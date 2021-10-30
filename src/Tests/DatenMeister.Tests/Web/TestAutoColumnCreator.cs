@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using NUnit.Framework;
 
@@ -32,7 +33,7 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
             var creator = FormCreator.Create(null, null);
-            var result = creator.CreateExtentForm(extent, CreationMode.All);
+            var result = creator.CreateExtentForm(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
             var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).Select(x=> x as IElement).FirstOrDefault();
             Assert.That(tab, Is.Not.Null);
@@ -81,7 +82,7 @@ namespace DatenMeister.Tests.Web
 
             // Execute the stuff
             var creator = FormCreator.Create(null, null);
-            var result = creator.CreateExtentForm(extent, CreationMode.All);
+            var result = creator.CreateExtentForm(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
 
             var tab = result

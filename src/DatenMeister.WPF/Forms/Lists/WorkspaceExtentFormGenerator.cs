@@ -49,23 +49,20 @@ namespace DatenMeister.WPF.Forms.Lists
         internal static FormDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
-            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
-            var formElement = viewLogic.GetInternalFormExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
+            var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+            var formFactory = GiveMe.Scope.Resolve<FormFactory>();
+            
+            var formElement = formsPlugin.GetInternalFormExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
 
             if (formElement == null)
             {
                 // The form was not found, so the form is created automatically
                 // Creates the form out of the properties of the workspace
-                var listForm = viewLogic.GetListFormForExtentsItem(
-                                   extent,
-                                   GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
-                                       _DatenMeister.TheOne.Management.__Workspace) ??
-                                   throw new InvalidOperationException("No workspace is found"),
-                                   FormDefinitionMode.Default)
+                formElement = formFactory.GetExtentFormForCollection(
+                                   extent.elements(),
+                                   new FormFactoryConfiguration())
                                ?? throw new InvalidOperationException("List form could not be created");
-                listForm.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
-
-                formElement = viewLogic.GetExtentFormForSubforms(listForm);
+                formElement.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
             }
 
             var formDefinition = new FormDefinition("Workspaces", formElement)
@@ -155,26 +152,21 @@ namespace DatenMeister.WPF.Forms.Lists
             INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var formFactory = GiveMe.Scope.Resolve<FormFactory>();
             var viewExtent = viewLogic.GetInternalFormExtent();
             var result = 
                 viewExtent.GetUriResolver().ResolveById("Workspace.ExtentFormForExtents");
             
             if (result == null)
             {
-                // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
-                var listForm =
-                    viewLogic.GetListFormForExtentsItem(
-                        extent,
-                        GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
-                            _DatenMeister.TheOne.Management.__Extent)
-                        ?? throw new InvalidOperationException("Did not found extent"),
-                        FormDefinitionMode.Default) ??
+                result =
+                    formFactory.GetExtentFormForCollection(
+                        extent.elements(),
+                        new FormFactoryConfiguration()) ??
                     throw new InvalidOperationException("listForm == null");
-                listForm.set(_DatenMeister._Forms._ListForm.inhibitDeleteItems, true);
-                listForm.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
-                listForm.set(_DatenMeister._Forms._ListForm.property, nameof(_DatenMeister._Management._Workspace.extents));
-
-                result = viewLogic.GetExtentFormForSubforms(listForm);
+                result.set(_DatenMeister._Forms._ListForm.inhibitDeleteItems, true);
+                result.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
+                result.set(_DatenMeister._Forms._ListForm.property, nameof(_DatenMeister._Management._Workspace.extents));
             }
 
             var viewDefinition = new FormDefinition("Extents", result)

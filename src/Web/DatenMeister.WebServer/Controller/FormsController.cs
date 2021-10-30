@@ -33,7 +33,10 @@ namespace DatenMeister.WebServer.Controller
             var item = GetItemByUriParameter(workspaceId, itemUrl);
                 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var form = formLogic.GetItemTreeFormForObject(item, FormDefinitionMode.Default, viewMode);
+            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var form = formFactory.GetExtentFormForItem(item,
+                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
+            
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
@@ -53,7 +56,9 @@ namespace DatenMeister.WebServer.Controller
                          ?? throw new InvalidOperationException("Extent is not found");
                 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var form = formLogic.GetExtentForm(extent, FormDefinitionMode.Default, viewMode);
+            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var form = formFactory.GetExtentFormForExtent(extent,
+                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");

@@ -39,6 +39,7 @@ namespace DatenMeister.WPF.Forms.Lists
             Loaded += ItemsInExtentList_Loaded;
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateForm);
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+            _formFactory = GiveMe.Scope.Resolve<FormFactory>();
         }
 
         /// <summary>
@@ -85,6 +86,8 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Stores the workspace logic
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
+
+        private readonly FormFactory _formFactory;
 
         /// <summary>
         ///     Sets the items of the given extent
@@ -145,7 +148,9 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Extent is currently selected
                     // Finds the view by the extent type
-                    form = formPlugin.GetExtentForm((IUriExtent) RootItem, overridingMode, CurrentViewModeId);
+                    form = _formFactory.GetExtentFormForExtent(
+                        (IUriExtent)RootItem,
+                        new FormFactoryConfiguration { ViewModeId = CurrentViewModeId });
                 }
                 else
                 {
@@ -161,10 +166,9 @@ namespace DatenMeister.WPF.Forms.Lists
                     }
                     
                     // User has selected a sub element and its children shall be shown
-                    form = formPlugin.GetItemTreeFormForObject(
+                    form = _formFactory.GetExtentFormForItem(
                         SelectedItem,
-                        overridingMode, 
-                        viewMode);
+                        new FormFactoryConfiguration{ViewModeId = viewMode});
                 }
             }
 

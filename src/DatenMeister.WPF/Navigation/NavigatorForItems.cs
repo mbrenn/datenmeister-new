@@ -12,6 +12,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.WPF.Forms.Base;
@@ -173,7 +174,8 @@ namespace DatenMeister.WPF.Navigation
             return await navigationHost.NavigateTo(() =>
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, CreationMode.ByMetaClass);
+                    var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, 
+                        FormFactoryConfiguration.CreateByMetaClassOnly);
 
                     var viewExtensions = new List<ViewExtension>();
 

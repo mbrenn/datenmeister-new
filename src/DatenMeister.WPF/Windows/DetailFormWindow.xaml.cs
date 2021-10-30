@@ -394,6 +394,7 @@ namespace DatenMeister.WPF.Windows
             
             IObject? effectiveForm = null;
             var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var formFactory = GiveMe.Scope.Resolve<FormFactory>();
 
             // Checks, if there is an overriding form 
             if (OverridingFormDefinition != null)
@@ -404,7 +405,7 @@ namespace DatenMeister.WPF.Windows
                 }
                 else
                 {
-                    effectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), OverridingFormDefinition.Mode);
+                    effectiveForm = formFactory.GetDetailFormForItem(DetailElement, new FormFactoryConfiguration());
                 }
 
                 formDefinition = OverridingFormDefinition;
@@ -424,10 +425,7 @@ namespace DatenMeister.WPF.Windows
                 else
                 {
                     effectiveForm =
-                        viewLogic.GetDetailForm(
-                            DetailElement,
-                            DetailElement.GetUriExtentOf(),
-                            RequestedFormDefinition.Mode);
+                        formFactory.GetDetailFormForItem(DetailElement, new FormFactoryConfiguration());
                 }
             }
 

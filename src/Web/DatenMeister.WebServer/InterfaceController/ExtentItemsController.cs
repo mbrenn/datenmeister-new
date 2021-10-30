@@ -13,18 +13,19 @@ namespace DatenMeister.WebServer.InterfaceController
     public class ExtentItemsController
     {
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IScopeStorage _scopeStorage;
         private readonly FormsPlugin _formsPlugin;
-
+        private readonly FormFactory _formFactory;
+        
         public ExtentItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
-            _scopeStorage = scopeStorage;
             _formsPlugin =
                 new FormsPlugin(
                     _workspaceLogic,
-                    new ExtentCreator(_workspaceLogic, _scopeStorage),
-                    _scopeStorage);
+                    new ExtentCreator(_workspaceLogic, scopeStorage),
+                    scopeStorage);
+            _formFactory = new FormFactory(
+                _formsPlugin, scopeStorage);
         }
 
         /// <summary>
@@ -61,10 +62,10 @@ namespace DatenMeister.WebServer.InterfaceController
             var result = new ItemAndFormModel();
             
             // Find the matching form
-            var extentForm = _formsPlugin.GetItemTreeFormForObject(
+            var extentForm = _formFactory.GetExtentFormForItem(
                 foundElement,
-                FormDefinitionMode.Default,
-                "Default");
+                new FormFactoryConfiguration{ViewModeId = "Default"});
+            
             if (extentForm == null)
             {
                 return null;
@@ -101,10 +102,9 @@ namespace DatenMeister.WebServer.InterfaceController
             var result = new CollectionAndFormModel();
 
             // Find the matching form
-            var extentForm = _formsPlugin.GetExtentForm(
+            var extentForm = _formFactory.GetExtentFormForExtent(
                 extent,
-                FormDefinitionMode.Default,
-                viewMode ?? ViewModes.Default);
+                new FormFactoryConfiguration { ViewModeId = viewMode ?? ViewModes.Default });
             if (extentForm == null)
             {
                 return null;

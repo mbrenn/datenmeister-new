@@ -8,6 +8,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.TextTemplates;
 
@@ -77,8 +78,8 @@ namespace DatenMeister.Reports.Generic
                 // Create form
                 var formCreator = FormCreator.Create(
                     reportLogic.WorkspaceLogic,
-                    null);
-                form = formCreator.CreateListFormForElements(elements, CreationMode.All);
+                    reportLogic.ScopeStorage);
+                form = formCreator.CreateListFormForElements(elements, new FormFactoryConfiguration());
             }
 
             // Creates the table

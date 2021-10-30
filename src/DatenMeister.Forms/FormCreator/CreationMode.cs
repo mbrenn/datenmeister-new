@@ -21,7 +21,7 @@ namespace DatenMeister.Forms.FormCreator
         ByPropertyValues = 0x02,
 
         /// <summary>
-        /// Allowes the creation of forms by going through the propeerties only if
+        /// Allows the creation of forms by going through the properties only if
         /// the element does not have a metaclass
         /// </summary>
         OnlyPropertiesIfNoMetaClass = 0x04,

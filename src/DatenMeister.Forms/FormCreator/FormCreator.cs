@@ -15,6 +15,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms.FormFinder;
 using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
 
@@ -31,6 +32,8 @@ namespace DatenMeister.Forms.FormCreator
         /// for the tabs of the extent form
         /// </summary>
         private readonly FormsPlugin? _formLogic;
+
+        private readonly IScopeStorage _scopeStorage;
 
         /// <summary>
         /// Stores the associated workspace logic
@@ -50,35 +53,22 @@ namespace DatenMeister.Forms.FormCreator
         private IElement? _realType;
         private IElement? _dateTimeType;
         private Workspace? _uriResolver;
-
-        /// <summary>
-        /// Initializes a new instance of the FormCreator class
-        /// </summary>
-        /// <param name="workspaceLogic">The workspace logic to be used</param>
-        /// <param name="formLogic">View logic being used</param>
-        /// <param name="scopeStorage">Stores the extent settings</param>
-        public FormCreator(
-            IWorkspaceLogic workspaceLogic,
-            FormsPlugin? formLogic,
-            IScopeStorage scopeStorage)
-             : this (workspaceLogic, formLogic, scopeStorage.TryGet<ExtentSettings>())
-        {
-
-        }
         
         /// <summary>
         /// Initializes a new instance of the FormCreator class
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="scopeStorage">The scope storage</param>
         /// <param name="formLogic">View logic being used</param>
         /// <param name="extentSettings">Stores the extent settings</param>
         private FormCreator(
-            IWorkspaceLogic? workspaceLogic,
-            FormsPlugin? formLogic, 
-            ExtentSettings? extentSettings = null)
+            IWorkspaceLogic workspaceLogic,
+            FormsPlugin formLogic, 
+            IScopeStorage scopeStorage)
         {
             _formLogic = formLogic;
-            _extentSettings = extentSettings ?? new ExtentSettings();
+            _scopeStorage = scopeStorage;
+            _extentSettings = scopeStorage.Get<ExtentSettings>();
             _workspaceLogic = workspaceLogic;
 
             var userExtent = _formLogic?.GetUserFormExtent();
@@ -86,19 +76,24 @@ namespace DatenMeister.Forms.FormCreator
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
         }
-        
+
         /// <summary>
         /// Creates the form logic by using the private constructor
         /// </summary>
         /// <param name="workspaceLogic">Workspace Logic to be evaluated</param>
+        /// <param name="scopeStorage">Scope storage</param>
         /// <param name="formLogic">Form Logic to be evaluated</param>
-        /// <param name="extentSettings">Settings of the extent</param>
         /// <returns></returns>
-        public static FormCreator Create(IWorkspaceLogic? workspaceLogic,
-            FormsPlugin? formLogic, 
-            ExtentSettings? extentSettings = null)
+        public static FormCreator Create(
+            IWorkspaceLogic workspaceLogic,
+            IScopeStorage scopeStorage)
         {
-            return new FormCreator(workspaceLogic, formLogic, extentSettings);
+            var formLogic = new FormsPlugin(
+                workspaceLogic, new ExtentCreator(workspaceLogic, scopeStorage), scopeStorage);
+            return new FormCreator(
+                workspaceLogic,
+                formLogic, 
+                scopeStorage);
         }
 
         /// <summary>
@@ -112,7 +107,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
         /// <param name="cache">Cache being used to store intermediate items</param>
-        private void AddToForm(IObject form, object item, CreationMode creationMode, FormCreatorCache cache)
+        private void AddToForm(IObject form, object item, FormFactoryConfiguration creationMode, FormCreatorCache cache)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
@@ -121,7 +116,7 @@ namespace DatenMeister.Forms.FormCreator
             var metaClass = asElement?.metaclass;
             var wasInMetaClass = false;
 
-            if (creationMode.HasFlag(CreationMode.ByMetaClass)
+            if (creationMode.CreateByMetaClass
                 && metaClass != null)
             {
                 if (!cache.CoveredMetaClasses.Contains(metaClass))
@@ -130,7 +125,8 @@ namespace DatenMeister.Forms.FormCreator
                     wasInMetaClass = AddToFormByMetaclass(
                         form,
                         metaClass,
-                        creationMode & ~(CreationMode.AddMetaClass),
+                        creationMode with 
+                        { AutomaticMetaClassField = false},
                         cache);
                 }
                 else
@@ -143,10 +139,8 @@ namespace DatenMeister.Forms.FormCreator
             // This item does not have a metaclass and also no properties, so we try to find them by using the item
             var itemAsAllProperties = item as IObjectAllProperties;
 
-            var isByProperties =
-                creationMode.HasFlag(CreationMode.ByPropertyValues);
-            var isOnlyPropertiesIfNoMetaClass =
-                creationMode.HasFlag(CreationMode.OnlyPropertiesIfNoMetaClass);
+            var isByProperties = creationMode.CreateByPropertyValues;
+                var isOnlyPropertiesIfNoMetaClass = creationMode.OnlyCreateByValuesWhenMetaClassIsNotSet;
 
             if ((isByProperties
                  || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
@@ -157,7 +151,7 @@ namespace DatenMeister.Forms.FormCreator
             }
 
             // Third phase: Add metaclass element itself
-            var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
+            var isMetaClass = creationMode.AutomaticMetaClassField;
             if (!cache.MetaClassAlreadyAdded
                 && isMetaClass
                 && !FormMethods.HasMetaClassFieldInForm(form))
@@ -190,7 +184,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="item">Item to be evaluated</param>
         /// <param name="creationMode">The creation mode that is used</param>
         /// <param name="cache">Cache being used to store intermediate items</param>
-        private void AddToFormByPropertyValues(IObject form, object item, CreationMode creationMode, FormCreatorCache cache)
+        private void AddToFormByPropertyValues(IObject form, object item, FormFactoryConfiguration creationMode, FormCreatorCache cache)
         {
             if (!(item is IObjectAllProperties itemAsAllProperties))
             {
@@ -205,7 +199,7 @@ namespace DatenMeister.Forms.FormCreator
                 return;
             }
             
-            var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
+            var isReadOnly = creationMode.IsReadOnly;
 
             // Creates the form out of the properties of the item
             var properties = itemAsAllProperties.getPropertiesBeingSet();
@@ -240,21 +234,14 @@ namespace DatenMeister.Forms.FormCreator
                         continue;
                     }
 
-                    if (DotNetHelper.IsPrimitiveType(propertyType) || creationMode.HasFlag(CreationMode.ForListForms))
+                    if (DotNetHelper.IsEnumeration(propertyType))
                     {
-                        column = _factory.create(_DatenMeister.TheOne.Forms.__TextFieldData);
+                        column = _factory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
                     }
                     else
                     {
-                        if (DotNetHelper.IsEnumeration(propertyType))
-                        {
-                            column = _factory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
-                        }
-                        else
-                        {
-                            column = _factory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
-                            column.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, false);
-                        }
+                        column = _factory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
+                        column.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, false);
                     }
 
                     column.set(_DatenMeister._Forms._FieldData.name, propertyName);
@@ -284,10 +271,10 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         /// <param name="form">Form that will be extended. Must be list or detail form.</param>
         /// <param name="metaClass">Metaclass to be used</param>
-        /// <param name="creationMode">Creation Mode to be used</param>
+        /// <param name="configuration">Creation Mode to be used</param>
         /// <param name="cache">Cache of reportCreator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddToFormByMetaclass(IObject form, IObject metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
+        private bool AddToFormByMetaclass(IObject form, IObject metaClass, FormFactoryConfiguration configuration, FormCreatorCache? cache = null)
         {
             cache ??= new FormCreatorCache();
             
@@ -324,13 +311,13 @@ namespace DatenMeister.Forms.FormCreator
                     continue;
                 }
 
-                var column = GetFieldForProperty(metaClass, property, creationMode);
+                var column = GetFieldForProperty(metaClass, property, configuration);
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
             }
 
             // After having created all the properties, add the meta class information at the end
             if (!cache.MetaClassAlreadyAdded
-                && creationMode.HasFlagFast(CreationMode.AddMetaClass)
+                && configuration.AutomaticMetaClassField
                 && !FormMethods.HasMetaClassFieldInForm(form))
             {
                 var metaClassField = _factory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
@@ -381,23 +368,24 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         /// Takes the given uml item and includes it into the form.
         /// The element can be of type enumeration, class or property.
-        ///
+        /// 
         /// For the creation rules, see chapter "FormManager" in the Documentation
         /// </summary>
         /// <param name="form">Form that will be enriched</param>
         /// <param name="umlElement">The uml element, property, class or type that will be added</param>
         /// <param name="creationMode">The creation mode</param>
+        /// <param name="umlElementType"></param>
         /// <returns>true, if an element was created</returns>
         public bool AddToFormByUmlElement(
             IElement form,
             IElement umlElement,
-            CreationMode creationMode,
+            FormFactoryConfiguration creationMode,
             FormUmlElementType umlElementType = FormUmlElementType.Unknown)
         {
             if (form == null) throw new ArgumentNullException(nameof(form));
             if (umlElement == null) throw new ArgumentNullException(nameof(umlElement));
 
-            var noDuplicate = creationMode.HasFlagFast(CreationMode.NoDuplicate);
+            var noDuplicate = true;
             
             // First, select the type of the form
             var isDetailForm =
@@ -437,13 +425,6 @@ namespace DatenMeister.Forms.FormCreator
                 throw new InvalidOperationException(
                     "Given element is not a property, not a class, not an enumeration.");
             }
-
-            // Now create the element depending on the form type
-            if (isListForm)
-            {
-                // Adds the flag for list forms
-                creationMode |= CreationMode.ForListForms;
-            }
             
             // First, let's parse the properties
             if (isDetailForm && isPropertyUml || isListForm && isPropertyUml)
@@ -482,7 +463,8 @@ namespace DatenMeister.Forms.FormCreator
                 var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
                     
                 // Now try to figure out the metaclass
-                var listForm = CreateListFormForProperty(umlElement, CreationMode.ByMetaClass);
+                var listForm = CreateListFormForProperty(umlElement, 
+                    FormFactoryConfiguration.CreateByMetaClassOnly);
                 tabs.add(listForm);
                 return true;
             }
@@ -521,16 +503,17 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         /// Gets the field data, depending upon the given property
         /// </summary>
+        /// <param name="parentMetaClass">Meta class of the parent item</param>
         /// <param name="property">Uml-Property which is requesting a field</param>
         /// <param name="creationMode">Defines the mode how to create the fields</param>
         /// <returns>The field data</returns>
-        private IElement GetFieldForProperty(IObject? parentMetaClass, IObject property, CreationMode creationMode)
+        private IElement GetFieldForProperty(IObject? parentMetaClass, IObject property, FormFactoryConfiguration creationMode)
         {
             var propertyType = PropertyMethods.GetPropertyType(property);
-            var isForListForm = creationMode.HasFlagFast(CreationMode.ForListForms);
+
             var propertyName = property.get<string>("name");
             var propertyIsEnumeration = PropertyMethods.IsCollection(property);
-            var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
+            var isReadOnly =creationMode.IsReadOnly;
 
             // Check, if field property is an enumeration
             _uriResolver ??= _workspaceLogic?.GetTypesWorkspace();
@@ -545,12 +528,12 @@ namespace DatenMeister.Forms.FormCreator
             var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)
             if (propertyTypeMetaClass != null && propertyType != null)
             {
-                if (propertyTypeMetaClass.equals(_UML.TheOne.SimpleClassifiers.__Enumeration) && !isForListForm)
+                if (propertyTypeMetaClass.equals(_UML.TheOne.SimpleClassifiers.__Enumeration))
                 {
                     return CreateFieldForEnumeration(propertyName, propertyType, creationMode);
                 }
 
-                if (propertyType.equals(_booleanType) && !isForListForm)
+                if (propertyType.equals(_booleanType))
                 {
                     // If we have a boolean and the field is not for a list form
                     var checkbox = _factory.create(_DatenMeister.TheOne.Forms.__CheckboxFieldData);
@@ -560,7 +543,7 @@ namespace DatenMeister.Forms.FormCreator
                     return checkbox;
                 }
 
-                if (propertyType.equals(_dateTimeType) && !isForListForm)
+                if (propertyType.equals(_dateTimeType))
                 {
                     var dateTimeField= _factory.create(_DatenMeister.TheOne.Forms.__DateTimeFieldData);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
@@ -573,8 +556,7 @@ namespace DatenMeister.Forms.FormCreator
                     !propertyType.equals(_stringType) &&
                     !propertyType.equals(_integerType) &&
                     !propertyType.equals(_realType) &&
-                    !propertyType.equals(_dateTimeType) &&
-                    !isForListForm)
+                    !propertyType.equals(_dateTimeType))
                 {
                     // If we have something else than a primitive type and it is not for a list form
                     if (propertyIsEnumeration)
@@ -611,12 +593,12 @@ namespace DatenMeister.Forms.FormCreator
                         }
                         // Create the internal form out of the metaclass
                         if (enumerationListForm == null 
-                            && creationMode.HasFlag(CreationMode.ByMetaClass))
+                            && creationMode.CreateByMetaClass)
                         {
                             enumerationListForm =
                                 CreateListFormForMetaClass(
                                     propertyType,
-                                    CreationMode.All,
+                                    new FormFactoryConfiguration(),
                                     property as IElement);
                         }
 
@@ -694,9 +676,9 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="propertyType">Type of the enumeration</param>
         /// <param name="creationMode">The used creation mode</param>
         /// <returns>The created element of the enumeration</returns>
-        private IElement CreateFieldForEnumeration(string propertyName, IElement propertyType, CreationMode creationMode)
+        private IElement CreateFieldForEnumeration(string propertyName, IElement propertyType, FormFactoryConfiguration creationMode)
         {
-            var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
+            var isReadOnly = creationMode.IsReadOnly;
             // If we have an enumeration (C#: Enum) and the field is not for a list form
             var comboBox = _factory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
             comboBox.set(_DatenMeister._Forms._DropDownFieldData.name, propertyName);

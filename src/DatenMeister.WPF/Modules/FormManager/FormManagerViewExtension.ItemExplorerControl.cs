@@ -337,7 +337,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     CreateFormByClassifierType.ExtentForm => formCreator.CreateExtentFormByMetaClass(locatedItem),
                     CreateFormByClassifierType.ListForm => formCreator.CreateListFormForMetaClass(
                         locatedItem,
-                        CreationMode.ForListForms | CreationMode.ByMetaClass),
+                        FormFactoryConfiguration.CreateByMetaClassOnly),
                     _ => throw new InvalidOperationException()
                 };
 

@@ -46,25 +46,40 @@ export class CollectionFormCreator implements IForm.IForm {
     createFormByCollection(parent: JQuery<HTMLElement>, elements: Array<Mof.DmObject>, isReadOnly: boolean) {
         const tthis = this;
         parent.empty();
+        const creatingElements = $("<div>Creating elements...</div>");
+        parent.append(creatingElements);
 
-        const tabs = this.formElement.get("tab");
+        const tabs = this.formElement.get("tab") as Array<Mof.DmObject>;
+
+        let tabCount = tabs.length;
         for (let n in tabs) {
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
 
-            let form = $("<div />");
-            const tab = tabs[n] as DmObject;
-            if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                const listForm = new ListForm();
-                listForm.elements = elements;
-                listForm.formElement = tab;
-                listForm.workspace = this.workspace;
-                listForm.extentUri = this.extentUri;
-                listForm.createFormByCollection(form, isReadOnly);
-            }
+            // Do it asynchronously. 
+            window.setTimeout(() => {
 
-            parent.append(form);
+                let form = $("<div />");
+                const tab = tabs[n] as DmObject;
+                if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
+                    const listForm = new ListForm();
+                    listForm.elements = elements;
+                    listForm.formElement = tab;
+                    listForm.workspace = this.workspace;
+                    listForm.extentUri = this.extentUri;
+                    listForm.createFormByCollection(form, isReadOnly);
+                }
+
+                parent.append(form);
+                tabCount--;
+
+                if (tabCount == 0) {
+                    // Removes the loading information
+                    creatingElements.remove();
+                }
+
+            });
         }
     }
 }
@@ -86,6 +101,8 @@ export class DetailFormCreator implements IForm.IForm {
     createFormByObject(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
         const tthis = this;
         parent.empty();
+        const creatingElements = $("<div>Creating elements...</div>");
+        parent.append(creatingElements);
 
         const tabs = this.formElement.get("tab");
         for (let n in tabs) {
@@ -133,6 +150,9 @@ export class DetailFormCreator implements IForm.IForm {
 
             parent.append(form);
         }
+
+        // Removes the loading information
+        creatingElements.remove();
     }
 
     createViewForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {

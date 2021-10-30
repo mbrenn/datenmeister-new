@@ -5,13 +5,13 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields"], function 
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
             const div = $("<div />");
-            if (dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
+            if (dmElement !== undefined && dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
                 div.text(dmElement.metaClass.id);
+                (0, DomHelper_1.injectNameByUri)(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
             }
             else {
-                div.text("unknown");
+                div.append($("<em>unknown</em>"));
             }
-            (0, DomHelper_1.injectNameByUri)(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
             return div;
         }
         evaluateDom(dmElement) {

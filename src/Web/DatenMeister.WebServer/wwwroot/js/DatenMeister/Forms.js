@@ -29,22 +29,33 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         createFormByCollection(parent, elements, isReadOnly) {
             const tthis = this;
             parent.empty();
+            const creatingElements = $("<div>Creating elements...</div>");
+            parent.append(creatingElements);
             const tabs = this.formElement.get("tab");
+            let tabCount = tabs.length;
             for (let n in tabs) {
                 if (!tabs.hasOwnProperty(n)) {
                     continue;
                 }
-                let form = $("<div />");
-                const tab = tabs[n];
-                if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                    const listForm = new Forms_ListForm_1.ListForm();
-                    listForm.elements = elements;
-                    listForm.formElement = tab;
-                    listForm.workspace = this.workspace;
-                    listForm.extentUri = this.extentUri;
-                    listForm.createFormByCollection(form, isReadOnly);
-                }
-                parent.append(form);
+                // Do it asynchronously. 
+                window.setTimeout(() => {
+                    let form = $("<div />");
+                    const tab = tabs[n];
+                    if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
+                        const listForm = new Forms_ListForm_1.ListForm();
+                        listForm.elements = elements;
+                        listForm.formElement = tab;
+                        listForm.workspace = this.workspace;
+                        listForm.extentUri = this.extentUri;
+                        listForm.createFormByCollection(form, isReadOnly);
+                    }
+                    parent.append(form);
+                    tabCount--;
+                    if (tabCount == 0) {
+                        // Removes the loading information
+                        creatingElements.remove();
+                    }
+                });
             }
         }
     }
@@ -59,6 +70,8 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         createFormByObject(parent, isReadOnly) {
             const tthis = this;
             parent.empty();
+            const creatingElements = $("<div>Creating elements...</div>");
+            parent.append(creatingElements);
             const tabs = this.formElement.get("tab");
             for (let n in tabs) {
                 if (!tabs.hasOwnProperty(n)) {
@@ -98,6 +111,8 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 }
                 parent.append(form);
             }
+            // Removes the loading information
+            creatingElements.remove();
         }
         createViewForm(parent, workspace, extentUri, uri) {
             this.createForm(parent, workspace, extentUri, uri, true);

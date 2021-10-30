@@ -9,13 +9,13 @@ export class Field extends BaseField implements IFormField
     createDom(dmElement: Mof.DmObject) {
 
         const div = $("<div />");
-        if (dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
+        if (dmElement !== undefined && dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
             div.text(dmElement.metaClass.id);
+            injectNameByUri(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
         } else {
-            div.text("unknown");
+            div.append($("<em>unknown</em>"));
         }
 
-        injectNameByUri(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
         return div;
     }
 

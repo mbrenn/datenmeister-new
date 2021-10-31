@@ -62,7 +62,7 @@ namespace DatenMeister.WebServer.InterfaceController
             var result = new ItemAndFormModel();
             
             // Find the matching form
-            var extentForm = _formFactory.GetExtentFormForItem(
+            var extentForm = _formFactory.CreateExtentFormForItem(
                 foundElement,
                 new FormFactoryConfiguration{ViewModeId = "Default"});
             
@@ -102,7 +102,7 @@ namespace DatenMeister.WebServer.InterfaceController
             var result = new CollectionAndFormModel();
 
             // Find the matching form
-            var extentForm = _formFactory.GetExtentFormForExtent(
+            var extentForm = _formFactory.CreateExtentFormForExtent(
                 extent,
                 new FormFactoryConfiguration { ViewModeId = viewMode ?? ViewModes.Default });
             if (extentForm == null)

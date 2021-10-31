@@ -271,7 +271,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    formCreator.AddToFormByUmlElement(
+                    formCreator.AddFieldsToFormByMetaClassProperty(
                         detailAsElement!, // !Ok, since this method will only be called when detailAsElement is set 
                         locatedItem,
                         new FormFactoryConfiguration());

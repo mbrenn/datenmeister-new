@@ -40,7 +40,7 @@ namespace DatenMeister.Tests.Web
             
             // Execute the stuff
             var creator = FormCreator.Create(workspaceLogic, scopeStorage);
-            var result = creator.CreateExtentForm(extent, new FormFactoryConfiguration());
+            var result = creator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
             var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).Select(x=> x as IElement).FirstOrDefault();
             Assert.That(tab, Is.Not.Null);
@@ -92,7 +92,7 @@ namespace DatenMeister.Tests.Web
             
             // Execute the stuff
             var creator = FormCreator.Create(workspaceLogic, scopeStorage);
-            var result = creator.CreateExtentForm(extent, new FormFactoryConfiguration());
+            var result = creator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
 
             var tab = result

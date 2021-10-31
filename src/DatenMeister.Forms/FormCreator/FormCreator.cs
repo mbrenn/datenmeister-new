@@ -25,7 +25,7 @@ namespace DatenMeister.Forms.FormCreator
     /// Creates a view out of the given extent, elements (collection) or element).
     /// 
     /// </summary>
-    public partial class FormCreator
+    public partial class FormCreator : IFormFactory
     {
         /// <summary>
         /// Stores the reference to the view logic which is required to get the views
@@ -82,7 +82,6 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="scopeStorage">The scope storage</param>
         /// <param name="formLogic">View logic being used</param>
-        /// <param name="extentSettings">Stores the extent settings</param>
         private FormCreator(
             IWorkspaceLogic workspaceLogic,
             FormsPlugin formLogic, 
@@ -100,7 +99,6 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         /// <param name="workspaceLogic">Workspace Logic to be evaluated</param>
         /// <param name="scopeStorage">Scope storage</param>
-        /// <param name="formLogic">Form Logic to be evaluated</param>
         /// <returns></returns>
         public static FormCreator Create(
             IWorkspaceLogic workspaceLogic,
@@ -125,7 +123,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
         /// <param name="cache">Cache being used to store intermediate items</param>
-        private void AddToForm(IObject form, object item, FormFactoryConfiguration creationMode, FormCreatorCache cache)
+        private void AddFieldsToForm(IObject form, object item, FormFactoryConfiguration creationMode, FormCreatorCache cache)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
@@ -134,17 +132,18 @@ namespace DatenMeister.Forms.FormCreator
             var metaClass = asElement?.metaclass;
             var wasInMetaClass = false;
 
-            if (creationMode.CreateByMetaClass
-                && metaClass != null)
+            if (creationMode.CreateByMetaClass && metaClass != null)
             {
                 if (!cache.CoveredMetaClasses.Contains(metaClass))
                 {
                     cache.CoveredMetaClasses.Add(metaClass);
-                    wasInMetaClass = AddToFormByMetaclass(
+                    wasInMetaClass = AddFieldsToFormByMetaclass(
                         form,
                         metaClass,
-                        creationMode with 
-                        { AutomaticMetaClassField = false},
+                        creationMode with
+                        {
+                            AutomaticMetaClassField = false
+                        },
                         cache);
                 }
                 else
@@ -164,7 +163,7 @@ namespace DatenMeister.Forms.FormCreator
                  || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
                 && itemAsAllProperties != null)
             {
-                AddToFormByPropertyValues(form, item, creationMode, cache);
+                AddFieldsToFormByPropertyValues(form, item, creationMode, cache);
                 form.set(_DatenMeister._Forms._DetailForm.allowNewProperties, true);
             }
 
@@ -202,15 +201,15 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="item">Item to be evaluated</param>
         /// <param name="creationMode">The creation mode that is used</param>
         /// <param name="cache">Cache being used to store intermediate items</param>
-        private void AddToFormByPropertyValues(IObject form, object item, FormFactoryConfiguration creationMode, FormCreatorCache cache)
+        private void AddFieldsToFormByPropertyValues(IObject form, object item, FormFactoryConfiguration creationMode, FormCreatorCache cache)
         {
-            if (!(item is IObjectAllProperties itemAsAllProperties))
+            if (item is not IObjectAllProperties itemAsAllProperties)
             {
                 // The object does not allow the retrieving of properties
                 return;
             }
 
-            if (!(item is IObject itemAsObject))
+            if (item is not IObject itemAsObject)
             {
                 // The object cannot be converted and FormCreator does not support
                 // non MOF Objects
@@ -296,7 +295,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="configuration">Creation Mode to be used</param>
         /// <param name="cache">Cache of reportCreator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddToFormByMetaclass(IObject form, IObject metaClass, FormFactoryConfiguration configuration, FormCreatorCache? cache = null)
+        private bool AddFieldsToFormByMetaclass(IObject form, IObject? metaClass, FormFactoryConfiguration configuration, FormCreatorCache? cache = null)
         {
             cache ??= new FormCreatorCache();
             
@@ -333,7 +332,7 @@ namespace DatenMeister.Forms.FormCreator
                     continue;
                 }
 
-                var column = GetFieldForProperty(metaClass, property, configuration);
+                var column = CreateFieldForProperty(metaClass, property, configuration);
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
             }
 
@@ -394,18 +393,18 @@ namespace DatenMeister.Forms.FormCreator
         /// For the creation rules, see chapter "FormManager" in the Documentation
         /// </summary>
         /// <param name="form">Form that will be enriched</param>
-        /// <param name="umlElement">The uml element, property, class or type that will be added</param>
+        /// <param name="umlClassOrProperty">The uml element, property, class or type that will be added</param>
         /// <param name="creationMode">The creation mode</param>
         /// <param name="umlElementType"></param>
         /// <returns>true, if an element was created</returns>
-        public bool AddToFormByUmlElement(
+        public bool AddFieldsToFormByMetaClassProperty(
             IElement form,
-            IElement umlElement,
+            IElement umlClassOrProperty,
             FormFactoryConfiguration creationMode,
             FormUmlElementType umlElementType = FormUmlElementType.Unknown)
         {
             if (form == null) throw new ArgumentNullException(nameof(form));
-            if (umlElement == null) throw new ArgumentNullException(nameof(umlElement));
+            if (umlClassOrProperty == null) throw new ArgumentNullException(nameof(umlClassOrProperty));
 
             var noDuplicate = true;
             
@@ -428,17 +427,17 @@ namespace DatenMeister.Forms.FormCreator
             // Second, select the type of the umlElement
             var isPropertyUml =
                 (umlElementType == FormUmlElementType.Unknown &&
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(),
+                ClassifierMethods.IsSpecializedClassifierOf(umlClassOrProperty.getMetaClass(),
                     _UML.TheOne.Classification.__Property))
                 || umlElementType == FormUmlElementType.Property;
             var isClassUml =
                 (umlElementType == FormUmlElementType.Unknown &&
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(),
+                ClassifierMethods.IsSpecializedClassifierOf(umlClassOrProperty.getMetaClass(),
                     _UML.TheOne.StructuredClassifiers.__Class))
                 || umlElementType == FormUmlElementType.Class;
             var isEnumerationUml =
                 (umlElementType == FormUmlElementType.Unknown &&
-                 ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(),
+                 ClassifierMethods.IsSpecializedClassifierOf(umlClassOrProperty.getMetaClass(),
                      _UML.TheOne.SimpleClassifiers.__Enumeration))
                 || umlElementType == FormUmlElementType.Enumeration;
             var isNoneOfTheUml = !(isPropertyUml || isClassUml || isEnumerationUml);
@@ -451,30 +450,30 @@ namespace DatenMeister.Forms.FormCreator
             // First, let's parse the properties
             if (isDetailForm && isPropertyUml || isListForm && isPropertyUml)
             {
-                if (noDuplicate && FormMethods.GetField(form, NamedElementMethods.GetName(umlElement)) != null)
+                if (noDuplicate && FormMethods.GetField(form, NamedElementMethods.GetName(umlClassOrProperty)) != null)
                 {
                     // Field is already existing
                     return false;
                 }
 
-                var column = GetFieldForProperty(umlElement.container(), umlElement, creationMode);
+                var column = CreateFieldForProperty(umlClassOrProperty.container(), umlClassOrProperty, creationMode);
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
                 return true;
             }
 
             if (isExtentForm && isPropertyUml)
             {
-                var isPropertyACollection = PropertyMethods.IsCollection(umlElement);
+                var isPropertyACollection = PropertyMethods.IsCollection(umlClassOrProperty);
 
                 if (!isPropertyACollection)
                 {
                     // Property is a single element, so a field is added to the detail form, if not already
                     // existing
                     var detailForm = GetOrCreateDetailFormIntoExtentForm(form);
-                    return AddToFormByUmlElement(detailForm, umlElement, creationMode);
+                    return AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
                 }
 
-                var propertyName = umlElement.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                var propertyName = umlClassOrProperty.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
                 if (noDuplicate && FormMethods.GetListTabForPropertyName(form, propertyName) != null )
                 {
                     // List form is already existing
@@ -485,7 +484,7 @@ namespace DatenMeister.Forms.FormCreator
                 var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
                     
                 // Now try to figure out the metaclass
-                var listForm = CreateListFormForProperty(umlElement, 
+                var listForm = CreateListFormForProperty(umlClassOrProperty, 
                     FormFactoryConfiguration.CreateByMetaClassOnly);
                 tabs.add(listForm);
                 return true;
@@ -494,8 +493,8 @@ namespace DatenMeister.Forms.FormCreator
             // Now, let's parse the enumerations
             if (isDetailForm && isEnumerationUml || isListForm && isEnumerationUml)
             {
-                var propertyName = NamedElementMethods.GetName(umlElement).ToLower(CultureInfo.InvariantCulture);
-                var column = CreateFieldForEnumeration(propertyName, umlElement, creationMode);
+                var propertyName = NamedElementMethods.GetName(umlClassOrProperty).ToLower(CultureInfo.InvariantCulture);
+                var column = CreateFieldForEnumeration(propertyName, umlClassOrProperty, creationMode);
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
                 return true;
             }
@@ -503,17 +502,17 @@ namespace DatenMeister.Forms.FormCreator
             if (isExtentForm && isEnumerationUml)
             {
                 var detailForm = GetOrCreateDetailFormIntoExtentForm(form);
-                return AddToFormByUmlElement(detailForm, umlElement, creationMode);
+                return AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
             }
             
             // Now the classes... All properties are created into this. 
             if (isClassUml)
             {
-                var properties = ClassifierMethods.GetPropertiesOfClassifier(umlElement);
+                var properties = ClassifierMethods.GetPropertiesOfClassifier(umlClassOrProperty);
                 var added = true;
                 foreach (var property in properties)
                 {
-                    added &= AddToFormByUmlElement(form, property, creationMode);
+                    added &= AddFieldsToFormByMetaClassProperty(form, property, creationMode);
                 }
 
                 return added;
@@ -529,7 +528,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="property">Uml-Property which is requesting a field</param>
         /// <param name="creationMode">Defines the mode how to create the fields</param>
         /// <returns>The field data</returns>
-        private IElement GetFieldForProperty(IObject? parentMetaClass, IObject property, FormFactoryConfiguration creationMode)
+        private IElement CreateFieldForProperty(IObject? parentMetaClass, IObject property, FormFactoryConfiguration creationMode)
         {
             var propertyType = PropertyMethods.GetPropertyType(property);
 
@@ -735,17 +734,18 @@ namespace DatenMeister.Forms.FormCreator
             /// <summary>
             /// The meta classes that have been covered
             /// </summary>
-            public HashSet<IElement> CoveredMetaClasses { get; } = new HashSet<IElement>();
+            public HashSet<IElement> CoveredMetaClasses { get; } = new();
 
             /// <summary>
             /// The property names that already have been covered and are within the 
             /// </summary>
-            public HashSet<string> CoveredPropertyNames { get; } = new HashSet<string>();
+            public HashSet<string> CoveredPropertyNames { get; } = new();
             
             /// <summary>
-            /// Skips the given property names
+            /// When at least one value is set, only those properties will be added which
+            /// are added to this hashset.
             /// </summary>
-            public HashSet<string> FocusOnPropertyNames { get; } = new HashSet<string>();
+            public HashSet<string> FocusOnPropertyNames { get; } = new();
         }
     }
 }

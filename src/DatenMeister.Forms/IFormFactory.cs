@@ -12,9 +12,9 @@ namespace DatenMeister.Forms
         /// <param name="element">Element to which the form is requested</param>
         /// <param name="configuration">Configuration to be used</param>
         /// <returns>The instance of the extent form</returns>
-        IElement? GetExtentFormForItem(IObject element, FormFactoryConfiguration configuration);
+        IElement? CreateExtentFormForItem(IObject element, FormFactoryConfiguration configuration);
 
-        IElement? GetDetailFormForItem(IObject element, FormFactoryConfiguration configuration);
+        IElement? CreateDetailFormForItem(IObject element, FormFactoryConfiguration configuration);
 
         /// <summary>
         /// Gets the extent form for a certain item's metaclass.
@@ -23,18 +23,18 @@ namespace DatenMeister.Forms
         /// <param name="metaClass">MetaClass to which the form shall be provided</param>
         /// <param name="configuration">Configuration to be used</param>
         /// <returns>The instance of the extent form</returns>
-        IElement? GetExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+        IElement? CreateExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
 
-        IElement? GetListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
+        IElement? CreateListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
 
-        IElement? GetExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
+        IElement? CreateExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
 
-        IElement? GetListFormForPropertyValues(IObject element, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration);
+        IElement? CreateListFormForPropertyValues(IObject element, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration);
         
         
-        public IElement? GetListFormForPropertyValues(IObject element, string propertyName, FormFactoryConfiguration configuration)
+        public IElement? CreateListFormForPropertyValues(IObject element, string propertyName, FormFactoryConfiguration configuration)
         {
-            return GetListFormForPropertyValues(element, propertyName, null, configuration);
+            return CreateListFormForPropertyValues(element, propertyName, null, configuration);
         }
     }
 }

@@ -79,7 +79,7 @@ namespace DatenMeister.Reports.Generic
                 var formCreator = FormCreator.Create(
                     reportLogic.WorkspaceLogic,
                     reportLogic.ScopeStorage);
-                form = formCreator.CreateListFormForElements(elements, new FormFactoryConfiguration());
+                form = formCreator.CreateListFormForCollection(elements, new FormFactoryConfiguration());
             }
 
             // Creates the table

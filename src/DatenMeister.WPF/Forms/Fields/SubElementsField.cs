@@ -116,7 +116,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 // The form will be created by evaluating the name of the property
                 // and the type of the property
                 var formsFactory = new FormFactory(formsLogic, GiveMe.Scope.ScopeStorage);
-                form = (formsFactory as IFormFactory).GetListFormForPropertyValues(
+                form = (formsFactory as IFormFactory).CreateListFormForPropertyValues(
                            _element, 
                            _propertyName,
                            new FormFactoryConfiguration()) ??

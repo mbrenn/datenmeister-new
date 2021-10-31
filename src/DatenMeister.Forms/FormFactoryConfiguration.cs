@@ -35,13 +35,6 @@
         public bool IncludeOnlyCommonProperties { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag whether fields shall also be created for these properties which
-        /// do not fit to the matching metaclass. This flag will only be evaluated in case the
-        /// corresponding elements has a property. 
-        /// </summary>
-        public bool IncludeFieldsForInvalidProperties { get; set; } = true;
-
-        /// <summary>
         /// Gets or sets the property whether the element shall be also created by the metaclass information
         /// of the properties
         /// </summary>

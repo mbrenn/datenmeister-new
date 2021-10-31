@@ -57,12 +57,12 @@ namespace DatenMeister.Forms
         private FormFinder.FormFinder CreateFormFinder()
             =>  new FormFinder.FormFinder(_plugin);
         
-        public IElement? GetExtentFormForItem(IObject element, FormFactoryConfiguration configuration)
+        public IElement? CreateExtentFormForItem(IObject element, FormFactoryConfiguration configuration)
         {
             // Checks if the item to which the extent form is requested is an extent
             if (element is IExtent elementAsExtent)
             {
-                return GetExtentFormForExtent(elementAsExtent, configuration);
+                return CreateExtentFormForExtent(elementAsExtent, configuration);
             }
             
             // Ok, not an extent now do the right things
@@ -143,7 +143,7 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? GetDetailFormForItem(IObject element, FormFactoryConfiguration configuration)
+        public IElement? CreateDetailFormForItem(IObject element, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;
             var extent = (element as IHasExtent)?.Extent;
@@ -173,7 +173,7 @@ namespace DatenMeister.Forms
             {
                 // Ok, we have not found the form. So create one
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateDetailForm(element);
+                foundForm = formCreator.CreateDetailFormForItem(element);
             }
 
             if (foundForm != null)
@@ -194,7 +194,7 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? GetExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
+        public IElement? CreateExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
         {
             
             IElement? foundForm = null;
@@ -240,14 +240,14 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? GetListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration)
+        public IElement? CreateListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;
             if (configuration.ViaFormCreator)
             {
                 // Ok, now perform the creation...
                 var formCreator = CreateFormCreator();
-                foundForm =  formCreator.CreateListFormForElements(collection, configuration);
+                foundForm =  formCreator.CreateListFormForCollection(collection, configuration);
             }
 
             if (foundForm != null)
@@ -265,7 +265,7 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? GetExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration)
+        public IElement? CreateExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration)
         {
             
             IElement? foundForm = null;
@@ -291,7 +291,7 @@ namespace DatenMeister.Forms
             {
                 // Ok, now perform the creation...
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateExtentForm(
+                foundForm = formCreator.CreateExtentFormForExtent(
                     extent,
                     new FormFactoryConfiguration());
             }
@@ -328,7 +328,7 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? GetListFormForPropertyValues(IObject parentElement, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration)
+        public IElement? CreateListFormForPropertyValues(IObject parentElement, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;
             propertyType ??=
@@ -356,7 +356,7 @@ namespace DatenMeister.Forms
             if (foundForm == null && configuration.ViaFormCreator)
             {
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateListFormForElements(
+                foundForm = formCreator.CreateListFormForCollection(
                     parentElement.get<IReflectiveCollection>(propertyName),
                     new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
             }

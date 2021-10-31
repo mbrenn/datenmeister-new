@@ -58,7 +58,7 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 // The form was not found, so the form is created automatically
                 // Creates the form out of the properties of the workspace
-                formElement = formFactory.GetExtentFormForCollection(
+                formElement = formFactory.CreateListFormForCollection(
                                    extent.elements(),
                                    new FormFactoryConfiguration())
                                ?? throw new InvalidOperationException("List form could not be created");
@@ -160,7 +160,7 @@ namespace DatenMeister.WPF.Forms.Lists
             if (result == null)
             {
                 result =
-                    formFactory.GetExtentFormForCollection(
+                    formFactory.CreateListFormForCollection(
                         extent.elements(),
                         new FormFactoryConfiguration()) ??
                     throw new InvalidOperationException("listForm == null");

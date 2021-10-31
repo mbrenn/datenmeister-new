@@ -93,7 +93,7 @@ namespace DatenMeister.Reports.Simple
 
                     if (metaClass.Key == null)
                     {
-                        foundForm = _formCreator.CreateListFormForElements(
+                        foundForm = _formCreator.CreateListFormForCollection(
                             collection,
                             creationMode);
                     }
@@ -111,7 +111,7 @@ namespace DatenMeister.Reports.Simple
             {
                 if (foundForm == null)
                 {
-                    foundForm = _formCreator.CreateListFormForElements(
+                    foundForm = _formCreator.CreateListFormForCollection(
                         elements,
                         creationMode);
 

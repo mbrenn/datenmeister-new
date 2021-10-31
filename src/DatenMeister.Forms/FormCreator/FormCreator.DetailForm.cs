@@ -16,7 +16,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="element"></param>
         /// <param name="creationMode"></param>
         /// <returns></returns>
-        public IElement CreateDetailForm(IObject element, FormFactoryConfiguration? creationMode = null)
+        public IElement CreateDetailFormForItem(IObject element, FormFactoryConfiguration? creationMode = null)
         {
             creationMode ??= new FormFactoryConfiguration();
             var cache = new FormCreatorCache();
@@ -28,7 +28,7 @@ namespace DatenMeister.Forms.FormCreator
                 createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
             }
 
-            AddToForm(createdForm, element, creationMode, cache);
+            AddFieldsToForm(createdForm, element, creationMode, cache);
             return createdForm;
         }
 
@@ -50,7 +50,7 @@ namespace DatenMeister.Forms.FormCreator
                 createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
             }
 
-            if (!AddToFormByMetaclass(createdForm, metaClass, creationMode))
+            if (!AddFieldsToFormByMetaclass(createdForm, metaClass, creationMode))
             {
                 createdForm.set(_DatenMeister._Forms._DetailForm.allowNewProperties, true);
             }

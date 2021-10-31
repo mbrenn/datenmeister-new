@@ -242,7 +242,7 @@ namespace DatenMeister.Forms
         /// <returns>The created extent</returns>
         public IElement GetExtentFormForSubforms(params IElement[] subForms)
         {
-            return FormCreator.FormCreator.CreateExtentForm(null, subForms);
+            return FormCreator.FormCreator.CreateExtentFormFromTabs(null, subForms);
         }
     }
 }

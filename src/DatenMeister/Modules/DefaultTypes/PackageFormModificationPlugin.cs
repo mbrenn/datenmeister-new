@@ -14,7 +14,7 @@ namespace DatenMeister.Modules.DefaultTypes
     /// <summary>
     /// Defines the default type modification pluging
     /// </summary>
-    public class DefaultTypesFormModificationPlugin : IFormModificationPlugin
+    public class PackageFormModificationPlugin : IFormModificationPlugin
     {
         public void ModifyForm(FormCreationContext context, IElement form)
         {

@@ -251,7 +251,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="metaClass">The meta class for which the extent form shall be created</param>
         /// <param name="creationMode">Defines the creation mode</param>
         /// <returns>The created extent form</returns>
-        public IElement CreateExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration creationMode = null)
+        public IElement CreateExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode = null)
         {
             creationMode ??= new FormFactoryConfiguration();
             
@@ -288,6 +288,7 @@ namespace DatenMeister.Forms.FormCreator
                     var field = CreateFieldForProperty(
                         metaClass,
                         property.property, 
+                        null,
                         new FormFactoryConfiguration {IsReadOnly = true});
                     fields.Add(field);
                 }
@@ -443,17 +444,20 @@ namespace DatenMeister.Forms.FormCreator
                 var fields = new List<IElement>();
                 foreach (var pair in propertiesWithoutCollection)
                 {
-                    if (objectMetaClass != null && pair.propertyName != null)
+                    if (pair.propertyName != null)
                     {
-                        var property = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
-                        if (property != null)
-                        {
-                            var field = CreateFieldForProperty(
-                                objectMetaClass,
-                                property,
-                                creationMode with { IsReadOnly = true });
-                            fields.Add(field);
-                        }
+                        var property =
+                            objectMetaClass == null
+                                ? null
+                                : ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
+                        
+                        var field = CreateFieldForProperty(
+                            objectMetaClass,
+                            property,
+                            pair.propertyName,
+                            creationMode with { IsReadOnly = true });
+                        fields.Add(field);
+
                     }
                 }
 

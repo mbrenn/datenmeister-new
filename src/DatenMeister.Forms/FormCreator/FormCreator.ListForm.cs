@@ -257,7 +257,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="propertyType"></param>
         /// <param name="creationMode"></param>
         public IElement CreateListFormForPropertyValues(
-            IObject element,
+            IObject? element,
             string propertyName, 
             IElement? propertyType,
             FormFactoryConfiguration creationMode)

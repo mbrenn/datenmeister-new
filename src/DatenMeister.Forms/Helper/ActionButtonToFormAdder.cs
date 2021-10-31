@@ -48,7 +48,11 @@ namespace DatenMeister.Forms.Helper
                         formWithFields = FormMethods.GetDetailForms(form).FirstOrDefault();
                         if (formWithFields == null)
                         {
-                            return;
+                            formWithFields = FormMethods.GetListForms(form).FirstOrDefault();
+                            if (formWithFields == null)
+                            {
+                                return;
+                            }
                         }
                     }
                     else

@@ -332,7 +332,7 @@ namespace DatenMeister.Forms.FormCreator
                     continue;
                 }
 
-                var column = CreateFieldForProperty(metaClass, property, configuration);
+                var column = CreateFieldForProperty(metaClass, property, propertyName, configuration);
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
             }
 
@@ -456,7 +456,11 @@ namespace DatenMeister.Forms.FormCreator
                     return false;
                 }
 
-                var column = CreateFieldForProperty(umlClassOrProperty.container(), umlClassOrProperty, creationMode);
+                var column = CreateFieldForProperty(
+                    umlClassOrProperty.container(), 
+                    umlClassOrProperty, 
+                    null,
+                    creationMode);
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
                 return true;
             }
@@ -528,12 +532,21 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="property">Uml-Property which is requesting a field</param>
         /// <param name="creationMode">Defines the mode how to create the fields</param>
         /// <returns>The field data</returns>
-        private IElement CreateFieldForProperty(IObject? parentMetaClass, IObject property, FormFactoryConfiguration creationMode)
+        private IElement CreateFieldForProperty(
+            IObject? parentMetaClass,
+            IObject? property,
+            string? propertyName,
+            FormFactoryConfiguration creationMode)
         {
-            var propertyType = PropertyMethods.GetPropertyType(property);
+            if (property == null && propertyName == null)
+            {
+                throw new InvalidOperationException("property == null && propertyName == null");
+            }
+            
+            var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
 
-            var propertyName = property.get<string>("name");
-            var propertyIsEnumeration = PropertyMethods.IsCollection(property);
+            propertyName ??= property.get<string>("name");
+            var propertyIsEnumeration = property != null && PropertyMethods.IsCollection(property);
             var isReadOnly =creationMode.IsReadOnly;
 
             // Check, if field property is an enumeration

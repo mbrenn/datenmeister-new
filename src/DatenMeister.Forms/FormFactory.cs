@@ -81,7 +81,7 @@ namespace DatenMeister.Forms
                 packageViewMode = element.getOrDefault<string>(_DatenMeister._CommonTypes._Default._Package.defaultViewMode);
             }
 
-            packageViewMode ??= ViewModes.Default;
+            packageViewMode = string.IsNullOrEmpty(packageViewMode) ? ViewModes.Default : packageViewMode;
             
             if (configuration.ViaFormFinder)
             {
@@ -257,7 +257,7 @@ namespace DatenMeister.Forms
                 CallFormsModificationPlugins(new FormCreationContext
                     {
                         Configuration = configuration,
-                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList,
                     },
                     ref foundForm);
             }
@@ -328,7 +328,7 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? CreateListFormForPropertyValues(IObject parentElement, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration)
+        public IElement? CreateListFormForPropertyValues(IObject? parentElement, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;
             propertyType ??=

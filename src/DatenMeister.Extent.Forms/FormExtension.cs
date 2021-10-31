@@ -29,18 +29,19 @@ namespace DatenMeister.Extent.Forms
         public void Start(PluginLoadingPosition position)
         {
             var formsPlugin = _scopeStorage.Get<FormsPluginState>();
-            
+
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Extent")
-                    { MetaClass = _DatenMeister.TheOne.Management.__Extent}
-                );
+                {
+                    MetaClass = _DatenMeister.TheOne.Management.__Extent
+                });
 
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")
-            {
-                FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
-            });
-            
+                {
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
+                });
+
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "New Item")
                 {
@@ -48,13 +49,13 @@ namespace DatenMeister.Extent.Forms
                     FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
                 }
             );
-            
+
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
                 {
                     FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
                 });
-            
+
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListDeleteItem, "Delete Item")
                 {

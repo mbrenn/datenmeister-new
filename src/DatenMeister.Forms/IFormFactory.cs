@@ -29,7 +29,7 @@ namespace DatenMeister.Forms
 
         IElement? CreateExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
 
-        IElement? CreateListFormForPropertyValues(IObject element, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration);
+        IElement? CreateListFormForPropertyValues(IObject? element, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration);
         
         
         public IElement? CreateListFormForPropertyValues(IObject element, string propertyName, FormFactoryConfiguration configuration)

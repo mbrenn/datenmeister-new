@@ -13,8 +13,8 @@
 <h1>Item</h1>
 
 <div class="dm-breadcrumb">
-    @{ var w = Model.ItemAndFormModel?.workspace ?? "No Workspace"; }
-    @{ var e = Model.ItemAndFormModel?.extentUri ?? "No Extent"; }
+    @{ var w = Model.Workspace ?? "No Workspace"; }
+    @{ var e = Model.Extent ?? "No Extent"; }
     @{ var i = Model.Item ?? "No Item"; }
     <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
     <a href="/ItemsOverview/@(HttpUtility.UrlEncode(w))/@(HttpUtility.UrlEncode(e))">@e</a> &lt;
@@ -60,20 +60,3 @@ $(function()
 
 </script>
 <div id="form_view">View Form</div>
-<div>
-    <a class="btn btn-primary" data-bs-toggle="collapse" href="#forminformation" role="button">Form Information</a>
-    <div class="collapse" id="forminformation">
-        <div class="card card-body">
-            @(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.Form)))
-        </div>
-    </div>
-</div>
-
-<div>
-    <a class="btn btn-primary" data-bs-toggle="collapse" href="#objectinformation" role="button">Object Information</a>
-    <div class="collapse" id="objectinformation">
-        <div class="card card-body">
-            @(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.FoundItem)))
-        </div>
-    </div>
-</div>

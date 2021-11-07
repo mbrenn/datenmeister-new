@@ -1,4 +1,4 @@
-define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", "./Fields/DropDownField", "./Fields/MetaClassElementField", "./Fields/ActionField", "./Fields/UnknownField"], function (require, exports, TextField, CheckboxField, DropDownField, MetaClassElementField, ActionField, UnknownField) {
+define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", "./Fields/DropDownField", "./Fields/MetaClassElementField", "./Fields/ActionField", "./Fields/AnyDataField", "./Fields/UnknownField"], function (require, exports, TextField, CheckboxField, DropDownField, MetaClassElementField, ActionField, AnyDataField, UnknownField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createField = void 0;
@@ -19,6 +19,9 @@ define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", ".
                 break;
             case "DatenMeister.Models.Forms.ActionFieldData":
                 result = new ActionField.Field();
+                break;
+            case "DatenMeister.Models.Forms.AnyDataFieldData":
+                result = new AnyDataField.Field();
                 break;
             default:
                 result = new UnknownField.Field(fieldMetaClassId);

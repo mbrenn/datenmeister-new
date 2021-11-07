@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Text;
-using System.Web;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.HtmlEngine;
 using DatenMeister.WebServer.InterfaceController;
-using DatenMeister.WebServer.Library.HtmlControls;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -45,22 +42,6 @@ namespace DatenMeister.WebServer.Pages
             Workspace = WebUtility.UrlDecode(workspace);
             Extent = WebUtility.UrlDecode(extent);
             Item = WebUtility.UrlDecode(item);
-            
-            ItemAndFormModel = ExtentItemsController.GetItemAndForm(Workspace, Extent, Item);
-            if (ItemAndFormModel == null)
-            {
-                throw new InvalidOperationException($"Items not found: {Workspace}/{Extent}/{Item}");
-            }
-
-            if (ItemAndFormModel == null)
-            {
-                throw new InvalidOperationException($"Items not found: {Workspace}/{Extent}/{Item}");
-            }
-            
-            FoundItem = XmiHelper.ConvertItemFromXmi(ItemAndFormModel.item)
-                        ?? throw new InvalidOperationException("Items are null. They may not be null");
-            Form = XmiHelper.ConvertItemFromXmi(ItemAndFormModel.form)
-                   ?? throw new InvalidOperationException("Form is null. It may not be null");
         }
     }
 }

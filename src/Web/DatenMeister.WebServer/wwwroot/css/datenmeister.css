@@ -116,3 +116,16 @@ a {
 .dm-table-nofullwidth {
   width: auto !important;
 }
+
+.dm-anydatafield-headline {
+  font-size: 75%;
+}
+
+.dm-anydatafield-headline a {
+  cursor: pointer;
+  text-decoration: none;  
+}
+
+.dm-anydatafield-headline a.active {
+  text-decoration: underline;
+}

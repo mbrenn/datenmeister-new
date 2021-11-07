@@ -37,6 +37,8 @@
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts" />
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\test\MofTests.ts" />
   </ItemGroup>
 
   <ItemGroup>

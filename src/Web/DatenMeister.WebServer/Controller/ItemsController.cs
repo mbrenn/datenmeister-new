@@ -96,11 +96,12 @@ namespace DatenMeister.WebServer.Controller
         public ActionResult<object> DeleteItem(string workspaceId,  string itemId)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
-            workspaceId = HttpUtility.UrlDecode(itemId);
+            itemId = HttpUtility.UrlDecode(itemId);
 
             var foundItem = _workspaceLogic.FindItem(workspaceId, itemId);
             if (foundItem != null)
             {
+                
             }
 
             throw new InvalidOperationException("Deletion is not possible from the subitem");

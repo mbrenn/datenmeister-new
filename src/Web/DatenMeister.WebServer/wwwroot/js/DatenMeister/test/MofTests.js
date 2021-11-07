@@ -1,11 +1,16 @@
 var assert = require('assert');
-var mof = require('../Mof');
 var loader = require('amd-loader');
-
-describe('Array', function () {
-    describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-            assert.equal([1, 2, 3].indexOf(4), -1);
+var mof = require('../Mof');
+describe('Mof', function () {
+    describe('Element', function () {
+        it('setting and getting should work', function () {
+            var element = new mof.DmObject();
+            assert.equal(element.isSet('test'), false);
+            element.set('test', 'yes');
+            assert.equal(element.get('test'), 'yes');
+            assert.equal(element.isSet('test'), true);
+            element.unset('test');
+            assert.equal(element.isSet('test'), false);
         });
     });
 });

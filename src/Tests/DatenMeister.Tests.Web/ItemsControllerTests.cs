@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Serialization;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -74,6 +75,28 @@ namespace DatenMeister.Tests.Web
             }
 
             Assert.That(found, Is.Not.Null);
+        }
+        
+
+        [Test]
+        public void TestDeleteItems()
+        {
+            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+            var rootElements = example.elements().ToList();
+            Assert.That(rootElements, Is.Not.Null);
+
+            var count = rootElements.Count;
+            var second = rootElements.ElementAtOrDefault(1) as IObject;
+            Assert.That(second, Is.Not.Null);
+
+            itemsController.DeleteItem(WorkspaceNames.WorkspaceData, second.GetUri()!);
+
+            var newRootElements = example.elements().ToList();
+            Assert.That(newRootElements.Count, Is.EqualTo(count - 1));
+
+
         }
     }
 }

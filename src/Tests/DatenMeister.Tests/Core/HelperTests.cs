@@ -104,7 +104,6 @@ namespace DatenMeister.Tests.Core
             Assert.That(collection.Any(x=> element2.Equals(x)), Is.False);
             Assert.That(collection.Any(x=> element3.Equals(x)), Is.False);
             Assert.That(collection.Any(x=> element4.Equals(x)), Is.True);
-            
         }
     }
 }

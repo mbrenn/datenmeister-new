@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.InMemory;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Mof.Core
+namespace DatenMeister.Tests.Core
 {
     [TestFixture]
     public class MofElementTests

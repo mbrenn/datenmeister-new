@@ -47,7 +47,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             AddMapping(
                 _DatenMeister._Management._Extent.workspaceId,
                 e => parentWorkspace.id,
-                (e, v) => throw new InvalidOperationException("Seeting of workspaces is not supported"));
+                (e, v) => throw new InvalidOperationException("Setting of workspaces is not supported"));
             
             AddMapping(
                 _DatenMeister._Management._Extent.uri,
@@ -91,7 +91,16 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
             AddMapping(
                 _DatenMeister._Management._Extent.name,
-                e => (uriExtent as MofExtent)?.GetConfiguration().Name,
+                e =>
+                {
+                    var result = (uriExtent as MofExtent)?.GetConfiguration().Name;
+                    if (string.IsNullOrEmpty(result))
+                    {
+                        result = uriExtent?.contextURI();
+                    }
+
+                    return result;
+                },
                 (e, v) =>
                 {
                     if (uriExtent is MofExtent mofExtent)

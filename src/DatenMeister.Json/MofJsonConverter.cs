@@ -6,7 +6,6 @@ using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Json
 {
@@ -19,9 +18,9 @@ namespace DatenMeister.Json
     public class MofJsonConverter
     {
         /// <summary>
-        /// Defines the maximum recursion depth being allowed to converte the elements
+        /// Defines the maximum recursion depth being allowed to be converted the elements
         /// </summary>
-        public int MaxRecursionDepth { get; set; } = 5;
+        public int MaxRecursionDepth { get; set; } = 10;
 
         /// <summary>
         /// Converts the given element to a json object
@@ -78,8 +77,8 @@ namespace DatenMeister.Json
                 builder.AppendLine(komma);
                 builder.Append($"\"{HttpUtility.JavaScriptStringEncode(property)}\": ");
                 var propertyValue = value.get(property);
-                
-                AppendValue(builder, propertyValue);
+
+                AppendValue(builder, propertyValue, recursionDepth);
 
                 komma = ",";
             }
@@ -95,13 +94,13 @@ namespace DatenMeister.Json
                     builder.Append(", \"m\": {");
                     
                     builder.Append("\"name\": ");
-                    AppendValue(builder, item.name, 0);
+                    AppendValue(builder, item.name, recursionDepth);
                     builder.Append(", \"id\": ");
-                    AppendValue(builder, item.id, 0);
+                    AppendValue(builder, item.id, recursionDepth);
                     builder.Append(", \"extentUri\": ");
-                    AppendValue(builder, item.extentUri, 0);
+                    AppendValue(builder, item.extentUri, recursionDepth);
                     builder.Append(", \"fullName\": ");
-                    AppendValue(builder, item.fullName, 0);
+                    AppendValue(builder, item.fullName, recursionDepth);
 
                     builder.Append("}");
                 }
@@ -128,9 +127,9 @@ namespace DatenMeister.Json
         /// <param name="recursionDepth">Defines the recursion Depth</param>
         private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0)
         {
-            if (recursionDepth >= MaxRecursionDepth)
+            if (recursionDepth >= MaxRecursionDepth && propertyValue is IObject asObject)
             {
-                builder.AppendLine($"[{HttpUtility.JavaScriptStringEncode(NamedElementMethods.GetName(propertyValue))}]");
+                builder.Append($"{{\"r\": \"{HttpUtility.JavaScriptStringEncode(asObject.GetUri() ?? "None")}\"}}");
                 return;
             }
 

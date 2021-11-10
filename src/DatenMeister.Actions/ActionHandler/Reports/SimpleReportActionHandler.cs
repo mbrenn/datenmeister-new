@@ -73,6 +73,7 @@ namespace DatenMeister.Actions.ActionHandler.Reports
 
             var simpleReport = new SimpleReportCreator(
                 actionLogic.WorkspaceLogic,
+                actionLogic.ScopeStorage,
                 configuration);
 
             // Checks, if directory needs to be created

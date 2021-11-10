@@ -67,7 +67,7 @@ namespace ScriptTests
             var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
             Directory.CreateDirectory(targetPath);
 
-            var reportCreator = new SimpleReportCreator(dm.WorkspaceLogic, configuration);
+            var reportCreator = new SimpleReportCreator(dm.WorkspaceLogic, dm.ScopeStorage, configuration);
 
             using (var writer = ReportHelper.CreateRandomFile(out var fileName, targetPath))
             {

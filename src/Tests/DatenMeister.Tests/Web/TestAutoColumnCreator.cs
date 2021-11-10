@@ -6,6 +6,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using NUnit.Framework;
 
@@ -31,15 +34,20 @@ namespace DatenMeister.Tests.Web
             
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            var creator = FormCreator.Create(null, null);
-            var result = creator.CreateExtentForm(extent, CreationMode.All);
+            
+            var scopeStorage = new ScopeStorage();
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+            
+            // Execute the stuff
+            var creator = FormCreator.Create(workspaceLogic, scopeStorage);
+            var result = creator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
             var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).Select(x=> x as IElement).FirstOrDefault();
             Assert.That(tab, Is.Not.Null);
             Assert.That(tab
                 .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                 .OfType<IElement>()
-                .Count(x => x.getMetaClass().ToString().Contains("TextFieldData")), Is.EqualTo(2));
+                .Count(x => x.getMetaClass()!.ToString().Contains("TextFieldData")), Is.EqualTo(2));
             var firstColumn = tab
                 .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                 .OfType<IElement>()
@@ -73,15 +81,18 @@ namespace DatenMeister.Tests.Web
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var valueList = new List<object> {factory.create(null)};
+            var valueList = new List<object> {factory.create(null), factory.create(null)};
             mofObject2.set(property3, valueList);
 
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
 
+            var scopeStorage = new ScopeStorage();
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+            
             // Execute the stuff
-            var creator = FormCreator.Create(null, null);
-            var result = creator.CreateExtentForm(extent, CreationMode.All);
+            var creator = FormCreator.Create(workspaceLogic, scopeStorage);
+            var result = creator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
 
             var tab = result

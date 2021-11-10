@@ -47,10 +47,4 @@ export namespace Out {
         workspace?: string;
         itemId?: string;
     }
-
-    export interface IItem {
-        found: boolean,
-        item: string
-        metaClass?: ItemWithNameAndId;
-    }
 }

@@ -107,64 +107,56 @@ export function createJsonFromObject(element: DmObject) {
 // Creates the given object from the included json
 // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
 */
-export function createObjectFromJson(json: string, metaClass?: ItemWithNameAndId): DmObject {
-    const converted = JSON.parse(json);
+export function convertJsonObjectToDmObject(element: object|string): DmObject {
+    if (typeof element === 'string' || element instanceof String) {
+        element = JSON.parse(element as string);
+    }
 
-    function convertJsonToDmObject(element: object): DmObject {
-        const result = new DmObject();
-        const elementValues = element["v"];
-        
-        if(elementValues !== undefined && elementValues !== null) {
-            for (let key in elementValues) {
-                if (Object.prototype.hasOwnProperty.call(elementValues, key)) {
-                    let value = elementValues[key];
+    const result = new DmObject();
+    const elementValues = element["v"];
 
-                    if (Array.isArray(value)) {
-                        // Converts array
-                        const finalValue = [];
-                        for (const m in value) {
-                            if (!((value as object[]).hasOwnProperty(m))) {
-                                continue;
-                            }
+    if (elementValues !== undefined && elementValues !== null) {
+        for (let key in elementValues) {
+            if (Object.prototype.hasOwnProperty.call(elementValues, key)) {
+                let value = elementValues[key];
 
-                            let arrayValue = value[m];
-                            if ((typeof arrayValue === "object" || typeof arrayValue === "function") && (arrayValue !== null)) {
-                                arrayValue = convertJsonToDmObject(arrayValue);
-                            }
-
-                            finalValue.push(arrayValue);
+                if (Array.isArray(value)) {
+                    // Converts array
+                    const finalValue = [];
+                    for (const m in value) {
+                        if (!((value as object[]).hasOwnProperty(m))) {
+                            continue;
                         }
 
-                        value = finalValue;
-                    } else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
-                        // Converts to DmObject, if item is an object
+                        let arrayValue = value[m];
+                        if ((typeof arrayValue === "object" || typeof arrayValue === "function") && (arrayValue !== null)) {
+                            arrayValue = convertJsonObjectToDmObject(arrayValue);
+                        }
 
-                        value = convertJsonToDmObject(value);
+                        finalValue.push(arrayValue);
                     }
 
-                    result.set(key, value);
+                    value = finalValue;
+                } else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+                    // Converts to DmObject, if item is an object
+
+                    value = convertJsonObjectToDmObject(value);
                 }
+
+                result.set(key, value);
             }
         }
-
-        const elementMetaClass = element["m"];
-        if (elementMetaClass !== undefined && elementMetaClass !== null) {
-            result.metaClass = elementMetaClass;
-        }
-        
-        const elementUri = element["u"];
-        if (elementUri !== undefined && elementUri !== null) {
-            result.uri = elementUri;
-        }
-
-        return result;
     }
 
-    let result2 = convertJsonToDmObject(converted);
-
-    if (metaClass !== undefined && metaClass !== null) {
-        result2.metaClass = metaClass;
+    const elementMetaClass = element["m"];
+    if (elementMetaClass !== undefined && elementMetaClass !== null) {
+        result.metaClass = elementMetaClass;
     }
 
-    return result2;
+    const elementUri = element["u"];
+    if (elementUri !== undefined && elementUri !== null) {
+        result.uri = elementUri;
+    }
+
+    return result;
 }

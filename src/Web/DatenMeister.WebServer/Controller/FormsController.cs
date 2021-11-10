@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Json;
-using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -25,28 +24,29 @@ namespace DatenMeister.WebServer.Controller
         }
         
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
-        public ActionResult<IItem> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
+        public ActionResult<string> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUrl = HttpUtility.UrlDecode(itemUrl);
             viewMode = HttpUtility.UrlDecode(viewMode);
 
             var item = GetItemByUriParameter(workspaceId, itemUrl);
                 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var form = formLogic.GetItemTreeFormForObject(item, FormDefinitionMode.Default, viewMode);
+            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var form = formFactory.CreateExtentFormForItem(item,
+                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
+            
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
             }
 
-            return new IItem
-            {
-                item = MofJsonConverter.ConvertToJsonWithDefaultParameter(form),
-                metaClass = ItemWithNameAndId.Create(form.getMetaClass())
-            };
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
         
         [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
-        public ActionResult<IItem> GetDefaultFormForExtent(string workspaceId, string extentUri, string? viewMode)
+        public ActionResult<string> GetDefaultFormForExtent(string workspaceId, string extentUri, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);
@@ -56,31 +56,26 @@ namespace DatenMeister.WebServer.Controller
                          ?? throw new InvalidOperationException("Extent is not found");
                 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var form = formLogic.GetExtentForm(extent, FormDefinitionMode.Default, viewMode);
+            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var form = formFactory.CreateExtentFormForExtent(extent,
+                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
             }
 
-            return new IItem
-            {
-                item = MofJsonConverter.ConvertToJsonWithDefaultParameter(form),
-                metaClass = ItemWithNameAndId.Create(form.getMetaClass())
-            };
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
 
         /// <summary>
         /// Gets the items by the uri parameter.
-        /// The parameter themselves are expected to be uriencoded, so a decoding via HttpUtility.UrlDecode will be performed
+        /// The parameter themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
         /// </summary>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="itemUri">Uri of the item</param>
         /// <returns>The found object</returns>
         private IObject GetItemByUriParameter(string workspaceId, string itemUri)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUri = HttpUtility.UrlDecode(itemUri);
-
             var workspace = _workspaceLogic.GetWorkspace(workspaceId);
             if (workspace == null)
             {

@@ -29,7 +29,6 @@ namespace DatenMeister.WPF.Modules.FormManager
     /// </summary>
     public partial class FormManagerViewExtension : IViewExtensionFactory
     {
-
         /// <summary>
         /// Gets the view extenstions for the detail window
         /// </summary>
@@ -272,10 +271,10 @@ namespace DatenMeister.WPF.Modules.FormManager
                     WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    formCreator.AddToFormByUmlElement(
+                    formCreator.AddFieldsToFormByMetaClassProperty(
                         detailAsElement!, // !Ok, since this method will only be called when detailAsElement is set 
                         locatedItem,
-                        CreationMode.All);
+                        new FormFactoryConfiguration());
                 }
             }
 

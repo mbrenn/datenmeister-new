@@ -1,32 +1,19 @@
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], function (require, exports, Settings, ApiConnection, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
-    Settings = __importStar(Settings);
-    ApiConnection = __importStar(ApiConnection);
-    Navigator = __importStar(Navigator);
     var DetailFormActions;
     (function (DetailFormActions) {
-        function execute(actionName, form, element) {
+        function requiresConfirmation(actionName) {
+            if (actionName === "Item.Delete" || actionName === "ExtentsList.DeleteItem") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        DetailFormActions.requiresConfirmation = requiresConfirmation;
+        function execute(actionName, form, itemUrl, element) {
             let workspaceId;
             let extentUri;
             switch (actionName) {
@@ -35,10 +22,14 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                     workspaceId = element.get('workspaceId');
                     FormActions.extentNavigateTo(workspaceId, extentUri);
                     break;
+                case "ExtentsList.ViewItem":
+                    FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
+                    break;
+                case "ExtentsList.DeleteItem":
+                    FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                    break;
                 case "Item.Delete":
-                    workspaceId = form.workspace;
-                    extentUri = form.itemId;
-                    FormActions.itemDelete(form.workspace, form.extentUri, form.itemId);
+                    FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                     break;
                 case "ZipExample.CreateExample":
                     const id = element.get('id');
@@ -66,6 +57,13 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 document.location.reload();
             });
         }
+        // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
+        static itemNavigateTo(workspace, extent, itemUrl) {
+            document.location.href = Settings.baseUrl + "Item/" +
+                encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(extent) + "/" +
+                encodeURIComponent(itemUrl);
+        }
         static itemNew(workspace, extentUri) {
             ApiConnection.post(Settings.baseUrl + "api/items/create", {
                 workspace: workspace,
@@ -76,12 +74,17 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
             });
         }
         static itemDelete(workspace, extentUri, itemUri) {
-            ApiConnection.post(Settings.baseUrl + "api/items/delete", {
-                workspace: workspace,
-                itemUri: itemUri
-            })
+            ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
+                + encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(itemUri), {})
                 .done(data => {
-                Navigator.navigateToExtent(workspace, extentUri);
+                const success = data.success;
+                if (success) {
+                    Navigator.navigateToExtent(workspace, extentUri);
+                }
+                else {
+                    alert('Deletion was not successful.');
+                }
             });
         }
         static extentsListViewItem(workspace, extentUri, itemId) {
@@ -91,13 +94,17 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 encodeURIComponent(itemId);
         }
         static extentsListDeleteItem(workspace, extentUri, itemId) {
-            ApiConnection.post(Settings.baseUrl + "api/items/delete_from_extent", {
-                workspace: workspace,
-                extentUri: extentUri,
-                itemId: itemId
-            })
+            ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
+                + encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(itemId), {})
                 .done(data => {
-                document.location.reload();
+                const success = data.success;
+                if (success) {
+                    document.location.reload();
+                }
+                else {
+                    alert('Deletion was not successful.');
+                }
             });
         }
     }

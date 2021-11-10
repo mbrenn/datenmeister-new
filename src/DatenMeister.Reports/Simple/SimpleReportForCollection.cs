@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -7,6 +8,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
@@ -55,16 +57,16 @@ namespace DatenMeister.Reports.Simple
             _report = report;
         }
 
-        public SimpleReportForCollection(IWorkspaceLogic workspaceLogic, IHtmlReport report)
+        public SimpleReportForCollection(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage, IHtmlReport report)
         {
             _report = report;
-            _formCreator = FormCreator.Create(workspaceLogic, null);
+            _formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
             _itemFormatter = new ItemFormatter(_report);
         }
         
         public void WriteReportForCollection(
             IReflectiveCollection elements,
-            CreationMode creationMode)
+            FormFactoryConfiguration creationMode)
         {
             var foundForm = Form;
             if (TableForTypeMode == _DatenMeister._Reports._Elements.___ReportTableForTypeMode.PerType)
@@ -91,7 +93,7 @@ namespace DatenMeister.Reports.Simple
 
                     if (metaClass.Key == null)
                     {
-                        foundForm = _formCreator.CreateListFormForElements(
+                        foundForm = _formCreator.CreateListFormForCollection(
                             collection,
                             creationMode);
                     }
@@ -109,7 +111,7 @@ namespace DatenMeister.Reports.Simple
             {
                 if (foundForm == null)
                 {
-                    foundForm = _formCreator.CreateListFormForElements(
+                    foundForm = _formCreator.CreateListFormForCollection(
                         elements,
                         creationMode);
 

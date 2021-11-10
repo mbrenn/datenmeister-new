@@ -12,7 +12,7 @@ namespace DatenMeister.WPF.Modules.UserInteractions
     public abstract class BaseElementInteractionHandler : IElementInteractionsHandler
     {
         /// <summary>
-        /// Gets or sets the class name of the elements that are in scópe of the BaseElementInteractionHandler
+        /// Gets or sets the class name of the elements that are in scope of the BaseElementInteractionHandler
         /// </summary>
         protected IElement? OnlyElementsOfType {
             get

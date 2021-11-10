@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -29,9 +30,12 @@ namespace DatenMeister.Forms
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public FormMethods(IWorkspaceLogic workspaceLogic)
+        private readonly IScopeStorage _scopeStorage;
+
+        public FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
         }
 
         /// <summary>
@@ -227,6 +231,18 @@ namespace DatenMeister.Forms
                 .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.id, "Default")
                 .OfType<IElement>()
                 .FirstOrDefault();
+        }
+        
+        
+
+        /// <summary>
+        /// Gets the extent form containing the subforms
+        /// </summary>
+        /// <param name="subForms">The forms to be added to the extent forms</param>
+        /// <returns>The created extent</returns>
+        public IElement GetExtentFormForSubforms(params IElement[] subForms)
+        {
+            return FormCreator.FormCreator.CreateExtentFormFromTabs(null, subForms);
         }
     }
 }

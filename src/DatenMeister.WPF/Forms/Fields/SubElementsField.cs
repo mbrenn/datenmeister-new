@@ -112,19 +112,14 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 // otherwise, we have to automatically create a form
                 var formsLogic = GiveMe.Scope.Resolve<FormsPlugin>();
-                IElement? propertyType = null;
-                var property = ClassifierMethods.GetPropertyOfClassifier(_element, _propertyName);
-                if (property != null)
-                {
-                    propertyType = PropertyMethods.GetPropertyType(property);
-                }
 
                 // The form will be created by evaluating the name of the property
                 // and the type of the property
-                form = formsLogic.GetListFormForElementsProperty(
+                var formsFactory = new FormFactory(formsLogic, GiveMe.Scope.ScopeStorage);
+                form = (formsFactory as IFormFactory).CreateListFormForPropertyValues(
                            _element, 
-                           _propertyName, 
-                           propertyType) ??
+                           _propertyName,
+                           new FormFactoryConfiguration()) ??
                        throw new InvalidOperationException("Form could not be created");
             }
 

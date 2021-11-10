@@ -2,10 +2,21 @@
 import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {DmObject} from "./Mof";
-import {IForm} from "./Forms";
+import * as IIForms from "./Interfaces.Forms";
+import {deleteRequest} from "./ApiConnection";
+
+
 
 export module DetailFormActions {
-    export function execute(actionName: string, form: IForm, element: DmObject) {
+    export function requiresConfirmation(actionName: string): boolean {
+        if (actionName === "Item.Delete" || actionName === "ExtentsList.DeleteItem") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    export function execute(actionName: string, form: IIForms.IForm, itemUrl: string, element: DmObject) {
         let workspaceId;
         let extentUri;
         switch (actionName) {
@@ -14,10 +25,14 @@ export module DetailFormActions {
                 workspaceId = element.get('workspaceId');
                 FormActions.extentNavigateTo(workspaceId, extentUri);                
                 break;
+            case "ExtentsList.ViewItem":                
+                FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
+                break;
+            case "ExtentsList.DeleteItem":
+                FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                break;
             case "Item.Delete":
-                workspaceId = form.workspace;
-                extentUri = form.itemId;
-                FormActions.itemDelete(form.workspace, form.extentUri, form.itemId);
+                FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                 break;
             case "ZipExample.CreateExample":
                 const id = element.get('id');
@@ -36,6 +51,10 @@ export module DetailFormActions {
     }
 }
 
+interface IDeleteCallbackData {
+    success: boolean;
+}
+
 export class FormActions {
     static extentNavigateTo(workspace: string, extentUri: string):void {
         document.location.href = Settings.baseUrl + "ItemsOverview/" +
@@ -52,6 +71,15 @@ export class FormActions {
                     document.location.reload();
                 });
     }
+    
+    // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
+    static itemNavigateTo(workspace: string, extent: string, itemUrl: string) {
+        document.location.href = Settings.baseUrl + "Item/" + 
+            encodeURIComponent(workspace) + "/" + 
+            encodeURIComponent(extent) + "/" + 
+            encodeURIComponent(itemUrl);
+        
+    }
 
     static itemNew(workspace: string, extentUri: string) {
         ApiConnection.post(
@@ -67,15 +95,20 @@ export class FormActions {
     }
 
     static itemDelete(workspace:string, extentUri: string, itemUri: string) {
-        ApiConnection.post(
-            Settings.baseUrl + "api/items/delete",
-            {
-                workspace: workspace,
-                itemUri: itemUri
-            })
+        ApiConnection.deleteRequest<IDeleteCallbackData>(
+            Settings.baseUrl + "api/items/delete/"
+            + encodeURIComponent(workspace) + "/" +
+            encodeURIComponent(itemUri),
+            {}
+        )
             .done(
                 data => {
-                    Navigator.navigateToExtent(workspace, extentUri);
+                    const success = data.success;
+                    if (success) {
+                        Navigator.navigateToExtent(workspace, extentUri);
+                    } else {
+                        alert('Deletion was not successful.');
+                    }
                 });
     }
 
@@ -87,16 +120,21 @@ export class FormActions {
     }
 
     static extentsListDeleteItem(workspace:string, extentUri: string, itemId:string) {
-        ApiConnection.post(
-            Settings.baseUrl + "api/items/delete_from_extent",
-            {
-                workspace: workspace,
-                extentUri: extentUri,
-                itemId: itemId
-            })
+
+        ApiConnection.deleteRequest<IDeleteCallbackData>(
+            Settings.baseUrl + "api/items/delete/"
+            + encodeURIComponent(workspace) + "/" +
+            encodeURIComponent(itemId),
+            {}
+        )
             .done(
                 data => {
-                    document.location.reload();
+                    const success = data.success;
+                    if (success) {
+                        document.location.reload();
+                    } else {
+                        alert('Deletion was not successful.');
+                    }
                 });
     }
 }

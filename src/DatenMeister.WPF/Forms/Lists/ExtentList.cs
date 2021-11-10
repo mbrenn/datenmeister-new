@@ -80,11 +80,10 @@ namespace DatenMeister.WPF.Forms.Lists
             }
             else if (SelectedItem != null)
             {
-                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
-                var form = viewLogic.GetItemTreeFormForObject(
+                var formFactory = GiveMe.Scope.Resolve<FormFactory>();
+                var form = formFactory.CreateExtentFormForItem(
                                SelectedItem,
-                               FormDefinitionMode.Default,
-                               CurrentViewModeId)
+                               new FormFactoryConfiguration(){ViewModeId = CurrentViewModeId})
                            ?? throw new InvalidOperationException("form == null");
                 var formDefinition = overridingDefinition ??
                                      new FormDefinition(form);

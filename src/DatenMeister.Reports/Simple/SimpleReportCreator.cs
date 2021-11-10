@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -9,6 +10,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
@@ -40,11 +42,11 @@ namespace DatenMeister.Reports.Simple
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="simpleReportConfiguration">The configuration defining the layout of the report</param>
-        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, IElement simpleReportConfiguration)
+        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage, IElement simpleReportConfiguration)
         {
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = simpleReportConfiguration;
-            _formCreator = FormCreator.Create(workspaceLogic, null);
+            _formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
         }
 
         /// <summary>
@@ -63,10 +65,12 @@ namespace DatenMeister.Reports.Simple
         /// <param name="textWriter">Text Writer to be used for html file creation</param>
         public void CreateReport(TextWriter textWriter)
         {
-            var creationMode = _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
-                ? CreationMode.All
-                : CreationMode.All & ~CreationMode.AddMetaClass;
- 
+            var formFactoryConfiguration = new FormFactoryConfiguration
+            {
+                AutomaticMetaClassField =
+                    _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
+            };
+            
             var rootElementUrl = _reportConfiguration.getOrDefault<string>(_SimpleReportConfiguration.rootElement);
             var workspaceId = _reportConfiguration.getOrDefault<string>(_SimpleReportConfiguration.workspaceId)
                               ?? WorkspaceNames.WorkspaceData;
@@ -92,7 +96,7 @@ namespace DatenMeister.Reports.Simple
                 var name = NamedElementMethods.GetFullName(rootElement);
                 report.Add(new HtmlHeadline($"Reported Item '{name}'", 1));
                 var detailForm =
-                    _formCreator.CreateDetailForm(rootElement, creationMode);
+                    _formCreator.CreateDetailFormForItem(rootElement, formFactoryConfiguration);
                 _itemFormatter.FormatItem(rootElement, detailForm);
             }
             
@@ -104,7 +108,7 @@ namespace DatenMeister.Reports.Simple
                 elements = elements.GetAllCompositesIncludingThemselves();
             }
 
-            WriteReportForCollection(report, elements, creationMode);
+            WriteReportForCollection(report, elements, formFactoryConfiguration);
 
             report.EndReport();
         }
@@ -129,16 +133,18 @@ namespace DatenMeister.Reports.Simple
         /// <param name="collection">Reflective collection of elements to be shown</param>
         public void CreateReportForCollection(TextWriter textWriter, IReflectiveCollection collection)
         {
-            var creationMode = _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
-                ? CreationMode.All
-                : CreationMode.All & ~CreationMode.AddMetaClass;
+            var formFactoryConfiguration = new FormFactoryConfiguration
+            {
+                AutomaticMetaClassField =
+                    _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
+            };
 
             using var report = new HtmlReport(textWriter);
             _itemFormatter = new ItemFormatter(report);
             
             report.SetDefaultCssStyle();
             report.StartReport("DatenMeister - Report");
-            WriteReportForCollection(report, collection, creationMode);
+            WriteReportForCollection(report, collection, formFactoryConfiguration);
             
             report.EndReport();
         }
@@ -152,7 +158,7 @@ namespace DatenMeister.Reports.Simple
         private void WriteReportForCollection(
             IHtmlReport report,
             IReflectiveCollection elements,
-            CreationMode creationMode)
+            FormFactoryConfiguration creationMode)
         {
             report.Add(new HtmlHeadline("Items in collection", 1));
 

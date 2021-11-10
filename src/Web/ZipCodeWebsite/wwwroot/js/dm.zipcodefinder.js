@@ -19,11 +19,11 @@ var ZipCodeLoader = /** @class */ (function () {
         return $.ajax(uri);
     };
     ZipCodeLoader.injectZipCodes = function (searchText) {
+        var _this = this;
         this.step++;
         var currentStep = this.step;
-        var tthis = this;
         this.getZipCodes(searchText).done(function (data) {
-            if (tthis.step != currentStep)
+            if (_this.step != currentStep)
                 return;
             var htmlResult = "";
             if (data.truncated === true) {

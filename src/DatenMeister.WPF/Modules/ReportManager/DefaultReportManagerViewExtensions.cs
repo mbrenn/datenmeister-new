@@ -97,7 +97,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
                             if (result != null)
                             {
-                                var simpleReport = new SimpleReportCreator(workspaceLogic, tempObject);
+                                var simpleReport = new SimpleReportCreator(workspaceLogic, GiveMe.Scope.ScopeStorage, tempObject);
 
                                 string tmpPath;
                                 using (var streamWriter = GetRandomWriter(out tmpPath))
@@ -280,7 +280,9 @@ namespace DatenMeister.WPF.Modules.ReportManager
             string tmpPath;
             using (var streamWriter = GetRandomWriter(out tmpPath))
             {
-                var reportCreator = new SimpleReportCreator(GiveMe.Scope.WorkspaceLogic, simpleReportConfiguration);
+                var reportCreator = new SimpleReportCreator(GiveMe.Scope.WorkspaceLogic, 
+                    GiveMe.Scope.ScopeStorage,
+                    simpleReportConfiguration);
                 reportCreator.CreateReport(streamWriter);
             }
 

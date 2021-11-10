@@ -186,3 +186,6 @@ node_modules/
 nugets/*.snupkg
 nugets/*.nupkg
 /src/Web/DatenMeister.WebServer/package-lock.json
+
+
+.nyc_output/

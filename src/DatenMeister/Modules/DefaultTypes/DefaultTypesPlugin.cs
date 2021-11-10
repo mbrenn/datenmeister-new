@@ -16,7 +16,7 @@ namespace DatenMeister.Modules.DefaultTypes
         {
             var formsPluginState = _scopeStorage.Get<FormsPluginState>();
             formsPluginState.FormModificationPlugins.Add(
-                new DefaultTypesFormModificationPlugin());
+                new PackageFormModificationPlugin());
         }
     }
 }

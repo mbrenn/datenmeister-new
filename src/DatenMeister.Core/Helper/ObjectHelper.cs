@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Uml.Helper;
 
@@ -675,6 +676,65 @@ namespace DatenMeister.Core.Helper
             }
 
             return list.Distinct();
+        }
+        
+        /// <summary>
+        /// Deletes an object from the database.
+        /// If the object is a root element, then it will be directly removed from the extent.
+        /// If the object is a child item of an existing item, then it will be removed
+        /// the parent item
+        /// </summary>
+        /// <param name="value">Element to be added</param>
+        /// <returns>Value whether a deletion was done</returns>
+        public static bool DeleteObject(IObject? value)
+        {
+            if (value == null)
+            {
+                return false;                
+            }
+            
+            // First, checks container item.... 
+            var container = (value as IElement)?.container();
+            var ofProperties = (container as IObjectAllProperties)?.getPropertiesBeingSet();
+            if (ofProperties != null && container != null)
+            {
+                foreach (var property in ofProperties)
+                {
+                    var propertyValue = container.getOrDefault<object>(property);
+                    if (propertyValue is IObject propertyValueAsObject)
+                    {
+                        if (value.@equals(propertyValueAsObject))
+                        {
+                            // We found it, so we will set it as zero. 
+                            // This means that the reference is now lost
+                            container.set(property, null);
+                            return true;
+                        }
+                    }
+
+                    if (propertyValue is IReflectiveCollection collection)
+                    {
+                        // Check, if the reflection collection can delete the given item. 
+                        // Here, we rely on the return value itself
+                        var success = collection.remove(value);
+                        if (success)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            // Second, check whether the element contains to an extent
+            var extent = (value as IHasExtent)?.Extent
+                         ?? ((value as IElement)?.container() as IExtent);
+            if (extent is not null)
+            {
+                // Removes the element from the extent 
+                return extent.elements().remove(value);
+            }
+            
+            return false;
         }
     }
 }

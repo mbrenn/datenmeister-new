@@ -24,6 +24,8 @@
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts" />
 
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.FieldFactory.ts" />
+
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts" />
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts" />
@@ -35,6 +37,8 @@
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts" />
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\test\MofTests.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.4.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -85,5 +89,5 @@
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
   </Target>
 
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties tsconfig_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

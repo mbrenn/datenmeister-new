@@ -7,7 +7,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Proxies;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Mof.Core
+namespace DatenMeister.Tests.Core
 {
     /// <summary>
     /// Zusammenfassungsbeschreibung für MofObjectTests

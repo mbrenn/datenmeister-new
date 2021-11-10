@@ -39,7 +39,7 @@ namespace DatenMeister.Forms.Helper
                 if (
                     (_parameter.MetaClass == null || context.MetaClass?.equals(_parameter.MetaClass) == true) &&
                     (_parameter.FormType == null || context.FormType == _parameter.FormType) &&
-                    (string.IsNullOrEmpty(context.ViewMode) || context.ViewMode == _parameter.ViewMode))
+                    (string.IsNullOrEmpty(context.Configuration?.ViewModeId) || context.Configuration?.ViewModeId == _parameter.ViewMode))
                 {
                     IElement? formWithFields = null;
                     var formMetaClass = form.getMetaClass();
@@ -48,7 +48,11 @@ namespace DatenMeister.Forms.Helper
                         formWithFields = FormMethods.GetDetailForms(form).FirstOrDefault();
                         if (formWithFields == null)
                         {
-                            return;
+                            formWithFields = FormMethods.GetListForms(form).FirstOrDefault();
+                            if (formWithFields == null)
+                            {
+                                return;
+                            }
                         }
                     }
                     else

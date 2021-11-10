@@ -5,7 +5,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
     var DetailFormActions;
     (function (DetailFormActions) {
         function requiresConfirmation(actionName) {
-            if (actionName === "Item.Delete") {
+            if (actionName === "Item.Delete" || actionName === "ExtentsList.DeleteItem") {
                 return true;
             }
             else {
@@ -24,6 +24,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                     break;
                 case "ExtentsList.ViewItem":
                     FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
+                    break;
+                case "ExtentsList.DeleteItem":
+                    FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
                     break;
                 case "Item.Delete":
                     FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
@@ -91,13 +94,17 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 encodeURIComponent(itemId);
         }
         static extentsListDeleteItem(workspace, extentUri, itemId) {
-            ApiConnection.post(Settings.baseUrl + "api/items/delete_from_extent", {
-                workspace: workspace,
-                extentUri: extentUri,
-                itemId: itemId
-            })
+            ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
+                + encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(itemId), {})
                 .done(data => {
-                document.location.reload();
+                const success = data.success;
+                if (success) {
+                    document.location.reload();
+                }
+                else {
+                    alert('Deletion was not successful.');
+                }
             });
         }
     }

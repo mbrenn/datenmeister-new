@@ -3,8 +3,19 @@ import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {DmObject} from "./Mof";
 import * as IIForms from "./Interfaces.Forms";
+import {deleteRequest} from "./ApiConnection";
+
+
 
 export module DetailFormActions {
+    export function requiresConfirmation(actionName: string): boolean {
+        if (actionName === "Item.Delete") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     export function execute(actionName: string, form: IIForms.IForm, itemUrl: string, element: DmObject) {
         let workspaceId;
         let extentUri;
@@ -35,6 +46,10 @@ export module DetailFormActions {
                 break;
         }
     }
+}
+
+interface IDeleteCallbackData {
+    success: boolean;
 }
 
 export class FormActions {
@@ -77,15 +92,20 @@ export class FormActions {
     }
 
     static itemDelete(workspace:string, extentUri: string, itemUri: string) {
-        ApiConnection.post(
-            Settings.baseUrl + "api/items/delete",
-            {
-                workspace: workspace,
-                itemUri: itemUri
-            })
+        ApiConnection.deleteRequest<IDeleteCallbackData>(
+            Settings.baseUrl + "api/items/delete/"
+            + encodeURIComponent(workspace) + "/" +
+            encodeURIComponent(itemUri),
+            {}
+        )
             .done(
                 data => {
-                    Navigator.navigateToExtent(workspace, extentUri);
+                    const success = data.success;
+                    if (success) {
+                        Navigator.navigateToExtent(workspace, extentUri);
+                    } else {
+                        alert('Deletion was not successful.');
+                    }
                 });
     }
 

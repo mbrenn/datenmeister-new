@@ -131,6 +131,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 tthis.element = element;
                 tthis.formElement = form;
                 tthis.workspace = workspace;
+                tthis.extentUri = extentUri;
                 tthis.itemId = itemId;
                 tthis.createFormByObject(parent, isReadOnly);
             });

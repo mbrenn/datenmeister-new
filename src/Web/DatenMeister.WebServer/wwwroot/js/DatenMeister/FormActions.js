@@ -4,6 +4,15 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
     exports.FormActions = exports.DetailFormActions = void 0;
     var DetailFormActions;
     (function (DetailFormActions) {
+        function requiresConfirmation(actionName) {
+            if (actionName === "Item.Delete") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        DetailFormActions.requiresConfirmation = requiresConfirmation;
         function execute(actionName, form, itemUrl, element) {
             let workspaceId;
             let extentUri;
@@ -62,12 +71,17 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
             });
         }
         static itemDelete(workspace, extentUri, itemUri) {
-            ApiConnection.post(Settings.baseUrl + "api/items/delete", {
-                workspace: workspace,
-                itemUri: itemUri
-            })
+            ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
+                + encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(itemUri), {})
                 .done(data => {
-                Navigator.navigateToExtent(workspace, extentUri);
+                const success = data.success;
+                if (success) {
+                    Navigator.navigateToExtent(workspace, extentUri);
+                }
+                else {
+                    alert('Deletion was not successful.');
+                }
             });
         }
         static extentsListViewItem(workspace, extentUri, itemId) {

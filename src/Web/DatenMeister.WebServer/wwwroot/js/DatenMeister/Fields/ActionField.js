@@ -7,12 +7,20 @@ define(["require", "exports", "../FormActions", "../Interfaces.Fields"], functio
             const tthis = this;
             const title = this.field.get('title');
             const action = this.field.get('actionName');
-            const result = $("<button class='btn btn-secondary' type='button'></button>");
-            result.text(title);
-            result.on('click', () => {
-                FormActions_1.DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement);
+            this._inConfirmation = false;
+            const requireConfirmation = FormActions_1.DetailFormActions.requiresConfirmation(action);
+            this.button = $("<button class='btn btn-secondary' type='button'></button>");
+            this.button.text(title);
+            this.button.on('click', () => {
+                if (!requireConfirmation || tthis._inConfirmation) {
+                    FormActions_1.DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement);
+                }
+                if (requireConfirmation) {
+                    this.button.text("Are you sure?");
+                    tthis._inConfirmation = true;
+                }
             });
-            return result;
+            return this.button;
         }
         evaluateDom(dmElement) {
         }

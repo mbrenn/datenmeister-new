@@ -14,6 +14,9 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
             table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
             const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
             table.append(tableBody);
+            var itemUri = tthis.itemId.indexOf('#') === -1
+                ? tthis.extentUri + "#" + tthis.itemId
+                : tthis.itemId;
             for (let n in fields) {
                 if (!fields.hasOwnProperty(n))
                     continue;
@@ -27,7 +30,7 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
                 fieldElement = (0, Forms_FieldFactory_1.createField)(fieldMetaClassId, {
                     form: this,
                     field: field,
-                    itemUrl: tthis.extentUri + "#" + tthis.itemId,
+                    itemUrl: itemUri,
                     isReadOnly: isReadOnly
                 });
                 if (fieldElement === null) {
@@ -40,7 +43,7 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
                     fieldElement.field = field;
                     fieldElement.isReadOnly = isReadOnly;
                     fieldElement.form = this;
-                    fieldElement.itemUrl = tthis.extentUri + "#" + tthis.itemId;
+                    fieldElement.itemUrl = itemUri;
                     htmlElement = fieldElement.createDom(this.element);
                 }
                 this.fieldElements.push(fieldElement);

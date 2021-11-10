@@ -176,7 +176,8 @@ export class DetailFormCreator implements IForm.IForm {
         $.when(defer1, defer2).then(function (element, form) {
             tthis.element = element;
             tthis.formElement = form;
-            tthis.workspace = workspace;
+            tthis.workspace = workspace;            
+            tthis.extentUri = extentUri;
             tthis.itemId = itemId;
             tthis.createFormByObject(parent, isReadOnly);
         });

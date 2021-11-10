@@ -28,6 +28,11 @@ export class DetailForm implements InterfacesForms.IForm {
         table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
         const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
         table.append(tableBody);
+        
+        var itemUri =
+            tthis.itemId.indexOf('#') === -1
+                ? tthis.extentUri + "#" + tthis.itemId
+                : tthis.itemId;
 
         for (let n in fields) {
             if (!fields.hasOwnProperty(n)) continue;
@@ -49,7 +54,7 @@ export class DetailForm implements InterfacesForms.IForm {
                 {
                     form: this,
                     field: field,
-                    itemUrl: tthis.extentUri + "#" + tthis.itemId,
+                    itemUrl: itemUri,
                     isReadOnly: isReadOnly
             });
             
@@ -62,7 +67,7 @@ export class DetailForm implements InterfacesForms.IForm {
                 fieldElement.field = field;
                 fieldElement.isReadOnly = isReadOnly;
                 fieldElement.form = this;
-                fieldElement.itemUrl = tthis.extentUri + "#" + tthis.itemId;
+                fieldElement.itemUrl = itemUri;
 
                 htmlElement = fieldElement.createDom(this.element);
             }

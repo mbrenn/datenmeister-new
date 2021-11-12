@@ -5,6 +5,9 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
     class ListForm {
         createFormByCollection(parent, isReadOnly) {
             var _a;
+            let headline = $("<h2></h2>");
+            headline.text(this.formElement.get('name'));
+            parent.append(headline);
             let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
             const fields = this.formElement.get("field");
             const headerRow = $("<tbody><tr></tr></tbody>");

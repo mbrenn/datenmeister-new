@@ -103,7 +103,7 @@ namespace DatenMeister.Forms.FormCreator
 
             var tabs = new List<IElement>();
 
-            var result = factory.create(_DatenMeister.TheOne.Forms.__ExtentForm);
+            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ExtentForm);
             result.set(_DatenMeister._Forms._ExtentForm.name, "Items");
 
             var elementsAsObjects = elements.OfType<IObject>().ToList();
@@ -141,7 +141,7 @@ namespace DatenMeister.Forms.FormCreator
             {
                 // If there are elements without a metaclass or if there are no elements at all within the extent
                 // then provide an empty list form
-                var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+                var form = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
                 form.set(_DatenMeister._Forms._ListForm.name, "Unclassified");
                 form.set(_DatenMeister._Forms._ListForm.noItemsWithMetaClass, true);
 
@@ -233,7 +233,7 @@ namespace DatenMeister.Forms.FormCreator
                         {
                             if (type.equals(_UML.TheOne.StructuredClassifiers.__Class))
                             {
-                                var defaultType = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                                var defaultType = mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
                                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, package);
                                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(package));
                                 currentDefaultPackages.add(defaultType);
@@ -255,7 +255,7 @@ namespace DatenMeister.Forms.FormCreator
         {
             creationMode ??= new FormFactoryConfiguration();
             
-            var extentForm = factory.create(_DatenMeister.TheOne.Forms.__ExtentForm);
+            var extentForm = mofFactory.create(_DatenMeister.TheOne.Forms.__ExtentForm);
             extentForm.set(_DatenMeister._Forms._ExtentForm.name, NamedElementMethods.GetName(metaClass) + " - List");
 
             var tabs = new List<IElement>();
@@ -279,7 +279,7 @@ namespace DatenMeister.Forms.FormCreator
 
             if (propertiesWithoutCollection.Any() || creationMode.AutomaticMetaClassField)
             {
-                var detailForm = factory.create(_DatenMeister.TheOne.Forms.__DetailForm);
+                var detailForm = mofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
                 detailForm.set(_DatenMeister._Forms._DetailForm.name, "Detail");
 
                 var fields = new List<IElement>();
@@ -297,7 +297,7 @@ namespace DatenMeister.Forms.FormCreator
                     || !FormMethods.HasMetaClassFieldInForm(detailForm))
                 {
                     // Add the element itself
-                    var metaClassField = factory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
+                    var metaClassField = mofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
                     fields.Add(metaClassField);
                 }
@@ -364,7 +364,7 @@ namespace DatenMeister.Forms.FormCreator
             var cache = new FormCreatorCache();
 
             // Creates the empty form
-            var extentForm = factory.create(_DatenMeister.TheOne.Forms.__ExtentForm);
+            var extentForm = mofFactory.create(_DatenMeister.TheOne.Forms.__ExtentForm);
             extentForm.set(_DatenMeister._Forms._ExtentForm.name, NamedElementMethods.GetName(element));
             var objectMetaClass = (element as IElement)?.getMetaClass();
 
@@ -436,9 +436,13 @@ namespace DatenMeister.Forms.FormCreator
                     select new {propertyName = p.PropertyName, propertyType = p.PropertyType, propertyContent})
                 .ToList();
 
+            //
+            // Now, we got
+            // propertyNamesWithCollection containing all properties which have a collection as a subitem ==> List Form
+            // propertyNamesWithoutCollection containing all properties which have a collection as a subitem ==> Detail Form
             if (propertiesWithoutCollection.Any() || creationMode.AutomaticMetaClassField)
             {
-                var detailForm = factory.create(_DatenMeister.TheOne.Forms.__DetailForm);
+                var detailForm = mofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
                 detailForm.set(_DatenMeister._Forms._DetailForm.name, "Detail");
 
                 var fields = new List<IElement>();
@@ -457,7 +461,6 @@ namespace DatenMeister.Forms.FormCreator
                             pair.propertyName,
                             creationMode with { IsReadOnly = true });
                         fields.Add(field);
-
                     }
                 }
 
@@ -468,7 +471,7 @@ namespace DatenMeister.Forms.FormCreator
                         !new FormMethods(_workspaceLogic, _scopeStorage).HasMetaClassFieldInForm(extent, fields)))
                 {
                     // Add the element itself
-                    var metaClassField = factory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
+                    var metaClassField = mofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
                     fields.Add(metaClassField);
 
@@ -486,6 +489,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 if (propertyName == _UML._Packages._Package.packagedElement)
                 {
+                    // If the property for the list is 'packagedElement', then create multiple subforms...
                     var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
                     {
                         if (x is IElement innerElement)
@@ -505,7 +509,7 @@ namespace DatenMeister.Forms.FormCreator
                     {
                         // If there are elements included and they are filled
                         // OR, if there is no element included at all, create the corresponding list form
-                        var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+                        var form = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
                         form.set(_DatenMeister._Forms._ListForm.name, propertyName);
                         form.set(_DatenMeister._Forms._ListForm.property, propertyName);
                         form.set(_DatenMeister._Forms._ListForm.noItemsWithMetaClass, true);
@@ -544,38 +548,19 @@ namespace DatenMeister.Forms.FormCreator
                 }
                 else
                 {
+                    
                     // If there are elements included and they are filled
                     // OR, if there is no element included at all, create the corresponding list form
-                    var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
-                    form.set(_DatenMeister._Forms._ListForm.name, propertyName);
-                    form.set(_DatenMeister._Forms._ListForm.property, propertyName);
-
-                    if (creationMode.CreateByPropertyValues)
+                    var form = _parentFormFactory.CreateListFormForCollection(
+                        new TemporaryReflectiveCollection(elementsAsObjects), creationMode);
+                    if (form != null)
                     {
-                        foreach (var item in elementsAsObjects)
-                        {
-                            AddFieldsToForm(form, item, creationMode, cache);
-                        }
-                    }
+                        form.set(_DatenMeister._Forms._ListForm.name, $"Property: {propertyName}");
+                        form.set(_DatenMeister._Forms._ListForm.property, propertyName);
 
-                    if (creationMode.CreateByMetaClass)
-                    {
-                        var property = pair.propertyType;
-                        var propertyType = property != null ? PropertyMethods.GetPropertyType(property) : null;
-                        if (propertyType != null)
-                        {
-                            AddFieldsToFormByMetaclass(
-                                form,
-                                propertyType,
-                                creationMode);
-                        }
+                        // Adds the form to the tabs
+                        tabs.Add(form);
                     }
-                    
-                    AddTextFieldForNameIfNoFieldAvailable(form);
-                    SortFieldsByImportantProperties(form);
-
-                    // Adds the form to the tabs
-                    tabs.Add(form);
                 }
             }
 

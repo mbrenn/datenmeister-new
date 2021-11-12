@@ -12,6 +12,10 @@ export class ListForm implements InterfacesForms.IForm {
     workspace: string;
 
     createFormByCollection(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
+        let headline = $("<h2></h2>");
+        headline.text(this.formElement.get('name'));
+        parent.append(headline);
+
         let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
         const fields = this.formElement.get("field");
 

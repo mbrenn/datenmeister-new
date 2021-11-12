@@ -57,6 +57,12 @@ namespace DatenMeister.Extent.Forms
                 });
 
             ActionButtonToFormAdder.AddActionButton(
+                formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
+                {
+                    FormType = _DatenMeister._Forms.___FormType.ObjectList
+                });
+
+            ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListDeleteItem, "Delete Item")
                 {
                     FormType = _DatenMeister._Forms.___FormType.TreeItemExtent

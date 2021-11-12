@@ -42,6 +42,8 @@ namespace DatenMeister.WebServer.Pages
             Workspace = WebUtility.UrlDecode(workspace);
             Extent = WebUtility.UrlDecode(extent);
             Item = WebUtility.UrlDecode(item);
+
+            ItemAndFormModel = ExtentItemsController.GetItemAndForm(Workspace, Extent, Item);
         }
     }
 }

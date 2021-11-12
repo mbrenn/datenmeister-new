@@ -46,7 +46,7 @@ namespace DatenMeister.Forms
         /// <returns>The created instance of the form reportCreator</returns>
         private FormCreator.FormCreator CreateFormCreator()
             =>  FormCreator.FormCreator.Create(
-                _plugin.WorkspaceLogic, _scopeStorage
+                _plugin.WorkspaceLogic, _scopeStorage, this
             );
         
 

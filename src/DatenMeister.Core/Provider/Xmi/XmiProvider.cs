@@ -15,7 +15,7 @@ namespace DatenMeister.Core.Provider.Xmi
         /// Gets the value whether the same xmiprovider instance shall always be used
         /// for the same XmlNode. 
         /// </summary>
-        public const bool ConfigurationUniqueXmiProviderObjects = true;
+        public const bool ConfigurationUseIsolatedXmiProviderObjects = true;
         
         /// <summary>
         /// Defines the name of the element
@@ -128,16 +128,22 @@ namespace DatenMeister.Core.Provider.Xmi
         public XmiProviderObject CreateProviderObject(XElement xmlElement)
         {
 #pragma warning disable 162
-            if (ConfigurationUniqueXmiProviderObjects)
+            if (ConfigurationUseIsolatedXmiProviderObjects)
             {
+                XmiProviderObject? result;
+
                 lock (_providerObjectCache)
                 {
-                    if (_providerObjectCache.TryGetValue(xmlElement, out var result))
+                    if (_providerObjectCache.TryGetValue(xmlElement, out result))
                     {
                         return result;
                     }
+                }
 
-                    result = XmiProviderObject.Create(xmlElement, this);
+                result = XmiProviderObject.Create(xmlElement, this);
+
+                lock (_providerObjectCache)
+                {
                     _providerObjectCache[xmlElement] = result;
 
                     return result;

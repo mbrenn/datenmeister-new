@@ -129,6 +129,14 @@ define(["require", "exports"], function (require, exports) {
         if (elementUri !== undefined && elementUri !== null) {
             result.uri = elementUri;
         }
+        const extentUri = element["e"];
+        if (extentUri !== undefined && extentUri !== null) {
+            result.extentUri = extentUri;
+        }
+        const workspace = element["w"];
+        if (workspace !== undefined && workspace !== null) {
+            result.workspace = workspace;
+        }
         return result;
     }
     exports.convertJsonObjectToDmObject = convertJsonObjectToDmObject;

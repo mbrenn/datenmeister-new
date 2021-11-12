@@ -8,6 +8,10 @@ export class DmObject
     
     uri: string;
 
+    extentUri: string;
+
+    workspace: string;
+
     constructor() {
         this.values = new Array<any>();
     }
@@ -156,6 +160,16 @@ export function convertJsonObjectToDmObject(element: object|string): DmObject {
     const elementUri = element["u"];
     if (elementUri !== undefined && elementUri !== null) {
         result.uri = elementUri;
+    }
+
+    const extentUri = element["e"];
+    if (extentUri !== undefined && extentUri !== null) {
+        result.extentUri = extentUri;
+    }
+
+    const workspace = element["w"];
+    if (workspace !== undefined && workspace !== null) {
+        result.workspace = workspace;
     }
 
     return result;

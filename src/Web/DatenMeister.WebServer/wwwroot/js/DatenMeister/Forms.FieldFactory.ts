@@ -4,6 +4,7 @@ import * as DropDownField from "./Fields/DropDownField";
 import * as MetaClassElementField from "./Fields/MetaClassElementField";
 import * as ActionField from "./Fields/ActionField";
 import * as AnyDataField from "./Fields/AnyDataField";
+import * as SubElementField from "./Fields/SubElementField";
 import * as UnknownField from "./Fields/UnknownField";
 import {IFormField} from "./Interfaces.Fields";
 import {IForm} from "./Interfaces.Forms";
@@ -35,6 +36,9 @@ export function createField(fieldMetaClassId: string, parameter: ICreateFieldPar
         break;
     case "DatenMeister.Models.Forms.ActionFieldData":
         result = new ActionField.Field();
+        break;
+    case "DatenMeister.Models.Forms.SubElementFieldData":
+        result = new SubElementField.Field();
         break;
     case "DatenMeister.Models.Forms.AnyDataFieldData":
         result = new AnyDataField.Field();

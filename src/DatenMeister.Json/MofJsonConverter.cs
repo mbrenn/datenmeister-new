@@ -114,7 +114,24 @@ namespace DatenMeister.Json
                 AppendValue(builder, uri);
             }
 
+            var extent = value.GetUriExtentOf();
+            if (extent != null)
+            {
+                var contextUri = extent.contextURI();
+                builder.Append(", \"e\": ");
+                AppendValue(builder, contextUri);
+            }
+
+            var workspace = extent?.GetWorkspace();
+            if (workspace != null)
+            {
+                var workspaceName = workspace.id;
+                builder.Append(", \"w\": ");
+                AppendValue(builder, workspaceName);
+            }
+
             builder.Append("}");
+
             
             builder.AppendLine();
         }

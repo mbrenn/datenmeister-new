@@ -50,11 +50,11 @@ namespace DatenMeister.Extent.Forms
                 }
             );
 
-            ActionButtonToFormAdder.AddActionButton(
+            /*ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
                 {
                     FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
-                });
+                });*/
 
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")

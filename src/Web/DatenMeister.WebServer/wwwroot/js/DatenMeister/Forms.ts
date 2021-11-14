@@ -6,6 +6,7 @@ import * as Settings from "./Settings";
 import * as DetailForm from "./Forms.DetailForm";
 import * as IForm from "./Interfaces.Forms";
 import {ListForm} from "./Forms.ListForm";
+import { debugElementToDom } from "./DomHelper";
 
 export class Form {
     viewMode: string;
@@ -180,6 +181,9 @@ export class DetailFormCreator implements IForm.IForm {
             tthis.extentUri = extentUri;
             tthis.itemId = itemId;
             tthis.createFormByObject(parent, isReadOnly);
+
+            debugElementToDom(element, ".debug_mofelement");
+            debugElementToDom(form, ".debug_formelement");
         });
 
         parent.empty();

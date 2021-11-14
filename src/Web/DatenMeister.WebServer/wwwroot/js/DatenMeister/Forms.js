@@ -1,4 +1,4 @@
-define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1) {
+define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.DetailFormCreator = exports.CollectionFormCreator = exports.Form = void 0;
@@ -134,6 +134,8 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 tthis.extentUri = extentUri;
                 tthis.itemId = itemId;
                 tthis.createFormByObject(parent, isReadOnly);
+                (0, DomHelper_1.debugElementToDom)(element, ".debug_mofelement");
+                (0, DomHelper_1.debugElementToDom)(form, ".debug_formelement");
             });
             parent.empty();
             parent.text("Loading content and form...");

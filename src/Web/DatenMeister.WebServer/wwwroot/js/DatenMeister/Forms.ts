@@ -37,7 +37,10 @@ export class CollectionFormCreator implements IForm.IForm {
             tthis.extentUri = extentUri;
 
             tthis.createFormByCollection(parent, elements, isReadOnly);
-            
+
+            debugElementToDom(elements, ".debug_mofelement");
+            debugElementToDom(form, ".debug_formelement");
+
         });
 
         parent.empty();

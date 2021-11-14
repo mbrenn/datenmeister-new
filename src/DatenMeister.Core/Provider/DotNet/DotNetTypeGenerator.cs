@@ -246,8 +246,8 @@ namespace DatenMeister.Core.Provider.DotNet
                 var propertyType = GetAnyElementType(property);
                 if (propertyType != property)
                 {
-                    SetProperty(propertyType, umlProperty);
-                    umlProperty.set(_UML._CommonStructure._MultiplicityElement.upper, 2);
+                    SetProperty(propertyType, umlProperty);                    
+                    umlProperty.set(_UML._CommonStructure._MultiplicityElement.upper, propertyType.IsEnum ? 1 : 2);
                 }
                 else
                 {

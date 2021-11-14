@@ -31,7 +31,7 @@ export function injectNameByUri(domElement: JQuery<HTMLElement>, elementUri: str
     });
 }
 
-export function debugElementToDom(mofElement: DmObject, domSelector: string) {
+export function debugElementToDom(mofElement: any, domSelector: string) {
     const domElement = $(domSelector);
     if (domElement.length > 0) {
         domElement.append(convertToDom(mofElement));
@@ -40,12 +40,20 @@ export function debugElementToDom(mofElement: DmObject, domSelector: string) {
 
 export function convertToDom(mofElement: any): JQuery{
     if (Array.isArray(mofElement)) {
-        var arrayList = $("<ol></ol>");
+        let count = 0;
+        const arrayList = $("<ol></ol>");
 
-        for (var m in mofElement) {
+        for (var m in mofElement) {            
             var li = $("<li></li>");
+            if (count > 50) {
+                li.text("... (total: " + mofElement.length + ")");
+                arrayList.append(li);
+                break;
+            }
+
             li.append(convertToDom(mofElement[m]));
             arrayList.append(li);
+            count++;            
         }
 
         return arrayList;

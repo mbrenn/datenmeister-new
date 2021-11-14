@@ -36,11 +36,18 @@ define(["require", "exports", "./NameLoader"], function (require, exports, NameL
     exports.debugElementToDom = debugElementToDom;
     function convertToDom(mofElement) {
         if (Array.isArray(mofElement)) {
-            var arrayList = $("<ol></ol>");
+            let count = 0;
+            const arrayList = $("<ol></ol>");
             for (var m in mofElement) {
                 var li = $("<li></li>");
+                if (count > 50) {
+                    li.text("... (total: " + mofElement.length + ")");
+                    arrayList.append(li);
+                    break;
+                }
                 li.append(convertToDom(mofElement[m]));
                 arrayList.append(li);
+                count++;
             }
             return arrayList;
         }

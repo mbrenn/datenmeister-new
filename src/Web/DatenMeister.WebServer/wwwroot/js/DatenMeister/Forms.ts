@@ -38,8 +38,8 @@ export class CollectionFormCreator implements IForm.IForm {
 
             tthis.createFormByCollection(parent, elements, isReadOnly);
 
-            debugElementToDom(elements, ".debug_mofelement");
-            debugElementToDom(form, ".debug_formelement");
+            debugElementToDom(elements, "#debug_mofelement");
+            debugElementToDom(form, "#debug_formelement");
 
         });
 
@@ -185,8 +185,8 @@ export class DetailFormCreator implements IForm.IForm {
             tthis.itemId = itemId;
             tthis.createFormByObject(parent, isReadOnly);
 
-            debugElementToDom(element, ".debug_mofelement");
-            debugElementToDom(form, ".debug_formelement");
+            debugElementToDom(element, "#debug_mofelement");
+            debugElementToDom(form, "#debug_formelement");
         });
 
         parent.empty();

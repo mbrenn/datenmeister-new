@@ -22,8 +22,8 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
                 tthis.createFormByCollection(parent, elements, isReadOnly);
-                (0, DomHelper_1.debugElementToDom)(elements, ".debug_mofelement");
-                (0, DomHelper_1.debugElementToDom)(form, ".debug_formelement");
+                (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
+                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
             });
             parent.empty();
             parent.text("Loading content and form...");
@@ -136,8 +136,8 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 tthis.extentUri = extentUri;
                 tthis.itemId = itemId;
                 tthis.createFormByObject(parent, isReadOnly);
-                (0, DomHelper_1.debugElementToDom)(element, ".debug_mofelement");
-                (0, DomHelper_1.debugElementToDom)(form, ".debug_formelement");
+                (0, DomHelper_1.debugElementToDom)(element, "#debug_mofelement");
+                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
             });
             parent.empty();
             parent.text("Loading content and form...");

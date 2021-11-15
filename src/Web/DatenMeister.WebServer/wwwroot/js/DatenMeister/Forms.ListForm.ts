@@ -16,54 +16,62 @@ export class ListForm implements InterfacesForms.IForm {
         headline.text(this.formElement.get('name'));
         parent.append(headline);
 
-        let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-        const fields = this.formElement.get("field");
-
-        const headerRow = $("<tbody><tr></tr></tbody>");
-        const innerRow = $("tr", headerRow);
-
-        for (let n in fields) {
-            if (!fields.hasOwnProperty(n)) continue;
-            const field = fields[n] as Mof.DmObject;
-
-            let cell = $("<th></th>");
-            cell.text(field.get("title") ?? field.get("name"));
-
-            innerRow.append(cell);
+        if (!Array.isArray(this.elements)) {
+            const div = $("<div></div>");
+            div.text("Non-Array elements for ListForm: ");
+            div.append($("<em></em>").text(this.elements));
+            parent.append(div);
         }
+        else {
+            let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+            const fields = this.formElement.get("field");
 
-        table.append(headerRow);
+            const headerRow = $("<tbody><tr></tr></tbody>");
+            const innerRow = $("tr", headerRow);
 
-        let elements = this.elements;
-        for (let n in elements) {
-            if (Object.prototype.hasOwnProperty.call(elements, n)) {
-                let element = this.elements[n];
+            for (let n in fields) {
+                if (!fields.hasOwnProperty(n)) continue;
+                const field = fields[n] as Mof.DmObject;
 
-                const row = $("<tr></tr>");
+                let cell = $("<th></th>");
+                cell.text(field.get("title") ?? field.get("name"));
 
-                for (let n in fields) {
-                    if (!fields.hasOwnProperty(n)) continue;
-                    const field = fields[n] as DmObject;
-                    let cell = $("<td></td>");
-                    
-                    const fieldMetaClassId = field.metaClass.id;
-                    const fieldElement = createField(
-                        fieldMetaClassId,
-                        {
-                            form: this,
-                            field: field,
-                            itemUrl: element.uri,
-                            isReadOnly: isReadOnly
-                        });
-                    
-                    cell.append(fieldElement.createDom(element));
-                    row.append(cell);
-                }
-
-                table.append(row);
+                innerRow.append(cell);
             }
-        }
 
-        parent.append(table);
+            table.append(headerRow);
+
+            let elements = this.elements;
+            for (let n in elements) {
+                if (Object.prototype.hasOwnProperty.call(elements, n)) {
+                    let element = this.elements[n];
+
+                    const row = $("<tr></tr>");
+
+                    for (let n in fields) {
+                        if (!fields.hasOwnProperty(n)) continue;
+                        const field = fields[n] as DmObject;
+                        let cell = $("<td></td>");
+
+                        const fieldMetaClassId = field.metaClass.id;
+                        const fieldElement = createField(
+                            fieldMetaClassId,
+                            {
+                                form: this,
+                                field: field,
+                                itemUrl: element.uri,
+                                isReadOnly: isReadOnly
+                            });
+
+                        cell.append(fieldElement.createDom(element));
+                        row.append(cell);
+                    }
+
+                    table.append(row);
+                }
+            }
+
+            parent.append(table);
+        }
     }
 }

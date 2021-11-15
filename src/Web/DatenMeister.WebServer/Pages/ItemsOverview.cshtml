@@ -30,8 +30,27 @@ $(function()
 
 <div id="items"></div>
 
-<h3>Element</h3>
-<div class="debug_mofelement"></div>
-
-<h3>Form</h3>
-<div class="debug_formelement"></div>
+<div class="accordion" id="debug_accordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="debug_mofelement_heading">    
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_mofelement_body" aria-expanded="true" aria-controls="collapseOne">
+        Element
+      </button>
+    </h2>    
+    <div id="debug_mofelement_body" class="accordion-collapse collapse" aria-labelledby="debug_mofelement_heading" data-bs-parent="#debug_accordion">
+      <div class="accordion-body" id="debug_mofelement">        
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="debug_formelement_heading">    
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_formelement_body" aria-expanded="true" aria-controls="collapseOne">
+        Form
+      </button>
+    </h2>
+    <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
+      <div class="accordion-body" id="debug_formelement">        
+      </div>
+    </div>
+  </div>
+</div>

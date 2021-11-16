@@ -127,7 +127,7 @@ namespace DatenMeister.Forms.FormCreator
         public static FormCreator Create(
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage,
-            IFormFactory parentFormFactory = null)
+            IFormFactory? parentFormFactory = null)
         {
             var formLogic = new FormsPlugin(
                 workspaceLogic, new ExtentCreator(workspaceLogic, scopeStorage), scopeStorage);

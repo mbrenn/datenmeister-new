@@ -59,6 +59,8 @@ namespace DatenMeister.Forms
         
         public IElement? CreateExtentFormForItem(IObject element, FormFactoryConfiguration configuration)
         {
+            var metaClass = (element as IElement)?.getMetaClass();
+
             // Checks if the item to which the extent form is requested is an extent
             if (element is IExtent elementAsExtent)
             {
@@ -74,6 +76,8 @@ namespace DatenMeister.Forms
                 throw new InvalidOperationException("Item Tree for extent-less object can't be created");
             }
 
+            var extentType = extent.GetConfiguration().ExtentType;
+
             string? packageViewMode = null;
             // Checks if the current item is a package and if the viewmode
             if (DefaultClassifierHints.IsPackageLike(element))
@@ -88,8 +92,8 @@ namespace DatenMeister.Forms
                 var viewFinder = CreateFormFinder();
                 foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
-                    extentType = extent.GetConfiguration().ExtentType,
-                    metaClass = (element as IElement)?.getMetaClass(),
+                    extentType = extentType,
+                    metaClass = metaClass,
                     FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                     viewModeId = configuration.ViewModeId ?? packageViewMode
                 }).FirstOrDefault();
@@ -137,6 +141,36 @@ namespace DatenMeister.Forms
                         DetailElement = element
                     },
                     ref foundForm);
+
+                var detailForms = FormMethods.GetDetailForms(foundForm);
+                foreach (var detailForm in detailForms.OfType<IElement>())
+                {
+                    var listedForm = detailForm; // Get iterative
+                    CallFormsModificationPlugins(
+                        new FormCreationContext
+                        {
+                            Configuration = configuration,
+                            ExtentType = extentType,
+                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            MetaClass = metaClass
+                        },
+                        ref listedForm);
+                }
+
+                var listForms = FormMethods.GetListForms(foundForm);
+                foreach (var listForm in listForms.OfType<IElement>())
+                {
+                    var listedForm = listForm; // Get iterative
+                    CallFormsModificationPlugins(
+                        new FormCreationContext
+                        {
+                            Configuration = configuration,
+                            ExtentType = extentType,
+                            FormType = _DatenMeister._Forms.___FormType.ObjectList,
+                            MetaClass = metaClass
+                        },
+                        ref listedForm);
+                }
             }
 
             // No Form
@@ -267,15 +301,14 @@ namespace DatenMeister.Forms
 
         public IElement? CreateExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration)
         {
-            
+            var extentType = extent.GetConfiguration().ExtentType;
             IElement? foundForm = null;
             if (configuration.ViaFormFinder)
             {
                 var viewFinder = CreateFormFinder();
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
-                    {
-                        
+                    {                        
                         extentType = extent.GetConfiguration().ExtentType,
                         FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         viewModeId = configuration.ViewModeId ?? ""
@@ -323,6 +356,35 @@ namespace DatenMeister.Forms
                         ExtentType = extent.GetConfiguration().ExtentType
                     },
                     ref foundForm);
+
+
+                var detailForms = FormMethods.GetDetailForms(foundForm);
+                foreach (var detailForm in detailForms.OfType<IElement>())
+                {
+                    var listedForm = detailForm; // Get iterative
+                    CallFormsModificationPlugins(
+                        new FormCreationContext
+                        {
+                            Configuration = configuration,
+                            ExtentType = extentType,
+                            FormType = _DatenMeister._Forms.___FormType.Detail
+                        },
+                        ref listedForm);
+                }
+
+                var listForms = FormMethods.GetListForms(foundForm);
+                foreach (var listForm in listForms.OfType<IElement>())
+                {
+                    var listedForm = listForm; // Get iterative
+                    CallFormsModificationPlugins(
+                        new FormCreationContext
+                        {
+                            Configuration = configuration,
+                            ExtentType = extentType,
+                            FormType = _DatenMeister._Forms.___FormType.ObjectList
+                        },
+                        ref listedForm);
+                }
             }
 
             return foundForm;

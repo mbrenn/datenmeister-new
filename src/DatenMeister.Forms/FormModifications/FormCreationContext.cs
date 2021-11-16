@@ -6,7 +6,7 @@ namespace DatenMeister.Forms.FormModifications
     /// <summary>
     /// The additional information for which the form was created
     /// </summary>
-    public class FormCreationContext
+    public record FormCreationContext
     {
         public _DatenMeister._Forms.___FormType FormType { get; set; }
 

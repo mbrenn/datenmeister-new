@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -46,25 +47,27 @@ namespace DatenMeister.Forms.Helper
                     _parameter.OnCallSuccess?.Invoke();
                     var formMetaClass = form.getMetaClass();
 
-                    IElement? formWithFields;
+                    var forms = new List<IObject>();
                     if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__ExtentForm) == true)
                     {
-                        formWithFields = FormMethods.GetDetailForms(form).FirstOrDefault();
-                        if (formWithFields == null)
+                        if (context.FormType != _DatenMeister._Forms.___FormType.ObjectList)
                         {
-                            formWithFields = FormMethods.GetListForms(form).FirstOrDefault();
-                            if (formWithFields == null)
-                            {
-                                return;
-                            }
+                            forms.AddRange(FormMethods.GetDetailForms(form));
+                        }
+
+                        if (context.FormType != _DatenMeister._Forms.___FormType.TreeItemDetail &&
+                            context.FormType != _DatenMeister._Forms.___FormType.Detail &&
+                            context.FormType != _DatenMeister._Forms.___FormType.TreeItemDetailExtension)
+                        {
+                            forms.AddRange(FormMethods.GetListForms(form));
                         }
                     }
                     else
                     {
-                        formWithFields = form;
+                        forms.Add(form);
                     }
 
-                    if (formWithFields is not null)
+                    foreach (var formWithFields in forms)
                     {
                         var fields = formWithFields.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
                         var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);

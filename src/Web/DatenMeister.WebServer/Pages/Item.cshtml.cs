@@ -22,19 +22,15 @@ namespace DatenMeister.WebServer.Pages
         /// Gets the item url of the currently selected item
         /// </summary>
         public string ItemUrl => Item?.Contains('#') == true ? Item : $"{Extent}#{Item}";
-        
-        private ExtentItemsController ExtentItemsController { get; set; }
 
         public IObject? FoundItem { get; set; }
 
         public IObject? Form { get; set; }
 
         public readonly StringBuilder ScriptLines = new();
-        public ItemAndFormModel? ItemAndFormModel;
 
-        public ItemModel(ExtentItemsController extentItemsController)
+        public ItemModel()
         {
-            ExtentItemsController = extentItemsController;
         }
 
         public void OnGet(string workspace, string extent, string? item)
@@ -42,8 +38,6 @@ namespace DatenMeister.WebServer.Pages
             Workspace = WebUtility.UrlDecode(workspace);
             Extent = WebUtility.UrlDecode(extent);
             Item = WebUtility.UrlDecode(item);
-
-            ItemAndFormModel = ExtentItemsController.GetItemAndForm(Workspace, Extent, Item);
         }
     }
 }

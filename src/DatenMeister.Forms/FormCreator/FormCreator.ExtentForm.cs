@@ -185,7 +185,7 @@ namespace DatenMeister.Forms.FormCreator
                     var formCreator = new FormFactory(_formLogic, _scopeStorage);
                     form = formCreator.CreateListFormForCollection(
                         extent.elements(),
-                        new FormFactoryConfiguration()) ?? throw new InvalidOperationException("No form was found");
+                        new FormFactoryConfiguration() { AllowFormModifications = false }) ?? throw new InvalidOperationException("No form was found");
 
                     if (configuration.CreateByMetaClass)
                     {
@@ -528,12 +528,11 @@ namespace DatenMeister.Forms.FormCreator
                         var groupedMetaclass = group.Key ?? throw new InvalidOperationException("Key may not be null");
                         if (_formLogic != null && extent != null)
                         {
-                            var formFactory = new FormFactory(_formLogic, _scopeStorage);
-                            var form = formFactory.CreateListFormForPropertyValues(
+                            var form = _parentFormFactory.CreateListFormForPropertyValues(
                                 element,
                                 propertyName,
                                 groupedMetaclass,
-                                new FormFactoryConfiguration());
+                                new FormFactoryConfiguration() { AllowFormModifications = false });
                             if (form != null)
                             {
                                 tabs.Add(form);
@@ -542,17 +541,17 @@ namespace DatenMeister.Forms.FormCreator
                         else
                         {
                             tabs.Add(
-                                CreateListFormForPropertyValues(null, pair.propertyName, groupedMetaclass, creationMode));
+                                CreateListFormForPropertyValues(null, pair.propertyName, groupedMetaclass, creationMode with { AllowFormModifications = false }));
                         }
                     }
                 }
                 else
-                {
-                    
+                {                    
                     // If there are elements included and they are filled
                     // OR, if there is no element included at all, create the corresponding list form
                     var form = _parentFormFactory.CreateListFormForCollection(
-                        new TemporaryReflectiveCollection(elementsAsObjects), creationMode);
+                        new TemporaryReflectiveCollection(elementsAsObjects), 
+                        creationMode with { AllowFormModifications = false });
                     if (form != null)
                     {
                         form.set(_DatenMeister._Forms._ListForm.name, $"Property: {propertyName}");

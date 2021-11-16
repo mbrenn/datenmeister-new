@@ -18,7 +18,7 @@
     @{ var i = Model.Item ?? "No Item"; }
     <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
     <a href="/ItemsOverview/@(HttpUtility.UrlEncode(w))/@(HttpUtility.UrlEncode(e))">@e</a> &lt;
-    @(Model.ItemAndFormModel?.fullName ?? "Unknown Element")
+    @("Element" ?? "Unknown Element")
 </div>
 
 <div><a class="btn btn-primary" onclick="EditItem()">Edit Item</a></div>

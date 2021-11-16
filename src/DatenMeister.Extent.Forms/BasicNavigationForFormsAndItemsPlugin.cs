@@ -33,13 +33,18 @@ namespace DatenMeister.Extent.Forms
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Extent")
                 {
+                    FormType = _DatenMeister._Forms.___FormType.Detail,
                     MetaClass = _DatenMeister.TheOne.Management.__Extent
                 });
 
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")
                 {
-                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
+                    OnCallSuccess = () =>
+                    {
+                        System.Diagnostics.Debug.WriteLine("YES");
+                    }
                 });
 
             ActionButtonToFormAdder.AddActionButton(
@@ -53,20 +58,13 @@ namespace DatenMeister.Extent.Forms
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
                 {
-                    FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
-                });
-
-            ActionButtonToFormAdder.AddActionButton(
-                formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
-                {
-                    FormType = _DatenMeister._Forms.___FormType.ObjectList,
-                    OnCallSuccess = () => { System.Diagnostics.Debugger.Break(); }
+                    FormType = _DatenMeister._Forms.___FormType.ObjectList
                 });
 
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListDeleteItem, "Delete Item")
                 {
-                    FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
+                    FormType = _DatenMeister._Forms.___FormType.ObjectList
                 });
         }
     }

@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
+using System;
 
 namespace DatenMeister.Forms.Helper
 {
@@ -33,6 +34,13 @@ namespace DatenMeister.Forms.Helper
         /// The title being used. 
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delegate that will be called, when the 
+        /// the filter is evaluated. This allows setting a breakpoint for the debugger
+        /// during issue finding
+        /// </summary>
+        public Action? OnCallSuccess { get; set; }
 
         public ActionButtonAdderParameter(string actionName, string title)
         {

@@ -22,7 +22,7 @@ pipeline {
             steps
             {
                 dotnetTest logger: 'trx;LogFileName=test.trx', project: 'src/Tests/DatenMeister.Tests/DatenMeister.Tests.csproj'                
-                dotnetTest logger: 'trx;LogFileName=test.trx', project: 'src/Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj'
+                dotnetTest logger: 'trx;LogFileName=test.web.trx', project: 'src/Tests/DatenMeister.Tests.Web/DatenMeister.Tests.Web.csproj'
 
                 mstest()
             }

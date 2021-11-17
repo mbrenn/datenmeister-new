@@ -60,7 +60,7 @@ namespace DatenMeister.WebServer.Controller
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
 
-        public IElement? GetDefaultFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
+        public IElement GetDefaultFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);

@@ -56,7 +56,7 @@ namespace DatenMeister.Tests.Web
             var foundForm = formsController.GetDefaultFormForItemInternal(
                 WorkspaceNames.WorkspaceData,
                 firstElement!.GetUri()!,
-                ViewModes.Default);
+                ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
             var detailForm = FormMethods.GetDetailForms(foundForm).FirstOrDefault();
@@ -81,7 +81,7 @@ namespace DatenMeister.Tests.Web
             var foundForm = formsController.GetDefaultFormForExtentInternal(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
-                ViewModes.Default);
+                ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
             var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();

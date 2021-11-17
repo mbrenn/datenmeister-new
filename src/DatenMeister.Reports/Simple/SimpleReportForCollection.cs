@@ -133,8 +133,6 @@ namespace DatenMeister.Reports.Simple
                 foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, fullNamefield);
             }
         }
-        
-        
 
         private void ReportItemCollection(IReflectiveCollection metaClass, IObject form)
         {

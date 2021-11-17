@@ -26,27 +26,41 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
         public ActionResult<string> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {
+            var form = GetDefaultFormForItemInternal(workspaceId, itemUrl, viewMode);
+
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        }
+
+        public IElement GetDefaultFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
+        {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUrl = HttpUtility.UrlDecode(itemUrl);
             viewMode = HttpUtility.UrlDecode(viewMode);
 
             var item = GetItemByUriParameter(workspaceId, itemUrl);
-                
+
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(formLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForItem(item,
                 new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
-            
+
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
             }
 
-            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+            return form;
         }
-        
+
         [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
         public ActionResult<string> GetDefaultFormForExtent(string workspaceId, string extentUri, string? viewMode)
+        {
+            var form = GetDefaultFormForExtentInternal(workspaceId, extentUri, viewMode);
+
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        }
+
+        public IElement? GetDefaultFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);
@@ -54,7 +68,7 @@ namespace DatenMeister.WebServer.Controller
 
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
-                
+
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(formLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForExtent(extent,
@@ -64,7 +78,7 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Form is not defined");
             }
 
-            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+            return form;
         }
 
         /// <summary>

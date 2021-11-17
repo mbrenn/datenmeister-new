@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestDefaultForExtent()
         {
-            var (zipExtent, formsController) = CreateZipExtent();
+            var (zipExtent, formsController, _) = CreateZipExtent();
             var foundForm = formsController.GetDefaultFormForExtent(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
@@ -33,7 +33,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestDefaultForItem()
         {
-            var (zipExtent, formsController) = CreateZipExtent();
+            var (zipExtent, formsController, _) = CreateZipExtent();
             var firstElement = zipExtent.elements().First() as IElement;
             Assert.That(firstElement, Is.Not.Null);
             var foundForm = formsController.GetDefaultFormForItem(
@@ -50,10 +50,10 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestDetailFormForDefaultButtons()
         {
-            var (zipExtent, formsController) = CreateZipExtent();
+            var (zipExtent, formsController, formsInternal) = CreateZipExtent();
             var firstElement = zipExtent.elements().First() as IElement;
             Assert.That(firstElement, Is.Not.Null);
-            var foundForm = formsController.GetDefaultFormForItemInternal(
+            var foundForm = formsInternal.GetDefaultFormForItemInternal(
                 WorkspaceNames.WorkspaceData,
                 firstElement!.GetUri()!,
                 ViewModes.Default)!;
@@ -77,8 +77,8 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestListFormForDefaultButtons()
         {
-            var (zipExtent, formsController) = CreateZipExtent();
-            var foundForm = formsController.GetDefaultFormForExtentInternal(
+            var (zipExtent, formsController, formsInternal) = CreateZipExtent();
+            var foundForm = formsInternal.GetDefaultFormForExtentInternal(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
                 ViewModes.Default)!;
@@ -116,7 +116,7 @@ namespace DatenMeister.Tests.Web
         /// </summary>
         /// <returns>Tuple of zipExtent and corresponding Forms Controller</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private static (IUriExtent zipExtent, FormsController formsController) CreateZipExtent()
+        private static (IUriExtent zipExtent, FormsController formsController, FormsControllerInternal internalFormController) CreateZipExtent()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
 
@@ -137,7 +137,7 @@ namespace DatenMeister.Tests.Web
                 .FirstOrDefault();
 
             var formsController = new FormsController(dm.WorkspaceLogic, dm.ScopeStorage);
-            return (zipExtent!, formsController);
+            return (zipExtent!, formsController, new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage));
         }
     }
 }

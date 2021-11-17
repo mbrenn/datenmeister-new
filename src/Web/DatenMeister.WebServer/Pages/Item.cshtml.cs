@@ -1,10 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Helper;
-using DatenMeister.WebServer.InterfaceController;
-using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

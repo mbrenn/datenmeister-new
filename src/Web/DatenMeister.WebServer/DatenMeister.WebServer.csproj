@@ -7,6 +7,7 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
+    <TypeScriptNuGetToolsVersion>4.3</TypeScriptNuGetToolsVersion>
     <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptESModuleInterop>True</TypeScriptESModuleInterop>

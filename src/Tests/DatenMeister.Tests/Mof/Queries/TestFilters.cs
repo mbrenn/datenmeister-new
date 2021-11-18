@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Provider.InMemory;
 using NUnit.Framework;
@@ -16,9 +18,9 @@ namespace DatenMeister.Tests.Mof.Queries
         public void TestUnion()
         {
             var first = new[]
-                {InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty()};
+                { InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty() };
             var second = new[]
-                {InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty()};
+                { InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty() };
 
             var firstReflection = new TemporaryReflectiveCollection(first);
             var secondReflection = new TemporaryReflectiveCollection(second);
@@ -95,6 +97,29 @@ namespace DatenMeister.Tests.Mof.Queries
             Assert.That(result.size(), Is.EqualTo(2));
             Assert.That(result.Contains(mofObject), Is.True);
             Assert.That(result.Contains(mofObject2), Is.True);
+        }
+
+        [Test]
+        public void TestTakeFirst()
+        {
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///");
+            var factory = new MofFactory(mofExtent);
+            
+            var list = new List<IObject>();
+            for (var n = 0; n < 1000; n++)
+            {
+                var item = factory.create(null);
+                item.set("name", "test");
+                list.Add(item);
+            }
+
+            var collection = new TemporaryReflectiveCollection(list);
+            
+            Assert.That(collection.size(), Is.EqualTo(1000));
+            Assert.That(collection.TakeFirst(100).size(), Is.EqualTo(100));
+            Assert.That(collection.TakeFirst(2000).size(), Is.EqualTo(1000));
+            Assert.That(collection.TakeFirst(100).Count(), Is.EqualTo(100));
+            Assert.That(collection.TakeFirst(2000).Count(), Is.EqualTo(1000));
         }
     }
 }

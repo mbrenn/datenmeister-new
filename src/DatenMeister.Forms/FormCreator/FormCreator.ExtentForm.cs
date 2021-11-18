@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
@@ -80,7 +81,10 @@ namespace DatenMeister.Forms.FormCreator
             var extentTypes = extent.GetConfiguration().ExtentTypes;
             extentFormConfiguration.ExtentTypes.AddRange(extentTypes);
             
-            return CreateExtentFormForCollection(extent.elements(), creationMode, extentFormConfiguration);
+            return CreateExtentFormForCollection(
+                extent.elements().TakeFirst(100),
+                creationMode, 
+                extentFormConfiguration);
         }
 
         /// <summary>

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Configuration parameter which limits the number of elements
+#define LimitNumberOfElements
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -193,8 +196,20 @@ namespace DatenMeister.WebServer.Controller
             var result = new StringBuilder();
             result.Append("[");
             var komma = string.Empty;
-
-            foreach (var item in extent.elements().OfType<IElement>())
+            
+            #if LimitNumberOfElements
+            
+            #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
+            
+            var elements = extent.elements().Take(100).OfType<IElement>();
+            
+            #else
+            
+            var elements = extent.elements().OfType<IElement>();
+            
+            #endif
+            
+            foreach (var item in elements)
             {
                 result.Append(komma);
                 result.Append(converter.ConvertToJson(item));

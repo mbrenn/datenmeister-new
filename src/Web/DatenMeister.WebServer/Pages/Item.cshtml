@@ -49,8 +49,8 @@ $(function()
 
     function EditItem()
     {
-        requirejs(['DatenMeister/Forms.DetailForm'], function(Form) {
-            var detailForm = new Form.FormCreator();
+        requirejs(['DatenMeister/Forms'], function(Form) {
+            var detailForm = new Form.DetailFormCreator();
             detailForm.createEditForm(
                 $("#form_view"),
                 "@HttpUtility.JavaScriptStringEncode(w)",

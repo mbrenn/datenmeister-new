@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release;WPF</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <TypeScriptToolsVersion>4.3</TypeScriptToolsVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -239,5 +239,9 @@ namespace DatenMeister.Core.Functions.Queries
             IReflectiveCollection second)
             =>
                 new UnionQuery(first, second);
+
+        public static IReflectiveCollection TakeFirst(
+            this IReflectiveCollection collection,
+            int number) => new TakeFirstQuery(collection, number);
     }
 }

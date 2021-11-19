@@ -1,0 +1,22 @@
+﻿@page "CreateItem/{Action}"
+@using System.Web
+@model DatenMeister.WebServer.Pages.CreateItemModel
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - Create";
+}
+
+$(function()
+{
+    CreateEditForm();
+});
+
+function CreateEditForm()
+{
+    requirejs(['DatenMeister/Forms'], function(Form) {
+        var detailForm = new Form.DetailFormCreator();
+        detailForm.createEditFormForMetaClass(
+            $("#form_view"),
+            "@HttpUtility.JavaScriptStringEncode(Model.MetaClass)");
+    });
+}

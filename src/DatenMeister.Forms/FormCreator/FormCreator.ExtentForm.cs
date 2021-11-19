@@ -57,6 +57,17 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         /// Creates an extent form containing the subforms
         /// </summary>
+        /// <param name="tabsAsForms">The Forms which are converted to an extent form</param>
+        /// <returns>The created extent</returns>
+        public static IElement CreateExtentFormFromTabs(params IElement[] tabsAsForms)
+        {
+            var factory = new MofFactory(tabsAsForms.First());
+            return CreateExtentFormFromTabs(factory, tabsAsForms);
+        }
+
+        /// <summary>
+        /// Creates an extent form containing the subforms
+        /// </summary>
         /// <param name="factory">The factory being used</param>
         /// <param name="tabsAsForms">The Forms which are converted to an extent form</param>
         /// <returns>The created extent</returns>

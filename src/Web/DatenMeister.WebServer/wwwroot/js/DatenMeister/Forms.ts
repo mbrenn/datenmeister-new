@@ -192,6 +192,11 @@ export class DetailFormCreator implements IForm.IForm {
         parent.empty();
         parent.text("Loading content and form...");
     }
+
+    createEditFormForMetaClass(parent: JQuery<HTMLElement>, metaClass: string) {
+        const tthis = this;
+        const defer = getDefaultFormForMetaClass(metaClass);
+    }
 }
 
 /*
@@ -216,6 +221,7 @@ export function getDefaultFormForItem(workspace: string, item: string,  viewMode
 
     return r;
 }
+
 /*
     Gets the default form for an extent uri by the webserver
  */
@@ -230,6 +236,25 @@ export function getDefaultFormForExtent(workspace: string, extentUri: string, vi
         encodeURIComponent(extentUri) +
         "/" +
         encodeURIComponent(viewMode)
+    ).done(x => {
+        const dmObject =
+            Mof.convertJsonObjectToDmObject(x);
+        r.resolve(dmObject);
+    });
+
+    return r;
+}
+
+/*
+    Gets the default form for an extent uri by the webserver
+ */
+export function getDefaultFormForMetaClass(metaClass: string): JQuery.Deferred<Mof.DmObject, never, never> {
+    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+
+    ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/forms/default_for_metaclass/" +
+        encodeURIComponent(metaClass)
     ).done(x => {
         const dmObject =
             Mof.convertJsonObjectToDmObject(x);

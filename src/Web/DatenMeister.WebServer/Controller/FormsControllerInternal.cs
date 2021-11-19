@@ -62,6 +62,37 @@ namespace DatenMeister.WebServer.Controller
         }
 
         /// <summary>
+        /// Gets a form from the metaClass. This method is used to create new items
+        /// </summary>
+        /// <param name="metaClass">MetaClass to be given</param>
+        /// <param name="viewMode">The view mode</param>
+        /// <returns>The found form</returns>
+        public IObject GetDefaultFormForMetaClassInternal(string metaClass, string? viewMode = null)
+        {
+            viewMode = HttpUtility.UrlDecode(viewMode);
+            metaClass = HttpUtility.UrlDecode(metaClass);
+            
+            var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
+            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            if (
+                _workspaceLogic.GetTypesWorkspace().FindElementByUri(metaClass) is not IElement element)
+            {
+                throw new InvalidOperationException("Element is not found: " + metaClass);
+            }
+            
+            var form = formFactory.CreateExtentFormForItemsMetaClass(
+                element,
+                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
+            
+            if (form == null)
+            {
+                throw new InvalidOperationException("Form is not defined");
+            }
+
+            return form;
+        }
+
+        /// <summary>
         /// Gets the items by the uri parameter.
         /// The parameter themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
         /// </summary>

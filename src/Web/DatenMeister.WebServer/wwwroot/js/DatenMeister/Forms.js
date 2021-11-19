@@ -1,7 +1,7 @@
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.DetailFormCreator = exports.CollectionFormCreator = exports.Form = void 0;
+    exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.DetailFormCreator = exports.CollectionFormCreator = exports.Form = void 0;
     class Form {
     }
     exports.Form = Form;
@@ -142,6 +142,10 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             parent.empty();
             parent.text("Loading content and form...");
         }
+        createEditFormForMetaClass(parent, metaClass) {
+            const tthis = this;
+            const defer = getDefaultFormForMetaClass(metaClass);
+        }
     }
     exports.DetailFormCreator = DetailFormCreator;
     /*
@@ -180,5 +184,19 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         return r;
     }
     exports.getDefaultFormForExtent = getDefaultFormForExtent;
+    /*
+        Gets the default form for an extent uri by the webserver
+     */
+    function getDefaultFormForMetaClass(metaClass) {
+        const r = jQuery.Deferred();
+        ApiConnection.get(Settings.baseUrl +
+            "api/forms/default_for_metaclass/" +
+            encodeURIComponent(metaClass)).done(x => {
+            const dmObject = Mof.convertJsonObjectToDmObject(x);
+            r.resolve(dmObject);
+        });
+        return r;
+    }
+    exports.getDefaultFormForMetaClass = getDefaultFormForMetaClass;
 });
 //# sourceMappingURL=Forms.js.map

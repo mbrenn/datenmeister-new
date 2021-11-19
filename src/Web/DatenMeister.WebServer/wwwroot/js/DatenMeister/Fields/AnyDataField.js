@@ -24,20 +24,18 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
             result.append(headLine);
             const fieldName = this.field.get('name').toString();
             const value = dmElement.get(fieldName);
+            /* Otherwise just create the correct field type. */
             if (this.isReadOnly) {
-                /* Otherwise just create the correct field type. */
-                if (this.isReadOnly) {
-                    const div = $("<div />");
-                    div.text((_b = (_a = dmElement.get(fieldName)) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "unknown");
-                    result.append(div);
-                    return result;
-                }
-                else {
-                    this._textBox = $("<input />");
-                    this._textBox.val((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
-                    result.append(this._textBox);
-                    return result;
-                }
+                const div = $("<div />");
+                div.text((_b = (_a = dmElement.get(fieldName)) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "unknown");
+                result.append(div);
+                return result;
+            }
+            else {
+                this._textBox = $("<input />");
+                this._textBox.val((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
+                result.append(this._textBox);
+                return result;
             }
         }
         evaluateDom(dmElement) {

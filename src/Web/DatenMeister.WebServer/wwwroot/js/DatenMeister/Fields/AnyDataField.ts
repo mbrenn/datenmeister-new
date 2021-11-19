@@ -8,7 +8,7 @@ export class Field extends BaseField implements IFormField
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
 
         const result = $("<div>");
-        
+
         const headLine = $(
             "<div class='dm-anydatafield-headline'><a class='dm-anydatafield-headline-value active'>Value</a> " +
             "| <a class='dm-anydatafield-headline-collection'>Collection</a> " +
@@ -17,7 +17,7 @@ export class Field extends BaseField implements IFormField
         const aValue = $(".dm-anydatafield-headline-value", headLine);
         const aCollection = $(".dm-anydatafield-headline-collection", headLine);
         const aReference = $(".dm-anydatafield-headline-reference", headLine);
-        
+
         aValue.on('click', () => {
             alert('Only Values supported up to now')
         });
@@ -27,26 +27,23 @@ export class Field extends BaseField implements IFormField
         aReference.on('click', () => {
             alert('Only Values supported up to now')
         });
-        
+
         result.append(headLine);
-        
+
         const fieldName = this.field.get('name').toString();
         const value = dmElement.get(fieldName);
 
+        /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
-
-            /* Otherwise just create the correct field type. */
-            if (this.isReadOnly) {
-                const div = $("<div />");
-                div.text(dmElement.get(fieldName)?.toString() ?? "unknown");
-                result.append(div);
-                return result;
-            } else {
-                this._textBox = $("<input />");
-                this._textBox.val(dmElement.get(fieldName)?.toString() ?? "unknown");
-                result.append(this._textBox)
-                return result;
-            }
+            const div = $("<div />");
+            div.text(dmElement.get(fieldName)?.toString() ?? "unknown");
+            result.append(div);
+            return result;
+        } else {
+            this._textBox = $("<input />");
+            this._textBox.val(dmElement.get(fieldName)?.toString() ?? "unknown");
+            result.append(this._textBox)
+            return result;
         }
     }
 

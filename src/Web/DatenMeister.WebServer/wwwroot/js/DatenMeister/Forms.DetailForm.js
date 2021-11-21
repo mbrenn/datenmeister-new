@@ -18,7 +18,7 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextFie
             this.fieldElements = new Array();
             const fields = this.formElement.getAsArray("field");
             table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-            const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
+            const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
             table.append(tableBody);
             const itemUri = this.itemId === undefined
                 ? ""
@@ -62,11 +62,11 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextFie
             // Checks, if user may add additional properties, if yes, include a button and create the corresponding
             // logic
             if (!configuration.isReadOnly && configuration.allowAddingNewProperties) {
-                tr = $("<tr><td></td><td><button class='btn btn-secondary'>New property</button></td></tr>");
+                tr = $("<tr class='dm-row-newproperty'><td></td><td><button class='btn btn-secondary'>New property</button></td></tr>");
                 tableBody.append(tr);
                 const button = $("button", tr);
                 button.on('click', () => {
-                    const newRow = $("<tr><td><input class='dm-textfield-key' type='text' /></td><td class='dm-row-value'></td></tr><tr>");
+                    const newRow = $("<tr><td><input class='dm-textfield-key' type='text' /></td><td class='dm-row-value'></td></tr>");
                     const rowValue = $(".dm-row-value", newRow);
                     const propertyTextField = $(".dm-textfield-key", newRow);
                     const textField = new TextField.Field();
@@ -79,7 +79,8 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextFie
                         };
                     rowValue.append(textField.createDom(tthis.element));
                     tthis.fieldElements.push(textField);
-                    newRow.insertBefore(tr);
+                    newRow.insertBefore($('.dm-row-newproperty'));
+                    propertyTextField.trigger('focus');
                 });
             }
             // Checks, if the form is a read-only form. If it is not a read-only, create the Accept and Reject buttons

@@ -8,6 +8,7 @@ import * as IForm from "./Interfaces.Forms";
 import {ListForm} from "./Forms.ListForm";
 import { debugElementToDom } from "./DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
+import {DomHelper} from "../datenmeister";
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {
@@ -147,17 +148,12 @@ export class DetailFormCreator implements IForm.IForm {
                 detailForm.element = this.element;
 
                 detailForm.createFormByObject(form, configuration);
-
-                detailForm.onCancel = () => {
-                    tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
+                if (configuration.onCancel !== undefined) {
+                    detailForm.onCancel = configuration.onCancel;
                 }
 
-                detailForm.onChange = (element) => {
-                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, tthis.element).done(
-                        () => {
-                            tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
-                        }
-                    );
+                if (configuration.onSubmit !== undefined) {
+                    detailForm.onChange = configuration.onSubmit;
                 }
             } else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
                 const listForm = new ListForm();
@@ -185,7 +181,21 @@ export class DetailFormCreator implements IForm.IForm {
     }
 
     createEditForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
-        this.createForm(parent, workspace, extentUri, uri, {isReadOnly: false});
+        const tthis = this;
+        this.createForm(parent, workspace, extentUri, uri, 
+            {
+            isReadOnly: false,
+            onCancel: () => {
+                tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+            },
+            onSubmit: (element) => {
+                DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(
+                    () => {
+                        tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                    }
+                );
+            }
+        });
     }
 
     createForm(parent: JQuery<HTMLElement>, 
@@ -221,6 +231,11 @@ export class DetailFormCreator implements IForm.IForm {
     createEditFormForMetaClass(parent: JQuery<HTMLElement>, metaClass: string | undefined, configuration: IFormConfiguration) {
         const tthis = this;
         tthis.element = new DmObject();
+        
+        configuration.onSubmit = (element) => {
+            
+            alert(Mof.createJsonFromObject(element));    
+        };        
 
         if (metaClass === undefined) {
             // Create a total empty form object... 

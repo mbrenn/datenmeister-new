@@ -36,8 +36,9 @@ export class Field extends BaseField implements IFormField
             div.text(dmElement.get(fieldName)?.toString() ?? "unknown");
             return div;
         } else {
+            const value = dmElement.get(fieldName)?.toString() ?? "";
             this._textBox = $("<input />");
-            this._textBox.val(dmElement.get(fieldName)?.toString() ?? "unknown");
+            this._textBox.val(value);
 
             return this._textBox;
         }

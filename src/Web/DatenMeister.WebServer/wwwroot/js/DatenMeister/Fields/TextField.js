@@ -27,8 +27,9 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
                 return div;
             }
             else {
+                const value = (_f = (_e = dmElement.get(fieldName)) === null || _e === void 0 ? void 0 : _e.toString()) !== null && _f !== void 0 ? _f : "";
                 this._textBox = $("<input />");
-                this._textBox.val((_f = (_e = dmElement.get(fieldName)) === null || _e === void 0 ? void 0 : _e.toString()) !== null && _f !== void 0 ? _f : "unknown");
+                this._textBox.val(value);
                 return this._textBox;
             }
         }

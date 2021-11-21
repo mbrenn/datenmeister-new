@@ -109,14 +109,12 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     detailForm.formElement = tab;
                     detailForm.element = this.element;
                     detailForm.createFormByObject(form, configuration);
-                    detailForm.onCancel = () => {
-                        tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
-                    };
-                    detailForm.onChange = (element) => {
-                        DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, tthis.element).done(() => {
-                            tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
-                        });
-                    };
+                    if (configuration.onCancel !== undefined) {
+                        detailForm.onCancel = configuration.onCancel;
+                    }
+                    if (configuration.onSubmit !== undefined) {
+                        detailForm.onChange = configuration.onSubmit;
+                    }
                 }
                 else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
                     const listForm = new Forms_ListForm_1.ListForm();
@@ -140,7 +138,18 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             this.createForm(parent, workspace, extentUri, uri, { isReadOnly: true });
         }
         createEditForm(parent, workspace, extentUri, uri) {
-            this.createForm(parent, workspace, extentUri, uri, { isReadOnly: false });
+            const tthis = this;
+            this.createForm(parent, workspace, extentUri, uri, {
+                isReadOnly: false,
+                onCancel: () => {
+                    tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                },
+                onSubmit: (element) => {
+                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(() => {
+                        tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                    });
+                }
+            });
         }
         createForm(parent, workspace, extentUri, itemId, configuration) {
             const tthis = this;
@@ -165,6 +174,9 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         createEditFormForMetaClass(parent, metaClass, configuration) {
             const tthis = this;
             tthis.element = new DmObject();
+            configuration.onSubmit = (element) => {
+                alert(Mof.createJsonFromObject(element));
+            };
             if (metaClass === undefined) {
                 // Create a total empty form object... 
                 tthis.formElement = FormModel.createEmptyFormWithDetail();

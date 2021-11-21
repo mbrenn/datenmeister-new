@@ -4,7 +4,6 @@ import * as Mof from "./Mof";
 import {createField} from "./Forms.FieldFactory";
 import * as TextField from "./Fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
-import {text} from "stream/consumers";
 
 export class DetailForm implements InterfacesForms.IForm {
     workspace: string;
@@ -32,7 +31,7 @@ export class DetailForm implements InterfacesForms.IForm {
         const fields = this.formElement.getAsArray("field");
 
         table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-        const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
+        const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
         table.append(tableBody);
         
         const itemUri = this.itemId === undefined 
@@ -89,12 +88,12 @@ export class DetailForm implements InterfacesForms.IForm {
         // Checks, if user may add additional properties, if yes, include a button and create the corresponding
         // logic
         if (!configuration.isReadOnly && configuration.allowAddingNewProperties) {
-            tr = $("<tr><td></td><td><button class='btn btn-secondary'>New property</button></td></tr>");
+            tr = $("<tr class='dm-row-newproperty'><td></td><td><button class='btn btn-secondary'>New property</button></td></tr>");
             tableBody.append(tr);
 
             const button = $("button", tr);
             button.on('click', () => {
-                const newRow = $("<tr><td><input class='dm-textfield-key' type='text' /></td><td class='dm-row-value'></td></tr><tr>");
+                const newRow = $("<tr><td><input class='dm-textfield-key' type='text' /></td><td class='dm-row-value'></td></tr>");
                 const rowValue = $(".dm-row-value", newRow);
                 const propertyTextField = $(".dm-textfield-key", newRow);
                 const textField = new TextField.Field();
@@ -108,7 +107,9 @@ export class DetailForm implements InterfacesForms.IForm {
                 rowValue.append(textField.createDom(tthis.element));
 
                 tthis.fieldElements.push(textField);
-                newRow.insertBefore(tr);
+                newRow.insertBefore($('.dm-row-newproperty'));
+                
+                propertyTextField.trigger('focus');
             });
         }
         

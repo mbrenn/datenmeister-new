@@ -1,11 +1,10 @@
 ﻿import {ItemWithNameAndId} from "./ApiModels";
 
-export class DmObject
-{
+export class DmObject {
     values: Array<any>;
-    
+
     metaClass: ItemWithNameAndId;
-    
+
     uri: string;
 
     extentUri: string;
@@ -16,23 +15,36 @@ export class DmObject
         this.values = new Array<any>();
     }
 
-    set(key: string, value: any): void
-    {
+    set(key: string, value: any): void {
         this.values[key] = value;
     }
 
-    get(key: string): any
-    {
+    get(key: string): any {
         return this.values[key];
     }
 
-    isSet(key:string): boolean
-    {
+    getAsArray(key: string): any {
+        const value = this.get(key);
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (value === undefined) {
+            const newArray = [];
+            this.set(key, newArray);
+            return newArray;
+        } else {
+            const newArray = [value];
+            this.set(key, newArray);
+            return newArray;
+        }
+    }
+
+    isSet(key: string): boolean {
         return this.values[key] !== undefined;
     }
 
-    unset(key:string): void
-    {
+    unset(key: string): void {
         this.values[key] = undefined;
     }
 

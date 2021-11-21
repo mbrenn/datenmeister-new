@@ -3,8 +3,11 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ListForm = void 0;
     class ListForm {
-        createFormByCollection(parent, isReadOnly) {
+        createFormByCollection(parent, configuration) {
             var _a;
+            if (configuration.isReadOnly === undefined) {
+                configuration.isReadOnly = true;
+            }
             let headline = $("<h2></h2>");
             headline.text(this.formElement.get('name'));
             parent.append(headline);
@@ -16,7 +19,7 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
             }
             else {
                 let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-                const fields = this.formElement.get("field");
+                const fields = this.formElement.getAsArray("field");
                 const headerRow = $("<tbody><tr></tr></tbody>");
                 const innerRow = $("tr", headerRow);
                 for (let n in fields) {
@@ -43,7 +46,7 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
                                 form: this,
                                 field: field,
                                 itemUrl: element.uri,
-                                isReadOnly: isReadOnly
+                                isReadOnly: configuration.isReadOnly
                             });
                             cell.append(fieldElement.createDom(element));
                             row.append(cell);

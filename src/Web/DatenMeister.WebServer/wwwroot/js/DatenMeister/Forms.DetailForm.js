@@ -1,22 +1,31 @@
-define(["require", "exports", "./Forms.FieldFactory"], function (require, exports, Forms_FieldFactory_1) {
+define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextField"], function (require, exports, Mof, Forms_FieldFactory_1, TextField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DetailForm = void 0;
     class DetailForm {
-        createFormByObject(parent, isReadOnly) {
+        createFormByObject(parent, configuration) {
             var _a;
+            if (configuration.isReadOnly === undefined) {
+                configuration.isReadOnly = true;
+            }
+            if (configuration.allowAddingNewProperties === undefined) {
+                configuration.allowAddingNewProperties = false;
+            }
             let tr;
             let table;
             const tthis = this;
             parent.empty();
             this.fieldElements = new Array();
-            const fields = this.formElement.get("field");
+            const fields = this.formElement.getAsArray("field");
             table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
             const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
             table.append(tableBody);
-            var itemUri = tthis.itemId.indexOf('#') === -1
-                ? tthis.extentUri + "#" + tthis.itemId
-                : tthis.itemId;
+            const itemUri = this.itemId === undefined
+                ? ""
+                : tthis.itemId.indexOf('#') === -1
+                    ? tthis.extentUri + "#" + tthis.itemId
+                    : tthis.itemId;
+            // Creates the fields for the item
             for (let n in fields) {
                 if (!fields.hasOwnProperty(n))
                     continue;
@@ -31,7 +40,7 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
                     form: this,
                     field: field,
                     itemUrl: itemUri,
-                    isReadOnly: isReadOnly
+                    isReadOnly: configuration.isReadOnly
                 });
                 if (fieldElement === null) {
                     // No field element was created.
@@ -41,7 +50,7 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
                 }
                 else {
                     fieldElement.field = field;
-                    fieldElement.isReadOnly = isReadOnly;
+                    fieldElement.isReadOnly = configuration.isReadOnly;
                     fieldElement.form = this;
                     fieldElement.itemUrl = itemUri;
                     htmlElement = fieldElement.createDom(this.element);
@@ -50,7 +59,31 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
                 $(".value", tr).append(htmlElement);
                 tableBody.append(tr);
             }
-            if (!isReadOnly) {
+            // Checks, if user may add additional properties, if yes, include a button and create the corresponding
+            // logic
+            if (!configuration.isReadOnly && configuration.allowAddingNewProperties) {
+                tr = $("<tr><td></td><td><button class='btn btn-secondary'>New property</button></td></tr>");
+                tableBody.append(tr);
+                const button = $("button", tr);
+                button.on('click', () => {
+                    const newRow = $("<tr><td><input class='dm-textfield-key' type='text' /></td><td class='dm-row-value'></td></tr><tr>");
+                    const rowValue = $(".dm-row-value", newRow);
+                    const propertyTextField = $(".dm-textfield-key", newRow);
+                    const textField = new TextField.Field();
+                    textField.field = new Mof.DmObject();
+                    textField.form = tthis;
+                    textField.isReadOnly = configuration.isReadOnly;
+                    textField.OverridePropertyValue =
+                        () => {
+                            return propertyTextField.val().toString();
+                        };
+                    rowValue.append(textField.createDom(tthis.element));
+                    tthis.fieldElements.push(textField);
+                    newRow.insertBefore(tr);
+                });
+            }
+            // Checks, if the form is a read-only form. If it is not a read-only, create the Accept and Reject buttons
+            if (!configuration.isReadOnly) {
                 // Add the Cancel and Submit buttons at the end of the creation to the table
                 // allowing the cancelling and setting of the properties
                 tr = $("<tr><td></td><td><button class='btn btn-secondary'>Cancel" +

@@ -12,6 +12,22 @@ define(["require", "exports"], function (require, exports) {
         get(key) {
             return this.values[key];
         }
+        getAsArray(key) {
+            const value = this.get(key);
+            if (Array.isArray(value)) {
+                return value;
+            }
+            if (value === undefined) {
+                const newArray = [];
+                this.set(key, newArray);
+                return newArray;
+            }
+            else {
+                const newArray = [value];
+                this.set(key, newArray);
+                return newArray;
+            }
+        }
         isSet(key) {
             return this.values[key] !== undefined;
         }

@@ -33,9 +33,9 @@ export namespace In {
 
 export interface ItemWithNameAndId
 {
-    name: string;
-    extentUri: string;
-    fullName: string;
+    name?: string;
+    extentUri?: string;
+    fullName?: string;
     id: string;
 }
 

@@ -6,22 +6,17 @@ namespace DatenMeister.WebServer.Pages
 {
     public class CreateItemModel : PageModel
     {
-        public string MetaClass { get; } = string.Empty;
+        public string? MetaClass { get; set; } = string.Empty;
         
-        [Parameter] public string Action { get; set; } = string.Empty;
+        [Parameter] public string ActionName { get; set; } = string.Empty;
 
         public CreateItemModel()
         {
-            
-        }
-        
-        public CreateItemModel(string metaClass)
-        {
-            MetaClass = metaClass;
         }
 
-        public void OnGet()
+        public void OnGet(string? metaclass = null)
         {
+            MetaClass = metaclass;
         }
     }
 }

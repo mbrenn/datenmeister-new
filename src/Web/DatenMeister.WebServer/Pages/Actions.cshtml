@@ -1,4 +1,7 @@
 ﻿@page "/Actions"
+@namespace DatenMeister.WebServer.Pages
+@using System.Web
+@model DatenMeister.WebServer.Pages.ActionsModel
 
 @{
     Layout = "~/Shared/_Layout.cshtml";
@@ -19,5 +22,13 @@
 <div>
     <ul>
         <li><a href="~/WorkspacesAndExtent">Workspaces and Extents</a></li>
+    </ul>
+</div>
+
+<h2>Test and Debugging</h2>
+<div>
+    <ul>
+        <li><a href="~/CreateItem/Zipcode.Test">Test Creation of empty object</a></li>
+        <li><a href="~/CreateItem/Zipcode.Test?metaclass=@HttpUtility.UrlEncode(Model.GetZipCodeMetaClassUri())">Test Creation of Zipcode</a></li>
     </ul>
 </div>

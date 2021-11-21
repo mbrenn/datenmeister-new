@@ -4,8 +4,8 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
-            var _a, _b, _c, _d;
-            const fieldName = this.field.get('name').toString();
+            var _a, _b, _c, _d, _e, _f;
+            const fieldName = (_b = (_a = this.field.get('name')) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
             /* Returns a list element in case an array is given */
             const value = dmElement.get(fieldName);
             if (Array.isArray(value)) {
@@ -23,18 +23,24 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
             /* Otherwise just create the correct field type. */
             if (this.isReadOnly) {
                 const div = $("<div />");
-                div.text((_b = (_a = dmElement.get(fieldName)) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "unknown");
+                div.text((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
                 return div;
             }
             else {
                 this._textBox = $("<input />");
-                this._textBox.val((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
+                this._textBox.val((_f = (_e = dmElement.get(fieldName)) === null || _e === void 0 ? void 0 : _e.toString()) !== null && _f !== void 0 ? _f : "unknown");
                 return this._textBox;
             }
         }
         evaluateDom(dmElement) {
             if (this._textBox !== undefined && this._textBox !== null) {
-                const fieldName = this.field.get('name').toString();
+                let fieldName;
+                if (this.OverridePropertyValue === undefined) {
+                    fieldName = this.field.get('name').toString();
+                }
+                else {
+                    fieldName = this.OverridePropertyValue();
+                }
                 dmElement.set(fieldName, this._textBox.val());
             }
         }

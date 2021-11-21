@@ -3,6 +3,7 @@ import * as InterfacesForms from "./Interfaces.Forms";
 import {DmObject} from "./Mof";
 import * as Mof from "./Mof";
 import {createField} from "./Forms.FieldFactory";
+import {IFormConfiguration} from "./IFormConfiguration";
 
 export class ListForm implements InterfacesForms.IForm {
     elements: Array<DmObject>;
@@ -11,7 +12,11 @@ export class ListForm implements InterfacesForms.IForm {
     itemId: string;
     workspace: string;
 
-    createFormByCollection(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
+    createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+        if (configuration.isReadOnly === undefined) {
+            configuration.isReadOnly = true;
+        }
+        
         let headline = $("<h2></h2>");
         headline.text(this.formElement.get('name'));
         parent.append(headline);
@@ -24,7 +29,7 @@ export class ListForm implements InterfacesForms.IForm {
         }
         else {
             let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-            const fields = this.formElement.get("field");
+            const fields = this.formElement.getAsArray("field");
 
             const headerRow = $("<tbody><tr></tr></tbody>");
             const innerRow = $("tr", headerRow);
@@ -60,7 +65,7 @@ export class ListForm implements InterfacesForms.IForm {
                                 form: this,
                                 field: field,
                                 itemUrl: element.uri,
-                                isReadOnly: isReadOnly
+                                isReadOnly: configuration.isReadOnly
                             });
 
                         cell.append(fieldElement.createDom(element));

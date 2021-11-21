@@ -22,7 +22,7 @@ $(function()
             $("#items"),
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
-            true);
+            {isReadOnly: true});
     });
 });
 

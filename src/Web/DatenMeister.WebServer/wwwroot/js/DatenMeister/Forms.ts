@@ -7,9 +7,21 @@ import * as DetailForm from "./Forms.DetailForm";
 import * as IForm from "./Interfaces.Forms";
 import {ListForm} from "./Forms.ListForm";
 import { debugElementToDom } from "./DomHelper";
+import {IFormConfiguration} from "./IFormConfiguration";
 
-export class Form {
-    viewMode: string;
+export namespace FormModel {
+    export function createEmptyFormWithDetail() {
+        const form = new Mof.DmObject();
+        const detailForm = new Mof.DmObject();
+        detailForm.metaClass =
+            {
+                id: "DatenMeister.Models.Forms.DetailForm"
+            };
+
+        form.set('tab', [detailForm]);
+
+        return form;
+    }
 }
 
 /*
@@ -21,7 +33,11 @@ export class CollectionFormCreator implements IForm.IForm {
     formElement: DmObject;
     workspace: string;
 
-    createListForRootElements(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, isReadOnly: boolean) {
+    createListForRootElements(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, configuration: IFormConfiguration) {
+        if (configuration.isReadOnly === undefined) {
+            configuration.isReadOnly = true;
+        }
+        
         const tthis = this;
 
         // Load the object
@@ -36,7 +52,7 @@ export class CollectionFormCreator implements IForm.IForm {
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
 
-            tthis.createFormByCollection(parent, elements, isReadOnly);
+            tthis.createFormByCollection(parent, elements, configuration);
 
             debugElementToDom(elements, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
@@ -47,7 +63,11 @@ export class CollectionFormCreator implements IForm.IForm {
         parent.text("Loading content and form...");
     }
 
-    createFormByCollection(parent: JQuery<HTMLElement>, elements: Array<Mof.DmObject>, isReadOnly: boolean) {
+    createFormByCollection(parent: JQuery<HTMLElement>, elements: Array<Mof.DmObject>, configuration: IFormConfiguration) {
+        if (configuration.isReadOnly === undefined) {
+            configuration.isReadOnly = true;
+        }
+        
         const tthis = this;
         parent.empty();
         const creatingElements = $("<div>Creating elements...</div>");
@@ -63,7 +83,6 @@ export class CollectionFormCreator implements IForm.IForm {
 
             // Do it asynchronously. 
             window.setTimeout(() => {
-
                 let form = $("<div />");
                 const tab = tabs[n] as DmObject;
                 if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
@@ -72,7 +91,7 @@ export class CollectionFormCreator implements IForm.IForm {
                     listForm.formElement = tab;
                     listForm.workspace = this.workspace;
                     listForm.extentUri = this.extentUri;
-                    listForm.createFormByCollection(form, isReadOnly);
+                    listForm.createFormByCollection(form, configuration);
                 }
 
                 parent.append(form);
@@ -102,13 +121,16 @@ export class DetailFormCreator implements IForm.IForm {
     itemId: string;
     workspace: string;
 
-    createFormByObject(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
+    createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         const tthis = this;
+
+        if (this.element == null) this.element = new DmObject();
+
         parent.empty();
         const creatingElements = $("<div>Creating elements...</div>");
         parent.append(creatingElements);
 
-        const tabs = this.formElement.get("tab");
+        const tabs = this.formElement.getAsArray("tab");
         for (let n in tabs) {
             if (!tabs.hasOwnProperty(n)) {
                 continue;
@@ -124,7 +146,7 @@ export class DetailFormCreator implements IForm.IForm {
                 detailForm.formElement = tab;
                 detailForm.element = this.element;
 
-                detailForm.createFormByObject(form, isReadOnly);
+                detailForm.createFormByObject(form, configuration);
 
                 detailForm.onCancel = () => {
                     tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
@@ -144,10 +166,9 @@ export class DetailFormCreator implements IForm.IForm {
                 listForm.itemId = this.itemId;
                 listForm.formElement = tab;
                 listForm.elements = this.element.get(tab.get("property"));
-                
-                listForm.createFormByCollection(form, true);
-            }
-            else {
+
+                listForm.createFormByCollection(form, {isReadOnly: true});
+            } else {
                 form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
                 $(".id", form).text(tab.metaClass.id);
             }
@@ -160,14 +181,18 @@ export class DetailFormCreator implements IForm.IForm {
     }
 
     createViewForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
-        this.createForm(parent, workspace, extentUri, uri, true);
+        this.createForm(parent, workspace, extentUri, uri, {isReadOnly: true});
     }
 
     createEditForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
-        this.createForm(parent, workspace, extentUri, uri, false);
+        this.createForm(parent, workspace, extentUri, uri, {isReadOnly: false});
     }
 
-    createForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, itemId: string, isReadOnly: boolean) {
+    createForm(parent: JQuery<HTMLElement>, 
+               workspace: string,
+               extentUri: string,
+               itemId: string, 
+               configuration: IFormConfiguration) {
         const tthis = this;
 
         // Load the object
@@ -183,7 +208,7 @@ export class DetailFormCreator implements IForm.IForm {
             tthis.workspace = workspace;            
             tthis.extentUri = extentUri;
             tthis.itemId = itemId;
-            tthis.createFormByObject(parent, isReadOnly);
+            tthis.createFormByObject(parent, configuration);
 
             debugElementToDom(element, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
@@ -193,9 +218,23 @@ export class DetailFormCreator implements IForm.IForm {
         parent.text("Loading content and form...");
     }
 
-    createEditFormForMetaClass(parent: JQuery<HTMLElement>, metaClass: string) {
+    createEditFormForMetaClass(parent: JQuery<HTMLElement>, metaClass: string | undefined, configuration: IFormConfiguration) {
         const tthis = this;
-        const defer = getDefaultFormForMetaClass(metaClass);
+        tthis.element = new DmObject();
+
+        if (metaClass === undefined) {
+            // Create a total empty form object... 
+            tthis.formElement = FormModel.createEmptyFormWithDetail();
+            tthis.createFormByObject(parent, configuration);
+        } else {
+            const defer = getDefaultFormForMetaClass(metaClass);
+            $.when(defer).then(function (form) {
+                tthis.formElement = form;
+                tthis.createFormByObject(parent, configuration);
+
+                debugElementToDom(form, "#debug_formelement");
+            });
+        }
     }
 }
 

@@ -4,10 +4,14 @@ import {BaseField, IFormField} from "../Interfaces.Fields";
 
 export class Field extends BaseField implements IFormField
 {
+    // Gets or sets the method which allows to override the method to 
+    // retrieve the property key
+    OverridePropertyValue: () => string;
+    
     _textBox: JQuery<HTMLElement>;
 
     createDom(dmElement: Mof.DmObject) {
-        const fieldName = this.field.get('name').toString();
+        const fieldName = this.field.get('name')?.toString() ?? "";
 
         /* Returns a list element in case an array is given */
         const value = dmElement.get(fieldName);
@@ -42,7 +46,15 @@ export class Field extends BaseField implements IFormField
     evaluateDom(dmElement: Mof.DmObject) {
         if (this._textBox !== undefined && this._textBox !== null)
         {
-            const fieldName = this.field.get('name').toString();
+            let fieldName: string;
+            
+            if (this.OverridePropertyValue === undefined) {
+                fieldName = this.field.get('name').toString();
+            }
+            else{
+                fieldName = this.OverridePropertyValue();
+            }
+            
             dmElement.set(fieldName, this._textBox.val());
         }
     }

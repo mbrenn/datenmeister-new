@@ -1,4 +1,4 @@
-﻿@page "CreateItem/{Action}"
+﻿@page "/CreateItem/{ActionName}"
 @using System.Web
 @model DatenMeister.WebServer.Pages.CreateItemModel
 @{
@@ -6,17 +6,60 @@
     ViewData["Title"] = "Der DatenMeister - Create";
 }
 
+
+<script type="application/javascript">
 $(function()
 {
     CreateEditForm();
 });
-
-function CreateEditForm()
+    
+@if (string.IsNullOrEmpty(Model.MetaClass))
 {
-    requirejs(['DatenMeister/Forms'], function(Form) {
-        var detailForm = new Form.DetailFormCreator();
-        detailForm.createEditFormForMetaClass(
-            $("#form_view"),
-            "@HttpUtility.JavaScriptStringEncode(Model.MetaClass)");
-    });
+    <text>
+    function CreateEditForm()
+    {
+        requirejs(['DatenMeister/Forms'], function(Form) {
+            const detailForm = new Form.DetailFormCreator();
+        
+            detailForm.createEditFormForMetaClass(
+                $("#form_view"),
+                undefined,
+                {isReadOnly: false, allowAddingNewProperties: true});
+        
+        });
+    }
+    </text>
+} else{
+    <text>
+    function CreateEditForm()
+    {
+        requirejs(['DatenMeister/Forms'], function(Form) {
+            const detailForm = new Form.DetailFormCreator();
+        
+            detailForm.createEditFormForMetaClass(
+                $("#form_view"),
+                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.MetaClass))",
+                {isReadOnly: false, allowAddingNewProperties: true});
+        
+        });
+    }
+    </text>
 }
+
+</script>
+
+<div id="form_view">View Form</div>
+
+<div class="accordion" id="debug_accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="debug_formelement_heading">    
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_formelement_body" aria-expanded="true" aria-controls="collapseOne">
+                Form
+            </button>
+        </h2>
+        <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
+            <div class="accordion-body" id="debug_formelement">        
+            </div>
+        </div>
+    </div>
+</div>

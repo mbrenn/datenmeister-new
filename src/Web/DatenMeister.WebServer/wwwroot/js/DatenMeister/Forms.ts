@@ -228,29 +228,6 @@ export class DetailFormCreator implements IForm.IForm {
         parent.text("Loading content and form...");
     }
 
-    createEditFormForMetaClass(parent: JQuery<HTMLElement>, metaClass: string | undefined, configuration: IFormConfiguration) {
-        const tthis = this;
-        tthis.element = new DmObject();
-        
-        configuration.onSubmit = (element) => {
-            
-            alert(Mof.createJsonFromObject(element));    
-        };        
-
-        if (metaClass === undefined) {
-            // Create a total empty form object... 
-            tthis.formElement = FormModel.createEmptyFormWithDetail();
-            tthis.createFormByObject(parent, configuration);
-        } else {
-            const defer = getDefaultFormForMetaClass(metaClass);
-            $.when(defer).then(function (form) {
-                tthis.formElement = form;
-                tthis.createFormByObject(parent, configuration);
-
-                debugElementToDom(form, "#debug_formelement");
-            });
-        }
-    }
 }
 
 /*

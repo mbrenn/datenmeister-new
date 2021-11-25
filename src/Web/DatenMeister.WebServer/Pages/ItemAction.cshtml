@@ -1,4 +1,4 @@
-﻿@page "/CreateItem/{ActionName}"
+﻿@page "/ItemAction/{ActionName}"
 @using System.Web
 @model DatenMeister.WebServer.Pages.CreateItemModel
 @{
@@ -18,14 +18,13 @@ $(function()
     <text>
     function CreateEditForm()
     {
-        requirejs(['DatenMeister/Forms'], function(Form) {
-            const detailForm = new Form.DetailFormCreator();
+        requirejs(['DatenMeister/Forms.ActionForm'], function(actionForm) {
         
-            detailForm.createEditFormForMetaClass(
+            actionForm.createActionFormForEmptyObject(
                 $("#form_view"),
                 undefined,
-                {isReadOnly: false, allowAddingNewProperties: true});
-        
+                {isReadOnly: false, allowAddingNewProperties: true}, 
+                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");        
         });
     }
     </text>
@@ -33,14 +32,13 @@ $(function()
     <text>
     function CreateEditForm()
     {
-        requirejs(['DatenMeister/Forms'], function(Form) {
-            const detailForm = new Form.DetailFormCreator();
-        
-            detailForm.createEditFormForMetaClass(
+        requirejs(['DatenMeister/Forms.ActionForm'], function(actionForm) {
+       
+            actionForm.createActionFormForEmptyObject(
                 $("#form_view"),
                 "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.MetaClass))",
-                {isReadOnly: false, allowAddingNewProperties: true});
-        
+                {isReadOnly: false, allowAddingNewProperties: true},
+                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");     
         });
     }
     </text>

@@ -1,7 +1,7 @@
 ﻿import * as Settings from "./Settings";
 import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
-import {DmObject} from "./Mof";
+import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./Interfaces.Forms";
 import {deleteRequest} from "./ApiConnection";
 
@@ -23,9 +23,9 @@ export module DetailFormActions {
             case "Extent.NavigateTo":
                 extentUri = element.get('uri');
                 workspaceId = element.get('workspaceId');
-                FormActions.extentNavigateTo(workspaceId, extentUri);                
+                FormActions.extentNavigateTo(workspaceId, extentUri);
                 break;
-            case "ExtentsList.ViewItem":                
+            case "ExtentsList.ViewItem":
                 FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
                 break;
             case "ExtentsList.DeleteItem":
@@ -44,11 +44,19 @@ export module DetailFormActions {
                             document.location.reload();
                         });
                 break;
+            case "JSON.Item.Alert":
+                alert(JSON.stringify(createJsonFromObject(element)));
+                break;
+            case "Zipcode.Test":
+                alert(element.get('zip').toString());
+                break;
+                
             default:
                 alert("Unknown action type: " + actionName);
                 break;
         }
     }
+    
 }
 
 interface IDeleteCallbackData {

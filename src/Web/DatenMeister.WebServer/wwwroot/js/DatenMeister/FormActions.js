@@ -1,4 +1,4 @@
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], function (require, exports, Settings, ApiConnection, Navigator) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -37,6 +37,12 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                         .done(data => {
                         document.location.reload();
                     });
+                    break;
+                case "JSON.Item.Alert":
+                    alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
+                    break;
+                case "Zipcode.Test":
+                    alert(element.get('zip').toString());
                     break;
                 default:
                     alert("Unknown action type: " + actionName);

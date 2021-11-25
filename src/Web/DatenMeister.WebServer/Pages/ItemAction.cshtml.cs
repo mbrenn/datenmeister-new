@@ -14,8 +14,9 @@ namespace DatenMeister.WebServer.Pages
         {
         }
 
-        public void OnGet(string? metaclass = null)
+        public void OnGet(string actionName, string? metaclass = null)
         {
+            ActionName = actionName;
             MetaClass = metaclass;
         }
     }

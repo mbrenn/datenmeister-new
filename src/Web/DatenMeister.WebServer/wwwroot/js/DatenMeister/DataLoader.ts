@@ -16,7 +16,7 @@ export function loadObject(workspace: string, extent: string, id: string): JQuer
         "/" +
         encodeURIComponent(id)
     ).done(x => {
-        var dmObject =
+        const dmObject =
             Mof.convertJsonObjectToDmObject(x);
         r.resolve(dmObject);
     });
@@ -25,7 +25,7 @@ export function loadObject(workspace: string, extent: string, id: string): JQuer
 }
 
 export function loadObjectByUri(workspace: string, url: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    var r = jQuery.Deferred<Mof.DmObject, never, never>();
+    const r = jQuery.Deferred<Mof.DmObject, never, never>();
 
     ApiConnection.get<object>(
         Settings.baseUrl +
@@ -34,7 +34,7 @@ export function loadObjectByUri(workspace: string, url: string): JQuery.Deferred
         "/" +
         encodeURIComponent(url)
     ).done(x => {
-        var dmObject =
+        const dmObject =
             Mof.convertJsonObjectToDmObject(x);
         r.resolve(dmObject);
     });
@@ -43,7 +43,7 @@ export function loadObjectByUri(workspace: string, url: string): JQuery.Deferred
 }
 
 export function loadRootElementsFromExtent(workspace: string, extentUri: string): JQuery.Deferred<Array<Mof.DmObject>, never, never> {
-    var r = jQuery.Deferred<Array<Mof.DmObject>, never, never>();
+    const r = jQuery.Deferred<Array<Mof.DmObject>, never, never>();
 
     ApiConnection.get<string>(
         Settings.baseUrl +
@@ -68,8 +68,8 @@ export function loadRootElementsFromExtent(workspace: string, extentUri: string)
 }
 
 export function storeObjectByUri(workspace: string, url: string, element: DmObject) : JQuery.Deferred<void, never, never> {
-    var r = jQuery.Deferred<void, never, never>();
-    var result = Mof.createJsonFromObject(element);
+    const r = jQuery.Deferred<void, never, never>();
+    const result = Mof.createJsonFromObject(element);
 
     ApiConnection.put<string>(
         Settings.baseUrl +

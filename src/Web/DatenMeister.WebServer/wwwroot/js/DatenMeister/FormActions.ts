@@ -5,8 +5,6 @@ import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./Interfaces.Forms";
 import {deleteRequest} from "./ApiConnection";
 
-
-
 export module DetailFormActions {
     export function requiresConfirmation(actionName: string): boolean {
         if (actionName === "Item.Delete" || actionName === "ExtentsList.DeleteItem") {
@@ -15,7 +13,7 @@ export module DetailFormActions {
             return false;
         }
     }
-    
+
     export function execute(actionName: string, form: IIForms.IForm, itemUrl: string, element: DmObject) {
         let workspaceId;
         let extentUri;
@@ -24,6 +22,17 @@ export module DetailFormActions {
                 extentUri = element.get('uri');
                 workspaceId = element.get('workspaceId');
                 FormActions.extentNavigateTo(workspaceId, extentUri);
+                break;
+            case "Extent.CreateItem":
+                let p = new URLSearchParams(window.location.search);
+                if (!p.has("extent") || !p.has("workspace")) {
+                    alert('There is no extent given');
+                } else {
+                    const extentUri = p.get('extent');
+                    const workspace = p.get('extent');
+                    FormActions.extentCreateItem(workspace, extentUri, element);
+                }
+                alert(window.location.search);
                 break;
             case "ExtentsList.ViewItem":
                 FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
@@ -50,13 +59,12 @@ export module DetailFormActions {
             case "Zipcode.Test":
                 alert(element.get('zip').toString());
                 break;
-                
+
             default:
                 alert("Unknown action type: " + actionName);
                 break;
         }
     }
-    
 }
 
 interface IDeleteCallbackData {
@@ -64,8 +72,27 @@ interface IDeleteCallbackData {
 }
 
 export class FormActions {
+    static extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string) {
+        alert(workspace);
+        alert(extentUri);
+
+        const json = createJsonFromObject(element);
+        ApiConnection.post(
+            Settings.baseUrl + "create_in_extent/" + encodeURI(workspace) + "/" + encodeURI(extentUri),
+            {
+                metaClass: metaClass === undefined ? "" : metaClass,
+                properties: json
+            }
+        ).done(() => {
+            document.location.href = Settings.baseUrl
+                + "ItemsOverview/" + encodeURI(workspace) +
+                "/" + encodeURI(extentUri)
+        });
+    }
+
     static extentNavigateTo(workspace: string, extentUri: string):void {
-        document.location.href = Settings.baseUrl + "ItemsOverview/" +
+        document.location.href =
+            Settings.baseUrl + "ItemsOverview/" +
             encodeURIComponent(workspace) + "/" +
             encodeURIComponent(extentUri);
     }
@@ -79,14 +106,14 @@ export class FormActions {
                     document.location.reload();
                 });
     }
-    
+
     // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
     static itemNavigateTo(workspace: string, extent: string, itemUrl: string) {
-        document.location.href = Settings.baseUrl + "Item/" + 
-            encodeURIComponent(workspace) + "/" + 
-            encodeURIComponent(extent) + "/" + 
+        document.location.href = Settings.baseUrl + "Item/" +
+            encodeURIComponent(workspace) + "/" +
+            encodeURIComponent(extent) + "/" +
             encodeURIComponent(itemUrl);
-        
+
     }
 
     static itemNew(workspace: string, extentUri: string) {

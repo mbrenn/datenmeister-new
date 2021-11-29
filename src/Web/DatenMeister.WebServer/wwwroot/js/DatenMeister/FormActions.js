@@ -22,6 +22,18 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     workspaceId = element.get('workspaceId');
                     FormActions.extentNavigateTo(workspaceId, extentUri);
                     break;
+                case "Extent.CreateItem":
+                    let p = new URLSearchParams(window.location.search);
+                    if (!p.has("extent") || !p.has("workspace")) {
+                        alert('There is no extent given');
+                    }
+                    else {
+                        const extentUri = p.get('extent');
+                        const workspace = p.get('extent');
+                        FormActions.extentCreateItem(workspace, extentUri, element);
+                    }
+                    alert(window.location.search);
+                    break;
                 case "ExtentsList.ViewItem":
                     FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
                     break;
@@ -52,10 +64,24 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         DetailFormActions.execute = execute;
     })(DetailFormActions = exports.DetailFormActions || (exports.DetailFormActions = {}));
     class FormActions {
+        static extentCreateItem(workspace, extentUri, element, metaClass) {
+            alert(workspace);
+            alert(extentUri);
+            const json = (0, Mof_1.createJsonFromObject)(element);
+            ApiConnection.post(Settings.baseUrl + "create_in_extent/" + encodeURI(workspace) + "/" + encodeURI(extentUri), {
+                metaClass: metaClass === undefined ? "" : metaClass,
+                properties: json
+            }).done(() => {
+                document.location.href = Settings.baseUrl
+                    + "ItemsOverview/" + encodeURI(workspace) +
+                    "/" + encodeURI(extentUri);
+            });
+        }
         static extentNavigateTo(workspace, extentUri) {
-            document.location.href = Settings.baseUrl + "ItemsOverview/" +
-                encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(extentUri);
+            document.location.href =
+                Settings.baseUrl + "ItemsOverview/" +
+                    encodeURIComponent(workspace) + "/" +
+                    encodeURIComponent(extentUri);
         }
         static createZipExample(workspace) {
             ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: workspace })

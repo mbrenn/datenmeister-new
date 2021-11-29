@@ -340,6 +340,8 @@ namespace DatenMeister.WebServer.Controller
             /// Gets or sets the metaclass
             /// </summary>
             public string? metaClass { get; set; }
+
+            private MofObjectAsJson? properties { get; set; }
         }
 
         /// <summary>

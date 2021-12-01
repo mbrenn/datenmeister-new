@@ -1,6 +1,8 @@
 ﻿@page "/Actions"
 @namespace DatenMeister.WebServer.Pages
 @using System.Web
+@using DatenMeister.Core.EMOF.Implementation
+@using DatenMeister.Core.Models
 @model DatenMeister.WebServer.Pages.ActionsModel
 
 @{
@@ -22,6 +24,9 @@
 <div>
     <ul>
         <li><a href="~/WorkspacesAndExtent">Workspaces and Extents</a></li>
+    </ul>
+    <ul>
+        <li><a href="~/ItemAction/Workspace.Extent.Xmi.Create?metaclass=@HttpUtility.UrlEncode((_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig as MofObjectShadow)!.Uri)">Create a new Xmi extent</a></li>
     </ul>
 </div>
 

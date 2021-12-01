@@ -50,6 +50,21 @@ namespace DatenMeister.WebServer.Controller
                     : extent.GetUriResolver().Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
 
             var item = factory.create(metaClass);
+            var values = createParams.properties?.v;
+            if (values != null)
+            {
+                foreach (var propertyParam in values)
+                {
+                    var value = propertyParam.Value;
+                    var propertyValue = ConvertJsonValue(value);
+
+                    if (propertyValue != null)
+                    {
+                        item.set(propertyParam.Key, propertyValue);
+                    }
+                }
+            }
+
             extent.elements().add(item);
 
             return new
@@ -309,18 +324,7 @@ namespace DatenMeister.WebServer.Controller
             foreach (var propertyParam in jsonObject.v)
             {
                 var value = propertyParam.Value;
-                object? propertyValue = null;
-                if (value is JsonElement jsonElement)
-                {
-                    propertyValue = jsonElement.ValueKind switch
-                    {
-                        JsonValueKind.String => jsonElement.GetString(),
-                        JsonValueKind.Number => jsonElement.GetDouble(),
-                        JsonValueKind.True => true,
-                        JsonValueKind.False => false,
-                        _ => propertyValue
-                    };
-                }
+                var propertyValue = ConvertJsonValue(value);
 
                 if (propertyValue != null)
                 {
@@ -329,6 +333,31 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return new { success = true };
+        }
+
+        /// <summary>
+        /// Converts the given json value to a .Net value
+        /// </summary>
+        /// <param name="value">Value to be converted. If
+        /// type of the element is a JsonElement, then this element will
+        /// be converted to a .Net value</param>
+        /// <returns>Converted value</returns>
+        private static object? ConvertJsonValue(object? value)
+        {
+            object? propertyValue = null;
+            if (value is JsonElement jsonElement)
+            {
+                propertyValue = jsonElement.ValueKind switch
+                {
+                    JsonValueKind.String => jsonElement.GetString(),
+                    JsonValueKind.Number => jsonElement.GetDouble(),
+                    JsonValueKind.True => true,
+                    JsonValueKind.False => false,
+                    _ => propertyValue
+                };
+            }
+
+            return propertyValue;
         }
 
         /// <summary>
@@ -341,7 +370,7 @@ namespace DatenMeister.WebServer.Controller
             /// </summary>
             public string? metaClass { get; set; }
 
-            private MofObjectAsJson? properties { get; set; }
+            public MofObjectAsJson? properties { get; set; }
         }
 
         /// <summary>

@@ -34,12 +34,18 @@ namespace DatenMeister.WebServer.Controller
             /// Gets or sets the extent uri
             /// </summary>
             public string ExtentUri { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Creates a new workspace
+            /// </summary>
+            public string Workspace { get; set; } = string.Empty;
         }
 
         [HttpPost("api/extent/create_xmi/{workspace}")]
-        public ActionResult<object> CreateXmi(string workspace, [FromBody] CreateXmiExtentParams createXmi)
+        public ActionResult<object> CreateXmi([FromBody] CreateXmiExtentParams createXmi)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
+            var workspace = createXmi.Workspace;
+            if (string.IsNullOrEmpty(workspace)) workspace = WorkspaceNames.WorkspaceData;
 
             var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
             var loaded = extentManager.CreateAndAddXmiExtent(createXmi.ExtentUri, createXmi.FilePath, workspace);

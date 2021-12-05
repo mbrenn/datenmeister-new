@@ -41,6 +41,40 @@ namespace DatenMeister.Core.Helper
                 propertyValue = value.get(property);
             }
 
+            if (propertyValue is string propertyValueAsString && objectType == ObjectType.DateTime)
+            {
+                if (DateTime.TryParse(
+                    propertyValueAsString ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out var result))
+                {
+                    return result;
+                }
+
+                // Second try with roundtrip-style
+                if (DateTime.TryParse(
+                    propertyValueAsString ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.RoundtripKind,
+                    out var result2))
+                {
+                    return result2;
+                }
+
+                return DateTime.MinValue;
+            }
+
+            if (propertyValue is DateTime propertyValueAsDateTime && objectType == ObjectType.String)
+            {
+                return propertyValueAsDateTime.ToString("o");
+            }
+
+            if (propertyValue is double propertyValueAsDouble && objectType == ObjectType.Double)
+            {
+                return propertyValueAsDouble.ToString(CultureInfo.InvariantCulture);
+            }
+
             if (propertyValue is IEnumerable<object> asObjectList)
             {
                 var list = asObjectList.ToList();
@@ -170,17 +204,7 @@ namespace DatenMeister.Core.Helper
 
             if (typeof(T) == typeof(DateTime))
             {
-                if (DateTime.TryParse(
-                    value.GetAsSingle(property, noReferences, ObjectType.DateTime)?.ToString() 
-                        ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out var result))
-                {
-                    return (T) (object) result;
-                }
-
-                return (T) (object) DateTime.MinValue;
+                return (T) value.GetAsSingle(property, noReferences, ObjectType.DateTime);
             }
 
             if (typeof(T) == typeof(object))

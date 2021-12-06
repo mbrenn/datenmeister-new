@@ -19,9 +19,9 @@ namespace DatenMeister.Tests.Web
             Assert.That(dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.Count(),
                 Is.EqualTo(0));
             extentController.CreateXmi(
-                WorkspaceNames.WorkspaceData,
                 new ExtentController.CreateXmiExtentParams
                 {
+                    Workspace = WorkspaceNames.WorkspaceData,
                     ExtentUri = "dm:///test",
                     FilePath = "./test.xmi"
                 });

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
@@ -157,6 +158,14 @@ namespace DatenMeister.Json
             else if (DotNetHelper.IsOfBoolean(propertyValue))
             {
                 builder.Append((bool)propertyValue ? "true": "false");
+            }
+            else if (propertyValue is double propertyValueAsDouble)
+            {
+                builder.Append(propertyValueAsDouble.ToString(CultureInfo.InvariantCulture));
+            }
+            else if (DotNetHelper.IsOfDateTime(propertyValue))
+            {
+                builder.Append($"\"{(DateTime) propertyValue:o}\"");
             }
             else if (DotNetHelper.IsOfPrimitiveType(propertyValue))
             {

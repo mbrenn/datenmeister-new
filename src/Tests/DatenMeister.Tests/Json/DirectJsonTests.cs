@@ -3,6 +3,8 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Json;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace DatenMeister.Tests.Json
 {
@@ -26,8 +28,19 @@ namespace DatenMeister.Tests.Json
              Assert.That(jsonText.Contains("array1"));
              Assert.That(jsonText.Contains("array2"));
 
-             var converter = JsonConvert.DeserializeObject(jsonText);
+             var converter = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
              Assert.That(converter, Is.Not.Null);
+        }
+        
+        [Test]
+        public void TestJsonDeconverter()
+        {
+            Assert.That(DirectJsonDeconverter.ConvertJsonValue(2), Is.EqualTo(2));
+            Assert.That(DirectJsonDeconverter.ConvertJsonValue("ABC"), Is.EqualTo("ABC"));
+            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("true").RootElement), Is.True);
+            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("false").RootElement), Is.False);
+            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("2").RootElement), Is.EqualTo(2));
+            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("\"abc\"").RootElement), Is.EqualTo("abc"));
         }
     }
 }

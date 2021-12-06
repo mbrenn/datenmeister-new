@@ -25,7 +25,7 @@ namespace DatenMeister.Json
         public ItemWithNameAndId? m { get; set; }
 
         /// <summary>
-        /// The uri of the element to retrieve additional information
+        /// The uri of the element to retrieve additional information, 
         /// </summary>
         public string? u { get; set; } = string.Empty;
     }

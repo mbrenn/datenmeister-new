@@ -40,6 +40,13 @@ namespace DatenMeister.Core.Helper
             || type == typeof(char);
 
         /// <summary>
+        /// Gets or sets the value indicating whether the given type is a date time type
+        /// </summary>
+        /// <param name="type">Type to be evaluated</param>
+        /// <returns>true, if it is a DateTime type</returns>
+        public static bool IsDateTime(Type type) => type == typeof(DateTime);
+
+        /// <summary>
         /// Evaluates whether the given type is a primitive type.
         /// A primitive type is considered all numbers, strings, timespan and DateTime
         /// </summary>
@@ -47,6 +54,16 @@ namespace DatenMeister.Core.Helper
         /// <returns>true, if the given type is a primitive type</returns>
         public static bool IsOfPrimitiveType(object? value) =>
             value != null && IsPrimitiveType(value.GetType());
+
+
+        /// <summary>
+        /// Evaluates whether the given type is a primitive type.
+        /// A primitive type is considered all numbers, strings, timespan and DateTime
+        /// </summary>
+        /// <param name="value">Value to be evaluated</param>
+        /// <returns>true, if the given type is a primitive type</returns>
+        public static bool IsOfDateTime(object? value) =>
+            value != null && IsDateTime(value.GetType());
 
         /// <summary>
         /// Evaluates whether the given type is an enumeration but is not a string
@@ -135,6 +152,7 @@ namespace DatenMeister.Core.Helper
             var type = property.GetType();
             return IsNumber(type);
         }
+
         private static bool IsNumber(Type type) =>
             type == typeof(short)
             || type == typeof(int)

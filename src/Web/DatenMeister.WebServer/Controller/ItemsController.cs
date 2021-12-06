@@ -189,8 +189,6 @@ namespace DatenMeister.WebServer.Controller
             var converter = new MofJsonConverter() { MaxRecursionDepth = 2 };
             var convertedElement = converter.ConvertToJson(foundElement);
 
-            var metaClass = (foundElement as IElement)?.getMetaClass();
-
             return convertedElement;
         }
 

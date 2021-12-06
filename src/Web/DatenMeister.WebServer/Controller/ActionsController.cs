@@ -22,8 +22,7 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Parameter are not set");
             }
             
-            var mofParameter = new MofJsonDeconverter()
-                .ConvertToObject(actionParams.Parameter);
+            var mofParameter = DirectJsonDeconverter.ConvertToObject(actionParams.Parameter);
             switch (actionName)
             {
                 case "Workspace.Extent.Xmi.Create":

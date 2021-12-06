@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Provider.InMemory;
+using System.Linq;
+using System.Text.Json;
 
 namespace DatenMeister.Json
 {
@@ -25,11 +28,32 @@ namespace DatenMeister.Json
                     JsonValueKind.Number => jsonElement.GetDouble(),
                     JsonValueKind.True => true,
                     JsonValueKind.False => false,
+                    JsonValueKind.Null => null,
+                    JsonValueKind.Undefined => null,
+                    JsonValueKind.Object => ConvertToObject(JsonSerializer.Deserialize<MofObjectAsJson>(jsonElement.GetRawText())),
+                    JsonValueKind.Array => jsonElement.EnumerateArray().Select(x => ConvertJsonValue(x)).ToList(),
                     _ => jsonElement.GetString()
                 };
             }
 
             return propertyValue ?? value;
+        }
+
+        /// <summary>
+        /// Takes a MofObjectAsJson element and converts it back to an IObject element
+        /// </summary>
+        /// <param name="jsonObject">Json Object to be converted</param>
+        /// <returns>The converted Json Object</returns>
+        public static IObject ConvertToObject(MofObjectAsJson jsonObject)
+        {
+            var result = InMemoryObject.CreateEmpty();
+
+            foreach (var pair in jsonObject.v)
+            {
+                result.set(pair.Key, ConvertJsonValue(pair.Value));
+            }
+
+            return result;
         }
     }
 }

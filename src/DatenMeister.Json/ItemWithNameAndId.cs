@@ -13,6 +13,8 @@ namespace DatenMeister.Json
     {
         public string name { get; set; } = string.Empty;
 
+        public string uri { get; set; } = string.Empty;
+        
         public string extentUri { get; set; } = string.Empty;
 
         public string fullName { get; set; } = string.Empty;
@@ -36,7 +38,8 @@ namespace DatenMeister.Json
                 name = NamedElementMethods.GetName(value),
                 extentUri = (value.GetExtentOf() as IUriExtent)?.contextURI() ?? string.Empty,
                 fullName = NamedElementMethods.GetFullName(value),
-                id = (value as IHasId)?.Id ?? string.Empty
+                id = (value as IHasId)?.Id ?? string.Empty,
+                uri = value.GetUri() ?? string.Empty
             };
 
             return result;

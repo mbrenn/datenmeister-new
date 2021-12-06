@@ -102,6 +102,8 @@ namespace DatenMeister.Json
                     AppendValue(builder, item.extentUri, recursionDepth);
                     builder.Append(", \"fullName\": ");
                     AppendValue(builder, item.fullName, recursionDepth);
+                    builder.Append(", \"uri\": ");
+                    AppendValue(builder, item.uri, recursionDepth);
 
                     builder.Append("}");
                 }

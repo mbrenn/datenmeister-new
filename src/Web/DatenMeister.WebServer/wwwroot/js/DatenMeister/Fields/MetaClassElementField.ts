@@ -10,8 +10,15 @@ export class Field extends BaseField implements IFormField
 
         const div = $("<div />");
         if (dmElement !== undefined && dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
-            div.text(dmElement.metaClass.id);
-            injectNameByUri(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
+            if (dmElement.metaClass.uri !== null) {
+                div.text(dmElement.metaClass.id ?? dmElement.metaClass.uri);
+                injectNameByUri(div, encodeURIComponent(dmElement.metaClass.uri));
+            } else if (dmElement.metaClass.id !== null && dmElement.metaClass.extentUri !== null) {
+                div.text(dmElement.metaClass.id);
+                injectNameByUri(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
+            } else {
+                div.append($("<em>unknown</em>"));
+            }
         } else {
             div.append($("<em>unknown</em>"));
         }

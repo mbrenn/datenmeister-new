@@ -53,6 +53,10 @@ export class DmObject {
 
         return DmObject.valueToString(values);
     }
+    
+    setMetaClass(metaClassUri: string) {
+        this.metaClass = {uri: metaClassUri};
+    }
 
     static valueToString(item: any, indent: string = ""): string {
 
@@ -98,7 +102,7 @@ export class DmObject {
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v:{}};
+    const result = {v:{}, m:{}};
     const values = result.v; 
     
     for (const key in element.values) {
@@ -114,6 +118,10 @@ export function createJsonFromObject(element: DmObject) {
         }
 
         values[key] = element.get(key);
+    }
+    
+    if ( element.metaClass !== undefined && element.metaClass !== null) {
+        result.m = element.metaClass;
     }
 
     return result;
@@ -165,8 +173,8 @@ export function convertJsonObjectToDmObject(element: object|string): DmObject {
     }
 
     const elementMetaClass = element["m"];
-    if (elementMetaClass !== undefined && elementMetaClass !== null) {
-        result.metaClass = elementMetaClass;
+    if (elementMetaClass !== undefined && elementMetaClass !== null) {        
+        result.metaClass =  elementMetaClass;
     }
 
     const elementUri = element["u"];

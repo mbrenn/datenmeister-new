@@ -5,6 +5,7 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
         const creator = new Forms.DetailFormCreator();
         creator.element = new Mof.DmObject();
+        creator.element.setMetaClass(metaClass);
         configuration.onSubmit = (element) => {
             FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
         };

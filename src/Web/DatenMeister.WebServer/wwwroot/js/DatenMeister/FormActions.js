@@ -50,6 +50,17 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         document.location.reload();
                     });
                     break;
+                case "Workspace.Extent.Xmi.Create":
+                    ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
+                        .done(data => {
+                        document.location.href = Settings.baseUrl
+                            + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
+                            "/" + encodeURIComponent(element.get("extentUri"));
+                    })
+                        .fail(() => {
+                        alert('fail');
+                    });
+                    break;
                 case "JSON.Item.Alert":
                     alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
                     break;
@@ -68,13 +79,13 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             alert(workspace);
             alert(extentUri);
             const json = (0, Mof_1.createJsonFromObject)(element);
-            ApiConnection.post(Settings.baseUrl + "create_in_extent/" + encodeURI(workspace) + "/" + encodeURI(extentUri), {
+            ApiConnection.post(Settings.baseUrl + "create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), {
                 metaClass: metaClass === undefined ? "" : metaClass,
                 properties: json
             }).done(() => {
                 document.location.href = Settings.baseUrl
-                    + "ItemsOverview/" + encodeURI(workspace) +
-                    "/" + encodeURI(extentUri);
+                    + "ItemsOverview/" + encodeURIComponent(workspace) +
+                    "/" + encodeURIComponent(extentUri);
             });
         }
         static extentNavigateTo(workspace, extentUri) {

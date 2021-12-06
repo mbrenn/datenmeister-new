@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.InMemory;
 using System.Linq;
 using System.Text.Json;
@@ -30,7 +31,9 @@ namespace DatenMeister.Json
                     JsonValueKind.False => false,
                     JsonValueKind.Null => null,
                     JsonValueKind.Undefined => null,
-                    JsonValueKind.Object => ConvertToObject(JsonSerializer.Deserialize<MofObjectAsJson>(jsonElement.GetRawText())),
+                    JsonValueKind.Object => ConvertToObject(
+                        JsonSerializer.Deserialize<MofObjectAsJson>(jsonElement.GetRawText())
+                        ?? throw new InvalidOperationException("Invalid Json for Conversion to MofObjectAsJson")),
                     JsonValueKind.Array => jsonElement.EnumerateArray().Select(x => ConvertJsonValue(x)).ToList(),
                     _ => jsonElement.GetString()
                 };
@@ -44,9 +47,9 @@ namespace DatenMeister.Json
         /// </summary>
         /// <param name="jsonObject">Json Object to be converted</param>
         /// <returns>The converted Json Object</returns>
-        public static IObject ConvertToObject(MofObjectAsJson jsonObject)
+        public static IElement ConvertToObject(MofObjectAsJson jsonObject)
         {
-            var result = InMemoryObject.CreateEmpty();
+            var result = InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
 
             foreach (var pair in jsonObject.v)
             {

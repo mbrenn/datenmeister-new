@@ -1,10 +1,15 @@
 ﻿using System;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Json;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
 {
+    [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
     public class ActionsController : ControllerBase
     {
         public class ActionParams
@@ -14,7 +19,9 @@ namespace DatenMeister.WebServer.Controller
             /// </summary>
             public MofObjectAsJson? Parameter { get; set; }    
         }
-        
+
+
+        [HttpPost("api/action/{actionName}")]
         public ActionResult<object> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
         {
             if (actionParams.Parameter == null)
@@ -26,7 +33,17 @@ namespace DatenMeister.WebServer.Controller
             switch (actionName)
             {
                 case "Workspace.Extent.Xmi.Create":
+                    if (mofParameter.metaclass?.@equals(_DatenMeister.TheOne.ExtentLoaderConfigs
+                        .__XmiStorageLoaderConfig) != true)
+                    {
+                        throw new InvalidOperationException("Wrong metaclass. Expected XmiStorageLoaderConfig");
+                    }
                     
+                    var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
+                    var extentManager = new ExtentManager(workspaceLogic, GiveMe.Scope.ScopeStorage);
+                    extentManager.LoadExtent(
+                        mofParameter,
+                        ExtentCreationFlags.LoadOrCreate);
                     break;
             }
             return new { success = false, reason = "ActionNotFound" };

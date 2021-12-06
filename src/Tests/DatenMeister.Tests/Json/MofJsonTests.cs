@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text.Json;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Tests.Json
@@ -95,6 +96,28 @@ namespace DatenMeister.Tests.Json
             
             Assert.That(arrayElements[0].getOrDefault<string>("name"), Is.EqualTo("array1"));
             Assert.That(arrayElements[1].getOrDefault<string>("name"), Is.EqualTo("array2"));
+        }
+
+        [Test]
+        public void TestMetaClass()
+        {
+            var element = InMemoryObject.CreateEmpty("dm:///meta1");
+            var childElement = InMemoryObject.CreateEmpty("dm:///meta2").SetProperty("name", "child");
+            element.set("name", "parent");
+            element.set("child", childElement);
+            
+            
+            var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
+
+            var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
+            Assert.That(asJsonObject, Is.Not.Null);
+
+            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject);
+            Assert.IsTrue(deconverted.metaclass.@equals( new MofObjectShadow("dm:///meta1")));
+            
+            var child2 = deconverted.get<IElement>("child");
+            Assert.That(child2, Is.Not.Null);
+            Assert.IsTrue(child2.metaclass.@equals(new MofObjectShadow("dm:///meta2")));
         }
     }
 }

@@ -53,6 +53,19 @@ export module DetailFormActions {
                             document.location.reload();
                         });
                 break;
+            case "Workspace.Extent.Xmi.Create":
+                ApiConnection.post(
+                    Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
+                    {Parameter: createJsonFromObject(element)})
+                    .done(data => {
+                        document.location.href = Settings.baseUrl
+                            + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
+                            "/" + encodeURIComponent(element.get("extentUri"))
+                    })
+                    .fail(() => {
+                        alert('fail');
+                    });
+                break;
             case "JSON.Item.Alert":
                 alert(JSON.stringify(createJsonFromObject(element)));
                 break;
@@ -78,15 +91,15 @@ export class FormActions {
 
         const json = createJsonFromObject(element);
         ApiConnection.post(
-            Settings.baseUrl + "create_in_extent/" + encodeURI(workspace) + "/" + encodeURI(extentUri),
+            Settings.baseUrl + "create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri),
             {
                 metaClass: metaClass === undefined ? "" : metaClass,
                 properties: json
             }
         ).done(() => {
             document.location.href = Settings.baseUrl
-                + "ItemsOverview/" + encodeURI(workspace) +
-                "/" + encodeURI(extentUri)
+                + "ItemsOverview/" + encodeURIComponent(workspace) +
+                "/" + encodeURIComponent(extentUri)
         });
     }
 

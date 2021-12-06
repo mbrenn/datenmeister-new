@@ -38,6 +38,9 @@ define(["require", "exports"], function (require, exports) {
             let values = this.values;
             return DmObject.valueToString(values);
         }
+        setMetaClass(metaClassUri) {
+            this.metaClass = { uri: metaClassUri };
+        }
         static valueToString(item, indent = "") {
             var result = "";
             var komma = "";
@@ -83,7 +86,7 @@ define(["require", "exports"], function (require, exports) {
         value is returned to MofObject
      */
     function createJsonFromObject(element) {
-        const result = { v: {} };
+        const result = { v: {}, m: {} };
         const values = result.v;
         for (const key in element.values) {
             if (!element.values.hasOwnProperty(key)) {
@@ -96,6 +99,9 @@ define(["require", "exports"], function (require, exports) {
                 continue;
             }
             values[key] = element.get(key);
+        }
+        if (element.metaClass !== undefined && element.metaClass !== null) {
+            result.m = element.metaClass;
         }
         return result;
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
 
@@ -125,9 +126,15 @@ namespace DatenMeister.Provider
 
         public bool RemoveFromProperty(string property, object value)
         {
-            var result = GetProperty(property, ObjectType.ReflectiveSequence) as ICollection<object>;
-            return result?.Remove(value) == true;
+            var result = GetProperty(property, ObjectType.ReflectiveSequence);
+            return result switch
+            {
+                ICollection<object> asCollection => asCollection.Remove(value),
+                IReflectiveCollection asReflective => asReflective.remove(value),
+                _ => false
+            };
         }
+    
 
         public bool HasContainer()
         {

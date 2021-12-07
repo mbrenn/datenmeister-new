@@ -3,17 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
     public class TemporaryReflectiveCollection : IReflectiveCollection
     {
+        /// <summary>
+        /// Defines the event arguments for deletion
+        /// </summary>
+        public class DeleteEventArgs : EventArgs
+        {
+            public object? DeleteObject { get; set; }
+        }
+
         protected IEnumerable<object?> Values;
 
         /// <summary>
         /// Gets or sets a value whether the temporary collection is read-only and hinders adding new items
         /// </summary>
         public bool IsReadOnly { get; set; }
+        
+        /// <summary>
+        /// Add or removes the events
+        /// </summary>
+        public event EventHandler<DeleteEventArgs>? OnDelete;
 
         public TemporaryReflectiveCollection()
         {
@@ -74,6 +88,15 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
             else
             {
+                var onDelete = OnDelete;
+                if (onDelete != null)
+                {
+                    foreach (var item in Values.Where(x=>x != null))
+                    {
+                        onDelete.Invoke(this, new DeleteEventArgs{DeleteObject = item!});
+                    }
+                }
+                
                 (Values as IList)?.Clear();
             }
         }
@@ -81,8 +104,27 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public virtual bool remove(object? value)
         {
+            if (value == null)
+            {
+                return false;
+            }
+            
             CheckForReadOnly();
-            throw new NotImplementedException();
+
+            var onDelete = OnDelete;
+            if (onDelete != null)
+            {
+                onDelete.Invoke(this, new DeleteEventArgs {DeleteObject = value});
+                if (Values.Any(x => x?.Equals(value) == true))
+                {
+                    (Values as IList)?.Remove(value);
+                    return true;
+                }
+
+                return false;
+            }
+
+            throw new InvalidOperationException("OnDelete event is not set, so deletion is not supported");
         }
 
         /// <inheritdoc />

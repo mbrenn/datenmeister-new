@@ -11,7 +11,6 @@ namespace DatenMeister.Provider
     public class MappingProviderObject<T> : IProviderObject where T : class
     {
         public MappingProviderObject(T value, IProvider provider, string id, string? metaclassUri = null) 
-
         {
             Value = value;
             Provider = provider;
@@ -84,7 +83,9 @@ namespace DatenMeister.Provider
             _mappings.TryGetValue(property, out var result);
 
             var itemResult = result?.GetFunction(Value);
-            if (itemResult != null && DotNetHelper.IsOfEnumeration(itemResult))
+            if (itemResult is not null
+                && DotNetHelper.IsOfEnumeration(itemResult)
+                && itemResult is not IReflectiveCollection)
             {
                 var itemAsEnumerable = (IEnumerable<object>) itemResult;
                 return new TemporaryReflectiveCollection(itemAsEnumerable);
@@ -134,7 +135,6 @@ namespace DatenMeister.Provider
                 _ => false
             };
         }
-    
 
         public bool HasContainer()
         {
@@ -179,6 +179,17 @@ namespace DatenMeister.Provider
 
             public Func<T, IProviderObject> GetFunction { get; }
             public Action<T, IProviderObject?> SetFunction { get; }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            var asProvider = obj as MappingProviderObject<T>;
+            return Value.Equals(asProvider?.Value);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
     }
 }

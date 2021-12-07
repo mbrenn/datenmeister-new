@@ -1,7 +1,6 @@
 ﻿@page "/Item/{workspace}/{extent}/{item?}"
 @namespace DatenMeister.WebServer.Pages
 @using System.Web
-@using DatenMeister.Html
 @model ItemModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -21,14 +20,14 @@
     @("Element" ?? "Unknown Element")
 </div>
 
-<div><a class="btn btn-primary" onclick="EditItem()">Edit Item</a></div>
+<div><a class="btn btn-primary" onclick="CreateEditForm()">Edit Item</a></div>
 
 <script type="application/javascript">
 
     function CreateViewForm()
     {
         requirejs(['DatenMeister/Forms'], function(Form) {
-            var detailForm = new Form.DetailFormCreator();
+            const detailForm = new Form.DetailFormCreator();
             detailForm.createViewForm(
                 $("#form_view"),
                 "@HttpUtility.JavaScriptStringEncode(w)",
@@ -47,17 +46,17 @@ $(function()
     CreateViewForm();
 });
 
-    function EditItem()
-    {
-        requirejs(['DatenMeister/Forms'], function(Form) {
-            var detailForm = new Form.DetailFormCreator();
-            detailForm.createEditForm(
-                $("#form_view"),
-                "@HttpUtility.JavaScriptStringEncode(w)",
-                "@HttpUtility.JavaScriptStringEncode(e)",
-                "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
-        });
-    }
+function CreateEditForm()
+{
+    requirejs(['DatenMeister/Forms'], function(Form) {
+        const detailForm = new Form.DetailFormCreator();
+        detailForm.createEditForm(
+            $("#form_view"),
+            "@HttpUtility.JavaScriptStringEncode(w)",
+            "@HttpUtility.JavaScriptStringEncode(e)",
+            "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
+    });
+}
 
 </script>
 <div id="form_view">View Form</div>

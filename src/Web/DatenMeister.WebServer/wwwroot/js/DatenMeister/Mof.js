@@ -12,6 +12,22 @@ define(["require", "exports"], function (require, exports) {
         get(key) {
             return this.values[key];
         }
+        getAsArray(key) {
+            const value = this.get(key);
+            if (Array.isArray(value)) {
+                return value;
+            }
+            if (value === undefined) {
+                const newArray = [];
+                this.set(key, newArray);
+                return newArray;
+            }
+            else {
+                const newArray = [value];
+                this.set(key, newArray);
+                return newArray;
+            }
+        }
         isSet(key) {
             return this.values[key] !== undefined;
         }
@@ -21,6 +37,9 @@ define(["require", "exports"], function (require, exports) {
         toString() {
             let values = this.values;
             return DmObject.valueToString(values);
+        }
+        setMetaClass(metaClassUri) {
+            this.metaClass = { uri: metaClassUri };
         }
         static valueToString(item, indent = "") {
             var result = "";
@@ -67,19 +86,22 @@ define(["require", "exports"], function (require, exports) {
         value is returned to MofObject
      */
     function createJsonFromObject(element) {
-        const result = { v: {} };
+        const result = { v: {}, m: {} };
         const values = result.v;
         for (const key in element.values) {
             if (!element.values.hasOwnProperty(key)) {
                 continue;
             }
-            var elementValue = element.get(key);
+            let elementValue = element.get(key);
             if (Array.isArray(elementValue)
                 || ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
                 // Do not send out arrays or objects
                 continue;
             }
             values[key] = element.get(key);
+        }
+        if (element.metaClass !== undefined && element.metaClass !== null) {
+            result.m = element.metaClass;
         }
         return result;
     }

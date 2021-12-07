@@ -54,8 +54,12 @@ namespace DatenMeister.Core.Provider.InMemory
             var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
             var element = (MofElement?) factory.create(null);
             if (element == null) throw new InvalidOperationException("factory.create returned null");
-                
-            element.SetMetaClass(metaClass);
+
+            if (!string.IsNullOrEmpty(metaClass))
+            {
+                element.SetMetaClass(metaClass);
+            }
+
             return element;
         }
 

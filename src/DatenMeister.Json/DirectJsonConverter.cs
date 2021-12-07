@@ -95,6 +95,10 @@ namespace DatenMeister.Json
             {
                 builder.Append("null");
             }
+            else if (DotNetHelper.IsOfDateTime(propertyValue))
+            {
+                builder.Append($"\"{(DateTime)propertyValue:o}\"");
+            }
             else if (DotNetHelper.IsOfPrimitiveType(propertyValue))
             {
                 builder.Append($"\"{propertyValue}\"");

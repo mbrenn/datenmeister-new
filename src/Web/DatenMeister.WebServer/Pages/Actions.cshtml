@@ -1,4 +1,9 @@
 ﻿@page "/Actions"
+@namespace DatenMeister.WebServer.Pages
+@using System.Web
+@using DatenMeister.Core.EMOF.Implementation
+@using DatenMeister.Core.Models
+@model DatenMeister.WebServer.Pages.ActionsModel
 
 @{
     Layout = "~/Shared/_Layout.cshtml";
@@ -19,5 +24,16 @@
 <div>
     <ul>
         <li><a href="~/WorkspacesAndExtent">Workspaces and Extents</a></li>
+    </ul>
+    <ul>
+        <li><a href="~/ItemAction/Workspace.Extent.Xmi.Create?metaclass=@HttpUtility.UrlEncode((_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig as MofObjectShadow)!.Uri)">Create a new Xmi extent</a></li>
+    </ul>
+</div>
+
+<h2>Test and Debugging</h2>
+<div>
+    <ul>
+        <li><a href="~/ItemAction/JSON.Item.Alert">Test Creation of empty object</a></li>
+        <li><a href="~/ItemAction/Zipcode.Test?metaclass=@HttpUtility.UrlEncode(Model.GetZipCodeMetaClassUri())">Test Creation of Zipcode</a></li>
     </ul>
 </div>

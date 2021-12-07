@@ -9,7 +9,10 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Forms;
 using DatenMeister.Forms;
+using DatenMeister.Modules.ZipCodeExample.Model;
+using DatenMeister.Types;
 using DatenMeister.WebServer.Controller;
+using Microsoft.AspNetCore.Routing;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web
@@ -111,6 +114,35 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundFields.Count, Is.EqualTo(1));
         }
 
+        [Test]
+        public void TestExtentFormForMetaClass()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var localType = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage);
+            var zipCode = localType.GetMetaClassFor(typeof(ZipCode))!;
+            Assert.That(zipCode, Is.Not.Null);
+
+            var zipCodeMetaUrl = zipCode.GetUri()!;
+            Assert.That(zipCodeMetaUrl, Is.Not.Null);
+
+            var controller = new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
+            var form = (controller.GetDefaultFormForMetaClassInternal(zipCodeMetaUrl) as IElement)!;
+            
+            Assert.That(form, Is.Not.Null);
+            Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ExtentForm), Is.True);
+            var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
+            Assert.That(detailForm, Is.Not.Null);
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            Assert.That(fields.Count(), Is.GreaterThan(3));
+
+            var positionLat = fields
+                .OfType<IElement>()
+                .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ==
+                                     nameof(ZipCode.positionLat));
+            Assert.That(positionLat,Is.Not.Null);
+        }
+
+        
         /// <summary>
         /// Creates the zipExtent and also the FormsController
         /// </summary>

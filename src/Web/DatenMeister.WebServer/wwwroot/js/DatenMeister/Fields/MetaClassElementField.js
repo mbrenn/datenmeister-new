@@ -4,10 +4,20 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields"], function 
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
+            var _a;
             const div = $("<div />");
             if (dmElement !== undefined && dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
-                div.text(dmElement.metaClass.id);
-                (0, DomHelper_1.injectNameByUri)(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
+                if (dmElement.metaClass.uri !== null) {
+                    div.text((_a = dmElement.metaClass.id) !== null && _a !== void 0 ? _a : dmElement.metaClass.uri);
+                    (0, DomHelper_1.injectNameByUri)(div, encodeURIComponent(dmElement.metaClass.uri));
+                }
+                else if (dmElement.metaClass.id !== null && dmElement.metaClass.extentUri !== null) {
+                    div.text(dmElement.metaClass.id);
+                    (0, DomHelper_1.injectNameByUri)(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
+                }
+                else {
+                    div.append($("<em>unknown</em>"));
+                }
             }
             else {
                 div.append($("<em>unknown</em>"));

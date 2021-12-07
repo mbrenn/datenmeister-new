@@ -33,10 +33,11 @@ export namespace In {
 
 export interface ItemWithNameAndId
 {
-    name: string;
-    extentUri: string;
-    fullName: string;
-    id: string;
+    uri?: string;
+    name?: string;
+    extentUri?: string;
+    fullName?: string;
+    id?: string;
 }
 
 // Defines the interfaces which are returned by the server

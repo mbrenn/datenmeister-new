@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
@@ -230,7 +231,6 @@ namespace DatenMeister.Forms
 
         public IElement? CreateExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
         {
-            
             IElement? foundForm = null;
 
             if (configuration.ViaFormFinder)
@@ -256,6 +256,12 @@ namespace DatenMeister.Forms
                 // Ok, we have not found the form. So create one
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateDetailFormByMetaClass(metaClass);
+            }
+
+            if (foundForm != null &&
+                foundForm.equals(_DatenMeister.TheOne.Forms.__ExtentForm) != true)
+            {
+                foundForm = FormCreator.FormCreator.CreateExtentFormFromTabs(foundForm);
             }
 
             if (foundForm != null)

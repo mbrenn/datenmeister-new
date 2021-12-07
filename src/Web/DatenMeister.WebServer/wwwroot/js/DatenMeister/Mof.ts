@@ -1,11 +1,10 @@
 ﻿import {ItemWithNameAndId} from "./ApiModels";
 
-export class DmObject
-{
+export class DmObject {
     values: Array<any>;
-    
+
     metaClass: ItemWithNameAndId;
-    
+
     uri: string;
 
     extentUri: string;
@@ -16,23 +15,36 @@ export class DmObject
         this.values = new Array<any>();
     }
 
-    set(key: string, value: any): void
-    {
+    set(key: string, value: any): void {
         this.values[key] = value;
     }
 
-    get(key: string): any
-    {
+    get(key: string): any {
         return this.values[key];
     }
 
-    isSet(key:string): boolean
-    {
+    getAsArray(key: string): any {
+        const value = this.get(key);
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (value === undefined) {
+            const newArray = [];
+            this.set(key, newArray);
+            return newArray;
+        } else {
+            const newArray = [value];
+            this.set(key, newArray);
+            return newArray;
+        }
+    }
+
+    isSet(key: string): boolean {
         return this.values[key] !== undefined;
     }
 
-    unset(key:string): void
-    {
+    unset(key: string): void {
         this.values[key] = undefined;
     }
 
@@ -40,6 +52,10 @@ export class DmObject
         let values = this.values;
 
         return DmObject.valueToString(values);
+    }
+    
+    setMetaClass(metaClassUri: string) {
+        this.metaClass = {uri: metaClassUri};
     }
 
     static valueToString(item: any, indent: string = ""): string {
@@ -86,7 +102,7 @@ export class DmObject
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v:{}};
+    const result = {v:{}, m:{}};
     const values = result.v; 
     
     for (const key in element.values) {
@@ -94,7 +110,7 @@ export function createJsonFromObject(element: DmObject) {
             continue;
         }
 
-        var elementValue = element.get(key);
+        let elementValue = element.get(key);
         if (Array.isArray(elementValue)
             || ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
             // Do not send out arrays or objects
@@ -102,6 +118,10 @@ export function createJsonFromObject(element: DmObject) {
         }
 
         values[key] = element.get(key);
+    }
+    
+    if ( element.metaClass !== undefined && element.metaClass !== null) {
+        result.m = element.metaClass;
     }
 
     return result;
@@ -153,8 +173,8 @@ export function convertJsonObjectToDmObject(element: object|string): DmObject {
     }
 
     const elementMetaClass = element["m"];
-    if (elementMetaClass !== undefined && elementMetaClass !== null) {
-        result.metaClass = elementMetaClass;
+    if (elementMetaClass !== undefined && elementMetaClass !== null) {        
+        result.metaClass =  elementMetaClass;
     }
 
     const elementUri = element["u"];

@@ -1,14 +1,10 @@
-﻿namespace DatenMeister.Json
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+
+namespace DatenMeister.Json
 {
-    public class MofJsonDeconverter
+    public class MofJsonDeconverter : DirectJsonDeconverter
     {
-        /// <summary>
-        /// Updates the object depending on the json string
-        /// </summary>
-        /// <param name="jsonString">Json String to be converted</param>
-        public void UpdateObject(string jsonString)
-        {
-            
-        }
     }
 }

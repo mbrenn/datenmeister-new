@@ -519,6 +519,13 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         {
             lock (_extentStorageData.LoadedExtents)
             {
+                // Before removing the extent, store it
+                if (information.Extent != null)
+                {
+                    StoreExtent(information.Extent);
+                }
+
+                // Deletes the extent
                 var extent = information.Extent;
                 if (extent != null)
                 {

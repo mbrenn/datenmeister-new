@@ -50,6 +50,21 @@ namespace DatenMeister.WebServer.Controller
                     : extent.GetUriResolver().Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
 
             var item = factory.create(metaClass);
+            var values = createParams.properties?.v;
+            if (values != null)
+            {
+                foreach (var propertyParam in values)
+                {
+                    var value = propertyParam.Value;
+                    var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
+
+                    if (propertyValue != null)
+                    {
+                        item.set(propertyParam.Key, propertyValue);
+                    }
+                }
+            }
+
             extent.elements().add(item);
 
             return new
@@ -115,8 +130,8 @@ namespace DatenMeister.WebServer.Controller
         /// Deletes an item from the extent itself
         /// </summary>
         /// <param name="extentUri">Uri of the extent</param>
-        /// <param name="param">Parameter of the deletion</param>
         /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="itemId">Id of the item to be deleted</param>
         /// <returns>the value indicating the success or not</returns>
         [HttpPost("api/items/delete_from_extent/{workspaceId}/{extentUri}/{itemId}")]
         public ActionResult<object> DeleteFromExtent(
@@ -173,8 +188,6 @@ namespace DatenMeister.WebServer.Controller
 
             var converter = new MofJsonConverter() { MaxRecursionDepth = 2 };
             var convertedElement = converter.ConvertToJson(foundElement);
-
-            var metaClass = (foundElement as IElement)?.getMetaClass();
 
             return convertedElement;
         }
@@ -309,18 +322,7 @@ namespace DatenMeister.WebServer.Controller
             foreach (var propertyParam in jsonObject.v)
             {
                 var value = propertyParam.Value;
-                object? propertyValue = null;
-                if (value is JsonElement jsonElement)
-                {
-                    propertyValue = jsonElement.ValueKind switch
-                    {
-                        JsonValueKind.String => jsonElement.GetString(),
-                        JsonValueKind.Number => jsonElement.GetDouble(),
-                        JsonValueKind.True => true,
-                        JsonValueKind.False => false,
-                        _ => propertyValue
-                    };
-                }
+                var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
 
                 if (propertyValue != null)
                 {
@@ -340,6 +342,8 @@ namespace DatenMeister.WebServer.Controller
             /// Gets or sets the metaclass
             /// </summary>
             public string? metaClass { get; set; }
+
+            public MofObjectAsJson? properties { get; set; }
         }
 
         /// <summary>

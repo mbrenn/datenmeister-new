@@ -1,4 +1,4 @@
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], function (require, exports, Settings, ApiConnection, Navigator) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -22,6 +22,18 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                     workspaceId = element.get('workspaceId');
                     FormActions.extentNavigateTo(workspaceId, extentUri);
                     break;
+                case "Extent.CreateItem":
+                    let p = new URLSearchParams(window.location.search);
+                    if (!p.has("extent") || !p.has("workspace")) {
+                        alert('There is no extent given');
+                    }
+                    else {
+                        const extentUri = p.get('extent');
+                        const workspace = p.get('extent');
+                        FormActions.extentCreateItem(workspace, extentUri, element);
+                    }
+                    alert(window.location.search);
+                    break;
                 case "ExtentsList.ViewItem":
                     FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
                     break;
@@ -38,6 +50,23 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                         document.location.reload();
                     });
                     break;
+                case "Workspace.Extent.Xmi.Create":
+                    ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
+                        .done(data => {
+                        document.location.href = Settings.baseUrl
+                            + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
+                            "/" + encodeURIComponent(element.get("extentUri"));
+                    })
+                        .fail(() => {
+                        alert('fail');
+                    });
+                    break;
+                case "JSON.Item.Alert":
+                    alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
+                    break;
+                case "Zipcode.Test":
+                    alert(element.get('zip').toString());
+                    break;
                 default:
                     alert("Unknown action type: " + actionName);
                     break;
@@ -46,10 +75,24 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
         DetailFormActions.execute = execute;
     })(DetailFormActions = exports.DetailFormActions || (exports.DetailFormActions = {}));
     class FormActions {
+        static extentCreateItem(workspace, extentUri, element, metaClass) {
+            alert(workspace);
+            alert(extentUri);
+            const json = (0, Mof_1.createJsonFromObject)(element);
+            ApiConnection.post(Settings.baseUrl + "create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), {
+                metaClass: metaClass === undefined ? "" : metaClass,
+                properties: json
+            }).done(() => {
+                document.location.href = Settings.baseUrl
+                    + "ItemsOverview/" + encodeURIComponent(workspace) +
+                    "/" + encodeURIComponent(extentUri);
+            });
+        }
         static extentNavigateTo(workspace, extentUri) {
-            document.location.href = Settings.baseUrl + "ItemsOverview/" +
-                encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(extentUri);
+            document.location.href =
+                Settings.baseUrl + "ItemsOverview/" +
+                    encodeURIComponent(workspace) + "/" +
+                    encodeURIComponent(extentUri);
         }
         static createZipExample(workspace) {
             ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: workspace })

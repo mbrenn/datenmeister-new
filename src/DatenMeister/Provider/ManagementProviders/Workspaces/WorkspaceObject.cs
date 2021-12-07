@@ -45,7 +45,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                     result.AddRange(
                         w.extent.Select(x =>
                         {
-                            if (!(x is IUriExtent asUriExtent))
+                            if (x is not IUriExtent asUriExtent)
                             {
                                 return null;
                             }
@@ -78,7 +78,17 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                             provider, workspace, null, loadedExtent));
                     }
 
-                    return result;
+                    var resultAsCollection = new TemporaryReflectiveCollection(result);
+                    resultAsCollection.OnDelete += (x, y) =>
+                    {
+                        var extentObject = y.DeleteObject as ExtentObject;
+                        if (extentObject?.LoadedExtentInformation != null)
+                        {
+                            provider.ExtentManager.RemoveExtent(extentObject.LoadedExtentInformation);
+                        }
+                    };
+                        
+                    return resultAsCollection;
                 },
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }

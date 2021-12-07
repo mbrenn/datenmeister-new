@@ -10,7 +10,6 @@ namespace DatenMeister.Actions.ActionHandler
     {
         private static ILogger logger = new ClassLogger(typeof(ActionSetMethods));
 
-
         /// <summary>
         /// Returns the item identified by path and workspace
         /// </summary>

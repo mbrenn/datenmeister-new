@@ -31,5 +31,13 @@ namespace DatenMeister.WebServer.Controller
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
+
+        [HttpGet("api/forms/default_for_metaclass/{metaClass}/{viewMode?}")]
+        public ActionResult<string> GetDefaultFormForMetaClass(string metaClass, string? viewMode) 
+        {
+            var form = _internal.GetDefaultFormForMetaClassInternal(metaClass, viewMode);
+
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        }
     }
 }

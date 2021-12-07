@@ -69,8 +69,10 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             throw new NotImplementedException();
         }
 
-        public bool DeleteElement(string id) =>
+        public bool DeleteElement(string id)
+        {
             throw new NotImplementedException();
+        }
 
         public void DeleteAllElements()
         {

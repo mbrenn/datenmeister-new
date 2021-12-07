@@ -1,0 +1,64 @@
+﻿@page "/ItemAction/{ActionName}"
+@using System.Web
+@model DatenMeister.WebServer.Pages.CreateItemModel
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - Create";
+}
+
+<h1>Action '@Model.ActionName'</h1>
+
+<script type="application/javascript">
+$(function()
+{
+    CreateEditForm();
+});
+    
+@if (string.IsNullOrEmpty(Model.MetaClass))
+{
+    <text>
+    function CreateEditForm()
+    {
+        requirejs(['DatenMeister/Forms.ActionForm'], function(actionForm) {
+        
+            actionForm.createActionFormForEmptyObject(
+                $("#form_view"),
+                undefined,
+                {isReadOnly: false, allowAddingNewProperties: true}, 
+                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");        
+        });
+    }
+    </text>
+} else {
+    <text>
+    function CreateEditForm()
+    {
+        requirejs(['DatenMeister/Forms.ActionForm'], function(actionForm) {
+       
+            actionForm.createActionFormForEmptyObject(
+                $("#form_view"),
+                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.MetaClass))",
+                {isReadOnly: false, allowAddingNewProperties: true},
+                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");     
+        });
+    }
+    </text>
+}
+
+</script>
+
+<div id="form_view">View Form</div>
+
+<div class="accordion" id="debug_accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="debug_formelement_heading">    
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_formelement_body" aria-expanded="true" aria-controls="collapseOne">
+                Form
+            </button>
+        </h2>
+        <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
+            <div class="accordion-body" id="debug_formelement">        
+            </div>
+        </div>
+    </div>
+</div>

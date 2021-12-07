@@ -22,11 +22,13 @@ $(function()
             $("#items"),
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
-            true);
+            {isReadOnly: true});
     });
 });
 
 </script>
+
+<div><a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)">Create Item</a></div>
 
 <div id="items"></div>
 

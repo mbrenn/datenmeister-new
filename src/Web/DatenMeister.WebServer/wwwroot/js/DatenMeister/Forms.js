@@ -1,16 +1,31 @@
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.DetailFormCreator = exports.CollectionFormCreator = exports.Form = void 0;
-    class Form {
-    }
-    exports.Form = Form;
+    exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.DetailFormCreator = exports.CollectionFormCreator = exports.FormModel = void 0;
+    var DmObject = Mof.DmObject;
+    var FormModel;
+    (function (FormModel) {
+        function createEmptyFormWithDetail() {
+            const form = new Mof.DmObject();
+            const detailForm = new Mof.DmObject();
+            detailForm.metaClass =
+                {
+                    id: "DatenMeister.Models.Forms.DetailForm"
+                };
+            form.set('tab', [detailForm]);
+            return form;
+        }
+        FormModel.createEmptyFormWithDetail = createEmptyFormWithDetail;
+    })(FormModel = exports.FormModel || (exports.FormModel = {}));
     /*
         Creates a form containing a collection of items.
         The input for this type is a collection of elements
     */
     class CollectionFormCreator {
-        createListForRootElements(parent, workspace, extentUri, isReadOnly) {
+        createListForRootElements(parent, workspace, extentUri, configuration) {
+            if (configuration.isReadOnly === undefined) {
+                configuration.isReadOnly = true;
+            }
             const tthis = this;
             // Load the object
             const defer1 = DataLoader.loadRootElementsFromExtent(workspace, extentUri);
@@ -21,14 +36,17 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
-                tthis.createFormByCollection(parent, elements, isReadOnly);
+                tthis.createFormByCollection(parent, elements, configuration);
                 (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
             });
             parent.empty();
             parent.text("Loading content and form...");
         }
-        createFormByCollection(parent, elements, isReadOnly) {
+        createFormByCollection(parent, elements, configuration) {
+            if (configuration.isReadOnly === undefined) {
+                configuration.isReadOnly = true;
+            }
             const tthis = this;
             parent.empty();
             const creatingElements = $("<div>Creating elements...</div>");
@@ -49,7 +67,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                         listForm.formElement = tab;
                         listForm.workspace = this.workspace;
                         listForm.extentUri = this.extentUri;
-                        listForm.createFormByCollection(form, isReadOnly);
+                        listForm.createFormByCollection(form, configuration);
                     }
                     parent.append(form);
                     tabCount--;
@@ -69,12 +87,14 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         This method handles all allowed form types.
      */
     class DetailFormCreator {
-        createFormByObject(parent, isReadOnly) {
+        createFormByObject(parent, configuration) {
             const tthis = this;
+            if (this.element == null)
+                this.element = new DmObject();
             parent.empty();
             const creatingElements = $("<div>Creating elements...</div>");
             parent.append(creatingElements);
-            const tabs = this.formElement.get("tab");
+            const tabs = this.formElement.getAsArray("tab");
             for (let n in tabs) {
                 if (!tabs.hasOwnProperty(n)) {
                     continue;
@@ -88,15 +108,13 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     detailForm.itemId = this.itemId;
                     detailForm.formElement = tab;
                     detailForm.element = this.element;
-                    detailForm.createFormByObject(form, isReadOnly);
-                    detailForm.onCancel = () => {
-                        tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
-                    };
-                    detailForm.onChange = (element) => {
-                        DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, tthis.element).done(() => {
-                            tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
-                        });
-                    };
+                    detailForm.createFormByObject(form, configuration);
+                    if (configuration.onCancel !== undefined) {
+                        detailForm.onCancel = configuration.onCancel;
+                    }
+                    if (configuration.onSubmit !== undefined) {
+                        detailForm.onChange = configuration.onSubmit;
+                    }
                 }
                 else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
                     const listForm = new Forms_ListForm_1.ListForm();
@@ -105,7 +123,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     listForm.itemId = this.itemId;
                     listForm.formElement = tab;
                     listForm.elements = this.element.get(tab.get("property"));
-                    listForm.createFormByCollection(form, true);
+                    listForm.createFormByCollection(form, { isReadOnly: true });
                 }
                 else {
                     form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
@@ -117,12 +135,23 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             creatingElements.remove();
         }
         createViewForm(parent, workspace, extentUri, uri) {
-            this.createForm(parent, workspace, extentUri, uri, true);
+            this.createForm(parent, workspace, extentUri, uri, { isReadOnly: true });
         }
         createEditForm(parent, workspace, extentUri, uri) {
-            this.createForm(parent, workspace, extentUri, uri, false);
+            const tthis = this;
+            this.createForm(parent, workspace, extentUri, uri, {
+                isReadOnly: false,
+                onCancel: () => {
+                    tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                },
+                onSubmit: (element) => {
+                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(() => {
+                        tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                    });
+                }
+            });
         }
-        createForm(parent, workspace, extentUri, itemId, isReadOnly) {
+        createForm(parent, workspace, extentUri, itemId, configuration) {
             const tthis = this;
             // Load the object
             const defer1 = DataLoader.loadObjectByUri(workspace, itemId);
@@ -135,7 +164,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
                 tthis.itemId = itemId;
-                tthis.createFormByObject(parent, isReadOnly);
+                tthis.createFormByObject(parent, configuration);
                 (0, DomHelper_1.debugElementToDom)(element, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
             });
@@ -180,5 +209,19 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         return r;
     }
     exports.getDefaultFormForExtent = getDefaultFormForExtent;
+    /*
+        Gets the default form for an extent uri by the webserver
+     */
+    function getDefaultFormForMetaClass(metaClass) {
+        const r = jQuery.Deferred();
+        ApiConnection.get(Settings.baseUrl +
+            "api/forms/default_for_metaclass/" +
+            encodeURIComponent(metaClass)).done(x => {
+            const dmObject = Mof.convertJsonObjectToDmObject(x);
+            r.resolve(dmObject);
+        });
+        return r;
+    }
+    exports.getDefaultFormForMetaClass = getDefaultFormForMetaClass;
 });
 //# sourceMappingURL=Forms.js.map

@@ -28,6 +28,7 @@ namespace DatenMeister.WebServer.Pages
             {
                 return;
             }
+            
             // Ok... what to do now?
             // Collect all files...
             var files = new List<string>();

@@ -22,8 +22,10 @@ export class SelectItemControl {
     private selectedWorkspace: ItemWithNameAndId;
     private selectedExtent: ItemWithNameAndId;
     private selectedItem: ItemWithNameAndId;
+    
+    onItemSelected: (selectedItem: ItemWithNameAndId) => void;
 
-    init(parent: JQuery<HTMLElement>, settings?: Settings) {
+    init(parent: JQuery<HTMLElement>, settings?: Settings): JQuery {
         this.settings = settings ?? new Settings();
 
         const tthis = this;
@@ -74,18 +76,28 @@ export class SelectItemControl {
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='items'></div>" +
             "</td></tr>" +
-            "<tr><td>Selected Item: </td><td class='selected'></td></tr>" +
+            "<tr><td>Selected Item: </td><td class='dm-selectitemcontrol-selected'></td></tr>" +
+            "<tr><td></td><td class='selected'><button class='btn btn-primary dm-selectitemcontrol-button' type='button'>Set</button></td></tr>" +
             "</table>");
 
         $(".workspace", div).append(this.htmlWorkspaceSelect);
         $(".extent", div).append(this.htmlExtentSelect);
         $(".items", div).append(this.htmlItemsList);
-        $(".selected", div).append(this.htmlSelectedElements);
+        $(".dm-selectitemcontrol-selected", div).append(this.htmlSelectedElements);
         this.htmlBreadcrumbList = $(".breadcrumb", div);
+        const setButton = $(".dm-selectitemcontrol-button", div);
+        setButton.on('click', () => {
+            const eventButton = tthis.onItemSelected;
+            if (eventButton != undefined) {
+                eventButton(tthis.selectedItem);
+            }
+        });
 
         parent.append(div);
 
         this.loadWorkspaces();
+        
+        return div;
     }
 
     loadWorkspaces() {

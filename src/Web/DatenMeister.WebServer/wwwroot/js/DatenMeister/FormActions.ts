@@ -34,8 +34,8 @@ export module DetailFormActions {
                 if (!p.has("extent") || !p.has("workspace")) {
                     alert('There is no extent given');
                 } else {
+                    const workspace = p.get('workspace');
                     const extentUri = p.get('extent');
-                    const workspace = p.get('extent');
                     FormActions.extentCreateItem(workspace, extentUri, element);
                 }
                 alert(window.location.search);

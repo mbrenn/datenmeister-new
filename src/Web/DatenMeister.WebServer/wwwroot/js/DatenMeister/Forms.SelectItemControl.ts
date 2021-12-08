@@ -1,8 +1,7 @@
 ﻿import * as EL from './ElementsLoader';
-import {ItemWithNameAndId} from "./ApiModels";
+import { ItemWithNameAndId } from "./ApiModels";
 
-export class Settings
-{
+export class Settings {
     showBreadcrumb = true;
     showWorkspaceInBreadcrumb = false;
     showExtentInBreadcrumb = false;
@@ -19,10 +18,10 @@ export class SelectItemControl {
     private visitedItems: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
-    private selectedWorkspace: ItemWithNameAndId;
-    private selectedExtent: ItemWithNameAndId;
-    private selectedItem: ItemWithNameAndId;
-    
+    private selectedWorkspace?: ItemWithNameAndId;
+    private selectedExtent?: ItemWithNameAndId;
+    private selectedItem?: ItemWithNameAndId;
+
     onItemSelected: (selectedItem: ItemWithNameAndId) => void;
 
     init(parent: JQuery<HTMLElement>, settings?: Settings): JQuery {
@@ -96,7 +95,7 @@ export class SelectItemControl {
         parent.append(div);
 
         this.loadWorkspaces();
-        
+
         return div;
     }
 
@@ -120,10 +119,10 @@ export class SelectItemControl {
 
                 tthis.htmlWorkspaceSelect.append(option);
             }
-            
+
             tthis.refreshBreadcrumb();
         });
-        
+
         this.loadExtents();
 
     }
@@ -143,7 +142,7 @@ export class SelectItemControl {
 
         if (workspaceId == "") {
             this.htmlExtentSelect.empty();
-            
+
             const select = $("<option value=''>--- Select Workspace ---</option>");
             this.htmlExtentSelect.append(select);
         } else {
@@ -151,10 +150,10 @@ export class SelectItemControl {
 
                 this.htmlExtentSelect.empty();
                 this.visitedItems.length = 0;
-                
+
                 const none = $("<option value=''>--- None ---</option>");
-                this.htmlExtentSelect.append(none);                
-                
+                this.htmlExtentSelect.append(none);
+
                 tthis.loadedExtents = items;
 
                 for (const n in items) {
@@ -198,7 +197,7 @@ export class SelectItemControl {
         } else {
             const funcElements = (items: ItemWithNameAndId[]) => {
                 this.htmlItemsList.empty();
-                
+
                 for (const n in items) {
                     if (!items.hasOwnProperty(n)) continue;
 
@@ -267,7 +266,7 @@ export class SelectItemControl {
                 const item = this.visitedItems[n];
 
                 this.addBreadcrumbItem(
-                    item.name, 
+                    item.name,
                     () => {
                         tthis.loadItems(item.id);
                         tthis.visitedItems = tthis.visitedItems.slice(0, n + 1);

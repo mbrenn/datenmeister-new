@@ -1,10 +1,11 @@
-define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.SelectItemControl"], function (require, exports, DomHelper_1, Interfaces_Fields_1, Forms_SelectItemControl_1) {
+define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.SelectItemControl", "../ElementsLoader"], function (require, exports, DomHelper_1, Interfaces_Fields_1, Forms_SelectItemControl_1, ElementsLoader_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
             var _a;
+            const tthis = this;
             const divContainer = $("<div />");
             const div = $("<div />");
             if (dmElement !== undefined && dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
@@ -29,11 +30,11 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
                 var button = $("<button class='btn btn-secondary' type='button'></button>");
                 button.text("Set MetaClass");
                 button.on('click', () => {
-                    const selectItem = new Forms_SelectItemControl_1.SelectItemControl();
-                    const divSelectItem = selectItem.init(divContainer);
-                    selectItem.onItemSelected = (selectedItem) => {
-                        alert('X' + selectedItem.uri);
-                        divSelectItem.remove();
+                    const selectItemCtrl = new Forms_SelectItemControl_1.SelectItemControl();
+                    const divSelectItem = selectItemCtrl.init(divContainer);
+                    selectItemCtrl.onItemSelected = (selectedItem) => {
+                        (0, ElementsLoader_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
+                            .done(() => divSelectItem.remove());
                     };
                 });
                 divContainer.append(button);

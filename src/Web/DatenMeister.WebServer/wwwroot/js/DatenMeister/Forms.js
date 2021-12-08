@@ -71,7 +71,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     }
                     parent.append(form);
                     tabCount--;
-                    if (tabCount == 0) {
+                    if (tabCount === 0) {
                         // Removes the loading information
                         creatingElements.remove();
                     }

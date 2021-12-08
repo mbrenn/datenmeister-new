@@ -1,7 +1,7 @@
-define(["require", "exports", "./ApiConnection"], function (require, exports, ApiConnection) {
+define(["require", "exports", "./ApiConnection", "./Settings"], function (require, exports, ApiConnection, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
+    exports.setMetaclass = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
     function getAllWorkspaces() {
         return load(undefined, undefined, undefined);
     }
@@ -18,6 +18,15 @@ define(["require", "exports", "./ApiConnection"], function (require, exports, Ap
         return load(workspaceId, extent, itemId);
     }
     exports.getAllChildItems = getAllChildItems;
+    function setMetaclass(workspaceId, itemUrl, newMetaClass) {
+        let url = Settings.baseUrl +
+            "api/items/set_metaclass/" +
+            encodeURIComponent(workspaceId) +
+            "/" +
+            encodeURIComponent(itemUrl);
+        return ApiConnection.post(url, { metaclass: newMetaClass });
+    }
+    exports.setMetaclass = setMetaclass;
     function load(workspaceId, extent, itemId) {
         const r = jQuery.Deferred();
         let url = '/api/elements/get_composites';

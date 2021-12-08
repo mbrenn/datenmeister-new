@@ -1,5 +1,6 @@
 ﻿import {ItemWithNameAndId} from "./ApiModels";
 import * as ApiConnection from "./ApiConnection"
+import * as Settings from "./Settings"
 
 export function getAllWorkspaces() : JQueryPromise<ItemWithNameAndId[]> {
     return load(undefined, undefined, undefined);
@@ -15,6 +16,17 @@ export function getAllRootItems(workspaceId: string, extent: string): JQueryProm
 
 export function getAllChildItems(workspaceId: string, extent: string, itemId: string) : JQueryPromise<ItemWithNameAndId[]> {
     return load(workspaceId, extent, itemId);
+}
+
+export function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass: string) {
+    let url = Settings.baseUrl +
+        "api/items/set_metaclass/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+    return ApiConnection.post(
+        url,
+        { metaclass: newMetaClass });
 }
 
 function load(workspaceId: string, extent: string, itemId: string): JQueryPromise<ItemWithNameAndId[]> {

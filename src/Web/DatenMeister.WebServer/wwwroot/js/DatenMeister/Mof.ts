@@ -102,25 +102,25 @@ export class DmObject {
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v:{}, m:{}};
-    const values = result.v; 
-    
+    const result = { v: {}, m: {} };
+    const values = result.v;
+
     for (const key in element.values) {
         if (!element.values.hasOwnProperty(key)) {
             continue;
         }
 
         let elementValue = element.get(key);
-        if (Array.isArray(elementValue)
-            || ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+        if (Array.isArray(elementValue) ||
+            ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
             // Do not send out arrays or objects
             continue;
         }
 
         values[key] = element.get(key);
     }
-    
-    if ( element.metaClass !== undefined && element.metaClass !== null) {
+
+    if (element.metaClass !== undefined && element.metaClass !== null) {
         result.m = element.metaClass;
     }
 

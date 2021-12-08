@@ -5,7 +5,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     var DetailFormActions;
     (function (DetailFormActions) {
         function requiresConfirmation(actionName) {
-            if (actionName === "Item.Delete" || actionName === "ExtentsList.DeleteItem") {
+            if (actionName === "Item.Delete"
+                || actionName === "ExtentsList.DeleteItem"
+                || actionName === "Extent.DeleteExtent") {
                 return true;
             }
             else {
@@ -21,6 +23,11 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     extentUri = element.get('uri');
                     workspaceId = element.get('workspaceId');
                     FormActions.extentNavigateTo(workspaceId, extentUri);
+                    break;
+                case "Extent.DeleteExtent":
+                    extentUri = element.get('uri');
+                    workspaceId = element.get('workspaceId');
+                    FormActions.extentDelete(workspaceId, extentUri);
                     break;
                 case "Extent.CreateItem":
                     let p = new URLSearchParams(window.location.search);
@@ -75,11 +82,13 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         DetailFormActions.execute = execute;
     })(DetailFormActions = exports.DetailFormActions || (exports.DetailFormActions = {}));
     class FormActions {
+        static workspaceNavigateTo(workspace) {
+            document.location.href =
+                Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
+        }
         static extentCreateItem(workspace, extentUri, element, metaClass) {
-            alert(workspace);
-            alert(extentUri);
             const json = (0, Mof_1.createJsonFromObject)(element);
-            ApiConnection.post(Settings.baseUrl + "create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), {
+            ApiConnection.post(Settings.baseUrl + "api/items/create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), {
                 metaClass: metaClass === undefined ? "" : metaClass,
                 properties: json
             }).done(() => {
@@ -93,6 +102,15 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 Settings.baseUrl + "ItemsOverview/" +
                     encodeURIComponent(workspace) + "/" +
                     encodeURIComponent(extentUri);
+        }
+        static extentDelete(workspace, extentUri) {
+            const parameter = {
+                workspace: workspace,
+                extentUri: extentUri
+            };
+            ApiConnection.deleteRequest(Settings.baseUrl + "api/extent/delete", parameter).done(() => {
+                FormActions.workspaceNavigateTo(workspace);
+            });
         }
         static createZipExample(workspace) {
             ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: workspace })

@@ -2,6 +2,9 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.get = exports.put = exports.deleteRequest = exports.post = void 0;
+    function serverError(x) {
+        alert("Error during Web-API Connection: " + x.toString());
+    }
     function post(uri, data) {
         return $.ajax({
             url: uri,
@@ -9,7 +12,7 @@ define(["require", "exports"], function (require, exports) {
             dataType: "json",
             contentType: "application/json",
             method: "POST"
-        });
+        }).fail(x => serverError(x));
     }
     exports.post = post;
     function deleteRequest(uri, data) {
@@ -19,7 +22,7 @@ define(["require", "exports"], function (require, exports) {
             dataType: "json",
             contentType: "application/json",
             method: "DELETE"
-        });
+        }).fail(x => serverError(x));
     }
     exports.deleteRequest = deleteRequest;
     function put(uri, data) {
@@ -29,14 +32,14 @@ define(["require", "exports"], function (require, exports) {
             dataType: "json",
             contentType: "application/json",
             method: "POST"
-        });
+        }).fail(x => serverError(x));
     }
     exports.put = put;
     function get(uri) {
         return $.ajax({
             url: uri,
             method: "GET"
-        });
+        }).fail(x => serverError(x));
     }
     exports.get = get;
 });

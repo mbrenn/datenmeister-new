@@ -3,11 +3,12 @@ import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./Interfaces.Forms";
-import {deleteRequest} from "./ApiConnection";
 
 export module DetailFormActions {
     export function requiresConfirmation(actionName: string): boolean {
-        if (actionName === "Item.Delete" || actionName === "ExtentsList.DeleteItem") {
+        if (actionName === "Item.Delete"
+            || actionName === "ExtentsList.DeleteItem"
+            || actionName === "Extent.DeleteExtent") {
             return true;
         } else {
             return false;
@@ -22,6 +23,11 @@ export module DetailFormActions {
                 extentUri = element.get('uri');
                 workspaceId = element.get('workspaceId');
                 FormActions.extentNavigateTo(workspaceId, extentUri);
+                break;
+            case "Extent.DeleteExtent":
+                extentUri = element.get('uri');
+                workspaceId = element.get('workspaceId');
+                FormActions.extentDelete(workspaceId, extentUri);
                 break;
             case "Extent.CreateItem":
                 let p = new URLSearchParams(window.location.search);
@@ -85,13 +91,16 @@ interface IDeleteCallbackData {
 }
 
 export class FormActions {
-    static extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string) {
-        alert(workspace);
-        alert(extentUri);
 
+    static workspaceNavigateTo(workspace: string) {
+        document.location.href =
+            Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
+    }
+
+    static extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string) {
         const json = createJsonFromObject(element);
         ApiConnection.post(
-            Settings.baseUrl + "create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri),
+            Settings.baseUrl + "api/items/create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri),
             {
                 metaClass: metaClass === undefined ? "" : metaClass,
                 properties: json
@@ -103,14 +112,28 @@ export class FormActions {
         });
     }
 
-    static extentNavigateTo(workspace: string, extentUri: string):void {
+    static extentNavigateTo(workspace: string, extentUri: string): void {
         document.location.href =
             Settings.baseUrl + "ItemsOverview/" +
             encodeURIComponent(workspace) + "/" +
             encodeURIComponent(extentUri);
     }
 
-    static createZipExample(workspace:string) {
+    static extentDelete(workspace: string, extentUri: string): void {
+        const parameter = {
+            workspace: workspace,
+            extentUri: extentUri
+        }
+
+        ApiConnection.deleteRequest(
+            Settings.baseUrl + "api/extent/delete",
+            parameter
+        ).done(() => {
+            FormActions.workspaceNavigateTo(workspace);
+        });
+    }
+
+    static createZipExample(workspace: string) {
         ApiConnection.post(
             Settings.baseUrl + "api/zip/create",
             {workspace: workspace})
@@ -126,7 +149,6 @@ export class FormActions {
             encodeURIComponent(workspace) + "/" +
             encodeURIComponent(extent) + "/" +
             encodeURIComponent(itemUrl);
-
     }
 
     static itemNew(workspace: string, extentUri: string) {
@@ -142,7 +164,7 @@ export class FormActions {
                 });
     }
 
-    static itemDelete(workspace:string, extentUri: string, itemUri: string) {
+    static itemDelete(workspace: string, extentUri: string, itemUri: string) {
         ApiConnection.deleteRequest<IDeleteCallbackData>(
             Settings.baseUrl + "api/items/delete/"
             + encodeURIComponent(workspace) + "/" +
@@ -160,14 +182,14 @@ export class FormActions {
                 });
     }
 
-    static extentsListViewItem(workspace:string, extentUri: string, itemId:string) {
+    static extentsListViewItem(workspace: string, extentUri: string, itemId: string) {
         document.location.href = Settings.baseUrl + "Item/" +
             encodeURIComponent(workspace) + "/" +
             encodeURIComponent(extentUri) + "/" +
             encodeURIComponent(itemId);
     }
 
-    static extentsListDeleteItem(workspace:string, extentUri: string, itemId:string) {
+    static extentsListDeleteItem(workspace: string, extentUri: string, itemId: string) {
 
         ApiConnection.deleteRequest<IDeleteCallbackData>(
             Settings.baseUrl + "api/items/delete/"

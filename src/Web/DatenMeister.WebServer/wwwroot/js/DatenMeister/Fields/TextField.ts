@@ -26,14 +26,19 @@ export class Field extends BaseField implements IFormField
                     enumeration.append(item);
                 }
             }
-            
+
             return enumeration;
         }
-        
+
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
             const div = $("<div />");
-            div.text(dmElement.get(fieldName)?.toString() ?? "unknown");
+            const value = dmElement.get(fieldName);
+            if (value === undefined) {
+                div.append($("<em>unknown</em>"));
+            } else {
+                div.text(dmElement.get(fieldName)?.toString() ?? "unknown");
+            }
             return div;
         } else {
             const value = dmElement.get(fieldName)?.toString() ?? "";

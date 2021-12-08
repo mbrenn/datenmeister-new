@@ -333,6 +333,29 @@ namespace DatenMeister.WebServer.Controller
             return new { success = true };
         }
 
+        public class SetMetaClassParams
+        {
+            public string metaClass { get; set; }
+        }
+
+        [HttpPost("api/items/set_metaclass/{workspaceId}/{itemUri}")]
+        public ActionResult<object> SetMetaClass(string workspaceId, string itemUri,
+            [FromBody] SetMetaClassParams parameter)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+            if (foundItem is IElementSetMetaClass asMetaClassSet)
+            {
+                asMetaClassSet.SetMetaClass(new MofObjectShadow(parameter.metaClass));
+            }
+
+            return new {success = true};
+        }
+
+
         /// <summary>
         /// Parameters to create an item within an extent
         /// </summary>

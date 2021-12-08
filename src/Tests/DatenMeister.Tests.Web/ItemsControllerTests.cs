@@ -91,8 +91,34 @@ namespace DatenMeister.Tests.Web
 
             var newRootElements = example.elements().ToList();
             Assert.That(newRootElements.Count, Is.EqualTo(count - 1));
+        }
 
+        [Test]
+        public void TestSetMetaClass()
+        {
+            var (dm, example) = ElementControllerTests.CreateExampleExtent();
 
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+            var rootElements = example.elements().ToList();
+            Assert.That(rootElements, Is.Not.Null);
+            
+            var first= rootElements.ElementAtOrDefault(0) as IElement;
+
+            Assert.That(first, Is.Not.Null);
+
+            var metaClass = first.getMetaClass();
+            Assert.That(metaClass, Is.Null);
+
+            var newMetaClass = "dm:///types#metaclass";
+            itemsController.SetMetaClass(
+                "Data",
+                first.GetUri() ?? throw new InvalidOperationException("Uri is not set"),
+                new ItemsController.SetMetaClassParams
+                {
+                    metaClass = newMetaClass
+                });
+
+            Assert.That(first.getMetaClass()?.@equals(new MofObjectShadow(newMetaClass)), Is.True);
         }
     }
 }

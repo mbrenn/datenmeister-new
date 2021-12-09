@@ -176,7 +176,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode = value;
         }
 
-        private static readonly MofExtent XmlMetaExtent = new MofUriExtent(new XmiProvider()); 
+        private static readonly MofExtent XmlMetaExtent =
+            new MofUriExtent(new XmiProvider())
+            {
+                LocalSlimUmlEvaluation = true
+            };
 
         /// <summary>
         /// Initializes a new instance of the Extent

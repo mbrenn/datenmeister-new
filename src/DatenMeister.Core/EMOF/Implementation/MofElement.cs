@@ -166,7 +166,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="metaClass">Metaclass to be set</param>
         public void SetMetaClass(IElement metaClass)
         {
-            _cachedMetaClass = metaClass;
+            _cachedMetaClass = metaClass is MofElement ? metaClass : null;
             if (metaClass is MofElement mofElement)
             {
                 if (mofElement.Extent == null)
@@ -181,7 +181,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 ProviderObject.MetaclassUri = metaClass.GetUri();
             }
-            
+
             UpdateContent();
         }
 

@@ -10,7 +10,15 @@ export function createActionFormForEmptyObject(
     metaClass: string,
     configuration: IFormConfiguration,
     actionName: string)
-{   
+{
+    const tthis = this;
+
+    if (configuration.refreshForm === undefined) {
+        configuration.refreshForm = () => {
+            tthis.createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
+        }
+    }
+
     const creator = new Forms.DetailFormCreator();
     creator.element = new Mof.DmObject();
     creator.element.setMetaClass(metaClass);

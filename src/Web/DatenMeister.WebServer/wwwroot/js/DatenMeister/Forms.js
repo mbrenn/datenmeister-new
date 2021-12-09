@@ -27,6 +27,11 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 configuration.isReadOnly = true;
             }
             const tthis = this;
+            if (configuration.refreshForm === undefined) {
+                configuration.refreshForm = () => {
+                    tthis.createListForRootElements(parent, workspace, extentUri, configuration);
+                };
+            }
             // Load the object
             const defer1 = DataLoader.loadRootElementsFromExtent(workspace, extentUri);
             // Load the form
@@ -48,6 +53,11 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 configuration.isReadOnly = true;
             }
             const tthis = this;
+            if (configuration.refreshForm === undefined) {
+                configuration.refreshForm = () => {
+                    tthis.createFormByCollection(parent, elements, configuration);
+                };
+            }
             parent.empty();
             const creatingElements = $("<div>Creating elements...</div>");
             parent.append(creatingElements);
@@ -89,6 +99,11 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     class DetailFormCreator {
         createFormByObject(parent, configuration) {
             const tthis = this;
+            if (configuration.refreshForm === undefined) {
+                configuration.refreshForm = () => {
+                    tthis.createFormByObject(parent, configuration);
+                };
+            }
             if (this.element == null)
                 this.element = new DmObject();
             parent.empty();
@@ -153,6 +168,11 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         }
         createForm(parent, workspace, extentUri, itemId, configuration) {
             const tthis = this;
+            if (configuration.refreshForm === undefined) {
+                configuration.refreshForm = () => {
+                    tthis.createForm(parent, workspace, extentUri, itemId, configuration);
+                };
+            }
             // Load the object
             const defer1 = DataLoader.loadObjectByUri(workspace, itemId);
             // Load the form

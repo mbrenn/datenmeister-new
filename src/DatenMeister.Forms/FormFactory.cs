@@ -8,12 +8,10 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.FormModifications;
 
@@ -111,7 +109,7 @@ namespace DatenMeister.Forms
                 foundForm = formCreator.CreateExtentFormForObject(
                     element,
                     extent,
-                    new FormFactoryConfiguration() { IncludeOnlyCommonProperties = true });
+                    new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
             }
 
             if (foundForm != null)

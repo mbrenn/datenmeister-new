@@ -3,6 +3,12 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createActionFormForEmptyObject = void 0;
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
+        const tthis = this;
+        if (configuration.refreshForm === undefined) {
+            configuration.refreshForm = () => {
+                tthis.createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
+            };
+        }
         const creator = new Forms.DetailFormCreator();
         creator.element = new Mof.DmObject();
         creator.element.setMetaClass(metaClass);

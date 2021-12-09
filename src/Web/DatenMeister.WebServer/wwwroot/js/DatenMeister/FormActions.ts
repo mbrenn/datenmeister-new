@@ -2,7 +2,7 @@
 import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {createJsonFromObject, DmObject} from "./Mof";
-import * as IIForms from "./Interfaces.Forms";
+import * as IIForms from "./Forms.Interfaces";
 
 export module DetailFormActions {
     export function requiresConfirmation(actionName: string): boolean {
@@ -15,7 +15,7 @@ export module DetailFormActions {
         }
     }
 
-    export function execute(actionName: string, form: IIForms.IForm, itemUrl: string, element: DmObject) {
+    export function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject) {
         let workspaceId;
         let extentUri;
         switch (actionName) {

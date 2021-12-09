@@ -1,4 +1,4 @@
-﻿import * as InterfacesForms from "./Interfaces.Forms";
+﻿import * as InterfacesForms from "./Forms.Interfaces";
 import * as InterfacesFields from "./Interfaces.Fields";
 import * as Mof from "./Mof";
 import {createField} from "./Forms.FieldFactory";
@@ -11,14 +11,21 @@ export class DetailForm implements InterfacesForms.IForm {
     itemId: string;
     element: Mof.DmObject;
     formElement: Mof.DmObject;
-    configuration: IFormConfiguration;
 
     fieldElements: Array<InterfacesFields.IFormField>;
 
     onCancel: () => void;
     onChange: (element: Mof.DmObject) => void;
+    parentHtml: JQuery<HTMLElement>;
+    configuration: IFormConfiguration;
+
+    refreshForm(): void {
+        this.createFormByObject(this.parentHtml, this.configuration);
+    }
 
     createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+        this.parentHtml = parent;
+        this.configuration = configuration;
         if (configuration.isReadOnly === undefined) {configuration.isReadOnly = true;}
         if (configuration.allowAddingNewProperties === undefined) {configuration.allowAddingNewProperties = false;}
                 
@@ -59,6 +66,7 @@ export class DetailForm implements InterfacesForms.IForm {
             fieldElement = createField(
                 fieldMetaClassId,
                 {
+                    configuration: configuration,
                     form: this,
                     field: field,
                     itemUrl: itemUri,

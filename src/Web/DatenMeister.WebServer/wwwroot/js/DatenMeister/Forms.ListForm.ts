@@ -1,5 +1,4 @@
-
-import * as InterfacesForms from "./Interfaces.Forms";
+import * as InterfacesForms from "./Forms.Interfaces";
 import {DmObject} from "./Mof";
 import * as Mof from "./Mof";
 import {createField} from "./Forms.FieldFactory";
@@ -11,8 +10,17 @@ export class ListForm implements InterfacesForms.IForm {
     formElement: DmObject;
     itemId: string;
     workspace: string;
+    parentHtml: JQuery<HTMLElement>;
+    configuration: IFormConfiguration;
+
+    refreshForm(): void {
+        this.createFormByCollection(this.parentHtml, this.configuration);
+    }
 
     createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+        this.parentHtml = parent;
+        this.configuration = configuration;
+
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -62,6 +70,7 @@ export class ListForm implements InterfacesForms.IForm {
                         const fieldElement = createField(
                             fieldMetaClassId,
                             {
+                                configuration: configuration,
                                 form: this,
                                 field: field,
                                 itemUrl: element.uri,

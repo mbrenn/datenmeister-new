@@ -1,9 +1,12 @@
-import {IForm} from "Interfaces.Forms";
+import {IForm} from "Forms.Interfaces";
 import * as Mof from "Mof";
+import { IFormConfiguration } from "./IFormConfiguration";
 
 
 export interface IFormField
 {
+    configuration: IFormConfiguration;
+
     // Defines the field to be used to create the dom for the field
     field: Mof.DmObject;
 
@@ -23,6 +26,7 @@ export interface IFormField
 
 export class BaseField
 {
+    configuration: IFormConfiguration;
     field: Mof.DmObject;
     isReadOnly: boolean;
     form: IForm;

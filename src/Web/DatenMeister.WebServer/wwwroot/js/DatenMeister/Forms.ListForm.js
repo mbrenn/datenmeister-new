@@ -3,8 +3,13 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ListForm = void 0;
     class ListForm {
+        refreshForm() {
+            this.createFormByCollection(this.parentHtml, this.configuration);
+        }
         createFormByCollection(parent, configuration) {
             var _a;
+            this.parentHtml = parent;
+            this.configuration = configuration;
             if (configuration.isReadOnly === undefined) {
                 configuration.isReadOnly = true;
             }
@@ -43,6 +48,7 @@ define(["require", "exports", "./Forms.FieldFactory"], function (require, export
                             let cell = $("<td></td>");
                             const fieldMetaClassId = field.metaClass.id;
                             const fieldElement = (0, Forms_FieldFactory_1.createField)(fieldMetaClassId, {
+                                configuration: configuration,
                                 form: this,
                                 field: field,
                                 itemUrl: element.uri,

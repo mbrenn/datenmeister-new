@@ -6,4 +6,6 @@ export interface IFormConfiguration {
     
     onCancel?: () => void;
     onSubmit?: (element: DmObject) => void;
+
+    refreshForm?: () => void;
 }

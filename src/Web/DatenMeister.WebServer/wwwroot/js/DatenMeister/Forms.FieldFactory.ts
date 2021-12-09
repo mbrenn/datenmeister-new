@@ -6,12 +6,14 @@ import * as ActionField from "./Fields/ActionField";
 import * as AnyDataField from "./Fields/AnyDataField";
 import * as SubElementField from "./Fields/SubElementField";
 import * as UnknownField from "./Fields/UnknownField";
-import {IFormField} from "./Interfaces.Fields";
-import {IForm} from "./Interfaces.Forms";
-import {DmObject} from "./Mof";
+import { IFormField } from "./Interfaces.Fields";
+import { IForm } from "./Forms.Interfaces";
+import { DmObject } from "./Mof";
+import { IFormConfiguration } from "./IFormConfiguration";
 
 interface ICreateFieldParameter
 {
+    configuration: IFormConfiguration,
     form: IForm;
     isReadOnly: boolean;
     field: DmObject;
@@ -48,6 +50,7 @@ export function createField(fieldMetaClassId: string, parameter: ICreateFieldPar
         break;
     }
 
+    result.configuration = parameter.configuration;
     result.form = parameter.form;
     result.isReadOnly = parameter.isReadOnly;
     result.field = parameter.field;

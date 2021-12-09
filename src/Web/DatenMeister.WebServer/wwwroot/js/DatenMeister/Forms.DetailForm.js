@@ -3,8 +3,13 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextFie
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DetailForm = void 0;
     class DetailForm {
+        refreshForm() {
+            this.createFormByObject(this.parentHtml, this.configuration);
+        }
         createFormByObject(parent, configuration) {
             var _a;
+            this.parentHtml = parent;
+            this.configuration = configuration;
             if (configuration.isReadOnly === undefined) {
                 configuration.isReadOnly = true;
             }
@@ -37,6 +42,7 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextFie
                 let fieldElement = null; // The instance if IFormField allowing to create the dom
                 let htmlElement; // The dom that had been created... 
                 fieldElement = (0, Forms_FieldFactory_1.createField)(fieldMetaClassId, {
+                    configuration: configuration,
                     form: this,
                     field: field,
                     itemUrl: itemUri,

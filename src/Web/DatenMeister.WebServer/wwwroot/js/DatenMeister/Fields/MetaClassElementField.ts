@@ -39,7 +39,11 @@ export class Field extends BaseField implements IFormField
 
                 selectItemCtrl.onItemSelected = (selectedItem) => {
                     setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
-                        .done(() => divSelectItem.remove());
+                        .done(() => divSelectItem.remove()).done(() => {
+                            if (tthis.configuration.refreshForm !== undefined) {
+                                tthis.configuration.refreshForm();
+                            }
+                        });
                 }
             });
 

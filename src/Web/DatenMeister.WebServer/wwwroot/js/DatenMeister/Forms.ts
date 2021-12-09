@@ -4,11 +4,10 @@ import DmObject = Mof.DmObject;
 import * as ApiConnection from "./ApiConnection";
 import * as Settings from "./Settings";
 import * as DetailForm from "./Forms.DetailForm";
-import * as IForm from "./Interfaces.Forms";
+import * as IForm from "./Forms.Interfaces";
 import {ListForm} from "./Forms.ListForm";
 import { debugElementToDom } from "./DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
-import {DomHelper} from "../datenmeister";
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {
@@ -29,7 +28,7 @@ export namespace FormModel {
     Creates a form containing a collection of items. 
     The input for this type is a collection of elements
 */
-export class CollectionFormCreator implements IForm.IForm {
+export class CollectionFormCreator implements IForm.IFormNavigation {
     extentUri: string;
     formElement: DmObject;
     workspace: string;
@@ -38,8 +37,14 @@ export class CollectionFormCreator implements IForm.IForm {
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
-        
+
         const tthis = this;
+
+        if (configuration.refreshForm === undefined) {
+            configuration.refreshForm = () => {
+                tthis.createListForRootElements(parent, workspace, extentUri, configuration);
+            }
+        }
 
         // Load the object
         const defer1 = DataLoader.loadRootElementsFromExtent(workspace, extentUri);
@@ -70,6 +75,13 @@ export class CollectionFormCreator implements IForm.IForm {
         }
         
         const tthis = this;
+        
+        if (configuration.refreshForm === undefined) {
+            configuration.refreshForm = () => {
+                tthis.createFormByCollection(parent, elements, configuration);
+            }
+        }
+
         parent.empty();
         const creatingElements = $("<div>Creating elements...</div>");
         parent.append(creatingElements);
@@ -114,7 +126,7 @@ export class CollectionFormCreator implements IForm.IForm {
     
     This method handles all allowed form types.  
  */
-export class DetailFormCreator implements IForm.IForm {
+export class DetailFormCreator implements IForm.IFormNavigation {
 
     element: DmObject;
     extentUri: string;
@@ -124,6 +136,12 @@ export class DetailFormCreator implements IForm.IForm {
 
     createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         const tthis = this;
+
+        if (configuration.refreshForm === undefined) {
+            configuration.refreshForm = () => {
+                tthis.createFormByObject(parent, configuration);
+            }
+        }
 
         if (this.element == null) this.element = new DmObject();
 
@@ -182,6 +200,7 @@ export class DetailFormCreator implements IForm.IForm {
 
     createEditForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
         const tthis = this;
+
         this.createForm(parent, workspace, extentUri, uri, 
             {
             isReadOnly: false,
@@ -204,6 +223,13 @@ export class DetailFormCreator implements IForm.IForm {
                itemId: string, 
                configuration: IFormConfiguration) {
         const tthis = this;
+
+
+        if (configuration.refreshForm === undefined) {
+            configuration.refreshForm = () => {
+                tthis.createForm(parent, workspace, extentUri, itemId, configuration);
+            }
+        }
 
         // Load the object
         const defer1 = DataLoader.loadObjectByUri(workspace, itemId);

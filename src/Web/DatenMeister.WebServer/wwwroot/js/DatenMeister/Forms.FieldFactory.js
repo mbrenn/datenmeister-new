@@ -30,6 +30,7 @@ define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", ".
                 result = new UnknownField.Field(fieldMetaClassId);
                 break;
         }
+        result.configuration = parameter.configuration;
         result.form = parameter.form;
         result.isReadOnly = parameter.isReadOnly;
         result.field = parameter.field;

@@ -34,7 +34,11 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
                     const divSelectItem = selectItemCtrl.init(divContainer);
                     selectItemCtrl.onItemSelected = (selectedItem) => {
                         (0, ElementsLoader_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
-                            .done(() => divSelectItem.remove());
+                            .done(() => divSelectItem.remove()).done(() => {
+                            if (tthis.configuration.refreshForm !== undefined) {
+                                tthis.configuration.refreshForm();
+                            }
+                        });
                     };
                 });
                 divContainer.append(button);

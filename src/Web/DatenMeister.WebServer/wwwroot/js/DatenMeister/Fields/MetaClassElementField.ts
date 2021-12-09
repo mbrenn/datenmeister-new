@@ -2,12 +2,14 @@ import * as Mof from "../Mof";
 import {injectNameByUri} from "../DomHelper";
 import {BaseField, IFormField} from "../Interfaces.Fields";
 import {SelectItemControl} from "../Forms.SelectItemControl";
+import { setMetaclass } from "../ElementsLoader";
 
 export class Field extends BaseField implements IFormField
 {
     _textBox: JQuery<HTMLInputElement>;
 
     createDom(dmElement: Mof.DmObject) {
+        const tthis = this;
 
         const divContainer = $("<div />");
         const div = $("<div />");
@@ -32,12 +34,12 @@ export class Field extends BaseField implements IFormField
             var button = $("<button class='btn btn-secondary' type='button'></button>");
             button.text("Set MetaClass");
             button.on('click', () => {
-                const selectItem = new SelectItemControl();
-                const divSelectItem = selectItem.init(divContainer);
+                const selectItemCtrl = new SelectItemControl();
+                const divSelectItem = selectItemCtrl.init(divContainer);
 
-                selectItem.onItemSelected = (selectedItem) => {
-                    alert('X' + selectedItem.uri);
-                    divSelectItem.remove();
+                selectItemCtrl.onItemSelected = (selectedItem) => {
+                    setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
+                        .done(() => divSelectItem.remove());
                 }
             });
 

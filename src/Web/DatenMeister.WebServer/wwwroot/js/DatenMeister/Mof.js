@@ -93,8 +93,8 @@ define(["require", "exports"], function (require, exports) {
                 continue;
             }
             let elementValue = element.get(key);
-            if (Array.isArray(elementValue)
-                || ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+            if (Array.isArray(elementValue) ||
+                ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
                 // Do not send out arrays or objects
                 continue;
             }

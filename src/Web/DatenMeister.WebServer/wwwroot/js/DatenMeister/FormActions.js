@@ -39,7 +39,6 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         const extentUri = p.get('extent');
                         FormActions.extentCreateItem(workspace, extentUri, element);
                     }
-                    alert(window.location.search);
                     break;
                 case "ExtentsList.ViewItem":
                     FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
@@ -92,9 +91,11 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 metaClass: metaClass === undefined ? "" : metaClass,
                 properties: json
             }).done(() => {
-                document.location.href = Settings.baseUrl
-                    + "ItemsOverview/" + encodeURIComponent(workspace) +
-                    "/" + encodeURIComponent(extentUri);
+                document.location.href = Settings.baseUrl +
+                    "ItemsOverview/" +
+                    encodeURIComponent(workspace) +
+                    "/" +
+                    encodeURIComponent(extentUri);
             });
         }
         static extentNavigateTo(workspace, extentUri) {

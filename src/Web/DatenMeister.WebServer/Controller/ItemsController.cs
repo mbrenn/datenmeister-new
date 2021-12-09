@@ -335,7 +335,7 @@ namespace DatenMeister.WebServer.Controller
 
         public class SetMetaClassParams
         {
-            public string metaClass { get; set; }
+            public string metaClass { get; set; } = string.Empty;
         }
 
         [HttpPost("api/items/set_metaclass/{workspaceId}/{itemUri}")]

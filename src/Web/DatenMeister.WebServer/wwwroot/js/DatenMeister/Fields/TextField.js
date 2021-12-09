@@ -23,13 +23,7 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
             /* Otherwise just create the correct field type. */
             if (this.isReadOnly) {
                 const div = $("<div />");
-                const value = dmElement.get(fieldName);
-                if (value === undefined) {
-                    div.append($("<em>unknown</em>"));
-                }
-                else {
-                    div.text((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
-                }
+                div.text((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
                 return div;
             }
             else {

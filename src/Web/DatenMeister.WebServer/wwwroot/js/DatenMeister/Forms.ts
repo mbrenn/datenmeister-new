@@ -98,7 +98,7 @@ export class CollectionFormCreator implements IForm.IForm {
                 parent.append(form);
                 tabCount--;
 
-                if (tabCount == 0) {
+                if (tabCount === 0) {
                     // Removes the loading information
                     creatingElements.remove();
                 }

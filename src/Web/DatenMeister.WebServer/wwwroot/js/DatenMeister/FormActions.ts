@@ -6,6 +6,23 @@ import * as IIForms from "./Forms.Interfaces";
 import * as ECClient from "./ExtentControllerClient";
 
 export module DetailFormActions {
+
+    // Loads the object being used for the action. 
+    export function loadObjectForAction(actionName: string): JQueryDeferred<DmObject> | undefined {
+
+        let p = new URLSearchParams(window.location.search);
+
+        if (actionName === "Extent.Properties.Update") {
+
+            const workspace = p.get('workspace');
+            const extentUri = p.get('extent');
+
+            return ECClient.getProperties(workspace, extentUri);
+        }
+
+        return undefined;
+    }
+
     export function requiresConfirmation(actionName: string): boolean {
         if (actionName === "Item.Delete"
             || actionName === "ExtentsList.DeleteItem"

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -43,6 +44,20 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return new {success = true};
+        }
+
+        [HttpGet("api/extent/get_properties/{workspace}/{extent}")]
+        public ActionResult<string?> GetProperties(string workspace, string extent)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            extent = HttpUtility.UrlDecode(extent);
+
+            var foundExtent = _workspaceLogic.FindExtent(workspace, extent)
+                              ?? throw new InvalidOperationException("The extent was not found");
+            var metaObject = (foundExtent as MofExtent)?.GetMetaObject();
+            return metaObject == null
+                ? new ActionResult<string?>(null as string)
+                : new MofJsonConverter().ConvertToJson(metaObject);
         }
 
         [HttpPost("api/extent/create_xmi")]

@@ -4,13 +4,25 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     exports.FormActions = exports.DetailFormActions = void 0;
     var DetailFormActions;
     (function (DetailFormActions) {
+        // Loads the object being used for the action. 
+        function loadObjectForAction(actionName) {
+            let p = new URLSearchParams(window.location.search);
+            if (actionName === "Extent.Properties.Update") {
+                const workspace = p.get('workspace');
+                const extentUri = p.get('extent');
+                return ECClient.getProperties(workspace, extentUri);
+            }
+            return undefined;
+        }
+
+        DetailFormActions.loadObjectForAction = loadObjectForAction;
+
         function requiresConfirmation(actionName) {
             if (actionName === "Item.Delete"
                 || actionName === "ExtentsList.DeleteItem"
                 || actionName === "Extent.DeleteExtent") {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -126,8 +138,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
                 "?workspace=" +
                 encodeURIComponent(workspace) +
-                    "&extent=" +
-                    encodeURIComponent(extentUri);
+                "&extent=" +
+                encodeURIComponent(extentUri);
         }
         static extentUpdateExtentProperties(workspace, extentUri, element) {
             ECClient.setProperties(workspace, extentUri, element);

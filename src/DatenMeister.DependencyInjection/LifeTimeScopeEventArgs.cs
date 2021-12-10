@@ -1,7 +1,7 @@
 ﻿using System;
 using Autofac;
 
-namespace DatenMeister.Modules
+namespace DatenMeister.DependencyInjection
 {
     public class LifeTimeScopeEventArgs : EventArgs
     {

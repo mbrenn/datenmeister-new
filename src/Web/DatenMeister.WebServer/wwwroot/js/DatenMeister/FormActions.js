@@ -1,4 +1,4 @@
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./ExtentControllerClient"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -18,6 +18,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         function execute(actionName, form, itemUrl, element) {
             let workspaceId;
             let extentUri;
+            let p = new URLSearchParams(window.location.search);
             switch (actionName) {
                 case "Extent.NavigateTo":
                     extentUri = element.get('uri');
@@ -29,8 +30,22 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     workspaceId = element.get('workspaceId');
                     FormActions.extentDelete(workspaceId, extentUri);
                     break;
+                case "Extent.Properties":
+                    extentUri = element.get('uri');
+                    workspaceId = element.get('workspaceId');
+                    FormActions.extentNavigateToProperties(workspaceId, extentUri);
+                    break;
+                case "Extent.Properties.Update":
+                    if (!p.has("extent") || !p.has("workspace")) {
+                        alert('There is no extent given');
+                    }
+                    else {
+                        const workspace = p.get('workspace');
+                        const extentUri = p.get('extent');
+                        FormActions.extentUpdateExtentProperties(workspace, extentUri, element);
+                    }
+                    break;
                 case "Extent.CreateItem":
-                    let p = new URLSearchParams(window.location.search);
                     if (!p.has("extent") || !p.has("workspace")) {
                         alert('There is no extent given');
                     }
@@ -103,6 +118,18 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 Settings.baseUrl + "ItemsOverview/" +
                     encodeURIComponent(workspace) + "/" +
                     encodeURIComponent(extentUri);
+        }
+        static extentNavigateToProperties(workspace, extentUri) {
+            document.location.href =
+                Settings.baseUrl +
+                    "ItemAction/Extent.Properties.Update/" +
+                    "?workspace=" +
+                    encodeURIComponent(workspace) +
+                    "&extent=" +
+                    encodeURIComponent(extentUri);
+        }
+        static extentUpdateExtentProperties(workspace, extentUri, element) {
+            ECClient.setProperties(workspace, extentUri, element);
         }
         static extentDelete(workspace, extentUri) {
             const parameter = {

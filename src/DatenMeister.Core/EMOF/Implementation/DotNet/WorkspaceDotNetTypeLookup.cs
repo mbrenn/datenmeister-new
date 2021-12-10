@@ -19,17 +19,14 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <summary>
         /// Defines a cache between all objects and their id
         /// </summary>
-        private readonly Dictionary<object, string> _cacheObjectToId =
-            new Dictionary<object, string>();
+        private readonly Dictionary<object, string> _cacheObjectToId = new();
 
-        private readonly Dictionary<string, Type> _elementsToTypes =
-            new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> _elementsToTypes = new();
 
         /// <summary>
         /// Stores a mapping between a .Net Type and the guid being used within the extent
         /// </summary>
-        private readonly Dictionary<Type, string> _typesToElements =
-            new Dictionary<Type, string>();
+        private readonly Dictionary<Type, string> _typesToElements = new();
 
         /// <summary>
         /// Adds an association between type and metaclassUri

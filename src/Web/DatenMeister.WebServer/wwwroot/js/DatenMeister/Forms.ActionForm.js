@@ -15,6 +15,14 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
         configuration.onSubmit = (element) => {
             FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
         };
+        if (configuration.formUri !== undefined) {
+            const defer = Forms.getForm(configuration.formUri);
+            $.when(defer).then(form => {
+                creator.formElement = form;
+                creator.createFormByObject(parent, configuration);
+                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+            });
+        }
         if (metaClass === undefined) {
             // Create a total empty form object... 
             creator.formElement = Forms.FormModel.createEmptyFormWithDetail();
@@ -22,7 +30,7 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
         }
         else {
             const defer = Forms.getDefaultFormForMetaClass(metaClass);
-            $.when(defer).then(function (form) {
+            $.when(defer).then(form => {
                 creator.formElement = form;
                 creator.createFormByObject(parent, configuration);
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");

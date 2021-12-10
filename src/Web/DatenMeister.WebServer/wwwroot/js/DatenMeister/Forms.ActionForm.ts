@@ -31,13 +31,22 @@ export function createActionFormForEmptyObject(
             creator.element);        
     };
 
+    if (configuration.formUri !== undefined) {
+        const defer = Forms.getForm(configuration.formUri);
+        $.when(defer).then(form => {
+            creator.formElement = form;
+            creator.createFormByObject(parent, configuration);
+
+            debugElementToDom(form, "#debug_formelement");
+        });
+    }
     if (metaClass === undefined) {
         // Create a total empty form object... 
         creator.formElement = Forms.FormModel.createEmptyFormWithDetail();
         creator.createFormByObject(parent, configuration);
     } else {
         const defer = Forms.getDefaultFormForMetaClass(metaClass);
-        $.when(defer).then(function (form) {
+        $.when(defer).then(form => {
             creator.formElement = form;
             creator.createFormByObject(parent, configuration);
 

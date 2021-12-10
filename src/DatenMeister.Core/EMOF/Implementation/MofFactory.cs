@@ -196,8 +196,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             => throw new NotImplementedException();
 
 
-        public static MofFactory CreateByExtent(IUriExtent loadedExtent)
-            => new MofFactory(loadedExtent);
+        public static MofFactory CreateByExtent(IUriExtent loadedExtent) => new(loadedExtent);
 
         /// <summary>
         /// Just a short call to create a new mof factory instance and call the create method

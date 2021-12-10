@@ -1,7 +1,11 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
+using BurnSystems.Extensions;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Json;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -39,6 +43,26 @@ namespace DatenMeister.WebServer.Controller
             /// Creates a new workspace
             /// </summary>
             public string Workspace { get; set; } = string.Empty;
+        }
+
+        [HttpPost("api/extent/set_properties/{workspace}/{extent}")]
+        public ActionResult<object> SetProperties(string workspace, string extentUri,
+            [FromBody] MofObjectAsJson properties)
+        {
+            var foundExtent = _workspaceLogic.FindExtent(workspace, extentUri)
+                              ?? throw new InvalidOperationException("The extent was not found");
+
+            var asObject = DirectJsonDeconverter.ConvertToObject(properties);
+            var asAllProperties = asObject as IObjectAllProperties
+                                  ?? throw new InvalidOperationException(
+                                      "For whatever reason, the properties could not be converted");
+
+            foreach (var property in asAllProperties.getPropertiesBeingSet())
+            {
+                foundExtent.set(property, asObject.get(property));
+            }
+
+            return new {success = true};
         }
 
         [HttpPost("api/extent/create_xmi/{workspace}")]

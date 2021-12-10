@@ -1,4 +1,4 @@
-﻿@page "/ItemAction/{ActionName}"
+﻿@page "/ItemAction/{ActionName}/{FormUri?}"
 @using System.Web
 @model DatenMeister.WebServer.Pages.CreateItemModel
 @{
@@ -24,7 +24,7 @@ $(function()
             actionForm.createActionFormForEmptyObject(
                 $("#form_view"),
                 undefined,
-                {isReadOnly: false, allowAddingNewProperties: true}, 
+                {isReadOnly: false, allowAddingNewProperties: true, formUri: @Model.JsFormUri )}, 
                 "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");        
         });
     }
@@ -38,7 +38,7 @@ $(function()
             actionForm.createActionFormForEmptyObject(
                 $("#form_view"),
                 "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.MetaClass))",
-                {isReadOnly: false, allowAddingNewProperties: true},
+                {isReadOnly: false, allowAddingNewProperties: true, formUri: @Model.JsFormUri},
                 "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");     
         });
     }

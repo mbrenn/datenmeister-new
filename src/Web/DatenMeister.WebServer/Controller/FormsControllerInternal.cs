@@ -19,6 +19,17 @@ namespace DatenMeister.WebServer.Controller
             _scopeStorage = scopeStorage;
         }
 
+        public IElement GetInternal(string formUri)
+        {
+            formUri = HttpUtility.UrlDecode(formUri);
+            if (GetItemByUriParameter(WorkspaceNames.WorkspaceManagement, formUri) is not IElement item)
+            {
+                throw new InvalidOperationException("Form is not found");
+            }
+
+            return item;
+        }
+
         public IElement GetDefaultFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);

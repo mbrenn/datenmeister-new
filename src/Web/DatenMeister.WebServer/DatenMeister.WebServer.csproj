@@ -23,6 +23,8 @@
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\ElementsLoader.ts" />
 
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ExtentControllerClient.ts" />
+
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts" />
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.FieldFactory.ts" />

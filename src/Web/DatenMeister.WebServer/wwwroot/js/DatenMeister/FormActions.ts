@@ -3,6 +3,7 @@ import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./Forms.Interfaces";
+import * as ECClient from "./ExtentControllerClient";
 
 export module DetailFormActions {
     export function requiresConfirmation(actionName: string): boolean {
@@ -18,6 +19,7 @@ export module DetailFormActions {
     export function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject) {
         let workspaceId;
         let extentUri;
+        let p = new URLSearchParams(window.location.search);
         switch (actionName) {
             case "Extent.NavigateTo":
                 extentUri = element.get('uri');
@@ -29,8 +31,21 @@ export module DetailFormActions {
                 workspaceId = element.get('workspaceId');
                 FormActions.extentDelete(workspaceId, extentUri);
                 break;
+            case "Extent.Properties":
+                extentUri = element.get('uri');
+                workspaceId = element.get('workspaceId');
+                FormActions.extentNavigateToProperties(workspaceId, extentUri);
+                break;
+            case "Extent.Properties.Update":
+                if (!p.has("extent") || !p.has("workspace")) {
+                    alert('There is no extent given');
+                } else {
+                    const workspace = p.get('workspace');
+                    const extentUri = p.get('extent');
+                    FormActions.extentUpdateExtentProperties(workspace, extentUri, element);
+                }
+                break;
             case "Extent.CreateItem":
-                let p = new URLSearchParams(window.location.search);
                 if (!p.has("extent") || !p.has("workspace")) {
                     alert('There is no extent given');
                 } else {
@@ -118,6 +133,20 @@ export class FormActions {
             Settings.baseUrl + "ItemsOverview/" +
             encodeURIComponent(workspace) + "/" +
             encodeURIComponent(extentUri);
+    }
+
+    static extentNavigateToProperties(workspace: string, extentUri: string) {
+        document.location.href =
+            Settings.baseUrl +
+            "ItemAction/Extent.Properties.Update/" +
+            "?workspace=" +
+            encodeURIComponent(workspace) +
+            "&extent=" +
+            encodeURIComponent(extentUri);
+    }
+    
+    static extentUpdateExtentProperties(workspace: string, extentUri: string, element: DmObject): void{
+        ECClient.setProperties(workspace, extentUri, element);
     }
 
     static extentDelete(workspace: string, extentUri: string): void {

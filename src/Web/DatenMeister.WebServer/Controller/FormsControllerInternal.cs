@@ -1,17 +1,17 @@
-﻿using DatenMeister.Core;
+﻿using System;
+using System.Web;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
-using System;
-using System.Web;
 
 namespace DatenMeister.WebServer.Controller
 {
     public class FormsControllerInternal
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         public FormsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
@@ -41,7 +41,7 @@ namespace DatenMeister.WebServer.Controller
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(formLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForItem(item,
-                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
+                new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
 
             if (form == null)
             {
@@ -63,7 +63,7 @@ namespace DatenMeister.WebServer.Controller
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(formLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForExtent(extent,
-                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
+                new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
@@ -82,7 +82,7 @@ namespace DatenMeister.WebServer.Controller
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             metaClass = HttpUtility.UrlDecode(metaClass);
-            
+
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(formLogic, _scopeStorage);
             if (
@@ -90,11 +90,11 @@ namespace DatenMeister.WebServer.Controller
             {
                 throw new InvalidOperationException("Element is not found: " + metaClass);
             }
-            
+
             var form = formFactory.CreateExtentFormForItemsMetaClass(
                 element,
-                new FormFactoryConfiguration { ViewModeId = viewMode ?? string.Empty });
-            
+                new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
+
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
@@ -118,8 +118,7 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Extent is not found");
             }
 
-            var foundElement = workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) as IObject;
-            if (foundElement == null)
+            if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
             {
                 throw new InvalidOperationException("Element is not found");
             }

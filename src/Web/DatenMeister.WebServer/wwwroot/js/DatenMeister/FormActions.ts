@@ -139,6 +139,7 @@ export class FormActions {
         document.location.href =
             Settings.baseUrl +
             "ItemAction/Extent.Properties.Update/" +
+            encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
             "?workspace=" +
             encodeURIComponent(workspace) +
             "&extent=" +

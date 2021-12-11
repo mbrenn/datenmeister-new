@@ -164,7 +164,7 @@ export class FormActions {
     }
     
     static extentUpdateExtentProperties(workspace: string, extentUri: string, element: DmObject): void{
-        ECClient.setProperties(workspace, extentUri, element);
+        ECClient.setProperties(workspace, extentUri, element).done(() => FormActions.extentNavigateTo(workspace, extentUri));
     }
 
     static extentDelete(workspace: string, extentUri: string): void {

@@ -14,9 +14,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             }
             return undefined;
         }
-
         DetailFormActions.loadObjectForAction = loadObjectForAction;
-
         function requiresConfirmation(actionName) {
             if (actionName === "Item.Delete"
                 || actionName === "ExtentsList.DeleteItem"
@@ -142,7 +140,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 encodeURIComponent(extentUri);
         }
         static extentUpdateExtentProperties(workspace, extentUri, element) {
-            ECClient.setProperties(workspace, extentUri, element);
+            ECClient.setProperties(workspace, extentUri, element).done(() => FormActions.extentNavigateTo(workspace, extentUri));
         }
         static extentDelete(workspace, extentUri) {
             const parameter = {

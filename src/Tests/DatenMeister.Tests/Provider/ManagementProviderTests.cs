@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -52,6 +51,41 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public void TestRemovalOfExtentViaProvider()
         {
+            var (_, workspaceLogic, _, _, extent) = GetInitializedWorkspace();
+
+            var firstWorkspace = extent.elements().OfType<IElement>().FirstOrDefault();
+            Assert.That(firstWorkspace, Is.Not.Null);
+            Assert.That(firstWorkspace.getOrDefault<string>(_DatenMeister._Management._Workspace.id),
+                Is.EqualTo("Data"));
+
+            var extents =
+                firstWorkspace.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
+            Assert.That(extents.Count(), Is.EqualTo(1));
+            var foundExtent = extents.ElementAt(0) as IElement;
+            Assert.That(foundExtent, Is.Not.Null);
+            Assert.That(foundExtent.get<string>(_DatenMeister._Management._Extent.uri), Is.EqualTo("dm:///test"));
+
+            var workspace = workspaceLogic.GetWorkspace("Data");
+            Assert.That(workspace, Is.Not.Null);
+            Assert.That(workspace.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.True);
+
+            // Now remove the extent via the object helper and check the deletion
+            ObjectHelper.DeleteObject(foundExtent);
+
+            // And check that it is deleted
+            workspace = workspaceLogic.GetWorkspace("Data");
+            Assert.That(workspace, Is.Not.Null);
+            Assert.That(workspace.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.False);
+
+            extents =
+                firstWorkspace.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
+            Assert.That(extents.Count(), Is.EqualTo(0));
+        }
+
+        private static (ScopeStorage scopeStorage, WorkspaceLogic workspaceLogic,
+            ExtentStorageData.LoadedExtentInformation loadedExtent,
+            ExtentOfWorkspaceProvider provider, MofUriExtent extent) GetInitializedWorkspace()
+        {
             var scopeStorage = new ScopeStorage();
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
             workspaceLogic.AddWorkspace(new Workspace("Data"));
@@ -73,6 +107,14 @@ namespace DatenMeister.Tests.Provider
 
             var provider = new ExtentOfWorkspaceProvider(workspaceLogic, scopeStorage);
             var extent = new MofUriExtent(provider, "dm:///management");
+            return (scopeStorage, workspaceLogic, loadedExtent, provider, extent);
+        }
+
+        [Test]
+        public void TestPropertiesViaProviderAccess()
+        {
+            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = GetInitializedWorkspace();
+            loadedExtent.Extent!.set("name", "Brenn");
 
             var firstWorkspace = extent.elements().OfType<IElement>().FirstOrDefault();
             Assert.That(firstWorkspace, Is.Not.Null);
@@ -81,26 +123,11 @@ namespace DatenMeister.Tests.Provider
 
             var extents =
                 firstWorkspace.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
-            Assert.That(extents.Count(), Is.EqualTo(1));
             var foundExtent = extents.ElementAt(0) as IElement;
-            Assert.That(foundExtent, Is.Not.Null);
-            Assert.That(foundExtent.get<string>(_DatenMeister._Management._Extent.uri), Is.EqualTo("dm:///test"));
-
-            var workspace = workspaceLogic.GetWorkspace("Data");
-            Assert.That(workspace, Is.Not.Null);
-            Assert.That(workspace.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.True);
-
-            // Now remove the extent via the object helper and check the deletion
-            ObjectHelper.DeleteObject(foundExtent);
-            
-            // And check that it is deleted
-            workspace = workspaceLogic.GetWorkspace("Data");
-            Assert.That(workspace, Is.Not.Null);
-            Assert.That(workspace.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.False);
-            
-            extents =
-                firstWorkspace.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
-            Assert.That(extents.Count(), Is.EqualTo(0));
+            var properties = foundExtent.getOrDefault<IElement>(_DatenMeister._Management._Extent.properties);
+            Assert.That(properties, Is.Not.Null);
+            Assert.That(properties.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
+            Assert.That(properties.getOrDefault<string>(MofUriExtent.UriPropertyName), Is.EqualTo("dm:///test"));
         }
     }
 }

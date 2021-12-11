@@ -16,6 +16,52 @@ namespace DatenMeister.Forms.FormCreator
     public partial class FormCreator
     {
         /// <summary>
+        /// Creates the list form out of the elements in the reflective collection.
+        /// Supports the creation by the metaclass and by the object's properties
+        /// </summary>
+        /// <param name="elements">Elements to be queried</param>
+        /// <param name="creationMode">The used creation mode</param>
+        /// <returns>The created list form </returns>
+        public IElement CreateListFormForCollection(IReflectiveCollection elements,
+            FormFactoryConfiguration creationMode)
+        {
+            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
+
+            AddToListFormByElements(result, elements, creationMode with {IsForListView = true});
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a list form for a certain metaclass being used inside an extent form
+        /// </summary>
+        /// <param name="element">Element being used to determine the propertytype... But this is empty</param>
+        /// <param name="propertyName">Name of the property</param>
+        /// <param name="propertyType"></param>
+        /// <param name="creationMode"></param>
+        public IElement CreateListFormForPropertyValues(
+            IObject? element,
+            string propertyName,
+            IElement? propertyType,
+            FormFactoryConfiguration creationMode)
+        {
+            if (!creationMode.CreateByMetaClass)
+            {
+                throw new InvalidOperationException("The list form will only be created for the metaclass");
+            }
+
+            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            AddFieldsToFormByMetaclass(result, propertyType, creationMode);
+            result.set(_DatenMeister._Forms._ListForm.property, propertyName);
+            result.set(_DatenMeister._Forms._ListForm.metaClass, propertyType);
+            result.set(_DatenMeister._Forms._ListForm.title,
+                $"{propertyName} - {NamedElementMethods.GetName(propertyType)}");
+            result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] {propertyType});
+
+            return result;
+        }
+
+        /// <summary>
         /// Creates a list form for a certain metaclass
         /// </summary>
         /// <param name="metaClass"></param>
@@ -34,8 +80,8 @@ namespace DatenMeister.Forms.FormCreator
             var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
             var propertyName = property != null ? realPropertyName : "List";
-            
-            var title = 
+
+            var title =
                 (metaClass != null ? NamedElementMethods.GetName(metaClass) : string.Empty) +
                 (metaClass != null && property != null ? " - " : "") +
                 (property != null ? NamedElementMethods.GetName(property) : "");
@@ -43,14 +89,15 @@ namespace DatenMeister.Forms.FormCreator
             result.set(_DatenMeister._Forms._ListForm.title, title);
             result.set(_DatenMeister._Forms._ListForm.name, propertyName);
             result.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
-            
+
             if (metaClass != null)
             {
-                AddFieldsToFormByMetaclass(result, metaClass, creationMode);
-                
+                AddFieldsToFormByMetaclass(result, metaClass, creationMode with {IsForListView = true});
+
                 var defaultType = mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, metaClass);
-                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
+                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+                    NamedElementMethods.GetName(metaClass));
                 result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] {defaultType});
             }
             else
@@ -59,25 +106,10 @@ namespace DatenMeister.Forms.FormCreator
                 AddFieldsToFormByMetaClassProperty(
                     result,
                     _UML.TheOne.CommonStructure.NamedElement._name,
-                    new FormFactoryConfiguration { CreateByPropertyValues = false, AutomaticMetaClassField = false },
+                    new FormFactoryConfiguration
+                        {CreateByPropertyValues = false, AutomaticMetaClassField = false, IsForListView = true},
                     FormUmlElementType.Property);
             }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Creates the list form out of the elements in the reflective collection.
-        /// Supports the creation by the metaclass and by the object's properties
-        /// </summary>
-        /// <param name="elements">Elements to be queried</param>
-        /// <param name="creationMode">The used creation mode</param>
-        /// <returns>The created list form </returns>
-        public IElement CreateListFormForCollection(IReflectiveCollection elements, FormFactoryConfiguration creationMode)
-        {
-            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
-            
-            AddToListFormByElements(result, elements, creationMode);
 
             return result;
         }
@@ -88,7 +120,8 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="form">Contains the form which is parsed</param>
         /// <param name="elements">Goes through the elements</param>
         /// <param name="creationMode">The creation mode to be used</param>
-        public void AddToListFormByElements(IElement form, IReflectiveCollection elements, FormFactoryConfiguration creationMode)
+        public void AddToListFormByElements(IElement form, IReflectiveCollection elements,
+            FormFactoryConfiguration creationMode)
         {
             var metaClassAdded = false;
             var onlyCommonProperties = creationMode.IncludeOnlyCommonProperties;
@@ -144,14 +177,14 @@ namespace DatenMeister.Forms.FormCreator
                     }
 
                     alreadyVisitedMetaClasses.Add(metaClass);
-                    AddFieldsToFormByMetaclass(form, metaClass, creationMode, cache);
+                    AddFieldsToFormByMetaclass(form, metaClass, creationMode with {IsForListView = true}, cache);
                 }
                 else if (creationMode.CreateByPropertyValues)
                 {
                     AddFieldsToForm(
                         form,
                         element,
-                        creationMode with { CreateByMetaClass = false },
+                        creationMode with {CreateByMetaClass = false, IsForListView = true},
                         cache);
                 }
 
@@ -166,14 +199,15 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="elements">The enumeration of elements which are parsed</param>
         /// <param name="propertyNames">A set of property names which are evaluated </param>
         /// <param name="creationMode">The creation mode to be used</param>
-        private void DefinePropertyNames(IReflectiveCollection elements, ISet<string> propertyNames, FormFactoryConfiguration creationMode)
+        private void DefinePropertyNames(IReflectiveCollection elements, ISet<string> propertyNames,
+            FormFactoryConfiguration creationMode)
         {
             if (elements == null) throw new ArgumentNullException(nameof(elements));
             if (propertyNames == null) throw new ArgumentNullException(nameof(propertyNames));
-            
+
             var firstRun = true;
             var toBeDeleted = new HashSet<string>();
-            
+
             // Parses the meta class
             if (creationMode.CreateByMetaClass)
             {
@@ -184,7 +218,7 @@ namespace DatenMeister.Forms.FormCreator
                     {
                         continue;
                     }
-                    
+
                     var propertiesOfElement =
                         ClassifierMethods.GetPropertyNamesOfClassifier(metaClass)
                             .ToList();
@@ -255,34 +289,6 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         /// Creates a list form for a certain metaclass being used inside an extent form
         /// </summary>
-        /// <param name="element">Element being used to determine the properttype... But this is empty</param>
-        /// <param name="propertyName">Name of the property</param>
-        /// <param name="propertyType"></param>
-        /// <param name="creationMode"></param>
-        public IElement CreateListFormForPropertyValues(
-            IObject? element,
-            string propertyName, 
-            IElement? propertyType,
-            FormFactoryConfiguration creationMode)
-        {
-            if (!creationMode.CreateByMetaClass)
-            {
-                throw new InvalidOperationException("The list form will only be created for the metaclass");
-            }
-
-            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
-            AddFieldsToFormByMetaclass(result, propertyType, creationMode);
-            result.set(_DatenMeister._Forms._ListForm.property, propertyName);
-            result.set(_DatenMeister._Forms._ListForm.metaClass, propertyType);
-            result.set(_DatenMeister._Forms._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(propertyType)}");
-            result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[]{propertyType});
-
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a list form for a certain metaclass being used inside an extent form
-        /// </summary>
         /// <param name="property">Property to be evaluated</param>
         /// <param name="creationMode"></param>
         public IElement CreateListFormForProperty(IElement property, FormFactoryConfiguration creationMode)
@@ -305,6 +311,5 @@ namespace DatenMeister.Forms.FormCreator
             result.set(_DatenMeister._Forms._ListForm.title, $"{propertyName}");
             return result;
         }
-        
     }
 }

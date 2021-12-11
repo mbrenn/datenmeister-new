@@ -21,12 +21,12 @@
         /// Allows the automatic creation of the metaclass field at the end of the form
         /// </summary>
         public bool AutomaticMetaClassField { get; set; } = true;
-        
+
         /// <summary>
         /// Gets or sets whether all fields shall be generated as a read-only field
         /// </summary>
         public bool IsReadOnly { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a flag which indicates that for a collection only these properties shall be
         /// included which are in common between the elements. This reduces the number of
@@ -57,7 +57,13 @@
         /// </summary>
         public string ViewModeId { get; set; } = string.Empty;
 
+        /// <summary>
+        ///     Gets or sets the information whether the created form is just for a list view.
+        ///     If that this is the case, then no subforms will be created
+        /// </summary>
+        public bool IsForListView { get; set; }
+
         public static FormFactoryConfiguration CreateByMetaClassOnly =>
-            new FormFactoryConfiguration() { AutomaticMetaClassField = false, CreateByPropertyValues = false };
+            new FormFactoryConfiguration() {AutomaticMetaClassField = false, CreateByPropertyValues = false};
     }
 }

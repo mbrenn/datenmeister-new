@@ -1,0 +1,23 @@
+﻿@page "/Logging"
+@namespace DatenMeister.WebServer.Pages
+@using System.Globalization
+@using BurnSystems.Logging.Provider
+@model LoggingModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - Logging";
+}
+
+<h1>Logging</h1>
+
+<div class="dm-logging">
+
+    @foreach (var logging in InMemoryDatabaseProvider.TheOne.Messages)
+    {
+        <p class="dm-logging-@logging.LogMessage.LogLevel.ToString().ToLower()">
+            @logging.Created.ToString(CultureInfo.InvariantCulture) @logging.LogMessage.ToString()
+        </p>
+    }
+</div>

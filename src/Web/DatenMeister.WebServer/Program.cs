@@ -12,6 +12,10 @@ namespace DatenMeister.WebServer
 {
     public class Program
     {
+        private static volatile bool _performRestart;
+
+        private static IHost? _host;
+
         /// <summary>
         /// Stops the program and performs a restart, if required
         /// </summary>
@@ -19,19 +23,15 @@ namespace DatenMeister.WebServer
         public static async void Stop(bool restart = false)
         {
             if (_host == null) return; // Nothing to do
-            
+
             _performRestart = restart;
             await _host.StopAsync();
         }
 
-        private static volatile bool _performRestart;
-
-        private static IHost? _host;
-        
         public static void Main(string[] args)
         {
             InitializeLogging();
-                
+
             // Starts the webserver
             do
             {
@@ -40,12 +40,12 @@ namespace DatenMeister.WebServer
                 defaultSettings.IsLockingActivated = true;
 
                 GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
-                
+
                 _performRestart = false;
                 _host = CreateHostBuilder(args).Build();
                 _host.Run();
             } while (_performRestart);
-            
+
             // Unloads the DatenMeister
             GiveMe.TryGetScope()?.UnuseDatenMeister();
         }
@@ -53,12 +53,14 @@ namespace DatenMeister.WebServer
         private static void InitializeLogging()
         {
             TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
+            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne);
 
             // Preload Public Settings
             var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
             var publicSettings =
                 PublicSettingHandler.LoadSettingsFromDirectory(
-                    Path.GetDirectoryName(publicSettingsPath) ?? throw new InvalidOperationException("Path returned null"));
+                    Path.GetDirectoryName(publicSettingsPath) ??
+                    throw new InvalidOperationException("Path returned null"));
             if (publicSettings == null || publicSettings.logLocation != LogLocation.None)
             {
                 var location = publicSettings?.logLocation ?? LogLocation.Application;
@@ -88,9 +90,6 @@ namespace DatenMeister.WebServer
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

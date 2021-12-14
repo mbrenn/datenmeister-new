@@ -123,9 +123,39 @@ a {
 
 .dm-anydatafield-headline a {
   cursor: pointer;
-  text-decoration: none;  
+  text-decoration: none;
 }
 
 .dm-anydatafield-headline a.active {
   text-decoration: underline;
+}
+
+.dm-logging p {
+  margin: 0px;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.dm-logging-trace {
+  color: gray;
+}
+
+.dm-logging-debug {
+  color: darkblue;
+}
+
+.dm-logging-info {
+  color: green;
+}
+
+.dm-logging-warn {
+  color: yellow;
+}
+
+.dm-logging-error {
+  color: red;
+}
+
+.dm-logging-fatal {
+  color: blueviolet;
 }

@@ -13,14 +13,14 @@ namespace DatenMeister.WebServer.Pages
         {
             _logger = logger;
         }
-        
-        
+
+
         [Parameter] public string Workspace { get; set; } = string.Empty;
 
         [Parameter] public string Extent { get; set; } = string.Empty;
 
         [Parameter] public string? Item { get; set; } = string.Empty;
-        
+
         public void OnGet(string workspace, string extent, string? item)
         {
             Workspace = WebUtility.UrlDecode(workspace);

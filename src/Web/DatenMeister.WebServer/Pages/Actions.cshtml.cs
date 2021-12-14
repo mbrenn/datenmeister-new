@@ -12,7 +12,6 @@ namespace DatenMeister.WebServer.Pages
     {
         public void OnGet()
         {
-            
         }
 
         public string GetZipCodeMetaClassUri()
@@ -20,7 +19,7 @@ namespace DatenMeister.WebServer.Pages
             var dm = GiveMe.Scope;
             var localTypeSupport = dm.Resolve<LocalTypeSupport>();
             return localTypeSupport.GetMetaClassFor(typeof(ZipCode))?.GetUri()
-                ?? throw new InvalidOperationException("Zipcode extension was not found");
+                   ?? throw new InvalidOperationException("Zipcode extension was not found");
         }
     }
 }

@@ -9,13 +9,13 @@ namespace DatenMeister.WebServer.Pages
     {
         private readonly WorkspaceController _workspaceController;
 
+        public List<WorkspaceModel> Workspaces = new();
+
         public WorkspacesAndExtent(WorkspaceController workspaceController)
         {
             _workspaceController = workspaceController;
         }
 
-        public List<WorkspaceModel> Workspaces = new();
-        
         public void OnGet()
         {
             Workspaces = _workspaceController.GetWorkspaceModels();

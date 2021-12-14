@@ -14,7 +14,6 @@ namespace DatenMeister.WebServer.Pages
 
         public void OnGet()
         {
-
         }
     }
 }

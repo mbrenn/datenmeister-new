@@ -14,21 +14,18 @@ namespace DatenMeister.WebServer.Pages
     public class ResetDatenMeister : PageModel
     {
         /// <summary>
-        /// Gets or sets the information whether the restart has been performed
+        ///     Gets or sets the information whether the restart has been performed
         /// </summary>
         public bool IsRestarted { get; set; }
-        
+
         public void OnGet()
         {
         }
-        
+
         public void OnPost(string action)
         {
-            if (action != "reset")
-            {
-                return;
-            }
-            
+            if (action != "reset") return;
+
             // Ok... what to do now?
             // Collect all files...
             var files = new List<string>();
@@ -37,10 +34,7 @@ namespace DatenMeister.WebServer.Pages
             var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {
-                if (workspace.id == WorkspaceNames.WorkspaceData)
-                {
-                    continue;
-                }
+                if (workspace.id == WorkspaceNames.WorkspaceData) continue;
 
                 foreach (var extent in workspaceLogic.GetExtentsForWorkspace(workspace))
                 {
@@ -51,10 +45,7 @@ namespace DatenMeister.WebServer.Pages
                             loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
                                 ._ExtentFileLoaderConfig.filePath);
 
-                        if (extentStoragePath != null)
-                        {
-                            files.Add(extentStoragePath);
-                        }
+                        if (extentStoragePath != null) files.Add(extentStoragePath);
                     }
                 }
             }
@@ -62,18 +53,14 @@ namespace DatenMeister.WebServer.Pages
             GiveMe.Scope.UnuseDatenMeister();
             GiveMe.Scope = null!;
 
-            foreach (var file in files)
-            {
-                System.IO.File.Delete(file);
-            }
+            foreach (var file in files) System.IO.File.Delete(file);
 
             System.IO.File.Delete(Integrator.GetPathToWorkspaces(integrationSettings));
             System.IO.File.Delete(Integrator.GetPathToExtents(integrationSettings));
-            
+
             // Reloads the DatenMeister
             IsRestarted = true;
             Program.Stop(true);
-            
         }
     }
 }

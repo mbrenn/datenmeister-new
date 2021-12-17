@@ -15,43 +15,36 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         {
             MetaclassUriPath = ((MofObjectShadow) _DatenMeister.TheOne.Management.__Extent).Uri;
         }
-        
-        /// <summary>
-        /// /Gets the information 
-        /// </summary>
-        public ExtentStorageData.LoadedExtentInformation? LoadedExtentInformation
-        {
-            get;
-        }
 
         public ExtentObject(
             ExtentOfWorkspaceProvider provider,
             Workspace parentWorkspace,
             IUriExtent? uriExtent,
-            ExtentStorageData.LoadedExtentInformation? loadedExtentInformation) 
+            ExtentStorageData.LoadedExtentInformation? loadedExtentInformation)
             : base(
-                new Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>(uriExtent, loadedExtentInformation), 
-                provider, 
-                string.Empty /*will be set below*/,  
+                new Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>(uriExtent, loadedExtentInformation),
+                provider,
+                string.Empty /*will be set below*/,
                 MetaclassUriPath)
         {
-            Id = parentWorkspace.id + 
+            Id = parentWorkspace.id +
                  "_" +
                  (loadedExtentInformation?.Configuration.getOrDefault<string>(
                       _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
                   ?? uriExtent?.contextURI() ??
                   throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"));
-            
+
             LoadedExtentInformation = loadedExtentInformation;
 
             AddMapping(
                 _DatenMeister._Management._Extent.workspaceId,
                 e => parentWorkspace.id,
                 (e, v) => throw new InvalidOperationException("Setting of workspaces is not supported"));
-            
+
             AddMapping(
                 _DatenMeister._Management._Extent.uri,
-                e => loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri) ?? uriExtent?.contextURI() ?? "Invalid Uri",
+                e => loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                    ._ExtentLoaderConfig.extentUri) ?? uriExtent?.contextURI() ?? "Invalid Uri",
                 (e, v) =>
                 {
                     if (v == null)
@@ -108,7 +101,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                         mofExtent.GetConfiguration().Name = v?.ToString() ?? string.Empty;
                     }
                 });
-            
+
             AddMapping(
                 _DatenMeister._Management._Extent.extentType,
                 e => (uriExtent as MofExtent)?.GetConfiguration().ExtentType,
@@ -119,7 +112,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                         mofExtent.GetConfiguration().ExtentType = v?.ToString() ?? string.Empty;
                     }
                 });
-            
+
             AddMapping(
                 _DatenMeister._Management._Extent.autoEnumerateType,
                 e => (uriExtent as MofExtent)?.GetConfiguration().AutoEnumerateType,
@@ -154,11 +147,21 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 e => loadedExtentInformation?.FailLoadingMessage ?? string.Empty,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 
+            AddMapping(
+                _DatenMeister._Management._Extent.properties,
+                e => (loadedExtentInformation?.Extent as MofExtent)?.MetaXmiElement,
+                (e, v) => throw new InvalidOperationException("properties cannot be set"));
+
             AddContainerMapping(
                 x => new WorkspaceObject(provider, parentWorkspace),
                 (_, value) => { }
             );
         }
+
+        /// <summary>
+        /// /Gets the information 
+        /// </summary>
+        public ExtentStorageData.LoadedExtentInformation? LoadedExtentInformation { get; }
 
         /// <summary>
         /// Stores the uri to the metaclass

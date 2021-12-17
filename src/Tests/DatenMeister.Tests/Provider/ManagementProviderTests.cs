@@ -26,7 +26,7 @@ namespace DatenMeister.Tests.Provider
             var uriExtent = scope.WorkspaceLogic.GetManagementWorkspace()
                 .FindExtent(WorkspaceNames.UriExtentWorkspaces);
 
-            var userExtent = uriExtent.element("#Management_dm%3A%2F%2F%2F_internal%2Fforms%2Fuser");
+            var userExtent = uriExtent.element("#Management_dm%3A%2F%2F%2F__internal%2Fforms%2Fuser");
             Assert.That(userExtent, Is.Not.Null);
 
             userExtent.set(_DatenMeister._Management._Extent.uri, "dm:///newusers");

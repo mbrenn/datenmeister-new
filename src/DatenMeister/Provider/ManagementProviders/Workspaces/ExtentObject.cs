@@ -4,6 +4,7 @@ using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 
@@ -27,12 +28,14 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 string.Empty /*will be set below*/,
                 MetaclassUriPath)
         {
-            Id = parentWorkspace.id +
+            var extentUri = loadedExtentInformation?.Configuration.getOrDefault<string>(
+                                _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
+                            ?? uriExtent?.contextURI() ??
+                            throw new InvalidOperationException("uriExtent and loadedExtentInformation is null");
+
+            Id = parentWorkspace.id.Replace("_", "__") +
                  "_" +
-                 (loadedExtentInformation?.Configuration.getOrDefault<string>(
-                      _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
-                  ?? uriExtent?.contextURI() ??
-                  throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"));
+                 extentUri.Replace("_", "__");
 
             LoadedExtentInformation = loadedExtentInformation;
 
@@ -149,7 +152,13 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
             AddMapping(
                 _DatenMeister._Management._Extent.properties,
-                e => (loadedExtentInformation?.Extent as MofExtent)?.MetaXmiElement,
+                e =>
+                {
+                    var found = (loadedExtentInformation?.Extent as MofExtent)?.GetMetaObject();
+                    return found == null
+                        ? null
+                        : new ProxyIdProviderObject(found.ProviderObject, Id + "_Properties");
+                },
                 (e, v) => throw new InvalidOperationException("properties cannot be set"));
 
             AddContainerMapping(

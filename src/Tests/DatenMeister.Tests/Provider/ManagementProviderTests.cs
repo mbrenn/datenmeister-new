@@ -11,6 +11,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Plugins;
 using DatenMeister.Provider.ExtentManagement;
 using NUnit.Framework;
 
@@ -83,12 +84,12 @@ namespace DatenMeister.Tests.Provider
         }
 
         private static (ScopeStorage scopeStorage, WorkspaceLogic workspaceLogic,
-            ExtentStorageData.LoadedExtentInformation loadedExtent,
-            ExtentOfWorkspaceProvider provider, MofUriExtent extent) GetInitializedWorkspace()
+            ExtentStorageData.LoadedExtentInformation loadedExtent, ExtentOfWorkspaceProvider provider, MofUriExtent
+            managementExtent) GetInitializedWorkspace()
         {
             var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(WorkspaceLogic.InitDefault());
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
-            workspaceLogic.AddWorkspace(new Workspace("Data"));
 
             var mapper = new ConfigurationToExtentStorageMapper();
             scopeStorage.Add(mapper);
@@ -128,6 +129,34 @@ namespace DatenMeister.Tests.Provider
             Assert.That(properties, Is.Not.Null);
             Assert.That(properties.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
             Assert.That(properties.getOrDefault<string>(MofUriExtent.UriPropertyName), Is.EqualTo("dm:///test"));
+        }
+
+        [Test]
+        public void TestUrlsOfWorkspaceAndExtentAndProperties()
+        {
+            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = GetInitializedWorkspace();
+            loadedExtent.Extent!.set("name", "Brenn");
+            var plugin = new ManagementProviderPlugin(workspaceLogic, scopeStorage);
+            plugin.Start(PluginLoadingPosition.AfterInitialization);
+
+            var data = workspaceLogic.FindItem(
+                ExtentManagementUrlHelper.GetUrlOfWorkspace(
+                    workspaceLogic.GetDataWorkspace()));
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.getOrDefault<string>(_DatenMeister._Management._Workspace.id), Is.EqualTo("Data"));
+
+            var extentData = workspaceLogic.FindItem(
+                ExtentManagementUrlHelper.GetUrlOfExtent(
+                    workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
+            Assert.That(extentData, Is.Not.Null);
+            Assert.That(extentData.getOrDefault<string>(_DatenMeister._Management._Extent.uri),
+                Is.EqualTo("dm:///test"));
+
+            var extentProperties = workspaceLogic.FindItem(
+                ExtentManagementUrlHelper.GetUrlOfExtentsProperties(
+                    workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
+            Assert.That(extentProperties, Is.Not.Null);
+            Assert.That(extentProperties.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
         }
     }
 }

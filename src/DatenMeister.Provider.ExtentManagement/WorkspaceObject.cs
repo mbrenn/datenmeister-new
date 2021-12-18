@@ -23,7 +23,7 @@ public class WorkspaceObject : MappingProviderObject<Workspace>
     public WorkspaceObject(ExtentOfWorkspaceProvider provider, Workspace workspace) : base(workspace, provider,
         workspace.id, MetaclassUriPath)
     {
-        Id = ExtentManagementUrlHelper.GetUrlOfWorkspace(workspace);
+        Id = ExtentManagementUrlHelper.GetIdOfWorkspace(workspace);
 
         AddMapping(
             _DatenMeister._Management._Workspace.id,

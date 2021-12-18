@@ -10,7 +10,7 @@ public class ExtentManagementUrlHelper
     /// </summary>
     /// <param name="workspace">Workspace to be used</param>
     /// <returns>Returns the management url under which the workspace will be found</returns>
-    public static string GetUrlOfWorkspace(Workspace workspace)
+    public static string GetIdOfWorkspace(Workspace workspace)
     {
         return workspace.id;
     }
@@ -21,7 +21,7 @@ public class ExtentManagementUrlHelper
     /// <param name="workspace">Workspace in which the extent is found</param>
     /// <param name="extent">Extent to be queried</param>
     /// <returns>The management url of the extent</returns>
-    public static string GetUrlOfExtent(Workspace workspace, IExtent? extent)
+    public static string GetIdOfExtent(Workspace workspace, IExtent? extent)
     {
         var extentUri =
             (extent as IUriExtent)?.contextURI() ??
@@ -39,8 +39,24 @@ public class ExtentManagementUrlHelper
     /// <param name="workspace">Workspace in which the extent is found</param>
     /// <param name="extent">Extent to be queried</param>
     /// <returns>The management url of the extent's properties</returns>
+    public static string GetIdOfExtentsProperties(Workspace workspace, IExtent? extent)
+    {
+        return $"{GetIdOfExtent(workspace, extent)}_Properties";
+    }
+
+    public static string GetUrlOfWorkspace(Workspace workspace)
+    {
+        return $"{ManagementProviderPlugin.UriExtentWorkspaces}#{GetIdOfWorkspace(workspace)}";
+    }
+
+
+    public static string GetUrlOfExtent(Workspace workspace, IExtent? extent)
+    {
+        return $"{ManagementProviderPlugin.UriExtentWorkspaces}#{GetIdOfExtent(workspace, extent)}";
+    }
+
     public static string GetUrlOfExtentsProperties(Workspace workspace, IExtent? extent)
     {
-        return $"{GetUrlOfExtent(workspace, extent)}_Properties";
+        return $"{ManagementProviderPlugin.UriExtentWorkspaces}#{GetIdOfExtentsProperties(workspace, extent)}";
     }
 }

@@ -28,7 +28,7 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
             string.Empty /*will be set below*/,
             MetaclassUriPath)
     {
-        Id = ExtentManagementUrlHelper.GetUrlOfExtent(parentWorkspace, uriExtent);
+        Id = ExtentManagementUrlHelper.GetIdOfExtent(parentWorkspace, uriExtent);
 
         LoadedExtentInformation = loadedExtentInformation;
 
@@ -131,7 +131,7 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
                 return found == null
                     ? null
                     : new ProxyIdProviderObject(found.ProviderObject,
-                        ExtentManagementUrlHelper.GetUrlOfExtentsProperties(parentWorkspace, uriExtent));
+                        ExtentManagementUrlHelper.GetIdOfExtentsProperties(parentWorkspace, uriExtent));
             },
             (e, v) => throw new InvalidOperationException("properties cannot be set"));
 

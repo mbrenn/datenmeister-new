@@ -1,11 +1,10 @@
-﻿using System;
-using DatenMeister.Core;
+﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Provider.ManagementProviders.Workspaces
+namespace DatenMeister.Provider.ExtentManagement
 {
     /// <summary>
     /// Defines a plugin for the management provider

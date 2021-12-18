@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.Mapping;
 using DatenMeister.Core.Runtime.Workspaces;
 using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 
-namespace DatenMeister.Provider.ManagementProviders.Workspaces
+namespace DatenMeister.Provider.ExtentManagement
 {
     public class WorkspaceObject : MappingProviderObject<Workspace>
     {
@@ -65,15 +63,16 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                     // Gets all the extent which are registered but are not actively loaded.
                     // These one might be in error, unloaded state or other states
                     foreach (var loadedExtent in
-                        provider.ExtentManager.GetLoadedExtentInformationForWorkspace(w.id))
+                             provider.ExtentManager.GetLoadedExtentInformationForWorkspace(w.id))
                     {
                         if (copyResult.Any(x =>
-                            x?.LoadedExtentInformation?.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri) ==
-                            loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
+                                x?.LoadedExtentInformation?.Configuration.getOrDefault<string>(_ExtentLoaderConfig
+                                    .extentUri) ==
+                                loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
                         {
                             continue;
                         }
-                        
+
                         result.Add(new ExtentObject(
                             provider, workspace, null, loadedExtent));
                     }
@@ -87,7 +86,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                             provider.ExtentManager.RemoveExtent(extentObject.LoadedExtentInformation);
                         }
                     };
-                        
+
                     return resultAsCollection;
                 },
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));

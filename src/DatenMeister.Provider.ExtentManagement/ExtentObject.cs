@@ -1,14 +1,14 @@
-﻿using System;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.Mapping;
 using DatenMeister.Core.Provider.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 
-namespace DatenMeister.Provider.ManagementProviders.Workspaces
+namespace DatenMeister.Provider.ExtentManagement
 {
     public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>>
     {

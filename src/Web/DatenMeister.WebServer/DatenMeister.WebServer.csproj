@@ -67,6 +67,7 @@
     <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj"/>
     <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
     <ProjectReference Include="..\..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
     <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />

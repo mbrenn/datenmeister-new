@@ -4,9 +4,8 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Provider;
 
-namespace DatenMeister.Provider
+namespace DatenMeister.Core.Provider.Mapping
 {
     public class MappingProviderObject<T> : IProviderObject where T : class
     {

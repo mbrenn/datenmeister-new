@@ -11,7 +11,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Provider.ExtentManagement;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider

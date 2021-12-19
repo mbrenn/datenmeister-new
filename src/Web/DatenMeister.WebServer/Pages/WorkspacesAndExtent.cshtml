@@ -1,6 +1,7 @@
 ﻿@page "/WorkspacesAndExtent"
 @namespace DatenMeister.WebServer.Pages
 @using System.Web
+@using DatenMeister.Provider.ExtentManagement
 @model WorkspacesAndExtent
 @{
     Layout = "~/Shared/_Layout.cshtml";
@@ -12,15 +13,36 @@
 <ul>
     @foreach (var workspace in Model.Workspaces)
     {
+        var uriExtent = HttpUtility.UrlEncode(ManagementProviderPlugin.UriExtentWorkspaces);
+        var workspaceId = HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(Model.GetIdOfWorkspace(workspace)));
+
         <li>
-            <a href="~/Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(workspace.id))">@workspace.id - @workspace.annotation</a>
+            <a href="~/Item/Management/@uriExtent/@Html.Raw(workspaceId)">@workspace.id - @workspace.annotation</a>
         </li>
         <ul>
             @foreach (var extent in workspace.extents)
             {
-                <li>
-                    <a href="~/Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(workspace.id))_@(HttpUtility.UrlEncode(extent.uri))">@extent.uri</a>
-                </li>
+                try
+                {
+                    var extentId = HttpUtility.HtmlAttributeEncode(
+                        HttpUtility.UrlEncode(Model.GetIdOfExtent(workspace, extent)));
+                    var extentsPropertiesId = HttpUtility.HtmlAttributeEncode(
+                        HttpUtility.UrlEncode(Model.GetIdOfExtentsProperties(workspace, extent)));
+
+                    var extentName = extent.uri;
+                    if (string.IsNullOrEmpty(extentName))
+                    {
+                        extentName = "No Uri given";
+                    }
+                    <li>
+                        <a href="~/Item/Management/@uriExtent/@Html.Raw(extentId)">@extentName</a>
+                        (<a href="~/Item/Management/@uriExtent/@Html.Raw(extentsPropertiesId)">Properties</a>)
+                    </li>
+                }
+                catch (Exception)
+                {
+                    <li>Error during extent retrieval of @extent?.ToString()</li>
+                }
             }
         </ul>
     }

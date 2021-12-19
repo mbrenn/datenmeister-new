@@ -127,7 +127,8 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
             _DatenMeister._Management._Extent.properties,
             e =>
             {
-                var found = (loadedExtentInformation?.Extent as MofExtent)?.GetMetaObject();
+                var found = (loadedExtentInformation?.Extent as MofExtent)?.GetMetaObject()
+                            ?? (uriExtent as MofExtent)?.GetMetaObject();
                 return found == null
                     ? null
                     : new ProxyIdProviderObject(found.ProviderObject,

@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using System.Web;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ExtentManagement;
@@ -46,17 +47,19 @@ public class ExtentManagementUrlHelper
 
     public static string GetUrlOfWorkspace(Workspace workspace)
     {
-        return $"{ManagementProviderPlugin.UriExtentWorkspaces}#{GetIdOfWorkspace(workspace)}";
+        return
+            $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfWorkspace(workspace))}";
     }
-
 
     public static string GetUrlOfExtent(Workspace workspace, IExtent? extent)
     {
-        return $"{ManagementProviderPlugin.UriExtentWorkspaces}#{GetIdOfExtent(workspace, extent)}";
+        return
+            $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfExtent(workspace, extent))}";
     }
 
     public static string GetUrlOfExtentsProperties(Workspace workspace, IExtent? extent)
     {
-        return $"{ManagementProviderPlugin.UriExtentWorkspaces}#{GetIdOfExtentsProperties(workspace, extent)}";
+        return
+            $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfExtentsProperties(workspace, extent))}";
     }
 }

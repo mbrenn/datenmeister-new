@@ -46,11 +46,12 @@ namespace DatenMeister.WebServer.Pages
                 var extent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, extentName)
                              ?? throw new InvalidOperationException(
                                  $"Extent '{extentName}' in '{workspaceId}' not found");
-                var uri = ExtentManagementUrlHelper.GetUrlOfExtentsProperties(workspace, extent);
+                var uriExtent = HttpUtility.UrlEncode(ManagementProviderPlugin.UriExtentWorkspaces);
+                var itemUri =
+                    HttpUtility.UrlEncode(ExtentManagementUrlHelper.GetIdOfExtentsProperties(workspace, extent));
 
                 return Redirect(
-                    "~/Item/Management/" + HttpUtility.UrlEncode(ManagementProviderPlugin.UriExtentWorkspaces) + "/" +
-                    HttpUtility.UrlEncode(uri));
+                    $"~/Item/Management/{uriExtent}/{itemUri}");
             }
 
             return Page();

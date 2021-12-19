@@ -39,8 +39,9 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
 
         AddMapping(
             _DatenMeister._Management._Extent.uri,
-            e => loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
-                ._ExtentLoaderConfig.extentUri) ?? uriExtent?.contextURI() ?? "Invalid Uri",
+            e => uriExtent?.contextURI()
+                 ?? loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                     ._ExtentLoaderConfig.extentUri) ?? "Invalid Uri",
             (e, v) =>
             {
                 if (v == null) throw new InvalidOperationException("value is null");

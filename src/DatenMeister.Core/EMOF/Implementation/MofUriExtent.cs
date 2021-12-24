@@ -18,14 +18,19 @@ namespace DatenMeister.Core.EMOF.Implementation
     public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
         /// <summary>
+        /// Defines the name for the uri property
+        /// </summary>
+        public const string UriPropertyName = "__uri";
+        
+        /// <summary>
         /// Stores the resolver cache
         /// </summary>
-        private readonly ResolverCache _resolverCache = new ResolverCache();
+        private readonly ResolverCache _resolverCache = new();
         
         /// <summary>
         /// Defines a possible logger
         /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(MofUriExtent));
+        private static readonly ClassLogger Logger = new(typeof(MofUriExtent));
 
         /// <summary>
         /// Gets an enumeration of alternative uris
@@ -48,7 +53,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             get
             {
-                var uri = isSet("__uri") ? get("__uri") : null;
+                var uri = isSet(UriPropertyName) ? get(UriPropertyName) : null;
                 if (uri == null)
                 {
                     return string.Empty;
@@ -57,10 +62,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return uri.ToString() ?? string.Empty;
             }
 
-            set => set("__uri", value);
+            set => set(UriPropertyName, value);
         }
 
-        private IWorkspaceLogic? _cachedWorkspaceLogic;
+        private readonly IWorkspaceLogic? _cachedWorkspaceLogic;
 
         /// <inheritdoc />
         public MofUriExtent(
@@ -312,8 +317,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         
         private class ResolverCache
         {
-            private readonly Dictionary<ResolverKey, object> _cache
-             = new Dictionary<ResolverKey, object>();
+            private readonly Dictionary<ResolverKey, object> _cache = new();
 
             public void Clear()
             {

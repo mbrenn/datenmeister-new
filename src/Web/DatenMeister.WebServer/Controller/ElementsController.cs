@@ -12,7 +12,7 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Json;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Provider.ExtentManagement;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -39,7 +39,7 @@ namespace DatenMeister.WebServer.Controller
                 return NotFound();
             }
 
-            return new { name = NamedElementMethods.GetName(foundItem) };
+            return new {name = NamedElementMethods.GetName(foundItem)};
         }
 
         [HttpGet("api/elements/get_name/{uri}/{workspace?}")]
@@ -76,7 +76,7 @@ namespace DatenMeister.WebServer.Controller
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUrl = HttpUtility.UrlDecode(itemUrl);
-            
+
             if (workspaceId == null)
             {
                 var extent = ManagementProviderPlugin.GetExtentForWorkspaces(_workspaceLogic);

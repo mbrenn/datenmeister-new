@@ -108,7 +108,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// STores the object for synchronization issues
         /// </summary>
-        private readonly object _syncObject = new object();
+        private readonly object _syncObject = new();
 
         /// <summary>
         /// Stores the information whether the evaluation about the item count is currently

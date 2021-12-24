@@ -33,6 +33,7 @@
     <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj"/>
     <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>
   <ItemGroup>

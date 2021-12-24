@@ -15,19 +15,27 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
         configuration.onSubmit = (element) => {
             FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
         };
-        if (metaClass === undefined) {
-            // Create a total empty form object... 
-            creator.formElement = Forms.FormModel.createEmptyFormWithDetail();
+        let deferLoadObjectForAction = FormActions_1.DetailFormActions.loadObjectForAction(actionName);
+        if (deferLoadObjectForAction === undefined) {
+            deferLoadObjectForAction = $.Deferred();
+            deferLoadObjectForAction.resolve(undefined);
+        }
+        let deferForm;
+        if (configuration.formUri !== undefined) {
+            deferForm = Forms.getForm(configuration.formUri);
+        } else if (metaClass === undefined) {
+            deferForm = $.Deferred();
+            deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
+            // Create a total empty form object...
+        } else {
+            deferForm = Forms.getDefaultFormForMetaClass(metaClass);
+        }
+        $.when(deferForm, deferLoadObjectForAction).then((form, element) => {
+            creator.element = element;
+            creator.formElement = form;
             creator.createFormByObject(parent, configuration);
-        }
-        else {
-            const defer = Forms.getDefaultFormForMetaClass(metaClass);
-            $.when(defer).then(function (form) {
-                creator.formElement = form;
-                creator.createFormByObject(parent, configuration);
-                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
-            });
-        }
+            (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+        });
     }
     exports.createActionFormForEmptyObject = createActionFormForEmptyObject;
 });

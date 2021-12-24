@@ -12,7 +12,6 @@ using DatenMeister.Forms;
 using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Types;
 using DatenMeister.WebServer.Controller;
-using Microsoft.AspNetCore.Routing;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web
@@ -48,7 +47,6 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundForm.Value, Is.Not.Null);
             Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
-
 
         [Test]
         public void TestDetailFormForDefaultButtons()
@@ -140,6 +138,23 @@ namespace DatenMeister.Tests.Web
                 .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ==
                                      nameof(ZipCode.positionLat));
             Assert.That(positionLat,Is.Not.Null);
+        }
+
+        [Test]
+        public void TestExtentFormByUri()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+
+            var controller = new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
+            var form = controller.GetInternal(WorkspaceNames.UriExtentInternalForm + "#DatenMeister.Extent.Properties");
+            Assert.That(form, Is.Not.Null);
+
+            var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
+            Assert.That(detailForm, Is.Not.Null);
+
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            Assert.That(fields, Is.Not.Null);
+            Assert.That(fields.OfType<IElement>().Any(x=>x.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) == "DefaultTypePackage"), Is.True);
         }
 
         

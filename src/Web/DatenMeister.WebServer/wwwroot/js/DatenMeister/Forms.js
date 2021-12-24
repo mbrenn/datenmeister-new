@@ -1,7 +1,7 @@
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.DetailFormCreator = exports.CollectionFormCreator = exports.FormModel = void 0;
+    exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.getForm = exports.DetailFormCreator = exports.CollectionFormCreator = exports.FormModel = void 0;
     var DmObject = Mof.DmObject;
     var FormModel;
     (function (FormModel) {
@@ -193,6 +193,17 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         }
     }
     exports.DetailFormCreator = DetailFormCreator;
+    function getForm(formUri) {
+        const r = jQuery.Deferred();
+        ApiConnection.get(Settings.baseUrl +
+            "api/forms/get/" +
+            encodeURIComponent(formUri)).done(x => {
+            const dmObject = Mof.convertJsonObjectToDmObject(x);
+            r.resolve(dmObject);
+        });
+        return r;
+    }
+    exports.getForm = getForm;
     /*
         Gets the default form for a certain item by the webserver
      */

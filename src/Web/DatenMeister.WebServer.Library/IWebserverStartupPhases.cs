@@ -1,7 +1,8 @@
 ﻿using System;
 using Autofac;
+using DatenMeister.DependencyInjection;
 
-namespace DatenMeister.Modules
+namespace DatenMeister.WebServer.Library
 {
     public interface IWebserverStartupPhases
     {

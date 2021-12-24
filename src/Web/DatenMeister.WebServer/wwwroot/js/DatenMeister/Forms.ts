@@ -256,6 +256,22 @@ export class DetailFormCreator implements IForm.IFormNavigation {
 
 }
 
+export function getForm(formUri: string): JQuery.Deferred<Mof.DmObject, never, never> {
+    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+
+    ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/forms/get/" +
+        encodeURIComponent(formUri)
+    ).done(x => {
+        const dmObject =
+            Mof.convertJsonObjectToDmObject(x);
+        r.resolve(dmObject);
+    });
+
+    return r;
+}
+
 /*
     Gets the default form for a certain item by the webserver
  */

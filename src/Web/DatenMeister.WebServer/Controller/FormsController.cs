@@ -15,7 +15,15 @@ namespace DatenMeister.WebServer.Controller
         {
             _internal = new FormsControllerInternal(workspaceLogic, scopeStorage);
         }
-        
+
+        [HttpGet("api/forms/get/{formUri}")]
+        public ActionResult<string> Get(string formUri)
+        {
+            var form = _internal.GetInternal(formUri);
+
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        }
+
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
         public ActionResult<string> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {

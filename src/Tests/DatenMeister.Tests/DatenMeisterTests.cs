@@ -4,6 +4,7 @@ using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Core;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Plugins;
@@ -49,6 +50,16 @@ namespace DatenMeister.Tests
             }
 
             return GiveMe.DatenMeister(integrationSettings);
+        }
+
+        public static (IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) GetDmInfrastructure()
+        {
+            var scopeStorage = new ScopeStorage();
+            var workspaceData = WorkspaceLogic.InitDefault();
+            scopeStorage.Add(workspaceData);
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+
+            return (workspaceLogic, scopeStorage);
         }
 
         /// <summary>

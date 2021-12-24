@@ -21,7 +21,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <summary>
         /// Defines the logger
         /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetConverter));
+        private static readonly ClassLogger Logger = new(typeof(DotNetConverter));
 
         /// <summary>
         /// Stores the MOF Factory being used to create the MOF object. This is dependent upon the extent.
@@ -32,7 +32,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// Stores a list of already visited elements, so a recursion is avoided, when a conversion from .Net Object to Mof Object is executed.
         /// This also assumes that the converter is not re-entrant
         /// </summary>
-        private readonly HashSet<object> _visitedElements = new HashSet<object>();
+        private readonly HashSet<object> _visitedElements = new();
 
         /// <summary>
         /// Stores the resolver to find metaclasses by .Net Types

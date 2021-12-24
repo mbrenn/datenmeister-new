@@ -15,6 +15,7 @@ namespace DatenMeister.Extent.Forms
     {
         public const string NavigationExtentNavigateTo = "Extent.NavigateTo";
         public const string NavigationExtentDeleteExtent = "Extent.DeleteExtent";
+        public const string NavigationExtentProperties = "Extent.Properties";
         public const string NavigationItemDelete = "Item.Delete";
         public const string NavigationItemNew = "Item.New";
         public const string NavigationExtentsListViewItem = "ExtentsList.ViewItem";
@@ -32,12 +33,19 @@ namespace DatenMeister.Extent.Forms
             var formsPlugin = _scopeStorage.Get<FormsPluginState>();
 
             ActionButtonToFormAdder.AddActionButton(
-                formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Extent")
+                formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")
                 {
                     FormType = _DatenMeister._Forms.___FormType.Detail,
                     MetaClass = _DatenMeister.TheOne.Management.__Extent
                 });
-                
+
+            ActionButtonToFormAdder.AddActionButton(
+                formsPlugin, new ActionButtonAdderParameter(NavigationExtentProperties, "View Extent Properties")
+                {
+                    FormType = _DatenMeister._Forms.___FormType.Detail,
+                    MetaClass = _DatenMeister.TheOne.Management.__Extent
+                });
+
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
                 {
@@ -48,11 +56,7 @@ namespace DatenMeister.Extent.Forms
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")
                 {
-                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
-                    OnCallSuccess = () =>
-                    {
-                        System.Diagnostics.Debug.WriteLine("YES");
-                    }
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
                 });
 
             ActionButtonToFormAdder.AddActionButton(

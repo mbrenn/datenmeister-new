@@ -137,7 +137,7 @@ a {
 }
 
 .dm-logging-trace {
-  color: gray;
+  color: #333333;
 }
 
 .dm-logging-debug {
@@ -149,7 +149,7 @@ a {
 }
 
 .dm-logging-warn {
-  color: yellow;
+  color: saddlebrown;
 }
 
 .dm-logging-error {

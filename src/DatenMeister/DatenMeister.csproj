@@ -6,7 +6,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <Configurations>Debug;Release;ViewLogicAdditional;WPF</Configurations>
+    <Configurations>Debug;Release;WPF</Configurations>
     <Nullable>enable</Nullable>
     <LangVersion>9</LangVersion>
     <TargetFramework>net5.0</TargetFramework>
@@ -14,10 +14,6 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Platforms>AnyCPU</Platforms>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;VIEWLOGICINFO</DefineConstants>
-    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>

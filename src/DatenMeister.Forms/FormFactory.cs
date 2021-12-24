@@ -532,40 +532,44 @@ namespace DatenMeister.Forms
         /// <param name="foundForm">The element that has been found</param>
         private void EvaluateListFormsForAutogenerationByElement(IElement element, IElement foundForm)
         {
+            var tabs = 
+                foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
+                ?.OfType<IElement>(); 
             // Go through the list forms and check if we need to auto-populate
-            foreach (var tab in
-                     foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
-                         .OfType<IElement>())
+            if (tabs != null)
             {
-                var tabMetaClass = tab.getMetaClass();
-                if (tabMetaClass == null ||
-                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
+                foreach (var tab in tabs)
                 {
-                    // Not a list tab
-                    continue;
-                }
-
-                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
-                if (autoGenerate)
-                {
-                    var formCreator = CreateFormCreator();
-                    var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
-                    if (propertyName == null || string.IsNullOrEmpty(propertyName))
+                    var tabMetaClass = tab.getMetaClass();
+                    if (tabMetaClass == null ||
+                        !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
                     {
-                        formCreator.AddToListFormByElements(
-                            tab,
-                            new PropertiesAsReflectiveCollection(element),
-                            new FormFactoryConfiguration());
+                        // Not a list tab
+                        continue;
                     }
-                    else
+
+                    var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                    if (autoGenerate)
                     {
-                        var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
-                        if (reflectiveSequence != null)
+                        var formCreator = CreateFormCreator();
+                        var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                        if (propertyName == null || string.IsNullOrEmpty(propertyName))
                         {
                             formCreator.AddToListFormByElements(
                                 tab,
-                                reflectiveSequence,
+                                new PropertiesAsReflectiveCollection(element),
                                 new FormFactoryConfiguration());
+                        }
+                        else
+                        {
+                            var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
+                            if (reflectiveSequence != null)
+                            {
+                                formCreator.AddToListFormByElements(
+                                    tab,
+                                    reflectiveSequence,
+                                    new FormFactoryConfiguration());
+                            }
                         }
                     }
                 }

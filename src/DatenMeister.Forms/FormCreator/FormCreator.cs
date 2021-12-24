@@ -628,7 +628,7 @@ namespace DatenMeister.Forms.FormCreator
                     !propertyType.equals(_dateTimeType))
                 {
                     // If we have something else than a primitive type and it is not for a list form
-                    if (propertyIsEnumeration && creationMode.IsForListView)
+                    if (propertyIsEnumeration && !creationMode.IsForListView)
                     {
                         // It can contain multiple elements
                         var elementsField = mofFactory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);

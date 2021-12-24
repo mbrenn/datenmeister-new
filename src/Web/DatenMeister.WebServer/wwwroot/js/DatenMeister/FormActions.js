@@ -20,7 +20,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 || actionName === "ExtentsList.DeleteItem"
                 || actionName === "Extent.DeleteExtent") {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         }
@@ -132,12 +133,12 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         static extentNavigateToProperties(workspace, extentUri) {
             document.location.href =
                 Settings.baseUrl +
-                "ItemAction/Extent.Properties.Update/" +
-                encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
-                "?workspace=" +
-                encodeURIComponent(workspace) +
-                "&extent=" +
-                encodeURIComponent(extentUri);
+                    "ItemAction/Extent.Properties.Update/" +
+                    encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
+                    "?workspace=" +
+                    encodeURIComponent(workspace) +
+                    "&extent=" +
+                    encodeURIComponent(extentUri);
         }
         static extentUpdateExtentProperties(workspace, extentUri, element) {
             ECClient.setProperties(workspace, extentUri, element).done(() => FormActions.extentNavigateTo(workspace, extentUri));

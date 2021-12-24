@@ -23,11 +23,13 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
         let deferForm;
         if (configuration.formUri !== undefined) {
             deferForm = Forms.getForm(configuration.formUri);
-        } else if (metaClass === undefined) {
+        }
+        else if (metaClass === undefined) {
             deferForm = $.Deferred();
             deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
             // Create a total empty form object...
-        } else {
+        }
+        else {
             deferForm = Forms.getDefaultFormForMetaClass(metaClass);
         }
         $.when(deferForm, deferLoadObjectForAction).then((form, element) => {

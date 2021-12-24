@@ -52,8 +52,13 @@ namespace DatenMeister.WebServer
 
         private static void InitializeLogging()
         {
+#if DEBUG
+            TheLog.FilterThreshold = LogLevel.Trace;
             TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
+            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne, LogLevel.Trace);
+#else
             TheLog.AddProvider(InMemoryDatabaseProvider.TheOne);
+#endif
 
             // Preload Public Settings
             var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;

@@ -132,7 +132,8 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
                             ?? (uriExtent as MofExtent)?.GetMetaObject();
                 return found == null
                     ? null
-                    : new ProxyIdProviderObject(found.ProviderObject,
+                    : new ProxyIdProviderObject(
+                        found.ProviderObject,
                         ExtentManagementUrlHelper.GetIdOfExtentsProperties(parentWorkspace, uriExtent));
             },
             (e, v) => throw new InvalidOperationException("properties cannot be set"));

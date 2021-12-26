@@ -30,8 +30,8 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundForm, Is.Not.Null);
             Assert.That(foundForm.Value.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
-        
-        
+
+
         [Test]
         public void TestDefaultForItem()
         {
@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.Web
                 WorkspaceNames.WorkspaceData,
                 firstElement!.GetUri()!,
                 ViewModes.Default);
-            
+
             Assert.That(foundForm, Is.Not.Null);
             Assert.That(foundForm.Value, Is.Not.Null);
             Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
@@ -70,11 +70,11 @@ namespace DatenMeister.Tests.Web
                             x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
                             BasicNavigationForFormsAndItemsPlugin.NavigationItemDelete)
                     .ToList();
-            
+
             Assert.That(foundFields.Any(), Is.True);
             Assert.That(foundFields.Count, Is.EqualTo(1));
         }
-        
+
         [Test]
         public void TestListFormForDefaultButtons()
         {
@@ -88,7 +88,7 @@ namespace DatenMeister.Tests.Web
             var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
             Assert.That(listForm, Is.Not.Null);
             var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
-            
+
             var foundFields =
                 fields.OfType<IElement>()
                     .Where(
@@ -96,10 +96,10 @@ namespace DatenMeister.Tests.Web
                             x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
                             BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListDeleteItem)
                     .ToList();
-            
+
             Assert.That(foundFields.Any(), Is.True);
             Assert.That(foundFields.Count, Is.EqualTo(1));
-            
+
             foundFields =
                 fields.OfType<IElement>()
                     .Where(
@@ -107,7 +107,7 @@ namespace DatenMeister.Tests.Web
                             x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
                             BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListViewItem)
                     .ToList();
-            
+
             Assert.That(foundFields.Any(), Is.True);
             Assert.That(foundFields.Count, Is.EqualTo(1));
         }
@@ -125,7 +125,7 @@ namespace DatenMeister.Tests.Web
 
             var controller = new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
             var form = (controller.GetDefaultFormForMetaClassInternal(zipCodeMetaUrl) as IElement)!;
-            
+
             Assert.That(form, Is.Not.Null);
             Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ExtentForm), Is.True);
             var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
@@ -137,7 +137,7 @@ namespace DatenMeister.Tests.Web
                 .OfType<IElement>()
                 .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ==
                                      nameof(ZipCode.positionLat));
-            Assert.That(positionLat,Is.Not.Null);
+            Assert.That(positionLat, Is.Not.Null);
         }
 
         [Test]
@@ -154,16 +154,19 @@ namespace DatenMeister.Tests.Web
 
             var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
             Assert.That(fields, Is.Not.Null);
-            Assert.That(fields.OfType<IElement>().Any(x=>x.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) == "DefaultTypePackage"), Is.True);
+            Assert.That(
+                fields.OfType<IElement>().Any(x =>
+                    x.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) == "DefaultTypes"), Is.True);
         }
 
-        
+
         /// <summary>
         /// Creates the zipExtent and also the FormsController
         /// </summary>
         /// <returns>Tuple of zipExtent and corresponding Forms Controller</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private static (IUriExtent zipExtent, FormsController formsController, FormsControllerInternal internalFormController) CreateZipExtent()
+        private static (IUriExtent zipExtent, FormsController formsController, FormsControllerInternal
+            internalFormController) CreateZipExtent()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
 

@@ -32,7 +32,7 @@ namespace DatenMeister.WPF.Navigation
         public async Task<NavigateToElementDetailResult?> NavigateToSelectCreateableType(
             INavigationHost window,
             IExtent? extent,
-            string buttonName = "Create Instance", 
+            string buttonName = "Create Instance",
             string? workspaceName = null,
             string? extentUri = null)
         {
@@ -41,10 +41,10 @@ namespace DatenMeister.WPF.Navigation
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
             // Gets metaworkspace and metaextent 
-            var defaultTypePackage = extent?.GetConfiguration().GetDefaultTypePackages().ToList();
+            var defaultTypes = extent?.GetConfiguration().GetDefaultTypes().ToList();
             IWorkspace? metaWorkspace = null;
             IUriExtent? metaExtent = null;
-            if (defaultTypePackage == null || !defaultTypePackage.Any())
+            if (defaultTypes == null || !defaultTypes.Any())
             {
                 // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
                 // Otherwise, select the first meta workspace and extent
@@ -63,18 +63,18 @@ namespace DatenMeister.WPF.Navigation
             }
 
             var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalFormExtent());
-            
+
             //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
             var parameter = new FindTypeFormParameter
             {
-                PreSelectedPackage = defaultTypePackage?.FirstOrDefault()
+                PreSelectedPackage = defaultTypes?.FirstOrDefault()
             };
 
             if (metaWorkspace != null) parameter.Workspace = metaWorkspace;
             if (workspaceName != null) parameter.WorkspaceName = workspaceName;
             if (metaExtent != null) parameter.Extent = metaExtent;
             if (extentUri != null) parameter.ExtentUri = extentUri;
-            
+
             var formPathToType = viewDefinitions.GetFindTypeForm(parameter, buttonName);
 
             var navigateToItemConfig = new NavigateToItemConfig(element)

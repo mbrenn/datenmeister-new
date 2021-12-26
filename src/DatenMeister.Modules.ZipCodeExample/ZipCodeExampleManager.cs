@@ -21,9 +21,9 @@ namespace DatenMeister.Modules.ZipCodeExample
     public class ZipCodeExampleManager
     {
         private static readonly ILogger Logger = new ClassLogger(typeof(ZipCodeExampleManager));
-        
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentManager _extentManager;
+
+        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ZipCodeModel _zipCodeModel;
 
         public ZipCodeExampleManager(
@@ -32,7 +32,6 @@ namespace DatenMeister.Modules.ZipCodeExample
             IScopeStorage scopeStorage)
             : this(workspaceLogic, extentManager, scopeStorage.Get<ZipCodeModel>())
         {
-
         }
 
         private ZipCodeExampleManager(
@@ -83,7 +82,7 @@ namespace DatenMeister.Modules.ZipCodeExample
             } while (File.Exists(filename));
 
             var extentName = $"dm:///zipcodes/{randomNumber}";
-            
+
             return AddZipCodeExample(workspaceId, extentName, exampleFilePath, filename);
         }
 
@@ -112,7 +111,7 @@ namespace DatenMeister.Modules.ZipCodeExample
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            
+
             File.Delete(targetFilename);
             File.Copy(originalFilename, targetFilename);
 
@@ -156,9 +155,9 @@ namespace DatenMeister.Modules.ZipCodeExample
             loadedExtent.Extent.GetConfiguration().ExtentType = ZipCodePlugin.ExtentType;
 
             if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
-                "dm:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
+                    "dm:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
             {
-                loadedExtent.Extent.GetConfiguration().SetDefaultTypePackages(new[] {zipCodeTypePackage});
+                loadedExtent.Extent.GetConfiguration().SetDefaultTypes(new[] {zipCodeTypePackage});
             }
             else
             {

@@ -15,7 +15,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Defines the name of the default type packages
         /// </summary>
-        public const string DatenMeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
+        public const string ExtentDefaultTypes = "__DatenMeister.DefaultTypes";
 
         /// <summary>
         /// Saves the type of the extent
@@ -75,7 +75,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             get => ExtentType.Split(' ');
             set => ExtentType = value.Aggregate((x, y) => $"{x} {y}");
-
         }
 
         /// <summary>
@@ -83,43 +82,45 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="extentType">Type of the extent being queried</param>
         /// <returns>true, if the extent's type contains the given extent type</returns>
-        public bool ContainsExtentType(string extentType) 
+        public bool ContainsExtentType(string extentType)
             => ExtentType.Contains(extentType);
 
         /// <summary>
         /// Sets the default type package which is shown, when the user wants
         /// to create a new item
         /// </summary>
-        /// <param name="defaultTypePackages">The elements which shall be considered as the
+        /// <param name="defaultTypes">The elements which shall be considered as the
         /// default type package</param>
-        public void SetDefaultTypePackages(IEnumerable<IElement> defaultTypePackages)
+        public void SetDefaultTypes(IEnumerable<IElement> defaultTypes)
         {
             _extent.set(
-                DatenMeisterDefaultTypePackage,
-                defaultTypePackages);
+                ExtentDefaultTypes,
+                defaultTypes);
         }
 
-        public void AddDefaultTypePackages(IEnumerable<IElement> defaultTypePackages)
+        public void AddDefaultTypes(IEnumerable<IElement> defaultTypes)
         {
-            var found = GetDefaultTypePackages().ToList() ?? new List<IElement>();
-            foreach (var newPackage in defaultTypePackages)
+            var found = GetDefaultTypes().ToList() ?? new List<IElement>();
+            foreach (var newPackage in defaultTypes)
             {
                 if (found.Any(x => MofObject.AreEqual(x, newPackage)))
                 {
                     continue;
                 }
-                
+
                 found.Add(newPackage);
             }
 
-            SetDefaultTypePackages(found);
+            SetDefaultTypes(found);
         }
 
         /// <summary>
         /// Gets the default type package
         /// </summary>
         /// <returns>The found element</returns>
-        public IEnumerable<IElement> GetDefaultTypePackages() =>
-            _extent.get<IReflectiveCollection>(DatenMeisterDefaultTypePackage).OfType<IElement>();
+        public IEnumerable<IElement> GetDefaultTypes()
+        {
+            return _extent.get<IReflectiveCollection>(ExtentDefaultTypes).OfType<IElement>();
+        }
     }
 }

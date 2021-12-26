@@ -32,24 +32,20 @@ namespace DatenMeister.Forms
     public partial class FormsPlugin : IDatenMeisterPlugin
     {
         /// <summary>
-        /// Defines the logger
-        /// </summary>
-        private static readonly ILogger Logger = new ClassLogger(typeof(FormsPlugin));
-
-        /// <summary>
         /// Stores the type of the extent containing the views
         /// </summary>
         public const string FormExtentType = "DatenMeister.Forms";
 
-        private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly ExtentCreator _extentCreator;
-        private readonly IntegrationSettings _integrationSettings;
-        private readonly ExtentSettings _extentSettings;
-
         /// <summary>
-        /// Gets the workspace logic of the view logic
+        /// Defines the logger
         /// </summary>
-        public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
+        private static readonly ILogger Logger = new ClassLogger(typeof(FormsPlugin));
+
+        private readonly ExtentCreator _extentCreator;
+        private readonly ExtentSettings _extentSettings;
+        private readonly IntegrationSettings _integrationSettings;
+
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Initializes a new instance of the FormLogic class
@@ -76,6 +72,11 @@ namespace DatenMeister.Forms
             : this(workspaceLogic, new ExtentCreator(workspaceLogic, scopeStorage), scopeStorage)
         {
         }
+
+        /// <summary>
+        /// Gets the workspace logic of the view logic
+        /// </summary>
+        public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
 
         /// <summary>
         /// Integrates the the view logic into the workspace.
@@ -111,7 +112,7 @@ namespace DatenMeister.Forms
                         throw new InvalidOperationException("Extent for users is not found");
 
                     extent.GetConfiguration()
-                        .AddDefaultTypePackages(new[]
+                        .AddDefaultTypes(new[]
                             {_DatenMeister.TheOne.Forms.__Form, _DatenMeister.TheOne.Forms.__FormAssociation});
 
                     break;
@@ -136,7 +137,8 @@ namespace DatenMeister.Forms
         {
             if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
             {
-                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
             }
 
             return foundExtent;
@@ -154,8 +156,9 @@ namespace DatenMeister.Forms
                 {
                     return null;
                 }
-                
-                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
+
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
             }
 
             return foundExtent;
@@ -169,7 +172,8 @@ namespace DatenMeister.Forms
         {
             if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
             {
-                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
             }
 
             return foundExtent;
@@ -187,8 +191,9 @@ namespace DatenMeister.Forms
                 {
                     return null;
                 }
-                
-                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
+
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
             }
 
             return foundExtent;
@@ -237,7 +242,7 @@ namespace DatenMeister.Forms
                             .GetAllDescendants(new[]
                                 {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
                             .WhenMetaClassIsOneOf(
-                                _DatenMeister.TheOne.Forms.__Form, 
+                                _DatenMeister.TheOne.Forms.__Form,
                                 _DatenMeister.TheOne.Forms.__DetailForm,
                                 _DatenMeister.TheOne.Forms.__ListForm)),
                     true);
@@ -252,15 +257,15 @@ namespace DatenMeister.Forms
         /// <param name="formType">Type to be added</param>
         /// <returns></returns>
         public IElement AddFormAssociationForMetaclass(
-            IElement form, 
-            IElement metaClass, 
+            IElement form,
+            IElement metaClass,
             _DatenMeister._Forms.___FormType formType)
         {
             var factory = new MofFactory(form);
-            
+
             var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
             var name = NamedElementMethods.GetName(form);
-            
+
             formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
             formAssociation.set(_DatenMeister._Forms._FormAssociation.form, form);
             formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
@@ -285,13 +290,13 @@ namespace DatenMeister.Forms
             var internalFormExtent = GetInternalFormExtent();
             if (result.All(x => x.contextURI() != internalFormExtent.contextURI()))
             {
-                result.Add(internalFormExtent);    
+                result.Add(internalFormExtent);
             }
-            
+
             var userFormExtent = GetInternalFormExtent();
             if (result.All(x => x.contextURI() != userFormExtent.contextURI()))
             {
-                result.Add(userFormExtent);    
+                result.Add(userFormExtent);
             }
 
             return result;
@@ -312,7 +317,7 @@ namespace DatenMeister.Forms
                             .WhenMetaClassIsOneOf(_DatenMeister.TheOne.Forms.__FormAssociation)),
                 true);
         }
-        
+
         /// <summary>
         /// Removes the view association from the database
         /// </summary>
@@ -322,13 +327,13 @@ namespace DatenMeister.Forms
         {
             var result = false;
             viewExtent ??= GetUserFormExtent();
-            
+
             foreach (var foundElement in viewExtent
-                .elements()
-                .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
-                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType)
-                .OfType<IElement>())
+                         .elements()
+                         .GetAllDescendantsIncludingThemselves()
+                         .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
+                         .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType)
+                         .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
 
@@ -337,7 +342,7 @@ namespace DatenMeister.Forms
 
             return result;
         }
-        
+
         /// <summary>
         /// Removes the view association from the database
         /// </summary>
@@ -347,14 +352,15 @@ namespace DatenMeister.Forms
         {
             var result = false;
             viewExtent ??= GetUserFormExtent();
-            
+
             foreach (var foundElement in viewExtent
-                .elements()
-                .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
-                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
-                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Detail)
-                .OfType<IElement>())
+                         .elements()
+                         .GetAllDescendantsIncludingThemselves()
+                         .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
+                         .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
+                         .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType,
+                             _DatenMeister._Forms.___FormType.Detail)
+                         .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
 

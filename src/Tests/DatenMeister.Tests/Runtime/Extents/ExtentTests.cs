@@ -132,7 +132,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extentSettings = dm.ScopeStorage.Get<ExtentSettings>();
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == UmlPlugin.ExtentType), Is.True);
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == FormsPlugin.FormExtentType), Is.True);
-            Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ExtentType), Is.True);
+            Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ZipCodeExtentType), Is.True);
         }
 
         [Test]

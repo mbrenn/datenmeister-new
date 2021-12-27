@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Forms.Helper;
@@ -16,13 +17,13 @@ namespace DatenMeister.Modules.ZipCodeExample
     [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterBootstrapping)]
     public class ZipCodePlugin : IDatenMeisterPlugin
     {
-        public const string ExtentType = "DatenMeister.Example.ZipCodes";
-        
+        public const string ZipCodeExtentType = "DatenMeister.Example.ZipCodes";
+
         public const string CreateZipExample = "ZipExample.CreateExample";
-        
+        private readonly ExtentSettings _extentSettings;
+
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly IScopeStorage _scopeStorage;
-        private readonly ExtentSettings _extentSettings;
 
         /// <summary>
         /// Initializes a new instance of the ZipCodePlugin
@@ -47,14 +48,14 @@ namespace DatenMeister.Modules.ZipCodeExample
                 {
                     var zipCodeModel = new ZipCodeModel();
                     _scopeStorage.Add(zipCodeModel);
-                    
+
                     // Load Resource
                     var types = _localTypeSupport.AddInternalTypes(
                         ZipCodeModel.PackagePath,
                         new[] {typeof(ZipCode), typeof(ZipCodeWithState)});
                     zipCodeModel.ZipCode = types.ElementAt(0);
                     zipCodeModel.ZipCodeWithState = types.ElementAt(1);
-                    
+
                     ActionButtonToFormAdder.AddActionButton(
                         _scopeStorage.Get<FormsPluginState>(),
                         new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
@@ -62,14 +63,26 @@ namespace DatenMeister.Modules.ZipCodeExample
                             MetaClass = _DatenMeister.TheOne.Management.__Workspace,
                             FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
                         });
-                    
+
                     break;
                 }
                 case PluginLoadingPosition.AfterBootstrapping:
                     _extentSettings.extentTypeSettings.Add(
-                        new ExtentType(ExtentType));
+                        new ExtentType(ZipCodeExtentType));
                     break;
             }
+        }
+
+        /// <summary>
+        ///     Creates a new instance of the ZipCodePlugin by Workspace Logic and Scope STorage
+        /// </summary>
+        /// <param name="workspaceLogic">Workspacelogic to be used</param>
+        /// <param name="scopeStorage">Scope storage to be used</param>
+        /// <returns>New instance of the</returns>
+        public static ZipCodePlugin Create(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        {
+            var localTypeSupport = new LocalTypeSupport(workspaceLogic, scopeStorage);
+            return new ZipCodePlugin(localTypeSupport, scopeStorage);
         }
     }
 }

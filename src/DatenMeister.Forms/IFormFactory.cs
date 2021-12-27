@@ -27,12 +27,22 @@ namespace DatenMeister.Forms
 
         IElement? CreateListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
 
+        /// <summary>
+        ///     Creates the list form for a specific meta class.
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be handled</param>
+        /// <param name="configuration">Configuration of the metaclass. </param>
+        /// <returns></returns>
+        IElement? CreateListFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+
         IElement? CreateExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
 
-        IElement? CreateListFormForPropertyValues(IObject? element, string propertyName, IElement? propertyType, FormFactoryConfiguration configuration);
-        
-        
-        public IElement? CreateListFormForPropertyValues(IObject element, string propertyName, FormFactoryConfiguration configuration)
+        IElement? CreateListFormForPropertyValues(IObject? element, string propertyName, IElement? propertyType,
+            FormFactoryConfiguration configuration);
+
+
+        public IElement? CreateListFormForPropertyValues(IObject element, string propertyName,
+            FormFactoryConfiguration configuration)
         {
             return CreateListFormForPropertyValues(element, propertyName, null, configuration);
         }

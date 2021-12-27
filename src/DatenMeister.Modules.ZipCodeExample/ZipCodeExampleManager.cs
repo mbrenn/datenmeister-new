@@ -26,6 +26,18 @@ namespace DatenMeister.Modules.ZipCodeExample
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ZipCodeModel _zipCodeModel;
 
+        /// <summary>
+        ///     Initializes a new instance of the zip code example manager
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic to be used</param>
+        /// <param name="scopeStorage">Scope storage to be used</param>
+        public ZipCodeExampleManager(
+            IWorkspaceLogic workspaceLogic,
+            IScopeStorage scopeStorage)
+            : this(workspaceLogic, new ExtentManager(workspaceLogic, scopeStorage), scopeStorage)
+        {
+        }
+
         public ZipCodeExampleManager(
             IWorkspaceLogic workspaceLogic,
             ExtentManager extentManager,
@@ -152,7 +164,7 @@ namespace DatenMeister.Modules.ZipCodeExample
                 throw new InvalidOperationException("Loading of zip extent failed");
             }
 
-            loadedExtent.Extent.GetConfiguration().ExtentType = ZipCodePlugin.ExtentType;
+            loadedExtent.Extent.GetConfiguration().ExtentType = ZipCodePlugin.ZipCodeExtentType;
 
             if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
                     "dm:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)

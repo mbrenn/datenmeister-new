@@ -19,9 +19,9 @@ namespace DatenMeister.Types
     /// </summary>
     public class DefaultTypeIntegrator
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IntegrationSettings _integrationSettings;
         private readonly PackageMethods _packageMethods;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
@@ -54,9 +54,9 @@ namespace DatenMeister.Types
 
                 // Copy the primitive type into a new extent for the type workspace
                 CopyMethods.CopyToElementsProperty(
-                    (_workspaceLogic.GetUmlWorkspace()
+                    _workspaceLogic.GetUmlWorkspace()
                         .FindElementByUri(WorkspaceNames.UriExtentPrimitiveTypes + "#_0")
-                        ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection)
+                        ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection
                     ?? throw new InvalidOperationException("PrimitiveTypes is not found"),
                     foundPackage,
                     _UML._Packages._Package.packagedElement,

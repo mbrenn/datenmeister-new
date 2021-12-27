@@ -2,10 +2,9 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Forms;
-using DatenMeister.Integration;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Modules.Form
+namespace DatenMeister.Tests.Modules.Forms
 {
     [TestFixture]
     public class FormTests
@@ -40,9 +39,9 @@ namespace DatenMeister.Tests.Modules.Form
             Assert.That(FormMethods.ValidateForm(form), Is.False);
 
             var newForm = factory.create(_DatenMeister.TheOne.Forms.__ExtentForm);
-            newForm.set(_DatenMeister._Forms._ExtentForm.tab, new[]{form});
+            newForm.set(_DatenMeister._Forms._ExtentForm.tab, new[] {form});
             Assert.That(FormMethods.ValidateForm(newForm), Is.False);
-            
+
             form.set(_DatenMeister._Forms._DetailForm.field, new[] {field1, field2, field3, field4});
             Assert.That(FormMethods.ValidateForm(newForm), Is.True);
         }

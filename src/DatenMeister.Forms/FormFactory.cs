@@ -83,7 +83,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
-                    Logger.Info("GetItemTreeFormForObject: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                    Logger.Info("CreateExtentFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                 }
             }
 
@@ -182,7 +182,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
-                    Logger.Info("GetDetailForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                    Logger.Info("CreateDetailFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                 }
             }
 
@@ -229,7 +229,8 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
-                    Logger.Info("GetDetailForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                    Logger.Info("CreateExtentFormForItemsMetaClass: Found form: " +
+                                NamedElementMethods.GetFullName(foundForm));
                 }
             }
 
@@ -282,6 +283,51 @@ namespace DatenMeister.Forms
                     {
                         Configuration = configuration,
                         FormType = _DatenMeister._Forms.___FormType.ObjectList,
+                    },
+                    ref foundForm);
+            }
+
+            return foundForm;
+        }
+
+        public IElement? CreateListFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
+        {
+            configuration = configuration with {IsForListView = true};
+            IElement? foundForm = null;
+
+            if (configuration.ViaFormFinder)
+            {
+                // Tries to find the form
+                var viewFinder = new FormFinder.FormFinder(_plugin);
+                foundForm = viewFinder.FindFormsFor(
+                    new FindFormQuery
+                    {
+                        metaClass = metaClass,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList,
+                        viewModeId = configuration.ViewModeId
+                    }).FirstOrDefault();
+
+                if (foundForm != null)
+                    Logger.Info("CreateListFormForMetaClass: Found form: " +
+                                NamedElementMethods.GetFullName(foundForm));
+            }
+
+            if (foundForm == null && configuration.ViaFormCreator)
+            {
+                // Ok, we have not found the form. So create one
+                var formCreator = CreateFormCreator();
+                foundForm = formCreator.CreateListFormForMetaClass(metaClass, configuration);
+            }
+
+            if (foundForm != null)
+            {
+                foundForm = CloneForm(foundForm);
+
+                CallFormsModificationPlugins(new FormCreationContext
+                    {
+                        Configuration = configuration,
+                        MetaClass = metaClass,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList
                     },
                     ref foundForm);
             }
@@ -349,7 +395,7 @@ namespace DatenMeister.Forms
 
 
                 var detailForms = FormMethods.GetDetailForms(foundForm);
-                foreach (var detailForm in detailForms.OfType<IElement>())
+                foreach (var detailForm in detailForms)
                 {
                     var listedForm = detailForm; // Get iterative
                     CallFormsModificationPlugins(
@@ -363,7 +409,7 @@ namespace DatenMeister.Forms
                 }
 
                 var listForms = FormMethods.GetListForms(foundForm);
-                foreach (var listForm in listForms.OfType<IElement>())
+                foreach (var listForm in listForms)
                 {
                     var listedForm = listForm; // Get iterative
                     CallFormsModificationPlugins(
@@ -492,7 +538,6 @@ namespace DatenMeister.Forms
             }
         }
 
-
         /// <summary>
         /// Goes through the tabs the extent form and checks whether the listform required an autogeneration
         /// </summary>
@@ -532,9 +577,9 @@ namespace DatenMeister.Forms
         /// <param name="foundForm">The element that has been found</param>
         private void EvaluateListFormsForAutogenerationByElement(IElement element, IElement foundForm)
         {
-            var tabs = 
+            var tabs =
                 foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
-                ?.OfType<IElement>(); 
+                    ?.OfType<IElement>();
             // Go through the list forms and check if we need to auto-populate
             if (tabs != null)
             {

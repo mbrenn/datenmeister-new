@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 
@@ -12,22 +13,28 @@ namespace DatenMeister.DependencyInjection
     public class ScopeStorage : IScopeStorage
     {
         /// <summary>
+        /// Stores the items and is also used to be thread safe
+        /// </summary>
+        private readonly Dictionary<Type, object> _storage = new();
+
+        /// <summary>
         /// Defines the class logger
         /// </summary>
         public ClassLogger Logger = new ClassLogger(typeof(ScopeStorage));
-        
-        /// <summary>
-        /// Stores the items and is also used to be thread safe
-        /// </summary>
-        private readonly Dictionary<Type, object> _storage = new Dictionary<Type, object>();
 
         public IScopeStorage Add<T>(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            
+
             lock (_storage)
             {
                 _storage[typeof(T)] = item;
+#if DEBUG
+                if (_storage.Count(x => x.Key.FullName == typeof(T).FullName) != 1)
+                    Logger.Error(
+                        "Something really broke down. The Storage type was added twice with the same Fullname: " +
+                        $"{typeof(T).FullName}");
+#endif
             }
 
             return this;
@@ -42,8 +49,8 @@ namespace DatenMeister.DependencyInjection
                     return (T) result;
                 }
 
-                Logger.Info($"Type of {typeof(T).FullName} not available, so we have to create an empty one.");
-                
+                Logger.Trace($"Type of {typeof(T).FullName} not available, so we have to create an empty one.");
+
                 var newResult = new T();
                 Add(newResult);
                 return newResult;

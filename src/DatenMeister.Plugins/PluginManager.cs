@@ -11,6 +11,12 @@ namespace DatenMeister.Plugins
     public class PluginManager
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(PluginManager));
+
+        /// <summary>
+        /// Stores the dictionary of instantiated plugins
+        /// </summary>
+        private Dictionary<Type, IDatenMeisterPlugin> _instantiatedPlugins = new();
+
         private List<Type>? _pluginTypes;
 
         /// <summary>
@@ -42,7 +48,8 @@ namespace DatenMeister.Plugins
                 }
                 catch (Exception e)
                 {
-                    Logger.Warn($"Error occured during Enumeration of Types in Assembly: {assembly.FullName}: {e.Message}");
+                    Logger.Warn(
+                        $"Error occured during Enumeration of Types in Assembly: {assembly.FullName}: {e.Message}");
                 }
 
                 foreach (var type in types)
@@ -53,11 +60,6 @@ namespace DatenMeister.Plugins
         }
 
         /// <summary>
-        /// Stores the dictionary of instantiated plugins
-        /// </summary>
-        private Dictionary<Type, IDatenMeisterPlugin> _instantiatedPlugins = new();
-
-        /// <summary>
         /// Starts the plugins in all loaded assemblies by calling each class which has the implementation
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>
@@ -65,7 +67,8 @@ namespace DatenMeister.Plugins
         /// <param name="pluginLoader">The plugin loader being used</param>
         /// <param name="loadingPosition">Defines the plugin position currently used</param>
         /// <returns>true, if all plugins have been started without exception</returns>
-        public bool StartPlugins(ILifetimeScope kernel, IPluginLoader pluginLoader, PluginLoadingPosition loadingPosition)
+        public bool StartPlugins(ILifetimeScope kernel, IPluginLoader pluginLoader,
+            PluginLoadingPosition loadingPosition)
         {
             Logger.Debug("Starting Plugins" + loadingPosition);
             _pluginTypes ??= pluginLoader.GetPluginTypes();
@@ -73,17 +76,14 @@ namespace DatenMeister.Plugins
                 .Where(type => GetPluginLoadingPosition(type).HasFlag(loadingPosition))
                 .Select(type =>
                 {
-                    if (_instantiatedPlugins.TryGetValue(type, out var plugin))
-                        {
-                            return plugin;
-                        }
+                    if (_instantiatedPlugins.TryGetValue(type, out var plugin)) return plugin;
 
                     var result = (IDatenMeisterPlugin) kernel.Resolve(type);
                     _instantiatedPlugins[type] = result;
                     return result;
                 })
                 .ToList();
-            
+
             NoExceptionDuringLoading = true;
 
             var lastCount = pluginList.Count;

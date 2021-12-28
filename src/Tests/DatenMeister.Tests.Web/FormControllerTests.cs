@@ -31,7 +31,6 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundForm.Value.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
 
-
         [Test]
         public void TestDefaultForItem()
         {

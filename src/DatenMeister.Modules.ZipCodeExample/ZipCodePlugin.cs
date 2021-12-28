@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -20,6 +22,8 @@ namespace DatenMeister.Modules.ZipCodeExample
         public const string ZipCodeExtentType = "DatenMeister.Example.ZipCodes";
 
         public const string CreateZipExample = "ZipExample.CreateExample";
+
+        private static readonly ILogger Logger = new ClassLogger(typeof(ZipCodePlugin));
         private readonly ExtentSettings _extentSettings;
 
         private readonly LocalTypeSupport _localTypeSupport;
@@ -46,8 +50,8 @@ namespace DatenMeister.Modules.ZipCodeExample
             {
                 case PluginLoadingPosition.AfterInitialization:
                 {
-                    var zipCodeModel = new ZipCodeModel();
-                    _scopeStorage.Add(zipCodeModel);
+                    Logger.Info("Initializing type for ZipCode-Plugin");
+                    var zipCodeModel = _scopeStorage.Get<ZipCodeModel>();
 
                     // Load Resource
                     var types = _localTypeSupport.AddInternalTypes(
@@ -55,6 +59,9 @@ namespace DatenMeister.Modules.ZipCodeExample
                         new[] {typeof(ZipCode), typeof(ZipCodeWithState)});
                     zipCodeModel.ZipCode = types.ElementAt(0);
                     zipCodeModel.ZipCodeWithState = types.ElementAt(1);
+
+                    if (zipCodeModel.ZipCode == null || zipCodeModel.ZipCodeWithState == null)
+                        throw new InvalidOperationException("The ZipCode Model could not be created");
 
                     ActionButtonToFormAdder.AddActionButton(
                         _scopeStorage.Get<FormsPluginState>(),

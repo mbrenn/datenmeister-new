@@ -29,16 +29,16 @@ namespace DatenMeister.Plugins
                     // Go through all types and check, if the type has implemented the interface for the pluging
                     pluginList.AddRange(
                         assembly.GetTypes()
-                            .Where(type => 
+                            .Where(type =>
                                 type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin))
-                                && !pluginList.Any (x=>x.FullName != null && x.FullName.Equals(type.FullName))));
+                                && !pluginList.Any(x => x.FullName != null && x.FullName.Equals(type.FullName))));
                 }
                 catch (ReflectionTypeLoadException e)
                 {
                     Logger.Error(
                         $"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
                 }
-            }            
+            }
 
             return pluginList;
         }
@@ -68,12 +68,12 @@ namespace DatenMeister.Plugins
                     }
 
                     if (AppDomain.CurrentDomain.GetAssemblies().All(
-                        x => x.GetName().Name?.ToLower() != filenameWithoutExtension))
+                            x => x.GetName().Name?.ToLower() != filenameWithoutExtension))
                     {
                         try
                         {
                             //var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(path, file));
-                            var assembly = Assembly.LoadFile(Path.Combine(path, file));
+                            var assembly = Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(path, file)));
                             Logger.Info($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }
                         catch (Exception e)
@@ -87,8 +87,15 @@ namespace DatenMeister.Plugins
             {
                 Logger.Warn($"Directory does not exist: {path}");
             }
+
+#if DEBUG
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().OrderBy(x => x.FullName);
+            var duplicates = loadedAssemblies.GroupBy(x => x.FullName).Where(x => x.Count() > 1).Select(x => x.Key);
+            foreach (var duplicate in duplicates.Where(x => x != null))
+                Logger.Error($"Duplicate Assembly detected: {duplicate}");
+#endif
         }
-        
+
         /// <summary>
         /// Loads all assemblies from the current directories 
         /// </summary>
@@ -105,7 +112,7 @@ namespace DatenMeister.Plugins
         public void LoadAllReferencedAssemblies()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => !IsDotNetLibrary(x.GetName())))
+                         .Where(x => !IsDotNetLibrary(x.GetName())))
             {
                 LoadReferencedAssembly(assembly);
             }
@@ -120,16 +127,16 @@ namespace DatenMeister.Plugins
             // All assemblies, which do not start with Microsoft or System.
             // We will not find any extent or something like that within these assemblies.
             foreach (var name in assembly.GetReferencedAssemblies()
-                .Where(x => !IsDotNetLibrary(x))
-                .Where(x => AppDomain.CurrentDomain.GetAssemblies().All(a =>
-                    !string.Equals(a.GetName().Name, x.Name, StringComparison.CurrentCultureIgnoreCase))))
+                         .Where(x => !IsDotNetLibrary(x))
+                         .Where(x => AppDomain.CurrentDomain.GetAssemblies().All(a =>
+                             !string.Equals(a.GetName().Name, x.Name, StringComparison.CurrentCultureIgnoreCase))))
             {
                 var innerAssembly = Assembly.Load(name);
                 Logger.Info($"Loaded (2): {innerAssembly}");
                 LoadReferencedAssembly(innerAssembly);
             }
         }
-        
+
 
         /// <summary>
         /// Gets true, if the given library is a dotnet library which

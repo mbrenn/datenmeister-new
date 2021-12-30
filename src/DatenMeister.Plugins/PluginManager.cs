@@ -61,7 +61,9 @@ namespace DatenMeister.Plugins
         /// <param name="pluginLoader">The plugin loader being used</param>
         /// <param name="loadingPosition">Defines the plugin position currently used</param>
         /// <returns>true, if all plugins have been started without exception</returns>
-        public bool StartPlugins(ILifetimeScope kernel, IPluginLoader pluginLoader,
+        public bool StartPlugins(
+            ILifetimeScope kernel,
+            IPluginLoader pluginLoader,
             PluginLoadingPosition loadingPosition)
         {
             Logger.Debug("Starting Plugins" + loadingPosition);

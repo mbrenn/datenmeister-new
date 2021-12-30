@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -7,7 +8,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime;
-using DatenMeister.DependencyInjection;
 using DatenMeister.Modules.DataViews;
 using NUnit.Framework;
 
@@ -23,13 +23,13 @@ namespace DatenMeister.Tests.Runtime
             var uriExtentNavigator = new ExtentUrlNavigator(extent);
             var firstChild = uriExtentNavigator.element(TestUri + "#child1") as IElement;
             var firstChildCached = uriExtentNavigator.element(TestUri + "#child1") as IElement;
-            
+
             Assert.That(firstChild, Is.Not.Null);
             Assert.That(firstChildCached, Is.Not.Null);
             Assert.That(firstChild.getOrDefault<string>("name"), Is.EqualTo("child1"));
             Assert.That(firstChildCached.getOrDefault<string>("name"), Is.EqualTo("child1"));
         }
-        
+
         [Test]
         public void TestById()
         {
@@ -59,7 +59,7 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(item1_2.getOrDefault<string>("name"), Is.EqualTo("item1"));
             Assert.That(child2Child1.getOrDefault<string>("name"), Is.EqualTo("child2child1"));
         }
-        
+
         [Test]
         public void TestByFullname()
         {
@@ -68,7 +68,8 @@ namespace DatenMeister.Tests.Runtime
                 as IElement;
             var noChild = extent.GetUriResolver().Resolve(TestUri + "?fn=none", ResolveType.Default)
                 as IElement;
-            var child2Child1 = extent.GetUriResolver().Resolve(TestUri + "?fn=item2::child2::child2child1", ResolveType.Default)
+            var child2Child1 = extent.GetUriResolver()
+                    .Resolve(TestUri + "?fn=item2::child2::child2child1", ResolveType.Default)
                 as IElement;
             var item1 = extent.GetUriResolver().Resolve(TestUri + "?fn=item1", ResolveType.Default)
                 as IElement;
@@ -81,12 +82,13 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("item1"));
             Assert.That(child2Child1.getOrDefault<string>("name"), Is.EqualTo("child2child1"));
         }
-        
+
         [Test]
         public void TestByProperty()
         {
             var extent = GetTestExtent();
-            var firstChild = extent.GetUriResolver().Resolve(TestUri + "?fn=item2&prop=packagedElement", ResolveType.Default)
+            var firstChild = extent.GetUriResolver()
+                    .Resolve(TestUri + "?fn=item2&prop=packagedElement", ResolveType.Default)
                 as IReflectiveSequence;
 
             Assert.That(firstChild, Is.Not.Null);
@@ -100,7 +102,7 @@ namespace DatenMeister.Tests.Runtime
                 asList.OfType<IElement>().Any(x => x.getOrDefault<string>("name") == "child1"),
                 Is.True);
         }
-        
+
         [Test]
         public void TestByDataView()
         {
@@ -135,9 +137,10 @@ namespace DatenMeister.Tests.Runtime
             var resolvedChildDirectly = extent.GetUriResolver().ResolveElement(firstChild, ResolveType.Default, false);
             Assert.That(resolvedChildDirectly, Is.Not.Null);
             Assert.That(resolvedChildDirectly, Is.EqualTo(firstChild));
-            
-            
-            var resolvedChildShadow = extent.GetUriResolver().ResolveElement(asShadow, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace, false);
+
+
+            var resolvedChildShadow = extent.GetUriResolver()
+                .ResolveElement(asShadow, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace, false);
             Assert.That(resolvedChildShadow, Is.Not.Null);
             Assert.That(resolvedChildShadow, Is.EqualTo(firstChild));
         }
@@ -156,7 +159,7 @@ namespace DatenMeister.Tests.Runtime
         /// Defines the test uri
         /// </summary>
         private const string TestUri = "dm:///Test";
-        
+
         /// <summary>
         /// Gets the test extent
         /// </summary>

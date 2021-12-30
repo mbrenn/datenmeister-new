@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -7,7 +8,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DependencyInjection;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using NUnit.Framework;
@@ -31,18 +31,19 @@ namespace DatenMeister.Tests.Web
             var mofObject2 = factory.create(null);
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
-            
+
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            
+
             var scopeStorage = new ScopeStorage();
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
-            
+
             // Execute the stuff
             var creator = FormCreator.Create(workspaceLogic, scopeStorage);
             var result = creator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
-            var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).Select(x=> x as IElement).FirstOrDefault();
+            var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
+                .Select(x => x as IElement).FirstOrDefault();
             Assert.That(tab, Is.Not.Null);
             Assert.That(tab
                 .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
@@ -89,7 +90,7 @@ namespace DatenMeister.Tests.Web
 
             var scopeStorage = new ScopeStorage();
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
-            
+
             // Execute the stuff
             var creator = FormCreator.Create(workspaceLogic, scopeStorage);
             var result = creator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration());
@@ -109,7 +110,7 @@ namespace DatenMeister.Tests.Web
                     .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                     .OfType<IElement>()
                     .Count(x => x.getMetaClass()?.ToString()?.Contains("SubElementFieldData") == true
-                    || x.getMetaClass()?.ToString()?.Contains("ReferenceFieldData") == true),
+                                || x.getMetaClass()?.ToString()?.Contains("ReferenceFieldData") == true),
                 Is.GreaterThanOrEqualTo(1));
 
 

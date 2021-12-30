@@ -12,7 +12,12 @@ namespace DatenMeister.Plugins
     /// </summary>
     public class DefaultPluginLoader : IPluginLoader
     {
+        /// <summary>
+        ///     Allows logging of events within the plugin loader
+        /// </summary>
         private static readonly ClassLogger Logger = new(typeof(DefaultPluginLoader));
+
+        public DefaultPluginSettings Settings { get; set; } = new();
 
         /// <summary>
         ///     Gets the list of loaded
@@ -55,6 +60,12 @@ namespace DatenMeister.Plugins
                     .Where(x => Path.GetExtension(x).ToLower() == ".dll");
                 foreach (var file in files)
                 {
+                    if (Settings.AssemblyFilesToBeSkipped.Contains(Path.GetFileName(file)))
+                    {
+                        Logger.Info($"Skipped by Settings: {file}");
+                        continue;
+                    }
+
                     var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
                     if (IsDotNetLibrary(filenameWithoutExtension))
                         // Skip .Net Library

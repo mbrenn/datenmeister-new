@@ -12,7 +12,7 @@ namespace DatenMeister.Plugins
     /// </summary>
     public class DefaultPluginLoader : IPluginLoader
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(DefaultPluginLoader));
+        private static readonly ClassLogger Logger = new(typeof(DefaultPluginLoader));
 
         /// <summary>
         /// Gets the list of loaded 

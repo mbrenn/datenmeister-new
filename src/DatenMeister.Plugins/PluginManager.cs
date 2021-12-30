@@ -10,12 +10,12 @@ namespace DatenMeister.Plugins
 {
     public class PluginManager
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(PluginManager));
+        private static readonly ClassLogger Logger = new(typeof(PluginManager));
 
         /// <summary>
         /// Stores the dictionary of instantiated plugins
         /// </summary>
-        private Dictionary<Type, IDatenMeisterPlugin> _instantiatedPlugins = new();
+        private readonly Dictionary<Type, IDatenMeisterPlugin> _instantiatedPlugins = new();
 
         private List<Type>? _pluginTypes;
 

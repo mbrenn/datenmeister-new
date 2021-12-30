@@ -8,14 +8,14 @@ using BurnSystems.Logging;
 namespace DatenMeister.Plugins
 {
     /// <summary>
-    /// Loads the plugins
+    ///     Loads the plugins
     /// </summary>
     public class DefaultPluginLoader : IPluginLoader
     {
         private static readonly ClassLogger Logger = new(typeof(DefaultPluginLoader));
 
         /// <summary>
-        /// Gets the list of loaded 
+        ///     Gets the list of loaded
         /// </summary>
         /// <returns>List of types which belong to a plugin</returns>
         public List<Type> GetPluginTypes()
@@ -23,7 +23,6 @@ namespace DatenMeister.Plugins
             var pluginList = new List<Type>();
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
                 try
                 {
                     // Go through all types and check, if the type has implemented the interface for the plugging
@@ -38,21 +37,17 @@ namespace DatenMeister.Plugins
                     Logger.Error(
                         $"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
                 }
-            }
 
             return pluginList;
         }
 
         /// <summary>
-        /// Loads all assemblies from the specific folder into the current context
+        ///     Loads all assemblies from the specific folder into the current context
         /// </summary>
         /// <param name="path">Path to directory whose assemblies are loaded</param>
         public void LoadAssembliesFromFolder(string path)
         {
-            if (!Path.IsPathRooted(path))
-            {
-                path = Path.Combine(Environment.CurrentDirectory, path);
-            }
+            if (!Path.IsPathRooted(path)) path = Path.Combine(Environment.CurrentDirectory, path);
 
             if (Directory.Exists(path))
             {
@@ -62,10 +57,8 @@ namespace DatenMeister.Plugins
                 {
                     var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
                     if (IsDotNetLibrary(filenameWithoutExtension))
-                    {
                         // Skip .Net Library
                         continue;
-                    }
 
                     if (AppDomain.CurrentDomain.GetAssemblies().All(
                             x => x.GetName().Name?.ToLower() != filenameWithoutExtension))
@@ -98,7 +91,7 @@ namespace DatenMeister.Plugins
         }
 
         /// <summary>
-        /// Loads all assemblies from the current directories 
+        ///     Loads all assemblies from the current directories
         /// </summary>
         public void LoadAllAssembliesFromCurrentDirectory()
         {
@@ -108,19 +101,17 @@ namespace DatenMeister.Plugins
         }
 
         /// <summary>
-        /// Loads all referenced assemblies from the assemblies being currently loaded. 
+        ///     Loads all referenced assemblies from the assemblies being currently loaded.
         /// </summary>
         public void LoadAllReferencedAssemblies()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
                          .Where(x => !IsDotNetLibrary(x.GetName())))
-            {
                 LoadReferencedAssembly(assembly);
-            }
         }
 
         /// <summary>
-        /// Loads all referenced assembly of the given assembly and all subassemblies
+        ///     Loads all referenced assembly of the given assembly and all subassemblies
         /// </summary>
         /// <param name="assembly">Assembly whose references shall be loaded</param>
         private void LoadReferencedAssembly(Assembly assembly)
@@ -140,25 +131,29 @@ namespace DatenMeister.Plugins
 
 
         /// <summary>
-        /// Gets true, if the given library is a dotnet library which
-        /// starts with System, Microsoft or mscorlib.
+        ///     Gets true, if the given library is a dotnet library which
+        ///     starts with System, Microsoft or mscorlib.
         /// </summary>
         /// <param name="assemblyName">Name of the assembly</param>
         /// <returns></returns>
-        public static bool IsDotNetLibrary(AssemblyName assemblyName) =>
-            assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.FullName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
+        public static bool IsDotNetLibrary(AssemblyName assemblyName)
+        {
+            return assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.FullName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
+        }
 
         /// <summary>
-        /// Gets true, if the given library is a dotnet library which
-        /// starts with System, Microsoft or mscorlib.
+        ///     Gets true, if the given library is a dotnet library which
+        ///     starts with System, Microsoft or mscorlib.
         /// </summary>
         /// <param name="assemblyName">Name of the assembly</param>
         /// <returns>true, if the given library is a .Net Library</returns>
-        public static bool IsDotNetLibrary(string assemblyName) =>
-            assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
+        public static bool IsDotNetLibrary(string assemblyName)
+        {
+            return assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }

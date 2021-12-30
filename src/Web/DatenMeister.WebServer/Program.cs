@@ -31,6 +31,7 @@ namespace DatenMeister.WebServer
         public static void Main(string[] args)
         {
             InitializeLogging();
+            TheLog.Info("Welcome to DatenMeister");
 
             // Starts the webserver
             do
@@ -89,7 +90,6 @@ namespace DatenMeister.WebServer
                 TheLog.AddProvider(new FileProvider(logPath, true), LogLevel.Trace);
             }
 
-            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne, LogLevel.Debug);
             TheLog.AddProvider(new ConsoleProvider(), LogLevel.Debug);
         }
 

@@ -1,18 +1,17 @@
 ﻿@using DatenMeister.WebServer.Library
 @namespace DatenMeister.WebServer.Shared
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject AppNavigationDefinition AppNavigationDefinition
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Der DatenMeister</title>
-    <base href="~/" />
-    <link href="~/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/css/bootstrap-reboot.min.css" rel="stylesheet" />
-    <link href="~/css/datenmeister.css" rel="stylesheet" />
+    <base href="~/"/>
+    <link href="~/css/bootstrap.css" rel="stylesheet"/>
+    <link href="~/css/bootstrap-reboot.min.css" rel="stylesheet"/>
+    <link href="~/css/datenmeister.css" rel="stylesheet"/>
     <script src="~/js/jquery.min.js"></script>
 </head>
 <body>
@@ -31,7 +30,7 @@
                         <a class="nav-link" href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/Data">Data</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces" >Workspaces</a>
+                        <a class="nav-link" href="/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces">Workspaces</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/Types">Types</a>
@@ -41,7 +40,7 @@
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Command" aria-label="Command">
                     <button class="btn btn-outline-success me-2" type="submit">Execute</button>
-                </form> 
+                </form>
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -55,9 +54,11 @@
         <ul class="navbar-nav">
             @foreach (var item in AppNavigationDefinition.Items)
             {
-                <li class="navbar-item"><a href="@item.Url" class="nav-link">
-                    <img src="img/@(item.Image)-48.png" alt="@item.Title" />
-                </a></li>
+                <li class="navbar-item">
+                    <a href="@item.Url" class="nav-link">
+                        <img src="img/@(item.Image)-48.png" alt="@item.Title"/>
+                    </a>
+                </li>
             }
         </ul>
     </nav>
@@ -68,7 +69,7 @@
 </div>
 
 
-    <script src="~/js/bootstrap.bundle.min.js"></script>
-    <script data-main="js/datenmeister" src="~/js/require.js"></script>
+<script src="~/js/bootstrap.bundle.min.js"></script>
+<script data-main="js/datenmeister" src="~/js/require.js"></script>
 </body>
 </html>

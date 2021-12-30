@@ -16,7 +16,6 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Forms.FormFinder;
 using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
 
 namespace DatenMeister.Forms.FormCreator
@@ -565,13 +564,14 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         /// <param name="parentMetaClass">Meta class of the parent item</param>
         /// <param name="property">Uml-Property which is requesting a field</param>
-        /// <param name="creationMode">Defines the mode how to create the fields</param>
+        /// <param name="propertyName">Name of the property wo whose values the list form shall be created.</param>
+        /// <param name="configuration">Defines the mode how to create the fields</param>
         /// <returns>The field data</returns>
         private IElement CreateFieldForProperty(
             IObject? parentMetaClass,
             IObject? property,
             string? propertyName,
-            FormFactoryConfiguration creationMode)
+            FormFactoryConfiguration configuration)
         {
             if (property == null && propertyName == null)
             {
@@ -582,7 +582,7 @@ namespace DatenMeister.Forms.FormCreator
 
             propertyName ??= property.get<string>("name");
             var propertyIsEnumeration = property != null && PropertyMethods.IsCollection(property);
-            var isReadOnly = creationMode.IsReadOnly;
+            var isReadOnly = configuration.IsReadOnly;
 
             // Check, if field property is an enumeration
             _uriResolver ??= _workspaceLogic?.GetTypesWorkspace();
@@ -599,7 +599,7 @@ namespace DatenMeister.Forms.FormCreator
             {
                 if (propertyTypeMetaClass.equals(_UML.TheOne.SimpleClassifiers.__Enumeration))
                 {
-                    return CreateFieldForEnumeration(propertyName, propertyType, creationMode);
+                    return CreateFieldForEnumeration(propertyName, propertyType, configuration);
                 }
 
                 if (propertyType.equals(_booleanType))
@@ -628,12 +628,14 @@ namespace DatenMeister.Forms.FormCreator
                     !propertyType.equals(_dateTimeType))
                 {
                     // If we have something else than a primitive type and it is not for a list form
-                    if (propertyIsEnumeration && !creationMode.IsForListView)
+                    if (propertyIsEnumeration)
                     {
                         // It can contain multiple elements
                         var elementsField = mofFactory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
                         elementsField.set(_DatenMeister._Forms._SubElementFieldData.name, propertyName);
                         elementsField.set(_DatenMeister._Forms._SubElementFieldData.title, propertyName);
+                        elementsField.set(_DatenMeister._Forms._SubElementFieldData.isReadOnly,
+                            configuration.IsForListView || configuration.IsReadOnly);
 
                         var defaultTypeForNewElement =
                             mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
@@ -649,33 +651,24 @@ namespace DatenMeister.Forms.FormCreator
                         elementsField.set(_DatenMeister._Forms._SubElementFieldData.isReadOnly, isReadOnly);
 
                         IElement? enumerationListForm = null;
-                        if (_formLogic != null)
+                        if (!configuration.IsForListView)
                         {
-                            var formFinder = new FormFinder.FormFinder(_formLogic);
-                            enumerationListForm = formFinder.FindFormsFor(
-                                new FindFormQuery
-                                {
-                                    parentMetaClass = parentMetaClass,
-                                    parentProperty = propertyName,
-                                    metaClass = propertyType,
-                                    FormType = _DatenMeister._Forms.___FormType.ObjectList
-                                }).FirstOrDefault();
-                        }
+                            if (_formLogic != null)
+                                enumerationListForm =
+                                    new FormFactory(_formLogic, _scopeStorage)
+                                        .CreateListFormForMetaClass(propertyType, configuration);
 
-                        // Create the internal form out of the metaclass
-                        if (enumerationListForm == null
-                            && creationMode.CreateByMetaClass)
-                        {
-                            enumerationListForm =
-                                CreateListFormForMetaClass(
-                                    propertyType,
-                                    new FormFactoryConfiguration(),
-                                    property as IElement);
-                        }
+                            // Create the internal form out of the metaclass
+                            if (enumerationListForm == null
+                                && configuration.CreateByMetaClass)
+                                enumerationListForm =
+                                    CreateListFormForMetaClass(
+                                        propertyType,
+                                        configuration with {IsForListView = true},
+                                        property as IElement);
 
-                        if (enumerationListForm != null)
-                        {
-                            elementsField.set(_DatenMeister._Forms._SubElementFieldData.form, enumerationListForm);
+                            if (enumerationListForm != null)
+                                elementsField.set(_DatenMeister._Forms._SubElementFieldData.form, enumerationListForm);
                         }
 
                         return elementsField;
@@ -686,12 +679,10 @@ namespace DatenMeister.Forms.FormCreator
                     reference.set(_DatenMeister._Forms._ReferenceFieldData.name, propertyName);
                     reference.set(_DatenMeister._Forms._ReferenceFieldData.title, propertyName);
                     reference.set(_DatenMeister._Forms._ReferenceFieldData.isReadOnly, isReadOnly);
-                    if (propertyType != null)
-                    {
-                        reference.set(
-                            _DatenMeister._Forms._ReferenceFieldData.metaClassFilter,
-                            new[] {propertyType});
-                    }
+                    reference.set(_DatenMeister._Forms._ReferenceFieldData.isEnumeration, propertyIsEnumeration);
+                    reference.set(
+                        _DatenMeister._Forms._ReferenceFieldData.metaClassFilter,
+                        new[] {propertyType});
 
                     return reference;
                 }

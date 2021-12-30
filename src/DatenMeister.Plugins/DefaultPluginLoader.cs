@@ -17,7 +17,7 @@ namespace DatenMeister.Plugins
         /// <summary>
         /// Gets the list of loaded 
         /// </summary>
-        /// <returns>List of types which elong to a plugin</returns>
+        /// <returns>List of types which belong to a plugin</returns>
         public List<Type> GetPluginTypes()
         {
             var pluginList = new List<Type>();
@@ -26,7 +26,7 @@ namespace DatenMeister.Plugins
             {
                 try
                 {
-                    // Go through all types and check, if the type has implemented the interface for the pluging
+                    // Go through all types and check, if the type has implemented the interface for the plugging
                     pluginList.AddRange(
                         assembly.GetTypes()
                             .Where(type =>
@@ -70,15 +70,16 @@ namespace DatenMeister.Plugins
                     if (AppDomain.CurrentDomain.GetAssemblies().All(
                             x => x.GetName().Name?.ToLower() != filenameWithoutExtension))
                     {
+                        var assemblyName = AssemblyName.GetAssemblyName(Path.Combine(path, file));
+
                         try
                         {
-                            //var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(path, file));
-                            var assembly = Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(path, file)));
+                            var assembly = Assembly.Load(assemblyName);
                             Logger.Info($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }
                         catch (Exception e)
                         {
-                            Logger.Error($"Loading of assembly {file} failed: {e}");
+                            Logger.Error($"Loading of assembly {file} ({assemblyName}) failed: {e}");
                         }
                     }
                 }

@@ -40,7 +40,7 @@ namespace DatenMeister.SourcecodeGenerator
                     // And adds the converted elements to package and the package to the temporary MOF Extent
                     PackageMethods.AddObjectToPackage(package, typeObject);
                     extent.TypeLookup.Add(
-                        typeObject.GetUri() ?? throw new NotImplementedException("GetUri() == null"),
+                        typeObject.GetUri() ?? throw new InvalidOperationException("GetUri() == null"),
                         type);
                 }
             }

@@ -199,10 +199,9 @@ namespace DatenMeister.Forms.FormCreator
                     // to the element
                     var formCreator = new FormFactory(_formLogic, _scopeStorage);
 
-                    // TODO: Create List Form By MetaClass and not by Collection(!!!)
-                    form = formCreator.CreateListFormForCollection(
-                               extent.elements(),
-                               new FormFactoryConfiguration() {AllowFormModifications = false}) ??
+                    form = formCreator.CreateListFormForMetaClass(
+                               groupedMetaclass,
+                               new FormFactoryConfiguration {AllowFormModifications = false, IsReadOnly = true}) ??
                            throw new InvalidOperationException("No form was found");
 
                     if (configuration.CreateByMetaClass)

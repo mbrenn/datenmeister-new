@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>8</LangVersion>
     <OutputType>WinExe</OutputType>
@@ -9,7 +9,7 @@
     <TargetFrameworks>net462;net5.0-windows</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TargetFrameworks>net5.0-windows</TargetFrameworks>
+    <TargetFramework>net5.0-windows</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icons.ico</ApplicationIcon>
@@ -22,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj" />
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
-    <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj" />
     <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\DatenMeister.WPF\DatenMeister.WPF.csproj" />

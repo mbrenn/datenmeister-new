@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
@@ -7,7 +8,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Locking;
 using DatenMeister.Provider.XMI;
@@ -71,7 +71,8 @@ namespace DatenMeister.Tests.Xmi.Runtime
         [Test]
         public void TestHrefAttributeLoading()
         {
-            const string xmi1 = "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"test\" value=\"23\" /></package>";
+            const string xmi1 =
+                "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"test\" value=\"23\" /></package>";
             const string xmi2 =
                 "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\"><sub href=\"dm:///xmi1/#test\" /></element></package>";
 

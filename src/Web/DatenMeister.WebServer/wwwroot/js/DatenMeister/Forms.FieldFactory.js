@@ -2,7 +2,6 @@ define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", ".
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.createField = void 0;
-
     function createField(fieldMetaClassId, parameter) {
         let result;
         switch (fieldMetaClassId) {

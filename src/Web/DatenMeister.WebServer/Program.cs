@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.BootStrap.PublicSettings;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.Plugins;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -31,6 +33,7 @@ namespace DatenMeister.WebServer
         public static void Main(string[] args)
         {
             InitializeLogging();
+            TheLog.Info("Welcome to DatenMeister");
 
             // Starts the webserver
             do
@@ -38,6 +41,12 @@ namespace DatenMeister.WebServer
                 // Loads the DatenMeister
                 var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
                 defaultSettings.IsLockingActivated = true;
+                defaultSettings.AdditionalSettings.Add(
+                    new DefaultPluginSettings
+                    {
+                        AssemblyFilesToBeSkipped =
+                            new List<string>(new[] {"DatenMeister.WebServer.Views.dll"})
+                    });
 
                 GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
 
@@ -89,7 +98,6 @@ namespace DatenMeister.WebServer
                 TheLog.AddProvider(new FileProvider(logPath, true), LogLevel.Trace);
             }
 
-            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne, LogLevel.Debug);
             TheLog.AddProvider(new ConsoleProvider(), LogLevel.Debug);
         }
 

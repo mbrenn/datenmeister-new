@@ -1,7 +1,7 @@
 ﻿using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Runtime.Workspaces.Data;
-using DatenMeister.DependencyInjection;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime
@@ -115,6 +115,5 @@ namespace DatenMeister.Tests.Runtime
                     )));
             return workspaceLoader;
         }
-
     }
 }

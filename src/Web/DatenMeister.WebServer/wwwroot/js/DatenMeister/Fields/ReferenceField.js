@@ -2,7 +2,6 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
-
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
             if (this.isReadOnly === true) {
@@ -19,11 +18,9 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
                 return this._list;
             }
         }
-
         evaluateDom(dmElement) {
         }
     }
-
     exports.Field = Field;
 });
 //# sourceMappingURL=ReferenceField.js.map

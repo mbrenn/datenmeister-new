@@ -21,7 +21,7 @@ export function createActionFormForEmptyObject(
 
     const creator = new Forms.DetailFormCreator();
     creator.element = new Mof.DmObject();
-    creator.element.setMetaClass(metaClass);
+    creator.element.setMetaClassByUri(metaClass);
 
     configuration.onSubmit = (element) => {
         DetailFormActions.execute(

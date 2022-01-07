@@ -53,9 +53,13 @@ export class DmObject {
 
         return DmObject.valueToString(values);
     }
-    
-    setMetaClass(metaClassUri: string) {
+
+    setMetaClassByUri(metaClassUri: string) {
         this.metaClass = {uri: metaClassUri};
+    }
+
+    setMetaClassById(metaClassId: string) {
+        this.metaClass = {id: metaClassId};
     }
 
     static valueToString(item: any, indent: string = ""): string {

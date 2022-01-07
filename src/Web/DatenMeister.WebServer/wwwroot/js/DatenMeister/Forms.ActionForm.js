@@ -11,7 +11,7 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
         }
         const creator = new Forms.DetailFormCreator();
         creator.element = new Mof.DmObject();
-        creator.element.setMetaClass(metaClass);
+        creator.element.setMetaClassByUri(metaClass);
         configuration.onSubmit = (element) => {
             FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
         };

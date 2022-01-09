@@ -359,6 +359,7 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="itemUri">Uri of the item to whose property shall be added</param>
         /// <param name="parameters">Parameters describing the property and the reference</param>
         /// <returns></returns>
+        [HttpPost("api/items/add_ref_to_collection/{workspaceId}/{itemUri}")]
         public ActionResult<object> AddReferenceToCollection(string workspaceId, string itemUri,
             [FromBody] AddReferenceToCollectionParams parameters)
         {

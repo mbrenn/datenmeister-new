@@ -1,13 +1,13 @@
 ﻿import * as Mof from "./Mof";
-import * as DataLoader from "./DataLoader";
-import DmObject = Mof.DmObject;
+import * as DataLoader from "./Client.Items";
 import * as ApiConnection from "./ApiConnection";
 import * as Settings from "./Settings";
 import * as DetailForm from "./Forms.DetailForm";
 import * as IForm from "./Forms.Interfaces";
 import {ListForm} from "./Forms.ListForm";
-import { debugElementToDom } from "./DomHelper";
+import {debugElementToDom} from "./DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
+import DmObject = Mof.DmObject;
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {

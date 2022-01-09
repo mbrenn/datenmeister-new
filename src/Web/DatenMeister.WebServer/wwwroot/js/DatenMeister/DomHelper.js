@@ -1,15 +1,18 @@
-define(["require", "exports", "./NameLoader"], function (require, exports, NameLoader) {
+define(["require", "exports", "./Client.Elements"], function (require, exports, ElementClient) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports, "__esModule", {value: true});
     exports.convertToDom = exports.debugElementToDom = exports.injectNameByUri = exports.injectName = void 0;
+
     function injectName(domElement, elementPosition) {
-        NameLoader.loadNameOf(elementPosition).done(x => {
+        ElementClient.loadNameOf(elementPosition).done(x => {
             domElement.text(x.name);
         });
     }
+
     exports.injectName = injectName;
+
     function injectNameByUri(domElement, elementUri) {
-        NameLoader.loadNameByUri(elementUri).done(x => {
+        ElementClient.loadNameByUri(elementUri).done(x => {
             if (x.extentUri !== undefined && x.workspace !== undefined
                 && x.extentUri !== "" && x.workspace !== ""
                 && x.itemId !== "" && x.itemId !== undefined) {

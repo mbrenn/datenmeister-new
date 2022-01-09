@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -101,7 +100,6 @@ namespace DatenMeister.Tests.Web
 
             var elementsController = new ElementsController(workspaceLogic, scopeStorage);
 
-
             var firstElement =
                 extent.elements()
                     .WhenPropertyContains("name", "item2").OfType<IElement>()
@@ -120,7 +118,7 @@ namespace DatenMeister.Tests.Web
         {
             var dm = DatenMeisterTests.GetDatenMeisterScope(
                 true,
-                new IntegrationSettings {PerformSlimIntegration = true});
+                DatenMeisterTests.GetIntegrationSettings());
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
 
             var createdExtent = extentManager.CreateAndAddXmiExtent(UriTemporaryExtent, "./test.xmi");

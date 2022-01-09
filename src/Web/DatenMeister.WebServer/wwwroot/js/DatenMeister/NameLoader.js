@@ -1,20 +1,5 @@
-define(["require", "exports", "./Settings"], function (require, exports, Settings) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.loadNameByUri = exports.loadNameOf = void 0;
-    function loadNameOf(elementPosition) {
-        return $.ajax(Settings.baseUrl +
-            "api/elements/get_name/" +
-            encodeURIComponent(elementPosition.workspace) + "/" +
-            encodeURIComponent(elementPosition.extentUri) + "/" +
-            encodeURIComponent(elementPosition.item));
-    }
-    exports.loadNameOf = loadNameOf;
-    function loadNameByUri(elementUri) {
-        return $.ajax(Settings.baseUrl +
-            "api/elements/get_name/" +
-            encodeURIComponent(elementUri));
-    }
-    exports.loadNameByUri = loadNameByUri;
+    Object.defineProperty(exports, "__esModule", {value: true});
 });
 //# sourceMappingURL=NameLoader.js.map

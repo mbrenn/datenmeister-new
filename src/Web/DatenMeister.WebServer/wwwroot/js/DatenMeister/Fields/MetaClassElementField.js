@@ -1,7 +1,8 @@
-define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.SelectItemControl", "../ElementsLoader"], function (require, exports, DomHelper_1, Interfaces_Fields_1, Forms_SelectItemControl_1, ElementsLoader_1) {
+define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, DomHelper_1, Interfaces_Fields_1, Forms_SelectItemControl_1, Client_Items_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
+
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
             var _a;
@@ -33,7 +34,7 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
                     const selectItemCtrl = new Forms_SelectItemControl_1.SelectItemControl();
                     const divSelectItem = selectItemCtrl.init(divContainer);
                     selectItemCtrl.onItemSelected = (selectedItem) => {
-                        (0, ElementsLoader_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
+                        (0, Client_Items_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                             .done(() => divSelectItem.remove()).done(() => {
                             if (tthis.configuration.refreshForm !== undefined) {
                                 tthis.configuration.refreshForm();

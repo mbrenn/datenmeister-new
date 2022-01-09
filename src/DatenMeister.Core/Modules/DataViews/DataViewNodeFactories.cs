@@ -8,7 +8,7 @@ namespace DatenMeister.Core.Modules.DataViews
     /// </summary>
     public class DataViewNodeFactories
     {
-        private readonly List<IDataViewNodeEvaluation> _factories = new List<IDataViewNodeEvaluation>();
+        private readonly List<IDataViewNodeEvaluation> _factories = new();
 
         /// <summary>
         /// Stores the view node factory

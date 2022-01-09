@@ -16,15 +16,14 @@ namespace DatenMeister.Core.Functions.Queries
     /// </summary>
     public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExtent
     {
-        private readonly IObject _value;
-
         /// <summary>
         /// Defines the names of the properties to be parsed
         /// </summary>
         private readonly ICollection<string> _propertyNames;
-        
-        private List<Tuple<string, object>> _propertyValues = new List<Tuple<string, object>>();
-        
+
+        private readonly List<Tuple<string, object>> _propertyValues = new();
+        private readonly IObject _value;
+
         public PropertiesAsReflectiveCollection(IObject value)
         {
             _value = value;
@@ -49,10 +48,24 @@ namespace DatenMeister.Core.Functions.Queries
             _propertyNames = propertyNames;
         }
 
+        /// <summary>
+        ///     Gets the extent associated to the parent extent
+        /// </summary>
+        public IExtent? Extent
+        {
+            get
+            {
+                lock (_propertyValues)
+                {
+                    return (_value as IHasExtent)?.Extent;
+                }
+            }
+        }
+
         public IEnumerator<object> GetEnumerator()
         {
             var result = new List<object>();
-            
+
             lock (_propertyValues)
             {
                 _propertyValues.Clear();
@@ -65,10 +78,10 @@ namespace DatenMeister.Core.Functions.Queries
                     }
 
                     foreach (var property in propertyNames
-                        .Where(property => _value.isSet(property)))
+                                 .Where(property => _value.isSet(property)))
                     {
                         if (!(_value.get(property)
-                            is IReflectiveCollection valueAsCollection))
+                                is IReflectiveCollection valueAsCollection))
                         {
                             continue;
                         }
@@ -78,14 +91,14 @@ namespace DatenMeister.Core.Functions.Queries
                             if (child == null) continue;
 
                             result.Add(child);
-                            
+
                             _propertyValues.Add(
                                 new Tuple<string, object>(property, child));
                         }
                     }
                 }
             }
-            
+
             return result.GetEnumerator();
         }
 
@@ -116,19 +129,5 @@ namespace DatenMeister.Core.Functions.Queries
         }
 
         public int size() => this.Count();
-
-        /// <summary>
-        /// Gets the extent associated to the parent extent
-        /// </summary>
-        public IExtent? Extent
-        {
-            get
-            {
-                lock (_propertyValues)
-                {
-                    return (_value as IHasExtent)?.Extent;
-                }
-            }
-        }
     }
 }

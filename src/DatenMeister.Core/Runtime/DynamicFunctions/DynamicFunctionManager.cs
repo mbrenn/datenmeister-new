@@ -12,9 +12,8 @@ namespace DatenMeister.Core.Runtime.DynamicFunctions
         /// <summary>
         /// Stores the derived properties
         /// </summary>
-        private Dictionary<DerivedPropertyKey, DerivedProperty> _derivedProperties = 
-            new Dictionary<DerivedPropertyKey, DerivedProperty>();
-        
+        private readonly Dictionary<DerivedPropertyKey, DerivedProperty> _derivedProperties = new();
+
         /// <summary>
         /// Gets the dynamic property of the element via the function manager.
         /// The dynamic function manager is called by the workspace in which
@@ -37,7 +36,7 @@ namespace DatenMeister.Core.Runtime.DynamicFunctions
             {
                 return (true, propertyValue.PropertyFunction(element));
             }
-            
+
             return (false, null);
         }
 
@@ -71,7 +70,7 @@ namespace DatenMeister.Core.Runtime.DynamicFunctions
         }
 
         public IElement MetaClass { get; }
-        
+
         public string Property { get; }
 
         public override bool Equals(object? obj)

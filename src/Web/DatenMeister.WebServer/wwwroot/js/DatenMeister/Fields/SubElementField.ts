@@ -3,6 +3,7 @@ import {DmObject} from "../Mof";
 import * as FieldFactory from "../Forms.FieldFactory";
 
 import {getItemDetailUri} from "../Website";
+import * as SIC from "../Forms.SelectItemControl";
 
 export class Field extends BaseField implements IFormField {
 
@@ -88,11 +89,23 @@ export class Field extends BaseField implements IFormField {
 
             }
 
-            const newItem = $("<a href='#'>Attach new Item</a>");
-            newItem.on('click', () => {
-                alert('YES');
+            const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach new Item</btn><div class='dm-subelements-appenditem-box'></div></div>");
+            $(".dm-subelements-appenditem-btn", newItem).on('click', () => {
+                const containerDiv = $(".dm-subelements-appenditem-box");
+                containerDiv.empty();
+                const selectItem = new SIC.SelectItemControl();
+                const settings = new SIC.Settings();
+                settings.showWorkspaceInBreadcrumb = true;
+                settings.showExtentInBreadcrumb = true;
+                selectItem.onItemSelected = selectedItem => {
+                    alert(selectedItem.id);
+                };
+
+                selectItem.init(containerDiv, settings);
+
                 return false;
             });
+
             this._list.append(newItem);
         }
 
@@ -100,8 +113,6 @@ export class Field extends BaseField implements IFormField {
     }
 
     evaluateDom(dmElement: DmObject) {
-        
+
     }
-
-
 }

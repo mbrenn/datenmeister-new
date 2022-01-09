@@ -215,10 +215,8 @@ namespace DatenMeister.WebServer.Controller
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
 
             var elements = extent.elements().Take(100).OfType<IElement>();
-
 #else
             var elements = extent.elements().OfType<IElement>();
-
 #endif
 
             foreach (var item in elements)
@@ -257,25 +255,30 @@ namespace DatenMeister.WebServer.Controller
 
         /// <summary>
         /// Gets the items by the uri parameter.
-        /// The parameter themselves are expected to be uriencoded, so a decoding via HttpUtility.UrlDecode will be performed
+        /// The parameter themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
         /// </summary>
-        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="workspaceId">Id of the workspace. Null, if through all workspaces shall be searched</param>
         /// <param name="itemUri">Uri of the item</param>
         /// <returns>The found object</returns>
-        private IObject GetItemByUriParameter(string workspaceId, string itemUri)
+        private IObject GetItemByUriParameter(string? workspaceId, string itemUri)
         {
-            var workspace = _workspaceLogic.GetWorkspace(workspaceId);
-            if (workspace == null)
+            if (workspaceId == null)
             {
-                throw new InvalidOperationException($"Workspace '{workspaceId}' is not found");
-            }
+                if (_workspaceLogic.Resolve(itemUri, ResolveType.Default, false) is not IObject foundElement)
+                    throw new InvalidOperationException($"Element '{itemUri}' is not found");
 
-            if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
+                return foundElement;
+            }
+            else
             {
-                throw new InvalidOperationException($"Element '{itemUri}' is not found");
-            }
+                var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+                if (workspace == null) throw new InvalidOperationException($"Workspace '{workspaceId}' is not found");
 
-            return foundElement;
+                if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
+                    throw new InvalidOperationException($"Element '{itemUri}' is not found");
+
+                return foundElement;
+            }
         }
 
         [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
@@ -349,11 +352,36 @@ namespace DatenMeister.WebServer.Controller
             return new {success = true};
         }
 
+        /// <summary>
+        ///     Adds a reference to a property's collection
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace where the item can be found</param>
+        /// <param name="itemUri">Uri of the item to whose property shall be added</param>
+        /// <param name="parameters">Parameters describing the property and the reference</param>
+        /// <returns></returns>
+        public ActionResult<object> AddReferenceToCollection(string workspaceId, string itemUri,
+            [FromBody] AddReferenceToCollectionParams parameters)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+
+            var reference = GetItemByUriParameter(
+                                parameters.WorkspaceId,
+                                parameters.ReferenceUri)
+                            ?? throw new InvalidOperationException("Reference was not found");
+
+            foundItem.AddCollectionItem(parameters.Property, reference);
+
+            return new {success = true};
+        }
+
         public class SetMetaClassParams
         {
             public string metaClass { get; set; } = string.Empty;
         }
-
 
         /// <summary>
         /// Parameters to create an item within an extent
@@ -412,6 +440,22 @@ namespace DatenMeister.WebServer.Controller
         public class SetPropertiesParams
         {
             public List<SetPropertyParams> Properties = new();
+        }
+
+
+        /// <summary>
+        ///     Defines the parameters to add a reference to a property's collection.
+        /// </summary>
+        public class AddReferenceToCollectionParams
+        {
+            /// <summary>
+            ///     Defines the property to which the property will be added
+            /// </summary>
+            public string Property { get; set; } = string.Empty;
+
+            public string? WorkspaceId { get; set; } = null;
+
+            public string ReferenceUri { get; set; } = string.Empty;
         }
     }
 }

@@ -16,11 +16,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
     /// </summary>
     public class WorkspaceLogic : IWorkspaceLogic
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLogic));
+        private static readonly ClassLogger Logger = new(typeof(WorkspaceLogic));
+
+        private readonly ChangeEventManager? _changeEventManager;
 
         private readonly WorkspaceData _workspaceData;
-        
-        private readonly ChangeEventManager? _changeEventManager;
 
         /// <summary>
         /// Cache to store the uri storing the extents as a provider object
@@ -32,33 +32,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
             _workspaceData = workspaceData;
             _changeEventManager = scopeStorage?.Get<ChangeEventManager>();
         }
-        
-        /// <summary>
-        /// Initializes a new instance of the WorkspaceLogic
-        /// </summary>
-        /// <param name="workspaceData"></param>
-        /// <param name="scopeStorage">The scope storage</param>
-        public static WorkspaceLogic Create(WorkspaceData workspaceData, IScopeStorage? scopeStorage = null)
-        {
-            return new WorkspaceLogic(workspaceData, scopeStorage);
-        }
 
         public WorkspaceLogic(IScopeStorage scopeStorage)
         {
             _workspaceData = scopeStorage.Get<WorkspaceData>();
-            _changeEventManager = scopeStorage.Get<ChangeEventManager>(); 
-        }
-
-        /// <summary>
-        /// Sets the default workspace that will be assumed, when the extent is not assigned to a workspace
-        /// </summary>
-        /// <param name="layer"></param>
-        public void SetDefaultWorkspace(Workspace layer)
-        {
-            lock (_workspaceData)
-            {
-                _workspaceData.Default = layer;
-            }
+            _changeEventManager = scopeStorage.Get<ChangeEventManager>();
         }
 
         public Workspace? GetWorkspaceOfExtent(IExtent? extent)
@@ -66,7 +44,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
             lock (_workspaceData)
             {
                 if (extent == null) return _workspaceData.Default;
-                
+
                 var result = _workspaceData.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
                 return result ?? _workspaceData.Default;
             }
@@ -119,20 +97,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
                     .Select(x => x as IUriExtent)
                     .Where(x => x != null)
                     .ToList()!;
-            }
-        }
-
-        /// <summary>
-        /// Gets the datalayer by name.
-        /// The datalayer will only be returned, if there is a relationship
-        /// </summary>
-        /// <param name="id">Name of the datalayer</param>
-        /// <returns>Found datalayer or null</returns>
-        public Workspace GetById(string id)
-        {
-            lock (_workspaceData)
-            {
-                return _workspaceData.Workspaces.First(x => x.id == id);
             }
         }
 
@@ -218,9 +182,9 @@ namespace DatenMeister.Core.Runtime.Workspaces
 
         public DynamicFunctionManager GetDynamicFunctionManager(string workspaceId)
         {
-                return (GetWorkspace(workspaceId) 
-                        ?? throw new InvalidOperationException($"Workspace not found {workspaceId}"))
-                    .DynamicFunctionManager;
+            return (GetWorkspace(workspaceId)
+                    ?? throw new InvalidOperationException($"Workspace not found {workspaceId}"))
+                .DynamicFunctionManager;
         }
 
         /// <summary>
@@ -285,6 +249,63 @@ namespace DatenMeister.Core.Runtime.Workspaces
             SendEventForWorkspaceChange(workspace);
         }
 
+        /// <inheritdoc />
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        {
+            return GetWorkspacesOrderedByDependability()
+                .Select(
+                    workspace => workspace.Resolve(
+                        uri,
+                        resolveType | ResolveType.NoMetaWorkspaces,
+                        traceFailing))
+                .FirstOrDefault(result => result != null);
+        }
+
+        /// <inheritdoc />
+        public IElement? ResolveById(string id)
+        {
+            return GetWorkspacesOrderedByDependability()
+                .Select(
+                    workspace => workspace.ResolveById(id))
+                .FirstOrDefault(result => result != null);
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the WorkspaceLogic
+        /// </summary>
+        /// <param name="workspaceData"></param>
+        /// <param name="scopeStorage">The scope storage</param>
+        public static WorkspaceLogic Create(WorkspaceData workspaceData, IScopeStorage? scopeStorage = null)
+        {
+            return new WorkspaceLogic(workspaceData, scopeStorage);
+        }
+
+        /// <summary>
+        ///     Sets the default workspace that will be assumed, when the extent is not assigned to a workspace
+        /// </summary>
+        /// <param name="layer"></param>
+        public void SetDefaultWorkspace(Workspace layer)
+        {
+            lock (_workspaceData)
+            {
+                _workspaceData.Default = layer;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the datalayer by name.
+        ///     The datalayer will only be returned, if there is a relationship
+        /// </summary>
+        /// <param name="id">Name of the datalayer</param>
+        /// <returns>Found datalayer or null</returns>
+        public Workspace GetById(string id)
+        {
+            lock (_workspaceData)
+            {
+                return _workspaceData.Workspaces.First(x => x.id == id);
+            }
+        }
+
         /// <summary>
         /// Performs an initialization of the common workspaces
         /// </summary>
@@ -293,8 +314,10 @@ namespace DatenMeister.Core.Runtime.Workspaces
         {
             var workspaceData = new Workspace(WorkspaceNames.WorkspaceData, "All the data workspaces");
             var workspaceTypes = new Workspace(WorkspaceNames.WorkspaceTypes, "All the types belonging to us. ");
-            var workspaceUml = new Workspace(WorkspaceNames.WorkspaceUml, "The extents belonging to UML are stored here.");
-            var workspaceMof = new Workspace(WorkspaceNames.WorkspaceMof, "The extents belonging to MOF are stored here.");
+            var workspaceUml =
+                new Workspace(WorkspaceNames.WorkspaceUml, "The extents belonging to UML are stored here.");
+            var workspaceMof =
+                new Workspace(WorkspaceNames.WorkspaceMof, "The extents belonging to MOF are stored here.");
             var workspaceMgmt = new Workspace(WorkspaceNames.WorkspaceManagement, "Management data for DatenMeister");
 
             var workspace = new WorkspaceData {Default = workspaceData};
@@ -319,5 +342,35 @@ namespace DatenMeister.Core.Runtime.Workspaces
         public static IWorkspaceLogic GetDefaultLogic() => Create(InitDefault());
 
         public static IWorkspaceLogic GetEmptyLogic() => Create(new WorkspaceData());
+
+        /// <summary>
+        ///     Gets an enumeration of workspaces in which the first item are the workspaces which have the
+        ///     highest levels of dependencies. This means that in a common workspacelogic, the first workspace
+        ///     being returned is the Data Workspace and the last one is the Mof workspace
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Workspace> GetWorkspacesOrderedByDependability()
+        {
+            var workspaces = Workspaces.ToList();
+            while (workspaces.Count > 0)
+            {
+                var count = workspaces.Count;
+                foreach (var tryWorkspace in workspaces.ToList())
+                    // Checks, if any of the meta-workspaces of the current workspace is still in this list 
+                    if (workspaces.All(x => x.MetaWorkspaces.All(y => y != tryWorkspace)))
+                    {
+                        yield return tryWorkspace;
+                        workspaces.Remove(tryWorkspace);
+                    }
+
+                if (workspaces.Count == count)
+                {
+                    // just take one... We have to take one because the MOF Workspace has a circular dependency 
+                    var first = workspaces.First();
+                    yield return first;
+                    workspaces.Remove(first);
+                }
+            }
+        }
     }
 }

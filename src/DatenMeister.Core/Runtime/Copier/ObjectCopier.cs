@@ -14,12 +14,12 @@ namespace DatenMeister.Core.Runtime.Copier
         /// <summary>
         /// Gets the default copy options which create new ids for each copied element
         /// </summary>
-        public static CopyOption None { get; } = new CopyOption();
+        public static CopyOption None { get; } = new();
 
         /// <summary>
         /// Gets the copy options which copies also the ids
         /// </summary>
-        public static CopyOption CopyId => new CopyOption {CopyId = true};
+        public static CopyOption CopyId => new() {CopyId = true};
     }
 
     public class CopyOption
@@ -47,19 +47,19 @@ namespace DatenMeister.Core.Runtime.Copier
     public class ObjectCopier
     {
         /// <summary>
-        /// Stores the current depth
-        /// </summary>
-        private int _currentDepth;
-
-        /// <summary>
         /// Defines the maximum recursion depth that is accepted by the object copier
         /// </summary>
         private const int MaxRecursionDepth = 100;
-        
+
         /// <summary>
         /// Contains the factory method
         /// </summary>
         private readonly IFactory _factory;
+
+        /// <summary>
+        ///     Stores the current depth
+        /// </summary>
+        private int _currentDepth;
 
         /// <summary>
         /// Stores the extent of the element to be copied.
@@ -90,13 +90,15 @@ namespace DatenMeister.Core.Runtime.Copier
 
             // Gets the source extent
             _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent
-                            ?? throw new InvalidOperationException("element is not IHasExtent and not MofElement");
+                ?? throw new InvalidOperationException("element is not IHasExtent and not MofElement");
 
             IElement targetElement;
             if (element is MofObject {IsSlimUmlEvaluation: true} asObject)
             {
                 targetElement = _factory.create(
-                    asObject.ProviderObject.MetaclassUri == null ? null : new MofObjectShadow(asObject.ProviderObject.MetaclassUri));
+                    asObject.ProviderObject.MetaclassUri == null
+                        ? null
+                        : new MofObjectShadow(asObject.ProviderObject.MetaclassUri));
             }
             else
             {
@@ -122,7 +124,7 @@ namespace DatenMeister.Core.Runtime.Copier
                 // Can't go deeper
                 return;
             }
-            
+
             copyOptions ??= CopyOptions.None;
 
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
@@ -172,10 +174,10 @@ namespace DatenMeister.Core.Runtime.Copier
                 case null:
                 case IElement _ when noRecursion:
                     return null;
-                
+
                 case MofObjectShadow asMofObjectShadow:
                     return asMofObjectShadow;
-                
+
                 case IElement valueAsElement:
                 {
                     var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
@@ -242,7 +244,7 @@ namespace DatenMeister.Core.Runtime.Copier
             {
                 InMemoryProvider.TemporaryExtent.AddMetaExtents((mofObject).ReferencedExtent.MetaExtents);
             }
-            
+
             // Adds the data workspaces
             return Copy(InMemoryObject.TemporaryFactory, value, CopyOptions.None);
         }
@@ -253,7 +255,8 @@ namespace DatenMeister.Core.Runtime.Copier
         /// <param name="value">Value to copied</param>
         /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>Element being copied</returns>
-        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption? copyOptions = null)
+        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value,
+            CopyOption? copyOptions = null)
         {
             var temp = new TemporaryReflectiveCollection();
             copyOptions ??= CopyOptions.None;

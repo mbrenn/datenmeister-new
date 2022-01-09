@@ -1,4 +1,4 @@
-define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1) {
+define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
@@ -69,9 +69,18 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                         table.append(tr);
                     }
                 }
-                const newItem = $("<a href='#'>Attach new Item</a>");
-                newItem.on('click', () => {
-                    alert('YES');
+                const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach new Item</btn><div class='dm-subelements-appenditem-box'></div></div>");
+                $(".dm-subelements-appenditem-btn", newItem).on('click', () => {
+                    const containerDiv = $(".dm-subelements-appenditem-box");
+                    containerDiv.empty();
+                    const selectItem = new SIC.SelectItemControl();
+                    const settings = new SIC.Settings();
+                    settings.showWorkspaceInBreadcrumb = true;
+                    settings.showExtentInBreadcrumb = true;
+                    selectItem.onItemSelected = selectedItem => {
+                        alert(selectedItem.id);
+                    };
+                    selectItem.init(containerDiv, settings);
                     return false;
                 });
                 this._list.append(newItem);

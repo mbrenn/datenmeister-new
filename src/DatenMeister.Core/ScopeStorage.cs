@@ -19,7 +19,7 @@ namespace DatenMeister.Core
         /// <summary>
         /// Defines the class logger
         /// </summary>
-        public ClassLogger Logger = new ClassLogger(typeof(ScopeStorage));
+        public ClassLogger Logger = new(typeof(ScopeStorage));
 
         public IScopeStorage Add<T>(T item)
         {

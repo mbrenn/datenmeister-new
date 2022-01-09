@@ -16,48 +16,43 @@ namespace DatenMeister.Core.Provider.Xmi
         /// for the same XmlNode. 
         /// </summary>
         public const bool ConfigurationUseIsolatedXmiProviderObjects = true;
-        
-        /// <summary>
-        /// Defines the name of the element
-        /// </summary>
-        public string ElementName { get; set; } = DefaultElementNodeName;
 
         public const string DefaultRootNodeName = "xmi";
 
         private const string DefaultElementNodeName = "item";
 
-        private readonly XDocument _document;
-        private readonly XElement _rootNode;
-
-        public XDocument Document => _document;
-
         private static readonly XNamespace XDatenMeisterNamespace = "http://datenmeister.net/";
 
         private static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
 
-        internal readonly object LockObject = new object(); 
-        
-        internal readonly Dictionary<string, string> NormalizationCache = new Dictionary<string, string>();
-        
+        /// <summary>
+        ///     Defines the cache
+        /// </summary>
+        private readonly Dictionary<string, XElement> _cache = new();
+
         /// <summary>
         /// Stores the cached provider objects to be sure that the same XmiProvider object will be used
         /// when the same XElement is retrieved
         /// </summary>
-        private readonly Dictionary<XElement, XmiProviderObject> _providerObjectCache 
-            = new Dictionary<XElement, XmiProviderObject>();
+        private readonly Dictionary<XElement, XmiProviderObject> _providerObjectCache = new();
+
+        private readonly XElement _rootNode;
+
+        internal readonly object LockObject = new();
+
+        internal readonly Dictionary<string, string> NormalizationCache = new();
 
         /// <summary>
-        /// Gets or sets the uri resolver for this provider. Will be used to figure out information
-        /// about the meta classes
+        /// Defines the interface
         /// </summary>
-        public IUriResolver? UriResolver { get; set; }
+        private ProviderSupportFunctions? _supportFunctions;
 
         public XmiProvider( /*string rootNodeName = DefaultRootNodeName*/)
         {
             var rootNodeName = DefaultRootNodeName;
-            _document = new XDocument();
+            Document = new XDocument();
             _rootNode = new XElement(rootNodeName);
-            _document.Add(_rootNode);
+            Document.Add(_rootNode);
             /*_rootNode.SetAttributeValue(_urlPropertyName, uri);*/
 
             CreateProviderSupportFunctions();
@@ -67,46 +62,31 @@ namespace DatenMeister.Core.Provider.Xmi
         {
             var rootNodeName = document.Elements().First().Name;
 
-            _document = document;
-            _rootNode = _document.Element(rootNodeName) ?? throw new InvalidOperationException("Xml Document inconclusive");
+            Document = document;
+            _rootNode = Document.Element(rootNodeName) ??
+                        throw new InvalidOperationException("Xml Document inconclusive");
 
             if (_rootNode == null)
             {
-                throw new InvalidOperationException($"The given document does not have a root node called {rootNodeName}.");
+                throw new InvalidOperationException(
+                    $"The given document does not have a root node called {rootNodeName}.");
             }
-            
+
             CreateProviderSupportFunctions();
         }
 
-        private void CreateProviderSupportFunctions()
-        {
-            _supportFunctions = new ProviderSupportFunctions
-            {
-                QueryById = id =>
-                {
-                    var result = FindById(id);
-                    if (result == null) return null;
+        /// <summary>
+        /// Defines the name of the element
+        /// </summary>
+        public string ElementName { get; set; } = DefaultElementNodeName;
 
-                    return CreateProviderObject(result);
-                }
-            };
-        }
+        public XDocument Document { get; }
 
         /// <summary>
-        /// Gets the meta node. If the meta node does not exist, create the meta node
+        ///     Gets or sets the uri resolver for this provider. Will be used to figure out information
+        ///     about the meta classes
         /// </summary>
-        /// <returns>The returned meta node</returns>
-        private XElement GetMetaNode()
-        {
-            var metaNode = _rootNode.Element(XMetaXmlNodeName);
-            if (metaNode == null)
-            {
-                metaNode = new XElement(XMetaXmlNodeName);
-                _rootNode.AddFirst(metaNode);
-            }
-
-            return metaNode;
-        }
+        public IUriResolver? UriResolver { get; set; }
 
         /// <inheritdoc />
         public IProviderObject CreateElement(string? metaClassUri)
@@ -118,40 +98,6 @@ namespace DatenMeister.Core.Provider.Xmi
             }
 
             return CreateProviderObject(node);
-        }
-
-        /// <summary>
-        /// Creates a new provider object for the xmiprovider
-        /// </summary>
-        /// <param name="xmlElement">Xml element storing the data</param>
-        /// <returns>Created ProviderObject</returns>
-        public XmiProviderObject CreateProviderObject(XElement xmlElement)
-        {
-#pragma warning disable 162
-            if (ConfigurationUseIsolatedXmiProviderObjects)
-            {
-                XmiProviderObject? result;
-
-                lock (_providerObjectCache)
-                {
-                    if (_providerObjectCache.TryGetValue(xmlElement, out result))
-                    {
-                        return result;
-                    }
-                }
-
-                result = XmiProviderObject.Create(xmlElement, this);
-
-                lock (_providerObjectCache)
-                {
-                    _providerObjectCache[xmlElement] = result;
-
-                    return result;
-                }
-            }
-
-            return XmiProviderObject.Create(xmlElement, this);
-#pragma warning restore 162
         }
 
         /// <inheritdoc />
@@ -213,49 +159,11 @@ namespace DatenMeister.Core.Provider.Xmi
             {
                 return CreateProviderObject(GetMetaNode());
             }
-            
+
             lock (LockObject)
             {
                 var result = FindById(id);
                 return result == null ? null : CreateProviderObject(result);
-            }
-        }
-
-        /// <summary>
-        /// Defines the cache
-        /// </summary>
-        private readonly Dictionary<string, XElement> _cache = new Dictionary<string, XElement>();
-        
-        /// <summary>
-        /// Finds a certain Xml Element by its id
-        /// </summary>
-        /// <param name="id">Id to be queried</param>
-        /// <returns>The found element</returns>
-        private XElement? FindById(string id)
-        {
-            lock (_cache)
-            {
-                if (_cache.TryGetValue(id, out var element))
-                {
-                    if (XmiId.Get(element) == id)
-                    {
-                        return element;
-                    }
-
-                    _cache.Remove(id);
-                }
-
-                lock (LockObject)
-                {
-                    foreach (var x in _rootNode.Descendants())
-                    {
-                        var foundId = XmiId.Get(x);
-                        if (foundId != null)
-                            _cache[foundId] = x;
-                    }
-                }
-
-                return _cache.TryGetValue(id, out var element2) ? element2 : null;
             }
         }
 
@@ -287,16 +195,102 @@ namespace DatenMeister.Core.Provider.Xmi
             ProviderCapabilities.StoreMetaDataInExtent;
 
         /// <summary>
-        /// Defines the interface
-        /// </summary>
-        private ProviderSupportFunctions? _supportFunctions;
-
-        /// <summary>
         /// Gets the support functions
         /// </summary>
         public ProviderSupportFunctions ProviderSupportFunctions => _supportFunctions
                                                                     ?? throw new NotSupportedException(
                                                                         "Should not happen");
+
+        private void CreateProviderSupportFunctions()
+        {
+            _supportFunctions = new ProviderSupportFunctions
+            {
+                QueryById = id =>
+                {
+                    var result = FindById(id);
+                    if (result == null) return null;
+
+                    return CreateProviderObject(result);
+                }
+            };
+        }
+
+        /// <summary>
+        ///     Gets the meta node. If the meta node does not exist, create the meta node
+        /// </summary>
+        /// <returns>The returned meta node</returns>
+        private XElement GetMetaNode()
+        {
+            var metaNode = _rootNode.Element(XMetaXmlNodeName);
+            if (metaNode == null)
+            {
+                metaNode = new XElement(XMetaXmlNodeName);
+                _rootNode.AddFirst(metaNode);
+            }
+
+            return metaNode;
+        }
+
+        /// <summary>
+        ///     Creates a new provider object for the xmiprovider
+        /// </summary>
+        /// <param name="xmlElement">Xml element storing the data</param>
+        /// <returns>Created ProviderObject</returns>
+        public XmiProviderObject CreateProviderObject(XElement xmlElement)
+        {
+#pragma warning disable 162
+            if (ConfigurationUseIsolatedXmiProviderObjects)
+            {
+                XmiProviderObject? result;
+
+                lock (_providerObjectCache)
+                {
+                    if (_providerObjectCache.TryGetValue(xmlElement, out result)) return result;
+                }
+
+                result = XmiProviderObject.Create(xmlElement, this);
+
+                lock (_providerObjectCache)
+                {
+                    _providerObjectCache[xmlElement] = result;
+
+                    return result;
+                }
+            }
+
+            return XmiProviderObject.Create(xmlElement, this);
+#pragma warning restore 162
+        }
+
+        /// <summary>
+        ///     Finds a certain Xml Element by its id
+        /// </summary>
+        /// <param name="id">Id to be queried</param>
+        /// <returns>The found element</returns>
+        private XElement? FindById(string id)
+        {
+            lock (_cache)
+            {
+                if (_cache.TryGetValue(id, out var element))
+                {
+                    if (XmiId.Get(element) == id) return element;
+
+                    _cache.Remove(id);
+                }
+
+                lock (LockObject)
+                {
+                    foreach (var x in _rootNode.Descendants())
+                    {
+                        var foundId = XmiId.Get(x);
+                        if (foundId != null)
+                            _cache[foundId] = x;
+                    }
+                }
+
+                return _cache.TryGetValue(id, out var element2) ? element2 : null;
+            }
+        }
 
         public static XElement GetMetaNodeFromFile(string filePath)
         {

@@ -16,12 +16,12 @@ namespace DatenMeister.Core.Helper
         /// <summary>
         /// Defines the logger
         /// </summary>
-        public static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentHelper));
+        public static readonly ClassLogger Logger = new(typeof(ExtentHelper));
 
         public static ExtentConfiguration GetConfiguration(this IExtent extent)
             => (extent as MofExtent)?.ExtentConfiguration
                ?? throw new InvalidOperationException("Configuration is not existing");
-       
+
         /// <summary>
         /// Returns the element, representing the .Net class
         /// </summary>
@@ -55,7 +55,8 @@ namespace DatenMeister.Core.Helper
                 return mofUriExtent.ResolveElement(shadow.Uri, ResolveType.Default);
             }
 
-            Logger.Error($"Given element is not of type MofElement or MofObjectShadow: {element?.ToString() ?? "'null'"}");
+            Logger.Error(
+                $"Given element is not of type MofElement or MofObjectShadow: {element?.ToString() ?? "'null'"}");
             return null;
         }
 
@@ -113,7 +114,7 @@ namespace DatenMeister.Core.Helper
                     var properties = itemAsObjectExt.getPropertiesBeingSet();
 
                     foreach (var property in properties
-                        .Where(property => !result.Contains(property)))
+                                 .Where(property => !result.Contains(property)))
                     {
                         result.Add(property);
                         yield return property;
@@ -184,7 +185,8 @@ namespace DatenMeister.Core.Helper
         /// <returns>The actual id being added</returns>
         public static string SetAvailableId(IUriExtent extent, IElement element, string requestedId)
         {
-            if (!(element is ICanSetId canSetId)) throw new InvalidOperationException("element is not of type ICanSetId");
+            if (!(element is ICanSetId canSetId))
+                throw new InvalidOperationException("element is not of type ICanSetId");
 
             var testedId = requestedId;
             var currentNr = 0;
@@ -200,7 +202,6 @@ namespace DatenMeister.Core.Helper
 
                 currentNr++;
                 testedId = requestedId + "-" + currentNr;
-
             } while (true);
         }
 
@@ -216,7 +217,7 @@ namespace DatenMeister.Core.Helper
         {
             var workspace = workspaceLogic.GetWorkspace(workspaceId);
             var sourceElement = workspace?.Resolve(path, ResolveType.NoMetaWorkspaces);
-            
+
             return sourceElement is not IObject asElement ? null : asElement;
         }
     }

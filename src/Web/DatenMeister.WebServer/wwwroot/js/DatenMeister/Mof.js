@@ -31,24 +31,19 @@ define(["require", "exports"], function (require, exports) {
         isSet(key) {
             return this.values[key] !== undefined;
         }
-
         unset(key) {
             this.values[key] = undefined;
         }
-
         toString() {
             let values = this.values;
             return DmObject.valueToString(values);
         }
-
         setMetaClassByUri(metaClassUri) {
             this.metaClass = {uri: metaClassUri};
         }
-
         setMetaClassById(metaClassId) {
             this.metaClass = {id: metaClassId};
         }
-
         static valueToString(item, indent = "") {
             var result = "";
             var komma = "";

@@ -12,14 +12,18 @@ namespace DatenMeister.Core.Provider.DotNet
     /// </summary>
     public class DotNetProvider : IProvider
     {
+        private readonly List<DotNetProviderObject> _elements = new();
+
         /// <summary>
-        /// Gets the type lookup
+        /// Stores the capabilities of the provider
         /// </summary>
-        internal IDotNetTypeLookup TypeLookup { get; }
+        /// <returns></returns>
+        private readonly ProviderCapability _providerCapability = new()
+        {
+            IsTemporaryStorage = true
+        };
 
-        private readonly object _syncObject = new object();
-
-        private readonly List<DotNetProviderObject> _elements = new List<DotNetProviderObject>();
+        private readonly object _syncObject = new();
 
         /// <summary>
         /// Initializes a new instance of the DotNetExtent class
@@ -29,6 +33,11 @@ namespace DatenMeister.Core.Provider.DotNet
         {
             TypeLookup = typeLookup;
         }
+
+        /// <summary>
+        ///     Gets the type lookup
+        /// </summary>
+        internal IDotNetTypeLookup TypeLookup { get; }
 
         /// <inheritdoc />
         public IProviderObject CreateElement(string? metaClassUri)
@@ -108,15 +117,6 @@ namespace DatenMeister.Core.Provider.DotNet
                 yield return element;
             }
         }
-
-        /// <summary>
-        /// Stores the capabilities of the provider
-        /// </summary>
-        /// <returns></returns>
-        private readonly ProviderCapability _providerCapability = new ProviderCapability
-        {
-            IsTemporaryStorage = true
-        };
 
         /// <summary>
         /// Gets the capabilities of the provider

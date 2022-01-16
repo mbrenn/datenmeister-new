@@ -31,13 +31,18 @@ namespace DatenMeister.Core.Runtime.Workspaces
         {
             _workspaceData = workspaceData;
             _changeEventManager = scopeStorage?.Get<ChangeEventManager>();
+            ScopeStorage = scopeStorage;
         }
 
         public WorkspaceLogic(IScopeStorage scopeStorage)
         {
             _workspaceData = scopeStorage.Get<WorkspaceData>();
             _changeEventManager = scopeStorage.Get<ChangeEventManager>();
+            ScopeStorage = scopeStorage;
         }
+
+
+        public IScopeStorage? ScopeStorage { get; }
 
         public Workspace? GetWorkspaceOfExtent(IExtent? extent)
         {

@@ -21,11 +21,13 @@ namespace DatenMeister.Types
     {
         private readonly IntegrationSettings _integrationSettings;
         private readonly PackageMethods _packageMethods;
+        private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
 
         public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
             _packageMethods = new PackageMethods();
         }
@@ -40,7 +42,8 @@ namespace DatenMeister.Types
             // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
-                WorkspaceNames.UriExtentPrimitiveTypes);
+                WorkspaceNames.UriExtentPrimitiveTypes,
+                _scopeStorage);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
 

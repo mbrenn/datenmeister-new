@@ -21,11 +21,11 @@ namespace DatenMeister.Tests.Modules
             //
             // Prepare all the stuff that is necessary
             var provider = new XmiProvider();
-            var dataExtent = new MofUriExtent(provider);
+            var dataExtent = new MofUriExtent(provider, null);
             var dataFactory = new MofFactory(dataExtent);
 
             var typeProvider = new InMemoryProvider();
-            var typeExtent = new MofUriExtent(typeProvider);
+            var typeExtent = new MofUriExtent(typeProvider, null);
 
             var typeFactory = new MofFactory(typeExtent);
             var class1 = typeFactory.create(_UML.TheOne.StructuredClassifiers.__Class);
@@ -118,13 +118,13 @@ namespace DatenMeister.Tests.Modules
 
             var copyRoot =
                 elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "root");
-            var copyPackage = 
+            var copyPackage =
                 elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "package");
             var copyChildRoot =
                 elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "husband root");
 
             Assert.That(
-                copyRoot.getOrDefault<IElement>("child").getOrDefault<string>("name"), 
+                copyRoot.getOrDefault<IElement>("child").getOrDefault<string>("name"),
                 Is.EqualTo("child root"));
             Assert.That(
                 copyRoot.getOrDefault<IElement>("husband").getOrDefault<string>("name"),
@@ -150,7 +150,6 @@ namespace DatenMeister.Tests.Modules
             Assert.That(
                 copyInPackage.getOrDefault<IElement>("husband").getOrDefault<string>("name"),
                 Is.EqualTo("husband package"));
-
         }
     }
 }

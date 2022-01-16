@@ -32,7 +32,8 @@ namespace DatenMeister.Provider.ExtentManagement
             // Adds the extent containing the workspaces
             _workspaceLogic.GetManagementWorkspace().AddExtent(
                 new MofUriExtent(
-                    new ExtentOfWorkspaceProvider(_workspaceLogic, _scopeStorage), WorkspaceNames.UriExtentWorkspaces));
+                    new ExtentOfWorkspaceProvider(_workspaceLogic, _scopeStorage),
+                    WorkspaceNames.UriExtentWorkspaces, _scopeStorage));
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var (scopeStorage, workspaceLogic) = HtmlReportTests.PrepareWorkspaceLogic();
 
             var inMemoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
+            var extent = new MofUriExtent(inMemoryProvider, "dm:///test", scopeStorage);
             workspaceLogic.GetDataWorkspace().AddExtent(extent);
 
             /* Creates the working object */

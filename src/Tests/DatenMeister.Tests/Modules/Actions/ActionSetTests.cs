@@ -150,8 +150,8 @@ namespace DatenMeister.Tests.Modules.Actions
 
             var sourceProvider = new InMemoryProvider();
             var targetProvider = new InMemoryProvider();
-            var sourceExtent = new MofUriExtent(sourceProvider, "dm:///source/");
-            var targetExtent = new MofUriExtent(targetProvider, "dm:///target/");
+            var sourceExtent = new MofUriExtent(sourceProvider, "dm:///source/", actionLogic.ScopeStorage);
+            var targetExtent = new MofUriExtent(targetProvider, "dm:///target/", actionLogic.ScopeStorage);
             var sourceFactory = new MofFactory(sourceExtent);
             var targetFactory = new MofFactory(targetExtent);
 

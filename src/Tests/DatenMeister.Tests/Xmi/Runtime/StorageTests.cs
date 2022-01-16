@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
         public void TestXmlStorage()
         {
             var xmlProvider = new XmiProvider();
-            var extent = new MofUriExtent(xmlProvider, "dm:///test/");
+            var extent = new MofUriExtent(xmlProvider, "dm:///test/", null);
             var factory = new MofFactory(extent);
             var mofObject1 = factory.create(null);
             var mofObject2 = factory.create(null);
@@ -58,7 +58,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             var otherExtent =
                 new MofUriExtent(
                     xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly).Provider,
-                    "dm:///tests/");
+                    "dm:///tests/", null);
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
             Assert.That(otherExtent.contextURI(), Is.EqualTo("dm:///tests/"));
             Assert.That((otherExtent.elements().ElementAt(0) as IObject)?.get("name"), Is.EqualTo("Martin"));
@@ -76,8 +76,8 @@ namespace DatenMeister.Tests.Xmi.Runtime
             const string xmi2 =
                 "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\"><sub href=\"dm:///xmi1/#test\" /></element></package>";
 
-            var extent1 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi1/");
-            var extent2 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi2/");
+            var extent1 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi1/", null);
+            var extent2 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi2/", null);
 
             var workspace = new Workspace("data");
             var loader = new SimpleLoader(workspace);

@@ -16,7 +16,7 @@ namespace DatenMeister.SourcecodeGenerator
         {
             ////////////////////////////////////////
             // First of all, create all Mof types, representing the objects under concern
-            var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl);
+            var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl, null);
             var factory = new MofFactory(extent);
 
             // Creates the package

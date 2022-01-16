@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = DotNetExtentTests.Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
             extent.AddMetaExtent(typeExtent);
             var strapper = XmiTests.CreateUmlAndMofInstance();
             extent.AddMetaExtent(strapper.UmlInfrastructure!);
@@ -53,7 +53,7 @@ namespace DatenMeister.Tests.Provider
         {
             public string Title { get; set; }
             public int Number { get; set; }
-            public List<string> Authors {get;set; } = new List<string>();
+            public List<string> Authors { get; set; } = new List<string>();
             public List<Person> Persons { get; set; } = new List<Person>();
         }
 
@@ -77,12 +77,12 @@ namespace DatenMeister.Tests.Provider
             public TestEnumeration Level { get; set; }
         }
 
-        public class PersonWithAnotherPersonPerElement 
+        public class PersonWithAnotherPersonPerElement
         {
             public string Name { get; set; }
-            
+
             public IElement Spouse { get; set; }
-            
+
             public List<IElement> Children { get; set; }
         }
 
@@ -104,7 +104,7 @@ namespace DatenMeister.Tests.Provider
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", scope.ScopeStorage);
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var factory = new MofFactory(extent);
@@ -115,10 +115,11 @@ namespace DatenMeister.Tests.Provider
 
             Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Value), Is.EqualTo("Content"));
             Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Property), Is.EqualTo("Test"));
-            Assert.That(value.getOrDefault<___ComparisonType>(_PropertyComparisonFilter.ComparisonType), Is.EqualTo(___ComparisonType.GreaterThan));
+            Assert.That(value.getOrDefault<___ComparisonType>(_PropertyComparisonFilter.ComparisonType),
+                Is.EqualTo(___ComparisonType.GreaterThan));
         }
 
-        public class TestClassForConversion 
+        public class TestClassForConversion
         {
             public bool fixRowCount { get; set; }
             public bool fixColumnCount { get; set; }
@@ -166,15 +167,16 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public void TestFindingXmiStorageLoaderConfig()
         {
-            using var datenMeister  = DatenMeisterTests.GetDatenMeisterScope();
+            using var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", datenMeister.ScopeStorage);
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var csvLoaderType = workspaceLogic.FindItem(
-                WorkspaceNames.UriExtentInternalTypes + "#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+                WorkspaceNames.UriExtentInternalTypes +
+                "#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
 
             Assert.That(csvLoaderType, Is.Not.Null);
         }

@@ -132,10 +132,32 @@ export function createJsonFromObject(element: DmObject) {
 }
 
 /*
+ * Converts the Object as given by the server to the JS-World. 
+ * In case of native objects, the native object will be returned. 
+ * In case of arrays, the arrays. 
+ * In case of elements, the corresponding DmObjects
+ */
+export function convertJsonObjectToObjects(element: any): any {
+    if (Array.isArray(element)) {
+        const arrayResult = [];
+        for (let m in element) {
+            const inner = element[m];
+            arrayResult.push(convertJsonObjectToObjects(inner));
+        }
+
+        return arrayResult;
+    } else if ((typeof element === "object" || typeof element === "function") && (element !== null)) {
+        return convertJsonObjectToDmObject(element);
+    }
+
+    return element;
+}
+
+/*
 // Creates the given object from the included json
 // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
 */
-export function convertJsonObjectToDmObject(element: object|string): DmObject {
+export function convertJsonObjectToDmObject(element: object | string): DmObject {
     if (typeof element === 'string' || element instanceof String) {
         element = JSON.parse(element as string);
     }

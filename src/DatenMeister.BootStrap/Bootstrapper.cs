@@ -23,6 +23,8 @@ namespace DatenMeister.BootStrap
     /// </summary>
     public class Bootstrapper
     {
+        private static readonly string TypeProperty = (Namespaces.Xmi + "type").ToString();
+        private static readonly string IdProperty = (Namespaces.Xmi + "id").ToString();
         private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
@@ -31,8 +33,22 @@ namespace DatenMeister.BootStrap
         /// </summary>
         private bool _wasRun;
 
-        private static readonly string TypeProperty = (Namespaces.Xmi + "type").ToString();
-        private static readonly string IdProperty = (Namespaces.Xmi + "id").ToString();
+        /// <summary>
+        /// The static constructor
+        /// </summary>
+        static Bootstrapper()
+        {
+        }
+
+        /// <summary>
+        /// Initializes the bootstrapper after having the the necessary extents
+        /// </summary>
+        /// <param name="workspaceLogic">Datalayerlogic  being used</param>
+        public Bootstrapper(
+            IWorkspaceLogic workspaceLogic)
+        {
+            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
+        }
 
         private Dictionary<string, IElement> MofClasses { get; } = new Dictionary<string, IElement>();
         private Dictionary<string, IElement> UmlClasses { get; } = new Dictionary<string, IElement>();
@@ -53,23 +69,6 @@ namespace DatenMeister.BootStrap
         /// </summary>
         public IUriExtent? PrimitiveTypesInfrastructure { get; private set; }
 
-        /// <summary>
-        /// The static constructor
-        /// </summary>
-        static Bootstrapper()
-        {
-        }
-
-        /// <summary>
-        /// Initializes the bootstrapper after having the the necessary extents
-        /// </summary>
-        /// <param name="workspaceLogic">Datalayerlogic  being used</param>
-        public Bootstrapper(
-            IWorkspaceLogic workspaceLogic)
-        {
-            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
-        }
-
         private void StrapUml(
             IUriExtent primitiveInfrastructure,
             IUriExtent umlInfrastructure,
@@ -83,21 +82,25 @@ namespace DatenMeister.BootStrap
         private void StrapUmlSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure)
         {
             UmlInfrastructure = umlInfrastructure ?? throw new ArgumentNullException(nameof(umlInfrastructure));
-            PrimitiveTypesInfrastructure = primitiveInfrastructure ?? throw new ArgumentNullException(nameof(primitiveInfrastructure));
+            PrimitiveTypesInfrastructure = primitiveInfrastructure ??
+                                           throw new ArgumentNullException(nameof(primitiveInfrastructure));
         }
 
-        private void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
+        private void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure,
+            IUriExtent mofInfrastructure)
         {
             StrapMofSlim(primitiveInfrastructure, umlInfrastructure, mofInfrastructure);
 
             StrapMof();
         }
 
-        private void StrapMofSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
+        private void StrapMofSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure,
+            IUriExtent mofInfrastructure)
         {
             UmlInfrastructure = umlInfrastructure ?? throw new ArgumentNullException(nameof(umlInfrastructure));
             MofInfrastructure = mofInfrastructure ?? throw new ArgumentNullException(nameof(mofInfrastructure));
-            PrimitiveTypesInfrastructure = primitiveInfrastructure ?? throw new ArgumentNullException(nameof(primitiveInfrastructure));
+            PrimitiveTypesInfrastructure = primitiveInfrastructure ??
+                                           throw new ArgumentNullException(nameof(primitiveInfrastructure));
         }
 
         /// <summary>
@@ -113,18 +116,18 @@ namespace DatenMeister.BootStrap
             _wasRun = true;
 
             var umlDescendents = AllDescendentsQuery
-                .GetDescendents(UmlInfrastructure 
+                .GetDescendents(UmlInfrastructure
                                 ?? throw new InvalidOperationException("Uml Workspace not found"))
                 .ToList();
             var primitiveDescendents = AllDescendentsQuery
-                .GetDescendents(PrimitiveTypesInfrastructure 
+                .GetDescendents(PrimitiveTypesInfrastructure
                                 ?? throw new InvalidOperationException("PrimitiveTypes Workspace not found"))
                 .ToList();
             var mofDescendents = AllDescendentsQuery
                 .GetDescendents(MofInfrastructure
                                 ?? throw new InvalidOperationException("Mof Workspace not found"))
                 .ToList();
-            
+
             var allElements =
                 umlDescendents
                     .Union(primitiveDescendents)
@@ -169,7 +172,9 @@ namespace DatenMeister.BootStrap
             foreach (var classInstance in umlDescendents.OfType<IElement>().Where(x => x.isSet("name")))
             {
                 var name = classInstance.getOrDefault<string>("name");
-                var typeValue = classInstance.isSet(TypeProperty) ? classInstance.getOrDefault<string>(TypeProperty) : null;
+                var typeValue = classInstance.isSet(TypeProperty)
+                    ? classInstance.getOrDefault<string>(TypeProperty)
+                    : null;
                 if (typeValue == "uml:Class")
                 {
                     UmlClasses[name] = classInstance;
@@ -284,7 +289,9 @@ namespace DatenMeister.BootStrap
             foreach (var classInstance in umlDescendents.OfType<IElement>().Where(x => x.isSet("name")))
             {
                 var name = classInstance.getOrDefault<string>("name");
-                var typeValue = classInstance.isSet(TypeProperty) ? classInstance.getOrDefault<string>(TypeProperty) : null;
+                var typeValue = classInstance.isSet(TypeProperty)
+                    ? classInstance.getOrDefault<string>(TypeProperty)
+                    : null;
                 if (typeValue == "uml:Class")
                     UmlClasses[name] = classInstance;
 
@@ -296,8 +303,10 @@ namespace DatenMeister.BootStrap
             // the metaclass of these element depending on the attribute value of Xmi:Type
             // If the current layer is UML, the metaLayer needs to trace to the MOF metalayer
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
-            var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriExtentUml).elements().GetAllDescendants();
-            var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriExtentMof).elements().GetAllDescendants();
+            var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriExtentUml).elements()
+                .GetAllDescendants();
+            var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriExtentMof).elements()
+                .GetAllDescendants();
             var mofMetaClasses =
                 mofElements
                     .Cast<IElement>()
@@ -369,9 +378,9 @@ namespace DatenMeister.BootStrap
                     .element(WorkspaceNames.UriExtentUml + "#Generalization");
             if (metaClassGeneralization == null)
                 throw new InvalidOperationException("Type for Generalization is not found");
-            
+
             EvaluateGeneralizations(umlDescendents, metaClassGeneralization);
-            
+
             // Go through all the elements and get the ownedAttributes and sets the correct property types
             foreach (var classes in umlMetaClasses)
             {
@@ -406,7 +415,7 @@ namespace DatenMeister.BootStrap
             // Now we handle the generalization information.
             // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
             foreach (var elementInstance in umlDescendents
-                .Where(x => (x as IElement)?.metaclass?.Equals(metaClassGeneralization) == true))
+                         .Where(x => (x as IElement)?.metaclass?.Equals(metaClassGeneralization) == true))
             {
                 if (elementInstance.isSet("general"))
                 {
@@ -416,7 +425,8 @@ namespace DatenMeister.BootStrap
                         throw new InvalidOperationException(elementInstance.ToString());
                     }
 
-                    var generalAsString = general.ToString() ?? throw new InvalidOperationException("ToString did not work");
+                    var generalAsString = general.ToString() ??
+                                          throw new InvalidOperationException("ToString did not work");
                     if (DotNetHelper.IsOfMofObject(general))
                     {
                         elementInstance.set("general", general as IElement);
@@ -524,7 +534,7 @@ namespace DatenMeister.BootStrap
             string xmlPrimitiveTypes;
             string xmlMof;
             string xmlUml;
-            
+
             if (paths?.LoadFromEmbeddedResources != false)
             {
                 xmlPrimitiveTypes = XmiResources.GetStringFromStream(
@@ -536,23 +546,33 @@ namespace DatenMeister.BootStrap
             }
             else
             {
-                xmlPrimitiveTypes = File.ReadAllText(paths.PathPrimitive ?? throw new InvalidOperationException("Path is null"));
+                xmlPrimitiveTypes =
+                    File.ReadAllText(paths.PathPrimitive ?? throw new InvalidOperationException("Path is null"));
                 xmlUml = File.ReadAllText(paths.PathUml ?? throw new InvalidOperationException("Path is null"));
                 xmlMof = File.ReadAllText(paths.PathMof ?? throw new InvalidOperationException("Path is null"));
             }
 
-            var umlExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlUml)), WorkspaceNames.UriExtentUml);
+            var umlExtent = new MofUriExtent(
+                new XmiProvider(XDocument.Parse(xmlUml)),
+                WorkspaceNames.UriExtentUml,
+                workspaceLogic.ScopeStorage);
             umlExtent.LocalSlimUmlEvaluation = true;
 
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
             umlExtent.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
 
-            var mofExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlMof)), WorkspaceNames.UriExtentMof);
+            var mofExtent = new MofUriExtent(
+                new XmiProvider(XDocument.Parse(xmlMof)),
+                WorkspaceNames.UriExtentMof,
+                workspaceLogic.ScopeStorage);
             mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
             mofExtent.LocalSlimUmlEvaluation = true;
 
-            var primitiveExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlPrimitiveTypes)), WorkspaceNames.UriExtentPrimitiveTypes);
+            var primitiveExtent = new MofUriExtent(
+                new XmiProvider(XDocument.Parse(xmlPrimitiveTypes)),
+                WorkspaceNames.UriExtentPrimitiveTypes,
+                workspaceLogic.ScopeStorage);
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi");
             primitiveExtent.LocalSlimUmlEvaluation = true;

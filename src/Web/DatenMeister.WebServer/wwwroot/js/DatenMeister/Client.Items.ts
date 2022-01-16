@@ -118,3 +118,27 @@ export function addReferenceToCollection(
         }
     );
 }
+
+export function getProperty(
+    workspaceId: string, itemUrl: string, property: string): JQuery.Deferred<any, never, never> {
+    const r = jQuery.Deferred<any, never, never>();
+    let url = Settings.baseUrl +
+        "api/items/get_property/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl) +
+        "?property=" +
+        encodeURIComponent(property);
+    const result = ApiConnection.get<IGetPropertyResult>(url);
+    result.done(x => {
+        const dmObject =
+            Mof.convertJsonObjectToObjects(x.v);
+        r.resolve(dmObject);
+    });
+
+    return r;
+}
+
+export interface IGetPropertyResult {
+    v: any;
+}

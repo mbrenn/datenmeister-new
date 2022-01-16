@@ -1,7 +1,7 @@
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
-    exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
+    exports.getProperty = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
 
     function loadObject(workspace, extent, id) {
         const r = jQuery.Deferred();
@@ -63,9 +63,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
         return r;
     }
-
     exports.storeObjectByUri = storeObjectByUri;
-
     function setMetaclass(workspaceId, itemUrl, newMetaClass) {
         let url = Settings.baseUrl +
             "api/items/set_metaclass/" +
@@ -74,9 +72,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
             encodeURIComponent(itemUrl);
         return ApiConnection.post(url, {metaclass: newMetaClass});
     }
-
     exports.setMetaclass = setMetaclass;
-
     function addReferenceToCollection(workspaceId, itemUrl, parameter) {
         let url = Settings.baseUrl +
             "api/items/add_ref_to_collection/" +
@@ -91,5 +87,24 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     }
 
     exports.addReferenceToCollection = addReferenceToCollection;
+
+    function getProperty(workspaceId, itemUrl, property) {
+        const r = jQuery.Deferred();
+        let url = Settings.baseUrl +
+            "api/items/get_property/" +
+            encodeURIComponent(workspaceId) +
+            "/" +
+            encodeURIComponent(itemUrl) +
+            "?property=" +
+            encodeURIComponent(property);
+        const result = ApiConnection.get(url);
+        result.done(x => {
+            const dmObject = Mof.convertJsonObjectToObjects(x.v);
+            r.resolve(dmObject);
+        });
+        return r;
+    }
+
+    exports.getProperty = getProperty;
 });
 //# sourceMappingURL=Client.Items.js.map

@@ -4,16 +4,20 @@ import * as FieldFactory from "../Forms.FieldFactory";
 
 import {getItemDetailUri} from "../Website";
 import * as SIC from "../Forms.SelectItemControl";
-import {addReferenceToCollection} from "../Client.Items";
+import * as ClientItems from "../Client.Items";
 
 export class Field extends BaseField implements IFormField {
 
     _list: JQuery;
     _element: DmObject;
 
-    loadValuesFromServer(): void {
+    reloadValuesFromServer(): void {
         const url = this._element.uri;
         const fieldName = this.field.get('name');
+
+        ClientItems.getProperty(this.form.workspace, url, fieldName).done(
+            x => this.createDomByValue(x)
+        );
     }
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
@@ -26,26 +30,36 @@ export class Field extends BaseField implements IFormField {
     createDomByValue(value: any): JQuery<HTMLElement> {
         var tthis = this;
         if (this.isReadOnly) {
-            this._list = $("<ul class='list-unstyled'></ul>");
+
+            this._list = $("<div></div>");
+            let ul = $("<ul class='list-unstyled'></ul>");
 
             let foundElements = 0;
             for (let m in value) {
                 if (Object.prototype.hasOwnProperty.call(value, m)) {
                     let innerValue = value[m] as DmObject;
 
-                    let item = $("<li><a></a></li>");
+                    const item = $("<li><a></a></li>");
                     const link = $("a", item);
-                    link.text(innerValue.get('name'));
+                    const name = innerValue.get('name');
+                    if (name !== undefined && name !== "") {
+                        link.text(innerValue.get('name'));
+                    } else {
+                        link.append($("<em>Unnamed</em>"));
+                    }
+
                     link.attr('href', getItemDetailUri(innerValue));
-                    this._list.append(item);
+                    ul.append(item);
 
                     foundElements++;
                 }
             }
 
             if (foundElements === 0) {
-                this._list = $("<em>No items</em>");
+                ul = $("<em>No items</em>");
             }
+
+            this._list.append(ul);
         } else {
             this._list = $("<div></div>");
             const table = $("<table><tbody></tbody></table>");
@@ -110,7 +124,7 @@ export class Field extends BaseField implements IFormField {
                 settings.showWorkspaceInBreadcrumb = true;
                 settings.showExtentInBreadcrumb = true;
                 selectItem.onItemSelected = selectedItem => {
-                    addReferenceToCollection(
+                    ClientItems.addReferenceToCollection(
                         tthis.form.workspace,
                         tthis.itemUrl,
                         {
@@ -119,7 +133,7 @@ export class Field extends BaseField implements IFormField {
                             referenceWorkspaceId: selectItem.getSelectedWorkspace()
                         }
                     ).done(x => {
-                        alert('X');
+                        this.reloadValuesFromServer();
                     });
                 };
 
@@ -128,8 +142,15 @@ export class Field extends BaseField implements IFormField {
                 return false;
             });
 
+
             this._list.append(newItem);
         }
+
+        const refreshBtn = $("<div><btn class='btn btn-secondary dm-subelements-refresh-btn'>Refresh</btn></div>");
+        $(".dm-subelements-refresh-btn", refreshBtn).on('click', () => {
+            tthis.reloadValuesFromServer();
+        });
+        this._list.append(refreshBtn);
 
         return this._list;
     }

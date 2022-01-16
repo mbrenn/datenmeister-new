@@ -28,6 +28,8 @@ namespace DatenMeister.WebServer
 
             _performRestart = restart;
             await _host.StopAsync();
+
+            TheLog.Info("Good bye - Your DatenMeister");
         }
 
         public static void Main(string[] args)

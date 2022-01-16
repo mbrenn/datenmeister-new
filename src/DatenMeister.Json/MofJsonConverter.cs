@@ -28,24 +28,10 @@ namespace DatenMeister.Json
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted element</returns>
-        public string ConvertToJson(object value)
+        public string ConvertToJson(object? value)
         {
             var builder = new StringBuilder();
-            AppendValue(builder, value);
-            return builder.ToString();
-        }
-
-        /// <summary>
-        /// Converts the given element to a json object
-        /// </summary>
-        /// <param name="value">Value to be converted</param>
-        /// <returns>The converted value</returns>
-        public string ConvertToJson(IObject value)
-        {
-            var builder = new StringBuilder();
-
-            ConvertToJson(builder, value);
-
+            AppendValue(builder, value, -1 /* starts with -1 since AppendValue will directly increase the value */);
             return builder.ToString();
         }
 

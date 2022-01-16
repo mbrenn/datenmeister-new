@@ -22,10 +22,10 @@ namespace DatenMeister.Tests.Runtime.Functions
             var child2 = InMemoryObject.CreateEmpty();
             var child3 = InMemoryObject.CreateEmpty();
             var child4 = InMemoryObject.CreateEmpty();
-            
-            item.set("list1", new []{child1, child2});
-            item.set("list2", new []{child3, child4});
-            
+
+            item.set("list1", new[] {child1, child2});
+            item.set("list2", new[] {child3, child4});
+
             var reflectiveCollection = new PropertiesAsReflectiveCollection(item);
             var elements = reflectiveCollection.ToList();
             Assert.That(elements, Is.Not.Null);
@@ -36,11 +36,11 @@ namespace DatenMeister.Tests.Runtime.Functions
             Assert.That(elements.Contains(child4));
 
             reflectiveCollection.remove(elements.First(x => x!.Equals(child1)));
-            
+
             // Checks that item1 is lost
             var newList = item.getOrDefault<IReflectiveCollection>("list1").ToList();
             Assert.That(newList.Count, Is.EqualTo(1));
-            
+
             reflectiveCollection = new PropertiesAsReflectiveCollection(item);
             elements = reflectiveCollection.ToList();
             Assert.That(elements, Is.Not.Null);
@@ -62,7 +62,7 @@ namespace DatenMeister.Tests.Runtime.Functions
             Assert.That(ordered[2].getOrDefault<int>("age"), Is.EqualTo(20));
             Assert.That(ordered[3].getOrDefault<int>("age"), Is.EqualTo(20));
             Assert.That(ordered[4].getOrDefault<int>("age"), Is.EqualTo(20));
-            
+
             ordered = extent.elements().OrderElementsBy("iq").ToList<IElement>();
             Assert.That(ordered.Count, Is.EqualTo(5));
             Assert.That(ordered[0].getOrDefault<int>("iq"), Is.EqualTo(100));
@@ -71,13 +71,13 @@ namespace DatenMeister.Tests.Runtime.Functions
             Assert.That(ordered[3].getOrDefault<int>("iq"), Is.EqualTo(110));
             Assert.That(ordered[4].getOrDefault<int>("iq"), Is.EqualTo(120));
         }
-        
+
         [Test]
         public void TestOrderByOrdinal()
         {
             var extent = CreateQueryTestExtent(true);
             var ordered = extent.elements().OrderElementsBy("iq").ToList<IElement>();
-            
+
             ordered = extent.elements().OrderElementsBy("iq").ToList<IElement>();
             Assert.That(ordered.Count, Is.EqualTo(5));
             Assert.That(ordered[0].getOrDefault<int>("iq"), Is.EqualTo(95));
@@ -92,7 +92,7 @@ namespace DatenMeister.Tests.Runtime.Functions
         {
             var extent = CreateQueryTestExtent();
             var ordered = extent.elements().OrderElementsBy(
-                new[]{"age", "iq"}).ToList<IElement>();
+                new[] {"age", "iq"}).ToList<IElement>();
             Assert.That(ordered.Count, Is.EqualTo(5));
             Assert.That(ordered[0].getOrDefault<int>("age"), Is.EqualTo(15));
             Assert.That(ordered[1].getOrDefault<int>("age"), Is.EqualTo(18));
@@ -105,13 +105,13 @@ namespace DatenMeister.Tests.Runtime.Functions
             Assert.That(ordered[3].getOrDefault<int>("iq"), Is.EqualTo(105));
             Assert.That(ordered[4].getOrDefault<int>("iq"), Is.EqualTo(109));
         }
-        
+
         [Test]
         public void TestOrderByPropertiesBackwards()
         {
             var extent = CreateQueryTestExtent();
             var ordered = extent.elements().OrderElementsBy(
-                new[]{"age", "!iq"}).ToList<IElement>();
+                new[] {"age", "!iq"}).ToList<IElement>();
             Assert.That(ordered.Count, Is.EqualTo(5));
             Assert.That(ordered[0].getOrDefault<int>("age"), Is.EqualTo(15));
             Assert.That(ordered[1].getOrDefault<int>("age"), Is.EqualTo(18));
@@ -128,7 +128,7 @@ namespace DatenMeister.Tests.Runtime.Functions
         private static IUriExtent CreateQueryTestExtent(bool ordinal = false)
         {
             var memoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(memoryProvider, "dm:///test");
+            var extent = new MofUriExtent(memoryProvider, "dm:///test", null);
             var factory = new MofFactory(extent);
 
             extent.elements().add(
@@ -139,7 +139,8 @@ namespace DatenMeister.Tests.Runtime.Functions
                     .SetProperties(new Dictionary<string, object> {["name"] = "person2", ["age"] = 15, ["iq"] = 120}));
             extent.elements().add(
                 factory.create(null)
-                    .SetProperties(new Dictionary<string, object> {["name"] = "person3", ["age"] = 20, ["iq"] = ordinal ? 95 : 105}));
+                    .SetProperties(new Dictionary<string, object>
+                        {["name"] = "person3", ["age"] = 20, ["iq"] = ordinal ? 95 : 105}));
             extent.elements().add(
                 factory.create(null)
                     .SetProperties(new Dictionary<string, object> {["name"] = "person4", ["age"] = 20, ["iq"] = 100}));
@@ -148,7 +149,6 @@ namespace DatenMeister.Tests.Runtime.Functions
                     .SetProperties(new Dictionary<string, object> {["name"] = "person5", ["age"] = 20, ["iq"] = 109}));
 
             return extent;
-
         }
     }
 }

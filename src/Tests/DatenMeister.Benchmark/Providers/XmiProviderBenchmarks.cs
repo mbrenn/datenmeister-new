@@ -21,12 +21,12 @@ namespace DatenMeister.Benchmark.Providers
                                 "    <item name=\"name1\" age=\"18\" />" +
                                 "    <item name=\"name2\" age=\"25\" />" +
                                 "    <item name=\"name3\" age=\"32\" />" +
-                                "</item>"));    
-            var extent = new MofUriExtent(provider, "dm:///test");
-            
+                                "</item>"));
+            var extent = new MofUriExtent(provider, "dm:///test", null);
+
             _elements = extent.elements().OfType<IElement>().ToList();
         }
-        
+
         [Benchmark]
         public void BenchMarkGetProperty()
         {

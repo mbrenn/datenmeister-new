@@ -22,18 +22,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
     {
         private static readonly ClassLogger Logger = new(typeof(ExtentConfigurationLoader));
 
-        /// <summary>
-        /// Gets the information about the loaded extents,
-        /// and filepath where to look after
-        /// </summary>
-        private ExtentStorageData ExtentStorageData { get; }
-
-        private IScopeStorage _scopeStorage;
-
-        /// <summary>
-        /// Gets the extent manager being used to actual load an extent
-        /// </summary>
-        private ExtentManager ExtentManager { get; }
+        private readonly IScopeStorage _scopeStorage;
 
         public ExtentConfigurationLoader(
             IScopeStorage scopeStorage,
@@ -43,6 +32,17 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             ExtentManager = extentManager;
             ExtentStorageData = scopeStorage.Get<ExtentStorageData>();
         }
+
+        /// <summary>
+        /// Gets the information about the loaded extents,
+        /// and filepath where to look after
+        /// </summary>
+        private ExtentStorageData ExtentStorageData { get; }
+
+        /// <summary>
+        /// Gets the extent manager being used to actual load an extent
+        /// </summary>
+        private ExtentManager ExtentManager { get; }
 
         /// <summary>
         /// Loads the configuration of the extents and returns the configuration
@@ -60,17 +60,18 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             else
             {
                 Logger.Info($"Loading extent configuration from file: {path}");
-                
-                
+
+
                 var document = XDocument.Load(path);
                 var version = document.Root?.Attribute("Version")?.Value;
                 if (string.IsNullOrEmpty(version))
                 {
-                    throw new InvalidOperationException($"Unfortunately, we have an old version and need to rebuild the extent configuration: {path}");
+                    throw new InvalidOperationException(
+                        $"Unfortunately, we have an old version and need to rebuild the extent configuration: {path}");
                 }
 
                 var xmiProvider = new XmiProvider(document);
-                var extent = new MofUriExtent(xmiProvider)
+                var extent = new MofUriExtent(xmiProvider, _scopeStorage)
                 {
                     Workspace = ExtentManager.WorkspaceLogic.GetDataWorkspace()
                 };
@@ -96,7 +97,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     "No extents are stored due to the failure during loading. This prevents unwanted data loss due to a missing extent.");
                 return;
             }
-            
+
             var xmiProvider = new XmiProvider();
             var extentConfigurations = new MofUriExtent(xmiProvider, _scopeStorage);
             var factory = new MofFactory(extentConfigurations);
@@ -111,7 +112,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     ?? throw new InvalidOperationException("Configuration is not set"));
 
                 // Stores the .Net datatype to allow restore of the right element
-                if (loadingInformation.Extent is MofExtent loadedExtent && 
+                if (loadingInformation.Extent is MofExtent loadedExtent &&
                     !loadedExtent.Provider.GetCapabilities().StoreMetaDataInExtent)
                 {
                     copiedConfiguration.set("metadata", loadedExtent.GetMetaObject());

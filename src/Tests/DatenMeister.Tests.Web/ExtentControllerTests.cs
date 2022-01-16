@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Web
         public void TestSetProperties()
         {
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
-            var newExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var newExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", scopeStorage);
             workspaceLogic.AddExtent(workspaceLogic.GetDataWorkspace(), newExtent);
 
             var extentController = new ExtentController(workspaceLogic, scopeStorage);
@@ -43,7 +43,7 @@ namespace DatenMeister.Tests.Web
         public void TestGetProperties()
         {
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
-            var newExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var newExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", scopeStorage);
             workspaceLogic.AddExtent(workspaceLogic.GetDataWorkspace(), newExtent);
 
             var extentController = new ExtentController(workspaceLogic, scopeStorage);

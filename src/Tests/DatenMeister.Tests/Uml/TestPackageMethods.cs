@@ -14,14 +14,14 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public void TestImportOfPackageIntoExtent()
         {
-            using var scope  = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var packageMethods = new PackageMethods();
-            
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
 
             packageMethods.ImportByManifest(
-                typeof(TestPackageMethods), 
+                typeof(TestPackageMethods),
                 "DatenMeister.Tests.Xmi.PackageTest.xmi",
                 "Internal",
                 extent,

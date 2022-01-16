@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var action = factory.create(_DatenMeister.TheOne.Actions.Reports.__SimpleReportAction);
             var configuration = factory.create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
             var tempFileName = Path.GetTempFileName();
-            
+
             configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, extent.contextURI());
             action.set(_DatenMeister._Actions._Reports._SimpleReportAction.configuration, configuration);
             action.set(
@@ -36,7 +36,7 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(File.Exists(tempFileName), Is.True);
             var content = File.ReadAllText(tempFileName);
             Assert.That(content.Contains("name"));
-            
+
             // Delete the file
             File.Delete(tempFileName);
         }
@@ -52,7 +52,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var action = factory.create(_DatenMeister.TheOne.Actions.Reports.__SimpleReportAction);
             var configuration = factory.create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
             var tempFileName = Path.GetTempFileName();
-            
+
             action.set(_DatenMeister._Actions._Reports._SimpleReportAction.path, "dm:///test");
             action.set(_DatenMeister._Actions._Reports._SimpleReportAction.workspaceId, "Data");
             action.set(_DatenMeister._Actions._Reports._SimpleReportAction.configuration, configuration);
@@ -65,7 +65,7 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(File.Exists(tempFileName), Is.True);
             var content = File.ReadAllText(tempFileName);
             Assert.That(content.Contains("name"));
-            
+
             // Delete the file
             File.Delete(tempFileName);
         }
@@ -81,7 +81,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
 
             var inMemoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
+            var extent = new MofUriExtent(inMemoryProvider, "dm:///test", scopeStorage);
             workspaceLogic.GetDataWorkspace().AddExtent(extent);
 
             /* Creates the working object */

@@ -1,12 +1,13 @@
-define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC, Client_Items_1) {
+define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC, ClientItems) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
 
     class Field extends Interfaces_Fields_1.BaseField {
-        loadValuesFromServer() {
+        reloadValuesFromServer() {
             const url = this._element.uri;
             const fieldName = this.field.get('name');
+            ClientItems.getProperty(this.form.workspace, url, fieldName).done(x => this.createDomByValue(x));
         }
 
         createDom(dmElement) {
@@ -15,27 +16,33 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
             const value = dmElement.get(fieldName);
             return this.createDomByValue(value);
         }
-
         createDomByValue(value) {
             var _a;
             var tthis = this;
             if (this.isReadOnly) {
-                this._list = $("<ul class='list-unstyled'></ul>");
+                this._list = $("<div></div>");
+                let ul = $("<ul class='list-unstyled'></ul>");
                 let foundElements = 0;
                 for (let m in value) {
                     if (Object.prototype.hasOwnProperty.call(value, m)) {
                         let innerValue = value[m];
-                        let item = $("<li><a></a></li>");
+                        const item = $("<li><a></a></li>");
                         const link = $("a", item);
-                        link.text(innerValue.get('name'));
+                        const name = innerValue.get('name');
+                        if (name !== undefined && name !== "") {
+                            link.text(innerValue.get('name'));
+                        } else {
+                            link.append($("<em>Unnamed</em>"));
+                        }
                         link.attr('href', (0, Website_1.getItemDetailUri)(innerValue));
-                        this._list.append(item);
+                        ul.append(item);
                         foundElements++;
                     }
                 }
                 if (foundElements === 0) {
-                    this._list = $("<em>No items</em>");
+                    ul = $("<em>No items</em>");
                 }
+                this._list.append(ul);
             } else {
                 this._list = $("<div></div>");
                 const table = $("<table><tbody></tbody></table>");
@@ -89,12 +96,12 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
                     selectItem.onItemSelected = selectedItem => {
-                        (0, Client_Items_1.addReferenceToCollection)(tthis.form.workspace, tthis.itemUrl, {
+                        ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.field.get('name'),
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getSelectedWorkspace()
                         }).done(x => {
-                            alert('X');
+                            this.reloadValuesFromServer();
                         });
                     };
                     selectItem.init(containerDiv, settings);
@@ -102,6 +109,11 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                 });
                 this._list.append(newItem);
             }
+            const refreshBtn = $("<div><btn class='btn btn-secondary dm-subelements-refresh-btn'>Refresh</btn></div>");
+            $(".dm-subelements-refresh-btn", refreshBtn).on('click', () => {
+                tthis.reloadValuesFromServer();
+            });
+            this._list.append(refreshBtn);
             return this._list;
         }
         evaluateDom(dmElement) {

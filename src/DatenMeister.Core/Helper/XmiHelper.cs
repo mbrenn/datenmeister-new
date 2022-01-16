@@ -15,7 +15,7 @@ namespace DatenMeister.Core.Helper
         public static string ConvertToXmiFromObject(IObject value)
         {
             var provider = new XmiProvider();
-            var extent = new MofUriExtent(provider);
+            var extent = new MofUriExtent(provider, null);
 
             var copiedResult = ObjectCopier.Copy(new MofFactory(extent), value, CopyOptions.CopyId);
             var providerObject = (copiedResult as MofObject)?.ProviderObject;
@@ -25,10 +25,10 @@ namespace DatenMeister.Core.Helper
             {
                 throw new InvalidOperationException("xml not found");
             }
-            
+
             return xml.ToString();
         }
-        
+
         /// <summary>
         /// Converts the reflective collection to an xml text
         /// </summary>
@@ -38,7 +38,7 @@ namespace DatenMeister.Core.Helper
         public static string ConvertToXmiFromCollection(IEnumerable<object?> collection)
         {
             var provider = new XmiProvider();
-            var extent = new MofUriExtent(provider);
+            var extent = new MofUriExtent(provider, null);
 
             foreach (var item in collection.OfType<IObject>())
             {
@@ -52,7 +52,7 @@ namespace DatenMeister.Core.Helper
             {
                 throw new InvalidOperationException("xml not found");
             }
-            
+
             return xml.ToString();
         }
 
@@ -66,8 +66,8 @@ namespace DatenMeister.Core.Helper
         {
             var provider = new XmiProvider();
             var providerObject = new XmiProviderObject(XElement.Parse(xmi), provider);
-            
-            var extent = new MofUriExtent(provider);
+
+            var extent = new MofUriExtent(provider, null);
             extent.LocalSlimUmlEvaluation = slimEvaluation;
             return new MofElement(providerObject, extent);
         }
@@ -81,7 +81,7 @@ namespace DatenMeister.Core.Helper
         public static IReflectiveCollection ConvertCollectionFromXmi(string xmi, bool slimEvaluation = true)
         {
             var provider = new XmiProvider();
-            var extent = new MofUriExtent(provider);
+            var extent = new MofUriExtent(provider, null);
             extent.LocalSlimUmlEvaluation = slimEvaluation;
             var collection = new TemporaryReflectiveCollection();
 

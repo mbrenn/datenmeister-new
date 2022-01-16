@@ -15,10 +15,10 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var data = WorkspaceLogic.InitDefault();
             var logic = WorkspaceLogic.Create(data);
 
-            var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data");
-            var typeExtent = new MofUriExtent(new InMemoryProvider(), "Types");
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml");
-            var unAssignedExtent = new MofUriExtent(new InMemoryProvider(), "Unassigned");
+            var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data", null);
+            var typeExtent = new MofUriExtent(new InMemoryProvider(), "Types", null);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml", null);
+            var unAssignedExtent = new MofUriExtent(new InMemoryProvider(), "Unassigned", null);
 
             logic.AddExtent(data.Data, dataExtent);
             logic.AddExtent(data.Types, typeExtent);
@@ -35,10 +35,10 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestDataLayersForItem()
         {
             var data = WorkspaceLogic.InitDefault();
-            var logic =  WorkspaceLogic.Create(data);
+            var logic = WorkspaceLogic.Create(data);
 
-            var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data");
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml");
+            var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data", null);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml", null);
 
             logic.AddExtent(data.Data, dataExtent);
             logic.AddExtent(data.Uml, umlExtent);

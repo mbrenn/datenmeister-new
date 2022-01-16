@@ -44,6 +44,7 @@ namespace DatenMeister.Forms
         private readonly ExtentCreator _extentCreator;
         private readonly ExtentSettings _extentSettings;
         private readonly IntegrationSettings _integrationSettings;
+        private readonly IScopeStorage _scopeStorage;
 
         private readonly IWorkspaceLogic _workspaceLogic;
 
@@ -59,6 +60,7 @@ namespace DatenMeister.Forms
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
+            _scopeStorage = scopeStorage;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
@@ -91,7 +93,7 @@ namespace DatenMeister.Forms
                 case PluginLoadingPosition.AfterBootstrapping:
                     // Creates the internal views for the DatenMeister
                     var dotNetUriExtent =
-                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentInternalForm);
+                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentInternalForm, _scopeStorage);
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     _extentSettings.extentTypeSettings.Add(new ExtentType(FormExtentType));

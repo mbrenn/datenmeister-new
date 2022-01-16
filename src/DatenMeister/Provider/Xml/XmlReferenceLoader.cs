@@ -18,12 +18,13 @@ namespace DatenMeister.Provider.Xml
 
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
-            var filePath = 
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath);
-            
+            var filePath =
+                configuration.getOrDefault<string>(
+                    _DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath);
+
             // Now load the stuff
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider);
+            var extent = new MofUriExtent(provider, ScopeStorage);
             var simpleLoader = new XmlToExtentConverter(configuration);
             simpleLoader.Convert(XDocument.Load(filePath), extent);
 

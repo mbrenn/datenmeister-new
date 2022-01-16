@@ -12,6 +12,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
     public interface IWorkspaceLogic : IUriResolver
     {
         /// <summary>
+        ///     Gets the scope storage, if set
+        /// </summary>
+        IScopeStorage? ScopeStorage { get; }
+
+        /// <summary>
         ///     Gets the workspaces of the workspace logic
         /// </summary>
         IEnumerable<Workspace> Workspaces { get; }

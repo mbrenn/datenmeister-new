@@ -107,7 +107,7 @@ namespace DatenMeister.Tests.Provider
             Assert.That(loadedExtent.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
 
             var provider = new ExtentOfWorkspaceProvider(workspaceLogic, scopeStorage);
-            var extent = new MofUriExtent(provider, "dm:///management");
+            var extent = new MofUriExtent(provider, "dm:///management", null);
             return (scopeStorage, workspaceLogic, loadedExtent, provider, extent);
         }
 

@@ -17,7 +17,7 @@ namespace DatenMeister.Extent.Manager
         public static IUriExtent CreateXmiExtent(string uri)
         {
             var xmlProvider = new XmiProvider();
-            return new MofUriExtent(xmlProvider, uri);
+            return new MofUriExtent(xmlProvider, uri, null);
         }
 
         /// <summary>

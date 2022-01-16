@@ -306,7 +306,7 @@ namespace DatenMeister.Core.Uml.Helper
         {
             var document = XDocument.Load(stream);
             var pseudoProvider = new XmiProvider(document);
-            var pseudoExtent = new MofUriExtent(pseudoProvider)
+            var pseudoExtent = new MofUriExtent(pseudoProvider, null)
             {
                 Workspace = (Workspace?) targetExtent.GetWorkspace()
             };

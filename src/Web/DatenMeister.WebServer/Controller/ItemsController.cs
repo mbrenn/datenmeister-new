@@ -274,7 +274,7 @@ namespace DatenMeister.WebServer.Controller
             return new {success = true};
         }
 
-        [HttpPost("api/items/get_property/{workspaceId}/{itemUri}")]
+        [HttpGet("api/items/get_property/{workspaceId}/{itemUri}")]
         public ActionResult<object> GetProperty(string workspaceId, string itemUri, string property)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
@@ -283,10 +283,7 @@ namespace DatenMeister.WebServer.Controller
             var result = _internal.GetPropertyInternal(workspaceId, itemUri, property);
 
             var converter = new MofJsonConverter {MaxRecursionDepth = 2};
-            return new
-            {
-                v = converter.ConvertToJson(result)
-            };
+            return Content($"{{\"v\": {converter.ConvertToJson(result)}}}", "application/json", Encoding.UTF8);
         }
 
         [HttpPost("api/items/set/{workspaceId}/{itemUri}")]

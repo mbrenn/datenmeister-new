@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <summary>
         /// Stores the extent being used to provide the information
         /// </summary>
-        private readonly MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
+        private readonly MofUriExtent _extent = new(new InMemoryProvider(), "dm:///temp", null);
 
         private readonly IReflectiveCollection _reflectiveCollection;
 
@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 {
                     continue;
                 }
-                
+
                 var element = value as IElement;
                 var metaClass = element?.getMetaClass();
                 if (metaClass == null)

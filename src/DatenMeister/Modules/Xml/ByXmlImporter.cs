@@ -22,7 +22,7 @@ namespace DatenMeister.Modules.Xml
         {
             var document = XDocument.Parse(xmlText);
             var provider = new XmiProvider(document);
-            var createdObject = new MofUriExtent(provider);
+            var createdObject = new MofUriExtent(provider, null);
 
             // Gets the reflective-collection for the element
             var reflectiveCollection = DefaultClassifierHints.GetDefaultReflectiveCollection(container);

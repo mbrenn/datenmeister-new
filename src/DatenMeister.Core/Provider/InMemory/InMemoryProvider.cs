@@ -13,7 +13,7 @@ namespace DatenMeister.Core.Provider.InMemory
         /// <summary>
         /// Stores the temporary extent that can be used to create temporary objects
         /// </summary>
-        public static readonly MofUriExtent TemporaryExtent = new(new InMemoryProvider(), "dm:///temp");
+        public static readonly MofUriExtent TemporaryExtent = new(new InMemoryProvider(), "dm:///temp", null);
 
         /// <summary>
         /// Stores the elements of the current provider

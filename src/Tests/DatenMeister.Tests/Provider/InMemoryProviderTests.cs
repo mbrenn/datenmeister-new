@@ -31,7 +31,7 @@ namespace DatenMeister.Tests.Provider
             var provider = new InMemoryProvider();
             ProviderTestHelper.TestListMovement(provider);
         }
-        
+
         [Test]
         public void TestSetReferenceAndSetValue()
         {
@@ -43,7 +43,7 @@ namespace DatenMeister.Tests.Provider
         public void TestStringsInReflectiveCollection()
         {
             var provider = new InMemoryProvider();
-            var mofExtent = new MofUriExtent(provider, "dm:///test");
+            var mofExtent = new MofUriExtent(provider, "dm:///test", null);
 
             var element = MofFactory.Create(mofExtent, null);
             mofExtent.elements().add(element);
@@ -53,7 +53,7 @@ namespace DatenMeister.Tests.Provider
 
 
             var result = element.getOrDefault<IReflectiveCollection>("test");
-            Assert.That(result, Is.Not.Null );
+            Assert.That(result, Is.Not.Null);
 
 
             Assert.That(result.Count(), Is.EqualTo(4));

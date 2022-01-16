@@ -25,8 +25,8 @@ namespace DatenMeister.Provider.ManagementProviders.Settings
             var typesWorkspace = _workspaceLogic.GetTypesWorkspace();
             var dotNetProvider = new ManagementSettingsProvider(new WorkspaceDotNetTypeLookup(typesWorkspace));
             var settingsExtent =
-                new MofUriExtent(dotNetProvider, WorkspaceNames.UriExtentSettings);
-            
+                new MofUriExtent(dotNetProvider, WorkspaceNames.UriExtentSettings, _scopeStorage);
+
             // Adds the extent containing the settings
             _workspaceLogic.GetManagementWorkspace().AddExtent(settingsExtent);
 

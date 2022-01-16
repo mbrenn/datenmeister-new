@@ -21,7 +21,7 @@ namespace DatenMeister.Tests.Modules.Reports
             var (scopeStorage, workspaceLogic) = HtmlReportTests.PrepareWorkspaceLogic();
 
             var inMemoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
+            var extent = new MofUriExtent(inMemoryProvider, "dm:///test", scopeStorage);
             workspaceLogic.GetDataWorkspace().AddExtent(extent);
 
             /* Creates the working object */
@@ -37,7 +37,7 @@ namespace DatenMeister.Tests.Modules.Reports
             var dynamicViewNode = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
             dynamicViewNode.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
             extent.elements().add(dynamicViewNode);
-            
+
             var filterMetaClass = factory.create(_DatenMeister.TheOne.DataViews.__FilterTypeNode);
             filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.name, "filter");
             filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.type, null);

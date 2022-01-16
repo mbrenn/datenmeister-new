@@ -15,9 +15,9 @@ namespace DatenMeister.Tests.Modules
         public void TestDefaultPackage()
         {
             var workspaceData = WorkspaceLogic.InitDefault();
-            var dataExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
-            var typeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types");
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), "dm:///uml");
+            var dataExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
+            var typeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types", null);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), "dm:///uml", null);
 
             workspaceData.Uml.AddExtent(umlExtent);
             workspaceData.Types.AddExtent(typeExtent);

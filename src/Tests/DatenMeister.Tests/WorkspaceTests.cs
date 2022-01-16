@@ -16,7 +16,7 @@ namespace DatenMeister.Tests
             var workspace = new Workspace("data", "No annotation");
             workspaceLogic.AddWorkspace(workspace);
 
-            var extent = new MofUriExtent(new InMemoryProvider(), "http://test/");
+            var extent = new MofUriExtent(new InMemoryProvider(), "http://test/", null);
             var factory = new MofFactory(extent);
             var element = factory.create(null);
             extent.elements().add(element);

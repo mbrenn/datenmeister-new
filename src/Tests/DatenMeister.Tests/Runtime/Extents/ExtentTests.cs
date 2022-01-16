@@ -225,7 +225,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public void TestExtentTypes()
         {
-            var extent = new MofUriExtent(new InMemoryProvider());
+            var extent = new MofUriExtent(new InMemoryProvider(), null);
             var configuration = new ExtentConfiguration(extent)
             {
                 ExtentType = "abc"
@@ -255,7 +255,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public static void TestAlternativeUris()
         {
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a");
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
             mofExtent.AlternativeUris.Add("dm:///test");
             mofExtent.AlternativeUris.Add("dm:///test2");
 
@@ -267,7 +267,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public static void TestAutoSettingOfIds()
         {
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a");
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
             var mofFactory = new MofFactory(mofExtent);
 
             var element1 = mofFactory.create(null);
@@ -386,7 +386,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var userTypes = localTypeSupport.GetUserTypeExtent();
             var factory = new MofFactory(userTypes);
 
-            var extent = new MofUriExtent(new InMemoryProvider());
+            var extent = new MofUriExtent(new InMemoryProvider(), null);
 
             type = factory.create(_UML.TheOne.StructuredClassifiers.__Class);
             var property1 = factory.create(_UML.TheOne.Classification.__Property);
@@ -445,7 +445,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         /// <returns>Uri extent to be tested</returns>
         public IUriExtent CreateLittleExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var factory = new MofFactory(uriExtent);
 
             var package1 = factory.create(null);

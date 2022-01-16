@@ -19,12 +19,13 @@ namespace DatenMeister.Provider.CSV
         /// <param name="uri">Uri for the loaded extent</param>
         /// <param name="settings">Settings being loaded</param>
         /// <returns>Extent to be used</returns>
-        public static IUriExtent LoadCsv(this IWorkspaceLogic workspaceLogic, string uri, string path, IElement? settings = null)
+        public static IUriExtent LoadCsv(this IWorkspaceLogic workspaceLogic, string uri, string path,
+            IElement? settings = null)
         {
             var provider = new CsvLoader(workspaceLogic);
 
             var memoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(memoryProvider, uri);
+            var extent = new MofUriExtent(memoryProvider, uri, workspaceLogic.ScopeStorage);
 
             using var stream = new FileStream(path, FileMode.Open);
             provider.Load(memoryProvider, stream, settings);

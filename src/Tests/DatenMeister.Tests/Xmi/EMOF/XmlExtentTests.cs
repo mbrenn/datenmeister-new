@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlMofObject()
         {
             var xmlExtent = new XmiProvider();
-            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/" );
+            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/", null);
             var mofFactory = new MofFactory(uriExtent);
             var mofObject = mofFactory.create(null);
             mofObject.set("test", "testvalue");
@@ -52,12 +52,12 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlMetaClassFromElementName()
         {
             var xmlExtent = new XmiProvider();
-            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/" );
+            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/", null);
             var mofFactory = new MofFactory(uriExtent);
             var mofObject = mofFactory.create(null);
             var provider = (mofObject as MofObject)!.ProviderObject as XmiProviderObject;
             provider!.XmlNode.Name = "demo";
-            
+
             mofObject.set("test", "testvalue");
             Assert.That((mofObject.getMetaClass() as MofObjectShadow)!.Uri, Is.EqualTo("dm:///_xmi/node/demo"));
         }
@@ -65,14 +65,14 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlMofObjectWithElementSet()
         {
-            var tempExtent = new MofUriExtent(new InMemoryProvider(), "dm:///temp/");
+            var tempExtent = new MofUriExtent(new InMemoryProvider(), "dm:///temp/", null);
             var imFactory = new MofFactory(tempExtent);
             var mofElement = imFactory.create(null);
             mofElement.set("Name", "Brenn");
             mofElement.set("Vorname", "Martin");
 
             var xmlExtent = new XmiProvider();
-            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/");
+            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/", null);
             var mofFactory = new MofFactory(uriExtent);
 
             var xmlElement = mofFactory.create(null);
@@ -100,7 +100,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlMofReflectiveSequence()
         {
             var xmlExtent = new XmiProvider();
-            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/");
+            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/", null);
             var mofFactory = new MofFactory(uriExtent);
             var mofObject1 = mofFactory.create(null);
             var mofObject2 = mofFactory.create(null);
@@ -169,7 +169,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlExtent()
         {
             var xmlProvider = new XmiProvider();
-            var extent = new MofUriExtent(xmlProvider, "dm:///test/");
+            var extent = new MofUriExtent(xmlProvider, "dm:///test/", null);
             var factory = new MofFactory(extent);
             var mofObject1 = factory.create(null);
             var mofObject2 = factory.create(null);
@@ -244,7 +244,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlFactory()
         {
             var xmlProvider = new XmiProvider();
-            var extent = new MofUriExtent(xmlProvider, "dm:///test/");
+            var extent = new MofUriExtent(xmlProvider, "dm:///test/", null);
             var factory = new MofFactory(extent);
             var mofElement = factory.create(null);
             Assert.That(mofElement, Is.Not.Null);
@@ -255,7 +255,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlExtentStorage()
         {
             using var builder = DatenMeisterTests.GetDatenMeisterScope();
-            
+
             using var scope = builder.BeginLifetimeScope();
             var path = PathForTemporaryDataFile;
             if (File.Exists(path))
@@ -265,9 +265,11 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             var storageConfiguration =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///test");
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                "dm:///test");
             storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
-            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                WorkspaceNames.WorkspaceData);
 
             // Creates the extent
             var loader = scope.Resolve<ExtentManager>();
@@ -289,8 +291,9 @@ namespace DatenMeister.Tests.Xmi.EMOF
             loader.DetachExtent(loadedExtent.Extent);
 
             // Reloads it
-            
-            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///test_new");
+
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                "dm:///test_new");
 
             var newExtent = loader.LoadExtent(storageConfiguration);
             Assert.That(newExtent, Is.Not.Null);
@@ -303,12 +306,12 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestWithMetaClass()
         {
             using var builder = DatenMeisterTests.GetDatenMeisterScope();
-            
+
             using var scope = builder.BeginLifetimeScope();
             var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
             var xmlProvider = new XmiProvider();
-            var extent = new MofUriExtent(xmlProvider, "dm:///test/");
+            var extent = new MofUriExtent(xmlProvider, "dm:///test/", null);
             dataLayerLogic.AddExtent(dataLayerLogic.GetTypesWorkspace(), extent);
 
             var factory = new MofFactory(extent);
@@ -333,7 +336,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var creator = dm.Resolve<ExtentCreator>();
             var xmi = creator.GetOrCreateXmiExtentInInternalDatabase(
-                null, 
+                null,
                 "dm:///test",
                 "Name",
                 extentCreationFlags: ExtentCreationFlags.CreateOnly);

@@ -81,8 +81,8 @@ namespace DatenMeister.Tests.Xmi
         {
             var provider1 = new XmiProvider();
             var provider2 = new XmiProvider();
-            var extent1 = new MofUriExtent(provider1, "dm:///xmi1/");
-            var extent2 = new MofUriExtent(provider2, "dm:///xmi2/");
+            var extent1 = new MofUriExtent(provider1, "dm:///xmi1/", null);
+            var extent2 = new MofUriExtent(provider2, "dm:///xmi2/", null);
 
             var workspace = new Workspace("data");
             var loader = new SimpleLoader(workspace);

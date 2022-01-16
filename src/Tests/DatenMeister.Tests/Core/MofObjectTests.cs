@@ -55,7 +55,7 @@ namespace DatenMeister.Tests.Core
         {
             var provider = new InMemoryProvider();
             var otherMofElement = InMemoryObject.CreateEmpty();
-            var mofInstance = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var mofInstance = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var mofElement = new MofElement(new InMemoryObject(provider), mofInstance);
             mofInstance.elements().add(mofElement);
             mofInstance.elements().add(otherMofElement);
@@ -79,7 +79,7 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestProxyForUriExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var proxiedUriExtent = new ProxyUriExtent(uriExtent).ActivateObjectConversion();
 
             var mofElement = InMemoryObject.CreateEmpty();
@@ -97,7 +97,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(proxiedUriExtent.elements().remove(proxiedElement), Is.True);
             Assert.That(proxiedUriExtent.elements().size, Is.EqualTo(1));
             proxiedUriExtent.elements().clear();
-            
+
             // Check, if the dereferencing of ProxyMofElements are working
             proxiedUriExtent.elements().add(proxiedElement);
             returned = proxiedUriExtent.elements().ElementAt(0);
@@ -110,28 +110,28 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestKnowsExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var factory = new MofFactory(uriExtent);
 
             var mofElement = factory.create(null);
-            var otherMofElement = InMemoryObject.CreateEmpty(); 
-            var innerMofElement = factory.create(null); 
+            var otherMofElement = InMemoryObject.CreateEmpty();
+            var innerMofElement = factory.create(null);
 
-            Assert.That(((IHasExtent)mofElement).Extent, Is.Null);
+            Assert.That(((IHasExtent) mofElement).Extent, Is.Null);
             Assert.That(((IHasExtent) otherMofElement).Extent, Is.Null);
 
             uriExtent.elements().add(mofElement);
 
-            Assert.That(((IHasExtent)mofElement).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent) mofElement).Extent, Is.SameAs(uriExtent));
             Assert.That(((IHasExtent) otherMofElement).Extent, Is.Null);
 
             uriExtent.elements().add(otherMofElement);
 
-            Assert.That(((IHasExtent)mofElement).Extent, Is.SameAs(uriExtent));
-            Assert.That(((IHasExtent)otherMofElement).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent) mofElement).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent) otherMofElement).Extent, Is.SameAs(uriExtent));
 
             otherMofElement.set("Test", innerMofElement);
-            Assert.That(((IHasExtent)otherMofElement.get("Test")).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent) otherMofElement.get("Test")).Extent, Is.SameAs(uriExtent));
         }
 
         [Test]
@@ -158,7 +158,7 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestSetDotNet()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var factory = new MofFactory(uriExtent);
 
             var mofElement = factory.create(null);

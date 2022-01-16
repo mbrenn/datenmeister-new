@@ -95,16 +95,28 @@ export function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass:
         {metaclass: newMetaClass});
 }
 
-export interface AddReferenceToCollectionParameter {
-    property: string;
-    referenceUri: string;
-    referenceWorkspaceId?: string;
-}
-
 export function addReferenceToCollection(
-    workspaceId: string, itemUrl: string, parameter: AddReferenceToCollectionParameter) {
+    workspaceId: string, itemUrl: string, parameter: IAddReferenceToCollectionParameter) {
     let url = Settings.baseUrl +
         "api/items/add_ref_to_collection/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+
+    return ApiConnection.post(
+        url,
+        {
+            property: parameter.property,
+            workspaceId: parameter.referenceWorkspaceId,
+            referenceUri: parameter.referenceUri
+        }
+    );
+}
+
+export function removeReferenceToCollection(
+    workspaceId: string, itemUrl: string, parameter: IRemoveReferenceToCollectionParameter) {
+    let url = Settings.baseUrl +
+        "api/items/remove_ref_to_collection/" +
         encodeURIComponent(workspaceId) +
         "/" +
         encodeURIComponent(itemUrl);
@@ -141,4 +153,17 @@ export function getProperty(
 
 export interface IGetPropertyResult {
     v: any;
+}
+
+
+export interface IAddReferenceToCollectionParameter {
+    property: string;
+    referenceUri: string;
+    referenceWorkspaceId?: string;
+}
+
+export interface IRemoveReferenceToCollectionParameter {
+    property: string;
+    referenceUri: string;
+    referenceWorkspaceId?: string;
 }

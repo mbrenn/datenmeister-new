@@ -2,14 +2,12 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
-
     class Field extends Interfaces_Fields_1.BaseField {
         reloadValuesFromServer() {
             const url = this._element.uri;
             const fieldName = this.field.get('name');
             ClientItems.getProperty(this.form.workspace, url, fieldName).done(x => this.createDomByValue(x));
         }
-
         createDom(dmElement) {
             this._element = dmElement;
             const fieldName = this.field.get('name');

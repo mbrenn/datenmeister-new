@@ -2,16 +2,13 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = void 0;
-
     class DmObject {
         constructor() {
             this.values = new Array();
         }
-
         set(key, value) {
             this.values[key] = value;
         }
-
         get(key) {
             return this.values[key];
         }
@@ -111,9 +108,7 @@ define(["require", "exports"], function (require, exports) {
         }
         return result;
     }
-
     exports.createJsonFromObject = createJsonFromObject;
-
     /*
      * Converts the Object as given by the server to the JS-World.
      * In case of native objects, the native object will be returned.
@@ -133,9 +128,7 @@ define(["require", "exports"], function (require, exports) {
         }
         return element;
     }
-
     exports.convertJsonObjectToObjects = convertJsonObjectToObjects;
-
     /*
     // Creates the given object from the included json
     // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert

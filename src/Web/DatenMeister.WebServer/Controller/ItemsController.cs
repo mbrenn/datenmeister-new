@@ -353,6 +353,33 @@ namespace DatenMeister.WebServer.Controller
             return new {success = true};
         }
 
+        /// <summary>
+        ///     Adds a reference to a property's collection
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace where the item can be found</param>
+        /// <param name="itemUri">Uri of the item to whose property shall be added</param>
+        /// <param name="parameters">Parameters describing the property and the reference</param>
+        /// <returns></returns>
+        [HttpPost("api/items/remove_ref_to_collection/{workspaceId}/{itemUri}")]
+        public ActionResult<object> RemoveReferenceToCollection(string workspaceId, string itemUri,
+            [FromBody] RemoveReferenceToCollectionParams parameters)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+
+            var reference = _internal.GetItemByUriParameter(
+                                parameters.WorkspaceId,
+                                parameters.ReferenceUri)
+                            ?? throw new InvalidOperationException("Reference was not found");
+
+            foundItem.RemoveCollectionItem(parameters.Property, reference);
+
+            return new {success = true};
+        }
+
         public class SetMetaClassParams
         {
             public string metaClass { get; set; } = string.Empty;
@@ -425,6 +452,18 @@ namespace DatenMeister.WebServer.Controller
         {
             /// <summary>
             ///     Defines the property to which the property will be added
+            /// </summary>
+            public string Property { get; set; } = string.Empty;
+
+            public string? WorkspaceId { get; set; } = null;
+
+            public string ReferenceUri { get; set; } = string.Empty;
+        }
+
+        public class RemoveReferenceToCollectionParams
+        {
+            /// <summary>
+            ///     Defines the property to which the property will be removed
             /// </summary>
             public string Property { get; set; } = string.Empty;
 

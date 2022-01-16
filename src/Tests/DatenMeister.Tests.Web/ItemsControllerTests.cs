@@ -196,5 +196,38 @@ namespace DatenMeister.Tests.Web
             list = first.getOrDefault<IReflectiveCollection>("reference");
             Assert.That(list.size() == 2, Is.True);
         }
+
+        [Test]
+        public void TestRemoveReferenceToCollection()
+        {
+            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+
+            var rootElements = example.elements().ToList();
+            var first = rootElements.ElementAtOrDefault(0) as IElement;
+            Assert.That(first, Is.Not.Null);
+
+            var list = first.get<IReflectiveCollection>("reference");
+            var second = example.element("#item2");
+            Assert.That(second, Is.Not.Null);
+            list.add(second);
+
+            list = first.get<IReflectiveCollection>("reference");
+            Assert.That(list.size() == 1, Is.True);
+
+            itemsController.RemoveReferenceToCollection(
+                "Data",
+                ElementControllerTests.UriTemporaryExtent + "#item1",
+                new ItemsController.RemoveReferenceToCollectionParams
+                {
+                    Property = "reference",
+                    WorkspaceId = "Data",
+                    ReferenceUri = ElementControllerTests.UriTemporaryExtent + "#item2"
+                });
+
+            list = first.get<IReflectiveCollection>("reference");
+            Assert.That(list.size() == 0, Is.True);
+        }
     }
 }

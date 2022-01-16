@@ -376,9 +376,30 @@ namespace DatenMeister.Core.Provider.Xmi
 
                 if (value is XmiProviderObject valueAsXmlElement)
                 {
+                    // If the providers are the same, then use 
+                    if (valueAsXmlElement.Provider == Provider)
+                        foreach (var subElement in
+                                 XmlNode.Elements(normalizePropertyName)
+                                     .Where(subElement =>
+                                         XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode)))
+                        {
+                            subElement.Remove();
+                            return true;
+                        }
+
+                    // Now try to go through the references, if there is no direct object with id included
                     foreach (var subElement in
                              XmlNode.Elements(normalizePropertyName)
-                                 .Where(subElement => XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode)))
+                                 .Where(subElement =>
+                                 {
+                                     var href = subElement.Attribute("href")?.Value;
+                                     if (href == null) return false;
+
+                                     var posHash = href.IndexOf('#');
+                                     if (posHash != -1) href = href[(posHash + 1)..];
+
+                                     return href == XmiId.Get(valueAsXmlElement.XmlNode);
+                                 }))
                     {
                         subElement.Remove();
                         return true;

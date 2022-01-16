@@ -1,7 +1,7 @@
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
-    exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
+    exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
 
     function loadObject(workspace, extent, id) {
         const r = jQuery.Deferred();
@@ -17,9 +17,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
         return r;
     }
-
     exports.loadObject = loadObject;
-
     function loadObjectByUri(workspace, url) {
         const r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
@@ -32,9 +30,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
         return r;
     }
-
     exports.loadObjectByUri = loadObjectByUri;
-
     function loadRootElementsFromExtent(workspace, extentUri) {
         const r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
@@ -54,9 +50,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
         return r;
     }
-
     exports.loadRootElementsFromExtent = loadRootElementsFromExtent;
-
     function storeObjectByUri(workspace, url, element) {
         const r = jQuery.Deferred();
         const result = Mof.createJsonFromObject(element);
@@ -82,5 +76,20 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     }
 
     exports.setMetaclass = setMetaclass;
+
+    function addReferenceToCollection(workspaceId, itemUrl, parameter) {
+        let url = Settings.baseUrl +
+            "api/items/add_ref_to_collection/" +
+            encodeURIComponent(workspaceId) +
+            "/" +
+            encodeURIComponent(itemUrl);
+        return ApiConnection.post(url, {
+            property: parameter.property,
+            workspaceId: parameter.referenceWorkspaceId,
+            referenceUri: parameter.referenceUri
+        });
+    }
+
+    exports.addReferenceToCollection = addReferenceToCollection;
 });
 //# sourceMappingURL=Client.Items.js.map

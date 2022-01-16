@@ -2,7 +2,6 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.SelectItemControl = exports.Settings = void 0;
-
     class Settings {
         constructor() {
             this.showBreadcrumb = true;

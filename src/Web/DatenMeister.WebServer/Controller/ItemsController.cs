@@ -22,6 +22,7 @@ namespace DatenMeister.WebServer.Controller
     [ApiController]
     public class ItemsController : ControllerBase
     {
+        private readonly ItemsControllerInternal _internal;
         private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
 
@@ -29,6 +30,7 @@ namespace DatenMeister.WebServer.Controller
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
+            _internal = new ItemsControllerInternal(workspaceLogic, scopeStorage);
         }
 
         [HttpPost("api/items/create_in_extent/{workspaceId}/{extentUri}")]
@@ -83,7 +85,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var item = GetItemByUriParameter(workspaceId, itemUri);
+            var item = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
             var factory = new MofFactory(item);
 
@@ -160,19 +162,7 @@ namespace DatenMeister.WebServer.Controller
             extentUri = HttpUtility.UrlDecode(extentUri);
             itemId = HttpUtility.UrlDecode(itemId);
 
-            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri) as IUriExtent;
-            if (extent == null)
-            {
-                throw new InvalidOperationException("Extent is not found");
-            }
-
-            var foundElement = extent.element("#" + itemId);
-            if (foundElement == null)
-            {
-                throw new InvalidOperationException("Element is not found");
-            }
-
-            var converter = new MofJsonConverter() {MaxRecursionDepth = 2};
+            var foundElement = _internal.GetItemInternal(workspaceId, extentUri, itemId, out var converter);
             var convertedElement = converter.ConvertToJson(foundElement);
 
             return convertedElement;
@@ -184,7 +174,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var foundElement = GetItemByUriParameter(workspaceId, itemUri);
+            var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
             var converter = new MofJsonConverter {MaxRecursionDepth = 2};
             var convertedElement = converter.ConvertToJson(foundElement);
@@ -198,7 +188,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
 
-            var foundElement = GetItemByUriParameter(workspaceId, extentUri);
+            var foundElement = _internal.GetItemByUriParameter(workspaceId, extentUri);
             if (foundElement is not IExtent extent)
             {
                 return NotFound();
@@ -207,7 +197,7 @@ namespace DatenMeister.WebServer.Controller
             var converter = new MofJsonConverter {MaxRecursionDepth = 2};
 
             var result = new StringBuilder();
-            result.Append("[");
+            result.Append('[');
             var komma = string.Empty;
 
 #if LimitNumberOfElements
@@ -227,7 +217,7 @@ namespace DatenMeister.WebServer.Controller
                 komma = ", ";
             }
 
-            result.Append("]");
+            result.Append(']');
 
             return result.ToString();
         }
@@ -238,7 +228,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri) as IElement
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri) as IElement
                             ?? throw new InvalidOperationException("Item was not found");
 
             var result = new List<ItemWithNameAndId>();
@@ -253,34 +243,6 @@ namespace DatenMeister.WebServer.Controller
             return result;
         }
 
-        /// <summary>
-        /// Gets the items by the uri parameter.
-        /// The parameter themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
-        /// </summary>
-        /// <param name="workspaceId">Id of the workspace. Null, if through all workspaces shall be searched</param>
-        /// <param name="itemUri">Uri of the item</param>
-        /// <returns>The found object</returns>
-        private IObject GetItemByUriParameter(string? workspaceId, string itemUri)
-        {
-            if (workspaceId == null)
-            {
-                if (_workspaceLogic.Resolve(itemUri, ResolveType.Default, false) is not IObject foundElement)
-                    throw new InvalidOperationException($"Element '{itemUri}' is not found");
-
-                return foundElement;
-            }
-            else
-            {
-                var workspace = _workspaceLogic.GetWorkspace(workspaceId);
-                if (workspace == null) throw new InvalidOperationException($"Workspace '{workspaceId}' is not found");
-
-                if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
-                    throw new InvalidOperationException($"Element '{itemUri}' is not found");
-
-                return foundElement;
-            }
-        }
-
         [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
         public ActionResult<object> SetProperty(string workspaceId, string itemUri,
             [FromBody] SetPropertyParams propertyParams)
@@ -288,7 +250,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foundItem.set(propertyParams.Key, propertyParams.Value);
 
@@ -302,7 +264,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in propertiesParams.Properties)
             {
@@ -312,6 +274,21 @@ namespace DatenMeister.WebServer.Controller
             return new {success = true};
         }
 
+        [HttpPost("api/items/get_property/{workspaceId}/{itemUri}")]
+        public ActionResult<object> GetProperty(string workspaceId, string itemUri, string property)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var result = _internal.GetPropertyInternal(workspaceId, itemUri, property);
+
+            var converter = new MofJsonConverter {MaxRecursionDepth = 2};
+            return new
+            {
+                v = converter.ConvertToJson(result)
+            };
+        }
+
         [HttpPost("api/items/set/{workspaceId}/{itemUri}")]
         public ActionResult<object> Set(string workspaceId, string itemUri,
             [FromBody] MofObjectAsJson jsonObject)
@@ -319,7 +296,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in jsonObject.v)
             {
@@ -342,7 +319,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             if (foundItem is IElementSetMetaClass asMetaClassSet)
             {
@@ -366,10 +343,10 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
 
-            var reference = GetItemByUriParameter(
+            var reference = _internal.GetItemByUriParameter(
                                 parameters.WorkspaceId,
                                 parameters.ReferenceUri)
                             ?? throw new InvalidOperationException("Reference was not found");

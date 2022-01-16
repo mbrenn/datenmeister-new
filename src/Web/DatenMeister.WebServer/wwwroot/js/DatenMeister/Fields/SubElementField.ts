@@ -4,15 +4,27 @@ import * as FieldFactory from "../Forms.FieldFactory";
 
 import {getItemDetailUri} from "../Website";
 import * as SIC from "../Forms.SelectItemControl";
+import {addReferenceToCollection} from "../Client.Items";
 
 export class Field extends BaseField implements IFormField {
 
     _list: JQuery;
+    _element: DmObject;
+
+    loadValuesFromServer(): void {
+        const url = this._element.uri;
+        const fieldName = this.field.get('name');
+    }
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
+        this._element = dmElement;
         const fieldName = this.field.get('name');
         const value = dmElement.get(fieldName);
+        return this.createDomByValue(value);
+    }
 
+    createDomByValue(value: any): JQuery<HTMLElement> {
+        var tthis = this;
         if (this.isReadOnly) {
             this._list = $("<ul class='list-unstyled'></ul>");
 
@@ -98,7 +110,17 @@ export class Field extends BaseField implements IFormField {
                 settings.showWorkspaceInBreadcrumb = true;
                 settings.showExtentInBreadcrumb = true;
                 selectItem.onItemSelected = selectedItem => {
-                    alert(selectedItem.id);
+                    addReferenceToCollection(
+                        tthis.form.workspace,
+                        tthis.itemUrl,
+                        {
+                            property: tthis.field.get('name'),
+                            referenceUri: selectedItem.uri,
+                            referenceWorkspaceId: selectItem.getSelectedWorkspace()
+                        }
+                    ).done(x => {
+                        alert('X');
+                    });
                 };
 
                 selectItem.init(containerDiv, settings);

@@ -1,12 +1,24 @@
-define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC) {
+define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC, Client_Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
+
     class Field extends Interfaces_Fields_1.BaseField {
+        loadValuesFromServer() {
+            const url = this._element.uri;
+            const fieldName = this.field.get('name');
+        }
+
         createDom(dmElement) {
-            var _a;
+            this._element = dmElement;
             const fieldName = this.field.get('name');
             const value = dmElement.get(fieldName);
+            return this.createDomByValue(value);
+        }
+
+        createDomByValue(value) {
+            var _a;
+            var tthis = this;
             if (this.isReadOnly) {
                 this._list = $("<ul class='list-unstyled'></ul>");
                 let foundElements = 0;
@@ -77,7 +89,13 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
                     selectItem.onItemSelected = selectedItem => {
-                        alert(selectedItem.id);
+                        (0, Client_Items_1.addReferenceToCollection)(tthis.form.workspace, tthis.itemUrl, {
+                            property: tthis.field.get('name'),
+                            referenceUri: selectedItem.uri,
+                            referenceWorkspaceId: selectItem.getSelectedWorkspace()
+                        }).done(x => {
+                            alert('X');
+                        });
                     };
                     selectItem.init(containerDiv, settings);
                     return false;

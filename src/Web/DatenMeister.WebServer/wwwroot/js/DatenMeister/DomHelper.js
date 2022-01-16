@@ -2,15 +2,12 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.convertToDom = exports.debugElementToDom = exports.injectNameByUri = exports.injectName = void 0;
-
     function injectName(domElement, elementPosition) {
         ElementClient.loadNameOf(elementPosition).done(x => {
             domElement.text(x.name);
         });
     }
-
     exports.injectName = injectName;
-
     function injectNameByUri(domElement, elementUri) {
         ElementClient.loadNameByUri(elementUri).done(x => {
             if (x.extentUri !== undefined && x.workspace !== undefined

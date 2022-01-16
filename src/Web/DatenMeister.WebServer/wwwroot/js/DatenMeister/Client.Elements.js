@@ -2,31 +2,22 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.loadNameByUri = exports.loadNameOf = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
-
     function getAllWorkspaces() {
         return load(undefined, undefined, undefined);
     }
-
     exports.getAllWorkspaces = getAllWorkspaces;
-
     function getAllExtents(workspaceId) {
         return load(workspaceId, undefined, undefined);
     }
-
     exports.getAllExtents = getAllExtents;
-
     function getAllRootItems(workspaceId, extent) {
         return load(workspaceId, extent, undefined);
     }
-
     exports.getAllRootItems = getAllRootItems;
-
     function getAllChildItems(workspaceId, extent, itemId) {
         return load(workspaceId, extent, itemId);
     }
-
     exports.getAllChildItems = getAllChildItems;
-
     function load(workspaceId, extent, itemId) {
         const r = jQuery.Deferred();
         let url = '/api/elements/get_composites';
@@ -45,7 +36,6 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
         });
         return r;
     }
-
     function loadNameOf(elementPosition) {
         return $.ajax(Settings.baseUrl +
             "api/elements/get_name/" +
@@ -53,15 +43,12 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
             encodeURIComponent(elementPosition.extentUri) + "/" +
             encodeURIComponent(elementPosition.item));
     }
-
     exports.loadNameOf = loadNameOf;
-
     function loadNameByUri(elementUri) {
         return $.ajax(Settings.baseUrl +
             "api/elements/get_name/" +
             encodeURIComponent(elementUri));
     }
-
     exports.loadNameByUri = loadNameByUri;
 });
 //# sourceMappingURL=Client.Elements.js.map

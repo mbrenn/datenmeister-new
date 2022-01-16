@@ -24,6 +24,18 @@ namespace DatenMeister.Json
         public int MaxRecursionDepth { get; set; } = 10;
 
         /// <summary>
+        ///     Converts the given element to a json object
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>The converted element</returns>
+        public string ConvertToJson(object value)
+        {
+            var builder = new StringBuilder();
+            AppendValue(builder, value);
+            return builder.ToString();
+        }
+
+        /// <summary>
         /// Converts the given element to a json object
         /// </summary>
         /// <param name="value">Value to be converted</param>
@@ -61,7 +73,7 @@ namespace DatenMeister.Json
                 builder.Append($"{{\"r\": \"{HttpUtility.JavaScriptStringEncode(asShadow.Uri)}\"}}");
                 return;
             }
-            
+
             if (value is not IObjectAllProperties allProperties)
             {
                 throw new ArgumentException("value is not of type IObjectAllProperties.");
@@ -71,7 +83,7 @@ namespace DatenMeister.Json
 
             // Creates the values
             var komma = string.Empty;
-            
+
             builder.Append("\"v\": {");
             foreach (var property in allProperties.getPropertiesBeingSet())
             {
@@ -93,7 +105,7 @@ namespace DatenMeister.Json
                 if (item != null)
                 {
                     builder.Append(", \"m\": {");
-                    
+
                     builder.Append("\"name\": ");
                     AppendValue(builder, item.name, recursionDepth);
                     builder.Append(", \"id\": ");
@@ -108,7 +120,7 @@ namespace DatenMeister.Json
                     builder.Append("}");
                 }
             }
-            
+
             // Creates the uri
             var uri = value.GetUri();
             if (uri != null)
@@ -135,7 +147,7 @@ namespace DatenMeister.Json
 
             builder.Append("}");
 
-            
+
             builder.AppendLine();
         }
 
@@ -159,7 +171,7 @@ namespace DatenMeister.Json
             }
             else if (DotNetHelper.IsOfBoolean(propertyValue))
             {
-                builder.Append((bool)propertyValue ? "true": "false");
+                builder.Append((bool) propertyValue ? "true" : "false");
             }
             else if (propertyValue is double propertyValueAsDouble)
             {

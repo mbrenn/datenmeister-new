@@ -47,6 +47,38 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestGetProperty()
+        {
+            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
+            var found = itemsController.GetPropertyInternal(
+                "Data",
+                ElementControllerTests.UriTemporaryExtent + "#item1", "name");
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found.ToString(), Is.EqualTo("item1"));
+
+            var item1 = example.element("#item1");
+            var item2 = example.element("#item2");
+            var item3 = example.element("#item3");
+            Assert.That(item3, Is.Not.Null);
+
+            item3.set("children", new[] {item1, item2});
+
+            var foundChildren = itemsController.GetPropertyInternal(
+                "Data",
+                ElementControllerTests.UriTemporaryExtent + "#item3", "children");
+
+            Assert.That(foundChildren, Is.Not.Null);
+            Assert.That(foundChildren, Is.InstanceOf<IReflectiveCollection>());
+            var asReflectiveCollection = foundChildren as IReflectiveCollection;
+            Assert.That(
+                asReflectiveCollection!
+                    .OfType<IElement>()
+                    .Any(x => x.getOrDefault<string>("name") == "item1"),
+                Is.True);
+        }
+
+        [Test]
         public void TestRootElements()
         {
             var (dm, example) = ElementControllerTests.CreateExampleExtent();

@@ -2,7 +2,6 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
-
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
             var _a;

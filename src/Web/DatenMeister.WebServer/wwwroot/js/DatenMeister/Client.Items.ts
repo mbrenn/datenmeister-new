@@ -94,3 +94,27 @@ export function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass:
         url,
         {metaclass: newMetaClass});
 }
+
+export interface AddReferenceToCollectionParameter {
+    property: string;
+    referenceUri: string;
+    referenceWorkspaceId?: string;
+}
+
+export function addReferenceToCollection(
+    workspaceId: string, itemUrl: string, parameter: AddReferenceToCollectionParameter) {
+    let url = Settings.baseUrl +
+        "api/items/add_ref_to_collection/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+
+    return ApiConnection.post(
+        url,
+        {
+            property: parameter.property,
+            workspaceId: parameter.referenceWorkspaceId,
+            referenceUri: parameter.referenceUri
+        }
+    );
+}

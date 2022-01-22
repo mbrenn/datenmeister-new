@@ -113,7 +113,7 @@ export function addReferenceToCollection(
     );
 }
 
-export function removeReferenceToCollection(
+export function removeReferenceFromCollection(
     workspaceId: string, itemUrl: string, parameter: IRemoveReferenceToCollectionParameter) {
     let url = Settings.baseUrl +
         "api/items/remove_ref_to_collection/" +

@@ -1,7 +1,7 @@
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
-    exports.getProperty = exports.removeReferenceToCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
+    exports.getProperty = exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
 
     function loadObject(workspace, extent, id) {
         const r = jQuery.Deferred();
@@ -85,10 +85,9 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
             referenceUri: parameter.referenceUri
         });
     }
-
     exports.addReferenceToCollection = addReferenceToCollection;
 
-    function removeReferenceToCollection(workspaceId, itemUrl, parameter) {
+    function removeReferenceFromCollection(workspaceId, itemUrl, parameter) {
         let url = Settings.baseUrl +
             "api/items/remove_ref_to_collection/" +
             encodeURIComponent(workspaceId) +
@@ -101,8 +100,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
     }
 
-    exports.removeReferenceToCollection = removeReferenceToCollection;
-
+    exports.removeReferenceFromCollection = removeReferenceFromCollection;
     function getProperty(workspaceId, itemUrl, property) {
         const r = jQuery.Deferred();
         let url = Settings.baseUrl +

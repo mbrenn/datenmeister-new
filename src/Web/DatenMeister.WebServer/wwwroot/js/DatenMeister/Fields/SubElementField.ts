@@ -12,11 +12,12 @@ export class Field extends BaseField implements IFormField {
     _element: DmObject;
 
     reloadValuesFromServer(): void {
+        const tthis = this;
         const url = this._element.uri;
         const fieldName = this.field.get('name');
 
         ClientItems.getProperty(this.form.workspace, url, fieldName).done(
-            x => this.createDomByValue(x)
+            x => tthis.createDomByValue(x)
         );
     }
 
@@ -24,14 +25,19 @@ export class Field extends BaseField implements IFormField {
         this._element = dmElement;
         const fieldName = this.field.get('name');
         const value = dmElement.get(fieldName);
-        return this.createDomByValue(value);
+
+        this._list = $("<div></div>");
+        this.createDomByValue(value);
+
+        return this._list
     }
 
     createDomByValue(value: any): JQuery<HTMLElement> {
         var tthis = this;
+        this._list.empty();
+
         if (this.isReadOnly) {
 
-            this._list = $("<div></div>");
             let ul = $("<ul class='list-unstyled'></ul>");
 
             let foundElements = 0;
@@ -61,7 +67,6 @@ export class Field extends BaseField implements IFormField {
 
             this._list.append(ul);
         } else {
-            this._list = $("<div></div>");
             const table = $("<table><tbody></tbody></table>");
             this._list.append(table);
 
@@ -77,6 +82,7 @@ export class Field extends BaseField implements IFormField {
                 fieldsData.push(nameField);
             }
 
+            /* Creates the table header */
             const tBody = $("tbody", table);
             const tr = $("<tr></tr>");
             for (let fieldDataKey in fieldsData) {
@@ -87,14 +93,19 @@ export class Field extends BaseField implements IFormField {
                 tr.append(header);
             }
 
+            let deleteHeader = $("<th>Delete</th>");
+            tr.append(deleteHeader);
+
             tBody.append(tr);
 
+            /* Creates the rows */
             for (let m in value) {
                 if (Object.prototype.hasOwnProperty.call(value, m)) {
                     const tr = $("<tr></tr>");
+                    let innerValue = value[m] as DmObject;
+
                     for (let fieldDataKey in fieldsData) {
                         const td = $("<td></td>");
-                        let innerValue = value[m] as DmObject;
                         let fieldData = fieldsData[fieldDataKey];
 
                         const field = FieldFactory.createField(
@@ -110,9 +121,28 @@ export class Field extends BaseField implements IFormField {
                         td.append(dom);
                         tr.append(td);
                     }
+
+                    /* Creates the delete button */
+                    let deleteCell = $("<td><btn class='btn btn-secondary'>Delete</btn></td>");
+                    $("btn", deleteCell).on('click',
+                        () => {
+                            ClientItems.removeReferenceFromCollection(
+                                tthis.form.workspace,
+                                tthis.itemUrl,
+                                {
+                                    property: tthis.field.get('name'),
+                                    referenceUri: innerValue.uri,
+                                    referenceWorkspaceId: innerValue.workspace
+                                })
+                                .done(() => {
+                                    tthis.reloadValuesFromServer()
+                                });
+                        });
+
+                    tr.append(deleteCell);
+
                     table.append(tr);
                 }
-
             }
 
             const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach new Item</btn><div class='dm-subelements-appenditem-box'></div></div>");

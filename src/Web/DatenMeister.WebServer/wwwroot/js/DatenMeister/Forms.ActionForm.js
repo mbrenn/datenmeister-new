@@ -1,7 +1,8 @@
-define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"], function (require, exports, Mof, DomHelper_1, Forms, FormActions_1) {
+define(["require", "exports", "./DomHelper", "./Forms", "./FormActions"], function (require, exports, DomHelper_1, Forms, FormActions_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports, "__esModule", {value: true});
     exports.createActionFormForEmptyObject = void 0;
+
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
         const tthis = this;
         if (configuration.refreshForm === undefined) {
@@ -10,8 +11,6 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
             };
         }
         const creator = new Forms.DetailFormCreator();
-        creator.element = new Mof.DmObject();
-        creator.element.setMetaClassByUri(metaClass);
         configuration.onSubmit = (element) => {
             FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
         };

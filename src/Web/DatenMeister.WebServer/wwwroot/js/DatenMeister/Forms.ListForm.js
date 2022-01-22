@@ -2,12 +2,10 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.openMetaClassSelectionFormForNewItem = exports.ListForm = void 0;
-
     class ListForm {
         refreshForm() {
             this.createFormByCollection(this.parentHtml, this.configuration);
         }
-
         createFormByCollection(parent, configuration) {
             var _a;
             this.parentHtml = parent;
@@ -66,9 +64,7 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
             }
         }
     }
-
     exports.ListForm = ListForm;
-
     function openMetaClassSelectionFormForNewItem(buttonDiv, containerDiv, workspace, extentUri) {
         const tthis = this;
         buttonDiv.on('click', () => {
@@ -99,7 +95,6 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
             selectItem.init(containerDiv, settings);
         });
     }
-
     exports.openMetaClassSelectionFormForNewItem = openMetaClassSelectionFormForNewItem;
 });
 //# sourceMappingURL=Forms.ListForm.js.map

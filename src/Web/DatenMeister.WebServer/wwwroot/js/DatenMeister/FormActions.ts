@@ -20,6 +20,19 @@ export module DetailFormActions {
             return ECClient.getProperties(workspace, extentUri);
         }
 
+        if (actionName === "Extent.CreateItem") {
+            const metaclass = p.get('metaclass');
+            const deferLoadObjectForAction = $.Deferred<DmObject>();
+            const result = new DmObject();
+
+            if (metaclass !== undefined) {
+                result.setMetaClassByUri(metaclass);
+            }
+
+            deferLoadObjectForAction.resolve(result);
+            return deferLoadObjectForAction;
+        }
+
         return undefined;
     }
 
@@ -129,6 +142,10 @@ export class FormActions {
     }
 
     static extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string) {
+        if (metaClass === undefined) {
+            metaClass = element.metaClass.uri
+        }
+
         const json = createJsonFromObject(element);
         ApiConnection.post(
             Settings.baseUrl + "api/items/create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri),

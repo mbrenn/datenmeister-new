@@ -15,8 +15,7 @@ namespace DatenMeister.WebServer.Pages
         {
         }
 
-        public string? MetaClass { get; set; } = string.Empty;
-
+        [Parameter] public string? MetaClass { get; set; } = string.Empty;
 
         [Parameter] public string ActionName { get; set; } = string.Empty;
 

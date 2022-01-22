@@ -1,8 +1,10 @@
 import * as InterfacesForms from "./Forms.Interfaces";
-import {DmObject} from "./Mof";
 import * as Mof from "./Mof";
+import {DmObject} from "./Mof";
 import {createField} from "./Forms.FieldFactory";
+import * as Settings from "./Settings";
 import {IFormConfiguration} from "./IFormConfiguration";
+import * as SIC from "./Forms.SelectItemControl";
 
 export class ListForm implements InterfacesForms.IForm {
     elements: Array<DmObject>;
@@ -88,4 +90,37 @@ export class ListForm implements InterfacesForms.IForm {
             parent.append(table);
         }
     }
+}
+
+export function openMetaClassSelectionFormForNewItem(buttonDiv: JQuery, containerDiv: JQuery, workspace: string, extentUri: string) {
+    const tthis = this;
+
+    buttonDiv.on('click', () => {
+        containerDiv.empty();
+        const selectItem = new SIC.SelectItemControl();
+        const settings = new SIC.Settings();
+        settings.showWorkspaceInBreadcrumb = true;
+        settings.showExtentInBreadcrumb = true;
+        selectItem.onItemSelected = selectedItem => {
+            if (selectedItem === undefined) {
+                document.location.href =
+                    Settings.baseUrl +
+                    "ItemAction/Extent.CreateItem?workspace=" +
+                    encodeURIComponent(workspace) +
+                    "&extent=" +
+                    encodeURIComponent(extentUri);
+            } else {
+                document.location.href =
+                    Settings.baseUrl +
+                    "ItemAction/Extent.CreateItem?workspace=" +
+                    encodeURIComponent(workspace) +
+                    "&extent=" +
+                    encodeURIComponent(extentUri) +
+                    "&metaclass=" +
+                    encodeURIComponent(selectedItem.uri);
+            }
+        };
+
+        selectItem.init(containerDiv, settings);
+    });
 }

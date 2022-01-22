@@ -23,14 +23,25 @@ $(function()
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
             {isReadOnly: true});
     });
+    
+    requirejs(['DatenMeister/Forms.ListForm'], function (listForm)
+    {
+        listForm.openMetaClassSelectionFormForNewItem(
+            $(".dm-btn-create-item-with-metaclass"),
+            $("#dm-btn-create-item-metaclass"),            
+            "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
+            "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
+    });
 });
 
 </script>
 
 <div>
-    <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)">Create Item</a>
+    <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create Item</a>
+    <btn class="btn btn-secondary dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
 </div>
 
+<div id="dm-btn-create-item-metaclass"></div>
 <div id="items"></div>
 
 <div class="accordion" id="debug_accordion">

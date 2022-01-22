@@ -33,7 +33,7 @@ export class Field extends BaseField implements IFormField {
     }
 
     createDomByValue(value: any): JQuery<HTMLElement> {
-        var tthis = this;
+        const tthis = this;
         this._list.empty();
 
         if (this.isReadOnly) {
@@ -162,7 +162,7 @@ export class Field extends BaseField implements IFormField {
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getSelectedWorkspace()
                         }
-                    ).done(x => {
+                    ).done(() => {
                         this.reloadValuesFromServer();
                     });
                 };

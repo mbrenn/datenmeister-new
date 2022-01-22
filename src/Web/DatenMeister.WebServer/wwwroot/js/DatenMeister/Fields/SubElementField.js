@@ -19,7 +19,7 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
         }
         createDomByValue(value) {
             var _a;
-            var tthis = this;
+            const tthis = this;
             this._list.empty();
             if (this.isReadOnly) {
                 let ul = $("<ul class='list-unstyled'></ul>");
@@ -117,7 +117,7 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                             property: tthis.field.get('name'),
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getSelectedWorkspace()
-                        }).done(x => {
+                        }).done(() => {
                             this.reloadValuesFromServer();
                         });
                     };

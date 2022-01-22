@@ -2,7 +2,6 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.getProperty = exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
-
     function loadObject(workspace, extent, id) {
         const r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
@@ -86,7 +85,6 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
     }
     exports.addReferenceToCollection = addReferenceToCollection;
-
     function removeReferenceFromCollection(workspaceId, itemUrl, parameter) {
         let url = Settings.baseUrl +
             "api/items/remove_ref_to_collection/" +
@@ -99,7 +97,6 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
             referenceUri: parameter.referenceUri
         });
     }
-
     exports.removeReferenceFromCollection = removeReferenceFromCollection;
     function getProperty(workspaceId, itemUrl, property) {
         const r = jQuery.Deferred();

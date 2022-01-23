@@ -2,6 +2,7 @@
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -116,44 +117,15 @@ namespace DatenMeister.Forms
                     EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
                 }
 
-                CallFormsModificationPlugins(new FormCreationContext
-                    {
-                        Configuration = configuration,
-                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
-                        MetaClass = (element as IElement)?.metaclass,
-                        DetailElement = element
-                    },
-                    ref foundForm);
-
-                var detailForms = FormMethods.GetDetailForms(foundForm);
-                foreach (var detailForm in detailForms.OfType<IElement>())
+                var formCreationContext = new FormCreationContext
                 {
-                    var listedForm = detailForm; // Get iterative
-                    CallFormsModificationPlugins(
-                        new FormCreationContext
-                        {
-                            Configuration = configuration,
-                            ExtentType = extentType,
-                            FormType = _DatenMeister._Forms.___FormType.Detail,
-                            MetaClass = metaClass
-                        },
-                        ref listedForm);
-                }
+                    Configuration = configuration,
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
+                    MetaClass = (element as IElement)?.metaclass,
+                    DetailElement = element
+                };
 
-                var listForms = FormMethods.GetListForms(foundForm);
-                foreach (var listForm in listForms.OfType<IElement>())
-                {
-                    var listedForm = listForm; // Get iterative
-                    CallFormsModificationPlugins(
-                        new FormCreationContext
-                        {
-                            Configuration = configuration,
-                            ExtentType = extentType,
-                            FormType = _DatenMeister._Forms.___FormType.ObjectList,
-                            MetaClass = metaClass
-                        },
-                        ref listedForm);
-                }
+                CallPluginsForExtentForm(formCreationContext, ref foundForm);
             }
 
             // No Form
@@ -196,6 +168,8 @@ namespace DatenMeister.Forms
             if (foundForm != null)
             {
                 foundForm = CloneForm(foundForm);
+
+                ExpandDropDownValuesOfValueReference(foundForm);
 
                 CallFormsModificationPlugins(new FormCreationContext
                     {
@@ -251,13 +225,14 @@ namespace DatenMeister.Forms
             {
                 foundForm = CloneForm(foundForm);
 
-                CallFormsModificationPlugins(new FormCreationContext
-                    {
-                        Configuration = configuration,
-                        MetaClass = metaClass,
-                        FormType = _DatenMeister._Forms.___FormType.Detail
-                    },
-                    ref foundForm);
+                var formCreationContext = new FormCreationContext
+                {
+                    Configuration = configuration,
+                    MetaClass = metaClass,
+                    FormType = _DatenMeister._Forms.___FormType.Detail
+                };
+
+                CallPluginsForExtentForm(formCreationContext, ref foundForm);
             }
 
             return foundForm;
@@ -278,6 +253,7 @@ namespace DatenMeister.Forms
             if (foundForm != null)
             {
                 foundForm = CloneForm(foundForm);
+                ExpandDropDownValuesOfValueReference(foundForm);
 
                 CallFormsModificationPlugins(new FormCreationContext
                     {
@@ -322,6 +298,7 @@ namespace DatenMeister.Forms
             if (foundForm != null)
             {
                 foundForm = CloneForm(foundForm);
+                ExpandDropDownValuesOfValueReference(foundForm);
 
                 CallFormsModificationPlugins(new FormCreationContext
                     {
@@ -385,45 +362,15 @@ namespace DatenMeister.Forms
 
                 EvaluateListFormsForAutogenerationByReflectiveCollection(extent.elements(), foundForm);
 
-                CallFormsModificationPlugins(new FormCreationContext
-                    {
-                        DetailElement = extent,
-                        Configuration = configuration,
-                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
-                        ExtentType = extent.GetConfiguration().ExtentType
-                    },
-                    ref foundForm);
-
-
-                var detailForms = FormMethods.GetDetailForms(foundForm);
-                foreach (var detailForm in detailForms)
+                var formCreationContext = new FormCreationContext
                 {
-                    var listedForm = detailForm; // Get iterative
-                    CallFormsModificationPlugins(
-                        new FormCreationContext
-                        {
-                            DetailElement = extent,
-                            Configuration = configuration,
-                            ExtentType = extentType,
-                            FormType = _DatenMeister._Forms.___FormType.Detail
-                        },
-                        ref listedForm);
-                }
+                    DetailElement = extent,
+                    Configuration = configuration,
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
+                    ExtentType = extent.GetConfiguration().ExtentType
+                };
 
-                var listForms = FormMethods.GetListForms(foundForm);
-                foreach (var listForm in listForms)
-                {
-                    var listedForm = listForm; // Get iterative
-                    CallFormsModificationPlugins(
-                        new FormCreationContext
-                        {
-                            DetailElement = extent,
-                            Configuration = configuration,
-                            ExtentType = extentType,
-                            FormType = _DatenMeister._Forms.___FormType.ObjectList
-                        },
-                        ref listedForm);
-                }
+                CallPluginsForExtentForm(formCreationContext, ref foundForm);
             }
 
             return foundForm;
@@ -469,6 +416,7 @@ namespace DatenMeister.Forms
             if (foundForm != null)
             {
                 foundForm = CloneForm(foundForm);
+                ExpandDropDownValuesOfValueReference(foundForm);
 
                 CallFormsModificationPlugins(new FormCreationContext
                     {
@@ -482,6 +430,43 @@ namespace DatenMeister.Forms
             }
 
             return foundForm;
+        }
+
+        /// <summary>
+        ///     Calls all the plugins for the extent form
+        /// </summary>
+        /// <param name="formCreationContext">Form Creation context to be used</param>
+        /// <param name="foundForm">The form being found</param>
+        /// <returns>Element being called</returns>
+        private void CallPluginsForExtentForm(FormCreationContext formCreationContext, ref IElement foundForm)
+        {
+            CallFormsModificationPlugins(
+                formCreationContext,
+                ref foundForm);
+
+            var detailForms = FormMethods.GetDetailForms(foundForm);
+            foreach (var detailForm in detailForms)
+            {
+                var listedForm = detailForm; // Get iterative
+
+                ExpandDropDownValuesOfValueReference(listedForm);
+
+                CallFormsModificationPlugins(
+                    formCreationContext with {FormType = _DatenMeister._Forms.___FormType.Detail},
+                    ref listedForm);
+            }
+
+            var listForms = FormMethods.GetListForms(foundForm);
+            foreach (var listForm in listForms)
+            {
+                var listedForm = listForm; // Get iterative
+
+                ExpandDropDownValuesOfValueReference(listedForm);
+
+                CallFormsModificationPlugins(
+                    formCreationContext with {FormType = _DatenMeister._Forms.___FormType.ObjectList},
+                    ref listedForm);
+            }
         }
 
         /// <summary>
@@ -518,7 +503,6 @@ namespace DatenMeister.Forms
                 plugin.ModifyForm(formCreationContext, form);
             }
         }
-
 
         /// <summary>
         /// Adds all found extension forms.
@@ -573,6 +557,38 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
+        ///     Expands the dropdown values of the the DropDownField.
+        ///     The DropDownField supports a reference field which is not resolved by every Form Client.
+        ///     So, the DropDownField can already be resolved on server side
+        /// </summary>
+        /// <param name="listOrDetailForm">The list form or the DetailForm being handled</param>
+        public void ExpandDropDownValuesOfValueReference(IElement listOrDetailForm)
+        {
+            var factory = new MofFactory(listOrDetailForm);
+            var fields = listOrDetailForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            foreach (var field in fields.OfType<IElement>())
+            {
+                if (field.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__DropDownFieldData) != true) continue;
+
+                var byEnumeration =
+                    field.getOrDefault<IElement>(_DatenMeister._Forms._DropDownFieldData.valuesByEnumeration);
+                var byValues =
+                    field.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
+                if (byValues == null && byEnumeration != null)
+                {
+                    var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
+                    foreach (var value in enumeration)
+                    {
+                        var element = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
+                        element.set(_DatenMeister._Forms._ValuePair.name, value);
+                        element.set(_DatenMeister._Forms._ValuePair.value, value);
+                        field.AddCollectionItem(_DatenMeister._Forms._DropDownFieldData.values, element);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Goes through the tabs the extent form and checks whether the listform required an autogeneration.
         /// Each tab within the list form can require an autogeneration by setting the field 'autoGenerateFields'.
         /// </summary>
@@ -580,45 +596,35 @@ namespace DatenMeister.Forms
         /// <param name="foundForm">The element that has been found</param>
         private void EvaluateListFormsForAutogenerationByElement(IElement element, IElement foundForm)
         {
-            var tabs =
-                foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
-                    ?.OfType<IElement>();
-            // Go through the list forms and check if we need to auto-populate
-            if (tabs != null)
+            var listForms = FormMethods.GetListForms(foundForm);
+            foreach (var tab in listForms)
             {
-                foreach (var tab in tabs)
-                {
-                    var tabMetaClass = tab.getMetaClass();
-                    if (tabMetaClass == null ||
-                        !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
-                    {
-                        // Not a list tab
-                        continue;
-                    }
+                var tabMetaClass = tab.getMetaClass();
+                if (tabMetaClass == null ||
+                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
+                    // Not a list tab
+                    continue;
 
-                    var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
-                    if (autoGenerate)
+                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                if (autoGenerate)
+                {
+                    var formCreator = CreateFormCreator();
+                    var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                    if (propertyName == null || string.IsNullOrEmpty(propertyName))
                     {
-                        var formCreator = CreateFormCreator();
-                        var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
-                        if (propertyName == null || string.IsNullOrEmpty(propertyName))
-                        {
+                        formCreator.AddToListFormByElements(
+                            tab,
+                            new PropertiesAsReflectiveCollection(element),
+                            new FormFactoryConfiguration());
+                    }
+                    else
+                    {
+                        var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
+                        if (reflectiveSequence != null)
                             formCreator.AddToListFormByElements(
                                 tab,
-                                new PropertiesAsReflectiveCollection(element),
+                                reflectiveSequence,
                                 new FormFactoryConfiguration());
-                        }
-                        else
-                        {
-                            var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
-                            if (reflectiveSequence != null)
-                            {
-                                formCreator.AddToListFormByElements(
-                                    tab,
-                                    reflectiveSequence,
-                                    new FormFactoryConfiguration());
-                            }
-                        }
                     }
                 }
             }

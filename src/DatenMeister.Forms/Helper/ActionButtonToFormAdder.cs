@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -16,7 +15,7 @@ namespace DatenMeister.Forms.Helper
     public static class ActionButtonToFormAdder
     {
         /// <summary>
-        /// Initializes a new instance of the ActionButtonToFormadder
+        /// Initializes a new instance of the ActionButtonToFormAdder
         /// </summary>
         /// <param name="formsPluginState">The plugin interface to the forms</param>
         /// <param name="adder">The parameter of the addition</param>
@@ -34,14 +33,14 @@ namespace DatenMeister.Forms.Helper
             {
                 _parameter = parameter;
             }
-            
+
             public void ModifyForm(FormCreationContext context, IElement form)
             {
-
                 if (
                     (_parameter.MetaClass == null || context.MetaClass?.equals(_parameter.MetaClass) == true) &&
                     (_parameter.FormType == null || context.FormType == _parameter.FormType) &&
-                    (string.IsNullOrEmpty(context.Configuration?.ViewModeId) || context.Configuration?.ViewModeId == _parameter.ViewMode))
+                    (string.IsNullOrEmpty(context.Configuration?.ViewModeId) ||
+                     context.Configuration?.ViewModeId == _parameter.ViewMode))
                 {
                     // Calls the OnCall method to allow property debugging
                     _parameter.OnCallSuccess?.Invoke();

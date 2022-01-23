@@ -11,7 +11,7 @@ namespace DatenMeister.Extent.Forms
     /// Defines the default form extensions which are used to navigate through the
     /// items, extens and also offers the simple creation and deletion of items. 
     /// </summary>
-    public class BasicNavigationForFormsAndItemsPlugin  : IDatenMeisterPlugin
+    public class BasicNavigationForFormsAndItemsPlugin : IDatenMeisterPlugin
     {
         public const string NavigationExtentNavigateTo = "Extent.NavigateTo";
         public const string NavigationExtentDeleteExtent = "Extent.DeleteExtent";
@@ -20,7 +20,7 @@ namespace DatenMeister.Extent.Forms
         public const string NavigationItemNew = "Item.New";
         public const string NavigationExtentsListViewItem = "ExtentsList.ViewItem";
         public const string NavigationExtentsListDeleteItem = "ExtentsList.DeleteItem";
-        
+
         private readonly IScopeStorage _scopeStorage;
 
         public BasicNavigationForFormsAndItemsPlugin(IScopeStorage scopeStorage)
@@ -78,6 +78,9 @@ namespace DatenMeister.Extent.Forms
                 {
                     FormType = _DatenMeister._Forms.___FormType.ObjectList
                 });
+
+            formsPlugin.FormModificationPlugins.Add(
+                new CreateInstanceButtonsForListForms());
         }
     }
 }

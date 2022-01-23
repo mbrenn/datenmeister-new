@@ -387,6 +387,7 @@ namespace DatenMeister.Forms
 
                 CallFormsModificationPlugins(new FormCreationContext
                     {
+                        DetailElement = extent,
                         Configuration = configuration,
                         FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         ExtentType = extent.GetConfiguration().ExtentType
@@ -401,6 +402,7 @@ namespace DatenMeister.Forms
                     CallFormsModificationPlugins(
                         new FormCreationContext
                         {
+                            DetailElement = extent,
                             Configuration = configuration,
                             ExtentType = extentType,
                             FormType = _DatenMeister._Forms.___FormType.Detail
@@ -415,6 +417,7 @@ namespace DatenMeister.Forms
                     CallFormsModificationPlugins(
                         new FormCreationContext
                         {
+                            DetailElement = extent,
                             Configuration = configuration,
                             ExtentType = extentType,
                             FormType = _DatenMeister._Forms.___FormType.ObjectList

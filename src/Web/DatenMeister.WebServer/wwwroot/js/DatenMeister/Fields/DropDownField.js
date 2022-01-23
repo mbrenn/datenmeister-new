@@ -8,10 +8,16 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
             const selectedValue = dmElement.get(fieldName);
             const values = this.field.get('values');
             this._selectBox = $("<select></select>");
-            for (const value of values) {
+            if (Array.isArray(values)) {
+                for (const value of values) {
+                    const option = $("<option></option>");
+                    option.val(value.get('value').toString());
+                    option.text(value.get('name').toString());
+                    this._selectBox.append(option);
+                }
+            } else {
                 const option = $("<option></option>");
-                option.val(value.get('value').toString());
-                option.text(value.get('name').toString());
+                option.text("No values given...");
                 this._selectBox.append(option);
             }
             this._selectBox.val(selectedValue);

@@ -2,7 +2,6 @@ define(["require", "exports", "./DomHelper", "./Forms", "./FormActions"], functi
     "use strict";
     Object.defineProperty(exports, "__esModule", {value: true});
     exports.createActionFormForEmptyObject = void 0;
-
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
         const tthis = this;
         if (configuration.refreshForm === undefined) {

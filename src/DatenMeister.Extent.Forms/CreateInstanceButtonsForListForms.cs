@@ -21,6 +21,7 @@ namespace DatenMeister.Extent.Forms
             if (context.FormType == _DatenMeister._Forms.___FormType.ObjectList &&
                 extent != null)
             {
+                // Adds the default types as defined in the extent
                 var defaultTypes = extent.getOrDefault<IReflectiveCollection>(ExtentConfiguration.ExtentDefaultTypes);
                 if (defaultTypes != null)
                 {

@@ -127,6 +127,8 @@ export function openMetaClassSelectionFormForNewItem(buttonDiv: JQuery, containe
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
+        selectItem.setWorkspaceById('Types');
+        selectItem.setExtentByUri("dm:///_internal/types/internal");
         selectItem.onItemSelected = selectedItem => {
             if (selectedItem === undefined) {
                 document.location.href =

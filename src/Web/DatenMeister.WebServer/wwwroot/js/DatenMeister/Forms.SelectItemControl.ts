@@ -18,9 +18,19 @@ export class SelectItemControl {
     private visitedItems: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
+    private deferLoadedWorkspaces: JQueryDeferred<void> = $.Deferred<void>();
+    private deferLoadedExtent: JQueryDeferred<void> = $.Deferred<void>();
     private selectedWorkspace?: ItemWithNameAndId;
     private selectedExtent?: ItemWithNameAndId;
     private selectedItem?: ItemWithNameAndId;
+
+    // Defines the id of the workspace, when the workspace shall be pre-selected
+    // This value is set to undefined, when no selection shall be given
+    private preSelectWorkspaceById: string | undefined;
+
+    // Defines the id of the extent, when the extent shall be pre-selected
+    // This value is set to undefined, when no selection shall be given
+    private preSelectExtentByUri: string | undefined;
 
     onItemSelected: (selectedItem: ItemWithNameAndId) => void;
 
@@ -36,7 +46,7 @@ export class SelectItemControl {
         this.htmlWorkspaceSelect.on('change', () => {
             // Find the selected workspace
             tthis.selectedWorkspace = undefined;
-            const currentWorkspace = tthis.getSelectedWorkspace();
+            const currentWorkspace = tthis.getUserSelectedWorkspace();
             if (currentWorkspace != "" && currentWorkspace != undefined) {
                 for (let n = 0; n < tthis.loadedWorkspaces.length; n++) {
                     const item = tthis.loadedWorkspaces[n];
@@ -53,7 +63,7 @@ export class SelectItemControl {
         this.htmlExtentSelect.on('change', () => {
             // Find the selected extent
             tthis.selectedExtent = undefined;
-            const currentExtent = tthis.getSelectedExtent();
+            const currentExtent = tthis.getUserSelectedExtent();
             if (currentExtent != "" && currentExtent != undefined) {
                 for (let n = 0; n < tthis.loadedExtents.length; n++) {
                     const item = tthis.loadedExtents[n];
@@ -99,8 +109,9 @@ export class SelectItemControl {
         return div;
     }
 
-    loadWorkspaces() {
+    loadWorkspaces(): JQueryDeferred<any> {
         const tthis = this;
+        const r = jQuery.Deferred<any, never, never>();
 
         EL.getAllWorkspaces().done((items) => {
             tthis.htmlWorkspaceSelect.empty();
@@ -121,23 +132,46 @@ export class SelectItemControl {
             }
 
             tthis.refreshBreadcrumb();
+            tthis.deferLoadedWorkspaces.resolve();
+            tthis.evaluatePreSelectedWorkspace();
         });
 
-        this.loadExtents();
+        this.loadExtents().done(() => {
+            r.resolve(true);
+        });
 
+        return r;
     }
 
-    getSelectedWorkspace(): string {
+    // This call may also be given before the workspaces has been loaded
+    setWorkspaceById(workspaceId: string) {
+        this.preSelectWorkspaceById = workspaceId;
+        this.evaluatePreSelectedWorkspace();
+    }
+
+    // This call may also be given before the extents has been loaded
+    setExtentByUri(extentUri: string) {
+        this.preSelectExtentByUri = extentUri;
+        this.evaluatePreSelectedExtent();
+    }
+
+    // Sets the workspace by given the id
+
+    getUserSelectedWorkspace(): string {
         return this.htmlWorkspaceSelect.val()?.toString() ?? "";
     }
 
-    getSelectedExtent(): string {
+    // Sets the extent by given the uri
+
+    getUserSelectedExtent(): string {
         return this.htmlExtentSelect.val()?.toString() ?? "";
     }
 
-    loadExtents() {
+    loadExtents(): JQueryDeferred<any> {
+        const r = jQuery.Deferred<any, never, never>();
+
         const tthis = this;
-        const workspaceId = this.getSelectedWorkspace();
+        const workspaceId = this.getUserSelectedWorkspace();
         tthis.htmlSelectedElements.text(workspaceId);
 
         if (workspaceId == "") {
@@ -148,11 +182,11 @@ export class SelectItemControl {
         } else {
             EL.getAllExtents(workspaceId).done(items => {
 
-                this.htmlExtentSelect.empty();
-                this.visitedItems.length = 0;
+                tthis.htmlExtentSelect.empty();
+                tthis.visitedItems.length = 0;
 
                 const none = $("<option value=''>--- None ---</option>");
-                this.htmlExtentSelect.append(none);
+                tthis.htmlExtentSelect.append(none);
 
                 tthis.loadedExtents = items;
 
@@ -166,16 +200,24 @@ export class SelectItemControl {
 
                     tthis.htmlExtentSelect.append(option);
                 }
+
+                tthis.deferLoadedExtent.resolve();
             });
         }
 
         tthis.refreshBreadcrumb();
-        this.loadItems();
+        this.loadItems().done(() => {
+            r.resolve(true);
+        });
+
+        return r;
     }
 
-    loadItems(selectedItem?: string) {
-        const workspaceId = this.getSelectedWorkspace();
-        const extentUri = this.getSelectedExtent();
+    loadItems(selectedItem?: string): JQueryDeferred<any> {
+        const r = jQuery.Deferred<any, never, never>();
+
+        const workspaceId = this.getUserSelectedWorkspace();
+        const extentUri = this.getUserSelectedExtent();
         const tthis = this;
 
         if (workspaceId == "" || extentUri == "") {
@@ -194,6 +236,8 @@ export class SelectItemControl {
                     }
                 );
             }
+
+            r.resolve(true);
         } else {
             const funcElements = (items: ItemWithNameAndId[]) => {
                 this.htmlItemsList.empty();
@@ -215,6 +259,8 @@ export class SelectItemControl {
 
                     tthis.htmlItemsList.append(option);
                 }
+
+                r.resolve(true);
             };
 
             if (selectedItem === undefined || selectedItem === null) {
@@ -226,6 +272,8 @@ export class SelectItemControl {
         }
 
         tthis.refreshBreadcrumb();
+
+        return r;
     }
 
     refreshBreadcrumb() {
@@ -233,8 +281,8 @@ export class SelectItemControl {
         this.htmlBreadcrumbList.empty();
 
         if (this.settings.showBreadcrumb) {
-            const currentWorkspace = this.getSelectedWorkspace();
-            const currentExtent = this.getSelectedExtent();
+            const currentWorkspace = this.getUserSelectedWorkspace();
+            const currentExtent = this.getUserSelectedExtent();
 
             if (this.settings.showWorkspaceInBreadcrumb) {
                 this.addBreadcrumbItem("DatenMeister", () => tthis.loadWorkspaces());
@@ -273,6 +321,36 @@ export class SelectItemControl {
                     });
             }
         }
+    }
+
+    // Evaluates the preselection of the workspaces
+    private evaluatePreSelectedWorkspace() {
+        const tthis = this;
+        this.deferLoadedWorkspaces.done(() => {
+
+            if (tthis.preSelectWorkspaceById === undefined) {
+                return;
+            }
+
+            tthis.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
+            tthis.preSelectWorkspaceById = undefined;
+            tthis.loadExtents();
+        });
+    }
+
+    // Evaluates the preselection of the workspaces
+    private evaluatePreSelectedExtent() {
+        const tthis = this;
+        this.deferLoadedExtent.done(() => {
+
+            if (tthis.preSelectExtentByUri === undefined) {
+                return;
+            }
+
+            tthis.htmlExtentSelect.val(this.preSelectExtentByUri);
+            tthis.preSelectExtentByUri = undefined;
+            tthis.loadItems();
+        });
     }
 
     addBreadcrumbItem(text: string, onClick: () => void): void {

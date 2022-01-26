@@ -200,13 +200,15 @@ namespace DatenMeister.WebServer.Controller
             result.Append('[');
             var komma = string.Empty;
 
-#if LimitNumberOfElements
 
+            var elements = extent.elements().OfType<IElement>();
+
+            
+#if LimitNumberOfElements
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
 
-            var elements = extent.elements().Take(100).OfType<IElement>();
-#else
-            var elements = extent.elements().OfType<IElement>();
+            elements = elements.Take(100);
+            
 #endif
 
             foreach (var item in elements)

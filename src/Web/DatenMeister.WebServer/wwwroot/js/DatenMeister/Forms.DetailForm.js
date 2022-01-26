@@ -68,7 +68,7 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextFie
             // Checks, if user may add additional properties, if yes, include a button and create the corresponding
             // logic
             if (!configuration.isReadOnly && configuration.allowAddingNewProperties) {
-                tr = $("<tr class='dm-row-newproperty'><td></td><td><button class='btn btn-secondary'>New property</button></td></tr>");
+                tr = $("<tr class='dm-row-newproperty'><td></td><td><button class='btn btn-secondary'>Add new property</button></td></tr>");
                 tableBody.append(tr);
                 const button = $("button", tr);
                 button.on('click', () => {

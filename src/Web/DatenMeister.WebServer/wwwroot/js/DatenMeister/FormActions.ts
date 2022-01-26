@@ -33,6 +33,15 @@ export module DetailFormActions {
             return deferLoadObjectForAction;
         }
 
+        if (actionName === "Zipcode.Test") {
+            const deferLoadObjectForAction = $.Deferred<DmObject>();
+            const result = new DmObject();
+
+            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+            deferLoadObjectForAction.resolve(result);
+            return deferLoadObjectForAction;
+        }
+
         return undefined;
     }
 
@@ -104,13 +113,17 @@ export module DetailFormActions {
                         });
                 break;
             case "Workspace.Extent.Xmi.Create":
-                ApiConnection.post(
+                ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
                     {Parameter: createJsonFromObject(element)})
                     .done(data => {
-                        document.location.href = Settings.baseUrl
-                            + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
-                            "/" + encodeURIComponent(element.get("extentUri"))
+                        if (data.success) {
+                            document.location.href = Settings.baseUrl
+                                + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
+                                "/" + encodeURIComponent(element.get("extentUri"))
+                        } else {
+                            alert(data.reason);
+                        }
                     })
                     .fail(() => {
                         alert('fail');

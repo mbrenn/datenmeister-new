@@ -11,16 +11,16 @@ namespace DatenMeister.Json
     /// </summary>
     public record ItemWithNameAndId
     {
-        public string name { get; set; } = string.Empty;
+        public string? name { get; set; } = string.Empty;
 
-        public string uri { get; set; } = string.Empty;
-        
-        public string extentUri { get; set; } = string.Empty;
+        public string? uri { get; set; } = string.Empty;
 
-        public string fullName { get; set; } = string.Empty;
+        public string? extentUri { get; set; } = string.Empty;
 
-        public string id { get; set; } = string.Empty;
-        
+        public string? fullName { get; set; } = string.Empty;
+
+        public string? id { get; set; } = string.Empty;
+
         /// <summary>
         /// Creates the element out of the attached object 
         /// </summary>
@@ -47,7 +47,7 @@ namespace DatenMeister.Json
 
         public override string ToString()
         {
-            return name;
+            return name ?? string.Empty;
         }
     }
 }

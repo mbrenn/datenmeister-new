@@ -243,11 +243,11 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
     /*
         Gets the default form for an extent uri by the webserver
      */
-    function getDefaultFormForMetaClass(metaClass) {
+    function getDefaultFormForMetaClass(metaClassUri) {
         const r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
             "api/forms/default_for_metaclass/" +
-            encodeURIComponent(metaClass)).done(x => {
+            encodeURIComponent(metaClassUri)).done(x => {
             const dmObject = Mof.convertJsonObjectToDmObject(x);
             r.resolve(dmObject);
         });

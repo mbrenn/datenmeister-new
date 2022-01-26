@@ -29,27 +29,35 @@ export class Field extends BaseField implements IFormField
 
         divContainer.append(div);
 
+
         // Create button to change metaClass
         if (!this.isReadOnly) {
-            var button = $("<button class='btn btn-secondary' type='button'></button>");
-            button.text("Set MetaClass");
+            const changeMetaClassDiv = $("<div></div>");
+
+            const button = $("<button class='btn btn-secondary' type='button'></button>");
+            button.text("Change MetaClass");
             button.on('click', () => {
+
+                changeMetaClassDiv.empty();
                 const selectItemCtrl = new SelectItemControl();
-                const divSelectItem = selectItemCtrl.init(divContainer);
+                const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
+
+                selectItemCtrl.setWorkspaceById('Types');
+                selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
 
                 selectItemCtrl.onItemSelected = (selectedItem) => {
                     setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                         .done(() => divSelectItem.remove()).done(() => {
-                            if (tthis.configuration.refreshForm !== undefined) {
-                                tthis.configuration.refreshForm();
-                            }
-                        });
+                        if (tthis.configuration.refreshForm !== undefined) {
+                            tthis.configuration.refreshForm();
+                        }
+                    });
                 }
             });
 
             divContainer.append(button);
+            divContainer.append(changeMetaClassDiv);
         }
-
         return divContainer;
     }
 

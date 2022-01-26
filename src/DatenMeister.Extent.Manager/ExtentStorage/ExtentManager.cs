@@ -129,6 +129,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             {
                 extentInformation.LoadingState = ExtentLoadingState.Failed;
                 extentInformation.FailLoadingMessage = exc.ToString();
+                TheLog.Warn("Loading of Extent has failed: " + exc.Message);
                 return extentInformation;
             }
         }

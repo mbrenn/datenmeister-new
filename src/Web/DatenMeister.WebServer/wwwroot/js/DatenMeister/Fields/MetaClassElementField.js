@@ -1,6 +1,6 @@
 define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, DomHelper_1, Interfaces_Fields_1, Forms_SelectItemControl_1, Client_Items_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
@@ -27,11 +27,15 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
             divContainer.append(div);
             // Create button to change metaClass
             if (!this.isReadOnly) {
-                var button = $("<button class='btn btn-secondary' type='button'></button>");
-                button.text("Set MetaClass");
+                const changeMetaClassDiv = $("<div></div>");
+                const button = $("<button class='btn btn-secondary' type='button'></button>");
+                button.text("Change MetaClass");
                 button.on('click', () => {
+                    changeMetaClassDiv.empty();
                     const selectItemCtrl = new Forms_SelectItemControl_1.SelectItemControl();
-                    const divSelectItem = selectItemCtrl.init(divContainer);
+                    const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
+                    selectItemCtrl.setWorkspaceById('Types');
+                    selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
                     selectItemCtrl.onItemSelected = (selectedItem) => {
                         (0, Client_Items_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                             .done(() => divSelectItem.remove()).done(() => {
@@ -42,6 +46,7 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
                     };
                 });
                 divContainer.append(button);
+                divContainer.append(changeMetaClassDiv);
             }
             return divContainer;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -9,7 +10,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Provider.ExtentManagement;
@@ -107,7 +107,7 @@ namespace DatenMeister.Tests.Provider
             Assert.That(loadedExtent.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
 
             var provider = new ExtentOfWorkspaceProvider(workspaceLogic, scopeStorage);
-            var extent = new MofUriExtent(provider, "dm:///management");
+            var extent = new MofUriExtent(provider, "dm:///management", null);
             return (scopeStorage, workspaceLogic, loadedExtent, provider, extent);
         }
 

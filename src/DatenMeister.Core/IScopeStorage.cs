@@ -23,6 +23,6 @@
         /// </summary>
         /// <typeparam name="T">Type to be retrieved</typeparam>
         /// <returns>The found storage item or null, if not found</returns>
-        T TryGet<T>();
+        T? TryGet<T>();
     }
 }

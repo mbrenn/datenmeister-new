@@ -7,8 +7,12 @@
         <PackageVersion>1.1.0</PackageVersion>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <Configurations>Debug;Release;WPF</Configurations>
+        <Configurations>Debug;Release;WPF;ViewLogicAdditionalInfo</Configurations>
         <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'ViewLogicAdditionalInfo' ">
+      <DefineConstants>TRACE;VIEWLOGICINFO</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

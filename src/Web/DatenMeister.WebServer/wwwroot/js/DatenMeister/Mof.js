@@ -1,7 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.convertJsonObjectToDmObject = exports.createJsonFromObject = exports.DmObject = void 0;
+    Object.defineProperty(exports, "__esModule", {value: true});
+    exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = void 0;
     class DmObject {
         constructor() {
             this.values = new Array();
@@ -38,8 +38,11 @@ define(["require", "exports"], function (require, exports) {
             let values = this.values;
             return DmObject.valueToString(values);
         }
-        setMetaClass(metaClassUri) {
-            this.metaClass = { uri: metaClassUri };
+        setMetaClassByUri(metaClassUri) {
+            this.metaClass = {uri: metaClassUri};
+        }
+        setMetaClassById(metaClassId) {
+            this.metaClass = {id: metaClassId};
         }
         static valueToString(item, indent = "") {
             var result = "";
@@ -106,6 +109,26 @@ define(["require", "exports"], function (require, exports) {
         return result;
     }
     exports.createJsonFromObject = createJsonFromObject;
+    /*
+     * Converts the Object as given by the server to the JS-World.
+     * In case of native objects, the native object will be returned.
+     * In case of arrays, the arrays.
+     * In case of elements, the corresponding DmObjects
+     */
+    function convertJsonObjectToObjects(element) {
+        if (Array.isArray(element)) {
+            const arrayResult = [];
+            for (let m in element) {
+                const inner = element[m];
+                arrayResult.push(convertJsonObjectToObjects(inner));
+            }
+            return arrayResult;
+        } else if ((typeof element === "object" || typeof element === "function") && (element !== null)) {
+            return convertJsonObjectToDmObject(element);
+        }
+        return element;
+    }
+    exports.convertJsonObjectToObjects = convertJsonObjectToObjects;
     /*
     // Creates the given object from the included json
     // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert

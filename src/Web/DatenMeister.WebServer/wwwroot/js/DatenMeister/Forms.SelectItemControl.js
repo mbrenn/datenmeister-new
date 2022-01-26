@@ -1,6 +1,6 @@
-define(["require", "exports", "./ElementsLoader"], function (require, exports, EL) {
+define(["require", "exports", "./Client.Elements"], function (require, exports, EL) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports, "__esModule", {value: true});
     exports.SelectItemControl = exports.Settings = void 0;
     class Settings {
         constructor() {

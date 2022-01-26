@@ -17,7 +17,6 @@ using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage
 {
-
     /// <summary>
     /// This logic handles the loading and storing of extents automatically.
     /// This loader is responsible to retrieve an extent by the given ExtentLoaderConfig
@@ -28,28 +27,21 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
     {
         public const string PackagePathTypesExtentLoaderConfig = "DatenMeister::ExtentLoaderConfigs";
 
+        private static readonly ClassLogger Logger = new(typeof(ExtentManager));
+
         private readonly ExtentStorageData _extentStorageData;
 
-        private static readonly ClassLogger Logger = new(typeof(ExtentManager));
+        private readonly IntegrationSettings _integrationSettings;
+
+        /// <summary>
+        /// Stores the locking logic. May be null, if no locking is active. 
+        /// </summary>
+        private readonly LockingLogic? _lockingHandler;
 
         /// <summary>
         /// Stores the mapping between configuration types and storage provider
         /// </summary>
         private readonly ConfigurationToExtentStorageMapper _map;
-
-        public IScopeStorage ScopeStorage { get; }
-
-        /// <summary>
-        /// Gets the workspace logic for the extent manager
-        /// </summary>
-        public IWorkspaceLogic WorkspaceLogic { get; }
-
-        private readonly IntegrationSettings _integrationSettings;
-        
-        /// <summary>
-        /// Stores the locking logic. May be null, if no locking is active. 
-        /// </summary>
-        private readonly LockingLogic? _lockingHandler;
 
         public ExtentManager(
             IWorkspaceLogic workspaceLogic,
@@ -66,6 +58,13 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             _map = ScopeStorage.Get<ConfigurationToExtentStorageMapper>();
         }
 
+        public IScopeStorage ScopeStorage { get; }
+
+        /// <summary>
+        /// Gets the workspace logic for the extent manager
+        /// </summary>
+        public IWorkspaceLogic WorkspaceLogic { get; }
+
         public ExtentStorageData.LoadedExtentInformation? GetExtentInformation(string workspaceId, string extentUri)
         {
             lock (_extentStorageData.LoadedExtents)
@@ -81,7 +80,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly)
         {
             var extentInformation = new ExtentStorageData.LoadedExtentInformation(configuration);
-            
+
             try
             {
                 // First, check, if there is already an extent loaded in the internal database with that uri and workspace
@@ -93,8 +92,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 lock (_extentStorageData.LoadedExtents)
                 {
                     if (_extentStorageData.LoadedExtents.Any(
-                        x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
-                             && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
+                            x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
+                                 && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
                     {
                         throw new InvalidOperationException(
                             $"There is already the extent loaded with extentUri: {extentUri}");
@@ -167,7 +166,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             {
                 throw new InvalidOperationException("No extent uri is given");
             }
-            
+
 
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
             // TODO: Do real check including generalizations, but accept it for now
@@ -183,7 +182,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     throw new InvalidOperationException("Given file is a directory name. ");
                 }
             }
-            
+
             // Check, if the extent url is a real uri
             if (!Uri.IsWellFormedUriString(extentUri, UriKind.Absolute))
             {
@@ -225,14 +224,15 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 extentInformation.LoadingState = ExtentLoadingState.Failed;
                 extentInformation.FailLoadingMessage = e.ToString();
                 extentInformation.IsExtentAddedToWorkspace = true;
-                return; 
+                return;
             }
 
             // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will
             if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace || extentInformation.IsExtentAddedToWorkspace)
             {
                 var newWorkspaceId =
-                    loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfig.workspaceId) ?? string.Empty;
+                    loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfig.workspaceId) ??
+                    string.Empty;
                 var newExtentUri =
                     loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfig.extentUri) ?? string.Empty;
                 var alreadyFoundExtent = (IUriExtent?) WorkspaceLogic.FindExtent(
@@ -266,7 +266,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
-            var mofUriExtent = new MofUriExtent(loadedProvider, extentUri);
+            var mofUriExtent = new MofUriExtent(loadedProvider, extentUri, ScopeStorage);
             extentInformation.Extent = mofUriExtent;
             mofUriExtent.SignalUpdateOfContent(false);
 
@@ -288,7 +288,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// <param name="loadedExtent">The loaded extent to be added to the workpace</param>
         /// <param name="createEmptyWorkspace">true, if an empty workspace shall be created in case the workspace
         /// does not exist. </param>
-        private void AddToWorkspaceIfPossible(IElement configuration, IUriExtent loadedExtent, bool createEmptyWorkspace)
+        private void AddToWorkspaceIfPossible(IElement configuration, IUriExtent loadedExtent,
+            bool createEmptyWorkspace)
         {
             var workspaceId =
                 configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId);
@@ -313,7 +314,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
                 workspace.AddExtentNoDuplicate(WorkspaceLogic, loadedExtent);
             }
-            
+
             VerifyDatabaseContent();
         }
 
@@ -329,7 +330,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             {
                 information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
                     (x.LoadingState == ExtentLoadingState.Loaded ||
-                        x.LoadingState == ExtentLoadingState.LoadedReadOnly)
+                     x.LoadingState == ExtentLoadingState.LoadedReadOnly)
                     && x.Extent?.equals(extent) == true);
             }
 
@@ -350,7 +351,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 list.AddRange(
                     _extentStorageData.LoadedExtents
                         .Where(loadedExtent =>
-                            loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId) == workspaceId));
+                            loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId) ==
+                            workspaceId));
             }
 
             return list;
@@ -387,7 +389,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 Logger.Info("ExtentManager is read-only. We do not store");
                 return;
             }
-            
+
             VerifyDatabaseContent();
             CheckForOpenedManager();
 
@@ -407,7 +409,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
             var extentStorage = _map.CreateFor(this, information.Configuration);
             extentStorage.StoreProvider(
-                (information.Extent as MofUriExtent ?? throw new InvalidOperationException("Extent was not set")).Provider,
+                (information.Extent as MofUriExtent ?? throw new InvalidOperationException("Extent was not set"))
+                .Provider,
                 information.Configuration);
 
             (extent as MofExtent)?.SignalUpdateOfContent(false);
@@ -440,10 +443,10 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             lock (_extentStorageData.LoadedExtents)
             {
                 CheckForOpenedManager();
-                
+
                 if (doStore) StoreExtent(extent);
-                
-                var information = _extentStorageData.LoadedExtents.FirstOrDefault(x => 
+
+                var information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
                     x.LoadingState == ExtentLoadingState.Loaded && x.Extent?.equals(extent) == true);
                 if (information != null)
                 {
@@ -506,7 +509,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
                 WorkspaceLogic.SendEventForWorkspaceChange(workspace);
             }
-            
+
             VerifyDatabaseContent();
         }
 
@@ -608,6 +611,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 {
                     return;
                 }
+
                 while (loaded.Count > 0)
                 {
                     var configuration = loaded[0];
@@ -615,8 +619,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
                     // Check, if given workspace can be loaded or whether references are still in list
                     if (IsMetaWorkspaceInLoaderList(
-                        configuration.getOrDefault<string>(_ExtentLoaderConfig
-                            .workspaceId), loaded))
+                            configuration.getOrDefault<string>(_ExtentLoaderConfig
+                                .workspaceId), loaded))
                     {
                         // If yes, put current workspace to the end
                         loaded.Add(configuration);
@@ -624,8 +628,9 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     else
                     {
                         // Adds the type extents as meta extents
-                        (configuration as MofElement)?.ReferencedExtent.AddMetaExtents(WorkspaceLogic.GetTypesWorkspace().extent);
-                        
+                        (configuration as MofElement)?.ReferencedExtent.AddMetaExtents(WorkspaceLogic
+                            .GetTypesWorkspace().extent);
+
                         try
                         {
                             var extent = LoadExtent(configuration);
@@ -759,10 +764,10 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 Logger.Info("ExtentManager is read-only. We do not store");
                 return;
             }
-            
+
             VerifyDatabaseContent();
             CheckForOpenedManager();
-                
+
             List<ExtentStorageData.LoadedExtentInformation> copy;
 
             lock (_extentStorageData.LoadedExtents)
@@ -894,8 +899,19 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// </summary>
         /// <param name="extent">Extent to be evaluated</param>
         /// <returns>true, if the extent is modified</returns>
-        public static bool IsExtentModified(IExtent extent) => 
+        public static bool IsExtentModified(IExtent extent) =>
             (extent as MofExtent)?.IsModified == true;
+
+        /// <summary>
+        /// Gets the provider capabilities of the provider behind the given extent
+        /// </summary>
+        /// <param name="extent">Extent to be evaluated</param>
+        public static ProviderCapability GetProviderCapabilities(IExtent extent)
+        {
+            var asExtent = extent as MofExtent;
+            return asExtent?.Provider.GetCapabilities() ??
+                   ProviderCapabilities.None;
+        }
 
         private class VerifyDatabaseEntry
         {
@@ -906,19 +922,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             }
 
             public string Workspace { get; set; }
-            
+
             public string ExtentUri { get; set; }
-        }
-        
-        /// <summary>
-        /// Gets the provider capabilities of the provider behind the given extent
-        /// </summary>
-        /// <param name="extent">Extent to be evaluated</param>
-        public static ProviderCapability GetProviderCapabilities(IExtent extent)
-        {
-            var asExtent = extent as MofExtent;
-            return asExtent?.Provider.GetCapabilities() ??
-                ProviderCapabilities.None;
         }
     }
 }

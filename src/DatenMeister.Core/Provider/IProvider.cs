@@ -15,7 +15,7 @@ namespace DatenMeister.Core.Provider
         /// uri extent loading file
         /// </summary>
         public bool StoreMetaDataInExtent { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the value whether the provider allows permanent storage
         /// </summary>
@@ -32,9 +32,9 @@ namespace DatenMeister.Core.Provider
     /// </summary>
     public static class ProviderCapabilities
     {
-        public static ProviderCapability None => new ProviderCapability();
+        public static ProviderCapability None => new();
 
-        public static ProviderCapability StoreMetaDataInExtent => new ProviderCapability
+        public static ProviderCapability StoreMetaDataInExtent => new()
         {
             StoreMetaDataInExtent = true
         };

@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using DatenMeister.Actions;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DependencyInjection;
 using DatenMeister.Tests.Modules.Reports;
 using NUnit.Framework;
 
@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Modules.Actions
     {
         public static (WorkspaceLogic workspaceLogic,
             ScopeStorage scopeStorage,
-            MofUriExtent extent, 
+            MofUriExtent extent,
             MofFactory factory,
             IElement reportInstance,
             ActionLogic actionLogic) CreateReportInstance(IElement reportInstanceMetaClass)
@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var (scopeStorage, workspaceLogic) = HtmlReportTests.PrepareWorkspaceLogic();
 
             var inMemoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
+            var extent = new MofUriExtent(inMemoryProvider, "dm:///test", scopeStorage);
             workspaceLogic.GetDataWorkspace().AddExtent(extent);
 
             /* Creates the working object */
@@ -68,14 +68,14 @@ namespace DatenMeister.Tests.Modules.Actions
 
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
-            
+
             return (workspaceLogic, scopeStorage, extent, factory, reportInstance, actionLogic);
         }
 
         [Test]
         public void TestHtmlReport()
         {
-            var (workspaceLogic, scopeStorage, extent, factory, reportInstance, actionLogic) = 
+            var (workspaceLogic, scopeStorage, extent, factory, reportInstance, actionLogic) =
                 CreateReportInstance(_DatenMeister.TheOne.Reports.__HtmlReportInstance);
 
             var tempFileName = Path.GetTempFileName();
@@ -101,8 +101,8 @@ namespace DatenMeister.Tests.Modules.Actions
             var tempFileName = Path.GetTempFileName();
 
             var action = factory.create(_DatenMeister.TheOne.Actions.Reports.__AdocReportAction);
-                
-                
+
+
             action.set(_DatenMeister._Actions._Reports._HtmlReportAction.filePath, tempFileName);
             action.set(_DatenMeister._Actions._Reports._HtmlReportAction.reportInstance, reportInstance);
 

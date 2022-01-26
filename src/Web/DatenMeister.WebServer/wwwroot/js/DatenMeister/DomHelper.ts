@@ -1,17 +1,17 @@
-﻿import * as NameLoader from "./NameLoader";
+﻿import * as ElementClient from "./Client.Elements"
 import * as ApiModels from "./ApiModels";
-import { DmObject } from "./Mof";
+import {DmObject} from "./Mof";
 
 
 export function injectName(domElement: JQuery<HTMLElement>, elementPosition: ApiModels.In.IElementPosition) {
 
-    NameLoader.loadNameOf(elementPosition).done(x => {
+    ElementClient.loadNameOf(elementPosition).done(x => {
         domElement.text(x.name);
     });
 }
 export function injectNameByUri(domElement: JQuery<HTMLElement>, elementUri: string) {
 
-    NameLoader.loadNameByUri(elementUri).done(x => {
+    ElementClient.loadNameByUri(elementUri).done(x => {
         if (
             x.extentUri !== undefined && x.workspace !== undefined
             && x.extentUri !== "" && x.workspace !== ""

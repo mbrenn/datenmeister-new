@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Modules.Reports
             var (scopeStorage, workspaceLogic) = HtmlReportTests.PrepareWorkspaceLogic();
 
             var inMemoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
+            var extent = new MofUriExtent(inMemoryProvider, "dm:///test", scopeStorage);
             workspaceLogic.GetDataWorkspace().AddExtent(extent);
 
             /* Creates the working object */
@@ -48,7 +48,8 @@ namespace DatenMeister.Tests.Modules.Reports
                 _DatenMeister._Reports._Elements._ReportParagraph.evalParagraph,
                 "Name: {{i.name}}");
 
-            reportLoop.set(_DatenMeister._Reports._Elements._ReportLoop.elements, new[] {reportParagraph, reportParagraph2});
+            reportLoop.set(_DatenMeister._Reports._Elements._ReportLoop.elements,
+                new[] {reportParagraph, reportParagraph2});
             reportLoop.set(_DatenMeister._Reports._Elements._ReportLoop.viewNode, new[] {dynamicViewNode});
 
             /* Attached it to the report definition */
@@ -73,13 +74,12 @@ namespace DatenMeister.Tests.Modules.Reports
             htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             var reportText = writer.ToString();
-            
+
             Assert.That(reportText.Contains("over18"), Is.True, reportText);
             Assert.That(reportText.Contains("under18"), Is.True, reportText);
             Assert.That(reportText.Contains("Mother"), Is.True, reportText);
             Assert.That(reportText.Contains("Father"), Is.True, reportText);
             Assert.That(reportText.Contains("Child1"), Is.True, reportText);
         }
-
     }
 }

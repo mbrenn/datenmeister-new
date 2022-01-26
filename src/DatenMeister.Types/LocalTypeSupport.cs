@@ -32,19 +32,15 @@ namespace DatenMeister.Types
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(LocalTypeSupport));
 
+        private readonly ExtentCreator _extentCreator;
+        private readonly IntegrationSettings _integrationSettings;
+        private readonly PackageMethods _packageMethods;
+        private readonly IScopeStorage _scopeStorage;
+
         /// <summary>
         /// Stores the workspace logic being used
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
-
-        private readonly ExtentCreator _extentCreator;
-        private readonly PackageMethods _packageMethods;
-        private readonly IScopeStorage _scopeStorage;
-        private readonly IntegrationSettings _integrationSettings;
-
-        public IUriExtent InternalTypes => GetInternalTypeExtent();
-
-        public IUriExtent UserTypeExtent => GetUserTypeExtent();
 
         public LocalTypeSupport(
             IWorkspaceLogic workspaceLogic,
@@ -52,12 +48,12 @@ namespace DatenMeister.Types
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
-            
+
             _packageMethods = new PackageMethods();
             _extentCreator = new ExtentCreator(workspaceLogic, scopeStorage);
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
@@ -73,11 +69,15 @@ namespace DatenMeister.Types
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
-            
+
             _packageMethods = packageMethods;
             _extentCreator = extentCreator;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
+
+        public IUriExtent InternalTypes => GetInternalTypeExtent();
+
+        public IUriExtent UserTypeExtent => GetUserTypeExtent();
 
         /// <summary>
         /// Creates the extent being used to store the internal types
@@ -89,7 +89,7 @@ namespace DatenMeister.Types
             {
                 case PluginLoadingPosition.AfterBootstrapping:
                     CreateInternalTypeExtent();
-                    
+
                     var defaultTypeIntegrator = new DefaultTypeIntegrator(_workspaceLogic, _scopeStorage);
                     defaultTypeIntegrator.CreateDefaultTypesForTypesWorkspace();
                     break;
@@ -105,11 +105,12 @@ namespace DatenMeister.Types
             // Creates the workspace and extent for the types layer which are belonging to the types
             var extentTypes = new MofUriExtent(
                 new InMemoryProvider(),
-                WorkspaceNames.UriExtentInternalTypes)
+                WorkspaceNames.UriExtentInternalTypes,
+                _scopeStorage)
             {
                 LocalSlimUmlEvaluation = true
             };
-            
+
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
             extentTypes.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
@@ -318,7 +319,7 @@ namespace DatenMeister.Types
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
             if (workspace == null)
                 throw new InvalidOperationException("Types workspace does not exist");
-            
+
             var internalTypeExtent = GetUserTypeExtent(workspace);
             return internalTypeExtent;
         }
@@ -349,7 +350,7 @@ namespace DatenMeister.Types
             var workspace = workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
             if (workspace == null)
                 throw new InvalidOperationException("Types workspace does not exist");
-            
+
             return GetInternalTypeExtent(workspace);
         }
 
@@ -360,7 +361,7 @@ namespace DatenMeister.Types
         /// <returns></returns>
         public static IUriExtent GetInternalTypeExtent(IWorkspace workspace) =>
             workspace.FindExtent(WorkspaceNames.UriExtentInternalTypes)
-                ?? throw new InvalidOperationException("Extent for internal Types not found");
+            ?? throw new InvalidOperationException("Extent for internal Types not found");
 
         /// <summary>
         /// Gets the extent containing the
@@ -369,7 +370,7 @@ namespace DatenMeister.Types
         /// <returns></returns>
         public static IUriExtent GetUserTypeExtent(IWorkspace workspace) =>
             workspace.FindExtent(WorkspaceNames.UriExtentUserTypes)
-                ?? throw new InvalidOperationException("Extent for user Types not found");
+            ?? throw new InvalidOperationException("Extent for user Types not found");
 
         /// <summary>
         /// Creates a new instance of the metaclass by looking through the internal extent
@@ -396,12 +397,12 @@ namespace DatenMeister.Types
         public IReflectiveCollection GetAllTypes(string? workspace = null)
         {
             var workspaceTypes = _workspaceLogic.GetWorkspace(workspace ?? WorkspaceNames.WorkspaceTypes)
-                                      ?? throw new InvalidOperationException("Workspace is not found");
-            
+                                 ?? throw new InvalidOperationException("Workspace is not found");
+
             var elements = workspaceTypes.GetAllDescendents(false);
-            var foundElements = 
+            var foundElements =
                 elements.WhenMetaClassIsOrSpecialized(
-                _UML.TheOne.Classification.__Classifier);
+                    _UML.TheOne.Classification.__Classifier);
 
             return foundElements;
         }

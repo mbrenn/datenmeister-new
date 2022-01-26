@@ -16,11 +16,10 @@ namespace DatenMeister.Core.Functions.Queries
     /// </summary>
     public class AllDescendentsQuery
     {
-        private readonly HashSet<IObject> _alreadyVisited = new HashSet<IObject>();
+        private readonly HashSet<IObject> _alreadyVisited = new();
 
         private AllDescendentsQuery()
         {
-                
         }
 
         /// <summary>
@@ -30,25 +29,29 @@ namespace DatenMeister.Core.Functions.Queries
         /// <param name="element">Element being queried</param>
         /// <param name="byFollowingProperties">The properties that shall be followed</param>
         /// <returns>An enumeration of all object and its descendents</returns>
-        public static IEnumerable<IObject> GetDescendents(IObject element, IEnumerable<string>? byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(IObject element,
+            IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
             return inner.GetDescendentsInternal(element, byFollowingProperties?.ToList());
         }
 
-        public static IEnumerable<IObject> GetDescendents(IExtent extent, IEnumerable<string>? byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(IExtent extent,
+            IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties?.ToList(),null);
+            return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties?.ToList(), null);
         }
 
-        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration, IEnumerable<string>? byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration,
+            IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
             return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null);
         }
 
-        public static IEnumerable<IObject> GetCompositeDescendents(IEnumerable enumeration, IEnumerable<string>? byFollowingProperties = null)
+        public static IEnumerable<IObject> GetCompositeDescendents(IEnumerable enumeration,
+            IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
             return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null, true);
@@ -139,7 +142,7 @@ namespace DatenMeister.Core.Functions.Queries
 
                     // Value is an object... perfect!
                     foreach (var innerValue in GetDescendentsInternal(valueAsObject, byFollowingProperties,
-                        onlyComposites))
+                                 onlyComposites))
                     {
                         yield return innerValue;
                     }
@@ -149,7 +152,7 @@ namespace DatenMeister.Core.Functions.Queries
                     // Value is a real enumeration. 
                     var valueAsEnumerable = (IEnumerable) value;
                     foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties, element,
-                        onlyComposites))
+                                 onlyComposites))
                     {
                         if (_alreadyVisited.Contains(innerValue))
                         {
@@ -178,12 +181,12 @@ namespace DatenMeister.Core.Functions.Queries
             bool onlyComposites = false)
         {
             var parentAsMofObject = parent as MofObject;
-            
+
             if (valueAsEnumerable == null)
             {
                 yield break;
             }
-            
+
             if (valueAsEnumerable is MofReflectiveSequence reflectiveSequence)
             {
                 foreach (var element in reflectiveSequence.Enumerate(true))
@@ -194,10 +197,11 @@ namespace DatenMeister.Core.Functions.Queries
                     {
                         continue;
                     }
-                    
+
                     if (element is IObject elementAsIObject)
                     {
-                        foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties, onlyComposites))
+                        foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties,
+                                     onlyComposites))
                         {
                             yield return value;
                         }
@@ -214,10 +218,11 @@ namespace DatenMeister.Core.Functions.Queries
                     {
                         continue;
                     }
-                    
+
                     if (element is IObject elementAsIObject)
                     {
-                        foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties, onlyComposites))
+                        foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties,
+                                     onlyComposites))
                         {
                             yield return value;
                         }

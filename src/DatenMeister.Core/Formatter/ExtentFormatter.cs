@@ -15,14 +15,14 @@ namespace DatenMeister.Core.Formatter
     public class ExtentFormatter
     {
         /// <summary>
+        /// Defines the builder being used to create the text
+        /// </summary>
+        private readonly StringBuilder _builder = new();
+
+        /// <summary>
         /// Stores a string to create the current indentation
         /// </summary>
         private string _currentIndent = string.Empty;
-
-        /// <summary>
-        /// Defines the builder being used to create the text
-        /// </summary>
-        private readonly StringBuilder _builder = new StringBuilder();
 
         /// <inheritdoc />
         public override string ToString() =>

@@ -62,6 +62,18 @@ namespace DatenMeister.Forms.FormCreator
         }
 
         /// <summary>
+        ///     Creates a list form for a certain metaclass
+        /// </summary>
+        /// <param name="metaClass"></param>
+        /// <param name="creationMode"></param>
+        public IElement CreateListFormForMetaClass(
+            IElement metaClass,
+            FormFactoryConfiguration creationMode)
+        {
+            return CreateListFormForMetaClass(metaClass, creationMode, null);
+        }
+
+        /// <summary>
         /// Creates a list form for a certain metaclass
         /// </summary>
         /// <param name="metaClass"></param>

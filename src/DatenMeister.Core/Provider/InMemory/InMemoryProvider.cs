@@ -13,27 +13,36 @@ namespace DatenMeister.Core.Provider.InMemory
         /// <summary>
         /// Stores the temporary extent that can be used to create temporary objects
         /// </summary>
-        public static readonly MofUriExtent TemporaryExtent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
-
-        /// <summary>
-        /// Gets the used temporary provider
-        /// </summary>
-        public static IProvider TemporaryProvider => (InMemoryProvider) TemporaryExtent.Provider;
+        public static readonly MofUriExtent TemporaryExtent = new(new InMemoryProvider(), "dm:///temp", null);
 
         /// <summary>
         /// Stores the elements of the current provider
         /// </summary>
-        private readonly List<InMemoryObject> _elements = new List<InMemoryObject>();
+        private readonly List<InMemoryObject> _elements = new();
 
         /// <summary>
         /// Stores the memory object for lacal information
         /// </summary>
         private readonly InMemoryObject _extentElement;
 
+        /// <summary>
+        ///     Stores the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        private readonly ProviderCapability _providerCapability = new()
+        {
+            IsTemporaryStorage = true
+        };
+
         public InMemoryProvider()
         {
             _extentElement = new InMemoryObject(this);
         }
+
+        /// <summary>
+        ///     Gets the used temporary provider
+        /// </summary>
+        public static IProvider TemporaryProvider => (InMemoryProvider) TemporaryExtent.Provider;
 
         /// <inheritdoc />
         public IProviderObject CreateElement(string? metaClassUri) =>
@@ -44,7 +53,7 @@ namespace DatenMeister.Core.Provider.InMemory
         {
             if (valueAsObject == null)
                 return; // Wo do not add empty elements
-            
+
             lock (_elements)
             {
                 var toBeAdded = (InMemoryObject) valueAsObject;
@@ -100,15 +109,6 @@ namespace DatenMeister.Core.Provider.InMemory
             }
         }
 
-        /// <summary>
-        /// Stores the capabilities of the provider
-        /// </summary>
-        /// <returns></returns>
-        private readonly ProviderCapability _providerCapability = new ProviderCapability
-        {
-            IsTemporaryStorage = true
-        };
-        
         /// <summary>
         /// Gets the capabilities of the provider
         /// </summary>

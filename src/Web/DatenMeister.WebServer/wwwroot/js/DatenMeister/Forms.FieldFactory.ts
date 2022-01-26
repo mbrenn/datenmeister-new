@@ -5,14 +5,14 @@ import * as MetaClassElementField from "./Fields/MetaClassElementField";
 import * as ActionField from "./Fields/ActionField";
 import * as AnyDataField from "./Fields/AnyDataField";
 import * as SubElementField from "./Fields/SubElementField";
+import * as ReferenceField from "./Fields/ReferenceField";
 import * as UnknownField from "./Fields/UnknownField";
-import { IFormField } from "./Interfaces.Fields";
-import { IForm } from "./Forms.Interfaces";
-import { DmObject } from "./Mof";
-import { IFormConfiguration } from "./IFormConfiguration";
+import {IFormField} from "./Interfaces.Fields";
+import {IForm} from "./Forms.Interfaces";
+import {DmObject} from "./Mof";
+import {IFormConfiguration} from "./IFormConfiguration";
 
-interface ICreateFieldParameter
-{
+interface ICreateFieldParameter {
     configuration: IFormConfiguration,
     form: IForm;
     isReadOnly: boolean;
@@ -24,30 +24,33 @@ export function createField(fieldMetaClassId: string, parameter: ICreateFieldPar
 
     let result: IFormField;
     switch (fieldMetaClassId) {
-    case "DatenMeister.Models.Forms.TextFieldData":
-        result = new TextField.Field();
-        break;
-    case "DatenMeister.Models.Forms.MetaClassElementFieldData":
-        result = new MetaClassElementField.Field();
-        break;
-    case "DatenMeister.Models.Forms.CheckboxFieldData":
-        result = new CheckboxField.Field();
-        break;
-    case "DatenMeister.Models.Forms.DropDownFieldData":
-        result = new DropDownField.Field();
-        break;
-    case "DatenMeister.Models.Forms.ActionFieldData":
-        result = new ActionField.Field();
-        break;
-    case "DatenMeister.Models.Forms.SubElementFieldData":
-        result = new SubElementField.Field();
-        break;
-    case "DatenMeister.Models.Forms.AnyDataFieldData":
-        result = new AnyDataField.Field();
-        break;
-    default:
-        result = new UnknownField.Field(fieldMetaClassId);
-        break;
+        case "DatenMeister.Models.Forms.TextFieldData":
+            result = new TextField.Field();
+            break;
+        case "DatenMeister.Models.Forms.MetaClassElementFieldData":
+            result = new MetaClassElementField.Field();
+            break;
+        case "DatenMeister.Models.Forms.ReferenceFieldData":
+            result = new ReferenceField.Field();
+            break;
+        case "DatenMeister.Models.Forms.CheckboxFieldData":
+            result = new CheckboxField.Field();
+            break;
+        case "DatenMeister.Models.Forms.DropDownFieldData":
+            result = new DropDownField.Field();
+            break;
+        case "DatenMeister.Models.Forms.ActionFieldData":
+            result = new ActionField.Field();
+            break;
+        case "DatenMeister.Models.Forms.SubElementFieldData":
+            result = new SubElementField.Field();
+            break;
+        case "DatenMeister.Models.Forms.AnyDataFieldData":
+            result = new AnyDataField.Field();
+            break;
+        default:
+            result = new UnknownField.Field(fieldMetaClassId);
+            break;
     }
 
     result.configuration = parameter.configuration;

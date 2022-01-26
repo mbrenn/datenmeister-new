@@ -1,6 +1,6 @@
-define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"], function (require, exports, Mof, DomHelper_1, Forms, FormActions_1) {
+define(["require", "exports", "./DomHelper", "./Forms", "./FormActions"], function (require, exports, DomHelper_1, Forms, FormActions_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports, "__esModule", {value: true});
     exports.createActionFormForEmptyObject = void 0;
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
         const tthis = this;
@@ -10,8 +10,6 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
             };
         }
         const creator = new Forms.DetailFormCreator();
-        creator.element = new Mof.DmObject();
-        creator.element.setMetaClass(metaClass);
         configuration.onSubmit = (element) => {
             FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
         };
@@ -23,11 +21,13 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
         let deferForm;
         if (configuration.formUri !== undefined) {
             deferForm = Forms.getForm(configuration.formUri);
-        } else if (metaClass === undefined) {
+        }
+        else if (metaClass === undefined) {
             deferForm = $.Deferred();
             deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
             // Create a total empty form object...
-        } else {
+        }
+        else {
             deferForm = Forms.getDefaultFormForMetaClass(metaClass);
         }
         $.when(deferForm, deferLoadObjectForAction).then((form, element) => {

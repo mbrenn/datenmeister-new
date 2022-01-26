@@ -2,7 +2,7 @@ import * as Mof from "../Mof";
 import {injectNameByUri} from "../DomHelper";
 import {BaseField, IFormField} from "../Interfaces.Fields";
 import {SelectItemControl} from "../Forms.SelectItemControl";
-import { setMetaclass } from "../ElementsLoader";
+import {setMetaclass} from "../Client.Items";
 
 export class Field extends BaseField implements IFormField
 {

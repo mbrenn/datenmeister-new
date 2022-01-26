@@ -22,7 +22,7 @@ namespace DatenMeister.Excel.ProviderLoader
     public class ExcelReferenceLoader : IProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
-        
+
         public IScopeStorage? ScopeStorage { get; set; }
 
         /// <summary>
@@ -36,12 +36,17 @@ namespace DatenMeister.Excel.ProviderLoader
         {
             // Now load the stuff
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider);
+            var extent = new MofUriExtent(provider, ScopeStorage);
 
             ImportExcelIntoExtent(extent, configuration);
 
             // Returns the provider
             return new LoadedProviderInfo(provider);
+        }
+
+        public void StoreProvider(IProvider extent, IElement configuration)
+        {
+            // Nothing to store, since the Excel Reference Provider is just a read-only thing
         }
 
         /// <summary>
@@ -52,8 +57,8 @@ namespace DatenMeister.Excel.ProviderLoader
         public static void ImportExcelIntoExtent(IExtent extent, IElement loaderConfig)
         {
             loaderConfig = ObjectCopier.CopyForTemporary(loaderConfig) as IElement
-                ?? throw new InvalidOperationException("Element is not of type IElement");
-            
+                           ?? throw new InvalidOperationException("Element is not of type IElement");
+
             var factory = new MofFactory(extent);
             var fixColumnCount =
                 loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
@@ -70,7 +75,7 @@ namespace DatenMeister.Excel.ProviderLoader
             var countColumns =
                 loaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                     .countColumns);
-            
+
             var excelImporter = new ExcelImporter(loaderConfig);
             excelImporter.LoadExcel();
 
@@ -112,11 +117,6 @@ namespace DatenMeister.Excel.ProviderLoader
                     extent.elements().add(item);
                 }
             }
-        }
-
-        public void StoreProvider(IProvider extent, IElement configuration)
-        {
-            // Nothing to store, since the Excel Reference Provider is just a read-only thing
         }
     }
 }

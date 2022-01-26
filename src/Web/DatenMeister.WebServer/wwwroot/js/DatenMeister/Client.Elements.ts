@@ -1,8 +1,10 @@
-﻿import {ItemWithNameAndId} from "./ApiModels";
+﻿import * as ApiModels from "./ApiModels";
+import {ItemWithNameAndId} from "./ApiModels";
 import * as ApiConnection from "./ApiConnection"
 import * as Settings from "./Settings"
 
-export function getAllWorkspaces() : JQueryPromise<ItemWithNameAndId[]> {
+
+export function getAllWorkspaces(): JQueryPromise<ItemWithNameAndId[]> {
     return load(undefined, undefined, undefined);
 }
 
@@ -14,19 +16,8 @@ export function getAllRootItems(workspaceId: string, extent: string): JQueryProm
     return load(workspaceId, extent, undefined);
 }
 
-export function getAllChildItems(workspaceId: string, extent: string, itemId: string) : JQueryPromise<ItemWithNameAndId[]> {
+export function getAllChildItems(workspaceId: string, extent: string, itemId: string): JQueryPromise<ItemWithNameAndId[]> {
     return load(workspaceId, extent, itemId);
-}
-
-export function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass: string) {
-    let url = Settings.baseUrl +
-        "api/items/set_metaclass/" +
-        encodeURIComponent(workspaceId) +
-        "/" +
-        encodeURIComponent(itemUrl);
-    return ApiConnection.post(
-        url,
-        { metaclass: newMetaClass });
 }
 
 function load(workspaceId: string, extent: string, itemId: string): JQueryPromise<ItemWithNameAndId[]> {
@@ -38,7 +29,7 @@ function load(workspaceId: string, extent: string, itemId: string): JQueryPromis
 
         if (extent !== undefined && extent !== null) {
             if (itemId !== undefined && itemId !== null) {
-                url += '/' + encodeURIComponent(extent+ '#' + itemId);
+                url += '/' + encodeURIComponent(extent + '#' + itemId);
             } else {
                 url += '/' + encodeURIComponent(extent);
             }
@@ -51,4 +42,20 @@ function load(workspaceId: string, extent: string, itemId: string): JQueryPromis
     );
 
     return r;
+}
+
+export function loadNameOf(elementPosition: ApiModels.In.IElementPosition): JQuery.jqXHR<ApiModels.Out.INamedElement> {
+    return $.ajax(
+        Settings.baseUrl +
+        "api/elements/get_name/" +
+        encodeURIComponent(elementPosition.workspace) + "/" +
+        encodeURIComponent(elementPosition.extentUri) + "/" +
+        encodeURIComponent(elementPosition.item));
+}
+
+export function loadNameByUri(elementUri: string): JQuery.jqXHR<ApiModels.Out.INamedElement> {
+    return $.ajax(
+        Settings.baseUrl +
+        "api/elements/get_name/" +
+        encodeURIComponent(elementUri));
 }

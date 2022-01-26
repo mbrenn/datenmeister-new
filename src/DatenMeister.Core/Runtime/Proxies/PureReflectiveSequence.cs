@@ -14,7 +14,7 @@ namespace DatenMeister.Core.Runtime.Proxies
         /// <summary>
         /// Stores the elements
         /// </summary>
-        private readonly List<object> _elements = new List<object>();
+        private readonly List<object> _elements = new();
 
         public IEnumerator<object> GetEnumerator()
         {
@@ -50,7 +50,7 @@ namespace DatenMeister.Core.Runtime.Proxies
                 foreach (var value in values)
                 {
                     if (value == null) continue;
-                    
+
                     result |= add(value);
                 }
             }
@@ -71,7 +71,7 @@ namespace DatenMeister.Core.Runtime.Proxies
             lock (_elements)
             {
                 if (value == null) return false;
-                
+
                 return _elements.Remove(value);
             }
         }

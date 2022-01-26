@@ -12,7 +12,7 @@ namespace DatenMeister.Core.Provider.Mapping
         /// <summary>
         /// Stores the mappings
         /// </summary>
-        private readonly Dictionary<string, MappingProperty> _mappings = new Dictionary<string, MappingProperty>();
+        private readonly Dictionary<string, MappingProperty> _mappings = new();
 
         public MappingProviderObject(T value, IProvider provider, string id, string? metaclassUri = null)
         {

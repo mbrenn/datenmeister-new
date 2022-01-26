@@ -1,5 +1,5 @@
-﻿import * as EL from './ElementsLoader';
-import { ItemWithNameAndId } from "./ApiModels";
+﻿import * as EL from './Client.Elements';
+import {ItemWithNameAndId} from "./ApiModels";
 
 export class Settings {
     showBreadcrumb = true;

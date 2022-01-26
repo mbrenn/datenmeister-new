@@ -23,11 +23,11 @@ namespace DatenMeister.SourceGeneration.Console
             CreateSourceForExcel();
 
             // CreateSourceForDataViews();
-            
+
             //CreateSourceCodeForDatenMeister();
 
             CreateSourceCodeForDatenMeisterAllTypes();
-            
+
             System.Console.WriteLine("Closing Source Code Generator");
 
 #if !DEBUG
@@ -43,7 +43,7 @@ namespace DatenMeister.SourceGeneration.Console
         private static void CreateSourceCodeForDatenMeisterAllTypes()
         {
             var dm = GiveMe.DatenMeister();
-            
+
             System.Console.Write("Create Sourcecode for DatenMeister...");
 
             var pseudoExtent = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage).InternalTypes;
@@ -83,9 +83,10 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateSourceForUmlAndMof()
         {
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml);
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof);
-            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml, null);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof, null);
+            var primitiveTypeExtent =
+                new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes, null);
 
             var loader = new SimpleLoader();
             loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");
@@ -148,4 +149,3 @@ namespace DatenMeister.SourceGeneration.Console
         }
     }
 }
-

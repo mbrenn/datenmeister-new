@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
@@ -15,7 +16,7 @@ namespace DatenMeister.Tests
             var workspace = new Workspace("data", "No annotation");
             workspaceLogic.AddWorkspace(workspace);
 
-            var extent = new MofUriExtent(new InMemoryProvider(), "http://test/");
+            var extent = new MofUriExtent(new InMemoryProvider(), "http://test/", null);
             var factory = new MofFactory(extent);
             var element = factory.create(null);
             extent.elements().add(element);
@@ -38,6 +39,19 @@ namespace DatenMeister.Tests
             var workspace = new Workspace("data", "No annotation");
             Assert.That(workspace.id, Is.EqualTo("data"));
             Assert.That(workspace.annotation, Is.EqualTo("No annotation"));
+        }
+
+        [Test]
+        public void CheckDependabilityOfWorkspaces()
+        {
+            var workspaceData = WorkspaceLogic.InitDefault();
+            var workspaceLogic = WorkspaceLogic.Create(workspaceData);
+
+            var workspaces = workspaceLogic.GetWorkspacesOrderedByDependability().ToList();
+
+            Assert.That(workspaces.First().id, Is.EqualTo("Data").Or.EqualTo("Management"));
+            Assert.That(workspaces.ElementAt(workspaces.Count - 2).id, Is.EqualTo("UML"));
+            Assert.That(workspaces.Last().id, Is.EqualTo("MOF"));
         }
     }
 }

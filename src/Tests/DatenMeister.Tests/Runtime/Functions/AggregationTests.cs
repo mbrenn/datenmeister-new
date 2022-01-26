@@ -88,7 +88,7 @@ namespace DatenMeister.Tests.Runtime.Functions
                         property1)
                     .Cast<IObject>()
                     .ToList();
-            
+
             var groupByA = finalValue.FirstOrDefault(x => x.get(property3).ToString() == "A");
             var groupByB = finalValue.FirstOrDefault(x => x.get(property3).ToString() == "B");
 
@@ -97,13 +97,12 @@ namespace DatenMeister.Tests.Runtime.Functions
 
             Assert.That(groupByA.get(property1), Is.EqualTo(9));
             Assert.That(groupByB.get(property1), Is.EqualTo(4));
-
         }
 
         private IReflectiveCollection CreateReflectiveSequence()
         {
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
             var element = new MofObject(new InMemoryObject(provider), extent);
             var factory = new MofFactory(extent);
 

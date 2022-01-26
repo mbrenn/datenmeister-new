@@ -16,7 +16,6 @@ using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Types;
@@ -32,7 +31,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestPropertiesOfManagementProvider()
         {
             using var builder = DatenMeisterTests.GetDatenMeisterScope();
-            
+
             using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.UriExtentWorkspaces);
@@ -55,7 +54,8 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
             Assert.That(extents, Is.Not.Null);
 
-            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri")?.ToString() == WorkspaceNames.UriExtentMof);
+            var mofExtent = extents.Cast<IElement>()
+                .First(x => x.get("uri")?.ToString() == WorkspaceNames.UriExtentMof);
             Assert.That(mofExtent, Is.Not.Null);
         }
 
@@ -63,13 +63,14 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestMetaDataInExtent()
         {
             var path = "./test.xmi";
-            
+
             var loaderConfig =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
-            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
-            
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                WorkspaceNames.WorkspaceData);
+
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
@@ -116,12 +117,12 @@ namespace DatenMeister.Tests.Runtime.Extents
             var dataWorkspace = workspaceLogic.GetDataWorkspace();
 
             var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
-            var setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
+            var setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
 
-            Assert.That(setDefaultTypePackage, Is.Not.Null);
+            Assert.That(setDefaultTypes, Is.Not.Null);
             Assert.That(zipCodeModel, Is.Not.Null);
 
-            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
         }
 
         [Test]
@@ -131,20 +132,21 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extentSettings = dm.ScopeStorage.Get<ExtentSettings>();
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == UmlPlugin.ExtentType), Is.True);
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == FormsPlugin.FormExtentType), Is.True);
-            Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ExtentType), Is.True);
+            Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ZipCodeExtentType), Is.True);
         }
 
         [Test]
         public void TestAutoEnumerateType()
         {
             var path = "./test.xmi";
-            
+
             var loaderConfig =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
-            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
-            
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                WorkspaceNames.WorkspaceData);
+
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
@@ -168,7 +170,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var foundExtent = workspaceLogic.FindExtent("dm:///data");
                 Assert.That(foundExtent, Is.Not.Null);
                 Assert.That(foundExtent.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Ordinal));
-                
+
                 foundExtent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Guid;
                 Assert.That(foundExtent.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Guid));
 
@@ -180,7 +182,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestAddDefaultExtentType()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            
+
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
@@ -194,36 +196,36 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
 
             // Per Default, one is included
-            var setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
-            Assert.That(setDefaultTypePackage, Is.Not.Null);
-            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
-            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            var setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
+            Assert.That(setDefaultTypes, Is.Not.Null);
+            Assert.That(setDefaultTypes.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
             // Checks, if adding another one does not work
-            zipExample.GetConfiguration().AddDefaultTypePackages(new[] {zipCodeModel});
-            setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
-            Assert.That(setDefaultTypePackage, Is.Not.Null);
-            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
-            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            zipExample.GetConfiguration().AddDefaultTypes(new[] {zipCodeModel});
+            setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
+            Assert.That(setDefaultTypes, Is.Not.Null);
+            Assert.That(setDefaultTypes.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
             // Checks, if removing works
-            zipExample.GetConfiguration().SetDefaultTypePackages(new IElement[] { });
-            setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
-            Assert.That(setDefaultTypePackage, Is.Not.Null);
-            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(0));
+            zipExample.GetConfiguration().SetDefaultTypes(new IElement[] { });
+            setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
+            Assert.That(setDefaultTypes, Is.Not.Null);
+            Assert.That(setDefaultTypes.Count, Is.EqualTo(0));
 
             // Checks, if adding works now correctly
-            zipExample.GetConfiguration().AddDefaultTypePackages(new[] {zipCodeModel});
-            setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
-            Assert.That(setDefaultTypePackage, Is.Not.Null);
-            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
-            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            zipExample.GetConfiguration().AddDefaultTypes(new[] {zipCodeModel});
+            setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
+            Assert.That(setDefaultTypes, Is.Not.Null);
+            Assert.That(setDefaultTypes.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
         }
 
         [Test]
         public void TestExtentTypes()
         {
-            var extent = new MofUriExtent(new InMemoryProvider());
+            var extent = new MofUriExtent(new InMemoryProvider(), null);
             var configuration = new ExtentConfiguration(extent)
             {
                 ExtentType = "abc"
@@ -233,7 +235,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(list, Is.Not.Null);
             Assert.That(list.Count, Is.EqualTo(1));
             Assert.That(list[0], Is.EqualTo("abc"));
-            
+
             configuration.ExtentType = "abc def";
             list = configuration.ExtentTypes.ToList();
             Assert.That(list, Is.Not.Null);
@@ -253,7 +255,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public static void TestAlternativeUris()
         {
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a");
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
             mofExtent.AlternativeUris.Add("dm:///test");
             mofExtent.AlternativeUris.Add("dm:///test2");
 
@@ -265,7 +267,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public static void TestAutoSettingOfIds()
         {
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a");
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a", null);
             var mofFactory = new MofFactory(mofExtent);
 
             var element1 = mofFactory.create(null);
@@ -288,11 +290,11 @@ namespace DatenMeister.Tests.Runtime.Extents
         public static void TestDefaultValue()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            
+
             var extent = CreateType(dm, out var type);
 
             var extentFactory = new MofFactory(extent);
-            
+
             var createdType = extentFactory.create(type);
             Assert.That(createdType, Is.Not.Null);
             Assert.That(createdType.getOrDefault<int>("age"), Is.EqualTo(18));
@@ -302,7 +304,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public static void TestAutoEnumerateGuidProperty()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            
+
             var extent = CreateType(dm, out var type);
 
             var extentFactory = new MofFactory(extent);
@@ -314,8 +316,8 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             var id = createdType.getOrDefault<string>("id");
             Assert.That(id.Length, Is.EqualTo(36));
-                
-                
+
+
             var createdType2 = extentFactory.create(type);
             Assert.That(createdType2, Is.Not.Null);
             Assert.That(createdType2.getOrDefault<string>("id"), Is.Not.Null);
@@ -323,7 +325,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var id2 = createdType2.getOrDefault<string>("id");
             Assert.That(id2.Length, Is.EqualTo(36));
             Assert.That(id2, Is.Not.EqualTo(id));
-            var setId= (createdType2 as IHasId)?.Id;
+            var setId = (createdType2 as IHasId)?.Id;
             Assert.That(setId, Is.EqualTo(id2));
         }
 
@@ -342,20 +344,20 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             var id = createdType.getOrDefault<int>("id");
             Assert.That(id, Is.EqualTo(1));
-                
-                
+
+
             var createdType2 = extentFactory.create(type);
             Assert.That(createdType2, Is.Not.Null);
             Assert.That(createdType2.getOrDefault<int>("id"), Is.Not.Null);
 
             var id2 = createdType2.getOrDefault<int>("id");
             Assert.That(id2, Is.EqualTo(2));
-            var setId= (createdType2 as IHasId)?.Id;
+            var setId = (createdType2 as IHasId)?.Id;
             Assert.That(setId, Is.EqualTo(id2.ToString()));
-            
+
             extent.unset(AutoEnumerateHandler.AutoEnumerateTypeValue);
-            
-            
+
+
             var createdType3 = extentFactory.create(type);
             Assert.That(createdType3, Is.Not.Null);
             Assert.That(createdType3.getOrDefault<int>("id"), Is.Not.Null);
@@ -366,13 +368,13 @@ namespace DatenMeister.Tests.Runtime.Extents
             extent.elements().add(createdType);
             extent.elements().add(createdType2);
             extent.elements().add(createdType3);
-            
+
             extent.unset(AutoEnumerateHandler.AutoEnumerateTypeValue);
-            
+
             var createdType4 = extentFactory.create(type);
             Assert.That(createdType4, Is.Not.Null);
             Assert.That(createdType4.getOrDefault<int>("id"), Is.Not.Null);
-            
+
 
             var id4 = createdType4.getOrDefault<int>("id");
             Assert.That(id4, Is.EqualTo(3));
@@ -384,16 +386,16 @@ namespace DatenMeister.Tests.Runtime.Extents
             var userTypes = localTypeSupport.GetUserTypeExtent();
             var factory = new MofFactory(userTypes);
 
-            var extent = new MofUriExtent(new InMemoryProvider());
+            var extent = new MofUriExtent(new InMemoryProvider(), null);
 
             type = factory.create(_UML.TheOne.StructuredClassifiers.__Class);
             var property1 = factory.create(_UML.TheOne.Classification.__Property);
             property1.set(_UML._Classification._Property.isID, true);
             property1.set(_UML._CommonStructure._NamedElement.name, "id");
-            
+
             var property2 = factory.create(_UML.TheOne.Classification.__Property);
             property2.set(_UML._CommonStructure._NamedElement.name, "name");
-            
+
             var property3 = factory.create(_UML.TheOne.Classification.__Property);
             property3.set(_UML._CommonStructure._NamedElement.name, "age");
             property3.set(_UML._Classification._Property.defaultValue, 18);
@@ -414,8 +416,8 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(package1, Is.Not.Null);
             Assert.That(package1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
                 Is.EqualTo("package1"));
-            
-            
+
+
             var element1 = uriExtent.element("dm:///test#e1");
             Assert.That(element1, Is.Not.Null);
             Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
@@ -430,7 +432,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(package1, Is.Not.Null);
             Assert.That(package1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
                 Is.EqualTo("package1"));
-            
+
             var element1 = uriExtent.element("dm:///test?fn=package1::element1");
             Assert.That(element1, Is.Not.Null);
             Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
@@ -443,7 +445,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         /// <returns>Uri extent to be tested</returns>
         public IUriExtent CreateLittleExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var factory = new MofFactory(uriExtent);
 
             var package1 = factory.create(null);
@@ -453,11 +455,11 @@ namespace DatenMeister.Tests.Runtime.Extents
             (package1 as ICanSetId)!.Id = "p1";
             (package2 as ICanSetId)!.Id = "p2";
             (element1 as ICanSetId)!.Id = "e1";
-            
+
             package1.set(_UML._CommonStructure._NamedElement.name, "package1");
             package2.set(_UML._CommonStructure._NamedElement.name, "package2");
             element1.set(_UML._CommonStructure._NamedElement.name, "element1");
-            
+
             package1.set(_UML._Packages._Package.packagedElement, new[] {element1});
 
             uriExtent.elements().add(package1);

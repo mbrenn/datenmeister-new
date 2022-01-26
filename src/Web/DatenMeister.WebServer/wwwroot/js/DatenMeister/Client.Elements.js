@@ -1,7 +1,7 @@
 define(["require", "exports", "./ApiConnection", "./Settings"], function (require, exports, ApiConnection, Settings) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setMetaclass = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
+    Object.defineProperty(exports, "__esModule", {value: true});
+    exports.loadNameByUri = exports.loadNameOf = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
     function getAllWorkspaces() {
         return load(undefined, undefined, undefined);
     }
@@ -18,15 +18,6 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
         return load(workspaceId, extent, itemId);
     }
     exports.getAllChildItems = getAllChildItems;
-    function setMetaclass(workspaceId, itemUrl, newMetaClass) {
-        let url = Settings.baseUrl +
-            "api/items/set_metaclass/" +
-            encodeURIComponent(workspaceId) +
-            "/" +
-            encodeURIComponent(itemUrl);
-        return ApiConnection.post(url, { metaclass: newMetaClass });
-    }
-    exports.setMetaclass = setMetaclass;
     function load(workspaceId, extent, itemId) {
         const r = jQuery.Deferred();
         let url = '/api/elements/get_composites';
@@ -35,8 +26,7 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
             if (extent !== undefined && extent !== null) {
                 if (itemId !== undefined && itemId !== null) {
                     url += '/' + encodeURIComponent(extent + '#' + itemId);
-                }
-                else {
+                } else {
                     url += '/' + encodeURIComponent(extent);
                 }
             }
@@ -46,5 +36,19 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
         });
         return r;
     }
+    function loadNameOf(elementPosition) {
+        return $.ajax(Settings.baseUrl +
+            "api/elements/get_name/" +
+            encodeURIComponent(elementPosition.workspace) + "/" +
+            encodeURIComponent(elementPosition.extentUri) + "/" +
+            encodeURIComponent(elementPosition.item));
+    }
+    exports.loadNameOf = loadNameOf;
+    function loadNameByUri(elementUri) {
+        return $.ajax(Settings.baseUrl +
+            "api/elements/get_name/" +
+            encodeURIComponent(elementUri));
+    }
+    exports.loadNameByUri = loadNameByUri;
 });
-//# sourceMappingURL=ElementsLoader.js.map
+//# sourceMappingURL=Client.Elements.js.map

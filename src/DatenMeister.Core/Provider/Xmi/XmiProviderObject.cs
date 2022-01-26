@@ -28,78 +28,42 @@ namespace DatenMeister.Core.Provider.Xmi
         /// xmiProviders
         /// </summary>
         private const bool ConfigurationUseNormalizationCache = true;
-     
+
         /// <summary>
         /// Gets or sets a value whether a cache shall be used for the property values.
         /// This value may only be set, of the UniqueXmiProvider Objects are set in XmiProvider
         /// </summary>
         private const bool ConfigurationUsePropertyCache = true;
 
-        /// <summary>
-        /// Defines a cache to store the property values upon the xml
-        /// </summary>
-        private readonly Dictionary<string, object> _propertyCache = new Dictionary<string, object>();
-
-#pragma warning disable 162
-        // ReSharper disable HeuristicUnreachableCode
-        /// <summary>
-        /// Checks whether the given property name is valid. This conversion is used to store the data into the xml
-        /// </summary>
-        /// <param name="property"></param>
-        private string NormalizePropertyName(string property)
-        {
-            if (ConfigurationUseNormalizationCache)
-            {
-                if (_xmiProvider.NormalizationCache.TryGetValue(property, out var value))
-                {
-                    return value;
-                }
-
-                value = property == "href"
-                    ? "_href"
-                    : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
-
-                _xmiProvider.NormalizationCache[property] = value;
-                return value;
-
-            }
-            else
-            {
-                var value = property == "href"
-                    ? "_href"
-                    : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
-
-                return value;
-            }
-        }
-        // ReSharper restore HeuristicUnreachableCode
-#pragma warning restore 162
-
-        /// <summary>
-        /// Denormalizes the property names, so they can be stored into the xml.
-        /// </summary>
-        /// <param name="property">Property being used</param>
-        /// <returns>The value is being sent to the provider</returns>
-        public static string DenormalizePropertyName(string property)
-        {
-            if (property == "_href")
-            {
-                return "href";
-            }
-
-            return XmlConvert.DecodeName(property)
-                ?? throw new InvalidOperationException("Should not happen");
-        }
-
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
 
         /// <summary>
-        /// Converts a property name to a property string used for references
+        /// Defines a cache to store the property values upon the xml
         /// </summary>
-        /// <param name="propertyName">The name of the property to be converted</param>
-        /// <returns>The proeprty with added-ref</returns>
-        private string ConvertPropertyToReference(string propertyName) =>
-            NormalizePropertyName(propertyName) + "-ref";
+        private readonly Dictionary<string, object> _propertyCache = new();
+
+        private readonly XmiProvider _xmiProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the XmlElement class.
+        /// </summary>
+        /// <param name="node">Node to be used</param>
+        /// <param name="provider">Provider to be set</param>
+        public XmiProviderObject(XElement node, XmiProvider provider)
+        {
+            XmlNode = node ?? throw new ArgumentNullException(nameof(node));
+            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            _xmiProvider = provider;
+
+            lock (_xmiProvider.LockObject)
+            {
+                // Checks, if an id is given. if not. set it.
+                if (!XmiId.HasId(node))
+                {
+                    XmiId.Set(node, XmiId.CreateNew());
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the Xml Node
@@ -136,156 +100,8 @@ namespace DatenMeister.Core.Provider.Xmi
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void ClearPropertyProviderCache()
-        {
-#pragma warning disable 162
-            if (ConfigurationUsePropertyCache)
-            {
-                _propertyCache.Clear();
-            }
-#pragma warning restore 162
-        }
-
         /// <inheritdoc />
         public IProvider Provider { get; }
-
-        private readonly XmiProvider _xmiProvider;
-
-        /// <summary>
-        /// Initializes a new instance of the XmlElement class.
-        /// </summary>
-        /// <param name="node">Node to be used</param>
-        /// <param name="provider">Provider to be set</param>
-        public XmiProviderObject(XElement node, XmiProvider provider)
-        {
-            XmlNode = node ?? throw new ArgumentNullException(nameof(node));
-            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            _xmiProvider = provider;
-
-            lock (_xmiProvider.LockObject)
-            {
-                // Checks, if an id is given. if not. set it.
-                if (!XmiId.HasId(node))
-                {
-                    XmiId.Set(node, XmiId.CreateNew());
-                }
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the XmlElement class.
-        /// </summary>
-        /// <param name="node">Node to be used</param>
-        /// <param name="provider">Provider to be set</param>
-        internal static XmiProviderObject Create(XElement node, XmiProvider provider)
-            => new XmiProviderObject(node, provider);
-
-        /// <summary>
-        /// Converts the object to a string value
-        /// </summary>
-        /// <param name="value">Value to be converted to a string</param>
-        /// <returns>Converted the value to text</returns>
-        private string ReturnObjectAsString(object value)
-        {
-            if (value is string)
-            {
-                return value.ToString() ?? throw new InvalidOperationException();
-            }
-
-            if (DotNetHelper.IsOfBoolean(value))
-            {
-                return value.ToString() ?? throw new InvalidOperationException();
-            }
-
-            if (value is double valueAsDouble)
-            {
-                return valueAsDouble.ToString(CultureInfo.InvariantCulture);
-            }
-
-            if (DotNetHelper.IsOfNumber(value))
-            {
-                return value.ToString() ?? throw new InvalidOperationException();
-            }
-
-            if (DotNetHelper.IsOfChar(value))
-            {
-                return value.ToString() ?? throw new InvalidOperationException();
-            }
-
-            if (value is DateTime propertyAsDateTime)
-            {
-                return propertyAsDateTime.ToString(CultureInfo.InvariantCulture);
-            }
-
-            if (value.GetType().IsEnum)
-            {
-                return value.ToString() ?? throw new InvalidOperationException();
-            }
-
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            throw new InvalidOperationException(
-                $"Only some types as properties are supported at the moment. Type is: {value.GetType()}");
-        }
-
-        /// <summary>
-        /// Converts the given value to an xml element.
-        /// If the value is already an XmlElement, it will be reused, otherwise a new XmlNode will
-        /// be created
-        /// </summary>
-        /// <param name="property">Property to be set</param>
-        /// <param name="value">Value to be converted</param>
-        /// <returns>The XmlNode reflecting the given element</returns>
-        private XElement ConvertValueAsXmlObject(string property, object value)
-        {
-            lock (_xmiProvider.LockObject)
-            {
-                if (value is XmiProviderObject valueAsXmlObject)
-                {
-                    if (valueAsXmlObject.XmlNode.Parent != null)
-                    {
-                        valueAsXmlObject = _xmiProvider.CreateProviderObject(
-                            new XElement(valueAsXmlObject.XmlNode));
-                    }
-
-                    valueAsXmlObject.XmlNode.Name = property;
-
-                    // Creates an id, of the node does not have currently an ID
-                    if (XmiId.Get(valueAsXmlObject.XmlNode) == null)
-                    {
-                        XmiId.Set(valueAsXmlObject.XmlNode, XmiId.CreateNew());
-                    }
-                    
-                    return valueAsXmlObject.XmlNode;
-                }
-
-                /*var valueAsElement = value as IElement;
-                if (valueAsElement != null)
-                {
-                    var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
-                    return ((XmlElement) copier.Copy(valueAsElement)).XmlNode;
-                }*/
-
-                if (DotNetHelper.IsOfPrimitiveType(value))
-                {
-                    return new XElement(property, DotNetHelper.AsString(value));
-                }
-
-                // A uri reference creates an href element
-                if (value is UriReference uriReference)
-                {
-                    return new XElement(
-                        property,
-                        new XAttribute("href", uriReference.Uri));
-                }
-            }
-
-            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + (value ?? "'null'"));
-        }
 
         /// <inheritdoc />
         public string? MetaclassUri
@@ -297,7 +113,7 @@ namespace DatenMeister.Core.Provider.Xmi
                     return GetMetaClassUri();
                 }
             }
-            
+
             set
             {
                 lock (_xmiProvider.LockObject)
@@ -305,52 +121,6 @@ namespace DatenMeister.Core.Provider.Xmi
                     XmlNode.SetAttributeValue(TypeAttribute, value);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the uri of the metaclass.
-        /// If there is no metaclass defined, then a pseudo-metaclass will be created. 
-        /// </summary>
-        /// <returns>The string describing the metaclass or null if not found</returns>
-        private string? GetMetaClassUri()
-        {
-            var result = XmlNode.Attribute(TypeAttribute)?.Value;
-            if (result == null)
-            {
-                // Ok, we don't have a type, so return a pseudo-type dependent on the name of the xml
-                // node or null, if it is the default element node
-                var element = XmlNode.Name;
-                return
-                    ((XmiProvider)Provider).ElementName == element
-                        ? null
-                        : $"{NodeMetaClassPrefix}{XmlNode.Name}";
-            }
-
-            // Checks, if there is a colon within the metaclass
-            var posColon = result.IndexOf(':');
-            if (posColon == -1)
-            {
-                return result;
-            }
-
-            // If there is a colon, get the value before the colon and use this to figure out the real namespace.
-            // Like: xmi:type="uml:Package": uml is the namespace. 
-            var xmlNamespace = result.Substring(0, posColon);
-            var type = result.Substring(posColon + 1);
-
-            // The first part before the colon is the namespace
-            var navigator = XmlNode.CreateNavigator();
-            navigator.MoveToFollowing(XPathNodeType.Element);
-            
-            // Resolves the namespace
-            var foundNamespace = navigator.GetNamespace(xmlNamespace);
-            if (foundNamespace != null && !string.IsNullOrEmpty(foundNamespace))
-            {
-                // We have found something, let's combine the url
-                return $"{foundNamespace}#{type}";
-            }
-
-            return result;
         }
 
         /// <inheritdoc />
@@ -367,7 +137,7 @@ namespace DatenMeister.Core.Provider.Xmi
                     }
                 }
 #pragma warning restore 162
-                
+
                 var normalizedPropertyName = NormalizePropertyName(property);
 
                 var propertyAsString = ReturnObjectAsString(normalizedPropertyName);
@@ -523,7 +293,7 @@ namespace DatenMeister.Core.Provider.Xmi
             lock (_xmiProvider.LockObject)
             {
                 ClearPropertyProviderCache();
-                
+
                 var normalizePropertyName = NormalizePropertyName(property);
                 DeleteProperty(property);
 
@@ -569,19 +339,6 @@ namespace DatenMeister.Core.Provider.Xmi
             }
         }
 
-        /// <summary>
-        /// Gets the size of all elements of a value, if that is an enumeration
-        /// </summary>
-        /// <param name="property">Property to be queried</param>
-        /// <returns>The size of the list</returns>
-        private int GetSizeOfList(string property)
-        {
-            lock (_xmiProvider.LockObject)
-            {
-                return XmlNode.Elements(property).Count();
-            }
-        }
-            
 
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
@@ -589,7 +346,7 @@ namespace DatenMeister.Core.Provider.Xmi
             lock (_xmiProvider.LockObject)
             {
                 ClearPropertyProviderCache();
-            
+
                 var normalizePropertyName = NormalizePropertyName(property);
 
                 if (index == GetSizeOfList(property) || index == -1)
@@ -614,14 +371,35 @@ namespace DatenMeister.Core.Provider.Xmi
             lock (_xmiProvider.LockObject)
             {
                 ClearPropertyProviderCache();
-            
+
                 var normalizePropertyName = NormalizePropertyName(property);
 
                 if (value is XmiProviderObject valueAsXmlElement)
                 {
+                    // If the providers are the same, then use 
+                    if (valueAsXmlElement.Provider == Provider)
+                        foreach (var subElement in
+                                 XmlNode.Elements(normalizePropertyName)
+                                     .Where(subElement =>
+                                         XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode)))
+                        {
+                            subElement.Remove();
+                            return true;
+                        }
+
+                    // Now try to go through the references, if there is no direct object with id included
                     foreach (var subElement in
-                        XmlNode.Elements(normalizePropertyName)
-                            .Where(subElement => XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode)))
+                             XmlNode.Elements(normalizePropertyName)
+                                 .Where(subElement =>
+                                 {
+                                     var href = subElement.Attribute("href")?.Value;
+                                     if (href == null) return false;
+
+                                     var posHash = href.IndexOf('#');
+                                     if (posHash != -1) href = href[(posHash + 1)..];
+
+                                     return href == XmiId.Get(valueAsXmlElement.XmlNode);
+                                 }))
                     {
                         subElement.Remove();
                         return true;
@@ -630,20 +408,20 @@ namespace DatenMeister.Core.Provider.Xmi
                 else if (value is UriReference uriReference)
                 {
                     foreach (var subElement in
-                        XmlNode.Elements(normalizePropertyName)
-                            .Where(subElement => subElement.Attribute("href")?.Value.Equals(uriReference.Uri) == true))
+                             XmlNode.Elements(normalizePropertyName)
+                                 .Where(subElement =>
+                                     subElement.Attribute("href")?.Value.Equals(uriReference.Uri) == true))
                     {
                         subElement.Remove();
                         return true;
                     }
-                    
                 }
                 else
                 {
                     var valueAsString = ReturnObjectAsString(value);
                     foreach (var subElement in
-                        XmlNode.Elements(normalizePropertyName)
-                            .Where(subElement => subElement.Value.Equals(valueAsString)))
+                             XmlNode.Elements(normalizePropertyName)
+                                 .Where(subElement => subElement.Value.Equals(valueAsString)))
                     {
                         subElement.Remove();
                         return true;
@@ -652,45 +430,6 @@ namespace DatenMeister.Core.Provider.Xmi
 
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Finds a certain list into the property list
-        /// </summary>
-        /// <param name="property">Property, which is selected</param>
-        /// <param name="value">Value, which is required</param>
-        /// <returns>The found element</returns>
-        private XElement? FindInPropertyList(string property, object value)
-        {
-            var normalizePropertyName = NormalizePropertyName(property);
-
-            if (value is XmiProviderObject valueAsXmlElement)
-            {
-                var xmiId = XmiId.Get(valueAsXmlElement.XmlNode);
-                if (xmiId == null) return null;
-                
-                foreach (var subElement in
-                    XmlNode.Elements(normalizePropertyName)
-                        .Where(subElement =>
-                            XmiId.Get(subElement) == xmiId
-                            || XmiId.GetHref(subElement) == xmiId))
-                {
-                    return subElement;
-                }
-            }
-            else
-            {
-                var valueAsString = ReturnObjectAsString(value);
-                foreach (var subElement in
-                    XmlNode.Elements(normalizePropertyName)
-                        .Where(subElement => subElement.Value.Equals(valueAsString)))
-                {
-                    subElement.Remove();
-                    return subElement;
-                }
-            }
-
-            return null;
         }
 
         public bool HasContainer()
@@ -711,15 +450,15 @@ namespace DatenMeister.Core.Provider.Xmi
             {
                 lock (_xmiProvider.LockObject)
                 {
-                    return XmlNode.Parent != null 
-                        ? _xmiProvider.CreateProviderObject(XmlNode.Parent) 
+                    return XmlNode.Parent != null
+                        ? _xmiProvider.CreateProviderObject(XmlNode.Parent)
                         : null;
                 }
             }
 
             return null;
         }
-        
+
         public void SetContainer(IProviderObject? value)
         {
             lock (_xmiProvider.LockObject)
@@ -743,7 +482,7 @@ namespace DatenMeister.Core.Provider.Xmi
             lock (_xmiProvider.LockObject)
             {
                 ClearPropertyProviderCache();
-            
+
                 var found = FindInPropertyList(property, value);
                 if (found == null)
                 {
@@ -774,7 +513,7 @@ namespace DatenMeister.Core.Provider.Xmi
             lock (_xmiProvider.LockObject)
             {
                 ClearPropertyProviderCache();
-            
+
                 var found = FindInPropertyList(property, value);
                 if (found == null)
                 {
@@ -798,6 +537,242 @@ namespace DatenMeister.Core.Provider.Xmi
 
                 return true;
             }
+        }
+
+#pragma warning disable 162
+        // ReSharper disable HeuristicUnreachableCode
+        /// <summary>
+        ///     Checks whether the given property name is valid. This conversion is used to store the data into the xml
+        /// </summary>
+        /// <param name="property"></param>
+        private string NormalizePropertyName(string property)
+        {
+            if (ConfigurationUseNormalizationCache)
+            {
+                if (_xmiProvider.NormalizationCache.TryGetValue(property, out var value)) return value;
+
+                value = property == "href"
+                    ? "_href"
+                    : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
+
+                _xmiProvider.NormalizationCache[property] = value;
+                return value;
+            }
+            else
+            {
+                var value = property == "href"
+                    ? "_href"
+                    : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
+
+                return value;
+            }
+        }
+        // ReSharper restore HeuristicUnreachableCode
+#pragma warning restore 162
+
+        /// <summary>
+        ///     Denormalizes the property names, so they can be stored into the xml.
+        /// </summary>
+        /// <param name="property">Property being used</param>
+        /// <returns>The value is being sent to the provider</returns>
+        public static string DenormalizePropertyName(string property)
+        {
+            if (property == "_href") return "href";
+
+            return XmlConvert.DecodeName(property)
+                   ?? throw new InvalidOperationException("Should not happen");
+        }
+
+        /// <summary>
+        ///     Converts a property name to a property string used for references
+        /// </summary>
+        /// <param name="propertyName">The name of the property to be converted</param>
+        /// <returns>The proeprty with added-ref</returns>
+        private string ConvertPropertyToReference(string propertyName)
+        {
+            return NormalizePropertyName(propertyName) + "-ref";
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void ClearPropertyProviderCache()
+        {
+#pragma warning disable 162
+            if (ConfigurationUsePropertyCache) _propertyCache.Clear();
+#pragma warning restore 162
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the XmlElement class.
+        /// </summary>
+        /// <param name="node">Node to be used</param>
+        /// <param name="provider">Provider to be set</param>
+        internal static XmiProviderObject Create(XElement node, XmiProvider provider)
+        {
+            return new XmiProviderObject(node, provider);
+        }
+
+        /// <summary>
+        ///     Converts the object to a string value
+        /// </summary>
+        /// <param name="value">Value to be converted to a string</param>
+        /// <returns>Converted the value to text</returns>
+        private string ReturnObjectAsString(object value)
+        {
+            if (value is string) return value.ToString() ?? throw new InvalidOperationException();
+
+            if (DotNetHelper.IsOfBoolean(value)) return value.ToString() ?? throw new InvalidOperationException();
+
+            if (value is double valueAsDouble) return valueAsDouble.ToString(CultureInfo.InvariantCulture);
+
+            if (DotNetHelper.IsOfNumber(value)) return value.ToString() ?? throw new InvalidOperationException();
+
+            if (DotNetHelper.IsOfChar(value)) return value.ToString() ?? throw new InvalidOperationException();
+
+            if (value is DateTime propertyAsDateTime) return propertyAsDateTime.ToString(CultureInfo.InvariantCulture);
+
+            if (value.GetType().IsEnum) return value.ToString() ?? throw new InvalidOperationException();
+
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            throw new InvalidOperationException(
+                $"Only some types as properties are supported at the moment. Type is: {value.GetType()}");
+        }
+
+        /// <summary>
+        ///     Converts the given value to an xml element.
+        ///     If the value is already an XmlElement, it will be reused, otherwise a new XmlNode will
+        ///     be created
+        /// </summary>
+        /// <param name="property">Property to be set</param>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>The XmlNode reflecting the given element</returns>
+        private XElement ConvertValueAsXmlObject(string property, object value)
+        {
+            lock (_xmiProvider.LockObject)
+            {
+                if (value is XmiProviderObject valueAsXmlObject)
+                {
+                    if (valueAsXmlObject.XmlNode.Parent != null)
+                        valueAsXmlObject = _xmiProvider.CreateProviderObject(
+                            new XElement(valueAsXmlObject.XmlNode));
+
+                    valueAsXmlObject.XmlNode.Name = property;
+
+                    // Creates an id, of the node does not have currently an ID
+                    if (XmiId.Get(valueAsXmlObject.XmlNode) == null)
+                        XmiId.Set(valueAsXmlObject.XmlNode, XmiId.CreateNew());
+
+                    return valueAsXmlObject.XmlNode;
+                }
+
+                /*var valueAsElement = value as IElement;
+                if (valueAsElement != null)
+                {
+                    var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
+                    return ((XmlElement) copier.Copy(valueAsElement)).XmlNode;
+                }*/
+
+                if (DotNetHelper.IsOfPrimitiveType(value)) return new XElement(property, DotNetHelper.AsString(value));
+
+                // A uri reference creates an href element
+                if (value is UriReference uriReference)
+                    return new XElement(
+                        property,
+                        new XAttribute("href", uriReference.Uri));
+            }
+
+            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + (value ?? "'null'"));
+        }
+
+        /// <summary>
+        ///     Gets the uri of the metaclass.
+        ///     If there is no metaclass defined, then a pseudo-metaclass will be created.
+        /// </summary>
+        /// <returns>The string describing the metaclass or null if not found</returns>
+        private string? GetMetaClassUri()
+        {
+            var result = XmlNode.Attribute(TypeAttribute)?.Value;
+            if (result == null)
+            {
+                // Ok, we don't have a type, so return a pseudo-type dependent on the name of the xml
+                // node or null, if it is the default element node
+                var element = XmlNode.Name;
+                return
+                    ((XmiProvider) Provider).ElementName == element
+                        ? null
+                        : $"{NodeMetaClassPrefix}{XmlNode.Name}";
+            }
+
+            // Checks, if there is a colon within the metaclass
+            var posColon = result.IndexOf(':');
+            if (posColon == -1) return result;
+
+            // If there is a colon, get the value before the colon and use this to figure out the real namespace.
+            // Like: xmi:type="uml:Package": uml is the namespace. 
+            var xmlNamespace = result.Substring(0, posColon);
+            var type = result.Substring(posColon + 1);
+
+            // The first part before the colon is the namespace
+            var navigator = XmlNode.CreateNavigator();
+            navigator.MoveToFollowing(XPathNodeType.Element);
+
+            // Resolves the namespace
+            var foundNamespace = navigator.GetNamespace(xmlNamespace);
+            if (foundNamespace != null && !string.IsNullOrEmpty(foundNamespace))
+                // We have found something, let's combine the url
+                return $"{foundNamespace}#{type}";
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Gets the size of all elements of a value, if that is an enumeration
+        /// </summary>
+        /// <param name="property">Property to be queried</param>
+        /// <returns>The size of the list</returns>
+        private int GetSizeOfList(string property)
+        {
+            lock (_xmiProvider.LockObject)
+            {
+                return XmlNode.Elements(property).Count();
+            }
+        }
+
+        /// <summary>
+        ///     Finds a certain list into the property list
+        /// </summary>
+        /// <param name="property">Property, which is selected</param>
+        /// <param name="value">Value, which is required</param>
+        /// <returns>The found element</returns>
+        private XElement? FindInPropertyList(string property, object value)
+        {
+            var normalizePropertyName = NormalizePropertyName(property);
+
+            if (value is XmiProviderObject valueAsXmlElement)
+            {
+                var xmiId = XmiId.Get(valueAsXmlElement.XmlNode);
+                if (xmiId == null) return null;
+
+                foreach (var subElement in
+                         XmlNode.Elements(normalizePropertyName)
+                             .Where(subElement =>
+                                 XmiId.Get(subElement) == xmiId
+                                 || XmiId.GetHref(subElement) == xmiId))
+                    return subElement;
+            }
+            else
+            {
+                var valueAsString = ReturnObjectAsString(value);
+                foreach (var subElement in
+                         XmlNode.Elements(normalizePropertyName)
+                             .Where(subElement => subElement.Value.Equals(valueAsString)))
+                {
+                    subElement.Remove();
+                    return subElement;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

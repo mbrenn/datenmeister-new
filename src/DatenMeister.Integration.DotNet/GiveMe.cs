@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Integration.DotNet.PluginLoader;
 using DatenMeister.Plugins;
-
 #if !NET462
 #endif
 
@@ -56,6 +54,7 @@ namespace DatenMeister.Integration.DotNet
         /// Returns a fully initialized DatenMeister for use.
         /// </summary>
         /// <param name="settings">Integration settings for the initialization of DatenMeister</param>
+        /// <param name="pluginLoaderSettings">The default plugin loader settings</param>
         /// <returns>The initialized DatenMeister that can be used</returns>
         public static IDatenMeisterScope DatenMeister(IntegrationSettings? settings = null,
             PluginLoaderSettings? pluginLoaderSettings = null)
@@ -63,17 +62,8 @@ namespace DatenMeister.Integration.DotNet
             settings ??= GetDefaultIntegrationSettings();
             pluginLoaderSettings ??= GetDefaultPluginLoaderSettings();
 
-            if (pluginLoaderSettings.PluginLoader is DefaultPluginLoader)
-            {
-#if NET462
-                pluginLoaderSettings.PluginLoader = new DefaultPluginLoader();
-#else
-                pluginLoaderSettings.PluginLoader = new DotNetCorePluginLoader();
-#endif
-            }
-
             var kernel = new ContainerBuilder();
-            var container = kernel.UseDatenMeister(settings);
+            var container = kernel.UseDatenMeister(settings, pluginLoaderSettings);
 
             var scope = new DatenMeisterScope(container.BeginLifetimeScope());
             scope.ScopeStorage = scope.Resolve<IScopeStorage>();
@@ -101,11 +91,7 @@ namespace DatenMeister.Integration.DotNet
         {
             return new PluginLoaderSettings
             {
-#if NET462
                 PluginLoader = new DefaultPluginLoader()
-#else
-                PluginLoader = new DotNetCorePluginLoader()
-#endif
             };
         }
 

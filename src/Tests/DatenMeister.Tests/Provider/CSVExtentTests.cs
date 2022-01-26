@@ -37,24 +37,27 @@ namespace DatenMeister.Tests.Provider
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
             settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
             settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
-            
+
             var storageConfiguration = InMemoryObject.CreateEmpty(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
             storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///test");
-            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath, PathForTemporaryDataFile);
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
+                PathForTemporaryDataFile);
             storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
-               
+
             var storage = new CsvProviderLoader
             {
                 WorkspaceLogic = WorkspaceLogic.GetEmptyLogic()
             };
             var provider = storage.LoadProvider(storageConfiguration, ExtentCreationFlags.LoadOnly);
-            var extent = new MofUriExtent(provider.Provider, "dm:////test/");
+            var extent = new MofUriExtent(provider.Provider, "dm:////test/", null);
 
             var csvSettings = storageConfiguration
                 .getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings);
             Assert.That(settings, Is.Not.Null);
-            var columns = csvSettings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+            var columns =
+                csvSettings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings
+                    .columns);
 
             Assert.That(columns.Count(), Is.EqualTo(3));
             Assert.That(extent.elements().Count(), Is.EqualTo(4));
@@ -65,15 +68,16 @@ namespace DatenMeister.Tests.Provider
 
             // We need to change a bit the line endings since the tests are also required to within Linux 
             Assert.That(
-                readCsvFile.Replace("\r\n", "\n").Replace("\n\n", "\n"), 
+                readCsvFile.Replace("\r\n", "\n").Replace("\n\n", "\n"),
                 Is.EqualTo(csvFile.Replace("\r\n", "\n").Replace("\n\n", "\n")));
 
             var firstElement = extent.elements().ElementAt(0) as IObject;
             Assert.That(firstElement, Is.Not.Null);
-            
+
             Assert.That(storageConfiguration
-                .getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings)
-                .getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns).ElementAt(0), 
+                    .getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings)
+                    .getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns)
+                    .ElementAt(0),
                 Is.EqualTo("Column 1"));
 
             firstElement.set("Column 1", "eens");
@@ -84,7 +88,7 @@ namespace DatenMeister.Tests.Provider
             readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
             // We need to change a bit the line endings since the tests are also required to within Linux 
             Assert.That(
-                readCsvFile.Replace("\r\n", "\n").Replace("\n\n", "\n"), 
+                readCsvFile.Replace("\r\n", "\n").Replace("\n\n", "\n"),
                 Is.EqualTo(csvOtherFile.Replace("\r\n", "\n").Replace("\n\n", "\n")));
 
             File.Delete(PathForTemporaryDataFile);

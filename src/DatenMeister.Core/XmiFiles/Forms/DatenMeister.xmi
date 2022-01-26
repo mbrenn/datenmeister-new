@@ -48,6 +48,23 @@
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="DatenMeister.ContextMenu.ImportByXmi" buttonApplyText="Import By Xmi" name="ContextMenu - Import By Xmi" title="Import By Xmi">
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="b585e1c6-0b85-460c-bfb1-5520e36d3c5e" lineHeight="30" name="importXmi" title="Import Xmi" width="600" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Workspaces and Extents" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="1eb3f426-9edd-44e0-94a3-99bed960c818">
+      
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" name="Extent Properties" hideMetaInformation="True" allowNewProperties="True" p1:id="ExtentPropertiesForm">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Extent Properties"
+             hideMetaInformation="True" allowNewProperties="True" p1:id="ExtentPropertiesFormDetail">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
+                 title="Name"/>
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__uri"
+                 title="Uri"/>
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__ExtentType"
+                 title="Extent Type"/>
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
+                 name="__DatenMeister.DefaultTypes" title="Default Types"/>
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="TreeItemDetail" form-ref="#ExtentPropertiesForm" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" name="Association for Extent Property" p1:id="aa43615b-42eb-4c0b-818c-985c961fbba3" />
+    </packagedElement>        
   </item>
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi" title="Create Xmi Extent" p1:id="WorkspacesAndExtents.Xmi.New" name="Dialog - New Xmi Extent">
@@ -71,12 +88,19 @@
 			  <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="43aad002-0aab-441b-865c-ef56e8c884ec" name="Metaclass" title="Metaclass" />
 		  </packagedElement>
 		  <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="DatenMeister.Extent.Properties" name="ExtentProperties">
-			  <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="9b764499-a1ca-42b6-8005-08f3df7785ac" name="Extent Properties - Detail" hideMetaInformation="True">
-				  <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="13fca42b-d748-4eb2-b44f-20ff8e4fdf34" name="__uri" title="Uri" />
-                  <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="13fca42b-d748-4eb2-b44f-20ff8e432df34" name="__Name" title="Name" />
-				  <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="ab225590-9ac7-47ea-9ba9-a23253233757" name="__ExtentType" title="ExtentType" />
-				  <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="__DatenMeister.DefaultTypePackage" title="DefaultTypePackage" p1:id="a82818a6-6f1a-4498-8054-e51a85820cf5" />
-			  </tab>
+            <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm"
+                 p1:id="9b764499-a1ca-42b6-8005-08f3df7785ac" name="Extent Properties - Detail"
+                 hideMetaInformation="True">
+              <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                     p1:id="13fca42b-d748-4eb2-b44f-20ff8e4fdf34" name="__uri" title="Uri"/>
+              <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                     p1:id="13fca42b-d748-4eb2-b44f-20ff8e432df34" name="__Name" title="Name"/>
+              <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                     p1:id="ab225590-9ac7-47ea-9ba9-a23253233757" name="__ExtentType" title="ExtentType"/>
+              <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
+                     name="__DatenMeister.DefaultTypes" title="DefaultTypes"
+                     p1:id="a82328a6-6f1a-4498-8054-e51a85820cf5"/>
+            </tab>
 		  </packagedElement>
 
 	  </packagedElement>

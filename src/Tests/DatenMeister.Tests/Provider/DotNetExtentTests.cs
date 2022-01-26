@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
             var value = new DotNetTests.TestClass();
             var dotNetElement = extent.CreateDotNetMofElement(value);
 
@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.Provider
         {
             var extent = Initialize();
             var provider = new DotNetProvider(extent.TypeLookup);
-            var dotNetExtent = new MofUriExtent(provider, "dm:///");
+            var dotNetExtent = new MofUriExtent(provider, "dm:///", null);
             var value = new DotNetTests.TestClassWithList();
             var dotNetElement = dotNetExtent.CreateDotNetMofElement(value);
 
@@ -72,7 +72,7 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
             extent.AddMetaExtent(typeExtent);
             var value = new DotNetTests.TestClassWithList();
             var dotNetElement = extent.CreateDotNetMofElement(value);
@@ -98,7 +98,7 @@ namespace DatenMeister.Tests.Provider
 
             var personAsElement = personGot as IElement;
             // ReSharper disable once PossibleNullReferenceException
-            Assert.That(personAsElement.metaclass.get("name"), Contains.Substring("Person"));
+            Assert.That(personAsElement.metaclass!.get("name"), Contains.Substring("Person"));
 
             Assert.That(personAsElement.get("Name"), Is.EqualTo("M"));
             personAsElement.set("Prename", "Herr");
@@ -110,7 +110,7 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
             extent.AddMetaExtent(typeExtent);
             Assert.That(extent.elements(), Is.Not.Null);
             extent.elements().add(new DotNetTests.Person());
@@ -123,11 +123,11 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
             var factory = new MofFactory(extent);
 
             var metaClass = typeExtent.TypeLookup.ToElement(typeof(DotNetTests.TestClass));
-            var created = factory.create(typeExtent.ResolveElement(metaClass, ResolveType.Default));
+            var created = factory.create(typeExtent.ResolveElement(metaClass!, ResolveType.Default));
             Assert.That(created, Is.TypeOf<MofElement>());
             created.set("Title", "Test");
             var metaClassObject = created.getMetaClass();
@@ -135,8 +135,8 @@ namespace DatenMeister.Tests.Provider
             Assert.That(metaClassObject.GetUri(), Is.EqualTo(metaClass));
             Assert.That(created.get("Title"), Is.EqualTo("Test"));
 
-            var found = (DotNetProviderObject) ((MofElement)created).ProviderObject;
-            Assert.That(((DotNetTests.TestClass)found.GetNativeValue()).Title, Is.EqualTo("Test"));
+            var found = (DotNetProviderObject) ((MofElement) created).ProviderObject;
+            Assert.That(((DotNetTests.TestClass) found.GetNativeValue()).Title, Is.EqualTo("Test"));
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
 
             var parent = new DotNetTests.PersonWithParent
             {
@@ -171,7 +171,7 @@ namespace DatenMeister.Tests.Provider
             Assert.That(parentObject, Is.Not.Null);
             var parentAsObject = parentObject.AsIObject();
             Assert.That(parentAsObject, Is.Not.Null);
-            asKnowsExtent = (IHasExtent)parentAsObject;
+            asKnowsExtent = (IHasExtent) parentAsObject;
             Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
         }
 
@@ -180,7 +180,7 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
 
             var parent = new DotNetTests.TestClassWithList
             {
@@ -225,8 +225,8 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
-            
+            var extent = new MofUriExtent(provider, "dm:///test", null);
+
             // Creates the spouse and the children and adds them to the extent
             var spouse = new DotNetTests.Person
             {
@@ -239,7 +239,7 @@ namespace DatenMeister.Tests.Provider
                 Name = "Child1",
                 Prename = "Maierson"
             };
-            
+
             var child2 = new DotNetTests.Person
             {
                 Name = "Child2",
@@ -258,7 +258,7 @@ namespace DatenMeister.Tests.Provider
             Assert.That(spouseElement, Is.Not.Null);
             Assert.That(child1Element, Is.Not.Null);
             Assert.That(spouseElement, Is.Not.Null);
-            
+
             // Now creates the element referencing spouse and children via IElement
             var nonSpouse = new DotNetTests.PersonWithAnotherPersonPerElement
             {
@@ -269,7 +269,8 @@ namespace DatenMeister.Tests.Provider
 
             extent.elements().add(extent.CreateDotNetMofElement(nonSpouse));
 
-            var nonSpouseElement = extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
+            var nonSpouseElement =
+                extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
             Assert.That(nonSpouseElement, Is.Not.Null);
             Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse"), Is.Not.Null);
             Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
@@ -286,12 +287,12 @@ namespace DatenMeister.Tests.Provider
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
-            var otherExtent = new MofUriExtent(new InMemoryProvider(), "dm:///otherextent");
+            var extent = new MofUriExtent(provider, "dm:///test", null);
+            var otherExtent = new MofUriExtent(new InMemoryProvider(), "dm:///otherextent", null);
             var workspace = new Workspace("Data");
             workspace.AddExtent(otherExtent);
             workspace.AddExtent(extent);
-            
+
             // Creates the spouse and the children and adds them to the extent
             var spouse = new DotNetTests.Person
             {
@@ -304,7 +305,7 @@ namespace DatenMeister.Tests.Provider
                 Name = "Child1",
                 Prename = "Maierson"
             };
-            
+
             var child2 = new DotNetTests.Person
             {
                 Name = "Child2",
@@ -319,14 +320,17 @@ namespace DatenMeister.Tests.Provider
                                        throw new InvalidOperationException("Should not be null"));
 
             // Checks that children and spouse are properly added
-            var spouseElement = otherExtent.elements().WhenPropertyHasValue("Name", "Spouse").FirstOrDefault() as IElement;
-            var child1Element = otherExtent.elements().WhenPropertyHasValue("Name", "Child1").FirstOrDefault() as IElement;
-            var child2Element = otherExtent.elements().WhenPropertyHasValue("Name", "Child2").FirstOrDefault() as IElement;
+            var spouseElement =
+                otherExtent.elements().WhenPropertyHasValue("Name", "Spouse").FirstOrDefault() as IElement;
+            var child1Element =
+                otherExtent.elements().WhenPropertyHasValue("Name", "Child1").FirstOrDefault() as IElement;
+            var child2Element =
+                otherExtent.elements().WhenPropertyHasValue("Name", "Child2").FirstOrDefault() as IElement;
 
             Assert.That(spouseElement, Is.Not.Null);
             Assert.That(child1Element, Is.Not.Null);
             Assert.That(spouseElement, Is.Not.Null);
-            
+
             // Now creates the element referencing spouse and children via IElement
             var nonSpouse = new DotNetTests.PersonWithAnotherPersonPerElement
             {
@@ -336,9 +340,10 @@ namespace DatenMeister.Tests.Provider
             };
 
             extent.elements().add(extent.CreateDotNetMofElement(nonSpouse));
-            
 
-            var nonSpouseElement = extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
+
+            var nonSpouseElement =
+                extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
             Assert.That(nonSpouseElement, Is.Not.Null);
             Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse"), Is.Not.Null);
             Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
@@ -348,11 +353,11 @@ namespace DatenMeister.Tests.Provider
             Assert.That(children, Is.Not.Null);
             Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child1"));
             Assert.That((children.ElementAt(1) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child2"));
-            
+
             // Now the challange... change the content in the other extent and it should be reflected here. 
             spouseElement.set("Name", "New Spouse");
             child1Element.set("Name", "New Child");
-            
+
             Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
                 Is.EqualTo("New Spouse"));
 
@@ -362,7 +367,7 @@ namespace DatenMeister.Tests.Provider
 
         internal static MofUriExtent Initialize()
         {
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
 
             extent.CreateTypeSpecification(typeof(DotNetTests.TestClass));
             extent.CreateTypeSpecification(typeof(DotNetTests.Person));
@@ -371,6 +376,5 @@ namespace DatenMeister.Tests.Provider
             extent.CreateTypeSpecification(typeof(DotNetTests.PersonWithAnotherPersonPerElement));
             return extent;
         }
-
     }
 }

@@ -16,7 +16,7 @@ namespace DatenMeister.SourcecodeGenerator
         {
             ////////////////////////////////////////
             // First of all, create all Mof types, representing the objects under concern
-            var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl);
+            var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl, null);
             var factory = new MofFactory(extent);
 
             // Creates the package
@@ -40,7 +40,7 @@ namespace DatenMeister.SourcecodeGenerator
                     // And adds the converted elements to package and the package to the temporary MOF Extent
                     PackageMethods.AddObjectToPackage(package, typeObject);
                     extent.TypeLookup.Add(
-                        typeObject.GetUri() ?? throw new NotImplementedException("GetUri() == null"),
+                        typeObject.GetUri() ?? throw new InvalidOperationException("GetUri() == null"),
                         type);
                 }
             }

@@ -19,13 +19,15 @@ namespace DatenMeister.Types
     /// </summary>
     public class DefaultTypeIntegrator
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IntegrationSettings _integrationSettings;
         private readonly PackageMethods _packageMethods;
+        private readonly IScopeStorage _scopeStorage;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
             _packageMethods = new PackageMethods();
         }
@@ -40,7 +42,8 @@ namespace DatenMeister.Types
             // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
-                WorkspaceNames.UriExtentPrimitiveTypes);
+                WorkspaceNames.UriExtentPrimitiveTypes,
+                _scopeStorage);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
 
@@ -54,9 +57,9 @@ namespace DatenMeister.Types
 
                 // Copy the primitive type into a new extent for the type workspace
                 CopyMethods.CopyToElementsProperty(
-                    (_workspaceLogic.GetUmlWorkspace()
+                    _workspaceLogic.GetUmlWorkspace()
                         .FindElementByUri(WorkspaceNames.UriExtentPrimitiveTypes + "#_0")
-                        ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection)
+                        ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection
                     ?? throw new InvalidOperationException("PrimitiveTypes is not found"),
                     foundPackage,
                     _UML._Packages._Package.packagedElement,

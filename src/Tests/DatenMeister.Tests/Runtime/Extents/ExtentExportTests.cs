@@ -15,7 +15,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var document = XDocument.Parse(xmlDocument);
 
             return new MofUriExtent(
-                new XmiProvider(document), "dm:///test");
+                new XmiProvider(document), "dm:///test", null);
         }
 
         [Test]

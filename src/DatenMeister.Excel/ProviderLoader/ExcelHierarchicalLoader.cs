@@ -24,21 +24,13 @@ namespace DatenMeister.Excel.ProviderLoader
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
         public IScopeStorage? ScopeStorage { get; set; }
 
-        private class DefinitionColumn
-        {
-            public string Name { get; set; }
-            public IElement MetaClass { get; set; }
-            public string Property { get; set; }
-            
-        }
-
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             configuration = ObjectCopier.CopyForTemporary(configuration) as IElement
                             ?? throw new InvalidOperationException("Element is not of type IElement");
 
             if (WorkspaceLogic == null) throw new InvalidOperationException("WorkspaceLogic == null");
-            
+
             var filePath =
                 configuration.getOrDefault<string>(_ExcelHierarchicalLoaderConfig.filePath);
 
@@ -66,7 +58,7 @@ namespace DatenMeister.Excel.ProviderLoader
             if (!fixRowCount) countColumns = excelImporter.GuessColumnCount();
 
             var provider = new InMemoryProvider();
-            var tempExtent = new MofUriExtent(provider);
+            var tempExtent = new MofUriExtent(provider, ScopeStorage);
             var factory = new MofFactory(tempExtent);
 
             /* Gets the definitions */
@@ -94,7 +86,7 @@ namespace DatenMeister.Excel.ProviderLoader
                     Property = property
                 });
             }
-            
+
             for (var r = 0; r < countRows; r++)
             {
                 var skipItem = false;
@@ -153,13 +145,13 @@ namespace DatenMeister.Excel.ProviderLoader
                 {
                     continue;
                 }
-    
+
                 var item = skipElementsForLastLevel ? lastCreated : factory.create(null);
                 for (var c = 0; c < countColumns; c++)
                 {
                     var columnName = columnNames[c];
                     if (columnName == null || definitionColumns.Contains(columnName)) continue;
-                    
+
                     item.set(columnName, excelImporter.GetCellContent(r, c));
                 }
 
@@ -175,6 +167,13 @@ namespace DatenMeister.Excel.ProviderLoader
         public void StoreProvider(IProvider extent, IElement configuration)
         {
             // Storing is not supported
+        }
+
+        private class DefinitionColumn
+        {
+            public string Name { get; set; }
+            public IElement MetaClass { get; set; }
+            public string Property { get; set; }
         }
     }
 }

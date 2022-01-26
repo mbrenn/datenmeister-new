@@ -156,7 +156,11 @@ namespace DatenMeister.BootStrap
             var pluginManager = new PluginManager();
             scopeStorage.Add(pluginManager);
 
-            var pluginLoader = _pluginLoaderSettings.PluginLoader ?? new DefaultPluginLoader();
+            var pluginLoader = _pluginLoaderSettings.PluginLoader;
+            var defaultPluginSettings = _settings.AdditionalSettings.TryGet<DefaultPluginSettings>();
+            if (defaultPluginSettings != null && pluginLoader is DefaultPluginLoader defaultPluginLoader)
+                defaultPluginLoader.Settings = defaultPluginSettings;
+
             pluginLoader.LoadAssembliesFromFolder(
                 Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location)
                 ?? throw new InvalidOperationException("Path is null"));

@@ -12,10 +12,10 @@ namespace DatenMeister.Core.Provider.InMemory
         /// <summary>
         /// Sores the logger
         /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(InMemoryProviderLoader));
+        private static readonly ClassLogger Logger = new(typeof(InMemoryProviderLoader));
 
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
-        
+
         public IScopeStorage? ScopeStorage { get; set; }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace DatenMeister.Core.Provider.InMemory
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             Logger.Info("InMemoryProvider is created");
-            
+
             var provider = new InMemoryProvider();
             return new LoadedProviderInfo(provider);
         }

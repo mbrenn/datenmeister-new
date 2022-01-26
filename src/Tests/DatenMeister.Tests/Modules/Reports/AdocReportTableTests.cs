@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Modules.Reports
             var (scopeStorage, workspaceLogic) = HtmlReportTests.PrepareWorkspaceLogic();
 
             var inMemoryProvider = new InMemoryProvider();
-            var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
+            var extent = new MofUriExtent(inMemoryProvider, "dm:///test", scopeStorage);
             workspaceLogic.GetDataWorkspace().AddExtent(extent);
 
             /* Creates the working object */
@@ -42,11 +42,11 @@ namespace DatenMeister.Tests.Modules.Reports
             filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.type, null);
             filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.input, dynamicViewNode);
             extent.elements().add(filterMetaClass);
-            
+
             /* Create the report paragraph and its corresponding view node */
             var reportHeadline = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportHeadline);
             reportHeadline.set(_DatenMeister._Reports._Elements._ReportHeadline.title, "This is a headline");
-            
+
             /* Create the report paragraph and its corresponding view node */
             var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph);
             reportParagraph.set(_DatenMeister._Reports._Elements._ReportParagraph.paragraph, "This is a paragraph");
@@ -68,7 +68,7 @@ namespace DatenMeister.Tests.Modules.Reports
                             " c.text = c.text\r\n" +
                             "end}}"
                     });
-            
+
             var field2 = factory.create(_DatenMeister.TheOne.Forms.__TextFieldData)
                 .SetProperties(
                     new Dictionary<string, object>
@@ -87,7 +87,8 @@ namespace DatenMeister.Tests.Modules.Reports
                 });
 
             /* Attached it to the report definition */
-            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements, new[] {reportHeadline, reportParagraph, reportTable});
+            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements,
+                new[] {reportHeadline, reportParagraph, reportTable});
 
             /* Creates the report instance */
             var reportInstance = factory.create(_DatenMeister.TheOne.Reports.__AdocReportInstance);

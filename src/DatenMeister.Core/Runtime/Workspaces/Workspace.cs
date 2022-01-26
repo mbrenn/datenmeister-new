@@ -18,11 +18,25 @@ namespace DatenMeister.Core.Runtime.Workspaces
     /// </summary>
     public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(Workspace));
+        private static readonly ClassLogger Logger = new(typeof(Workspace));
 
-        private readonly object _syncObject = new object();
+        private readonly List<IExtent> _extent = new();
 
-        private readonly List<IExtent> _extent = new List<IExtent>();
+        // ReSharper disable once CollectionNeverUpdated.Local
+        private readonly List<ITag> _properties = new();
+
+        private readonly object _syncObject = new();
+
+        /// <summary>
+        ///     Adds plugins which allow additional extents to an extent
+        /// </summary>
+        public List<IEnumerable<IExtent>> ExtentPlugins = new();
+
+        public Workspace(string id, string annotation = "")
+        {
+            this.id = id ?? throw new ArgumentNullException(nameof(id));
+            this.annotation = annotation;
+        }
 
         /// <summary>
         /// Gets or sets the information whether the workspace is a dynamic workspace
@@ -30,45 +44,82 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// </summary>
         public bool IsDynamicWorkspace { get; set; }
 
-        // ReSharper disable once CollectionNeverUpdated.Local
-        private readonly List<ITag> _properties = new List<ITag>();
+        /// <summary>
+        ///     Gets a list the cache which stores the filled types
+        /// </summary>
+        internal List<object> FilledTypeCache { get; } = new();
+
+        public string annotation { get; set; }
+
+        public IEnumerable<ITag> properties => _properties;
+
+        public bool equals(object? other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object get(string property)
+        {
+            if (property == "id") return id;
+
+            throw new InvalidOperationException($"Given property {id} is not set.");
+        }
+
+        public void set(string property, object? value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isSet(string property)
+        {
+            return property == "id";
+        }
+
+        public void unset(string property)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> getPropertiesBeingSet()
+        {
+            yield return "id";
+        }
+
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        {
+            lock (_syncObject)
+            {
+                var result = _extent
+                    .Select(theExtent =>
+                        (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
+                    .FirstOrDefault(found => found != null);
+                if (result == null && traceFailing) Logger.Trace($"URI not resolved: {uri}");
+
+                return result;
+            }
+        }
+
+        public IElement? ResolveById(string elementId)
+        {
+            lock (_syncObject)
+            {
+                return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId))
+                    .FirstOrDefault(found => found != null);
+            }
+        }
 
         /// <summary>
         /// Stores a list of meta workspaces that are associated to the given workspace
         /// The metaworkspaces are requested to figure out meta classes
         /// </summary>
-        public List<Workspace> MetaWorkspaces { get; } = new List<Workspace>();
+        public List<Workspace> MetaWorkspaces { get; } = new();
 
-        /// <summary>
-        /// Adds plugins which allow additional extents to an extent
-        /// </summary>
-        public List<IEnumerable<IExtent>> ExtentPlugins = new List<IEnumerable<IExtent>>();
-        
         /// <summary>
         /// Stores the dynamic function managers
         /// </summary>
-        public DynamicFunctionManager DynamicFunctionManager { get; } = new DynamicFunctionManager();
-
-        /// <summary>
-        /// Adds a meta workspace
-        /// </summary>
-        /// <param name="workspace">Workspace to be added as a meta workspace</param>
-        public void AddMetaWorkspace(Workspace workspace)
-        {
-            lock (_syncObject)
-            {
-                MetaWorkspaces.Add(workspace);
-            }
-        }
-
-        /// <summary>
-        /// Gets a list the cache which stores the filled types
-        /// </summary>
-        internal List<object> FilledTypeCache { get; } = new List<object>();
+        public DynamicFunctionManager DynamicFunctionManager { get; } = new();
 
         public string id { get; }
-
-        public string annotation { get; set; }
 
         /// <summary>
         /// Gets the extents. The source of the extent list is the _extent combined with the
@@ -96,19 +147,23 @@ namespace DatenMeister.Core.Runtime.Workspaces
             }
         }
 
-        public IEnumerable<ITag> properties => _properties;
-
-        public Workspace(string id, string annotation = "")
-        {
-            this.id = id ?? throw new ArgumentNullException(nameof(id));
-            this.annotation = annotation;
-        }
-
         public void ClearCache()
         {
             lock (_syncObject)
             {
                 FilledTypeCache.Clear();
+            }
+        }
+
+        /// <summary>
+        ///     Adds a meta workspace
+        /// </summary>
+        /// <param name="workspace">Workspace to be added as a meta workspace</param>
+        public void AddMetaWorkspace(Workspace workspace)
+        {
+            lock (_syncObject)
+            {
+                MetaWorkspaces.Add(workspace);
             }
         }
 
@@ -131,7 +186,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 if (extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
                 {
                     Logger.Fatal($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
-                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
+                    throw new InvalidOperationException(
+                        $"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
                 }
 
                 Logger.Debug($"Added extent to workspace: {newExtent.contextURI()} --> {id}");
@@ -180,60 +236,5 @@ namespace DatenMeister.Core.Runtime.Workspaces
             !string.IsNullOrEmpty(annotation)
                 ? $"({id}) {annotation}"
                 : $"({id})";
-
-        public IEnumerable<string> getPropertiesBeingSet()
-        {
-            yield return "id";
-        }
-
-        public bool equals(object? other) => throw new NotImplementedException();
-
-        public object get(string property)
-        {
-            if (property == "id")
-            {
-                return id;
-            }
-
-            throw new InvalidOperationException($"Given property {id} is not set.");
-        }
-
-        public void set(string property, object? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool isSet(string property) => property == "id";
-
-        public void unset(string property)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
-        {
-            lock (_syncObject)
-            {
-                var result = _extent
-                    .Select(theExtent =>
-                        (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
-                    .FirstOrDefault(found => found != null);
-                if (result == null && traceFailing)
-                {
-                    Logger.Trace($"URI not resolved: {uri}");
-                }
-                
-                return result;
-            }
-        }
-
-        public IElement? ResolveById(string elementId)
-        {
-            lock (_syncObject)
-            {
-                return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId))
-                    .FirstOrDefault(found => found != null);
-            }
-        }
     }
 }

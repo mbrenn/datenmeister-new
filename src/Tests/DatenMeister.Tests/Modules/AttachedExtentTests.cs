@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Modules
         {
             // Prepare some stuff
             var workspaceLogic = WorkspaceLogic.Create(new WorkspaceData());
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var factory = new MofFactory(extent);
             var type = factory.create(_UML.TheOne.StructuredClassifiers.__Class);
             extent.elements().add(type);
@@ -42,18 +42,22 @@ namespace DatenMeister.Tests.Modules
 
             extent.set(
                 AttachedExtentHandler.AttachedExtentProperty, attachedConfiguration);
-            
+
             // Now test the attached handler
             var attachedHandler = new AttachedExtentHandler(workspaceLogic);
             var foundConfiguration = attachedHandler.GetConfiguration(extent);
             Assert.That(foundConfiguration, Is.Not.Null);
             Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.name), Is.EqualTo("Test"));
-            Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referencedExtent), Is.EqualTo("dm:///other"));
-            Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referencedWorkspace), Is.EqualTo("Data"));
-            Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referenceProperty), Is.EqualTo("referenceid"));
-            Assert.That(foundConfiguration.getOrDefault<IElement>(_AttachedExtentConfiguration.referenceType), Is.EqualTo(type));
+            Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referencedExtent),
+                Is.EqualTo("dm:///other"));
+            Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referencedWorkspace),
+                Is.EqualTo("Data"));
+            Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referenceProperty),
+                Is.EqualTo("referenceid"));
+            Assert.That(foundConfiguration.getOrDefault<IElement>(_AttachedExtentConfiguration.referenceType),
+                Is.EqualTo(type));
         }
-        
+
         [Test]
         public void TestSetupCreation()
         {
@@ -66,7 +70,7 @@ namespace DatenMeister.Tests.Modules
             Assert.That(setup.AttachedExtent2, Is.Not.Null);
         }
 
-        [Test] 
+        [Test]
         public void TestGetOriginalExtent()
         {
             var setup = CreateTestSetup();
@@ -106,33 +110,33 @@ namespace DatenMeister.Tests.Modules
             Assert.That(attached1, Is.Not.Null);
             Assert.That(attached2, Is.Not.Null);
             Assert.That(attached1.metaclass, Is.EqualTo(setup.ReferenceType));
-            
+
             attached1.set("name", "Attached 1");
             attached2.set("name", "Attached 2");
-            
+
             var attached3 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem1, setup.AttachedExtent);
             Assert.That(attached3, Is.Not.Null);
             Assert.That(attached3.getOrDefault<string>("name"), Is.EqualTo("Attached 1"));
         }
-        
+
         public class TestSetup
         {
             public AttachedExtentHandler AttachedExtentHandler { get; set; }
-            
+
             public IElement AttachedExtentConfiguration { get; set; }
-            
+
             public IWorkspaceLogic WorkspaceLogic { get; set; }
-            
+
             public IUriExtent TypeExtent { get; set; }
-            
+
             public IElement ReferenceType { get; set; }
-            
+
             public IUriExtent OriginalExtent { get; set; }
-            
+
             public IUriExtent AttachedExtent { get; set; }
-            
+
             public IUriExtent AttachedExtent2 { get; set; }
-            
+
             public IUriExtent NonConnectedExtent { get; set; }
         }
 
@@ -141,28 +145,28 @@ namespace DatenMeister.Tests.Modules
             var testSetup = new TestSetup
             {
                 WorkspaceLogic = WorkspaceLogic.Create(new WorkspaceData()),
-                TypeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types"),
-                OriginalExtent = new MofUriExtent(new InMemoryProvider(), "dm:///originalExtent"),
-                AttachedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///attachedExtent"),
-                AttachedExtent2 = new MofUriExtent(new InMemoryProvider(), "dm:///attachedExtent2"),
-                NonConnectedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///nonconnectedExtent")
+                TypeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types", null),
+                OriginalExtent = new MofUriExtent(new InMemoryProvider(), "dm:///originalExtent", null),
+                AttachedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///attachedExtent", null),
+                AttachedExtent2 = new MofUriExtent(new InMemoryProvider(), "dm:///attachedExtent2", null),
+                NonConnectedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///nonconnectedExtent", null)
             };
 
             var type = MofFactory.Create(testSetup.TypeExtent, null);
             testSetup.TypeExtent.elements().add(type);
             type.set("name", "ReferenceType");
             testSetup.ReferenceType = type;
-            
+
             var attachedHandler =
                 testSetup.AttachedExtentHandler = new AttachedExtentHandler(testSetup.WorkspaceLogic);
-                
+
             var dataWorkspace = new Workspace("Data");
             testSetup.WorkspaceLogic.AddWorkspace(dataWorkspace);
             testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.OriginalExtent);
             testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.AttachedExtent);
             testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.AttachedExtent2);
             testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.NonConnectedExtent);
-            
+
             var config = InMemoryObject.CreateEmpty(
                     _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration)
                 .SetProperties(

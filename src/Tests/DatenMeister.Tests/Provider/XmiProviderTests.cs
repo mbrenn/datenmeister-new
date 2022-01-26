@@ -21,7 +21,7 @@ namespace DatenMeister.Tests.Provider
             var provider = new XmiProvider();
             ProviderTestHelper.TestGetAndSetOfPrimitiveTypes(provider);
         }
-        
+
         [Test]
         public void TestLists()
         {
@@ -53,7 +53,7 @@ namespace DatenMeister.Tests.Provider
     <node element=""first"" p1:id=""second"" />
 </xml>";
             var xmiProvider = new XmiProvider(XDocument.Parse(x));
-            var uriExtent = new MofUriExtent(xmiProvider);
+            var uriExtent = new MofUriExtent(xmiProvider, null);
 
             var first = uriExtent.elements().ElementAt(0) as IElement;
             var second = uriExtent.elements().ElementAt(1) as IElement;
@@ -75,13 +75,13 @@ namespace DatenMeister.Tests.Provider
         {
             var inMemoryProvider = new InMemoryProvider();
             var xmiProvider = new XmiProvider();
-            
+
             var workspace = new Workspace("Test");
-            var extent1 = new MofUriExtent(inMemoryProvider, "dm:///extent1");
-            var extent2 = new MofUriExtent(xmiProvider, "dm:///extent2");
+            var extent1 = new MofUriExtent(inMemoryProvider, "dm:///extent1", null);
+            var extent2 = new MofUriExtent(xmiProvider, "dm:///extent2", null);
             workspace.AddExtent(extent1);
             workspace.AddExtent(extent2);
-            
+
             var factory1 = new MofFactory(extent1);
             var factory2 = new MofFactory(extent2);
 
@@ -108,14 +108,14 @@ namespace DatenMeister.Tests.Provider
         {
             var inMemoryProvider = new InMemoryProvider();
             var xmiProvider = new XmiProvider();
-            
+
             var workspace = new Workspace("Test");
-            var extent1 = new MofUriExtent(xmiProvider, "dm:///extent2");
-            var extent2 = new MofUriExtent(inMemoryProvider, "dm:///extent1");
-            
+            var extent1 = new MofUriExtent(xmiProvider, "dm:///extent2", null);
+            var extent2 = new MofUriExtent(inMemoryProvider, "dm:///extent1", null);
+
             workspace.AddExtent(extent1);
             workspace.AddExtent(extent2);
-            
+
             var factory1 = new MofFactory(extent1);
             var factory2 = new MofFactory(extent2);
 
@@ -141,12 +141,12 @@ namespace DatenMeister.Tests.Provider
         public void TestStringsInReflectiveCollection()
         {
             var provider = new XmiProvider();
-            var mofExtent = new MofUriExtent(provider, "dm:///test");
+            var mofExtent = new MofUriExtent(provider, "dm:///test", null);
 
             var element = MofFactory.Create(mofExtent, null);
             mofExtent.elements().add(element);
 
-            var list = new List<string> { "ABC", "DEF", "GHI", "JKL" };
+            var list = new List<string> {"ABC", "DEF", "GHI", "JKL"};
             element.set("test", list);
 
             var result = element.getOrDefault<IReflectiveCollection>("test");
@@ -172,7 +172,7 @@ namespace DatenMeister.Tests.Provider
                 "  </element>" +
                 "</item>");
             var provider = new XmiProvider(document);
-            var mofExtent = new MofUriExtent(provider, "dm:///test");
+            var mofExtent = new MofUriExtent(provider, "dm:///test", null);
 
             var element = mofExtent.elements().First() as IElement;
             Assert.That(element, Is.Not.Null);

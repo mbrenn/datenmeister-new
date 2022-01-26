@@ -22,9 +22,9 @@ namespace DatenMeister.Core.Runtime
     /// </summary>
     public class ExtentUrlNavigator
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentUrlNavigator));
+        private static readonly ClassLogger Logger = new(typeof(ExtentUrlNavigator));
 
-        private readonly ConcurrentDictionary<string, IHasId> _cacheIds = new ConcurrentDictionary<string, IHasId>();
+        private readonly ConcurrentDictionary<string, IHasId> _cacheIds = new();
 
         private readonly MofUriExtent _extent;
 
@@ -88,10 +88,10 @@ namespace DatenMeister.Core.Runtime
                 }
                 else
                 {
-                    var fragmentUri = 
-                        extentUri 
+                    var fragmentUri =
+                        extentUri
                         + "#" + fragment;
-                    
+
                     // Check, if the element is in the cache and if yes, return it
                     if (_cacheIds.TryGetValue(fragmentUri, out var result))
                     {
@@ -135,7 +135,7 @@ namespace DatenMeister.Core.Runtime
             {
                 foundItem = mofElement.get<IReflectiveCollection>(property);
             }
-            
+
             // Now check whether we have a dataview
             var dataview = queryString.Get("dataview");
             if (dataview != null && foundItem is IReflectiveCollection reflectiveCollection)
@@ -145,6 +145,7 @@ namespace DatenMeister.Core.Runtime
                     Logger.Error("Dataview queried but extent does not have Scope Storage set");
                     throw new InvalidOperationException("Dataview queried but extent does not have Scope Storage set");
                 }
+
                 var dataviewElement = _extent.ResolveElement(dataview, ResolveType.Default);
                 if (dataviewElement == null)
                 {
@@ -152,12 +153,12 @@ namespace DatenMeister.Core.Runtime
                 }
                 else
                 {
-                    var dataViewEvaluation = new DataViewEvaluation(_extent.ScopeStorage.Get<DataViewNodeFactories>()); 
+                    var dataViewEvaluation = new DataViewEvaluation(_extent.ScopeStorage.Get<DataViewNodeFactories>());
                     dataViewEvaluation.AddDynamicSource("input", reflectiveCollection);
                     foundItem = dataViewEvaluation.GetElementsForViewNode(dataviewElement);
                 }
             }
-            
+
             return foundItem;
         }
 

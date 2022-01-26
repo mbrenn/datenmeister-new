@@ -1,5 +1,4 @@
 ﻿import {IFormConfiguration} from "./IFormConfiguration";
-import * as Mof from "./Mof";
 import {DmObject} from "./Mof";
 import {debugElementToDom} from "./DomHelper";
 import * as Forms from "./Forms";
@@ -20,8 +19,6 @@ export function createActionFormForEmptyObject(
     }
 
     const creator = new Forms.DetailFormCreator();
-    creator.element = new Mof.DmObject();
-    creator.element.setMetaClass(metaClass);
 
     configuration.onSubmit = (element) => {
         DetailFormActions.execute(

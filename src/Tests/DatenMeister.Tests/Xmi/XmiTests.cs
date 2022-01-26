@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void LoadUmlInfrastructure()
         {
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///target");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///target", null);
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var factory = new MofFactory(extent);
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
@@ -47,7 +47,7 @@ namespace DatenMeister.Tests.Xmi
 
             // Adds an artificial node, which duplicates an id.
             document.Root.Add(
-                new XElement ("other", new XAttribute(Namespaces.Xmi + "id", "_MOF-Identifiers-Extent")));
+                new XElement("other", new XAttribute(Namespaces.Xmi + "id", "_MOF-Identifiers-Extent")));
 
             Assert.That(XmiId.IsValid(document), Is.False);
         }
@@ -94,12 +94,14 @@ namespace DatenMeister.Tests.Xmi
         public void TestThatPropertyIsIElement()
         {
             var dm = DatenMeisterTests.GetDatenMeisterScope();
-            
-            var comment = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.CommonStructure.__Comment.GetUri()!, ResolveType.Default)
+
+            var comment = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.CommonStructure.__Comment.GetUri()!, ResolveType.Default)
                 as IElement;
             Assert.That(_UML.TheOne.CommonStructure.Comment._body, Is.Not.Null);
 
-            var commentBody = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.CommonStructure.Comment._body.GetUri()!, ResolveType.Default)
+            var commentBody = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.CommonStructure.Comment._body.GetUri()!, ResolveType.Default)
                 as IElement;
             Assert.That(comment, Is.InstanceOf<IElement>());
             Assert.That(_UML._CommonStructure._Comment.body, Is.InstanceOf<string>());
@@ -121,7 +123,8 @@ namespace DatenMeister.Tests.Xmi
         {
             var dm = DatenMeisterTests.GetDatenMeisterScope();
 
-            var package = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Packages.__Package.GetUri()!, ResolveType.Default)
+            var package = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.Packages.__Package.GetUri()!, ResolveType.Default)
                 as IElement;
             // Old behavior
             IEnumerable<object> generalizedElements;
@@ -141,18 +144,19 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(generalizedElements.Count(), Is.EqualTo(3));
 
             var firstElement = generalizedElements.ElementAtOrDefault(0) as IElement;
-            Assert.That(firstElement,Is.Not.Null);
+            Assert.That(firstElement, Is.Not.Null);
             var generalContent = firstElement.getOrDefault<IElement>(generalProperty);
-            Assert.That(generalContent,Is.InstanceOf<IElement>());
+            Assert.That(generalContent, Is.InstanceOf<IElement>());
             Assert.That(generalContent.equals(_UML.TheOne.CommonStructure.__PackageableElement));
         }
+
         /// <summary>
         /// Creates a filled MOF and UML instance which can be used for further testing
         /// </summary>
         public static Bootstrapper CreateUmlAndMofInstance()
         {
             var data = WorkspaceLogic.InitDefault();
-            var dataLayerLogic =  WorkspaceLogic.Create(data);
+            var dataLayerLogic = WorkspaceLogic.Create(data);
             var strapper = Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
                 data.Mof,

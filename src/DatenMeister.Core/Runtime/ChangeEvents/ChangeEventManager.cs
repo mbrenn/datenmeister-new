@@ -16,17 +16,17 @@ namespace DatenMeister.Core.Runtime.ChangeEvents
     /// </summary>
     public class ChangeEventManager
     {
-        private static readonly ClassLogger ClassLogger = new ClassLogger(typeof(ChangeEventManager));
-
-        /// <summary>
-        /// Defines the locking for the change events
-        /// </summary>
-        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private static readonly ClassLogger ClassLogger = new(typeof(ChangeEventManager));
 
         /// <summary>
         /// Stores the handles that would like to get informed about changes
         /// </summary>
-        private readonly List<RegisteredEventHandle> _handles = new List<RegisteredEventHandle>();
+        private readonly List<RegisteredEventHandle> _handles = new();
+
+        /// <summary>
+        /// Defines the locking for the change events
+        /// </summary>
+        private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.NoRecursion);
 
         /// <summary>
         /// Has to be called, when the given object has changed
@@ -46,7 +46,7 @@ namespace DatenMeister.Core.Runtime.ChangeEvents
                     // Nothing to do.
                     return;
                 }
-                
+
                 handles = _handles.Where(
                     x => x.Value?.Equals(value) == true
                          || x.Extent?.Equals(extent) == true
@@ -85,11 +85,11 @@ namespace DatenMeister.Core.Runtime.ChangeEvents
             try
             {
                 _lock.EnterReadLock();
-                
+
                 if (_handles.Count == 0)
                     // Nothing to do.
                     return;
-                
+
                 handles = _handles.Where(
                     x => x.Extent?.Equals(extent) == true ||
                          x.Workspace?.Equals(workspace) == true).ToArray();
@@ -117,15 +117,15 @@ namespace DatenMeister.Core.Runtime.ChangeEvents
         /// <param name="workspace">Changed workspace</param>
         public void SendChangeEvent(IWorkspace workspace)
         {
-            RegisteredEventHandle[] handles; 
+            RegisteredEventHandle[] handles;
 
             try
             {
                 _lock.EnterReadLock();
-                
+
                 if (_handles.Count == 0) // Nothing to do.
                     return;
-                
+
                 handles = _handles.Where(
                     x => x.Workspace?.Equals(workspace) == true).ToArray();
             }

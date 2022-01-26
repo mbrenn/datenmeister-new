@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.DynamicFunctions;
@@ -8,8 +9,18 @@ namespace DatenMeister.Core.Runtime.Workspaces
     /// <summary>
     /// Defines the workspace logic is used to organize the workspaces
     /// </summary>
-    public interface IWorkspaceLogic
+    public interface IWorkspaceLogic : IUriResolver
     {
+        /// <summary>
+        ///     Gets the scope storage, if set
+        /// </summary>
+        IScopeStorage? ScopeStorage { get; }
+
+        /// <summary>
+        ///     Gets the workspaces of the workspace logic
+        /// </summary>
+        IEnumerable<Workspace> Workspaces { get; }
+
         Workspace AddWorkspace(Workspace workspace);
 
         /// <summary>
@@ -24,7 +35,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <param name="id">Id of the workspace</param>
         /// <returns>Found workspace or null, if not found</returns>
         Workspace? GetWorkspace(string id);
-        
+
         /// <summary>
         /// Gets the dynamic function manager for a certain workspace.
         /// The workspace needs to be retrieved in which the types are hosted
@@ -32,11 +43,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <param name="workspace">Workspace to be queried</param>
         /// <returns>The dynamic function manager</returns>
         DynamicFunctionManager GetDynamicFunctionManager(string workspace);
-
-        /// <summary>
-        /// Gets the workspaces of the workspace logic
-        /// </summary>
-        IEnumerable<Workspace> Workspaces { get; }
 
         /// <summary>
         /// Gets the datalayer of a certain extent

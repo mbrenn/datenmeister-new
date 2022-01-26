@@ -15,8 +15,8 @@ namespace DatenMeister.Tests.Runtime
         {
             var typeWorkspace = new Workspace("Types");
 
-            var typeExtent = new MofUriExtent(new InMemoryProvider());
-            
+            var typeExtent = new MofUriExtent(new InMemoryProvider(), null);
+
             var typeFactory = new MofFactory(typeExtent);
 
             // Creates the class
@@ -27,24 +27,24 @@ namespace DatenMeister.Tests.Runtime
             property2Method.set(_UML._CommonStructure._NamedElement.name, "doubleage");
 
             classMethod.set(
-                _UML._StructuredClassifiers._Class.ownedAttribute, 
-                new []{property1Method, property2Method});
-            
+                _UML._StructuredClassifiers._Class.ownedAttribute,
+                new[] {property1Method, property2Method});
+
             typeExtent.elements().add(classMethod);
             typeWorkspace.AddExtent(typeExtent);
-            
+
             // Create the derived method
             typeWorkspace.DynamicFunctionManager.AddDerivedProperty(
                 classMethod,
                 "doubleage", o => o.getOrDefault<int>("age") * 2);
-            
+
             // The item to be created
-            var itemExtent = new MofUriExtent(new InMemoryProvider());
+            var itemExtent = new MofUriExtent(new InMemoryProvider(), null);
             var itemFactory = new MofFactory(itemExtent);
 
             var itemFound = itemFactory.create(classMethod);
             itemFound.set("age", 18);
-            
+
             // Now the checks
             var metaClass = itemFound.metaclass!;
             Assert.That(metaClass, Is.Not.Null);

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -12,7 +13,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -32,7 +32,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionSet = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionSet);
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoggingWriterAction);
             if (actionSet == null || action == null) throw new InvalidOperationException("null");
-            
+
             action.set(_DatenMeister._Actions._LoggingWriterAction.message, "zyx");
             actionSet.get<IReflectiveCollection>(_DatenMeister._Actions._ActionSet.action).add(action);
 
@@ -67,9 +67,10 @@ namespace DatenMeister.Tests.Modules.Actions
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
-            
-            
-            var createWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
+
+
+            var createWorkspaceAction =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
@@ -78,8 +79,8 @@ namespace DatenMeister.Tests.Modules.Actions
 
             Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.True);
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
-            
-            
+
+
             var dropWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DropWorkspaceAction);
             Debug.Assert(dropWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
             dropWorkspaceAction.set(_DatenMeister._Actions._DropWorkspaceAction.workspace, "ws");
@@ -92,13 +93,17 @@ namespace DatenMeister.Tests.Modules.Actions
         public static ConfigurationToExtentStorageMapper GetDefaultMapper()
         {
             var result = new ConfigurationToExtentStorageMapper();
-            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig, manager => new InMemoryProviderLoader());
-            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig, manager => new CsvProviderLoader());
-            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig, manager => new XmiProviderLoader());
-            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig, manager => new XmlReferenceLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
+                manager => new InMemoryProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
+                manager => new CsvProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig,
+                manager => new XmiProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
+                manager => new XmlReferenceLoader());
             return result;
         }
-        
+
         [Test]
         public void TestCreateExtent()
         {
@@ -145,8 +150,8 @@ namespace DatenMeister.Tests.Modules.Actions
 
             var sourceProvider = new InMemoryProvider();
             var targetProvider = new InMemoryProvider();
-            var sourceExtent = new MofUriExtent(sourceProvider, "dm:///source/");
-            var targetExtent = new MofUriExtent(targetProvider, "dm:///target/");
+            var sourceExtent = new MofUriExtent(sourceProvider, "dm:///source/", actionLogic.ScopeStorage);
+            var targetExtent = new MofUriExtent(targetProvider, "dm:///target/", actionLogic.ScopeStorage);
             var sourceFactory = new MofFactory(sourceExtent);
             var targetFactory = new MofFactory(targetExtent);
 

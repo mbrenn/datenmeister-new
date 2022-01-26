@@ -12,6 +12,16 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 const extentUri = p.get('extent');
                 return ECClient.getProperties(workspace, extentUri);
             }
+            if (actionName === "Extent.CreateItem") {
+                const metaclass = p.get('metaclass');
+                const deferLoadObjectForAction = $.Deferred();
+                const result = new Mof_1.DmObject();
+                if (metaclass !== undefined) {
+                    result.setMetaClassByUri(metaclass);
+                }
+                deferLoadObjectForAction.resolve(result);
+                return deferLoadObjectForAction;
+            }
             return undefined;
         }
         DetailFormActions.loadObjectForAction = loadObjectForAction;
@@ -20,7 +30,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 || actionName === "ExtentsList.DeleteItem"
                 || actionName === "Extent.DeleteExtent") {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         }
@@ -111,6 +122,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
         }
         static extentCreateItem(workspace, extentUri, element, metaClass) {
+            if (metaClass === undefined) {
+                metaClass = element.metaClass.uri;
+            }
             const json = (0, Mof_1.createJsonFromObject)(element);
             ApiConnection.post(Settings.baseUrl + "api/items/create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), {
                 metaClass: metaClass === undefined ? "" : metaClass,
@@ -132,12 +146,12 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         static extentNavigateToProperties(workspace, extentUri) {
             document.location.href =
                 Settings.baseUrl +
-                "ItemAction/Extent.Properties.Update/" +
-                encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
-                "?workspace=" +
-                encodeURIComponent(workspace) +
-                "&extent=" +
-                encodeURIComponent(extentUri);
+                    "ItemAction/Extent.Properties.Update/" +
+                    encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
+                    "?workspace=" +
+                    encodeURIComponent(workspace) +
+                    "&extent=" +
+                    encodeURIComponent(extentUri);
         }
         static extentUpdateExtentProperties(workspace, extentUri, element) {
             ECClient.setProperties(workspace, extentUri, element).done(() => FormActions.extentNavigateTo(workspace, extentUri));

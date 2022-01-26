@@ -11,36 +11,35 @@ namespace DatenMeister.Core.Modules.DataViews
 {
     public class DataViewEvaluation
     {
+        private const int MaximumReferenceCount = 1000;
+
         /// <summary>
         /// Stores the logger
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(DataViewEvaluation));
 
-        private readonly IWorkspaceLogic? _workspaceLogic;
-
-        private int _referenceCount;
-
-        private const int MaximumReferenceCount = 1000;
-
         /// <summary>
         /// Adds the dynamic sources
         /// </summary>
-        private readonly Dictionary<string, IReflectiveCollection> _dynamicSources =
-            new Dictionary<string, IReflectiveCollection>();
+        private readonly Dictionary<string, IReflectiveCollection> _dynamicSources = new();
+
+        private readonly IWorkspaceLogic? _workspaceLogic;
 
         private DataViewNodeFactories _dataViewFactories;
+
+        private int _referenceCount;
 
         public DataViewEvaluation(DataViewNodeFactories dataViewFactories)
         {
             _dataViewFactories = dataViewFactories;
         }
-        
+
         public DataViewEvaluation(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _dataViewFactories = scopeStorage.Get<DataViewNodeFactories>();
         }
-        
+
         public DataViewEvaluation(IWorkspaceLogic workspaceLogic, DataViewNodeFactories dataViewFactories)
         {
             _workspaceLogic = workspaceLogic;
@@ -77,7 +76,7 @@ namespace DatenMeister.Core.Modules.DataViews
                 Logger.Warn("Maximum number of recursions are evaluated in dataview evaluation");
                 return new PureReflectiveSequence();
             }
-            
+
             var result = GetElementsForViewNodeInternal(viewNode);
             _referenceCount--;
 
@@ -98,9 +97,9 @@ namespace DatenMeister.Core.Modules.DataViews
 
             // Check, if viewnode has been visited
             foreach (var evaluation in
-                from x in _dataViewFactories.Evaluations
-                where x.IsResponsible(viewNode)
-                select x)
+                     from x in _dataViewFactories.Evaluations
+                     where x.IsResponsible(viewNode)
+                     select x)
             {
                 return evaluation.Evaluate(this, viewNode);
             }

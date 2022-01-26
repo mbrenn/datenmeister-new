@@ -15,83 +15,20 @@ namespace DatenMeister.Core.Provider.InMemory
     /// </summary>
     public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMovements
     {
-        public IProvider Provider { get; }
-
         /// <summary>
         /// Stores the temporary factory
         /// </summary>
         private static IFactory? _temporaryFactory;
 
         /// <summary>
-        /// Stores the temporary factory
+        ///     Stores the values direct within the memory
         /// </summary>
-        public static IFactory TemporaryFactory => _temporaryFactory ??= new MofFactory(InMemoryProvider.TemporaryExtent);
+        private readonly Dictionary<string, object?> _values = new();
 
         /// <summary>
         /// Stores the container being associated to the in memory object
         /// </summary>
         private IProviderObject? _container;
-
-        /// <summary>
-        /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
-        /// </summary>
-        /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty(IExtent? uriExtent = null)
-        {
-            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-            if (!(factory.create(null) is MofElement element)) 
-                throw new InvalidOperationException("factory.create returned null");
-
-            return element;
-        }
-
-        /// <summary>
-        /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
-        /// </summary>
-        /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty(string metaClass, IExtent? uriExtent = null)
-        {
-            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-            var element = (MofElement?) factory.create(null);
-            if (element == null) throw new InvalidOperationException("factory.create returned null");
-
-            if (!string.IsNullOrEmpty(metaClass))
-            {
-                element.SetMetaClass(metaClass);
-            }
-
-            return element;
-        }
-
-        /// <summary>
-        /// Creates an empty element with the given type
-        /// </summary>
-        /// <param name="type">Type of the element to be created</param>
-        /// <param name="workspace">Defines the workspace to which the created element is connected (for resolving, etc)</param>
-        /// <returns>Returned element to be created</returns>
-        public static IElement CreateEmpty(IElement type)
-        {
-            var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
-            var element = mofFactory.create(type);
-            if (element == null) throw new InvalidOperationException("factory.create returned null");
-
-            // Adds the type as meta extent to the temporary provider, so it can be refound
-            var typeExtent = type.GetExtentOf();
-            if (typeExtent != null)
-            {
-                InMemoryProvider.TemporaryExtent.AddMetaExtent(typeExtent);
-            }
-
-            return element;
-        }
-
-        /// <summary>
-        ///     Stores the values direct within the memory
-        /// </summary>
-        private readonly Dictionary<string, object?> _values = new Dictionary<string, object?>();
-
-        /// <inheritdoc />
-        public string? MetaclassUri { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the InMemoryObject.
@@ -105,13 +42,16 @@ namespace DatenMeister.Core.Provider.InMemory
             MetaclassUri = metaclassUri ?? string.Empty;
         }
 
-        private static void CheckValue(object? value)
-        {
-            if (value is MofReflectiveSequence || value is MofObject)
-            {
-                throw new InvalidOperationException($"Value is of type {value.GetType()}");
-            }
-        }
+        /// <summary>
+        ///     Stores the temporary factory
+        /// </summary>
+        public static IFactory TemporaryFactory =>
+            _temporaryFactory ??= new MofFactory(InMemoryProvider.TemporaryExtent);
+
+        public IProvider Provider { get; }
+
+        /// <inheritdoc />
+        public string? MetaclassUri { get; set; }
 
         public string? Id { get; set; }
 
@@ -150,35 +90,6 @@ namespace DatenMeister.Core.Provider.InMemory
         public IEnumerable<string> GetProperties() =>
             _values.Keys;
 
-        public override string ToString()
-        {
-            if (IsPropertySet("name"))
-            {
-                return GetProperty("name")?.ToString() ?? string.Empty;
-            }
-
-            var builder = new StringBuilder();
-            builder.Append($"#{Id} - ");
-
-            var komma = string.Empty;
-            foreach (var pair in _values)
-            {
-                var key = pair.Key;
-                if (key != null)
-                {
-                    builder.Append($"{komma}{key} = {pair.Value}");
-                }
-                else
-                {
-                    builder.Append($"{komma}Prop = {pair.Value}");
-                }
-
-                komma = ", ";
-            }
-
-            return builder.ToString();
-        }
-
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index)
         {
@@ -195,23 +106,6 @@ namespace DatenMeister.Core.Provider.InMemory
             }
 
             return true;
-        }
-
-        private List<object> GetListOfProperty(string property)
-        {
-            List<object>? result = null;
-            if (_values.ContainsKey(property))
-            {
-                result = _values[property] as List<object>;
-            }
-
-            if (result == null)
-            {
-                result = new List<object>();
-                _values[property] = result;
-            }
-
-            return result;
         }
 
         /// <inheritdoc />
@@ -242,7 +136,7 @@ namespace DatenMeister.Core.Provider.InMemory
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
             if (value == null) throw new ArgumentNullException(nameof(value));
-            
+
             CheckValue(value);
             var result = GetListOfProperty(property);
             for (var n = 1; n < result.Count; n++)
@@ -280,6 +174,97 @@ namespace DatenMeister.Core.Provider.InMemory
             }
 
             return false;
+        }
+
+        /// <summary>
+        ///     Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the
+        ///     InMemoryObject
+        /// </summary>
+        /// <returns>The created object as MofObject</returns>
+        public static MofElement CreateEmpty(IExtent? uriExtent = null)
+        {
+            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
+            if (!(factory.create(null) is MofElement element))
+                throw new InvalidOperationException("factory.create returned null");
+
+            return element;
+        }
+
+        /// <summary>
+        ///     Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the
+        ///     InMemoryObject
+        /// </summary>
+        /// <returns>The created object as MofObject</returns>
+        public static MofElement CreateEmpty(string metaClass, IExtent? uriExtent = null)
+        {
+            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
+            var element = (MofElement?) factory.create(null);
+            if (element == null) throw new InvalidOperationException("factory.create returned null");
+
+            if (!string.IsNullOrEmpty(metaClass)) element.SetMetaClass(metaClass);
+
+            return element;
+        }
+
+        /// <summary>
+        ///     Creates an empty element with the given type
+        /// </summary>
+        /// <param name="type">Type of the element to be created</param>
+        /// <param name="workspace">Defines the workspace to which the created element is connected (for resolving, etc)</param>
+        /// <returns>Returned element to be created</returns>
+        public static IElement CreateEmpty(IElement type)
+        {
+            var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
+            var element = mofFactory.create(type);
+            if (element == null) throw new InvalidOperationException("factory.create returned null");
+
+            // Adds the type as meta extent to the temporary provider, so it can be refound
+            var typeExtent = type.GetExtentOf();
+            if (typeExtent != null) InMemoryProvider.TemporaryExtent.AddMetaExtent(typeExtent);
+
+            return element;
+        }
+
+        private static void CheckValue(object? value)
+        {
+            if (value is MofReflectiveSequence || value is MofObject)
+                throw new InvalidOperationException($"Value is of type {value.GetType()}");
+        }
+
+        public override string ToString()
+        {
+            if (IsPropertySet("name")) return GetProperty("name")?.ToString() ?? string.Empty;
+
+            var builder = new StringBuilder();
+            builder.Append($"#{Id} - ");
+
+            var komma = string.Empty;
+            foreach (var pair in _values)
+            {
+                var key = pair.Key;
+                if (key != null)
+                    builder.Append($"{komma}{key} = {pair.Value}");
+                else
+                    builder.Append($"{komma}Prop = {pair.Value}");
+
+                komma = ", ";
+            }
+
+            return builder.ToString();
+        }
+
+        private List<object> GetListOfProperty(string property)
+        {
+            List<object>? result = null;
+            if (_values.ContainsKey(property)) result = _values[property] as List<object>;
+
+            if (result == null)
+            {
+                result = new List<object>();
+                _values[property] = result;
+            }
+
+            return result;
         }
     }
 }

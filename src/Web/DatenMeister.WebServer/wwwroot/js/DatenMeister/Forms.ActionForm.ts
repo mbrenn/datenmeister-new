@@ -14,7 +14,7 @@ export function createActionFormForEmptyObject(
 
     if (configuration.refreshForm === undefined) {
         configuration.refreshForm = () => {
-            tthis.createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
+            createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         }
     }
 
@@ -31,7 +31,7 @@ export function createActionFormForEmptyObject(
     let deferLoadObjectForAction = DetailFormActions.loadObjectForAction(actionName);
     if (deferLoadObjectForAction === undefined) {
         deferLoadObjectForAction = $.Deferred<DmObject>();
-        deferLoadObjectForAction.resolve(undefined);
+        deferLoadObjectForAction.resolve(new DmObject());
     }
 
     let deferForm;
@@ -47,6 +47,11 @@ export function createActionFormForEmptyObject(
     }
 
     $.when(deferForm, deferLoadObjectForAction).then((form, element) => {
+        // Updates the metaclass, if the metaclass is not set by the element itself
+        if (element.metaClass === undefined) {
+            element.setMetaClassByUri(metaClass);
+        }
+
         creator.element = element;
         creator.formElement = form;
         creator.createFormByObject(parent, configuration);

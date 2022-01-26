@@ -321,13 +321,13 @@ export function getDefaultFormForExtent(workspace: string, extentUri: string, vi
 /*
     Gets the default form for an extent uri by the webserver
  */
-export function getDefaultFormForMetaClass(metaClass: string): JQuery.Deferred<Mof.DmObject, never, never> {
+export function getDefaultFormForMetaClass(metaClassUri: string): JQuery.Deferred<Mof.DmObject, never, never> {
     const r = jQuery.Deferred<Mof.DmObject, never, never>();
 
     ApiConnection.get<object>(
         Settings.baseUrl +
         "api/forms/default_for_metaclass/" +
-        encodeURIComponent(metaClass)
+        encodeURIComponent(metaClassUri)
     ).done(x => {
         const dmObject =
             Mof.convertJsonObjectToDmObject(x);

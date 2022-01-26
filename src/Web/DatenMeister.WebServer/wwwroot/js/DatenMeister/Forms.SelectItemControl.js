@@ -84,8 +84,8 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
         loadWorkspaces() {
             const tthis = this;
             const r = jQuery.Deferred();
+            tthis.htmlWorkspaceSelect.empty();
             EL.getAllWorkspaces().done((items) => {
-                tthis.htmlWorkspaceSelect.empty();
                 tthis.visitedItems.length = 0;
                 tthis.loadedWorkspaces = items;
                 const none = $("<option value=''>--- None ---</option>");
@@ -133,14 +133,13 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             const tthis = this;
             const workspaceId = this.getUserSelectedWorkspace();
             tthis.htmlSelectedElements.text(workspaceId);
+            this.htmlExtentSelect.empty();
             if (workspaceId == "") {
-                this.htmlExtentSelect.empty();
                 const select = $("<option value=''>--- Select Workspace ---</option>");
                 this.htmlExtentSelect.append(select);
             }
             else {
                 EL.getAllExtents(workspaceId).done(items => {
-                    tthis.htmlExtentSelect.empty();
                     tthis.visitedItems.length = 0;
                     const none = $("<option value=''>--- None ---</option>");
                     tthis.htmlExtentSelect.append(none);
@@ -168,8 +167,8 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             const workspaceId = this.getUserSelectedWorkspace();
             const extentUri = this.getUserSelectedExtent();
             const tthis = this;
+            this.htmlItemsList.empty();
             if (workspaceId == "" || extentUri == "") {
-                this.htmlItemsList.empty();
                 const select = $("<li>--- Select Extent ---</li>");
                 this.htmlItemsList.append(select);
                 this.visitedItems.length = 0;
@@ -185,7 +184,6 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             }
             else {
                 const funcElements = (items) => {
-                    this.htmlItemsList.empty();
                     for (const n in items) {
                         if (!items.hasOwnProperty(n))
                             continue;

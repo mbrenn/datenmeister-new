@@ -112,9 +112,9 @@ export class SelectItemControl {
     loadWorkspaces(): JQueryDeferred<any> {
         const tthis = this;
         const r = jQuery.Deferred<any, never, never>();
+        tthis.htmlWorkspaceSelect.empty();
 
         EL.getAllWorkspaces().done((items) => {
-            tthis.htmlWorkspaceSelect.empty();
             tthis.visitedItems.length = 0;
             tthis.loadedWorkspaces = items;
             const none = $("<option value=''>--- None ---</option>");
@@ -173,16 +173,14 @@ export class SelectItemControl {
         const tthis = this;
         const workspaceId = this.getUserSelectedWorkspace();
         tthis.htmlSelectedElements.text(workspaceId);
+        this.htmlExtentSelect.empty();
 
         if (workspaceId == "") {
-            this.htmlExtentSelect.empty();
-
             const select = $("<option value=''>--- Select Workspace ---</option>");
             this.htmlExtentSelect.append(select);
         } else {
             EL.getAllExtents(workspaceId).done(items => {
 
-                tthis.htmlExtentSelect.empty();
                 tthis.visitedItems.length = 0;
 
                 const none = $("<option value=''>--- None ---</option>");
@@ -219,9 +217,9 @@ export class SelectItemControl {
         const workspaceId = this.getUserSelectedWorkspace();
         const extentUri = this.getUserSelectedExtent();
         const tthis = this;
+        this.htmlItemsList.empty();
 
         if (workspaceId == "" || extentUri == "") {
-            this.htmlItemsList.empty();
             const select = $("<li>--- Select Extent ---</li>");
             this.htmlItemsList.append(select);
             this.visitedItems.length = 0;
@@ -240,7 +238,6 @@ export class SelectItemControl {
             r.resolve(true);
         } else {
             const funcElements = (items: ItemWithNameAndId[]) => {
-                this.htmlItemsList.empty();
 
                 for (const n in items) {
                     if (!items.hasOwnProperty(n)) continue;

@@ -95,6 +95,8 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
             const settings = new SIC.Settings();
             settings.showWorkspaceInBreadcrumb = true;
             settings.showExtentInBreadcrumb = true;
+            selectItem.setWorkspaceById('Types');
+            selectItem.setExtentByUri("dm:///_internal/types/internal");
             selectItem.onItemSelected = selectedItem => {
                 if (selectedItem === undefined) {
                     document.location.href =

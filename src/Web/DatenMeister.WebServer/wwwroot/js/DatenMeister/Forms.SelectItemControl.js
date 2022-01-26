@@ -1,6 +1,6 @@
 define(["require", "exports", "./Client.Elements"], function (require, exports, EL) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.SelectItemControl = exports.Settings = void 0;
     class Settings {
         constructor() {
@@ -15,6 +15,8 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             this.visitedItems = new Array();
             this.loadedWorkspaces = new Array();
             this.loadedExtents = new Array();
+            this.deferLoadedWorkspaces = $.Deferred();
+            this.deferLoadedExtent = $.Deferred();
         }
         init(parent, settings) {
             this.settings = settings !== null && settings !== void 0 ? settings : new Settings();
@@ -26,7 +28,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             this.htmlWorkspaceSelect.on('change', () => {
                 // Find the selected workspace
                 tthis.selectedWorkspace = undefined;
-                const currentWorkspace = tthis.getSelectedWorkspace();
+                const currentWorkspace = tthis.getUserSelectedWorkspace();
                 if (currentWorkspace != "" && currentWorkspace != undefined) {
                     for (let n = 0; n < tthis.loadedWorkspaces.length; n++) {
                         const item = tthis.loadedWorkspaces[n];
@@ -41,7 +43,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             this.htmlExtentSelect.on('change', () => {
                 // Find the selected extent
                 tthis.selectedExtent = undefined;
-                const currentExtent = tthis.getSelectedExtent();
+                const currentExtent = tthis.getUserSelectedExtent();
                 if (currentExtent != "" && currentExtent != undefined) {
                     for (let n = 0; n < tthis.loadedExtents.length; n++) {
                         const item = tthis.loadedExtents[n];
@@ -81,6 +83,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
         }
         loadWorkspaces() {
             const tthis = this;
+            const r = jQuery.Deferred();
             EL.getAllWorkspaces().done((items) => {
                 tthis.htmlWorkspaceSelect.empty();
                 tthis.visitedItems.length = 0;
@@ -97,20 +100,38 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                     tthis.htmlWorkspaceSelect.append(option);
                 }
                 tthis.refreshBreadcrumb();
+                tthis.deferLoadedWorkspaces.resolve();
+                tthis.evaluatePreSelectedWorkspace();
             });
-            this.loadExtents();
+            this.loadExtents().done(() => {
+                r.resolve(true);
+            });
+            return r;
         }
-        getSelectedWorkspace() {
+        // This call may also be given before the workspaces has been loaded
+        setWorkspaceById(workspaceId) {
+            this.preSelectWorkspaceById = workspaceId;
+            this.evaluatePreSelectedWorkspace();
+        }
+        // This call may also be given before the extents has been loaded
+        setExtentByUri(extentUri) {
+            this.preSelectExtentByUri = extentUri;
+            this.evaluatePreSelectedExtent();
+        }
+        // Sets the workspace by given the id
+        getUserSelectedWorkspace() {
             var _a, _b;
             return (_b = (_a = this.htmlWorkspaceSelect.val()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
         }
-        getSelectedExtent() {
+        // Sets the extent by given the uri
+        getUserSelectedExtent() {
             var _a, _b;
             return (_b = (_a = this.htmlExtentSelect.val()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
         }
         loadExtents() {
+            const r = jQuery.Deferred();
             const tthis = this;
-            const workspaceId = this.getSelectedWorkspace();
+            const workspaceId = this.getUserSelectedWorkspace();
             tthis.htmlSelectedElements.text(workspaceId);
             if (workspaceId == "") {
                 this.htmlExtentSelect.empty();
@@ -119,10 +140,10 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             }
             else {
                 EL.getAllExtents(workspaceId).done(items => {
-                    this.htmlExtentSelect.empty();
-                    this.visitedItems.length = 0;
+                    tthis.htmlExtentSelect.empty();
+                    tthis.visitedItems.length = 0;
                     const none = $("<option value=''>--- None ---</option>");
-                    this.htmlExtentSelect.append(none);
+                    tthis.htmlExtentSelect.append(none);
                     tthis.loadedExtents = items;
                     for (const n in items) {
                         if (!items.hasOwnProperty(n))
@@ -133,14 +154,19 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                         option.text(item.name);
                         tthis.htmlExtentSelect.append(option);
                     }
+                    tthis.deferLoadedExtent.resolve();
                 });
             }
             tthis.refreshBreadcrumb();
-            this.loadItems();
+            this.loadItems().done(() => {
+                r.resolve(true);
+            });
+            return r;
         }
         loadItems(selectedItem) {
-            const workspaceId = this.getSelectedWorkspace();
-            const extentUri = this.getSelectedExtent();
+            const r = jQuery.Deferred();
+            const workspaceId = this.getUserSelectedWorkspace();
+            const extentUri = this.getUserSelectedExtent();
             const tthis = this;
             if (workspaceId == "" || extentUri == "") {
                 this.htmlItemsList.empty();
@@ -155,6 +181,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                         extentUri: extentUri
                     });
                 }
+                r.resolve(true);
             }
             else {
                 const funcElements = (items) => {
@@ -174,6 +201,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                         }))(item);
                         tthis.htmlItemsList.append(option);
                     }
+                    r.resolve(true);
                 };
                 if (selectedItem === undefined || selectedItem === null) {
                     tthis.htmlSelectedElements.text(extentUri);
@@ -184,13 +212,14 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                 }
             }
             tthis.refreshBreadcrumb();
+            return r;
         }
         refreshBreadcrumb() {
             const tthis = this;
             this.htmlBreadcrumbList.empty();
             if (this.settings.showBreadcrumb) {
-                const currentWorkspace = this.getSelectedWorkspace();
-                const currentExtent = this.getSelectedExtent();
+                const currentWorkspace = this.getUserSelectedWorkspace();
+                const currentExtent = this.getUserSelectedExtent();
                 if (this.settings.showWorkspaceInBreadcrumb) {
                     this.addBreadcrumbItem("DatenMeister", () => tthis.loadWorkspaces());
                 }
@@ -216,6 +245,30 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                     });
                 }
             }
+        }
+        // Evaluates the preselection of the workspaces
+        evaluatePreSelectedWorkspace() {
+            const tthis = this;
+            this.deferLoadedWorkspaces.done(() => {
+                if (tthis.preSelectWorkspaceById === undefined) {
+                    return;
+                }
+                tthis.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
+                tthis.preSelectWorkspaceById = undefined;
+                tthis.loadExtents();
+            });
+        }
+        // Evaluates the preselection of the workspaces
+        evaluatePreSelectedExtent() {
+            const tthis = this;
+            this.deferLoadedExtent.done(() => {
+                if (tthis.preSelectExtentByUri === undefined) {
+                    return;
+                }
+                tthis.htmlExtentSelect.val(this.preSelectExtentByUri);
+                tthis.preSelectExtentByUri = undefined;
+                tthis.loadItems();
+            });
         }
         addBreadcrumbItem(text, onClick) {
             const tthis = this;

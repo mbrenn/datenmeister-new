@@ -160,7 +160,7 @@ export class Field extends BaseField implements IFormField {
                         {
                             property: tthis.field.get('name'),
                             referenceUri: selectedItem.uri,
-                            referenceWorkspaceId: selectItem.getSelectedWorkspace()
+                            referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
                         }
                     ).done(() => {
                         this.reloadValuesFromServer();

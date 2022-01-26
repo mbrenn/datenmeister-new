@@ -116,7 +116,7 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                         ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.field.get('name'),
                             referenceUri: selectedItem.uri,
-                            referenceWorkspaceId: selectItem.getSelectedWorkspace()
+                            referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
                         }).done(() => {
                             this.reloadValuesFromServer();
                         });

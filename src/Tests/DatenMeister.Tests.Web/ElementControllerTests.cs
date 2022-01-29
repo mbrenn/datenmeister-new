@@ -114,6 +114,36 @@ namespace DatenMeister.Tests.Web
             dm.Dispose();
         }
 
+        [Test]
+        public void TestFindBySearchString()
+        {
+            var (dm, extent) = CreateExampleExtent();
+            var workspaceLogic = dm.WorkspaceLogic;
+            var scopeStorage = dm.ScopeStorage;
+
+            var elementsController = new ElementsControllerInternal(workspaceLogic, scopeStorage);
+
+            // Nothing should be found
+            var result = elementsController.FindBySearchString("fiuosdaiu");
+            Assert.That(result.resultType, Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeNone));
+
+            result = elementsController.FindBySearchString(UriTemporaryExtent + "#item1");
+            Assert.That(result.resultType, Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeReference));
+            Assert.That(result.reference!.id, Is.EqualTo("item1"));
+            Assert.That(result.reference.uri, Is.EqualTo("dm:///temp#item1"));
+            Assert.That(result.reference.extentUri, Is.EqualTo("dm:///temp"));
+            Assert.That(result.reference.name, Is.EqualTo("item1"));
+            Assert.That(result.reference.workspace, Is.EqualTo("Data"));
+
+            result = elementsController.FindBySearchString(UriTemporaryExtent);
+            Assert.That(result.resultType,
+                Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeReferenceExtent));
+            Assert.That(result.reference!.uri, Is.EqualTo("dm:///temp"));
+            Assert.That(result.reference.extentUri, Is.EqualTo("dm:///temp"));
+            Assert.That(result.reference.workspace, Is.EqualTo("Data"));
+            Assert.That(result.reference.name, Is.EqualTo("Test Extent"));
+        }
+
         public static (IDatenMeisterScope dm, IUriExtent extent) CreateExampleExtent()
         {
             var dm = DatenMeisterTests.GetDatenMeisterScope(
@@ -134,7 +164,7 @@ namespace DatenMeister.Tests.Web
             var propertyName = DefaultClassifierHints.GetDefaultPackagePropertyName(item1);
 
             item1.set(propertyName, item3);
-            item2.set(propertyName, new[] {item4, item5});
+            item2.set(propertyName, new[] { item4, item5 });
             createdExtent.Extent.elements().add(item1);
             createdExtent.Extent.elements().add(item2);
 

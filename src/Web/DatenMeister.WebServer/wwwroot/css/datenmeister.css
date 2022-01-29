@@ -159,3 +159,7 @@ a {
 .dm-logging-fatal {
   color: blueviolet;
 }
+
+.dm-subelements-refresh-btn {
+  cursor: pointer
+}

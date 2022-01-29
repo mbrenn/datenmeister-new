@@ -126,7 +126,7 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                 });
                 this._list.append(newItem);
             }
-            const refreshBtn = $("<div><btn class='btn btn-secondary dm-subelements-refresh-btn'>Refresh</btn></div>");
+            const refreshBtn = $("<div><btn class='dm-subelements-refresh-btn'><img src='/img/refresh-32.png' alt='Refresh' /></btn></div>");
             $(".dm-subelements-refresh-btn", refreshBtn).on('click', () => {
                 tthis.reloadValuesFromServer();
             });

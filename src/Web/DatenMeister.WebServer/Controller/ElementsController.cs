@@ -1,18 +1,11 @@
-﻿using System.Linq;
-using System.Web;
+﻿using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
-using DatenMeister.Core.Models.EMOF;
-using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Json;
-using DatenMeister.Provider.ExtentManagement;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -24,10 +17,13 @@ namespace DatenMeister.WebServer.Controller
         private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
 
+        public ElementsControllerInternal _internal;
+
         public ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
+            _internal = new ElementsControllerInternal(workspaceLogic, scopeStorage);
         }
 
         [HttpGet("api/elements/get_name/{workspace}/{extenturi}/{itemid}")]
@@ -39,7 +35,7 @@ namespace DatenMeister.WebServer.Controller
                 return NotFound();
             }
 
-            return new {name = NamedElementMethods.GetName(foundItem)};
+            return new { name = NamedElementMethods.GetName(foundItem) };
         }
 
         [HttpGet("api/elements/get_name/{uri}/{workspace?}")]
@@ -74,76 +70,29 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
         public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId, string? itemUrl)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUrl = HttpUtility.UrlDecode(itemUrl);
-
-            if (workspaceId == null)
-            {
-                var extent = ManagementProviderPlugin.GetExtentForWorkspaces(_workspaceLogic);
-                var rootElements = extent.elements();
-
-                return rootElements.OfType<IObject>().Select(x => ItemWithNameAndId.Create(x)!).ToArray();
-            }
-
-            if (itemUrl == null)
-            {
-                var workspaceExtent = ManagementProviderPlugin.GetExtentForWorkspaces(_workspaceLogic);
-                var rootElements = workspaceExtent.elements();
-
-                var foundExtent =
-                    rootElements
-                        .OfType<IObject>()
-                        .FirstOrDefault(x =>
-                            x.getOrDefault<string>(_DatenMeister._Management._Workspace.id) == workspaceId);
-
-                if (foundExtent == null)
-                {
-                    return NotFound();
-                }
-
-                var foundExtents =
-                    foundExtent.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
-
-                return
-                    foundExtents
-                        .OfType<IObject>()
-                        .Select(@t =>
-                        {
-                            var x = ItemWithNameAndId.Create(@t)!;
-                            var realExtent = _workspaceLogic.FindExtent(
-                                workspaceId,
-                                t.get<string>(_DatenMeister._Management._Extent.uri));
-                            x.extentUri = (realExtent as IUriExtent)?.contextURI() ?? string.Empty;
-                            if (t.isSet(_UML._CommonStructure._NamedElement.name))
-                            {
-                                x.name = realExtent.get<string>(_UML._CommonStructure._NamedElement.name);
-                            }
-
-                            if (string.IsNullOrEmpty(x.name))
-                            {
-                                x.name = (realExtent as IUriExtent)?.contextURI() ?? "Unknown";
-                            }
-
-                            return x;
-                        })
-                        .ToArray();
-            }
-
-            var workspace = _workspaceLogic.GetWorkspace(workspaceId);
-            if (workspace == null)
+            var result = _internal.GetComposites(workspaceId, itemUrl);
+            if (result == null)
             {
                 return NotFound();
             }
 
-            if (workspace.Resolve(itemUrl, ResolveType.NoMetaWorkspaces) is not IObject foundItem)
-            {
-                return NotFound();
-            }
+            return result;
+        }
 
-            var packagedItems = DefaultClassifierHints.GetPackagedElements(foundItem);
-            return packagedItems
-                .OfType<IObject>()
-                .Select(x => ItemWithNameAndId.Create(x)!).ToArray();
+        [HttpGet("api/elements/find_by_searchstring")]
+        public ActionResult<OutFindBySearchString> FindBySearchString(string search)
+        {
+            return _internal.FindBySearchString(search);
+        }
+
+
+        public class OutFindBySearchString
+        {
+            public const string ResultTypeNone = "none";
+            public const string ResultTypeReference = "reference";
+            public const string ResultTypeReferenceExtent = "referenceExtent";
+            public string resultType { get; set; } = ResultTypeNone;
+            public ItemWithNameAndId? reference { get; set; }
         }
     }
 }

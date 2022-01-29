@@ -45,7 +45,7 @@ function load(workspaceId: string, extent: string, itemId: string): JQueryPromis
 }
 
 export function loadNameOf(elementPosition: ApiModels.In.IElementPosition): JQuery.jqXHR<ApiModels.Out.INamedElement> {
-    return $.ajax(
+    return ApiConnection.get<ApiModels.Out.INamedElement>(
         Settings.baseUrl +
         "api/elements/get_name/" +
         encodeURIComponent(elementPosition.workspace) + "/" +
@@ -54,8 +54,20 @@ export function loadNameOf(elementPosition: ApiModels.In.IElementPosition): JQue
 }
 
 export function loadNameByUri(elementUri: string): JQuery.jqXHR<ApiModels.Out.INamedElement> {
-    return $.ajax(
+    return ApiConnection.get<ApiModels.Out.INamedElement>(
         Settings.baseUrl +
         "api/elements/get_name/" +
         encodeURIComponent(elementUri));
+}
+
+export function findBySearchString(searchString): JQuery.jqXHR<IOutFindBySearchString> {
+    return ApiConnection.get<IOutFindBySearchString>(
+        Settings.baseUrl +
+        "api/elements/find_by_searchstring?search=" +
+        encodeURIComponent(searchString));
+}
+
+export interface IOutFindBySearchString {
+    resultType: string;
+    reference: ItemWithNameAndId;
 }

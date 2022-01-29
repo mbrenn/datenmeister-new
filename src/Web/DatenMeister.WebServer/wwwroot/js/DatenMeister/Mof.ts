@@ -7,6 +7,8 @@ export class DmObject {
 
     uri: string;
 
+    isReference: boolean = false;
+
     extentUri: string;
 
     workspace: string;
@@ -199,13 +201,19 @@ export function convertJsonObjectToDmObject(element: object | string): DmObject 
     }
 
     const elementMetaClass = element["m"];
-    if (elementMetaClass !== undefined && elementMetaClass !== null) {        
-        result.metaClass =  elementMetaClass;
+    if (elementMetaClass !== undefined && elementMetaClass !== null) {
+        result.metaClass = elementMetaClass;
     }
 
     const elementUri = element["u"];
     if (elementUri !== undefined && elementUri !== null) {
         result.uri = elementUri;
+    }
+
+    const elementReferenceUri = element["r"];
+    if (elementReferenceUri !== undefined && elementReferenceUri !== null) {
+        result.uri = elementReferenceUri;
+        result.isReference = true;
     }
 
     const extentUri = element["e"];

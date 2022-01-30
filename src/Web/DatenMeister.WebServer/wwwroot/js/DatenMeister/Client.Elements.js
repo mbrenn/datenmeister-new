@@ -1,7 +1,7 @@
 define(["require", "exports", "./ApiConnection", "./Settings"], function (require, exports, ApiConnection, Settings) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
-    exports.loadNameByUri = exports.loadNameOf = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.findBySearchString = exports.loadNameByUri = exports.loadNameOf = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
     function getAllWorkspaces() {
         return load(undefined, undefined, undefined);
     }
@@ -26,7 +26,8 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
             if (extent !== undefined && extent !== null) {
                 if (itemId !== undefined && itemId !== null) {
                     url += '/' + encodeURIComponent(extent + '#' + itemId);
-                } else {
+                }
+                else {
                     url += '/' + encodeURIComponent(extent);
                 }
             }
@@ -37,7 +38,7 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
         return r;
     }
     function loadNameOf(elementPosition) {
-        return $.ajax(Settings.baseUrl +
+        return ApiConnection.get(Settings.baseUrl +
             "api/elements/get_name/" +
             encodeURIComponent(elementPosition.workspace) + "/" +
             encodeURIComponent(elementPosition.extentUri) + "/" +
@@ -45,10 +46,16 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
     }
     exports.loadNameOf = loadNameOf;
     function loadNameByUri(elementUri) {
-        return $.ajax(Settings.baseUrl +
+        return ApiConnection.get(Settings.baseUrl +
             "api/elements/get_name/" +
             encodeURIComponent(elementUri));
     }
     exports.loadNameByUri = loadNameByUri;
+    function findBySearchString(searchString) {
+        return ApiConnection.get(Settings.baseUrl +
+            "api/elements/find_by_searchstring?search=" +
+            encodeURIComponent(searchString));
+    }
+    exports.findBySearchString = findBySearchString;
 });
 //# sourceMappingURL=Client.Elements.js.map

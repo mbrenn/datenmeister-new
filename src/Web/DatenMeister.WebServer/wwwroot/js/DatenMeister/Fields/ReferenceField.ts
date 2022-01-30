@@ -12,7 +12,11 @@ export class Field extends BaseField implements IFormField {
             const value = dmElement.get(fieldName);
 
             this._list = $("<span></span>");
-            this._list.text(value.get('name'));
+            if (value === undefined) {
+                this._list.html("<em>undefined</em>");
+            } else {
+                this._list.text(value.get('name'));
+            }
 
             return this._list;
         } else {

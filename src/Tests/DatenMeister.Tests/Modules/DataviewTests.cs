@@ -12,7 +12,6 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration;
 using DatenMeister.Types;
 using NUnit.Framework;
 
@@ -54,7 +53,8 @@ namespace DatenMeister.Tests.Modules
             var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterPropertyNode);
             userViewExtent.elements().add(propertyFilter);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.property, "name");
-            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, _DatenMeister._DataViews.___ComparisonMode.Contains);
+            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode,
+                _DatenMeister._DataViews.___ComparisonMode.Contains);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.value, "ai");
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.input, extentSource);
 
@@ -65,13 +65,14 @@ namespace DatenMeister.Tests.Modules
 
             Assert.That(extent, Is.Not.Null);
 
-            var elements = extent.elements().OfType<IElement>().ToArray();
-            Assert.That(elements.All(x=> x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+            var elements = extent!.elements().OfType<IElement>().ToArray();
+            Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
             Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
             Assert.That(elements.Length, Is.GreaterThan(0));
 
             // Go to Non-Contain
-            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, _DatenMeister._DataViews.___ComparisonMode.DoesNotContain);
+            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode,
+                _DatenMeister._DataViews.___ComparisonMode.DoesNotContain);
             elements = extent.elements().OfType<IElement>().ToArray();
             Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
             Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
@@ -85,26 +86,27 @@ namespace DatenMeister.Tests.Modules
             var dataExtent = CreateDataForTest(dm);
 
             var factory = InMemoryObject.TemporaryFactory;
-            
+
             // Creates the dataview
             var extentSource = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
             extentSource.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
-            
+
             var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterPropertyNode);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.property, "name");
-            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, _DatenMeister._DataViews.___ComparisonMode.Contains);
+            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode,
+                _DatenMeister._DataViews.___ComparisonMode.Contains);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.value, "ai");
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.input, extentSource);
-            
+
             // Gets the elements
             var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
-            dataViewEvaluator.AddDynamicSource("input",  dataExtent.elements());
+            dataViewEvaluator.AddDynamicSource("input", dataExtent.elements());
 
             var elements = dataViewEvaluator.GetElementsForViewNode(propertyFilter)
                 .OfType<IElement>().ToArray();
-            
+
             // Evaluates the elements
-            Assert.That(elements.All(x=> x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+            Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
             Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
             Assert.That(elements.Length, Is.GreaterThan(0));
         }

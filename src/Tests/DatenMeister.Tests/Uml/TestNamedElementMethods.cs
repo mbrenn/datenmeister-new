@@ -25,17 +25,17 @@ namespace DatenMeister.Tests.Uml
                 workspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Feature.GetUri() ?? "Uri",
                     ResolveType.Default) as IElement;
             Assert.That(feature, Is.Not.Null);
-                        
-            var fullName = NamedElementMethods.GetFullName(feature);
+
+            var fullName = NamedElementMethods.GetFullName(feature!);
 
             Assert.That(fullName, Is.Not.Null);
             Assert.That(fullName, Is.EqualTo("UML::Classification::Feature"));
 
-            var umlExtent = workspaceCollection.GetWorkspace(WorkspaceNames.WorkspaceUml).FindExtent(WorkspaceNames.UriExtentUml);
+            var umlExtent =
+                workspaceCollection.GetWorkspace(WorkspaceNames.WorkspaceUml)!.FindExtent(WorkspaceNames.UriExtentUml);
             // now the other way
-            var foundElement = NamedElementMethods.GetByFullName(umlExtent.elements(), fullName);
+            var foundElement = NamedElementMethods.GetByFullName(umlExtent!.elements(), fullName);
             Assert.That(foundElement, Is.EqualTo(feature));
         }
-        
     }
 }

@@ -58,11 +58,10 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
 
-            tthis.createFormByCollection(parent, elements, configuration);
-
             debugElementToDom(elements, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
 
+            tthis.createFormByCollection(parent, elements, configuration);
         });
 
         parent.empty();
@@ -88,7 +87,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         const tabs = this.formElement.get("tab") as Array<Mof.DmObject>;
 
-        let tabCount = tabs.length;
+        let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {
             if (!tabs.hasOwnProperty(n)) {
                 continue;
@@ -114,7 +113,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                     // Removes the loading information
                     creatingElements.remove();
                 }
-
             });
         }
     }
@@ -241,13 +239,14 @@ export class DetailFormCreator implements IForm.IFormNavigation {
         $.when(defer1, defer2).then(function (element, form) {
             tthis.element = element;
             tthis.formElement = form;
-            tthis.workspace = workspace;            
+            tthis.workspace = workspace;
             tthis.extentUri = extentUri;
             tthis.itemId = itemId;
-            tthis.createFormByObject(parent, configuration);
 
             debugElementToDom(element, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
+
+            tthis.createFormByObject(parent, configuration);
         });
 
         parent.empty();

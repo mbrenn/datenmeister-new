@@ -38,6 +38,7 @@ export interface ItemWithNameAndId
     extentUri?: string;
     fullName?: string;
     id?: string;
+    workspace?: string;
 }
 
 // Defines the interfaces which are returned by the server

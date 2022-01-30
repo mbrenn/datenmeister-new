@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Provider
         public static string PathForTemporaryDataFile =>
             Path.Combine(
                 // ReSharper disable once AssignNullToNotNullAttribute
-                Path.GetDirectoryName(Assembly.GetAssembly(typeof(CSVExtentTests)).Location),
+                Path.GetDirectoryName(Assembly.GetAssembly(typeof(CSVExtentTests))!.Location)!,
                 "data.txt");
 
         [Test]
@@ -80,7 +80,7 @@ namespace DatenMeister.Tests.Provider
                     .ElementAt(0),
                 Is.EqualTo("Column 1"));
 
-            firstElement.set("Column 1", "eens");
+            firstElement!.set("Column 1", "eens");
 
             Assert.That(firstElement.getOrDefault<string>("Column 1"), Is.EqualTo("eens"));
 

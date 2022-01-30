@@ -27,7 +27,7 @@
 
     function CreateViewForm()
     {
-        requirejs(['DatenMeister/Forms'], function(Form) {
+        requirejs(['Forms'], function(Form) {
             const detailForm = new Form.DetailFormCreator();
             detailForm.createViewForm(
                 $("#form_view"),
@@ -49,7 +49,7 @@ $(function()
 
 function CreateEditForm()
 {
-    requirejs(['DatenMeister/Forms'], function(Form) {
+    requirejs(['Forms'], function(Form) {
         const detailForm = new Form.DetailFormCreator();
         detailForm.createEditForm(
             $("#form_view"),

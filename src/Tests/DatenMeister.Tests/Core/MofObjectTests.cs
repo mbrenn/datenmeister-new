@@ -30,7 +30,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(mofObject.IsPropertySet(property1), Is.True);
             Assert.That(mofObject.IsPropertySet(property2), Is.True);
 
-            Assert.That(mofObject.GetProperty(property1).ToString(), Is.EqualTo("Test"));
+            Assert.That(mofObject.GetProperty(property1)!.ToString(), Is.EqualTo("Test"));
             Assert.That(mofObject.GetProperty(property2), Is.EqualTo(property1));
         }
 
@@ -46,7 +46,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(mofObject.IsPropertySet(property1), Is.True);
             Assert.That(mofObject.IsPropertySet(property2), Is.True);
 
-            Assert.That(mofObject.GetProperty(property1).ToString(), Is.EqualTo("Test"));
+            Assert.That(mofObject.GetProperty(property1)?.ToString(), Is.EqualTo("Test"));
             Assert.That(mofObject.GetProperty(property2), Is.EqualTo(2));
         }
 
@@ -92,7 +92,7 @@ namespace DatenMeister.Tests.Core
 
             var proxiedElement = returned as ProxyMofElement;
             Assert.That(proxiedElement, Is.Not.Null);
-            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
+            Assert.That(proxiedElement!.GetProxiedElement(), Is.TypeOf<MofElement>());
 
             Assert.That(proxiedUriExtent.elements().remove(proxiedElement), Is.True);
             Assert.That(proxiedUriExtent.elements().size, Is.EqualTo(1));
@@ -104,7 +104,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(returned, Is.TypeOf<ProxyMofElement>());
 
             proxiedElement = returned as ProxyMofElement;
-            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
+            Assert.That(proxiedElement!.GetProxiedElement(), Is.TypeOf<MofElement>());
         }
 
         [Test]
@@ -117,21 +117,21 @@ namespace DatenMeister.Tests.Core
             var otherMofElement = InMemoryObject.CreateEmpty();
             var innerMofElement = factory.create(null);
 
-            Assert.That(((IHasExtent) mofElement).Extent, Is.Null);
-            Assert.That(((IHasExtent) otherMofElement).Extent, Is.Null);
+            Assert.That(((IHasExtent)mofElement).Extent, Is.Null);
+            Assert.That(((IHasExtent)otherMofElement).Extent, Is.Null);
 
             uriExtent.elements().add(mofElement);
 
-            Assert.That(((IHasExtent) mofElement).Extent, Is.SameAs(uriExtent));
-            Assert.That(((IHasExtent) otherMofElement).Extent, Is.Null);
+            Assert.That(((IHasExtent)mofElement).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent)otherMofElement).Extent, Is.Null);
 
             uriExtent.elements().add(otherMofElement);
 
-            Assert.That(((IHasExtent) mofElement).Extent, Is.SameAs(uriExtent));
-            Assert.That(((IHasExtent) otherMofElement).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent)mofElement).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent)otherMofElement).Extent, Is.SameAs(uriExtent));
 
             otherMofElement.set("Test", innerMofElement);
-            Assert.That(((IHasExtent) otherMofElement.get("Test")).Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent)otherMofElement.get("Test")!)!.Extent, Is.SameAs(uriExtent));
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace DatenMeister.Tests.Core
             var value = InMemoryObject.CreateEmpty();
             value.set("nr", 42);
             value.set("string", "ABC");
-            value.set("collection", new object[] {43, 2, 321, 231});
+            value.set("collection", new object[] { 43, 2, 321, 231 });
             var otherValue = InMemoryObject.CreateEmpty();
             otherValue.set("name", "Martin");
 
@@ -167,7 +167,7 @@ namespace DatenMeister.Tests.Core
 
             var retrieve = mofElement.get("point");
             Assert.That(retrieve is IObject, Is.True);
-            var asObject = (IObject) retrieve;
+            var asObject = (IObject)retrieve!;
             Assert.That(asObject.get("X"), Is.EqualTo(23));
             Assert.That(asObject.get("Y"), Is.EqualTo(24));
         }

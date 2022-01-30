@@ -1,9 +1,10 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = void 0;
     class DmObject {
         constructor() {
+            this.isReference = false;
             this.values = new Array();
         }
         set(key, value) {
@@ -39,10 +40,10 @@ define(["require", "exports"], function (require, exports) {
             return DmObject.valueToString(values);
         }
         setMetaClassByUri(metaClassUri) {
-            this.metaClass = {uri: metaClassUri};
+            this.metaClass = { uri: metaClassUri };
         }
         setMetaClassById(metaClassId) {
-            this.metaClass = {id: metaClassId};
+            this.metaClass = { id: metaClassId };
         }
         static valueToString(item, indent = "") {
             var result = "";
@@ -123,7 +124,8 @@ define(["require", "exports"], function (require, exports) {
                 arrayResult.push(convertJsonObjectToObjects(inner));
             }
             return arrayResult;
-        } else if ((typeof element === "object" || typeof element === "function") && (element !== null)) {
+        }
+        else if ((typeof element === "object" || typeof element === "function") && (element !== null)) {
             return convertJsonObjectToDmObject(element);
         }
         return element;
@@ -173,6 +175,11 @@ define(["require", "exports"], function (require, exports) {
         const elementUri = element["u"];
         if (elementUri !== undefined && elementUri !== null) {
             result.uri = elementUri;
+        }
+        const elementReferenceUri = element["r"];
+        if (elementReferenceUri !== undefined && elementReferenceUri !== null) {
+            result.uri = elementReferenceUri;
+            result.isReference = true;
         }
         const extentUri = element["e"];
         if (extentUri !== undefined && extentUri !== null) {

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
@@ -19,9 +20,21 @@ namespace DatenMeister.Json
     public class MofJsonConverter
     {
         /// <summary>
+        ///     Stores the extent from which the resolving is started. This information is used to
+        ///     evaluate the ResolveReferenceToOtherExtents flag properly
+        /// </summary>
+        private IExtent? rootExtent;
+
+        /// <summary>
         /// Defines the maximum recursion depth being allowed to be converted the elements
         /// </summary>
         public int MaxRecursionDepth { get; set; } = 10;
+
+        /// <summary>
+        ///     Gets or sets the flag whether references to other extents shall also be resolved or whether
+        ///     they shall just be given as a reference and the client side is responsible to resolve it.
+        /// </summary>
+        public bool ResolveReferenceToOtherExtents { get; set; } = false;
 
         /// <summary>
         ///     Converts the given element to a json object
@@ -31,8 +44,22 @@ namespace DatenMeister.Json
         public string ConvertToJson(object? value)
         {
             var builder = new StringBuilder();
+
+            rootExtent =
+                GetConnectedExtent(value);
+
             AppendValue(builder, value, -1 /* starts with -1 since AppendValue will directly increase the value */);
             return builder.ToString();
+        }
+
+        private static IExtent? GetConnectedExtent(object? value)
+        {
+            return (value is IHasExtent hasExtent
+                       ? hasExtent.Extent
+                       : null) ??
+                   (value is MofObject asMofObject
+                       ? asMofObject.ReferencedExtent
+                       : null);
         }
 
         /// <summary>
@@ -145,7 +172,12 @@ namespace DatenMeister.Json
         /// <param name="recursionDepth">Defines the recursion Depth</param>
         private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0)
         {
-            if (recursionDepth >= MaxRecursionDepth && propertyValue is IObject asObject)
+            var connectedExtent = GetConnectedExtent(propertyValue);
+            var forceReference = !ResolveReferenceToOtherExtents
+                                 && rootExtent != null
+                                 && rootExtent != connectedExtent;
+
+            if (propertyValue is IObject asObject && (recursionDepth >= MaxRecursionDepth || forceReference))
             {
                 builder.Append($"{{\"r\": \"{HttpUtility.JavaScriptStringEncode(asObject.GetUri() ?? "None")}\"}}");
                 return;
@@ -157,7 +189,7 @@ namespace DatenMeister.Json
             }
             else if (DotNetHelper.IsOfBoolean(propertyValue))
             {
-                builder.Append((bool) propertyValue ? "true" : "false");
+                builder.Append((bool)propertyValue ? "true" : "false");
             }
             else if (propertyValue is double propertyValueAsDouble)
             {
@@ -165,7 +197,7 @@ namespace DatenMeister.Json
             }
             else if (DotNetHelper.IsOfDateTime(propertyValue))
             {
-                builder.Append($"\"{(DateTime) propertyValue:o}\"");
+                builder.Append($"\"{(DateTime)propertyValue:o}\"");
             }
             else if (DotNetHelper.IsOfPrimitiveType(propertyValue))
             {

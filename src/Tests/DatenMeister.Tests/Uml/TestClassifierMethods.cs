@@ -6,7 +6,6 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager;
-using DatenMeister.Integration;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml
@@ -18,27 +17,29 @@ namespace DatenMeister.Tests.Uml
         public void TestCompositeProperties()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
+            var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
             Assert.That(classifier, Is.Not.Null);
 
-            var properties = ClassifierMethods.GetCompositingProperties(classifier).ToList();
+            var properties = ClassifierMethods.GetCompositingProperties(classifier!).ToList();
             Assert.That(properties, Is.Not.Null);
             var propertyList = properties.ToList();
             Assert.That(propertyList.Count(), Is.GreaterThan(0));
-            
-            var allProperties = ClassifierMethods.GetPropertiesOfClassifier(classifier).ToList();
+
+            var allProperties = ClassifierMethods.GetPropertiesOfClassifier(classifier!).ToList();
             Assert.That(allProperties, Is.Not.Null);
             var allPropertyList = allProperties.ToList();
             Assert.That(allPropertyList.Count, Is.GreaterThan(propertyList.Count));
         }
-        
+
 
         [Test]
         public void TestAddGeneralization()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
+            var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
             var extent = XmiExtensions.CreateXmiExtent("dm:///test");
             var factory = new MofFactory(extent);
@@ -59,7 +60,7 @@ namespace DatenMeister.Tests.Uml
             Assert.That(generalizations.Count, Is.EqualTo(1));
             Assert.That(generalizations.First().Equals(classGeneralized), Is.True);
         }
-        
+
         [Test]
         public void TestGeneralizedProperties()
         {
@@ -67,7 +68,8 @@ namespace DatenMeister.Tests.Uml
             using var scope = builder.BeginLifetimeScope();
 
             // Gets the logic
-            var feature = builder.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Feature.GetUri()!, ResolveType.Default)
+            var feature = builder.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.Classification.__Feature.GetUri()!, ResolveType.Default)
                 as IElement;
             var properties = ClassifierMethods.GetPropertyNamesOfClassifier(feature!).ToList();
 
@@ -84,12 +86,15 @@ namespace DatenMeister.Tests.Uml
         public void TestGeneralizationEvaluation()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            
-            var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
+
+            var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
-            var class2 = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.StructuredClassifiers.__Class.GetUri()!, ResolveType.Default)
+            var class2 = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.StructuredClassifiers.__Class.GetUri()!, ResolveType.Default)
                 as IElement;
-            var comment = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.CommonStructure.__Comment.GetUri()!, ResolveType.Default)
+            var comment = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.CommonStructure.__Comment.GetUri()!, ResolveType.Default)
                 as IElement;
 
             var isSpecialized = ClassifierMethods.IsSpecializedClassifierOf(
@@ -107,10 +112,12 @@ namespace DatenMeister.Tests.Uml
         public void TestIsOfPrimitiveType()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            
-            var activity = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Activities.__Activity.GetUri()!, ResolveType.Default)
+
+            var activity = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_UML.TheOne.Activities.__Activity.GetUri()!, ResolveType.Default)
                 as IElement;
-            var integer = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_PrimitiveTypes.TheOne.__Integer.GetUri()!, ResolveType.Default)
+            var integer = dm.WorkspaceLogic.GetUmlWorkspace()
+                    .Resolve(_PrimitiveTypes.TheOne.__Integer.GetUri()!, ResolveType.Default)
                 as IElement;
 
             Assert.That(ClassifierMethods.IsOfPrimitiveType(activity!), Is.False);

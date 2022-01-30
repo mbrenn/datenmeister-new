@@ -9,7 +9,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
@@ -83,7 +83,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var formFactory = GiveMe.Scope.Resolve<FormFactory>();
                 var form = formFactory.CreateExtentFormForItem(
                                SelectedItem,
-                               new FormFactoryConfiguration(){ViewModeId = CurrentViewModeId})
+                               new FormFactoryConfiguration() { ViewModeId = CurrentViewModeId })
                            ?? throw new InvalidOperationException("form == null");
                 var formDefinition = overridingDefinition ??
                                      new FormDefinition(form);

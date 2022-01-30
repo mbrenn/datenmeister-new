@@ -1,6 +1,6 @@
 define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1, DomHelper_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.getForm = exports.DetailFormCreator = exports.CollectionFormCreator = exports.FormModel = void 0;
     var DmObject = Mof.DmObject;
     var FormModel;
@@ -41,9 +41,9 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
-                tthis.createFormByCollection(parent, elements, configuration);
                 (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+                tthis.createFormByCollection(parent, elements, configuration);
             });
             parent.empty();
             parent.text("Loading content and form...");
@@ -62,7 +62,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
             const creatingElements = $("<div>Creating elements...</div>");
             parent.append(creatingElements);
             const tabs = this.formElement.get("tab");
-            let tabCount = tabs.length;
+            let tabCount = Array.isArray(tabs) ? tabs.length : 0;
             for (let n in tabs) {
                 if (!tabs.hasOwnProperty(n)) {
                     continue;
@@ -184,9 +184,9 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
                 tthis.itemId = itemId;
-                tthis.createFormByObject(parent, configuration);
                 (0, DomHelper_1.debugElementToDom)(element, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+                tthis.createFormByObject(parent, configuration);
             });
             parent.empty();
             parent.text("Loading content and form...");

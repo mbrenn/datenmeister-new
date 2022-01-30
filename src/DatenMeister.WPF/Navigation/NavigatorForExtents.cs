@@ -20,9 +20,9 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Extent.Manager.ExtentStorage.Validators;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Helper;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -44,7 +44,7 @@ namespace DatenMeister.WPF.Navigation
             string workspaceId)
         {
             return window.NavigateTo(
-                () => new ExtentList {WorkspaceId = workspaceId},
+                () => new ExtentList { WorkspaceId = workspaceId },
                 NavigationMode.List);
         }
 
@@ -54,7 +54,8 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost">Host for navigation being to be used</param>
         /// <param name="extentUrl">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public static async Task<NavigateToElementDetailResult?> OpenDetailOfExtent(INavigationHost navigationHost, string extentUrl)
+        public static async Task<NavigateToElementDetailResult?> OpenDetailOfExtent(INavigationHost navigationHost,
+            string extentUrl)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var uri = WorkspaceNames.UriExtentWorkspaces + "#" + WebUtility.UrlEncode(extentUrl);
@@ -76,14 +77,16 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost">Host for navigation being to be used</param>
         /// <param name="extent">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public static async Task<NavigateToElementDetailResult?> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
+        public static async Task<NavigateToElementDetailResult?> OpenPropertiesOfExtent(INavigationHost navigationHost,
+            IExtent extent)
         {
             if (extent is MofExtent mofExtent)
             {
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var managementWorkspace = workspaceLogic.GetManagementWorkspace();
                 var resolvedForm = managementWorkspace.ResolveElement(
-                    $"{WorkspaceNames.UriExtentInternalForm}#Workspace.ExtentDetail", ResolveType.NoMetaWorkspaces, false);
+                    $"{WorkspaceNames.UriExtentInternalForm}#Workspace.ExtentDetail", ResolveType.NoMetaWorkspaces,
+                    false);
                 var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
 
                 // Look for the checkbox item list for the possible extent types
@@ -92,12 +95,13 @@ namespace DatenMeister.WPF.Navigation
                     // Add the options for the extent types
                     var foundExtentType =
                         resolvedForm.GetByPropertyFromCollection(
-                            _DatenMeister._Forms._ListForm.field, 
+                            _DatenMeister._Forms._ListForm.field,
                             _DatenMeister._Forms._Form.name,
                             _DatenMeister._Management._Extent.extentType).FirstOrDefault();
                     if (foundExtentType == null)
                     {
-                        Logger.Error($"Found Form #ExtentPropertyDetailForm did not find the field ${_DatenMeister._Management._Extent.extentType}");
+                        Logger.Error(
+                            $"Found Form #ExtentPropertyDetailForm did not find the field ${_DatenMeister._Management._Extent.extentType}");
                     }
                     else
                     {
@@ -117,9 +121,9 @@ namespace DatenMeister.WPF.Navigation
                 }
 
                 // Gets the properties of the extent themselves
-                var uri = 
+                var uri =
                     WorkspaceNames.UriExtentWorkspaces + "#" +
-                    WebUtility.UrlEncode(((IUriExtent) mofExtent).contextURI());
+                    WebUtility.UrlEncode(((IUriExtent)mofExtent).contextURI());
                 var foundItem = workspaceLogic.FindItem(uri);
                 if (foundItem == null)
                 {
@@ -135,7 +139,7 @@ namespace DatenMeister.WPF.Navigation
                         AttachedElement = foundItem,
                         Title = "Edit Extent Properties"
                     };
-                    
+
                     return await NavigatorForItems.NavigateToElementDetailView(
                         navigationHost,
                         config);
@@ -146,7 +150,7 @@ namespace DatenMeister.WPF.Navigation
                 navigationHost,
                 new ExtentPropertyObject(extent));
         }
-        
+
         /// <summary>
         /// Opens the dialog in which the user can create a new xmi extent
         /// </summary>
@@ -161,12 +165,12 @@ namespace DatenMeister.WPF.Navigation
             var form =
                 viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
                 ?? throw new InvalidOperationException(ManagementViewDefinitions.IdNewXmiDetailForm + " was not found");
-            
+
             var formDefinition = new FormDefinition(form);
-            formDefinition.Validators.Add( new NewXmiExtentValidator(
+            formDefinition.Validators.Add(new NewXmiExtentValidator(
                 GiveMe.Scope.WorkspaceLogic,
                 workspaceId));
-            
+
             var navigateToItemConfig = new NavigateToItemConfig
             {
                 Form = formDefinition
@@ -178,12 +182,12 @@ namespace DatenMeister.WPF.Navigation
                            $"{ManagementViewDefinitions.IdNewXmiDetailForm} " +
                            "was not found";
                 Logger.Error(text);
-                
+
                 MessageBox.Show(text);
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailView(window, navigateToItemConfig);
-            var detailElement = result?.DetailElement ?? 
+            var detailElement = result?.DetailElement ??
                                 throw new InvalidOperationException("detailElement == null");
             if (result.Result == NavigationResult.Saved)
             {

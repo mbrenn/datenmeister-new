@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.AttachedExtent;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Modules.AttachedExtent;
 using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Navigation;
 
@@ -23,13 +23,13 @@ namespace DatenMeister.WPF.Modules.AttachedExtent
             {
                 yield break;
             }
-            
+
             var uriExtent = element.GetUriExtentOf();
             if (uriExtent == null)
             {
                 yield break;
             }
-            
+
             var attachedExtents = _attachedExtentHandler.FindAttachedExtents(uriExtent);
             foreach (var attachedExtent in attachedExtents)
             {

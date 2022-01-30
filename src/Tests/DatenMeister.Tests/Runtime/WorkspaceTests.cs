@@ -63,11 +63,11 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));
             var first = newWorkSpaceCollection.Workspaces.FirstOrDefault(x => x.id == "test");
             Assert.That(first, Is.Not.Null);
-            Assert.That(first.id, Is.EqualTo("test"));
+            Assert.That(first!.id, Is.EqualTo("test"));
             Assert.That(first.annotation, Is.EqualTo("Continue"));
             first = newWorkSpaceCollection.Workspaces.FirstOrDefault(x => x.id == "another");
             Assert.That(first, Is.Not.Null);
-            Assert.That(first.id, Is.EqualTo("another"));
+            Assert.That(first!.id, Is.EqualTo("another"));
             Assert.That(first.annotation, Is.EqualTo("annotation"));
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));
@@ -91,11 +91,11 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));
             var first = newWorkSpaceCollection.Workspaces.FirstOrDefault(x => x.id == "test");
             Assert.That(first, Is.Not.Null);
-            Assert.That(first.id, Is.EqualTo("test"));
+            Assert.That(first!.id, Is.EqualTo("test"));
             Assert.That(first.annotation, Is.EqualTo("Continue"));
             first = newWorkSpaceCollection.Workspaces.FirstOrDefault(x => x.id == "another");
             Assert.That(first, Is.Not.Null);
-            Assert.That(first.id, Is.EqualTo("another"));
+            Assert.That(first!.id, Is.EqualTo("another"));
             Assert.That(first.annotation, Is.EqualTo("annotation"));
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));

@@ -15,7 +15,6 @@
     <ItemGroup>
       <ProjectReference Include="..\DatenMeister.BootStrap\DatenMeister.BootStrap.csproj" />
       <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
-      <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
     </ItemGroup>
 
     <ItemGroup>

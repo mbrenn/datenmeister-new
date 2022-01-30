@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Uml.Helper;
 
@@ -31,6 +32,11 @@ namespace DatenMeister.Core.Runtime
         public ExtentUrlNavigator(MofUriExtent extent)
         {
             _extent = extent;
+        }
+
+        private IResolveHook? GetResolveHook(string parameter)
+        {
+            return _extent.ScopeStorage?.Get<ResolveHooks>().Get(parameter);
         }
 
         /// <summary>
@@ -66,7 +72,7 @@ namespace DatenMeister.Core.Runtime
                 return null;
             }
 
-            var queryString = ParseQueryString(uri, posQuestion);
+            var queryString = ParseQueryString(uri, posQuestion, posHash);
 
             object? foundItem = null;
             // Ok, not found, try to find it
@@ -116,7 +122,7 @@ namespace DatenMeister.Core.Runtime
                         {
                             // Caching is only useful for fragments since the cache lookup 
                             // Tries to find an item by the element
-                            _cacheIds[fragmentUri] = (MofElement) foundItem;
+                            _cacheIds[fragmentUri] = (MofElement)foundItem;
                         }
                     }
                 }
@@ -136,33 +142,23 @@ namespace DatenMeister.Core.Runtime
                 foundItem = mofElement.get<IReflectiveCollection>(property);
             }
 
-            // Now check whether we have a dataview
-            var dataview = queryString.Get("dataview");
-            if (dataview != null && foundItem is IReflectiveCollection reflectiveCollection)
-            {
-                if (_extent.ScopeStorage == null)
-                {
-                    Logger.Error("Dataview queried but extent does not have Scope Storage set");
-                    throw new InvalidOperationException("Dataview queried but extent does not have Scope Storage set");
-                }
 
-                var dataviewElement = _extent.ResolveElement(dataview, ResolveType.Default);
-                if (dataviewElement == null)
+            foreach (var key in queryString.AllKeys.Where(
+                         x => x != "fn" && x != "prop" && x != null))
+            {
+                var resolveHook = GetResolveHook(key!);
+                if (resolveHook != null)
                 {
-                    Logger.Warn($"Dataview was not found: {dataview}");
-                }
-                else
-                {
-                    var dataViewEvaluation = new DataViewEvaluation(_extent.ScopeStorage.Get<DataViewNodeFactories>());
-                    dataViewEvaluation.AddDynamicSource("input", reflectiveCollection);
-                    foundItem = dataViewEvaluation.GetElementsForViewNode(dataviewElement);
+                    var parameters = new ResolveHookParameters(queryString, foundItem, _extent);
+
+                    foundItem = resolveHook.Resolve(parameters);
                 }
             }
 
             return foundItem;
         }
 
-        private static NameValueCollection ParseQueryString(string uri, int posQuestion)
+        private static NameValueCollection ParseQueryString(string uri, int posQuestion, int posHash)
         {
             try
             {
@@ -170,7 +166,10 @@ namespace DatenMeister.Core.Runtime
                 NameValueCollection parsedValue;
                 if (posQuestion != -1)
                 {
-                    var query = uri.Substring(posQuestion + 1);
+                    var query =
+                        posHash == -1
+                            ? uri.Substring(posQuestion + 1)
+                            : uri.Substring(posQuestion + 1, posHash - posQuestion - 1);
                     if (query.IndexOf('=') == -1)
                     {
                         // If there is no real query string, create one with full name
@@ -218,7 +217,7 @@ namespace DatenMeister.Core.Runtime
                     if (_extent == null) throw new InvalidOperationException("_extent is null");
 #endif
                     var resultElement = new MofElement(resultingObject, _extent)
-                        {Extent = _extent};
+                        { Extent = _extent };
                     return resultElement;
                 }
             }

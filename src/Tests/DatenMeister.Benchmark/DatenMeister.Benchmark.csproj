@@ -10,7 +10,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
-      <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
     </ItemGroup>
 
     <ItemGroup>

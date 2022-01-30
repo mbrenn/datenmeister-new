@@ -68,16 +68,27 @@ export function convertToDom(mofElement: any): JQuery{
             list.append(row);
         }
 
-        for (var n in mofElement.values) {
-            let value = mofElement.get(n);
-
+        if (asElement.uri !== undefined) {
             const row = $("<li></li>");
             const span = $("<span></span>");
-            span.text(n + ": ");
-            span.append(convertToDom(value));
+            span.html("<em>Uri</em>: ");
+            span.append(convertToDom(asElement.uri));
             row.append(span);
 
             list.append(row);
+        }
+        if (asElement.values !== undefined) {
+            for (let n in asElement.values) {
+                let value = asElement.get(n);
+
+                const row = $("<li></li>");
+                const span = $("<span></span>");
+                span.text(n + ": ");
+                span.append(convertToDom(value));
+                row.append(span);
+
+                list.append(row);
+            }
         }
 
         return list;

@@ -39,7 +39,7 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
             Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace), Is.Not.Null);
         }
-        
+
         [Test]
         public async Task TestCopyingFromExtentToExtentWithDeletion()
         {
@@ -158,7 +158,7 @@ namespace DatenMeister.Tests.Modules.Actions
             // Check that packagedElement is the property
             var sourceElement = source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as IObject;
             Assert.That(sourceElement, Is.Not.Null);
-            Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement),
+            Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement!),
                 Is.EqualTo("packagedElement"));
 
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
@@ -192,7 +192,7 @@ namespace DatenMeister.Tests.Modules.Actions
             // Check that packagedElement is the property
             var sourceElement = source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as IObject;
             Assert.That(sourceElement, Is.Not.Null);
-            Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement),
+            Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement!),
                 Is.EqualTo("packagedElement"));
 
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)

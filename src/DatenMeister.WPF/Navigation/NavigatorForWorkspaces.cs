@@ -14,12 +14,11 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Helper;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -59,7 +58,8 @@ namespace DatenMeister.WPF.Navigation
             if (formElement == null)
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
-                formElement = creator.CreateDetailFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
+                formElement =
+                    creator.CreateDetailFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailView(
@@ -73,7 +73,7 @@ namespace DatenMeister.WPF.Navigation
             {
                 var detailElement =
                     result.DetailElement ?? throw new InvalidOperationException("DetailElement == null");
-                
+
                 var workspaceId = detailElement.getOrDefault<string>("id");
                 var annotation = detailElement.getOrDefault<string>("annotation");
 

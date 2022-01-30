@@ -1,14 +1,19 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.DataViews;
+using DatenMeister.Plugins;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime
@@ -92,7 +97,7 @@ namespace DatenMeister.Tests.Runtime
                 as IReflectiveSequence;
 
             Assert.That(firstChild, Is.Not.Null);
-            var asList = firstChild.ToList<object>();
+            var asList = firstChild!.ToList<object>();
 
             Assert.That(asList.Count, Is.EqualTo(3));
             Assert.That(
@@ -113,7 +118,7 @@ namespace DatenMeister.Tests.Runtime
                 as IReflectiveSequence;
 
             Assert.That(firstChild, Is.Not.Null);
-            var asList = firstChild.ToList<object>();
+            var asList = firstChild!.ToList<object>();
 
             Assert.That(asList.Count, Is.EqualTo(1));
             Assert.That(
@@ -134,7 +139,7 @@ namespace DatenMeister.Tests.Runtime
 
             Assert.That(firstChild, Is.Not.Null);
 
-            var resolvedChildDirectly = extent.GetUriResolver().ResolveElement(firstChild, ResolveType.Default, false);
+            var resolvedChildDirectly = extent.GetUriResolver().ResolveElement(firstChild!, ResolveType.Default, false);
             Assert.That(resolvedChildDirectly, Is.Not.Null);
             Assert.That(resolvedChildDirectly, Is.EqualTo(firstChild));
 
@@ -152,7 +157,31 @@ namespace DatenMeister.Tests.Runtime
             var found = extent.GetUriResolver().Resolve(TestUri, ResolveType.Default);
             Assert.That(found, Is.Not.Null);
             Assert.That(found is IUriExtent, Is.True);
-            Assert.That(found.Equals(extent));
+            Assert.That(found!.Equals(extent));
+        }
+
+        [Test]
+        public void TestResolveHook()
+        {
+            var extent = GetTestExtent();
+            var hook = new TestResolveHookClass();
+            extent.ScopeStorage!.Get<ResolveHooks>().Add("count", hook);
+
+            Assert.That(hook.Counts, Is.EqualTo(0));
+            var firstChild = extent.GetUriResolver().Resolve(TestUri + "?count=4#child1", ResolveType.Default);
+            Assert.That(firstChild, Is.Not.Null);
+            Assert.That(hook.Counts, Is.EqualTo(4));
+        }
+
+        public class TestResolveHookClass : IResolveHook
+        {
+            public int Counts { get; set; }
+
+            public object? Resolve(ResolveHookParameters hookParameters)
+            {
+                Counts += Convert.ToInt32(hookParameters.QueryString["count"]);
+                return hookParameters.CurrentItem;
+            }
         }
 
         /// <summary>
@@ -190,7 +219,11 @@ namespace DatenMeister.Tests.Runtime
 </item>";
 
             var scopeStorage = new ScopeStorage();
-            scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+            var dataViewPlugin = new DataViewPlugin(
+                workspaceLogic, new DataViewLogic(workspaceLogic, scopeStorage), scopeStorage);
+            dataViewPlugin.StartThrough();
+
             var provider = new XmiProvider(XDocument.Parse(document));
             return new MofUriExtent(provider, TestUri, scopeStorage);
         }

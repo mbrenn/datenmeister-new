@@ -18,11 +18,11 @@ namespace DatenMeister.Tests.Runtime.Extents
         {
             var settings = DatenMeisterTests.GetIntegrationSettings();
             settings.IsLockingActivated = true;
-            
+
             var settings2 = DatenMeisterTests.GetIntegrationSettings();
             settings2.IsLockingActivated = true;
             settings2.DatabasePath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
                 "testing/datenmeister/data2");
 
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(true, settings))
@@ -30,15 +30,15 @@ namespace DatenMeister.Tests.Runtime.Extents
                 using (var dm2 = DatenMeisterTests.GetDatenMeisterScope(true, settings2))
                 {
                     try
-                    {    
-                        
+                    {
                         var extentSettings =
-                            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+                            InMemoryObject.CreateEmpty(
+                                _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
                         extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
                             "dm:///test");
                         extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
                             Path.Combine(
-                                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
                                 "testing/datenmeister/x.xmi"));
                         extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                             "Data");

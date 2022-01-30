@@ -93,7 +93,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             // Now verify the full href loading
             var otherElement = (extent2.elements().FirstOrDefault() as IElement)?.get("sub") as IElement;
             Assert.That(otherElement, Is.Not.Null);
-            Assert.That(otherElement.get("value").ToString(), Is.EqualTo("23"));
+            Assert.That(otherElement?.get("value")?.ToString(), Is.EqualTo("23"));
             Assert.That(otherElement, Is.EqualTo(foundElement));
         }
     }

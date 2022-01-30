@@ -13,6 +13,94 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
     {
+        /// <summary>
+        /// Stores the cached metaclass to speed-up lookup
+        /// </summary>
+        private IElement? _cachedMetaClass;
+
+        /// <summary>
+        /// Initialized a new instance of the MofElement class which is an abstraction of the provided database.
+        /// </summary>
+        /// <param name="providedObject">Provided object by database</param>
+        /// <param name="extent">Extent to which the object is allocated to</param>
+        /// <param name="referenceElement"></param>
+        public MofElement(
+            IProviderObject providedObject,
+            MofExtent? extent,
+            IElement? referenceElement = null)
+            : base(providedObject, extent, referenceElement)
+        {
+        }
+
+        /// <inheritdoc />
+        public IElement? metaclass => getMetaClass();
+
+        public override bool isSet(string property)
+        {
+            if (!IsSlimUmlEvaluation)
+            {
+                // Checks whether we have a derived property 
+                var metaClass = getMetaClass();
+
+                if (metaclass?.GetExtentOf() is MofExtent extent
+                    && metaClass != null
+                    && extent.DynamicFunctionManager?.HasDerivedProperty(metaClass, property) == true)
+                {
+                    return true;
+                }
+            }
+
+            return base.isSet(property);
+        }
+
+        /// <inheritdoc />
+        IElement? IElement.getMetaClass()
+        {
+            return getMetaClass();
+        }
+
+        /// <inheritdoc />
+        public IElement? container()
+        {
+            var containerElement = ProviderObject.GetContainer();
+            return containerElement != null
+                ? new MofElement(containerElement, Extent ?? ReferencedExtent)
+                    { Extent = Extent }
+                : null;
+        }
+
+        /// <summary>
+        /// Sets the container for the element
+        /// </summary>
+        public IObject? Container
+        {
+            set => ProviderObject.SetContainer(((MofObject?)value)?.ProviderObject);
+        }
+
+        /// <summary>
+        /// Sets the meta class for the given element
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be set</param>
+        public void SetMetaClass(IElement? metaClass)
+        {
+            _cachedMetaClass = metaClass is MofElement ? metaClass : null;
+            if (metaClass is MofElement mofElement)
+            {
+                if (mofElement.Extent == null)
+                {
+                    throw new InvalidOperationException("The given metaclass is not connected to an element");
+                }
+
+                ProviderObject.MetaclassUri = ((MofUriExtent)mofElement.Extent).uri(mofElement);
+            }
+            else
+            {
+                ProviderObject.MetaclassUri = metaClass?.GetUri() ?? string.Empty;
+            }
+
+            UpdateContent();
+        }
+
         /// <inheritdoc cref="ICanSetId.Id" />
         public string? Id
         {
@@ -27,23 +115,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                         throw new InvalidOperationException("The ID is already set within the extent.");
                     }
                 }
-                
+
                 ProviderObject.Id = value;
             }
-        }
-
-        /// <summary>
-        /// Initialized a new instance of the MofElement class which is an abstraction of the provided database.
-        /// </summary>
-        /// <param name="providedObject">Provided object by database</param>
-        /// <param name="extent">Extent to which the object is allocated to</param>
-        /// <param name="referenceElement"></param>
-        public MofElement(
-            IProviderObject providedObject,
-            MofExtent? extent,
-            IElement? referenceElement = null)
-            : base(providedObject, extent, referenceElement)
-        {
         }
 
         /// <summary>
@@ -63,33 +137,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">Extent to be set as start for references</param>
         /// <returns>The element itself for chaining</returns>
         public MofElement SetReferencedExtent(IUriExtent extent)
-            => SetReferencedExtent((MofExtent) extent);
-
-        /// <inheritdoc />
-        public IElement? metaclass => getMetaClass();
-
-        /// <summary>
-        /// Stores the cached metaclass to speed-up lookup
-        /// </summary>
-        private IElement? _cachedMetaClass;
-
-        public override bool isSet(string property)
-        {
-            if (!IsSlimUmlEvaluation)
-            {
-                // Checks whether we have a derived property 
-                var metaClass = getMetaClass();
-
-                if (metaclass?.GetExtentOf() is MofExtent extent
-                    && metaClass != null
-                    && extent.DynamicFunctionManager?.HasDerivedProperty(metaClass, property) == true)
-                {
-                    return true;
-                }
-            }
-            
-            return base.isSet(property);
-        }
+            => SetReferencedExtent((MofExtent)extent);
 
         protected override (bool, object?) GetDynamicProperty(string property)
         {
@@ -110,12 +158,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return (false, null);
-        }
-
-        /// <inheritdoc />
-        IElement? IElement.getMetaClass()
-        {
-            return getMetaClass();
         }
 
         /// <inheritdoc />
@@ -142,49 +184,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             return result;
         }
 
-        /// <inheritdoc />
-        public IElement? container()
-        {
-            var containerElement = ProviderObject.GetContainer();
-            return containerElement != null
-                ? new MofElement(containerElement, Extent ?? ReferencedExtent)
-                    {Extent = Extent}
-                : null;
-        }
-
-        /// <summary>
-        /// Sets the container for the element
-        /// </summary>
-        public IObject? Container
-        {
-            set => ProviderObject.SetContainer(((MofObject?) value)?.ProviderObject);
-        }
-
-        /// <summary>
-        /// Sets the meta class for the given element
-        /// </summary>
-        /// <param name="metaClass">Metaclass to be set</param>
-        public void SetMetaClass(IElement metaClass)
-        {
-            _cachedMetaClass = metaClass is MofElement ? metaClass : null;
-            if (metaClass is MofElement mofElement)
-            {
-                if (mofElement.Extent == null)
-                {
-                    throw new InvalidOperationException("The given metaclass is not connected to an element");
-                }
-
-                ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(mofElement);
-
-            }
-            else
-            {
-                ProviderObject.MetaclassUri = metaClass.GetUri();
-            }
-
-            UpdateContent();
-        }
-
         /// <summary>
         /// Sets the metaclass by directly setting the uri
         /// </summary>
@@ -193,7 +192,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             _cachedMetaClass = null;
             ProviderObject.MetaclassUri = metaClassUri;
-            
+
             UpdateContent();
         }
 

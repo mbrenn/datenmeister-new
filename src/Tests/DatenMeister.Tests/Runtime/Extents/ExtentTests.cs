@@ -36,7 +36,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.UriExtentWorkspaces);
             Assert.That(workspaceExtent, Is.Not.Null);
-            var asData = workspaceExtent.elements().Cast<IElement>()
+            var asData = workspaceExtent!.elements().Cast<IElement>()
                 .First(x => x.get("id")?.ToString() == WorkspaceNames.WorkspaceData);
             var asManagement = workspaceExtent.elements().Cast<IElement>()
                 .First(x => x.get("id")?.ToString() == WorkspaceNames.WorkspaceManagement);
@@ -54,7 +54,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
             Assert.That(extents, Is.Not.Null);
 
-            var mofExtent = extents.Cast<IElement>()
+            var mofExtent = extents!.Cast<IElement>()
                 .First(x => x.get("uri")?.ToString() == WorkspaceNames.UriExtentMof);
             Assert.That(mofExtent, Is.Not.Null);
         }
@@ -96,7 +96,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var foundExtent = workspaceLogic.FindExtent("dm:///data");
                 Assert.That(foundExtent, Is.Not.Null);
 
-                Assert.That(foundExtent.get("test"), Is.EqualTo("this is a test"));
+                Assert.That(foundExtent!.get("test"), Is.EqualTo("this is a test"));
                 Assert.That(foundExtent.GetConfiguration().ExtentType, Is.EqualTo("Happy Extent"));
 
                 dm.UnuseDatenMeister();
@@ -122,7 +122,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(setDefaultTypes, Is.Not.Null);
             Assert.That(zipCodeModel, Is.Not.Null);
 
-            Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            Assert.That(setDefaultTypes!.FirstOrDefault(), Is.EqualTo(zipCodeModel));
         }
 
         [Test]
@@ -158,8 +158,8 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
 
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
-                loadedExtent.Extent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
-                extentLoader.StoreExtent(loadedExtent.Extent);
+                loadedExtent.Extent!.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
+                extentLoader.StoreExtent(loadedExtent.Extent!);
 
                 dm.UnuseDatenMeister();
             }
@@ -169,10 +169,10 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
                 var foundExtent = workspaceLogic.FindExtent("dm:///data");
                 Assert.That(foundExtent, Is.Not.Null);
-                Assert.That(foundExtent.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Ordinal));
+                Assert.That(foundExtent!.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Ordinal));
 
-                foundExtent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Guid;
-                Assert.That(foundExtent.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Guid));
+                foundExtent!.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Guid;
+                Assert.That(foundExtent!.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Guid));
 
                 dm.UnuseDatenMeister();
             }
@@ -198,27 +198,27 @@ namespace DatenMeister.Tests.Runtime.Extents
             // Per Default, one is included
             var setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
             Assert.That(setDefaultTypes, Is.Not.Null);
-            Assert.That(setDefaultTypes.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypes!.Count, Is.EqualTo(1));
             Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
             // Checks, if adding another one does not work
-            zipExample.GetConfiguration().AddDefaultTypes(new[] {zipCodeModel});
+            zipExample.GetConfiguration().AddDefaultTypes(new[] { zipCodeModel! });
             setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
             Assert.That(setDefaultTypes, Is.Not.Null);
-            Assert.That(setDefaultTypes.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypes!.Count, Is.EqualTo(1));
             Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
             // Checks, if removing works
             zipExample.GetConfiguration().SetDefaultTypes(new IElement[] { });
             setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
             Assert.That(setDefaultTypes, Is.Not.Null);
-            Assert.That(setDefaultTypes.Count, Is.EqualTo(0));
+            Assert.That(setDefaultTypes!.Count, Is.EqualTo(0));
 
             // Checks, if adding works now correctly
-            zipExample.GetConfiguration().AddDefaultTypes(new[] {zipCodeModel});
+            zipExample.GetConfiguration().AddDefaultTypes(new[] { zipCodeModel! });
             setDefaultTypes = zipExample.GetConfiguration().GetDefaultTypes()?.ToList();
             Assert.That(setDefaultTypes, Is.Not.Null);
-            Assert.That(setDefaultTypes.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypes!.Count, Is.EqualTo(1));
             Assert.That(setDefaultTypes.FirstOrDefault(), Is.EqualTo(zipCodeModel));
         }
 
@@ -243,7 +243,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(list[0], Is.EqualTo("abc"));
             Assert.That(list[1], Is.EqualTo("def"));
 
-            configuration.ExtentTypes = new[] {"abc", "def"};
+            configuration.ExtentTypes = new[] { "abc", "def" };
             Assert.That(configuration.ExtentType, Is.EqualTo("abc def"));
             list = configuration.ExtentTypes.ToList();
             Assert.That(list, Is.Not.Null);
@@ -401,7 +401,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             property3.set(_UML._Classification._Property.defaultValue, 18);
 
             type.set(_UML._StructuredClassifiers._StructuredClassifier.ownedAttribute,
-                new[] {property1, property2, property3});
+                new[] { property1, property2, property3 });
             type.set(_UML._CommonStructure._NamedElement.name, "your");
 
             userTypes.elements().add(type);
@@ -460,7 +460,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             package2.set(_UML._CommonStructure._NamedElement.name, "package2");
             element1.set(_UML._CommonStructure._NamedElement.name, "element1");
 
-            package1.set(_UML._Packages._Package.packagedElement, new[] {element1});
+            package1.set(_UML._Packages._Package.packagedElement, new[] { element1 });
 
             uriExtent.elements().add(package1);
             uriExtent.elements().add(package2);

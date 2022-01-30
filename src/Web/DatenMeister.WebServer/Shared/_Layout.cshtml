@@ -37,14 +37,14 @@
                     </li>
 
                 </ul>
-                <form class="d-flex">
+                <div class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Command" aria-label="Command">
                     <button class="btn btn-outline-success me-2" type="submit">Execute</button>
-                </form>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                </div>
+                <div class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="dm-search-textbox">
+                    <button class="btn btn-outline-success" type="submit" id="dm-search-btn">Search</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -70,6 +70,6 @@
 
 
 <script src="~/js/bootstrap.bundle.min.js"></script>
-<script data-main="js/datenmeister" src="~/js/require.js"></script>
+<script data-main="js/datenmeister/init" src="~/js/require.js"></script>
 </body>
 </html>

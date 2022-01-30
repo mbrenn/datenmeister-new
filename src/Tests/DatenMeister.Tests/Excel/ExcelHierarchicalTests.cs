@@ -25,8 +25,8 @@ namespace DatenMeister.Tests.Excel
         {
             var dm = DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var filePath = Path.Combine(currentDirectory, "Excel/Hierarchical Test.xlsx");
-            
+            var filePath = Path.Combine(currentDirectory!, "Excel/Hierarchical Test.xlsx");
+
             var localType = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage);
             var localTypes = localType.InternalTypes;
             var localTypeFactory = new MofFactory(localTypes);
@@ -36,7 +36,7 @@ namespace DatenMeister.Tests.Excel
             localTypes.elements().add(type1);
             localTypes.elements().add(type2);
             localTypes.elements().add(type3);
-            
+
             var loaderConfig = InMemoryObject.CreateEmpty(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalLoaderConfig);
 
@@ -67,15 +67,15 @@ namespace DatenMeister.Tests.Excel
                 );
 
             loaderConfig.set(_ExcelHierarchicalLoaderConfig.hierarchicalColumns,
-                new[] {definition1, definition2});
-            
+                new[] { definition1, definition2 });
+
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
             var inMemoryExtent = extentManager.LoadExtent(loaderConfig);
 
             Assert.That(inMemoryExtent, Is.Not.Null);
             Assert.That(inMemoryExtent.Extent, Is.Not.Null);
 
-            Assert.That(inMemoryExtent.Extent.elements().Count(), Is.EqualTo(2));
+            Assert.That(inMemoryExtent.Extent!.elements().Count(), Is.EqualTo(2));
             Assert.That(inMemoryExtent.Extent.elements().WhenPropertyHasValue("name", "Erste Liga").Any(), Is.True);
             Assert.That(inMemoryExtent.Extent.elements().WhenPropertyHasValue("name", "ZweiteLiga").Any(), Is.True);
             Assert.That(inMemoryExtent.Extent.elements().WhenPropertyHasValue("name", "Dritte Liga").Any(), Is.False);
@@ -88,29 +88,29 @@ namespace DatenMeister.Tests.Excel
             var teams = firstLiga.getOrDefault<IReflectiveSequence>("team")
                 .OfType<IElement>()
                 .ToList();
-            
+
             Assert.That(teams.Count, Is.EqualTo(3));
-            
+
             var frankfurt = new TemporaryReflectiveCollection(teams).WhenPropertyHasValue("name", "Frankfurt")
                 .OfType<IElement>()
                 .FirstOrDefault();
-            
+
             Assert.That(frankfurt, Is.Not.Null);
-            
+
             var players = frankfurt.getOrDefault<IReflectiveSequence>("player")
                 .OfType<IElement>()
                 .ToList();
-            
+
             Assert.That(players, Is.Not.Null);
             Assert.That(players.Count, Is.EqualTo(6));
-            
-            var maier  = new TemporaryReflectiveCollection(players).WhenPropertyHasValue("Spieler", "Maier")
+
+            var maier = new TemporaryReflectiveCollection(players).WhenPropertyHasValue("Spieler", "Maier")
                 .OfType<IElement>()
                 .FirstOrDefault();
 
             Assert.That(maier, Is.Not.Null);
-            
-            var sebbel  = new TemporaryReflectiveCollection(players).WhenPropertyHasValue("Spieler", "Sebbel")
+
+            var sebbel = new TemporaryReflectiveCollection(players).WhenPropertyHasValue("Spieler", "Sebbel")
                 .OfType<IElement>()
                 .FirstOrDefault();
 

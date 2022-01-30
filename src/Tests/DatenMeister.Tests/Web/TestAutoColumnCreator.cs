@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Web
             Assert.That(tab
                 .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                 .OfType<IElement>()
-                .Count(x => x.getMetaClass()!.ToString().Contains("TextFieldData")), Is.EqualTo(2));
+                .Count(x => x.getMetaClass()!.ToString()!.Contains("TextFieldData")), Is.EqualTo(2));
             var firstColumn = tab
                 .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                 .OfType<IElement>()
@@ -82,7 +82,7 @@ namespace DatenMeister.Tests.Web
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var valueList = new List<object> {factory.create(null), factory.create(null)};
+            var valueList = new List<object> { factory.create(null), factory.create(null) };
             mofObject2.set(property3, valueList);
 
             extent.elements().add(mofObject);

@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.Modules
             var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
 
             Assert.That(settings, Is.Not.Null);
-            Assert.That(settings.databasePath, Is.EqualTo("test"));
+            Assert.That(settings!.databasePath, Is.EqualTo("test"));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace DatenMeister.Tests.Modules
             var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
 
             Assert.That(settings, Is.Not.Null);
-            Assert.That(settings.databasePath, Is.EqualTo($"Test\\test"));
+            Assert.That(settings!.databasePath, Is.EqualTo("Test\\test"));
         }
 
         [Test]
@@ -86,8 +86,8 @@ namespace DatenMeister.Tests.Modules
             var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
 
             Assert.That(settings, Is.Not.Null);
-            Assert.That(settings.environmentVariable.Any(x=>x.key == "key"), Is.True);
-            Assert.That(settings.environmentVariable.Any(x=>x.key == "key2"), Is.True);
+            Assert.That(settings!.environmentVariable.Any(x => x.key == "key"), Is.True);
+            Assert.That(settings.environmentVariable.Any(x => x.key == "key2"), Is.True);
 
             Assert.That(Environment.GetEnvironmentVariable("key"), Is.EqualTo("value"));
         }

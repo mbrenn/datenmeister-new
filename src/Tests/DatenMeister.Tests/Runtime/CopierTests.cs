@@ -28,10 +28,10 @@ namespace DatenMeister.Tests.Runtime
             var result2 = copier.Copy(mofObject2);
 
             Assert.That(result1, Is.Not.Null);
-            Assert.That(result1.get(property1).ToString(), Is.EqualTo("55130"));
-            Assert.That(result1.get(property2).ToString(), Is.EqualTo("Mainz"));
-            Assert.That(result2.get(property1).ToString(), Is.EqualTo("65474"));
-            Assert.That(result2.get(property2).ToString(), Is.EqualTo("Bischofsheim"));
+            Assert.That(result1.get(property1)?.ToString(), Is.EqualTo("55130"));
+            Assert.That(result1.get(property2)?.ToString(), Is.EqualTo("Mainz"));
+            Assert.That(result2.get(property1)?.ToString(), Is.EqualTo("65474"));
+            Assert.That(result2.get(property2)?.ToString(), Is.EqualTo("Bischofsheim"));
         }
     }
 }

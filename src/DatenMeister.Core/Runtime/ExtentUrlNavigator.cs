@@ -9,7 +9,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Uml.Helper;
 
@@ -116,7 +115,7 @@ namespace DatenMeister.Core.Runtime
                         {
                             // Caching is only useful for fragments since the cache lookup 
                             // Tries to find an item by the element
-                            _cacheIds[fragmentUri] = (MofElement) foundItem;
+                            _cacheIds[fragmentUri] = (MofElement)foundItem;
                         }
                     }
                 }
@@ -137,7 +136,7 @@ namespace DatenMeister.Core.Runtime
             }
 
             // Now check whether we have a dataview
-            var dataview = queryString.Get("dataview");
+            /*var dataview = queryString.Get("dataview");
             if (dataview != null && foundItem is IReflectiveCollection reflectiveCollection)
             {
                 if (_extent.ScopeStorage == null)
@@ -157,7 +156,7 @@ namespace DatenMeister.Core.Runtime
                     dataViewEvaluation.AddDynamicSource("input", reflectiveCollection);
                     foundItem = dataViewEvaluation.GetElementsForViewNode(dataviewElement);
                 }
-            }
+            }*/
 
             return foundItem;
         }
@@ -218,7 +217,7 @@ namespace DatenMeister.Core.Runtime
                     if (_extent == null) throw new InvalidOperationException("_extent is null");
 #endif
                     var resultElement = new MofElement(resultingObject, _extent)
-                        {Extent = _extent};
+                        { Extent = _extent };
                     return resultElement;
                 }
             }

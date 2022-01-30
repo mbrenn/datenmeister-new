@@ -4,10 +4,10 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Extensions.Functions.Aggregation;
+using DatenMeister.Core.Extensions.Functions.Interfaces;
+using DatenMeister.Core.Extensions.Functions.Queries;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Runtime.Functions.Aggregation;
-using DatenMeister.Runtime.Functions.Interfaces;
-using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Functions
@@ -107,7 +107,7 @@ namespace DatenMeister.Tests.Runtime.Functions
             var factory = new MofFactory(extent);
 
             element.set("c", new List<object>());
-            var reflectiveSequence = (IReflectiveCollection) element.get("c");
+            var reflectiveSequence = (IReflectiveCollection)element.get("c");
 
             var value = factory.create(null);
             value.set(property1, 3);

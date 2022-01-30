@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
+      <ProjectReference Include="..\DatenMeister.DataView\DatenMeister.DataView.csproj"/>
       <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
       <ProjectReference Include="..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
       <ProjectReference Include="..\DatenMeister.Html\DatenMeister.Html.csproj" />

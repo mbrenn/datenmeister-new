@@ -6,9 +6,12 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.DataViews;
+using DatenMeister.Plugins;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime
@@ -190,7 +193,11 @@ namespace DatenMeister.Tests.Runtime
 </item>";
 
             var scopeStorage = new ScopeStorage();
-            scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+            var dataViewPlugin = new DataViewPlugin(
+                workspaceLogic, new DataViewLogic(workspaceLogic, scopeStorage), scopeStorage);
+            dataViewPlugin.StartThrough();
+
             var provider = new XmiProvider(XDocument.Parse(document));
             return new MofUriExtent(provider, TestUri, scopeStorage);
         }

@@ -1,7 +1,9 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Modules.DataViews.Evaluation;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DataView.DataViews;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.Modules.DataViews
@@ -13,8 +15,10 @@ namespace DatenMeister.Modules.DataViews
         private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public DataViewPlugin(IWorkspaceLogic workspaceLogic,
-            DataViewLogic dataViewLogic, IScopeStorage scopeStorage)
+        public DataViewPlugin(
+            IWorkspaceLogic workspaceLogic,
+            DataViewLogic dataViewLogic,
+            IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _dataViewLogic = dataViewLogic;
@@ -35,6 +39,9 @@ namespace DatenMeister.Modules.DataViews
                     workspace.IsDynamicWorkspace = true;
                     _workspaceLogic.AddWorkspace(workspace);
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_dataViewLogic));
+
+                    _scopeStorage.Get<ResolveHooks>().Add(
+                        "dataview", new DataViewResolveHook());
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var factories = GetDefaultViewNodeFactories();

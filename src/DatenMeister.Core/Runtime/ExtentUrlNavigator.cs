@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
@@ -30,6 +32,11 @@ namespace DatenMeister.Core.Runtime
         public ExtentUrlNavigator(MofUriExtent extent)
         {
             _extent = extent;
+        }
+
+        private IResolveHook? GetResolveHook(string parameter)
+        {
+            return _extent.ScopeStorage?.Get<ResolveHooks>().Get(parameter);
         }
 
         /// <summary>
@@ -135,28 +142,18 @@ namespace DatenMeister.Core.Runtime
                 foundItem = mofElement.get<IReflectiveCollection>(property);
             }
 
-            // Now check whether we have a dataview
-            /*var dataview = queryString.Get("dataview");
-            if (dataview != null && foundItem is IReflectiveCollection reflectiveCollection)
-            {
-                if (_extent.ScopeStorage == null)
-                {
-                    Logger.Error("Dataview queried but extent does not have Scope Storage set");
-                    throw new InvalidOperationException("Dataview queried but extent does not have Scope Storage set");
-                }
 
-                var dataviewElement = _extent.ResolveElement(dataview, ResolveType.Default);
-                if (dataviewElement == null)
+            foreach (var key in queryString.AllKeys.Where(
+                         x => x != "fn" && x != "prop" && x != null))
+            {
+                var resolveHook = GetResolveHook(key!);
+                if (resolveHook != null)
                 {
-                    Logger.Warn($"Dataview was not found: {dataview}");
+                    var parameters = new ResolveHookParameters(queryString, foundItem, _extent);
+
+                    foundItem = resolveHook.Resolve(parameters);
                 }
-                else
-                {
-                    var dataViewEvaluation = new DataViewEvaluation(_extent.ScopeStorage.Get<DataViewNodeFactories>());
-                    dataViewEvaluation.AddDynamicSource("input", reflectiveCollection);
-                    foundItem = dataViewEvaluation.GetElementsForViewNode(dataviewElement);
-                }
-            }*/
+            }
 
             return foundItem;
         }

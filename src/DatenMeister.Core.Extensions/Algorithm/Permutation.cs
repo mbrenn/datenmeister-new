@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DatenMeister.Runtime.Functions.Algorithm
+namespace DatenMeister.Core.Extensions.Algorithm
 {
     /// <summary>
     /// Implements an algorithm for permutations
@@ -52,7 +52,7 @@ namespace DatenMeister.Runtime.Functions.Algorithm
                         yield return result;
                     }
 
-                    Swap(list,k,i);
+                    Swap(list, k, i);
                 }
             }
         }

@@ -40,7 +40,7 @@ namespace DatenMeister.Modules.UserProperties
                 }
             }
         }
-        
+
 
         /// <summary>
         /// Gets the first view mode of the user 

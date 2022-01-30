@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Runtime.Functions.Algorithm
+﻿namespace DatenMeister.Core.Extensions.Algorithm
 {
     public class Geometry
     {
@@ -6,7 +6,8 @@
         /// Gets the information whether the two given lines intersect each other
         /// </summary>
         /// <returns>true, if the both lines intersect</returns>
-        public static bool Intersect(double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y)
+        public static bool Intersect(double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X,
+            double p3Y)
         {
             var s1X = p1X - p0X;
             var s1Y = p1Y - p0Y;

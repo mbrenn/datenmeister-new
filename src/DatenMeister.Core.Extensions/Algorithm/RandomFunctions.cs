@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace DatenMeister.Runtime.Functions.Algorithm
+namespace DatenMeister.Core.Extensions.Algorithm
 {
     /// <summary>
     /// Stores all functions that are connected with random functions

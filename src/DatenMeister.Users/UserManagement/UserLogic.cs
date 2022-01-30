@@ -6,13 +6,13 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Extensions.Algorithm;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
-using DatenMeister.Runtime.Functions.Algorithm;
 using DatenMeister.Types;
 
 namespace DatenMeister.Modules.UserManagement
@@ -24,25 +24,24 @@ namespace DatenMeister.Modules.UserManagement
     [PluginDependency(typeof(LocalTypeSupport))]
     public class UserLogic : IDatenMeisterPlugin
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
-
         /// <summary>
         /// Defines the default extent for the users
         /// </summary>
         public const string ExtentUri = "dm:///_internal/users";
 
         private const string ExtentTypeName = "DatenMeister.Users";
-
-        private readonly LocalTypeSupport _localTypeSupport;
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
 
         private readonly ExtentCreator _extentCreator;
 
-        private readonly IWorkspaceLogic _workspaceLogic;
-
         private readonly IntegrationSettings _integrationSettings;
-        private IList<IElement>? _types;
-        private IElement? _settingsMetaClass;
+
+        private readonly LocalTypeSupport _localTypeSupport;
+
+        private readonly IWorkspaceLogic _workspaceLogic;
         private IUriExtent? _extent;
+        private IElement? _settingsMetaClass;
+        private IList<IElement>? _types;
 
         public UserLogic(
             LocalTypeSupport localTypeSupport,
@@ -54,6 +53,59 @@ namespace DatenMeister.Modules.UserManagement
             _extentCreator = extentCreator;
             _workspaceLogic = workspaceLogic;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
+        }
+
+        public void Start(PluginLoadingPosition position)
+        {
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterBootstrapping:
+                    _types = _localTypeSupport.AddInternalTypes(
+                        new[] { typeof(User), typeof(UserManagementSettings) },
+                        "DatenMeister::UserManagement"
+                    );
+
+                    _settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
+
+                    break;
+
+                case PluginLoadingPosition.AfterLoadingOfExtents:
+                    _extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                        WorkspaceNames.WorkspaceManagement,
+                        ExtentUri,
+                        ExtentTypeName,
+                        "",
+                        _integrationSettings.InitializeDefaultExtents
+                            ? ExtentCreationFlags.CreateOnly
+                            : ExtentCreationFlags.LoadOrCreate);
+
+                    if (_extent == null)
+                    {
+                        throw new InvalidOperationException("Extent could not be created");
+                    }
+
+                    if (_types == null)
+                    {
+                        throw new InvalidOperationException("_extent or _types are null");
+                    }
+
+                    if (!(_extent.elements().WhenMetaClassIs(_settingsMetaClass).FirstOrDefault() is IElement))
+                    {
+                        // Create new settings
+                        var factory = new MofFactory(_extent);
+                        var element = factory.create(_types[1]);
+                        element.set(nameof(UserManagementSettings.salt),
+                            RandomFunctions.GetRandomAlphanumericString(16));
+                        _extent.elements().add(element);
+                        Logger.Info("UserLogic - Created Salt...");
+                    }
+                    else
+                    {
+                        Logger.Debug("UserLogic - Salt is existing");
+                    }
+
+                    break;
+            }
         }
 
         /// <summary>
@@ -102,59 +154,6 @@ namespace DatenMeister.Modules.UserManagement
 
         public void ChangePassword(string username, string password)
         {
-        }
-
-        public void Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterBootstrapping:
-                    _types = _localTypeSupport.AddInternalTypes(
-                        new[] {typeof(User), typeof(UserManagementSettings)},
-                        "DatenMeister::UserManagement"
-                    );
-
-                    _settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
-
-                    break;
-
-                case PluginLoadingPosition.AfterLoadingOfExtents:
-                    _extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
-                        WorkspaceNames.WorkspaceManagement,
-                        ExtentUri,
-                        ExtentTypeName,
-                        "",
-                        _integrationSettings.InitializeDefaultExtents
-                            ? ExtentCreationFlags.CreateOnly
-                            : ExtentCreationFlags.LoadOrCreate);
-
-                    if (_extent == null)
-                    {
-                        throw new InvalidOperationException("Extent could not be created");
-                    }
-
-                    if (_types == null)
-                    {
-                        throw new InvalidOperationException("_extent or _types are null");
-                    }
-
-                    if (!(_extent.elements().WhenMetaClassIs(_settingsMetaClass).FirstOrDefault() is IElement))
-                    {
-                        // Create new settings
-                        var factory = new MofFactory(_extent);
-                        var element = factory.create(_types[1]);
-                        element.set(nameof(UserManagementSettings.salt),
-                            RandomFunctions.GetRandomAlphanumericString(16));
-                        _extent.elements().add(element);
-                        Logger.Info("UserLogic - Created Salt...");
-                    }
-                    else
-                    {
-                        Logger.Debug("UserLogic - Salt is existing");
-                    }
-
-                    break;
-            }
         }
     }
 }

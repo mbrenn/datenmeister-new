@@ -6,7 +6,7 @@ using System.Dynamic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
-namespace DatenMeister.Runtime.Dynamic
+namespace DatenMeister.Core.Extensions
 {
     /// <summary>
     /// Converts the MOF instance to a dynamic object
@@ -27,7 +27,7 @@ namespace DatenMeister.Runtime.Dynamic
                     throw new InvalidOperationException("The given value is not of type ExpandObject");
                 }
 
-                if (((IDictionary<string, object>) value).ContainsKey("__wrappedObject__"))
+                if (((IDictionary<string, object>)value).ContainsKey("__wrappedObject__"))
                 {
                     throw new InvalidOperationException("Somehow, the object already has a value.");
                 }
@@ -71,7 +71,7 @@ namespace DatenMeister.Runtime.Dynamic
             foreach (var property in allProperties.getPropertiesBeingSet())
             {
                 var propertyValue = value.get(property);
-                ((IDictionary<string, object?>) result)[property] = ConvertValue(propertyValue, wrapInObject);
+                ((IDictionary<string, object?>)result)[property] = ConvertValue(propertyValue, wrapInObject);
             }
 
             if (wrapInObject)

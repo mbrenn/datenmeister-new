@@ -16,6 +16,12 @@ namespace DatenMeister.Provider.XMI
     {
         private readonly MofExtent _extent;
 
+        public XmlConverter()
+        {
+            _extent = new MofExtent(
+                new XmiProvider());
+        }
+
         /// <summary>
         /// Ignores the ids
         /// </summary>
@@ -26,12 +32,6 @@ namespace DatenMeister.Provider.XMI
         /// </summary>
         public bool RelativePaths { get; set; }
 
-        public XmlConverter()
-        {
-            _extent = new MofExtent(
-                new XmiProvider());
-        }
-
         /// <summary>
         /// Converts the given element to an xml element
         /// </summary>
@@ -39,13 +39,13 @@ namespace DatenMeister.Provider.XMI
         /// <returns>Converted element to be shown</returns>
         public XElement ConvertToXml(IObject element)
         {
-            var copyOptions = new CopyOption {CloneAllReferences = false, CopyId = true};
+            var copyOptions = new CopyOption { CloneAllReferences = false, CopyId = true };
             var extentName = (element as IElement)?.GetUriExtentOf()?.contextURI() ??
                              string.Empty;
             var copier = new ObjectCopier(new MofFactory(_extent));
 
-            var result = (MofElement) copier.Copy(element, copyOptions); // Copies the element
-            var xmlNode = ((XmiProviderObject) result.ProviderObject).XmlNode;
+            var result = (MofElement)copier.Copy(element, copyOptions); // Copies the element
+            var xmlNode = ((XmiProviderObject)result.ProviderObject).XmlNode;
 
             if (SkipIds)
             {
@@ -71,10 +71,10 @@ namespace DatenMeister.Provider.XMI
         /// <returns>Converted element to be shown</returns>
         public XElement ConvertToXml(IEnumerable<object?> elements)
         {
-            var copyOptions = new CopyOption {CloneAllReferences = false, CopyId = true};
+            var copyOptions = new CopyOption { CloneAllReferences = false, CopyId = true };
             var factory = new MofFactory(_extent);
             var copier = new ObjectCopier(factory);
-            var rootItem = (MofObject) factory.create(null);
+            var rootItem = (MofObject)factory.create(null);
             var elementsAsList = elements.ToList();
             var extentName = elementsAsList.OfType<IElement>().FirstOrDefault()?.GetUriExtentOf()?.contextURI() ??
                              string.Empty;
@@ -86,7 +86,7 @@ namespace DatenMeister.Provider.XMI
 
             rootItem.set("items", list);
 
-            var xmlNode = ((XmiProviderObject) rootItem.ProviderObject).XmlNode;
+            var xmlNode = ((XmiProviderObject)rootItem.ProviderObject).XmlNode;
 
             if (SkipIds)
             {
@@ -109,7 +109,7 @@ namespace DatenMeister.Provider.XMI
         {
             foreach (var node in xmlNode.DescendantNodesAndSelf().OfType<XElement>())
             {
-                foreach ( var attribute in node.Attributes())
+                foreach (var attribute in node.Attributes())
                 {
                     if (attribute == null) continue;
 
@@ -120,7 +120,6 @@ namespace DatenMeister.Provider.XMI
                     }
                 }
             }
-
         }
 
         /// <summary>

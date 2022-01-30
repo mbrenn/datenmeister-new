@@ -19,7 +19,7 @@ namespace DatenMeister.Core.Runtime.Proxies.ReadOnly
             throw new ReadOnlyAccessException("Element is read-only");
         }
 
-        public override void SetMetaClass(IElement metaClass)
+        public override void SetMetaClass(IElement? metaClass)
         {
             throw new ReadOnlyAccessException("Element is read-only");
         }

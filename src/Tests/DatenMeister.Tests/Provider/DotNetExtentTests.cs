@@ -54,7 +54,7 @@ namespace DatenMeister.Tests.Provider
 
             Assert.That(list, Is.Not.Null);
             // ReSharper disable once PossibleNullReferenceException
-            Assert.That(list.size(), Is.EqualTo(0));
+            Assert.That(list!.size(), Is.EqualTo(0));
 
             list.add("Mr. M");
             list.add("Mr. B");
@@ -85,9 +85,9 @@ namespace DatenMeister.Tests.Provider
 
             Assert.That(list, Is.Not.Null);
             // ReSharper disable once PossibleNullReferenceException
-            Assert.That(list.size(), Is.EqualTo(0));
+            Assert.That(list!.size(), Is.EqualTo(0));
 
-            var person1 = new DotNetTests.Person {Name = "M"};
+            var person1 = new DotNetTests.Person { Name = "M" };
 
             list.add(person1);
             Assert.That(list.size(), Is.EqualTo(1));
@@ -98,7 +98,7 @@ namespace DatenMeister.Tests.Provider
 
             var personAsElement = personGot as IElement;
             // ReSharper disable once PossibleNullReferenceException
-            Assert.That(personAsElement.metaclass!.get("name"), Contains.Substring("Person"));
+            Assert.That(personAsElement!.metaclass!.get("name"), Contains.Substring("Person"));
 
             Assert.That(personAsElement.get("Name"), Is.EqualTo("M"));
             personAsElement.set("Prename", "Herr");
@@ -132,11 +132,11 @@ namespace DatenMeister.Tests.Provider
             created.set("Title", "Test");
             var metaClassObject = created.getMetaClass();
             Assert.That(metaClassObject, Is.Not.Null);
-            Assert.That(metaClassObject.GetUri(), Is.EqualTo(metaClass));
+            Assert.That(metaClassObject!.GetUri(), Is.EqualTo(metaClass));
             Assert.That(created.get("Title"), Is.EqualTo("Test"));
 
-            var found = (DotNetProviderObject) ((MofElement) created).ProviderObject;
-            Assert.That(((DotNetTests.TestClass) found.GetNativeValue()).Title, Is.EqualTo("Test"));
+            var found = (DotNetProviderObject)((MofElement)created).ProviderObject;
+            Assert.That(((DotNetTests.TestClass)found.GetNativeValue()).Title, Is.EqualTo("Test"));
         }
 
         [Test]
@@ -162,16 +162,16 @@ namespace DatenMeister.Tests.Provider
             var personAsElement = extent.CreateDotNetMofElement(child);
             extent.elements().add(personAsElement);
 
-            var element = extent.elements().ElementAt(0).AsIObject();
+            var element = extent.elements().ElementAt(0)!.AsIObject();
             Assert.That(element != null);
-            var asKnowsExtent = (IHasExtent) element;
+            var asKnowsExtent = (IHasExtent)element!;
             Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
 
-            var parentObject = element.get("Parent");
+            var parentObject = element!.get("Parent");
             Assert.That(parentObject, Is.Not.Null);
-            var parentAsObject = parentObject.AsIObject();
+            var parentAsObject = parentObject!.AsIObject();
             Assert.That(parentAsObject, Is.Not.Null);
-            asKnowsExtent = (IHasExtent) parentAsObject;
+            asKnowsExtent = (IHasExtent)parentAsObject;
             Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
         }
 
@@ -205,18 +205,18 @@ namespace DatenMeister.Tests.Provider
             var personAsElement = extent.CreateDotNetMofElement(parent);
             extent.elements().add(personAsElement);
 
-            var element = extent.elements().ElementAt(0).AsIObject();
+            var element = extent.elements().ElementAt(0)!.AsIObject();
 
             // Gets the children and verifies if they are a reflective colleciton
             var parentObject = element.get("Persons");
             Assert.That(parentObject, Is.Not.Null);
-            var persons = (IReflectiveCollection) parentObject;
+            var persons = (IReflectiveCollection)parentObject!;
             Assert.That(persons, Is.Not.Null);
 
             // Ok, now get the child and see, if OK
             var childRetrieved = persons.ElementAt(0);
             Assert.That(childRetrieved, Is.Not.Null);
-            var asKnowsExtent = (IHasExtent) childRetrieved;
+            var asKnowsExtent = (IHasExtent)childRetrieved!;
             Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
         }
 
@@ -263,8 +263,8 @@ namespace DatenMeister.Tests.Provider
             var nonSpouse = new DotNetTests.PersonWithAnotherPersonPerElement
             {
                 Name = "Husband",
-                Spouse = spouseElement,
-                Children = new List<IElement> {child1Element, child2Element}
+                Spouse = spouseElement!,
+                Children = new List<IElement> { child1Element!, child2Element! }
             };
 
             extent.elements().add(extent.CreateDotNetMofElement(nonSpouse));
@@ -335,8 +335,8 @@ namespace DatenMeister.Tests.Provider
             var nonSpouse = new DotNetTests.PersonWithAnotherPersonPerElement
             {
                 Name = "Husband",
-                Spouse = spouseElement,
-                Children = new List<IElement> {child1Element, child2Element}
+                Spouse = spouseElement!,
+                Children = new List<IElement> { child1Element!, child2Element! }
             };
 
             extent.elements().add(extent.CreateDotNetMofElement(nonSpouse));
@@ -355,8 +355,8 @@ namespace DatenMeister.Tests.Provider
             Assert.That((children.ElementAt(1) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child2"));
 
             // Now the challange... change the content in the other extent and it should be reflected here. 
-            spouseElement.set("Name", "New Spouse");
-            child1Element.set("Name", "New Child");
+            spouseElement!.set("Name", "New Spouse");
+            child1Element!.set("Name", "New Child");
 
             Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
                 Is.EqualTo("New Spouse"));

@@ -22,11 +22,12 @@ namespace DatenMeister.Tests.Modules.Provider
             var extent = workspace.FindExtent(WorkspaceNames.UriExtentWorkspaces);
             Assert.That(extent, Is.Not.Null);
 
-            var workspaceValue = extent.elements().WhenPropertyHasValue(
+            var workspaceValue = extent!.elements().WhenPropertyHasValue(
                 _DatenMeister._Management._Workspace.id,
                 WorkspaceNames.WorkspaceManagement).FirstOrDefault() as IElement;
             Assert.That(workspaceValue, Is.Not.Null);
-            Assert.That(workspaceValue.get(_DatenMeister._Management._Workspace.id), Is.EqualTo(WorkspaceNames.WorkspaceManagement));
+            Assert.That(workspaceValue!.get(_DatenMeister._Management._Workspace.id),
+                Is.EqualTo(WorkspaceNames.WorkspaceManagement));
 
             var extents =
                 workspaceValue.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
@@ -36,7 +37,7 @@ namespace DatenMeister.Tests.Modules.Provider
 
             var firstExtent = extentAsList.First() as IElement;
             Assert.That(firstExtent, Is.Not.Null);
-            var containeredElement = firstExtent.container();
+            var containeredElement = firstExtent!.container();
             Assert.That(containeredElement, Is.Not.Null);
 
             Assert.That(containeredElement, Is.EqualTo(workspaceValue));

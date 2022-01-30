@@ -30,7 +30,7 @@ namespace DatenMeister.Tests.Provider
             var userExtent = uriExtent?.element("#Management_dm%3A%2F%2F%2F__internal%2Fforms%2Fuser");
             Assert.That(userExtent, Is.Not.Null);
 
-            userExtent.set(_DatenMeister._Management._Extent.uri, "dm:///newusers");
+            userExtent!.set(_DatenMeister._Management._Extent.uri, "dm:///newusers");
 
             Assert.That(userExtent.get(_DatenMeister._Management._Extent.uri), Is.EqualTo("dm:///newusers"));
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Tests.Provider
 
             var workspace = workspaceLogic.GetWorkspace("Data");
             Assert.That(workspace, Is.Not.Null);
-            Assert.That(workspace.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.True);
+            Assert.That(workspace!.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.True);
 
             // Now remove the extent via the object helper and check the deletion
             ObjectHelper.DeleteObject(foundExtent);
@@ -76,7 +76,7 @@ namespace DatenMeister.Tests.Provider
             // And check that it is deleted
             workspace = workspaceLogic.GetWorkspace("Data");
             Assert.That(workspace, Is.Not.Null);
-            Assert.That(workspace.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.False);
+            Assert.That(workspace!.extent.OfType<IUriExtent>().Any(x => x.contextURI() == "dm:///test"), Is.False);
 
             extents =
                 firstWorkspace.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);

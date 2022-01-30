@@ -20,16 +20,16 @@ namespace DatenMeister.Provider.XMI
     public class SimpleLoader
     {
         /// <summary>
-        /// Stores the uri resolver being used to figure out the href instances.
+        /// Defines a list of actions that will be performed after the loading has finished
         /// </summary>
-        private readonly IUriResolver? _uriResolver;
+        private readonly List<Action> _afterLoadActions = new List<Action>();
 
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
         /// <summary>
-        /// Defines a list of actions that will be performed after the loading has finished
+        /// Stores the uri resolver being used to figure out the href instances.
         /// </summary>
-        private readonly List<Action> _afterLoadActions = new List<Action>();
+        private readonly IUriResolver? _uriResolver;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -52,7 +52,7 @@ namespace DatenMeister.Provider.XMI
                                ?? throw new InvalidOperationException($"Stream for {resourceName} is not found");
             LoadFromStream(factory, extent, stream);
         }
-        
+
         public void LoadFromFile(IFactory factory, IUriExtent extent, string filePath)
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));

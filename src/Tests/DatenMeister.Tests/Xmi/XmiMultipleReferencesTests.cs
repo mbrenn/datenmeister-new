@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Xmi
 
             var item2 = extent2.elements().First() as IElement;
             Assert.That(item2, Is.Not.Null);
-            item2.set("sub", item1);
+            item2!.set("sub", item1);
 
             VerifyXmlStructureForSingleReference(extent1, extent2);
         }
@@ -59,7 +59,7 @@ namespace DatenMeister.Tests.Xmi
 
             var item2 = extent2.elements().First() as IElement;
             Assert.That(item2, Is.Not.Null);
-            item2.set("sub", new[] {subItem1, subItem2, subItem3, subItem4});
+            item2!.set("sub", new[] { subItem1, subItem2, subItem3, subItem4 });
 
             VerifyXmlStructureForListReference(extent1, extent2);
         }
@@ -106,15 +106,15 @@ namespace DatenMeister.Tests.Xmi
             var item2 = extent2.elements().First() as IElement;
             Assert.That(item2, Is.Not.Null);
 
-            var retrievedItem1 = item2.get("sub") as IElement;
+            var retrievedItem1 = item2!.get("sub") as IElement;
             Assert.That(retrievedItem1, Is.Not.Null);
-            var foundUri = retrievedItem1.GetUri();
-            Assert.That(foundUri, Is.EqualTo(item1.GetUri()));
+            var foundUri = retrievedItem1!.GetUri();
+            Assert.That(foundUri, Is.EqualTo(item1!.GetUri()));
 
             // Verifies that XmlNode structure is correct
             var xmlNode = ((item2 as MofElement)?.ProviderObject as XmiProviderObject)?.XmlNode;
             Assert.That(xmlNode, Is.Not.Null);
-            var subElementNode = xmlNode.Elements("sub").FirstOrDefault();
+            var subElementNode = xmlNode!.Elements("sub").FirstOrDefault();
             if (subElementNode != null)
             {
                 Assert.That(subElementNode.Attribute("href"), Is.Not.Null);
@@ -124,7 +124,7 @@ namespace DatenMeister.Tests.Xmi
                 Assert.That(xmlNode.Attribute("sub-ref"), Is.Not.Null);
             }
 
-            item1.set("value", 54);
+            item1!.set("value", 54);
             Assert.That((item2.get("sub") as IElement)?.get("value")?.ToString(), Is.EqualTo("54"));
         }
 
@@ -147,11 +147,11 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(subItem3, Is.Not.Null);
             Assert.That(subItem4, Is.Not.Null);
 
-            var retrievedItem1 = item2.get("sub") as IReflectiveCollection;
+            var retrievedItem1 = item2!.get("sub") as IReflectiveCollection;
             Assert.That(retrievedItem1, Is.Not.Null);
 
             var size = 0;
-            foreach (var subItem in retrievedItem1.OfType<IElement>())
+            foreach (var subItem in retrievedItem1!.OfType<IElement>())
             {
                 size++;
                 Assert.That((subItem as IHasId)?.Id, Is.EqualTo("item" + size));

@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Xmi
         public void LoadUmlInfrastructure()
         {
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///target", null);
-            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var factory = new MofFactory(extent);
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
             var loader = new SimpleLoader();
@@ -36,7 +36,7 @@ namespace DatenMeister.Tests.Xmi
 
             var firstElement = (extent.elements().ElementAt(0) as IObject);
             Assert.That(firstElement, Is.Not.Null);
-            Assert.That(firstElement.get("name").ToString(), Is.EqualTo("UML"));
+            Assert.That(firstElement!.get("name")!.ToString(), Is.EqualTo("UML"));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(XmiId.IsValid(document), Is.True);
 
             // Adds an artificial node, which duplicates an id.
-            document.Root.Add(
+            document.Root!.Add(
                 new XElement("other", new XAttribute(Namespaces.Xmi + "id", "_MOF-Identifiers-Extent")));
 
             Assert.That(XmiId.IsValid(document), Is.False);
@@ -55,7 +55,7 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestGetUriAndRetrieveElement()
         {
-            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
             var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic = WorkspaceLogic.Create(data);
@@ -71,21 +71,21 @@ namespace DatenMeister.Tests.Xmi
                 });
             var umlExtent = strapper.UmlInfrastructure;
             Assert.That(umlExtent, Is.Not.Null);
-            var element = umlExtent.elements().ElementAt(0) as IElement;
+            var element = umlExtent!.elements().ElementAt(0) as IElement;
             Assert.That(element, Is.Not.Null);
 
-            var elementUri = umlExtent.uri(element);
+            var elementUri = umlExtent.uri(element!);
             Assert.That(elementUri, Is.Not.Null);
-            var foundElement = umlExtent.element(elementUri);
+            var foundElement = umlExtent.element(elementUri!);
             Assert.That(foundElement, Is.Not.Null);
             Assert.That(foundElement, Is.EqualTo(element));
 
             // Retrieve another element
             element = AllDescendentsQuery.GetDescendents(umlExtent).ElementAt(300) as IElement;
             Assert.That(element, Is.Not.Null);
-            elementUri = umlExtent.uri(element);
+            elementUri = umlExtent.uri(element!);
             Assert.That(elementUri, Is.Not.Null);
-            foundElement = umlExtent.element(elementUri);
+            foundElement = umlExtent.element(elementUri!);
             Assert.That(foundElement, Is.Not.Null);
             Assert.That(foundElement, Is.EqualTo(element));
         }
@@ -108,7 +108,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(commentBody, Is.InstanceOf<IElement>());
 
             Assert.That(
-                commentBody
+                commentBody!
                     .isSet(_UML._CommonStructure._NamedElement.name),
                 Is.True);
 
@@ -126,12 +126,15 @@ namespace DatenMeister.Tests.Xmi
             var package = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Packages.__Package.GetUri()!, ResolveType.Default)
                 as IElement;
+
+            Assert.That(package, Is.Not.Null);
+
             // Old behavior
             IEnumerable<object> generalizedElements;
             string generalProperty;
-            if (package.isSet("generalization"))
+            if (package!.isSet("generalization"))
             {
-                generalizedElements = (package.get("generalization") as IEnumerable<object>).ToList();
+                generalizedElements = (package.get("generalization") as IEnumerable<object>)!.ToList();
                 generalProperty = "general";
             }
             else
@@ -165,7 +168,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 
             Assert.That(
-                AllDescendentsQuery.GetDescendents(strapper.UmlInfrastructure).Count(),
+                AllDescendentsQuery.GetDescendents(strapper.UmlInfrastructure!).Count(),
                 Is.GreaterThan(500));
 
             return strapper;

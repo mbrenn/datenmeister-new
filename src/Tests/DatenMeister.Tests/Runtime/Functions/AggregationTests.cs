@@ -89,14 +89,14 @@ namespace DatenMeister.Tests.Runtime.Functions
                     .Cast<IObject>()
                     .ToList();
 
-            var groupByA = finalValue.FirstOrDefault(x => x.get(property3).ToString() == "A");
-            var groupByB = finalValue.FirstOrDefault(x => x.get(property3).ToString() == "B");
+            var groupByA = finalValue.FirstOrDefault(x => x.get(property3)!.ToString() == "A");
+            var groupByB = finalValue.FirstOrDefault(x => x.get(property3)!.ToString() == "B");
 
             Assert.That(groupByA, Is.Not.Null);
             Assert.That(groupByB, Is.Not.Null);
 
-            Assert.That(groupByA.get(property1), Is.EqualTo(9));
-            Assert.That(groupByB.get(property1), Is.EqualTo(4));
+            Assert.That(groupByA!.get(property1), Is.EqualTo(9));
+            Assert.That(groupByB!.get(property1), Is.EqualTo(4));
         }
 
         private IReflectiveCollection CreateReflectiveSequence()
@@ -107,7 +107,7 @@ namespace DatenMeister.Tests.Runtime.Functions
             var factory = new MofFactory(extent);
 
             element.set("c", new List<object>());
-            var reflectiveSequence = (IReflectiveCollection)element.get("c");
+            var reflectiveSequence = (IReflectiveCollection)element.get("c")!;
 
             var value = factory.create(null);
             value.set(property1, 3);

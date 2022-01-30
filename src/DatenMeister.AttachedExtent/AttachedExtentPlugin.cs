@@ -3,7 +3,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Modules.AttachedExtent
+namespace DatenMeister.AttachedExtent
 {
     [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class AttachedExtentPlugin : IDatenMeisterPlugin

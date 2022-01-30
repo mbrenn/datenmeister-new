@@ -3,7 +3,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 
-namespace DatenMeister.Provider.ManagementProviders.Settings
+namespace DatenMeister.Extent.Manager
 {
     public class ManagementSettingsProvider : DotNetProvider
     {

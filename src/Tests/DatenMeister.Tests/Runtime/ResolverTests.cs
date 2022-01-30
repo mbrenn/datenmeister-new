@@ -97,7 +97,7 @@ namespace DatenMeister.Tests.Runtime
                 as IReflectiveSequence;
 
             Assert.That(firstChild, Is.Not.Null);
-            var asList = firstChild.ToList<object>();
+            var asList = firstChild!.ToList<object>();
 
             Assert.That(asList.Count, Is.EqualTo(3));
             Assert.That(
@@ -118,7 +118,7 @@ namespace DatenMeister.Tests.Runtime
                 as IReflectiveSequence;
 
             Assert.That(firstChild, Is.Not.Null);
-            var asList = firstChild.ToList<object>();
+            var asList = firstChild!.ToList<object>();
 
             Assert.That(asList.Count, Is.EqualTo(1));
             Assert.That(
@@ -139,7 +139,7 @@ namespace DatenMeister.Tests.Runtime
 
             Assert.That(firstChild, Is.Not.Null);
 
-            var resolvedChildDirectly = extent.GetUriResolver().ResolveElement(firstChild, ResolveType.Default, false);
+            var resolvedChildDirectly = extent.GetUriResolver().ResolveElement(firstChild!, ResolveType.Default, false);
             Assert.That(resolvedChildDirectly, Is.Not.Null);
             Assert.That(resolvedChildDirectly, Is.EqualTo(firstChild));
 
@@ -157,7 +157,7 @@ namespace DatenMeister.Tests.Runtime
             var found = extent.GetUriResolver().Resolve(TestUri, ResolveType.Default);
             Assert.That(found, Is.Not.Null);
             Assert.That(found is IUriExtent, Is.True);
-            Assert.That(found.Equals(extent));
+            Assert.That(found!.Equals(extent));
         }
 
         [Test]

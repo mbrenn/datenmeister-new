@@ -140,7 +140,7 @@ namespace DatenMeister.Provider.Xml
                 }
             }
 
-            if (!mofElement.isSet(_UML._CommonStructure._NamedElement.name) && localName != ((IHasId) mofElement).Id)
+            if (!mofElement.isSet(_UML._CommonStructure._NamedElement.name) && localName != ((IHasId)mofElement).Id)
             {
                 mofElement.set(_UML._CommonStructure._NamedElement.name, localName);
             }
@@ -148,7 +148,7 @@ namespace DatenMeister.Provider.Xml
 
         private static string GuessId(IElement mofElement)
         {
-            var result = ((IHasId) mofElement).Id;
+            var result = ((IHasId)mofElement).Id;
             var name = mofElement.getOrDefault<string>("name");
             if (!string.IsNullOrEmpty(name))
             {
@@ -187,12 +187,11 @@ namespace DatenMeister.Provider.Xml
             var keepNamespaces =
                 _loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig
                     .keepNamespaces);
-            
+
             var name = xname.ToString();
             if (!keepNamespaces)
             {
                 name = xname.LocalName;
-
             }
 
             return name;

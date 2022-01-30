@@ -17,9 +17,9 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
     public class ExtentCreator
     {
         private static readonly ClassLogger Logger = new(typeof(ExtentCreator));
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentManager _extentManager;
         private readonly IntegrationSettings _integrationSettings;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         public ExtentCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
@@ -27,6 +27,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             _extentManager = new ExtentManager(workspaceLogic, scopeStorage);
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
+
         public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
@@ -51,7 +52,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         }
 
         public IUriExtent? GetOrCreateXmiExtentInInternalDatabase(
-            string workspace,
+            string? workspace,
             string uri,
             string name,
             string extentType = "",
@@ -64,7 +65,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 Logger.Debug("Creates the extent for the " + name);
 
                 // Creates the extent for user types
-                
+
                 var storageConfiguration = InMemoryObject.CreateEmpty(
                     _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
                 storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
@@ -81,10 +82,10 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     foundExtent.GetConfiguration().ExtentType = extentType;
                 }
 
-                return (IUriExtent?) foundExtent;
+                return (IUriExtent?)foundExtent;
             }
 
-            return (IUriExtent?) foundExtent;
+            return (IUriExtent?)foundExtent;
         }
     }
 }

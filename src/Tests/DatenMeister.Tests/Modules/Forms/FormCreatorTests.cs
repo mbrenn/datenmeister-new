@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Modules.Forms
 
             var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
             var createdForm =
-                formCreator.CreateListFormForMetaClass(zipModel.ZipCode, new FormFactoryConfiguration());
+                formCreator.CreateListFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
             Assert.That(createdForm, Is.Not.Null);
             var fields =
                 createdForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field)
@@ -35,9 +35,9 @@ namespace DatenMeister.Tests.Modules.Forms
                     .ToList();
             Assert.That(fields, Is.Not.Null);
             Assert.That(createdForm.metaclass?.equals(_DatenMeister.TheOne.Forms.__ListForm), Is.True);
-            Assert.That(fields.Any(x =>
+            Assert.That(fields!.Any(x =>
                 x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == nameof(ZipCode.name)));
-            Assert.That(fields.Any(x =>
+            Assert.That(fields!.Any(x =>
                 x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == nameof(ZipCode.zip)));
         }
     }

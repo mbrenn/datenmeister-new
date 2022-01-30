@@ -68,7 +68,7 @@ namespace DatenMeister.Tests.Runtime
                 settings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
             Assert.That(columns, Is.Not.Null);
 
-            ((IObject) csvExtent.Extent.elements().ElementAt(0))
+            ((IObject)csvExtent.Extent.elements().ElementAt(0)!)
                 .set(columns.ElementAt(0) as string ?? throw new InvalidOperationException(
                     "Exception"), "eens");
             extentManager.UnloadManager(true);
@@ -110,7 +110,7 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(csvExtent, Is.Not.Null);
             Assert.That(csvExtent.Extent, Is.Not.Null);
 
-            var foundConfiguration = logic.GetLoadConfigurationFor(csvExtent.Extent);
+            var foundConfiguration = logic.GetLoadConfigurationFor(csvExtent.Extent!);
             Assert.That(foundConfiguration, Is.EqualTo(configuration));
 
 

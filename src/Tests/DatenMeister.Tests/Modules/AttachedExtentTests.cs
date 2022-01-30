@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.AttachedExtent;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -8,7 +9,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Modules.AttachedExtent;
 using NUnit.Framework;
 using static DatenMeister.Core.Models._DatenMeister._AttachedExtent;
 
@@ -74,9 +74,9 @@ namespace DatenMeister.Tests.Modules
         public void TestGetOriginalExtent()
         {
             var setup = CreateTestSetup();
-            var originalExtent = setup.AttachedExtentHandler.GetOriginalExtent(setup.AttachedExtent);
+            var originalExtent = setup.AttachedExtentHandler!.GetOriginalExtent(setup.AttachedExtent!);
             Assert.That(originalExtent, Is.Not.Null);
-            Assert.That(originalExtent.contextURI(), Is.EqualTo(setup.OriginalExtent.contextURI()));
+            Assert.That(originalExtent!.contextURI(), Is.EqualTo(setup.OriginalExtent!.contextURI()));
         }
 
 
@@ -85,27 +85,27 @@ namespace DatenMeister.Tests.Modules
         {
             var setup = CreateTestSetup();
             var attachedExtents =
-                setup.AttachedExtentHandler.FindAttachedExtents(setup.OriginalExtent)
+                setup.AttachedExtentHandler!.FindAttachedExtents(setup.OriginalExtent!)
                     .ToList();
 
             Assert.That(attachedExtents, Is.Not.Null);
             Assert.That(attachedExtents.Count, Is.EqualTo(2));
-            Assert.That(attachedExtents.Any(x => x.contextURI() == setup.AttachedExtent.contextURI()));
-            Assert.That(attachedExtents.Any(x => x.contextURI() == setup.AttachedExtent2.contextURI()));
+            Assert.That(attachedExtents.Any(x => x.contextURI() == setup.AttachedExtent!.contextURI()));
+            Assert.That(attachedExtents.Any(x => x.contextURI() == setup.AttachedExtent2!.contextURI()));
         }
 
         [Test]
         public void TestAttachedItems()
         {
             var setup = CreateTestSetup();
-            var originalItem1 = MofFactory.Create(setup.OriginalExtent, null);
-            var originalItem2 = MofFactory.Create(setup.OriginalExtent, null);
+            var originalItem1 = MofFactory.Create(setup.OriginalExtent!, null);
+            var originalItem2 = MofFactory.Create(setup.OriginalExtent!, null);
 
-            setup.OriginalExtent.elements().add(originalItem1);
+            setup.OriginalExtent!.elements().add(originalItem1);
             setup.OriginalExtent.elements().add(originalItem2);
 
-            var attached1 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem1, setup.AttachedExtent);
-            var attached2 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem2, setup.AttachedExtent);
+            var attached1 = setup.AttachedExtentHandler!.GetOrCreateAttachedItem(originalItem1, setup.AttachedExtent!);
+            var attached2 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem2, setup.AttachedExtent!);
 
             Assert.That(attached1, Is.Not.Null);
             Assert.That(attached2, Is.Not.Null);
@@ -114,30 +114,30 @@ namespace DatenMeister.Tests.Modules
             attached1.set("name", "Attached 1");
             attached2.set("name", "Attached 2");
 
-            var attached3 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem1, setup.AttachedExtent);
+            var attached3 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem1, setup.AttachedExtent!);
             Assert.That(attached3, Is.Not.Null);
             Assert.That(attached3.getOrDefault<string>("name"), Is.EqualTo("Attached 1"));
         }
 
         public class TestSetup
         {
-            public AttachedExtentHandler AttachedExtentHandler { get; set; }
+            public AttachedExtentHandler? AttachedExtentHandler { get; set; }
 
-            public IElement AttachedExtentConfiguration { get; set; }
+            public IElement? AttachedExtentConfiguration { get; set; }
 
-            public IWorkspaceLogic WorkspaceLogic { get; set; }
+            public IWorkspaceLogic? WorkspaceLogic { get; set; }
 
-            public IUriExtent TypeExtent { get; set; }
+            public IUriExtent? TypeExtent { get; set; }
 
-            public IElement ReferenceType { get; set; }
+            public IElement? ReferenceType { get; set; }
 
-            public IUriExtent OriginalExtent { get; set; }
+            public IUriExtent? OriginalExtent { get; set; }
 
-            public IUriExtent AttachedExtent { get; set; }
+            public IUriExtent? AttachedExtent { get; set; }
 
-            public IUriExtent AttachedExtent2 { get; set; }
+            public IUriExtent? AttachedExtent2 { get; set; }
 
-            public IUriExtent NonConnectedExtent { get; set; }
+            public IUriExtent? NonConnectedExtent { get; set; }
         }
 
         public TestSetup CreateTestSetup()

@@ -1,13 +1,13 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Helper;
-using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Json;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.Json;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Json;
+using NUnit.Framework;
 
 namespace DatenMeister.Tests.Json
 {
@@ -21,12 +21,12 @@ namespace DatenMeister.Tests.Json
             var childElement = InMemoryObject.CreateEmpty().SetProperty("name", "child");
             var arrayElement1 = InMemoryObject.CreateEmpty().SetProperty("name", "array1");
             var arrayElement2 = InMemoryObject.CreateEmpty().SetProperty("name", "array2");
-             
+
             element.set("child", childElement);
-            element.set("array", new[] {arrayElement1, arrayElement2});
+            element.set("array", new[] { arrayElement1, arrayElement2 });
 
             var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
-             
+
             Assert.That(jsonText.Contains("child"));
             Assert.That(jsonText.Contains("array1"));
             Assert.That(jsonText.Contains("array2"));
@@ -49,8 +49,9 @@ namespace DatenMeister.Tests.Json
             var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
 
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
+            Assert.That(asJsonObject, Is.Not.Null);
 
-            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject);
+            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject!);
 
             Assert.That(deconverted, Is.Not.Null);
             Assert.That(deconverted.isSet("name"), Is.True);
@@ -79,7 +80,7 @@ namespace DatenMeister.Tests.Json
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
             Assert.That(asJsonObject, Is.Not.Null);
 
-            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject);
+            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject!);
             Assert.That(deconverted, Is.Not.Null);
             Assert.That(deconverted.getOrDefault<string>("name"), Is.EqualTo("parent"));
 
@@ -93,7 +94,7 @@ namespace DatenMeister.Tests.Json
 
             var arrayElements = reflectiveCollection.OfType<IElement>().ToList();
             Assert.That(arrayElements.Count, Is.EqualTo(2));
-            
+
             Assert.That(arrayElements[0].getOrDefault<string>("name"), Is.EqualTo("array1"));
             Assert.That(arrayElements[1].getOrDefault<string>("name"), Is.EqualTo("array2"));
         }
@@ -105,19 +106,19 @@ namespace DatenMeister.Tests.Json
             var childElement = InMemoryObject.CreateEmpty("dm:///meta2").SetProperty("name", "child");
             element.set("name", "parent");
             element.set("child", childElement);
-            
-            
+
+
             var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
 
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
             Assert.That(asJsonObject, Is.Not.Null);
 
-            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject);
-            Assert.IsTrue(deconverted.metaclass.@equals( new MofObjectShadow("dm:///meta1")));
-            
+            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject!);
+            Assert.IsTrue(deconverted.metaclass!.equals(new MofObjectShadow("dm:///meta1")));
+
             var child2 = deconverted.get<IElement>("child");
             Assert.That(child2, Is.Not.Null);
-            Assert.IsTrue(child2.metaclass.@equals(new MofObjectShadow("dm:///meta2")));
+            Assert.IsTrue(child2.metaclass!.equals(new MofObjectShadow("dm:///meta2")));
         }
     }
 }

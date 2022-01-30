@@ -9,7 +9,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormModifications;
 
-namespace DatenMeister.Modules.DefaultTypes
+namespace DatenMeister.Extent.Forms
 {
     /// <summary>
     /// Defines the default type modification pluging
@@ -24,14 +24,16 @@ namespace DatenMeister.Modules.DefaultTypes
                 && context.DetailElement != null)
             {
                 var tabPackagedElement =
-                    FormMethods.GetListTabForPropertyName(form, _DatenMeister._CommonTypes._Default._Package.packagedElement);
+                    FormMethods.GetListTabForPropertyName(form,
+                        _DatenMeister._CommonTypes._Default._Package.packagedElement);
 
                 if (tabPackagedElement != null)
                 {
                     var factory = new MofFactory(form);
-                    
+
                     var defaultTypes =
-                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm
+                            .defaultTypesForNewElements);
 
                     // Checks the preferred types
                     var preferredTypes =
@@ -39,7 +41,7 @@ namespace DatenMeister.Modules.DefaultTypes
                             _DatenMeister._CommonTypes._Default._Package.preferredType);
 
                     AddPreferredTypes(factory, preferredTypes, defaultTypes);
-                    
+
                     // Checks the preferred package. 
                     // If a preferred package is set, then all containing classes will be added
                     var preferredPackages =
@@ -72,7 +74,8 @@ namespace DatenMeister.Modules.DefaultTypes
             }
         }
 
-        private static void AddPreferredType(MofFactory factory, IElement preferredType, IReflectiveCollection defaultTypes)
+        private static void AddPreferredType(MofFactory factory, IElement preferredType,
+            IReflectiveCollection defaultTypes)
         {
             if (preferredType.getMetaClass()?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
             {

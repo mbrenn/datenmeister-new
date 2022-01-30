@@ -2,7 +2,7 @@
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Modules.DefaultTypes
+namespace DatenMeister.Extent.Forms
 {
     public class DefaultTypesPlugin : IDatenMeisterPlugin
     {
@@ -12,6 +12,7 @@ namespace DatenMeister.Modules.DefaultTypes
         {
             _scopeStorage = scopeStorage;
         }
+
         public void Start(PluginLoadingPosition position)
         {
             var formsPluginState = _scopeStorage.Get<FormsPluginState>();

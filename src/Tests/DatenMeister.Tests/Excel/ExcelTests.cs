@@ -13,7 +13,6 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
 
@@ -27,28 +26,28 @@ namespace DatenMeister.Tests.Excel
         {
             var dm = DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"));
+            var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
 
             Console.WriteLine(excelExtent.ToString());
             foreach (var sheet in excelExtent.GetRootObjects().Take(1))
             {
-                var allProperties = ((IEnumerable<object>) sheet.GetProperty("items")).First() as IProviderObject;
-                Assert.That(sheet.GetProperty("name").ToString(), Is.EqualTo("Tabelle1"));
+                var allProperties = ((IEnumerable<object>)sheet.GetProperty("items")!).First() as IProviderObject;
+                Assert.That(sheet.GetProperty("name")!.ToString(), Is.EqualTo("Tabelle1"));
                 Assert.That(allProperties, Is.Not.Null);
 
-                Assert.That(allProperties.GetProperties().Count(), Is.EqualTo(2));
+                Assert.That(allProperties!.GetProperties().Count(), Is.EqualTo(2));
                 Assert.That(allProperties.GetProperties().ElementAt(0), Is.EqualTo("Wert"));
 
-                foreach (var item in (IEnumerable<object>) sheet.GetProperty("items"))
+                foreach (var item in (IEnumerable<object>)sheet.GetProperty("items")!)
                 {
-                    var itemAsElement = (IProviderObject) item;
+                    var itemAsElement = (IProviderObject)item;
 
                     var value1 = Convert.ToInt32(itemAsElement.GetProperty("Wert"));
                     var value2 = Convert.ToInt32(itemAsElement.GetProperty("Quadratzahl"));
                     Assert.That(value1 * value1 - value2, Is.EqualTo(0));
                 }
 
-                Assert.That(((IEnumerable<object>) sheet.GetProperty("items")).Count(), Is.GreaterThan(10));
+                Assert.That(((IEnumerable<object>)sheet.GetProperty("items")!).Count(), Is.GreaterThan(10));
             }
         }
 
@@ -76,7 +75,7 @@ namespace DatenMeister.Tests.Excel
 
                 var secondElement = loadedExtent.Extent.elements().ElementAtOrDefault(1) as IObject;
                 Assert.That(secondElement, Is.Not.Null);
-                var value1 = DotNetHelper.AsInteger(secondElement.get("Wert"));
+                var value1 = DotNetHelper.AsInteger(secondElement!.get("Wert"));
                 var value2 = DotNetHelper.AsInteger(secondElement.get("Quadratzahl"));
 
                 Assert.That(value1, Is.EqualTo(2));
@@ -91,11 +90,11 @@ namespace DatenMeister.Tests.Excel
 
                 var loadedExtent = extentManager.FindExtent("dm:///excel2");
                 Assert.That(loadedExtent, Is.Not.Null);
-                Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
+                Assert.That(loadedExtent!.elements().Count(), Is.GreaterThan(0));
 
                 var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;
                 Assert.That(secondElement, Is.Not.Null);
-                var value1 = DotNetHelper.AsInteger(secondElement.get("Wert"));
+                var value1 = DotNetHelper.AsInteger(secondElement!.get("Wert"));
                 var value2 = DotNetHelper.AsInteger(secondElement.get("Quadratzahl"));
 
                 Assert.That(value1, Is.EqualTo(2));
@@ -107,7 +106,7 @@ namespace DatenMeister.Tests.Excel
         public void PerformExcelTestSkipRows()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            
+
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelReferenceSettings =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelReferenceLoaderConfig);
@@ -119,15 +118,16 @@ namespace DatenMeister.Tests.Excel
                 true);
             excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
                 "Tabelle2");
-            excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+            excelReferenceSettings.set(
+                _DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
                 0);
 
             var extentManager = dm.Resolve<ExtentManager>();
             var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
             Assert.That(loadedExtent.Extent, Is.Not.Null);
             Assert.That(loadedExtent.Extent!.elements().Count(), Is.LessThan(40));
-            
-            
+
+
             var excelReferenceSettings2 =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelReferenceLoaderConfig);
             excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
@@ -138,11 +138,13 @@ namespace DatenMeister.Tests.Excel
                 true);
             excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
                 "Tabelle2");
-            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+            excelReferenceSettings2.set(
+                _DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
                 0);
             excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
                 "dm:///excel3");
-            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+            excelReferenceSettings2.set(
+                _DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
                 5);
 
             var loadedExtent2 = extentManager.LoadExtent(excelReferenceSettings2, ExtentCreationFlags.LoadOrCreate);
@@ -160,18 +162,18 @@ namespace DatenMeister.Tests.Excel
 
                 var excelImportLoaderConfig =
                     InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig);
-                
+
                 excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri,
                     "dm:///excel2");
                 excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath,
                     Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
                 excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath,
-                    Path.Combine(currentDirectory, "test.xmi"));
+                    Path.Combine(currentDirectory!, "test.xmi"));
                 excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader,
                     true);
                 excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.sheetName,
                     "Tabelle1");
-                
+
                 var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelImportLoaderConfig, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
@@ -179,26 +181,26 @@ namespace DatenMeister.Tests.Excel
 
                 var secondElement = loadedExtent.Extent!.elements().ElementAtOrDefault(1) as IObject;
                 Assert.That(secondElement, Is.Not.Null);
-                var value1 = DotNetHelper.AsInteger(secondElement.get("Wert"));
-                var value2 = DotNetHelper.AsInteger(secondElement.get("Quadratzahl"));
+                var value1 = DotNetHelper.AsInteger(secondElement!.get("Wert"));
+                var value2 = DotNetHelper.AsInteger(secondElement!.get("Quadratzahl"));
 
                 Assert.That(value1, Is.EqualTo(2));
                 Assert.That(value2, Is.EqualTo(4));
 
                 dm.UnuseDatenMeister();
             }
-            
+
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
 
                 var loadedExtent = extentManager.FindExtent("dm:///excel2");
                 Assert.That(loadedExtent, Is.Not.Null);
-                Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
+                Assert.That(loadedExtent!.elements().Count(), Is.GreaterThan(0));
 
                 var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;
                 Assert.That(secondElement, Is.Not.Null);
-                var value1 = DotNetHelper.AsInteger(secondElement.get("Wert"));
+                var value1 = DotNetHelper.AsInteger(secondElement!.get("Wert"));
                 var value2 = DotNetHelper.AsInteger(secondElement.get("Quadratzahl"));
 
                 Assert.That(value1, Is.EqualTo(2));

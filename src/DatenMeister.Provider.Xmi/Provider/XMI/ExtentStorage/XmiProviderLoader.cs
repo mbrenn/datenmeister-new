@@ -65,46 +65,6 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             return new LoadedProviderInfo(new XmiProvider(xmlDocument));
         }
 
-        /// <summary>
-        /// Creates an empty Xmi document as given by the configuration
-        /// </summary>
-        /// <param name="configuration">Xmi Configuration being used. XmiStorageLoaderConfig</param>
-        /// <returns>Found XDocument</returns>
-        private static XDocument CreateEmptyXmiDocument(IElement configuration)
-        {
-            var filePath = 
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
-            
-            CreateDirectoryIfNecessary(configuration);
-
-            // We need to create an empty Xmi file... Not the best thing at the moment, but we try it.
-            var xmlDocument = new XDocument(
-                new XElement(XmiProvider.DefaultRootNodeName));
-
-            // Try to create file, to verify that file access and other activities are given
-            xmlDocument.Save(filePath);
-            return xmlDocument;
-        }
-
-        
-        /// <summary>
-        /// XmiStorageLoaderConfig
-        /// </summary>
-        /// <param name="configuration">configuration as XmiStorage </param>
-        private static void CreateDirectoryIfNecessary(IElement configuration)
-        {
-            var filePath = 
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
-            // Creates directory if necessary
-            var directoryPath = Path.GetDirectoryName(filePath)
-                                ?? throw new InvalidOperationException("directoryPath is null");
-
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-        }
-
         public void StoreProvider(IProvider extent, IElement configuration)
         {
             var filePath =
@@ -120,6 +80,74 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             // Loads existing file
             using var fileStream = File.OpenWrite(filePath);
             xmlExtent.Document.Save(fileStream);
+        }
+
+        public bool IsLocked(IElement configuration)
+        {
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+
+            var path = GetLockFilePath(configuration);
+            return lockingLogic.IsLocked(path);
+        }
+
+        public void Lock(IElement configuration)
+        {
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+
+
+            var path = GetLockFilePath(configuration);
+            lockingLogic.Lock(path);
+        }
+
+        public void Unlock(IElement configuration)
+        {
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+
+            var path = GetLockFilePath(configuration);
+            lockingLogic.Unlock(path);
+        }
+
+        /// <summary>
+        /// Creates an empty Xmi document as given by the configuration
+        /// </summary>
+        /// <param name="configuration">Xmi Configuration being used. XmiStorageLoaderConfig</param>
+        /// <returns>Found XDocument</returns>
+        private static XDocument CreateEmptyXmiDocument(IElement configuration)
+        {
+            var filePath =
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+
+            CreateDirectoryIfNecessary(configuration);
+
+            // We need to create an empty Xmi file... Not the best thing at the moment, but we try it.
+            var xmlDocument = new XDocument(
+                new XElement(XmiProvider.DefaultRootNodeName));
+
+            // Try to create file, to verify that file access and other activities are given
+            xmlDocument.Save(filePath);
+            return xmlDocument;
+        }
+
+
+        /// <summary>
+        /// XmiStorageLoaderConfig
+        /// </summary>
+        /// <param name="configuration">configuration as XmiStorage </param>
+        private static void CreateDirectoryIfNecessary(IElement configuration)
+        {
+            var filePath =
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+            // Creates directory if necessary
+            var directoryPath = Path.GetDirectoryName(filePath)
+                                ?? throw new InvalidOperationException("directoryPath is null");
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
         }
 
         /// <summary>
@@ -138,34 +166,6 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             }
 
             return filePath + ".lock";
-        }
-
-        public bool IsLocked(IElement configuration)
-        {
-            var lockingLogic =
-                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
-
-            var path = GetLockFilePath(configuration);
-            return lockingLogic.IsLocked(path);
-        }
-
-        public void Lock(IElement configuration)
-        {
-            var lockingLogic =
-                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
-           
-
-            var path = GetLockFilePath(configuration);
-            lockingLogic.Lock(path);
-        }
-
-        public void Unlock(IElement configuration)
-        {
-            var lockingLogic =
-                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
-
-            var path = GetLockFilePath(configuration);
-            lockingLogic.Unlock(path);
         }
     }
 }

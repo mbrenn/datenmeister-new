@@ -36,7 +36,7 @@ namespace DatenMeister.Tests
         /// <returns></returns>
         public static IDatenMeisterScope GetDatenMeisterScope(
             bool dropDatabase = true,
-            IntegrationSettings integrationSettings = null)
+            IntegrationSettings? integrationSettings = null)
         {
             TheLog.ClearProviders();
             TheLog.AddProvider(new ConsoleProvider());
@@ -70,7 +70,8 @@ namespace DatenMeister.Tests
         public static IntegrationSettings GetIntegrationSettings(bool dropDatabase = true)
         {
             var path = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException("Get Directory Name failed"),
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??
+                throw new InvalidOperationException("Get Directory Name failed"),
                 "testing/datenmeister/data");
             var integrationSettings = new IntegrationSettings
             {

@@ -39,19 +39,19 @@ namespace DatenMeister.Tests.Provider
 
         public class TestClass
         {
-            public string Title { get; set; }
+            public string? Title { get; set; }
             public int Number { get; set; }
         }
 
         public class Person
         {
-            public string Name { get; set; }
-            public string Prename { get; set; }
+            public string? Name { get; set; }
+            public string? Prename { get; set; }
         }
 
         public class TestClassWithList
         {
-            public string Title { get; set; }
+            public string? Title { get; set; }
             public int Number { get; set; }
             public List<string> Authors { get; set; } = new List<string>();
             public List<Person> Persons { get; set; } = new List<Person>();
@@ -59,9 +59,9 @@ namespace DatenMeister.Tests.Provider
 
         public class PersonWithParent
         {
-            public string Name { get; set; }
-            public string Prename { get; set; }
-            public PersonWithParent Parent { get; set; }
+            public string? Name { get; set; }
+            public string? Prename { get; set; }
+            public PersonWithParent? Parent { get; set; }
         }
 
         public enum TestEnumeration
@@ -73,23 +73,23 @@ namespace DatenMeister.Tests.Provider
 
         public class PersonWithEnumeration
         {
-            public string Name { get; set; }
+            public string? Name { get; set; }
             public TestEnumeration Level { get; set; }
         }
 
         public class PersonWithAnotherPersonPerElement
         {
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            public IElement Spouse { get; set; }
+            public IElement? Spouse { get; set; }
 
-            public List<IElement> Children { get; set; }
+            public List<IElement>? Children { get; set; }
         }
 
         [Test]
         public void TestOfEnumeration()
         {
-            var person = new PersonWithEnumeration {Name = "Hallo", Level = TestEnumeration.First};
+            var person = new PersonWithEnumeration { Name = "Hallo", Level = TestEnumeration.First };
             var asMof = DotNetConverter.ConvertFromDotNetObject(person);
 
             var copy = DotNetConverter.ConvertToDotNetObject<PersonWithEnumeration>(asMof);
@@ -105,7 +105,7 @@ namespace DatenMeister.Tests.Provider
 
             var provider = new InMemoryProvider();
             var extent = new MofUriExtent(provider, "dm:///test", scope.ScopeStorage);
-            workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
+            workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace()!, extent);
 
             var factory = new MofFactory(extent);
             var value = factory.create(_DatenMeister.TheOne.FastViewFilters.__PropertyComparisonFilter);
@@ -123,14 +123,14 @@ namespace DatenMeister.Tests.Provider
         {
             public bool fixRowCount { get; set; }
             public bool fixColumnCount { get; set; }
-            public string filePath { get; set; }
-            public string sheetName { get; set; }
+            public string? filePath { get; set; }
+            public string? sheetName { get; set; }
             public int offsetRow { get; set; }
             public int offsetColumn { get; set; }
             public int countRows { get; set; }
             public int countColumns { get; set; }
             public bool hasHeader { get; set; } = true;
-            public string idColumnName { get; set; }
+            public string? idColumnName { get; set; }
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace DatenMeister.Tests.Provider
 
             var provider = new InMemoryProvider();
             var extent = new MofUriExtent(provider, "dm:///test", datenMeister.ScopeStorage);
-            workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
+            workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace()!, extent);
 
             var csvLoaderType = workspaceLogic.FindItem(
                 WorkspaceNames.UriExtentInternalTypes +

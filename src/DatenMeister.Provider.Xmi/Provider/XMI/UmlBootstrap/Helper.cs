@@ -91,7 +91,7 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
         /// <returns>Enumeration of objects of the given type</returns>
         private static IEnumerable<IObject> XmlGetElementsOfType(IObject element, string typeName)
         {
-            return XmlGetElementsOfTypes(element, new[] {typeName});
+            return XmlGetElementsOfTypes(element, new[] { typeName });
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
         /// <returns>Enumeration of all elements</returns>
         private static IEnumerable<IObject> XmlGetElementsOfTypes(IObject element, IEnumerable<string> typeNames)
         {
-            var elementAsExt = (IObjectAllProperties) element;
+            var elementAsExt = (IObjectAllProperties)element;
             if (elementAsExt == null)
             {
                 throw new ArgumentNullException(nameof(element));

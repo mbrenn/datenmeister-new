@@ -6,7 +6,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Provider.ManagementProviders.Settings
+namespace DatenMeister.Extent.Manager
 {
     public class SettingsProviderHelper : IDatenMeisterPlugin
     {

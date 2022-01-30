@@ -23,15 +23,15 @@ namespace DatenMeister.Tests.Core
             temporaryReflectionCollection.OnDelete += (x, y) =>
             {
                 z++;
-                deleted.Add(y.DeleteObject);
+                deleted.Add(y.DeleteObject!);
             };
-            
+
             Assert.That(z, Is.EqualTo(0));
 
             temporaryReflectionCollection.remove("abc");
             Assert.That(z, Is.EqualTo(1));
             Assert.That(deleted.Contains("abc"));
-            
+
             temporaryReflectionCollection.clear();
             Assert.That(z, Is.EqualTo(3));
             Assert.That(deleted.Contains("def"));

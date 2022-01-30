@@ -9,15 +9,15 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using static DatenMeister.Core.Models._DatenMeister._AttachedExtent;
 
-namespace DatenMeister.Modules.AttachedExtent
+namespace DatenMeister.AttachedExtent
 {
     /// <summary>
     /// Defines the handler to support the attached extents. 
     /// </summary>
     public class AttachedExtentHandler
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
         public const string AttachedExtentProperty = "DatenMeister.AttachedExtent";
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         public AttachedExtentHandler(IWorkspaceLogic workspaceLogic)
         {

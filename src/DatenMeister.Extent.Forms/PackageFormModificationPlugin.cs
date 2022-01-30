@@ -12,11 +12,11 @@ using DatenMeister.Forms.FormModifications;
 namespace DatenMeister.Extent.Forms
 {
     /// <summary>
-    /// Defines the default type modification pluging
+    ///     Defines the default type modification pluging
     /// </summary>
     public class PackageFormModificationPlugin : IFormModificationPlugin
     {
-        public void ModifyForm(FormCreationContext context, IElement form)
+        public bool ModifyForm(FormCreationContext context, IElement form)
         {
             if (context.MetaClass?.Equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true
                 && context.FormType == _DatenMeister._Forms.___FormType.Detail
@@ -40,7 +40,7 @@ namespace DatenMeister.Extent.Forms
                         context.DetailElement.getOrDefault<IReflectiveCollection>(
                             _DatenMeister._CommonTypes._Default._Package.preferredType);
 
-                    AddPreferredTypes(factory, preferredTypes, defaultTypes);
+                    AddPreferredTypes(form, factory, preferredTypes, defaultTypes);
 
                     // Checks the preferred package. 
                     // If a preferred package is set, then all containing classes will be added
@@ -49,32 +49,34 @@ namespace DatenMeister.Extent.Forms
                             _DatenMeister._CommonTypes._Default._Package.preferredPackage);
 
                     if (preferredPackages != null)
-                    {
                         foreach (var preferredPackage in preferredPackages.OfType<IElement>())
                         {
                             var preferredTypes2 = PackageMethods.GetPackagedObjects(preferredPackage);
-                            AddPreferredTypes(factory, preferredTypes2, defaultTypes);
+                            AddPreferredTypes(form, factory, preferredTypes2, defaultTypes);
                         }
-                    }
                 }
+
+                return true;
             }
+
+            return false;
         }
 
         private static void AddPreferredTypes(
+            IObject form,
             MofFactory factory,
             IReflectiveCollection? preferredTypes,
             IReflectiveCollection defaultTypes)
         {
             if (preferredTypes != null)
-            {
                 foreach (var preferredType in preferredTypes.OfType<IElement>())
-                {
-                    AddPreferredType(factory, preferredType, defaultTypes);
-                }
-            }
+                    AddPreferredType(form, factory, preferredType, defaultTypes);
         }
 
-        private static void AddPreferredType(MofFactory factory, IElement preferredType,
+        private static void AddPreferredType(
+            IObject form,
+            MofFactory factory,
+            IElement preferredType,
             IReflectiveCollection defaultTypes)
         {
             if (preferredType.getMetaClass()?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
@@ -84,6 +86,10 @@ namespace DatenMeister.Extent.Forms
                     NamedElementMethods.GetName(preferredType));
                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, preferredType);
                 defaultTypes.add(defaultType);
+
+                FormMethods.AddToFormCreationProtocol(
+                    form,
+                    "[PackageFormModificationPlugin]: Add DefaultType " + NamedElementMethods.GetName(defaultType));
             }
         }
     }

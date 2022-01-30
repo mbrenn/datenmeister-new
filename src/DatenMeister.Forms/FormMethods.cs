@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -17,21 +16,21 @@ using DatenMeister.Core.Uml.Helper;
 namespace DatenMeister.Forms
 {
     /// <summary>
-    /// Contains some helper methods for forms
+    ///     Contains some helper methods for forms
     /// </summary>
     public class FormMethods
     {
         /// <summary>
-        /// Logger being used
+        ///     Logger being used
         /// </summary>
         private static readonly ClassLogger Logger = new(typeof(FormMethods));
 
+        private readonly IScopeStorage _scopeStorage;
+
         /// <summary>
-        /// Stores the workspacelogic
+        ///     Stores the workspacelogic
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
-
-        private readonly IScopeStorage _scopeStorage;
 
         public FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
@@ -40,7 +39,7 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        /// Performs a verification of the form and returns false, if the form is not in a valid state
+        ///     Performs a verification of the form and returns false, if the form is not in a valid state
         /// </summary>
         /// <param name="form">Form to be evaluated</param>
         /// <returns>true, if the form is valid</returns>
@@ -48,24 +47,20 @@ namespace DatenMeister.Forms
         {
             var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
             if (fields != null)
-            {
-                if (!ValidateFields(fields)) return false;
-            }
+                if (!ValidateFields(fields))
+                    return false;
 
             var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
             if (tabs != null)
-            {
                 foreach (var tab in tabs.OfType<IObject>())
-                {
-                    if (!ValidateForm(tab)) return false;
-                }
-            }
+                    if (!ValidateForm(tab))
+                        return false;
 
             return true;
         }
 
         /// <summary>
-        /// Checks, if there is a duplicated name of the fields
+        ///     Checks, if there is a duplicated name of the fields
         /// </summary>
         /// <param name="fields">Fields to be enumerated</param>
         /// <returns>true, if there are no duplications</returns>
@@ -77,8 +72,8 @@ namespace DatenMeister.Forms
             {
                 var preName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
                 var isAttached = field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isAttached);
-                var name = isAttached ? randomGuid  + preName : preName;
-                
+                var name = isAttached ? randomGuid + preName : preName;
+
                 if (set.Contains(name) && !string.IsNullOrEmpty(name))
                 {
                     Logger.Warn($"Field '{name}' is included twice. Validation of form failed");
@@ -92,7 +87,7 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        /// Checks if the given element already has a metaclass within the form
+        ///     Checks if the given element already has a metaclass within the form
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>true, if the form already contains a metaclass form</returns>
@@ -106,7 +101,7 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        /// Checks if the given element already has a metaclass within the form
+        ///     Checks if the given element already has a metaclass within the form
         /// </summary>
         /// <param name="extent">Defines the extent</param>
         /// <param name="fields">Enumeration fo fields</param>
@@ -119,9 +114,9 @@ namespace DatenMeister.Forms
                 .OfType<IElement>()
                 .Any(x => x.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) ?? false);
         }
-        
+
         /// <summary>
-        /// Looks for the given field in the form and returns it, if it is available
+        ///     Looks for the given field in the form and returns it, if it is available
         /// </summary>
         /// <param name="form">Form to be evaluated</param>
         /// <param name="fieldName">Name of the field</param>
@@ -129,8 +124,9 @@ namespace DatenMeister.Forms
         public static IElement? GetField(IElement form, string fieldName)
         {
             if (_DatenMeister._Forms._DetailForm.field != _DatenMeister._Forms._ListForm.field)
-                throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
-            
+                throw new InvalidOperationException(
+                    "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
+
             var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
             return fields
                 .WhenPropertyHasValue(_DatenMeister._Forms._FieldData.name, fieldName)
@@ -139,41 +135,33 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        /// Gets the enumeration of the detail forms which are in embedded into the tabs
+        ///     Gets the enumeration of the detail forms which are in embedded into the tabs
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>Enumeration of the detail forms</returns>
         public static IEnumerable<IElement> GetDetailForms(IElement form)
         {
             foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
-            {
-                if (tab is IElement asElement 
-                    && asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
-                {
+                if (tab is IElement asElement
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
                     yield return asElement;
-                }
-            }
         }
 
         /// <summary>
-        /// Gets the enumeration of the detail forms which are in embedded into the tabs
+        ///     Gets the enumeration of the detail forms which are in embedded into the tabs
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>Enumeration of the detail forms</returns>
         public static IEnumerable<IElement> GetListForms(IElement form)
         {
             foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
-            {
-                if (tab is IElement asElement 
-                    && asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
-                {
+                if (tab is IElement asElement
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
                     yield return asElement;
-                }
-            }
         }
 
         /// <summary>
-        /// Gets the list tab listing the items of the properties
+        ///     Gets the list tab listing the items of the properties
         /// </summary>
         /// <param name="form">Form to be evaluated</param>
         /// <param name="propertyName">Name of the property to which the propertyname shall belong</param>
@@ -181,38 +169,34 @@ namespace DatenMeister.Forms
         public static IElement? GetListTabForPropertyName(IElement form, string propertyName)
         {
             if (_DatenMeister._Forms._ExtentForm.tab != _DatenMeister._Forms._DetailForm.tab)
-                throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
+                throw new InvalidOperationException(
+                    "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
             var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
 
             foreach (var tab in tabs.OfType<IElement>())
-            {
-                if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(), _DatenMeister.TheOne.Forms.__ListForm))
+                if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(),
+                        _DatenMeister.TheOne.Forms.__ListForm))
                 {
                     var property = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
-                    if (property == propertyName)
-                    {
-                        return tab;
-                    }
+                    if (property == propertyName) return tab;
                 }
-            }
 
             return null;
         }
 
         /// <summary>
-        /// Gets the default view mode for a certain object by querying the view mode instances as
-        /// given in the in the management workspace
+        ///     Gets the default view mode for a certain object by querying the view mode instances as
+        ///     given in the in the management workspace
         /// </summary>
         /// <param name="extent">Extent whose view mode is requested</param>
         /// <returns>Found element or null if not found</returns>
         public IElement? GetDefaultViewMode(IExtent? extent)
         {
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
-            
+
             var extentTypes = extent?.GetConfiguration()?.ExtentTypes;
             if (extentTypes != null)
-            {
                 foreach (var extentType in extentTypes)
                 {
                     var result = managementWorkspace
@@ -220,12 +204,8 @@ namespace DatenMeister.Forms
                         .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.defaultExtentType, extentType)
                         .OfType<IElement>()
                         .FirstOrDefault();
-                    if (result != null)
-                    {
-                        return result;
-                    }
+                    if (result != null) return result;
                 }
-            }
 
             return managementWorkspace
                 .GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
@@ -233,11 +213,10 @@ namespace DatenMeister.Forms
                 .OfType<IElement>()
                 .FirstOrDefault();
         }
-        
-        
+
 
         /// <summary>
-        /// Gets the extent form containing the subforms
+        ///     Gets the extent form containing the subforms
         /// </summary>
         /// <param name="subForms">The forms to be added to the extent forms</param>
         /// <returns>The created extent</returns>
@@ -247,26 +226,22 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        /// Adds a certain text to the form creation protocol.
-        /// This protocol is used to allow more easy debugging of the form creation process.
-        /// Otherwise, the form is 'just' there and nobody knows how it was created. 
+        ///     Adds a certain text to the form creation protocol.
+        ///     This protocol is used to allow more easy debugging of the form creation process.
+        ///     Otherwise, the form is 'just' there and nobody knows how it was created.
         /// </summary>
         /// <param name="form">For to which the message shall be addedparam</param>
         /// <param name="message">Message it self that shall be added</param>
-        public static void AddToFormCreationProtocol(IElement form, string message)
+        public static void AddToFormCreationProtocol(IObject form, string message)
         {
             var currentMessage =
                 form.getOrDefault<string>(_DatenMeister._Forms._Form.creationProtocol)
                 ?? string.Empty;
 
             if (currentMessage != string.Empty)
-            {
                 currentMessage += "\r\n" + message;
-            }
             else
-            {
                 currentMessage = message;
-            }
 
             form.set(_DatenMeister._Forms._Form.creationProtocol, currentMessage);
         }

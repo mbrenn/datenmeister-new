@@ -12,14 +12,14 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'ViewLogicAdditionalInfo' ">
-      <DefineConstants>TRACE;VIEWLOGICINFO</DefineConstants>
+        <DefineConstants>TRACE;VIEWLOGICINFO</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj" />
-      <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
-      <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
-      <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+        <ProjectReference Include="..\DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj"/>
+        <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj"/>
+        <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj"/>
+        <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj"/>
     </ItemGroup>
 
 </Project>

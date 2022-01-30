@@ -81,7 +81,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             return list;
         }
         else {
-            var span = $("<span></span>");
+            var span = $("<span class='dm-debug-property-value'></span>");
             span.text(mofElement);
             return span;
         }

@@ -1375,9 +1375,9 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="307084b9-62bc-4cc3-97e6-c9caa923d190"
                       name="isModified" type-ref="dm:///_internal/model/primitivetypes#Boolean"/>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f187a79a-8995-45ba-b6be-0ae9ee4a4b8d"
-                      name="alternativeUris" type-ref="dm:///_internal/model/primitivetypes#String" upper="2"/>
+                      name="alternativeUris" type-ref="dm:///_internal/model/primitivetypes#String" upper="*"/>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ba5dad40-2615-4f90-ba8f-15a0e531b2ed"
-                      name="autoEnumerateType" type-ref="dm:///_internal/model/primitivetypes#String" upper="2"/>
+                      name="autoEnumerateType" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="463b5a55-2895-4fd7-a8e4-3e641d59deaa"
                       name="state" type-ref="#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState"/>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="6ea1b043-e28c-4ff6-b515-0d7f2836866e"

@@ -9,6 +9,7 @@ export function injectName(domElement: JQuery<HTMLElement>, elementPosition: Api
         domElement.text(x.name);
     });
 }
+
 export function injectNameByUri(domElement: JQuery<HTMLElement>, elementUri: string) {
 
     ElementClient.loadNameByUri(elementUri).done(x => {
@@ -38,12 +39,12 @@ export function debugElementToDom(mofElement: any, domSelector: string) {
     }
 }
 
-export function convertToDom(mofElement: any): JQuery{
+export function convertToDom(mofElement: any): JQuery {
     if (Array.isArray(mofElement)) {
         let count = 0;
         const arrayList = $("<ol></ol>");
 
-        for (var m in mofElement) {            
+        for (var m in mofElement) {
             var li = $("<li></li>");
             if (count > 50) {
                 li.text("... (total: " + mofElement.length + ")");
@@ -53,7 +54,7 @@ export function convertToDom(mofElement: any): JQuery{
 
             li.append(convertToDom(mofElement[m]));
             arrayList.append(li);
-            count++;            
+            count++;
         }
 
         return arrayList;
@@ -93,7 +94,7 @@ export function convertToDom(mofElement: any): JQuery{
 
         return list;
     } else {
-        var span = $("<span></span>");
+        var span = $("<span class='dm-debug-property-value'></span>");
         span.text(mofElement);
         return span;
     }

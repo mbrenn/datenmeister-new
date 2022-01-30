@@ -4,6 +4,8 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormModifications;
 
 namespace DatenMeister.Extent.Forms
@@ -15,12 +17,13 @@ namespace DatenMeister.Extent.Forms
     /// </summary>
     public class CreateInstanceButtonsForListForms : IFormModificationPlugin
     {
-        public void ModifyForm(FormCreationContext context, IElement form)
+        public bool ModifyForm(FormCreationContext context, IElement form)
         {
             var extent = context.DetailElement?.GetExtentOf();
             if (context.FormType == _DatenMeister._Forms.___FormType.ObjectList &&
                 extent != null)
             {
+                var added = false;
                 // Adds the default types as defined in the extent
                 var defaultTypes = extent.getOrDefault<IReflectiveCollection>(ExtentConfiguration.ExtentDefaultTypes);
                 if (defaultTypes != null)
@@ -28,9 +31,23 @@ namespace DatenMeister.Extent.Forms
                     var inForm =
                         form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
 
-                    foreach (var defaultType in defaultTypes.OfType<IElement>()) inForm.add(defaultType);
+                    foreach (var defaultType in defaultTypes.OfType<IElement>())
+                    {
+                        inForm.add(defaultType);
+
+                        FormMethods.AddToFormCreationProtocol(
+                            form,
+                            "[CreateInstanceButtonsForListForms]: Add DefaultType " +
+                            NamedElementMethods.GetName(defaultType));
+
+                        added = true;
+                    }
                 }
+
+                return added;
             }
+
+            return false;
         }
     }
 }

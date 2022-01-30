@@ -1270,6 +1270,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="509716dd-67d4-430f-8c56-3211a626262d" name="isReadOnly" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7d1434ca-e491-4169-af30-922b7c7fdf75" name="hideMetaInformation" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7820ec89-9e4a-4566-b47a-85ed529b7aab" name="originalUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7820ec89-9e4a-4566-b47a-85e3229b7aab" name="creationProtocol" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DetailForm" name="DetailForm">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="3902be47-9259-470f-ab52-27e160b071b9" general-ref="#DatenMeister.Models.Forms.Form" />

@@ -72,7 +72,7 @@ namespace DatenMeister.Core.Runtime
                 return null;
             }
 
-            var queryString = ParseQueryString(uri, posQuestion);
+            var queryString = ParseQueryString(uri, posQuestion, posHash);
 
             object? foundItem = null;
             // Ok, not found, try to find it
@@ -158,7 +158,7 @@ namespace DatenMeister.Core.Runtime
             return foundItem;
         }
 
-        private static NameValueCollection ParseQueryString(string uri, int posQuestion)
+        private static NameValueCollection ParseQueryString(string uri, int posQuestion, int posHash)
         {
             try
             {
@@ -166,7 +166,10 @@ namespace DatenMeister.Core.Runtime
                 NameValueCollection parsedValue;
                 if (posQuestion != -1)
                 {
-                    var query = uri.Substring(posQuestion + 1);
+                    var query =
+                        posHash == -1
+                            ? uri.Substring(posQuestion + 1)
+                            : uri.Substring(posQuestion + 1, posHash - posQuestion - 1);
                     if (query.IndexOf('=') == -1)
                     {
                         // If there is no real query string, create one with full name

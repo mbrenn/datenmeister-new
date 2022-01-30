@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -156,6 +158,30 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(found, Is.Not.Null);
             Assert.That(found is IUriExtent, Is.True);
             Assert.That(found.Equals(extent));
+        }
+
+        [Test]
+        public void TestResolveHook()
+        {
+            var extent = GetTestExtent();
+            var hook = new TestResolveHookClass();
+            extent.ScopeStorage!.Get<ResolveHooks>().Add("count", hook);
+
+            Assert.That(hook.Counts, Is.EqualTo(0));
+            var firstChild = extent.GetUriResolver().Resolve(TestUri + "?count=4#child1", ResolveType.Default);
+            Assert.That(firstChild, Is.Not.Null);
+            Assert.That(hook.Counts, Is.EqualTo(4));
+        }
+
+        public class TestResolveHookClass : IResolveHook
+        {
+            public int Counts { get; set; }
+
+            public object? Resolve(ResolveHookParameters hookParameters)
+            {
+                Counts += Convert.ToInt32(hookParameters.QueryString["count"]);
+                return hookParameters.CurrentItem;
+            }
         }
 
         /// <summary>

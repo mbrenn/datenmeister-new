@@ -1,6 +1,6 @@
 define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", "./Fields/DropDownField", "./Fields/MetaClassElementField", "./Fields/ActionField", "./Fields/AnyDataField", "./Fields/SubElementField", "./Fields/ReferenceField", "./Fields/UnknownField"], function (require, exports, TextField, CheckboxField, DropDownField, MetaClassElementField, ActionField, AnyDataField, SubElementField, ReferenceField, UnknownField) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.createField = void 0;
     function createField(fieldMetaClassId, parameter) {
         let result;

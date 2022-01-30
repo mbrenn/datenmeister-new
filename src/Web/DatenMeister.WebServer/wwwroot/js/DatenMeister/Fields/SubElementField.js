@@ -1,6 +1,6 @@
 define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC, ClientItems) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         reloadValuesFromServer() {
@@ -32,7 +32,8 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                         const name = innerValue.get('name');
                         if (name !== undefined && name !== "") {
                             link.text(innerValue.get('name'));
-                        } else {
+                        }
+                        else {
                             link.append($("<em>Unnamed</em>"));
                         }
                         link.attr('href', (0, Website_1.getItemDetailUri)(innerValue));
@@ -44,11 +45,12 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                     ul = $("<em>No items</em>");
                 }
                 this._list.append(ul);
-            } else {
+            }
+            else {
                 const table = $("<table><tbody></tbody></table>");
                 this._list.append(table);
                 let fields = (_a = this.field.get('form')) === null || _a === void 0 ? void 0 : _a.get('field');
-                let fieldsData = [];
+                let fieldsData = new Array();
                 if (fields === undefined) {
                     const nameField = new Mof_1.DmObject();
                     nameField.setMetaClassById("DatenMeister.Models.Forms.TextFieldData");
@@ -97,8 +99,8 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                                 referenceWorkspaceId: innerValue.workspace
                             })
                                 .done(() => {
-                                    tthis.reloadValuesFromServer();
-                                });
+                                tthis.reloadValuesFromServer();
+                            });
                         });
                         tr.append(deleteCell);
                         table.append(tr);

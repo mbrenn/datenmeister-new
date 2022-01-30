@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -23,7 +24,7 @@ namespace DatenMeister.Forms
         /// <summary>
         /// Logger being used
         /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(FormMethods));
+        private static readonly ClassLogger Logger = new(typeof(FormMethods));
 
         /// <summary>
         /// Stores the workspacelogic
@@ -240,9 +241,34 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="subForms">The forms to be added to the extent forms</param>
         /// <returns>The created extent</returns>
-        public IElement GetExtentFormForSubforms(params IElement[] subForms)
+        public static IElement GetExtentFormForSubforms(params IElement[] subForms)
         {
             return FormCreator.FormCreator.CreateExtentFormFromTabs(null, subForms);
+        }
+
+        /// <summary>
+        /// Adds a certain text to the form creation protocol.
+        /// This protocol is used to allow more easy debugging of the form creation process.
+        /// Otherwise, the form is 'just' there and nobody knows how it was created. 
+        /// </summary>
+        /// <param name="form">For to which the message shall be addedparam</param>
+        /// <param name="message">Message it self that shall be added</param>
+        public static void AddToFormCreationProtocol(IElement form, string message)
+        {
+            var currentMessage =
+                form.getOrDefault<string>(_DatenMeister._Forms._Form.creationProtocol)
+                ?? string.Empty;
+
+            if (currentMessage != string.Empty)
+            {
+                currentMessage += "\r\n" + message;
+            }
+            else
+            {
+                currentMessage = message;
+            }
+
+            form.set(_DatenMeister._Forms._Form.creationProtocol, currentMessage);
         }
     }
 }

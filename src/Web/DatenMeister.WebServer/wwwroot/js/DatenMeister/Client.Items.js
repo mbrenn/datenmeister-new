@@ -1,6 +1,6 @@
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.getProperty = exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
     function loadObject(workspace, extent, id) {
         const r = jQuery.Deferred();
@@ -38,7 +38,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
             "/" +
             encodeURIComponent(extentUri)).done(text => {
             const x = JSON.parse(text);
-            let result = [];
+            let result = new Array();
             for (let n in x) {
                 if (Object.prototype.hasOwnProperty.call(x, n)) {
                     const v = x[n];
@@ -69,7 +69,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
             encodeURIComponent(workspaceId) +
             "/" +
             encodeURIComponent(itemUrl);
-        return ApiConnection.post(url, {metaclass: newMetaClass});
+        return ApiConnection.post(url, { metaclass: newMetaClass });
     }
     exports.setMetaclass = setMetaclass;
     function addReferenceToCollection(workspaceId, itemUrl, parameter) {

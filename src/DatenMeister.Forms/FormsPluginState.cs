@@ -8,6 +8,6 @@ namespace DatenMeister.Forms
         /// <summary>
         /// Lists all form modificationPlugins
         /// </summary>
-        public List<IFormModificationPlugin> FormModificationPlugins { get; } = new List<IFormModificationPlugin>();
+        public List<IFormModificationPlugin> FormModificationPlugins { get; } = new();
     }
 }

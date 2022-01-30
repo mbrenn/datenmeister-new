@@ -643,6 +643,6 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         /// Gets or sets the extent type to be used
         /// </summary>
-        public List<string> ExtentTypes { get; set; } = new List<string>();
+        public List<string> ExtentTypes { get; set; } = new();
     }
 }

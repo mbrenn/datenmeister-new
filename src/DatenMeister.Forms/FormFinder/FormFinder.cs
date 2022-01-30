@@ -246,6 +246,6 @@ namespace DatenMeister.Forms.FormFinder
 #pragma warning restore 162
         }
 
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(FormFinder));
+        private static readonly ClassLogger Logger = new(typeof(FormFinder));
     }
 }

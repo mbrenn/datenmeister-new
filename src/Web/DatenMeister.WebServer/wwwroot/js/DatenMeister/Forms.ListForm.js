@@ -1,6 +1,6 @@
 define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.SelectItemControl"], function (require, exports, Forms_FieldFactory_1, Settings, SIC) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.openMetaClassSelectionFormForNewItem = exports.ListForm = void 0;
     class ListForm {
         refreshForm() {
@@ -28,12 +28,12 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                         const uri = inner.uri;
                         document.location.href =
                             Settings.baseUrl +
-                            "ItemAction/Extent.CreateItem?workspace=" +
-                            encodeURIComponent(tthis.workspace) +
-                            "&extent=" +
-                            encodeURIComponent(tthis.extentUri) +
-                            "&metaclass=" +
-                            encodeURIComponent(uri);
+                                "ItemAction/Extent.CreateItem?workspace=" +
+                                encodeURIComponent(tthis.workspace) +
+                                "&extent=" +
+                                encodeURIComponent(tthis.extentUri) +
+                                "&metaclass=" +
+                                encodeURIComponent(uri);
                     });
                     parent.append(btn);
                 }
@@ -44,7 +44,8 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                 div.text("Non-Array elements for ListForm: ");
                 div.append($("<em></em>").text(this.elements));
                 parent.append(div);
-            } else {
+            }
+            else {
                 let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
                 const fields = this.formElement.getAsArray("field");
                 const headerRow = $("<tbody><tr></tr></tbody>");
@@ -101,19 +102,20 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                 if (selectedItem === undefined) {
                     document.location.href =
                         Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri);
-                } else {
+                            "ItemAction/Extent.CreateItem?workspace=" +
+                            encodeURIComponent(workspace) +
+                            "&extent=" +
+                            encodeURIComponent(extentUri);
+                }
+                else {
                     document.location.href =
                         Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri) +
-                        "&metaclass=" +
-                        encodeURIComponent(selectedItem.uri);
+                            "ItemAction/Extent.CreateItem?workspace=" +
+                            encodeURIComponent(workspace) +
+                            "&extent=" +
+                            encodeURIComponent(extentUri) +
+                            "&metaclass=" +
+                            encodeURIComponent(selectedItem.uri);
                 }
             };
             selectItem.init(containerDiv, settings);

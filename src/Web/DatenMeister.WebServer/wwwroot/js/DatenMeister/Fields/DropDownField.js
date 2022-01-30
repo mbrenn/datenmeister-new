@@ -15,7 +15,8 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
                     option.text(value.get('name').toString());
                     this._selectBox.append(option);
                 }
-            } else {
+            }
+            else {
                 const option = $("<option></option>");
                 option.text("No values given...");
                 this._selectBox.append(option);

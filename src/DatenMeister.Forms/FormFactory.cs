@@ -484,7 +484,7 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <returns>The created instance of the form reportCreator</returns>
         private FormFinder.FormFinder CreateFormFinder()
-            => new FormFinder.FormFinder(_plugin);
+            => new(_plugin);
 
         /// <summary>
         /// Calls all the form modification plugins, if allowed. 

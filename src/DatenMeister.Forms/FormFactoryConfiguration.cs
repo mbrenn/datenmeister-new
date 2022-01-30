@@ -64,6 +64,6 @@
         public bool IsForListView { get; set; }
 
         public static FormFactoryConfiguration CreateByMetaClassOnly =>
-            new FormFactoryConfiguration() {AutomaticMetaClassField = false, CreateByPropertyValues = false};
+            new() {AutomaticMetaClassField = false, CreateByPropertyValues = false};
     }
 }

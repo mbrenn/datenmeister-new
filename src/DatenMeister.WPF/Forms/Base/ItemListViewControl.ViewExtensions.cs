@@ -58,7 +58,7 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         var loader = new CsvLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
                         var memoryProvider = new InMemoryProvider();
-                        var temporary = new MofUriExtent(memoryProvider, "dm:///temp");
+                        var temporary = new MofUriExtent(memoryProvider, "dm:///temp", null);
                         var copier = new ExtentCopier(new MofFactory(temporary));
                         copier.Copy(Items, temporary.elements());
 

@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DatenMeister.Provider.Xmi\DatenMeister.Provider.Xmi.csproj"/>
-      <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
     </ItemGroup>
 
 </Project>

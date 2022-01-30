@@ -24,7 +24,6 @@
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\DatenMeister.WPF\DatenMeister.WPF.csproj" />
-    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons.ico" />

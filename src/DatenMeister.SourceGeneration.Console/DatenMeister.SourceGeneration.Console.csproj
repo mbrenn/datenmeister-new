@@ -20,7 +20,6 @@
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
-    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />

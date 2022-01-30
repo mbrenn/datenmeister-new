@@ -19,7 +19,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
         <ProjectReference Include="..\..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
-        <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
         <ProjectReference Include="..\ZipCodeLibrary\ZipCodeLibrary.csproj" />
     </ItemGroup>
 

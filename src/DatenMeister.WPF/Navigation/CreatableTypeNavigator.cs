@@ -8,8 +8,8 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Helper;
 
 namespace DatenMeister.WPF.Navigation
 {

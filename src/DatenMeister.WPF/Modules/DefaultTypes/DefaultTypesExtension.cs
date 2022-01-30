@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Runtime;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -23,7 +23,7 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
         {
             _defaultClassifierHints = hints;
         }
-        
+
         public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
             var btn = GetNewPackageButton(viewExtensionInfo);
@@ -44,7 +44,7 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
         {
             // Only, if the navigation guest is the item explorer view
             var itemExplorerView = viewExtensionInfo.GetItemExplorerControl();
-            
+
             // Check, if we are in an item explorer control
             if (itemExplorerView == null)
                 return null;
@@ -60,15 +60,15 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
 
             // Check, if the selected element is a package or an extent
             // which allows 
-            if (itemExplorerView.SelectedItem is IElement selectedElement 
+            if (itemExplorerView.SelectedItem is IElement selectedElement
                 && !DefaultClassifierHints.IsPackageLike(selectedElement))
                 return null;
 
             return
                 new ItemButtonDefinition(
                     "New Package",
-                    clickedItem => 
-                     {
+                    clickedItem =>
+                    {
                         if (clickedItem == null) throw new InvalidOperationException("ClickedItem == null");
                         if (!(clickedItem is IHasExtent asExtent))
                             throw new InvalidOperationException("Not of type asExtent");
@@ -78,9 +78,9 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                         var type = _defaultClassifierHints.GetDefaultPackageClassifier(asExtent);
                         var package = factory.create(type);
                         package.set(_UML._CommonStructure._NamedElement.name, "Unnamed");
-                        
+
                         DefaultClassifierHints.AddToExtentOrElement(
-                            clickedItem, 
+                            clickedItem,
                             package);
 
                         _ = NavigatorForItems.NavigateToElementDetailView(

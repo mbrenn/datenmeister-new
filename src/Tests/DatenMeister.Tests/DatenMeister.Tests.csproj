@@ -37,7 +37,6 @@
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj"/>
     <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj"/>
     <ProjectReference Include="..\..\DatenMeister.Users\DatenMeister.Users.csproj"/>
-    <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />

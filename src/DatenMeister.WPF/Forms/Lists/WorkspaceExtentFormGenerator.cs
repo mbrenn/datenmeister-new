@@ -22,10 +22,10 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.ZipCodeExample;
-using DatenMeister.Provider.ManagementProviders.View;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.Types;
 using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -51,17 +51,18 @@ namespace DatenMeister.WPF.Forms.Lists
             // Finds the view
             var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             var formFactory = GiveMe.Scope.Resolve<FormFactory>();
-            
-            var formElement = formsPlugin.GetInternalFormExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
+
+            var formElement = formsPlugin.GetInternalFormExtent()
+                .element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
 
             if (formElement == null)
             {
                 // The form was not found, so the form is created automatically
                 // Creates the form out of the properties of the workspace
                 formElement = formFactory.CreateListFormForCollection(
-                                   extent.elements(),
-                                   new FormFactoryConfiguration())
-                               ?? throw new InvalidOperationException("List form could not be created");
+                                  extent.elements(),
+                                  new FormFactoryConfiguration())
+                              ?? throw new InvalidOperationException("List form could not be created");
                 formElement.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
             }
 
@@ -126,10 +127,10 @@ namespace DatenMeister.WPF.Forms.Lists
             void DeleteWorkspace(INavigationGuest navigationGuest, IObject workspace)
             {
                 var workspaceId = workspace.getOrDefault<string>("id");
-                
+
                 if (MessageBox.Show(
                         $"Are you sure to delete the workspace '{workspaceId}'? " +
-                        "All included extents will also be deleted.", 
+                        "All included extents will also be deleted.",
                         "Confirmation",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -147,16 +148,16 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <param name="navigationHost">Defines the navigation host being used for the window</param>
         /// <returns>The created form</returns>
         internal static FormDefinition RequestFormForExtents(
-            IExtent extent, 
+            IExtent extent,
             string workspaceId,
             INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var formFactory = GiveMe.Scope.Resolve<FormFactory>();
             var viewExtent = viewLogic.GetInternalFormExtent();
-            var result = 
+            var result =
                 viewExtent.GetUriResolver().ResolveById("Workspace.ExtentFormForExtents");
-            
+
             if (result == null)
             {
                 result =
@@ -166,7 +167,8 @@ namespace DatenMeister.WPF.Forms.Lists
                     throw new InvalidOperationException("listForm == null");
                 result.set(_DatenMeister._Forms._ListForm.inhibitDeleteItems, true);
                 result.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
-                result.set(_DatenMeister._Forms._ListForm.property, nameof(_DatenMeister._Management._Workspace.extents));
+                result.set(_DatenMeister._Forms._ListForm.property,
+                    nameof(_DatenMeister._Management._Workspace.extents));
             }
 
             var viewDefinition = new FormDefinition("Extents", result)
@@ -230,14 +232,14 @@ namespace DatenMeister.WPF.Forms.Lists
                     LoadExtent,
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));
-            
+
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>
                     new TextBlock
                     {
                         Inlines =
                         {
-                            new Bold {Inlines = {new Run("Workspace: ")}},
+                            new Bold { Inlines = { new Run("Workspace: ") } },
                             new Run(workspaceId)
                             {
                                 ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(workspaceId)
@@ -250,9 +252,9 @@ namespace DatenMeister.WPF.Forms.Lists
                 var extentObject = (element as MofElement)?.ProviderObject as ExtentObject;
                 var uri = element.getOrDefault<string>("uri");
                 if (MessageBox.Show(
-                    $"Are you sure, you would like to delete the extent '{uri}'?",
-                    "Delete Extent",
-                    MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        $"Are you sure, you would like to delete the extent '{uri}'?",
+                        "Delete Extent",
+                        MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
@@ -268,7 +270,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     {
                         extentManager.RemoveExtent(extentObject.LoadedExtentInformation);
                     }
-                    
+
                     guest.UpdateForm();
                 }
             }
@@ -293,7 +295,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void ShowItems(INavigationGuest navigationGuest, IObject extentElement)
             {
-                var listViewControl = (ItemListViewControl) navigationGuest;
+                var listViewControl = (ItemListViewControl)navigationGuest;
 
                 var uri = extentElement.getOrDefault<string>("uri");
 
@@ -305,7 +307,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             async void LoadExtent(IObject? item)
             {
-                var extentLoaderConfig = 
+                var extentLoaderConfig =
                     await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)
                 {
@@ -314,7 +316,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     try
                     {
                         var loadedExtent = extentManager.LoadExtent(
-                            extentLoaderConfig, 
+                            extentLoaderConfig,
                             ExtentCreationFlags.LoadOrCreate);
                         if (loadedExtent.LoadingState == ExtentLoadingState.Failed)
                         {
@@ -392,7 +394,7 @@ namespace DatenMeister.WPF.Forms.Lists
             static void OnPropertyValueChanged(PropertyValueChangedEventArgs prop)
             {
                 if (prop.PropertyName != "filePath") return;
-                
+
                 var filePath = prop.NewValue?.ToString();
                 try
                 {
@@ -428,7 +430,8 @@ namespace DatenMeister.WPF.Forms.Lists
             };
 
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var extent = workspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
+            var extent =
+                workspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
             if (extent == null)
             {
                 Logger.Error("Extent for Types is not found");
@@ -438,13 +441,13 @@ namespace DatenMeister.WPF.Forms.Lists
             var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
             var package =
                 packageMethods.GetPackageStructure(
-                    extent.elements(), 
+                    extent.elements(),
                     ExtentManager.PackagePathTypesExtentLoaderConfig);
             if (package == null)
             {
                 throw new InvalidOperationException(ExtentManager.PackagePathTypesExtentLoaderConfig + " not found");
             }
-            
+
             dlg.SetAsRoot(extent /*package*/);
 
             // User has selected the type

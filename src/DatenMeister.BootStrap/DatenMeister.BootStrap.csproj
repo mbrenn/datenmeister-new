@@ -17,7 +17,6 @@
       <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
       <ProjectReference Include="..\DatenMeister.Provider.Xmi\DatenMeister.Provider.Xmi.csproj"/>
       <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
-      <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
     </ItemGroup>
 
     <ItemGroup>

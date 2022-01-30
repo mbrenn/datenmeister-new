@@ -72,7 +72,6 @@
     <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj"/>
     <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
     <ProjectReference Include="..\..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
-    <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
   </ItemGroup>
 

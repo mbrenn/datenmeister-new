@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core;
-using DatenMeister.Modules.AttachedExtent;
+﻿using DatenMeister.AttachedExtent;
+using DatenMeister.Core;
 using DatenMeister.Plugins;
 using DatenMeister.WPF.Modules.UserInteractions;
 
@@ -7,8 +7,8 @@ namespace DatenMeister.WPF.Modules.AttachedExtent
 {
     public class AttachedExtentWpfPlugin : IDatenMeisterPlugin
     {
-        private readonly IScopeStorage _scopeStorage;
         private readonly AttachedExtentHandler _attachedExtentHandler;
+        private readonly IScopeStorage _scopeStorage;
 
         public AttachedExtentWpfPlugin(IScopeStorage scopeStorage, AttachedExtentHandler attachedExtentHandler)
         {

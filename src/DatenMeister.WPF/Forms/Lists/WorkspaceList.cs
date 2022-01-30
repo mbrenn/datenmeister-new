@@ -11,7 +11,7 @@ using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
@@ -51,8 +51,8 @@ namespace DatenMeister.WPF.Forms.Lists
 
                 // Checks, if the given form is correct
                 if (!ClassifierMethods.IsSpecializedClassifierOf(
-                    (OverridingViewDefinition.Element as IElement)?.getMetaClass(),
-                    _DatenMeister.TheOne.Forms.__ExtentForm))
+                        (OverridingViewDefinition.Element as IElement)?.getMetaClass(),
+                        _DatenMeister.TheOne.Forms.__ExtentForm))
                 {
                     MessageBox.Show("Overriding form is not of type ExtentForm.");
                     form = null;

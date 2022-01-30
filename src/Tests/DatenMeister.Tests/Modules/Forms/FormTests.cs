@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Forms;
 using DatenMeister.Types;
@@ -15,6 +16,25 @@ namespace DatenMeister.Tests.Modules.Forms
     [TestFixture]
     public class FormTests
     {
+        [Test]
+        public void TestProtocol()
+        {
+            var element = InMemoryObject.CreateEmpty();
+            
+            FormMethods.AddToFormCreationProtocol(element, "test");
+            Assert.That(
+                element.getOrDefault<string>(_DatenMeister._Forms._Form.creationProtocol)?.Contains("test") == true,
+                Is.True);
+            
+            FormMethods.AddToFormCreationProtocol(element, "hallo");
+            Assert.That(
+                element.getOrDefault<string>(_DatenMeister._Forms._Form.creationProtocol)?.Contains("test") == true,
+                Is.True);
+            Assert.That(
+                element.getOrDefault<string>(_DatenMeister._Forms._Form.creationProtocol)?.Contains("hallo") == true,
+                Is.True);
+        }
+        
         [Test]
         public void TestValidator()
         {

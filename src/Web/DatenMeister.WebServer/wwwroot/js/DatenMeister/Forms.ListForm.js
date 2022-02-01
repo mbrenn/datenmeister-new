@@ -7,7 +7,7 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
             this.createFormByCollection(this.parentHtml, this.configuration);
         }
         createFormByCollection(parent, configuration) {
-            var _a;
+            var _a, _b, _c, _d;
             this.parentHtml = parent;
             this.configuration = configuration;
             const tthis = this;
@@ -15,7 +15,7 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                 configuration.isReadOnly = true;
             }
             let headline = $("<h2></h2>");
-            headline.text(this.formElement.get('name'));
+            headline.text((_a = this.formElement.get('title')) !== null && _a !== void 0 ? _a : this.formElement.get('name'));
             parent.append(headline);
             // Evaluate the new buttons to create objects
             const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
@@ -55,14 +55,27 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                         continue;
                     const field = fields[n];
                     let cell = $("<th></th>");
-                    cell.text((_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name"));
+                    cell.text((_b = field.get("title")) !== null && _b !== void 0 ? _b : field.get("name"));
                     innerRow.append(cell);
                 }
                 table.append(headerRow);
+                let metaClass = (_c = this.formElement.get('metaClass')) === null || _c === void 0 ? void 0 : _c.uri;
+                let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
                 let elements = this.elements;
                 for (let n in elements) {
                     if (Object.prototype.hasOwnProperty.call(elements, n)) {
                         let element = this.elements[n];
+                        // Check, if the element may be shown
+                        let elementsMetaClass = (_d = element.metaClass) === null || _d === void 0 ? void 0 : _d.uri;
+                        if ((elementsMetaClass !== undefined && elementsMetaClass !== "") && noItemsWithMetaClass) {
+                            // Only items with no metaclass may be shown, but the element is the metaclass
+                            continue;
+                        }
+                        if ((metaClass !== undefined && metaClass !== "") && elementsMetaClass !== metaClass) {
+                            // Only elements with given metaclass shall be shown, but given element is not of
+                            // the metaclass type
+                            continue;
+                        }
                         const row = $("<tr></tr>");
                         for (let n in fields) {
                             if (!fields.hasOwnProperty(n))

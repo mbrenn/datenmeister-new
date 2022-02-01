@@ -200,7 +200,7 @@ namespace DatenMeister.Forms.FormCreator
 
                     FormMethods.AddToFormCreationProtocol(
                         result,
-                        "[FormCreator.CreateExtentFormForCollection]: Create ListForm for elements: " +
+                        "[FormCreator.CreateExtentFormForCollection]: Create ListForm for metaclass: " +
                         NamedElementMethods.GetName(groupedMetaclass));
 
                     form = formCreator.CreateListFormForMetaClass(

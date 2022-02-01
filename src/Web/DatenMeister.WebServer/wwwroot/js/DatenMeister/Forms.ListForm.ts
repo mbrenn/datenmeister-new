@@ -29,7 +29,9 @@ export class ListForm implements InterfacesForms.IForm {
         }
 
         let headline = $("<h2></h2>");
-        headline.text(this.formElement.get('name'));
+        headline.text(
+            this.formElement.get('title')
+            ?? this.formElement.get('name'));
         parent.append(headline);
 
         // Evaluate the new buttons to create objects
@@ -82,10 +84,26 @@ export class ListForm implements InterfacesForms.IForm {
 
             table.append(headerRow);
 
+            let metaClass = (this.formElement.get('metaClass') as DmObject)?.uri;
+            let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
+
             let elements = this.elements;
             for (let n in elements) {
                 if (Object.prototype.hasOwnProperty.call(elements, n)) {
                     let element = this.elements[n];
+
+                    // Check, if the element may be shown
+                    let elementsMetaClass = element.metaClass?.uri;
+                    if ((elementsMetaClass !== undefined && elementsMetaClass !== "") && noItemsWithMetaClass) {
+                        // Only items with no metaclass may be shown, but the element is the metaclass
+                        continue;
+                    }
+
+                    if ((metaClass !== undefined && metaClass !== "") && elementsMetaClass !== metaClass) {
+                        // Only elements with given metaclass shall be shown, but given element is not of
+                        // the metaclass type
+                        continue;
+                    }
 
                     const row = $("<tr></tr>");
 

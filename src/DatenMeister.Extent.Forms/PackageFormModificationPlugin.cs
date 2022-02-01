@@ -12,7 +12,9 @@ using DatenMeister.Forms.FormModifications;
 namespace DatenMeister.Extent.Forms
 {
     /// <summary>
-    ///     Defines the default type modification pluging
+    ///     Defines the default type modification plugin.
+    /// It finds the 'packagedElement' of a package and adds all preferred type as being mentioned
+    /// in the package instance itself
     /// </summary>
     public class PackageFormModificationPlugin : IFormModificationPlugin
     {
@@ -75,7 +77,7 @@ namespace DatenMeister.Extent.Forms
 
         private static void AddPreferredType(
             IObject form,
-            MofFactory factory,
+            IFactory factory,
             IElement preferredType,
             IReflectiveCollection defaultTypes)
         {
@@ -89,7 +91,8 @@ namespace DatenMeister.Extent.Forms
 
                 FormMethods.AddToFormCreationProtocol(
                     form,
-                    "[PackageFormModificationPlugin]: Add DefaultType " + NamedElementMethods.GetName(defaultType));
+                    "[PackageFormModificationPlugin]: Add DefaultType by preferredtypes" +
+                    NamedElementMethods.GetName(defaultType));
             }
         }
     }

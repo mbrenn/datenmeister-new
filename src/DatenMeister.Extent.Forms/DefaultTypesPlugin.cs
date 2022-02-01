@@ -6,7 +6,7 @@ namespace DatenMeister.Extent.Forms
 {
     public class DefaultTypesPlugin : IDatenMeisterPlugin
     {
-        private IScopeStorage _scopeStorage;
+        private readonly IScopeStorage _scopeStorage;
 
         public DefaultTypesPlugin(IScopeStorage scopeStorage)
         {

@@ -109,8 +109,8 @@ namespace DatenMeister.Forms.FormCreator
                 (metaClass != null && property != null ? " - " : "") +
                 (property != null ? NamedElementMethods.GetName(property) : "");
 
-            result.set(_DatenMeister._Forms._ListForm.title, title);
-            result.set(_DatenMeister._Forms._ListForm.name, propertyName);
+            result.set(_DatenMeister._Forms._ListForm.title, "Types: " + title);
+            result.set(_DatenMeister._Forms._ListForm.name, title);
             result.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
 
             if (metaClass != null)

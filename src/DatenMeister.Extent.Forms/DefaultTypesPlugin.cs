@@ -15,9 +15,15 @@ namespace DatenMeister.Extent.Forms
 
         public void Start(PluginLoadingPosition position)
         {
-            var formsPluginState = _scopeStorage.Get<FormsPluginState>();
-            formsPluginState.FormModificationPlugins.Add(
-                new PackageFormModificationPlugin());
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterLoadingOfExtents:
+
+                    var formsPluginState = _scopeStorage.Get<FormsPluginState>();
+                    formsPluginState.FormModificationPlugins.Add(
+                        new PackageFormModificationPlugin());
+                    break;
+            }
         }
     }
 }

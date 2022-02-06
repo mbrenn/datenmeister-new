@@ -29,7 +29,7 @@ namespace DatenMeister.Forms
     /// </summary>
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     // ReSharper disable once ClassNeverInstantiated.Global
-    public partial class FormsPlugin : IDatenMeisterPlugin
+    public class FormsPlugin : IDatenMeisterPlugin
     {
         /// <summary>
         /// Stores the type of the extent containing the views
@@ -96,7 +96,8 @@ namespace DatenMeister.Forms
                         new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentInternalForm, _scopeStorage);
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
-                    _extentSettings.extentTypeSettings.Add(new ExtentType(FormExtentType));
+                    _extentSettings.extentTypeSettings.Add(
+                        new ExtentType(FormExtentType));
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:

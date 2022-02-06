@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
 
@@ -19,7 +20,14 @@ namespace DatenMeister.Types.Plugin
         {
             var extentSettings = scopeStorage.Get<ExtentSettings>();
             extentSettings.extentTypeSettings.Add(
-                new ExtentType(ExtentType));
+                new ExtentType(ExtentType)
+                {
+                    rootElementMetaClasses =
+                    {
+                        _UML.TheOne.StructuredClassifiers.__Class,
+                        _UML.TheOne.SimpleClassifiers.__Enumeration
+                    }
+                });
         }
 
         public void Start(PluginLoadingPosition position)

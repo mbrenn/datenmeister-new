@@ -103,7 +103,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
                 }
 
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationItemDelete && itemAsElement is not null)
+                if (actionType == ItemsFormsPlugin.NavigationItemDelete && itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
                     WriteScriptLines(id, "itemDelete", workspace, extent, itemId);
@@ -116,13 +116,13 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
                 }
 
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
+                if (actionType == ItemsFormsPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
                     WriteScriptLinesWithContext(id, "extentsListViewItem", itemId);
                 }
 
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListDeleteItem &&
+                if (actionType == ItemsFormsPlugin.NavigationExtentsListDeleteItem &&
                     itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);

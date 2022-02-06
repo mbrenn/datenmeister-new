@@ -312,7 +312,7 @@ namespace DatenMeister.Forms
                     configuration,
                     new FormCreationContext
                     {
-                        MetaClass = metaClass,
+                        ParentMetaClass = metaClass,
                         FormType = _DatenMeister._Forms.___FormType.ObjectList
                     },
                     ref foundForm);
@@ -482,7 +482,13 @@ namespace DatenMeister.Forms
 
                 CallFormsModificationPlugins(
                     configuration,
-                    formCreationContext with { FormType = _DatenMeister._Forms.___FormType.ObjectList },
+                    formCreationContext with
+                    {
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList,
+                        ParentPropertyName = listedForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property),
+                        ParentMetaClass = formCreationContext.MetaClass,
+                        MetaClass = listedForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass)
+                    },
                     ref listedForm);
             }
         }

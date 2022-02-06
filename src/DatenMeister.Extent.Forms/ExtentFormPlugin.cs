@@ -59,10 +59,13 @@ namespace DatenMeister.Extent.Forms
             );
 
             ActionButtonToFormAdder.AddActionButton(
-                formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "View ExtentItems Item")
+                formsPlugin,
+                new ActionButtonAdderParameter(NavigationExtentNavigateTo, "Items")
                 {
-                    MetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                    FormType = _DatenMeister._Forms.___FormType.ObjectList
+                    ParentMetaClass = _DatenMeister.TheOne.Management.__Workspace,
+                    FormType = _DatenMeister._Forms.___FormType.ObjectList,
+                    ParentPropertyName = _DatenMeister._Management._Workspace.extents,
+                    ActionButtonPosition = 0
                 });
         }
     }

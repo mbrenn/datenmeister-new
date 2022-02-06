@@ -21,7 +21,6 @@ namespace DatenMeister.WebServer.Controller
 
         public IElement GetInternal(string formUri)
         {
-            formUri = HttpUtility.UrlDecode(formUri);
             if (GetItemByUriParameter(WorkspaceNames.WorkspaceManagement, formUri) is not IElement item)
             {
                 throw new InvalidOperationException("Form is not found");
@@ -32,10 +31,6 @@ namespace DatenMeister.WebServer.Controller
 
         public IElement GetDefaultFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUrl = HttpUtility.UrlDecode(itemUrl);
-            viewMode = HttpUtility.UrlDecode(viewMode);
-
             var item = GetItemByUriParameter(workspaceId, itemUrl);
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
@@ -53,10 +48,6 @@ namespace DatenMeister.WebServer.Controller
 
         public IElement GetDefaultFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
         {
-            viewMode = HttpUtility.UrlDecode(viewMode);
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            extentUri = HttpUtility.UrlDecode(extentUri);
-
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
 
@@ -80,9 +71,6 @@ namespace DatenMeister.WebServer.Controller
         /// <returns>The found form</returns>
         public IObject GetDefaultFormForMetaClassInternal(string metaClass, string? viewMode = null)
         {
-            viewMode = HttpUtility.UrlDecode(viewMode);
-            metaClass = HttpUtility.UrlDecode(metaClass);
-
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(formLogic, _scopeStorage);
             if (

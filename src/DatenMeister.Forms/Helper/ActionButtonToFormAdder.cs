@@ -47,7 +47,6 @@ namespace DatenMeister.Forms.Helper
                     FormCreationContext.EvaluateMatching(_parameter, context) && 
                     (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)))
                 {
-
                     // Calls the OnCall method to allow property debugging
                     _parameter.OnCallSuccess?.Invoke();
                     var formMetaClass = form.getMetaClass();
@@ -70,12 +69,20 @@ namespace DatenMeister.Forms.Helper
 
                     foreach (var formWithFields in forms)
                     {
-                        var fields = formWithFields.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+                        var fields = formWithFields.get<IReflectiveSequence>(_DatenMeister._Forms._DetailForm.field);
                         var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, _parameter.ActionName);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.name, _parameter.ActionName);
-                        fields.add(actionField);
+
+                        if (_parameter.ActionButtonPosition == -1)
+                        {
+                            fields.add(actionField);
+                        }
+                        else
+                        {
+                            fields.add(_parameter.ActionButtonPosition, actionField);
+                        }
                     }
 
                     FormMethods.AddToFormCreationProtocol(

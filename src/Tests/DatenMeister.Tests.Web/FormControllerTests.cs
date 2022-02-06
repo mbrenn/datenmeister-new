@@ -112,6 +112,27 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestWorkspaceFormForViewExtentButtonInListForm()
+        {
+            var (zipExtent, formsController, formsInternal) = CreateZipExtent();
+            var foundForm = formsInternal.GetDefaultFormForItemInternal(
+                WorkspaceNames.WorkspaceManagement,
+                WorkspaceNames.UriExtentWorkspaces + "#Data",
+                ViewModes.Default)!;
+
+            Assert.That(foundForm, Is.Not.Null);
+            var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
+            Assert.That(listForm, Is.Not.Null);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+
+            // Check that field is at first position
+            var firstField = fields.OfType<IElement>().ElementAtOrDefault(0);
+            Assert.That(firstField, Is.Not.Null);
+            Assert.That(firstField.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
+                        ExtentFormPlugin.NavigationExtentNavigateTo);
+        }
+
+        [Test]
         public void TestExtentFormForMetaClass()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
@@ -164,8 +185,10 @@ namespace DatenMeister.Tests.Web
         /// </summary>
         /// <returns>Tuple of zipExtent and corresponding Forms Controller</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private static (IUriExtent zipExtent, FormsController formsController, FormsControllerInternal
-            internalFormController) CreateZipExtent()
+        private static (
+            IUriExtent zipExtent,
+            FormsController formsController,
+            FormsControllerInternal internalFormController) CreateZipExtent()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
 

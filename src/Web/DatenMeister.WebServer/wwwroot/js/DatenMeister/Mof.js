@@ -1,7 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = void 0;
+    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = void 0;
     class DmObject {
         constructor() {
             this.isReference = false;
@@ -192,5 +192,28 @@ define(["require", "exports"], function (require, exports) {
         return result;
     }
     exports.convertJsonObjectToDmObject = convertJsonObjectToDmObject;
+    function getName(value) {
+        if (value === null || value === undefined) {
+            return "Null";
+        }
+        if (Array.isArray(value)) {
+            let spacer = "";
+            let result = "";
+            for (let n in value) {
+                const inner = value[n];
+                result += spacer + getName(inner);
+                spacer = ", ";
+            }
+            return result;
+        }
+        if ((typeof value === "object" || typeof value === "function")) {
+            return value.get('name');
+        }
+        if (value.toString !== undefined) {
+            return value.toString();
+        }
+        return value;
+    }
+    exports.getName = getName;
 });
 //# sourceMappingURL=Mof.js.map

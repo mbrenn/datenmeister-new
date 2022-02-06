@@ -2,6 +2,7 @@
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
@@ -68,7 +69,11 @@ namespace DatenMeister.Modules.ZipCodeExample
                         new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
                         {
                             MetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                            FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
+                            FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
+                            PredicateForElement = 
+                                element => 
+                                    element?.getOrDefault<string>(
+                                        _DatenMeister._Management._Workspace.id) == WorkspaceNames.WorkspaceData
                         });
 
                     break;

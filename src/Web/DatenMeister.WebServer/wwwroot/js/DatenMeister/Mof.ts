@@ -228,3 +228,31 @@ export function convertJsonObjectToDmObject(element: object | string): DmObject 
 
     return result;
 }
+
+export function getName(value: any):string {
+    if (value === null || value === undefined) {
+        return "Null";
+    }
+
+    if (Array.isArray(value)) {
+        let spacer = "";
+        let result = "";
+        for (let n in value) {
+            const inner = value[n];
+            result += spacer + getName(inner);
+            spacer = ", ";
+        }
+
+        return result;
+    }
+
+    if ((typeof value === "object" || typeof value === "function")) {
+        return value.get('name');
+    }
+
+    if (value.toString !== undefined) {
+        return value.toString();
+    }
+
+    return value;
+}

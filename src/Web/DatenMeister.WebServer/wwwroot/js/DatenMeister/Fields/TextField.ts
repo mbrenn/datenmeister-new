@@ -22,7 +22,7 @@ export class Field extends BaseField implements IFormField
                     let innerValue = value[m];
 
                     let item = $("<li></li>");
-                    item.text(innerValue.get('name'));
+                    item.text(Mof.getName(innerValue));
                     enumeration.append(item);
                 }
             }

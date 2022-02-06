@@ -1,4 +1,4 @@
-define(["require", "exports", "../Interfaces.Fields"], function (require, exports, Interfaces_Fields_1) {
+define(["require", "exports", "../Mof", "../Interfaces.Fields"], function (require, exports, Mof, Interfaces_Fields_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
@@ -14,7 +14,7 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
                     if (Object.prototype.hasOwnProperty.call(value, m)) {
                         let innerValue = value[m];
                         let item = $("<li></li>");
-                        item.text(innerValue.get('name'));
+                        item.text(Mof.getName(innerValue));
                         enumeration.append(item);
                     }
                 }

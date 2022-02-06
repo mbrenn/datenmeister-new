@@ -36,6 +36,13 @@ namespace DatenMeister.Forms.Helper
         public string Title { get; set; }
 
         /// <summary>
+        /// Gets or sets a predicate that can be used as an additional filtering option.
+        /// If the method is not set, the element will be considered as fitting.
+        /// If the element is set, then the predicate must return true, to add the filter element 
+        /// </summary>
+        public Func<IObject?, bool>? PredicateForElement;
+
+        /// <summary>
         /// Gets or sets the delegate that will be called, when the 
         /// the filter is evaluated. This allows setting a breakpoint for the debugger
         /// during issue finding

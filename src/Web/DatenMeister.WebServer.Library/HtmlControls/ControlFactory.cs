@@ -96,7 +96,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
 
                 var actionType = field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName);
                 var itemAsElement = item as IElement;
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
+                if (actionType == ExtentFormPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
                 {
                     WriteScriptLineFunction(id, "extentNavigateTo",
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
@@ -109,7 +109,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                     WriteScriptLines(id, "itemDelete", workspace, extent, itemId);
                 }
 
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationItemNew && itemAsElement is not null)
+                if (actionType == ExtentFormPlugin.NavigationItemNew && itemAsElement is not null)
                 {
                     WriteScriptLineFunction(id, "itemNew",
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),

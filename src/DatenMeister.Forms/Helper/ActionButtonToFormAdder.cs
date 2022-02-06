@@ -34,14 +34,18 @@ namespace DatenMeister.Forms.Helper
                 _parameter = parameter;
             }
 
+            /// <summary>
+            /// Modifies the form by checking whether the action button can be applied
+            /// </summary>
+            /// <param name="context">The form creation context in which the application shall be checked. This is
+            /// the specific instance of the requesting form context</param>
+            /// <param name="form">The form to which the changes shall be applied</param>
+            /// <returns>true, if the form has been modified</returns>
             public bool ModifyForm(FormCreationContext context, IElement form)
             {
                 if (
-                    (_parameter.MetaClass == null || context.MetaClass?.equals(_parameter.MetaClass) == true) &&
-                    (_parameter.FormType == null || context.FormType == _parameter.FormType) &&
-                    (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)) &&
-                    (string.IsNullOrEmpty(context.Configuration?.ViewModeId) ||
-                     context.Configuration?.ViewModeId == _parameter.ViewMode))
+                    FormCreationContext.EvaluateMatching(_parameter, context) && 
+                    (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)))
                 {
 
                     // Calls the OnCall method to allow property debugging

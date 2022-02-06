@@ -113,13 +113,12 @@ namespace DatenMeister.Forms
 
                 var formCreationContext = new FormCreationContext
                 {
-                    Configuration = configuration,
                     FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                     MetaClass = (element as IElement)?.metaclass,
                     DetailElement = element
                 };
 
-                CallPluginsForExtentForm(formCreationContext, ref foundForm);
+                CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);
             }
 
             // No Form
@@ -168,9 +167,10 @@ namespace DatenMeister.Forms
 
                 ExpandDropDownValuesOfValueReference(foundForm);
 
-                CallFormsModificationPlugins(new FormCreationContext
+                CallFormsModificationPlugins(
+                    configuration,
+                    new FormCreationContext
                     {
-                        Configuration = configuration,
                         MetaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.Detail,
                         ExtentType = extent?.GetConfiguration().ExtentType ?? string.Empty,
@@ -228,12 +228,11 @@ namespace DatenMeister.Forms
 
                 var formCreationContext = new FormCreationContext
                 {
-                    Configuration = configuration,
                     MetaClass = metaClass,
                     FormType = _DatenMeister._Forms.___FormType.Detail
                 };
 
-                CallPluginsForExtentForm(formCreationContext, ref foundForm);
+                CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);
             }
 
             return foundForm;
@@ -257,9 +256,9 @@ namespace DatenMeister.Forms
                 foundForm = CloneForm(foundForm);
                 ExpandDropDownValuesOfValueReference(foundForm);
 
-                CallFormsModificationPlugins(new FormCreationContext
+                CallFormsModificationPlugins(
+                    configuration, new FormCreationContext
                     {
-                        Configuration = configuration,
                         FormType = _DatenMeister._Forms.___FormType.ObjectList
                     },
                     ref foundForm);
@@ -309,9 +308,10 @@ namespace DatenMeister.Forms
                 foundForm = CloneForm(foundForm);
                 ExpandDropDownValuesOfValueReference(foundForm);
 
-                CallFormsModificationPlugins(new FormCreationContext
+                CallFormsModificationPlugins(
+                    configuration,
+                    new FormCreationContext
                     {
-                        Configuration = configuration,
                         MetaClass = metaClass,
                         FormType = _DatenMeister._Forms.___FormType.ObjectList
                     },
@@ -377,12 +377,11 @@ namespace DatenMeister.Forms
                 var formCreationContext = new FormCreationContext
                 {
                     DetailElement = extent,
-                    Configuration = configuration,
                     FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                     ExtentType = extent.GetConfiguration().ExtentType
                 };
 
-                CallPluginsForExtentForm(formCreationContext, ref foundForm);
+                CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);
             }
 
             return foundForm;
@@ -434,9 +433,9 @@ namespace DatenMeister.Forms
                 foundForm = CloneForm(foundForm);
                 ExpandDropDownValuesOfValueReference(foundForm);
 
-                CallFormsModificationPlugins(new FormCreationContext
+                CallFormsModificationPlugins(configuration,
+                    new FormCreationContext
                     {
-                        Configuration = configuration,
                         FormType = _DatenMeister._Forms.___FormType.ObjectList,
                         MetaClass = (parentElement as IElement)?.metaclass,
                         ParentPropertyName = propertyName,
@@ -454,9 +453,10 @@ namespace DatenMeister.Forms
         /// <param name="formCreationContext">Form Creation context to be used</param>
         /// <param name="foundForm">The form being found</param>
         /// <returns>Element being called</returns>
-        private void CallPluginsForExtentForm(FormCreationContext formCreationContext, ref IElement foundForm)
+        private void CallPluginsForExtentForm(FormFactoryConfiguration configuration, FormCreationContext formCreationContext, ref IElement foundForm)
         {
             CallFormsModificationPlugins(
+                configuration,
                 formCreationContext,
                 ref foundForm);
 
@@ -468,6 +468,7 @@ namespace DatenMeister.Forms
                 ExpandDropDownValuesOfValueReference(listedForm);
 
                 CallFormsModificationPlugins(
+                    configuration,
                     formCreationContext with { FormType = _DatenMeister._Forms.___FormType.Detail },
                     ref listedForm);
             }
@@ -480,6 +481,7 @@ namespace DatenMeister.Forms
                 ExpandDropDownValuesOfValueReference(listedForm);
 
                 CallFormsModificationPlugins(
+                    configuration,
                     formCreationContext with { FormType = _DatenMeister._Forms.___FormType.ObjectList },
                     ref listedForm);
             }
@@ -509,11 +511,12 @@ namespace DatenMeister.Forms
         /// <summary>
         ///     Calls all the form modification plugins, if allowed.
         /// </summary>
+        /// <param name="configuration">The configuration under which the plugins shall be checked</param>
         /// <param name="formCreationContext">The creation context used by the plugins</param>
         /// <param name="form">The form that is evaluated</param>
-        private void CallFormsModificationPlugins(FormCreationContext formCreationContext, ref IElement form)
+        private void CallFormsModificationPlugins(FormFactoryConfiguration configuration, FormCreationContext formCreationContext, ref IElement form)
         {
-            if (formCreationContext.Configuration?.AllowFormModifications != true) return; // Nothing to do
+            if (configuration?.AllowFormModifications != true) return; // Nothing to do
 
             foreach (var plugin in _formPluginState.FormModificationPlugins)
                 if (plugin.ModifyForm(formCreationContext, form))

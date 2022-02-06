@@ -54,15 +54,26 @@ namespace DatenMeister.Forms.FormModifications
         /// <returns>true, if the two elements are fitting</returns>
         public static bool EvaluateMatching(FormCreationContext template, FormCreationContext instance)
         {
-            return instance.FormType == null || template.FormType == instance.FormType &&
-                instance.ExtentType == null || template.ExtentType == instance.ExtentType &&
-                instance.DetailElement == null || template.DetailElement?.@equals(instance.DetailElement) == true &&
-                instance.ParentPropertyName == null || template.ParentPropertyName == instance.ParentPropertyName &&
-                instance.MetaClass == null || template.MetaClass?.@equals(instance.MetaClass) == true &&
-                instance.ViewMode == null || template.ViewMode == instance.ViewMode &&
-                instance.ParentMetaClass == null || template.ParentMetaClass?.@equals(instance.ParentMetaClass) == true;
+         return ((template.FormType == null ||
+                  template.FormType == instance.FormType) &&
+
+                 (string.IsNullOrEmpty(template.ExtentType) ||
+                  template.ExtentType == instance.ExtentType) &&
+
+                 (template.DetailElement == null ||
+                  template.DetailElement?.@equals(instance.DetailElement) == true) &&
+
+                 (string.IsNullOrEmpty(template.ParentPropertyName) ||
+                  template.ParentPropertyName == instance.ParentPropertyName) &&
+
+                 (template.MetaClass == null ||
+                  template.MetaClass?.@equals(instance.MetaClass) == true) &&
+
+                 (string.IsNullOrEmpty(template.ViewMode) ||
+                  template.ViewMode == instance.ViewMode) &&
+
+                 (template.ParentMetaClass == null ||
+                  template.ParentMetaClass?.@equals(instance.ParentMetaClass) == true))!;
         }
     }
-    
-    
 }

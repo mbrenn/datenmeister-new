@@ -10,13 +10,19 @@ $files = Get-ChildItem "*.svg"
 
 foreach($file in $files)
 {
+    Write-Output $file
+
     $filename = $file.BaseName
     & inkscape.exe --export-type="png" $file
 
     & inkscape --export-type="png" --export-width=128 --export-filename="$filename-128.png" $file
     & inkscape --export-type="png" --export-width=64 --export-filename="$filename-64.png" $file
-    & inkscape --export-type="png" --export-width=32 --export-filename="$filename-32.png" $file
     & inkscape --export-type="png" --export-width=48 --export-filename="$filename-48.png" $file
+    & inkscape --export-type="png" --export-width=32 --export-filename="$filename-32.png" $file
+    & inkscape --export-type="png" --export-width=16 --export-filename="$filename-16.png" $file
+    
+    Write-Output "Waiting for Inkscape"
+    Wait-Process -name "inkscape"
 }
 
 # Waits until inkscape is closed

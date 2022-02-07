@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -54,11 +55,12 @@ namespace DatenMeister.Extent.Forms
             {
                 var foundExtentType =
                     _extentSettings.extentTypeSettings.FirstOrDefault(x => x.name == context.ExtentType);
+                var mofFactory = new MofFactory(form);
                 if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.TreeItemExtent)
                 {
                     foreach (var listForm in FormMethods.GetListForms(form))
                     {
-                        if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass) == null)
+                        if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass) != null)
                         {
                             continue;
                         }
@@ -68,7 +70,12 @@ namespace DatenMeister.Extent.Forms
                             var defaultTypesForNewElements =
                                 listForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm
                                     .defaultTypesForNewElements);
-                            defaultTypesForNewElements.add(rootElement);
+
+                            var defaultType = mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                            defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, rootElement);
+                            defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+                                NamedElementMethods.GetName(rootElement));
+                            defaultTypesForNewElements.add(defaultType);
 
                             FormMethods.AddToFormCreationProtocol(listForm,
                                 $"TypesFormsPlugin: Added {NamedElementMethods.GetName(rootElement)} by ExtentType");

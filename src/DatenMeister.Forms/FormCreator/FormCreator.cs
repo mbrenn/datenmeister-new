@@ -65,7 +65,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         ///     Stores the associated workspace logic
         /// </summary>
-        private readonly IWorkspaceLogic? _workspaceLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         private IElement? _booleanType;
         private IElement? _dateTimeType;
@@ -95,10 +95,9 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="formLogic">View logic being used</param>
         private FormCreator(
             IWorkspaceLogic workspaceLogic,
-            FormsPlugin formLogic,
             IScopeStorage scopeStorage)
         {
-            _formLogic = formLogic;
+            _formLogic = new FormsPlugin(workspaceLogic, scopeStorage);
             _scopeStorage = scopeStorage;
             _extentSettings = scopeStorage.Get<ExtentSettings>();
             _workspaceLogic = workspaceLogic;
@@ -669,7 +668,7 @@ namespace DatenMeister.Forms.FormCreator
                         {
                             if (_formLogic != null)
                                 enumerationListForm =
-                                    new FormFactory(_formLogic, _scopeStorage)
+                                    new FormFactory(_workspaceLogic, _scopeStorage)
                                         .CreateListFormForMetaClass(propertyType, configuration);
 
                             // Create the internal form out of the metaclass

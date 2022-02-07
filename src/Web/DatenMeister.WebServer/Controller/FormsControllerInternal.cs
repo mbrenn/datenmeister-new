@@ -34,7 +34,7 @@ namespace DatenMeister.WebServer.Controller
             var item = GetItemByUriParameter(workspaceId, itemUrl);
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForItem(item,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
 
@@ -52,7 +52,7 @@ namespace DatenMeister.WebServer.Controller
                          ?? throw new InvalidOperationException("Extent is not found");
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForExtent(extent,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
             if (form == null)
@@ -72,7 +72,7 @@ namespace DatenMeister.WebServer.Controller
         public IObject GetDefaultFormForMetaClassInternal(string metaClass, string? viewMode = null)
         {
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             if (
                 _workspaceLogic.GetTypesWorkspace().FindElementByUri(metaClass) is not IElement element)
             {

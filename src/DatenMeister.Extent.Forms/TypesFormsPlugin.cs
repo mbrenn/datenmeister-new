@@ -4,11 +4,10 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormModifications;
-using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.Extent.Forms
@@ -55,13 +54,26 @@ namespace DatenMeister.Extent.Forms
             {
                 var foundExtentType =
                     _extentSettings.extentTypeSettings.FirstOrDefault(x => x.name == context.ExtentType);
-                if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.ObjectList)
+                if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.TreeItemExtent)
                 {
-                    foreach (var rootElement in foundExtentType.rootElementMetaClasses)
+                    foreach (var listForm in FormMethods.GetListForms(form))
                     {
-                        var defaultTypesForNewElements =
-                            form.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
-                        defaultTypesForNewElements.add(rootElement);
+                        if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass) == null)
+                        {
+                            continue;
+                        }
+
+                        foreach (var rootElement in foundExtentType.rootElementMetaClasses)
+                        {
+                            var defaultTypesForNewElements =
+                                listForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm
+                                    .defaultTypesForNewElements);
+                            defaultTypesForNewElements.add(rootElement);
+
+                            FormMethods.AddToFormCreationProtocol(listForm,
+                                $"TypesFormsPlugin: Added {NamedElementMethods.GetName(rootElement)} by ExtentType");
+                        }
+
                     }
                 }
 

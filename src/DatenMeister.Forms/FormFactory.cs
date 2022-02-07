@@ -12,6 +12,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.FormModifications;
@@ -33,9 +34,9 @@ namespace DatenMeister.Forms
         private readonly FormsPlugin _plugin;
         private readonly IScopeStorage _scopeStorage;
 
-        public FormFactory(FormsPlugin plugin, IScopeStorage scopeStorage)
+        public FormFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
-            _plugin = plugin;
+            _plugin = new FormsPlugin(workspaceLogic, scopeStorage);
             _scopeStorage = scopeStorage;
             _formPluginState = scopeStorage.Get<FormsPluginState>();
         }

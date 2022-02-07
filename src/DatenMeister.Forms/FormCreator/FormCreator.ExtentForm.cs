@@ -196,7 +196,7 @@ namespace DatenMeister.Forms.FormCreator
                     // Asks the view logic whether it has a list form for the specific metaclass
                     // It will ask the form reportCreator, if there is no view association directly referencing
                     // to the element
-                    var formCreator = new FormFactory(_formLogic, _scopeStorage);
+                    var formCreator = new FormFactory(_workspaceLogic, _scopeStorage);
 
                     FormMethods.AddToFormCreationProtocol(
                         result,
@@ -205,7 +205,7 @@ namespace DatenMeister.Forms.FormCreator
 
                     form = formCreator.CreateListFormForMetaClass(
                                groupedMetaclass,
-                               new FormFactoryConfiguration { AllowFormModifications = false, IsReadOnly = true }) ??
+                               configuration with {IsReadOnly = true, IsForListView = true}) ??
                            throw new InvalidOperationException("No form was found");
 
                     if (configuration.CreateByMetaClass)

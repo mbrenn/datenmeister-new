@@ -194,7 +194,7 @@ namespace DatenMeister.Forms.FormCreator
                 if (!cache.CoveredMetaClasses.Contains(metaClass))
                 {
                     cache.CoveredMetaClasses.Add(metaClass);
-                    wasInMetaClass = AddFieldsToFormByMetaclass(
+                    wasInMetaClass = AddFieldsToFormByMetaClass(
                         form,
                         metaClass,
                         creationMode with
@@ -345,7 +345,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="configuration">Creation Mode to be used</param>
         /// <param name="cache">Cache of reportCreator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddFieldsToFormByMetaclass(
+        private bool AddFieldsToFormByMetaClass(
             IObject form,
             IObject? metaClass,
             FormFactoryConfiguration configuration,
@@ -650,14 +650,17 @@ namespace DatenMeister.Forms.FormCreator
                         elementsField.set(_DatenMeister._Forms._SubElementFieldData.isReadOnly,
                             configuration.IsForListView || configuration.IsReadOnly);
 
-                        var defaultTypeForNewElement =
-                            mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                        defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
-                            NamedElementMethods.GetName(propertyType));
-                        defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass,
-                            propertyType);
-                        elementsField.set(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements,
-                            new[] { defaultTypeForNewElement });
+                        if (!configuration.IsForListView)
+                        {
+                            var defaultTypeForNewElement =
+                                mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                            defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+                                NamedElementMethods.GetName(propertyType));
+                            defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass,
+                                propertyType);
+                            elementsField.set(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements,
+                                new[] { defaultTypeForNewElement });
+                        }
 
                         elementsField.set(
                             _DatenMeister._Forms._SubElementFieldData.includeSpecializationsForDefaultTypes, true);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -74,7 +73,7 @@ namespace DatenMeister.WebServer.Controller
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             if (
-                _workspaceLogic.GetTypesWorkspace().FindElementByUri(metaClass) is not IElement element)
+                _workspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) is not IElement element)
             {
                 throw new InvalidOperationException("Element is not found: " + metaClass);
             }

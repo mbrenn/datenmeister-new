@@ -23,6 +23,11 @@ namespace DatenMeister.Extent.Manager.Extents.Configuration
         /// to the extent. Other metaclasses are also possible, but these one are actively offered
         /// by the tool
         /// </summary>
-        public List<IElement> rootElementMetaClasses { get; } = new(); 
+        public List<IElement> rootElementMetaClasses { get; } = new();
+
+        public override string ToString()
+        {
+            return name ?? "{ExtentType}";
+        }
     }
 }

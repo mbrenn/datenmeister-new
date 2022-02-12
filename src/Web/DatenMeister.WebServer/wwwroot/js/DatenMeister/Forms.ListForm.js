@@ -22,20 +22,22 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
             if (defaultTypesForNewElements !== undefined) {
                 for (let n in defaultTypesForNewElements) {
                     const inner = defaultTypesForNewElements[n];
-                    const btn = $("<btn class='btn btn-secondary'></btn>");
-                    btn.text("Create " + inner.get('name'));
-                    btn.on('click', () => {
-                        const uri = inner.uri;
-                        document.location.href =
-                            Settings.baseUrl +
+                    (function (innerValue) {
+                        const btn = $("<btn class='btn btn-secondary'></btn>");
+                        btn.text("Create " + inner.get('name'));
+                        btn.on('click', () => {
+                            const uri = innerValue.get('metaClass').uri;
+                            document.location.href =
+                                Settings.baseUrl +
                                 "ItemAction/Extent.CreateItem?workspace=" +
                                 encodeURIComponent(tthis.workspace) +
                                 "&extent=" +
                                 encodeURIComponent(tthis.extentUri) +
                                 "&metaclass=" +
                                 encodeURIComponent(uri);
-                    });
-                    parent.append(btn);
+                        });
+                        parent.append(btn);
+                    })(inner);
                 }
             }
             // Evaluate the elements themselves

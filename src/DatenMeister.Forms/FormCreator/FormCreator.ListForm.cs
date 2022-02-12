@@ -54,7 +54,7 @@ namespace DatenMeister.Forms.FormCreator
                 result,
                 "[FormCreator.CreateListFormForPropertyValues]");
 
-            AddFieldsToFormByMetaclass(result, propertyType, creationMode);
+            AddFieldsToFormByMetaClass(result, propertyType, creationMode);
             result.set(_DatenMeister._Forms._ListForm.property, propertyName);
             result.set(_DatenMeister._Forms._ListForm.metaClass, propertyType);
             result.set(_DatenMeister._Forms._ListForm.title,
@@ -115,11 +115,12 @@ namespace DatenMeister.Forms.FormCreator
 
             if (metaClass != null)
             {
-                AddFieldsToFormByMetaclass(result, metaClass, creationMode with { IsForListView = true });
+                AddFieldsToFormByMetaClass(result, metaClass, creationMode with { IsForListView = true });
 
                 var defaultType = mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, metaClass);
-                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+                defaultType.set(
+                    _DatenMeister._Forms._DefaultTypeForNewElement.name,
                     NamedElementMethods.GetName(metaClass));
                 result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] { defaultType });
 
@@ -205,7 +206,7 @@ namespace DatenMeister.Forms.FormCreator
                     if (alreadyVisitedMetaClasses.Contains(metaClass)) continue;
 
                     alreadyVisitedMetaClasses.Add(metaClass);
-                    AddFieldsToFormByMetaclass(form, metaClass, creationMode with { IsForListView = true }, cache);
+                    AddFieldsToFormByMetaClass(form, metaClass, creationMode with { IsForListView = true }, cache);
                 }
                 else if (creationMode.CreateByPropertyValues)
                 {
@@ -314,7 +315,7 @@ namespace DatenMeister.Forms.FormCreator
                 result,
                 "[FormCreator.CreateListFormForProperty] Created for Property: " + propertyName);
 
-            if (propertyType != null) AddFieldsToFormByMetaclass(result, propertyType, creationMode);
+            if (propertyType != null) AddFieldsToFormByMetaClass(result, propertyType, creationMode);
 
             result.set(_DatenMeister._Forms._ListForm.property, propertyName);
             result.set(_DatenMeister._Forms._ListForm.title, $"{propertyName}");

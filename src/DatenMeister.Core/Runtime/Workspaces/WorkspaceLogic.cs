@@ -257,7 +257,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <inheritdoc />
         public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
-            return GetWorkspacesOrderedByDependability()
+            return GetWorkspacesOrderedByDependability(resolveType)
                 .Select(
                     workspace => workspace.Resolve(
                         uri,
@@ -269,7 +269,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <inheritdoc />
         public IElement? ResolveById(string id)
         {
-            return GetWorkspacesOrderedByDependability()
+            return GetWorkspacesOrderedByDependability(ResolveType.Default)
                 .Select(
                     workspace => workspace.ResolveById(id))
                 .FirstOrDefault(result => result != null);
@@ -354,17 +354,22 @@ namespace DatenMeister.Core.Runtime.Workspaces
         ///     being returned is the Data Workspace and the last one is the Mof workspace
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Workspace> GetWorkspacesOrderedByDependability()
+        public IEnumerable<Workspace> GetWorkspacesOrderedByDependability(ResolveType resolveType)
         {
             var workspaces = Workspaces.ToList();
+            var round = 0;
             while (workspaces.Count > 0)
             {
                 var count = workspaces.Count;
                 foreach (var tryWorkspace in workspaces.ToList())
-                    // Checks, if any of the meta-workspaces of the current workspace is still in this list 
+                    // Checks, if any of the meta-workspaces of the current workspace is still in this list
                     if (workspaces.All(x => x.MetaWorkspaces.All(y => y != tryWorkspace)))
                     {
-                        yield return tryWorkspace;
+                        if (!resolveType.HasFlag(ResolveType.OnlyMetaWorkspaces) ||
+                            round != 0)
+                            // Skips the first round, when only MetaWorkspaces are queried
+                            yield return tryWorkspace;
+
                         workspaces.Remove(tryWorkspace);
                     }
 
@@ -375,6 +380,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
                     yield return first;
                     workspaces.Remove(first);
                 }
+
+                round++;
             }
         }
     }

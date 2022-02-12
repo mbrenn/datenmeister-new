@@ -148,7 +148,8 @@ namespace DatenMeister.Forms.FormCreator
                 var extentTypeSetting = _extentSettings.GetExtentTypeSetting(extentType);
                 if (extentTypeSetting == null) continue;
 
-                metaClasses.AddRange(extentTypeSetting.rootElementMetaClasses);
+                metaClasses.AddRange(extentTypeSetting.rootElementMetaClasses.Select(
+                    x => _workspaceLogic.ResolveElement(x, ResolveType.Default)));
             }
 
             // Create the tab for the elements of without any metaclass
@@ -636,7 +637,7 @@ namespace DatenMeister.Forms.FormCreator
                         var propertyType = pair.propertyType;
                         if (propertyType != null)
                         {
-                            AddFieldsToFormByMetaclass(form, propertyType, creationMode, cache);
+                            AddFieldsToFormByMetaClass(form, propertyType, creationMode, cache);
                             AddDefaultTypeForNewElement(form, propertyType);
 
                             FormMethods.AddToFormCreationProtocol(

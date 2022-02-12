@@ -54,7 +54,7 @@ namespace DatenMeister.Forms.FormCreator
             if (creationMode.AutomaticMetaClassField)
                 createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
 
-            if (!AddFieldsToFormByMetaclass(createdForm, metaClass, creationMode))
+            if (!AddFieldsToFormByMetaClass(createdForm, metaClass, creationMode))
                 createdForm.set(_DatenMeister._Forms._DetailForm.allowNewProperties, true);
 
             return createdForm;

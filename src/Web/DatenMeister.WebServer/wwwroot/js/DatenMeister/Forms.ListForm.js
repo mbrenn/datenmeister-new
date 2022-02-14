@@ -29,16 +29,19 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                             const uri = innerValue.get('metaClass').uri;
                             document.location.href =
                                 Settings.baseUrl +
-                                "ItemAction/Extent.CreateItem?workspace=" +
-                                encodeURIComponent(tthis.workspace) +
-                                "&extent=" +
-                                encodeURIComponent(tthis.extentUri) +
-                                "&metaclass=" +
-                                encodeURIComponent(uri);
+                                    "ItemAction/Extent.CreateItem?workspace=" +
+                                    encodeURIComponent(tthis.workspace) +
+                                    "&extent=" +
+                                    encodeURIComponent(tthis.extentUri) +
+                                    "&metaclass=" +
+                                    encodeURIComponent(uri);
                         });
                         parent.append(btn);
                     })(inner);
                 }
+            }
+            if (this.elements === undefined) {
+                this.elements = [];
             }
             // Evaluate the elements themselves
             if (!Array.isArray(this.elements)) {

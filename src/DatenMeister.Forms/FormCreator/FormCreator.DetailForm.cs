@@ -20,7 +20,7 @@ namespace DatenMeister.Forms.FormCreator
         {
             creationMode ??= new FormFactoryConfiguration();
             var cache = new FormCreatorCache();
-            var createdForm = mofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
+            var createdForm = MofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
             createdForm.set(_DatenMeister._Forms._DetailForm.name, "Item");
 
             FormMethods.AddToFormCreationProtocol(
@@ -43,7 +43,7 @@ namespace DatenMeister.Forms.FormCreator
         public IElement CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode = null)
         {
             creationMode ??= new FormFactoryConfiguration();
-            var createdForm = mofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
+            var createdForm = MofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
             var name = NamedElementMethods.GetName(metaClass);
             createdForm.set(_DatenMeister._Forms._DetailForm.name, $"{name} - Detail");
 

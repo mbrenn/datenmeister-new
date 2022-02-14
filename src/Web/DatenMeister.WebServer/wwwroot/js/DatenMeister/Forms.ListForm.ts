@@ -61,6 +61,10 @@ export class ListForm implements InterfacesForms.IForm {
             }
         }
 
+        if(this.elements === undefined) {
+            this.elements = [];
+        }
+
         // Evaluate the elements themselves
         if (!Array.isArray(this.elements)) {
             const div = $("<div></div>");

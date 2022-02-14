@@ -15,37 +15,37 @@
 
   <ItemGroup>
 
-    <TypeScriptCompile Remove="node_modules\**"/>
+    <TypeScriptCompile Remove="node_modules\**" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ApiModels.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ApiModels.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\DomHelper.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\DomHelper.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ExtentControllerClient.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ExtentControllerClient.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Fields\ReferenceField.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Fields\ReferenceField.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.FieldFactory.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.FieldFactory.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ActionForm.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ActionForm.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\init.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\init.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Mof.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Mof.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\NameLoader.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\NameLoader.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\test\MofTests.ts"/>
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\test\MofTests.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,7 +69,7 @@
     <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />
-    <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj"/>
+    <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
     <ProjectReference Include="..\..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />

@@ -20,6 +20,7 @@ export function createActionFormForEmptyObject(
 
     const creator = new Forms.DetailFormCreator();
 
+    configuration.isNewItem = true;
     configuration.onSubmit = (element) => {
         DetailFormActions.execute(
             actionName,

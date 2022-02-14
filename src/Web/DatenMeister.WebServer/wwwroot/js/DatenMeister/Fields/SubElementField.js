@@ -10,12 +10,17 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
             ClientItems.getProperty(this.form.workspace, url, fieldName).done(x => tthis.createDomByValue(x));
         }
         createDom(dmElement) {
-            this._element = dmElement;
-            const fieldName = this.field.get('name');
-            const value = dmElement.get(fieldName);
-            this._list = $("<div></div>");
-            this.createDomByValue(value);
-            return this._list;
+            if (this.configuration.isNewItem) {
+                return $("<em>Element needs to be saved first</em>");
+            }
+            else {
+                this._element = dmElement;
+                const fieldName = this.field.get('name');
+                const value = dmElement.get(fieldName);
+                this._list = $("<div></div>");
+                this.createDomByValue(value);
+                return this._list;
+            }
         }
         createDomByValue(value) {
             var _a;

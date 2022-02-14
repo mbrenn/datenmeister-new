@@ -80,7 +80,7 @@ namespace DatenMeister.Forms
                 {
                     Logger.Info("CreateExtentFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory] Found Form via FormFinder: " + foundForm.GetUri());
+                        "[FormFactory.CreateExtentFormForItem] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
 
@@ -92,7 +92,7 @@ namespace DatenMeister.Forms
                     extent,
                     new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateExtentFormForItem] Created Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -111,6 +111,7 @@ namespace DatenMeister.Forms
                     });
 
                 if (element is IElement asElement) EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
+                EvaluateListFormsForDefaultTypes(element as IElement, foundForm);
 
                 var formCreationContext = new FormCreationContext
                 {
@@ -124,6 +125,33 @@ namespace DatenMeister.Forms
 
             // No Form
             return foundForm;
+        }
+
+        private void EvaluateListFormsForDefaultTypes(IElement value, IElement foundForm)
+        {
+            var listForms = FormMethods.GetListForms(foundForm);
+            foreach (var listForm in listForms)
+            {
+                var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
+                if (metaClass != null)
+                {
+                    FormCreator.FormCreator.AddDefaultTypeForNewElement(foundForm, metaClass);
+                }
+
+                if (value == null) continue;
+
+                var property = listForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                var objectMetaClass = value.getMetaClass();
+
+                if (property == null || objectMetaClass == null) continue;
+                var propertyInstance = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, property);
+
+                if (propertyInstance == null) continue;
+                var propertyType = PropertyMethods.GetPropertyType(propertyInstance);
+
+                if (propertyType == null) continue;
+                FormCreator.FormCreator.AddDefaultTypeForNewElement(listForm, propertyType);
+            }
         }
 
         public IElement? CreateDetailFormForItem(IObject element, FormFactoryConfiguration configuration)
@@ -150,7 +178,7 @@ namespace DatenMeister.Forms
                 {
                     Logger.Info("CreateDetailFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory] Found Form via FormFinder: " + foundForm.GetUri());
+                        "[FormFactory.CreateDetailFormForItem] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
 
@@ -159,7 +187,7 @@ namespace DatenMeister.Forms
                 // Ok, we have not found the form. So create one
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateDetailFormForItem(element);
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateDetailFormForItem] Created Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -204,7 +232,7 @@ namespace DatenMeister.Forms
                     Logger.Info("CreateExtentFormForItemsMetaClass: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory] Found Form via FormFinder: " + foundForm.GetUri());
+                        "[FormFactory.CreateExtentFormForItemsMetaClass] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
 
@@ -249,7 +277,7 @@ namespace DatenMeister.Forms
                 // Ok, now perform the creation...
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateListFormForCollection(collection, configuration);
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateListFormForCollection] Created Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -291,7 +319,7 @@ namespace DatenMeister.Forms
                                 NamedElementMethods.GetFullName(foundForm));
 
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory] Found Form via FormFinder" + foundForm.GetUri());
+                        "[FormFactory.CreateListFormForMetaClass] Found Form via FormFinder" + foundForm.GetUri());
                 }
             }
 
@@ -301,7 +329,7 @@ namespace DatenMeister.Forms
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateListFormForMetaClass(metaClass, configuration);
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateListFormForMetaClass] Created Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -342,7 +370,7 @@ namespace DatenMeister.Forms
                     Logger.Info("GetExtentForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(
                         foundForm,
-                        $"[FormFactory] Found Form via FormFinder {foundForm.GetUri()}");
+                        $"[FormFactory.CreateExtentFormForExtent] Found Form via FormFinder {foundForm.GetUri()}");
                 }
             }
 
@@ -354,7 +382,7 @@ namespace DatenMeister.Forms
                     extent,
                     new FormFactoryConfiguration());
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateExtentFormForExtent] Created Form via FormCreator");
             }
 
             // Adds the extension forms to the found extent
@@ -415,7 +443,7 @@ namespace DatenMeister.Forms
                     Logger.Info("GetListFormForElementsProperty: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory] Found Form via FormFinder: " + foundForm.GetUri());
+                        "[FormFactory.CreateListFormForPropertyValues] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
 
@@ -426,7 +454,7 @@ namespace DatenMeister.Forms
                     parentElement.get<IReflectiveCollection>(propertyName),
                     new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Found Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateListFormForPropertyValues] Found Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -527,7 +555,7 @@ namespace DatenMeister.Forms
 
             foreach (var plugin in _formPluginState.FormModificationPlugins)
                 if (plugin.ModifyForm(formCreationContext, form))
-                    FormMethods.AddToFormCreationProtocol(form, $"[FormFactory] Modified via plugin: {plugin}");
+                    FormMethods.AddToFormCreationProtocol(form, $"[FormFactory.CallFormsModificationPlugins] Modified via plugin: {plugin}");
         }
 
         /// <summary>
@@ -573,7 +601,7 @@ namespace DatenMeister.Forms
                 if (autoGenerate)
                 {
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        $"[FormFactory] Auto Creation of fields by Reflective Collection: {NamedElementMethods.GetName(tab)}");
+                        $"[FormFactory.EvaluateListFormsForAutogenerationByReflectiveCollection] Auto Creation of fields by Reflective Collection: {NamedElementMethods.GetName(tab)}");
 
                     var formCreator = CreateFormCreator();
                     formCreator.AddToListFormByElements(tab, reflectiveCollection,
@@ -612,7 +640,7 @@ namespace DatenMeister.Forms
                     }
 
                     FormMethods.AddToFormCreationProtocol(listOrDetailForm,
-                        $"[FormFactory] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
+                        $"[FormFactory.ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
                 }
             }
         }
@@ -642,7 +670,7 @@ namespace DatenMeister.Forms
                     if (propertyName == null || string.IsNullOrEmpty(propertyName))
                     {
                         FormMethods.AddToFormCreationProtocol(foundForm,
-                            $"[FormFactory] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
+                            $"[FormFactory.EvaluateListFormsForAutogenerationByElement] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
 
                         formCreator.AddToListFormByElements(
                             tab,
@@ -652,7 +680,7 @@ namespace DatenMeister.Forms
                     else
                     {
                         FormMethods.AddToFormCreationProtocol(foundForm,
-                            $"[FormFactory] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
+                            $"[FormFactory.EvaluateListFormsForAutogenerationByElement] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
 
                         var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
                         if (reflectiveSequence != null)

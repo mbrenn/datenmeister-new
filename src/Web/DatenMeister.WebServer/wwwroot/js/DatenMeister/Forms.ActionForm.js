@@ -10,6 +10,7 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
             };
         }
         const creator = new Forms.DetailFormCreator();
+        configuration.isNewItem = true;
         configuration.onSubmit = (element) => {
             FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
         };

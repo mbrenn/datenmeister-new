@@ -22,14 +22,20 @@ export class Field extends BaseField implements IFormField {
     }
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
-        this._element = dmElement;
-        const fieldName = this.field.get('name');
-        const value = dmElement.get(fieldName);
+        if ( this.configuration.isNewItem) {
+            return $("<em>Element needs to be saved first</em>");
+        }
+        else
+        {
+            this._element = dmElement;
+            const fieldName = this.field.get('name');
+            const value = dmElement.get(fieldName);
 
-        this._list = $("<div></div>");
-        this.createDomByValue(value);
+            this._list = $("<div></div>");
+            this.createDomByValue(value);
 
-        return this._list
+            return this._list
+        }
     }
 
     createDomByValue(value: any): JQuery<HTMLElement> {

@@ -13,7 +13,7 @@ export function post<T>(uri: string, data: object): JQuery.jqXHR<T>
             contentType: "application/json",
             method: "POST"
         }
-    ).fail(x => serverError(x));
+    ).fail(x => serverError(x.responseText));
 }
 
 export function deleteRequest<T>(uri: string, data: object): JQuery.jqXHR<T>
@@ -26,7 +26,7 @@ export function deleteRequest<T>(uri: string, data: object): JQuery.jqXHR<T>
             contentType: "application/json",
             method: "DELETE"
         }
-    ).fail(x => serverError(x));
+    ).fail(x => serverError(x.responseText));
 }
 
 export function put<T>(uri: string, data: object): JQuery.jqXHR<T>
@@ -39,7 +39,7 @@ export function put<T>(uri: string, data: object): JQuery.jqXHR<T>
             contentType: "application/json",
             method: "POST"
         }
-    ).fail(x => serverError(x));
+    ).fail(x => serverError(x.responseText));
 }
 
 export function get<T>(uri: string): JQuery.jqXHR<T> {
@@ -48,6 +48,6 @@ export function get<T>(uri: string): JQuery.jqXHR<T> {
             url: uri,
             method: "GET"
         }
-    ).fail(x => serverError(x));
+    ).fail(x => serverError(x.responseText));
 }
 

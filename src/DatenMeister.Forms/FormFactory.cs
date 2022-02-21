@@ -110,8 +110,11 @@ namespace DatenMeister.Forms
                         viewModeId = configuration.ViewModeId ?? ViewModes.Default
                     });
 
-                if (element is IElement asElement) EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
-                EvaluateListFormsForDefaultTypes(element as IElement, foundForm);
+                if (element is IElement asElement)
+                {
+                    EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
+                    EvaluateListFormsForDefaultTypes(asElement, foundForm);
+                }
 
                 var formCreationContext = new FormCreationContext
                 {

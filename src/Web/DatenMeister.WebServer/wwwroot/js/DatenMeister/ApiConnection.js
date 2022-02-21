@@ -12,7 +12,7 @@ define(["require", "exports"], function (require, exports) {
             dataType: "json",
             contentType: "application/json",
             method: "POST"
-        }).fail(x => serverError(x));
+        }).fail(x => serverError(x.responseText));
     }
     exports.post = post;
     function deleteRequest(uri, data) {
@@ -22,7 +22,7 @@ define(["require", "exports"], function (require, exports) {
             dataType: "json",
             contentType: "application/json",
             method: "DELETE"
-        }).fail(x => serverError(x));
+        }).fail(x => serverError(x.responseText));
     }
     exports.deleteRequest = deleteRequest;
     function put(uri, data) {
@@ -32,14 +32,14 @@ define(["require", "exports"], function (require, exports) {
             dataType: "json",
             contentType: "application/json",
             method: "POST"
-        }).fail(x => serverError(x));
+        }).fail(x => serverError(x.responseText));
     }
     exports.put = put;
     function get(uri) {
         return $.ajax({
             url: uri,
             method: "GET"
-        }).fail(x => serverError(x));
+        }).fail(x => serverError(x.responseText));
     }
     exports.get = get;
 });

@@ -29,23 +29,25 @@
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.FieldFactory.ts" />
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ActionForm.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ActionForm.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\init.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\init.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Mof.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Mof.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\NameLoader.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\MofResolver.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\NameLoader.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts"/>
 
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\test\MofTests.ts" />
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts"/>
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\test\MofTests.ts"/>
   </ItemGroup>
 
   <ItemGroup>

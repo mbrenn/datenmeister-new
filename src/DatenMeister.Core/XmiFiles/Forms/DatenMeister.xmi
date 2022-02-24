@@ -61,6 +61,8 @@
                  title="Extent Type"/>
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
                  name="__DatenMeister.DefaultTypes" title="Default Types"/>
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
+                 name="__DatenMeister.DefaultTypePackage" title="Package for Types"/>
         </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="TreeItemDetail" form-ref="#ExtentPropertiesForm" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" name="Association for Extent Property" p1:id="aa43615b-42eb-4c0b-818c-985c961fbba3" />

@@ -125,7 +125,7 @@ namespace DatenMeister.WebServer.Controller
                 success = ObjectHelper.DeleteObject(foundItem);
             }
 
-            return new {success = success};
+            return new { success = success };
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace DatenMeister.WebServer.Controller
                         ?? throw new InvalidOperationException("Item is not found");
 
             extent.elements().remove(found);
-            return new {success = true};
+            return new { success = true };
         }
 
         [HttpGet("api/items/get/{workspaceId}/{extentUri}/{itemId}")]
@@ -176,7 +176,7 @@ namespace DatenMeister.WebServer.Controller
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
-            var converter = new MofJsonConverter {MaxRecursionDepth = 2};
+            var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
             var convertedElement = converter.ConvertToJson(foundElement);
 
             return convertedElement;
@@ -194,7 +194,7 @@ namespace DatenMeister.WebServer.Controller
                 return NotFound();
             }
 
-            var converter = new MofJsonConverter {MaxRecursionDepth = 2};
+            var converter = new MofJsonConverter { MaxRecursionDepth = 2 };
 
             var result = new StringBuilder();
             result.Append('[');
@@ -203,12 +203,12 @@ namespace DatenMeister.WebServer.Controller
 
             var elements = extent.elements().OfType<IElement>();
 
-            
+
 #if LimitNumberOfElements
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
 
             elements = elements.Take(100);
-            
+
 #endif
 
             foreach (var item in elements)
@@ -256,7 +256,7 @@ namespace DatenMeister.WebServer.Controller
                             ?? throw new InvalidOperationException("Item was not found");
             foundItem.set(propertyParams.Key, propertyParams.Value);
 
-            return new {success = true};
+            return new { success = true };
         }
 
         [HttpPut("api/items/set_properties/{workspaceId}/{itemUri}")]
@@ -273,7 +273,7 @@ namespace DatenMeister.WebServer.Controller
                 foundItem.set(propertyParam.Key, propertyParam.Value);
             }
 
-            return new {success = true};
+            return new { success = true };
         }
 
         [HttpGet("api/items/get_property/{workspaceId}/{itemUri}")]
@@ -284,7 +284,7 @@ namespace DatenMeister.WebServer.Controller
 
             var result = _internal.GetPropertyInternal(workspaceId, itemUri, property);
 
-            var converter = new MofJsonConverter {MaxRecursionDepth = 2};
+            var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
             return Content($"{{\"v\": {converter.ConvertToJson(result)}}}", "application/json", Encoding.UTF8);
         }
 
@@ -308,7 +308,7 @@ namespace DatenMeister.WebServer.Controller
                 }
             }
 
-            return new {success = true};
+            return new { success = true };
         }
 
         [HttpPost("api/items/set_metaclass/{workspaceId}/{itemUri}")]
@@ -325,7 +325,7 @@ namespace DatenMeister.WebServer.Controller
                 asMetaClassSet.SetMetaClass(new MofObjectShadow(parameter.metaClass));
             }
 
-            return new {success = true};
+            return new { success = true };
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace DatenMeister.WebServer.Controller
 
             foundItem.AddCollectionItem(parameters.Property, reference);
 
-            return new {success = true};
+            return new { success = true };
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace DatenMeister.WebServer.Controller
 
             foundItem.RemoveCollectionItem(parameters.Property, reference);
 
-            return new {success = true};
+            return new { success = true };
         }
 
         public class SetMetaClassParams

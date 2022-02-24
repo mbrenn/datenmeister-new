@@ -22,7 +22,6 @@ export class Field extends BaseField implements IFormField {
             const option = $("<option></option>");
             option.text("No values given...");
             this._selectBox.append(option);
-
         }
 
         this._selectBox.val(selectedValue);

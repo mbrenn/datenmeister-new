@@ -5,6 +5,7 @@ import * as FieldFactory from "../Forms.FieldFactory";
 import {getItemDetailUri} from "../Website";
 import * as SIC from "../Forms.SelectItemControl";
 import * as ClientItems from "../Client.Items";
+import {resolve} from "../MofResolver"
 
 export class Field extends BaseField implements IFormField {
 
@@ -43,26 +44,30 @@ export class Field extends BaseField implements IFormField {
         this._list.empty();
 
         if (this.isReadOnly) {
-
             let ul = $("<ul class='list-unstyled'></ul>");
 
             let foundElements = 0;
             for (let m in value) {
                 if (Object.prototype.hasOwnProperty.call(value, m)) {
                     let innerValue = value[m] as DmObject;
-
                     const item = $("<li><a></a></li>");
-                    const link = $("a", item);
-                    const name = innerValue.get('name');
-                    if (name !== undefined && name !== "") {
-                        link.text(innerValue.get('name'));
-                    } else {
-                        link.append($("<em>Unnamed</em>"));
-                    }
 
-                    link.attr('href', getItemDetailUri(innerValue));
+                    // Resolve the elements
+                    (function (a: DmObject, b: JQuery) {
+                        resolve(a).done(resolved => {
+                            const link = $("a", b);
+                            const name = resolved.get('name');
+                            if (name !== undefined && name !== "") {
+                                link.text(resolved.get('name'));
+                            } else {
+                                link.append($("<em>Unnamed</em>"));
+                            }
+
+                            link.attr('href', getItemDetailUri(resolved));
+                        });
+                    })(innerValue, item);
+
                     ul.append(item);
-
                     foundElements++;
                 }
             }

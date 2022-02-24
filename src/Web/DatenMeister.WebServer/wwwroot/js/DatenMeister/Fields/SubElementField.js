@@ -1,6 +1,6 @@
-define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC, ClientItems) {
+define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl", "../Client.Items", "../MofResolver"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC, ClientItems, MofResolver_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports, "__esModule", {value: true});
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         reloadValuesFromServer() {
@@ -33,15 +33,19 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                     if (Object.prototype.hasOwnProperty.call(value, m)) {
                         let innerValue = value[m];
                         const item = $("<li><a></a></li>");
-                        const link = $("a", item);
-                        const name = innerValue.get('name');
-                        if (name !== undefined && name !== "") {
-                            link.text(innerValue.get('name'));
-                        }
-                        else {
-                            link.append($("<em>Unnamed</em>"));
-                        }
-                        link.attr('href', (0, Website_1.getItemDetailUri)(innerValue));
+                        // Resolve the elements
+                        (function (a, b) {
+                            (0, MofResolver_1.resolve)(a).done(resolved => {
+                                const link = $("a", b);
+                                const name = resolved.get('name');
+                                if (name !== undefined && name !== "") {
+                                    link.text(resolved.get('name'));
+                                } else {
+                                    link.append($("<em>Unnamed</em>"));
+                                }
+                                link.attr('href', (0, Website_1.getItemDetailUri)(resolved));
+                            });
+                        })(innerValue, item);
                         ul.append(item);
                         foundElements++;
                     }

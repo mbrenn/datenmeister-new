@@ -7,7 +7,7 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
-    <TypeScriptNuGetToolsVersion>4.3</TypeScriptNuGetToolsVersion>
+    <TypeScriptNuGetToolsVersion>4.5.3</TypeScriptNuGetToolsVersion>
     <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptESModuleInterop>True</TypeScriptESModuleInterop>
@@ -55,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.4.4">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.5.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

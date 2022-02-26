@@ -55,7 +55,7 @@ export function loadNameOf(elementPosition: ApiModels.In.IElementPosition): JQue
 
 export function loadNameByUri(workspaceId: string, elementUri: string): JQuery.jqXHR<ApiModels.Out.INamedElement> {
     if (workspaceId === undefined) {
-        workspaceId = "";
+        workspaceId = "_";
     }
     return ApiConnection.get<ApiModels.Out.INamedElement>(
         Settings.baseUrl +

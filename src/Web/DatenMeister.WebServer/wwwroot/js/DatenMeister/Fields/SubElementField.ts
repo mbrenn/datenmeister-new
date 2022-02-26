@@ -53,7 +53,7 @@ export class Field extends BaseField implements IFormField {
                     const item = $("<li><a></a></li>");
 
                     // Resolve the elements
-                    (function (a: DmObject, b: JQuery) {
+                    ((a: DmObject, b: JQuery) => {
                         resolve(a).done(resolved => {
                             const link = $("a", b);
                             const name = resolved.get('name');

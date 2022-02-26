@@ -34,7 +34,7 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                         let innerValue = value[m];
                         const item = $("<li><a></a></li>");
                         // Resolve the elements
-                        (function (a, b) {
+                        ((a, b) => {
                             (0, MofResolver_1.resolve)(a).done(resolved => {
                                 const link = $("a", b);
                                 const name = resolved.get('name');

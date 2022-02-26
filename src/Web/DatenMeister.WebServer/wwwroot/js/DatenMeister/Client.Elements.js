@@ -47,7 +47,7 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
     exports.loadNameOf = loadNameOf;
     function loadNameByUri(workspaceId, elementUri) {
         if (workspaceId === undefined) {
-            workspaceId = "";
+            workspaceId = "_";
         }
         return ApiConnection.get(Settings.baseUrl +
             "api/elements/get_name/" +

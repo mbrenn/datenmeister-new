@@ -16,7 +16,7 @@ export function resolve(value: any): JQuery.Deferred<any> {
             const workspace = asDmObject.workspace;
             if (workspace === undefined) {
                 alert('Workspace is undefined');
-                asDmObject.workspace = "";
+                asDmObject.workspace = "_";
             }
 
             ClientItem.loadObjectByUri(

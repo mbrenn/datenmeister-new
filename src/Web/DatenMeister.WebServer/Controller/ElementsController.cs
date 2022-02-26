@@ -42,7 +42,7 @@ namespace DatenMeister.WebServer.Controller
         public ActionResult<object> GetName(string? workspace, string uri)
         {
             IElement? foundItem;
-            if (string.IsNullOrEmpty(workspace))
+            if (string.IsNullOrEmpty(workspace) || workspace == "_")
             {
                 foundItem = _workspaceLogic.FindItem(HttpUtility.UrlDecode(uri));
             }

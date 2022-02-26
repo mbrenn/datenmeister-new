@@ -17,7 +17,7 @@ define(["require", "exports", "./Client.Items"], function (require, exports, Cli
                 const workspace = asDmObject.workspace;
                 if (workspace === undefined) {
                     alert('Workspace is undefined');
-                    asDmObject.workspace = "";
+                    asDmObject.workspace = "_";
                 }
                 ClientItem.loadObjectByUri(asDmObject.workspace, asDmObject.uri).done(loadedValue => r.resolve(loadedValue));
             }

@@ -59,7 +59,7 @@ namespace DatenMeister.WebServer.Controller
         /// <returns>The found object</returns>
         public IObject GetItemByUriParameter(string? workspaceId, string itemUri)
         {
-            if (string.IsNullOrEmpty(workspaceId))
+            if (string.IsNullOrEmpty(workspaceId) || workspaceId == "_")
             {
                 if (_workspaceLogic.Resolve(itemUri, ResolveType.Default, false) is not IObject foundElement)
                     throw new InvalidOperationException($"Element '{itemUri}' is not found");

@@ -61,7 +61,7 @@ namespace DatenMeister.WebServer
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            
             var config = new StaticFileOptions
             {
                 ServeUnknownFileTypes = true

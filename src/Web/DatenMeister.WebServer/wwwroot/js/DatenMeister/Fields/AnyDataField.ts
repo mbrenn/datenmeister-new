@@ -1,5 +1,6 @@
 ﻿import {BaseField, IFormField} from "../Interfaces.Fields";
 import { DmObject } from "../Mof";
+import {injectNameByUri} from "../DomHelper";
 
 export class Field extends BaseField implements IFormField
 {
@@ -35,13 +36,18 @@ export class Field extends BaseField implements IFormField
 
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
-            const div = $("<div />");
-            div.text(dmElement.get(fieldName)?.toString() ?? "unknown");
-            result.append(div);
+            if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+                const asDmObject = value as DmObject;
+                injectNameByUri(result, asDmObject.workspace, asDmObject.uri);
+            } else {
+                const div = $("<div />");
+                div.text(value?.toString() ?? "unknown");
+                result.append(div);
+            }
             return result;
         } else {
             this._textBox = $("<input />");
-            this._textBox.val(dmElement.get(fieldName)?.toString() ?? "unknown");
+            this._textBox.val(value?.toString() ?? "unknown");
             result.append(this._textBox)
             return result;
         }

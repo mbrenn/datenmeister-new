@@ -8,8 +8,8 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
         });
     }
     exports.injectName = injectName;
-    function injectNameByUri(domElement, elementUri) {
-        ElementClient.loadNameByUri(elementUri).done(x => {
+    function injectNameByUri(domElement, workspaceId, elementUri) {
+        ElementClient.loadNameByUri(workspaceId, elementUri).done(x => {
             if (x.extentUri !== undefined && x.workspace !== undefined
                 && x.extentUri !== "" && x.workspace !== ""
                 && x.itemId !== "" && x.itemId !== undefined) {

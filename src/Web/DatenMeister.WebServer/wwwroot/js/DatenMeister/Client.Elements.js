@@ -45,9 +45,13 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
             encodeURIComponent(elementPosition.item));
     }
     exports.loadNameOf = loadNameOf;
-    function loadNameByUri(elementUri) {
+    function loadNameByUri(workspaceId, elementUri) {
+        if (workspaceId === undefined) {
+            workspaceId = "";
+        }
         return ApiConnection.get(Settings.baseUrl +
             "api/elements/get_name/" +
+            encodeURIComponent(workspaceId) + "/" +
             encodeURIComponent(elementUri));
     }
     exports.loadNameByUri = loadNameByUri;

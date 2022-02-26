@@ -1,6 +1,6 @@
 define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldFactory", "../Website", "../Forms.SelectItemControl", "../Client.Items", "../MofResolver"], function (require, exports, Interfaces_Fields_1, Mof_1, FieldFactory, Website_1, SIC, ClientItems, MofResolver_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         reloadValuesFromServer() {
@@ -40,7 +40,8 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                                 const name = resolved.get('name');
                                 if (name !== undefined && name !== "") {
                                     link.text(resolved.get('name'));
-                                } else {
+                                }
+                                else {
                                     link.append($("<em>Unnamed</em>"));
                                 }
                                 link.attr('href', (0, Website_1.getItemDetailUri)(resolved));

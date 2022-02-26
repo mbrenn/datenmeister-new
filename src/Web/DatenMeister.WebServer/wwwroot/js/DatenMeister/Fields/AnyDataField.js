@@ -1,10 +1,10 @@
-define(["require", "exports", "../Interfaces.Fields"], function (require, exports, Interfaces_Fields_1) {
+define(["require", "exports", "../Interfaces.Fields", "../DomHelper"], function (require, exports, Interfaces_Fields_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
-            var _a, _b, _c, _d;
+            var _a, _b;
             const result = $("<div>");
             const headLine = $("<div class='dm-anydatafield-headline'><a class='dm-anydatafield-headline-value active'>Value</a> " +
                 "| <a class='dm-anydatafield-headline-collection'>Collection</a> " +
@@ -26,14 +26,20 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
             const value = dmElement.get(fieldName);
             /* Otherwise just create the correct field type. */
             if (this.isReadOnly) {
-                const div = $("<div />");
-                div.text((_b = (_a = dmElement.get(fieldName)) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "unknown");
-                result.append(div);
+                if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+                    const asDmObject = value;
+                    (0, DomHelper_1.injectNameByUri)(result, asDmObject.workspace, asDmObject.uri);
+                }
+                else {
+                    const div = $("<div />");
+                    div.text((_a = value === null || value === void 0 ? void 0 : value.toString()) !== null && _a !== void 0 ? _a : "unknown");
+                    result.append(div);
+                }
                 return result;
             }
             else {
                 this._textBox = $("<input />");
-                this._textBox.val((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
+                this._textBox.val((_b = value === null || value === void 0 ? void 0 : value.toString()) !== null && _b !== void 0 ? _b : "unknown");
                 result.append(this._textBox);
                 return result;
             }

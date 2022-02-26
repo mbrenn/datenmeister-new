@@ -38,8 +38,8 @@ namespace DatenMeister.WebServer.Controller
             return new { name = NamedElementMethods.GetName(foundItem) };
         }
 
-        [HttpGet("api/elements/get_name/{uri}/{workspace?}")]
-        public ActionResult<object> GetName(string uri, string? workspace)
+        [HttpGet("api/elements/get_name/{workspace}/{uri}")]
+        public ActionResult<object> GetName(string? workspace, string uri)
         {
             IElement? foundItem;
             if (string.IsNullOrEmpty(workspace))
@@ -49,7 +49,7 @@ namespace DatenMeister.WebServer.Controller
             else
             {
                 foundItem =
-                    _workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.Default)
+                    _workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.NoMetaWorkspaces)
                         as IElement;
             }
 

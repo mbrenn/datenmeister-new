@@ -53,10 +53,14 @@ export function loadNameOf(elementPosition: ApiModels.In.IElementPosition): JQue
         encodeURIComponent(elementPosition.item));
 }
 
-export function loadNameByUri(elementUri: string): JQuery.jqXHR<ApiModels.Out.INamedElement> {
+export function loadNameByUri(workspaceId: string, elementUri: string): JQuery.jqXHR<ApiModels.Out.INamedElement> {
+    if (workspaceId === undefined) {
+        workspaceId = "";
+    }
     return ApiConnection.get<ApiModels.Out.INamedElement>(
         Settings.baseUrl +
         "api/elements/get_name/" +
+        encodeURIComponent(workspaceId) + "/" +
         encodeURIComponent(elementUri));
 }
 

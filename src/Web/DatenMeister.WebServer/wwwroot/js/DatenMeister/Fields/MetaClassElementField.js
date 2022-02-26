@@ -11,11 +11,11 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
             if (dmElement !== undefined && dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
                 if (dmElement.metaClass.uri !== null) {
                     div.text((_a = dmElement.metaClass.id) !== null && _a !== void 0 ? _a : dmElement.metaClass.uri);
-                    (0, DomHelper_1.injectNameByUri)(div, encodeURIComponent(dmElement.metaClass.uri));
+                    (0, DomHelper_1.injectNameByUri)(div, dmElement.metaClass.workspace, encodeURIComponent(dmElement.metaClass.uri));
                 }
                 else if (dmElement.metaClass.id !== null && dmElement.metaClass.extentUri !== null) {
                     div.text(dmElement.metaClass.id);
-                    (0, DomHelper_1.injectNameByUri)(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
+                    (0, DomHelper_1.injectNameByUri)(div, dmElement.metaClass.workspace, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
                 }
                 else {
                     div.append($("<em>unknown</em>"));

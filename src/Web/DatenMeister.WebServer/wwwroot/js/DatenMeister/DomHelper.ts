@@ -10,9 +10,9 @@ export function injectName(domElement: JQuery<HTMLElement>, elementPosition: Api
     });
 }
 
-export function injectNameByUri(domElement: JQuery<HTMLElement>, elementUri: string) {
+export function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
 
-    ElementClient.loadNameByUri(elementUri).done(x => {
+    ElementClient.loadNameByUri(workspaceId, elementUri).done(x => {
         if (
             x.extentUri !== undefined && x.workspace !== undefined
             && x.extentUri !== "" && x.workspace !== ""

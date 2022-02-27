@@ -5,6 +5,7 @@ export class Settings {
     showBreadcrumb = true;
     showWorkspaceInBreadcrumb = false;
     showExtentInBreadcrumb = false;
+    showCancelButton = true;
 }
 
 export class SelectItemControl {
@@ -23,6 +24,7 @@ export class SelectItemControl {
     private selectedWorkspace?: ItemWithNameAndId;
     private selectedExtent?: ItemWithNameAndId;
     private selectedItem?: ItemWithNameAndId;
+    private _containerDiv: JQuery;
 
     // Defines the id of the workspace, when the workspace shall be pre-selected
     // This value is set to undefined, when no selection shall be given
@@ -86,7 +88,9 @@ export class SelectItemControl {
             "<div class='items'></div>" +
             "</td></tr>" +
             "<tr><td>Selected Item: </td><td class='dm-selectitemcontrol-selected'></td></tr>" +
-            "<tr><td></td><td class='selected'><button class='btn btn-primary dm-selectitemcontrol-button' type='button'>Set</button></td></tr>" +
+            "<tr><td></td><td class='selected'>" +
+            (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-selectitemcontrol-cancelbtn' type='button'>Cancel</button>" : "")+
+            "<button class='btn btn-primary dm-selectitemcontrol-button' type='button'>Set</button></td></tr>" +
             "</table>");
 
         $(".workspace", div).append(this.htmlWorkspaceSelect);
@@ -102,11 +106,22 @@ export class SelectItemControl {
             }
         });
 
+        const cancelButton = $(".dm-selectitemcontrol-cancelbtn", div);
+        cancelButton.on('click', () => {
+            this.collapse();
+        });
+
         parent.append(div);
 
         this.loadWorkspaces();
+        this._containerDiv = div;
 
         return div;
+    }
+
+    collapse() {
+        this._containerDiv?.remove();
+        this._containerDiv = undefined;
     }
 
     loadWorkspaces(): JQueryDeferred<any> {

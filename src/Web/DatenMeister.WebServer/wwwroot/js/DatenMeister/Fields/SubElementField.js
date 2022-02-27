@@ -118,7 +118,7 @@ define(["require", "exports", "../Interfaces.Fields", "../Mof", "../Forms.FieldF
                 }
                 const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach new Item</btn><div class='dm-subelements-appenditem-box'></div></div>");
                 $(".dm-subelements-appenditem-btn", newItem).on('click', () => {
-                    const containerDiv = $(".dm-subelements-appenditem-box");
+                    const containerDiv = $(".dm-subelements-appenditem-box", newItem);
                     containerDiv.empty();
                     const selectItem = new SIC.SelectItemControl();
                     const settings = new SIC.Settings();

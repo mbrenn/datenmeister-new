@@ -7,6 +7,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             this.showBreadcrumb = true;
             this.showWorkspaceInBreadcrumb = false;
             this.showExtentInBreadcrumb = false;
+            this.showCancelButton = true;
         }
     }
     exports.Settings = Settings;
@@ -63,7 +64,9 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                 "<div class='items'></div>" +
                 "</td></tr>" +
                 "<tr><td>Selected Item: </td><td class='dm-selectitemcontrol-selected'></td></tr>" +
-                "<tr><td></td><td class='selected'><button class='btn btn-primary dm-selectitemcontrol-button' type='button'>Set</button></td></tr>" +
+                "<tr><td></td><td class='selected'>" +
+                (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-selectitemcontrol-cancelbtn' type='button'>Cancel</button>" : "") +
+                "<button class='btn btn-primary dm-selectitemcontrol-button' type='button'>Set</button></td></tr>" +
                 "</table>");
             $(".workspace", div).append(this.htmlWorkspaceSelect);
             $(".extent", div).append(this.htmlExtentSelect);
@@ -77,9 +80,19 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                     eventButton(tthis.selectedItem);
                 }
             });
+            const cancelButton = $(".dm-selectitemcontrol-cancelbtn", div);
+            cancelButton.on('click', () => {
+                this.collapse();
+            });
             parent.append(div);
             this.loadWorkspaces();
+            this._containerDiv = div;
             return div;
+        }
+        collapse() {
+            var _a;
+            (_a = this._containerDiv) === null || _a === void 0 ? void 0 : _a.remove();
+            this._containerDiv = undefined;
         }
         loadWorkspaces() {
             const tthis = this;

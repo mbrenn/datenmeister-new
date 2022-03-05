@@ -6,7 +6,7 @@ define(["require", "exports", "./Client.Elements", "./Navigator"], function (req
         (0, Client_Elements_1.findBySearchString)(searchText).done(result => {
             switch (result.resultType) {
                 case 'reference':
-                    (0, Navigator_1.navigateToItem)(result.reference.workspace, result.reference.extentUri, result.reference.id);
+                    (0, Navigator_1.navigateToItemByUrl)(result.reference.workspace, result.reference.uri);
                     break;
                 case 'referenceExtent':
                     (0, Navigator_1.navigateToExtent)(result.reference.workspace, result.reference.extentUri);

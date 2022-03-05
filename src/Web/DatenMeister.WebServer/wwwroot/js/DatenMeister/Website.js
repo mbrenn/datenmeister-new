@@ -5,7 +5,6 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
     function getItemDetailUri(element) {
         return Settings.baseUrl + "Item/"
             + encodeURIComponent(element.workspace) + "/"
-            + encodeURIComponent(element.extentUri) + "/"
             + encodeURIComponent(element.uri);
     }
     exports.getItemDetailUri = getItemDetailUri;

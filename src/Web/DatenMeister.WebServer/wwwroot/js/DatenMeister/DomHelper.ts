@@ -22,8 +22,7 @@ export function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: st
             linkElement.attr(
                 "href",
                 "/Item/" + encodeURIComponent(x.workspace) +
-                "/" + encodeURIComponent(x.extentUri) +
-                "/" + encodeURIComponent(x.itemId));
+                "/" + encodeURIComponent(x.extentUri + "#" + x.itemId));
             domElement.empty();
             domElement.append(linkElement);
         } else {

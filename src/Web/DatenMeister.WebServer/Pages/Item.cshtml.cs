@@ -12,24 +12,27 @@ namespace DatenMeister.WebServer.Pages
 
         [Parameter] public string Workspace { get; set; } = string.Empty;
 
-        [Parameter] public string Extent { get; set; } = string.Empty;
-
-        [Parameter] public string? Item { get; set; } = string.Empty;
-
-        /// <summary>
-        ///     Gets the item url of the currently selected item
-        /// </summary>
-        public string ItemUrl => Item?.Contains('#') == true ? Item : $"{Extent}#{Item}";
+        [Parameter] public string ItemUrl { get; set; } = string.Empty;
 
         public IObject? FoundItem { get; set; }
 
         public IObject? Form { get; set; }
 
-        public void OnGet(string workspace, string extent, string? item)
+        public string ExtentUrl
+        {
+            get
+            {
+                var posHash = ItemUrl.IndexOf('#');
+                if (posHash == -1)
+                    return ItemUrl;
+                return ItemUrl.Substring(0, posHash);
+            }
+        }
+
+        public void OnGet(string workspace, string itemUrl)
         {
             Workspace = WebUtility.UrlDecode(workspace);
-            Extent = WebUtility.UrlDecode(extent);
-            Item = WebUtility.UrlDecode(item);
+            ItemUrl = WebUtility.UrlDecode(itemUrl);
         }
     }
 }

@@ -22,6 +22,12 @@ export function navigateToItem(workspace: string, extentUri: string, itemId: str
     document.location.href =
         Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +
-        encodeURIComponent(extentUri) + "/" +
-        encodeURIComponent(itemId);
+        encodeURIComponent(extentUri + "#" + itemId);
+}
+
+export function navigateToItemByUrl(workspace: string, itemUrl: string) {
+    document.location.href =
+        Settings.baseUrl + "Item/" +
+        encodeURIComponent(workspace) + "/" +
+        encodeURIComponent(itemUrl);
 }

@@ -20,7 +20,7 @@ export module DetailFormActions {
             return ECClient.getProperties(workspace, extentUri);
         }
 
-        if (actionName === "Extent.CreateItem") {
+        if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
             const metaclass = p.get('metaclass');
             const deferLoadObjectForAction = $.Deferred<DmObject>();
             const result = new DmObject();
@@ -93,8 +93,18 @@ export module DetailFormActions {
                     FormActions.extentCreateItem(workspace, extentUri, element);
                 }
                 break;
+            case "Extent.CreateItemInProperty":
+                if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
+                    alert('There is no itemUrl given');
+                } else {
+                    const workspace = p.get('workspace');
+                    const itemUrl = p.get('itemUrl');
+                    const property = p.get('property');
+                    FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
+                }
+                break;
             case "ExtentsList.ViewItem":
-                FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
+                FormActions.itemNavigateTo(form.workspace, element.uri);
                 break;
             case "ExtentsList.DeleteItem":
                 FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
@@ -175,6 +185,25 @@ export class FormActions {
         });
     }
 
+    static extentCreateItemInProperty(workspace: string, itemUrl: string, property: string, element: DmObject, metaClass?: string) {
+        if (metaClass === undefined) {
+            metaClass = element.metaClass.uri
+        }
+
+        const json = createJsonFromObject(element);
+        ApiConnection.post(
+            Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl),
+            {
+                metaClass: metaClass === undefined ? "" : metaClass,
+                property: property,
+                asList: true,
+                properties: json
+            }
+        ).done(() => {
+            Navigator.navigateToItemByUrl(workspace, itemUrl);
+        });
+    }
+
     static extentNavigateTo(workspace: string, extentUri: string): void {
         document.location.href =
             Settings.baseUrl + "ItemsOverview/" +
@@ -222,11 +251,10 @@ export class FormActions {
     }
 
     // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
-    static itemNavigateTo(workspace: string, extent: string, itemUrl: string) {
-        document.location.href = Settings.baseUrl + "Item/" +
-            encodeURIComponent(workspace) + "/" +
-            encodeURIComponent(extent) + "/" +
-            encodeURIComponent(itemUrl);
+    static itemNavigateTo(workspace: string, itemUrl: string) {
+        Navigator.navigateToItemByUrl(
+            workspace,
+            itemUrl);
     }
 
     static itemNew(workspace: string, extentUri: string) {

@@ -105,6 +105,16 @@ namespace DatenMeister.WebServer.Controller
                 item.set(createParams.property, child);
             }
 
+            var values = createParams.properties?.v;
+            if (values != null)
+                foreach (var propertyParam in values)
+                {
+                    var value = propertyParam.Value;
+                    var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
+
+                    if (propertyValue != null) child.set(propertyParam.Key, propertyValue);
+                }
+
             return new
             {
                 success = true,
@@ -125,7 +135,7 @@ namespace DatenMeister.WebServer.Controller
                 success = ObjectHelper.DeleteObject(foundItem);
             }
 
-            return new { success = success };
+            return new {success = success};
         }
 
         /// <summary>
@@ -152,7 +162,7 @@ namespace DatenMeister.WebServer.Controller
                         ?? throw new InvalidOperationException("Item is not found");
 
             extent.elements().remove(found);
-            return new { success = true };
+            return new {success = true};
         }
 
         [HttpGet("api/items/get/{workspaceId}/{extentUri}/{itemId}")]
@@ -176,7 +186,7 @@ namespace DatenMeister.WebServer.Controller
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
-            var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
+            var converter = new MofJsonConverter {MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true};
             var convertedElement = converter.ConvertToJson(foundElement);
 
             return convertedElement;
@@ -194,7 +204,7 @@ namespace DatenMeister.WebServer.Controller
                 return NotFound();
             }
 
-            var converter = new MofJsonConverter { MaxRecursionDepth = 2 };
+            var converter = new MofJsonConverter {MaxRecursionDepth = 2};
 
             var result = new StringBuilder();
             result.Append('[');
@@ -256,7 +266,21 @@ namespace DatenMeister.WebServer.Controller
                             ?? throw new InvalidOperationException("Item was not found");
             foundItem.set(propertyParams.Key, propertyParams.Value);
 
-            return new { success = true };
+            return new {success = true};
+        }
+
+        [HttpPut("api/items/unset_property/{workspaceId}/{itemUri}")]
+        public ActionResult<object> UnsetProperty(string workspaceId, string itemUri,
+            [FromBody] UnsetPropertyParams propertyParams)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+            foundItem.unset(propertyParams.Key);
+
+            return new {success = true};
         }
 
         [HttpPut("api/items/set_properties/{workspaceId}/{itemUri}")]
@@ -273,7 +297,7 @@ namespace DatenMeister.WebServer.Controller
                 foundItem.set(propertyParam.Key, propertyParam.Value);
             }
 
-            return new { success = true };
+            return new {success = true};
         }
 
         [HttpGet("api/items/get_property/{workspaceId}/{itemUri}")]
@@ -284,7 +308,7 @@ namespace DatenMeister.WebServer.Controller
 
             var result = _internal.GetPropertyInternal(workspaceId, itemUri, property);
 
-            var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
+            var converter = new MofJsonConverter {MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true};
             return Content($"{{\"v\": {converter.ConvertToJson(result)}}}", "application/json", Encoding.UTF8);
         }
 
@@ -308,7 +332,7 @@ namespace DatenMeister.WebServer.Controller
                 }
             }
 
-            return new { success = true };
+            return new {success = true};
         }
 
         [HttpPost("api/items/set_metaclass/{workspaceId}/{itemUri}")]
@@ -325,7 +349,7 @@ namespace DatenMeister.WebServer.Controller
                 asMetaClassSet.SetMetaClass(new MofObjectShadow(parameter.metaClass));
             }
 
-            return new { success = true };
+            return new {success = true};
         }
 
         /// <summary>
@@ -352,7 +376,7 @@ namespace DatenMeister.WebServer.Controller
 
             foundItem.AddCollectionItem(parameters.Property, reference);
 
-            return new { success = true };
+            return new {success = true};
         }
 
         /// <summary>
@@ -379,7 +403,7 @@ namespace DatenMeister.WebServer.Controller
 
             foundItem.RemoveCollectionItem(parameters.Property, reference);
 
-            return new { success = true };
+            return new {success = true};
         }
 
         public class SetMetaClassParams
@@ -420,6 +444,19 @@ namespace DatenMeister.WebServer.Controller
             /// shall be directly set to the property
             /// </summary>
             public bool asList { get; set; }
+
+            public MofObjectAsJson? properties { get; set; }
+        }
+
+        /// <summary>
+        ///     Defines the property for the unset property
+        /// </summary>
+        public class UnsetPropertyParams
+        {
+            /// <summary>
+            ///     Gets or sets the key
+            /// </summary>
+            public string Key { get; set; } = string.Empty;
         }
 
         /// <summary>

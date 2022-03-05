@@ -79,6 +79,25 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestUnsetProperty()
+        {
+            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+
+            var item1 = example.element("#item1");
+            Assert.That(item1, Is.Not.Null);
+
+            Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("item1"));
+
+            itemsController.UnsetProperty(
+                WorkspaceNames.WorkspaceData,
+                ElementControllerTests.UriTemporaryExtent + "#item1",
+                new ItemsController.UnsetPropertyParams {Key = "name"});
+
+            Assert.That(item1.getOrDefault<string>("name"), Is.Null);
+        }
+
+        [Test]
         public void TestRootElements()
         {
             var (dm, example) = ElementControllerTests.CreateExampleExtent();

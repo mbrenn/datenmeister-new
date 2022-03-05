@@ -34,6 +34,8 @@ export class ListForm implements InterfacesForms.IForm {
             ?? this.formElement.get('name'));
         parent.append(headline);
 
+        const property = this.formElement.get('property');
+
         // Evaluate the new buttons to create objects
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {
@@ -45,14 +47,27 @@ export class ListForm implements InterfacesForms.IForm {
                     btn.text("Create " + inner.get('name'));
                     btn.on('click', () => {
                         const uri = innerValue.get('metaClass').uri;
-                        document.location.href =
-                            Settings.baseUrl +
-                            "ItemAction/Extent.CreateItem?workspace=" +
-                            encodeURIComponent(tthis.workspace) +
-                            "&extent=" +
-                            encodeURIComponent(tthis.extentUri) +
-                            "&metaclass=" +
-                            encodeURIComponent(uri);
+                        if (property === undefined) {
+                            document.location.href =
+                                Settings.baseUrl +
+                                "ItemAction/Extent.CreateItem?workspace=" +
+                                encodeURIComponent(tthis.workspace) +
+                                "&extent=" +
+                                encodeURIComponent(tthis.extentUri) +
+                                "&metaclass=" +
+                                encodeURIComponent(uri);
+                        } else {
+                            document.location.href =
+                                Settings.baseUrl +
+                                "ItemAction/Extent.CreateItemInProperty?workspace=" +
+                                encodeURIComponent(tthis.workspace) +
+                                "&itemUrl=" +
+                                encodeURIComponent(tthis.itemId) +
+                                "&metaclass=" +
+                                encodeURIComponent(uri) +
+                                "&property=" +
+                                encodeURIComponent(property);
+                        }
                     });
 
                     parent.append(btn);

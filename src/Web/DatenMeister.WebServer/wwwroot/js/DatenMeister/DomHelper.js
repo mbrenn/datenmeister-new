@@ -16,8 +16,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                 const linkElement = $("<a></a>");
                 linkElement.text(x.name);
                 linkElement.attr("href", "/Item/" + encodeURIComponent(x.workspace) +
-                    "/" + encodeURIComponent(x.extentUri) +
-                    "/" + encodeURIComponent(x.itemId));
+                    "/" + encodeURIComponent(x.extentUri + "#" + x.itemId));
                 domElement.empty();
                 domElement.append(linkElement);
             }

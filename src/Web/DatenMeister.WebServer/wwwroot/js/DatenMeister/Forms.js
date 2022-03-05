@@ -138,9 +138,8 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                     listForm.itemId = this.itemId;
                     listForm.formElement = tab;
                     listForm.elements = this.element.get(tab.get("property"));
-                    listForm.createFormByCollection(form, { isReadOnly: true });
-                }
-                else {
+                    listForm.createFormByCollection(form, {isReadOnly: true});
+                } else {
                     form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
                     $(".id", form).text(tab.metaClass.id);
                 }
@@ -149,41 +148,43 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
             // Removes the loading information
             creatingElements.remove();
         }
-        createViewForm(parent, workspace, extentUri, uri) {
-            this.createForm(parent, workspace, extentUri, uri, { isReadOnly: true });
+
+        createViewForm(parent, workspace, uri) {
+            this.createForm(parent, workspace, uri, {isReadOnly: true});
         }
-        createEditForm(parent, workspace, extentUri, uri) {
+
+        createEditForm(parent, workspace, uri) {
             const tthis = this;
-            this.createForm(parent, workspace, extentUri, uri, {
+            this.createForm(parent, workspace, uri, {
                 isReadOnly: false,
                 onCancel: () => {
-                    tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                    tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                 },
                 onSubmit: (element) => {
                     DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(() => {
-                        tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                        tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                     });
                 }
             });
         }
-        createForm(parent, workspace, extentUri, itemId, configuration) {
+
+        createForm(parent, workspace, itemUrl, configuration) {
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
-                    tthis.createForm(parent, workspace, extentUri, itemId, configuration);
+                    tthis.createForm(parent, workspace, itemUrl, configuration);
                 };
             }
             // Load the object
-            const defer1 = DataLoader.loadObjectByUri(workspace, itemId);
+            const defer1 = DataLoader.loadObjectByUri(workspace, itemUrl);
             // Load the form
-            const defer2 = getDefaultFormForItem(workspace, itemId, "");
+            const defer2 = getDefaultFormForItem(workspace, itemUrl, "");
             // Wait for both
             $.when(defer1, defer2).then(function (element, form) {
                 tthis.element = element;
                 tthis.formElement = form;
                 tthis.workspace = workspace;
-                tthis.extentUri = extentUri;
-                tthis.itemId = itemId;
+                tthis.itemId = itemUrl;
                 (0, DomHelper_1.debugElementToDom)(element, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
                 tthis.createFormByObject(parent, configuration);

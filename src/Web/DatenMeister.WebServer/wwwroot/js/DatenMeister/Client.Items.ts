@@ -151,6 +151,22 @@ export function getProperty(
     return r;
 }
 
+export function unsetProperty(
+    workspaceId: string, itemUrl: string, property: string): JQuery.Deferred<any, never, never> {
+    const r = jQuery.Deferred<any, never, never>();
+    let url = Settings.baseUrl +
+        "api/items/unset_property/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+    const result = ApiConnection.put<any>(url, {property: property});
+    result.done(x => {
+        r.resolve(true);
+    });
+
+    return r;
+}
+
 export interface IGetPropertyResult {
     v: any;
 }
@@ -166,4 +182,8 @@ export interface IRemoveReferenceToCollectionParameter {
     property: string;
     referenceUri: string;
     referenceWorkspaceId?: string;
+}
+
+export interface IUnsetPropertyResult {
+    property: string;
 }

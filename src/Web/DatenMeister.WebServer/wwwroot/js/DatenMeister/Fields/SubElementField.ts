@@ -1,11 +1,10 @@
 ﻿import {BaseField, IFormField} from "../Interfaces.Fields";
 import {DmObject} from "../Mof";
 import * as FieldFactory from "../Forms.FieldFactory";
-
-import {getItemDetailUri} from "../Website";
 import * as SIC from "../Forms.SelectItemControl";
 import * as ClientItems from "../Client.Items";
 import {resolve} from "../MofResolver"
+import {navigateToItemByUrl} from "../Navigator";
 
 export class Field extends BaseField implements IFormField {
 
@@ -54,7 +53,8 @@ export class Field extends BaseField implements IFormField {
 
                     // Resolve the elements
                     ((a: DmObject, b: JQuery) => {
-                        resolve(a).done(resolved => {
+                        resolve(a).done(resolvedRaw => {
+                            const resolved = resolvedRaw as DmObject;
                             const link = $("a", b);
                             const name = resolved.get('name');
                             if (name !== undefined && name !== "") {
@@ -63,7 +63,11 @@ export class Field extends BaseField implements IFormField {
                                 link.append($("<em>Unnamed</em>"));
                             }
 
-                            link.attr('href', getItemDetailUri(resolved));
+                            link.attr('href', '#');
+                            link.on('click', () => {
+                                navigateToItemByUrl(resolved.workspace, resolved.uri);
+                                return false;
+                            });
                         });
                     })(innerValue, item);
 

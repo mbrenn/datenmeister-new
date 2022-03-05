@@ -192,56 +192,54 @@ export class DetailFormCreator implements IForm.IFormNavigation {
         creatingElements.remove();
     }
 
-    createViewForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
-        this.createForm(parent, workspace, extentUri, uri, {isReadOnly: true});
+    createViewForm(parent: JQuery<HTMLElement>, workspace: string, uri: string) {
+        this.createForm(parent, workspace, uri, {isReadOnly: true});
     }
 
-    createEditForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
+    createEditForm(parent: JQuery<HTMLElement>, workspace: string, uri: string) {
         const tthis = this;
 
-        this.createForm(parent, workspace, extentUri, uri, 
+        this.createForm(parent, workspace, uri,
             {
-            isReadOnly: false,
-            onCancel: () => {
-                tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
-            },
-            onSubmit: (element) => {
-                DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(
-                    () => {
-                        tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
-                    }
-                );
-            }
-        });
+                isReadOnly: false,
+                onCancel: () => {
+                    tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
+                },
+                onSubmit: (element) => {
+                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(
+                        () => {
+                            tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
+                        }
+                    );
+                }
+            });
     }
 
-    createForm(parent: JQuery<HTMLElement>, 
+    createForm(parent: JQuery<HTMLElement>,
                workspace: string,
-               extentUri: string,
-               itemId: string, 
+               itemUrl: string,
                configuration: IFormConfiguration) {
         const tthis = this;
 
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createForm(parent, workspace, extentUri, itemId, configuration);
+                tthis.createForm(parent, workspace, itemUrl, configuration);
             }
         }
 
         // Load the object
-        const defer1 = DataLoader.loadObjectByUri(workspace, itemId);
+        const defer1 = DataLoader.loadObjectByUri(workspace, itemUrl);
 
         // Load the form
-        const defer2 = getDefaultFormForItem(workspace, itemId, "");
+        const defer2 = getDefaultFormForItem(workspace, itemUrl, "");
 
         // Wait for both
         $.when(defer1, defer2).then(function (element, form) {
             tthis.element = element;
             tthis.formElement = form;
             tthis.workspace = workspace;
-            tthis.extentUri = extentUri;
-            tthis.itemId = itemId;
+            tthis.itemId = itemUrl;
 
             debugElementToDom(element, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");

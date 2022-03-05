@@ -1,14 +1,13 @@
 import {findBySearchString} from "./Client.Elements";
-import {navigateToExtent, navigateToItem} from "./Navigator";
+import {navigateToExtent, navigateToItemByUrl} from "./Navigator";
 
 export function executeSearchByText(searchText: string) {
     findBySearchString(searchText).done(result => {
         switch (result.resultType) {
             case 'reference':
-                navigateToItem(
+                navigateToItemByUrl(
                     result.reference.workspace,
-                    result.reference.extentUri,
-                    result.reference.id
+                    result.reference.uri
                 );
                 break;
             case 'referenceExtent':

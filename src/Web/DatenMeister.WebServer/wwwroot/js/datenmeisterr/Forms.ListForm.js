@@ -31,23 +31,24 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                             if (property === undefined) {
                                 document.location.href =
                                     Settings.baseUrl +
-                                    "ItemAction/Extent.CreateItem?workspace=" +
-                                    encodeURIComponent(tthis.workspace) +
-                                    "&extent=" +
-                                    encodeURIComponent(tthis.extentUri) +
-                                    "&metaclass=" +
-                                    encodeURIComponent(uri);
-                            } else {
+                                        "ItemAction/Extent.CreateItem?workspace=" +
+                                        encodeURIComponent(tthis.workspace) +
+                                        "&extent=" +
+                                        encodeURIComponent(tthis.extentUri) +
+                                        "&metaclass=" +
+                                        encodeURIComponent(uri);
+                            }
+                            else {
                                 document.location.href =
                                     Settings.baseUrl +
-                                    "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                                    encodeURIComponent(tthis.workspace) +
-                                    "&itemUrl=" +
-                                    encodeURIComponent(tthis.itemId) +
-                                    "&metaclass=" +
-                                    encodeURIComponent(uri) +
-                                    "&property=" +
-                                    encodeURIComponent(property);
+                                        "ItemAction/Extent.CreateItemInProperty?workspace=" +
+                                        encodeURIComponent(tthis.workspace) +
+                                        "&itemUrl=" +
+                                        encodeURIComponent(tthis.itemId) +
+                                        "&metaclass=" +
+                                        encodeURIComponent(uri) +
+                                        "&property=" +
+                                        encodeURIComponent(property);
                             }
                         });
                         parent.append(btn);

@@ -1,8 +1,7 @@
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.unsetProperty = exports.getProperty = exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
-
     function loadObject(workspace, extent, id) {
         const r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
@@ -115,9 +114,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
         return r;
     }
-
     exports.getProperty = getProperty;
-
     function unsetProperty(workspaceId, itemUrl, property) {
         const r = jQuery.Deferred();
         let url = Settings.baseUrl +
@@ -125,13 +122,12 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
             encodeURIComponent(workspaceId) +
             "/" +
             encodeURIComponent(itemUrl);
-        const result = ApiConnection.put(url, {property: property});
+        const result = ApiConnection.put(url, { property: property });
         result.done(x => {
             r.resolve(true);
         });
         return r;
     }
-
     exports.unsetProperty = unsetProperty;
 });
 //# sourceMappingURL=Client.Items.js.map

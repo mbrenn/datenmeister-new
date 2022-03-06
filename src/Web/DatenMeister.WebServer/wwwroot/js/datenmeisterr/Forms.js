@@ -138,8 +138,9 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                     listForm.itemId = this.itemId;
                     listForm.formElement = tab;
                     listForm.elements = this.element.get(tab.get("property"));
-                    listForm.createFormByCollection(form, {isReadOnly: true});
-                } else {
+                    listForm.createFormByCollection(form, { isReadOnly: true });
+                }
+                else {
                     form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
                     $(".id", form).text(tab.metaClass.id);
                 }
@@ -148,11 +149,9 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
             // Removes the loading information
             creatingElements.remove();
         }
-
         createViewForm(parent, workspace, uri) {
-            this.createForm(parent, workspace, uri, {isReadOnly: true});
+            this.createForm(parent, workspace, uri, { isReadOnly: true });
         }
-
         createEditForm(parent, workspace, uri) {
             const tthis = this;
             this.createForm(parent, workspace, uri, {
@@ -167,7 +166,6 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                 }
             });
         }
-
         createForm(parent, workspace, itemUrl, configuration) {
             const tthis = this;
             if (configuration.refreshForm === undefined) {

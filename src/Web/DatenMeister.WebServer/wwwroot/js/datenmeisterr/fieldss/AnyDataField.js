@@ -1,6 +1,6 @@
-define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client.Items", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, Interfaces_Fields_1, DomHelper_1, ClientItem, SIC, ClientItems) {
+define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client.Items", "../Client.Items", "../Forms.SelectItemControl"], function (require, exports, Interfaces_Fields_1, DomHelper_1, ClientItem, ClientItems, SIC) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     var ModeValue;
     (function (ModeValue) {
@@ -8,32 +8,7 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
         ModeValue[ModeValue["Collection"] = 1] = "Collection";
         ModeValue[ModeValue["Reference"] = 2] = "Reference";
     })(ModeValue || (ModeValue = {}));
-
     class Field extends Interfaces_Fields_1.BaseField {
-        highlightValue() {
-            this._aValue.addClass('active');
-            this._aCollection.removeClass('active');
-            this._aReference.removeClass('active');
-            this._mode = ModeValue.Value;
-            this.updateDomContent();
-        }
-
-        highlightCollection() {
-            this._aValue.removeClass('active');
-            this._aCollection.addClass('active');
-            this._aReference.removeClass('active');
-            this._mode = ModeValue.Collection;
-            this.updateDomContent();
-        }
-
-        highlightReference() {
-            this._aValue.removeClass('active');
-            this._aCollection.removeClass('active');
-            this._aReference.addClass('active');
-            this._mode = ModeValue.Reference;
-            this.updateDomContent();
-        }
-
         createDom(dmElement) {
             const tthis = this;
             this._element = dmElement;
@@ -69,14 +44,44 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
             const value = this._element.get(fieldName);
             if (value === null || value === undefined) {
                 this.highlightReference();
-            } else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+            }
+            else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
                 this.highlightReference();
-            } else {
+            }
+            else {
                 this.highlightValue();
             }
             return result;
         }
-
+        evaluateDom(dmElement) {
+            if (this._mode === ModeValue.Value) {
+                if (this._textBox !== undefined && this._textBox !== null) {
+                    const fieldName = this.field.get('name').toString();
+                    dmElement.set(fieldName, this._textBox.val());
+                }
+            }
+        }
+        highlightValue() {
+            this._aValue.addClass('active');
+            this._aCollection.removeClass('active');
+            this._aReference.removeClass('active');
+            this._mode = ModeValue.Value;
+            this.updateDomContent();
+        }
+        highlightCollection() {
+            this._aValue.removeClass('active');
+            this._aCollection.addClass('active');
+            this._aReference.removeClass('active');
+            this._mode = ModeValue.Collection;
+            this.updateDomContent();
+        }
+        highlightReference() {
+            this._aValue.removeClass('active');
+            this._aCollection.removeClass('active');
+            this._aReference.addClass('active');
+            this._mode = ModeValue.Reference;
+            this.updateDomContent();
+        }
         updateDomContent() {
             this._domElement.empty();
             const fieldName = this.field.get('name').toString();
@@ -84,31 +89,33 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
             /* Otherwise just create the correct field type. */
             if (this.isReadOnly) {
                 this.updateDomContentReadOnly(value);
-            } else {
+            }
+            else {
                 this.updateDomContentEditable(value);
             }
         }
-
         updateDomContentReadOnly(value) {
             var _a;
             if (value === null || value === undefined) {
                 const div = $("<div><em>null</em></null>");
                 this._domElement.append(div);
-            } else if (this._mode === ModeValue.Reference) {
+            }
+            else if (this._mode === ModeValue.Reference) {
                 const asDmObject = value;
                 const div = $("<div />");
                 (0, DomHelper_1.injectNameByUri)(div, asDmObject.workspace, asDmObject.uri);
                 this._domElement.append(div);
-            } else if (this._mode === ModeValue.Value) {
+            }
+            else if (this._mode === ModeValue.Value) {
                 const div = $("<div />");
                 div.text((_a = value === null || value === void 0 ? void 0 : value.toString()) !== null && _a !== void 0 ? _a : "");
                 this._domElement.append(div);
-            } else if (this._mode === ModeValue.Collection) {
+            }
+            else if (this._mode === ModeValue.Collection) {
                 const div = $("<div><em>Collections not supported</div>");
                 this._domElement.append(div);
             }
         }
-
         updateDomContentEditable(value) {
             var _a;
             const fieldName = this.field.get('name').toString();
@@ -117,7 +124,8 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                 if (value === null || value === undefined) {
                     const div = $("<div><em>null</em></null>");
                     this._domElement.append(div);
-                } else {
+                }
+                else {
                     const asDmObject = value;
                     const div = $("<div />");
                     (0, DomHelper_1.injectNameByUri)(div, asDmObject.workspace, asDmObject.uri);
@@ -126,7 +134,8 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                 if (this.configuration.isNewItem) {
                     const div = $("<em>Element needs to be saved first</em>");
                     this._domElement.append(div);
-                } else {
+                }
+                else {
                     const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
                     const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
                     const containerChangeCell = $("<div></div>");
@@ -156,22 +165,15 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                     this._domElement.append(changeCell);
                     this._domElement.append(unsetCell);
                 }
-            } else if (this._mode === ModeValue.Value) {
+            }
+            else if (this._mode === ModeValue.Value) {
                 this._textBox = $("<input />");
                 this._textBox.val((_a = value === null || value === void 0 ? void 0 : value.toString()) !== null && _a !== void 0 ? _a : "");
                 this._domElement.append(this._textBox);
-            } else if (this._mode === ModeValue.Collection) {
+            }
+            else if (this._mode === ModeValue.Collection) {
                 const div = $("<div><em>Collections not supported</div>");
                 this._domElement.append(div);
-            }
-        }
-
-        evaluateDom(dmElement) {
-            if (this._mode === ModeValue.Value) {
-                if (this._textBox !== undefined && this._textBox !== null) {
-                    const fieldName = this.field.get('name').toString();
-                    dmElement.set(fieldName, this._textBox.val());
-                }
             }
         }
     }

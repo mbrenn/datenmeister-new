@@ -1,11 +1,13 @@
-define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./Fields/TextField"], function (require, exports, Mof, Forms_FieldFactory_1, TextField) {
+define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./fields/TextField"], function (require, exports, Mof, Forms_FieldFactory_1, TextField) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports, "__esModule", {value: true});
     exports.DetailForm = void 0;
+
     class DetailForm {
         refreshForm() {
             this.createFormByObject(this.parentHtml, this.configuration);
         }
+
         createFormByObject(parent, configuration) {
             var _a;
             this.parentHtml = parent;

@@ -35,7 +35,7 @@ namespace DatenMeister.WebServer.Pages
             ActionName = actionName;
             MetaClass = metaclass;
 
-            if (ActionName == "Extent.Properties.Update")
+            if (ActionName == "Extent.Properties.Navigate")
             {
                 var workspaceId = (string) Request.Query["workspace"];
                 var extentName = (string) Request.Query["extent"];
@@ -45,12 +45,12 @@ namespace DatenMeister.WebServer.Pages
                 var extent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, extentName)
                              ?? throw new InvalidOperationException(
                                  $"Extent '{extentName}' in '{workspaceId}' not found");
-                var uriExtent = HttpUtility.UrlEncode(ManagementProviderPlugin.UriExtentWorkspaces);
                 var itemUri =
-                    HttpUtility.UrlEncode(ExtentManagementUrlHelper.GetIdOfExtentsProperties(workspace, extent));
+                    HttpUtility.UrlEncode(ManagementProviderPlugin.UriExtentWorkspaces + "#" +
+                                          ExtentManagementUrlHelper.GetIdOfExtentsProperties(workspace, extent));
 
                 return Redirect(
-                    $"~/Item/Management/{uriExtent}/{itemUri}");
+                    $"~/Item/Management/{itemUri}");
             }
 
             return Page();

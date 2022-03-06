@@ -16,12 +16,12 @@ namespace DatenMeister.Extent.Forms
     // ReSharper disable once UnusedType.Global
     /// <summary>
     /// Defines the default form extensions which are used to navigate through the
-    /// items, extens and also offers the simple creation and deletion of items. 
+    /// items, extents and also offers the simple creation and deletion of items. 
     /// </summary>
     public class TypesFormsPlugin : IDatenMeisterPlugin
     {
-        private readonly IScopeStorage _scopeStorage;
         private readonly ExtentSettings _extentSettings;
+        private readonly IScopeStorage _scopeStorage;
 
         public TypesFormsPlugin(IScopeStorage scopeStorage)
         {
@@ -58,6 +58,7 @@ namespace DatenMeister.Extent.Forms
                 var mofFactory = new MofFactory(form);
                 if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.TreeItemExtent)
                 {
+                    
                     foreach (var listForm in FormMethods.GetListForms(form))
                     {
                         if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass) != null)
@@ -68,8 +69,9 @@ namespace DatenMeister.Extent.Forms
                         foreach (var rootElement in foundExtentType.rootElementMetaClasses)
                         {
                             var defaultTypesForNewElements =
-                                listForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm
-                                    .defaultTypesForNewElements);
+                                listForm.get<IReflectiveSequence>(
+                                    _DatenMeister._Forms._ListForm
+                                        .defaultTypesForNewElements);
 
                             var defaultType = mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
                             defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, rootElement);
@@ -78,9 +80,8 @@ namespace DatenMeister.Extent.Forms
                             defaultTypesForNewElements.add(defaultType);
 
                             FormMethods.AddToFormCreationProtocol(listForm,
-                                $"TypesFormsPlugin: Added {NamedElementMethods.GetName(rootElement)} by ExtentType");
+                                $"TypesFormsPlugin: Added {NamedElementMethods.GetName(rootElement)} by ExtentType '{foundExtentType.name}'");
                         }
-
                     }
                 }
 

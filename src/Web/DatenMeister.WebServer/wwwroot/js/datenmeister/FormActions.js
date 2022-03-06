@@ -183,8 +183,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         static extentNavigateToProperties(workspace, extentUri) {
             document.location.href =
                 Settings.baseUrl +
-                    "ItemAction/Extent.Properties.Update/" +
-                    encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
+                "ItemAction/Extent.Properties.Navigate/" +
+                encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
                     "?workspace=" +
                     encodeURIComponent(workspace) +
                     "&extent=" +

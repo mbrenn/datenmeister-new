@@ -119,7 +119,7 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 result,
-                "[FormCreator.CreateExtentFormForCollection]");
+                "[FormCreator.CreateExtentFormForCollection] Using Form Creator");
 
             var elementsAsObjects = elements.OfType<IObject>().ToList();
             var elementsWithoutMetaClass = elementsAsObjects
@@ -148,17 +148,20 @@ namespace DatenMeister.Forms.FormCreator
                 var extentTypeSetting = _extentSettings.GetExtentTypeSetting(extentType);
                 if (extentTypeSetting == null) continue;
 
-
                 foreach (var extentMetaClass in
                          extentTypeSetting.rootElementMetaClasses.Select(
                              x => _workspaceLogic.ResolveElement(x, ResolveType.Default)))
                 {
-                    if (metaClasses.Any(x => x!= null && x.@equals(extentMetaClass)))
+                    if (metaClasses.Any(x => x != null && x.equals(extentMetaClass)))
                     {
                         continue;
                     }
 
                     metaClasses.Add(extentMetaClass);
+
+                    FormMethods.AddToFormCreationProtocol(
+                        result,
+                        $"[FormCreator.CreateExtentFormForCollection] Adding listform for '{NamedElementMethods.GetName(extentMetaClass)}' for extent type '{extentTypeSetting.name}'");
                 }
             }
 

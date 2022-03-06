@@ -1,10 +1,10 @@
 ﻿import {DmObject} from "./Mof";
 import * as ClientItem from "./Client.Items"
 
-/// Resolves the given value
-/// This means, that for primitive instances, the value will be directly returns via a defered instance
-/// while for pure references, the server will be queries.
-/// This is currently the most simple implementation
+// Resolves the given value
+// This means, that for primitive instances, the value will be directly returns via a defered instance
+// while for pure references, the server will be queries.
+// This is currently the most simple implementation
 export function resolve(value: any): JQuery.Deferred<any> {
     const r = jQuery.Deferred<any, never, never>();
 

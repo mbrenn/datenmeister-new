@@ -214,7 +214,7 @@ export class FormActions {
     static extentNavigateToProperties(workspace: string, extentUri: string) {
         document.location.href =
             Settings.baseUrl +
-            "ItemAction/Extent.Properties.Update/" +
+            "ItemAction/Extent.Properties.Navigate/" +
             encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
             "?workspace=" +
             encodeURIComponent(workspace) +

@@ -2,7 +2,7 @@
 import * as InterfacesFields from "./Interfaces.Fields";
 import * as Mof from "./Mof";
 import {createField} from "./Forms.FieldFactory";
-import * as TextField from "./Fields/TextField"
+import * as TextField from "./fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
 
 export class DetailForm implements InterfacesForms.IForm {

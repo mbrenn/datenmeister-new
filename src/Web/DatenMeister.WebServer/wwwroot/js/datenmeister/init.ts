@@ -1,6 +1,6 @@
 ﻿import {executeSearchByText} from "./Search";
 
-$(function () {
+$(() => {
 
     $("#dm-search-btn").on(
         'click',

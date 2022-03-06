@@ -1,20 +1,20 @@
-import { DetailFormActions } from "../FormActions";
-import { BaseField, IFormField } from "../Interfaces.Fields";
-import { DmObject } from "../Mof";
+import {DetailFormActions} from "../FormActions";
+import {BaseField, IFormField} from "../Interfaces.Fields";
+import {DmObject} from "../Mof";
 
 export class Field extends BaseField implements IFormField {
-    
+
     button: JQuery;
-    
-    _inConfirmation: boolean;
-    
+
+    private inConfirmation: boolean;
+
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
-        
+
         const tthis = this;
         const title = this.field.get('title');
         const action = this.field.get('actionName');
 
-        this._inConfirmation = false;
+        this.inConfirmation = false;
         const requireConfirmation = DetailFormActions.requiresConfirmation(action);
 
         this.button = $("<button class='btn btn-secondary' type='button'></button>");
@@ -22,13 +22,13 @@ export class Field extends BaseField implements IFormField {
 
         this.button.on('click',
             () => {
-                if(!requireConfirmation || tthis._inConfirmation) {
+                if (!requireConfirmation || tthis.inConfirmation) {
                     DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement);
                 }
                 
                 if (requireConfirmation) {
                     this.button.text("Are you sure?");
-                    tthis._inConfirmation = true;
+                    tthis.inConfirmation = true;
                 }
             });
 

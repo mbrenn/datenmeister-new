@@ -39,7 +39,7 @@ namespace DatenMeister.Forms.Helper
         /// the filter is evaluated. This allows setting a breakpoint for the debugger
         /// during issue finding
         /// </summary>
-        public Action<IObject, ActionButtonAdderParameter>? OnCallSuccess { get; set; }
+        public Action<IObject?, ActionButtonAdderParameter>? OnCallSuccess { get; set; }
 
         /// <summary>
         /// Gets or sets the position at which the button shall be added

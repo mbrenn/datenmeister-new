@@ -217,7 +217,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="element">Element to be included</param>
         /// <param name="metaClass">Meta class whose element will be created</param>
         /// <returns>The created element</returns>
-        public static IElement Create(IObject element, IElement metaClass)
+        public static IElement Create(IObject element, IElement? metaClass)
         {
             return new MofFactory(element).create(metaClass);
         }

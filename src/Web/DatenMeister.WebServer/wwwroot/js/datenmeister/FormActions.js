@@ -32,7 +32,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             if (actionName === "Workspace.Extent.Xmi.Create") {
                 const deferLoadObjectForAction = $.Deferred();
                 const result = new Mof_1.DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
                 result.set("workspaceId", p.get('workspaceId'));
                 deferLoadObjectForAction.resolve(result);
                 return deferLoadObjectForAction;

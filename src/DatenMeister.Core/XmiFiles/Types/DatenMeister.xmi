@@ -1385,6 +1385,8 @@
                       name="failMessage" type-ref="dm:///_internal/model/primitivetypes#String"/>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10c82cc6-6372-457a-9e11-a37385c522e1"
                       name="properties"/>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10c82cd6-6372-457a-9e11-a37385c522e1"
+                      name="loadingConfiguration"/>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ManagementProvider.Workspace" name="Workspace">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="61dcc951-45ef-4f37-8d08-0ec91dda03f6" name="id" type-ref="dm:///_internal/model/primitivetypes#String" />

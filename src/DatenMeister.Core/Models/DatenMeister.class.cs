@@ -2266,6 +2266,9 @@ namespace DatenMeister.Core.Models
                 public static string @properties = "properties";
                 public IElement? @_properties = null;
 
+                public static string @loadingConfiguration = "loadingConfiguration";
+                public IElement? @_loadingConfiguration = null;
+
             }
 
             public _Extent @Extent = new _Extent();
@@ -2353,6 +2356,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @properties = "properties";
                 public IElement? @_properties = null;
+
+                public static string @loadingConfiguration = "loadingConfiguration";
+                public IElement? @_loadingConfiguration = null;
 
             }
 

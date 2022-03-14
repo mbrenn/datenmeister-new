@@ -39,7 +39,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Initializes a new instance of the MofFactory
         /// </summary>
-        /// <param name="collection">Colleciton to be used</param>
+        /// <param name="collection">Collection to be used</param>
         public MofFactory(IReflectiveCollection collection) : this(((IHasExtent) collection).Extent ?? throw new InvalidOperationException("extent"))
         {
         }

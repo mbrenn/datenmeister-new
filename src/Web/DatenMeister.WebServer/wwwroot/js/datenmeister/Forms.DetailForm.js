@@ -1,15 +1,13 @@
 define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./fields/TextField"], function (require, exports, Mof, Forms_FieldFactory_1, TextField) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", {value: true});
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.DetailForm = void 0;
-
     class DetailForm {
         refreshForm() {
             this.createFormByObject(this.parentHtml, this.configuration);
         }
-
         createFormByObject(parent, configuration) {
-            var _a;
+            var _a, _b, _c, _d, _e, _f;
             this.parentHtml = parent;
             this.configuration = configuration;
             if (configuration.isReadOnly === undefined) {
@@ -45,10 +43,10 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./fields/TextFie
                 let htmlElement; // The dom that had been created... 
                 fieldElement = (0, Forms_FieldFactory_1.createField)(fieldMetaClassId, {
                     configuration: configuration,
-                    form: this,
                     field: field,
                     itemUrl: itemUri,
-                    isReadOnly: configuration.isReadOnly
+                    isReadOnly: configuration.isReadOnly,
+                    form: this
                 });
                 if (fieldElement === null) {
                     // No field element was created.
@@ -121,10 +119,10 @@ define(["require", "exports", "./Mof", "./Forms.FieldFactory", "./fields/TextFie
             tableInfo.append($("<tr><th>Workspace</th><td class='dm-detail-info-workspace'>W</td></tr>"));
             tableInfo.append($("<tr><th>Extent-Uri</th><td class='dm-detail-info-extenturi'>E</td></tr>"));
             tableInfo.append($("<tr><th>Metaclass</th><td class='dm-detail-info-metaclass'>m</td></tr>"));
-            $(".dm-detail-info-uri", tableInfo).text(this.element.uri);
-            $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace);
-            $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri);
-            $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass.fullName);
+            $(".dm-detail-info-uri", tableInfo).text((_b = this.element.uri) !== null && _b !== void 0 ? _b : "none");
+            $(".dm-detail-info-workspace", tableInfo).text((_c = this.element.workspace) !== null && _c !== void 0 ? _c : "none");
+            $(".dm-detail-info-extenturi", tableInfo).text((_d = this.element.extentUri) !== null && _d !== void 0 ? _d : "none");
+            $(".dm-detail-info-metaclass", tableInfo).text((_f = (_e = this.element.metaClass) === null || _e === void 0 ? void 0 : _e.fullName) !== null && _f !== void 0 ? _f : "none");
             parent.append(tableInfo);
         }
     }

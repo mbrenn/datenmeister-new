@@ -12,7 +12,6 @@ export class Field extends BaseField implements IFormField {
     }
     
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
-
         const result = $("<em></em>");
         result.text(this.unknownFieldName ?? "unknown");
         return result;

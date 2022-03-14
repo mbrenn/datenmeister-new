@@ -1480,6 +1480,9 @@ namespace DatenMeister.Core.Models
                 public static string @actionName = "actionName";
                 public IElement? @_actionName = null;
 
+                public static string @parameter = "parameter";
+                public IElement? @_parameter = null;
+
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
 

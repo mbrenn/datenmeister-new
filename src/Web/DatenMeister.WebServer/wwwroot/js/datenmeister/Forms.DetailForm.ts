@@ -67,10 +67,10 @@ export class DetailForm implements InterfacesForms.IForm {
                 fieldMetaClassId,
                 {
                     configuration: configuration,
-                    form: this,
                     field: field,
                     itemUrl: itemUri,
-                    isReadOnly: configuration.isReadOnly
+                    isReadOnly: configuration.isReadOnly,
+                    form: this
             });
             
             if (fieldElement === null) {
@@ -163,10 +163,10 @@ export class DetailForm implements InterfacesForms.IForm {
         tableInfo.append(
             $("<tr><th>Metaclass</th><td class='dm-detail-info-metaclass'>m</td></tr>"));
 
-        $(".dm-detail-info-uri", tableInfo).text(this.element.uri);
-        $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace);
-        $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri);
-        $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass.fullName);
+        $(".dm-detail-info-uri", tableInfo).text(this.element.uri ?? "none");
+        $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace ?? "none");
+        $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri ?? "none");
+        $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName ?? "none");
         parent.append(tableInfo);
     }
 }

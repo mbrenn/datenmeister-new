@@ -1169,6 +1169,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ActionFieldData" name="ActionFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="0b40a1f8-11c7-478b-9881-08ed6eef41e8" general-ref="#DatenMeister.Models.Forms.FieldData" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5dac053a-d3d8-1115-9c70-af81f4b7d896" name="actionName" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5dac053a-d3d8-1115-9c70-af81f4b7d832" name="parameter" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DateTimeFieldData" name="DateTimeFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="a1ffbbdf-9302-40d2-99f7-d94bdbe8f978" general-ref="#DatenMeister.Models.Forms.FieldData" />

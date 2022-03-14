@@ -4,7 +4,6 @@ import {debugElementToDom} from "./DomHelper";
 import * as Forms from "./Forms";
 import {DetailFormActions} from "./FormActions";
 
-
 export function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,
     metaClass: string,
@@ -37,26 +36,35 @@ export function createActionFormForEmptyObject(
 
     let deferForm;
 
-    if (configuration.formUri !== undefined) {
-        deferForm = Forms.getForm(configuration.formUri);
-    } else if (metaClass === undefined) {
-        deferForm = $.Deferred<DmObject>();
-        deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
-        // Create a total empty form object...
-    } else {
-        deferForm = Forms.getDefaultFormForMetaClass(metaClass);
-    }
-
-    $.when(deferForm, deferLoadObjectForAction).then((form, element) => {
-        // Updates the metaclass, if the metaclass is not set by the element itself
-        if (element.metaClass === undefined) {
+    $.when(deferLoadObjectForAction).then((element) => {
+        if(metaClass === undefined && element.metaClass?.uri !== undefined) {
+            // If the returned element has a metaclass, then set the metaClass being used to 
+            // find the right form to the one by the element
+            metaClass = element.metaClass.uri;
+        }
+        else if (element.metaClass === undefined) {
+            // Updates the metaclass, if the metaclass is not set by the element itself
             element.setMetaClassByUri(metaClass);
         }
+        
+        // Defines the form
+        if (configuration.formUri !== undefined) {
+            // Ok, we already have an explicit form
+            deferForm = Forms.getForm(configuration.formUri);
+        } else if (metaClass === undefined) {
+            // If there is no metaclass set, create a total empty form object...
+            deferForm = $.Deferred<DmObject>();
+            deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
+        } else {
+            deferForm = Forms.getDefaultFormForMetaClass(metaClass);
+        }
 
-        creator.element = element;
-        creator.formElement = form;
-        creator.createFormByObject(parent, configuration);
+        $.when(deferForm).then((form) => {
+            creator.element = element;
+            creator.formElement = form;
+            creator.createFormByObject(parent, configuration);
 
-        debugElementToDom(form, "#debug_formelement");
+            debugElementToDom(form, "#debug_formelement");
+        });
     });
 }

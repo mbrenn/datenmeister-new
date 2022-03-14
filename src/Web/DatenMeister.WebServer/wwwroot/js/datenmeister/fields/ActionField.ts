@@ -13,6 +13,8 @@ export class Field extends BaseField implements IFormField {
         const tthis = this;
         const title = this.field.get('title');
         const action = this.field.get('actionName');
+        
+        const parameter = this.field.get('parameter');
 
         this.inConfirmation = false;
         const requireConfirmation = DetailFormActions.requiresConfirmation(action);
@@ -23,10 +25,10 @@ export class Field extends BaseField implements IFormField {
         this.button.on('click',
             () => {
                 if (!requireConfirmation || tthis.inConfirmation) {
-                    DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement);
+                    DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement, parameter);
                 }
                 
-                if (requireConfirmation) {
+                if (requireConfirmation && !tthis.inConfirmation) {
                     this.button.text("Are you sure?");
                     tthis.inConfirmation = true;
                 }

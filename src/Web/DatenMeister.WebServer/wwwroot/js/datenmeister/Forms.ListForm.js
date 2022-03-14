@@ -105,10 +105,10 @@ define(["require", "exports", "./Forms.FieldFactory", "./Settings", "./Forms.Sel
                             const fieldMetaClassId = field.metaClass.id;
                             const fieldElement = (0, Forms_FieldFactory_1.createField)(fieldMetaClassId, {
                                 configuration: configuration,
-                                form: this,
                                 field: field,
                                 itemUrl: element.uri,
-                                isReadOnly: configuration.isReadOnly
+                                isReadOnly: configuration.isReadOnly,
+                                form: this
                             });
                             cell.append(fieldElement.createDom(element));
                             row.append(cell);

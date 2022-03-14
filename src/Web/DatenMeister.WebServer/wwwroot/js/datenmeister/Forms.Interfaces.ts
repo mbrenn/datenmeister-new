@@ -4,10 +4,9 @@ export interface IFormNavigation {
     workspace: string;
     extentUri: string;
     formElement: Mof.DmObject;
-
 }
 
-export interface IForm extends  IFormNavigation
+export interface IForm extends IFormNavigation
 {
 
     // Just performs a refresh of the form

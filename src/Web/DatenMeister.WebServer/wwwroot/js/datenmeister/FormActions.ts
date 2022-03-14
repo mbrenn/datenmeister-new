@@ -41,6 +41,16 @@ export module DetailFormActions {
             deferLoadObjectForAction.resolve(result);
             return deferLoadObjectForAction;
         }
+        
+        if (actionName === "Workspace.Extent.Xmi.Create") {
+            const deferLoadObjectForAction = $.Deferred<DmObject>()
+            const result = new DmObject();
+            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+            result.set("workspaceId", p.get('workspaceId'));
+            
+            deferLoadObjectForAction.resolve(result);
+            return deferLoadObjectForAction;
+        }
 
         return undefined;
     }
@@ -55,7 +65,7 @@ export module DetailFormActions {
         }
     }
 
-    export function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject) {
+    export function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject, parameter?: DmObject) {
         let workspaceId;
         let extentUri;
         let p = new URLSearchParams(window.location.search);
@@ -122,6 +132,10 @@ export module DetailFormActions {
                             document.location.reload();
                         });
                 break;
+            case "Workspace.Extent.Xmi.Create.Navigate":
+                const workspaceIdParameter = parameter?.get('workspaceId') ?? "";
+                FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                break;
             case "Workspace.Extent.Xmi.Create":
                 ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
@@ -159,6 +173,11 @@ interface IDeleteCallbackData {
 
 export class FormActions {
 
+    static workspaceExtentCreateXmiNavigateTo(workspaceId: string) {
+        document.location.href =
+            Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
+    }
+    
     static workspaceNavigateTo(workspace: string) {
         document.location.href =
             Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);

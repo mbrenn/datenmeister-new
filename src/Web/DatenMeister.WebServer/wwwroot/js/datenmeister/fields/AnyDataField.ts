@@ -2,8 +2,8 @@
 import {DmObject} from "../Mof";
 import {injectNameByUri} from "../DomHelper";
 import * as ClientItem from "../Client.Items"
-import * as ClientItems from "../Client.Items"
 import * as SIC from "../Forms.SelectItemControl";
+import * as SubElementField from "./SubElementField"
 
 
 enum ModeValue {
@@ -22,6 +22,7 @@ export class Field extends BaseField implements IFormField {
     private _mode: ModeValue;
     private _element: DmObject;
     private _domElement: JQuery<HTMLElement>;
+    private _fieldValue: any;
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
         const tthis = this;
@@ -39,47 +40,32 @@ export class Field extends BaseField implements IFormField {
         this._aReference = $(".dm-anydatafield-headline-reference", headLine);
 
         this._domElement = $("<div></div>");
-
-
+        
         this._aValue.on('click', () => {
-            if (tthis.isReadOnly) {
-                alert('Read-Only Mode');
-            }
-
             tthis.highlightValue();
         });
 
         this._aCollection.on('click', () => {
-            if (tthis.isReadOnly) {
-                alert('Read-Only Mode');
-            }
-
             tthis.highlightCollection();
         });
 
         this._aReference.on('click', () => {
-            if (tthis.isReadOnly) {
-                alert('Read-Only Mode');
-            }
-
             tthis.highlightReference();
         });
 
         result.append(headLine);
         result.append(this._domElement);
 
-
         const fieldName = this.field.get('name').toString();
-        const value = this._element.get(fieldName);
+        this._fieldValue = this._element.get(fieldName);
 
-        if (value === null || value === undefined) {
+        if (this._fieldValue === null || this._fieldValue === undefined) {
             this.highlightReference();
-        } else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+        } else if ((typeof this._fieldValue === "object" || typeof this._fieldValue === "function") && (this._fieldValue !== null)) {
             this.highlightReference();
         } else {
             this.highlightValue();
         }
-
 
         return result;
     }
@@ -119,23 +105,34 @@ export class Field extends BaseField implements IFormField {
         this._mode = ModeValue.Reference;
         this.updateDomContent();
     }
+    
+    private reloadAndUpdateDomContent() {
+        const tthis = this;
+        ClientItem.getProperty(
+            this.form.workspace,
+            this.itemUrl,
+            this.field.get('name').toString()
+        ).done((item) => {
+            tthis._fieldValue = item;
+            tthis.updateDomContent();
+        });
+    }
 
     private updateDomContent() {
         this._domElement.empty();
-        const fieldName = this.field.get('name').toString();
-        const value = this._element.get(fieldName);
 
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
-            this.updateDomContentReadOnly(value);
+            this.updateDomContentReadOnly();
         } else {
-            this.updateDomContentEditable(value);
+            this.updateDomContentEditable();
         }
     }
 
-    private updateDomContentReadOnly(value) {
+    private updateDomContentReadOnly() {
+        const value = this._fieldValue;
         if (value === null || value === undefined) {
-            const div = $("<div><em>null</em></null>");
+            const div = $("<div><em>Not set</em></null>");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Reference) {
             const asDmObject = value as DmObject;
@@ -147,13 +144,15 @@ export class Field extends BaseField implements IFormField {
             div.text(value?.toString() ?? "");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Collection) {
-            const div = $("<div><em>Collections not supported</div>");
-            this._domElement.append(div);
+            const field = this.createSubElementFieldInstance();
+            const element = field.createDomByValue(value);
+            
+            this._domElement.append(element);
         }
     }
 
-    private updateDomContentEditable(value) {
-
+    private updateDomContentEditable() {
+        const value = this._fieldValue;
         const fieldName = this.field.get('name').toString();
 
         var tthis = this;
@@ -185,14 +184,13 @@ export class Field extends BaseField implements IFormField {
                 });
 
                 changeCell.on('click', () => {
-
                     containerChangeCell.empty();
                     const selectItem = new SIC.SelectItemControl();
                     const settings = new SIC.Settings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
                     selectItem.onItemSelected = selectedItem => {
-                        ClientItems.addReferenceToCollection(
+                        ClientItem.addReferenceToCollection(
                             tthis.form.workspace,
                             tthis.itemUrl,
                             {
@@ -218,9 +216,24 @@ export class Field extends BaseField implements IFormField {
             this._textBox.val(value?.toString() ?? "");
             this._domElement.append(this._textBox)
         } else if (this._mode === ModeValue.Collection) {
-            const div = $("<div><em>Collections not supported</div>");
-            this._domElement.append(div);
+            if (this.configuration.isNewItem) {
+                const div = $("<em>Element needs to be saved first</em>");
+                this._domElement.append(div);
+            } else {
+                const field = this.createSubElementFieldInstance();
+                const element = field.createDomByValue(value);
+                this._domElement.append(element);
+            }
         }
-    }
+    } 
     
+    private createSubElementFieldInstance() {
+        const element = new SubElementField.Control();
+        element.isReadOnly = this.isReadOnly;
+        element.configuration = this.configuration;
+        element.itemUrl = this.itemUrl;
+        element.propertyName = this.field.get('name').toString();
+        
+        return element;
+    }
 }

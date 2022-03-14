@@ -20,26 +20,36 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
             deferLoadObjectForAction.resolve(new Mof_1.DmObject());
         }
         let deferForm;
-        if (configuration.formUri !== undefined) {
-            deferForm = Forms.getForm(configuration.formUri);
-        }
-        else if (metaClass === undefined) {
-            deferForm = $.Deferred();
-            deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
-            // Create a total empty form object...
-        }
-        else {
-            deferForm = Forms.getDefaultFormForMetaClass(metaClass);
-        }
-        $.when(deferForm, deferLoadObjectForAction).then((form, element) => {
-            // Updates the metaclass, if the metaclass is not set by the element itself
-            if (element.metaClass === undefined) {
+        $.when(deferLoadObjectForAction).then((element) => {
+            var _a;
+            if (metaClass === undefined && ((_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri) !== undefined) {
+                // If the returned element has a metaclass, then set the metaClass being used to 
+                // find the right form to the one by the element
+                metaClass = element.metaClass.uri;
+            }
+            else if (element.metaClass === undefined) {
+                // Updates the metaclass, if the metaclass is not set by the element itself
                 element.setMetaClassByUri(metaClass);
             }
-            creator.element = element;
-            creator.formElement = form;
-            creator.createFormByObject(parent, configuration);
-            (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+            // Defines the form
+            if (configuration.formUri !== undefined) {
+                // Ok, we already have an explicit form
+                deferForm = Forms.getForm(configuration.formUri);
+            }
+            else if (metaClass === undefined) {
+                // If there is no metaclass set, create a total empty form object...
+                deferForm = $.Deferred();
+                deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
+            }
+            else {
+                deferForm = Forms.getDefaultFormForMetaClass(metaClass);
+            }
+            $.when(deferForm).then((form) => {
+                creator.element = element;
+                creator.formElement = form;
+                creator.createFormByObject(parent, configuration);
+                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+            });
         });
     }
     exports.createActionFormForEmptyObject = createActionFormForEmptyObject;

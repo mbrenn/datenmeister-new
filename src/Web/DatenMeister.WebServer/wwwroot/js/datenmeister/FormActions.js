@@ -29,6 +29,14 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 deferLoadObjectForAction.resolve(result);
                 return deferLoadObjectForAction;
             }
+            if (actionName === "Workspace.Extent.Xmi.Create") {
+                const deferLoadObjectForAction = $.Deferred();
+                const result = new Mof_1.DmObject();
+                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+                result.set("workspaceId", p.get('workspaceId'));
+                deferLoadObjectForAction.resolve(result);
+                return deferLoadObjectForAction;
+            }
             return undefined;
         }
         DetailFormActions.loadObjectForAction = loadObjectForAction;
@@ -43,7 +51,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             }
         }
         DetailFormActions.requiresConfirmation = requiresConfirmation;
-        function execute(actionName, form, itemUrl, element) {
+        function execute(actionName, form, itemUrl, element, parameter) {
+            var _a;
             let workspaceId;
             let extentUri;
             let p = new URLSearchParams(window.location.search);
@@ -110,6 +119,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         document.location.reload();
                     });
                     break;
+                case "Workspace.Extent.Xmi.Create.Navigate":
+                    const workspaceIdParameter = (_a = parameter === null || parameter === void 0 ? void 0 : parameter.get('workspaceId')) !== null && _a !== void 0 ? _a : "";
+                    FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                    break;
                 case "Workspace.Extent.Xmi.Create":
                     ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
                         .done(data => {
@@ -140,6 +153,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         DetailFormActions.execute = execute;
     })(DetailFormActions = exports.DetailFormActions || (exports.DetailFormActions = {}));
     class FormActions {
+        static workspaceExtentCreateXmiNavigateTo(workspaceId) {
+            document.location.href =
+                Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
+        }
         static workspaceNavigateTo(workspace) {
             document.location.href =
                 Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
@@ -183,8 +200,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         static extentNavigateToProperties(workspace, extentUri) {
             document.location.href =
                 Settings.baseUrl +
-                "ItemAction/Extent.Properties.Navigate/" +
-                encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
+                    "ItemAction/Extent.Properties.Navigate/" +
+                    encodeURIComponent("dm:///_internal/forms/internal#DatenMeister.Extent.Properties") +
                     "?workspace=" +
                     encodeURIComponent(workspace) +
                     "&extent=" +

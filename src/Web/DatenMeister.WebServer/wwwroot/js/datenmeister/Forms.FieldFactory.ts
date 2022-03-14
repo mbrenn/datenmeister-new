@@ -8,16 +8,16 @@ import * as SubElementField from "./fields/SubElementField";
 import * as ReferenceField from "./fields/ReferenceField";
 import * as UnknownField from "./fields/UnknownField";
 import {IFormField} from "./Interfaces.Fields";
-import {IForm} from "./Forms.Interfaces";
+import {IForm, IFormNavigation} from "./Forms.Interfaces";
 import {DmObject} from "./Mof";
 import {IFormConfiguration} from "./IFormConfiguration";
 
 interface ICreateFieldParameter {
     configuration: IFormConfiguration,
-    form: IForm;
     isReadOnly: boolean;
     field: DmObject;
     itemUrl: string;
+    form: IFormNavigation;
 }
 
 export function createField(fieldMetaClassId: string, parameter: ICreateFieldParameter): IFormField {
@@ -54,10 +54,10 @@ export function createField(fieldMetaClassId: string, parameter: ICreateFieldPar
     }
 
     result.configuration = parameter.configuration;
-    result.form = parameter.form;
     result.isReadOnly = parameter.isReadOnly;
     result.field = parameter.field;
     result.itemUrl = parameter.itemUrl;
+    result.form = parameter.form;
 
     return result;
 }

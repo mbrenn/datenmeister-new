@@ -139,12 +139,12 @@ export class ListForm implements InterfacesForms.IForm {
                             fieldMetaClassId,
                             {
                                 configuration: configuration,
-                                form: this,
                                 field: field,
                                 itemUrl: element.uri,
-                                isReadOnly: configuration.isReadOnly
+                                isReadOnly: configuration.isReadOnly,
+                                form: this
                             });
-
+                        
                         cell.append(fieldElement.createDom(element));
                         row.append(cell);
                     }

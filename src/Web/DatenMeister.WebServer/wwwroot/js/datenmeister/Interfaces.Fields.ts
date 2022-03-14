@@ -1,4 +1,4 @@
-import {IForm} from "Forms.Interfaces";
+import {IForm, IFormNavigation} from "Forms.Interfaces";
 import * as Mof from "Mof";
 import { IFormConfiguration } from "./IFormConfiguration";
 
@@ -12,10 +12,10 @@ export interface IFormField
 
     isReadOnly: boolean;
 
-    form: IForm;
-
     // Is connected to the item url of the element being connected to that element
     itemUrl: string;
+    
+    form: IFormNavigation;
 
     // Creates the dom depending on the given field and the internal object
     createDom(dmElement: Mof.DmObject) : JQuery<HTMLElement>;
@@ -29,6 +29,6 @@ export class BaseField
     configuration: IFormConfiguration;
     field: Mof.DmObject;
     isReadOnly: boolean;
-    form: IForm;
+    form: IFormNavigation;
     itemUrl: string;
 }

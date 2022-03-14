@@ -269,7 +269,7 @@ namespace DatenMeister.WebServer.Controller
             return new {success = true};
         }
 
-        [HttpPut("api/items/unset_property/{workspaceId}/{itemUri}")]
+        [HttpPost("api/items/unset_property/{workspaceId}/{itemUri}")]
         public ActionResult<object> UnsetProperty(string workspaceId, string itemUri,
             [FromBody] UnsetPropertyParams propertyParams)
         {

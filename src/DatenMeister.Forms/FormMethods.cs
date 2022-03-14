@@ -172,7 +172,7 @@ namespace DatenMeister.Forms
                 throw new InvalidOperationException(
                     "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
-            var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
 
             foreach (var tab in tabs.OfType<IElement>())
                 if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(),

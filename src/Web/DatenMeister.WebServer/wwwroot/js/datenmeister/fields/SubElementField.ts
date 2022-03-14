@@ -1,48 +1,39 @@
-﻿import {BaseField, IFormField} from "../Interfaces.Fields";
+﻿import {IFormField} from "../Interfaces.Fields";
 import {DmObject} from "../Mof";
 import * as FieldFactory from "../Forms.FieldFactory";
 import * as SIC from "../Forms.SelectItemControl";
 import * as ClientItems from "../Client.Items";
 import {resolve} from "../MofResolver"
 import {navigateToItemByUrl} from "../Navigator";
+import {IFormConfiguration} from "../IFormConfiguration";
+import {IForm, IFormNavigation} from "../Forms.Interfaces";
+import * as Settings from "../Settings";
 
-export class Field extends BaseField implements IFormField {
+export class Control {
+    configuration: IFormConfiguration;
+    isReadOnly: boolean;
+    
+    // Is connected to the item url of the element being connected to that element
+    itemUrl: string;
+    form: IFormNavigation;
+    propertyName: string;
 
     _list: JQuery;
-    _element: DmObject;
 
-    reloadValuesFromServer(): void {
-        const tthis = this;
-        const url = this._element.uri;
-        const fieldName = this.field.get('name');
-
-        ClientItems.getProperty(this.form.workspace, url, fieldName).done(
-            x => tthis.createDomByValue(x)
-        );
+    constructor() {
+        this._list = $("<div></div>");
     }
 
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
-        if ( this.configuration.isNewItem) {
-            return $("<em>Element needs to be saved first</em>");
-        }
-        else
-        {
-            this._element = dmElement;
-            const fieldName = this.field.get('name');
-            const value = dmElement.get(fieldName);
-
-            this._list = $("<div></div>");
-            this.createDomByValue(value);
-
-            return this._list
-        }
-    }
-
-    createDomByValue(value: any): JQuery<HTMLElement> {
+    createDomByValue(value: any): JQuery<HTMLElement> {       
+        
         const tthis = this;
         this._list.empty();
 
         if (this.isReadOnly) {
+            if (!Array.isArray(value)) {
+                return $("<div><em>Element is not an Array</em></div>")
+            }
+            
             let ul = $("<ul class='list-unstyled'></ul>");
 
             let foundElements = 0;
@@ -82,10 +73,14 @@ export class Field extends BaseField implements IFormField {
 
             this._list.append(ul);
         } else {
+            if (!Array.isArray(value)) {
+                value = [];
+            }
+            
             const table = $("<table><tbody></tbody></table>");
             this._list.append(table);
 
-            let fields = this.field.get('form')?.get('field');
+            let fields = this.getFieldDefinitions();
 
             let fieldsData = new Array<DmObject>();
             if (fields === undefined) {
@@ -127,10 +122,10 @@ export class Field extends BaseField implements IFormField {
                             fieldData.metaClass.id,
                             {
                                 field: fieldData,
-                                form: this.form,
                                 isReadOnly: true,
                                 itemUrl: innerValue.uri,
-                                configuration: {}
+                                configuration: {},
+                                form: tthis.form
                             });
                         const dom = field.createDom(innerValue);
                         td.append(dom);
@@ -145,7 +140,7 @@ export class Field extends BaseField implements IFormField {
                                 tthis.form.workspace,
                                 tthis.itemUrl,
                                 {
-                                    property: tthis.field.get('name'),
+                                    property: tthis.propertyName,
                                     referenceUri: innerValue.uri,
                                     referenceWorkspaceId: innerValue.workspace
                                 })
@@ -160,9 +155,9 @@ export class Field extends BaseField implements IFormField {
                 }
             }
 
-            const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach new Item</btn><div class='dm-subelements-appenditem-box'></div></div>");
-            $(".dm-subelements-appenditem-btn", newItem).on('click', () => {
-                const containerDiv = $(".dm-subelements-appenditem-box", newItem);
+            const attachItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach Item</btn><div class='dm-subelements-appenditem-box'></div></div>");
+            $(".dm-subelements-appenditem-btn", attachItem).on('click', () => {
+                const containerDiv = $(".dm-subelements-appenditem-box", attachItem);
                 containerDiv.empty();
                 const selectItem = new SIC.SelectItemControl();
                 const settings = new SIC.Settings();
@@ -173,7 +168,7 @@ export class Field extends BaseField implements IFormField {
                         tthis.form.workspace,
                         tthis.itemUrl,
                         {
-                            property: tthis.field.get('name'),
+                            property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
                         }
@@ -187,6 +182,21 @@ export class Field extends BaseField implements IFormField {
                 return false;
             });
 
+            this._list.append(attachItem);
+            
+            const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn></div>");
+            newItem.on('click', () => {
+                document.location.href =
+                    Settings.baseUrl +
+                    "ItemAction/Extent.CreateItemInProperty?workspace=" +
+                    encodeURIComponent(tthis.form.workspace) +
+                    "&itemUrl=" +
+                    encodeURIComponent(tthis.itemUrl) +
+                    /*"&metaclass=" +
+                    encodeURIComponent(uri) +*/
+                    "&property=" +
+                    encodeURIComponent(tthis.propertyName);
+            });
 
             this._list.append(newItem);
         }
@@ -200,6 +210,51 @@ export class Field extends BaseField implements IFormField {
         return this._list;
     }
 
+    reloadValuesFromServer() {
+        alert('reloadValuesFromServer is not overridden.');
+    }
+
+    // Returns the default definition of a name.
+    // This method can be overridden by the right field definitions
+    getFieldDefinitions() : Array<DmObject> | undefined {
+        return undefined;
+    }
+}
+
+export class Field extends Control implements IFormField {
+
+    _element: DmObject;
+    form: IForm;
+    field: DmObject;
+    
+    reloadValuesFromServer(): void {
+        const tthis = this;
+        const url = this._element.uri;
+        
+        ClientItems.getProperty(this.form.workspace, url, this.propertyName).done(
+            x => tthis.createDomByValue(x)
+        );
+    }
+    
+    getFieldDefinitions() : Array<DmObject>  {
+        return this.field.get('form')?.get('field') as Array<DmObject>;
+    }
+
+    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+        this.propertyName = this.field.get('name');
+        
+        if (this.configuration.isNewItem) {
+            return $("<em>Element needs to be saved first</em>");
+        } else {
+            this._element = dmElement;
+            const value = dmElement.get(this.propertyName);
+
+            this.createDomByValue(value);
+
+            return this._list
+        }
+    }
+    
     evaluateDom(dmElement: DmObject) {
 
     }

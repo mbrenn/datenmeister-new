@@ -1,4 +1,4 @@
-define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client.Items", "../Client.Items", "../Forms.SelectItemControl"], function (require, exports, Interfaces_Fields_1, DomHelper_1, ClientItem, ClientItems, SIC) {
+define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client.Items", "../Forms.SelectItemControl", "./SubElementField"], function (require, exports, Interfaces_Fields_1, DomHelper_1, ClientItem, SIC, SubElementField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
@@ -21,31 +21,22 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
             this._aReference = $(".dm-anydatafield-headline-reference", headLine);
             this._domElement = $("<div></div>");
             this._aValue.on('click', () => {
-                if (tthis.isReadOnly) {
-                    alert('Read-Only Mode');
-                }
                 tthis.highlightValue();
             });
             this._aCollection.on('click', () => {
-                if (tthis.isReadOnly) {
-                    alert('Read-Only Mode');
-                }
                 tthis.highlightCollection();
             });
             this._aReference.on('click', () => {
-                if (tthis.isReadOnly) {
-                    alert('Read-Only Mode');
-                }
                 tthis.highlightReference();
             });
             result.append(headLine);
             result.append(this._domElement);
             const fieldName = this.field.get('name').toString();
-            const value = this._element.get(fieldName);
-            if (value === null || value === undefined) {
+            this._fieldValue = this._element.get(fieldName);
+            if (this._fieldValue === null || this._fieldValue === undefined) {
                 this.highlightReference();
             }
-            else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+            else if ((typeof this._fieldValue === "object" || typeof this._fieldValue === "function") && (this._fieldValue !== null)) {
                 this.highlightReference();
             }
             else {
@@ -82,22 +73,28 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
             this._mode = ModeValue.Reference;
             this.updateDomContent();
         }
+        reloadAndUpdateDomContent() {
+            const tthis = this;
+            ClientItem.getProperty(this.form.workspace, this.itemUrl, this.field.get('name').toString()).done((item) => {
+                tthis._fieldValue = item;
+                tthis.updateDomContent();
+            });
+        }
         updateDomContent() {
             this._domElement.empty();
-            const fieldName = this.field.get('name').toString();
-            const value = this._element.get(fieldName);
             /* Otherwise just create the correct field type. */
             if (this.isReadOnly) {
-                this.updateDomContentReadOnly(value);
+                this.updateDomContentReadOnly();
             }
             else {
-                this.updateDomContentEditable(value);
+                this.updateDomContentEditable();
             }
         }
-        updateDomContentReadOnly(value) {
+        updateDomContentReadOnly() {
             var _a;
+            const value = this._fieldValue;
             if (value === null || value === undefined) {
-                const div = $("<div><em>null</em></null>");
+                const div = $("<div><em>Not set</em></null>");
                 this._domElement.append(div);
             }
             else if (this._mode === ModeValue.Reference) {
@@ -112,12 +109,14 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                 this._domElement.append(div);
             }
             else if (this._mode === ModeValue.Collection) {
-                const div = $("<div><em>Collections not supported</div>");
-                this._domElement.append(div);
+                const field = this.createSubElementFieldInstance();
+                const element = field.createDomByValue(value);
+                this._domElement.append(element);
             }
         }
-        updateDomContentEditable(value) {
+        updateDomContentEditable() {
             var _a;
+            const value = this._fieldValue;
             const fieldName = this.field.get('name').toString();
             var tthis = this;
             if (this._mode === ModeValue.Reference) {
@@ -151,7 +150,7 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                         settings.showWorkspaceInBreadcrumb = true;
                         settings.showExtentInBreadcrumb = true;
                         selectItem.onItemSelected = selectedItem => {
-                            ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
+                            ClientItem.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                                 property: tthis.field.get('name'),
                                 referenceUri: selectedItem.uri,
                                 referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
@@ -172,9 +171,24 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                 this._domElement.append(this._textBox);
             }
             else if (this._mode === ModeValue.Collection) {
-                const div = $("<div><em>Collections not supported</div>");
-                this._domElement.append(div);
+                if (this.configuration.isNewItem) {
+                    const div = $("<em>Element needs to be saved first</em>");
+                    this._domElement.append(div);
+                }
+                else {
+                    const field = this.createSubElementFieldInstance();
+                    const element = field.createDomByValue(value);
+                    this._domElement.append(element);
+                }
             }
+        }
+        createSubElementFieldInstance() {
+            const element = new SubElementField.Control();
+            element.isReadOnly = this.isReadOnly;
+            element.configuration = this.configuration;
+            element.itemUrl = this.itemUrl;
+            element.propertyName = this.field.get('name').toString();
+            return element;
         }
     }
     exports.Field = Field;

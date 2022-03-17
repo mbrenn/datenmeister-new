@@ -6,11 +6,17 @@ export class Field extends BaseField implements IFormField {
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
 
+        const fieldName = this.field.get('name');
+        let value = dmElement.get(fieldName);
+        if (Array.isArray(value)) {
+            if (value.length === 1) {
+                value = value[0];
+            } else {
+                return $("<em>The value is an array and not supported by the referencefield</em>");
+            }
+        }
+        
         if (this.isReadOnly === true) {
-
-            const fieldName = this.field.get('name');
-            const value = dmElement.get(fieldName);
-
             this._list = $("<span></span>");
             if (value === undefined) {
                 this._list.html("<em>undefined</em>");
@@ -20,8 +26,6 @@ export class Field extends BaseField implements IFormField {
 
             return this._list;
         } else {
-            const fieldName = this.field.get('name');
-            const value = dmElement.get(fieldName);
 
             this._list = $("<span></span>");
             this._list.text(value.get('name'));

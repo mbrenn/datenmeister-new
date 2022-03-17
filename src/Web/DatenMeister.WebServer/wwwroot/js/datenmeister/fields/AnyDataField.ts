@@ -131,7 +131,8 @@ export class Field extends BaseField implements IFormField {
 
     private updateDomContentReadOnly() {
         const value = this._fieldValue;
-        if (value === null || value === undefined) {
+        if (value === null || value === undefined
+        || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
             const div = $("<div><em>Not set</em></null>");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Reference) {
@@ -157,7 +158,7 @@ export class Field extends BaseField implements IFormField {
 
         var tthis = this;
         if (this._mode === ModeValue.Reference) {
-            if (value === null || value === undefined) {
+            if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                 const div = $("<div><em>null</em></null>");
                 this._domElement.append(div);
             } else {

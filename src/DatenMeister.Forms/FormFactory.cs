@@ -214,7 +214,7 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? CreateExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
+        public IElement? CreateExtentFormForItemsMetaClass(IElement? metaClass, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;
 
@@ -299,7 +299,7 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? CreateListFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
+        public IElement? CreateListFormForMetaClass(IElement? metaClass, FormFactoryConfiguration configuration)
         {
             configuration = configuration with { IsForListView = true };
             IElement? foundForm = null;

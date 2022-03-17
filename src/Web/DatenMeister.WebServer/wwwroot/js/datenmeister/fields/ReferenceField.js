@@ -4,9 +4,17 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
     exports.Field = void 0;
     class Field extends Interfaces_Fields_1.BaseField {
         createDom(dmElement) {
+            const fieldName = this.field.get('name');
+            let value = dmElement.get(fieldName);
+            if (Array.isArray(value)) {
+                if (value.length === 1) {
+                    value = value[0];
+                }
+                else {
+                    return $("<em>The value is an array and not supported by the referencefield</em>");
+                }
+            }
             if (this.isReadOnly === true) {
-                const fieldName = this.field.get('name');
-                const value = dmElement.get(fieldName);
                 this._list = $("<span></span>");
                 if (value === undefined) {
                     this._list.html("<em>undefined</em>");
@@ -17,8 +25,6 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
                 return this._list;
             }
             else {
-                const fieldName = this.field.get('name');
-                const value = dmElement.get(fieldName);
                 this._list = $("<span></span>");
                 this._list.text(value.get('name'));
                 return this._list;

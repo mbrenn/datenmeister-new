@@ -76,7 +76,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="metaClass"></param>
         /// <param name="creationMode"></param>
         public IElement CreateListFormForMetaClass(
-            IElement metaClass,
+            IElement? metaClass,
             FormFactoryConfiguration creationMode)
         {
             return CreateListFormForMetaClass(metaClass, creationMode, null);
@@ -107,7 +107,7 @@ namespace DatenMeister.Forms.FormCreator
             var title =
                 (metaClass != null ? NamedElementMethods.GetName(metaClass) : string.Empty) +
                 (metaClass != null && property != null ? " - " : "") +
-                (property != null ? NamedElementMethods.GetName(property) : "");
+                propertyName;
 
             result.set(_DatenMeister._Forms._ListForm.title, "Types: " + title);
             result.set(_DatenMeister._Forms._ListForm.name, title);

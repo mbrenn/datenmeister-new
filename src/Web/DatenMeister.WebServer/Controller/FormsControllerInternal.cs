@@ -70,17 +70,23 @@ namespace DatenMeister.WebServer.Controller
         /// <returns>The found form</returns>
         public IObject GetDefaultFormForMetaClassInternal(string metaClass, string? viewMode = null)
         {
-            var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            if (
-                _workspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) is not IElement element)
-            {
-                throw new InvalidOperationException("Element is not found: " + metaClass);
-            }
 
+            var configurationMode = new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty};
+
+            IElement? resolvedMetaClass = null;
+            if (!string.IsNullOrEmpty(metaClass ))
+            {
+                resolvedMetaClass = _workspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) as IElement;
+                if (resolvedMetaClass != null)
+                {
+                    throw new InvalidOperationException("Element is not found: " + metaClass);
+                }
+            }
+            
             var form = formFactory.CreateExtentFormForItemsMetaClass(
-                element,
-                new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
+                resolvedMetaClass,
+                configurationMode);
 
             if (form == null)
             {

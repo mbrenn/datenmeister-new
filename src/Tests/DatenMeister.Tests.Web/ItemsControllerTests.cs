@@ -92,7 +92,7 @@ namespace DatenMeister.Tests.Web
             itemsController.UnsetProperty(
                 WorkspaceNames.WorkspaceData,
                 ElementControllerTests.UriTemporaryExtent + "#item1",
-                new ItemsController.UnsetPropertyParams {Key = "name"});
+                new ItemsController.UnsetPropertyParams {Property = "name"});
 
             Assert.That(item1.getOrDefault<string>("name"), Is.Null);
         }

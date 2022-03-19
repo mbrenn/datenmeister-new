@@ -75,15 +75,15 @@ namespace DatenMeister.WebServer.Controller
             var configurationMode = new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty};
 
             IElement? resolvedMetaClass = null;
-            if (!string.IsNullOrEmpty(metaClass ))
+            if (!string.IsNullOrEmpty(metaClass))
             {
                 resolvedMetaClass = _workspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) as IElement;
-                if (resolvedMetaClass != null)
+                if (resolvedMetaClass == null)
                 {
-                    throw new InvalidOperationException("Element is not found: " + metaClass);
+                    throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);
                 }
             }
-            
+
             var form = formFactory.CreateExtentFormForItemsMetaClass(
                 resolvedMetaClass,
                 configurationMode);

@@ -1,7 +1,7 @@
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.unsetProperty = exports.getProperty = exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
+    exports.unsetProperty = exports.setProperty = exports.getProperty = exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
     function loadObject(workspace, extent, id) {
         const r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
@@ -115,6 +115,20 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         return r;
     }
     exports.getProperty = getProperty;
+    function setProperty(workspaceId, itemUrl, property, value) {
+        const r = jQuery.Deferred();
+        let url = Settings.baseUrl +
+            "api/items/set_property/" +
+            encodeURIComponent(workspaceId) +
+            "/" +
+            encodeURIComponent(itemUrl);
+        const result = ApiConnection.put(url, { key: property, value: value });
+        result.done(x => {
+            r.resolve(true);
+        });
+        return r;
+    }
+    exports.setProperty = setProperty;
     function unsetProperty(workspaceId, itemUrl, property) {
         const r = jQuery.Deferred();
         let url = Settings.baseUrl +

@@ -1,4 +1,4 @@
-define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client.Items", "../Forms.SelectItemControl", "./SubElementField"], function (require, exports, Interfaces_Fields_1, DomHelper_1, ClientItem, SIC, SubElementField) {
+define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client.Items", "../Forms.SelectItemControl", "./SubElementField", "./ReferenceField"], function (require, exports, Interfaces_Fields_1, DomHelper_1, ClientItem, SIC, SubElementField, ReferenceField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
@@ -99,10 +99,9 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                 this._domElement.append(div);
             }
             else if (this._mode === ModeValue.Reference) {
-                const asDmObject = value;
-                const div = $("<div />");
-                (0, DomHelper_1.injectNameByUri)(div, asDmObject.workspace, asDmObject.uri);
-                this._domElement.append(div);
+                const field = this.createReferenceFieldInstance();
+                const element = field.createDomByValue(value);
+                this._domElement.append(element);
             }
             else if (this._mode === ModeValue.Value) {
                 const div = $("<div />");
@@ -182,6 +181,14 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                     this._domElement.append(element);
                 }
             }
+        }
+        createReferenceFieldInstance() {
+            const element = new ReferenceField.Control();
+            element.isReadOnly = this.isReadOnly;
+            element.configuration = this.configuration;
+            element.itemUrl = this.itemUrl;
+            element.propertyName = this.field.get('name').toString();
+            return element;
         }
         createSubElementFieldInstance() {
             const element = new SubElementField.Control();

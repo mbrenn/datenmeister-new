@@ -50,7 +50,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
             {
                 if (extent == null) return _workspaceData.Default;
 
-                var result = _workspaceData.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
+                var result = _workspaceData.Workspaces.FirstOrDefault(
+                    x => x.extent.Contains(extent));
                 return result ?? _workspaceData.Default;
             }
         }

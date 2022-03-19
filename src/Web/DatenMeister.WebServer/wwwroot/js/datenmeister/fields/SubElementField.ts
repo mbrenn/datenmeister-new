@@ -205,6 +205,7 @@ export class Control {
         $(".dm-subelements-refresh-btn", refreshBtn).on('click', () => {
             tthis.reloadValuesFromServer();
         });
+        
         this._list.append(refreshBtn);
 
         return this._list;
@@ -224,7 +225,6 @@ export class Control {
 export class Field extends Control implements IFormField {
 
     _element: DmObject;
-    form: IForm;
     field: DmObject;
     
     reloadValuesFromServer(): void {

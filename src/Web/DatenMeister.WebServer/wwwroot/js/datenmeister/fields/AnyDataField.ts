@@ -4,6 +4,7 @@ import {injectNameByUri} from "../DomHelper";
 import * as ClientItem from "../Client.Items"
 import * as SIC from "../Forms.SelectItemControl";
 import * as SubElementField from "./SubElementField"
+import * as ReferenceField from "./ReferenceField"
 
 
 enum ModeValue {
@@ -136,18 +137,16 @@ export class Field extends BaseField implements IFormField {
             const div = $("<div><em>Not set</em></null>");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Reference) {
-            const asDmObject = value as DmObject;
-            const div = $("<div />");
-            injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
-            this._domElement.append(div);
+            const field = this.createReferenceFieldInstance();
+            const element = field.createDomByValue(value);
+            this._domElement.append(element);
         } else if (this._mode === ModeValue.Value) {
             const div = $("<div />");
             div.text(value?.toString() ?? "");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Collection) {
             const field = this.createSubElementFieldInstance();
-            const element = field.createDomByValue(value);
-            
+            const element = field.createDomByValue(value);            
             this._domElement.append(element);
         }
     }
@@ -228,13 +227,23 @@ export class Field extends BaseField implements IFormField {
         }
     } 
     
+    private createReferenceFieldInstance() {
+        const element = new ReferenceField.Control();
+        element.isReadOnly = this.isReadOnly;
+        element.configuration = this.configuration;
+        element.itemUrl = this.itemUrl;
+        element.propertyName = this.field.get('name').toString();
+        
+        return element;
+    }
+
     private createSubElementFieldInstance() {
         const element = new SubElementField.Control();
         element.isReadOnly = this.isReadOnly;
         element.configuration = this.configuration;
         element.itemUrl = this.itemUrl;
         element.propertyName = this.field.get('name').toString();
-        
+
         return element;
     }
 }

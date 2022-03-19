@@ -151,6 +151,22 @@ export function getProperty(
     return r;
 }
 
+export function setProperty(
+    workspaceId: string, itemUrl: string, property: string, value: any) : JQuery.Deferred<any, never, never> {
+        const r = jQuery.Deferred<any, never, never>();
+        let url = Settings.baseUrl +
+            "api/items/set_property/" +
+            encodeURIComponent(workspaceId) +
+            "/" +
+            encodeURIComponent(itemUrl);
+        const result = ApiConnection.put<any>(url, {key: property, value: value });
+        result.done(x => {
+            r.resolve(true);
+        });
+
+        return r;
+}
+
 export function unsetProperty(
     workspaceId: string, itemUrl: string, property: string): JQuery.Deferred<any, never, never> {
     const r = jQuery.Deferred<any, never, never>();

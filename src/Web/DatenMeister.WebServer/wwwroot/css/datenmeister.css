@@ -170,3 +170,16 @@ a {
 .dm-debug-property-value {
     white-space: pre-wrap;
 }
+
+
+
+/* Mocha Configuration
+-------------------------------------------------- */
+#mocha
+{    
+    margin: 10px !important;
+}
+
+#mocha #mocha-stats {
+    position: relative;
+}

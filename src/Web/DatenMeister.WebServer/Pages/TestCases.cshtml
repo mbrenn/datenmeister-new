@@ -1,0 +1,39 @@
+﻿@page "/TestCases"
+@namespace DatenMeister.WebServer.Pages
+@model LoggingModel
+
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - TestCases";
+}
+<link href="js/node_modules/mocha/mocha.css" rel="stylesheet" />
+<h1>Test Cases</h1>
+
+<div>
+    <button onClick="startTests()">Start Tests</button>
+</div>
+
+<h2>Test Result</h2>
+
+<div id="mocha">
+    
+</div>
+
+<script src="js/node_modules/mocha/mocha.js"></script>
+<script src="js/node_modules/chai/chai.js"></script>
+<script>mocha.setup('bdd')</script>
+
+<script>
+$(() =>
+{
+    requirejs(['test/TestLibrary'], function(Test)
+    {
+        Test.includeTests();
+    });
+});
+
+function startTests()
+{
+  mocha.run();
+}
+</script>

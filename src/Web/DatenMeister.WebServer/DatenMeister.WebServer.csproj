@@ -14,8 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-
     <TypeScriptCompile Remove="node_modules\**" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\TestLibrary.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +60,15 @@
 
   <Target Name="CopyIconPngFiles" BeforeTargets="Compile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
+  </Target>
+
+
+  <Target Name="CopyNodeModules" BeforeTargets="Compile">
+    <ItemGroup>
+      <NodeModules Include="./node_modules/**/*.js" />
+      <NodeModules Include="./node_modules/**/*.css" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NodeModules)" DestinationFolder="wwwroot/js/node_modules/%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <ProjectExtensions><VisualStudio><UserProperties tsconfig_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

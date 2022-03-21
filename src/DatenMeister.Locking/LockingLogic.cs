@@ -79,7 +79,8 @@ namespace DatenMeister.Locking
             {
                 if (IsLocked(filePath))
                 {
-                    throw new IsLockedException($"File {filePath} is already locked", filePath);
+                    var fullPath = Path.GetFullPath(filePath);
+                    throw new IsLockedException($"File {fullPath} is already locked", filePath);
                 }
 
                 UpdateLockFile(_lockingState, filePath);

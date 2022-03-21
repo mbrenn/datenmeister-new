@@ -168,7 +168,6 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 throw new InvalidOperationException("No extent uri is given");
             }
 
-
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
             // TODO: Do real check including generalizations, but accept it for now
             if (configuration.isSet(_ExtentFileLoaderConfig.filePath))
@@ -203,6 +202,9 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
                     extentInformation.LoadingState = ExtentLoadingState.Failed;
                     extentInformation.FailLoadingMessage = $"The provider is locked: {filePath}";
+                    
+                    Logger.Error(extentInformation.FailLoadingMessage);
+                    
                     return;
                 }
 

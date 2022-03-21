@@ -15,6 +15,10 @@
 
   <ItemGroup>
     <TypeScriptCompile Remove="node_modules\**" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\Client.Extents.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\Client.Workspace.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Extents.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Workspace.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\TestLibrary.ts" />
   </ItemGroup>
 

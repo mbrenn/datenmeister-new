@@ -31,7 +31,7 @@ define(["require", "exports"], function (require, exports) {
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-            method: "POST"
+            method: "PUT"
         }).fail(x => serverError(x.responseText));
     }
     exports.put = put;

@@ -37,7 +37,7 @@ export function put<T>(uri: string, data: object): JQuery.jqXHR<T>
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-            method: "POST"
+            method: "PUT"
         }
     ).fail(x => serverError(x.responseText));
 }

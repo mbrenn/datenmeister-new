@@ -9,10 +9,6 @@
 <link href="js/node_modules/mocha/mocha.css" rel="stylesheet" />
 <h1>Test Cases</h1>
 
-<div>
-    <button onClick="startTests()">Start Tests</button>
-</div>
-
 <h2>Test Result</h2>
 
 <div id="mocha">
@@ -24,16 +20,15 @@
 <script>mocha.setup('bdd')</script>
 
 <script>
+
 $(() =>
 {
     requirejs(['test/TestLibrary'], function(Test)
     {
         Test.includeTests();
+        mocha.timeout(20000);
+        mocha.run();
     });
 });
 
-function startTests()
-{
-  mocha.run();
-}
 </script>

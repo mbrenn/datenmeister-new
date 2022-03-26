@@ -41,6 +41,18 @@ export function includeTests() {
                     done();
                 }).catch(e => done(e));
             });
+            
+            /*it('Create and delete Properties, if existing', function(done) {
+                ClientExtent.deleteExtent(
+                    {
+                        workspace: "Test",
+                        extentUri: "dm:///notexisting",
+                        skipIfNotExisting: true
+                    }).then(result => {
+                    chai.assert.isTrue(result.success, "Tried Deletion was not successful");
+                    chai.assert.isTrue(result.skipped, "Was not skipped");
+                }).catch(e => done(e));            
+            });*/
 
             after(function () {
                 return new Promise<void>(done => {

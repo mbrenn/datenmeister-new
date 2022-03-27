@@ -7,20 +7,19 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Mof"], functio
             let url = Settings.baseUrl +
                 "api/extent/create_xmi";
             ApiConnection.post(url, params).then((result) => {
-                resolve({ success: result.success });
+                resolve(result);
             });
         });
     }
     exports.createXmi = createXmi;
     function deleteExtent(params) {
-        const r = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let url = Settings.baseUrl +
                 "api/extent/delete";
             ApiConnection.deleteRequest(url, params).then((result) => {
-                resolve({ success: result.success });
+                resolve(result);
             });
         });
-        return r;
     }
     exports.deleteExtent = deleteExtent;
     function setProperties(workspace, extentUri, properties) {

@@ -3,7 +3,7 @@ define(["require", "exports", "./Settings", "./ApiConnection"], function (requir
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.deleteWorkspace = exports.createWorkspace = void 0;
     function createWorkspace(id, annotation, param) {
-        const r = new Promise(resolve => {
+        return new Promise(resolve => {
             let url = Settings.baseUrl +
                 "api/workspace/create";
             const data = {
@@ -14,14 +14,13 @@ define(["require", "exports", "./Settings", "./ApiConnection"], function (requir
                 data.skipIfExisting = param.skipIfExisting;
             }
             ApiConnection.put(url, data).then((result) => {
-                resolve({ success: result.success });
+                resolve(result);
             });
         });
-        return r;
     }
     exports.createWorkspace = createWorkspace;
     function deleteWorkspace(id, param) {
-        const r = new Promise(resolve => {
+        return new Promise(resolve => {
             let url = Settings.baseUrl +
                 "api/workspace/delete";
             const data = {
@@ -31,10 +30,9 @@ define(["require", "exports", "./Settings", "./ApiConnection"], function (requir
                 data.skipIfExisting = param.skipIfExisting;
             }
             ApiConnection.deleteRequest(url, data).then((result) => {
-                resolve({ success: result.success });
+                resolve(result);
             });
         });
-        return r;
     }
     exports.deleteWorkspace = deleteWorkspace;
 });

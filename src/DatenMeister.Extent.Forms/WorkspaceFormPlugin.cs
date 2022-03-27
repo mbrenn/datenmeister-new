@@ -40,7 +40,7 @@ namespace DatenMeister.Extent.Forms
                             OnCallSuccess = (element, parameter) =>
                             {
                                 // Sets the parameter that the right workspace is used
-                                var workspaceId = element.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
+                                var workspaceId = element?.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
                                 if (!string.IsNullOrEmpty(workspaceId))
                                 {
                                     parameter.Parameter["workspaceId"] = workspaceId;

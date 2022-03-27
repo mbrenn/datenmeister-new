@@ -1,7 +1,6 @@
 ﻿import * as Settings from "./Settings"
 import * as ApiConnection from "./ApiConnection"
 import * as Mof from "./Mof";
-import {DmObject} from "./Mof";
 
 export function createXmi(params: ICreateXmiParams) {
     return new Promise<ICreateXmiResult>((resolve, reject) => {
@@ -12,24 +11,25 @@ export function createXmi(params: ICreateXmiParams) {
         ApiConnection.post(
             url, params
         ).then((result: any) => {
-            resolve({success: result.success});
+            resolve(result);
         });
     });
 }
-
 
 export interface ICreateXmiParams {
     filePath: string;
     extentUri: string;
     workspace: string;
+    skipIfExisting?: boolean;
 }
 
 export interface ICreateXmiResult {
     success: boolean;
+    skipped: boolean;
 }
 
 export function deleteExtent(params: IDeleteExtentsParams) {
-    const r = new Promise<IDeleteExtentsResult>((resolve, reject) => {
+    return new Promise<IDeleteExtentsResult>((resolve, reject) => {
 
         let url = Settings.baseUrl +
             "api/extent/delete";
@@ -37,11 +37,9 @@ export function deleteExtent(params: IDeleteExtentsParams) {
         ApiConnection.deleteRequest(
             url, params
         ).then((result: any) => {
-            resolve({success: result.success});
+            resolve(result);
         });
     });
-
-    return r;
 }
 
 export interface IDeleteExtentsParams {
@@ -52,6 +50,7 @@ export interface IDeleteExtentsParams {
 
 export interface IDeleteExtentsResult {
     success: boolean;
+    skipped: boolean;
 }
 
 export function setProperties(workspace: string, extentUri: string, properties: Mof.DmObject): Promise<void> {
@@ -62,7 +61,7 @@ export function setProperties(workspace: string, extentUri: string, properties: 
 }
 
 export function getProperties(workspace: string, extentUri: string) {
-    return new Promise<DmObject>(resolve => {
+    return new Promise<Mof.DmObject>(resolve => {
 
         ApiConnection.get<object>(
             Settings.baseUrl + "api/extent/get_properties/"

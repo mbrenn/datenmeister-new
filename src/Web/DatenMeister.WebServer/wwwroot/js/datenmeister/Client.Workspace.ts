@@ -2,7 +2,7 @@
 import * as ApiConnection from "./ApiConnection"
 
 export function createWorkspace(id: string, annotation: string, param?: CreateWorkspaceParams) {
-    const r = new Promise<CreateWorkspaceResult>(resolve => {
+    return new Promise<CreateWorkspaceResult>(resolve => {
         let url = Settings.baseUrl +
             "api/workspace/create";
 
@@ -19,11 +19,9 @@ export function createWorkspace(id: string, annotation: string, param?: CreateWo
             url,
             data
         ).then((result: any) => {
-            resolve({success: result.success});
+            resolve(result);
         });
     });
-
-    return r;
 }
 
 export interface CreateWorkspaceParams {
@@ -32,10 +30,11 @@ export interface CreateWorkspaceParams {
 
 export interface CreateWorkspaceResult {
     success: boolean;
+    skipped: boolean;
 }
 
 export function deleteWorkspace(id: string, param?: DeleteWorkspaceParams) {
-    const r = new Promise<DeleteWorkspaceResult>(resolve => {
+    return new Promise<DeleteWorkspaceResult>(resolve => {
         let url = Settings.baseUrl +
             "api/workspace/delete";
         const data: any = {
@@ -50,11 +49,9 @@ export function deleteWorkspace(id: string, param?: DeleteWorkspaceParams) {
             url,
             data
         ).then((result: any) => {
-            resolve({success: result.success});
+            resolve(result);
         });
     });
-
-    return r;
 }
 
 
@@ -64,4 +61,5 @@ export interface DeleteWorkspaceParams {
 
 export interface DeleteWorkspaceResult {
     success: boolean;
+    skipped: boolean;
 }

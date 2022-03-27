@@ -7,7 +7,7 @@ define(["require", "exports", "../Client.Extents", "../Client.Workspace"], funct
             describe('Extents', function () {
                 before(function () {
                     return new Promise(done => {
-                        ClientWorkspace.createWorkspace("Test", "Annotation", { skipIfExisting: true }).done(() => done());
+                        ClientWorkspace.createWorkspace("Test", "Annotation", { skipIfExisting: true }).then(() => done());
                     });
                 });
                 it('Create and delete Xmi Extent', function (done) {
@@ -31,13 +31,24 @@ define(["require", "exports", "../Client.Extents", "../Client.Workspace"], funct
                         done();
                     }).catch(e => done(e));
                 });
+                /*it('Create and delete Properties, if existing', function(done) {
+                    ClientExtent.deleteExtent(
+                        {
+                            workspace: "Test",
+                            extentUri: "dm:///notexisting",
+                            skipIfNotExisting: true
+                        }).then(result => {
+                        chai.assert.isTrue(result.success, "Tried Deletion was not successful");
+                        chai.assert.isTrue(result.skipped, "Was not skipped");
+                    }).catch(e => done(e));
+                });*/
                 after(function () {
                     return new Promise(done => {
                         return ClientExtent.deleteExtent({
                             workspace: "Test",
                             extentUri: "dm:///unittest",
                             skipIfNotExisting: true
-                        }).done(done);
+                        }).then(() => done());
                     }).then(done => {
                         ClientWorkspace.deleteWorkspace("Test");
                     });

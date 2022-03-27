@@ -19,8 +19,6 @@ export class SelectItemControl {
     private visitedItems: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
-    private deferLoadedWorkspaces: JQueryDeferred<void> = $.Deferred<void>();
-    private deferLoadedExtent: JQueryDeferred<void> = $.Deferred<void>();
     private selectedWorkspace?: ItemWithNameAndId;
     private selectedExtent?: ItemWithNameAndId;
     private selectedItem?: ItemWithNameAndId;
@@ -89,7 +87,7 @@ export class SelectItemControl {
             "</td></tr>" +
             "<tr><td>Selected Item: </td><td class='dm-selectitemcontrol-selected'></td></tr>" +
             "<tr><td></td><td class='selected'>" +
-            (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-selectitemcontrol-cancelbtn' type='button'>Cancel</button>" : "")+
+            (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-selectitemcontrol-cancelbtn' type='button'>Cancel</button>" : "") +
             "<button class='btn btn-primary dm-selectitemcontrol-button' type='button'>Set</button></td></tr>" +
             "</table>");
 
@@ -129,7 +127,7 @@ export class SelectItemControl {
         const r = jQuery.Deferred<any, never, never>();
         tthis.htmlWorkspaceSelect.empty();
 
-        EL.getAllWorkspaces().done((items) => {
+        EL.getAllWorkspaces().then((items) => {
             tthis.visitedItems.length = 0;
             tthis.loadedWorkspaces = items;
             const none = $("<option value=''>--- None ---</option>");
@@ -147,7 +145,6 @@ export class SelectItemControl {
             }
 
             tthis.refreshBreadcrumb();
-            tthis.deferLoadedWorkspaces.resolve();
             tthis.evaluatePreSelectedWorkspace();
         });
 
@@ -194,7 +191,7 @@ export class SelectItemControl {
             const select = $("<option value=''>--- Select Workspace ---</option>");
             this.htmlExtentSelect.append(select);
         } else {
-            EL.getAllExtents(workspaceId).done(items => {
+            EL.getAllExtents(workspaceId).then(items => {
 
                 tthis.visitedItems.length = 0;
 
@@ -214,7 +211,7 @@ export class SelectItemControl {
                     tthis.htmlExtentSelect.append(option);
                 }
 
-                tthis.deferLoadedExtent.resolve();
+                tthis.evaluatePreSelectedExtent();
             });
         }
 
@@ -277,9 +274,9 @@ export class SelectItemControl {
 
             if (selectedItem === undefined || selectedItem === null) {
                 tthis.htmlSelectedElements.text(extentUri);
-                EL.getAllRootItems(workspaceId, extentUri).done(funcElements);
+                EL.getAllRootItems(workspaceId, extentUri).then(funcElements);
             } else {
-                EL.getAllChildItems(workspaceId, extentUri, selectedItem).done(funcElements);
+                EL.getAllChildItems(workspaceId, extentUri, selectedItem).then(funcElements);
             }
         }
 
@@ -337,32 +334,25 @@ export class SelectItemControl {
 
     // Evaluates the preselection of the workspaces
     private evaluatePreSelectedWorkspace() {
-        const tthis = this;
-        this.deferLoadedWorkspaces.done(() => {
 
-            if (tthis.preSelectWorkspaceById === undefined) {
-                return;
-            }
+        if (this.preSelectWorkspaceById === undefined) {
+            return;
+        }
 
-            tthis.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
-            tthis.preSelectWorkspaceById = undefined;
-            tthis.loadExtents();
-        });
+        this.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
+        this.preSelectWorkspaceById = undefined;
+        this.loadExtents();
     }
 
     // Evaluates the preselection of the workspaces
     private evaluatePreSelectedExtent() {
-        const tthis = this;
-        this.deferLoadedExtent.done(() => {
+        if (this.preSelectExtentByUri === undefined) {
+            return;
+        }
 
-            if (tthis.preSelectExtentByUri === undefined) {
-                return;
-            }
-
-            tthis.htmlExtentSelect.val(this.preSelectExtentByUri);
-            tthis.preSelectExtentByUri = undefined;
-            tthis.loadItems();
-        });
+        this.htmlExtentSelect.val(this.preSelectExtentByUri);
+        this.preSelectExtentByUri = undefined;
+        this.loadItems();
     }
 
     addBreadcrumbItem(text: string, onClick: () => void): void {

@@ -46,7 +46,7 @@ namespace DatenMeister.WebServer.Controller
 
             var factory = new MofFactory(extent);
 
-            IElement? metaClass =
+            var metaClass =
                 string.IsNullOrEmpty(createParams.metaClass)
                     ? null
                     : extent.GetUriResolver().Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
@@ -54,18 +54,13 @@ namespace DatenMeister.WebServer.Controller
             var item = factory.create(metaClass);
             var values = createParams.properties?.v;
             if (values != null)
-            {
                 foreach (var propertyParam in values)
                 {
                     var value = propertyParam.Value;
                     var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
 
-                    if (propertyValue != null)
-                    {
-                        item.set(propertyParam.Key, propertyValue);
-                    }
+                    if (propertyValue != null) item.set(propertyParam.Key, propertyValue);
                 }
-            }
 
             extent.elements().add(item);
 
@@ -89,7 +84,7 @@ namespace DatenMeister.WebServer.Controller
 
             var factory = new MofFactory(item);
 
-            IElement? metaClass =
+            var metaClass =
                 string.IsNullOrEmpty(createParams.metaClass)
                     ? null
                     : (item.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver"))
@@ -97,13 +92,9 @@ namespace DatenMeister.WebServer.Controller
 
             var child = factory.create(metaClass);
             if (createParams.asList)
-            {
                 item.AddCollectionItem(createParams.property, child);
-            }
             else
-            {
                 item.set(createParams.property, child);
-            }
 
             var values = createParams.properties?.v;
             if (values != null)
@@ -130,10 +121,7 @@ namespace DatenMeister.WebServer.Controller
 
             var success = false;
             var foundItem = _workspaceLogic.FindItem(workspaceId, itemId);
-            if (foundItem != null)
-            {
-                success = ObjectHelper.DeleteObject(foundItem);
-            }
+            if (foundItem != null) success = ObjectHelper.DeleteObject(foundItem);
 
             return new {success = success};
         }
@@ -199,10 +187,7 @@ namespace DatenMeister.WebServer.Controller
             extentUri = HttpUtility.UrlDecode(extentUri);
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, extentUri);
-            if (foundElement is not IExtent extent)
-            {
-                return NotFound();
-            }
+            if (foundElement is not IExtent extent) return NotFound();
 
             var converter = new MofJsonConverter {MaxRecursionDepth = 2};
 
@@ -293,9 +278,7 @@ namespace DatenMeister.WebServer.Controller
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in propertiesParams.Properties)
-            {
                 foundItem.set(propertyParam.Key, propertyParam.Value);
-            }
 
             return new {success = true};
         }
@@ -312,7 +295,7 @@ namespace DatenMeister.WebServer.Controller
             return Content($"{{\"v\": {converter.ConvertToJson(result)}}}", "application/json", Encoding.UTF8);
         }
 
-        [HttpPost("api/items/set/{workspaceId}/{itemUri}")]
+        [HttpPut("api/items/set/{workspaceId}/{itemUri}")]
         public ActionResult<object> Set(string workspaceId, string itemUri,
             [FromBody] MofObjectAsJson jsonObject)
         {
@@ -326,10 +309,7 @@ namespace DatenMeister.WebServer.Controller
                 var value = propertyParam.Value;
                 var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
 
-                if (propertyValue != null)
-                {
-                    foundItem.set(propertyParam.Key, propertyValue);
-                }
+                if (propertyValue != null) foundItem.set(propertyParam.Key, propertyValue);
             }
 
             return new {success = true};
@@ -345,9 +325,7 @@ namespace DatenMeister.WebServer.Controller
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             if (foundItem is IElementSetMetaClass asMetaClassSet)
-            {
                 asMetaClassSet.SetMetaClass(new MofObjectShadow(parameter.metaClass));
-            }
 
             return new {success = true};
         }

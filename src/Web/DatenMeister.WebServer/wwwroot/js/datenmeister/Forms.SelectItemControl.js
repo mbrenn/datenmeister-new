@@ -16,8 +16,6 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             this.visitedItems = new Array();
             this.loadedWorkspaces = new Array();
             this.loadedExtents = new Array();
-            this.deferLoadedWorkspaces = $.Deferred();
-            this.deferLoadedExtent = $.Deferred();
         }
         init(parent, settings) {
             this.settings = settings !== null && settings !== void 0 ? settings : new Settings();
@@ -98,7 +96,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             const tthis = this;
             const r = jQuery.Deferred();
             tthis.htmlWorkspaceSelect.empty();
-            EL.getAllWorkspaces().done((items) => {
+            EL.getAllWorkspaces().then((items) => {
                 tthis.visitedItems.length = 0;
                 tthis.loadedWorkspaces = items;
                 const none = $("<option value=''>--- None ---</option>");
@@ -113,7 +111,6 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                     tthis.htmlWorkspaceSelect.append(option);
                 }
                 tthis.refreshBreadcrumb();
-                tthis.deferLoadedWorkspaces.resolve();
                 tthis.evaluatePreSelectedWorkspace();
             });
             this.loadExtents().done(() => {
@@ -152,7 +149,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                 this.htmlExtentSelect.append(select);
             }
             else {
-                EL.getAllExtents(workspaceId).done(items => {
+                EL.getAllExtents(workspaceId).then(items => {
                     tthis.visitedItems.length = 0;
                     const none = $("<option value=''>--- None ---</option>");
                     tthis.htmlExtentSelect.append(none);
@@ -166,7 +163,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                         option.text(item.name);
                         tthis.htmlExtentSelect.append(option);
                     }
-                    tthis.deferLoadedExtent.resolve();
+                    tthis.evaluatePreSelectedExtent();
                 });
             }
             tthis.refreshBreadcrumb();
@@ -216,10 +213,10 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
                 };
                 if (selectedItem === undefined || selectedItem === null) {
                     tthis.htmlSelectedElements.text(extentUri);
-                    EL.getAllRootItems(workspaceId, extentUri).done(funcElements);
+                    EL.getAllRootItems(workspaceId, extentUri).then(funcElements);
                 }
                 else {
-                    EL.getAllChildItems(workspaceId, extentUri, selectedItem).done(funcElements);
+                    EL.getAllChildItems(workspaceId, extentUri, selectedItem).then(funcElements);
                 }
             }
             tthis.refreshBreadcrumb();
@@ -259,27 +256,21 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
         }
         // Evaluates the preselection of the workspaces
         evaluatePreSelectedWorkspace() {
-            const tthis = this;
-            this.deferLoadedWorkspaces.done(() => {
-                if (tthis.preSelectWorkspaceById === undefined) {
-                    return;
-                }
-                tthis.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
-                tthis.preSelectWorkspaceById = undefined;
-                tthis.loadExtents();
-            });
+            if (this.preSelectWorkspaceById === undefined) {
+                return;
+            }
+            this.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
+            this.preSelectWorkspaceById = undefined;
+            this.loadExtents();
         }
         // Evaluates the preselection of the workspaces
         evaluatePreSelectedExtent() {
-            const tthis = this;
-            this.deferLoadedExtent.done(() => {
-                if (tthis.preSelectExtentByUri === undefined) {
-                    return;
-                }
-                tthis.htmlExtentSelect.val(this.preSelectExtentByUri);
-                tthis.preSelectExtentByUri = undefined;
-                tthis.loadItems();
-            });
+            if (this.preSelectExtentByUri === undefined) {
+                return;
+            }
+            this.htmlExtentSelect.val(this.preSelectExtentByUri);
+            this.preSelectExtentByUri = undefined;
+            this.loadItems();
         }
         addBreadcrumbItem(text, onClick) {
             const tthis = this;

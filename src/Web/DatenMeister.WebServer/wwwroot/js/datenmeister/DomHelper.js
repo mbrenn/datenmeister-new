@@ -3,13 +3,13 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.convertToDom = exports.debugElementToDom = exports.injectNameByUri = exports.injectName = void 0;
     function injectName(domElement, elementPosition) {
-        ElementClient.loadNameOf(elementPosition).done(x => {
+        ElementClient.loadNameOf(elementPosition).then(x => {
             domElement.text(x.name);
         });
     }
     exports.injectName = injectName;
     function injectNameByUri(domElement, workspaceId, elementUri) {
-        ElementClient.loadNameByUri(workspaceId, elementUri).done(x => {
+        ElementClient.loadNameByUri(workspaceId, elementUri).then(x => {
             if (x.extentUri !== undefined && x.workspace !== undefined
                 && x.extentUri !== "" && x.workspace !== ""
                 && x.itemId !== "" && x.itemId !== undefined) {
@@ -80,7 +80,7 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
             return list;
         }
         else {
-            var span = $("<span class='dm-debug-property-value'></span>");
+            const span = $("<span class='dm-debug-property-value'></span>");
             span.text(mofElement);
             return span;
         }

@@ -4,8 +4,7 @@ import {BaseField, IFormField} from "../Interfaces.Fields";
 import {SelectItemControl} from "../Forms.SelectItemControl";
 import {setMetaclass} from "../Client.Items";
 
-export class Field extends BaseField implements IFormField
-{
+export class Field extends BaseField implements IFormField {
     _textBox: JQuery<HTMLInputElement>;
 
     createDom(dmElement: Mof.DmObject) {
@@ -47,7 +46,7 @@ export class Field extends BaseField implements IFormField
 
                 selectItemCtrl.onItemSelected = (selectedItem) => {
                     setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
-                        .done(() => divSelectItem.remove()).done(() => {
+                        .then(() => divSelectItem.remove()).then(() => {
                         if (tthis.configuration.refreshForm !== undefined) {
                             tthis.configuration.refreshForm();
                         }

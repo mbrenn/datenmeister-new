@@ -41,7 +41,7 @@ export class Field extends BaseField implements IFormField {
         this._aReference = $(".dm-anydatafield-headline-reference", headLine);
 
         this._domElement = $("<div></div>");
-        
+
         this._aValue.on('click', () => {
             tthis.highlightValue();
         });
@@ -106,14 +106,14 @@ export class Field extends BaseField implements IFormField {
         this._mode = ModeValue.Reference;
         this.updateDomContent();
     }
-    
+
     private reloadAndUpdateDomContent() {
         const tthis = this;
         ClientItem.getProperty(
             this.form.workspace,
             this.itemUrl,
             this.field.get('name').toString()
-        ).done((item) => {
+        ).then((item) => {
             tthis._fieldValue = item;
             tthis.updateDomContent();
         });
@@ -133,7 +133,7 @@ export class Field extends BaseField implements IFormField {
     private updateDomContentReadOnly() {
         const value = this._fieldValue;
         if (value === null || value === undefined
-        || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
+            || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
             const div = $("<div><em>Not set</em></null>");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Reference) {
@@ -146,7 +146,7 @@ export class Field extends BaseField implements IFormField {
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Collection) {
             const field = this.createSubElementFieldInstance();
-            const element = field.createDomByValue(value);            
+            const element = field.createDomByValue(value);
             this._domElement.append(element);
         }
     }
@@ -176,7 +176,7 @@ export class Field extends BaseField implements IFormField {
                 const containerChangeCell = $("<div></div>");
 
                 unsetCell.on('click', () => {
-                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName).done(
+                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName).then(
                         () => {
                             tthis.updateDomContent();
                         }
@@ -198,7 +198,7 @@ export class Field extends BaseField implements IFormField {
                                 referenceUri: selectedItem.uri,
                                 referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
                             }
-                        ).done(() => {
+                        ).then(() => {
                             this.updateDomContent();
                         });
                     };
@@ -225,24 +225,26 @@ export class Field extends BaseField implements IFormField {
                 this._domElement.append(element);
             }
         }
-    } 
-    
+    }
+
     private createReferenceFieldInstance() {
         const element = new ReferenceField.Control();
+        this.cloneField(element);
+
+        return element;
+    }
+
+    private cloneField(element: ReferenceField.Control | SubElementField.Control) {
         element.isReadOnly = this.isReadOnly;
         element.configuration = this.configuration;
         element.itemUrl = this.itemUrl;
         element.propertyName = this.field.get('name').toString();
-        
-        return element;
+        element.form = this.form;
     }
 
     private createSubElementFieldInstance() {
         const element = new SubElementField.Control();
-        element.isReadOnly = this.isReadOnly;
-        element.configuration = this.configuration;
-        element.itemUrl = this.itemUrl;
-        element.propertyName = this.field.get('name').toString();
+        this.cloneField(element);
 
         return element;
     }

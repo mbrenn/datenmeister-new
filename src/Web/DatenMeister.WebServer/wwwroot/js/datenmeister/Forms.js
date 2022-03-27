@@ -37,7 +37,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
             // Load the form
             const defer2 = getDefaultFormForExtent(workspace, extentUri, "");
             // Wait for both
-            $.when(defer1, defer2).then((elements, form) => {
+            Promise.all([defer1, defer2]).then(([elements, form]) => {
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
@@ -160,7 +160,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                     tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                 },
                 onSubmit: (element) => {
-                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(() => {
+                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).then(() => {
                         tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                     });
                 }
@@ -178,12 +178,12 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
             // Load the form
             const defer2 = getDefaultFormForItem(workspace, itemUrl, "");
             // Wait for both
-            $.when(defer1, defer2).then(function (element, form) {
-                tthis.element = element;
+            Promise.all([defer1, defer2]).then(([element1, form]) => {
+                tthis.element = element1;
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.itemId = itemUrl;
-                (0, DomHelper_1.debugElementToDom)(element, "#debug_mofelement");
+                (0, DomHelper_1.debugElementToDom)(element1, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
                 tthis.createFormByObject(parent, configuration);
             });
@@ -193,12 +193,13 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
     }
     exports.DetailFormCreator = DetailFormCreator;
     function getForm(formUri) {
-        const r = jQuery.Deferred();
-        ApiConnection.get(Settings.baseUrl +
-            "api/forms/get/" +
-            encodeURIComponent(formUri)).done(x => {
-            const dmObject = Mof.convertJsonObjectToDmObject(x);
-            r.resolve(dmObject);
+        const r = new Promise(resolve => {
+            ApiConnection.get(Settings.baseUrl +
+                "api/forms/get/" +
+                encodeURIComponent(formUri)).then(x => {
+                const dmObject = Mof.convertJsonObjectToDmObject(x);
+                resolve(dmObject);
+            });
         });
         return r;
     }
@@ -207,16 +208,17 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
         Gets the default form for a certain item by the webserver
      */
     function getDefaultFormForItem(workspace, item, viewMode) {
-        const r = jQuery.Deferred();
-        ApiConnection.get(Settings.baseUrl +
-            "api/forms/default_for_item/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(item) +
-            "/" +
-            encodeURIComponent(viewMode)).done(x => {
-            const dmObject = Mof.convertJsonObjectToDmObject(x);
-            r.resolve(dmObject);
+        const r = new Promise(resolve => {
+            ApiConnection.get(Settings.baseUrl +
+                "api/forms/default_for_item/" +
+                encodeURIComponent(workspace) +
+                "/" +
+                encodeURIComponent(item) +
+                "/" +
+                encodeURIComponent(viewMode)).then(x => {
+                const dmObject = Mof.convertJsonObjectToDmObject(x);
+                resolve(dmObject);
+            });
         });
         return r;
     }
@@ -225,16 +227,17 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
         Gets the default form for an extent uri by the webserver
      */
     function getDefaultFormForExtent(workspace, extentUri, viewMode) {
-        const r = jQuery.Deferred();
-        ApiConnection.get(Settings.baseUrl +
-            "api/forms/default_for_extent/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(extentUri) +
-            "/" +
-            encodeURIComponent(viewMode)).done(x => {
-            const dmObject = Mof.convertJsonObjectToDmObject(x);
-            r.resolve(dmObject);
+        const r = new Promise(resolve => {
+            ApiConnection.get(Settings.baseUrl +
+                "api/forms/default_for_extent/" +
+                encodeURIComponent(workspace) +
+                "/" +
+                encodeURIComponent(extentUri) +
+                "/" +
+                encodeURIComponent(viewMode)).then(x => {
+                const dmObject = Mof.convertJsonObjectToDmObject(x);
+                resolve(dmObject);
+            });
         });
         return r;
     }
@@ -243,12 +246,13 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
         Gets the default form for an extent uri by the webserver
      */
     function getDefaultFormForMetaClass(metaClassUri) {
-        const r = jQuery.Deferred();
-        ApiConnection.get(Settings.baseUrl +
-            "api/forms/default_for_metaclass/" +
-            encodeURIComponent(metaClassUri)).done(x => {
-            const dmObject = Mof.convertJsonObjectToDmObject(x);
-            r.resolve(dmObject);
+        const r = new Promise(resolve => {
+            ApiConnection.get(Settings.baseUrl +
+                "api/forms/default_for_metaclass/" +
+                encodeURIComponent(metaClassUri)).then(x => {
+                const dmObject = Mof.convertJsonObjectToDmObject(x);
+                resolve(dmObject);
+            });
         });
         return r;
     }

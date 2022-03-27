@@ -7,28 +7,28 @@ define(["require", "exports", "./Client.Items"], function (require, exports, Cli
     // while for pure references, the server will be queries.
     // This is currently the most simple implementation
     function resolve(value) {
-        const r = jQuery.Deferred();
-        if (Array.isArray(value)) {
-            r.resolve(value);
-        }
-        else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
-            const asDmObject = value;
-            if (asDmObject.isReference) {
-                const workspace = asDmObject.workspace;
-                if (workspace === undefined) {
-                    alert('Workspace is undefined');
-                    asDmObject.workspace = "_";
+        return new Promise(resolve => {
+            if (Array.isArray(value)) {
+                resolve(value);
+            }
+            else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+                const asDmObject = value;
+                if (asDmObject.isReference) {
+                    const workspace = asDmObject.workspace;
+                    if (workspace === undefined) {
+                        alert('Workspace is undefined');
+                        asDmObject.workspace = "_";
+                    }
+                    ClientItem.loadObjectByUri(asDmObject.workspace, asDmObject.uri).then(loadedValue => resolve(loadedValue));
                 }
-                ClientItem.loadObjectByUri(asDmObject.workspace, asDmObject.uri).done(loadedValue => r.resolve(loadedValue));
+                else {
+                    resolve(value);
+                }
             }
             else {
-                r.resolve(value);
+                resolve(value);
             }
-        }
-        else {
-            r.resolve(value);
-        }
-        return r;
+        });
     }
     exports.resolve = resolve;
 });

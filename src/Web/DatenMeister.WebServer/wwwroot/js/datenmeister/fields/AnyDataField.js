@@ -75,7 +75,7 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
         }
         reloadAndUpdateDomContent() {
             const tthis = this;
-            ClientItem.getProperty(this.form.workspace, this.itemUrl, this.field.get('name').toString()).done((item) => {
+            ClientItem.getProperty(this.form.workspace, this.itemUrl, this.field.get('name').toString()).then((item) => {
                 tthis._fieldValue = item;
                 tthis.updateDomContent();
             });
@@ -139,7 +139,7 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                     const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
                     const containerChangeCell = $("<div></div>");
                     unsetCell.on('click', () => {
-                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName).done(() => {
+                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, fieldName).then(() => {
                             tthis.updateDomContent();
                         });
                     });
@@ -154,7 +154,7 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
                                 property: tthis.field.get('name'),
                                 referenceUri: selectedItem.uri,
                                 referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
-                            }).done(() => {
+                            }).then(() => {
                                 this.updateDomContent();
                             });
                         };
@@ -184,18 +184,19 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
         }
         createReferenceFieldInstance() {
             const element = new ReferenceField.Control();
+            this.cloneField(element);
+            return element;
+        }
+        cloneField(element) {
             element.isReadOnly = this.isReadOnly;
             element.configuration = this.configuration;
             element.itemUrl = this.itemUrl;
             element.propertyName = this.field.get('name').toString();
-            return element;
+            element.form = this.form;
         }
         createSubElementFieldInstance() {
             const element = new SubElementField.Control();
-            element.isReadOnly = this.isReadOnly;
-            element.configuration = this.configuration;
-            element.itemUrl = this.itemUrl;
-            element.propertyName = this.field.get('name').toString();
+            this.cloneField(element);
             return element;
         }
     }

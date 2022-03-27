@@ -5,14 +5,14 @@ import {DmObject} from "./Mof";
 
 export function injectName(domElement: JQuery<HTMLElement>, elementPosition: ApiModels.In.IElementPosition) {
 
-    ElementClient.loadNameOf(elementPosition).done(x => {
+    ElementClient.loadNameOf(elementPosition).then(x => {
         domElement.text(x.name);
     });
 }
 
 export function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
 
-    ElementClient.loadNameByUri(workspaceId, elementUri).done(x => {
+    ElementClient.loadNameByUri(workspaceId, elementUri).then(x => {
         if (
             x.extentUri !== undefined && x.workspace !== undefined
             && x.extentUri !== "" && x.workspace !== ""
@@ -93,7 +93,7 @@ export function convertToDom(mofElement: any): JQuery {
 
         return list;
     } else {
-        var span = $("<span class='dm-debug-property-value'></span>");
+        const span = $("<span class='dm-debug-property-value'></span>");
         span.text(mofElement);
         return span;
     }

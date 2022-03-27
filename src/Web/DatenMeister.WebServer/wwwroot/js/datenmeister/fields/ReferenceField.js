@@ -28,7 +28,7 @@ define(["require", "exports", "../DomHelper", "../Client.Items", "../Forms.Selec
                 const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
                 const containerChangeCell = $("<div></div>");
                 unsetCell.on('click', () => {
-                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).done(() => {
+                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(() => {
                         tthis.reloadValuesFromServer();
                     });
                 });
@@ -43,7 +43,7 @@ define(["require", "exports", "../DomHelper", "../Client.Items", "../Forms.Selec
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
-                        }).done(() => {
+                        }).then(() => {
                             this.reloadValuesFromServer();
                         });
                     };

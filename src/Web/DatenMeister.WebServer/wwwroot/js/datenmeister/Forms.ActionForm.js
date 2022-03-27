@@ -16,11 +16,12 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
         };
         let deferLoadObjectForAction = FormActions_1.DetailFormActions.loadObjectForAction(actionName);
         if (deferLoadObjectForAction === undefined) {
-            deferLoadObjectForAction = $.Deferred();
-            deferLoadObjectForAction.resolve(new Mof_1.DmObject());
+            deferLoadObjectForAction = new Promise(resolve => {
+                resolve(new Mof_1.DmObject());
+            });
         }
         let deferForm;
-        $.when(deferLoadObjectForAction).then((element) => {
+        deferLoadObjectForAction.then((element) => {
             var _a;
             if (metaClass === undefined && ((_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri) !== undefined) {
                 // If the returned element has a metaclass, then set the metaClass being used to 
@@ -38,13 +39,14 @@ define(["require", "exports", "./Mof", "./DomHelper", "./Forms", "./FormActions"
             }
             else if (metaClass === undefined) {
                 // If there is no metaclass set, create a total empty form object...
-                deferForm = $.Deferred();
-                deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
+                deferForm = new Promise(resolve => {
+                    deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
+                });
             }
             else {
                 deferForm = Forms.getDefaultFormForMetaClass(metaClass);
             }
-            $.when(deferForm).then((form) => {
+            deferForm.then((form) => {
                 creator.element = element;
                 creator.formElement = form;
                 creator.createFormByObject(parent, configuration);

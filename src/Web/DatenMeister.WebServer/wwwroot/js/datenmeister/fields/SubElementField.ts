@@ -12,7 +12,7 @@ import * as Settings from "../Settings";
 export class Control {
     configuration: IFormConfiguration;
     isReadOnly: boolean;
-    
+
     // Is connected to the item url of the element being connected to that element
     itemUrl: string;
     form: IFormNavigation;
@@ -24,8 +24,8 @@ export class Control {
         this._list = $("<div></div>");
     }
 
-    createDomByValue(value: any): JQuery<HTMLElement> {       
-        
+    createDomByValue(value: any): JQuery<HTMLElement> {
+
         const tthis = this;
         this._list.empty();
 
@@ -33,7 +33,7 @@ export class Control {
             if (!Array.isArray(value)) {
                 return $("<div><em>Element is not an Array</em></div>")
             }
-            
+
             let ul = $("<ul class='list-unstyled'></ul>");
 
             let foundElements = 0;
@@ -44,7 +44,7 @@ export class Control {
 
                     // Resolve the elements
                     ((a: DmObject, b: JQuery) => {
-                        resolve(a).done(resolvedRaw => {
+                        resolve(a).then(resolvedRaw => {
                             const resolved = resolvedRaw as DmObject;
                             const link = $("a", b);
                             const name = resolved.get('name');
@@ -76,7 +76,7 @@ export class Control {
             if (!Array.isArray(value)) {
                 value = [];
             }
-            
+
             const table = $("<table><tbody></tbody></table>");
             this._list.append(table);
 
@@ -144,7 +144,7 @@ export class Control {
                                     referenceUri: innerValue.uri,
                                     referenceWorkspaceId: innerValue.workspace
                                 })
-                                .done(() => {
+                                .then(() => {
                                     tthis.reloadValuesFromServer()
                                 });
                         });
@@ -172,7 +172,7 @@ export class Control {
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
                         }
-                    ).done(() => {
+                    ).then(() => {
                         this.reloadValuesFromServer();
                     });
                 };
@@ -183,7 +183,7 @@ export class Control {
             });
 
             this._list.append(attachItem);
-            
+
             const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn></div>");
             newItem.on('click', () => {
                 document.location.href =
@@ -205,7 +205,7 @@ export class Control {
         $(".dm-subelements-refresh-btn", refreshBtn).on('click', () => {
             tthis.reloadValuesFromServer();
         });
-        
+
         this._list.append(refreshBtn);
 
         return this._list;
@@ -217,7 +217,7 @@ export class Control {
 
     // Returns the default definition of a name.
     // This method can be overridden by the right field definitions
-    getFieldDefinitions() : Array<DmObject> | undefined {
+    getFieldDefinitions(): Array<DmObject> | undefined {
         return undefined;
     }
 }
@@ -226,23 +226,23 @@ export class Field extends Control implements IFormField {
 
     _element: DmObject;
     field: DmObject;
-    
+
     reloadValuesFromServer(): void {
         const tthis = this;
         const url = this._element.uri;
-        
-        ClientItems.getProperty(this.form.workspace, url, this.propertyName).done(
+
+        ClientItems.getProperty(this.form.workspace, url, this.propertyName).then(
             x => tthis.createDomByValue(x)
         );
     }
-    
-    getFieldDefinitions() : Array<DmObject>  {
+
+    getFieldDefinitions(): Array<DmObject> {
         return this.field.get('form')?.get('field') as Array<DmObject>;
     }
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
         this.propertyName = this.field.get('name');
-        
+
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");
         } else {
@@ -254,7 +254,7 @@ export class Field extends Control implements IFormField {
             return this._list
         }
     }
-    
+
     evaluateDom(dmElement: DmObject) {
 
     }

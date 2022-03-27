@@ -3,85 +3,80 @@ import {DmObject} from "./Mof"
 import * as Settings from "./Settings"
 import * as ApiConnection from "./ApiConnection"
 
-export function loadObject(workspace: string, extent: string, id: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+export function loadObject(workspace: string, extent: string, id: string): Promise<Mof.DmObject> {
+    return new Promise<Mof.DmObject>((resolve, reject) => {
 
-    ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/items/get/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(extent) +
-        "/" +
-        encodeURIComponent(id)
-    ).done(x => {
-        const dmObject =
-            Mof.convertJsonObjectToDmObject(x);
-        r.resolve(dmObject);
+        ApiConnection.get<object>(
+            Settings.baseUrl +
+            "api/items/get/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(extent) +
+            "/" +
+            encodeURIComponent(id)
+        ).then(x => {
+            const dmObject =
+                Mof.convertJsonObjectToDmObject(x);
+            resolve(dmObject);
+        });
     });
-
-    return r;
 }
 
-export function loadObjectByUri(workspace: string, url: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+export function loadObjectByUri(workspace: string, url: string): Promise<Mof.DmObject> {
+    return new Promise<Mof.DmObject>((resolve, reject) => {
 
-    ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/items/get/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(url)
-    ).done(x => {
-        const dmObject =
-            Mof.convertJsonObjectToDmObject(x);
-        r.resolve(dmObject);
+        ApiConnection.get<object>(
+            Settings.baseUrl +
+            "api/items/get/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(url)
+        ).then(x => {
+            const dmObject =
+                Mof.convertJsonObjectToDmObject(x);
+            resolve(dmObject);
+        });
     });
-
-    return r;
 }
 
-export function loadRootElementsFromExtent(workspace: string, extentUri: string): JQuery.Deferred<Array<Mof.DmObject>, never, never> {
-    const r = jQuery.Deferred<Array<Mof.DmObject>, never, never>();
-
-    ApiConnection.get<string>(
-        Settings.baseUrl +
-        "api/items/get_root_elements/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(extentUri)
-    ).done(text => {
-        const x = JSON.parse(text);
-        let result = new Array<Mof.DmObject>();
-        for (let n in x) {
-            if (Object.prototype.hasOwnProperty.call(x, n)) {
-                const v = x[n];
-                result.push(Mof.convertJsonObjectToDmObject(v));
+export function loadRootElementsFromExtent(workspace: string, extentUri: string): Promise<Array<Mof.DmObject>> {
+    return new Promise<Array<Mof.DmObject>>((resolve, reject) => {
+        ApiConnection.get<string>(
+            Settings.baseUrl +
+            "api/items/get_root_elements/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(extentUri)
+        ).then(text => {
+            const x = JSON.parse(text);
+            let result = new Array<Mof.DmObject>();
+            for (let n in x) {
+                if (Object.prototype.hasOwnProperty.call(x, n)) {
+                    const v = x[n];
+                    result.push(Mof.convertJsonObjectToDmObject(v));
+                }
             }
-        }
 
-        r.resolve(result);
+            resolve(result);
+        });
     });
-
-    return r;
 }
 
-export function storeObjectByUri(workspace: string, url: string, element: DmObject): JQuery.Deferred<void, never, never> {
-    const r = jQuery.Deferred<void, never, never>();
-    const result = Mof.createJsonFromObject(element);
+export function storeObjectByUri(workspace: string, url: string, element: DmObject): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        const result = Mof.createJsonFromObject(element);
 
-    ApiConnection.put<string>(
-        Settings.baseUrl +
-        "api/items/set/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(url),
-        result
-    ).done(x => {
-        r.resolve();
+        ApiConnection.put<string>(
+            Settings.baseUrl +
+            "api/items/set/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(url),
+            result
+        ).then(x => {
+            resolve();
+        });
     });
-
-    return r;
 }
 
 export function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass: string) {
@@ -132,55 +127,54 @@ export function removeReferenceFromCollection(
 }
 
 export function getProperty(
-    workspaceId: string, itemUrl: string, property: string): JQuery.Deferred<any, never, never> {
-    const r = jQuery.Deferred<any, never, never>();
-    let url = Settings.baseUrl +
-        "api/items/get_property/" +
-        encodeURIComponent(workspaceId) +
-        "/" +
-        encodeURIComponent(itemUrl) +
-        "?property=" +
-        encodeURIComponent(property);
-    const result = ApiConnection.get<IGetPropertyResult>(url);
-    result.done(x => {
-        const dmObject =
-            Mof.convertJsonObjectToObjects(x.v);
-        r.resolve(dmObject);
+    workspaceId: string, itemUrl: string, property: string): Promise<any> {
+    const r = new Promise<any>((resolve, reject) => {
+        let url = Settings.baseUrl +
+            "api/items/get_property/" +
+            encodeURIComponent(workspaceId) +
+            "/" +
+            encodeURIComponent(itemUrl) +
+            "?property=" +
+            encodeURIComponent(property);
+        const result = ApiConnection.get<IGetPropertyResult>(url);
+        result.then(x => {
+            const dmObject =
+                Mof.convertJsonObjectToObjects(x.v);
+            resolve(dmObject);
+        });
     });
 
     return r;
 }
 
 export function setProperty(
-    workspaceId: string, itemUrl: string, property: string, value: any) : JQuery.Deferred<any, never, never> {
-        const r = jQuery.Deferred<any, never, never>();
+    workspaceId: string, itemUrl: string, property: string, value: any): Promise<any> {
+    return new Promise<boolean>(resolve => {
         let url = Settings.baseUrl +
             "api/items/set_property/" +
             encodeURIComponent(workspaceId) +
             "/" +
             encodeURIComponent(itemUrl);
-        const result = ApiConnection.put<any>(url, {key: property, value: value });
-        result.done(x => {
-            r.resolve(true);
+        const result = ApiConnection.put<any>(url, {key: property, value: value});
+        result.then(x => {
+            resolve(true);
         });
-
-        return r;
+    });
 }
 
 export function unsetProperty(
-    workspaceId: string, itemUrl: string, property: string): JQuery.Deferred<any, never, never> {
-    const r = jQuery.Deferred<any, never, never>();
-    let url = Settings.baseUrl +
-        "api/items/unset_property/" +
-        encodeURIComponent(workspaceId) +
-        "/" +
-        encodeURIComponent(itemUrl);
-    const result = ApiConnection.put<any>(url, {property: property});
-    result.done(x => {
-        r.resolve(true);
+    workspaceId: string, itemUrl: string, property: string): Promise<any> {
+    return new Promise<boolean>(resolve => {
+        let url = Settings.baseUrl +
+            "api/items/unset_property/" +
+            encodeURIComponent(workspaceId) +
+            "/" +
+            encodeURIComponent(itemUrl);
+        const result = ApiConnection.put<any>(url, {property: property});
+        result.then(x => {
+            resolve(true);
+        });
     });
-
-    return r;
 }
 
 export interface IGetPropertyResult {

@@ -1,27 +1,26 @@
-﻿
-import * as Settings from "./Settings"
+﻿import * as Settings from "./Settings"
 import * as ApiConnection from "./ApiConnection"
 
 export function createWorkspace(id: string, annotation: string, param?: CreateWorkspaceParams) {
-    const r = jQuery.Deferred<any, never, never>();
+    const r = new Promise<CreateWorkspaceResult>(resolve => {
+        let url = Settings.baseUrl +
+            "api/workspace/create";
 
-    let url = Settings.baseUrl +
-        "api/workspace/create";
+        const data: any = {
+            id: id,
+            annotation: annotation
+        };
 
-    const data: any = {
-        id: id,
-        annotation: annotation
-    };
+        if (param?.skipIfExisting !== undefined) {
+            data.skipIfExisting = param.skipIfExisting;
+        }
 
-    if (param?.skipIfExisting !== undefined) {
-        data.skipIfExisting = param.skipIfExisting;
-    }
-
-    ApiConnection.put(
-        url,
-        data
-    ).done((result: any) => {
-        r.resolve({success: result.success});
+        ApiConnection.put(
+            url,
+            data
+        ).then((result: any) => {
+            resolve({success: result.success});
+        });
     });
 
     return r;
@@ -36,24 +35,23 @@ export interface CreateWorkspaceResult {
 }
 
 export function deleteWorkspace(id: string, param?: DeleteWorkspaceParams) {
-    const r = jQuery.Deferred<DeleteWorkspaceResult, never, never>();
+    const r = new Promise<DeleteWorkspaceResult>(resolve => {
+        let url = Settings.baseUrl +
+            "api/workspace/delete";
+        const data: any = {
+            id: id
+        };
 
-    let url = Settings.baseUrl +
-        "api/workspace/delete";
+        if (param?.skipIfExisting !== undefined) {
+            data.skipIfExisting = param.skipIfExisting;
+        }
 
-    const data: any = {
-        id: id
-    };
-
-    if (param?.skipIfExisting !== undefined) {
-        data.skipIfExisting = param.skipIfExisting;
-    }
-
-    ApiConnection.deleteRequest(
-        url,
-        data
-    ).done((result: any) => {
-        r.resolve({success: result.success});
+        ApiConnection.deleteRequest(
+            url,
+            data
+        ).then((result: any) => {
+            resolve({success: result.success});
+        });
     });
 
     return r;

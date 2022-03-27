@@ -34,18 +34,17 @@ export class Control {
         if (this.configuration.isNewItem) {
             const div = $("<em>Element needs to be saved first</em>");
             this._list.append(div);
-        } else if ( this.isReadOnly) {
+        } else if (this.isReadOnly) {
             const div = $("<div />");
             injectNameByUri(div, this.form.workspace, asDmObject.uri);
             this._list.append(div);
-        }
-        else {
+        } else {
             const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
             const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
             const containerChangeCell = $("<div></div>");
 
             unsetCell.on('click', () => {
-                ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).done(
+                ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
                     () => {
                         tthis.reloadValuesFromServer();
                     }
@@ -67,7 +66,7 @@ export class Control {
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
                         }
-                    ).done(() => {
+                    ).then(() => {
                         this.reloadValuesFromServer();
                     });
                 };
@@ -80,7 +79,7 @@ export class Control {
             this._list.append(changeCell);
             this._list.append(unsetCell);
         }
-        
+
         return this._list;
     }
 
@@ -103,11 +102,11 @@ export class Field extends Control implements IFormField {
                 value = value[0];
             } else {
                 this._list.append($("<em>The value is an array and not supported by the referencefield</em>"));
-                
+
                 return this._list;
             }
-        } 
-        
+        }
+
         if (this.isReadOnly === true) {
             if (value === undefined) {
                 this._list.html("<em>undefined</em>");

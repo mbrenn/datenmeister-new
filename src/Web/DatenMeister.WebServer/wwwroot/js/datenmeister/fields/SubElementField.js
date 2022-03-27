@@ -21,7 +21,7 @@ define(["require", "exports", "../Mof", "../Forms.FieldFactory", "../Forms.Selec
                         const item = $("<li><a></a></li>");
                         // Resolve the elements
                         ((a, b) => {
-                            (0, MofResolver_1.resolve)(a).done(resolvedRaw => {
+                            (0, MofResolver_1.resolve)(a).then(resolvedRaw => {
                                 const resolved = resolvedRaw;
                                 const link = $("a", b);
                                 const name = resolved.get('name');
@@ -102,7 +102,7 @@ define(["require", "exports", "../Mof", "../Forms.FieldFactory", "../Forms.Selec
                                 referenceUri: innerValue.uri,
                                 referenceWorkspaceId: innerValue.workspace
                             })
-                                .done(() => {
+                                .then(() => {
                                 tthis.reloadValuesFromServer();
                             });
                         });
@@ -123,7 +123,7 @@ define(["require", "exports", "../Mof", "../Forms.FieldFactory", "../Forms.Selec
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
                             referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
-                        }).done(() => {
+                        }).then(() => {
                             this.reloadValuesFromServer();
                         });
                     };
@@ -167,7 +167,7 @@ define(["require", "exports", "../Mof", "../Forms.FieldFactory", "../Forms.Selec
         reloadValuesFromServer() {
             const tthis = this;
             const url = this._element.uri;
-            ClientItems.getProperty(this.form.workspace, url, this.propertyName).done(x => tthis.createDomByValue(x));
+            ClientItems.getProperty(this.form.workspace, url, this.propertyName).then(x => tthis.createDomByValue(x));
         }
         getFieldDefinitions() {
             var _a;

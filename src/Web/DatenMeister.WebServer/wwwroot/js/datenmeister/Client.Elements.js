@@ -19,21 +19,22 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
     }
     exports.getAllChildItems = getAllChildItems;
     function load(workspaceId, extent, itemId) {
-        const r = jQuery.Deferred();
-        let url = '/api/elements/get_composites';
-        if (workspaceId !== undefined && workspaceId !== null) {
-            url += '/' + encodeURIComponent(workspaceId);
-            if (extent !== undefined && extent !== null) {
-                if (itemId !== undefined && itemId !== null) {
-                    url += '/' + encodeURIComponent(extent + '#' + itemId);
-                }
-                else {
-                    url += '/' + encodeURIComponent(extent);
+        const r = new Promise((resolve, reject) => {
+            let url = '/api/elements/get_composites';
+            if (workspaceId !== undefined && workspaceId !== null) {
+                url += '/' + encodeURIComponent(workspaceId);
+                if (extent !== undefined && extent !== null) {
+                    if (itemId !== undefined && itemId !== null) {
+                        url += '/' + encodeURIComponent(extent + '#' + itemId);
+                    }
+                    else {
+                        url += '/' + encodeURIComponent(extent);
+                    }
                 }
             }
-        }
-        ApiConnection.get(url).done(items => {
-            r.resolve(items);
+            ApiConnection.get(url).then(items => {
+                resolve(items);
+            });
         });
         return r;
     }

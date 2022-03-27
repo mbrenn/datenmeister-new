@@ -3,12 +3,12 @@ import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./Forms.Interfaces";
-import * as ECClient from "./ExtentControllerClient";
+import * as ECClient from "./Client.Extents";
 
 export module DetailFormActions {
 
     // Loads the object being used for the action. 
-    export function loadObjectForAction(actionName: string): JQueryDeferred<DmObject> | undefined {
+    export function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
 
         let p = new URLSearchParams(window.location.search);
 
@@ -22,34 +22,34 @@ export module DetailFormActions {
 
         if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
             const metaclass = p.get('metaclass');
-            const deferLoadObjectForAction = $.Deferred<DmObject>();
-            const result = new DmObject();
+            return new Promise<DmObject>(resolve => {
+                const result = new DmObject();
 
-            if (metaclass !== undefined) {
-                result.setMetaClassByUri(metaclass);
-            }
+                if (metaclass !== undefined) {
+                    result.setMetaClassByUri(metaclass);
+                }
 
-            deferLoadObjectForAction.resolve(result);
-            return deferLoadObjectForAction;
+                resolve(result);
+            });
         }
 
         if (actionName === "Zipcode.Test") {
-            const deferLoadObjectForAction = $.Deferred<DmObject>();
-            const result = new DmObject();
+            return new Promise<DmObject>(resolve => {
+                const result = new DmObject();
 
-            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
-            deferLoadObjectForAction.resolve(result);
-            return deferLoadObjectForAction;
+                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+                resolve(result);
+            });
         }
-        
+
         if (actionName === "Workspace.Extent.Xmi.Create") {
-            const deferLoadObjectForAction = $.Deferred<DmObject>()
-            const result = new DmObject();
-            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
-            result.set("workspaceId", p.get('workspaceId'));
-            
-            deferLoadObjectForAction.resolve(result);
-            return deferLoadObjectForAction;
+            return new Promise<DmObject>(resolve => {
+                const result = new DmObject();
+                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+                result.set("workspaceId", p.get('workspaceId'));
+
+                resolve(result);
+            });
         }
 
         return undefined;
@@ -127,7 +127,7 @@ export module DetailFormActions {
                 ApiConnection.post(
                     Settings.baseUrl + "api/zip/create",
                     {workspace: id})
-                    .done(
+                    .then(
                         data => {
                             document.location.reload();
                         });
@@ -140,7 +140,7 @@ export module DetailFormActions {
                 ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
                     {Parameter: createJsonFromObject(element)})
-                    .done(data => {
+                    .then(data => {
                         if (data.success) {
                             document.location.href = Settings.baseUrl
                                 + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
@@ -149,7 +149,7 @@ export module DetailFormActions {
                             alert(data.reason);
                         }
                     })
-                    .fail(() => {
+                    .catch(() => {
                         alert('fail');
                     });
                 break;
@@ -177,7 +177,7 @@ export class FormActions {
         document.location.href =
             Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
     }
-    
+
     static workspaceNavigateTo(workspace: string) {
         document.location.href =
             Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
@@ -195,7 +195,7 @@ export class FormActions {
                 metaClass: metaClass === undefined ? "" : metaClass,
                 properties: json
             }
-        ).done(() => {
+        ).then(() => {
             document.location.href = Settings.baseUrl +
                 "ItemsOverview/" +
                 encodeURIComponent(workspace) +
@@ -218,7 +218,7 @@ export class FormActions {
                 asList: true,
                 properties: json
             }
-        ).done(() => {
+        ).then(() => {
             Navigator.navigateToItemByUrl(workspace, itemUrl);
         });
     }
@@ -240,9 +240,9 @@ export class FormActions {
             "&extent=" +
             encodeURIComponent(extentUri);
     }
-    
-    static extentUpdateExtentProperties(workspace: string, extentUri: string, element: DmObject): void{
-        ECClient.setProperties(workspace, extentUri, element).done(() => FormActions.extentNavigateTo(workspace, extentUri));
+
+    static extentUpdateExtentProperties(workspace: string, extentUri: string, element: DmObject): void {
+        ECClient.setProperties(workspace, extentUri, element).then(() => FormActions.extentNavigateTo(workspace, extentUri));
     }
 
     static extentDelete(workspace: string, extentUri: string): void {
@@ -254,7 +254,7 @@ export class FormActions {
         ApiConnection.deleteRequest(
             Settings.baseUrl + "api/extent/delete",
             parameter
-        ).done(() => {
+        ).then(() => {
             FormActions.workspaceNavigateTo(workspace);
         });
     }
@@ -263,7 +263,7 @@ export class FormActions {
         ApiConnection.post(
             Settings.baseUrl + "api/zip/create",
             {workspace: workspace})
-            .done(
+            .then(
                 data => {
                     document.location.reload();
                 });
@@ -283,7 +283,7 @@ export class FormActions {
                 workspace: workspace,
                 extentUri: extentUri
             })
-            .done(
+            .then(
                 data => {
                     document.location.reload();
                 });
@@ -296,7 +296,7 @@ export class FormActions {
             encodeURIComponent(itemUri),
             {}
         )
-            .done(
+            .then(
                 data => {
                     const success = data.success;
                     if (success) {
@@ -322,7 +322,7 @@ export class FormActions {
             encodeURIComponent(itemId),
             {}
         )
-            .done(
+            .then(
                 data => {
                     const success = data.success;
                     if (success) {

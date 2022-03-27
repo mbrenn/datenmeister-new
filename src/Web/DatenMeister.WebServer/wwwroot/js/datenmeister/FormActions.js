@@ -1,4 +1,4 @@
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./ExtentControllerClient"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./Client.Extents"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -14,28 +14,28 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             }
             if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
                 const metaclass = p.get('metaclass');
-                const deferLoadObjectForAction = $.Deferred();
-                const result = new Mof_1.DmObject();
-                if (metaclass !== undefined) {
-                    result.setMetaClassByUri(metaclass);
-                }
-                deferLoadObjectForAction.resolve(result);
-                return deferLoadObjectForAction;
+                return new Promise(resolve => {
+                    const result = new Mof_1.DmObject();
+                    if (metaclass !== undefined) {
+                        result.setMetaClassByUri(metaclass);
+                    }
+                    resolve(result);
+                });
             }
             if (actionName === "Zipcode.Test") {
-                const deferLoadObjectForAction = $.Deferred();
-                const result = new Mof_1.DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
-                deferLoadObjectForAction.resolve(result);
-                return deferLoadObjectForAction;
+                return new Promise(resolve => {
+                    const result = new Mof_1.DmObject();
+                    result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+                    resolve(result);
+                });
             }
             if (actionName === "Workspace.Extent.Xmi.Create") {
-                const deferLoadObjectForAction = $.Deferred();
-                const result = new Mof_1.DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
-                result.set("workspaceId", p.get('workspaceId'));
-                deferLoadObjectForAction.resolve(result);
-                return deferLoadObjectForAction;
+                return new Promise(resolve => {
+                    const result = new Mof_1.DmObject();
+                    result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+                    result.set("workspaceId", p.get('workspaceId'));
+                    resolve(result);
+                });
             }
             return undefined;
         }
@@ -115,7 +115,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 case "ZipExample.CreateExample":
                     const id = element.get('id');
                     ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
-                        .done(data => {
+                        .then(data => {
                         document.location.reload();
                     });
                     break;
@@ -125,7 +125,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     break;
                 case "Workspace.Extent.Xmi.Create":
                     ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
-                        .done(data => {
+                        .then(data => {
                         if (data.success) {
                             document.location.href = Settings.baseUrl
                                 + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
@@ -135,7 +135,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                             alert(data.reason);
                         }
                     })
-                        .fail(() => {
+                        .catch(() => {
                         alert('fail');
                     });
                     break;
@@ -169,7 +169,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             ApiConnection.post(Settings.baseUrl + "api/items/create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), {
                 metaClass: metaClass === undefined ? "" : metaClass,
                 properties: json
-            }).done(() => {
+            }).then(() => {
                 document.location.href = Settings.baseUrl +
                     "ItemsOverview/" +
                     encodeURIComponent(workspace) +
@@ -187,7 +187,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 property: property,
                 asList: true,
                 properties: json
-            }).done(() => {
+            }).then(() => {
                 Navigator.navigateToItemByUrl(workspace, itemUrl);
             });
         }
@@ -208,20 +208,20 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     encodeURIComponent(extentUri);
         }
         static extentUpdateExtentProperties(workspace, extentUri, element) {
-            ECClient.setProperties(workspace, extentUri, element).done(() => FormActions.extentNavigateTo(workspace, extentUri));
+            ECClient.setProperties(workspace, extentUri, element).then(() => FormActions.extentNavigateTo(workspace, extentUri));
         }
         static extentDelete(workspace, extentUri) {
             const parameter = {
                 workspace: workspace,
                 extentUri: extentUri
             };
-            ApiConnection.deleteRequest(Settings.baseUrl + "api/extent/delete", parameter).done(() => {
+            ApiConnection.deleteRequest(Settings.baseUrl + "api/extent/delete", parameter).then(() => {
                 FormActions.workspaceNavigateTo(workspace);
             });
         }
         static createZipExample(workspace) {
             ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: workspace })
-                .done(data => {
+                .then(data => {
                 document.location.reload();
             });
         }
@@ -234,7 +234,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 workspace: workspace,
                 extentUri: extentUri
             })
-                .done(data => {
+                .then(data => {
                 document.location.reload();
             });
         }
@@ -242,7 +242,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
                 + encodeURIComponent(workspace) + "/" +
                 encodeURIComponent(itemUri), {})
-                .done(data => {
+                .then(data => {
                 const success = data.success;
                 if (success) {
                     Navigator.navigateToExtent(workspace, extentUri);
@@ -262,7 +262,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
                 + encodeURIComponent(workspace) + "/" +
                 encodeURIComponent(itemId), {})
-                .done(data => {
+                .then(data => {
                 const success = data.success;
                 if (success) {
                     document.location.reload();

@@ -10,7 +10,7 @@ export function includeTests() {
                     ClientWorkspace.createWorkspace(
                         "Test",
                         "Annotation",
-                        {skipIfExisting: true}).done(() => done());
+                        {skipIfExisting: true}).then(() => done());
                 });
             });
 
@@ -41,7 +41,7 @@ export function includeTests() {
                     done();
                 }).catch(e => done(e));
             });
-            
+
             /*it('Create and delete Properties, if existing', function(done) {
                 ClientExtent.deleteExtent(
                     {
@@ -60,7 +60,7 @@ export function includeTests() {
                         workspace: "Test",
                         extentUri: "dm:///unittest",
                         skipIfNotExisting: true
-                    }).done(done);
+                    }).then(() => done());
                 }).then(done => {
                     ClientWorkspace.deleteWorkspace("Test");
                 });

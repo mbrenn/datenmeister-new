@@ -40,7 +40,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="metaClass">Metaclass to which the form will be created</param>
         /// <param name="creationMode">The creation mode being used</param>
         /// <returns>The created form for the metaclass</returns>
-        public IElement CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode = null)
+        public IElement CreateDetailFormByMetaClass(IElement? metaClass, FormFactoryConfiguration? creationMode = null)
         {
             creationMode ??= new FormFactoryConfiguration();
             var createdForm = MofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);

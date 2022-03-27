@@ -53,7 +53,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const defer2 = getDefaultFormForExtent(workspace, extentUri, "");
 
         // Wait for both
-        $.when(defer1, defer2).then((elements, form) => {
+        Promise.all([defer1, defer2]).then(([elements, form]) => {
             tthis.formElement = form;
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
@@ -72,9 +72,9 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
-        
+
         const tthis = this;
-        
+
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
                 tthis.createFormByCollection(parent, elements, configuration);
@@ -206,7 +206,7 @@ export class DetailFormCreator implements IForm.IFormNavigation {
                     tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                 },
                 onSubmit: (element) => {
-                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).done(
+                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).then(
                         () => {
                             tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                         }
@@ -235,13 +235,13 @@ export class DetailFormCreator implements IForm.IFormNavigation {
         const defer2 = getDefaultFormForItem(workspace, itemUrl, "");
 
         // Wait for both
-        $.when(defer1, defer2).then(function (element, form) {
-            tthis.element = element;
+        Promise.all([defer1, defer2]).then(([element1, form]) => {
+            tthis.element = element1;
             tthis.formElement = form;
             tthis.workspace = workspace;
             tthis.itemId = itemUrl;
 
-            debugElementToDom(element, "#debug_mofelement");
+            debugElementToDom(element1, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
 
             tthis.createFormByObject(parent, configuration);
@@ -253,17 +253,18 @@ export class DetailFormCreator implements IForm.IFormNavigation {
 
 }
 
-export function getForm(formUri: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+export function getForm(formUri: string): Promise<Mof.DmObject> {
+    const r = new Promise<Mof.DmObject>(resolve => {
 
-    ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/get/" +
-        encodeURIComponent(formUri)
-    ).done(x => {
-        const dmObject =
-            Mof.convertJsonObjectToDmObject(x);
-        r.resolve(dmObject);
+        ApiConnection.get<object>(
+            Settings.baseUrl +
+            "api/forms/get/" +
+            encodeURIComponent(formUri)
+        ).then(x => {
+            const dmObject =
+                Mof.convertJsonObjectToDmObject(x);
+            resolve(dmObject);
+        });
     });
 
     return r;
@@ -272,21 +273,22 @@ export function getForm(formUri: string): JQuery.Deferred<Mof.DmObject, never, n
 /*
     Gets the default form for a certain item by the webserver
  */
-export function getDefaultFormForItem(workspace: string, item: string,  viewMode: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+export function getDefaultFormForItem(workspace: string, item: string, viewMode: string) {
+    const r = new Promise<Mof.DmObject>(resolve => {
 
-    ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/default_for_item/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(item) +
-        "/" +
-        encodeURIComponent(viewMode)
-    ).done(x => {
-        const dmObject =
-            Mof.convertJsonObjectToDmObject(x);
-        r.resolve(dmObject);
+        ApiConnection.get<object>(
+            Settings.baseUrl +
+            "api/forms/default_for_item/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(item) +
+            "/" +
+            encodeURIComponent(viewMode)
+        ).then(x => {
+            const dmObject =
+                Mof.convertJsonObjectToDmObject(x);
+            resolve(dmObject);
+        });
     });
 
     return r;
@@ -295,21 +297,22 @@ export function getDefaultFormForItem(workspace: string, item: string,  viewMode
 /*
     Gets the default form for an extent uri by the webserver
  */
-export function getDefaultFormForExtent(workspace: string, extentUri: string, viewMode: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+export function getDefaultFormForExtent(workspace: string, extentUri: string, viewMode: string) {
+    const r = new Promise<Mof.DmObject>(resolve => {
 
-    ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/default_for_extent/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(extentUri) +
-        "/" +
-        encodeURIComponent(viewMode)
-    ).done(x => {
-        const dmObject =
-            Mof.convertJsonObjectToDmObject(x);
-        r.resolve(dmObject);
+        ApiConnection.get<object>(
+            Settings.baseUrl +
+            "api/forms/default_for_extent/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(extentUri) +
+            "/" +
+            encodeURIComponent(viewMode)
+        ).then(x => {
+            const dmObject =
+                Mof.convertJsonObjectToDmObject(x);
+            resolve(dmObject);
+        });
     });
 
     return r;
@@ -318,17 +321,18 @@ export function getDefaultFormForExtent(workspace: string, extentUri: string, vi
 /*
     Gets the default form for an extent uri by the webserver
  */
-export function getDefaultFormForMetaClass(metaClassUri: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+export function getDefaultFormForMetaClass(metaClassUri: string) {
+    const r = new Promise<Mof.DmObject>(resolve => {
 
-    ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/default_for_metaclass/" +
-        encodeURIComponent(metaClassUri)
-    ).done(x => {
-        const dmObject =
-            Mof.convertJsonObjectToDmObject(x);
-        r.resolve(dmObject);
+        ApiConnection.get<object>(
+            Settings.baseUrl +
+            "api/forms/default_for_metaclass/" +
+            encodeURIComponent(metaClassUri)
+        ).then(x => {
+            const dmObject =
+                Mof.convertJsonObjectToDmObject(x);
+            resolve(dmObject);
+        });
     });
 
     return r;

@@ -38,7 +38,7 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
                     selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
                     selectItemCtrl.onItemSelected = (selectedItem) => {
                         (0, Client_Items_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
-                            .done(() => divSelectItem.remove()).done(() => {
+                            .then(() => divSelectItem.remove()).then(() => {
                             if (tthis.configuration.refreshForm !== undefined) {
                                 tthis.configuration.refreshForm();
                             }

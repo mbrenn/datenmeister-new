@@ -9,6 +9,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
     /// </summary>
     public class WorkspaceData
     {
+        public string TEST;
+        
         private Workspace? _default;
 
         /// <summary>
@@ -60,5 +62,39 @@ namespace DatenMeister.Core.Runtime.Workspaces
                        throw new InvalidOperationException("Mof Workspace is not found");
             }
         }
+
+        /// <summary>
+        /// This event is called whenever a new workspace will be added
+        /// </summary>
+        public event EventHandler<WorkspaceEventArgs>? WorkspaceAdded;
+
+        /// <summary>
+        /// This event is called whenever a workspace is removed
+        /// </summary>
+        public event EventHandler<WorkspaceEventArgs>? WorkspaceRemoved;
+        
+        internal void OnWorkspaceAdded(IWorkspaceLogic workspaceLogic, string workspaceId)
+        {
+            WorkspaceAdded?.Invoke(workspaceLogic, new WorkspaceEventArgs
+            {
+                Id = workspaceId
+            });
+        }
+
+        internal void OnWorkspaceRemoved(IWorkspaceLogic workspaceLogic, string workspaceId)
+        {
+            WorkspaceRemoved?.Invoke(workspaceLogic, new WorkspaceEventArgs
+            {
+                Id = workspaceId
+            });
+        }
+    }
+
+    /// <summary>
+    /// Defines the event class for workspace related event
+    /// </summary>
+    public class WorkspaceEventArgs : EventArgs
+    {
+        public string Id { get; set; }
     }
 }

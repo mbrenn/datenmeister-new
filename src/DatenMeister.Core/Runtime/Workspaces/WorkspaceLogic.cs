@@ -26,6 +26,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// Cache to store the uri storing the extents as a provider object
         /// </summary>
         private IUriExtent? _cacheUriExtents;
+        
+        public WorkspaceData WorkspaceData => _workspaceData;
 
         private WorkspaceLogic(WorkspaceData workspaceData, IScopeStorage? scopeStorage)
         {
@@ -149,6 +151,9 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 }
             }
 
+            // ReSharper disable once InconsistentlySynchronizedField
+            _workspaceData.OnWorkspaceAdded(this, workspace.id);
+
             SendEventForWorkspaceChange(workspace);
 
             return workspace;
@@ -222,6 +227,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 {
                     _workspaceData.Workspaces.Remove(workspaceToBeDeleted);
                 }
+            }
+
+            if (workspaceToBeDeleted != null)
+            {
+                _workspaceData.OnWorkspaceRemoved(this, id);
             }
 
             if (workspaceToBeDeleted != null)

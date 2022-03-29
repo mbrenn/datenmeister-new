@@ -14,7 +14,7 @@
     <ItemGroup>
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Locking\DatenMeister.Locking.csproj" />
-      <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj"/>
+      <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
       <ProjectReference Include="..\DatenMeister.Validators\DatenMeister.Validators.csproj" />
     </ItemGroup>
 

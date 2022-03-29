@@ -49,6 +49,7 @@ namespace DatenMeister.Tests.Provider
             {
                 WorkspaceLogic = WorkspaceLogic.GetEmptyLogic()
             };
+            
             var provider = storage.LoadProvider(storageConfiguration, ExtentCreationFlags.LoadOnly);
             var extent = new MofUriExtent(provider.Provider, "dm:////test/", null);
 

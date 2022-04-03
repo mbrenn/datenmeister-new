@@ -67,6 +67,15 @@ export interface ICreateItemAsChildResult
     itemId: string;
 }
 
+export async function deleteRootElements(workspaceId: string, extentUri: string)
+{
+    return await ApiConnection.deleteRequest<ISuccessResult>(
+        Settings.baseUrl + "api/items/delete_root_elements/"
+        + encodeURIComponent(workspaceId) + "/"
+        + encodeURIComponent(extentUri), {}
+    );
+}
+
 export async function deleteItem(workspaceId: string, itemUri: string) {
     return await ApiConnection.deleteRequest<ISuccessResult>(
         Settings.baseUrl + "api/items/delete/"
@@ -193,7 +202,9 @@ export async function setProperties(workspaceId: string, itemUrl: string, proper
         "/" +
         encodeURIComponent(itemUrl);
 
-    return await ApiConnection.put(url, Mof.createJsonFromObject(properties));
+    return await ApiConnection.put(
+        url,
+        Mof.createJsonFromObject(properties));
 }
 
 export async function getProperty(

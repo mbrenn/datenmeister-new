@@ -14,6 +14,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Json;
+using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -166,6 +167,27 @@ namespace DatenMeister.WebServer.Controller
             if (foundItem != null) success = ObjectHelper.DeleteObject(foundItem);
 
             return new {success = success};
+        }
+
+        /// <summary>
+        /// Deletes all elements from an extent
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace in which the extent is residing</param>
+        /// <param name="extentUri">Uri of the extent</param>
+        /// <returns>The action result</returns>
+        [HttpDelete("api/items/delete_root_elements/{workspaceId}/{extentUri}")]
+        public ActionResult<SuccessResult> DeleteRootElements(string workspaceId, string extentUri)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            extentUri = HttpUtility.UrlDecode(extentUri);
+
+            var success = true;
+            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
+                         ?? throw new InvalidOperationException("Extent is not found");
+            
+            extent.elements().RemoveAll();
+
+            return new SuccessResult {Success = success};
         }
 
         /// <summary>

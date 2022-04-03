@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.createItemAsChild = exports.createItemInExtent = void 0;
+    exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
     function createItemInExtent(workspaceId, extentUri, param) {
         return __awaiter(this, void 0, void 0, function* () {
             const evaluatedParameter = {
@@ -44,6 +44,14 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
         });
     }
     exports.createItemAsChild = createItemAsChild;
+    function deleteRootElements(workspaceId, extentUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete_root_elements/"
+                + encodeURIComponent(workspaceId) + "/"
+                + encodeURIComponent(extentUri), {});
+        });
+    }
+    exports.deleteRootElements = deleteRootElements;
     function deleteItem(workspaceId, itemUri) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"

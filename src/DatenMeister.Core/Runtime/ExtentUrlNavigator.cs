@@ -60,6 +60,11 @@ namespace DatenMeister.Core.Runtime
                 return _extent;
             }
 
+            if (posQuestion == -1 && posHash == -1)
+            {
+                return element("#" + uri);
+            }
+
             // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 
             // extent
             if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0) return null;

@@ -3,7 +3,8 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.get = exports.put = exports.deleteRequest = exports.post = void 0;
     function serverError(x) {
-        alert("Error during Web-API Connection: " + x.toString());
+        const error = $("<div></div>").text(x.toString());
+        $("#server_errors").append(error);
     }
     function post(uri, data) {
         return new Promise((resolve, reject) => {

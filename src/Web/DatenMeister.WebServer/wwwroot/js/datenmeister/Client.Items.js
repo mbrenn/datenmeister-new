@@ -46,7 +46,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     exports.createItemAsChild = createItemAsChild;
     function deleteItem(workspaceId, itemUri) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/create_child/"
+            return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
                 + encodeURIComponent(workspaceId) + "/"
                 + encodeURIComponent(itemUri), {});
         });
@@ -54,7 +54,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     exports.deleteItem = deleteItem;
     function deleteItemFromExtent(workspaceId, extentUri, itemId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/create_child/"
+            return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete_from_extent/"
                 + encodeURIComponent(workspaceId) + "/"
                 + encodeURIComponent(extentUri) + "/"
                 + encodeURIComponent(itemId), {});
@@ -76,12 +76,17 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     exports.getObject = getObject;
     function getObjectByUri(workspace, url) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
-                "api/items/get/" +
-                encodeURIComponent(workspace) +
-                "/" +
-                encodeURIComponent(url));
-            return Mof.convertJsonObjectToDmObject(resultFromServer);
+            try {
+                const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
+                    "api/items/get/" +
+                    encodeURIComponent(workspace) +
+                    "/" +
+                    encodeURIComponent(url));
+                return Mof.convertJsonObjectToDmObject(resultFromServer);
+            }
+            catch (e) {
+                return undefined;
+            }
         });
     }
     exports.getObjectByUri = getObjectByUri;

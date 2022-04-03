@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Client.Extents", "../Client.Workspace"], function (require, exports, ClientExtent, ClientWorkspace) {
+define(["require", "exports", "../Client.Extents", "../Client.Workspace", "../Client.Items"], function (require, exports, ClientExtent, ClientWorkspace, ClientItems) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -25,13 +25,25 @@ define(["require", "exports", "../Client.Extents", "../Client.Workspace"], funct
                         });
                     });
                 });
+                it('Get Non-existing item', function () {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        const result = yield ClientItems.getObjectByUri("Test", "Does_Not_Exist");
+                        chai.assert.isUndefined(result);
+                    });
+                });
                 it('Create and Delete Item', function () {
                     return __awaiter(this, void 0, void 0, function* () {
-                        try {
-                        }
-                        catch (e) {
-                            throw e;
-                        }
+                        const result = yield ClientItems.createItemInExtent("Test", "dm:///unittest", {});
+                        chai.assert.isTrue(result.success, 'Item was not created');
+                        chai.assert.isTrue(result.itemId !== undefined && result.itemId !== null, "Item id is null");
+                        const item = yield ClientItems.getObjectByUri("Test", result.itemId);
+                        chai.assert.isTrue(item !== undefined, "Item is not existing");
+                        chai.assert.isTrue(item.extentUri === "dm:///unittest", "Extent Uri is not correctly set");
+                        chai.assert.isTrue(item.workspace === "Test", "Workspace is not correctly set");
+                        const resultDelete = yield ClientItems.deleteItem("Test", result.itemId);
+                        chai.assert.isTrue(result.success, "Item was not successful deleted");
+                        const nonFoundItem = yield ClientItems.getObjectByUri("Test", result.itemId);
+                        chai.assert.isTrue(item !== undefined, "Item was found when it should not be found");
                     });
                 });
                 after(function () {

@@ -136,6 +136,9 @@ define(["require", "exports"], function (require, exports) {
     // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
     */
     function convertJsonObjectToDmObject(element) {
+        if (element === undefined || element === null) {
+            return undefined;
+        }
         if (typeof element === 'string' || element instanceof String) {
             element = JSON.parse(element);
         }

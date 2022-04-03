@@ -69,7 +69,7 @@ export interface ICreateItemAsChildResult
 
 export async function deleteItem(workspaceId: string, itemUri: string) {
     return await ApiConnection.deleteRequest<ISuccessResult>(
-        Settings.baseUrl + "api/items/create_child/"
+        Settings.baseUrl + "api/items/delete/"
         + encodeURIComponent(workspaceId) + "/"
         + encodeURIComponent(itemUri),
         {}
@@ -78,7 +78,7 @@ export async function deleteItem(workspaceId: string, itemUri: string) {
 
 export async function deleteItemFromExtent(workspaceId: string, extentUri:string, itemId: string) {
     return await ApiConnection.deleteRequest<ISuccessResult>(
-        Settings.baseUrl + "api/items/create_child/"
+        Settings.baseUrl + "api/items/delete_from_extent/"
         + encodeURIComponent(workspaceId) + "/"
         + encodeURIComponent(extentUri) + "/"
         + encodeURIComponent(itemId),
@@ -100,16 +100,22 @@ export async function getObject(workspace: string, extent: string, id: string) {
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
 
-export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObject> {
-    const resultFromServer = await ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/items/get/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(url)
-    );
-    
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
+export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObject | undefined> {
+    try {
+        const resultFromServer = await ApiConnection.get<object>(
+            Settings.baseUrl +
+            "api/items/get/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(url)
+        );
+
+        return Mof.convertJsonObjectToDmObject(resultFromServer);
+    }
+    catch(e)
+    {
+        return undefined;
+    }
 }
 
 export async function getRootElements(workspace: string, extentUri: string): Promise<Array<Mof.DmObject>> {

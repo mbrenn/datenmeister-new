@@ -1,5 +1,6 @@
 ﻿function serverError(x: any) {
-    alert("Error during Web-API Connection: " + x.toString());
+    const error = $("<div></div>").text(x.toString());
+    $("#server_errors").append(error);
 }
 
 export function post<T>(uri: string, data: object): Promise<T> {

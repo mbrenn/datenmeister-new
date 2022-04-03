@@ -159,7 +159,12 @@ export function convertJsonObjectToObjects(element: any): any {
 // Creates the given object from the included json
 // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
 */
-export function convertJsonObjectToDmObject(element: object | string): DmObject {
+export function convertJsonObjectToDmObject(element: object | string | undefined): DmObject | undefined {
+    
+    if( element === undefined || element === null) {
+        return undefined;
+    }
+    
     if (typeof element === 'string' || element instanceof String) {
         element = JSON.parse(element as string);
     }

@@ -94,25 +94,25 @@ namespace DatenMeister.WebServer.Controller
         /// </summary>
         /// <param name="search">The string being typed in by the user</param>
         /// <returns>The answer by the logic. </returns>
-        public ElementsController.OutFindBySearchString FindBySearchString(string search)
+        public ElementsController.FindBySearchStringResult FindBySearchString(string search)
         {
-            var result = new ElementsController.OutFindBySearchString();
+            var result = new ElementsController.FindBySearchStringResult();
             var found = _workspaceLogic.Resolve(search, ResolveType.Default, false);
             if (found is IUriExtent asExtent)
             {
-                result.resultType = ElementsController.OutFindBySearchString.ResultTypeReferenceExtent;
+                result.resultType = ElementsController.FindBySearchStringResult.ResultTypeReferenceExtent;
                 result.reference = ItemWithNameAndId.Create(asExtent)
                                    ?? throw new InvalidOperationException("Create could not handle an object...");
             }
             else if (found is IObject asObject)
             {
-                result.resultType = ElementsController.OutFindBySearchString.ResultTypeReference;
+                result.resultType = ElementsController.FindBySearchStringResult.ResultTypeReference;
                 result.reference = ItemWithNameAndId.Create(asObject)
                                    ?? throw new InvalidOperationException("Create could not handle an object...");
             }
             else
             {
-                result.resultType = ElementsController.OutFindBySearchString.ResultTypeNone;
+                result.resultType = ElementsController.FindBySearchStringResult.ResultTypeNone;
             }
 
             return result;

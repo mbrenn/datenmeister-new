@@ -19,9 +19,7 @@ export function resolve(value: any): Promise<any> {
                     asDmObject.workspace = "_";
                 }
 
-                ClientItem.loadObjectByUri(
-                    asDmObject.workspace,
-                    asDmObject.uri).then(
+                ClientItem.getObjectByUri(asDmObject.workspace, asDmObject.uri).then(
                     loadedValue => resolve(loadedValue));
             } else {
                 resolve(value);

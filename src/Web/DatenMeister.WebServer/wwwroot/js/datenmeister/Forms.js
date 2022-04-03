@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -33,7 +42,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                 };
             }
             // Load the object
-            const defer1 = DataLoader.loadRootElementsFromExtent(workspace, extentUri);
+            const defer1 = DataLoader.getRootElements(workspace, extentUri);
             // Load the form
             const defer2 = getDefaultFormForExtent(workspace, extentUri, "");
             // Wait for both
@@ -160,7 +169,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                     tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                 },
                 onSubmit: (element) => {
-                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).then(() => {
+                    DataLoader.setProperties(tthis.workspace, tthis.itemId, element).then(() => {
                         tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                     });
                 }
@@ -174,7 +183,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                 };
             }
             // Load the object
-            const defer1 = DataLoader.loadObjectByUri(workspace, itemUrl);
+            const defer1 = DataLoader.getObjectByUri(workspace, itemUrl);
             // Load the form
             const defer2 = getDefaultFormForItem(workspace, itemUrl, "");
             // Wait for both
@@ -193,68 +202,56 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
     }
     exports.DetailFormCreator = DetailFormCreator;
     function getForm(formUri) {
-        const r = new Promise(resolve => {
-            ApiConnection.get(Settings.baseUrl +
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
                 "api/forms/get/" +
-                encodeURIComponent(formUri)).then(x => {
-                const dmObject = Mof.convertJsonObjectToDmObject(x);
-                resolve(dmObject);
-            });
+                encodeURIComponent(formUri));
+            return Mof.convertJsonObjectToDmObject(resultFromServer);
         });
-        return r;
     }
     exports.getForm = getForm;
     /*
         Gets the default form for a certain item by the webserver
      */
     function getDefaultFormForItem(workspace, item, viewMode) {
-        const r = new Promise(resolve => {
-            ApiConnection.get(Settings.baseUrl +
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
                 "api/forms/default_for_item/" +
                 encodeURIComponent(workspace) +
                 "/" +
                 encodeURIComponent(item) +
                 "/" +
-                encodeURIComponent(viewMode)).then(x => {
-                const dmObject = Mof.convertJsonObjectToDmObject(x);
-                resolve(dmObject);
-            });
+                encodeURIComponent(viewMode));
+            return Mof.convertJsonObjectToDmObject(resultFromServer);
         });
-        return r;
     }
     exports.getDefaultFormForItem = getDefaultFormForItem;
     /*
         Gets the default form for an extent uri by the webserver
      */
     function getDefaultFormForExtent(workspace, extentUri, viewMode) {
-        const r = new Promise(resolve => {
-            ApiConnection.get(Settings.baseUrl +
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
                 "api/forms/default_for_extent/" +
                 encodeURIComponent(workspace) +
                 "/" +
                 encodeURIComponent(extentUri) +
                 "/" +
-                encodeURIComponent(viewMode)).then(x => {
-                const dmObject = Mof.convertJsonObjectToDmObject(x);
-                resolve(dmObject);
-            });
+                encodeURIComponent(viewMode));
+            return Mof.convertJsonObjectToDmObject(resultFromServer);
         });
-        return r;
     }
     exports.getDefaultFormForExtent = getDefaultFormForExtent;
     /*
         Gets the default form for an extent uri by the webserver
      */
     function getDefaultFormForMetaClass(metaClassUri) {
-        const r = new Promise(resolve => {
-            ApiConnection.get(Settings.baseUrl +
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
                 "api/forms/default_for_metaclass/" +
-                encodeURIComponent(metaClassUri)).then(x => {
-                const dmObject = Mof.convertJsonObjectToDmObject(x);
-                resolve(dmObject);
-            });
+                encodeURIComponent(metaClassUri));
+            return Mof.convertJsonObjectToDmObject(resultFromServer);
         });
-        return r;
     }
     exports.getDefaultFormForMetaClass = getDefaultFormForMetaClass;
 });

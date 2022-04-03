@@ -6,13 +6,11 @@ export function includeTests() {
     describe('Client', function () {
         describe('Extents', function () {
 
-            before(function () {
-                return new Promise<void>(done => {
-                    ClientWorkspace.createWorkspace(
+            before(async function () {
+                await ClientWorkspace.createWorkspace(
                         "Test",
                         "Annotation",
-                        {skipIfExisting: true}).then(() => done());
-                });
+                        {skipIfExisting: true});
             });
 
             it('Create and delete Xmi Extent', function (done) {

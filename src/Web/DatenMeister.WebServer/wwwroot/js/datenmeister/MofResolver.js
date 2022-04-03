@@ -19,7 +19,7 @@ define(["require", "exports", "./Client.Items"], function (require, exports, Cli
                         alert('Workspace is undefined');
                         asDmObject.workspace = "_";
                     }
-                    ClientItem.loadObjectByUri(asDmObject.workspace, asDmObject.uri).then(loadedValue => resolve(loadedValue));
+                    ClientItem.getObjectByUri(asDmObject.workspace, asDmObject.uri).then(loadedValue => resolve(loadedValue));
                 }
                 else {
                     resolve(value);

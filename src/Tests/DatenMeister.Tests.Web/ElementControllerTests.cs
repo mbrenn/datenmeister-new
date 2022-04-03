@@ -125,10 +125,10 @@ namespace DatenMeister.Tests.Web
 
             // Nothing should be found
             var result = elementsController.FindBySearchString("fiuosdaiu");
-            Assert.That(result.resultType, Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeNone));
+            Assert.That(result.resultType, Is.EqualTo(ElementsController.FindBySearchStringResult.ResultTypeNone));
 
             result = elementsController.FindBySearchString(UriTemporaryExtent + "#item1");
-            Assert.That(result.resultType, Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeReference));
+            Assert.That(result.resultType, Is.EqualTo(ElementsController.FindBySearchStringResult.ResultTypeReference));
             Assert.That(result.reference!.id, Is.EqualTo("item1"));
             Assert.That(result.reference.uri, Is.EqualTo("dm:///temp#item1"));
             Assert.That(result.reference.extentUri, Is.EqualTo("dm:///temp"));
@@ -137,7 +137,7 @@ namespace DatenMeister.Tests.Web
 
             result = elementsController.FindBySearchString(UriTemporaryExtent);
             Assert.That(result.resultType,
-                Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeReferenceExtent));
+                Is.EqualTo(ElementsController.FindBySearchStringResult.ResultTypeReferenceExtent));
             Assert.That(result.reference!.uri, Is.EqualTo("dm:///temp"));
             Assert.That(result.reference.extentUri, Is.EqualTo("dm:///temp"));
             Assert.That(result.reference.workspace, Is.EqualTo("Data"));

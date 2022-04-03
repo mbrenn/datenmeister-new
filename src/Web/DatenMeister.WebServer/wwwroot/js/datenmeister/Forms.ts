@@ -47,7 +47,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         }
 
         // Load the object
-        const defer1 = DataLoader.loadRootElementsFromExtent(workspace, extentUri);
+        const defer1 = DataLoader.getRootElements(workspace, extentUri);
 
         // Load the form
         const defer2 = getDefaultFormForExtent(workspace, extentUri, "");
@@ -206,7 +206,7 @@ export class DetailFormCreator implements IForm.IFormNavigation {
                     tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                 },
                 onSubmit: (element) => {
-                    DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, element).then(
+                    DataLoader.setProperties(tthis.workspace, tthis.itemId, element).then(
                         () => {
                             tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
                         }
@@ -221,7 +221,6 @@ export class DetailFormCreator implements IForm.IFormNavigation {
                configuration: IFormConfiguration) {
         const tthis = this;
 
-
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
                 tthis.createForm(parent, workspace, itemUrl, configuration);
@@ -229,7 +228,7 @@ export class DetailFormCreator implements IForm.IFormNavigation {
         }
 
         // Load the object
-        const defer1 = DataLoader.loadObjectByUri(workspace, itemUrl);
+        const defer1 = DataLoader.getObjectByUri(workspace, itemUrl);
 
         // Load the form
         const defer2 = getDefaultFormForItem(workspace, itemUrl, "");
@@ -253,87 +252,57 @@ export class DetailFormCreator implements IForm.IFormNavigation {
 
 }
 
-export function getForm(formUri: string): Promise<Mof.DmObject> {
-    const r = new Promise<Mof.DmObject>(resolve => {
-
-        ApiConnection.get<object>(
-            Settings.baseUrl +
-            "api/forms/get/" +
-            encodeURIComponent(formUri)
-        ).then(x => {
-            const dmObject =
-                Mof.convertJsonObjectToDmObject(x);
-            resolve(dmObject);
-        });
-    });
-
-    return r;
+export async function getForm(formUri: string): Promise<Mof.DmObject> {
+    const resultFromServer = await ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/forms/get/" +
+        encodeURIComponent(formUri)
+    );
+    return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
 
 /*
     Gets the default form for a certain item by the webserver
  */
-export function getDefaultFormForItem(workspace: string, item: string, viewMode: string) {
-    const r = new Promise<Mof.DmObject>(resolve => {
+export async function getDefaultFormForItem(workspace: string, item: string, viewMode: string) {
+    const resultFromServer = await ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/forms/default_for_item/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(item) +
+        "/" +
+        encodeURIComponent(viewMode)
+    );
+    return Mof.convertJsonObjectToDmObject(resultFromServer);
+}
+/*
+    Gets the default form for an extent uri by the webserver
+ */
+export async function getDefaultFormForExtent(workspace: string, extentUri: string, viewMode: string) {
+    const resultFromServer = await ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/forms/default_for_extent/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri) +
+        "/" +
+        encodeURIComponent(viewMode)
+    );
 
-        ApiConnection.get<object>(
-            Settings.baseUrl +
-            "api/forms/default_for_item/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(item) +
-            "/" +
-            encodeURIComponent(viewMode)
-        ).then(x => {
-            const dmObject =
-                Mof.convertJsonObjectToDmObject(x);
-            resolve(dmObject);
-        });
-    });
-
-    return r;
+    return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
 
 /*
     Gets the default form for an extent uri by the webserver
  */
-export function getDefaultFormForExtent(workspace: string, extentUri: string, viewMode: string) {
-    const r = new Promise<Mof.DmObject>(resolve => {
+export async function getDefaultFormForMetaClass(metaClassUri: string) {
 
-        ApiConnection.get<object>(
-            Settings.baseUrl +
-            "api/forms/default_for_extent/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(extentUri) +
-            "/" +
-            encodeURIComponent(viewMode)
-        ).then(x => {
-            const dmObject =
-                Mof.convertJsonObjectToDmObject(x);
-            resolve(dmObject);
-        });
-    });
-
-    return r;
-}
-
-/*
-    Gets the default form for an extent uri by the webserver
- */
-export function getDefaultFormForMetaClass(metaClassUri: string) {
-    const r = new Promise<Mof.DmObject>(resolve => {
-
-        ApiConnection.get<object>(
-            Settings.baseUrl +
-            "api/forms/default_for_metaclass/" +
-            encodeURIComponent(metaClassUri)
-        ).then(x => {
-            const dmObject =
-                Mof.convertJsonObjectToDmObject(x);
-            resolve(dmObject);
-        });
-    });
-
-    return r;
+    const resultFromServer = await ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/forms/default_for_metaclass/" +
+        encodeURIComponent(metaClassUri)
+    );
+    
+    return Mof.convertJsonObjectToDmObject(resultFromServer);
 }

@@ -17,29 +17,29 @@ namespace DatenMeister.WebServer.Controller
         private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public ElementsControllerInternal _internal;
+        public readonly ElementsControllerInternal Internal;
 
         public ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
-            _internal = new ElementsControllerInternal(workspaceLogic, scopeStorage);
+            Internal = new ElementsControllerInternal(workspaceLogic, scopeStorage);
         }
 
-        [HttpGet("api/elements/get_name/{workspace}/{extenturi}/{itemid}")]
-        public ActionResult<object> GetName(string workspace, string extenturi, string itemid)
+        [HttpGet("api/elements/get_name/{workspace}/{extentUri}/{itemId}")]
+        public ActionResult<object> GetName(string workspace, string extentUri, string itemId)
         {
-            var foundItem = _workspaceLogic.FindObject(workspace, extenturi, itemid);
+            var foundItem = _workspaceLogic.FindObject(workspace, extentUri, itemId);
             if (foundItem == null)
             {
                 return NotFound();
             }
 
-            return new { name = NamedElementMethods.GetName(foundItem) };
+            return ItemWithNameAndId.Create(foundItem)!;
         }
 
         [HttpGet("api/elements/get_name/{workspace}/{uri}")]
-        public ActionResult<object> GetName(string? workspace, string uri)
+        public ActionResult<ItemWithNameAndId> GetName(string? workspace, string uri)
         {
             IElement? foundItem;
             if (string.IsNullOrEmpty(workspace) || workspace == "_")
@@ -58,19 +58,13 @@ namespace DatenMeister.WebServer.Controller
                 return NotFound();
             }
 
-            return new
-            {
-                name = NamedElementMethods.GetName(foundItem),
-                extentUri = foundItem.GetUriExtentOf()?.contextURI() ?? string.Empty,
-                workspace = foundItem.GetUriExtentOf()?.GetWorkspace()?.id ?? string.Empty,
-                itemId = (foundItem as IHasId)?.Id ?? string.Empty
-            };
+            return ItemWithNameAndId.Create(foundItem)!;
         }
 
         [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
         public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId, string? itemUrl)
         {
-            var result = _internal.GetComposites(workspaceId, itemUrl);
+            var result = Internal.GetComposites(workspaceId, itemUrl);
             if (result == null)
             {
                 return NotFound();
@@ -80,18 +74,20 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/elements/find_by_searchstring")]
-        public ActionResult<OutFindBySearchString> FindBySearchString(string search)
+        public ActionResult<FindBySearchStringResult> FindBySearchString(string search)
         {
-            return _internal.FindBySearchString(search);
+            return Internal.FindBySearchString(search);
         }
 
 
-        public class OutFindBySearchString
+        public class FindBySearchStringResult
         {
             public const string ResultTypeNone = "none";
             public const string ResultTypeReference = "reference";
             public const string ResultTypeReferenceExtent = "referenceExtent";
+            
             public string resultType { get; set; } = ResultTypeNone;
+            
             public ItemWithNameAndId? reference { get; set; }
         }
     }

@@ -2,33 +2,25 @@
 import * as ApiModels from "./ApiModels";
 import {DmObject} from "./Mof";
 
+export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
 
-export function injectName(domElement: JQuery<HTMLElement>, elementPosition: ApiModels.In.IElementPosition) {
-
-    ElementClient.loadNameOf(elementPosition).then(x => {
+    const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
+    
+    if (
+        x.extentUri !== undefined && x.workspace !== undefined
+        && x.extentUri !== "" && x.workspace !== ""
+        && x.id !== "" && x.id !== undefined) {
+        const linkElement = $("<a></a>");
+        linkElement.text(x.name);
+        linkElement.attr(
+            "href",
+            "/Item/" + encodeURIComponent(x.workspace) +
+            "/" + encodeURIComponent(x.extentUri + "#" + x.id));
+        domElement.empty();
+        domElement.append(linkElement);
+    } else {
         domElement.text(x.name);
-    });
-}
-
-export function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
-
-    ElementClient.loadNameByUri(workspaceId, elementUri).then(x => {
-        if (
-            x.extentUri !== undefined && x.workspace !== undefined
-            && x.extentUri !== "" && x.workspace !== ""
-            && x.itemId !== "" && x.itemId !== undefined) {
-            const linkElement = $("<a></a>");
-            linkElement.text(x.name);
-            linkElement.attr(
-                "href",
-                "/Item/" + encodeURIComponent(x.workspace) +
-                "/" + encodeURIComponent(x.extentUri + "#" + x.itemId));
-            domElement.empty();
-            domElement.append(linkElement);
-        } else {
-            domElement.text(x.name);
-        }
-    });
+    }
 }
 
 export function debugElementToDom(mofElement: any, domSelector: string) {
@@ -43,8 +35,8 @@ export function convertToDom(mofElement: any): JQuery {
         let count = 0;
         const arrayList = $("<ol></ol>");
 
-        for (var m in mofElement) {
-            var li = $("<li></li>");
+        for (let m in mofElement) {
+            const li = $("<li></li>");
             if (count > 50) {
                 li.text("... (total: " + mofElement.length + ")");
                 arrayList.append(li);

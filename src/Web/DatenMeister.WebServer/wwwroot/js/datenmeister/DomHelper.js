@@ -1,22 +1,26 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "./Client.Elements"], function (require, exports, ElementClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.convertToDom = exports.debugElementToDom = exports.injectNameByUri = exports.injectName = void 0;
-    function injectName(domElement, elementPosition) {
-        ElementClient.loadNameOf(elementPosition).then(x => {
-            domElement.text(x.name);
-        });
-    }
-    exports.injectName = injectName;
+    exports.convertToDom = exports.debugElementToDom = exports.injectNameByUri = void 0;
     function injectNameByUri(domElement, workspaceId, elementUri) {
-        ElementClient.loadNameByUri(workspaceId, elementUri).then(x => {
+        return __awaiter(this, void 0, void 0, function* () {
+            const x = yield ElementClient.loadNameByUri(workspaceId, elementUri);
             if (x.extentUri !== undefined && x.workspace !== undefined
                 && x.extentUri !== "" && x.workspace !== ""
-                && x.itemId !== "" && x.itemId !== undefined) {
+                && x.id !== "" && x.id !== undefined) {
                 const linkElement = $("<a></a>");
                 linkElement.text(x.name);
                 linkElement.attr("href", "/Item/" + encodeURIComponent(x.workspace) +
-                    "/" + encodeURIComponent(x.extentUri + "#" + x.itemId));
+                    "/" + encodeURIComponent(x.extentUri + "#" + x.id));
                 domElement.empty();
                 domElement.append(linkElement);
             }
@@ -37,8 +41,8 @@ define(["require", "exports", "./Client.Elements"], function (require, exports, 
         if (Array.isArray(mofElement)) {
             let count = 0;
             const arrayList = $("<ol></ol>");
-            for (var m in mofElement) {
-                var li = $("<li></li>");
+            for (let m in mofElement) {
+                const li = $("<li></li>");
                 if (count > 50) {
                     li.text("... (total: " + mofElement.length + ")");
                     arrayList.append(li);

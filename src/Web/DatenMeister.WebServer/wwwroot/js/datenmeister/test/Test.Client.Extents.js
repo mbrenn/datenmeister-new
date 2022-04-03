@@ -15,8 +15,8 @@ define(["require", "exports", "../Client.Extents", "../Client.Workspace", "../Mo
         describe('Client', function () {
             describe('Extents', function () {
                 before(function () {
-                    return new Promise(done => {
-                        ClientWorkspace.createWorkspace("Test", "Annotation", { skipIfExisting: true }).then(() => done());
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield ClientWorkspace.createWorkspace("Test", "Annotation", { skipIfExisting: true });
                     });
                 });
                 it('Create and delete Xmi Extent', function (done) {

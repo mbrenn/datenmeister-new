@@ -1,96 +1,225 @@
 ﻿import * as Mof from "./Mof"
-import {DmObject} from "./Mof"
 import * as Settings from "./Settings"
 import * as ApiConnection from "./ApiConnection"
+import {ISuccessResult, ItemWithNameAndId} from "./ApiModels";
 
-export function loadObject(workspace: string, extent: string, id: string): Promise<Mof.DmObject> {
-    return new Promise<Mof.DmObject>((resolve, reject) => {
+export async function createItemInExtent(workspaceId: string, extentUri: string, param: ICreateItemInExtentParams) {
+    const evaluatedParameter =
+        {
+            metaClass: param.metaClass,
+            properties: undefined
+        };
 
-        ApiConnection.get<object>(
-            Settings.baseUrl +
-            "api/items/get/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(extent) +
-            "/" +
-            encodeURIComponent(id)
-        ).then(x => {
-            const dmObject =
-                Mof.convertJsonObjectToDmObject(x);
-            resolve(dmObject);
-        });
-    });
+    if (param.properties !== undefined && param.properties !== null) {
+        evaluatedParameter.properties = Mof.createJsonFromObject(param.properties);
+    }
+
+    return await ApiConnection.post<ICreateItemInExtentResult>(
+        Settings.baseUrl + "api/items/create_in_extent/"
+        + encodeURIComponent(workspaceId) + "/"
+        + encodeURIComponent(extentUri),
+        evaluatedParameter
+    );
 }
 
-export function loadObjectByUri(workspace: string, url: string): Promise<Mof.DmObject> {
-    return new Promise<Mof.DmObject>((resolve, reject) => {
-
-        ApiConnection.get<object>(
-            Settings.baseUrl +
-            "api/items/get/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(url)
-        ).then(x => {
-            const dmObject =
-                Mof.convertJsonObjectToDmObject(x);
-            resolve(dmObject);
-        });
-    });
+export interface ICreateItemInExtentParams {
+    metaClass?: string;
+    properties?: Mof.DmObject;
 }
 
-export function loadRootElementsFromExtent(workspace: string, extentUri: string): Promise<Array<Mof.DmObject>> {
-    return new Promise<Array<Mof.DmObject>>((resolve, reject) => {
-        ApiConnection.get<string>(
-            Settings.baseUrl +
-            "api/items/get_root_elements/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(extentUri)
-        ).then(text => {
-            const x = JSON.parse(text);
-            let result = new Array<Mof.DmObject>();
-            for (let n in x) {
-                if (Object.prototype.hasOwnProperty.call(x, n)) {
-                    const v = x[n];
-                    result.push(Mof.convertJsonObjectToDmObject(v));
-                }
-            }
-
-            resolve(result);
-        });
-    });
+export interface ICreateItemInExtentResult{
+    success: boolean;
+    itemId: string;
 }
 
-export function storeObjectByUri(workspace: string, url: string, element: DmObject): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        const result = Mof.createJsonFromObject(element);
+export async function createItemAsChild(workspaceId: string, itemUri: string, param: ICreateItemAsChildParams)
+{
+    const evaluatedParameter =
+        {
+            metaClass: param.metaClass,
+            property: param.property,
+            asList: param.asList ?? false,            
+            properties: undefined
+        };
 
-        ApiConnection.put<string>(
-            Settings.baseUrl +
-            "api/items/set/" +
-            encodeURIComponent(workspace) +
-            "/" +
-            encodeURIComponent(url),
-            result
-        ).then(x => {
-            resolve();
-        });
-    });
+    if (param.properties !== undefined && param.properties !== null) {
+        evaluatedParameter.properties = Mof.createJsonFromObject(param.properties);
+    }
+
+    return await ApiConnection.post<ICreateItemAsChildResult>(
+        Settings.baseUrl + "api/items/create_child/"
+        + encodeURIComponent(workspaceId) + "/"
+        + encodeURIComponent(itemUri),
+        evaluatedParameter
+    );
 }
 
-export function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass: string) {
+export interface ICreateItemAsChildParams {
+    metaClass?: string;
+    property: string;
+    asList: boolean;
+    properties?: Mof.DmObject;    
+}
+
+export interface ICreateItemAsChildResult
+{
+    success: boolean;
+    itemId: string;
+}
+
+export async function deleteItem(workspaceId: string, itemUri: string) {
+    return await ApiConnection.deleteRequest<ISuccessResult>(
+        Settings.baseUrl + "api/items/create_child/"
+        + encodeURIComponent(workspaceId) + "/"
+        + encodeURIComponent(itemUri),
+        {}
+    );
+}
+
+export async function deleteItemFromExtent(workspaceId: string, extentUri:string, itemId: string) {
+    return await ApiConnection.deleteRequest<ISuccessResult>(
+        Settings.baseUrl + "api/items/create_child/"
+        + encodeURIComponent(workspaceId) + "/"
+        + encodeURIComponent(extentUri) + "/"
+        + encodeURIComponent(itemId),
+        {}
+    );
+}
+
+export async function getObject(workspace: string, extent: string, id: string) {
+    const resultFromServer = ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/items/get/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extent) +
+        "/" +
+        encodeURIComponent(id)
+    );
+
+    return Mof.convertJsonObjectToDmObject(resultFromServer);
+}
+
+export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObject> {
+    const resultFromServer = await ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/items/get/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(url)
+    );
+    
+    return Mof.convertJsonObjectToDmObject(resultFromServer);
+}
+
+export async function getRootElements(workspace: string, extentUri: string): Promise<Array<Mof.DmObject>> {
+    const resultFromServer = await ApiConnection.get<string>(
+        Settings.baseUrl +
+        "api/items/get_root_elements/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri)
+    );
+
+    const x = JSON.parse(resultFromServer);
+    let result = new Array<Mof.DmObject>();
+    for (let n in x) {
+        if (Object.prototype.hasOwnProperty.call(x, n)) {
+            const v = x[n];
+            result.push(Mof.convertJsonObjectToDmObject(v));
+        }
+    }
+
+    return result;
+}
+
+export async function getContainer(workspaceId: string, itemUri: string): Promise<Array<ItemWithNameAndId>> {
+    return await ApiConnection.get<Array<ItemWithNameAndId>>(
+        Settings.baseUrl + "api/items/get_container/"
+        + encodeURIComponent(workspaceId) + "/"
+        + encodeURIComponent(itemUri));
+}
+
+export async  function setProperty(
+    workspaceId: string, itemUrl: string, property: string, value: any): Promise<ISuccessResult> {
+    let url = Settings.baseUrl +
+        "api/items/set_property/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+    return await ApiConnection.put<any>(url, {key: property, value: value});
+}
+export async function unsetProperty(
+    workspaceId: string, itemUrl: string, property: string): Promise<ISuccessResult> {
+    let url = Settings.baseUrl +
+        "api/items/unset_property/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+
+    return await ApiConnection.put<any>(url, {property: property});
+}
+
+export async function setPropertiesByStringValues(workspaceId: string, itemUrl: string, params: ISetPropertiesParams): Promise<ISuccessResult> {
+    let url = Settings.baseUrl +
+        "api/items/unset_property/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+    
+    return await ApiConnection.post(url, params);    
+}
+
+export interface ISetPropertyParam
+{
+    key: string;
+    value: string;
+}
+
+export interface ISetPropertiesParams {
+    properties: Array<ISetPropertyParam>;
+}
+
+export async function setProperties(workspaceId: string, itemUrl: string, properties: Mof.DmObject): Promise<ISuccessResult> {    
+    let url = Settings.baseUrl +
+        "api/items/set/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+
+    return await ApiConnection.put(url, Mof.createJsonFromObject(properties));
+}
+
+export async function getProperty(
+    workspaceId: string, itemUrl: string, property: string): Promise<any> {
+
+    let url = Settings.baseUrl +
+        "api/items/get_property/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl) +
+        "?property=" +
+        encodeURIComponent(property);
+    const result = await ApiConnection.get<IGetPropertyResult>(url);
+    return Mof.convertJsonObjectToObjects(result.v);
+}
+
+export async function setMetaclass(workspaceId: string, itemUrl: string, newMetaClass: string) {
     let url = Settings.baseUrl +
         "api/items/set_metaclass/" +
         encodeURIComponent(workspaceId) +
         "/" +
         encodeURIComponent(itemUrl);
-    return ApiConnection.post(
+    return await ApiConnection.post(
         url,
         {metaclass: newMetaClass});
 }
 
-export function addReferenceToCollection(
+export interface IGetPropertyResult {
+    v: any;
+}
+
+export async function addReferenceToCollection(
     workspaceId: string, itemUrl: string, parameter: IAddReferenceToCollectionParameter) {
     let url = Settings.baseUrl +
         "api/items/add_ref_to_collection/" +
@@ -98,7 +227,7 @@ export function addReferenceToCollection(
         "/" +
         encodeURIComponent(itemUrl);
 
-    return ApiConnection.post(
+    await ApiConnection.post(
         url,
         {
             property: parameter.property,
@@ -106,79 +235,6 @@ export function addReferenceToCollection(
             referenceUri: parameter.referenceUri
         }
     );
-}
-
-export function removeReferenceFromCollection(
-    workspaceId: string, itemUrl: string, parameter: IRemoveReferenceToCollectionParameter) {
-    let url = Settings.baseUrl +
-        "api/items/remove_ref_to_collection/" +
-        encodeURIComponent(workspaceId) +
-        "/" +
-        encodeURIComponent(itemUrl);
-
-    return ApiConnection.post(
-        url,
-        {
-            property: parameter.property,
-            workspaceId: parameter.referenceWorkspaceId,
-            referenceUri: parameter.referenceUri
-        }
-    );
-}
-
-export function getProperty(
-    workspaceId: string, itemUrl: string, property: string): Promise<any> {
-    const r = new Promise<any>((resolve, reject) => {
-        let url = Settings.baseUrl +
-            "api/items/get_property/" +
-            encodeURIComponent(workspaceId) +
-            "/" +
-            encodeURIComponent(itemUrl) +
-            "?property=" +
-            encodeURIComponent(property);
-        const result = ApiConnection.get<IGetPropertyResult>(url);
-        result.then(x => {
-            const dmObject =
-                Mof.convertJsonObjectToObjects(x.v);
-            resolve(dmObject);
-        });
-    });
-
-    return r;
-}
-
-export function setProperty(
-    workspaceId: string, itemUrl: string, property: string, value: any): Promise<any> {
-    return new Promise<boolean>(resolve => {
-        let url = Settings.baseUrl +
-            "api/items/set_property/" +
-            encodeURIComponent(workspaceId) +
-            "/" +
-            encodeURIComponent(itemUrl);
-        const result = ApiConnection.put<any>(url, {key: property, value: value});
-        result.then(x => {
-            resolve(true);
-        });
-    });
-}
-
-export function unsetProperty(
-    workspaceId: string, itemUrl: string, property: string): Promise<any> {
-    return new Promise<boolean>(resolve => {
-        let url = Settings.baseUrl +
-            "api/items/unset_property/" +
-            encodeURIComponent(workspaceId) +
-            "/" +
-            encodeURIComponent(itemUrl);
-        const result = ApiConnection.put<any>(url, {property: property});
-        result.then(x => {
-            resolve(true);
-        });
-    });
-}
-
-export interface IGetPropertyResult {
-    v: any;
 }
 
 
@@ -188,12 +244,26 @@ export interface IAddReferenceToCollectionParameter {
     referenceWorkspaceId?: string;
 }
 
-export interface IRemoveReferenceToCollectionParameter {
+export async function removeReferenceFromCollection(
+    workspaceId: string, itemUrl: string, parameter: IRemoveReferenceFromCollectionParameter) {
+    let url = Settings.baseUrl +
+        "api/items/remove_ref_to_collection/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+
+    await ApiConnection.post(
+        url,
+        {
+            property: parameter.property,
+            workspaceId: parameter.referenceWorkspaceId,
+            referenceUri: parameter.referenceUri
+        }
+    );
+}
+
+export interface IRemoveReferenceFromCollectionParameter {
     property: string;
     referenceUri: string;
     referenceWorkspaceId?: string;
-}
-
-export interface IUnsetPropertyResult {
-    property: string;
 }

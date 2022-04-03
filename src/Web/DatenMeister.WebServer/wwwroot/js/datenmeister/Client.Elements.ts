@@ -1,8 +1,6 @@
-﻿import * as ApiModels from "./ApiModels";
-import {ItemWithNameAndId} from "./ApiModels";
+﻿import {ItemWithNameAndId} from "./ApiModels";
 import * as ApiConnection from "./ApiConnection"
 import * as Settings from "./Settings"
-
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
     return load(undefined, undefined, undefined);
@@ -21,7 +19,7 @@ export function getAllChildItems(workspaceId: string, extent: string, itemId: st
 }
 
 function load(workspaceId: string, extent: string, itemId: string): Promise<ItemWithNameAndId[]> {
-    const r = new Promise<ItemWithNameAndId[]>((resolve, reject) => {
+    return new Promise<ItemWithNameAndId[]>((resolve, reject) => {
         let url = '/api/elements/get_composites';
         if (workspaceId !== undefined && workspaceId !== null) {
             url += '/' + encodeURIComponent(workspaceId);
@@ -40,38 +38,37 @@ function load(workspaceId: string, extent: string, itemId: string): Promise<Item
             }
         );
     });
-
-    return r;
 }
 
-export function loadNameOf(elementPosition: ApiModels.In.IElementPosition): Promise<ApiModels.Out.INamedElement> {
-    return ApiConnection.get<ApiModels.Out.INamedElement>(
+export async function loadNameOf(workspaceId: string, extentUri: string, itemUri: string): Promise<ItemWithNameAndId> {
+    return await ApiConnection.get<ItemWithNameAndId>(
         Settings.baseUrl +
         "api/elements/get_name/" +
-        encodeURIComponent(elementPosition.workspace) + "/" +
-        encodeURIComponent(elementPosition.extentUri) + "/" +
-        encodeURIComponent(elementPosition.item));
+        encodeURIComponent(workspaceId) + "/" +
+        encodeURIComponent(extentUri) + "/" +
+        encodeURIComponent(itemUri));
 }
 
-export function loadNameByUri(workspaceId: string, elementUri: string): Promise<ApiModels.Out.INamedElement> {
+
+export async function loadNameByUri(workspaceId: string, elementUri: string): Promise<ItemWithNameAndId> {
     if (workspaceId === undefined) {
         workspaceId = "_";
     }
-    return ApiConnection.get<ApiModels.Out.INamedElement>(
+    return await ApiConnection.get<ItemWithNameAndId>(
         Settings.baseUrl +
         "api/elements/get_name/" +
         encodeURIComponent(workspaceId) + "/" +
         encodeURIComponent(elementUri));
 }
 
-export function findBySearchString(searchString): Promise<IOutFindBySearchString> {
-    return ApiConnection.get<IOutFindBySearchString>(
+export function findBySearchString(searchString): Promise<IFindBySearchString> {
+    return ApiConnection.get<IFindBySearchString>(
         Settings.baseUrl +
         "api/elements/find_by_searchstring?search=" +
         encodeURIComponent(searchString));
 }
 
-export interface IOutFindBySearchString {
+export interface IFindBySearchString {
     resultType: string;
     reference: ItemWithNameAndId;
 }

@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "./ApiConnection", "./Settings"], function (require, exports, ApiConnection, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -19,7 +28,7 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
     }
     exports.getAllChildItems = getAllChildItems;
     function load(workspaceId, extent, itemId) {
-        const r = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let url = '/api/elements/get_composites';
             if (workspaceId !== undefined && workspaceId !== null) {
                 url += '/' + encodeURIComponent(workspaceId);
@@ -36,24 +45,27 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
                 resolve(items);
             });
         });
-        return r;
     }
-    function loadNameOf(elementPosition) {
-        return ApiConnection.get(Settings.baseUrl +
-            "api/elements/get_name/" +
-            encodeURIComponent(elementPosition.workspace) + "/" +
-            encodeURIComponent(elementPosition.extentUri) + "/" +
-            encodeURIComponent(elementPosition.item));
+    function loadNameOf(workspaceId, extentUri, itemUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.get(Settings.baseUrl +
+                "api/elements/get_name/" +
+                encodeURIComponent(workspaceId) + "/" +
+                encodeURIComponent(extentUri) + "/" +
+                encodeURIComponent(itemUri));
+        });
     }
     exports.loadNameOf = loadNameOf;
     function loadNameByUri(workspaceId, elementUri) {
-        if (workspaceId === undefined) {
-            workspaceId = "_";
-        }
-        return ApiConnection.get(Settings.baseUrl +
-            "api/elements/get_name/" +
-            encodeURIComponent(workspaceId) + "/" +
-            encodeURIComponent(elementUri));
+        return __awaiter(this, void 0, void 0, function* () {
+            if (workspaceId === undefined) {
+                workspaceId = "_";
+            }
+            return yield ApiConnection.get(Settings.baseUrl +
+                "api/elements/get_name/" +
+                encodeURIComponent(workspaceId) + "/" +
+                encodeURIComponent(elementUri));
+        });
     }
     exports.loadNameByUri = loadNameByUri;
     function findBySearchString(searchString) {

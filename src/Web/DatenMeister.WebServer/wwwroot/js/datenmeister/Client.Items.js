@@ -1,105 +1,163 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.unsetProperty = exports.setProperty = exports.getProperty = exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.storeObjectByUri = exports.loadRootElementsFromExtent = exports.loadObjectByUri = exports.loadObject = void 0;
-    function loadObject(workspace, extent, id) {
-        return new Promise((resolve, reject) => {
-            ApiConnection.get(Settings.baseUrl +
+    exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.createItemAsChild = exports.createItemInExtent = void 0;
+    function createItemInExtent(workspaceId, extentUri, param) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const evaluatedParameter = {
+                metaClass: param.metaClass,
+                properties: undefined
+            };
+            if (param.properties !== undefined && param.properties !== null) {
+                evaluatedParameter.properties = Mof.createJsonFromObject(param.properties);
+            }
+            return yield ApiConnection.post(Settings.baseUrl + "api/items/create_in_extent/"
+                + encodeURIComponent(workspaceId) + "/"
+                + encodeURIComponent(extentUri), evaluatedParameter);
+        });
+    }
+    exports.createItemInExtent = createItemInExtent;
+    function createItemAsChild(workspaceId, itemUri, param) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const evaluatedParameter = {
+                metaClass: param.metaClass,
+                property: param.property,
+                asList: (_a = param.asList) !== null && _a !== void 0 ? _a : false,
+                properties: undefined
+            };
+            if (param.properties !== undefined && param.properties !== null) {
+                evaluatedParameter.properties = Mof.createJsonFromObject(param.properties);
+            }
+            return yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/"
+                + encodeURIComponent(workspaceId) + "/"
+                + encodeURIComponent(itemUri), evaluatedParameter);
+        });
+    }
+    exports.createItemAsChild = createItemAsChild;
+    function deleteItem(workspaceId, itemUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/create_child/"
+                + encodeURIComponent(workspaceId) + "/"
+                + encodeURIComponent(itemUri), {});
+        });
+    }
+    exports.deleteItem = deleteItem;
+    function deleteItemFromExtent(workspaceId, extentUri, itemId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/create_child/"
+                + encodeURIComponent(workspaceId) + "/"
+                + encodeURIComponent(extentUri) + "/"
+                + encodeURIComponent(itemId), {});
+        });
+    }
+    exports.deleteItemFromExtent = deleteItemFromExtent;
+    function getObject(workspace, extent, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = ApiConnection.get(Settings.baseUrl +
                 "api/items/get/" +
                 encodeURIComponent(workspace) +
                 "/" +
                 encodeURIComponent(extent) +
                 "/" +
-                encodeURIComponent(id)).then(x => {
-                const dmObject = Mof.convertJsonObjectToDmObject(x);
-                resolve(dmObject);
-            });
+                encodeURIComponent(id));
+            return Mof.convertJsonObjectToDmObject(resultFromServer);
         });
     }
-    exports.loadObject = loadObject;
-    function loadObjectByUri(workspace, url) {
-        return new Promise((resolve, reject) => {
-            ApiConnection.get(Settings.baseUrl +
+    exports.getObject = getObject;
+    function getObjectByUri(workspace, url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
                 "api/items/get/" +
                 encodeURIComponent(workspace) +
                 "/" +
-                encodeURIComponent(url)).then(x => {
-                const dmObject = Mof.convertJsonObjectToDmObject(x);
-                resolve(dmObject);
-            });
+                encodeURIComponent(url));
+            return Mof.convertJsonObjectToDmObject(resultFromServer);
         });
     }
-    exports.loadObjectByUri = loadObjectByUri;
-    function loadRootElementsFromExtent(workspace, extentUri) {
-        return new Promise((resolve, reject) => {
-            ApiConnection.get(Settings.baseUrl +
+    exports.getObjectByUri = getObjectByUri;
+    function getRootElements(workspace, extentUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
                 "api/items/get_root_elements/" +
                 encodeURIComponent(workspace) +
                 "/" +
-                encodeURIComponent(extentUri)).then(text => {
-                const x = JSON.parse(text);
-                let result = new Array();
-                for (let n in x) {
-                    if (Object.prototype.hasOwnProperty.call(x, n)) {
-                        const v = x[n];
-                        result.push(Mof.convertJsonObjectToDmObject(v));
-                    }
+                encodeURIComponent(extentUri));
+            const x = JSON.parse(resultFromServer);
+            let result = new Array();
+            for (let n in x) {
+                if (Object.prototype.hasOwnProperty.call(x, n)) {
+                    const v = x[n];
+                    result.push(Mof.convertJsonObjectToDmObject(v));
                 }
-                resolve(result);
-            });
+            }
+            return result;
         });
     }
-    exports.loadRootElementsFromExtent = loadRootElementsFromExtent;
-    function storeObjectByUri(workspace, url, element) {
-        return new Promise((resolve, reject) => {
-            const result = Mof.createJsonFromObject(element);
-            ApiConnection.put(Settings.baseUrl +
-                "api/items/set/" +
-                encodeURIComponent(workspace) +
+    exports.getRootElements = getRootElements;
+    function getContainer(workspaceId, itemUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.get(Settings.baseUrl + "api/items/get_container/"
+                + encodeURIComponent(workspaceId) + "/"
+                + encodeURIComponent(itemUri));
+        });
+    }
+    exports.getContainer = getContainer;
+    function setProperty(workspaceId, itemUrl, property, value) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/items/set_property/" +
+                encodeURIComponent(workspaceId) +
                 "/" +
-                encodeURIComponent(url), result).then(x => {
-                resolve();
-            });
+                encodeURIComponent(itemUrl);
+            return yield ApiConnection.put(url, { key: property, value: value });
         });
     }
-    exports.storeObjectByUri = storeObjectByUri;
-    function setMetaclass(workspaceId, itemUrl, newMetaClass) {
-        let url = Settings.baseUrl +
-            "api/items/set_metaclass/" +
-            encodeURIComponent(workspaceId) +
-            "/" +
-            encodeURIComponent(itemUrl);
-        return ApiConnection.post(url, { metaclass: newMetaClass });
-    }
-    exports.setMetaclass = setMetaclass;
-    function addReferenceToCollection(workspaceId, itemUrl, parameter) {
-        let url = Settings.baseUrl +
-            "api/items/add_ref_to_collection/" +
-            encodeURIComponent(workspaceId) +
-            "/" +
-            encodeURIComponent(itemUrl);
-        return ApiConnection.post(url, {
-            property: parameter.property,
-            workspaceId: parameter.referenceWorkspaceId,
-            referenceUri: parameter.referenceUri
+    exports.setProperty = setProperty;
+    function unsetProperty(workspaceId, itemUrl, property) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/items/unset_property/" +
+                encodeURIComponent(workspaceId) +
+                "/" +
+                encodeURIComponent(itemUrl);
+            return yield ApiConnection.put(url, { property: property });
         });
     }
-    exports.addReferenceToCollection = addReferenceToCollection;
-    function removeReferenceFromCollection(workspaceId, itemUrl, parameter) {
-        let url = Settings.baseUrl +
-            "api/items/remove_ref_to_collection/" +
-            encodeURIComponent(workspaceId) +
-            "/" +
-            encodeURIComponent(itemUrl);
-        return ApiConnection.post(url, {
-            property: parameter.property,
-            workspaceId: parameter.referenceWorkspaceId,
-            referenceUri: parameter.referenceUri
+    exports.unsetProperty = unsetProperty;
+    function setPropertiesByStringValues(workspaceId, itemUrl, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/items/unset_property/" +
+                encodeURIComponent(workspaceId) +
+                "/" +
+                encodeURIComponent(itemUrl);
+            return yield ApiConnection.post(url, params);
         });
     }
-    exports.removeReferenceFromCollection = removeReferenceFromCollection;
+    exports.setPropertiesByStringValues = setPropertiesByStringValues;
+    function setProperties(workspaceId, itemUrl, properties) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/items/set/" +
+                encodeURIComponent(workspaceId) +
+                "/" +
+                encodeURIComponent(itemUrl);
+            return yield ApiConnection.put(url, Mof.createJsonFromObject(properties));
+        });
+    }
+    exports.setProperties = setProperties;
     function getProperty(workspaceId, itemUrl, property) {
-        const r = new Promise((resolve, reject) => {
+        return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
                 "api/items/get_property/" +
                 encodeURIComponent(workspaceId) +
@@ -107,42 +165,51 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
                 encodeURIComponent(itemUrl) +
                 "?property=" +
                 encodeURIComponent(property);
-            const result = ApiConnection.get(url);
-            result.then(x => {
-                const dmObject = Mof.convertJsonObjectToObjects(x.v);
-                resolve(dmObject);
-            });
+            const result = yield ApiConnection.get(url);
+            return Mof.convertJsonObjectToObjects(result.v);
         });
-        return r;
     }
     exports.getProperty = getProperty;
-    function setProperty(workspaceId, itemUrl, property, value) {
-        return new Promise(resolve => {
+    function setMetaclass(workspaceId, itemUrl, newMetaClass) {
+        return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
-                "api/items/set_property/" +
+                "api/items/set_metaclass/" +
                 encodeURIComponent(workspaceId) +
                 "/" +
                 encodeURIComponent(itemUrl);
-            const result = ApiConnection.put(url, { key: property, value: value });
-            result.then(x => {
-                resolve(true);
-            });
+            return yield ApiConnection.post(url, { metaclass: newMetaClass });
         });
     }
-    exports.setProperty = setProperty;
-    function unsetProperty(workspaceId, itemUrl, property) {
-        return new Promise(resolve => {
+    exports.setMetaclass = setMetaclass;
+    function addReferenceToCollection(workspaceId, itemUrl, parameter) {
+        return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
-                "api/items/unset_property/" +
+                "api/items/add_ref_to_collection/" +
                 encodeURIComponent(workspaceId) +
                 "/" +
                 encodeURIComponent(itemUrl);
-            const result = ApiConnection.put(url, { property: property });
-            result.then(x => {
-                resolve(true);
+            yield ApiConnection.post(url, {
+                property: parameter.property,
+                workspaceId: parameter.referenceWorkspaceId,
+                referenceUri: parameter.referenceUri
             });
         });
     }
-    exports.unsetProperty = unsetProperty;
+    exports.addReferenceToCollection = addReferenceToCollection;
+    function removeReferenceFromCollection(workspaceId, itemUrl, parameter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/items/remove_ref_to_collection/" +
+                encodeURIComponent(workspaceId) +
+                "/" +
+                encodeURIComponent(itemUrl);
+            yield ApiConnection.post(url, {
+                property: parameter.property,
+                workspaceId: parameter.referenceWorkspaceId,
+                referenceUri: parameter.referenceUri
+            });
+        });
+    }
+    exports.removeReferenceFromCollection = removeReferenceFromCollection;
 });
 //# sourceMappingURL=Client.Items.js.map

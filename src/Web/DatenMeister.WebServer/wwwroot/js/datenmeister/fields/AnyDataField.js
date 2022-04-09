@@ -1,4 +1,4 @@
-define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client.Items", "../Forms.SelectItemControl", "./SubElementField", "./ReferenceField"], function (require, exports, Interfaces_Fields_1, DomHelper_1, ClientItem, SIC, SubElementField, ReferenceField) {
+define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items", "../controls/SelectItemControl", "./SubElementField", "./ReferenceField"], function (require, exports, Interfaces_1, DomHelper_1, ClientItem, SIC, SubElementField, ReferenceField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
@@ -8,7 +8,7 @@ define(["require", "exports", "../Interfaces.Fields", "../DomHelper", "../Client
         ModeValue[ModeValue["Collection"] = 1] = "Collection";
         ModeValue[ModeValue["Reference"] = 2] = "Reference";
     })(ModeValue || (ModeValue = {}));
-    class Field extends Interfaces_Fields_1.BaseField {
+    class Field extends Interfaces_1.BaseField {
         createDom(dmElement) {
             const tthis = this;
             this._element = dmElement;

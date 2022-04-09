@@ -1,4 +1,4 @@
-﻿import {DmObject} from "./Mof";
+﻿import {DmObject} from "../Mof";
 
 export interface IFormConfiguration {
     allowAddingNewProperties?: boolean;

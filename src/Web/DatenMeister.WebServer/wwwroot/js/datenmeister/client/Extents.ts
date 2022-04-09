@@ -1,6 +1,6 @@
-﻿import * as Settings from "./Settings"
-import * as ApiConnection from "./ApiConnection"
-import * as Mof from "./Mof";
+﻿import * as Settings from "../Settings"
+import * as ApiConnection from "../ApiConnection"
+import * as Mof from "../Mof";
 
 export function createXmi(params: ICreateXmiParams) {
     return new Promise<ICreateXmiResult>((resolve, reject) => {

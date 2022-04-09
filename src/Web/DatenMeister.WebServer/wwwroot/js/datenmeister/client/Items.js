@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
+define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
@@ -225,4 +225,4 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     }
     exports.removeReferenceFromCollection = removeReferenceFromCollection;
 });
-//# sourceMappingURL=Client.Items.js.map
+//# sourceMappingURL=Items.js.map

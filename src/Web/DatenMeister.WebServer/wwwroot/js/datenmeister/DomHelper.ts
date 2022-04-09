@@ -1,4 +1,4 @@
-﻿import * as ElementClient from "./Client.Elements"
+﻿import * as ElementClient from "./client/Elements"
 import * as ApiModels from "./ApiModels";
 import {DmObject} from "./Mof";
 

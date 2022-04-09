@@ -1,4 +1,4 @@
-define(["require", "exports", "../Mof", "../Forms.FieldFactory", "../Forms.SelectItemControl", "../Client.Items", "../MofResolver", "../Navigator", "../Settings"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, MofResolver_1, Navigator_1, Settings) {
+define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../MofResolver", "../Navigator", "../Settings"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, MofResolver_1, Navigator_1, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;

@@ -1,8 +1,8 @@
-define(["require", "exports", "../Mof", "../Interfaces.Fields"], function (require, exports, Mof, Interfaces_Fields_1) {
+define(["require", "exports", "../Mof", "./Interfaces"], function (require, exports, Mof, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
-    class Field extends Interfaces_Fields_1.BaseField {
+    class Field extends Interfaces_1.BaseField {
         createDom(dmElement) {
             var _a, _b, _c, _d, _e, _f;
             const fieldName = (_b = (_a = this.field.get('name')) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";

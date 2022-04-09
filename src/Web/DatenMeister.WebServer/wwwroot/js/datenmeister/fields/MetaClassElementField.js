@@ -1,8 +1,8 @@
-define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.SelectItemControl", "../Client.Items"], function (require, exports, DomHelper_1, Interfaces_Fields_1, Forms_SelectItemControl_1, Client_Items_1) {
+define(["require", "exports", "../DomHelper", "./Interfaces", "../controls/SelectItemControl", "../client/Items"], function (require, exports, DomHelper_1, Interfaces_1, SelectItemControl_1, Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
-    class Field extends Interfaces_Fields_1.BaseField {
+    class Field extends Interfaces_1.BaseField {
         createDom(dmElement) {
             var _a;
             const tthis = this;
@@ -32,12 +32,12 @@ define(["require", "exports", "../DomHelper", "../Interfaces.Fields", "../Forms.
                 button.text("Change MetaClass");
                 button.on('click', () => {
                     changeMetaClassDiv.empty();
-                    const selectItemCtrl = new Forms_SelectItemControl_1.SelectItemControl();
+                    const selectItemCtrl = new SelectItemControl_1.SelectItemControl();
                     const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
                     selectItemCtrl.setWorkspaceById('Types');
                     selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
                     selectItemCtrl.onItemSelected = (selectedItem) => {
-                        (0, Client_Items_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
+                        (0, Items_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                             .then(() => divSelectItem.remove()).then(() => {
                             if (tthis.configuration.refreshForm !== undefined) {
                                 tthis.configuration.refreshForm();

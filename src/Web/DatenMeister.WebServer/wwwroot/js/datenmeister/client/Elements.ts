@@ -1,6 +1,6 @@
-﻿import {ItemWithNameAndId} from "./ApiModels";
-import * as ApiConnection from "./ApiConnection"
-import * as Settings from "./Settings"
+﻿import {ItemWithNameAndId} from "../ApiModels";
+import * as ApiConnection from "../ApiConnection"
+import * as Settings from "../Settings"
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
     return load(undefined, undefined, undefined);

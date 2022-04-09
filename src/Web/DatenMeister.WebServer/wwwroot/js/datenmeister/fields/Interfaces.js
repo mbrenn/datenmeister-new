@@ -6,4 +6,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.BaseField = BaseField;
 });
-//# sourceMappingURL=Interfaces.Fields.js.map
+//# sourceMappingURL=Interfaces.js.map

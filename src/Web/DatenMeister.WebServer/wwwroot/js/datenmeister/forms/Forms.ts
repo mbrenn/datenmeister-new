@@ -1,11 +1,11 @@
-﻿import * as Mof from "./Mof";
-import * as DataLoader from "./Client.Items";
-import * as ApiConnection from "./ApiConnection";
-import * as Settings from "./Settings";
-import * as DetailForm from "./Forms.DetailForm";
-import * as IForm from "./Forms.Interfaces";
-import {ListForm} from "./Forms.ListForm";
-import {debugElementToDom} from "./DomHelper";
+﻿import * as Mof from "../Mof";
+import * as DataLoader from "../client/Items";
+import * as ApiConnection from "../ApiConnection";
+import * as Settings from "../Settings";
+import * as DetailForm from "./DetailForm";
+import * as IForm from "./Interfaces";
+import {ListForm} from "./ListForm";
+import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
 import DmObject = Mof.DmObject;
 

@@ -1,4 +1,4 @@
-﻿import * as Mof from "./Mof";
+﻿import * as Mof from "../Mof";
 
 export interface IFormNavigation {
     workspace: string;

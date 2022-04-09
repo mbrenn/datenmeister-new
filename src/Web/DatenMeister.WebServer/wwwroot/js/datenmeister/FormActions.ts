@@ -2,8 +2,8 @@
 import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {createJsonFromObject, DmObject} from "./Mof";
-import * as IIForms from "./Forms.Interfaces";
-import * as ECClient from "./Client.Extents";
+import * as IIForms from "./forms/Interfaces";
+import * as ECClient from "./client/Extents";
 
 export module DetailFormActions {
 

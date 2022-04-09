@@ -25,7 +25,7 @@
 
     function CreateViewForm()
     {
-        requirejs(['Forms'], function(Form) {
+        requirejs(['forms/Forms'], function(Form) {
             const detailForm = new Form.DetailFormCreator();
             detailForm.createViewForm(
                 $("#form_view"),
@@ -41,7 +41,7 @@ $(function()
 
 function CreateEditForm()
 {
-    requirejs(['Forms'], function(Form) {
+    requirejs(['forms/Forms'], function(Form) {
         const detailForm = new Form.DetailFormCreator();
         detailForm.createEditForm(
             $("#form_view"),

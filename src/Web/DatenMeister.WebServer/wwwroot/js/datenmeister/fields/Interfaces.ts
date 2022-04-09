@@ -1,6 +1,6 @@
-import {IForm, IFormNavigation} from "Forms.Interfaces";
+import {IForm, IFormNavigation} from "../forms/Interfaces";
 import * as Mof from "Mof";
-import { IFormConfiguration } from "./IFormConfiguration";
+import { IFormConfiguration } from "../forms/IFormConfiguration";
 
 
 export interface IFormField

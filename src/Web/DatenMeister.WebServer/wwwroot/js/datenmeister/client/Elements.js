@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ApiConnection", "./Settings"], function (require, exports, ApiConnection, Settings) {
+define(["require", "exports", "../ApiConnection", "../Settings"], function (require, exports, ApiConnection, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.findBySearchString = exports.loadNameByUri = exports.loadNameOf = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
@@ -75,4 +75,4 @@ define(["require", "exports", "./ApiConnection", "./Settings"], function (requir
     }
     exports.findBySearchString = findBySearchString;
 });
-//# sourceMappingURL=Client.Elements.js.map
+//# sourceMappingURL=Elements.js.map

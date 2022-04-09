@@ -1,4 +1,4 @@
-define(["require", "exports", "../Client.Workspace"], function (require, exports, ClientWorkspace) {
+define(["require", "exports", "../client/Workspace"], function (require, exports, ClientWorkspace) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;

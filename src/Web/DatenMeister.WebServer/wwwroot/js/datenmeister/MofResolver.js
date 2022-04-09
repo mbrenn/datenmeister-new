@@ -1,4 +1,4 @@
-define(["require", "exports", "./Client.Items"], function (require, exports, ClientItem) {
+define(["require", "exports", "./client/Items"], function (require, exports, ClientItem) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.resolve = void 0;

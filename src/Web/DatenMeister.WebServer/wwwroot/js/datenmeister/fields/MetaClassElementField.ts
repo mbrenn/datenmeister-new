@@ -1,8 +1,8 @@
 import * as Mof from "../Mof";
 import {injectNameByUri} from "../DomHelper";
-import {BaseField, IFormField} from "../Interfaces.Fields";
-import {SelectItemControl} from "../Forms.SelectItemControl";
-import {setMetaclass} from "../Client.Items";
+import {BaseField, IFormField} from "./Interfaces";
+import {SelectItemControl} from "../controls/SelectItemControl";
+import {setMetaclass} from "../client/Items";
 
 export class Field extends BaseField implements IFormField {
     _textBox: JQuery<HTMLInputElement>;

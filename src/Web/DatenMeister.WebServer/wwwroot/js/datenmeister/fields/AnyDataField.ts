@@ -1,8 +1,8 @@
-﻿import {BaseField, IFormField} from "../Interfaces.Fields";
+﻿import {BaseField, IFormField} from "./Interfaces";
 import {DmObject} from "../Mof";
 import {injectNameByUri} from "../DomHelper";
-import * as ClientItem from "../Client.Items"
-import * as SIC from "../Forms.SelectItemControl";
+import * as ClientItem from "../client/Items"
+import * as SIC from "../controls/SelectItemControl";
 import * as SubElementField from "./SubElementField"
 import * as ReferenceField from "./ReferenceField"
 

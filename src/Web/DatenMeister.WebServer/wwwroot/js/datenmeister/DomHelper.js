@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Client.Elements"], function (require, exports, ElementClient) {
+define(["require", "exports", "./client/Elements"], function (require, exports, ElementClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.convertToDom = exports.debugElementToDom = exports.injectNameByUri = void 0;

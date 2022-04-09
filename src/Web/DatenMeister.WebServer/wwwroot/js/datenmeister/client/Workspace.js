@@ -1,4 +1,4 @@
-define(["require", "exports", "./Settings", "./ApiConnection"], function (require, exports, Settings, ApiConnection) {
+define(["require", "exports", "../Settings", "../ApiConnection"], function (require, exports, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.deleteWorkspace = exports.createWorkspace = void 0;
@@ -36,4 +36,4 @@ define(["require", "exports", "./Settings", "./ApiConnection"], function (requir
     }
     exports.deleteWorkspace = deleteWorkspace;
 });
-//# sourceMappingURL=Client.Workspace.js.map
+//# sourceMappingURL=Workspace.js.map

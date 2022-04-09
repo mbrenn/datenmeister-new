@@ -1,8 +1,8 @@
-﻿import * as InterfacesForms from "./Forms.Interfaces";
-import * as InterfacesFields from "./Interfaces.Fields";
-import * as Mof from "./Mof";
-import {createField} from "./Forms.FieldFactory";
-import * as TextField from "./fields/TextField"
+﻿import * as InterfacesForms from "../forms/Interfaces";
+import * as InterfacesFields from "../fields/Interfaces";
+import * as Mof from "../Mof";
+import {createField} from "./FieldFactory";
+import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
 
 export class DetailForm implements InterfacesForms.IForm {

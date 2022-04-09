@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Client.Extents", "../Client.Workspace", "../Mof"], function (require, exports, ClientExtent, ClientWorkspace, Mof_1) {
+define(["require", "exports", "../client/Extents", "../client/Workspace", "../Mof"], function (require, exports, ClientExtent, ClientWorkspace, Mof_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;

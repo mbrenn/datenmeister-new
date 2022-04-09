@@ -1,4 +1,4 @@
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./Client.Extents"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;

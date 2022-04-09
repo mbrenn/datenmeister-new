@@ -1,10 +1,10 @@
-﻿import {BaseField, IFormField} from "../Interfaces.Fields";
+﻿import {BaseField, IFormField} from "./Interfaces";
 import {DmObject} from "../Mof";
-import {IFormConfiguration} from "../IFormConfiguration";
-import {IForm, IFormNavigation} from "../Forms.Interfaces";
+import {IFormConfiguration} from "../forms/IFormConfiguration";
+import {IForm, IFormNavigation} from "../forms/Interfaces";
 import {injectNameByUri} from "../DomHelper";
-import * as ClientItem from "../Client.Items";
-import * as SIC from "../Forms.SelectItemControl";
+import * as ClientItem from "../client/Items";
+import * as SIC from "../controls/SelectItemControl";
 
 export class Control {
     configuration: IFormConfiguration;

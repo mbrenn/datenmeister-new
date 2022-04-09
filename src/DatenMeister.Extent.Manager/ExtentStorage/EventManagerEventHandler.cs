@@ -22,7 +22,6 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             {
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var workspaceData = _scopeStorage.Get<WorkspaceData>();
-                    workspaceData.TEST = "X";
                     workspaceData.WorkspaceRemoved += (x, y) =>
                     {
                         var logic = new WorkspaceLogic(_scopeStorage);

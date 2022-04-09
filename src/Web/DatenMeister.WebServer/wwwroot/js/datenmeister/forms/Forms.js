@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1, DomHelper_1) {
+define(["require", "exports", "../Mof", "../client/Items", "../ApiConnection", "../Settings", "./DetailForm", "./ListForm", "../DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, ListForm_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.getForm = exports.DetailFormCreator = exports.CollectionFormCreator = exports.FormModel = void 0;
@@ -81,7 +81,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                     let form = $("<div />");
                     const tab = tabs[n];
                     if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                        const listForm = new Forms_ListForm_1.ListForm();
+                        const listForm = new ListForm_1.ListForm();
                         listForm.elements = elements;
                         listForm.formElement = tab;
                         listForm.workspace = this.workspace;
@@ -141,7 +141,7 @@ define(["require", "exports", "./Mof", "./Client.Items", "./ApiConnection", "./S
                     }
                 }
                 else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                    const listForm = new Forms_ListForm_1.ListForm();
+                    const listForm = new ListForm_1.ListForm();
                     listForm.workspace = this.workspace;
                     listForm.extentUri = this.extentUri;
                     listForm.itemId = this.itemId;

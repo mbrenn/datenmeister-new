@@ -1,5 +1,5 @@
-﻿import * as Settings from "./Settings"
-import * as ApiConnection from "./ApiConnection"
+﻿import * as Settings from "../Settings"
+import * as ApiConnection from "../ApiConnection"
 
 export function createWorkspace(id: string, annotation: string, param?: CreateWorkspaceParams) {
     return new Promise<CreateWorkspaceResult>(resolve => {

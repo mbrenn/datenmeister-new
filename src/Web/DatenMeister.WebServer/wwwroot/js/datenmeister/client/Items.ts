@@ -1,7 +1,7 @@
-﻿import * as Mof from "./Mof"
-import * as Settings from "./Settings"
-import * as ApiConnection from "./ApiConnection"
-import {ISuccessResult, ItemWithNameAndId} from "./ApiModels";
+﻿import * as Mof from "../Mof"
+import * as Settings from "../Settings"
+import * as ApiConnection from "../ApiConnection"
+import {ISuccessResult, ItemWithNameAndId} from "../ApiModels";
 
 export async function createItemInExtent(workspaceId: string, extentUri: string, param: ICreateItemInExtentParams) {
     const evaluatedParameter =

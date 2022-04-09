@@ -1,15 +1,14 @@
-import * as InterfacesForms from "./Forms.Interfaces";
-import * as Mof from "./Mof";
-import {DmObject} from "./Mof";
-import {createField} from "./Forms.FieldFactory";
-import * as Settings from "./Settings";
+import * as InterfacesForms from "./Interfaces";
+import * as Mof from "../Mof";
+import {createField} from "./FieldFactory";
+import * as Settings from "../Settings";
 import {IFormConfiguration} from "./IFormConfiguration";
-import * as SIC from "./Forms.SelectItemControl";
+import * as SIC from "../controls/SelectItemControl";
 
 export class ListForm implements InterfacesForms.IForm {
-    elements: Array<DmObject>;
+    elements: Array<Mof.DmObject>;
     extentUri: string;
-    formElement: DmObject;
+    formElement: Mof.DmObject;
     itemId: string;
     workspace: string;
     parentHtml: JQuery<HTMLElement>;
@@ -40,7 +39,7 @@ export class ListForm implements InterfacesForms.IForm {
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {
             for (let n in defaultTypesForNewElements) {
-                const inner = defaultTypesForNewElements[n] as DmObject;
+                const inner = defaultTypesForNewElements[n] as Mof.DmObject;
                 (function (innerValue) {
 
                     const btn = $("<btn class='btn btn-secondary'></btn>");
@@ -84,7 +83,7 @@ export class ListForm implements InterfacesForms.IForm {
         if (!Array.isArray(this.elements)) {
             const div = $("<div></div>");
             div.text("Non-Array elements for ListForm: ");
-            div.append($("<em></em>").text(this.elements));
+            div.append($("<em></em>").text((this.elements as any).toString()));
             parent.append(div);
         } else {
 
@@ -106,7 +105,7 @@ export class ListForm implements InterfacesForms.IForm {
 
             table.append(headerRow);
 
-            let metaClass = (this.formElement.get('metaClass') as DmObject)?.uri;
+            let metaClass = (this.formElement.get('metaClass') as Mof.DmObject)?.uri;
             let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
 
             let elements = this.elements;
@@ -131,7 +130,7 @@ export class ListForm implements InterfacesForms.IForm {
 
                     for (let n in fields) {
                         if (!fields.hasOwnProperty(n)) continue;
-                        const field = fields[n] as DmObject;
+                        const field = fields[n] as Mof.DmObject;
                         let cell = $("<td></td>");
 
                         const fieldMetaClassId = field.metaClass.id;

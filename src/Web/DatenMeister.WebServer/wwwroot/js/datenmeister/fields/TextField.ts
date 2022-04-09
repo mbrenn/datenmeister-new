@@ -1,6 +1,6 @@
 import * as Mof from "../Mof";
 
-import {BaseField, IFormField} from "../Interfaces.Fields";
+import {BaseField, IFormField} from "./Interfaces";
 
 export class Field extends BaseField implements IFormField
 {

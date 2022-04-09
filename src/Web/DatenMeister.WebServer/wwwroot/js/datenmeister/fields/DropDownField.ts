@@ -1,4 +1,4 @@
-import {BaseField, IFormField} from "../Interfaces.Fields";
+import {BaseField, IFormField} from "./Interfaces";
 import {DmObject} from "../Mof";
 
 export class Field extends BaseField implements IFormField {

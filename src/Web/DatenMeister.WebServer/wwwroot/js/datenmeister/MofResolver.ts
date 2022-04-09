@@ -1,5 +1,5 @@
 ﻿import {DmObject} from "./Mof";
-import * as ClientItem from "./Client.Items"
+import * as ClientItem from "./client/Items"
 
 // Resolves the given value
 // This means, that for primitive instances, the value will be directly returns via a defered instance

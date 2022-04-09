@@ -1,5 +1,5 @@
-﻿import * as ClientExtent from "../Client.Extents"
-import * as ClientWorkspace from "../Client.Workspace"
+﻿import * as ClientExtent from "../client/Extents"
+import * as ClientWorkspace from "../client/Workspace"
 import {DmObject} from "../Mof";
 
 export function includeTests() {

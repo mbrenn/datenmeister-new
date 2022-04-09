@@ -9,8 +9,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
     /// </summary>
     public class WorkspaceData
     {
-        public string TEST;
-        
         private Workspace? _default;
 
         /// <summary>
@@ -95,6 +93,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
     /// </summary>
     public class WorkspaceEventArgs : EventArgs
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
     }
 }

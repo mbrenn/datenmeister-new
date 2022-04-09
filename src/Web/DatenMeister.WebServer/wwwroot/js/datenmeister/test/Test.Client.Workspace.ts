@@ -1,4 +1,4 @@
-﻿import * as ClientWorkspace from "../Client.Workspace"
+﻿import * as ClientWorkspace from "../client/Workspace"
 
 export function includeTests() {
 

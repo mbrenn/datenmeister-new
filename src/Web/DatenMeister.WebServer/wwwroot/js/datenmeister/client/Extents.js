@@ -1,4 +1,4 @@
-define(["require", "exports", "./Settings", "./ApiConnection", "./Mof"], function (require, exports, Settings, ApiConnection, Mof) {
+define(["require", "exports", "../Settings", "../ApiConnection", "../Mof"], function (require, exports, Settings, ApiConnection, Mof) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getProperties = exports.setProperties = exports.deleteExtent = exports.createXmi = void 0;
@@ -39,4 +39,4 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Mof"], functio
     }
     exports.getProperties = getProperties;
 });
-//# sourceMappingURL=Client.Extents.js.map
+//# sourceMappingURL=Extents.js.map

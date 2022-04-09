@@ -1,4 +1,4 @@
-define(["require", "exports", "../DomHelper", "../Client.Items", "../Forms.SelectItemControl"], function (require, exports, DomHelper_1, ClientItem, SIC) {
+define(["require", "exports", "../DomHelper", "../client/Items", "../controls/SelectItemControl"], function (require, exports, DomHelper_1, ClientItem, SIC) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;

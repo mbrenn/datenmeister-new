@@ -1,4 +1,4 @@
-import {findBySearchString} from "./Client.Elements";
+import {findBySearchString} from "./client/Elements";
 import {navigateToExtent, navigateToItemByUrl} from "./Navigator";
 
 export function executeSearchByText(searchText: string) {

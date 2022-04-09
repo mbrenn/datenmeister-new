@@ -1,8 +1,8 @@
-define(["require", "exports", "../FormActions", "../Interfaces.Fields"], function (require, exports, FormActions_1, Interfaces_Fields_1) {
+define(["require", "exports", "../FormActions", "./Interfaces"], function (require, exports, FormActions_1, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
-    class Field extends Interfaces_Fields_1.BaseField {
+    class Field extends Interfaces_1.BaseField {
         createDom(dmElement) {
             const tthis = this;
             const title = this.field.get('title');

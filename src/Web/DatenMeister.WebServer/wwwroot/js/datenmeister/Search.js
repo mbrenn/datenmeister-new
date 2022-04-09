@@ -1,9 +1,9 @@
-define(["require", "exports", "./Client.Elements", "./Navigator"], function (require, exports, Client_Elements_1, Navigator_1) {
+define(["require", "exports", "./client/Elements", "./Navigator"], function (require, exports, Elements_1, Navigator_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.executeSearchByText = void 0;
     function executeSearchByText(searchText) {
-        (0, Client_Elements_1.findBySearchString)(searchText).then(result => {
+        (0, Elements_1.findBySearchString)(searchText).then(result => {
             switch (result.resultType) {
                 case 'reference':
                     (0, Navigator_1.navigateToItemByUrl)(result.reference.workspace, result.reference.uri);

@@ -1,12 +1,12 @@
-﻿import {IFormField} from "../Interfaces.Fields";
+﻿import {IFormField} from "./Interfaces";
 import {DmObject} from "../Mof";
-import * as FieldFactory from "../Forms.FieldFactory";
-import * as SIC from "../Forms.SelectItemControl";
-import * as ClientItems from "../Client.Items";
+import * as FieldFactory from "../forms/FieldFactory";
+import * as SIC from "../controls/SelectItemControl";
+import * as ClientItems from "../client/Items";
 import {resolve} from "../MofResolver"
 import {navigateToItemByUrl} from "../Navigator";
-import {IFormConfiguration} from "../IFormConfiguration";
-import {IForm, IFormNavigation} from "../Forms.Interfaces";
+import {IFormConfiguration} from "../forms/IFormConfiguration";
+import {IForm, IFormNavigation} from "../forms/Interfaces";
 import * as Settings from "../Settings";
 
 export class Control {

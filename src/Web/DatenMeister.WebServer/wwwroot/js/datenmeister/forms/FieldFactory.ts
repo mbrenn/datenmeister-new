@@ -1,15 +1,15 @@
-﻿import * as TextField from "./fields/TextField";
-import * as CheckboxField from "./fields/CheckboxField";
-import * as DropDownField from "./fields/DropDownField";
-import * as MetaClassElementField from "./fields/MetaClassElementField";
-import * as ActionField from "./fields/ActionField";
-import * as AnyDataField from "./fields/AnyDataField";
-import * as SubElementField from "./fields/SubElementField";
-import * as ReferenceField from "./fields/ReferenceField";
-import * as UnknownField from "./fields/UnknownField";
-import {IFormField} from "./Interfaces.Fields";
+﻿import * as TextField from "../fields/TextField";
+import * as CheckboxField from "../fields/CheckboxField";
+import * as DropDownField from "../fields/DropDownField";
+import * as MetaClassElementField from "../fields/MetaClassElementField";
+import * as ActionField from "../fields/ActionField";
+import * as AnyDataField from "../fields/AnyDataField";
+import * as SubElementField from "../fields/SubElementField";
+import * as ReferenceField from "../fields/ReferenceField";
+import * as UnknownField from "../fields/UnknownField";
+import {IFormField} from "../fields/Interfaces";
 import {IForm, IFormNavigation} from "./Forms.Interfaces";
-import {DmObject} from "./Mof";
+import {DmObject} from "../Mof";
 import {IFormConfiguration} from "./IFormConfiguration";
 
 interface ICreateFieldParameter {

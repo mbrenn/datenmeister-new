@@ -1,8 +1,8 @@
 ﻿import {IFormConfiguration} from "./IFormConfiguration";
-import {DmObject} from "./Mof";
-import {debugElementToDom} from "./DomHelper";
+import {DmObject} from "../Mof";
+import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
-import {DetailFormActions} from "./FormActions";
+import {DetailFormActions} from "../FormActions";
 
 export function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,

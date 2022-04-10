@@ -149,7 +149,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                         const settings = new SIC.Settings();
                         settings.showWorkspaceInBreadcrumb = true;
                         settings.showExtentInBreadcrumb = true;
-                        selectItem.onItemSelected = selectedItem => {
+                        selectItem.itemSelected = selectedItem => {
                             ClientItem.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                                 property: tthis.field.get('name'),
                                 referenceUri: selectedItem.uri,

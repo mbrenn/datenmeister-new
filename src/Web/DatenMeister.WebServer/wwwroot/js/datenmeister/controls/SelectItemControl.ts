@@ -9,11 +9,25 @@ export class Settings {
 }
 
 export class SelectItemControl {
-    private htmlWorkspaceSelect: JQuery<HTMLElement>;
-    private htmlItemsList: JQuery<HTMLElement>;
+
+
+    // Defines the dropdown element in which the user can select the extent
     private htmlExtentSelect: JQuery<HTMLElement>;
+    
+    // Defines the dropdown element in which the user can select the active works
+    private htmlWorkspaceSelect: JQuery<HTMLElement>;
+    
+    // Defines the element in which the user can select the corresponding list item. 
+    // This element is a clickable list
+    private htmlItemsList: JQuery<HTMLElement>;
+    
+    // Shows the name of the selected elemnt
     private htmlSelectedElements: JQuery<HTMLElement>;
+    
+    // Shows the bread crumb list
     private htmlBreadcrumbList: JQuery<HTMLElement>;
+    
+    // Defines the settings of the Select Item
     private settings: Settings;
 
     private visitedItems: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
@@ -32,8 +46,24 @@ export class SelectItemControl {
     // This value is set to undefined, when no selection shall be given
     private preSelectExtentByUri: string | undefined;
 
-    onItemSelected: (selectedItem: ItemWithNameAndId) => void;
+    /* 
+     * The events that can be subscribed
+     */
+    
+    // This method will be called whenever the user has selected an item
+    itemSelected: (selectedItem: ItemWithNameAndId) => void;
+    
+    // This method will be called when the workspace DOM elements have been updated
+    domWorkspaceUpdated: () => void;
+    
+    // This method will be called when the extents DOM elements have been updated
+    domExtentUpdated: () => void;
+    
+    // This method will be called when the domItems are updated
+    domItemsUpdated: () => void;
+    
 
+    // Initializes the Select Item Control and adds it to the given parent
     init(parent: JQuery<HTMLElement>, settings?: Settings): JQuery {
         this.settings = settings ?? new Settings();
 
@@ -43,39 +73,10 @@ export class SelectItemControl {
         this.htmlSelectedElements = $("<div></div>");
         this.htmlItemsList = $("<ul></ul>");
 
-        this.htmlWorkspaceSelect.on('change', () => {
-            // Find the selected workspace
-            tthis.selectedWorkspace = undefined;
-            const currentWorkspace = tthis.getUserSelectedWorkspace();
-            if (currentWorkspace != "" && currentWorkspace != undefined) {
-                for (let n = 0; n < tthis.loadedWorkspaces.length; n++) {
-                    const item = tthis.loadedWorkspaces[n];
-                    if (item.id == currentWorkspace) {
-                        tthis.selectedWorkspace = item;
-                        break;
-                    }
-                }
-            }
+        // Defines the handler whenever the user changes something
+        this.htmlWorkspaceSelect.on('change', () => tthis.onWorkspaceChangedByUser());
 
-            tthis.loadExtents();
-        });
-
-        this.htmlExtentSelect.on('change', () => {
-            // Find the selected extent
-            tthis.selectedExtent = undefined;
-            const currentExtent = tthis.getUserSelectedExtent();
-            if (currentExtent != "" && currentExtent != undefined) {
-                for (let n = 0; n < tthis.loadedExtents.length; n++) {
-                    const item = tthis.loadedExtents[n];
-                    if (item.extentUri == currentExtent) {
-                        tthis.selectedExtent = item;
-                        break;
-                    }
-                }
-            }
-
-            tthis.loadItems();
-        });
+        this.htmlExtentSelect.on('change', () => tthis.onExtentChangedByUser());
 
         const div = $(
             "<table class='dm-selectitemcontrol'>" +
@@ -98,7 +99,7 @@ export class SelectItemControl {
         this.htmlBreadcrumbList = $(".breadcrumb", div);
         const setButton = $(".dm-selectitemcontrol-button", div);
         setButton.on('click', () => {
-            const eventButton = tthis.onItemSelected;
+            const eventButton = tthis.itemSelected;
             if (eventButton != undefined) {
                 eventButton(tthis.selectedItem);
             }
@@ -116,18 +117,57 @@ export class SelectItemControl {
 
         return div;
     }
+    
+    // This method will be called when the user changed the workspace
+    private async onWorkspaceChangedByUser()
+    {
+        // Find the selected workspace
+        this.selectedWorkspace = undefined;
+        const currentWorkspace = this.getUserSelectedWorkspace();
+        if (currentWorkspace != "" && currentWorkspace != undefined) {
+            for (let n = 0; n < this.loadedWorkspaces.length; n++) {
+                const item = this.loadedWorkspaces[n];
+                if (item.id == currentWorkspace) {
+                    this.selectedWorkspace = item;
+                    break;
+                }
+            }
+        }
+
+        await this.loadExtents();
+    }
+    
+    // This method will be called when the user changed the extent select item
+    private async onExtentChangedByUser()
+    {
+        // Find the selected extent
+        this.selectedExtent = undefined;
+        const currentExtent = this.getUserSelectedExtent();
+        if (currentExtent != "" && currentExtent != undefined) {
+            for (let n = 0; n < this.loadedExtents.length; n++) {
+                const item = this.loadedExtents[n];
+                if (item.extentUri == currentExtent) {
+                    this.selectedExtent = item;
+                    break;
+                }
+            }
+        }
+
+        await this.loadItems();
+    }
 
     collapse() {
         this._containerDiv?.remove();
         this._containerDiv = undefined;
     }
 
-    loadWorkspaces(): JQueryDeferred<any> {
+    loadWorkspaces(): Promise<any> {
         const tthis = this;
-        const r = jQuery.Deferred<any, never, never>();
-        tthis.htmlWorkspaceSelect.empty();
+        return new Promise<any>(async resolve => {
+            tthis.htmlWorkspaceSelect.empty();
 
-        EL.getAllWorkspaces().then((items) => {
+            const items = await EL.getAllWorkspaces();
+
             tthis.visitedItems.length = 0;
             tthis.loadedWorkspaces = items;
             const none = $("<option value=''>--- None ---</option>");
@@ -146,13 +186,11 @@ export class SelectItemControl {
 
             tthis.refreshBreadcrumb();
             tthis.evaluatePreSelectedWorkspace();
+            
+            await this.loadExtents();
+            
+            resolve(true);
         });
-
-        this.loadExtents().done(() => {
-            r.resolve(true);
-        });
-
-        return r;
     }
 
     // This call may also be given before the workspaces has been loaded
@@ -168,7 +206,6 @@ export class SelectItemControl {
     }
 
     // Sets the workspace by given the id
-
     getUserSelectedWorkspace(): string {
         return this.htmlWorkspaceSelect.val()?.toString() ?? "";
     }
@@ -179,110 +216,110 @@ export class SelectItemControl {
         return this.htmlExtentSelect.val()?.toString() ?? "";
     }
 
-    loadExtents(): JQueryDeferred<any> {
-        const r = jQuery.Deferred<any, never, never>();
-
+    loadExtents(): Promise<any> {
         const tthis = this;
-        const workspaceId = this.getUserSelectedWorkspace();
-        tthis.htmlSelectedElements.text(workspaceId);
-        this.htmlExtentSelect.empty();
+        return new Promise<any>(async resolve => {
 
-        if (workspaceId == "") {
-            const select = $("<option value=''>--- Select Workspace ---</option>");
-            this.htmlExtentSelect.append(select);
-        } else {
-            EL.getAllExtents(workspaceId).then(items => {
+            const workspaceId = this.getUserSelectedWorkspace();
+            tthis.htmlSelectedElements.text(workspaceId);
+            this.htmlExtentSelect.empty();
 
-                tthis.visitedItems.length = 0;
+            if (workspaceId == "") {
+                const select = $("<option value=''>--- Select Workspace ---</option>");
+                this.htmlExtentSelect.append(select);
+            } else {
+                EL.getAllExtents(workspaceId).then(items => {
 
-                const none = $("<option value=''>--- None ---</option>");
-                tthis.htmlExtentSelect.append(none);
+                    tthis.visitedItems.length = 0;
 
-                tthis.loadedExtents = items;
+                    const none = $("<option value=''>--- None ---</option>");
+                    tthis.htmlExtentSelect.append(none);
 
-                for (const n in items) {
-                    if (!items.hasOwnProperty(n)) continue;
+                    tthis.loadedExtents = items;
 
-                    const item = items[n];
-                    const option = $("<option></option>");
-                    option.val(item.extentUri);
-                    option.text(item.name);
+                    for (const n in items) {
+                        if (!items.hasOwnProperty(n)) continue;
 
-                    tthis.htmlExtentSelect.append(option);
-                }
+                        const item = items[n];
+                        const option = $("<option></option>");
+                        option.val(item.extentUri);
+                        option.text(item.name);
 
-                tthis.evaluatePreSelectedExtent();
-            });
-        }
+                        tthis.htmlExtentSelect.append(option);
+                    }
 
-        tthis.refreshBreadcrumb();
-        this.loadItems().done(() => {
-            r.resolve(true);
+                    tthis.evaluatePreSelectedExtent();
+                });
+            }
+
+            tthis.refreshBreadcrumb();
+            await this.loadItems();
+
+            resolve(true);
         });
-
-        return r;
     }
 
-    loadItems(selectedItem?: string): JQueryDeferred<any> {
-        const r = jQuery.Deferred<any, never, never>();
+    loadItems(selectedItem?: string): Promise<any> {
 
-        const workspaceId = this.getUserSelectedWorkspace();
-        const extentUri = this.getUserSelectedExtent();
-        const tthis = this;
-        this.htmlItemsList.empty();
+        const tthis = this;        
+        return new Promise<any>(async resolve => {
 
-        if (workspaceId == "" || extentUri == "") {
-            const select = $("<li>--- Select Extent ---</li>");
-            this.htmlItemsList.append(select);
-            this.visitedItems.length = 0;
+            const workspaceId = this.getUserSelectedWorkspace();
+            const extentUri = this.getUserSelectedExtent();
+            this.htmlItemsList.empty();
 
-            if (extentUri !== "" && extentUri !== undefined && extentUri !== null) {
-                this.visitedItems.push(
-                    {
-                        id: extentUri,
-                        name: extentUri,
-                        fullName: extentUri,
-                        extentUri: extentUri
-                    }
-                );
-            }
+            if (workspaceId == "" || extentUri == "") {
+                const select = $("<li>--- Select Extent ---</li>");
+                this.htmlItemsList.append(select);
+                this.visitedItems.length = 0;
 
-            r.resolve(true);
-        } else {
-            const funcElements = (items: ItemWithNameAndId[]) => {
-
-                for (const n in items) {
-                    if (!items.hasOwnProperty(n)) continue;
-
-                    const item = items[n];
-                    const option = $("<li></li>");
-                    option.text(item.name);
-                    ((innerItem) =>
-                        option.on('click', () => {
-                            tthis.selectedItem = innerItem;
-                            tthis.loadItems(innerItem.id);
-                            tthis.htmlSelectedElements.text(innerItem.fullName);
-                            tthis.visitedItems.push(item);
-                            tthis.refreshBreadcrumb();
-                        }))(item);
-
-                    tthis.htmlItemsList.append(option);
+                if (extentUri !== "" && extentUri !== undefined && extentUri !== null) {
+                    this.visitedItems.push(
+                        {
+                            id: extentUri,
+                            name: extentUri,
+                            fullName: extentUri,
+                            extentUri: extentUri
+                        }
+                    );
                 }
 
-                r.resolve(true);
-            };
-
-            if (selectedItem === undefined || selectedItem === null) {
-                tthis.htmlSelectedElements.text(extentUri);
-                EL.getAllRootItems(workspaceId, extentUri).then(funcElements);
+                resolve(true);
+                
             } else {
-                EL.getAllChildItems(workspaceId, extentUri, selectedItem).then(funcElements);
+                const funcElements = (items: ItemWithNameAndId[]) => {
+
+                    for (const n in items) {
+                        if (!items.hasOwnProperty(n)) continue;
+
+                        const item = items[n];
+                        const option = $("<li></li>");
+                        option.text(item.name);
+                        ((innerItem) =>
+                            option.on('click', () => {
+                                tthis.selectedItem = innerItem;
+                                tthis.loadItems(innerItem.id);
+                                tthis.htmlSelectedElements.text(innerItem.fullName);
+                                tthis.visitedItems.push(item);
+                                tthis.refreshBreadcrumb();
+                            }))(item);
+
+                        tthis.htmlItemsList.append(option);
+                    }
+
+                    resolve(true);
+                };
+
+                if (selectedItem === undefined || selectedItem === null) {
+                    tthis.htmlSelectedElements.text(extentUri);
+                    EL.getAllRootItems(workspaceId, extentUri).then(funcElements);
+                } else {
+                    EL.getAllChildItems(workspaceId, extentUri, selectedItem).then(funcElements);
+                }
             }
-        }
 
-        tthis.refreshBreadcrumb();
-
-        return r;
+            tthis.refreshBreadcrumb();
+        });
     }
 
     refreshBreadcrumb() {
@@ -333,7 +370,7 @@ export class SelectItemControl {
     }
 
     // Evaluates the preselection of the workspaces
-    private evaluatePreSelectedWorkspace() {
+    private async evaluatePreSelectedWorkspace() {
 
         if (this.preSelectWorkspaceById === undefined) {
             return;
@@ -341,18 +378,18 @@ export class SelectItemControl {
 
         this.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
         this.preSelectWorkspaceById = undefined;
-        this.loadExtents();
+        await this.loadExtents();
     }
 
     // Evaluates the preselection of the workspaces
-    private evaluatePreSelectedExtent() {
+    private async evaluatePreSelectedExtent() {
         if (this.preSelectExtentByUri === undefined) {
             return;
         }
 
         this.htmlExtentSelect.val(this.preSelectExtentByUri);
         this.preSelectExtentByUri = undefined;
-        this.loadItems();
+        await this.loadItems();
     }
 
     addBreadcrumbItem(text: string, onClick: () => void): void {

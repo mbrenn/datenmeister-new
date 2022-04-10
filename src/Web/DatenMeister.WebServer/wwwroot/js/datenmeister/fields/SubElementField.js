@@ -118,7 +118,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                     const settings = new SIC.Settings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
-                    selectItem.onItemSelected = selectedItem => {
+                    selectItem.itemSelected = selectedItem => {
                         ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,

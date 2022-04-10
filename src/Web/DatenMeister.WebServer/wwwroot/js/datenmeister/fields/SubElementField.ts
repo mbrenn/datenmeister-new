@@ -163,7 +163,7 @@ export class Control {
                 const settings = new SIC.Settings();
                 settings.showWorkspaceInBreadcrumb = true;
                 settings.showExtentInBreadcrumb = true;
-                selectItem.onItemSelected = selectedItem => {
+                selectItem.itemSelected = selectedItem => {
                     ClientItems.addReferenceToCollection(
                         tthis.form.workspace,
                         tthis.itemUrl,

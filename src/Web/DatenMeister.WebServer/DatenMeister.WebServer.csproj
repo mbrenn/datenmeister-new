@@ -15,10 +15,8 @@
 
   <ItemGroup>
     <TypeScriptCompile Remove="node_modules\**" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Extents.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Workspace.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Controls.SelectItemControl.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\TestLibrary.ts" />
+    <TypeScriptCompile Include="wwwroot\js\**.ts" />
+    <TypeScriptCompile Include="wwwroot\js\burnsystems\tests\events.test.ts" />
   </ItemGroup>
 
   <ItemGroup>

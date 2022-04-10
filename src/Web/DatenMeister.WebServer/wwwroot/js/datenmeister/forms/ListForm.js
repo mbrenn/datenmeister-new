@@ -131,7 +131,7 @@ define(["require", "exports", "./FieldFactory", "../Settings", "../controls/Sele
             settings.showExtentInBreadcrumb = true;
             selectItem.setWorkspaceById('Types');
             selectItem.setExtentByUri("dm:///_internal/types/internal");
-            selectItem.onItemSelected = selectedItem => {
+            selectItem.itemSelected = selectedItem => {
                 if (selectedItem === undefined) {
                     document.location.href =
                         Settings.baseUrl +

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -314,33 +315,32 @@ namespace DatenMeister.Core.EMOF.Implementation
             return null;
         }
 
+        /// <summary>
+        /// Clears all resolve caches
+        /// </summary>
+        internal void ClearResolveCache()
+        {
+            _resolverCache.Clear();
+            _navigator.ClearResolveCache();
+        }
 
         private class ResolverCache
         {
-            private readonly Dictionary<ResolverKey, object> _cache = new();
+            private readonly ConcurrentDictionary<ResolverKey, object> _cache = new();
 
             public void Clear()
             {
-                lock (_cache)
-                {
-                    _cache.Clear();
-                }
+                _cache.Clear();
             }
 
             public object? GetElementFor(string uri, ResolveType resolveType)
             {
-                lock (_cache)
-                {
-                    return _cache.TryGetValue(new ResolverKey(uri, resolveType), out var result) ? result : null;
-                }
+                return _cache.TryGetValue(new ResolverKey(uri, resolveType), out var result) ? result : null;
             }
 
             public void AddElementFor(string uri, ResolveType resolveType, object foundElement)
             {
-                lock (_cache)
-                {
-                    _cache[new ResolverKey(uri, resolveType)] = foundElement;
-                }
+                _cache[new ResolverKey(uri, resolveType)] = foundElement;
             }
 
             private class ResolverKey

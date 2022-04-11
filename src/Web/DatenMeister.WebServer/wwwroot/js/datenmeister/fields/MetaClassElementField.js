@@ -36,14 +36,14 @@ define(["require", "exports", "../DomHelper", "./Interfaces", "../controls/Selec
                     const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
                     selectItemCtrl.setWorkspaceById('Types');
                     selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
-                    selectItemCtrl.itemSelected = (selectedItem) => {
+                    selectItemCtrl.itemSelected.addListener((selectedItem) => {
                         (0, Items_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                             .then(() => divSelectItem.remove()).then(() => {
                             if (tthis.configuration.refreshForm !== undefined) {
                                 tthis.configuration.refreshForm();
                             }
                         });
-                    };
+                    });
                 });
                 divContainer.append(button);
                 divContainer.append(changeMetaClassDiv);

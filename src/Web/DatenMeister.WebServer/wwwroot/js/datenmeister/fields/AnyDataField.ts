@@ -189,19 +189,20 @@ export class Field extends BaseField implements IFormField {
                     const settings = new SIC.Settings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
-                    selectItem.itemSelected = selectedItem => {
-                        ClientItem.addReferenceToCollection(
-                            tthis.form.workspace,
-                            tthis.itemUrl,
-                            {
-                                property: tthis.field.get('name'),
-                                referenceUri: selectedItem.uri,
-                                referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
-                            }
-                        ).then(() => {
-                            this.updateDomContent();
+                    selectItem.itemSelected.addListener(
+                        selectedItem => {
+                            ClientItem.addReferenceToCollection(
+                                tthis.form.workspace,
+                                tthis.itemUrl,
+                                {
+                                    property: tthis.field.get('name'),
+                                    referenceUri: selectedItem.uri,
+                                    referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
+                                }
+                            ).then(() => {
+                                this.updateDomContent();
+                            });
                         });
-                    };
 
                     selectItem.init(containerChangeCell, settings);
 

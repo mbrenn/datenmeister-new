@@ -62,11 +62,10 @@ export function includeTests() {
                 chai.assert.isTrue(item !== undefined, "Item is not existing");
 
                 const result2 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
-                chai.assert.isTrue(result.success, "Deletion of all root Elements did not work");
-
+                chai.assert.isTrue(result2.success, "Deletion of all root Elements did not work");
 
                 const nonFoundItem = await ClientItems.getObjectByUri("Test", result.itemId);
-                chai.assert.isTrue(item !== undefined, "Item was found when it should not be found");
+                chai.assert.isTrue(nonFoundItem === undefined, "Item was found when it should not be found");
             });
 
             it('Get and Set Properties', async function () {

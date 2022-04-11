@@ -38,6 +38,14 @@ namespace DatenMeister.Core.Runtime
         {
             return _extent.ScopeStorage?.Get<ResolveHooks>().Get(parameter);
         }
+        
+        /// <summary>
+        /// Clears the complete resolve cache
+        /// </summary>
+        public void ClearResolveCache()
+        {
+            _cacheIds.Clear();
+        }
 
         /// <summary>
         /// Gets the sub element by the uri or null, if the extent does not contain the uri, null is returned

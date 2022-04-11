@@ -11,6 +11,9 @@
 
 <h2>Test Result</h2>
 
+<div id="dom_test">
+    
+</div>
 <div id="mocha">
     
 </div>
@@ -25,10 +28,11 @@ $(() =>
 {
     requirejs(['test/TestLibrary'], function(Test)
     {
+        mocha.timeout(200000);
         Test.includeTests();
-        mocha.timeout(20000);
         mocha.run();
     });
 });
 
 </script>
+

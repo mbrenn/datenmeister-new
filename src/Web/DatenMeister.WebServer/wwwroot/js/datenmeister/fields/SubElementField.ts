@@ -163,19 +163,20 @@ export class Control {
                 const settings = new SIC.Settings();
                 settings.showWorkspaceInBreadcrumb = true;
                 settings.showExtentInBreadcrumb = true;
-                selectItem.itemSelected = selectedItem => {
-                    ClientItems.addReferenceToCollection(
-                        tthis.form.workspace,
-                        tthis.itemUrl,
-                        {
-                            property: tthis.propertyName,
-                            referenceUri: selectedItem.uri,
-                            referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
-                        }
-                    ).then(() => {
-                        this.reloadValuesFromServer();
+                selectItem.itemSelected.addListener(
+                    selectedItem => {
+                        ClientItems.addReferenceToCollection(
+                            tthis.form.workspace,
+                            tthis.itemUrl,
+                            {
+                                property: tthis.propertyName,
+                                referenceUri: selectedItem.uri,
+                                referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
+                            }
+                        ).then(() => {
+                            this.reloadValuesFromServer();
+                        });
                     });
-                };
 
                 selectItem.init(containerDiv, settings);
 

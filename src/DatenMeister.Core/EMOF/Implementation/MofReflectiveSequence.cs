@@ -131,6 +131,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             // Performs now the final deletion
             MofObject.ProviderObject.EmptyListForProperty(PropertyName);
+            
+            
             UpdateContent();
         }
 
@@ -161,6 +163,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 result = MofObject.ProviderObject.RemoveFromProperty(PropertyName, value);
             }
+
 
             UpdateContent();
             return result;
@@ -227,6 +230,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
             MofObject.Extent?.SignalUpdateOfContent();
+            (MofObject.Extent as MofUriExtent)?.ClearResolveCache();
         }
     }
 }

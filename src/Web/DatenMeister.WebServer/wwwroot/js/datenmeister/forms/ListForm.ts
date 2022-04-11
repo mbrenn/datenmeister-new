@@ -168,25 +168,26 @@ export function openMetaClassSelectionFormForNewItem(buttonDiv: JQuery, containe
         settings.showExtentInBreadcrumb = true;
         selectItem.setWorkspaceById('Types');
         selectItem.setExtentByUri("dm:///_internal/types/internal");
-        selectItem.itemSelected = selectedItem => {
-            if (selectedItem === undefined) {
-                document.location.href =
-                    Settings.baseUrl +
-                    "ItemAction/Extent.CreateItem?workspace=" +
-                    encodeURIComponent(workspace) +
-                    "&extent=" +
-                    encodeURIComponent(extentUri);
-            } else {
-                document.location.href =
-                    Settings.baseUrl +
-                    "ItemAction/Extent.CreateItem?workspace=" +
-                    encodeURIComponent(workspace) +
-                    "&extent=" +
-                    encodeURIComponent(extentUri) +
-                    "&metaclass=" +
-                    encodeURIComponent(selectedItem.uri);
-            }
-        };
+        selectItem.itemSelected.addListener(
+            selectedItem => {
+                if (selectedItem === undefined) {
+                    document.location.href =
+                        Settings.baseUrl +
+                        "ItemAction/Extent.CreateItem?workspace=" +
+                        encodeURIComponent(workspace) +
+                        "&extent=" +
+                        encodeURIComponent(extentUri);
+                } else {
+                    document.location.href =
+                        Settings.baseUrl +
+                        "ItemAction/Extent.CreateItem?workspace=" +
+                        encodeURIComponent(workspace) +
+                        "&extent=" +
+                        encodeURIComponent(extentUri) +
+                        "&metaclass=" +
+                        encodeURIComponent(selectedItem.uri);
+                }
+            });
 
         selectItem.init(containerDiv, settings);
     });

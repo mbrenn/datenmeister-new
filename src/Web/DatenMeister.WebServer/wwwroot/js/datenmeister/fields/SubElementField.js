@@ -118,7 +118,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                     const settings = new SIC.Settings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
-                    selectItem.itemSelected = selectedItem => {
+                    selectItem.itemSelected.addListener(selectedItem => {
                         ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
@@ -126,7 +126,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                         }).then(() => {
                             this.reloadValuesFromServer();
                         });
-                    };
+                    });
                     selectItem.init(containerDiv, settings);
                     return false;
                 });

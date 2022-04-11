@@ -53,9 +53,9 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                         const item = yield ClientItems.getObjectByUri("Test", result.itemId);
                         chai.assert.isTrue(item !== undefined, "Item is not existing");
                         const result2 = yield ClientItems.deleteRootElements("Test", "dm:///unittest");
-                        chai.assert.isTrue(result.success, "Deletion of all root Elements did not work");
+                        chai.assert.isTrue(result2.success, "Deletion of all root Elements did not work");
                         const nonFoundItem = yield ClientItems.getObjectByUri("Test", result.itemId);
-                        chai.assert.isTrue(item !== undefined, "Item was found when it should not be found");
+                        chai.assert.isTrue(nonFoundItem === undefined, "Item was found when it should not be found");
                     });
                 });
                 it('Get and Set Properties', function () {

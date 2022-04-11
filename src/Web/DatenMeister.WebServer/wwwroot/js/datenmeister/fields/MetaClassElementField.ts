@@ -44,14 +44,15 @@ export class Field extends BaseField implements IFormField {
                 selectItemCtrl.setWorkspaceById('Types');
                 selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
 
-                selectItemCtrl.itemSelected = (selectedItem) => {
-                    setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
-                        .then(() => divSelectItem.remove()).then(() => {
-                        if (tthis.configuration.refreshForm !== undefined) {
-                            tthis.configuration.refreshForm();
-                        }
+                selectItemCtrl.itemSelected.addListener(
+                    (selectedItem) => {
+                        setMetaclass(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
+                            .then(() => divSelectItem.remove()).then(() => {
+                            if (tthis.configuration.refreshForm !== undefined) {
+                                tthis.configuration.refreshForm();
+                            }
+                        });
                     });
-                }
             });
 
             divContainer.append(button);

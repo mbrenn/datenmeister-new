@@ -131,7 +131,7 @@ define(["require", "exports", "./FieldFactory", "../Settings", "../controls/Sele
             settings.showExtentInBreadcrumb = true;
             selectItem.setWorkspaceById('Types');
             selectItem.setExtentByUri("dm:///_internal/types/internal");
-            selectItem.itemSelected = selectedItem => {
+            selectItem.itemSelected.addListener(selectedItem => {
                 if (selectedItem === undefined) {
                     document.location.href =
                         Settings.baseUrl +
@@ -150,7 +150,7 @@ define(["require", "exports", "./FieldFactory", "../Settings", "../controls/Sele
                             "&metaclass=" +
                             encodeURIComponent(selectedItem.uri);
                 }
-            };
+            });
             selectItem.init(containerDiv, settings);
         });
     }

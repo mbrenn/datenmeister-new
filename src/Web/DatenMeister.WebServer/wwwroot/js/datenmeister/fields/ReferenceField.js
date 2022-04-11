@@ -38,7 +38,7 @@ define(["require", "exports", "../DomHelper", "../client/Items", "../controls/Se
                     const settings = new SIC.Settings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
-                    selectItem.itemSelected = selectedItem => {
+                    selectItem.itemSelected.addListener(selectedItem => {
                         ClientItem.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
@@ -46,7 +46,7 @@ define(["require", "exports", "../DomHelper", "../client/Items", "../controls/Se
                         }).then(() => {
                             this.reloadValuesFromServer();
                         });
-                    };
+                    });
                     selectItem.init(containerChangeCell, settings);
                     return false;
                 });

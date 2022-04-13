@@ -33,12 +33,12 @@ define(["require", "exports", "../client/Workspace", "../client/Extents", "../cl
                     }
                     const sic = new SelectItemControl_1.SelectItemControl();
                     const query = yield sic.initAsync(div);
-                    const workspace = $("#dm-sic-workspace select", query);
+                    const workspace = $(".dm-sic-workspace select", query);
                     chai.assert.isTrue(workspace !== undefined, "No select given");
                     const children = workspace.children();
                     let found = false;
                     children.each((index, child) => {
-                        if ($(child).text() === "abc") {
+                        if ($(child).text() === "Test") {
                             found = true;
                         }
                     });

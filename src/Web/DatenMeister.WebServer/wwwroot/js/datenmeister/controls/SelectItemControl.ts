@@ -99,25 +99,25 @@ export class SelectItemControl {
             "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
             "<tr><td>Items: </td>" +
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
-            "<div class='items'></div>" +
+            "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            "<tr><td>Selected Item: </td><td class='dm-selectitemcontrol-selected'></td></tr>" +
+            "<tr><td>Selected Item: </td><td class='sic'></td></tr>" +
             "<tr><td></td><td class='selected'>" +
-            (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-selectitemcontrol-cancelbtn' type='button'>Cancel</button>" : "") +
-            "<button class='btn btn-primary dm-selectitemcontrol-button' type='button'>Set</button></td></tr>" +
+            (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
+            "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
             "</table>");
 
-        $(".workspace", div).append(this.htmlWorkspaceSelect);
-        $(".extent", div).append(this.htmlExtentSelect);
-        $(".items", div).append(this.htmlItemsList);
-        $(".dm-selectitemcontrol-selected", div).append(this.htmlSelectedElements);
+        $(".dm-sic-workspace", div).append(this.htmlWorkspaceSelect);
+        $(".dm-sic-extent", div).append(this.htmlExtentSelect);
+        $(".dm-sic-items", div).append(this.htmlItemsList);
+        $(".dm-sic-selected", div).append(this.htmlSelectedElements);
         this.htmlBreadcrumbList = $(".breadcrumb", div);
-        const setButton = $(".dm-selectitemcontrol-button", div);
+        const setButton = $(".dm-sic-button", div);
         setButton.on('click', () => {
             tthis.itemSelected.invoke(tthis.selectedItem);
         });
 
-        const cancelButton = $(".dm-selectitemcontrol-cancelbtn", div);
+        const cancelButton = $(".dm-sic-cancelbtn", div);
         cancelButton.on('click', () => {
             this.collapse();
         });

@@ -38,22 +38,20 @@ export function includeTests() {
                             const sic = new SelectItemControl();
                             const query = await sic.initAsync(div);
 
-                            const workspace = $("#dm-sic-workspace select", query);
+                            const workspace = $(".dm-sic-workspace select", query);
                             chai.assert.isTrue(workspace !== undefined, "No select given");
 
                             const children = workspace.children();
                             let found = false;
                             children.each((index, child) => {
-                                if ($(child).text() === "abc") {
+                                if ($(child).text() === "Test") {
                                     found = true;
                                 }
                             });
 
-                            chai.assert.isTrue(found, "Workspace was not found");
-
+                            chai.assert.isTrue(found, "Workspace was not found")
 
                             div.remove();
-
                         });
                 });
         });

@@ -3,6 +3,7 @@ import {DmObject} from "../Mof";
 import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
 import {DetailFormActions} from "../FormActions";
+import * as ClientForms from '../client/Forms'
 
 export function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,
@@ -50,14 +51,14 @@ export function createActionFormForEmptyObject(
         // Defines the form
         if (configuration.formUri !== undefined) {
             // Ok, we already have an explicit form
-            deferForm = Forms.getForm(configuration.formUri);
+            deferForm = ClientForms.getForm(configuration.formUri);
         } else if (metaClass === undefined) {
             // If there is no metaclass set, create a total empty form object...
             deferForm = new Promise<DmObject>(resolve => {
                 deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
             });
         } else {
-            deferForm = Forms.getDefaultFormForMetaClass(metaClass);
+            deferForm = ClientForms.getDefaultFormForMetaClass(metaClass);
         }
 
         deferForm.then((form) => {

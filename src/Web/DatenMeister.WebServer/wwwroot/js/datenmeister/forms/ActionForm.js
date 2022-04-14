@@ -1,4 +1,4 @@
-define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActions"], function (require, exports, Mof_1, DomHelper_1, Forms, FormActions_1) {
+define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActions", "../client/Forms"], function (require, exports, Mof_1, DomHelper_1, Forms, FormActions_1, ClientForms) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createActionFormForEmptyObject = void 0;
@@ -35,7 +35,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
             // Defines the form
             if (configuration.formUri !== undefined) {
                 // Ok, we already have an explicit form
-                deferForm = Forms.getForm(configuration.formUri);
+                deferForm = ClientForms.getForm(configuration.formUri);
             }
             else if (metaClass === undefined) {
                 // If there is no metaclass set, create a total empty form object...
@@ -44,7 +44,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
                 });
             }
             else {
-                deferForm = Forms.getDefaultFormForMetaClass(metaClass);
+                deferForm = ClientForms.getDefaultFormForMetaClass(metaClass);
             }
             deferForm.then((form) => {
                 creator.element = element;

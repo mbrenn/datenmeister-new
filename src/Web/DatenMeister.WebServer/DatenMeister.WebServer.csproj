@@ -17,6 +17,8 @@
     <TypeScriptCompile Remove="node_modules\**" />
     <TypeScriptCompile Include="wwwroot\js\**.ts" />
     <TypeScriptCompile Include="wwwroot\js\burnsystems\tests\events.test.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Forms.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ts" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-define(["require", "exports", "./MofTests", "./Test.Client.Workspace", "./Test.Client.Extents", "./Test.Client.Items", "./Test.Controls.SelectItemControl", "../../burnsystems/tests/events.test"], function (require, exports, MofTests, ClientWorkspace, ClientExtent, ClientItems, ControlSelectItemControl, UserEvents) {
+define(["require", "exports", "./MofTests", "./Test.Client.Workspace", "./Test.Client.Extents", "./Test.Client.Items", "./Test.Controls.SelectItemControl", "./Test.Forms", "../../burnsystems/tests/events.test"], function (require, exports, MofTests, ClientWorkspace, ClientExtent, ClientItems, ControlSelectItemControl, Forms, UserEvents) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -9,6 +9,7 @@ define(["require", "exports", "./MofTests", "./Test.Client.Workspace", "./Test.C
         ClientExtent.includeTests();
         ClientItems.includeTests();
         ControlSelectItemControl.includeTests();
+        Forms.includeTests();
     }
     exports.includeTests = includeTests;
 });

@@ -8,9 +8,9 @@ import * as SubElementField from "../fields/SubElementField";
 import * as ReferenceField from "../fields/ReferenceField";
 import * as UnknownField from "../fields/UnknownField";
 import {IFormField} from "../fields/Interfaces";
-import {IForm, IFormNavigation} from "./Forms.Interfaces";
 import {DmObject} from "../Mof";
 import {IFormConfiguration} from "./IFormConfiguration";
+import {IFormNavigation} from "./Interfaces";
 
 interface ICreateFieldParameter {
     configuration: IFormConfiguration,

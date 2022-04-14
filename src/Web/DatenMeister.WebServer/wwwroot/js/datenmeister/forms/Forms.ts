@@ -1,7 +1,6 @@
 ﻿import * as Mof from "../Mof";
 import * as DataLoader from "../client/Items";
-import * as ApiConnection from "../ApiConnection";
-import * as Settings from "../Settings";
+import * as ClientForms from "../client/Forms";
 import * as DetailForm from "./DetailForm";
 import * as IForm from "./Interfaces";
 import {ListForm} from "./ListForm";
@@ -50,7 +49,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const defer1 = DataLoader.getRootElements(workspace, extentUri);
 
         // Load the form
-        const defer2 = getDefaultFormForExtent(workspace, extentUri, "");
+        const defer2 = ClientForms.getDefaultFormForExtent(workspace, extentUri, "");
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([elements, form]) => {
@@ -231,7 +230,7 @@ export class DetailFormCreator implements IForm.IFormNavigation {
         const defer1 = DataLoader.getObjectByUri(workspace, itemUrl);
 
         // Load the form
-        const defer2 = getDefaultFormForItem(workspace, itemUrl, "");
+        const defer2 = ClientForms.getDefaultFormForItem(workspace, itemUrl, "");
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {
@@ -250,59 +249,4 @@ export class DetailFormCreator implements IForm.IFormNavigation {
         parent.text("Loading content and form...");
     }
 
-}
-
-export async function getForm(formUri: string): Promise<Mof.DmObject> {
-    const resultFromServer = await ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/get/" +
-        encodeURIComponent(formUri)
-    );
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
-}
-
-/*
-    Gets the default form for a certain item by the webserver
- */
-export async function getDefaultFormForItem(workspace: string, item: string, viewMode: string) {
-    const resultFromServer = await ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/default_for_item/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(item) +
-        "/" +
-        encodeURIComponent(viewMode)
-    );
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
-}
-/*
-    Gets the default form for an extent uri by the webserver
- */
-export async function getDefaultFormForExtent(workspace: string, extentUri: string, viewMode: string) {
-    const resultFromServer = await ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/default_for_extent/" +
-        encodeURIComponent(workspace) +
-        "/" +
-        encodeURIComponent(extentUri) +
-        "/" +
-        encodeURIComponent(viewMode)
-    );
-
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
-}
-
-/*
-    Gets the default form for an extent uri by the webserver
- */
-export async function getDefaultFormForMetaClass(metaClassUri: string) {
-
-    const resultFromServer = await ApiConnection.get<object>(
-        Settings.baseUrl +
-        "api/forms/default_for_metaclass/" +
-        encodeURIComponent(metaClassUri)
-    );
-    
-    return Mof.convertJsonObjectToDmObject(resultFromServer);
 }

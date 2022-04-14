@@ -57,7 +57,7 @@ export async function createItemAsChild(workspaceId: string, itemUri: string, pa
 export interface ICreateItemAsChildParams {
     metaClass?: string;
     property: string;
-    asList: boolean;
+    asList?: boolean;
     properties?: Mof.DmObject;    
 }
 

@@ -127,7 +127,7 @@ export class SelectItemControl {
         return div;
     }
 
-// This method will be called when the user changed the workspace
+    // This method will be called when the user changed the workspace
     private async onWorkspaceChangedByUser()
     {
         // Find the selected workspace
@@ -269,6 +269,8 @@ export class SelectItemControl {
 
         tthis.refreshBreadcrumb();
         await this.loadItems();
+        
+        this.domExtentUpdated.invoke();
 
         return true;
     }
@@ -282,7 +284,7 @@ export class SelectItemControl {
         const extentUri = this.getUserSelectedExtent();
         this.htmlItemsList.empty();
 
-        if (workspaceId == "" || extentUri == "") {
+        if (workspaceId === "" || extentUri === "") {
             const select = $("<li>--- Select Extent ---</li>");
             this.htmlItemsList.append(select);
             this.visitedItems.length = 0;
@@ -335,6 +337,8 @@ export class SelectItemControl {
         }
 
         tthis.refreshBreadcrumb();
+
+        this.domItemsUpdated.invoke();
     }
 
     refreshBreadcrumb() {

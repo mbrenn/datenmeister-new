@@ -211,6 +211,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                 }
                 tthis.refreshBreadcrumb();
                 yield this.loadItems();
+                this.domExtentUpdated.invoke();
                 return true;
             });
         }
@@ -220,7 +221,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                 const workspaceId = this.getUserSelectedWorkspace();
                 const extentUri = this.getUserSelectedExtent();
                 this.htmlItemsList.empty();
-                if (workspaceId == "" || extentUri == "") {
+                if (workspaceId === "" || extentUri === "") {
                     const select = $("<li>--- Select Extent ---</li>");
                     this.htmlItemsList.append(select);
                     this.visitedItems.length = 0;
@@ -264,6 +265,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                     }
                 }
                 tthis.refreshBreadcrumb();
+                this.domItemsUpdated.invoke();
             });
         }
         refreshBreadcrumb() {

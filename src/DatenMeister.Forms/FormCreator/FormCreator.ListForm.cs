@@ -59,7 +59,11 @@ namespace DatenMeister.Forms.FormCreator
             result.set(_DatenMeister._Forms._ListForm.metaClass, propertyType);
             result.set(_DatenMeister._Forms._ListForm.title,
                 $"{propertyName} - {NamedElementMethods.GetName(propertyType)}");
-            result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] { propertyType });
+            if (propertyType != null)
+            {
+                FormMethods.AddDefaultTypeForNewElement(result, propertyType);
+            }
+            
 
             FormMethods.AddToFormCreationProtocol(
                 result,
@@ -96,51 +100,47 @@ namespace DatenMeister.Forms.FormCreator
             if (!creationMode.CreateByMetaClass)
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
 
-            var result = MofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var form = MofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
-            var propertyName = property != null ? realPropertyName : "List";
+            var propertyName = property != null ? realPropertyName : "";
 
             FormMethods.AddToFormCreationProtocol(
-                result,
+                form,
                 "[FormCreator.CreateListFormForMetaClass] Created for: " + NamedElementMethods.GetName(metaClass));
 
             var title =
-                (metaClass != null ? NamedElementMethods.GetName(metaClass) : string.Empty) +
-                (metaClass != null && property != null ? " - " : "") +
+                (metaClass != null ? "'" + NamedElementMethods.GetName(metaClass) + "'" : string.Empty) +
+                (metaClass != null && !string.IsNullOrEmpty(propertyName) ? " - " : "") +
                 propertyName;
 
-            result.set(_DatenMeister._Forms._ListForm.title, "Types: " + title);
-            result.set(_DatenMeister._Forms._ListForm.name, title);
-            result.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
+            form.set(_DatenMeister._Forms._ListForm.title, "Items of type " + title);
+            form.set(_DatenMeister._Forms._ListForm.name, title);
+            form.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
 
             if (metaClass != null)
             {
-                AddFieldsToFormByMetaClass(result, metaClass, creationMode with { IsForListView = true });
-
-                var defaultType = MofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, metaClass);
-                defaultType.set(
-                    _DatenMeister._Forms._DefaultTypeForNewElement.name,
-                    NamedElementMethods.GetName(metaClass));
-                result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] { defaultType });
-
+                AddFieldsToFormByMetaClass(form, metaClass, creationMode with { IsForListView = true });
+                
                 FormMethods.AddToFormCreationProtocol(
-                    result,
+                    form,
                     "[FormCreator.CreateListFormForMetaClass] Added Default Type for: " +
-                    NamedElementMethods.GetName(defaultType));
+                    NamedElementMethods.GetName(metaClass));
+                FormMethods.AddDefaultTypeForNewElement(form, metaClass);
             }
             else
             {
                 // Ok, we have no metaclass, but let's add at least the columns for the property 'name'
                 AddFieldsToFormByMetaClassProperty(
-                    result,
+                    form,
                     _UML.TheOne.CommonStructure.NamedElement._name,
                     new FormFactoryConfiguration
                         { CreateByPropertyValues = false, AutomaticMetaClassField = false, IsForListView = true },
                     FormUmlElementType.Property);
             }
+            
+            FormMethods.RemoveDuplicatingDefaultNewTypes(form);
 
-            return result;
+            return form;
         }
 
         /// <summary>

@@ -138,7 +138,7 @@ namespace DatenMeister.Forms
                 var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
                 if (metaClass != null)
                 {
-                    FormCreator.FormCreator.AddDefaultTypeForNewElement(foundForm, metaClass);
+                    FormMethods.AddDefaultTypeForNewElement(foundForm, metaClass);
                 }
 
                 if (value == null) continue;
@@ -153,7 +153,7 @@ namespace DatenMeister.Forms
                 var propertyType = PropertyMethods.GetPropertyType(propertyInstance);
 
                 if (propertyType == null) continue;
-                FormCreator.FormCreator.AddDefaultTypeForNewElement(listForm, propertyType);
+                FormMethods.AddDefaultTypeForNewElement(listForm, propertyType);
             }
         }
 

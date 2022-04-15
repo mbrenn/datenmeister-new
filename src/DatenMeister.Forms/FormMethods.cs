@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -244,6 +245,71 @@ namespace DatenMeister.Forms
                 currentMessage = message;
 
             form.set(_DatenMeister._Forms._Form.creationProtocol, currentMessage);
+        }
+
+        /// <summary>
+        /// Cleans duplicates of default new types
+        /// </summary>
+        /// <param name="form">For to be handled</param>
+        public static void RemoveDuplicatingDefaultNewTypes(IObject form)
+        {
+            var defaultNewTypesForElements =
+                form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+            if (defaultNewTypesForElements == null)
+            {
+                // Nothing to do, when no default types are set
+                return;
+            }
+            
+            var handled = new List<IObject>();
+
+            foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
+            {
+                var metaClass = element.getOrDefault<IObject>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
+                if (handled.Any(x => x.@equals(metaClass)))
+                {
+                    defaultNewTypesForElements.remove(element);
+                }
+                else
+                {
+                    handled.Add(metaClass);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a default type for a new element.
+        /// If the element is already added, then it will be skipped.
+        /// </summary>
+        /// <param name="form">Form to be evaluated</param>
+        /// <param name="defaultType">DefaultType to be added</param>
+        public static void AddDefaultTypeForNewElement(IObject form, IObject defaultType)
+        {
+            var currentDefaultPackages =
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+            if (currentDefaultPackages.OfType<IElement>().Any(x =>
+                    x.getOrDefault<IElement>(
+                            _DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
+                        ?.@equals(defaultType) == true))
+            {
+
+                FormMethods.AddToFormCreationProtocol(
+                    form,
+                    $"[FormCreator.AddDefaultTypeForNewElement] Not added because default type is already existing: {NamedElementMethods.GetName(defaultType)}");
+                // No adding, because it already exists
+                return;
+            }
+
+            var defaultTypeInstance =
+                new MofFactory(form).create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, defaultType);
+            defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+                NamedElementMethods.GetName(defaultType));
+            currentDefaultPackages.add(defaultTypeInstance);
+
+            FormMethods.AddToFormCreationProtocol(
+                form,
+                $"[FormCreator.AddDefaultTypeForNewElement] Added defaulttype: {NamedElementMethods.GetName(defaultType)}");
         }
     }
 }

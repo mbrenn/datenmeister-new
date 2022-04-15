@@ -158,7 +158,6 @@ namespace DatenMeister.Forms.FormCreator
                     }
 
                     metaClasses.Add(extentMetaClass);
-
                     FormMethods.AddToFormCreationProtocol(
                         result,
                         $"[FormCreator.CreateExtentFormForCollection] Adding listform for '{NamedElementMethods.GetName(extentMetaClass)}' for extent type '{extentTypeSetting.name}'");
@@ -183,7 +182,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 AddTextFieldForNameIfNoFieldAvailable(form);
                 SortFieldsByImportantProperties(form);
-
+                FormMethods.RemoveDuplicatingDefaultNewTypes(form);
                 SetDefaultTypesByPackages(form);
 
                 tabs.Add(form);
@@ -226,7 +225,11 @@ namespace DatenMeister.Forms.FormCreator
                         foreach (var element in @group)
                             AddFieldsToFormByPropertyValues(form, element, configuration, cache);
 
-                    AddDefaultTypeForNewElement(form, groupedMetaclass);
+                    FormMethods.AddToFormCreationProtocol(
+                        form,
+                        "[FormCreator.CreateExtentFormForCollection]: Create Default Type for metaclass: " +
+                        NamedElementMethods.GetName(groupedMetaclass));
+                    FormMethods.AddDefaultTypeForNewElement(form, groupedMetaclass);
                 }
                 else
                 {
@@ -238,6 +241,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 SortFieldsByImportantProperties(form);
                 SetDefaultTypesByPackages(form);
+                FormMethods.RemoveDuplicatingDefaultNewTypes(form);
 
                 tabs.Add(form);
             }
@@ -262,7 +266,7 @@ namespace DatenMeister.Forms.FormCreator
                         foreach (var type in childItems.OfType<IElement>())
                             if (type.@equals(_UML.TheOne.StructuredClassifiers.__Class))
                             {
-                                AddDefaultTypeForNewElement(form, package);
+                                FormMethods.AddDefaultTypeForNewElement(form, package);
 
                                 FormMethods.AddToFormCreationProtocol(
                                     result,
@@ -271,37 +275,6 @@ namespace DatenMeister.Forms.FormCreator
                             }
                     }
             }
-        }
-
-        /// <summary>
-        /// Adds a default type for a new element.
-        /// If the element is already added, then it will be skipped.
-        /// </summary>
-        /// <param name="form">Form to be evaluated</param>
-        /// <param name="defaultType">DefaultType to be added</param>
-        public static void AddDefaultTypeForNewElement(IObject form, IObject defaultType)
-        {
-            var currentDefaultPackages =
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
-            if (currentDefaultPackages.OfType<IElement>().Any(x =>
-                    x.getOrDefault<IElement>(
-                            _DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
-                        ?.@equals(defaultType) == true))
-            {
-                // No adding, because it already exists
-                return;
-            }
-
-            var defaultTypeInstance =
-                new MofFactory(form).create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-            defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, defaultType);
-            defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
-                NamedElementMethods.GetName(defaultType));
-            currentDefaultPackages.add(defaultTypeInstance);
-
-            FormMethods.AddToFormCreationProtocol(
-                form,
-                $"[FormCreator.AddDefaultTypeForNewElement] Added defaulttype: ${NamedElementMethods.GetName(defaultType)}");
         }
 
         /// <summary>
@@ -346,7 +319,6 @@ namespace DatenMeister.Forms.FormCreator
             {
                 var detailForm = MofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
                 detailForm.set(_DatenMeister._Forms._DetailForm.name, "Detail");
-
 
                 FormMethods.AddToFormCreationProtocol(
                     extentForm,
@@ -613,6 +585,8 @@ namespace DatenMeister.Forms.FormCreator
                             extentForm,
                             "[FormCreator.CreateExtentFormForObject]: Added Listform: " +
                             NamedElementMethods.GetName(pair.propertyType));
+                        
+                        FormMethods.RemoveDuplicatingDefaultNewTypes(form);
 
                         tabs.Add(form);
                     }
@@ -672,7 +646,7 @@ namespace DatenMeister.Forms.FormCreator
                         if (propertyType != null)
                         {
                             AddFieldsToFormByMetaClass(form, propertyType, creationMode, cache);
-                            AddDefaultTypeForNewElement(form, propertyType);
+                            FormMethods.AddDefaultTypeForNewElement(form, propertyType);
 
                             FormMethods.AddToFormCreationProtocol(
                                 form,

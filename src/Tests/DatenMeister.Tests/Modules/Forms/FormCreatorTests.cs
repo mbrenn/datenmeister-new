@@ -75,7 +75,6 @@ namespace DatenMeister.Tests.Modules.Forms
                     x => x?.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
                         .Equals(_UML.TheOne.StructuredClassifiers.__Class) == true),
                 Is.True);
-
         }
     }
 }

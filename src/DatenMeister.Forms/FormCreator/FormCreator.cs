@@ -655,14 +655,7 @@ namespace DatenMeister.Forms.FormCreator
 
                         if (!configuration.IsForListView)
                         {
-                            var defaultTypeForNewElement =
-                                MofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                            defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
-                                NamedElementMethods.GetName(propertyType));
-                            defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass,
-                                propertyType);
-                            elementsField.set(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements,
-                                new[] { defaultTypeForNewElement });
+                            FormMethods.AddDefaultTypeForNewElement(elementsField, propertyType);
                         }
 
                         elementsField.set(
@@ -722,14 +715,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 if (propertyType != null)
                 {
-                    var defaultTypeForNewElement =
-                        MofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                    defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
-                        NamedElementMethods.GetName(propertyType));
-                    defaultTypeForNewElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass,
-                        propertyType);
-                    element.set(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements,
-                        new[] { defaultTypeForNewElement });
+                    FormMethods.AddDefaultTypeForNewElement(element, propertyType);
                 }
 
                 return element;

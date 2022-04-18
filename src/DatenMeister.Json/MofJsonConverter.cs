@@ -216,7 +216,7 @@ namespace DatenMeister.Json
             }
             else if (DotNetHelper.IsOfDateTime(propertyValue))
             {
-                builder.Append($"\"{(DateTime)propertyValue:o}\"");
+                builder.Append($"\"{DotNetHelper.AsString(propertyValue)}\"");
             }
             else if (DotNetHelper.IsOfPrimitiveType(propertyValue))
             {

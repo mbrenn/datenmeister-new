@@ -115,7 +115,10 @@ namespace DatenMeister.Forms.FormCreator
 
             form.set(_DatenMeister._Forms._ListForm.title, "Items of type " + title);
             form.set(_DatenMeister._Forms._ListForm.name, title);
-            form.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
+            if (property != null)
+            {
+                form.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
+            }
 
             if (metaClass != null)
             {

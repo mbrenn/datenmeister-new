@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -104,6 +105,30 @@ namespace DatenMeister.Tests.Core
             Assert.That(collection.Any(x => element2.Equals(x)), Is.False);
             Assert.That(collection.Any(x => element3.Equals(x)), Is.False);
             Assert.That(collection.Any(x => element4.Equals(x)), Is.True);
+        }
+
+        [Test]
+        public void TestDateTimeConversions()
+        {
+            var date1 = new DateTime(1980, 3, 10);
+            var date2 = new DateTime(1980, 3, 10, 0,0,0, DateTimeKind.Local);
+            var date3 = new DateTime(1980, 3, 10, 0,0,0, DateTimeKind.Utc);
+            var date4 = new DateTime(1980, 3, 10,1,2,3);
+
+            var text1 = DotNetHelper.AsString(date1);
+            var text2 = DotNetHelper.AsString(date2);
+            var text3 = DotNetHelper.AsString(date3);
+            var text4 = DotNetHelper.AsString(date4);
+
+            var newDate1 = DotNetHelper.AsDateTime(text1);
+            var newDate2 = DotNetHelper.AsDateTime(text2);
+            var newDate3 = DotNetHelper.AsDateTime(text3);
+            var newDate4 = DotNetHelper.AsDateTime(text4);
+            
+            Assert.That(newDate1, Is.EqualTo(date1));
+            Assert.That(newDate2, Is.EqualTo(date2));
+            Assert.That(newDate3, Is.EqualTo(date3));
+            Assert.That(newDate4, Is.EqualTo(date4));
         }
     }
 }

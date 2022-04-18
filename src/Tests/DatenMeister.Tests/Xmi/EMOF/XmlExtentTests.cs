@@ -112,7 +112,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             mofContainer.set("items", new List<object>());
             mofContainer.set("items2", new List<object>());
             mofContainer.set("items3", new List<object>());
-            var mofReflectiveSequence = mofContainer.get("items") as IReflectiveSequence;
+            var mofReflectiveSequence = mofContainer.get<IReflectiveCollection>("items") as IReflectiveSequence;
             Assert.That(mofReflectiveSequence, Is.Not.Null);
             Assert.That(mofReflectiveSequence!.size(), Is.EqualTo(0));
             Assert.That(mofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
@@ -136,7 +136,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             mofReflectiveSequence.add(mofObject1);
             mofReflectiveSequence.add(mofObject2);
 
-            var otherMofReflectiveSequence = mofContainer.get("items2") as IReflectiveSequence;
+            var otherMofReflectiveSequence = mofContainer.get<IReflectiveSequence>("items2") as IReflectiveSequence;
             Assert.That(otherMofReflectiveSequence, Is.Not.Null);
             Assert.That(otherMofReflectiveSequence!.size(), Is.EqualTo(0));
             otherMofReflectiveSequence.addAll(mofReflectiveSequence);
@@ -147,7 +147,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(0));
             Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
 
-            otherMofReflectiveSequence = mofContainer.get("items3") as IReflectiveSequence;
+            otherMofReflectiveSequence = mofContainer.get<IReflectiveSequence>("items3") as IReflectiveSequence;
             Assert.That(otherMofReflectiveSequence, Is.Not.Null);
             otherMofReflectiveSequence!.add(0, mofObject1);
             otherMofReflectiveSequence.add(0, mofObject2);

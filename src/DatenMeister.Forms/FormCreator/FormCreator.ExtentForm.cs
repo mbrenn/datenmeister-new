@@ -127,7 +127,7 @@ namespace DatenMeister.Forms.FormCreator
                 {
                     var element = x as IElement;
                     var metaClass = element?.getMetaClass();
-                    return metaClass == null || metaClass is MofObjectShadow;
+                    return metaClass is null or MofObjectShadow;
                 })
                 .ToList();
 
@@ -178,7 +178,10 @@ namespace DatenMeister.Forms.FormCreator
                 form.set(_DatenMeister._Forms._ListForm.name, "Unclassified");
                 form.set(_DatenMeister._Forms._ListForm.noItemsWithMetaClass, true);
 
-                foreach (var item in elementsWithoutMetaClass) AddFieldsToForm(form, item, configuration, cache);
+                foreach (var item in elementsWithoutMetaClass)
+                {
+                    AddFieldsToForm(form, item, configuration, cache);
+                }
 
                 AddTextFieldForNameIfNoFieldAvailable(form);
                 SortFieldsByImportantProperties(form);
@@ -222,8 +225,12 @@ namespace DatenMeister.Forms.FormCreator
                            throw new InvalidOperationException("No form was found");
 
                     if (configuration.CreateByMetaClass)
+                    {
                         foreach (var element in @group)
+                        {
                             AddFieldsToFormByPropertyValues(form, element, configuration, cache);
+                        }
+                    }
 
                     FormMethods.AddToFormCreationProtocol(
                         form,
@@ -712,16 +719,5 @@ namespace DatenMeister.Forms.FormCreator
                     "[FormCreator.AddTextFieldForNameIfNoFieldAvailable]: Added default 'name' because it is empty");
             }
         }
-    }
-
-    /// <summary>
-    ///     A configuration helper class to create the extent form
-    /// </summary>
-    public class ExtentFormConfiguration
-    {
-        /// <summary>
-        ///     Gets or sets the extent type to be used
-        /// </summary>
-        public List<string> ExtentTypes { get; set; } = new();
     }
 }

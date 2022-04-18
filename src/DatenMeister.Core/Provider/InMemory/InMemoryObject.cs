@@ -65,7 +65,7 @@ namespace DatenMeister.Core.Provider.InMemory
         {
             if (_values.TryGetValue(property, out var result))
             {
-                return result;
+                return ObjectTypeConverter.Convert(result, objectType);
             }
 
             throw new MofException("Property not found: " + property);

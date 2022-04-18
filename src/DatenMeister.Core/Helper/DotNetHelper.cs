@@ -200,6 +200,11 @@ namespace DatenMeister.Core.Helper
                 return null;
             }
 
+            if (value is DateTime valueAsDateTime)
+            {
+                return valueAsDateTime.ToString(CultureInfo.InvariantCulture);
+            }
+
             if (value is double valueAsDouble)
             {
                 return valueAsDouble.ToString(CultureInfo.InvariantCulture);
@@ -261,6 +266,16 @@ namespace DatenMeister.Core.Helper
                     ? resultAsDouble
                     : 0.0,
                 _ => Convert.ToDouble(value, CultureInfo.InvariantCulture)
+            };
+        }
+
+        public static object AsDateTime(object? value)
+        {
+            return value switch
+            {
+                null => DateTime.MinValue,
+                string valueAsString => DateTime.Parse(valueAsString, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind), 
+                _ => Convert.ToDateTime(value)
             };
         }
 

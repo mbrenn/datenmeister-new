@@ -120,7 +120,7 @@ namespace DatenMeister.Core.Helper
             {
                 // ReSharper disable HeuristicUnreachableCode
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                if (!(value is IHasMofExtentMetaObject metaObject))
+                if (value is not IHasMofExtentMetaObject metaObject)
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
                 // ReSharper restore HeuristicUnreachableCode
 

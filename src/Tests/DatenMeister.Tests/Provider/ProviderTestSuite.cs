@@ -1,35 +1,52 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider
 {
-    /// <summary>
-    /// This class contains several test helper which can be used to test the
-    /// behavior of the provider interface
-    /// </summary>
-    public class ProviderTestHelper
+    public class ProviderTestSuite
     {
-        public static void TestGetAndSetOfPrimitiveTypes(IProvider provider)
+        /// <summary>
+        /// Performs a set of tests on the provider object.
+        /// This can be used to evaluate the capability of the provider
+        /// </summary>
+        /// <param name="provider"></param>
+        public static void TestProviderObject(IProvider provider)
         {
-            var providerObject = provider.CreateElement(null);
+            var element = provider.CreateElement(null);
+            Assert.That(element, Is.Not.Null);
 
-            providerObject.SetProperty("string", "abc");
-            providerObject.SetProperty("double", 23.2342);
-            providerObject.SetProperty("int", 232);
+            element.SetProperty("name", "Martin");
+            element.SetProperty("age", 40);
+            element.SetProperty("nextday", new DateTime(2022, 04, 19));
+            element.SetProperty("nothing", null);
+            element.SetProperty("isMale", true);
+            element.SetProperty("isFemale", false);
 
-            Assert.That(
-                DotNetHelper.AsString(
-                    providerObject.GetProperty("string")), Is.EqualTo("abc"));
+            // Now gets the check
+            var name = element.GetProperty("name", ObjectType.String);
+            var age = element.GetProperty("age", ObjectType.Integer);
+            var nextDay = element.GetProperty("nextday", ObjectType.DateTime);
+            var nothing = element.GetProperty("nothing", ObjectType.None);
+            var isMale = element.GetProperty("isMale", ObjectType.Boolean);
+            var isFemale = element.GetProperty("isFemale", ObjectType.Boolean);
 
-            Assert.That(
-                DotNetHelper.AsDouble(
-                    providerObject.GetProperty("double")), Is.EqualTo(23.2342).Within(0.0005));
+            Assert.That(name, Is.EqualTo("Martin"));
+            Assert.That(age, Is.EqualTo(40));
+            Assert.That(nextDay, Is.EqualTo(new DateTime(2022, 04, 19)));
+            Assert.That(nothing, Is.Null);
+            Assert.That(isMale, Is.True);
+            Assert.That(isFemale, Is.False);
+            
+            // Check, that we are case sensitive
+            Assert.That(element.IsPropertySet("nextday"), Is.True);
+            Assert.That(element.IsPropertySet("nextDay"), Is.False);
 
-            Assert.That(
-                DotNetHelper.AsInteger(
-                    providerObject.GetProperty("int")), Is.EqualTo(232));
+            TestListsWithObjects(provider);
+            TestListMovement(provider);
+            TestSetReferenceAndSetValue(provider);
         }
 
         public static void TestListsWithObjects(IProvider provider)
@@ -62,11 +79,11 @@ namespace DatenMeister.Tests.Provider
             Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("c"));
 
             element.EmptyListForProperty("list");
-            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list"))!.OfType<IProviderObject>().ToList();
+            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list", ObjectType.ReflectiveSequence))!.OfType<IProviderObject>().ToList();
             Assert.That(asEnumerable.Count, Is.EqualTo(0));
         }
-
-
+        
+        
         public static void TestListMovement(IProvider provider)
         {
             var element = provider.CreateElement(null);
@@ -167,7 +184,6 @@ namespace DatenMeister.Tests.Provider
             var uriReference = element.GetPropertyAsSingle("child") as UriReference;
             Assert.That(uriReference, Is.Not.Null);
             Assert.That(uriReference!.Uri, Is.EqualTo("http://abc"));
-
 
             element.SetProperty("child", "123");
 

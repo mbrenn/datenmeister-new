@@ -24,6 +24,7 @@ namespace DatenMeister.Types.Plugin
                 {
                     rootElementMetaClasses =
                     {
+                        _UML.TheOne.Packages.__Package,
                         _UML.TheOne.StructuredClassifiers.__Class,
                         _UML.TheOne.SimpleClassifiers.__Enumeration
                     }

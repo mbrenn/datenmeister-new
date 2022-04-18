@@ -12,33 +12,12 @@ namespace DatenMeister.Tests.Provider
     public class InMemoryProviderTests
     {
         [Test]
-        public void TestGetAndSet()
+        public void TestSuite()
         {
             var provider = new InMemoryProvider();
-            ProviderTestHelper.TestGetAndSetOfPrimitiveTypes(provider);
+            ProviderTestSuite.TestProviderObject(provider);
         }
-
-        [Test]
-        public void TestLists()
-        {
-            var provider = new InMemoryProvider();
-            ProviderTestHelper.TestListsWithObjects(provider);
-        }
-
-        [Test]
-        public void TestMovements()
-        {
-            var provider = new InMemoryProvider();
-            ProviderTestHelper.TestListMovement(provider);
-        }
-
-        [Test]
-        public void TestSetReferenceAndSetValue()
-        {
-            var provider = new InMemoryProvider();
-            ProviderTestHelper.TestSetReferenceAndSetValue(provider);
-        }
-
+        
         [Test]
         public void TestStringsInReflectiveCollection()
         {

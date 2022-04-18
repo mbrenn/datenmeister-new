@@ -311,5 +311,87 @@ namespace DatenMeister.Forms
                 form,
                 $"[FormCreator.AddDefaultTypeForNewElement] Added defaulttype: {NamedElementMethods.GetName(defaultType)}");
         }
+
+        /// <summary>
+        ///     Expands the dropdown values of the the DropDownField.
+        ///     The DropDownField supports a reference field which is not resolved by every Form Client.
+        ///     So, the DropDownField can already be resolved on server side
+        /// </summary>
+        /// <param name="listOrDetailForm">The list form or the DetailForm being handled</param>
+        public static void ExpandDropDownValuesOfValueReference(IElement listOrDetailForm)
+        {
+            var factory = new MofFactory(listOrDetailForm);
+            var fields = listOrDetailForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            foreach (var field in fields.OfType<IElement>())
+            {
+                if (field.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DropDownFieldData) != true) continue;
+
+                var byEnumeration =
+                    field.getOrDefault<IElement>(_DatenMeister._Forms._DropDownFieldData.valuesByEnumeration);
+                var byValues =
+                    field.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
+                if (byValues == null && byEnumeration != null)
+                {
+                    var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
+                    foreach (var value in enumeration)
+                    {
+                        var element = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
+                        element.set(_DatenMeister._Forms._ValuePair.name, value);
+                        element.set(_DatenMeister._Forms._ValuePair.value, value);
+                        field.AddCollectionItem(_DatenMeister._Forms._DropDownFieldData.values, element);
+                    }
+
+                    FormMethods.AddToFormCreationProtocol(listOrDetailForm,
+                        $"[FormFactory.ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cleans up the ist form by executing several default methods like, expanding the
+        /// drop down values are removing duplicates
+        /// </summary>
+        /// <param name="listForm">List form to be evaluated</param>
+        public static void CleanupListForm(IElement listForm)
+        {
+            AddDefaultTypeForListFormsMetaClass(listForm);
+            ExpandDropDownValuesOfValueReference(listForm);            
+            FormMethods.RemoveDuplicatingDefaultNewTypes(listForm);
+        }
+
+        private static void AddDefaultTypeForListFormsMetaClass(IObject listForm)
+        {
+            // Adds the default type corresponding to the list form
+            var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
+            if (metaClass != null)
+            {
+                FormMethods.AddDefaultTypeForNewElement(listForm, metaClass);
+            }
+        }
+
+        /// <summary>
+        /// Checks the type of the given element <code>asElement</code> and add its propertytype
+        /// to the default types
+        /// </summary>
+        /// <param name="foundForm">The listform to be modified</param>
+        /// <param name="asElement">The element being evaluated</param>
+        public static void AddDefaultTypesInListFormByElementsProperty(IElement foundForm, IElement asElement)
+        {
+            var listForms = FormMethods.GetListForms(foundForm);
+            foreach (var listForm in listForms)
+            {
+                var property = listForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                var objectMetaClass = asElement.getMetaClass();
+
+                if (property == null || objectMetaClass == null) continue;
+                var propertyInstance = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, property);
+
+                if (propertyInstance == null) continue;
+                var propertyType = PropertyMethods.GetPropertyType(propertyInstance);
+
+                if (propertyType == null) continue;
+                FormMethods.AddDefaultTypeForNewElement(listForm, propertyType);
+            }
+        }
     }
 }

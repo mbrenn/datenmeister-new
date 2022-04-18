@@ -175,6 +175,10 @@ namespace DatenMeister.Forms.FormCreator
                 var form = _parentFormFactory.CreateListFormForCollection(
                     new TemporaryReflectiveCollection(elementsWithoutMetaClass),
                     configuration with { IsForListView = true, AllowFormModifications = false });
+                if (form == null)
+                {
+                    throw new InvalidOperationException("The form was not created... When it should have been.");
+                }
 
                 FormMethods.AddToFormCreationProtocol(
                     result,

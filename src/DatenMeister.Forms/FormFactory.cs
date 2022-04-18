@@ -31,7 +31,6 @@ namespace DatenMeister.Forms
         ///     Defines the state for the form plugin
         /// </summary>
         private readonly FormsPluginState _formPluginState;
-
         private readonly FormsPlugin _plugin;
         private readonly IScopeStorage _scopeStorage;
 
@@ -114,7 +113,10 @@ namespace DatenMeister.Forms
                 if (element is IElement asElement)
                 {
                     EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
-                    EvaluateListFormsForDefaultTypes(asElement, foundForm);
+                    
+                    // This call is required to add the new buttons to the list form 
+                    // in case the creator of the form did not have these buttons included
+                    FormMethods.AddDefaultTypesInListFormByElementsProperty(foundForm, asElement);
                 }
                 
                 var formCreationContext = new FormCreationContext
@@ -126,44 +128,11 @@ namespace DatenMeister.Forms
 
                 CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);
                 
-                CleanupExtentForm(foundForm);
+                CleanupExtentForm(foundForm, true);
             }
 
             // No Form
             return foundForm;
-        }
-
-        /// <summary>
-        /// Goes through each list form and adds a default type for new element 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="foundForm"></param>
-        private void EvaluateListFormsForDefaultTypes(IElement value, IElement foundForm)
-        {/*
-            var listForms = FormMethods.GetListForms(foundForm);
-            foreach (var listForm in listForms)
-            {
-                var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
-                if (metaClass != null)
-                {
-                    FormMethods.AddDefaultTypeForNewElement(foundForm, metaClass);
-                }
-
-                if (value == null) continue;
-
-                var property = listForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
-                var objectMetaClass = value.getMetaClass();
-
-                if (property == null || objectMetaClass == null) continue;
-                var propertyInstance = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, property);
-
-                if (propertyInstance == null) continue;
-                var propertyType = PropertyMethods.GetPropertyType(propertyInstance);
-
-                if (propertyType == null) continue;
-                FormMethods.AddDefaultTypeForNewElement(listForm, propertyType);
-            }
-            */
         }
 
         public IElement? CreateDetailFormForItem(IObject element, FormFactoryConfiguration configuration)
@@ -275,7 +244,7 @@ namespace DatenMeister.Forms
                 };
 
                 CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);
-                CleanupExtentForm(foundForm);
+                CleanupExtentForm(foundForm, true);
             }
 
             return foundForm;
@@ -309,7 +278,7 @@ namespace DatenMeister.Forms
                     },
                     ref foundForm);
 
-                CleanupListForm(foundForm);
+                FormMethods.CleanupListForm(foundForm);
             }
 
             return foundForm;
@@ -377,7 +346,7 @@ namespace DatenMeister.Forms
 
                 CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);
                 
-                CleanupExtentForm(foundForm);
+                CleanupExtentForm(foundForm, true);
             }
 
             return foundForm;
@@ -433,8 +402,8 @@ namespace DatenMeister.Forms
                         FormType = _DatenMeister._Forms.___FormType.ObjectList
                     },
                     ref foundForm);
-                
-                CleanupListForm(foundForm);
+
+                FormMethods.CleanupListForm(foundForm);
             }
 
             return foundForm;
@@ -504,8 +473,8 @@ namespace DatenMeister.Forms
                         DetailElement = parentElement
                     },
                     ref foundForm);
-                
-                CleanupListForm(foundForm);
+
+                FormMethods.CleanupListForm(foundForm);
             }
 
             return foundForm;
@@ -529,7 +498,7 @@ namespace DatenMeister.Forms
             {
                 var listedForm = detailForm; // Get iterative
 
-                ExpandDropDownValuesOfValueReference(listedForm);
+                FormMethods.ExpandDropDownValuesOfValueReference(listedForm);
 
                 _formPluginState.CallFormsModificationPlugins(
                     configuration,
@@ -542,7 +511,7 @@ namespace DatenMeister.Forms
             {
                 var listedForm = listForm; // Get iterative
 
-                ExpandDropDownValuesOfValueReference(listedForm);
+                FormMethods.ExpandDropDownValuesOfValueReference(listedForm);
 
                 _formPluginState.CallFormsModificationPlugins(
                     configuration,
@@ -568,14 +537,13 @@ namespace DatenMeister.Forms
             );
         }
 
-
         /// <summary>
         ///     Creates a new instance of the form reportCreator
         /// </summary>
         /// <returns>The created instance of the form reportCreator</returns>
         private FormFinder.FormFinder CreateFormFinder()
         {
-            return new(_plugin);
+            return new FormFinder.FormFinder(_plugin);
         }
 
         /// <summary>
@@ -626,41 +594,6 @@ namespace DatenMeister.Forms
                     var formCreator = CreateFormCreator();
                     formCreator.AddToListFormByElements(tab, reflectiveCollection,
                         new FormFactoryConfiguration());
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Expands the dropdown values of the the DropDownField.
-        ///     The DropDownField supports a reference field which is not resolved by every Form Client.
-        ///     So, the DropDownField can already be resolved on server side
-        /// </summary>
-        /// <param name="listOrDetailForm">The list form or the DetailForm being handled</param>
-        public void ExpandDropDownValuesOfValueReference(IElement listOrDetailForm)
-        {
-            var factory = new MofFactory(listOrDetailForm);
-            var fields = listOrDetailForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
-            foreach (var field in fields.OfType<IElement>())
-            {
-                if (field.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__DropDownFieldData) != true) continue;
-
-                var byEnumeration =
-                    field.getOrDefault<IElement>(_DatenMeister._Forms._DropDownFieldData.valuesByEnumeration);
-                var byValues =
-                    field.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
-                if (byValues == null && byEnumeration != null)
-                {
-                    var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
-                    foreach (var value in enumeration)
-                    {
-                        var element = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
-                        element.set(_DatenMeister._Forms._ValuePair.name, value);
-                        element.set(_DatenMeister._Forms._ValuePair.value, value);
-                        field.AddCollectionItem(_DatenMeister._Forms._DropDownFieldData.values, element);
-                    }
-
-                    FormMethods.AddToFormCreationProtocol(listOrDetailForm,
-                        $"[FormFactory.ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
                 }
             }
         }
@@ -742,7 +675,7 @@ namespace DatenMeister.Forms
                 var listForms = FormMethods.GetListForms(extentForm);
                 foreach (var listForm in listForms)
                 {
-                    CleanupListForm(listForm);
+                    FormMethods.CleanupListForm(listForm);
                 }
             }
         }
@@ -754,20 +687,9 @@ namespace DatenMeister.Forms
         /// <param name="listForm">Detail form to be evaluated</param>
         public void CleanupDetailForm(IElement detailForm)
         {
-            ExpandDropDownValuesOfValueReference(detailForm);
+            FormMethods.ExpandDropDownValuesOfValueReference(detailForm);
         }
-        
-        /// <summary>
-        /// Cleans up the ist form by executing several default methods like, expanding the
-        /// drop down values are removing duplicates
-        /// </summary>
-        /// <param name="listForm">List form to be evaluated</param>
-        public void CleanupListForm(IElement listForm)
-        {
-            ExpandDropDownValuesOfValueReference(listForm);            
-            FormMethods.RemoveDuplicatingDefaultNewTypes(listForm);
-        }
-        
+
 
         // Some helper method which creates the button to create new elements by the extent being connected
         // to the enumeration of elements

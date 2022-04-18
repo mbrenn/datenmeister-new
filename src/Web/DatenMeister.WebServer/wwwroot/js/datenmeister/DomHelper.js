@@ -32,6 +32,7 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
     exports.injectNameByUri = injectNameByUri;
     function debugElementToDom(mofElement, domSelector) {
         const domElement = $(domSelector);
+        domElement.empty();
         if (domElement.length > 0) {
             domElement.append(convertToDom(mofElement));
         }

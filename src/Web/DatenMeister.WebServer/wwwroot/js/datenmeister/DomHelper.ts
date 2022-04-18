@@ -25,6 +25,7 @@ export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspace
 
 export function debugElementToDom(mofElement: any, domSelector: string) {
     const domElement = $(domSelector);
+    domElement.empty();
     if (domElement.length > 0) {
         domElement.append(convertToDom(mofElement));
     }

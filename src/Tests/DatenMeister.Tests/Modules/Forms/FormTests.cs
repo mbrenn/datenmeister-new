@@ -102,7 +102,7 @@ namespace DatenMeister.Tests.Modules.Forms
                 field1.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
             Assert.That(valuesBefore, Is.Null);
 
-            formFactory.ExpandDropDownValuesOfValueReference(form);
+            FormMethods.ExpandDropDownValuesOfValueReference(form);
 
             var values = field1.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
             Assert.That(values, Is.Not.Null);

@@ -204,6 +204,7 @@ export class Field extends BaseField implements IFormField {
                             });
                         });
 
+                    containerChangeCell.empty();
                     selectItem.init(containerChangeCell, settings);
 
                     return false;
@@ -211,6 +212,7 @@ export class Field extends BaseField implements IFormField {
 
                 this._domElement.append(changeCell);
                 this._domElement.append(unsetCell);
+                this._domElement.append(containerChangeCell);
             }
         } else if (this._mode === ModeValue.Value) {
             this._textBox = $("<input />");

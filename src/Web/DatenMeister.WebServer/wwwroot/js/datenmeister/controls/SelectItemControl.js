@@ -25,6 +25,11 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
             this.visitedItems = new Array();
             this.loadedWorkspaces = new Array();
             this.loadedExtents = new Array();
+            /*
+             * The events that can be subscribed
+             */
+            // This method will be called whenever the user has selected an item
+            this.itemSelected = new Events_1.UserEvent();
             // This method will be called when the workspace DOM elements have been updated
             this.domWorkspaceUpdated = new Events_1.UserEvent();
             // This method will be called when the extents DOM elements have been updated
@@ -245,6 +250,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                             option.text(item.name);
                             ((innerItem) => option.on('click', () => {
                                 tthis.selectedItem = innerItem;
+                                tthis.itemSelected.invoke(innerItem);
                                 tthis.loadItems(innerItem.id);
                                 tthis.htmlSelectedElements.text(innerItem.fullName);
                                 tthis.visitedItems.push(item);

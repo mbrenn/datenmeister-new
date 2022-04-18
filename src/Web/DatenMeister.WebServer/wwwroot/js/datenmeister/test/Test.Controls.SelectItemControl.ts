@@ -103,7 +103,12 @@ export function includeTests() {
                                 div = $("<div></div>");
                             }
 
+                            let itemCounter = 0;
                             const sic = new SelectItemControl();
+                            sic.itemSelected.addListener(() => {
+                                itemCounter++;
+                            });
+
                             const query = await sic.initAsync(div);
 
                             await sic.setWorkspaceById('Test');
@@ -116,11 +121,16 @@ export function includeTests() {
                             const textToLookFor = "NamedElement";
                             let {found, foundItem} = lookForChildWithText(children, textToLookFor);
 
-                            chai.assert.isTrue(found, "Item was not found was not found")
-                            chai.assert.isTrue(foundItem !== undefined, "Item Dom was not found was not found")
+                            chai.assert.isTrue(found, "Item was not found was not found");
+                            chai.assert.isTrue(foundItem !== undefined, "Item Dom was not found was not found");
+                            chai.assert.isTrue(itemCounter === 0, "Item Counter is not 0");
+                            
                             if (foundItem === undefined) throw 'Should not happen';
                             foundItem.click();
 
+                            // The click should have happened synchronously.
+                            chai.assert.isTrue(itemCounter === 1, "Item Counter is not 1");
+                            
                             await new Promise<void>(resolve => {
                                 sic.domItemsUpdated.addListener(() => {
                                     const items = $(".dm-sic-items ul", query);

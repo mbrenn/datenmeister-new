@@ -158,11 +158,13 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                                 this.updateDomContent();
                             });
                         });
+                        containerChangeCell.empty();
                         selectItem.init(containerChangeCell, settings);
                         return false;
                     });
                     this._domElement.append(changeCell);
                     this._domElement.append(unsetCell);
+                    this._domElement.append(containerChangeCell);
                 }
             }
             else if (this._mode === ModeValue.Value) {

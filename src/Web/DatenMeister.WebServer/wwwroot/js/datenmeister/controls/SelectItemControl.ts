@@ -52,7 +52,7 @@ export class SelectItemControl {
      */
     
     // This method will be called whenever the user has selected an item
-    itemSelected: UserEvent<ItemWithNameAndId>;
+    itemSelected: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
     
     // This method will be called when the workspace DOM elements have been updated
     domWorkspaceUpdated: UserEvent<void> = new UserEvent<void>();
@@ -279,7 +279,6 @@ export class SelectItemControl {
 
         const tthis = this;
 
-
         const workspaceId = this.getUserSelectedWorkspace();
         const extentUri = this.getUserSelectedExtent();
         this.htmlItemsList.empty();
@@ -314,6 +313,7 @@ export class SelectItemControl {
                     ((innerItem) =>
                         option.on('click', () => {
                             tthis.selectedItem = innerItem;
+                            tthis.itemSelected.invoke(innerItem);
                             tthis.loadItems(innerItem.id);
                             tthis.htmlSelectedElements.text(innerItem.fullName);
                             tthis.visitedItems.push(item);

@@ -627,7 +627,7 @@ namespace DatenMeister.Core.Provider.Xmi
         /// </summary>
         /// <param name="value">Value to be converted to a string</param>
         /// <returns>Converted the value to text</returns>
-        private string ReturnObjectAsString(object value)
+        private static string? ReturnObjectAsString(object value)
         {
             return DotNetHelper.AsString(value);
         }

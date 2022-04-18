@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
@@ -73,7 +74,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public IEnumerable<string> ExtentTypes
         {
-            get => ExtentType.Split(' ');
+            get => ExtentType.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             set => ExtentType = value.Aggregate((x, y) => $"{x} {y}");
         }
 

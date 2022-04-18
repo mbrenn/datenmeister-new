@@ -29,6 +29,8 @@ namespace DatenMeister.Forms.FormCreator
 
             AddToListFormByElements(result, elements, creationMode with { IsForListView = true });
 
+            CleanupListForm(result);
+            
             return result;
         }
 
@@ -63,14 +65,14 @@ namespace DatenMeister.Forms.FormCreator
             {
                 FormMethods.AddDefaultTypeForNewElement(result, propertyType);
             }
-            
 
             FormMethods.AddToFormCreationProtocol(
                 result,
                 "[FormCreator.CreateListFormForPropertyValues] Set default type: " +
                 NamedElementMethods.GetName(propertyType));
 
-
+            CleanupListForm(result);
+            
             return result;
         }
 
@@ -140,9 +142,9 @@ namespace DatenMeister.Forms.FormCreator
                         { CreateByPropertyValues = false, AutomaticMetaClassField = false, IsForListView = true },
                     FormUmlElementType.Property);
             }
-            
-            FormMethods.RemoveDuplicatingDefaultNewTypes(form);
 
+            CleanupListForm(form);
+            
             return form;
         }
 
@@ -220,8 +222,6 @@ namespace DatenMeister.Forms.FormCreator
                         cache);
                 }
 
-                AddTextFieldForNameIfNoFieldAvailable(form);
-                SortFieldsByImportantProperties(form);
             }
         }
 
@@ -319,10 +319,17 @@ namespace DatenMeister.Forms.FormCreator
                 "[FormCreator.CreateListFormForProperty] Created for Property: " + propertyName);
 
             if (propertyType != null) AddFieldsToFormByMetaClass(result, propertyType, creationMode);
-
             result.set(_DatenMeister._Forms._ListForm.property, propertyName);
             result.set(_DatenMeister._Forms._ListForm.title, $"{propertyName}");
+            
+            CleanupListForm(result);
             return result;
+        }
+
+        public void CleanupListForm(IElement listForm)
+        {
+            AddTextFieldForNameIfNoFieldAvailable(listForm);
+            SortFieldsByImportantProperties(listForm);
         }
     }
 }

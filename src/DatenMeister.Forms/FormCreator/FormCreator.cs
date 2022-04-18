@@ -75,15 +75,25 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         private IFactory? _f;
 
-        private IElement? _integerType;
 
         /// <summary>
         ///     Defines the parent form factory which is used to create subforms.
         /// </summary>
         private readonly IFormFactory _parentFormFactory;
 
+        /// <summary>
+        /// The cached real type
+        /// </summary>
         private IElement? _realType;
 
+        /// <summary>
+        /// The cached integer type
+        /// </summary>
+        private IElement? _integerType;
+        
+        /// <summary>
+        /// The cached string type
+        /// </summary>
         private IElement? _stringType;
         private Workspace? _uriResolver;
 
@@ -761,6 +771,56 @@ namespace DatenMeister.Forms.FormCreator
                     return data;
                 }).ToList());
             return comboBox;
+        }
+        
+        private static void SortFieldsByImportantProperties(IObject form)
+        {
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            if (fields == null) return;
+            var fieldsAsList = fields.OfType<IElement>().ToList();
+
+            // Check if the name is within the list, if yes, push it to the front
+            var fieldName = fieldsAsList.FirstOrDefault(x =>
+                x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) ==
+                _UML._CommonStructure._NamedElement.name);
+
+            if (fieldName != null)
+            {
+                fieldsAsList.Remove(fieldName);
+                fieldsAsList.Insert(0, fieldName);
+            }
+
+            // Sets it
+            form.set(_DatenMeister._Forms._ListForm.field, fieldsAsList);
+
+            FormMethods.AddToFormCreationProtocol(
+                form,
+                "[FormCreator.SortFieldsByImportantProperties]: Fields are sorted");
+        }
+
+        /// <summary>
+        ///     Checks whether at least one field is given.
+        ///     If no field is given, then the one text field for the name will be added
+        /// </summary>
+        /// <param name="form">Form to be checked</param>
+        private static void AddTextFieldForNameIfNoFieldAvailable(IObject form)
+        {
+            // If the field is empty, create an empty textfield with 'name' as a placeholder
+            var fieldLength =
+                form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field)?.Count() ?? 0;
+            if (fieldLength == 0)
+            {
+                var factory = new MofFactory(form);
+                var textFieldData = factory.create(_DatenMeister.TheOne.Forms.__TextFieldData);
+                textFieldData.set(_DatenMeister._Forms._TextFieldData.name, "name");
+                textFieldData.set(_DatenMeister._Forms._TextFieldData.title, "name");
+
+                form.AddCollectionItem(_DatenMeister._Forms._ListForm.field, textFieldData);
+
+                FormMethods.AddToFormCreationProtocol(
+                    form,
+                    "[FormCreator.AddTextFieldForNameIfNoFieldAvailable]: Added default 'name' because it is empty");
+            }
         }
 
         /// <summary>

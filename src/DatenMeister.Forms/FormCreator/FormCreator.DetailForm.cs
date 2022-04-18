@@ -31,6 +31,7 @@ namespace DatenMeister.Forms.FormCreator
                 createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
 
             AddFieldsToForm(createdForm, element, creationMode, cache);
+            CleanupDetailForm(createdForm);
             return createdForm;
         }
 
@@ -57,7 +58,14 @@ namespace DatenMeister.Forms.FormCreator
             if (!AddFieldsToFormByMetaClass(createdForm, metaClass, creationMode))
                 createdForm.set(_DatenMeister._Forms._DetailForm.allowNewProperties, true);
 
+            CleanupDetailForm(createdForm);
             return createdForm;
+        }
+        
+        public void CleanupDetailForm(IElement detailForm)
+        {
+            SortFieldsByImportantProperties(detailForm);
+            
         }
     }
 }

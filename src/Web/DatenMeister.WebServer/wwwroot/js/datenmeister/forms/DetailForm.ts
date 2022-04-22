@@ -5,6 +5,15 @@ import {createField} from "./FieldFactory";
 import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
 
+// Defines the possible submit methods, a user can chose to close the detail form
+export enum SubmitMethod
+{
+    // The user clicked on the save button
+    Save,
+    // The user clicked on the save and close button
+    SaveAndClose
+}
+    
 export class DetailForm implements InterfacesForms.IForm {
     workspace: string;
     extentUri: string;
@@ -15,7 +24,7 @@ export class DetailForm implements InterfacesForms.IForm {
     fieldElements: Array<InterfacesFields.IFormField>;
 
     onCancel: () => void;
-    onChange: (element: Mof.DmObject) => void;
+    onChange: (element: Mof.DmObject, method: SubmitMethod) => void;
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
 
@@ -26,9 +35,13 @@ export class DetailForm implements InterfacesForms.IForm {
     createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         this.parentHtml = parent;
         this.configuration = configuration;
-        if (configuration.isReadOnly === undefined) {configuration.isReadOnly = true;}
-        if (configuration.allowAddingNewProperties === undefined) {configuration.allowAddingNewProperties = false;}
-                
+        if (configuration.isReadOnly === undefined) {
+            configuration.isReadOnly = true;
+        }
+        if (configuration.allowAddingNewProperties === undefined) {
+            configuration.allowAddingNewProperties = false;
+        }
+
         let tr;
         let table;
         const tthis = this;
@@ -40,8 +53,8 @@ export class DetailForm implements InterfacesForms.IForm {
         table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
         const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
         table.append(tableBody);
-        
-        const itemUri = this.itemId === undefined 
+
+        const itemUri = this.itemId === undefined
             ? ""
             : tthis.itemId.indexOf('#') === -1
                 ? tthis.extentUri + "#" + tthis.itemId
@@ -55,14 +68,14 @@ export class DetailForm implements InterfacesForms.IForm {
 
             const name =
                 (field.get("title") as any as string) ??
-                    (field.get("name") as any as string);
+                (field.get("name") as any as string);
 
             $(".key", tr).text(name);
 
             const fieldMetaClassId = field.metaClass.id;
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created... 
-            
+
             fieldElement = createField(
                 fieldMetaClassId,
                 {
@@ -71,8 +84,8 @@ export class DetailForm implements InterfacesForms.IForm {
                     itemUrl: itemUri,
                     isReadOnly: configuration.isReadOnly,
                     form: this
-            });
-            
+                });
+
             if (fieldElement === null) {
                 // No field element was created.
                 htmlElement = $("<em></em>");
@@ -116,26 +129,27 @@ export class DetailForm implements InterfacesForms.IForm {
 
                 tthis.fieldElements.push(textField);
                 newRow.insertBefore($('.dm-row-newproperty'));
-                
+
                 propertyTextField.trigger('focus');
             });
         }
-        
+
         // Checks, if the form is a read-only form. If it is not a read-only, create the Accept and Reject buttons
         if (!configuration.isReadOnly) {
             // Add the Cancel and Submit buttons at the end of the creation to the table
             // allowing the cancelling and setting of the properties
-            tr = $("<tr><td></td><td><button class='btn btn-secondary'>Cancel" +
-                "<button class='btn btn-primary'>Submit</button></td></tr>");
+            tr = $("<tr><td></td><td><button class='btn btn-secondary dm-detail-form-cancel'>Cancel</button>" +
+                "<button class='btn btn-primary dm-detail-form-save'>Save</button>" +
+                "<button class='btn btn-primary dm-detail-form-save-and-close'>Save &amp; Close</button></td></tr>");
             tableBody.append(tr);
 
-            $(".btn-secondary", tr).on('click', () => {
+            $(".dm-detail-form-cancel", tr).on('click', () => {
                 if (tthis.onCancel !== undefined && tthis.onCancel !== null) {
                     tthis.onCancel();
                 }
             });
 
-            $(".btn-primary", tr).on('click', () => {
+            function saveHelper(method: SubmitMethod) {
                 if (tthis.onChange !== undefined && tthis.onCancel !== null) {
                     for (let m in tthis.fieldElements) {
                         if (!tthis.fieldElements.hasOwnProperty(m)) continue;
@@ -144,13 +158,20 @@ export class DetailForm implements InterfacesForms.IForm {
                         fieldElement.evaluateDom(tthis.element);
                     }
 
-                    tthis.onChange(tthis.element);
+                    tthis.onChange(tthis.element, method);
                 }
+            }
+
+            $(".dm-detail-form-save", tr).on('click', () => {
+                saveHelper(SubmitMethod.Save);
+            });
+
+            $(".dm-detail-form-save-and-close", tr).on('click', () => {
+                saveHelper(SubmitMethod.SaveAndClose);
             });
         }
 
         parent.append(table);
-
 
         const tableInfo =
             $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");

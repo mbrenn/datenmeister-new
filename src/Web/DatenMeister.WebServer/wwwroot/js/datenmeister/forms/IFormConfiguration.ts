@@ -1,4 +1,5 @@
 ﻿import {DmObject} from "../Mof";
+import {SubmitMethod} from "./DetailForm";
 
 export interface IFormConfiguration {
     allowAddingNewProperties?: boolean;
@@ -9,7 +10,7 @@ export interface IFormConfiguration {
     formUri?: string;
     
     onCancel?: () => void;
-    onSubmit?: (element: DmObject) => void;
+    onSubmit?: (element: DmObject, method: SubmitMethod) => void;
 
     refreshForm?: () => void;
 }

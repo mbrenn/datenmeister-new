@@ -7,6 +7,7 @@ import {ListForm} from "./ListForm";
 import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
 import DmObject = Mof.DmObject;
+import {SubmitMethod} from "./DetailForm";
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {
@@ -117,6 +118,17 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
     }
 }
 
+
+// Defines the possible viewmode of a form
+export enum FormMode
+{
+    // The user can not edit the fields and just views the information
+    ViewMode,
+    // The user can edit the fields and submit these changes
+    EditMode
+};
+
+
 /* 
     Defines the form creator which also performs the connect to the webserver itself. 
     The input for this type of form is a single element
@@ -128,23 +140,30 @@ export class DetailFormCreator implements IForm.IFormNavigation {
     element: DmObject;
     extentUri: string;
     formElement: DmObject;
+    domContainer: JQuery;
+    configuration: IFormConfiguration;
     itemId: string;
     workspace: string;
 
     createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+        // First, store the parent and the configuration
+        this.domContainer = parent;
+        this.configuration = configuration;
+        
+        this.createFormForItem();
+    }
+
+    private createFormForItem() {
+        const configuration = this.configuration;
         const tthis = this;
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createFormByObject(parent, configuration);
+                tthis.createFormForItem();
             }
         }
 
         if (this.element == null) this.element = new DmObject();
-
-        parent.empty();
-        const creatingElements = $("<div>Creating elements...</div>");
-        parent.append(creatingElements);
 
         const tabs = this.formElement.getAsArray("tab");
         for (let n in tabs) {
@@ -184,69 +203,93 @@ export class DetailFormCreator implements IForm.IFormNavigation {
                 $(".id", form).text(tab.metaClass.id);
             }
 
-            parent.append(form);
+            this.domContainer.append(form);
         }
+    }
+}
 
-        // Removes the loading information
-        creatingElements.remove();
+export class ItemDetailFormCreator {
+    formMode: FormMode = FormMode.ViewMode;
+    itemUri: string;
+    workspace: string;
+    private domContainer: JQuery;
+
+    switchToMode(formMode: FormMode) {
+        this.formMode = formMode;
+        this.rebuildForm();
     }
 
-    createViewForm(parent: JQuery<HTMLElement>, workspace: string, uri: string) {
-        this.createForm(parent, workspace, uri, {isReadOnly: true});
+    createForm(parent: JQuery, workspace: string, itemUri: string) {
+        this.domContainer = parent;
+        this.workspace = workspace;
+        this.itemUri = itemUri;
+
+        this.rebuildForm();
     }
 
-    createEditForm(parent: JQuery<HTMLElement>, workspace: string, uri: string) {
+    rebuildForm() {
         const tthis = this;
 
-        this.createForm(parent, workspace, uri,
-            {
+        let configuration;
+        if (this.formMode === FormMode.ViewMode) {
+            configuration = {isReadOnly: true};
+        } else {
+            configuration = {
                 isReadOnly: false,
                 onCancel: () => {
-                    tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
+                    tthis.switchToMode(FormMode.ViewMode);
                 },
-                onSubmit: (element) => {
-                    DataLoader.setProperties(tthis.workspace, tthis.itemId, element).then(
-                        () => {
-                            tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
-                        }
-                    );
-                }
-            });
-    }
+                onSubmit: async (element, method) => {
+                    await DataLoader.setProperties(tthis.workspace, tthis.itemUri, element);
 
-    createForm(parent: JQuery<HTMLElement>,
-               workspace: string,
-               itemUrl: string,
-               configuration: IFormConfiguration) {
-        const tthis = this;
+                    if (method === SubmitMethod.Save) {
+                        tthis.switchToMode(FormMode.ViewMode);
+                    }
+
+                    if (method === SubmitMethod.SaveAndClose) {
+
+                    }
+                }
+            };
+        }
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createForm(parent, workspace, itemUrl, configuration);
+                tthis.rebuildForm();
             }
         }
 
         // Load the object
-        const defer1 = DataLoader.getObjectByUri(workspace, itemUrl);
+        const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
 
         // Load the form
-        const defer2 = ClientForms.getDefaultFormForItem(workspace, itemUrl, "");
+        const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, "");
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {
-            tthis.element = element1;
-            tthis.formElement = form;
-            tthis.workspace = workspace;
-            tthis.itemId = itemUrl;
+            
+            this.domContainer.empty();
+            
+            const detailForm = new DetailFormCreator();
+            detailForm.workspace = this.workspace;
+            detailForm.itemId = this.itemUri;
+            detailForm.element = element1;
+            detailForm.formElement = form;
+
+            if (this.formMode === FormMode.ViewMode) {
+                const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
+                domEditButton.on('click', () => tthis.switchToMode(FormMode.EditMode));
+                this.domContainer.append(domEditButton);
+            }
+
+            detailForm.createFormByObject(tthis.domContainer, configuration);
 
             debugElementToDom(element1, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
 
-            tthis.createFormByObject(parent, configuration);
         });
 
-        parent.empty();
-        parent.text("Loading content and form...");
+        this.domContainer.empty();
+        this.domContainer.text("Loading content and form...");
     }
-
 }

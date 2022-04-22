@@ -1,7 +1,16 @@
-define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./ListForm", "../DomHelper"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, ListForm_1, DomHelper_1) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./ListForm", "../DomHelper", "./DetailForm"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, ListForm_1, DomHelper_1, DetailForm_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DetailFormCreator = exports.CollectionFormCreator = exports.FormModel = void 0;
+    exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.FormMode = exports.CollectionFormCreator = exports.FormModel = void 0;
     var DmObject = Mof.DmObject;
     var FormModel;
     (function (FormModel) {
@@ -90,6 +99,15 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
         }
     }
     exports.CollectionFormCreator = CollectionFormCreator;
+    // Defines the possible viewmode of a form
+    var FormMode;
+    (function (FormMode) {
+        // The user can not edit the fields and just views the information
+        FormMode[FormMode["ViewMode"] = 0] = "ViewMode";
+        // The user can edit the fields and submit these changes
+        FormMode[FormMode["EditMode"] = 1] = "EditMode";
+    })(FormMode = exports.FormMode || (exports.FormMode = {}));
+    ;
     /*
         Defines the form creator which also performs the connect to the webserver itself.
         The input for this type of form is a single element
@@ -98,17 +116,21 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
      */
     class DetailFormCreator {
         createFormByObject(parent, configuration) {
+            // First, store the parent and the configuration
+            this.domContainer = parent;
+            this.configuration = configuration;
+            this.createFormForItem();
+        }
+        createFormForItem() {
+            const configuration = this.configuration;
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
-                    tthis.createFormByObject(parent, configuration);
+                    tthis.createFormForItem();
                 };
             }
             if (this.element == null)
                 this.element = new DmObject();
-            parent.empty();
-            const creatingElements = $("<div>Creating elements...</div>");
-            parent.append(creatingElements);
             const tabs = this.formElement.getAsArray("tab");
             for (let n in tabs) {
                 if (!tabs.hasOwnProperty(n)) {
@@ -144,53 +166,77 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                     form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
                     $(".id", form).text(tab.metaClass.id);
                 }
-                parent.append(form);
+                this.domContainer.append(form);
             }
-            // Removes the loading information
-            creatingElements.remove();
-        }
-        createViewForm(parent, workspace, uri) {
-            this.createForm(parent, workspace, uri, { isReadOnly: true });
-        }
-        createEditForm(parent, workspace, uri) {
-            const tthis = this;
-            this.createForm(parent, workspace, uri, {
-                isReadOnly: false,
-                onCancel: () => {
-                    tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
-                },
-                onSubmit: (element) => {
-                    DataLoader.setProperties(tthis.workspace, tthis.itemId, element).then(() => {
-                        tthis.createViewForm(parent, tthis.workspace, tthis.itemId);
-                    });
-                }
-            });
-        }
-        createForm(parent, workspace, itemUrl, configuration) {
-            const tthis = this;
-            if (configuration.refreshForm === undefined) {
-                configuration.refreshForm = () => {
-                    tthis.createForm(parent, workspace, itemUrl, configuration);
-                };
-            }
-            // Load the object
-            const defer1 = DataLoader.getObjectByUri(workspace, itemUrl);
-            // Load the form
-            const defer2 = ClientForms.getDefaultFormForItem(workspace, itemUrl, "");
-            // Wait for both
-            Promise.all([defer1, defer2]).then(([element1, form]) => {
-                tthis.element = element1;
-                tthis.formElement = form;
-                tthis.workspace = workspace;
-                tthis.itemId = itemUrl;
-                (0, DomHelper_1.debugElementToDom)(element1, "#debug_mofelement");
-                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
-                tthis.createFormByObject(parent, configuration);
-            });
-            parent.empty();
-            parent.text("Loading content and form...");
         }
     }
     exports.DetailFormCreator = DetailFormCreator;
+    class ItemDetailFormCreator {
+        constructor() {
+            this.formMode = FormMode.ViewMode;
+        }
+        switchToMode(formMode) {
+            this.formMode = formMode;
+            this.rebuildForm();
+        }
+        createForm(parent, workspace, itemUri) {
+            this.domContainer = parent;
+            this.workspace = workspace;
+            this.itemUri = itemUri;
+            this.rebuildForm();
+        }
+        rebuildForm() {
+            const tthis = this;
+            let configuration;
+            if (this.formMode === FormMode.ViewMode) {
+                configuration = { isReadOnly: true };
+            }
+            else {
+                configuration = {
+                    isReadOnly: false,
+                    onCancel: () => {
+                        tthis.switchToMode(FormMode.ViewMode);
+                    },
+                    onSubmit: (element, method) => __awaiter(this, void 0, void 0, function* () {
+                        yield DataLoader.setProperties(tthis.workspace, tthis.itemUri, element);
+                        if (method === DetailForm_1.SubmitMethod.Save) {
+                            tthis.switchToMode(FormMode.ViewMode);
+                        }
+                        if (method === DetailForm_1.SubmitMethod.SaveAndClose) {
+                        }
+                    })
+                };
+            }
+            if (configuration.refreshForm === undefined) {
+                configuration.refreshForm = () => {
+                    tthis.rebuildForm();
+                };
+            }
+            // Load the object
+            const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
+            // Load the form
+            const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, "");
+            // Wait for both
+            Promise.all([defer1, defer2]).then(([element1, form]) => {
+                this.domContainer.empty();
+                const detailForm = new DetailFormCreator();
+                detailForm.workspace = this.workspace;
+                detailForm.itemId = this.itemUri;
+                detailForm.element = element1;
+                detailForm.formElement = form;
+                if (this.formMode === FormMode.ViewMode) {
+                    const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
+                    domEditButton.on('click', () => tthis.switchToMode(FormMode.EditMode));
+                    this.domContainer.append(domEditButton);
+                }
+                detailForm.createFormByObject(tthis.domContainer, configuration);
+                (0, DomHelper_1.debugElementToDom)(element1, "#debug_mofelement");
+                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+            });
+            this.domContainer.empty();
+            this.domContainer.text("Loading content and form...");
+        }
+    }
+    exports.ItemDetailFormCreator = ItemDetailFormCreator;
 });
 //# sourceMappingURL=Forms.js.map

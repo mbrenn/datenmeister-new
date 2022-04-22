@@ -17,41 +17,21 @@
     @("Element" ?? "Unknown Element")
 </div>
 
-<div>
-    <a class="btn btn-primary" onclick="CreateEditForm()">Edit Item</a>
-</div>
-
 <script type="application/javascript">
-
-    function CreateViewForm()
-    {
-        requirejs(['forms/Forms'], function(Form) {
-            const detailForm = new Form.DetailFormCreator();
-            detailForm.createViewForm(
-                $("#form_view"),
-                "@HttpUtility.JavaScriptStringEncode(w)",
-                "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
-        });
-    }
 
 $(function()
 {
-    CreateViewForm();
-});
-
-function CreateEditForm()
-{
     requirejs(['forms/Forms'], function(Form) {
-        const detailForm = new Form.DetailFormCreator();
-        detailForm.createEditForm(
+        const detailForm = new Form.ItemDetailFormCreator();
+        detailForm.createForm(
             $("#form_view"),
             "@HttpUtility.JavaScriptStringEncode(w)",
             "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
     });
-}
-
+});
+    
 </script>
-<div id="form_view">View Form</div>
+<div id="form_view">Loading the form</div>
 
 <div class="accordion" id="debug_accordion">
     <div class="accordion-item">

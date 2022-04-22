@@ -1,7 +1,15 @@
 define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"], function (require, exports, Mof, FieldFactory_1, TextField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DetailForm = void 0;
+    exports.DetailForm = exports.SubmitMethod = void 0;
+    // Defines the possible submit methods, a user can chose to close the detail form
+    var SubmitMethod;
+    (function (SubmitMethod) {
+        // The user clicked on the save button
+        SubmitMethod[SubmitMethod["Save"] = 0] = "Save";
+        // The user clicked on the save and close button
+        SubmitMethod[SubmitMethod["SaveAndClose"] = 1] = "SaveAndClose";
+    })(SubmitMethod = exports.SubmitMethod || (exports.SubmitMethod = {}));
     class DetailForm {
         refreshForm() {
             this.createFormByObject(this.parentHtml, this.configuration);
@@ -93,15 +101,16 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
             if (!configuration.isReadOnly) {
                 // Add the Cancel and Submit buttons at the end of the creation to the table
                 // allowing the cancelling and setting of the properties
-                tr = $("<tr><td></td><td><button class='btn btn-secondary'>Cancel" +
-                    "<button class='btn btn-primary'>Submit</button></td></tr>");
+                tr = $("<tr><td></td><td><button class='btn btn-secondary dm-detail-form-cancel'>Cancel</button>" +
+                    "<button class='btn btn-primary dm-detail-form-save'>Save</button>" +
+                    "<button class='btn btn-primary dm-detail-form-save-and-close'>Save &amp; Close</button></td></tr>");
                 tableBody.append(tr);
-                $(".btn-secondary", tr).on('click', () => {
+                $(".dm-detail-form-cancel", tr).on('click', () => {
                     if (tthis.onCancel !== undefined && tthis.onCancel !== null) {
                         tthis.onCancel();
                     }
                 });
-                $(".btn-primary", tr).on('click', () => {
+                function saveHelper(method) {
                     if (tthis.onChange !== undefined && tthis.onCancel !== null) {
                         for (let m in tthis.fieldElements) {
                             if (!tthis.fieldElements.hasOwnProperty(m))
@@ -109,8 +118,14 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                             const fieldElement = tthis.fieldElements[m];
                             fieldElement.evaluateDom(tthis.element);
                         }
-                        tthis.onChange(tthis.element);
+                        tthis.onChange(tthis.element, method);
                     }
+                }
+                $(".dm-detail-form-save", tr).on('click', () => {
+                    saveHelper(SubmitMethod.Save);
+                });
+                $(".dm-detail-form-save-and-close", tr).on('click', () => {
+                    saveHelper(SubmitMethod.SaveAndClose);
                 });
             }
             parent.append(table);

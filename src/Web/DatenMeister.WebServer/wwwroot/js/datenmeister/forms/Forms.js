@@ -204,7 +204,19 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                         }
                         if (method === DetailForm_1.SubmitMethod.SaveAndClose) {
                             const containers = yield DataLoader.getContainer(tthis.workspace, tthis.itemUri);
-                            (0, Navigator_1.navigateToItemByUrl)(tthis.workspace, containers[containers.length - 1].uri);
+                            if (containers !== undefined && containers.length > 0) {
+                                const parentWorkspace = containers[0].workspace;
+                                if (containers.length === 2) {
+                                    // If user has selected would move to an extent, he should move to the items enumeration
+                                    (0, Navigator_1.navigateToExtent)(parentWorkspace, containers[0].uri);
+                                }
+                                else {
+                                    (0, Navigator_1.navigateToItemByUrl)(parentWorkspace, containers[0].uri);
+                                }
+                            }
+                            else {
+                                alert('Something wrong happened. I cannot retrieve the parent...');
+                            }
                         }
                     })
                 };

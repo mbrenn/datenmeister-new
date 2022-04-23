@@ -316,14 +316,9 @@ namespace DatenMeister.WebServer.Controller
             var workspace = extent?.GetWorkspace();
             if (extent != null && workspace != null)
             {
-                var managementExtentItem = _workspaceLogic.GetManagementWorkspace()
-                    .ResolveById(ExtentManagementUrlHelper.GetIdOfExtent(workspace.id, extent.contextURI()));
-                if (managementExtentItem != null)
-                {
-                    result.Add(ItemWithNameAndId.Create(managementExtentItem)
-                               ?? throw new InvalidOperationException("Should not happen"));
-                }
-                
+                result.Add(ItemWithNameAndId.Create(extent)
+                           ?? throw new InvalidOperationException("Should not happen"));
+
                 var managementWorkspaceItem = _workspaceLogic.GetManagementWorkspace()
                     .ResolveById(ExtentManagementUrlHelper.GetIdOfWorkspace(workspace.id));
                 if (managementWorkspaceItem != null)

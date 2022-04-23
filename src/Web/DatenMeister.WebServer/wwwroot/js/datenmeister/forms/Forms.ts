@@ -8,7 +8,7 @@ import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
 import DmObject = Mof.DmObject;
 import {SubmitMethod} from "./DetailForm";
-import {navigateToItemByUrl} from "../Navigator";
+import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {
@@ -249,7 +249,18 @@ export class ItemDetailFormCreator {
 
                     if (method === SubmitMethod.SaveAndClose) {
                         const containers = await DataLoader.getContainer(tthis.workspace, tthis.itemUri);
-                        navigateToItemByUrl(tthis.workspace, containers[containers.length - 1].uri);
+                        if (containers !== undefined && containers.length > 0) {
+                            const parentWorkspace = containers[0].workspace;
+                            if (containers.length === 2) {
+                                // If user has selected would move to an extent, he should move to the items enumeration
+                                navigateToExtent(parentWorkspace, containers[0].uri);
+                            } else {
+                                navigateToItemByUrl(parentWorkspace, containers[0].uri);
+                            }
+                        }
+                        else{
+                            alert ('Something wrong happened. I cannot retrieve the parent...');
+                        }
                     }
                 }
             };

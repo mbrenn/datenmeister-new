@@ -241,9 +241,9 @@ namespace DatenMeister.Tests.Web
             // Get the containers of the root items. This element should be the extent and the workspace
             var container1 = itemsController.GetContainer("Data", "dm:///temp#item1")?.Value;
             Assert.That(container1.Count, Is.EqualTo(2));
-            Assert.That(container1[0].name, Is.EqualTo("dm:///temp"));
-            Assert.That(container1[0].workspace, Is.EqualTo("Management"));
-            Assert.That(container1[0].uri, Is.EqualTo(ExtentManagementUrlHelper.GetUrlOfExtent("Data", "dm:///temp")));
+            Assert.That(container1[0].name, Is.EqualTo("Test Extent"));
+            Assert.That(container1[0].workspace, Is.EqualTo("Data"));
+            Assert.That(container1[0].uri, Is.EqualTo("dm:///temp"));
             
             Assert.That(container1[1].name, Is.EqualTo("Data"));
             Assert.That(container1[1].workspace, Is.EqualTo("Management"));
@@ -256,8 +256,8 @@ namespace DatenMeister.Tests.Web
             Assert.That(container4[0].name, Is.EqualTo("item2"));
             Assert.That(container4[0].workspace, Is.EqualTo("Data"));
             
-            Assert.That(container4[1].name, Is.EqualTo("dm:///temp"));
-            Assert.That(container4[1].workspace, Is.EqualTo("Management"));
+            Assert.That(container4[1].name, Is.EqualTo("Test Extent"));
+            Assert.That(container4[1].workspace, Is.EqualTo("Data"));
             
             Assert.That(container4[2].name, Is.EqualTo("Data"));
             Assert.That(container4[2].workspace, Is.EqualTo("Management"));
@@ -272,8 +272,8 @@ namespace DatenMeister.Tests.Web
             Assert.That(container7[1].name, Is.EqualTo("item2"));
             Assert.That(container7[1].workspace, Is.EqualTo("Data"));
             
-            Assert.That(container7[2].name, Is.EqualTo("dm:///temp"));
-            Assert.That(container7[2].workspace, Is.EqualTo("Management"));
+            Assert.That(container7[2].name, Is.EqualTo("Test Extent"));
+            Assert.That(container7[2].workspace, Is.EqualTo("Data"));
             
             Assert.That(container7[3].name, Is.EqualTo("Data"));
             Assert.That(container7[3].workspace, Is.EqualTo("Management"));

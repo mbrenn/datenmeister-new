@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -266,7 +267,7 @@ namespace DatenMeister.Core.Provider.DotNet
                     else
                     {
                         umlProperty.set(_UML._CommonStructure._TypedElement.type,
-                            new MofObjectShadow($"#{WebUtility.UrlEncode(propertyType.FullName)}"));
+                            new MofObjectShadow($"#{HttpUtility.UrlEncode(propertyType.FullName)}"));
                     }
                 }
             }

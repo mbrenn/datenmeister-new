@@ -217,7 +217,7 @@ namespace DatenMeister.Core.Runtime
         private MofElement? ResolveByFragment(string fragment)
         {
             // Queries the object
-            var queryObjectId = WebUtility.UrlDecode(fragment);
+            var queryObjectId = HttpUtility.UrlDecode(fragment);
 
             // Check if the extent type already supports the direct querying of objects
             if (_extent.Provider is IProviderSupportFunctions supportFunctions &&
@@ -265,7 +265,7 @@ namespace DatenMeister.Core.Runtime
                 throw new InvalidOperationException("element is not of type IHasId. Element is: " + element);
             }
 
-            return _extent.contextURI() + "#" + WebUtility.UrlEncode(elementAsObject.Id);
+            return _extent.contextURI() + "#" + HttpUtility.UrlEncode(elementAsObject.Id);
         }
     }
 }

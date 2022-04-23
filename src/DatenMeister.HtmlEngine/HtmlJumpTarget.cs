@@ -1,4 +1,5 @@
 using System.Net;
+using System.Web;
 
 namespace DatenMeister.HtmlEngine
 {
@@ -16,7 +17,7 @@ namespace DatenMeister.HtmlEngine
 
         public override string ToString()
         {
-            return $"<a name=\"{WebUtility.HtmlEncode(_id)}\" />{_text}";
+            return $"<a name=\"{HttpUtility.HtmlEncode(_id)}\" />{_text}";
         }
     }
 }

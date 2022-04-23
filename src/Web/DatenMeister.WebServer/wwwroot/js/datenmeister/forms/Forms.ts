@@ -8,6 +8,7 @@ import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
 import DmObject = Mof.DmObject;
 import {SubmitMethod} from "./DetailForm";
+import {navigateToItemByUrl} from "../Navigator";
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {
@@ -247,7 +248,8 @@ export class ItemDetailFormCreator {
                     }
 
                     if (method === SubmitMethod.SaveAndClose) {
-
+                        const containers = await DataLoader.getContainer(tthis.workspace, tthis.itemUri);
+                        navigateToItemByUrl(tthis.workspace, containers[containers.length - 1].uri);
                     }
                 }
             };

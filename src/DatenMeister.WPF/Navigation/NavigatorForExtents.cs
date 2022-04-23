@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using Autofac;
 using BurnSystems.Logging;
@@ -58,7 +59,7 @@ namespace DatenMeister.WPF.Navigation
             string extentUrl)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var uri = WorkspaceNames.UriExtentWorkspaces + "#" + WebUtility.UrlEncode(extentUrl);
+            var uri = WorkspaceNames.UriExtentWorkspaces + "#" + HttpUtility.UrlEncode(extentUrl);
             var foundItem = workspaceLogic.FindItem(uri);
             if (foundItem == null)
             {
@@ -123,7 +124,7 @@ namespace DatenMeister.WPF.Navigation
                 // Gets the properties of the extent themselves
                 var uri =
                     WorkspaceNames.UriExtentWorkspaces + "#" +
-                    WebUtility.UrlEncode(((IUriExtent)mofExtent).contextURI());
+                    HttpUtility.UrlEncode(((IUriExtent)mofExtent).contextURI());
                 var foundItem = workspaceLogic.FindItem(uri);
                 if (foundItem == null)
                 {

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text;
+using System.Web;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,8 +32,8 @@ namespace DatenMeister.WebServer.Pages
 
         public void OnGet(string workspace, string itemUrl)
         {
-            Workspace = WebUtility.UrlDecode(workspace);
-            ItemUrl = WebUtility.UrlDecode(itemUrl);
+            Workspace = HttpUtility.UrlDecode(workspace);
+            ItemUrl = HttpUtility.UrlDecode(itemUrl);
         }
     }
 }

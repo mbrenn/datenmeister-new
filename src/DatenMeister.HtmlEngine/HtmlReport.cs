@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Web;
 using BurnSystems;
 
 namespace DatenMeister.HtmlEngine
@@ -87,7 +88,7 @@ namespace DatenMeister.HtmlEngine
             _streamWriter.WriteLine("<!DOCTYPE html>");
             _streamWriter.WriteLine("<html>");
             _streamWriter.WriteLine("  <head>");
-            _streamWriter.WriteLine("    <title>" + WebUtility.HtmlEncode(pageTitle) + "</title>");
+            _streamWriter.WriteLine("    <title>" + HttpUtility.HtmlEncode(pageTitle) + "</title>");
             _streamWriter.WriteLine("  </head>");
             if (!string.IsNullOrEmpty(CssStyleSheet))
             {

@@ -184,9 +184,9 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 return new HtmlDivElement(
                     new HtmlLinkElement
                     {
-                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextWorkspace)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextExtent)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(asHasId.Id)!),
+                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextWorkspace)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextExtent)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(asHasId.Id)!),
                         Content = NamedElementMethods.GetName(value)
                     });
             }
@@ -223,9 +223,9 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 return new HtmlDivElement(
                     new HtmlLinkElement
                     {
-                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextWorkspace)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextExtent)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(asHasId.Id)!),
+                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextWorkspace)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextExtent)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(asHasId.Id)!),
                         Content = NamedElementMethods.GetName(value)
                     });
             }

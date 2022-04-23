@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./ListForm", "../DomHelper", "./DetailForm"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, ListForm_1, DomHelper_1, DetailForm_1) {
+define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./ListForm", "../DomHelper", "./DetailForm", "../Navigator"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, ListForm_1, DomHelper_1, DetailForm_1, Navigator_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.FormMode = exports.CollectionFormCreator = exports.FormModel = void 0;
@@ -203,6 +203,8 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                             tthis.switchToMode(FormMode.ViewMode);
                         }
                         if (method === DetailForm_1.SubmitMethod.SaveAndClose) {
+                            const containers = yield DataLoader.getContainer(tthis.workspace, tthis.itemUri);
+                            (0, Navigator_1.navigateToItemByUrl)(tthis.workspace, containers[containers.length - 1].uri);
                         }
                     })
                 };

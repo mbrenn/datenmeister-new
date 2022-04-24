@@ -51,7 +51,7 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/forms/default_for_metaclass/{metaClass}/{viewMode?}")]
-        public ActionResult<string> GetDefaultFormForMetaClass(string metaClass, string? viewMode) 
+        public ActionResult<string> GetDefaultFormForMetaClass(string? metaClass, string? viewMode) 
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             metaClass = HttpUtility.UrlDecode(metaClass);

@@ -11,8 +11,9 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
         }
         const creator = new Forms.DetailFormCreator();
         configuration.isNewItem = true;
-        configuration.onSubmit = (element) => {
-            FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element);
+        configuration.onSubmit = (element, method) => {
+            FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element, undefined, // The action form cannot provide additional parameters as the ActionButton
+            method);
         };
         let deferLoadObjectForAction = FormActions_1.DetailFormActions.loadObjectForAction(actionName);
         if (deferLoadObjectForAction === undefined) {
@@ -40,7 +41,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
             else if (metaClass === undefined) {
                 // If there is no metaclass set, create a total empty form object...
                 deferForm = new Promise(resolve => {
-                    deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
+                    resolve(Forms.FormModel.createEmptyFormWithDetail());
                 });
             }
             else {

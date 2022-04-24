@@ -5,7 +5,7 @@ export class DmObject {
 
     metaClass: ItemWithNameAndId;
 
-    uri: string;
+    uri: string | undefined;
 
     isReference: boolean = false;
 
@@ -56,7 +56,7 @@ export class DmObject {
         return DmObject.valueToString(values);
     }
 
-    setMetaClassByUri(metaClassUri: string) {
+    setMetaClassByUri(metaClassUri: string | undefined) {
         this.metaClass = {uri: metaClassUri};
     }
 

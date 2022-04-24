@@ -68,7 +68,7 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="metaClass">MetaClass to be given</param>
         /// <param name="viewMode">The view mode</param>
         /// <returns>The found form</returns>
-        public IObject GetDefaultFormForMetaClassInternal(string metaClass, string? viewMode = null)
+        public IObject GetDefaultFormForMetaClassInternal(string? metaClass, string? viewMode = null)
         {
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
 

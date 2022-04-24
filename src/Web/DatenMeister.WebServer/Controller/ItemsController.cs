@@ -198,22 +198,22 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="extentUri">Uri of the extent</param>
         /// <param name="itemId">Id of the item to be deleted</param>
         /// <returns>the value indicating the success or not</returns>
-        [HttpPost("api/items/delete_from_extent/{workspaceId}/{extentUri}/{itemId}")]
-        public ActionResult<object> DeleteItemFromExtent(string workspaceId,
-            string extentUri,
-            string itemId)
+        [HttpPost("api/items/delete_from_extent/{workspaceId}/{itemUri}")]
+        public ActionResult<object> DeleteItemFromExtent(
+            string workspaceId,
+            string itemUri)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
-            extentUri = HttpUtility.UrlDecode(extentUri);
-            itemId = HttpUtility.UrlDecode(itemId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
 
-            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
-                         ?? throw new InvalidOperationException("Extent is not found");
+            var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
+            var extent = foundElement.GetExtentOf();
+            if (extent == null)
+            {
+                throw new InvalidOperationException($"Extent of item {itemUri} was not found");
+            }
 
-            var found = extent.elements().FirstOrDefault(x => (x as IHasId)?.Id == itemId)
-                        ?? throw new InvalidOperationException("Item is not found");
-
-            extent.elements().remove(found);
+            extent.elements().remove(foundElement);
             return new {success = true};
         }
 

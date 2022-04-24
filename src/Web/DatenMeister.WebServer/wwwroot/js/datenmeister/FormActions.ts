@@ -4,6 +4,8 @@ import * as Navigator from "./Navigator";
 import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./forms/Interfaces";
 import * as ECClient from "./client/Extents";
+import * as ItemClient from "./client/Items";
+import {SubmitMethod} from "./forms/DetailForm";
 
 export module DetailFormActions {
 
@@ -25,7 +27,7 @@ export module DetailFormActions {
             return new Promise<DmObject>(resolve => {
                 const result = new DmObject();
 
-                if (metaclass !== undefined) {
+                if (metaclass !== undefined && metaclass !== null) {
                     result.setMetaClassByUri(metaclass);
                 }
 
@@ -65,7 +67,15 @@ export module DetailFormActions {
         }
     }
 
-    export function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject, parameter?: DmObject) {
+    // Calls to execute the form actions.
+    // actionName: Name of the action to be executed. This is a simple string describing the action
+    // form: The form which was used to trigger the action
+    // itemUrl: The url of the item whose action will be executed
+    // element: The element which is reflected within the form
+    // parameter: These parameter are retrieved from the actionForm definition from the server and are forwarded
+    //    This supports the server to provide additional paramater for an action button
+    // submitMethod: Describes which button the user has clicked
+    export async function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod) {
         let workspaceId;
         let extentUri;
         let p = new URLSearchParams(window.location.search);
@@ -100,7 +110,7 @@ export module DetailFormActions {
                 } else {
                     const workspace = p.get('workspace');
                     const extentUri = p.get('extent');
-                    FormActions.extentCreateItem(workspace, extentUri, element);
+                    await FormActions.extentCreateItem(workspace, extentUri, element, undefined, submitMethod);
                 }
                 break;
             case "Extent.CreateItemInProperty":
@@ -110,7 +120,7 @@ export module DetailFormActions {
                     const workspace = p.get('workspace');
                     const itemUrl = p.get('itemUrl');
                     const property = p.get('property');
-                    FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
+                    await FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
                 }
                 break;
             case "ExtentsList.ViewItem":
@@ -124,7 +134,7 @@ export module DetailFormActions {
                 break;
             case "ZipExample.CreateExample":
                 const id = element.get('id');
-                ApiConnection.post(
+                await ApiConnection.post(
                     Settings.baseUrl + "api/zip/create",
                     {workspace: id})
                     .then(
@@ -137,7 +147,7 @@ export module DetailFormActions {
                 FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
                 break;
             case "Workspace.Extent.Xmi.Create":
-                ApiConnection.post<any>(
+                await ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
                     {Parameter: createJsonFromObject(element)})
                     .then(data => {
@@ -148,9 +158,6 @@ export module DetailFormActions {
                         } else {
                             alert(data.reason);
                         }
-                    })
-                    .catch(() => {
-                        alert('fail');
                     });
                 break;
             case "JSON.Item.Alert":
@@ -178,49 +185,56 @@ export class FormActions {
             Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
     }
 
-    static workspaceNavigateTo(workspace: string) {
-        document.location.href =
-            Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
-    }
-
-    static extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string) {
+    static async extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string, submitMethod?: SubmitMethod) {
         if (metaClass === undefined) {
             metaClass = element.metaClass.uri
         }
 
         const json = createJsonFromObject(element);
-        ApiConnection.post(
-            Settings.baseUrl + "api/items/create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri),
+
+        const newItem = await ItemClient.createItemInExtent(
+            workspace, extentUri,
             {
                 metaClass: metaClass === undefined ? "" : metaClass,
-                properties: json
+                properties: element
             }
-        ).then(() => {
+        );
+
+        if (submitMethod === SubmitMethod.Save) {
+            // If user has clicked on the save button (without closing), the form shall just be updated
+            Navigator.navigateToItemByUrl(workspace, newItem.itemId);
+        } else {
+            // Else, move to the overall items overview
             document.location.href = Settings.baseUrl +
                 "ItemsOverview/" +
                 encodeURIComponent(workspace) +
                 "/" +
                 encodeURIComponent(extentUri);
-        });
+        }
     }
 
-    static extentCreateItemInProperty(workspace: string, itemUrl: string, property: string, element: DmObject, metaClass?: string) {
+    static workspaceNavigateTo(workspace: string) {
+        document.location.href =
+            Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
+    }
+
+    static async extentCreateItemInProperty(workspace: string, itemUrl: string, property: string, element: DmObject, metaClass?: string) {
         if (metaClass === undefined) {
             metaClass = element.metaClass.uri
         }
 
         const json = createJsonFromObject(element);
-        ApiConnection.post(
+        await ApiConnection.post(
             Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl),
             {
-                metaClass: metaClass === undefined ? "" : metaClass,
+                metaClass: (metaClass === undefined || metaClass === undefined) ? "" : metaClass,
                 property: property,
                 asList: true,
                 properties: json
             }
-        ).then(() => {
-            Navigator.navigateToItemByUrl(workspace, itemUrl);
-        });
+        );
+        
+        Navigator.navigateToItemByUrl(workspace, itemUrl);
     }
 
     static extentNavigateTo(workspace: string, extentUri: string): void {
@@ -289,22 +303,15 @@ export class FormActions {
                 });
     }
 
-    static itemDelete(workspace: string, extentUri: string, itemUri: string) {
-        ApiConnection.deleteRequest<IDeleteCallbackData>(
-            Settings.baseUrl + "api/items/delete/"
-            + encodeURIComponent(workspace) + "/" +
-            encodeURIComponent(itemUri),
-            {}
-        )
-            .then(
-                data => {
-                    const success = data.success;
-                    if (success) {
-                        Navigator.navigateToExtent(workspace, extentUri);
-                    } else {
-                        alert('Deletion was not successful.');
-                    }
-                });
+    static async itemDelete(workspace: string, extentUri: string, itemUri: string) {
+        const data = await ItemClient.deleteItem(workspace, itemUri);
+        
+        const success = data.success;
+        if (success) {
+            Navigator.navigateToExtent(workspace, extentUri);
+        } else {
+            alert('Deletion was not successful.');
+        }
     }
 
     static extentsListViewItem(workspace: string, extentUri: string, itemId: string) {

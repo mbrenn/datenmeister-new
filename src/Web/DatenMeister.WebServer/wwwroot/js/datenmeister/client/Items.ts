@@ -85,12 +85,11 @@ export async function deleteItem(workspaceId: string, itemUri: string) {
     );
 }
 
-export async function deleteItemFromExtent(workspaceId: string, extentUri:string, itemId: string) {
+export async function deleteItemFromExtent(workspaceId: string, itemUrl: string) {
     return await ApiConnection.deleteRequest<ISuccessResult>(
         Settings.baseUrl + "api/items/delete_from_extent/"
         + encodeURIComponent(workspaceId) + "/"
-        + encodeURIComponent(extentUri) + "/"
-        + encodeURIComponent(itemId),
+        + encodeURIComponent(itemUrl),
         {}
     );
 }

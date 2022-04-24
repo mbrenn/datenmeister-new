@@ -60,12 +60,11 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.deleteItem = deleteItem;
-    function deleteItemFromExtent(workspaceId, extentUri, itemId) {
+    function deleteItemFromExtent(workspaceId, itemUrl) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete_from_extent/"
                 + encodeURIComponent(workspaceId) + "/"
-                + encodeURIComponent(extentUri) + "/"
-                + encodeURIComponent(itemId), {});
+                + encodeURIComponent(itemUrl), {});
         });
     }
     exports.deleteItemFromExtent = deleteItemFromExtent;

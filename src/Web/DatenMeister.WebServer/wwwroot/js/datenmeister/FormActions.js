@@ -1,4 +1,13 @@
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./forms/DetailForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, DetailForm_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -16,7 +25,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 const metaclass = p.get('metaclass');
                 return new Promise(resolve => {
                     const result = new Mof_1.DmObject();
-                    if (metaclass !== undefined) {
+                    if (metaclass !== undefined && metaclass !== null) {
                         result.setMetaClassByUri(metaclass);
                     }
                     resolve(result);
@@ -51,104 +60,111 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             }
         }
         DetailFormActions.requiresConfirmation = requiresConfirmation;
-        function execute(actionName, form, itemUrl, element, parameter) {
+        // Calls to execute the form actions.
+        // actionName: Name of the action to be executed. This is a simple string describing the action
+        // form: The form which was used to trigger the action
+        // itemUrl: The url of the item whose action will be executed
+        // element: The element which is reflected within the form
+        // parameter: These parameter are retrieved from the actionForm definition from the server and are forwarded
+        //    This supports the server to provide additional paramater for an action button
+        // submitMethod: Describes which button the user has clicked
+        function execute(actionName, form, itemUrl, element, parameter, submitMethod) {
             var _a;
-            let workspaceId;
-            let extentUri;
-            let p = new URLSearchParams(window.location.search);
-            switch (actionName) {
-                case "Extent.NavigateTo":
-                    extentUri = element.get('uri');
-                    workspaceId = element.get('workspaceId');
-                    FormActions.extentNavigateTo(workspaceId, extentUri);
-                    break;
-                case "Extent.DeleteExtent":
-                    extentUri = element.get('uri');
-                    workspaceId = element.get('workspaceId');
-                    FormActions.extentDelete(workspaceId, extentUri);
-                    break;
-                case "Extent.Properties":
-                    extentUri = element.get('uri');
-                    workspaceId = element.get('workspaceId');
-                    FormActions.extentNavigateToProperties(workspaceId, extentUri);
-                    break;
-                case "Extent.Properties.Update":
-                    if (!p.has("extent") || !p.has("workspace")) {
-                        alert('There is no extent given');
-                    }
-                    else {
-                        const workspace = p.get('workspace');
-                        const extentUri = p.get('extent');
-                        FormActions.extentUpdateExtentProperties(workspace, extentUri, element);
-                    }
-                    break;
-                case "Extent.CreateItem":
-                    if (!p.has("extent") || !p.has("workspace")) {
-                        alert('There is no extent given');
-                    }
-                    else {
-                        const workspace = p.get('workspace');
-                        const extentUri = p.get('extent');
-                        FormActions.extentCreateItem(workspace, extentUri, element);
-                    }
-                    break;
-                case "Extent.CreateItemInProperty":
-                    if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
-                        alert('There is no itemUrl given');
-                    }
-                    else {
-                        const workspace = p.get('workspace');
-                        const itemUrl = p.get('itemUrl');
-                        const property = p.get('property');
-                        FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
-                    }
-                    break;
-                case "ExtentsList.ViewItem":
-                    FormActions.itemNavigateTo(form.workspace, element.uri);
-                    break;
-                case "ExtentsList.DeleteItem":
-                    FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
-                    break;
-                case "Item.Delete":
-                    FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
-                    break;
-                case "ZipExample.CreateExample":
-                    const id = element.get('id');
-                    ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
-                        .then(data => {
-                        document.location.reload();
-                    });
-                    break;
-                case "Workspace.Extent.Xmi.Create.Navigate":
-                    const workspaceIdParameter = (_a = parameter === null || parameter === void 0 ? void 0 : parameter.get('workspaceId')) !== null && _a !== void 0 ? _a : "";
-                    FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
-                    break;
-                case "Workspace.Extent.Xmi.Create":
-                    ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
-                        .then(data => {
-                        if (data.success) {
-                            document.location.href = Settings.baseUrl
-                                + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
-                                "/" + encodeURIComponent(element.get("extentUri"));
+            return __awaiter(this, void 0, void 0, function* () {
+                let workspaceId;
+                let extentUri;
+                let p = new URLSearchParams(window.location.search);
+                switch (actionName) {
+                    case "Extent.NavigateTo":
+                        extentUri = element.get('uri');
+                        workspaceId = element.get('workspaceId');
+                        FormActions.extentNavigateTo(workspaceId, extentUri);
+                        break;
+                    case "Extent.DeleteExtent":
+                        extentUri = element.get('uri');
+                        workspaceId = element.get('workspaceId');
+                        FormActions.extentDelete(workspaceId, extentUri);
+                        break;
+                    case "Extent.Properties":
+                        extentUri = element.get('uri');
+                        workspaceId = element.get('workspaceId');
+                        FormActions.extentNavigateToProperties(workspaceId, extentUri);
+                        break;
+                    case "Extent.Properties.Update":
+                        if (!p.has("extent") || !p.has("workspace")) {
+                            alert('There is no extent given');
                         }
                         else {
-                            alert(data.reason);
+                            const workspace = p.get('workspace');
+                            const extentUri = p.get('extent');
+                            FormActions.extentUpdateExtentProperties(workspace, extentUri, element);
                         }
-                    })
-                        .catch(() => {
-                        alert('fail');
-                    });
-                    break;
-                case "JSON.Item.Alert":
-                    alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
-                    break;
-                case "Zipcode.Test":
-                    alert(element.get('zip').toString());
-                    break;
-                default:
-                    alert("Unknown action type: " + actionName);
-                    break;
-            }
+                        break;
+                    case "Extent.CreateItem":
+                        if (!p.has("extent") || !p.has("workspace")) {
+                            alert('There is no extent given');
+                        }
+                        else {
+                            const workspace = p.get('workspace');
+                            const extentUri = p.get('extent');
+                            yield FormActions.extentCreateItem(workspace, extentUri, element, undefined, submitMethod);
+                        }
+                        break;
+                    case "Extent.CreateItemInProperty":
+                        if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
+                            alert('There is no itemUrl given');
+                        }
+                        else {
+                            const workspace = p.get('workspace');
+                            const itemUrl = p.get('itemUrl');
+                            const property = p.get('property');
+                            yield FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
+                        }
+                        break;
+                    case "ExtentsList.ViewItem":
+                        FormActions.itemNavigateTo(form.workspace, element.uri);
+                        break;
+                    case "ExtentsList.DeleteItem":
+                        FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                        break;
+                    case "Item.Delete":
+                        FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                        break;
+                    case "ZipExample.CreateExample":
+                        const id = element.get('id');
+                        yield ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
+                            .then(data => {
+                            document.location.reload();
+                        });
+                        break;
+                    case "Workspace.Extent.Xmi.Create.Navigate":
+                        const workspaceIdParameter = (_a = parameter === null || parameter === void 0 ? void 0 : parameter.get('workspaceId')) !== null && _a !== void 0 ? _a : "";
+                        FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                        break;
+                    case "Workspace.Extent.Xmi.Create":
+                        yield ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
+                            .then(data => {
+                            if (data.success) {
+                                document.location.href = Settings.baseUrl
+                                    + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
+                                    "/" + encodeURIComponent(element.get("extentUri"));
+                            }
+                            else {
+                                alert(data.reason);
+                            }
+                        });
+                        break;
+                    case "JSON.Item.Alert":
+                        alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
+                        break;
+                    case "Zipcode.Test":
+                        alert(element.get('zip').toString());
+                        break;
+                    default:
+                        alert("Unknown action type: " + actionName);
+                        break;
+                }
+            });
         }
         DetailFormActions.execute = execute;
     })(DetailFormActions = exports.DetailFormActions || (exports.DetailFormActions = {}));
@@ -157,37 +173,46 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             document.location.href =
                 Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
         }
+        static extentCreateItem(workspace, extentUri, element, metaClass, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (metaClass === undefined) {
+                    metaClass = element.metaClass.uri;
+                }
+                const json = (0, Mof_1.createJsonFromObject)(element);
+                const newItem = yield ItemClient.createItemInExtent(workspace, extentUri, {
+                    metaClass: metaClass === undefined ? "" : metaClass,
+                    properties: element
+                });
+                if (submitMethod === DetailForm_1.SubmitMethod.Save) {
+                    // If user has clicked on the save button (without closing), the form shall just be updated
+                    Navigator.navigateToItemByUrl(workspace, newItem.itemId);
+                }
+                else {
+                    // Else, move to the overall items overview
+                    document.location.href = Settings.baseUrl +
+                        "ItemsOverview/" +
+                        encodeURIComponent(workspace) +
+                        "/" +
+                        encodeURIComponent(extentUri);
+                }
+            });
+        }
         static workspaceNavigateTo(workspace) {
             document.location.href =
                 Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
         }
-        static extentCreateItem(workspace, extentUri, element, metaClass) {
-            if (metaClass === undefined) {
-                metaClass = element.metaClass.uri;
-            }
-            const json = (0, Mof_1.createJsonFromObject)(element);
-            ApiConnection.post(Settings.baseUrl + "api/items/create_in_extent/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(extentUri), {
-                metaClass: metaClass === undefined ? "" : metaClass,
-                properties: json
-            }).then(() => {
-                document.location.href = Settings.baseUrl +
-                    "ItemsOverview/" +
-                    encodeURIComponent(workspace) +
-                    "/" +
-                    encodeURIComponent(extentUri);
-            });
-        }
         static extentCreateItemInProperty(workspace, itemUrl, property, element, metaClass) {
-            if (metaClass === undefined) {
-                metaClass = element.metaClass.uri;
-            }
-            const json = (0, Mof_1.createJsonFromObject)(element);
-            ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
-                metaClass: metaClass === undefined ? "" : metaClass,
-                property: property,
-                asList: true,
-                properties: json
-            }).then(() => {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (metaClass === undefined) {
+                    metaClass = element.metaClass.uri;
+                }
+                const json = (0, Mof_1.createJsonFromObject)(element);
+                yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
+                    metaClass: (metaClass === undefined || metaClass === undefined) ? "" : metaClass,
+                    property: property,
+                    asList: true,
+                    properties: json
+                });
                 Navigator.navigateToItemByUrl(workspace, itemUrl);
             });
         }
@@ -239,10 +264,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             });
         }
         static itemDelete(workspace, extentUri, itemUri) {
-            ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
-                + encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(itemUri), {})
-                .then(data => {
+            return __awaiter(this, void 0, void 0, function* () {
+                const data = yield ItemClient.deleteItem(workspace, itemUri);
                 const success = data.success;
                 if (success) {
                     Navigator.navigateToExtent(workspace, extentUri);

@@ -21,12 +21,14 @@ export function createActionFormForEmptyObject(
     const creator = new Forms.DetailFormCreator();
 
     configuration.isNewItem = true;
-    configuration.onSubmit = (element) => {
+    configuration.onSubmit = (element, method) => {
         DetailFormActions.execute(
             actionName,
             creator,
             undefined,
-            creator.element);
+            creator.element,
+            undefined, // The action form cannot provide additional parameters as the ActionButton
+            method);
     };
 
     let deferLoadObjectForAction = DetailFormActions.loadObjectForAction(actionName);
@@ -55,7 +57,7 @@ export function createActionFormForEmptyObject(
         } else if (metaClass === undefined) {
             // If there is no metaclass set, create a total empty form object...
             deferForm = new Promise<DmObject>(resolve => {
-                deferForm.resolve(Forms.FormModel.createEmptyFormWithDetail());
+                resolve(Forms.FormModel.createEmptyFormWithDetail());
             });
         } else {
             deferForm = ClientForms.getDefaultFormForMetaClass(metaClass);

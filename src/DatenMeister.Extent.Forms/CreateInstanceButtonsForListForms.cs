@@ -33,7 +33,7 @@ namespace DatenMeister.Extent.Forms
                     {
                         FormMethods.AddToFormCreationProtocol(
                             form,
-                            "[CreateInstanceButtonsForListForms]: Add DefaultType " +
+                            "[CreateInstanceButtonsForListForms]: Add DefaultType per ExtentDefaultTypes property " +
                             NamedElementMethods.GetName(defaultType));
                         
                         FormMethods.AddDefaultTypeForNewElement(form, defaultType);

@@ -153,7 +153,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                             ClientItem.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                                 property: tthis.field.get('name'),
                                 referenceUri: selectedItem.uri,
-                                referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
+                                workspaceId: selectItem.getUserSelectedWorkspace()
                             }).then(() => {
                                 this.updateDomContent();
                             });
@@ -189,17 +189,17 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
             this.cloneField(element);
             return element;
         }
+        createSubElementFieldInstance() {
+            const element = new SubElementField.Control();
+            this.cloneField(element);
+            return element;
+        }
         cloneField(element) {
             element.isReadOnly = this.isReadOnly;
             element.configuration = this.configuration;
             element.itemUrl = this.itemUrl;
             element.propertyName = this.field.get('name').toString();
             element.form = this.form;
-        }
-        createSubElementFieldInstance() {
-            const element = new SubElementField.Control();
-            this.cloneField(element);
-            return element;
         }
     }
     exports.Field = Field;

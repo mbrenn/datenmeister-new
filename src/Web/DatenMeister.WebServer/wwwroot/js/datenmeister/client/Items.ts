@@ -247,7 +247,7 @@ export async function addReferenceToCollection(
         url,
         {
             property: parameter.property,
-            workspaceId: parameter.referenceWorkspaceId,
+            workspaceId: parameter.workspaceId,
             referenceUri: parameter.referenceUri
         }
     );
@@ -257,7 +257,31 @@ export async function addReferenceToCollection(
 export interface IAddReferenceToCollectionParameter {
     property: string;
     referenceUri: string;
-    referenceWorkspaceId?: string;
+    workspaceId?: string;
+}
+
+export async function setPropertyReference(
+    workspaceId: string, itemUrl: string, parameter: ISetPropertyReferenceParams): Promise<ISuccessResult> {
+    let url = Settings.baseUrl +
+        "api/items/set_property_reference/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+
+    return await ApiConnection.post(
+        url,
+        {
+            property: parameter.property,
+            workspaceId: parameter.workspaceId,
+            referenceUri: parameter.referenceUri
+        }
+    );
+}
+
+export interface ISetPropertyReferenceParams {
+    property: string;
+    referenceUri: string;
+    workspaceId?: string;
 }
 
 export async function removeReferenceFromCollection(

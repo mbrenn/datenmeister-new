@@ -233,7 +233,7 @@ export class FormActions {
                 properties: json
             }
         );
-        
+
         Navigator.navigateToItemByUrl(workspace, itemUrl);
     }
 
@@ -304,8 +304,9 @@ export class FormActions {
     }
 
     static async itemDelete(workspace: string, extentUri: string, itemUri: string) {
-        const data = await ItemClient.deleteItem(workspace, itemUri);
         
+        const data = await ItemClient.deleteItem(workspace, itemUri);
+
         const success = data.success;
         if (success) {
             Navigator.navigateToExtent(workspace, extentUri);
@@ -321,22 +322,20 @@ export class FormActions {
             encodeURIComponent(itemId);
     }
 
-    static extentsListDeleteItem(workspace: string, extentUri: string, itemId: string) {
+    static async extentsListDeleteItem(workspace: string, extentUri: string, itemId: string) {
 
-        ApiConnection.deleteRequest<IDeleteCallbackData>(
+        const data = await ApiConnection.deleteRequest<IDeleteCallbackData>(
             Settings.baseUrl + "api/items/delete/"
             + encodeURIComponent(workspace) + "/" +
             encodeURIComponent(itemId),
             {}
-        )
-            .then(
-                data => {
-                    const success = data.success;
-                    if (success) {
-                        document.location.reload();
-                    } else {
-                        alert('Deletion was not successful.');
-                    }
-                });
+        );
+        
+        const success = data.success;
+        if (success) {
+            document.location.reload();
+        } else {
+            alert('Deletion was not successful.');
+        }
     }
 }

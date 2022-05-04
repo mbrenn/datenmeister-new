@@ -282,10 +282,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 encodeURIComponent(itemId);
         }
         static extentsListDeleteItem(workspace, extentUri, itemId) {
-            ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
-                + encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(itemId), {})
-                .then(data => {
+            return __awaiter(this, void 0, void 0, function* () {
+                const data = yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
+                    + encodeURIComponent(workspace) + "/" +
+                    encodeURIComponent(itemId), {});
                 const success = data.success;
                 if (success) {
                     document.location.reload();

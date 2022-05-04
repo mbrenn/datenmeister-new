@@ -51,8 +51,11 @@ export class SelectItemControl {
      * The events that can be subscribed
      */
     
-    // This method will be called whenever the user has selected an item
+    // This method will be called whenever the user has selected an item via the 'Set' button 
     itemSelected: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
+    
+    // This method will be called whenever the user has selected an item in the dropdown
+    itemClicked: UserEvent<ItemWithNameAndId> = new UserEvent<ItemWithNameAndId>();
     
     // This method will be called when the workspace DOM elements have been updated
     domWorkspaceUpdated: UserEvent<void> = new UserEvent<void>();
@@ -101,7 +104,7 @@ export class SelectItemControl {
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            "<tr><td>Selected Item: </td><td class='sic'></td></tr>" +
+            "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
             "<tr><td></td><td class='selected'>" +
             (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
             "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
@@ -235,7 +238,6 @@ export class SelectItemControl {
     async loadExtents() {
         const tthis = this;
 
-
         const workspaceId = this.getUserSelectedWorkspace();
         tthis.htmlSelectedElements.text(workspaceId);
         this.htmlExtentSelect.empty();
@@ -313,8 +315,8 @@ export class SelectItemControl {
                     ((innerItem) =>
                         option.on('click', () => {
                             tthis.selectedItem = innerItem;
-                            tthis.itemSelected.invoke(innerItem);
                             tthis.loadItems(innerItem.id);
+                            tthis.itemClicked.invoke(innerItem);
                             tthis.htmlSelectedElements.text(innerItem.fullName);
                             tthis.visitedItems.push(item);
                             tthis.refreshBreadcrumb();
@@ -341,6 +343,7 @@ export class SelectItemControl {
         this.domItemsUpdated.invoke();
     }
 
+    // Refreshes the elements on the bread crumb 
     refreshBreadcrumb() {
         const tthis = this;
         this.htmlBreadcrumbList.empty();
@@ -349,11 +352,11 @@ export class SelectItemControl {
             const currentWorkspace = this.getUserSelectedWorkspace();
             const currentExtent = this.getUserSelectedExtent();
 
+            // Starts by showing the button to select to select the Workspaces
             if (this.settings.showWorkspaceInBreadcrumb) {
-                this.addBreadcrumbItem("DatenMeister", () => tthis.loadWorkspaces());
-            }
-
-            if (this.settings.showExtentInBreadcrumb) {
+                this.addBreadcrumbItem("Workspaces", () => tthis.loadWorkspaces());
+                
+                // Now show the current workspace
                 if (currentWorkspace !== "" && currentWorkspace !== undefined) {
                     this.addBreadcrumbItem(
                         currentWorkspace,
@@ -365,16 +368,20 @@ export class SelectItemControl {
                 }
             }
 
-            if (currentExtent !== "" && currentExtent !== undefined) {
-                this.addBreadcrumbItem(
-                    currentExtent,
-                    () => {
-                        tthis.loadItems();
-                        tthis.visitedItems.length = 0;
-                    }
-                );
+            // Shows the extent itself in the breadcrumb, if configured
+            if (this.settings.showExtentInBreadcrumb) {
+                if (currentExtent !== "" && currentExtent !== undefined) {
+                    this.addBreadcrumbItem(
+                        currentExtent,
+                        () => {
+                            tthis.loadItems();
+                            tthis.visitedItems.length = 0;
+                        }
+                    );
+                }
             }
 
+            // Otherwise, just go to the parents
             for (let n = 0; n < this.visitedItems.length; n++) {
                 const item = this.visitedItems[n];
 

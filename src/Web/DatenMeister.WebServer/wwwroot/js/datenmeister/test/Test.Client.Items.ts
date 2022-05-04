@@ -93,7 +93,7 @@ export function includeTests() {
                     {}
                 );
 
-                const result2= await ClientItems.createItemInExtent(
+                const result2 = await ClientItems.createItemInExtent(
                     "Test",
                     "dm:///unittest",
                     {}
@@ -101,7 +101,7 @@ export function includeTests() {
 
                 chai.assert.isTrue(result.success, 'Item was not created');
                 chai.assert.isTrue(result2.success, 'Item was not created');
-                
+
                 const allItems = await ClientItems.getRootElements('Test', 'dm:///unittest');
                 chai.assert.equal(allItems.length, 2, "There are less or more items in the root elements");
                 for (var n in allItems) {
@@ -113,8 +113,8 @@ export function includeTests() {
                 const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
             });
-            
-            it('Set and get multiple properties', async function(){
+
+            it('Set and get multiple properties', async function () {
 
                 const element = new DmObject();
                 element.set('name', 'Brenn');
@@ -124,7 +124,7 @@ export function includeTests() {
                     "dm:///unittest",
                     {properties: element}
                 );
-                
+
                 let property = await ClientItems.getProperty('Test', result.itemId, 'name');
                 chai.assert.equal(property, 'Brenn', 'Name is not set');
                 property = await ClientItems.getProperty('Test', result.itemId, 'age');
@@ -133,23 +133,56 @@ export function includeTests() {
                 const element2 = new DmObject();
                 element2.set('prename', 'Martin');
                 element2.set('zip', 12345);
-                
+
                 await ClientItems.setProperties('Test', result.itemId, element2);
 
                 property = await ClientItems.getProperty('Test', result.itemId, 'prename');
                 chai.assert.equal(property, 'Martin', 'Martin is not set');
                 property = await ClientItems.getProperty('Test', result.itemId, 'zip');
                 chai.assert.equal(property.toString(), '12345', 'Zip is not set');
-                
+
                 const properties = await ClientItems.getObjectByUri('Test', result.itemId);
                 chai.assert.isTrue(properties !== undefined && properties !== null, 'properties are not set');
                 chai.assert.equal(properties.get('name'), 'Brenn', 'name is not correctly set');
                 chai.assert.equal(properties.get('prename'), 'Martin', 'prename is not correctly set');
                 chai.assert.equal(properties.get('age').toString(), '40', 'age is not correctly set');
                 chai.assert.equal(properties.get('zip').toString(), '12345', 'zip is not correctly set');
-                
+
                 const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
+            });
+
+            it('Set Reference Property', async () => {
+                const result = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+
+                const result2 = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+                
+                await ClientItems.setProperty("Test", result.itemId, "name", "item1");
+                await ClientItems.setProperty("Test", result2.itemId, "name", "item2");
+                
+                let reference = await ClientItems.getProperty("Test", result.itemId, "reference");
+                chai.assert.isTrue(reference === undefined || reference === null, "Not set item should be undefined");
+                
+                const resultSetProperty = await ClientItems.setPropertyReference("Test", result.itemId,
+                    {
+                        property: "reference",
+                        workspaceId: "Test",
+                        referenceUri: result2.itemId
+                    });
+                
+                chai.assert.isTrue(resultSetProperty.success === true, "Setting should be a success story");
+
+                reference = await ClientItems.getProperty("Test", result.itemId, "reference");
+                chai.assert.isTrue(reference !== undefined, "Item is still undefined");
+                chai.assert.isTrue((reference as DmObject).get("name") === "item2", "Name is not correctly set");                
             });
 
             after(async function () {

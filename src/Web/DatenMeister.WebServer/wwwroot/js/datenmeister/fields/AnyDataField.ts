@@ -194,10 +194,10 @@ export class Field extends BaseField implements IFormField {
                             ClientItem.addReferenceToCollection(
                                 tthis.form.workspace,
                                 tthis.itemUrl,
-                                {
+                                {                                    
                                     property: tthis.field.get('name'),
                                     referenceUri: selectedItem.uri,
-                                    referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
+                                    workspaceId: selectItem.getUserSelectedWorkspace()
                                 }
                             ).then(() => {
                                 this.updateDomContent();
@@ -237,18 +237,18 @@ export class Field extends BaseField implements IFormField {
         return element;
     }
 
+    private createSubElementFieldInstance() {
+        const element = new SubElementField.Control();
+        this.cloneField(element);
+
+        return element;
+    }
+
     private cloneField(element: ReferenceField.Control | SubElementField.Control) {
         element.isReadOnly = this.isReadOnly;
         element.configuration = this.configuration;
         element.itemUrl = this.itemUrl;
         element.propertyName = this.field.get('name').toString();
         element.form = this.form;
-    }
-
-    private createSubElementFieldInstance() {
-        const element = new SubElementField.Control();
-        this.cloneField(element);
-
-        return element;
     }
 }

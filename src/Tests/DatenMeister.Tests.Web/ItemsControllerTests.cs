@@ -191,6 +191,37 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestSetPropertyReference()
+        {
+            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+
+            var rootElements = example.elements().ToList();
+            Assert.That(rootElements, Is.Not.Null);
+            var first = rootElements.ElementAtOrDefault(0) as IElement;
+            Assert.That(first, Is.Not.Null);
+            Assert.That(first.getOrDefault<string>("name"), Is.EqualTo("item1"));
+
+            var list = first.getOrDefault<IReflectiveCollection>("reference");
+            Assert.That(list == null || list.size() == 0, Is.True);
+
+            itemsController.SetPropertyReference(
+                "Data",
+                ElementControllerTests.UriTemporaryExtent + "#item1",
+                new ItemsController.SetPropertyReferenceParams
+                {
+                    Property = "reference",
+                    WorkspaceId = "Data",
+                    ReferenceUri = ElementControllerTests.UriTemporaryExtent + "#item2"
+                });
+
+            var asElement = first.getOrDefault<IElement>("reference");
+            Assert.That(asElement, Is.Not.Null);
+            Assert.That(asElement.getOrDefault<string>("name"), Is.EqualTo("item2"));
+        }
+
+        [Test]
         public void TestRemoveReferenceToCollection()
         {
             using var dm = ElementControllerTests.CreateExampleExtent(out var example);

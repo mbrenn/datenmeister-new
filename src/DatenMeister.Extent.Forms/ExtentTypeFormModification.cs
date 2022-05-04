@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -35,6 +36,15 @@ namespace DatenMeister.Extent.Forms
 
             if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.TreeItemExtent)
             {
+                var foundListMetaClasses = new List<IElement>();
+                // First, figure out which list forms we are having...
+                foreach (var listForm in FormMethods.GetListForms(form))
+                {
+                    var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
+                    foundListMetaClasses.Add(metaClass);
+                }
+                
+                // Second, now create the action buttons for the listform without classifier
                 foreach (var listForm in FormMethods.GetListForms(form))
                 {
                     // Selects only the listform which do not have a classifier
@@ -42,21 +52,26 @@ namespace DatenMeister.Extent.Forms
                     {
                         continue;
                     }
-
+                    
                     foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                     {
                         var resolvedMetaClass =
                             _workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
-                        var defaultTypesForNewElements =
-                            listForm.get<IReflectiveSequence>(
-                                _DatenMeister._Forms._ListForm
-                                    .defaultTypesForNewElements);
 
-                        var defaultType = mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                        defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, resolvedMetaClass);
-                        defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
-                            NamedElementMethods.GetName(resolvedMetaClass));
-                        defaultTypesForNewElements.add(defaultType);
+                        if (resolvedMetaClass == null)
+                        {
+                            continue;
+                        }
+                        
+                        // The found metaclass already has a list form
+                        if (foundListMetaClasses.Contains(resolvedMetaClass))
+                        {
+                            FormMethods.AddToFormCreationProtocol(listForm,
+                                $"TypesFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
+                            continue;
+                        }
+                        
+                        FormMethods.AddDefaultTypeForNewElement(form, resolvedMetaClass);
 
                         FormMethods.AddToFormCreationProtocol(listForm,
                             $"TypesFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");

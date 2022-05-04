@@ -171,7 +171,7 @@ export class Control {
                             {
                                 property: tthis.propertyName,
                                 referenceUri: selectedItem.uri,
-                                referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
+                                workspaceId: selectItem.getUserSelectedWorkspace()
                             }
                         ).then(() => {
                             this.reloadValuesFromServer();

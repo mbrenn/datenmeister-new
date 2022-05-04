@@ -114,6 +114,23 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                         chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
                     });
                 });
+                it('Set Reference Property', () => __awaiter(this, void 0, void 0, function* () {
+                    const result = yield ClientItems.createItemInExtent("Test", "dm:///unittest", {});
+                    const result2 = yield ClientItems.createItemInExtent("Test", "dm:///unittest", {});
+                    yield ClientItems.setProperty("Test", result.itemId, "name", "item1");
+                    yield ClientItems.setProperty("Test", result2.itemId, "name", "item2");
+                    let reference = yield ClientItems.getProperty("Test", result.itemId, "reference");
+                    chai.assert.isTrue(reference === undefined || reference === null, "Not set item should be undefined");
+                    const resultSetProperty = yield ClientItems.setPropertyReference("Test", result.itemId, {
+                        property: "reference",
+                        workspaceId: "Test",
+                        referenceUri: result2.itemId
+                    });
+                    chai.assert.isTrue(resultSetProperty.success === true, "Setting should be a success story");
+                    reference = yield ClientItems.getProperty("Test", result.itemId, "reference");
+                    chai.assert.isTrue(reference !== undefined, "Item is still undefined");
+                    chai.assert.isTrue(reference.get("name") === "item2", "Name is not correctly set");
+                }));
                 after(function () {
                     return __awaiter(this, void 0, void 0, function* () {
                         yield ClientExtent.deleteExtent({

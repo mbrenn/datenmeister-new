@@ -28,8 +28,10 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
             /*
              * The events that can be subscribed
              */
-            // This method will be called whenever the user has selected an item
+            // This method will be called whenever the user has selected an item via the 'Set' button 
             this.itemSelected = new Events_1.UserEvent();
+            // This method will be called whenever the user has selected an item in the dropdown
+            this.itemClicked = new Events_1.UserEvent();
             // This method will be called when the workspace DOM elements have been updated
             this.domWorkspaceUpdated = new Events_1.UserEvent();
             // This method will be called when the extents DOM elements have been updated
@@ -69,7 +71,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                 "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
                 "<div class='dm-sic-items'></div>" +
                 "</td></tr>" +
-                "<tr><td>Selected Item: </td><td class='sic'></td></tr>" +
+                "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
                 "<tr><td></td><td class='selected'>" +
                 (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
                 "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
@@ -250,8 +252,8 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                             option.text(item.name);
                             ((innerItem) => option.on('click', () => {
                                 tthis.selectedItem = innerItem;
-                                tthis.itemSelected.invoke(innerItem);
                                 tthis.loadItems(innerItem.id);
+                                tthis.itemClicked.invoke(innerItem);
                                 tthis.htmlSelectedElements.text(innerItem.fullName);
                                 tthis.visitedItems.push(item);
                                 tthis.refreshBreadcrumb();
@@ -274,16 +276,17 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                 this.domItemsUpdated.invoke();
             });
         }
+        // Refreshes the elements on the bread crumb 
         refreshBreadcrumb() {
             const tthis = this;
             this.htmlBreadcrumbList.empty();
             if (this.settings.showBreadcrumb) {
                 const currentWorkspace = this.getUserSelectedWorkspace();
                 const currentExtent = this.getUserSelectedExtent();
+                // Starts by showing the button to select to select the Workspaces
                 if (this.settings.showWorkspaceInBreadcrumb) {
-                    this.addBreadcrumbItem("DatenMeister", () => tthis.loadWorkspaces());
-                }
-                if (this.settings.showExtentInBreadcrumb) {
+                    this.addBreadcrumbItem("Workspaces", () => tthis.loadWorkspaces());
+                    // Now show the current workspace
                     if (currentWorkspace !== "" && currentWorkspace !== undefined) {
                         this.addBreadcrumbItem(currentWorkspace, () => {
                             tthis.loadExtents();
@@ -291,12 +294,16 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                         });
                     }
                 }
-                if (currentExtent !== "" && currentExtent !== undefined) {
-                    this.addBreadcrumbItem(currentExtent, () => {
-                        tthis.loadItems();
-                        tthis.visitedItems.length = 0;
-                    });
+                // Shows the extent itself in the breadcrumb, if configured
+                if (this.settings.showExtentInBreadcrumb) {
+                    if (currentExtent !== "" && currentExtent !== undefined) {
+                        this.addBreadcrumbItem(currentExtent, () => {
+                            tthis.loadItems();
+                            tthis.visitedItems.length = 0;
+                        });
+                    }
                 }
+                // Otherwise, just go to the parents
                 for (let n = 0; n < this.visitedItems.length; n++) {
                     const item = this.visitedItems[n];
                     this.addBreadcrumbItem(item.name, () => {

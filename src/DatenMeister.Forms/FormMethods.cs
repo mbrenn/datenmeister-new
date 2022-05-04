@@ -293,9 +293,9 @@ namespace DatenMeister.Forms
                         ?.@equals(defaultType) == true))
             {
 
-                FormMethods.AddToFormCreationProtocol(
+                AddToFormCreationProtocol(
                     form,
-                    $"[FormCreator.AddDefaultTypeForNewElement] Not added because default type is already existing: {NamedElementMethods.GetName(defaultType)}");
+                    $"[FormMethods.AddDefaultTypeForNewElement] Not added because default type is already existing: {NamedElementMethods.GetName(defaultType)}");
                 // No adding, because it already exists
                 return;
             }
@@ -307,9 +307,9 @@ namespace DatenMeister.Forms
                 NamedElementMethods.GetName(defaultType));
             currentDefaultPackages.add(defaultTypeInstance);
 
-            FormMethods.AddToFormCreationProtocol(
+            AddToFormCreationProtocol(
                 form,
-                $"[FormCreator.AddDefaultTypeForNewElement] Added defaulttype: {NamedElementMethods.GetName(defaultType)}");
+                $"[FormMethods.AddDefaultTypeForNewElement] Added defaulttype: {NamedElementMethods.GetName(defaultType)}");
         }
 
         /// <summary>

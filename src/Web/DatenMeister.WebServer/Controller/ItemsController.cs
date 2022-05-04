@@ -345,6 +345,48 @@ namespace DatenMeister.WebServer.Controller
             return new {success = true};
         }
 
+        [HttpPost("api/items/set_property_reference/{workspaceId}/{itemUri}")]
+        public ActionResult<SuccessResult> SetPropertyReference(string workspaceId, string itemUri,
+            [FromBody] SetPropertyReferenceParams parameters)
+        {
+
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+
+            var reference = _internal.GetItemByUriParameter(
+                                parameters.WorkspaceId,
+                                parameters.ReferenceUri)
+                            ?? throw new InvalidOperationException("Reference was not found");
+
+            foundItem.set(parameters.Property, reference);
+
+            return new SuccessResult() {Success = true};
+        }
+
+        /// <summary>
+        /// Defines the property for the set property
+        /// </summary>
+        public class SetPropertyReferenceParams
+        {
+            /// <summary>
+            /// Gets or sets the key
+            /// </summary>
+            public string Property { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the value
+            /// </summary>
+            public string ReferenceUri { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the value of the workspace from which the element will be loaded
+            /// </summary>
+            public string WorkspaceId { get; set; } = string.Empty;
+        }
+
         [HttpPost("api/items/unset_property/{workspaceId}/{itemUri}")]
         public ActionResult<object> UnsetProperty(string workspaceId, string itemUri,
             [FromBody] UnsetPropertyParams propertyParams)
@@ -499,8 +541,14 @@ namespace DatenMeister.WebServer.Controller
             /// </summary>
             public string Property { get; set; } = string.Empty;
 
+            /// <summary>
+            /// Defines the workspace from which the property will be laoded
+            /// </summary>
             public string? WorkspaceId { get; set; } = null;
 
+            /// <summary>
+            /// Defines the reference Uri from which the property will be loaded
+            /// </summary>
             public string ReferenceUri { get; set; } = string.Empty;
         }
 

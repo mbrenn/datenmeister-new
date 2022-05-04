@@ -696,10 +696,11 @@ namespace DatenMeister.Forms
         void SetDefaultTypesByPackages(IHasExtent? hasExtent, IObject listForm)
         {
             if (hasExtent is null) return;
-            
+
             var extent = hasExtent.Extent;
             var defaultTypes = extent?.GetConfiguration().GetDefaultTypes();
             if (defaultTypes != null)
+            {
                 // Now go through the packages and pick the classifier and add them to the list
                 foreach (var package in defaultTypes)
                 {
@@ -708,6 +709,7 @@ namespace DatenMeister.Forms
                     if (childItems == null) continue;
 
                     foreach (var type in childItems.OfType<IElement>())
+                    {
                         if (type.@equals(_UML.TheOne.StructuredClassifiers.__Class))
                         {
                             FormMethods.AddDefaultTypeForNewElement(listForm, package);
@@ -717,7 +719,9 @@ namespace DatenMeister.Forms
                                 "[FormCreator.SetDefaultTypesByPackages]: Add DefaultTypeForNewElement driven by ExtentType: " +
                                 NamedElementMethods.GetName(package));
                         }
+                    }
                 }
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.removeReferenceFromCollection = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
+    exports.removeReferenceFromCollection = exports.setPropertyReference = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
     function createItemInExtent(workspaceId, extentUri, param) {
         return __awaiter(this, void 0, void 0, function* () {
             const evaluatedParameter = {
@@ -202,12 +202,27 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
                 encodeURIComponent(itemUrl);
             yield ApiConnection.post(url, {
                 property: parameter.property,
-                workspaceId: parameter.referenceWorkspaceId,
+                workspaceId: parameter.workspaceId,
                 referenceUri: parameter.referenceUri
             });
         });
     }
     exports.addReferenceToCollection = addReferenceToCollection;
+    function setPropertyReference(workspaceId, itemUrl, parameter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/items/set_property_reference/" +
+                encodeURIComponent(workspaceId) +
+                "/" +
+                encodeURIComponent(itemUrl);
+            return yield ApiConnection.post(url, {
+                property: parameter.property,
+                workspaceId: parameter.workspaceId,
+                referenceUri: parameter.referenceUri
+            });
+        });
+    }
+    exports.setPropertyReference = setPropertyReference;
     function removeReferenceFromCollection(workspaceId, itemUrl, parameter) {
         return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +

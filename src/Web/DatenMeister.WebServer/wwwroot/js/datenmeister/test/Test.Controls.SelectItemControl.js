@@ -79,7 +79,7 @@ define(["require", "exports", "../client/Workspace", "../client/Extents", "../cl
                     }
                     let itemCounter = 0;
                     const sic = new SelectItemControl_1.SelectItemControl();
-                    sic.itemSelected.addListener(() => {
+                    sic.itemClicked.addListener(() => {
                         itemCounter++;
                     });
                     const query = yield sic.initAsync(div);

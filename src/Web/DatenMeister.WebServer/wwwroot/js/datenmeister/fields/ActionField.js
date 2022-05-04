@@ -13,6 +13,9 @@ define(["require", "exports", "../FormActions", "./Interfaces"], function (requi
             this.button = $("<button class='btn btn-secondary' type='button'></button>");
             this.button.text(title);
             this.button.on('click', () => {
+                // There is the option whether a form action requires a separate confirmation
+                // If this is the case, then the button itself is asking for confirmation upon the first 
+                // click. Only then, the DetailForm itself is executed. 
                 if (!requireConfirmation || tthis.inConfirmation) {
                     FormActions_1.DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement, parameter);
                 }

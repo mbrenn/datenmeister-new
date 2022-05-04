@@ -42,7 +42,7 @@ define(["require", "exports", "../DomHelper", "../client/Items", "../controls/Se
                         ClientItem.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
-                            referenceWorkspaceId: selectItem.getUserSelectedWorkspace()
+                            workspaceId: selectItem.getUserSelectedWorkspace()
                         }).then(() => {
                             this.reloadValuesFromServer();
                         });

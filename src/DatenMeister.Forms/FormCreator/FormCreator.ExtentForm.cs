@@ -188,6 +188,11 @@ namespace DatenMeister.Forms.FormCreator
                 form.set(_DatenMeister._Forms._ListForm.noItemsWithMetaClass, true);
                 
                 SortFieldsByImportantProperties(form);
+                
+                // Remove action create property buttons which were created and are covered by the list forms
+                // being created below
+                
+                
                 tabs.Add(form);
             }
 

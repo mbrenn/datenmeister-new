@@ -105,7 +105,7 @@ export function includeTests() {
 
                             let itemCounter = 0;
                             const sic = new SelectItemControl();
-                            sic.itemSelected.addListener(() => {
+                            sic.itemClicked.addListener(() => {
                                 itemCounter++;
                             });
 

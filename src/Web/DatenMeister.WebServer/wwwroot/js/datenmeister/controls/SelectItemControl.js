@@ -38,6 +38,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
             this.domExtentUpdated = new Events_1.UserEvent();
             // This method will be called when the domItems are updated
             this.domItemsUpdated = new Events_1.UserEvent();
+            this.isDomInitializationDone = false;
         }
         // Initializes the Select Item Control and adds it to the given parent
         init(parent, settings) {
@@ -91,6 +92,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
             });
             parent.append(div);
             this._containerDiv = div;
+            this.isDomInitializationDone = true;
             return div;
         }
         // This method will be called when the user changed the workspace
@@ -316,7 +318,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
         // Evaluates the preselection of the workspaces
         evaluatePreSelectedWorkspace() {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.preSelectWorkspaceById === undefined) {
+                if (this.preSelectWorkspaceById === undefined || !this.isDomInitializationDone) {
                     return;
                 }
                 this.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
@@ -327,7 +329,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
         // Evaluates the preselection of the workspaces
         evaluatePreSelectedExtent() {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.preSelectExtentByUri === undefined) {
+                if (this.preSelectExtentByUri === undefined || !this.isDomInitializationDone) {
                     return;
                 }
                 this.htmlExtentSelect.val(this.preSelectExtentByUri);

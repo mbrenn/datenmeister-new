@@ -66,6 +66,7 @@ export class SelectItemControl {
     // This method will be called when the domItems are updated
     domItemsUpdated: UserEvent<void> = new UserEvent<void>();
     
+    private isDomInitializationDone: boolean = false;    
 
     // Initializes the Select Item Control and adds it to the given parent
     init(parent: JQuery<HTMLElement>, settings?: Settings): JQuery {
@@ -127,6 +128,7 @@ export class SelectItemControl {
 
         parent.append(div);
         this._containerDiv = div;
+        this.isDomInitializationDone = true;
         return div;
     }
 
@@ -398,7 +400,7 @@ export class SelectItemControl {
     // Evaluates the preselection of the workspaces
     private async evaluatePreSelectedWorkspace() {
 
-        if (this.preSelectWorkspaceById === undefined) {
+        if (this.preSelectWorkspaceById === undefined || !this.isDomInitializationDone) {
             return;
         }
 
@@ -409,7 +411,7 @@ export class SelectItemControl {
 
     // Evaluates the preselection of the workspaces
     private async evaluatePreSelectedExtent() {
-        if (this.preSelectExtentByUri === undefined) {
+        if (this.preSelectExtentByUri === undefined || !this.isDomInitializationDone) {
             return;
         }
 

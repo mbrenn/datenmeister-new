@@ -9,6 +9,7 @@ export interface ItemWithNameAndId
     fullName?: string;
     id?: string;
     workspace?: string;
+    typeName?: string;
 }
 
 

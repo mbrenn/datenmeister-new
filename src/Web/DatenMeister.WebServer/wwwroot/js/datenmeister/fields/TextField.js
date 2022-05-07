@@ -25,10 +25,10 @@ define(["require", "exports", "../Mof", "./Interfaces"], function (require, expo
                 const div = $("<div />");
                 const value = dmElement.get(fieldName);
                 if (value === undefined) {
-                    div.append($("<em>unknown</em>"));
+                    div.append($("<em>undefined</em>"));
                 }
                 else {
-                    div.text((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "unknown");
+                    div.text((_d = (_c = dmElement.get(fieldName)) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : "undefined");
                 }
                 return div;
             }

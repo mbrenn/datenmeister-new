@@ -16,13 +16,19 @@ enum ModeValue {
 export class Field extends BaseField implements IFormField {
 
     _textBox: JQuery<HTMLElement>;
+    
+    // The texts on which the user can click to modify the type of the element
     private _aValue: JQuery;
     private _aCollection: JQuery;
     private _aReference: JQuery;
 
     private _mode: ModeValue;
+    
+    // This is the element containing the property
     private _element: DmObject;
     private _domElement: JQuery<HTMLElement>;
+    
+    // This is the element describing the property value; the element that shall be shown in this
     private _fieldValue: any;
 
     // Creates the overall DOM
@@ -114,16 +120,15 @@ export class Field extends BaseField implements IFormField {
         this.updateDomContent();
     }
 
-    private reloadAndUpdateDomContent() {
+    private async reloadAndUpdateDomContent() {
         const tthis = this;
-        ClientItem.getProperty(
+        tthis._fieldValue = await ClientItem.getProperty(
             this.form.workspace,
             this.itemUrl,
             this.field.get('name').toString()
-        ).then((item) => {
-            tthis._fieldValue = item;
-            tthis.updateDomContent();
-        });
+        );
+        
+        tthis.updateDomContent();
     }
     
     // Performs a 'reload' of the complete DOM
@@ -140,13 +145,17 @@ export class Field extends BaseField implements IFormField {
 
     // Rebuilds the BOM in the read-only mode
     private updateDomContentReadOnly() {
-        const value = this._fieldValue;
+        let value = this._fieldValue;
         if (value === null || value === undefined
             || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
             const div = $("<div><em>Not set</em></null>");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Reference) {
-            const field = this.createReferenceFieldInstance();
+            if(Array.isArray(value)) {
+                value = value[0];
+            }
+            
+            const field = this.createReferenceFieldInstance();            
             const element = field.createDomByValue(value);
             this._domElement.append(element);
         } else if (this._mode === ModeValue.Value) {
@@ -165,7 +174,11 @@ export class Field extends BaseField implements IFormField {
         if (this._mode === ModeValue.Reference) {
             const tthis = this;
 
-            const value = this._fieldValue;
+            let value = this._fieldValue;
+            if(Array.isArray(value)) {
+                value = value[0];
+            }
+            
             const fieldName = this.field.get('name').toString();
             if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                 // Nothing is selected... ==> Null value
@@ -205,8 +218,8 @@ export class Field extends BaseField implements IFormField {
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
                     selectItem.itemSelected.addListener(
-                        selectedItem => {
-                            ClientItem.addReferenceToCollection(
+                        async selectedItem => {
+                            await ClientItem.setPropertyReference(
                                 tthis.form.workspace,
                                 tthis.itemUrl,
                                 {
@@ -214,9 +227,9 @@ export class Field extends BaseField implements IFormField {
                                     referenceUri: selectedItem.uri,
                                     workspaceId: selectItem.getUserSelectedWorkspace()
                                 }
-                            ).then(() => {
-                                this.updateDomContent();
-                            });
+                            );
+                            
+                            await tthis.reloadAndUpdateDomContent();
                         });
 
                     containerChangeCell.empty();

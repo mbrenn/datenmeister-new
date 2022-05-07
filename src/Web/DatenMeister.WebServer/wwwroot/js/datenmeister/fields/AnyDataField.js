@@ -90,9 +90,9 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
             this.updateDomContent();
         }
         reloadAndUpdateDomContent() {
-            const tthis = this;
-            ClientItem.getProperty(this.form.workspace, this.itemUrl, this.field.get('name').toString()).then((item) => {
-                tthis._fieldValue = item;
+            return __awaiter(this, void 0, void 0, function* () {
+                const tthis = this;
+                tthis._fieldValue = yield ClientItem.getProperty(this.form.workspace, this.itemUrl, this.field.get('name').toString());
                 tthis.updateDomContent();
             });
         }
@@ -110,13 +110,16 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
         // Rebuilds the BOM in the read-only mode
         updateDomContentReadOnly() {
             var _a;
-            const value = this._fieldValue;
+            let value = this._fieldValue;
             if (value === null || value === undefined
                 || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
                 const div = $("<div><em>Not set</em></null>");
                 this._domElement.append(div);
             }
             else if (this._mode === ModeValue.Reference) {
+                if (Array.isArray(value)) {
+                    value = value[0];
+                }
                 const field = this.createReferenceFieldInstance();
                 const element = field.createDomByValue(value);
                 this._domElement.append(element);
@@ -137,7 +140,10 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
             var _a;
             if (this._mode === ModeValue.Reference) {
                 const tthis = this;
-                const value = this._fieldValue;
+                let value = this._fieldValue;
+                if (Array.isArray(value)) {
+                    value = value[0];
+                }
                 const fieldName = this.field.get('name').toString();
                 if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                     // Nothing is selected... ==> Null value
@@ -176,15 +182,14 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                         const settings = new SIC.Settings();
                         settings.showWorkspaceInBreadcrumb = true;
                         settings.showExtentInBreadcrumb = true;
-                        selectItem.itemSelected.addListener(selectedItem => {
-                            ClientItem.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
+                        selectItem.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
+                            yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                                 property: tthis.field.get('name'),
                                 referenceUri: selectedItem.uri,
                                 workspaceId: selectItem.getUserSelectedWorkspace()
-                            }).then(() => {
-                                this.updateDomContent();
                             });
-                        });
+                            yield tthis.reloadAndUpdateDomContent();
+                        }));
                         containerChangeCell.empty();
                         yield selectItem.initAsync(containerChangeCell, settings);
                         if (((_b = this._element) === null || _b === void 0 ? void 0 : _b.workspace) !== undefined) {

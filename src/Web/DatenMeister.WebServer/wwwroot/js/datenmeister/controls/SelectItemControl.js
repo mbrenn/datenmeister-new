@@ -251,12 +251,22 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events"],
                                 continue;
                             const item = items[n];
                             const option = $("<li></li>");
-                            option.text(item.name);
+                            // Sets the item text within the list
+                            let itemText = item.fullName;
+                            if (item.typeName !== undefined) {
+                                itemText += " [" + item.typeName + "]";
+                            }
+                            option.text(itemText);
+                            // Creates the clickability of the list of items
                             ((innerItem) => option.on('click', () => {
                                 tthis.selectedItem = innerItem;
                                 tthis.loadItems(innerItem.id);
                                 tthis.itemClicked.invoke(innerItem);
-                                tthis.htmlSelectedElements.text(innerItem.fullName);
+                                let itemText = innerItem.fullName;
+                                if (innerItem.typeName !== undefined) {
+                                    itemText += " [" + innerItem.typeName + "]";
+                                }
+                                tthis.htmlSelectedElements.text(itemText);
                                 tthis.visitedItems.push(item);
                                 tthis.refreshBreadcrumb();
                             }))(item);

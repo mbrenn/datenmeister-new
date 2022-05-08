@@ -1,4 +1,7 @@
 ﻿@page "/About"
+@using System.Web
+@model DatenMeister.WebServer.Pages.AboutModel
+
 
 @{
     Layout = "~/Shared/_Layout.cshtml";
@@ -7,5 +10,29 @@
 
 <h1>About</h1>
 
-DatenMeister.Net
+DatenMeister.Net<br />
 Welcome to the About-Page
+
+<table class="table table-striped">
+    <tbody>
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+    </tbody>
+    <tr>
+        <td>Workspace-Folder</td>
+        <td>
+            <a href="#" onclick="setWorkspaceToClipboard(); return false;">@Model.WorkspacePath</a>
+        </td>
+    </tr>
+</table>
+
+<script type="text/ecmascript">
+    function setWorkspaceToClipboard()
+    {
+        navigator.clipboard.writeText("@HttpUtility.JavaScriptStringEncode(Model.WorkspacePath)");
+        alert('Path copied');
+    }
+</script>
+

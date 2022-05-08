@@ -11,6 +11,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.Extents.Configuration;
@@ -317,7 +318,6 @@ namespace DatenMeister.Tests.Runtime.Extents
             var id = createdType.getOrDefault<string>("id");
             Assert.That(id.Length, Is.EqualTo(36));
 
-
             var createdType2 = extentFactory.create(type);
             Assert.That(createdType2, Is.Not.Null);
             Assert.That(createdType2.getOrDefault<string>("id"), Is.Not.Null);
@@ -344,7 +344,6 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             var id = createdType.getOrDefault<int>("id");
             Assert.That(id, Is.EqualTo(1));
-
 
             var createdType2 = extentFactory.create(type);
             Assert.That(createdType2, Is.Not.Null);
@@ -437,6 +436,54 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(element1, Is.Not.Null);
             Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
                 Is.EqualTo("element1"));
+        }
+
+        [Test]
+        public void TestCreatingGettingAndDeletion()
+        {
+            var provider = new InMemoryProvider();
+            var uriExtent = new MofUriExtent(provider, "dm:///unittest", null);
+
+            var factory = new MofFactory(uriExtent);
+            var item1 = factory.create(null);
+            var item1Id = (item1 as IHasId)?.Id!;
+
+            uriExtent.elements().add(item1);
+
+            var found = uriExtent.Resolve(item1Id,ResolveType.Default);
+            Assert.That(found, Is.Not.Null);
+            Assert.That((found as IHasId)?.Id!, Is.EqualTo(item1Id));
+            
+            // Deletes all elements
+            uriExtent.elements().RemoveAll();
+            
+            // Checks that the element is not somewhere hidden in a cache
+            var found2 = uriExtent.Resolve(item1Id,ResolveType.Default);
+            Assert.That(found2, Is.Null);
+        }
+
+        [Test]
+        public void TestCreatingGettingAndDeletionWithXmi()
+        {
+            var provider = new XmiProvider();
+            var uriExtent = new MofUriExtent(provider, "dm:///unittest", null);
+
+            var factory = new MofFactory(uriExtent);
+            var item1 = factory.create(null);
+
+            uriExtent.elements().add(item1);
+            var item1Id = (item1 as IHasId)?.Id!;
+
+            var found = uriExtent.Resolve(item1Id, ResolveType.Default);
+            Assert.That(found, Is.Not.Null);
+            Assert.That((found as IHasId)?.Id!, Is.EqualTo(item1Id));
+            
+            // Deletes all elements
+            uriExtent.elements().RemoveAll();
+            
+            // Checks that the element is not somewhere hidden in a cache
+            var found2 = uriExtent.Resolve(item1Id,ResolveType.Default);
+            Assert.That(found2, Is.Null);
         }
 
         /// <summary>

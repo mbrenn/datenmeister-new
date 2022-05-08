@@ -214,7 +214,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="noReferences">Indicates whether the elements shall be dereferenced</param>
         /// <param name="nullName">Defines the return value in case the given element is null</param>
         /// <returns>The found name or null, if not found</returns>
-        public static string GetName(IObject? element, bool noReferences = false, string nullName = "null")
+        public static string GetName(IObject? element, bool noReferences = false, string nullName = "null", bool showMetaClass = true)
         {
             if (element == null)
             {
@@ -232,9 +232,9 @@ namespace DatenMeister.Core.Uml.Helper
             {
                 case IHasId elementAsHasId:
                     return elementAsHasId.Id ?? string.Empty;
-                case IElement asIElement when asIElement.metaclass != null:
+                case IElement asIElement when asIElement.metaclass != null && showMetaClass:
                 {
-                    var name = GetName(asIElement.metaclass, noReferences);
+                    var name = GetName(asIElement.metaclass, noReferences, nullName, false);
                     if (name != null && !string.IsNullOrEmpty(name))
                     {
                         return $"({name})";

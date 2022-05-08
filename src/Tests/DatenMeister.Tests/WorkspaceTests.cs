@@ -47,11 +47,19 @@ namespace DatenMeister.Tests
             var workspaceData = WorkspaceLogic.InitDefault();
             var workspaceLogic = WorkspaceLogic.Create(workspaceData);
 
-            var workspaces = workspaceLogic.GetWorkspacesOrderedByDependability().ToList();
+            var workspaces = workspaceLogic.GetWorkspacesOrderedByDependability(ResolveType.Default).ToList();
 
             Assert.That(workspaces.First().id, Is.EqualTo("Data").Or.EqualTo("Management"));
             Assert.That(workspaces.ElementAt(workspaces.Count - 2).id, Is.EqualTo("UML"));
             Assert.That(workspaces.Last().id, Is.EqualTo("MOF"));
+
+
+            workspaces = workspaceLogic.GetWorkspacesOrderedByDependability(ResolveType.OnlyMetaWorkspaces).ToList();
+
+            Assert.That(workspaces.ElementAt(workspaces.Count - 2).id, Is.EqualTo("UML"));
+            Assert.That(workspaces.Last().id, Is.EqualTo("MOF"));
+            Assert.That(workspaces.Any(x=>x.id == WorkspaceNames.WorkspaceData), Is.False);
+            Assert.That(workspaces.Any(x=>x.id == WorkspaceNames.WorkspaceManagement), Is.False);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -172,7 +173,7 @@ namespace DatenMeister.Forms
                 throw new InvalidOperationException(
                     "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
-            var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
 
             foreach (var tab in tabs.OfType<IElement>())
                 if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(),
@@ -244,6 +245,153 @@ namespace DatenMeister.Forms
                 currentMessage = message;
 
             form.set(_DatenMeister._Forms._Form.creationProtocol, currentMessage);
+        }
+
+        /// <summary>
+        /// Cleans duplicates of default new types
+        /// </summary>
+        /// <param name="form">For to be handled</param>
+        public static void RemoveDuplicatingDefaultNewTypes(IObject form)
+        {
+            var defaultNewTypesForElements =
+                form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+            if (defaultNewTypesForElements == null)
+            {
+                // Nothing to do, when no default types are set
+                return;
+            }
+            
+            var handled = new List<IObject>();
+
+            foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
+            {
+                var metaClass = element.getOrDefault<IObject>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
+                if (handled.Any(x => x.@equals(metaClass)))
+                {
+                    defaultNewTypesForElements.remove(element);
+                }
+                else
+                {
+                    handled.Add(metaClass);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a default type for a new element.
+        /// If the element is already added, then it will be skipped.
+        /// </summary>
+        /// <param name="form">Form to be evaluated</param>
+        /// <param name="defaultType">DefaultType to be added</param>
+        public static void AddDefaultTypeForNewElement(IObject form, IObject defaultType)
+        {
+            var currentDefaultPackages =
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+            if (currentDefaultPackages.OfType<IElement>().Any(x =>
+                    x.getOrDefault<IElement>(
+                            _DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
+                        ?.@equals(defaultType) == true))
+            {
+
+                AddToFormCreationProtocol(
+                    form,
+                    $"[FormMethods.AddDefaultTypeForNewElement] Not added because default type is already existing: {NamedElementMethods.GetName(defaultType)}");
+                // No adding, because it already exists
+                return;
+            }
+
+            var defaultTypeInstance =
+                new MofFactory(form).create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, defaultType);
+            defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+                NamedElementMethods.GetName(defaultType));
+            currentDefaultPackages.add(defaultTypeInstance);
+
+            AddToFormCreationProtocol(
+                form,
+                $"[FormMethods.AddDefaultTypeForNewElement] Added defaulttype: {NamedElementMethods.GetName(defaultType)}");
+        }
+
+        /// <summary>
+        ///     Expands the dropdown values of the the DropDownField.
+        ///     The DropDownField supports a reference field which is not resolved by every Form Client.
+        ///     So, the DropDownField can already be resolved on server side
+        /// </summary>
+        /// <param name="listOrDetailForm">The list form or the DetailForm being handled</param>
+        public static void ExpandDropDownValuesOfValueReference(IElement listOrDetailForm)
+        {
+            var factory = new MofFactory(listOrDetailForm);
+            var fields = listOrDetailForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            foreach (var field in fields.OfType<IElement>())
+            {
+                if (field.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DropDownFieldData) != true) continue;
+
+                var byEnumeration =
+                    field.getOrDefault<IElement>(_DatenMeister._Forms._DropDownFieldData.valuesByEnumeration);
+                var byValues =
+                    field.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
+                if (byValues == null && byEnumeration != null)
+                {
+                    var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
+                    foreach (var value in enumeration)
+                    {
+                        var element = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
+                        element.set(_DatenMeister._Forms._ValuePair.name, value);
+                        element.set(_DatenMeister._Forms._ValuePair.value, value);
+                        field.AddCollectionItem(_DatenMeister._Forms._DropDownFieldData.values, element);
+                    }
+
+                    FormMethods.AddToFormCreationProtocol(listOrDetailForm,
+                        $"[FormFactory.ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cleans up the ist form by executing several default methods like, expanding the
+        /// drop down values are removing duplicates
+        /// </summary>
+        /// <param name="listForm">List form to be evaluated</param>
+        public static void CleanupListForm(IElement listForm)
+        {
+            AddDefaultTypeForListFormsMetaClass(listForm);
+            ExpandDropDownValuesOfValueReference(listForm);            
+            FormMethods.RemoveDuplicatingDefaultNewTypes(listForm);
+        }
+
+        private static void AddDefaultTypeForListFormsMetaClass(IObject listForm)
+        {
+            // Adds the default type corresponding to the list form
+            var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
+            if (metaClass != null)
+            {
+                FormMethods.AddDefaultTypeForNewElement(listForm, metaClass);
+            }
+        }
+
+        /// <summary>
+        /// Checks the type of the given element <code>asElement</code> and add its propertytype
+        /// to the default types
+        /// </summary>
+        /// <param name="foundForm">The listform to be modified</param>
+        /// <param name="asElement">The element being evaluated</param>
+        public static void AddDefaultTypesInListFormByElementsProperty(IElement foundForm, IElement asElement)
+        {
+            var listForms = FormMethods.GetListForms(foundForm);
+            foreach (var listForm in listForms)
+            {
+                var property = listForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                var objectMetaClass = asElement.getMetaClass();
+
+                if (property == null || objectMetaClass == null) continue;
+                var propertyInstance = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, property);
+
+                if (propertyInstance == null) continue;
+                var propertyType = PropertyMethods.GetPropertyType(propertyInstance);
+
+                if (propertyType == null) continue;
+                FormMethods.AddDefaultTypeForNewElement(listForm, propertyType);
+            }
         }
     }
 }

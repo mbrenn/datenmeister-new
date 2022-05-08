@@ -78,6 +78,13 @@ a {
     text-decoration: underline;
 }
 
+/* Restyle the buttons that they are a bit more beautiful */
+.btn{
+    font-size: 80%;
+    padding: 3px 10px 3px 10px;
+    margin-right: 2px;
+}
+
 .dm-sidebar {
     width: 64px;
     margin-left: 5px;
@@ -90,6 +97,22 @@ a {
 
 .dm-breadcrumb {
     font-size: 80%;
+    margin-bottom: 0;
+}
+
+/* Breadcrumb Items are links and need to have a pointer */
+.dm-breadcrumb .breadcrumb-item{
+    cursor: pointer;
+}
+
+/* The slash between the items do not need a pointer */
+.dm-breadcrumb .breadcrumb-item::before{
+    cursor: default;
+}
+
+/* Prevents that the Breadcrumb adds additional margin at the bottom */
+.dm-breadcrumb ul {
+    margin-bottom: 0;
 }
 
 .dm-selectitemcontrol {
@@ -114,6 +137,23 @@ a {
 
 .dm-selectitemcontrol ul li {
     list-style-position: outside;
+}
+
+.dm-selectitemcontrol .dm-sic-items ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Makes the selectable items like a small button */
+.dm-selectitemcontrol .dm-sic-item
+{
+    background: lightblue;
+    border: 1px solid dimgray;
+    border-radius: 2px;
+    padding: 3px 10px 3px 10px;
+    margin-bottom: 2px;
+    font-size: 80%;    
+    cursor: pointer;
 }
 
 .dm-table-nofullwidth {
@@ -169,4 +209,35 @@ a {
 
 .dm-debug-property-value {
     white-space: pre-wrap;
+}
+
+/* 
+ * To be used in convertItemWithNameAndIdToDom whenever an item's metaclass is shown. 
+ */
+.dm-metaclass
+{
+    color: dimgray;
+    font-size: 80%;
+    font-style: italic;
+}
+
+
+
+/* Mocha Configuration
+-------------------------------------------------- */
+#mocha
+{    
+    margin: 10px !important;
+}
+
+#mocha #mocha-stats {
+    position: relative;
+}
+
+#server_errors div
+{
+    font-size: 9px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    
 }

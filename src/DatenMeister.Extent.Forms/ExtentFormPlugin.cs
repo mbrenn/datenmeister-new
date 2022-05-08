@@ -27,46 +27,53 @@ namespace DatenMeister.Extent.Forms
 
         public void Start(PluginLoadingPosition position)
         {
-            var formsPlugin = _scopeStorage.Get<FormsPluginState>();
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterLoadingOfExtents:
 
-            ActionButtonToFormAdder.AddActionButton(
-                formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")
-                {
-                    FormType = _DatenMeister._Forms.___FormType.Detail,
-                    MetaClass = _DatenMeister.TheOne.Management.__Extent
-                });
+                    var formsPlugin = _scopeStorage.Get<FormsPluginState>();
 
-            ActionButtonToFormAdder.AddActionButton(
-                formsPlugin, new ActionButtonAdderParameter(NavigationExtentProperties, "View Extent Properties")
-                {
-                    FormType = _DatenMeister._Forms.___FormType.Detail,
-                    MetaClass = _DatenMeister.TheOne.Management.__Extent
-                });
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent
+                        });
 
-            ActionButtonToFormAdder.AddActionButton(
-                formsPlugin, new ActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
-                {
-                    FormType = _DatenMeister._Forms.___FormType.Detail,
-                    MetaClass = _DatenMeister.TheOne.Management.__Extent
-                });
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin,
+                        new ActionButtonAdderParameter(NavigationExtentProperties, "View Extent Properties")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent
+                        });
 
-            ActionButtonToFormAdder.AddActionButton(
-                formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "New Item")
-                {
-                    MetaClass = _DatenMeister.TheOne.Management.__Extent,
-                    FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
-                }
-            );
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent
+                        });
 
-            ActionButtonToFormAdder.AddActionButton(
-                formsPlugin,
-                new ActionButtonAdderParameter(NavigationExtentNavigateTo, "Items")
-                {
-                    ParentMetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                    FormType = _DatenMeister._Forms.___FormType.ObjectList,
-                    ParentPropertyName = _DatenMeister._Management._Workspace.extents,
-                    ActionButtonPosition = 0
-                });
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "New Item")
+                        {
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent,
+                            FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
+                        }
+                    );
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin,
+                        new ActionButtonAdderParameter(NavigationExtentNavigateTo, "Items")
+                        {
+                            ParentMetaClass = _DatenMeister.TheOne.Management.__Workspace,
+                            FormType = _DatenMeister._Forms.___FormType.ObjectList,
+                            ParentPropertyName = _DatenMeister._Management._Workspace.extents,
+                            ActionButtonPosition = 0
+                        });
+                    break;
+            }
         }
     }
 }

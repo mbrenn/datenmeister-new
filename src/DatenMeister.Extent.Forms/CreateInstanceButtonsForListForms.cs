@@ -6,6 +6,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormModifications;
 
 namespace DatenMeister.Extent.Forms
@@ -28,18 +29,14 @@ namespace DatenMeister.Extent.Forms
                 var defaultTypes = extent.getOrDefault<IReflectiveCollection>(ExtentConfiguration.ExtentDefaultTypes);
                 if (defaultTypes != null)
                 {
-                    var inForm =
-                        form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
-
                     foreach (var defaultType in defaultTypes.OfType<IElement>())
                     {
-                        inForm.add(defaultType);
-
                         FormMethods.AddToFormCreationProtocol(
                             form,
-                            "[CreateInstanceButtonsForListForms]: Add DefaultType " +
+                            "[CreateInstanceButtonsForListForms]: Add DefaultType per ExtentDefaultTypes property " +
                             NamedElementMethods.GetName(defaultType));
-
+                        
+                        FormMethods.AddDefaultTypeForNewElement(form, defaultType);
                         added = true;
                     }
                 }

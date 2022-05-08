@@ -23,6 +23,8 @@ namespace DatenMeister.Json
 
         public string? workspace { get; set; } = string.Empty;
 
+        public string? typeName { get; set; } = string.Empty;
+
         /// <summary>
         /// Creates the element out of the attached object 
         /// </summary>
@@ -36,6 +38,7 @@ namespace DatenMeister.Json
             }
 
             var extent = value.GetExtentOf() as IUriExtent;
+            var metaClass = (value as IElement)?.metaclass;
 
             var result = new ItemWithNameAndId
             {
@@ -44,7 +47,8 @@ namespace DatenMeister.Json
                 fullName = NamedElementMethods.GetFullName(value),
                 id = (value as IHasId)?.Id ?? string.Empty,
                 uri = value.GetUri() ?? string.Empty,
-                workspace = extent?.GetWorkspace()?.id ?? string.Empty
+                workspace = extent?.GetWorkspace()?.id ?? string.Empty,
+                typeName = metaClass == null ? null :  NamedElementMethods.GetName(metaClass)
             };
 
             return result;

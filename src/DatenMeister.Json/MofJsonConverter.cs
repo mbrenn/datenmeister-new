@@ -177,9 +177,28 @@ namespace DatenMeister.Json
                                  && rootExtent != null
                                  && rootExtent != connectedExtent;
 
+            // If the item is of another extent, the recursion depth will be set, so there will be no deeper 
+            // parsing. If a deeper parsing is required, the client shall explicitly query
+            var isOtherExtent = rootExtent != null && connectedExtent != null && rootExtent != connectedExtent;
+            if (isOtherExtent)
+            {
+                recursionDepth = Math.Max(recursionDepth, MaxRecursionDepth - 1);
+            }
+
             if (propertyValue is IObject asObject && (recursionDepth >= MaxRecursionDepth || forceReference))
             {
-                builder.Append($"{{\"r\": \"{HttpUtility.JavaScriptStringEncode(asObject.GetUri() ?? "None")}\"}}");
+                builder.Append("{");
+
+                builder.Append($"\"r\": \"{HttpUtility.JavaScriptStringEncode(asObject.GetUri() ?? "None")}\"");
+                var workspace = asObject.GetExtentOf()?.GetWorkspace();
+                if (workspace != null)
+                {
+                    var workspaceName = workspace.id;
+                    builder.Append(", \"w\": ");
+                    AppendValue(builder, workspaceName);
+                }
+
+                builder.Append("}");
                 return;
             }
 
@@ -197,7 +216,7 @@ namespace DatenMeister.Json
             }
             else if (DotNetHelper.IsOfDateTime(propertyValue))
             {
-                builder.Append($"\"{(DateTime)propertyValue:o}\"");
+                builder.Append($"\"{DotNetHelper.AsString(propertyValue)}\"");
             }
             else if (DotNetHelper.IsOfPrimitiveType(propertyValue))
             {

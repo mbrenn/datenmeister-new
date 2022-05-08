@@ -25,10 +25,12 @@ namespace DatenMeister.Forms.FormCreator
         public IElement CreateListFormForCollection(IReflectiveCollection elements,
             FormFactoryConfiguration creationMode)
         {
-            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var result = MofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
 
             AddToListFormByElements(result, elements, creationMode with { IsForListView = true });
 
+            CleanupListForm(result);
+            
             return result;
         }
 
@@ -48,25 +50,29 @@ namespace DatenMeister.Forms.FormCreator
             if (!creationMode.CreateByMetaClass)
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
 
-            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var result = MofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
 
             FormMethods.AddToFormCreationProtocol(
                 result,
                 "[FormCreator.CreateListFormForPropertyValues]");
 
-            AddFieldsToFormByMetaclass(result, propertyType, creationMode);
+            AddFieldsToFormByMetaClass(result, propertyType, creationMode);
             result.set(_DatenMeister._Forms._ListForm.property, propertyName);
             result.set(_DatenMeister._Forms._ListForm.metaClass, propertyType);
             result.set(_DatenMeister._Forms._ListForm.title,
                 $"{propertyName} - {NamedElementMethods.GetName(propertyType)}");
-            result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] { propertyType });
+            if (propertyType != null)
+            {
+                FormMethods.AddDefaultTypeForNewElement(result, propertyType);
+            }
 
             FormMethods.AddToFormCreationProtocol(
                 result,
                 "[FormCreator.CreateListFormForPropertyValues] Set default type: " +
                 NamedElementMethods.GetName(propertyType));
 
-
+            CleanupListForm(result);
+            
             return result;
         }
 
@@ -76,7 +82,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="metaClass"></param>
         /// <param name="creationMode"></param>
         public IElement CreateListFormForMetaClass(
-            IElement metaClass,
+            IElement? metaClass,
             FormFactoryConfiguration creationMode)
         {
             return CreateListFormForMetaClass(metaClass, creationMode, null);
@@ -96,50 +102,50 @@ namespace DatenMeister.Forms.FormCreator
             if (!creationMode.CreateByMetaClass)
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
 
-            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var form = MofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
-            var propertyName = property != null ? realPropertyName : "List";
+            var propertyName = property != null ? realPropertyName : "";
 
             FormMethods.AddToFormCreationProtocol(
-                result,
+                form,
                 "[FormCreator.CreateListFormForMetaClass] Created for: " + NamedElementMethods.GetName(metaClass));
 
             var title =
-                (metaClass != null ? NamedElementMethods.GetName(metaClass) : string.Empty) +
-                (metaClass != null && property != null ? " - " : "") +
-                (property != null ? NamedElementMethods.GetName(property) : "");
+                (metaClass != null ? "'" + NamedElementMethods.GetName(metaClass) + "'" : string.Empty) +
+                (metaClass != null && !string.IsNullOrEmpty(propertyName) ? " - " : "") +
+                propertyName;
 
-            result.set(_DatenMeister._Forms._ListForm.title, "Types: " + title);
-            result.set(_DatenMeister._Forms._ListForm.name, title);
-            result.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
+            form.set(_DatenMeister._Forms._ListForm.title, "Items of type " + title);
+            form.set(_DatenMeister._Forms._ListForm.name, title);
+            if (property != null)
+            {
+                form.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
+            }
 
             if (metaClass != null)
             {
-                AddFieldsToFormByMetaclass(result, metaClass, creationMode with { IsForListView = true });
-
-                var defaultType = mofFactory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, metaClass);
-                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
-                    NamedElementMethods.GetName(metaClass));
-                result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] { defaultType });
-
+                AddFieldsToFormByMetaClass(form, metaClass, creationMode with { IsForListView = true });
+                
                 FormMethods.AddToFormCreationProtocol(
-                    result,
+                    form,
                     "[FormCreator.CreateListFormForMetaClass] Added Default Type for: " +
-                    NamedElementMethods.GetName(defaultType));
+                    NamedElementMethods.GetName(metaClass));
+                FormMethods.AddDefaultTypeForNewElement(form, metaClass);
             }
             else
             {
                 // Ok, we have no metaclass, but let's add at least the columns for the property 'name'
                 AddFieldsToFormByMetaClassProperty(
-                    result,
+                    form,
                     _UML.TheOne.CommonStructure.NamedElement._name,
                     new FormFactoryConfiguration
                         { CreateByPropertyValues = false, AutomaticMetaClassField = false, IsForListView = true },
                     FormUmlElementType.Property);
             }
 
-            return result;
+            CleanupListForm(form);
+            
+            return form;
         }
 
         /// <summary>
@@ -190,7 +196,7 @@ namespace DatenMeister.Forms.FormCreator
                     cache.MetaClassAlreadyAdded = true;
 
                     // Create the metaclass as a field
-                    var metaClassField = mofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
+                    var metaClassField = MofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Metaclass");
                     form.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, metaClassField);
@@ -205,7 +211,7 @@ namespace DatenMeister.Forms.FormCreator
                     if (alreadyVisitedMetaClasses.Contains(metaClass)) continue;
 
                     alreadyVisitedMetaClasses.Add(metaClass);
-                    AddFieldsToFormByMetaclass(form, metaClass, creationMode with { IsForListView = true }, cache);
+                    AddFieldsToFormByMetaClass(form, metaClass, creationMode with { IsForListView = true }, cache);
                 }
                 else if (creationMode.CreateByPropertyValues)
                 {
@@ -216,8 +222,6 @@ namespace DatenMeister.Forms.FormCreator
                         cache);
                 }
 
-                AddTextFieldForNameIfNoFieldAvailable(form);
-                SortFieldsByImportantProperties(form);
             }
         }
 
@@ -308,17 +312,24 @@ namespace DatenMeister.Forms.FormCreator
             var propertyName = property.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
             var propertyType = PropertyMethods.GetPropertyType(property);
 
-            var result = mofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var result = MofFactory.create(_DatenMeister.TheOne.Forms.__ListForm);
 
             FormMethods.AddToFormCreationProtocol(
                 result,
                 "[FormCreator.CreateListFormForProperty] Created for Property: " + propertyName);
 
-            if (propertyType != null) AddFieldsToFormByMetaclass(result, propertyType, creationMode);
-
+            if (propertyType != null) AddFieldsToFormByMetaClass(result, propertyType, creationMode);
             result.set(_DatenMeister._Forms._ListForm.property, propertyName);
             result.set(_DatenMeister._Forms._ListForm.title, $"{propertyName}");
+            
+            CleanupListForm(result);
             return result;
+        }
+
+        public void CleanupListForm(IElement listForm)
+        {
+            AddTextFieldForNameIfNoFieldAvailable(listForm);
+            SortFieldsByImportantProperties(listForm);
         }
     }
 }

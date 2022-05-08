@@ -61,7 +61,7 @@ namespace DatenMeister.WebServer
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            
             var config = new StaticFileOptions
             {
                 ServeUnknownFileTypes = true
@@ -77,7 +77,6 @@ namespace DatenMeister.WebServer
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                // endpoints.MapFallbackToPage("/Index");
             });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions

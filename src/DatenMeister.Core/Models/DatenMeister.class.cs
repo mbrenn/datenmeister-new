@@ -1480,6 +1480,9 @@ namespace DatenMeister.Core.Models
                 public static string @actionName = "actionName";
                 public IElement? @_actionName = null;
 
+                public static string @parameter = "parameter";
+                public IElement? @_parameter = null;
+
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
 
@@ -2263,6 +2266,9 @@ namespace DatenMeister.Core.Models
                 public static string @properties = "properties";
                 public IElement? @_properties = null;
 
+                public static string @loadingConfiguration = "loadingConfiguration";
+                public IElement? @_loadingConfiguration = null;
+
             }
 
             public _Extent @Extent = new _Extent();
@@ -2350,6 +2356,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @properties = "properties";
                 public IElement? @_properties = null;
+
+                public static string @loadingConfiguration = "loadingConfiguration";
+                public IElement? @_loadingConfiguration = null;
 
             }
 

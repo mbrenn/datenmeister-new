@@ -121,6 +121,7 @@ namespace DatenMeister.Core.Provider.Xmi
                 if (found != null)
                 {
                     found.Remove();
+                    _cache.Remove(id);
                     return true;
                 }
 
@@ -149,6 +150,8 @@ namespace DatenMeister.Core.Provider.Xmi
                 {
                     node.Remove();
                 }
+
+                _cache.Clear();
             }
         }
 
@@ -269,7 +272,7 @@ namespace DatenMeister.Core.Provider.Xmi
         /// <returns>The found element</returns>
         private XElement? FindById(string id)
         {
-            lock (_cache)
+            lock (LockObject)
             {
                 if (_cache.TryGetValue(id, out var element))
                 {
@@ -277,19 +280,22 @@ namespace DatenMeister.Core.Provider.Xmi
 
                     _cache.Remove(id);
                 }
+            }
 
-                lock (LockObject)
+            lock (LockObject)
+            {
+                foreach (var x in _rootNode.Descendants())
                 {
-                    foreach (var x in _rootNode.Descendants())
+                    var foundId = XmiId.Get(x);
+                    if (foundId != null)
                     {
-                        var foundId = XmiId.Get(x);
-                        if (foundId != null)
-                            _cache[foundId] = x;
+                        // Go through each item to build up the cache
+                        _cache[foundId] = x;
                     }
                 }
-
-                return _cache.TryGetValue(id, out var element2) ? element2 : null;
             }
+
+            return _cache.TryGetValue(id, out var element2) ? element2 : null;
         }
 
         public static XElement GetMetaNodeFromFile(string filePath)

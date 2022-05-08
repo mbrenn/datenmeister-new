@@ -38,6 +38,14 @@ namespace DatenMeister.Core.Runtime
         {
             return _extent.ScopeStorage?.Get<ResolveHooks>().Get(parameter);
         }
+        
+        /// <summary>
+        /// Clears the complete resolve cache
+        /// </summary>
+        public void ClearResolveCache()
+        {
+            _cacheIds.Clear();
+        }
 
         /// <summary>
         /// Gets the sub element by the uri or null, if the extent does not contain the uri, null is returned
@@ -58,6 +66,11 @@ namespace DatenMeister.Core.Runtime
                                   && (uri == _extent.contextURI() || _extent.AlternativeUris.Contains(uri)))
             {
                 return _extent;
+            }
+
+            if (posQuestion == -1 && posHash == -1)
+            {
+                return element("#" + uri);
             }
 
             // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 
@@ -204,7 +217,7 @@ namespace DatenMeister.Core.Runtime
         private MofElement? ResolveByFragment(string fragment)
         {
             // Queries the object
-            var queryObjectId = WebUtility.UrlDecode(fragment);
+            var queryObjectId = HttpUtility.UrlDecode(fragment);
 
             // Check if the extent type already supports the direct querying of objects
             if (_extent.Provider is IProviderSupportFunctions supportFunctions &&
@@ -252,7 +265,7 @@ namespace DatenMeister.Core.Runtime
                 throw new InvalidOperationException("element is not of type IHasId. Element is: " + element);
             }
 
-            return _extent.contextURI() + "#" + WebUtility.UrlEncode(elementAsObject.Id);
+            return _extent.contextURI() + "#" + HttpUtility.UrlEncode(elementAsObject.Id);
         }
     }
 }

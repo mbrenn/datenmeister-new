@@ -140,7 +140,7 @@ namespace DatenMeister.Core.Provider.Xmi
 
                 var normalizedPropertyName = NormalizePropertyName(property);
 
-                var propertyAsString = ReturnObjectAsString(normalizedPropertyName);
+                var propertyAsString = ReturnObjectAsString(normalizedPropertyName) ?? string.Empty;
                 var propertyAsReference = ConvertPropertyToReference(property);
 
                 return XmlNode.Attribute(propertyAsString) != null
@@ -151,7 +151,13 @@ namespace DatenMeister.Core.Provider.Xmi
 
         /// <inheritdoc />
         [SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
-        public object GetProperty(string property, ObjectType objectType)
+        public object? GetProperty(string property, ObjectType objectType)
+        {
+            var value = GetPropertyInternal(property, objectType);
+            return ObjectTypeConverter.Convert(value, objectType);
+        }
+        
+        private object? GetPropertyInternal(string property, ObjectType objectType)
         {
             lock (_xmiProvider.LockObject)
             {
@@ -227,10 +233,15 @@ namespace DatenMeister.Core.Provider.Xmi
                     return reference;
                 }
 
-                // For unknown objects, return an empty enumeration which will then be converted to an Reflective Sequence
-                var empty = new List<object>();
-                _propertyCache[propertyCacheName] = empty;
-                return empty;
+                if (objectType == ObjectType.ReflectiveSequence)
+                {
+                    // For unknown objects, return an empty enumeration which will then be converted to an Reflective Sequence
+                    var empty = new List<object>();
+                    _propertyCache[propertyCacheName] = empty;
+                    return empty;
+                }
+                
+                return null;
             }
         }
 
@@ -616,26 +627,9 @@ namespace DatenMeister.Core.Provider.Xmi
         /// </summary>
         /// <param name="value">Value to be converted to a string</param>
         /// <returns>Converted the value to text</returns>
-        private string ReturnObjectAsString(object value)
+        private static string? ReturnObjectAsString(object value)
         {
-            if (value is string) return value.ToString() ?? throw new InvalidOperationException();
-
-            if (DotNetHelper.IsOfBoolean(value)) return value.ToString() ?? throw new InvalidOperationException();
-
-            if (value is double valueAsDouble) return valueAsDouble.ToString(CultureInfo.InvariantCulture);
-
-            if (DotNetHelper.IsOfNumber(value)) return value.ToString() ?? throw new InvalidOperationException();
-
-            if (DotNetHelper.IsOfChar(value)) return value.ToString() ?? throw new InvalidOperationException();
-
-            if (value is DateTime propertyAsDateTime) return propertyAsDateTime.ToString(CultureInfo.InvariantCulture);
-
-            if (value.GetType().IsEnum) return value.ToString() ?? throw new InvalidOperationException();
-
-            if (value == null) throw new ArgumentNullException(nameof(value));
-
-            throw new InvalidOperationException(
-                $"Only some types as properties are supported at the moment. Type is: {value.GetType()}");
+            return DotNetHelper.AsString(value);
         }
 
         /// <summary>

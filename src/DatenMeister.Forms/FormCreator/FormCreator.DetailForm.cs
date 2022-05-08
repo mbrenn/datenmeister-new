@@ -20,7 +20,7 @@ namespace DatenMeister.Forms.FormCreator
         {
             creationMode ??= new FormFactoryConfiguration();
             var cache = new FormCreatorCache();
-            var createdForm = mofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
+            var createdForm = MofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
             createdForm.set(_DatenMeister._Forms._DetailForm.name, "Item");
 
             FormMethods.AddToFormCreationProtocol(
@@ -31,6 +31,7 @@ namespace DatenMeister.Forms.FormCreator
                 createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
 
             AddFieldsToForm(createdForm, element, creationMode, cache);
+            CleanupDetailForm(createdForm);
             return createdForm;
         }
 
@@ -40,10 +41,10 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="metaClass">Metaclass to which the form will be created</param>
         /// <param name="creationMode">The creation mode being used</param>
         /// <returns>The created form for the metaclass</returns>
-        public IElement CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode = null)
+        public IElement CreateDetailFormByMetaClass(IElement? metaClass, FormFactoryConfiguration? creationMode = null)
         {
             creationMode ??= new FormFactoryConfiguration();
-            var createdForm = mofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
+            var createdForm = MofFactory.create(_DatenMeister.TheOne.Forms.__DetailForm);
             var name = NamedElementMethods.GetName(metaClass);
             createdForm.set(_DatenMeister._Forms._DetailForm.name, $"{name} - Detail");
 
@@ -54,10 +55,17 @@ namespace DatenMeister.Forms.FormCreator
             if (creationMode.AutomaticMetaClassField)
                 createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
 
-            if (!AddFieldsToFormByMetaclass(createdForm, metaClass, creationMode))
+            if (!AddFieldsToFormByMetaClass(createdForm, metaClass, creationMode))
                 createdForm.set(_DatenMeister._Forms._DetailForm.allowNewProperties, true);
 
+            CleanupDetailForm(createdForm);
             return createdForm;
+        }
+        
+        public void CleanupDetailForm(IElement detailForm)
+        {
+            SortFieldsByImportantProperties(detailForm);
+            
         }
     }
 }

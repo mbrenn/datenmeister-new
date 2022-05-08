@@ -7,53 +7,22 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
-    <TypeScriptNuGetToolsVersion>4.3</TypeScriptNuGetToolsVersion>
+    <TypeScriptNuGetToolsVersion>4.5.3</TypeScriptNuGetToolsVersion>
     <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptESModuleInterop>True</TypeScriptESModuleInterop>
   </PropertyGroup>
 
   <ItemGroup>
-
-    <TypeScriptCompile Remove="node_modules\**"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ApiModels.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\DomHelper.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ExtentControllerClient.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Fields\ReferenceField.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.FieldFactory.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ActionForm.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\init.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Mof.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\NameLoader.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts"/>
-
-    <TypeScriptCompile Include="wwwroot\js\DatenMeister\test\MofTests.ts"/>
+    <TypeScriptCompile Remove="node_modules\**" />
+    <TypeScriptCompile Include="wwwroot\js\**.ts" />
+    <TypeScriptCompile Include="wwwroot\js\burnsystems\tests\events.test.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Forms.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\js\datenmeister.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.4.4">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.5.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -69,7 +38,7 @@
     <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />
-    <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj"/>
+    <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
     <ProjectReference Include="..\..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
@@ -94,6 +63,15 @@
 
   <Target Name="CopyIconPngFiles" BeforeTargets="Compile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
+  </Target>
+
+
+  <Target Name="CopyNodeModules" BeforeTargets="Compile">
+    <ItemGroup>
+      <NodeModules Include="./node_modules/**/*.js" />
+      <NodeModules Include="./node_modules/**/*.css" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NodeModules)" DestinationFolder="wwwroot/js/node_modules/%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <ProjectExtensions><VisualStudio><UserProperties tsconfig_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

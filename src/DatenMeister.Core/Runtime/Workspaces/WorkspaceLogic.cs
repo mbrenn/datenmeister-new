@@ -26,6 +26,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// Cache to store the uri storing the extents as a provider object
         /// </summary>
         private IUriExtent? _cacheUriExtents;
+        
+        public WorkspaceData WorkspaceData => _workspaceData;
 
         private WorkspaceLogic(WorkspaceData workspaceData, IScopeStorage? scopeStorage)
         {
@@ -50,7 +52,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
             {
                 if (extent == null) return _workspaceData.Default;
 
-                var result = _workspaceData.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
+                var result = _workspaceData.Workspaces.FirstOrDefault(
+                    x => x.extent.Contains(extent));
                 return result ?? _workspaceData.Default;
             }
         }
@@ -148,6 +151,9 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 }
             }
 
+            // ReSharper disable once InconsistentlySynchronizedField
+            _workspaceData.OnWorkspaceAdded(this, workspace.id);
+
             SendEventForWorkspaceChange(workspace);
 
             return workspace;
@@ -225,6 +231,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
 
             if (workspaceToBeDeleted != null)
             {
+                _workspaceData.OnWorkspaceRemoved(this, id);
+            }
+
+            if (workspaceToBeDeleted != null)
+            {
                 SendEventForWorkspaceChange(workspaceToBeDeleted);
             }
         }
@@ -257,7 +268,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <inheritdoc />
         public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
-            return GetWorkspacesOrderedByDependability()
+            return GetWorkspacesOrderedByDependability(resolveType)
                 .Select(
                     workspace => workspace.Resolve(
                         uri,
@@ -269,7 +280,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <inheritdoc />
         public IElement? ResolveById(string id)
         {
-            return GetWorkspacesOrderedByDependability()
+            return GetWorkspacesOrderedByDependability(ResolveType.Default)
                 .Select(
                     workspace => workspace.ResolveById(id))
                 .FirstOrDefault(result => result != null);
@@ -354,17 +365,22 @@ namespace DatenMeister.Core.Runtime.Workspaces
         ///     being returned is the Data Workspace and the last one is the Mof workspace
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Workspace> GetWorkspacesOrderedByDependability()
+        public IEnumerable<Workspace> GetWorkspacesOrderedByDependability(ResolveType resolveType)
         {
             var workspaces = Workspaces.ToList();
+            var round = 0;
             while (workspaces.Count > 0)
             {
                 var count = workspaces.Count;
                 foreach (var tryWorkspace in workspaces.ToList())
-                    // Checks, if any of the meta-workspaces of the current workspace is still in this list 
+                    // Checks, if any of the meta-workspaces of the current workspace is still in this list
                     if (workspaces.All(x => x.MetaWorkspaces.All(y => y != tryWorkspace)))
                     {
-                        yield return tryWorkspace;
+                        if (!resolveType.HasFlag(ResolveType.OnlyMetaWorkspaces) ||
+                            round != 0)
+                            // Skips the first round, when only MetaWorkspaces are queried
+                            yield return tryWorkspace;
+
                         workspaces.Remove(tryWorkspace);
                     }
 
@@ -375,6 +391,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
                     yield return first;
                     workspaces.Remove(first);
                 }
+
+                round++;
             }
         }
     }

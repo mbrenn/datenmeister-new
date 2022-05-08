@@ -140,6 +140,11 @@ namespace DatenMeister.Provider.ExtentManagement
                 },
                 (e, v) => throw new InvalidOperationException("properties cannot be set"));
 
+            AddMapping(
+                _DatenMeister._Management._Extent.loadingConfiguration,
+                e => loadedExtentInformation?.Configuration.SetId(Id + "_loadingConfiguration"),
+                (e, v) => throw new InvalidOperationException("loadingConfiguration cannot be set"));
+
             AddContainerMapping(
                 x => new WorkspaceObject(provider, parentWorkspace),
                 (_, value) => { }

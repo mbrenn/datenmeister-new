@@ -25,7 +25,7 @@ namespace DatenMeister.WebServer.InterfaceController
                     new ExtentCreator(_workspaceLogic, scopeStorage),
                     scopeStorage);
             _formFactory = new FormFactory(
-                _formsPlugin, scopeStorage);
+                _workspaceLogic, scopeStorage);
         }
 
         /// <summary>

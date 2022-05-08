@@ -1,4 +1,4 @@
-﻿@page "/Item/{workspace}/{extent}/{item?}"
+﻿@page "/Item/{workspace}/{itemUrl}"
 @namespace DatenMeister.WebServer.Pages
 @using System.Web
 @model ItemModel
@@ -12,50 +12,26 @@
 
 <div class="dm-breadcrumb">
     @{ var w = Model.Workspace ?? "No Workspace"; }
-    @{ var e = Model.Extent ?? "No Extent"; }
-    @{ var i = Model.Item ?? "No Item"; }
     <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
-    <a href="/ItemsOverview/@(HttpUtility.UrlEncode(w))/@(HttpUtility.UrlEncode(e))">@e</a> &lt;
+    <a href="/ItemsOverview/@(HttpUtility.UrlEncode(w))/@(HttpUtility.UrlEncode(Model.ExtentUrl))">@Model.ExtentUrl</a> &lt;
     @("Element" ?? "Unknown Element")
-</div>
-
-<div>
-    <a class="btn btn-primary" onclick="CreateEditForm()">Edit Item</a>
 </div>
 
 <script type="application/javascript">
 
-    function CreateViewForm()
-    {
-        requirejs(['Forms'], function(Form) {
-            const detailForm = new Form.DetailFormCreator();
-            detailForm.createViewForm(
-                $("#form_view"),
-                "@HttpUtility.JavaScriptStringEncode(w)",
-                "@HttpUtility.JavaScriptStringEncode(e)",
-                "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
-        });
-    }
-
 $(function()
 {
-    CreateViewForm();
-});
-
-function CreateEditForm()
-{
-    requirejs(['Forms'], function(Form) {
-        const detailForm = new Form.DetailFormCreator();
-        detailForm.createEditForm(
+    requirejs(['forms/Forms'], function(Form) {
+        const detailForm = new Form.ItemDetailFormCreator();
+        detailForm.createForm(
             $("#form_view"),
             "@HttpUtility.JavaScriptStringEncode(w)",
-            "@HttpUtility.JavaScriptStringEncode(e)",
             "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
     });
-}
-
+});
+    
 </script>
-<div id="form_view">View Form</div>
+<div id="form_view">Loading the form</div>
 
 <div class="accordion" id="debug_accordion">
     <div class="accordion-item">

@@ -7,7 +7,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Controller;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -19,37 +21,9 @@ namespace DatenMeister.Tests.Web
     public class ItemsControllerTests
     {
         [Test]
-        public void TestParentItems()
-        {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
-
-            var createdExtent = extentManager.CreateAndAddXmiExtent("dm:///temp", "./test.xmi");
-            createdExtent.Extent!.set("name", "Test Extent");
-
-            var factory = new MofFactory(createdExtent.Extent);
-            var item1 = factory.create(null).SetProperty("name", "item1").SetId("1");
-            var item2 = factory.create(null).SetProperty("name", "item2").SetId("2");
-            var item3 = factory.create(null).SetProperty("name", "item3").SetId("3");
-            var item4 = factory.create(null).SetProperty("name", "item4").SetId("4");
-            var item5 = factory.create(null).SetProperty("name", "item5").SetId("5");
-            var item6 = factory.create(null).SetProperty("name", "item6").SetId("6");
-            var item7 = factory.create(null).SetProperty("name", "item7").SetId("7");
-
-            var propertyName = DefaultClassifierHints.GetDefaultPackagePropertyName(item1);
-
-            item1.set(propertyName, item3);
-            item2.set(propertyName, new[] {item4, item5});
-            createdExtent.Extent.elements().add(item1);
-            createdExtent.Extent.elements().add(item2);
-
-            item4.set(propertyName, new[] {item6, item7});
-        }
-
-        [Test]
         public void TestGetProperty()
         {
-            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            using var dm = ElementControllerTests.CreateExampleExtent(out var extent);
             var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
             var found = itemsController.GetPropertyInternal(
                 "Data",
@@ -57,9 +31,9 @@ namespace DatenMeister.Tests.Web
             Assert.That(found, Is.Not.Null);
             Assert.That(found.ToString(), Is.EqualTo("item1"));
 
-            var item1 = example.element("#item1");
-            var item2 = example.element("#item2");
-            var item3 = example.element("#item3");
+            var item1 = extent.element("#item1");
+            var item2 = extent.element("#item2");
+            var item3 = extent.element("#item3");
             Assert.That(item3, Is.Not.Null);
 
             item3.set("children", new[] {item1, item2});
@@ -79,9 +53,28 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestUnsetProperty()
+        {
+            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+
+            var item1 = example.element("#item1");
+            Assert.That(item1, Is.Not.Null);
+
+            Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("item1"));
+
+            itemsController.UnsetProperty(
+                WorkspaceNames.WorkspaceData,
+                ElementControllerTests.UriTemporaryExtent + "#item1",
+                new ItemsController.UnsetPropertyParams {Property = "name"});
+
+            Assert.That(item1.getOrDefault<string>("name"), Is.Null);
+        }
+
+        [Test]
         public void TestRootElements()
         {
-            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            using var dm = ElementControllerTests.CreateExampleExtent(out var extent);
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var rootElements = itemsController
@@ -112,7 +105,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestDeleteItems()
         {
-            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var rootElements = example.elements().ToList();
@@ -131,7 +124,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestSetMetaClass()
         {
-            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var rootElements = example.elements().ToList();
@@ -159,7 +152,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestAddReferenceToCollection()
         {
-            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
 
@@ -198,9 +191,40 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestSetPropertyReference()
+        {
+            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+
+            var rootElements = example.elements().ToList();
+            Assert.That(rootElements, Is.Not.Null);
+            var first = rootElements.ElementAtOrDefault(0) as IElement;
+            Assert.That(first, Is.Not.Null);
+            Assert.That(first.getOrDefault<string>("name"), Is.EqualTo("item1"));
+
+            var list = first.getOrDefault<IReflectiveCollection>("reference");
+            Assert.That(list == null || list.size() == 0, Is.True);
+
+            itemsController.SetPropertyReference(
+                "Data",
+                ElementControllerTests.UriTemporaryExtent + "#item1",
+                new ItemsController.SetPropertyReferenceParams
+                {
+                    Property = "reference",
+                    WorkspaceId = "Data",
+                    ReferenceUri = ElementControllerTests.UriTemporaryExtent + "#item2"
+                });
+
+            var asElement = first.getOrDefault<IElement>("reference");
+            Assert.That(asElement, Is.Not.Null);
+            Assert.That(asElement.getOrDefault<string>("name"), Is.EqualTo("item2"));
+        }
+
+        [Test]
         public void TestRemoveReferenceToCollection()
         {
-            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
 
@@ -228,6 +252,62 @@ namespace DatenMeister.Tests.Web
 
             list = first.get<IReflectiveCollection>("reference");
             Assert.That(list.size() == 0, Is.True);
+        }
+
+        [Test]
+        public void TestGetContainer()
+        {
+            using var dm = ElementControllerTests.CreateExampleExtent(out var extent);
+
+            var item1 = extent.element("item1");
+            var item4 = extent.element("item4");
+            var item7 = extent.element("item7");
+
+            Assert.That(item1, Is.Not.Null);
+            Assert.That(item4, Is.Not.Null);
+            Assert.That(item7, Is.Not.Null);
+
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+
+            // Get the containers of the root items. This element should be the extent and the workspace
+            var container1 = itemsController.GetContainer("Data", "dm:///temp#item1")?.Value;
+            Assert.That(container1.Count, Is.EqualTo(2));
+            Assert.That(container1[0].name, Is.EqualTo("Test Extent"));
+            Assert.That(container1[0].workspace, Is.EqualTo("Data"));
+            Assert.That(container1[0].uri, Is.EqualTo("dm:///temp"));
+            
+            Assert.That(container1[1].name, Is.EqualTo("Data"));
+            Assert.That(container1[1].workspace, Is.EqualTo("Management"));
+            Assert.That(container1[1].uri, Is.EqualTo(ExtentManagementUrlHelper.GetUrlOfWorkspace("Data")));
+
+            // Get the containers of the root items. This element should be the item2, extent and the workspace
+            var container4 = itemsController.GetContainer("Data", "dm:///temp#item4")?.Value;
+            
+            Assert.That(container4.Count, Is.EqualTo(3));
+            Assert.That(container4[0].name, Is.EqualTo("item2"));
+            Assert.That(container4[0].workspace, Is.EqualTo("Data"));
+            
+            Assert.That(container4[1].name, Is.EqualTo("Test Extent"));
+            Assert.That(container4[1].workspace, Is.EqualTo("Data"));
+            
+            Assert.That(container4[2].name, Is.EqualTo("Data"));
+            Assert.That(container4[2].workspace, Is.EqualTo("Management"));
+
+            // Get the containers of the root items. This element should be the item4, item2, extent and the workspace
+            var container7 = itemsController.GetContainer("Data", "dm:///temp#item7")?.Value;
+
+            Assert.That(container7.Count, Is.EqualTo(4));
+            Assert.That(container7[0].name, Is.EqualTo("item4"));
+            Assert.That(container7[0].workspace, Is.EqualTo("Data"));
+            
+            Assert.That(container7[1].name, Is.EqualTo("item2"));
+            Assert.That(container7[1].workspace, Is.EqualTo("Data"));
+            
+            Assert.That(container7[2].name, Is.EqualTo("Test Extent"));
+            Assert.That(container7[2].workspace, Is.EqualTo("Data"));
+            
+            Assert.That(container7[3].name, Is.EqualTo("Data"));
+            Assert.That(container7[3].workspace, Is.EqualTo("Management"));
         }
     }
 }

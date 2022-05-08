@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.Json
                 .SetProperty("name", "Brenn")
                 .SetProperty("prename", "Martin")
                 .SetProperty("location", "Germany")
-                .SetProperty("birthday", new DateTime(1981, 11, 16))
+                .SetProperty("birthday", new DateTime(1981, 12, 20, 0, 0, 0))
                 .SetProperty("legs", 2)
                 .SetProperty("coffeePerDay", 2.8);
 
@@ -58,7 +58,8 @@ namespace DatenMeister.Tests.Json
             Assert.That(deconverted.get<string>("name"), Is.EqualTo("Brenn"));
             Assert.That(deconverted.get<string>("prename"), Is.EqualTo("Martin"));
             Assert.That(deconverted.get<string>("location"), Is.EqualTo("Germany"));
-            Assert.That(deconverted.get<DateTime>("birthday"), Is.EqualTo(new DateTime(1981, 11, 16)));
+            Assert.That(deconverted.get<DateTime>("birthday"),
+                Is.EqualTo(new DateTime(1981, 12, 20, 0, 0, 0)));
             Assert.That(deconverted.get<int>("legs"), Is.EqualTo(2));
             Assert.That(deconverted.get<double>("coffeePerDay"), Is.EqualTo(2.8).Within(0.01));
         }

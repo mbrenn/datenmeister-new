@@ -184,6 +184,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             add(index, value);
 
             UpdateContent();
+            
 
             return result;
         }
@@ -195,6 +196,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             _extent.ChangeEventManager?.SendChangeEvent(_extent);
             _extent.SignalUpdateOfContent();
+
+            (_extent as MofUriExtent)?.ClearResolveCache();
         }
     }
 }

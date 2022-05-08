@@ -101,6 +101,32 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));
         }
 
+        [Test]
+        public void OnTestWorkspaceEvents()
+        {
+            var workSpaceCollection = WorkspaceLogic.GetEmptyLogic() as WorkspaceLogic;
+            Assert.That(workSpaceCollection, Is.Not.Null);
+
+            var data = workSpaceCollection!.WorkspaceData;
+            Assert.That(data, Is.Not.Null);
+
+            var counter = 0;
+
+            data.WorkspaceAdded += (x, y) => { counter++; };
+            data.WorkspaceRemoved += (x, y) => { counter--; };
+
+            Assert.That(counter, Is.EqualTo(0));
+
+            workSpaceCollection.AddWorkspace(new Workspace("id", "anno"));
+            Assert.That(counter, Is.EqualTo(1));
+            
+            workSpaceCollection.RemoveWorkspace("id");
+            Assert.That(counter,Is.EqualTo(0));
+            
+            workSpaceCollection.RemoveWorkspace("id");
+            Assert.That(counter,Is.EqualTo(0));
+        }
+        
         /// <summary>
         /// Creates a configured workspaceloader with defined filepath
         /// </summary>

@@ -91,6 +91,9 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
                 lock (_extentStorageData.LoadedExtents)
                 {
+                    // Checks, if we have a workspace in the loaded extent which is not existing anymore
+                    
+                    // Now, perform the check itself
                     if (_extentStorageData.LoadedExtents.Any(
                             x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
                                  && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
@@ -168,7 +171,6 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 throw new InvalidOperationException("No extent uri is given");
             }
 
-
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
             // TODO: Do real check including generalizations, but accept it for now
             if (configuration.isSet(_ExtentFileLoaderConfig.filePath))
@@ -203,6 +205,9 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
                     extentInformation.LoadingState = ExtentLoadingState.Failed;
                     extentInformation.FailLoadingMessage = $"The provider is locked: {filePath}";
+                    
+                    Logger.Error(extentInformation.FailLoadingMessage);
+                    
                     return;
                 }
 
@@ -438,7 +443,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// the workspaces.
         /// </summary>
         /// <param name="extent"></param>
-        /// <param name="doStore">true, if the values shall be stored into the database</param>
+        /// <param name="doStore">true, if the extent shall be stored into the database</param>
         public void DetachExtent(IExtent extent, bool doStore = false)
         {
             lock (_extentStorageData.LoadedExtents)
@@ -460,6 +465,26 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             }
 
             VerifyDatabaseContent();
+        }
+        
+        /// <summary>
+        /// Detaches all events which are passing the filter 
+        /// </summary>
+        /// <param name="filter">Filterpredicate, which needs to return true, in case
+        /// the extent shall be detached</param>
+        /// <param name="doStore">true, if the extent shall be stored into the database</param>
+        public void DetachAllExtents(Func<ExtentStorageData.LoadedExtentInformation, bool> filter, bool doStore = false)
+        {
+            lock (_extentStorageData.LoadedExtents)
+            {
+                foreach (var loadInfo in 
+                         _extentStorageData.LoadedExtents
+                             .Where(loadInfo => filter(loadInfo) && loadInfo.Extent != null)
+                             .ToList())
+                {
+                    DetachExtent(loadInfo.Extent!, doStore);
+                }
+            }
         }
 
         /// <summary>

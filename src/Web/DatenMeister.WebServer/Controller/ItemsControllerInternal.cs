@@ -28,7 +28,7 @@ namespace DatenMeister.WebServer.Controller
             var foundElement = extent.element("#" + itemId);
             if (foundElement == null) throw new InvalidOperationException("Element is not found");
 
-            converter = new MofJsonConverter {MaxRecursionDepth = 2};
+            converter = new MofJsonConverter { MaxRecursionDepth = 2 };
             return foundElement;
         }
 
@@ -59,7 +59,7 @@ namespace DatenMeister.WebServer.Controller
         /// <returns>The found object</returns>
         public IObject GetItemByUriParameter(string? workspaceId, string itemUri)
         {
-            if (workspaceId == null)
+            if (string.IsNullOrEmpty(workspaceId) || workspaceId == "_")
             {
                 if (_workspaceLogic.Resolve(itemUri, ResolveType.Default, false) is not IObject foundElement)
                     throw new InvalidOperationException($"Element '{itemUri}' is not found");

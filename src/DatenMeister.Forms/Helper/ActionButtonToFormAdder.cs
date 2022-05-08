@@ -48,7 +48,7 @@ namespace DatenMeister.Forms.Helper
                     (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)))
                 {
                     // Calls the OnCall method to allow property debugging
-                    _parameter.OnCallSuccess?.Invoke();
+                    _parameter.OnCallSuccess?.Invoke(context.DetailElement, _parameter);
                     var formMetaClass = form.getMetaClass();
 
                     var forms = new List<IObject>();
@@ -75,6 +75,17 @@ namespace DatenMeister.Forms.Helper
                         actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.name, _parameter.ActionName);
 
+                        if (_parameter.Parameter.Count > 0)
+                        {
+                            var parameter = MofFactory.Create(form, null);
+                            foreach (var (key, value) in _parameter.Parameter)
+                            {
+                                parameter.set(key, value);
+                            }
+                            
+                            actionField.set(_DatenMeister._Forms._ActionFieldData.parameter, parameter);
+                        }
+                        
                         if (_parameter.ActionButtonPosition == -1)
                         {
                             fields.add(actionField);

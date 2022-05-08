@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Forms;
 using DatenMeister.Types;
@@ -101,7 +102,7 @@ namespace DatenMeister.Tests.Modules.Forms
                 field1.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
             Assert.That(valuesBefore, Is.Null);
 
-            formFactory.ExpandDropDownValuesOfValueReference(form);
+            FormMethods.ExpandDropDownValuesOfValueReference(form);
 
             var values = field1.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
             Assert.That(values, Is.Not.Null);
@@ -111,5 +112,41 @@ namespace DatenMeister.Tests.Modules.Forms
                     x.getOrDefault<string>(_DatenMeister._Forms._ValuePair.name) ==
                     _DatenMeister._FastViewFilters._ComparisonType.GreaterThan));
         }
+
+        [Test]
+        public void TestRemoveDuplicateDefaultNewTypes()
+        {
+            var workspaceLogic = WorkspaceLogic.Create(new WorkspaceData());
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
+            var factory = new MofFactory(extent);
+
+            var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var defaultNewType1 = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultNewType1.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, _DatenMeister.TheOne.Actions.__Action);
+            var defaultNewType2 = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultNewType2.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, _DatenMeister.TheOne.Actions.__ActionSet);
+            var defaultNewType3 = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultNewType3.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, _DatenMeister.TheOne.Actions.__ClearCollectionAction);
+            var defaultNewType4 = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultNewType4.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, _DatenMeister.TheOne.Actions.__ActionSet);
+            var defaultNewType5 = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultNewType5.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, _DatenMeister.TheOne.Actions.__ClearCollectionAction);
+            
+            form.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, 
+                new[]{defaultNewType1, defaultNewType2, defaultNewType3, defaultNewType4, defaultNewType5});
+
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+            Assert.That(fields.Count(), Is.EqualTo(5));
+            
+            FormMethods.RemoveDuplicatingDefaultNewTypes(form);
+            var fields2 = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements).OfType<IObject>()
+                .Select(x=>x.getOrDefault<IObject>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass))
+                .ToList();
+            Assert.That(fields2.Count, Is.EqualTo(3));
+            Assert.That(fields2.Any (x=> x.equals(_DatenMeister.TheOne.Actions.__Action)));
+            Assert.That(fields2.Any (x=> x.equals(_DatenMeister.TheOne.Actions.__ActionSet)));
+            Assert.That(fields2.Any (x=> x.equals(_DatenMeister.TheOne.Actions.__ClearCollectionAction)));
+        }
+        
     }
 }

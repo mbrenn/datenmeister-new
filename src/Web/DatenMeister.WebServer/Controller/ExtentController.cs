@@ -61,22 +61,47 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpPost("api/extent/create_xmi")]
-        public ActionResult<object> CreateXmi([FromBody] CreateXmiExtentParams createXmi)
+        public ActionResult<CreateXmiExtentResult> CreateXmi([FromBody] CreateXmiExtentParams param)
         {
-            var workspace = createXmi.Workspace;
+            var workspace = param.Workspace;
             if (string.IsNullOrEmpty(workspace)) workspace = WorkspaceNames.WorkspaceData;
+            
+            if (param.SkipIfExisting && 
+                _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri) != null)
+            {
+                return new CreateXmiExtentResult
+                {
+                    Success = true,
+                    Skipped = true
+                };
+            }
 
             var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
-            var loaded = extentManager.CreateAndAddXmiExtent(createXmi.ExtentUri, createXmi.FilePath, workspace);
-            return new {success = loaded.LoadingState == ExtentLoadingState.Loaded};
+            var loaded = extentManager.CreateAndAddXmiExtent(param.ExtentUri, param.FilePath, workspace);
+            return new CreateXmiExtentResult
+                {Success = loaded.LoadingState == ExtentLoadingState.Loaded};
         }
 
         [HttpDelete("api/extent/delete")]
-        public ActionResult<object> DeleteExtent([FromBody] DeleteExtentParams param)
+        public ActionResult<DeleteExtentResult> DeleteExtent([FromBody] DeleteExtentParams param)
         {
             var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
+
+            if (param.SkipIfNotExisting && 
+                _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri) == null)
+            {
+                return new DeleteExtentResult
+                {
+                    Success = true,
+                    Skipped = true
+                };
+            }
+
             var result = extentManager.RemoveExtent(param.Workspace, param.ExtentUri);
-            return new {success = result};
+            return new DeleteExtentResult
+            {
+                Success = result
+            };
         }
 
         /// <summary>
@@ -99,12 +124,30 @@ namespace DatenMeister.WebServer.Controller
             /// Creates a new workspace
             /// </summary>
             public string Workspace { get; set; } = string.Empty;
+            
+            public bool SkipIfExisting { get; set; }
+        }
+
+        public class CreateXmiExtentResult
+        {
+            public bool Success { get; set; }
+        
+            public bool Skipped { get; set; }
         }
 
         public class DeleteExtentParams
         {
             public string Workspace { get; set; } = string.Empty;
             public string ExtentUri { get; set; } = string.Empty;
+            
+            public bool SkipIfNotExisting { get; set; }
+        }
+
+        public class DeleteExtentResult
+        {
+            public bool Success { get; set; }
+        
+            public bool Skipped { get; set; }
         }
     }
 }

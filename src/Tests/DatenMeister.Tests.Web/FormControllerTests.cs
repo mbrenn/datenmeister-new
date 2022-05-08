@@ -67,7 +67,7 @@ namespace DatenMeister.Tests.Web
                     .Where(
                         x =>
                             x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
-                            BasicNavigationForFormsAndItemsPlugin.NavigationItemDelete)
+                            ItemsFormsPlugin.NavigationItemDelete)
                     .ToList();
 
             Assert.That(foundFields.Any(), Is.True);
@@ -93,7 +93,7 @@ namespace DatenMeister.Tests.Web
                     .Where(
                         x =>
                             x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
-                            BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListDeleteItem)
+                            ItemsFormsPlugin.NavigationExtentsListDeleteItem)
                     .ToList();
 
             Assert.That(foundFields.Any(), Is.True);
@@ -104,7 +104,7 @@ namespace DatenMeister.Tests.Web
                     .Where(
                         x =>
                             x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
-                            BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListViewItem)
+                            ItemsFormsPlugin.NavigationExtentsListViewItem)
                     .ToList();
 
             Assert.That(foundFields.Any(), Is.True);

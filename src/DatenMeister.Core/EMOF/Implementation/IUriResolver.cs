@@ -56,7 +56,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Searches also within the workspace within the types
         /// </summary>
-        AlsoTypeWorkspace = 0x10
+        AlsoTypeWorkspace = 0x10,
+
+        /// <summary>
+        ///     Searches only in the meta-workspaces and does not look in the Data and other 'first-level' workspaces.
+        /// </summary>
+        OnlyMetaWorkspaces = 0x20
     }
 
     public static class ResolveTypeExtensions

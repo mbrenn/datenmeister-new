@@ -103,7 +103,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
                 }
 
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationItemDelete && itemAsElement is not null)
+                if (actionType == ItemsFormsPlugin.NavigationItemDelete && itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
                     WriteScriptLines(id, "itemDelete", workspace, extent, itemId);
@@ -116,13 +116,13 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
                 }
 
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
+                if (actionType == ItemsFormsPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
                     WriteScriptLinesWithContext(id, "extentsListViewItem", itemId);
                 }
 
-                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListDeleteItem &&
+                if (actionType == ItemsFormsPlugin.NavigationExtentsListDeleteItem &&
                     itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
@@ -184,9 +184,9 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 return new HtmlDivElement(
                     new HtmlLinkElement
                     {
-                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextWorkspace)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextExtent)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(asHasId.Id)!),
+                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextWorkspace)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextExtent)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(asHasId.Id)!),
                         Content = NamedElementMethods.GetName(value)
                     });
             }
@@ -223,9 +223,9 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 return new HtmlDivElement(
                     new HtmlLinkElement
                     {
-                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextWorkspace)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextExtent)!) +
-                               "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(asHasId.Id)!),
+                        Href = "/Item/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextWorkspace)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(contextExtent)!) +
+                               "/" + HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(asHasId.Id)!),
                         Content = NamedElementMethods.GetName(value)
                     });
             }

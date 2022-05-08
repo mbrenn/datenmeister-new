@@ -39,7 +39,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Initializes a new instance of the MofFactory
         /// </summary>
-        /// <param name="collection">Colleciton to be used</param>
+        /// <param name="collection">Collection to be used</param>
         public MofFactory(IReflectiveCollection collection) : this(((IHasExtent) collection).Extent ?? throw new InvalidOperationException("extent"))
         {
         }
@@ -217,7 +217,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="element">Element to be included</param>
         /// <param name="metaClass">Meta class whose element will be created</param>
         /// <returns>The created element</returns>
-        public static IElement Create(IObject element, IElement metaClass)
+        public static IElement Create(IObject element, IElement? metaClass)
         {
             return new MofFactory(element).create(metaClass);
         }

@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public void TestWorkspaces()
         {
-            var (dm, extent) = CreateExampleExtent();
+            using var dm = CreateExampleExtent(out var extent);
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -31,14 +31,12 @@ namespace DatenMeister.Tests.Web
             Assert.That(result.Value.Any(x => x.name == "Data"));
             Assert.That(result.Value.Any(x => x.id == "Data"));
             Assert.That(result.Value.Any(x => x.name == "Management"));
-
-            dm.Dispose();
         }
 
         [Test]
         public void TestExtents()
         {
-            var (dm, extent) = CreateExampleExtent();
+            using var dm = CreateExampleExtent(out var extent);
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -48,14 +46,12 @@ namespace DatenMeister.Tests.Web
             // Check, that the workspaces are in... 
             Assert.That(result.Value.Any(x => x.name == "Test Extent"));
             Assert.That(result.Value.Any(x => x.id == "Data_dm:///temp"));
-
-            dm.Dispose();
         }
 
         [Test]
         public void TestRootElements()
         {
-            var (dm, extent) = CreateExampleExtent();
+            using var dm = CreateExampleExtent(out var extent);
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -65,14 +61,12 @@ namespace DatenMeister.Tests.Web
             // Check, that the workspaces are in... 
             Assert.That(result.Value.Any(x => x.name == "item1"));
             Assert.That(result.Value.Any(x => x.name == "item2"));
-
-            dm.Dispose();
         }
 
         [Test]
         public void TestSubElementsWithSingleChild()
         {
-            var (dm, extent) = CreateExampleExtent();
+            using var dm = CreateExampleExtent(out var extent);
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -87,14 +81,12 @@ namespace DatenMeister.Tests.Web
                 "Data", "dm:///temp#" + (firstElement as IHasId)?.Id);
 
             Assert.That(result.Value.Any(x => x.name == "item3"));
-
-            dm.Dispose();
         }
 
         [Test]
         public void TestSubElementsWithMultipleChildren()
         {
-            var (dm, extent) = CreateExampleExtent();
+            using var dm = CreateExampleExtent(out var extent);
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -110,14 +102,12 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(result.Value.Any(x => x.name == "item4"));
             Assert.That(result.Value.Any(x => x.name == "item5"));
-
-            dm.Dispose();
         }
 
         [Test]
         public void TestFindBySearchString()
         {
-            var (dm, extent) = CreateExampleExtent();
+            using var dm = CreateExampleExtent(out var extent);
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -125,10 +115,10 @@ namespace DatenMeister.Tests.Web
 
             // Nothing should be found
             var result = elementsController.FindBySearchString("fiuosdaiu");
-            Assert.That(result.resultType, Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeNone));
+            Assert.That(result.resultType, Is.EqualTo(ElementsController.FindBySearchStringResult.ResultTypeNone));
 
             result = elementsController.FindBySearchString(UriTemporaryExtent + "#item1");
-            Assert.That(result.resultType, Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeReference));
+            Assert.That(result.resultType, Is.EqualTo(ElementsController.FindBySearchStringResult.ResultTypeReference));
             Assert.That(result.reference!.id, Is.EqualTo("item1"));
             Assert.That(result.reference.uri, Is.EqualTo("dm:///temp#item1"));
             Assert.That(result.reference.extentUri, Is.EqualTo("dm:///temp"));
@@ -137,14 +127,14 @@ namespace DatenMeister.Tests.Web
 
             result = elementsController.FindBySearchString(UriTemporaryExtent);
             Assert.That(result.resultType,
-                Is.EqualTo(ElementsController.OutFindBySearchString.ResultTypeReferenceExtent));
+                Is.EqualTo(ElementsController.FindBySearchStringResult.ResultTypeReferenceExtent));
             Assert.That(result.reference!.uri, Is.EqualTo("dm:///temp"));
             Assert.That(result.reference.extentUri, Is.EqualTo("dm:///temp"));
             Assert.That(result.reference.workspace, Is.EqualTo("Data"));
             Assert.That(result.reference.name, Is.EqualTo("Test Extent"));
         }
 
-        public static (IDatenMeisterScope dm, IUriExtent extent) CreateExampleExtent()
+        public static IDatenMeisterScope CreateExampleExtent(out IUriExtent extent)
         {
             var dm = DatenMeisterTests.GetDatenMeisterScope(
                 true,
@@ -167,8 +157,12 @@ namespace DatenMeister.Tests.Web
             item2.set(propertyName, new[] { item4, item5 });
             createdExtent.Extent.elements().add(item1);
             createdExtent.Extent.elements().add(item2);
+            var item6 = factory.create(null).SetProperty("name", "item6").SetId("item6");
+            var item7 = factory.create(null).SetProperty("name", "item7").SetId("item7");
+            item4.set(propertyName, new[] { item6, item7 });
 
-            return (dm, createdExtent.Extent);
+            extent = createdExtent.Extent;
+            return dm;
         }
     }
 }

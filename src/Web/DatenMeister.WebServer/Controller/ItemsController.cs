@@ -14,6 +14,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Json;
+using DatenMeister.Provider.ExtentManagement;
+using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -46,7 +48,7 @@ namespace DatenMeister.WebServer.Controller
 
             var factory = new MofFactory(extent);
 
-            IElement? metaClass =
+            var metaClass =
                 string.IsNullOrEmpty(createParams.metaClass)
                     ? null
                     : extent.GetUriResolver().Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
@@ -54,33 +56,43 @@ namespace DatenMeister.WebServer.Controller
             var item = factory.create(metaClass);
             var values = createParams.properties?.v;
             if (values != null)
-            {
                 foreach (var propertyParam in values)
                 {
                     var value = propertyParam.Value;
                     var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
 
-                    if (propertyValue != null)
-                    {
-                        item.set(propertyParam.Key, propertyValue);
-                    }
+                    if (propertyValue != null) item.set(propertyParam.Key, propertyValue);
                 }
-            }
 
             extent.elements().add(item);
 
-            return new
-            {
-                success = true,
-                itemId = (item as IHasId)?.Id ?? string.Empty
-            };
+            return new CreateItemInExtentResult {success = true, itemId = (item as IHasId)?.Id ?? string.Empty};
+        }
+        
+
+        /// <summary>
+        /// Parameters to create an item within an extent
+        /// </summary>
+        public class CreateItemInExtentParams
+        {
+            /// <summary>
+            /// Gets or sets the metaclass
+            /// </summary>
+            public string? metaClass { get; set; }
+
+            public MofObjectAsJson? properties { get; set; }
         }
 
+        public class CreateItemInExtentResult
+        {
+            public bool success { get; set; }
+            public string itemId { get; set; } = string.Empty;
+        }
 
         [HttpPost("api/items/create_child/{workspaceId}/{itemUri}")]
         public ActionResult<object> CreateItemAsChild(
             string workspaceId, string itemUri,
-            [FromBody] CreateChildParams createParams)
+            [FromBody] CreateItemAsChildParams createItemAsParams)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
@@ -89,69 +101,119 @@ namespace DatenMeister.WebServer.Controller
 
             var factory = new MofFactory(item);
 
-            IElement? metaClass =
-                string.IsNullOrEmpty(createParams.metaClass)
+            var metaClass =
+                string.IsNullOrEmpty(createItemAsParams.metaClass)
                     ? null
                     : (item.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver"))
-                    .Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
+                    .Resolve(createItemAsParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
 
             var child = factory.create(metaClass);
-            if (createParams.asList)
-            {
-                item.AddCollectionItem(createParams.property, child);
-            }
+            if (createItemAsParams.asList)
+                item.AddCollectionItem(createItemAsParams.property, child);
             else
-            {
-                item.set(createParams.property, child);
-            }
+                item.set(createItemAsParams.property, child);
 
-            return new
-            {
-                success = true,
-                itemId = (child as IHasId)?.Id ?? string.Empty
-            };
+            var values = createItemAsParams.properties?.v;
+            if (values != null)
+                foreach (var propertyParam in values)
+                {
+                    var value = propertyParam.Value;
+                    var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
+
+                    if (propertyValue != null) child.set(propertyParam.Key, propertyValue);
+                }
+
+            return new CreateItemAsChildResult {success = true, itemId = (child as IHasId)?.Id ?? string.Empty};
         }
 
-        [HttpDelete("api/items/delete/{workspaceId}/{itemId}")]
-        public ActionResult<object> DeleteItem(string workspaceId, string itemId)
+        /// <summary>
+        /// Parameters to create an item within an extent
+        /// </summary>
+        public class CreateItemAsChildParams
+        {
+            /// <summary>
+            /// Gets or sets the metaclass
+            /// </summary>
+            public string metaClass { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Property in which the item shall be added
+            /// </summary>
+            public string property { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets whether the child shall be added as a list item or
+            /// shall be directly set to the property
+            /// </summary>
+            public bool asList { get; set; }
+
+            public MofObjectAsJson? properties { get; set; }
+        }
+
+
+        public class CreateItemAsChildResult
+        {
+            public bool success { get; set; }
+            public string itemId { get; set; } = string.Empty;
+        }
+
+        [HttpDelete("api/items/delete/{workspaceId}/{itemUrl}")]
+        public ActionResult<object> DeleteItem(string workspaceId, string itemUrl)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemId = HttpUtility.UrlDecode(itemId);
+            itemUrl = HttpUtility.UrlDecode(itemUrl);
 
             var success = false;
-            var foundItem = _workspaceLogic.FindItem(workspaceId, itemId);
-            if (foundItem != null)
-            {
-                success = ObjectHelper.DeleteObject(foundItem);
-            }
+            var foundItem = _workspaceLogic.FindItem(workspaceId, itemUrl);
+            if (foundItem != null) success = ObjectHelper.DeleteObject(foundItem);
 
             return new {success = success};
         }
 
         /// <summary>
-        /// Deletes an item from the extent itself
+        /// Deletes all elements from an extent
         /// </summary>
+        /// <param name="workspaceId">Id of the workspace in which the extent is residing</param>
         /// <param name="extentUri">Uri of the extent</param>
-        /// <param name="workspaceId">Id of the workspace</param>
-        /// <param name="itemId">Id of the item to be deleted</param>
-        /// <returns>the value indicating the success or not</returns>
-        [HttpPost("api/items/delete_from_extent/{workspaceId}/{extentUri}/{itemId}")]
-        public ActionResult<object> DeleteFromExtent(
-            string workspaceId,
-            string extentUri,
-            string itemId)
+        /// <returns>The action result</returns>
+        [HttpDelete("api/items/delete_root_elements/{workspaceId}/{extentUri}")]
+        public ActionResult<SuccessResult> DeleteRootElements(string workspaceId, string extentUri)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
-            itemId = HttpUtility.UrlDecode(itemId);
 
+            var success = true;
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
+            
+            extent.elements().RemoveAll();
 
-            var found = extent.elements().FirstOrDefault(x => (x as IHasId)?.Id == itemId)
-                        ?? throw new InvalidOperationException("Item is not found");
+            return new SuccessResult {Success = success};
+        }
 
-            extent.elements().remove(found);
+        /// <summary>
+        /// Deletes an item from the extent itself
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUri">Uri of the extent</param>
+        /// <param name="itemId">Id of the item to be deleted</param>
+        /// <returns>the value indicating the success or not</returns>
+        [HttpPost("api/items/delete_from_extent/{workspaceId}/{itemUri}")]
+        public ActionResult<object> DeleteItemFromExtent(
+            string workspaceId,
+            string itemUri)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
+            var extent = foundElement.GetExtentOf();
+            if (extent == null)
+            {
+                throw new InvalidOperationException($"Extent of item {itemUri} was not found");
+            }
+
+            extent.elements().remove(foundElement);
             return new {success = true};
         }
 
@@ -176,7 +238,7 @@ namespace DatenMeister.WebServer.Controller
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
-            var converter = new MofJsonConverter {MaxRecursionDepth = 2};
+            var converter = new MofJsonConverter {MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true};
             var convertedElement = converter.ConvertToJson(foundElement);
 
             return convertedElement;
@@ -189,10 +251,7 @@ namespace DatenMeister.WebServer.Controller
             extentUri = HttpUtility.UrlDecode(extentUri);
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, extentUri);
-            if (foundElement is not IExtent extent)
-            {
-                return NotFound();
-            }
+            if (foundElement is not IExtent extent) return NotFound();
 
             var converter = new MofJsonConverter {MaxRecursionDepth = 2};
 
@@ -203,12 +262,12 @@ namespace DatenMeister.WebServer.Controller
 
             var elements = extent.elements().OfType<IElement>();
 
-            
+
 #if LimitNumberOfElements
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
 
             elements = elements.Take(100);
-            
+
 #endif
 
             foreach (var item in elements)
@@ -224,8 +283,8 @@ namespace DatenMeister.WebServer.Controller
             return result.ToString();
         }
 
-        [HttpPut("api/items/get_container/{workspaceId}/{itemUri}")]
-        public ActionResult<object> GetParents(string workspaceId, string itemUri)
+        [HttpGet("api/items/get_container/{workspaceId}/{itemUri}")]
+        public ActionResult<List<ItemWithNameAndId>> GetContainer(string workspaceId, string itemUri)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
@@ -235,12 +294,39 @@ namespace DatenMeister.WebServer.Controller
 
             var result = new List<ItemWithNameAndId>();
             var container = foundItem;
+
+            int maxIteration = 100;
             do
             {
                 container = container.container();
+                if (container == null)
+                {
+                    // Container is null
+                    break;
+                }
+
                 result.Add(ItemWithNameAndId.Create(container)
                            ?? throw new InvalidOperationException("Should not happen"));
-            } while (container != null);
+                maxIteration--;
+            } while (maxIteration > 0);
+            
+            // After we are at the root element, now return the management items for extent and workspace
+            // First the extent
+            var extent = foundItem.GetExtentOf() as IUriExtent;
+            var workspace = extent?.GetWorkspace();
+            if (extent != null && workspace != null)
+            {
+                result.Add(ItemWithNameAndId.Create(extent)
+                           ?? throw new InvalidOperationException("Should not happen"));
+
+                var managementWorkspaceItem = _workspaceLogic.GetManagementWorkspace()
+                    .ResolveById(ExtentManagementUrlHelper.GetIdOfWorkspace(workspace.id));
+                if (managementWorkspaceItem != null)
+                {
+                    result.Add(ItemWithNameAndId.Create(managementWorkspaceItem)
+                               ?? throw new InvalidOperationException("Should not happen"));
+                }
+            }
 
             return result;
         }
@@ -259,6 +345,73 @@ namespace DatenMeister.WebServer.Controller
             return new {success = true};
         }
 
+        [HttpPost("api/items/set_property_reference/{workspaceId}/{itemUri}")]
+        public ActionResult<SuccessResult> SetPropertyReference(string workspaceId, string itemUri,
+            [FromBody] SetPropertyReferenceParams parameters)
+        {
+
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+
+            var reference = _internal.GetItemByUriParameter(
+                                parameters.WorkspaceId,
+                                parameters.ReferenceUri)
+                            ?? throw new InvalidOperationException("Reference was not found");
+
+            foundItem.set(parameters.Property, reference);
+
+            return new SuccessResult() {Success = true};
+        }
+
+        /// <summary>
+        /// Defines the property for the set property
+        /// </summary>
+        public class SetPropertyReferenceParams
+        {
+            /// <summary>
+            /// Gets or sets the key
+            /// </summary>
+            public string Property { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the value
+            /// </summary>
+            public string ReferenceUri { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the value of the workspace from which the element will be loaded
+            /// </summary>
+            public string WorkspaceId { get; set; } = string.Empty;
+        }
+
+        [HttpPost("api/items/unset_property/{workspaceId}/{itemUri}")]
+        public ActionResult<object> UnsetProperty(string workspaceId, string itemUri,
+            [FromBody] UnsetPropertyParams propertyParams)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+            foundItem.unset(propertyParams.Property);
+
+            return new {success = true};
+        }
+
+        /// <summary>
+        ///     Defines the property for the unset property
+        /// </summary>
+        public class UnsetPropertyParams
+        {
+            /// <summary>
+            ///     Gets or sets the key
+            /// </summary>
+            public string Property { get; set; } = string.Empty;
+        }
+
         [HttpPut("api/items/set_properties/{workspaceId}/{itemUri}")]
         public ActionResult<object> SetProperties(string workspaceId, string itemUri,
             [FromBody] SetPropertiesParams propertiesParams)
@@ -269,11 +422,33 @@ namespace DatenMeister.WebServer.Controller
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in propertiesParams.Properties)
-            {
                 foundItem.set(propertyParam.Key, propertyParam.Value);
-            }
 
             return new {success = true};
+        }
+
+        /// <summary>
+        /// Defines the property for the set property
+        /// </summary>
+        public class SetPropertyParams
+        {
+            /// <summary>
+            /// Gets or sets the key
+            /// </summary>
+            public string Key { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the value
+            /// </summary>
+            public string Value { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Defines the properties for the set properties
+        /// </summary>
+        public class SetPropertiesParams
+        {
+            public List<SetPropertyParams> Properties = new();
         }
 
         [HttpGet("api/items/get_property/{workspaceId}/{itemUri}")]
@@ -284,11 +459,11 @@ namespace DatenMeister.WebServer.Controller
 
             var result = _internal.GetPropertyInternal(workspaceId, itemUri, property);
 
-            var converter = new MofJsonConverter {MaxRecursionDepth = 2};
+            var converter = new MofJsonConverter {MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true};
             return Content($"{{\"v\": {converter.ConvertToJson(result)}}}", "application/json", Encoding.UTF8);
         }
 
-        [HttpPost("api/items/set/{workspaceId}/{itemUri}")]
+        [HttpPut("api/items/set/{workspaceId}/{itemUri}")]
         public ActionResult<object> Set(string workspaceId, string itemUri,
             [FromBody] MofObjectAsJson jsonObject)
         {
@@ -302,10 +477,7 @@ namespace DatenMeister.WebServer.Controller
                 var value = propertyParam.Value;
                 var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
 
-                if (propertyValue != null)
-                {
-                    foundItem.set(propertyParam.Key, propertyValue);
-                }
+                if (propertyValue != null) foundItem.set(propertyParam.Key, propertyValue);
             }
 
             return new {success = true};
@@ -321,11 +493,15 @@ namespace DatenMeister.WebServer.Controller
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             if (foundItem is IElementSetMetaClass asMetaClassSet)
-            {
                 asMetaClassSet.SetMetaClass(new MofObjectShadow(parameter.metaClass));
-            }
 
             return new {success = true};
+        }
+        
+
+        public class SetMetaClassParams
+        {
+            public string metaClass { get; set; } = string.Empty;
         }
 
         /// <summary>
@@ -356,6 +532,27 @@ namespace DatenMeister.WebServer.Controller
         }
 
         /// <summary>
+        ///     Defines the parameters to add a reference to a property's collection.
+        /// </summary>
+        public class AddReferenceToCollectionParams
+        {
+            /// <summary>
+            ///     Defines the property to which the property will be added
+            /// </summary>
+            public string Property { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Defines the workspace from which the property will be laoded
+            /// </summary>
+            public string? WorkspaceId { get; set; } = null;
+
+            /// <summary>
+            /// Defines the reference Uri from which the property will be loaded
+            /// </summary>
+            public string ReferenceUri { get; set; } = string.Empty;
+        }
+
+        /// <summary>
         ///     Adds a reference to a property's collection
         /// </summary>
         /// <param name="workspaceId">Id of the workspace where the item can be found</param>
@@ -380,86 +577,6 @@ namespace DatenMeister.WebServer.Controller
             foundItem.RemoveCollectionItem(parameters.Property, reference);
 
             return new {success = true};
-        }
-
-        public class SetMetaClassParams
-        {
-            public string metaClass { get; set; } = string.Empty;
-        }
-
-        /// <summary>
-        /// Parameters to create an item within an extent
-        /// </summary>
-        public class CreateItemInExtentParams
-        {
-            /// <summary>
-            /// Gets or sets the metaclass
-            /// </summary>
-            public string? metaClass { get; set; }
-
-            public MofObjectAsJson? properties { get; set; }
-        }
-
-        /// <summary>
-        /// Parameters to create an item within an extent
-        /// </summary>
-        public class CreateChildParams
-        {
-            /// <summary>
-            /// Gets or sets the metaclass
-            /// </summary>
-            public string metaClass { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Property in which the item shall be added
-            /// </summary>
-            public string property { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Gets or sets whether the child shall be added as a list item or
-            /// shall be directly set to the property
-            /// </summary>
-            public bool asList { get; set; }
-        }
-
-        /// <summary>
-        /// Defines the property for the set property
-        /// </summary>
-        public class SetPropertyParams
-        {
-            /// <summary>
-            /// Gets or sets the key
-            /// </summary>
-            public string Key { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Gets or sets the value
-            /// </summary>
-            public string Value { get; set; } = string.Empty;
-        }
-
-        /// <summary>
-        /// Defines the properties for the set properties
-        /// </summary>
-        public class SetPropertiesParams
-        {
-            public List<SetPropertyParams> Properties = new();
-        }
-
-
-        /// <summary>
-        ///     Defines the parameters to add a reference to a property's collection.
-        /// </summary>
-        public class AddReferenceToCollectionParams
-        {
-            /// <summary>
-            ///     Defines the property to which the property will be added
-            /// </summary>
-            public string Property { get; set; } = string.Empty;
-
-            public string? WorkspaceId { get; set; } = null;
-
-            public string ReferenceUri { get; set; } = string.Empty;
         }
 
         public class RemoveReferenceToCollectionParams

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Web;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Modules.ZipCodeExample.Model;
@@ -23,11 +24,11 @@ namespace DatenMeister.WPF.Modules.Apps.ZipExample
                 yield return new DefaultElementInteraction(
                     "Open in OpenStreetMap",
                     () => DotNetHelper.CreateProcess("https://www.openstreetmap.org/search?query="
-                                        + WebUtility.UrlEncode(query)));
+                                        + HttpUtility.UrlEncode(query)));
                 yield return new DefaultElementInteraction(
                     "Open in Google Maps",
                     () => DotNetHelper.CreateProcess("https://www.google.com/maps/search/?api=1&query="
-                                                     + WebUtility.UrlEncode(query)));
+                                                     + HttpUtility.UrlEncode(query)));
             }
         }
     }

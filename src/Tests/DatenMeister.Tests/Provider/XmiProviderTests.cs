@@ -16,31 +16,10 @@ namespace DatenMeister.Tests.Provider
     public class XmiProviderTests
     {
         [Test]
-        public void TestGetAndSet()
+        public void TestSuite()
         {
             var provider = new XmiProvider();
-            ProviderTestHelper.TestGetAndSetOfPrimitiveTypes(provider);
-        }
-
-        [Test]
-        public void TestLists()
-        {
-            var provider = new XmiProvider();
-            ProviderTestHelper.TestListsWithObjects(provider);
-        }
-
-        [Test]
-        public void TestMovements()
-        {
-            var provider = new XmiProvider();
-            ProviderTestHelper.TestListMovement(provider);
-        }
-
-        [Test]
-        public void TestSetReferenceAndSetValue()
-        {
-            var provider = new XmiProvider();
-            ProviderTestHelper.TestSetReferenceAndSetValue(provider);
+            ProviderTestSuite.TestProviderObject(provider);
         }
 
         [Test]

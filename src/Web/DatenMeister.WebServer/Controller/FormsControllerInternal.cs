@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -34,7 +33,7 @@ namespace DatenMeister.WebServer.Controller
             var item = GetItemByUriParameter(workspaceId, itemUrl);
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForItem(item,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
 
@@ -52,7 +51,7 @@ namespace DatenMeister.WebServer.Controller
                          ?? throw new InvalidOperationException("Extent is not found");
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var formFactory = new FormFactory(formLogic, _scopeStorage);
+            var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateExtentFormForExtent(extent,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
             if (form == null)
@@ -69,19 +68,25 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="metaClass">MetaClass to be given</param>
         /// <param name="viewMode">The view mode</param>
         /// <returns>The found form</returns>
-        public IObject GetDefaultFormForMetaClassInternal(string metaClass, string? viewMode = null)
+        public IObject GetDefaultFormForMetaClassInternal(string? metaClass, string? viewMode = null)
         {
-            var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
-            var formFactory = new FormFactory(formLogic, _scopeStorage);
-            if (
-                _workspaceLogic.GetTypesWorkspace().FindElementByUri(metaClass) is not IElement element)
+            var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
+
+            var configurationMode = new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty};
+
+            IElement? resolvedMetaClass = null;
+            if (!string.IsNullOrEmpty(metaClass))
             {
-                throw new InvalidOperationException("Element is not found: " + metaClass);
+                resolvedMetaClass = _workspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) as IElement;
+                if (resolvedMetaClass == null)
+                {
+                    throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);
+                }
             }
 
             var form = formFactory.CreateExtentFormForItemsMetaClass(
-                element,
-                new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
+                resolvedMetaClass,
+                configurationMode);
 
             if (form == null)
             {

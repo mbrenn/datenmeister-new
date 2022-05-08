@@ -140,7 +140,7 @@ namespace DatenMeister.Core.Provider.Xmi
 
                 var normalizedPropertyName = NormalizePropertyName(property);
 
-                var propertyAsString = ReturnObjectAsString(normalizedPropertyName);
+                var propertyAsString = ReturnObjectAsString(normalizedPropertyName) ?? string.Empty;
                 var propertyAsReference = ConvertPropertyToReference(property);
 
                 return XmlNode.Attribute(propertyAsString) != null

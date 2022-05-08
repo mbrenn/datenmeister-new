@@ -15,7 +15,7 @@ define(["require", "exports", "../client/Workspace", "../client/Extents", "../cl
         let found = false;
         let foundItem = undefined;
         children.each((index, child) => {
-            if ($(child).text() === textToLookFor) {
+            if ($(child).text().indexOf(textToLookFor) !== -1) {
                 found = true;
                 foundItem = child;
             }

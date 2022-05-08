@@ -8,7 +8,7 @@ function lookForChildWithText(children: JQuery<HTMLElement>, textToLookFor: stri
     let found = false;
     let foundItem: HTMLElement | undefined = undefined;
     children.each((index, child) => {
-        if ($(child).text() === textToLookFor) {
+        if ($(child).text().indexOf(textToLookFor) !== -1) {
             found = true;
             foundItem = child;
         }

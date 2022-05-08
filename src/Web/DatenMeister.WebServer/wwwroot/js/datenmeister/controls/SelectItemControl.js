@@ -17,6 +17,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
             this.showWorkspaceInBreadcrumb = false;
             this.showExtentInBreadcrumb = false;
             this.showCancelButton = true;
+            this.hideAtStartup = false;
         }
     }
     exports.Settings = Settings;
@@ -90,10 +91,18 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
             cancelButton.on('click', () => {
                 this.collapse();
             });
+            if (settings === null || settings === void 0 ? void 0 : settings.hideAtStartup) {
+                div.hide();
+            }
             parent.append(div);
             this._containerDiv = div;
             this.isDomInitializationDone = true;
             return div;
+        }
+        showControl() {
+            if (this._containerDiv !== undefined) {
+                this._containerDiv.show();
+            }
         }
         // This method will be called when the user changed the workspace
         onWorkspaceChangedByUser() {
@@ -101,10 +110,10 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 // Find the selected workspace
                 this.selectedWorkspace = undefined;
                 const currentWorkspace = this.getUserSelectedWorkspace();
-                if (currentWorkspace != "" && currentWorkspace != undefined) {
+                if (currentWorkspace !== "" && currentWorkspace !== undefined) {
                     for (let n = 0; n < this.loadedWorkspaces.length; n++) {
                         const item = this.loadedWorkspaces[n];
-                        if (item.id == currentWorkspace) {
+                        if (item.id === currentWorkspace) {
                             this.selectedWorkspace = item;
                             break;
                         }
@@ -119,10 +128,10 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 // Find the selected extent
                 this.selectedExtent = undefined;
                 const currentExtent = this.getUserSelectedExtent();
-                if (currentExtent != "" && currentExtent != undefined) {
+                if (currentExtent !== "" && currentExtent != undefined) {
                     for (let n = 0; n < this.loadedExtents.length; n++) {
                         const item = this.loadedExtents[n];
-                        if (item.extentUri == currentExtent) {
+                        if (item.extentUri === currentExtent) {
                             this.selectedExtent = item;
                             break;
                         }
@@ -181,6 +190,20 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 yield this.evaluatePreSelectedExtent();
             });
         }
+        setItemByUri(workspaceId, itemUri) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (!this.isDomInitializationDone) {
+                    throw "DOM is not initialized. Call initDom first";
+                }
+                const item = yield EL.loadNameByUri(workspaceId, itemUri);
+                yield this.setWorkspaceById(workspaceId);
+                yield this.setExtentByUri(item.extentUri);
+                yield this.loadItems(item.uri);
+                this.selectedItem = item;
+                this.htmlSelectedElements.empty();
+                this.htmlSelectedElements.append(yield (0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
+            });
+        }
         // Sets the workspace by given the id
         getUserSelectedWorkspace() {
             var _a, _b;
@@ -197,7 +220,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 const workspaceId = this.getUserSelectedWorkspace();
                 tthis.htmlSelectedElements.text(workspaceId);
                 this.htmlExtentSelect.empty();
-                if (workspaceId == "") {
+                if (workspaceId === "") {
                     const select = $("<option value=''>--- Select Workspace ---</option>");
                     this.htmlExtentSelect.append(select);
                 }
@@ -255,7 +278,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                             // Creates the clickability of the list of items
                             ((innerItem) => option.on('click', () => {
                                 tthis.selectedItem = innerItem;
-                                tthis.loadItems(innerItem.id);
+                                tthis.loadItems(innerItem.uri);
                                 tthis.itemClicked.invoke(innerItem);
                                 tthis.htmlSelectedElements.empty();
                                 tthis.htmlSelectedElements.append((0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
@@ -272,7 +295,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                         funcElements(rootElements);
                     }
                     else {
-                        const childElements = yield EL.getAllChildItems(workspaceId, extentUri, selectedItem);
+                        const childElements = yield EL.getAllChildItems(workspaceId, selectedItem);
                         funcElements(childElements);
                     }
                 }
@@ -311,7 +334,7 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 for (let n = 0; n < this.visitedItems.length; n++) {
                     const item = this.visitedItems[n];
                     this.addBreadcrumbItem(item.name, () => {
-                        tthis.loadItems(item.id);
+                        tthis.loadItems(item.uri);
                         tthis.visitedItems = tthis.visitedItems.slice(0, n + 1);
                     });
                 }
@@ -337,6 +360,16 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 this.htmlExtentSelect.val(this.preSelectExtentByUri);
                 this.preSelectExtentByUri = undefined;
                 yield this.loadItems();
+            });
+        }
+        // Evaluates the preselection of the workspaces
+        evaluatePreselectedItem() {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.preSelectItemUri === undefined || !this.isDomInitializationDone) {
+                    return;
+                }
+                yield this.loadItems(this.preSelectItemUri);
+                this.preSelectItemUri = undefined;
             });
         }
         addBreadcrumbItem(text, onClick) {

@@ -3,41 +3,37 @@ import * as ApiConnection from "../ApiConnection"
 import * as Settings from "../Settings"
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
-    return load(undefined, undefined, undefined);
+    return load(undefined, undefined);
 }
 
 export function getAllExtents(workspaceId: string): Promise<ItemWithNameAndId[]> {
-    return load(workspaceId, undefined, undefined);
+    return load(workspaceId, undefined);
 }
 
-export function getAllRootItems(workspaceId: string, extent: string): Promise<ItemWithNameAndId[]> {
-    return load(workspaceId, extent, undefined);
+export function getAllRootItems(workspaceId: string, extentUri: string): Promise<ItemWithNameAndId[]> {
+    return load(workspaceId, extentUri);
 }
 
-export function getAllChildItems(workspaceId: string, extent: string, itemId: string): Promise<ItemWithNameAndId[]> {
-    return load(workspaceId, extent, itemId);
+export function getAllChildItems(workspaceId: string, itemUrl: string): Promise<ItemWithNameAndId[]> {
+    return load(workspaceId, itemUrl);
 }
 
-function load(workspaceId: string, extent: string, itemId: string): Promise<ItemWithNameAndId[]> {
-    return new Promise<ItemWithNameAndId[]>((resolve, reject) => {
-        let url = '/api/elements/get_composites';
-        if (workspaceId !== undefined && workspaceId !== null) {
-            url += '/' + encodeURIComponent(workspaceId);
+/*
+ * Loads the items from the server.
+ * The ItemUri may be an extent (then the root items will be loaded)
+ * or may be an item (then the composite children will be loaded)
+ */
+async function load(workspaceId: string, itemUri: string): Promise<ItemWithNameAndId[]> {
+    let url = "/api/elements/get_composites";
+    if (workspaceId !== undefined && workspaceId !== null) {
+        url += '/' + encodeURIComponent(workspaceId);
 
-            if (extent !== undefined && extent !== null) {
-                if (itemId !== undefined && itemId !== null) {
-                    url += '/' + encodeURIComponent(extent + '#' + itemId);
-                } else {
-                    url += '/' + encodeURIComponent(extent);
-                }
-            }
+        if (itemUri !== undefined && itemUri !== null) {
+            url += '/' + encodeURIComponent(itemUri);
         }
+    }
 
-        ApiConnection.get<ItemWithNameAndId[]>(url).then(items => {
-                resolve(items);
-            }
-        );
-    });
+    return await ApiConnection.get<ItemWithNameAndId[]>(url);
 }
 
 export async function loadNameOf(workspaceId: string, extentUri: string, itemUri: string): Promise<ItemWithNameAndId> {

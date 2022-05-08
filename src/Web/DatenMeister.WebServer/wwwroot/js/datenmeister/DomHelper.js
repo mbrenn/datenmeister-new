@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "./client/Elements"], function (require, exports, ElementClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.convertToDom = exports.convertItemWithNameAndIdToDom = exports.debugElementToDom = exports.injectNameByUri = void 0;
+    exports.convertToDom = exports.convertItemWithNameAndIdToDom = exports.debugElementToDom = exports.convertDmObjectToDom = exports.injectNameByUri = void 0;
     function injectNameByUri(domElement, workspaceId, elementUri) {
         return __awaiter(this, void 0, void 0, function* () {
             const x = yield ElementClient.loadNameByUri(workspaceId, elementUri);
@@ -19,6 +19,13 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
         });
     }
     exports.injectNameByUri = injectNameByUri;
+    function convertDmObjectToDom(item, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const x = yield ElementClient.loadNameByUri(item.workspace, item.uri);
+            return convertItemWithNameAndIdToDom(x, params);
+        });
+    }
+    exports.convertDmObjectToDom = convertDmObjectToDom;
     function debugElementToDom(mofElement, domSelector) {
         const domElement = $(domSelector);
         domElement.empty();
@@ -50,7 +57,7 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
             result.text(item.name);
         }
         // Add the metaclass
-        if (item.typeName !== undefined) {
+        if (item.typeName !== undefined && item.typeName !== null) {
             const metaClassText = $("<span class='dm-metaclass'></span>");
             metaClassText.text(" [" + item.typeName + "]");
             result.append(metaClassText);

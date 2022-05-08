@@ -182,6 +182,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                         const settings = new SIC.Settings();
                         settings.showWorkspaceInBreadcrumb = true;
                         settings.showExtentInBreadcrumb = true;
+                        settings.hideAtStartup = true;
                         selectItem.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
                             yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                                 property: tthis.field.get('name'),
@@ -192,12 +193,27 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                         }));
                         containerChangeCell.empty();
                         yield selectItem.initAsync(containerChangeCell, settings);
-                        if (((_b = this._element) === null || _b === void 0 ? void 0 : _b.workspace) !== undefined) {
-                            yield selectItem.setWorkspaceById(tthis._element.workspace);
+                        // Sets the item, if defined
+                        if (value.workspace !== undefined && value.uri !== undefined) {
+                            yield selectItem.setItemByUri(value.workspace, value.uri);
                         }
-                        if (((_c = this._element) === null || _c === void 0 ? void 0 : _c.extentUri) !== undefined) {
-                            yield selectItem.setExtentByUri(tthis._element.extentUri);
+                        else {
+                            // Sets the workspace, if defined
+                            if ((value === null || value === void 0 ? void 0 : value.workspace) !== undefined) {
+                                yield selectItem.setWorkspaceById(value.workspace);
+                            }
+                            else if (((_b = this._element) === null || _b === void 0 ? void 0 : _b.workspace) !== undefined) {
+                                yield selectItem.setWorkspaceById(tthis._element.workspace);
+                            }
+                            // Sets the extent, if defined
+                            if ((value === null || value === void 0 ? void 0 : value.extentUri) !== undefined) {
+                                yield selectItem.setWorkspaceById(value.extentUri);
+                            }
+                            else if (((_c = this._element) === null || _c === void 0 ? void 0 : _c.extentUri) !== undefined) {
+                                yield selectItem.setExtentByUri(tthis._element.extentUri);
+                            }
                         }
+                        selectItem.showControl();
                         return false;
                     }));
                     this._domElement.append(changeCell);

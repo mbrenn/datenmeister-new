@@ -174,9 +174,9 @@ export class Field extends BaseField implements IFormField {
         if (this._mode === ModeValue.Reference) {
             const tthis = this;
 
-            let value = this._fieldValue;
+            let value = this._fieldValue as DmObject;
             if(Array.isArray(value)) {
-                value = value[0];
+                value = value[0] as DmObject;
             }
             
             const fieldName = this.field.get('name').toString();
@@ -217,6 +217,7 @@ export class Field extends BaseField implements IFormField {
                     const settings = new SIC.Settings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
+                    settings.hideAtStartup = true;
                     selectItem.itemSelected.addListener(
                         async selectedItem => {
                             await ClientItem.setPropertyReference(
@@ -228,19 +229,34 @@ export class Field extends BaseField implements IFormField {
                                     workspaceId: selectItem.getUserSelectedWorkspace()
                                 }
                             );
-                            
+
                             await tthis.reloadAndUpdateDomContent();
                         });
 
                     containerChangeCell.empty();
                     await selectItem.initAsync(containerChangeCell, settings);
-                    if (this._element?.workspace !== undefined) {
-                        await selectItem.setWorkspaceById(tthis._element.workspace);
-                    }
 
-                    if (this._element?.extentUri !== undefined) {
-                        await selectItem.setExtentByUri(tthis._element.extentUri);
+                    // Sets the item, if defined
+                    if (value.workspace !== undefined && value.uri !== undefined) {
+                        await selectItem.setItemByUri(value.workspace, value.uri);
+
+                    } else {
+                        // Sets the workspace, if defined
+                        if (value?.workspace !== undefined) {
+                            await selectItem.setWorkspaceById(value.workspace);
+                        } else if (this._element?.workspace !== undefined) {
+                            await selectItem.setWorkspaceById(tthis._element.workspace);
+                        }
+
+                        // Sets the extent, if defined
+                        if (value?.extentUri !== undefined) {
+                            await selectItem.setWorkspaceById(value.extentUri);
+                        } else if (this._element?.extentUri !== undefined) {
+                            await selectItem.setExtentByUri(tthis._element.extentUri);
+                        }
                     }
+                    
+                    selectItem.showControl();
 
                     return false;
                 });
@@ -250,15 +266,13 @@ export class Field extends BaseField implements IFormField {
                 this._domElement.append(containerChangeCell);
             }
         } else if (this._mode === ModeValue.Value) {
-
             const value = this._fieldValue;
             this._textBox = $("<input />");
             this._textBox.val(value?.toString() ?? "");
-            this._domElement.append(this._textBox)
+            this._domElement.append(this._textBox);
         } else if (this._mode === ModeValue.Collection) {
 
-            const value = this._fieldValue;
-            
+            const value = this._fieldValue;            
             if (this.configuration.isNewItem) {
                 const div = $("<em>Element needs to be saved first</em>");
                 this._domElement.append(div);

@@ -1,6 +1,7 @@
 ﻿import * as ElementClient from "./client/Elements"
 import * as ApiModels from "./ApiModels";
 import {DmObject} from "./Mof";
+import {loadNameByUri} from "./client/Elements";
 
 export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
 
@@ -9,6 +10,11 @@ export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspace
     domElement.empty();
     domElement.append(convertItemWithNameAndIdToDom(x));
     
+}
+
+export async function convertDmObjectToDom(item: DmObject, params?: IConvertItemWithNameAndIdParameters) {
+    const x = await ElementClient.loadNameByUri(item.workspace, item.uri);
+    return convertItemWithNameAndIdToDom(x, params);
 }
 
 export function debugElementToDom(mofElement: any, domSelector: string) {
@@ -54,7 +60,7 @@ export function convertItemWithNameAndIdToDom(item: any, params?: IConvertItemWi
     }
     
     // Add the metaclass
-    if (item.typeName !== undefined) {
+    if (item.typeName !== undefined && item.typeName !== null) {
         const metaClassText = $("<span class='dm-metaclass'></span>");
         metaClassText.text(" [" + item.typeName + "]");
         result.append(metaClassText);

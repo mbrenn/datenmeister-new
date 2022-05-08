@@ -90,6 +90,12 @@ a {
 
 .dm-breadcrumb {
     font-size: 80%;
+    margin-bottom: 0;
+}
+
+/* Prevents that the Breadcrumb adds additional margin at the bottom */
+.dm-breadcrumb ul {
+    margin-bottom: 0;
 }
 
 .dm-selectitemcontrol {
@@ -114,6 +120,23 @@ a {
 
 .dm-selectitemcontrol ul li {
     list-style-position: outside;
+}
+
+.dm-selectitemcontrol .dm-sic-items ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Makes the selectable items like a small button */
+.dm-selectitemcontrol .dm-sic-item
+{
+    background: lightblue;
+    border: 1px solid dimgray;
+    border-radius: 2px;
+    padding: 3px 10px 3px 10px;
+    margin-bottom: 2px;
+    font-size: 80%;    
+    cursor: pointer;
 }
 
 .dm-table-nofullwidth {
@@ -169,6 +192,16 @@ a {
 
 .dm-debug-property-value {
     white-space: pre-wrap;
+}
+
+/* 
+ * To be used in convertItemWithNameAndIdToDom whenever an item's metaclass is shown. 
+ */
+.dm-metaclass
+{
+    color: dimgray;
+    font-size: 80%;
+    font-style: italic;
 }
 
 

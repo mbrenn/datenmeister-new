@@ -10,23 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "./client/Elements"], function (require, exports, ElementClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.convertToDom = exports.debugElementToDom = exports.injectNameByUri = void 0;
+    exports.convertToDom = exports.convertItemWithNameAndIdToDom = exports.debugElementToDom = exports.injectNameByUri = void 0;
     function injectNameByUri(domElement, workspaceId, elementUri) {
         return __awaiter(this, void 0, void 0, function* () {
             const x = yield ElementClient.loadNameByUri(workspaceId, elementUri);
-            if (x.extentUri !== undefined && x.workspace !== undefined
-                && x.extentUri !== "" && x.workspace !== ""
-                && x.id !== "" && x.id !== undefined) {
-                const linkElement = $("<a></a>");
-                linkElement.text(x.name);
-                linkElement.attr("href", "/Item/" + encodeURIComponent(x.workspace) +
-                    "/" + encodeURIComponent(x.extentUri + "#" + x.id));
-                domElement.empty();
-                domElement.append(linkElement);
-            }
-            else {
-                domElement.text(x.name);
-            }
+            domElement.empty();
+            domElement.append(convertItemWithNameAndIdToDom(x));
         });
     }
     exports.injectNameByUri = injectNameByUri;
@@ -38,6 +27,37 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
         }
     }
     exports.debugElementToDom = debugElementToDom;
+    /*
+     * Converts an ItemWithNameAndId to a Dom Element which reflects the content
+     */
+    function convertItemWithNameAndIdToDom(item, params) {
+        let result = $("<span></span>");
+        // Checks, if we have valid link information, so the user can click on the item to move to it
+        // The link will only be shown when the parameter does inhibit this. The inhibition might be required
+        // in case the calling element wants to include its own action.
+        const validLinkInformation = item.extentUri !== undefined && item.workspace !== undefined &&
+            item.extentUri !== "" && item.workspace !== "" &&
+            item.id !== "" && item.id !== undefined;
+        const inhibitLink = params !== undefined && params.inhibitItemLink;
+        if (validLinkInformation && !inhibitLink) {
+            const linkElement = $("<a></a>");
+            linkElement.text(item.name);
+            linkElement.attr("href", "/Item/" + encodeURIComponent(item.workspace) +
+                "/" + encodeURIComponent(item.extentUri + "#" + item.id));
+            result.append(linkElement);
+        }
+        else {
+            result.text(item.name);
+        }
+        // Add the metaclass
+        if (item.typeName !== undefined) {
+            const metaClassText = $("<span class='dm-metaclass'></span>");
+            metaClassText.text(" [" + item.typeName + "]");
+            result.append(metaClassText);
+        }
+        return result;
+    }
+    exports.convertItemWithNameAndIdToDom = convertItemWithNameAndIdToDom;
     function convertToDom(mofElement) {
         if (Array.isArray(mofElement)) {
             let count = 0;

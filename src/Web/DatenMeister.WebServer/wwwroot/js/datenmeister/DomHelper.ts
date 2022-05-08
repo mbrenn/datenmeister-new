@@ -5,22 +5,10 @@ import {DmObject} from "./Mof";
 export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
 
     const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
+
+    domElement.empty();
+    domElement.append(convertItemWithNameAndIdToDom(x));
     
-    if (
-        x.extentUri !== undefined && x.workspace !== undefined
-        && x.extentUri !== "" && x.workspace !== ""
-        && x.id !== "" && x.id !== undefined) {
-        const linkElement = $("<a></a>");
-        linkElement.text(x.name);
-        linkElement.attr(
-            "href",
-            "/Item/" + encodeURIComponent(x.workspace) +
-            "/" + encodeURIComponent(x.extentUri + "#" + x.id));
-        domElement.empty();
-        domElement.append(linkElement);
-    } else {
-        domElement.text(x.name);
-    }
 }
 
 export function debugElementToDom(mofElement: any, domSelector: string) {
@@ -29,6 +17,50 @@ export function debugElementToDom(mofElement: any, domSelector: string) {
     if (domElement.length > 0) {
         domElement.append(convertToDom(mofElement));
     }
+}
+
+export interface IConvertItemWithNameAndIdParameters{
+    inhibitItemLink?: boolean;
+}
+
+/*
+ * Converts an ItemWithNameAndId to a Dom Element which reflects the content
+ */
+export function convertItemWithNameAndIdToDom(item: any, params?: IConvertItemWithNameAndIdParameters): JQuery {
+    let result = $("<span></span>");
+    
+    // Checks, if we have valid link information, so the user can click on the item to move to it
+    // The link will only be shown when the parameter does inhibit this. The inhibition might be required
+    // in case the calling element wants to include its own action.
+    const validLinkInformation = 
+        item.extentUri !== undefined && item.workspace !== undefined && 
+        item.extentUri !== "" && item.workspace !== "" &&
+        item.id !== "" && item.id !== undefined;
+    
+    const inhibitLink = params !== undefined && params.inhibitItemLink;
+    
+    if (validLinkInformation && !inhibitLink) {
+
+        const linkElement = $("<a></a>");
+        linkElement.text(item.name);
+        linkElement.attr(
+            "href",
+            "/Item/" + encodeURIComponent(item.workspace) +
+            "/" + encodeURIComponent(item.extentUri + "#" + item.id));
+        result.append(linkElement);
+        
+    } else {
+        result.text(item.name);
+    }
+    
+    // Add the metaclass
+    if (item.typeName !== undefined) {
+        const metaClassText = $("<span class='dm-metaclass'></span>");
+        metaClassText.text(" [" + item.typeName + "]");
+        result.append(metaClassText);
+    }
+
+    return result;
 }
 
 export function convertToDom(mofElement: any): JQuery {

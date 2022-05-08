@@ -1,6 +1,7 @@
 ﻿import * as EL from '../client/Elements';
 import {ItemWithNameAndId} from "../ApiModels";
 import {UserEvent} from "../../burnsystems/Events";
+import {convertItemWithNameAndIdToDom} from "../DomHelper";
 
 export class Settings {
     showBreadcrumb = true;
@@ -101,11 +102,11 @@ export class SelectItemControl {
             "<table class='dm-selectitemcontrol'>" +
             "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
             "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
+            "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
             "<tr><td>Items: </td>" +
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
             "<tr><td></td><td class='selected'>" +
             (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
             "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
@@ -312,15 +313,8 @@ export class SelectItemControl {
                     if (!items.hasOwnProperty(n)) continue;
 
                     const item = items[n];
-                    const option = $("<li></li>");
-
-                    // Sets the item text within the list
-                    let itemText = item.fullName;
-                    if (item.typeName !== undefined) {
-                        itemText += " [" + item.typeName + "]";
-                    }
-                    
-                    option.text(itemText);
+                    const option = $("<li class='dm-sic-item'></li>");
+                    option.append(convertItemWithNameAndIdToDom(item, {inhibitItemLink: true}));
                     
                     // Creates the clickability of the list of items
                     ((innerItem) =>
@@ -328,13 +322,10 @@ export class SelectItemControl {
                             tthis.selectedItem = innerItem;
                             tthis.loadItems(innerItem.id);
                             tthis.itemClicked.invoke(innerItem);
-
-                            let itemText = innerItem.fullName;
-                            if (innerItem.typeName !== undefined) {
-                                itemText += " [" + innerItem.typeName + "]";
-                            }
-
-                            tthis.htmlSelectedElements.text(itemText);
+                            
+                            tthis.htmlSelectedElements.empty();
+                            tthis.htmlSelectedElements.append(convertItemWithNameAndIdToDom(item));
+                            
                             tthis.visitedItems.push(item);
                             tthis.refreshBreadcrumb();
                         }))(item);

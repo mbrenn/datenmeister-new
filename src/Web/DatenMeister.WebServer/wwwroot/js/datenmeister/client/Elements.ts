@@ -57,6 +57,17 @@ export async function loadNameByUri(workspaceId: string, elementUri: string): Pr
         encodeURIComponent(elementUri));
 }
 
+export interface ICreateTemporaryElementResult {
+    success: boolean;
+    uri: string;
+}
+
+export async function createTemporaryElement() : Promise<ICreateTemporaryElementResult> {
+    return await ApiConnection.put<ICreateTemporaryElementResult>(
+        Settings.baseUrl +
+        "api/elements/create_temporary_element", {});
+}
+
 export function findBySearchString(searchString): Promise<IFindBySearchString> {
     return ApiConnection.get<IFindBySearchString>(
         Settings.baseUrl +

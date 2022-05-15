@@ -41,6 +41,7 @@
     <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Users\DatenMeister.Users.csproj" />
   </ItemGroup>
   <ItemGroup>

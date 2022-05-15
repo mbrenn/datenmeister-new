@@ -69,6 +69,11 @@
     </packagedElement>        
   </item>
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" name="Extent - Select Type" hideMetaInformation="True" allowNewProperties="True" p1:id="WorkspacesAndExtents.Extent.SelectType" comment="Used by Action 'LoadOrCreateExtent'">
+      <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Extent-Type" title="Select your Extent Type" p1:id="WorkspacesAndExtents.Extent.SelectType.Detail" name="Select Extent Type">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="extentType" title="Type of Extent" p1:id="976fcfdf-2726-5625-a266-66c43a18351f" />
+      </tab>      
+    </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi" title="Create Xmi Extent" p1:id="WorkspacesAndExtents.Xmi.New" name="Dialog - New Xmi Extent">
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0" width="0" isAttached="False" fieldType="text" name="uri" title="URI" isEnumeration="False" defaultValue="dm:///" isReadOnly="False" p1:id="477c2b2c-84ac-4378-b893-49ee02856910" />
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData" defaultExtension="*.xmi" filter="Xmi File (*.xmi)|*.xmi|Xml Files (*.xml)|*.xml|All Files (*.*)|*.*" isSaving="True" initialPathToDirectory="%MyDocuments%" name="filepath" title="Path to File" p1:id="c3ffb548-61e5-4fb2-ae96-7852712b762f" />

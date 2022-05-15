@@ -10,7 +10,7 @@ define(["require", "exports", "../DomHelper", "../client/Items", "../controls/Se
             this._list.empty();
             const tthis = this;
             if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
-                const div = $("<div><em>null</em></null>");
+                const div = $("<div><em>undefined</em></null>");
                 this._list.append(div);
             }
             const asDmObject = value;
@@ -83,7 +83,7 @@ define(["require", "exports", "../DomHelper", "../client/Items", "../controls/Se
                 }
             }
             else {
-                this._list.text(value.get('name'));
+                return this.createDomByValue(value);
             }
             return this._list;
         }

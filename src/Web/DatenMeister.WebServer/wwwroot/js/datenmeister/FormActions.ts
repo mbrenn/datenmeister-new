@@ -5,6 +5,7 @@ import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./forms/Interfaces";
 import * as ECClient from "./client/Extents";
 import * as ItemClient from "./client/Items";
+import * as FormClient from "./client/Forms";
 import {SubmitMethod} from "./forms/DetailForm";
 
 export module DetailFormActions {
@@ -55,6 +56,11 @@ export module DetailFormActions {
     /* Finds the best form fitting for the action */
     export async function loadFormForAction(actionName: string)
     {
+        if ( actionName === 'LoadOrCreateExtent')
+        {
+            return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
+        }
+        
         return Promise.resolve(undefined);
     }
 

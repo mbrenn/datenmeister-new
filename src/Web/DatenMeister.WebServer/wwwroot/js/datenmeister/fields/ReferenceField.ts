@@ -26,7 +26,7 @@ export class Control {
         const tthis = this;
 
         if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
-            const div = $("<div><em>null</em></null>");
+            const div = $("<div><em>undefined</em></null>");
             this._list.append(div);
         }
 
@@ -116,7 +116,7 @@ export class Field extends Control implements IFormField {
             }
         } else {
 
-            this._list.text(value.get('name'));
+            return this.createDomByValue(value);
         }
 
         return this._list;

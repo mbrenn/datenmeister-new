@@ -10,51 +10,52 @@ import {SubmitMethod} from "./forms/DetailForm";
 export module DetailFormActions {
 
     // Loads the object being used for the action. 
-    export function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
+    export async function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
 
         let p = new URLSearchParams(window.location.search);
 
         if (actionName === "Extent.Properties.Update") {
-
             const workspace = p.get('workspace');
             const extentUri = p.get('extent');
 
-            return ECClient.getProperties(workspace, extentUri);
+            return await ECClient.getProperties(workspace, extentUri);
         }
 
         if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
             const metaclass = p.get('metaclass');
-            return new Promise<DmObject>(resolve => {
-                const result = new DmObject();
+            const result = new DmObject();
+            if (metaclass !== undefined && metaclass !== null) {
+                result.setMetaClassByUri(metaclass);
+            }
 
-                if (metaclass !== undefined && metaclass !== null) {
-                    result.setMetaClassByUri(metaclass);
-                }
-
-                resolve(result);
-            });
+            return Promise.resolve(result);
         }
 
         if (actionName === "Zipcode.Test") {
-            return new Promise<DmObject>(resolve => {
-                const result = new DmObject();
 
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
-                resolve(result);
-            });
+            const result = new DmObject();
+
+            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+            return Promise.resolve(result);
         }
 
         if (actionName === "Workspace.Extent.Xmi.Create") {
-            return new Promise<DmObject>(resolve => {
-                const result = new DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
-                result.set("workspaceId", p.get('workspaceId'));
 
-                resolve(result);
-            });
+            const result = new DmObject();
+            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+            result.set("workspaceId", p.get('workspaceId'));
+
+            return Promise.resolve(result);
         }
 
-        return undefined;
+        /* Nothing has been found, so return an undefined */
+        return Promise.resolve(undefined);
+    }
+    
+    /* Finds the best form fitting for the action */
+    export async function loadFormForAction(actionName: string)
+    {
+        return Promise.resolve(undefined);
     }
 
     export function requiresConfirmation(actionName: string): boolean {
@@ -227,7 +228,7 @@ export class FormActions {
         await ApiConnection.post(
             Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl),
             {
-                metaClass: (metaClass === undefined || metaClass === undefined) ? "" : metaClass,
+                metaClass: (metaClass === undefined || metaClass === null) ? "" : metaClass,
                 property: property,
                 asList: true,
                 properties: json

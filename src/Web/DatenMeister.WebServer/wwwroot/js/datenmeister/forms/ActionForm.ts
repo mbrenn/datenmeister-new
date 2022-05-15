@@ -5,12 +5,11 @@ import * as Forms from "./Forms";
 import {DetailFormActions} from "../FormActions";
 import * as ClientForms from '../client/Forms'
 
-export function createActionFormForEmptyObject(
+export async function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,
     metaClass: string,
     configuration: IFormConfiguration,
     actionName: string) {
-    const tthis = this;
 
     if (configuration.refreshForm === undefined) {
         configuration.refreshForm = () => {
@@ -31,44 +30,46 @@ export function createActionFormForEmptyObject(
             method);
     };
 
-    let deferLoadObjectForAction = DetailFormActions.loadObjectForAction(actionName);
-    if (deferLoadObjectForAction === undefined) {
-        deferLoadObjectForAction = new Promise<DmObject>(resolve => {
-            resolve(new DmObject());
-        });
+    /* Loads the object being used as a base for the new action.
+    * Usually context information from GET-Query are retrieved. Or some default fields are filled out
+    */
+    let element = await DetailFormActions.loadObjectForAction(actionName);
+    if (element === undefined) {
+        element = new DmObject();
+    }
+    
+    /* Now find the right form */
+    
+    let form;
+    
+    // After having loaded the object, load the form
+    if (metaClass === undefined && element.metaClass?.uri !== undefined) {
+        // If the returned element has a metaclass, then set the metaClass being used to 
+        // find the right form to the one by the element
+        metaClass = element.metaClass.uri;
+    } else if (element.metaClass === undefined) {
+        // Updates the metaclass, if the metaclass is not set by the element itself
+        element.setMetaClassByUri(metaClass);
     }
 
-    let deferForm;
-
-    deferLoadObjectForAction.then((element) => {
-        if (metaClass === undefined && element.metaClass?.uri !== undefined) {
-            // If the returned element has a metaclass, then set the metaClass being used to 
-            // find the right form to the one by the element
-            metaClass = element.metaClass.uri;
-        } else if (element.metaClass === undefined) {
-            // Updates the metaclass, if the metaclass is not set by the element itself
-            element.setMetaClassByUri(metaClass);
-        }
-
+    // Asks the detail form actions, whether we have a form for the action itself
+    form = await DetailFormActions.loadFormForAction(actionName);
+    if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {
             // Ok, we already have an explicit form
-            deferForm = ClientForms.getForm(configuration.formUri);
+            form = await ClientForms.getForm(configuration.formUri);
         } else if (metaClass === undefined) {
             // If there is no metaclass set, create a total empty form object...
-            deferForm = new Promise<DmObject>(resolve => {
-                resolve(Forms.FormModel.createEmptyFormWithDetail());
-            });
+            form = Forms.FormModel.createEmptyFormWithDetail();
         } else {
-            deferForm = ClientForms.getDefaultFormForMetaClass(metaClass);
+            form = await ClientForms.getDefaultFormForMetaClass(metaClass);
         }
+    }
+    
+    creator.element = element;
+    creator.formElement = form;
+    creator.createFormByObject(parent, configuration);
 
-        deferForm.then((form) => {
-            creator.element = element;
-            creator.formElement = form;
-            creator.createFormByObject(parent, configuration);
-
-            debugElementToDom(form, "#debug_formelement");
-        });
-    });
+    debugElementToDom(form, "#debug_formelement");
 }

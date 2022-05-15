@@ -15,40 +15,44 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     (function (DetailFormActions) {
         // Loads the object being used for the action. 
         function loadObjectForAction(actionName) {
-            let p = new URLSearchParams(window.location.search);
-            if (actionName === "Extent.Properties.Update") {
-                const workspace = p.get('workspace');
-                const extentUri = p.get('extent');
-                return ECClient.getProperties(workspace, extentUri);
-            }
-            if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
-                const metaclass = p.get('metaclass');
-                return new Promise(resolve => {
+            return __awaiter(this, void 0, void 0, function* () {
+                let p = new URLSearchParams(window.location.search);
+                if (actionName === "Extent.Properties.Update") {
+                    const workspace = p.get('workspace');
+                    const extentUri = p.get('extent');
+                    return yield ECClient.getProperties(workspace, extentUri);
+                }
+                if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
+                    const metaclass = p.get('metaclass');
                     const result = new Mof_1.DmObject();
                     if (metaclass !== undefined && metaclass !== null) {
                         result.setMetaClassByUri(metaclass);
                     }
-                    resolve(result);
-                });
-            }
-            if (actionName === "Zipcode.Test") {
-                return new Promise(resolve => {
+                    return Promise.resolve(result);
+                }
+                if (actionName === "Zipcode.Test") {
                     const result = new Mof_1.DmObject();
                     result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
-                    resolve(result);
-                });
-            }
-            if (actionName === "Workspace.Extent.Xmi.Create") {
-                return new Promise(resolve => {
+                    return Promise.resolve(result);
+                }
+                if (actionName === "Workspace.Extent.Xmi.Create") {
                     const result = new Mof_1.DmObject();
                     result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
                     result.set("workspaceId", p.get('workspaceId'));
-                    resolve(result);
-                });
-            }
-            return undefined;
+                    return Promise.resolve(result);
+                }
+                /* Nothing has been found, so return an undefined */
+                return Promise.resolve(undefined);
+            });
         }
         DetailFormActions.loadObjectForAction = loadObjectForAction;
+        /* Finds the best form fitting for the action */
+        function loadFormForAction(actionName) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return Promise.resolve(undefined);
+            });
+        }
+        DetailFormActions.loadFormForAction = loadFormForAction;
         function requiresConfirmation(actionName) {
             if (actionName === "Item.Delete"
                 || actionName === "ExtentsList.DeleteItem"
@@ -208,7 +212,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 }
                 const json = (0, Mof_1.createJsonFromObject)(element);
                 yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
-                    metaClass: (metaClass === undefined || metaClass === undefined) ? "" : metaClass,
+                    metaClass: (metaClass === undefined || metaClass === null) ? "" : metaClass,
                     property: property,
                     asList: true,
                     properties: json

@@ -73,8 +73,7 @@ namespace DatenMeister.Tests.Web
 
             var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
 
-            Assert.That(dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.Count(),
-                Is.EqualTo(0));
+            var n = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.Count();
             extentController.CreateXmi(
                 new ExtentController.CreateXmiExtentParams
                 {
@@ -84,7 +83,7 @@ namespace DatenMeister.Tests.Web
                 });
 
             Assert.That(dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.Count(),
-                Is.EqualTo(1));
+                Is.EqualTo(n + 1));
             Assert.That(
                 dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.OfType<IUriExtent>()
                     .Any(x => x.contextURI() == "dm:///test"),
@@ -97,7 +96,7 @@ namespace DatenMeister.Tests.Web
             });
 
             Assert.That(dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.Count(),
-                Is.EqualTo(0));
+                Is.EqualTo(n));
         }
     }
 }

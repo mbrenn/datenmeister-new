@@ -23,19 +23,28 @@ namespace DatenMeister.WebServer.Controller
         {
             public string Workspace { get; set; } = string.Empty;
         }
-        
+
+        /// <summary>
+        /// Defines the result
+        /// </summary>
+        /// <param name="Success">Flag, whether the creation was successful</param>
+        /// <param name="ExtentUri">Name of the created extent</param>
+        public record CreateZipExampleResult(bool Success, string ExtentUri)
+        {
+            public override string ToString()
+            {
+                return $"{{ success = {Success}, extentUri = {ExtentUri} }}";
+            }
+        }
+
         [HttpPost("api/zip/create")]
-        public ActionResult<object> CreateZipExample([FromBody] CreateZipExampleParam param)
+        public ActionResult<CreateZipExampleResult> CreateZipExample([FromBody] CreateZipExampleParam param)
         {
             var zipExample = new ZipCodeExampleManager(_workspaceLogic,
                 new ExtentManager(_workspaceLogic, _scopeStorage), _scopeStorage);
             var result = zipExample.AddZipCodeExample(param.Workspace);
 
-            return new
-            {
-                success = true,
-                extentUri = result.contextURI()
-            };
+            return new CreateZipExampleResult(true, result.contextURI());
         }
     }
 }

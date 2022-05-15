@@ -196,9 +196,8 @@ namespace DatenMeister.Tests.Web
 
             var extentsData = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)
                               ?? throw new InvalidOperationException("No management workspace found");
-            Assert.That(extentsData.extent.Count(), Is.EqualTo(0));
-
-            zipController.CreateZipExample(new ZipController.CreateZipExampleParam
+            
+            var result = zipController.CreateZipExample(new ZipController.CreateZipExampleParam
             {
                 Workspace = WorkspaceNames.WorkspaceData
             });
@@ -206,7 +205,7 @@ namespace DatenMeister.Tests.Web
             var zipExtent = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!
                 .extent
                 .OfType<IUriExtent>()
-                .FirstOrDefault();
+                .FirstOrDefault(x=>x.contextURI() == result.Value.ExtentUri);
 
             var formsController = new FormsController(dm.WorkspaceLogic, dm.ScopeStorage);
             return (zipExtent!, formsController, new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage));

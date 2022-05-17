@@ -171,7 +171,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
         }
         getFieldDefinitions() {
             var _a;
-            return (_a = this.field.get('form')) === null || _a === void 0 ? void 0 : _a.get('field');
+            return (_a = this.field.get('form', Mof_1.ObjectType.Single)) === null || _a === void 0 ? void 0 : _a.get('field', Mof_1.ObjectType.Array);
         }
         createDom(dmElement) {
             this.propertyName = this.field.get('name');

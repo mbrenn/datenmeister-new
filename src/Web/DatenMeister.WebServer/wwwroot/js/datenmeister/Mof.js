@@ -1,7 +1,13 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = void 0;
+    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = exports.ObjectType = void 0;
+    var ObjectType;
+    (function (ObjectType) {
+        ObjectType[ObjectType["Default"] = 0] = "Default";
+        ObjectType[ObjectType["Single"] = 1] = "Single";
+        ObjectType[ObjectType["Array"] = 2] = "Array";
+    })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
         constructor() {
             this.isReference = false;
@@ -10,8 +16,23 @@ define(["require", "exports"], function (require, exports) {
         set(key, value) {
             this.values[key] = value;
         }
-        get(key) {
-            return this.values[key];
+        get(key, objectType) {
+            const result = this.values[key];
+            switch (objectType) {
+                case ObjectType.Default:
+                    return result;
+                case ObjectType.Single:
+                    if (Array.isArray(result)) {
+                        return result[0];
+                    }
+                    return result;
+                case ObjectType.Array:
+                    if (Array.isArray(result)) {
+                        return result;
+                    }
+                    return [result];
+            }
+            return result;
         }
         getAsArray(key) {
             const value = this.get(key);

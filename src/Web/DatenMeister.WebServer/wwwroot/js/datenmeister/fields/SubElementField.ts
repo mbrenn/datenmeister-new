@@ -1,12 +1,12 @@
 ﻿import {IFormField} from "./Interfaces";
-import {DmObject} from "../Mof";
+import {DmObject, ObjectType} from "../Mof";
 import * as FieldFactory from "../forms/FieldFactory";
 import * as SIC from "../controls/SelectItemControl";
 import * as ClientItems from "../client/Items";
 import {resolve} from "../MofResolver"
 import {navigateToItemByUrl} from "../Navigator";
 import {IFormConfiguration} from "../forms/IFormConfiguration";
-import {IForm, IFormNavigation} from "../forms/Interfaces";
+import {IFormNavigation} from "../forms/Interfaces";
 import * as Settings from "../Settings";
 
 export class Control {
@@ -238,7 +238,7 @@ export class Field extends Control implements IFormField {
     }
 
     getFieldDefinitions(): Array<DmObject> {
-        return this.field.get('form')?.get('field') as Array<DmObject>;
+        return this.field.get('form', ObjectType.Single)?.get('field', ObjectType.Array) as Array<DmObject>;
     }
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {

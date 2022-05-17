@@ -1,5 +1,11 @@
 ﻿import {ItemWithNameAndId} from "./ApiModels";
 
+export enum ObjectType{
+    Default, 
+    Single, 
+    Array
+}
+
 export class DmObject {
     values: Array<any>;
 
@@ -21,8 +27,28 @@ export class DmObject {
         this.values[key] = value;
     }
 
-    get(key: string): any {
-        return this.values[key];
+    get(key: string, objectType?: ObjectType): any {
+        const result = this.values[key];
+        
+        switch (objectType) {
+            case ObjectType.Default:
+                return result;
+            case ObjectType.Single:
+                if ( Array.isArray(result)){
+                    return result[0];
+                }
+                
+                return result;
+            case ObjectType.Array:
+                if ( Array.isArray(result))
+                {
+                    return result;
+                }
+                
+                return [result];
+        }
+        
+        return result;
     }
 
     getAsArray(key: string): any {

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActions", "../client/Forms"], function (require, exports, Mof_1, DomHelper_1, Forms, FormActions_1, ClientForms) {
+define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActions", "../client/Forms", "../client/Elements", "../client/Items"], function (require, exports, Mof_1, DomHelper_1, Forms, FormActions_1, ClientForms, ClientElements, ClientItems) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createActionFormForEmptyObject = void 0;
@@ -20,11 +20,11 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
                 };
             }
             const creator = new Forms.DetailFormCreator();
-            configuration.isNewItem = true;
-            configuration.onSubmit = (element, method) => {
-                FormActions_1.DetailFormActions.execute(actionName, creator, undefined, creator.element, undefined, // The action form cannot provide additional parameters as the ActionButton
+            configuration.onSubmit = (element, method) => __awaiter(this, void 0, void 0, function* () {
+                const loadedElement = yield ClientItems.getObjectByUri("Data", creator.element.uri);
+                yield FormActions_1.DetailFormActions.execute(actionName, creator, undefined, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
                 method);
-            };
+            });
             /* Loads the object being used as a base for the new action.
             * Usually context information from GET-Query are retrieved. Or some default fields are filled out
             */
@@ -32,6 +32,9 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
             if (element === undefined) {
                 element = new Mof_1.DmObject();
             }
+            // If, we have created the element, we will now have to create the temporary object on the server
+            const temporaryElement = yield ClientElements.createTemporaryElement();
+            yield ClientItems.setProperties("Data", temporaryElement.uri, element);
             /* Now find the right form */
             let form;
             // After having loaded the object, load the form
@@ -60,7 +63,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
                     form = yield ClientForms.getDefaultFormForMetaClass(metaClass);
                 }
             }
-            creator.element = element;
+            creator.element = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
             creator.formElement = form;
             creator.createFormByObject(parent, configuration);
             (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");

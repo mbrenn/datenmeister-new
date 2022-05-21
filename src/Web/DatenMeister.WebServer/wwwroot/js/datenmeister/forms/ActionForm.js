@@ -14,6 +14,9 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            configuration.submitName = "Perform Action";
+            configuration.showCancelButton = false;
+            configuration.allowAddingNewProperties = false;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
                     createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
@@ -65,6 +68,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
             }
             creator.element = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
             creator.formElement = form;
+            // Finally, we have everything together, create the form
             creator.createFormByObject(parent, configuration);
             (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
         });

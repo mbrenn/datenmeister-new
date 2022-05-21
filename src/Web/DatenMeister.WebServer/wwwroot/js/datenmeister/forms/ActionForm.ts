@@ -12,9 +12,13 @@ export async function createActionFormForEmptyObject(
     metaClass: string,
     configuration: IFormConfiguration,
     actionName: string) {
+    
+    configuration.submitName = "Perform Action";
+    configuration.showCancelButton = false;
+    configuration.allowAddingNewProperties = false;
 
     if (configuration.refreshForm === undefined) {
-        configuration.refreshForm = () => {
+        configuration.refreshForm = () => {            
             createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         }
     }
@@ -76,6 +80,8 @@ export async function createActionFormForEmptyObject(
     
     creator.element = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
     creator.formElement = form;
+    
+    // Finally, we have everything together, create the form
     creator.createFormByObject(parent, configuration);
 
     debugElementToDom(form, "#debug_formelement");

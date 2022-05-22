@@ -66,10 +66,12 @@ define(["require", "exports", "../ApiConnection", "../Settings"], function (requ
         });
     }
     exports.loadNameByUri = loadNameByUri;
-    function createTemporaryElement() {
+    function createTemporaryElement(metaClassUri) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield ApiConnection.put(Settings.baseUrl +
-                "api/elements/create_temporary_element", {});
+                "api/elements/create_temporary_element", {
+                metaClassUri: metaClassUri
+            });
         });
     }
     exports.createTemporaryElement = createTemporaryElement;

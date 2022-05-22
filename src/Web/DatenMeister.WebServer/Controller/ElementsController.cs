@@ -92,18 +92,36 @@ namespace DatenMeister.WebServer.Controller
             public ItemWithNameAndId? reference { get; set; }
         }
 
+        public class CreateTemporaryElementParams
+        {
+            /// <summary>
+            /// Gets or sets the uri of the metaclass
+            /// </summary>
+            public string? MetaClassUri { get; set; }
+        }
+
         [HttpPut("api/elements/create_temporary_element")]
-        public ActionResult<CreateTemporaryElementResult> CreateTemporaryElement()
+        public ActionResult<CreateTemporaryElementResult> CreateTemporaryElement([FromBody] CreateTemporaryElementParams? parameter)
         {
             var logic = new TemporaryExtentLogic(_workspaceLogic);
-            var result = logic.CreateTemporaryElement(null);
+
+            // Defines the metaclass
+            IElement? metaClass = null;
+            if (parameter != null && !string.IsNullOrEmpty(parameter.MetaClassUri))
+            {
+                metaClass =
+                    _workspaceLogic.GetTypesWorkspace()
+                        .Resolve(parameter.MetaClassUri, ResolveType.Default) as IElement;
+            }
+
+            // Create the temporary element
+            var result = logic.CreateTemporaryElement(metaClass);
             return new CreateTemporaryElementResult
             {
                 Success = true,
                 Uri = result.GetUri() ?? throw new InvalidOperationException("No uri defined")
             };
         }
-
 
         /// <summary>
         /// Defines the result of the CreateTemporaryElement method 

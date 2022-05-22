@@ -62,10 +62,12 @@ export interface ICreateTemporaryElementResult {
     uri: string;
 }
 
-export async function createTemporaryElement() : Promise<ICreateTemporaryElementResult> {
+export async function createTemporaryElement(metaClassUri?: string) : Promise<ICreateTemporaryElementResult> {
     return await ApiConnection.put<ICreateTemporaryElementResult>(
         Settings.baseUrl +
-        "api/elements/create_temporary_element", {});
+        "api/elements/create_temporary_element", {
+            metaClassUri: metaClassUri
+        });
 }
 
 export function findBySearchString(searchString): Promise<IFindBySearchString> {

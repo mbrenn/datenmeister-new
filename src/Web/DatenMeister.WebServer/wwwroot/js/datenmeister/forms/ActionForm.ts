@@ -6,6 +6,7 @@ import {DetailFormActions} from "../FormActions";
 import * as ClientForms from '../client/Forms'
 import * as ClientElements from '../client/Elements'
 import * as ClientItems from '../client/Items'
+import * as DataLoader from "../client/Items";
 
 export async function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,
@@ -26,13 +27,14 @@ export async function createActionFormForEmptyObject(
     const creator = new Forms.DetailFormCreator();
 
     configuration.onSubmit = async (element, method) => {
-        const loadedElement = await ClientItems.getObjectByUri("Data", creator.element.uri);
-        
+
+        await DataLoader.setProperties("Data", temporaryElement.uri, element);
+                
         await DetailFormActions.execute(
             actionName,
             creator,
             undefined,
-            loadedElement,
+            element,
             undefined, // The action form cannot provide additional parameters as the ActionButton
             method);
     };
@@ -46,7 +48,7 @@ export async function createActionFormForEmptyObject(
     }
     
     // If, we have created the element, we will now have to create the temporary object on the server
-    const temporaryElement = await ClientElements.createTemporaryElement();
+    const temporaryElement = await ClientElements.createTemporaryElement(element.metaClass.uri);
     await ClientItems.setProperties("Data", temporaryElement.uri, element);    
     
     /* Now find the right form */

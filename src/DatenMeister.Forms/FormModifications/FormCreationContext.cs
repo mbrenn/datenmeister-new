@@ -75,5 +75,17 @@ namespace DatenMeister.Forms.FormModifications
                  (template.ParentMetaClass == null ||
                   template.ParentMetaClass?.@equals(instance.ParentMetaClass) == true))!;
         }
+
+        public override string ToString()
+        {
+         return
+          $"{nameof(FormType)}: {FormType}, " +
+          $"{nameof(DetailElement)}: {DetailElement}, " +
+          $"{nameof(MetaClass)}: {MetaClass}, " +
+          $"{nameof(ExtentType)}: {ExtentType}, " +
+          $"{nameof(ParentPropertyName)}: {ParentPropertyName}, " +
+          $"{nameof(ParentMetaClass)}: {ParentMetaClass}, " +
+          $"{nameof(ViewMode)}: {ViewMode}";
+        }
     }
 }

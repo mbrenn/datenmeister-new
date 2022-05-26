@@ -28,8 +28,10 @@ export async function createActionFormForEmptyObject(
 
     configuration.onSubmit = async (element, method) => {
 
+        // Stores the most recent changes on the server
         await DataLoader.setProperties("Data", temporaryElement.uri, element);
-                
+
+        // Executes the detail form
         await DetailFormActions.execute(
             actionName,
             creator,

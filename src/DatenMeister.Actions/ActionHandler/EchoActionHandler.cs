@@ -1,10 +1,9 @@
 ﻿using System;
-using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 
-namespace DatenMeister.Actions
+namespace DatenMeister.Actions.ActionHandler
 {
     /// <summary>
     /// This is just an echo action handler which returns a success in case the

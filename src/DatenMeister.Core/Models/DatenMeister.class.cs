@@ -367,6 +367,22 @@ namespace DatenMeister.Core.Models
             public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
             public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
 
+            public class _EchoAction
+            {
+                public static string @shallSuccess = "shallSuccess";
+                public IElement? @_shallSuccess = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _EchoAction @EchoAction = new _EchoAction();
+            public IElement @__EchoAction = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction");
+
             public class _DocumentOpenAction
             {
                 public static string @filePath = "filePath";

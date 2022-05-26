@@ -54,13 +54,11 @@ export module DetailFormActions {
     }
     
     /* Finds the best form fitting for the action */
-    export async function loadFormForAction(actionName: string)
-    {
-        if ( actionName === 'LoadOrCreateExtent')
-        {
+    export async function loadFormForAction(actionName: string) {
+        if (actionName === 'Workspace.Extent.LoadOrCreate') {
             return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
         }
-        
+
         return Promise.resolve(undefined);
     }
 
@@ -134,10 +132,10 @@ export module DetailFormActions {
                 FormActions.itemNavigateTo(form.workspace, element.uri);
                 break;
             case "ExtentsList.DeleteItem":
-                FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
                 break;
             case "Item.Delete":
-                FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                await FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                 break;
             case "ZipExample.CreateExample":
                 const id = element.get('id');
@@ -151,7 +149,21 @@ export module DetailFormActions {
                 break;
             case "Workspace.Extent.Xmi.Create.Navigate":
                 const workspaceIdParameter = parameter?.get('workspaceId') ?? "";
-                FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                await FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                break;
+            case "Workspace.Extent.LoadOrCreate":
+                const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
+                if (extentType === null || extentType === undefined) {
+                    alert('No Extent Type has been selected');
+                } else {
+                    document.location.href= Settings.baseUrl +
+                        "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaclass=" + encodeURIComponent(extentType.uri);
+                }
+
+                break;
+            case "Workspace.Extent.LoadOrCreate.Step2":
+                
+                
                 break;
             case "Workspace.Extent.Xmi.Create":
                 await ApiConnection.post<any>(

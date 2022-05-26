@@ -12,7 +12,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createActionFormForEmptyObject = void 0;
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             configuration.submitName = "Perform Action";
             configuration.showCancelButton = false;
@@ -38,12 +38,12 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
                 element = new Mof_1.DmObject();
             }
             // If, we have created the element, we will now have to create the temporary object on the server
-            const temporaryElement = yield ClientElements.createTemporaryElement(element.metaClass.uri);
+            const temporaryElement = yield ClientElements.createTemporaryElement((_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri);
             yield ClientItems.setProperties("Data", temporaryElement.uri, element);
             /* Now find the right form */
             let form;
             // After having loaded the object, load the form
-            if (metaClass === undefined && ((_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri) !== undefined) {
+            if (metaClass === undefined && ((_b = element.metaClass) === null || _b === void 0 ? void 0 : _b.uri) !== undefined) {
                 // If the returned element has a metaclass, then set the metaClass being used to 
                 // find the right form to the one by the element
                 metaClass = element.metaClass.uri;
@@ -70,6 +70,8 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
             }
             creator.element = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
             creator.formElement = form;
+            creator.workspace = "Data";
+            creator.extentUri = creator.element.extentUri;
             // Finally, we have everything together, create the form
             creator.createFormByObject(parent, configuration);
             (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");

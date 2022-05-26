@@ -46,6 +46,7 @@ namespace DatenMeister.Actions
             logicState.AddActionHandler(new AdocReportActionHandler());
             logicState.AddActionHandler(new HtmlReportActionHandler());
             logicState.AddActionHandler(new OpenDocumentActionHandler());
+            logicState.AddActionHandler(new EchoActionHandler());
 
             return logicState;
         }

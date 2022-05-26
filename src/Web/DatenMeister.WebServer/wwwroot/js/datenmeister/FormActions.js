@@ -49,7 +49,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         /* Finds the best form fitting for the action */
         function loadFormForAction(actionName) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (actionName === 'LoadOrCreateExtent') {
+                if (actionName === 'Workspace.Extent.LoadOrCreate') {
                     return yield FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
                 }
                 return Promise.resolve(undefined);
@@ -132,10 +132,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         FormActions.itemNavigateTo(form.workspace, element.uri);
                         break;
                     case "ExtentsList.DeleteItem":
-                        FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
                         break;
                     case "Item.Delete":
-                        FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                         break;
                     case "ZipExample.CreateExample":
                         const id = element.get('id');
@@ -146,7 +146,19 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         break;
                     case "Workspace.Extent.Xmi.Create.Navigate":
                         const workspaceIdParameter = (_a = parameter === null || parameter === void 0 ? void 0 : parameter.get('workspaceId')) !== null && _a !== void 0 ? _a : "";
-                        FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                        yield FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                        break;
+                    case "Workspace.Extent.LoadOrCreate":
+                        const extentType = yield ItemClient.getProperty("Data", element.uri, "extentType");
+                        if (extentType === null || extentType === undefined) {
+                            alert('No Extent Type has been selected');
+                        }
+                        else {
+                            document.location.href = Settings.baseUrl +
+                                "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaclass=" + encodeURIComponent(extentType.uri);
+                        }
+                        break;
+                    case "Workspace.Extent.LoadOrCreate.Step2":
                         break;
                     case "Workspace.Extent.Xmi.Create":
                         yield ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })

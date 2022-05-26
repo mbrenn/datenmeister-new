@@ -142,7 +142,7 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
                 encodeURIComponent(workspaceId) +
                 "/" +
                 encodeURIComponent(itemUrl);
-            return yield ApiConnection.put(url, { property: property });
+            return yield ApiConnection.post(url, { property: property });
         });
     }
     exports.unsetProperty = unsetProperty;

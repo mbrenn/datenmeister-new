@@ -50,7 +50,7 @@ export async function createActionFormForEmptyObject(
     }
     
     // If, we have created the element, we will now have to create the temporary object on the server
-    const temporaryElement = await ClientElements.createTemporaryElement(element.metaClass.uri);
+    const temporaryElement = await ClientElements.createTemporaryElement(element.metaClass?.uri);
     await ClientItems.setProperties("Data", temporaryElement.uri, element);    
     
     /* Now find the right form */
@@ -84,6 +84,8 @@ export async function createActionFormForEmptyObject(
     
     creator.element = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
     creator.formElement = form;
+    creator.workspace = "Data";
+    creator.extentUri = creator.element.extentUri;
     
     // Finally, we have everything together, create the form
     creator.createFormByObject(parent, configuration);

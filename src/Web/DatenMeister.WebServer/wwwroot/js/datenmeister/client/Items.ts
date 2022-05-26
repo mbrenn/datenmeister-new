@@ -171,7 +171,7 @@ export async function unsetProperty(
         "/" +
         encodeURIComponent(itemUrl);
 
-    return await ApiConnection.put<any>(url, {property: property});
+    return await ApiConnection.post<any>(url, {property: property});
 }
 
 export async function setPropertiesByStringValues(workspaceId: string, itemUrl: string, params: ISetPropertiesParams): Promise<ISuccessResult> {

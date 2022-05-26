@@ -563,6 +563,17 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Actions.EchoAction" name="EchoAction">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="55233f60-c637-410f-ba32-84ffe3ec8752" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+      </generalization>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b8a3ea8f-b505-46bc-ab43-1bed0922e2f4" name="shallSuccess" type-ref="dm:///_internal/model/primitivetypes#String">
+      </ownedAttribute>
+    </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="04878741-802e-4b7f-8003-21d25f38ac74" name="DocumentOpenAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />

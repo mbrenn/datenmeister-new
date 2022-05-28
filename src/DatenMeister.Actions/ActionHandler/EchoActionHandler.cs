@@ -25,7 +25,7 @@ namespace DatenMeister.Actions.ActionHandler
                 return;
             }
 
-            throw new InvalidOperationException("shall Success is not OK");
+            throw new InvalidOperationException("The property 'shallSuccess' is not OK");
         }
     }
 }

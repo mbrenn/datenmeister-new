@@ -7,15 +7,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../DomHelper", "../client/Items", "../controls/SelectItemControl"], function (require, exports, DomHelper_1, ClientItem, SIC) {
+define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../controls/SelectItemControl"], function (require, exports, Mof_1, DomHelper_1, ClientItem, SIC) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;
     class Control {
-        constructor() {
+        /** Initializes a new instance
+         *
+         * @param field This field contains the definition according ReferenceFieldData. It may be undefined,
+         * then no support will be given for the selected item
+         * */
+        constructor(field) {
+            this.field = field;
             this._list = $("<span></span>");
         }
+        /** Creates the overall DOM-elements by getting the object */
         createDomByValue(value) {
+            var _a;
             this._list.empty();
             const tthis = this;
             const asDmObject = value;
@@ -44,30 +52,62 @@ define(["require", "exports", "../DomHelper", "../client/Items", "../controls/Se
                             yield tthis.reloadValuesFromServer();
                         }));
                     });
-                    changeCell.on('click', () => {
-                        containerChangeCell.empty();
-                        const selectItem = new SIC.SelectItemControl();
-                        const settings = new SIC.Settings();
-                        settings.showWorkspaceInBreadcrumb = true;
-                        settings.showExtentInBreadcrumb = true;
-                        selectItem.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
-                            yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
-                                property: tthis.propertyName,
-                                referenceUri: selectedItem.uri,
-                                workspaceId: selectItem.getUserSelectedWorkspace()
-                            });
-                            containerChangeCell.empty();
-                            yield this.reloadValuesFromServer();
-                        }));
-                        selectItem.init(containerChangeCell, settings);
+                    changeCell.on('click', () => __awaiter(this, void 0, void 0, function* () {
+                        yield this.createSelectFields(containerChangeCell, value);
                         return false;
-                    });
+                    }));
                     this._list.append(changeCell);
                     this._list.append(unsetCell);
                     this._list.append(containerChangeCell);
+                    // Checks, whether the Drop-Down Field shall be completely pre-created
+                    if (((_a = this.field) === null || _a === void 0 ? void 0 : _a.get('isSelectionInline', Mof_1.ObjectType.Boolean)) === true) {
+                        this.createSelectFields(containerChangeCell, value);
+                    }
                 }
             }
             return this._list;
+        }
+        /** Creates the GUI elements in which the user is capable to select the items to be reference
+         * @param containerChangeCell The cell which will contain the GUI elements. This cell will be emptied
+         * @param value The value that is currently selecetd*/
+        createSelectFields(containerChangeCell, value) {
+            var _a, _b;
+            return __awaiter(this, void 0, void 0, function* () {
+                const tthis = this;
+                containerChangeCell.empty();
+                const selectItem = new SIC.SelectItemControl();
+                const settings = new SIC.Settings();
+                settings.showWorkspaceInBreadcrumb = true;
+                settings.showExtentInBreadcrumb = true;
+                selectItem.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
+                    yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
+                        property: tthis.propertyName,
+                        referenceUri: selectedItem.uri,
+                        workspaceId: selectItem.getUserSelectedWorkspace()
+                    });
+                    containerChangeCell.empty();
+                    yield this.reloadValuesFromServer();
+                }));
+                yield selectItem.initAsync(containerChangeCell, settings);
+                if (value !== undefined && value !== null &&
+                    (typeof value === "object" || typeof value === "function")) {
+                    const valueAsDmObject = value;
+                    yield selectItem.setItemByUri(valueAsDmObject.workspace, valueAsDmObject.uri);
+                }
+                else {
+                    // No value is selected, so retrieve the default items
+                    const workspaceId = (_a = this.field) === null || _a === void 0 ? void 0 : _a.get('defaultWorkspace', Mof_1.ObjectType.Single);
+                    const itemUri = (_b = this.field) === null || _b === void 0 ? void 0 : _b.get('defaultItemUri', Mof_1.ObjectType.Single);
+                    if (workspaceId !== undefined && workspaceId !== null) {
+                        if (itemUri === null || itemUri === undefined) {
+                            yield selectItem.setWorkspaceById(workspaceId);
+                        }
+                        else {
+                            yield selectItem.setItemByUri(workspaceId, itemUri);
+                        }
+                    }
+                }
+            });
         }
         reloadValuesFromServer() {
             return __awaiter(this, void 0, void 0, function* () {

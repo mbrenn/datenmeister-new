@@ -3,7 +3,8 @@
 export enum ObjectType{
     Default, 
     Single, 
-    Array
+    Array,
+    Boolean
 }
 
 export class DmObject {
@@ -28,24 +29,30 @@ export class DmObject {
     }
 
     get(key: string, objectType?: ObjectType): any {
-        const result = this.values[key];
+        let result = this.values[key];
         
         switch (objectType) {
             case ObjectType.Default:
                 return result;
             case ObjectType.Single:
-                if ( Array.isArray(result)){
+                if (Array.isArray(result)) {
                     return result[0];
                 }
-                
+
                 return result;
             case ObjectType.Array:
-                if ( Array.isArray(result))
-                {
+                if (Array.isArray(result)) {
                     return result;
                 }
-                
+
                 return [result];
+            case ObjectType.Boolean:
+                if (Array.isArray(result)) {
+                    result = result[0];
+                }
+                
+                // Take the standard routine but also check that there is no '0' in the text
+                return Boolean(result) && result !== "0";
         }
         
         return result;

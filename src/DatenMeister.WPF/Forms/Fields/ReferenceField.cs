@@ -105,7 +105,7 @@ namespace DatenMeister.WPF.Forms.Fields
             _element = element;
             
             _workspace = fieldData.getOrDefault<string>(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace);
-            _extent = fieldData.getOrDefault<string>(_DatenMeister._Forms._ReferenceFieldData.defaultExtentUri);
+            _extent = fieldData.getOrDefault<string>(_DatenMeister._Forms._ReferenceFieldData.defaultItemUri);
 
             if (_extent == null)
             {

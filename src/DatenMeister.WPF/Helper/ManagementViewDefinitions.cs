@@ -59,7 +59,7 @@ namespace DatenMeister.WPF.Helper
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, true);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultValue, parameter.PreSelectedPackage);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace, parameter.WorkspaceName);
-            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultExtentUri, parameter.ExtentUri);
+            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultItemUri, parameter.ExtentUri);
 
             detailForm.set(_DatenMeister._Forms._DetailForm.field, new[] { type2Field });
 

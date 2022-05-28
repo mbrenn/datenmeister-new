@@ -1661,11 +1661,11 @@ namespace DatenMeister.Core.Models
                 public static string @isSelectionInline = "isSelectionInline";
                 public IElement? @_isSelectionInline = null;
 
-                public static string @defaultExtentUri = "defaultExtentUri";
-                public IElement? @_defaultExtentUri = null;
-
                 public static string @defaultWorkspace = "defaultWorkspace";
                 public IElement? @_defaultWorkspace = null;
+
+                public static string @defaultItemUri = "defaultItemUri";
+                public IElement? @_defaultItemUri = null;
 
                 public static string @showAllChildren = "showAllChildren";
                 public IElement? @_showAllChildren = null;

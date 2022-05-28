@@ -3,7 +3,7 @@
   <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms" __uri="dm:///_internal/forms/internal" />
   <item p1:id="_package_Common_Forms" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="CommonForms">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" p1:id="ImportManagerFindExtent" name="Find Extent">
-      <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True" defaultExtentUri="dm:///_internal/workspaces/" showAllChildren="True" p1:id="19d57ee5-4222-48cc-a85a-ab012a1b6bc7" />
+      <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True" defaultItemUri="dm:///_internal/workspaces/" showAllChildren="True" p1:id="19d57ee5-4222-48cc-a85a-ab012a1b6bc7" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="CommonForms.ChangeId" buttonApplyText="Change ID" name="Change ID" title="Change ID">
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="52bbe9c3-70d7-4145-af3d-b1da051051ed" name="oldId" title="Old ID" isReadOnly="True" />
@@ -40,7 +40,7 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="Name" p1:id="c9feda4a-0595-4e22-9bb7-d3a1ac4780bc" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referencedWorkspace" title="Original Workspace" p1:id="1f8510e5-289c-4377-b500-c9c22c147ed9" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referencedExtent" title="Original Extent" p1:id="7e40bdc1-6719-4de8-951f-fec5dcff99db" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="referenceType" title="Attached Element Type" defaultWorkspace="Types" defaultExtentUri="dm:///_internal/types/user" p1:id="c0c8a785-8185-4d7b-b10c-508eda4d326a" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="referenceType" title="Attached Element Type" defaultWorkspace="Types" defaultItemUri="dm:///_internal/types/user" p1:id="c0c8a785-8185-4d7b-b10c-508eda4d326a" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referenceProperty" title="Referencing Property" p1:id="f3641c7b-4dad-4cf2-8d52-9105101d378f" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="Detail" form-ref="#AttachedElement.ExtentProperty" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration" name="Association for Extent Property" p1:id="0a43615b-42eb-4c0b-818c-985c966fbaa3" />
@@ -71,7 +71,8 @@
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" name="Extent - Select Type" hideMetaInformation="True" allowNewProperties="True" p1:id="WorkspacesAndExtents.Extent.SelectType" comment="Used by Action 'LoadOrCreateExtent'">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Extent-Type" title="Select your Extent Type" p1:id="WorkspacesAndExtents.Extent.SelectType.Detail" name="Select Extent Type">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="extentType" title="Type of Extent" p1:id="976fcfdf-2726-5625-a266-66c43a18351f" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="extentType" title="Type of Extent" p1:id="976fcfdf-2726-5625-a266-66c43a18351f" 
+          defaultWorkspace="Types" defaultItemUri="dm:///_internal/types/internal#DatenMeister.ExtentLoaderConfigs" isSelectionInline="true" />
       </tab>      
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi" title="Create Xmi Extent" p1:id="WorkspacesAndExtents.Xmi.New" name="Dialog - New Xmi Extent">

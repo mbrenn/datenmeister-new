@@ -7,6 +7,7 @@ define(["require", "exports"], function (require, exports) {
         ObjectType[ObjectType["Default"] = 0] = "Default";
         ObjectType[ObjectType["Single"] = 1] = "Single";
         ObjectType[ObjectType["Array"] = 2] = "Array";
+        ObjectType[ObjectType["Boolean"] = 3] = "Boolean";
     })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
         constructor() {
@@ -17,7 +18,7 @@ define(["require", "exports"], function (require, exports) {
             this.values[key] = value;
         }
         get(key, objectType) {
-            const result = this.values[key];
+            let result = this.values[key];
             switch (objectType) {
                 case ObjectType.Default:
                     return result;
@@ -31,6 +32,12 @@ define(["require", "exports"], function (require, exports) {
                         return result;
                     }
                     return [result];
+                case ObjectType.Boolean:
+                    if (Array.isArray(result)) {
+                        result = result[0];
+                    }
+                    // Take the standard routine but also check that there is no '0' in the text
+                    return Boolean(result) && result !== "0";
             }
             return result;
         }

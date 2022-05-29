@@ -7,16 +7,16 @@ var DatenMeister;
         (function (Models) {
             let _ExcelModels;
             (function (_ExcelModels) {
-                let _Workbook;
-                (function (_Workbook) {
-                    _Workbook.tables = "tables";
-                })(_Workbook = _ExcelModels._Workbook || (_ExcelModels._Workbook = {}));
+                class _Workbook {
+                }
+                _Workbook.tables = "tables";
+                _ExcelModels._Workbook = _Workbook;
                 _ExcelModels.__Workbook_Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook";
-                let _Table;
-                (function (_Table) {
-                    _Table.name = "name";
-                    _Table.items = "items";
-                })(_Table = _ExcelModels._Table || (_ExcelModels._Table = {}));
+                class _Table {
+                }
+                _Table._name_ = "name";
+                _Table.items = "items";
+                _ExcelModels._Table = _Table;
                 _ExcelModels.__Table_Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Table";
             })(_ExcelModels = Models._ExcelModels || (Models._ExcelModels = {}));
         })(Models = Excel.Models || (Excel.Models = {}));

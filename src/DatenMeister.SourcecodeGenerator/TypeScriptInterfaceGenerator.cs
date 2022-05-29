@@ -50,7 +50,7 @@ namespace DatenMeister.SourcecodeGenerator
         {
             var name = GetNameOfElement(element);
 
-            Result.AppendLine($"{stack.Indentation}export module _{name}");
+            Result.AppendLine($"{stack.Indentation}export namespace _{name}");
             Result.AppendLine($"{stack.Indentation}{{");
 
             var innerStack = new CallStack(stack)
@@ -73,7 +73,7 @@ namespace DatenMeister.SourcecodeGenerator
             if (!(classInstance is IElement asElement)) return;
             var name = GetNameOfElement(classInstance);
 
-            Result.AppendLine($"{stack.Indentation}export module _{name}");
+            Result.AppendLine($"{stack.Indentation}export class _{name}");
             Result.AppendLine($"{stack.Indentation}{{");
 
             base.WalkClass(classInstance, stack);
@@ -92,7 +92,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject?.ToString() ?? string.Empty;
-            Result.AppendLine($"{stack.Indentation}export const {EscapeKeyword(name)} = \"{name}\";");
+            Result.AppendLine($"{stack.Indentation}static {EscapeKeyword(name)} = \"{name}\";");
         }
 
         /// <summary>
@@ -209,6 +209,7 @@ namespace DatenMeister.SourcecodeGenerator
                 "let",
                 "long",
                 "native",
+                "name",
                 "new",
                 "null",
                 "package",

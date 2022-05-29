@@ -1,62 +1,62 @@
 // Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.0.0.0
-export module _PrimitiveTypes
+export namespace _PrimitiveTypes
 {
-    export module _DateTime
+    export class _DateTime
     {
     }
 
     export const __DateTime_Uri = "dm:///_internal/types/internal#PrimitiveTypes.DateTime";
 }
 
-export module _DatenMeister
+export namespace _DatenMeister
 {
-    export module _CommonTypes
+    export namespace _CommonTypes
     {
-        export module _Default
+        export namespace _Default
         {
-            export module _Package
+            export class _Package
             {
-                export const name = "name";
-                export const packagedElement = "packagedElement";
-                export const preferredType = "preferredType";
-                export const preferredPackage = "preferredPackage";
-                export const defaultViewMode = "defaultViewMode";
+                static _name_ = "name";
+                static packagedElement = "packagedElement";
+                static preferredType = "preferredType";
+                static preferredPackage = "preferredPackage";
+                static defaultViewMode = "defaultViewMode";
             }
 
             export const __Package_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package";
         }
 
-        export module _ExtentManager
+        export namespace _ExtentManager
         {
-            export module _ImportSettings
+            export class _ImportSettings
             {
-                export const filePath = "filePath";
-                export const extentUri = "extentUri";
-                export const workspace = "workspace";
+                static filePath = "filePath";
+                static extentUri = "extentUri";
+                static workspace = "workspace";
             }
 
             export const __ImportSettings_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings";
-            export module _ImportException
+            export class _ImportException
             {
-                export const message = "message";
+                static message = "message";
             }
 
             export const __ImportException_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportException";
         }
 
-        export module _OSIntegration
+        export namespace _OSIntegration
         {
-            export module _CommandLineApplication
+            export class _CommandLineApplication
             {
-                export const name = "name";
-                export const applicationPath = "applicationPath";
+                static _name_ = "name";
+                static applicationPath = "applicationPath";
             }
 
             export const __CommandLineApplication_Uri = "dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication";
-            export module _EnvironmentalVariable
+            export class _EnvironmentalVariable
             {
-                export const name = "name";
-                export const value = "value";
+                static _name_ = "name";
+                static value = "value";
             }
 
             export const __EnvironmentalVariable_Uri = "dm:///_internal/types/internal#OSIntegration.EnvironmentalVariable";
@@ -64,228 +64,228 @@ export module _DatenMeister
 
     }
 
-    export module _Actions
+    export namespace _Actions
     {
-        export module _ActionSet
+        export class _ActionSet
         {
-            export const action = "action";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static action = "action";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __ActionSet_Uri = "dm:///_internal/types/internal#Actions.ActionSet";
-        export module _LoggingWriterAction
+        export class _LoggingWriterAction
         {
-            export const message = "message";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static message = "message";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __LoggingWriterAction_Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction";
-        export module _CommandExecutionAction
+        export class _CommandExecutionAction
         {
-            export const command = "command";
-            export const _arguments_ = "arguments";
-            export const workingDirectory = "workingDirectory";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static command = "command";
+            static _arguments_ = "arguments";
+            static workingDirectory = "workingDirectory";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __CommandExecutionAction_Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82";
-        export module _PowershellExecutionAction
+        export class _PowershellExecutionAction
         {
-            export const script = "script";
-            export const workingDirectory = "workingDirectory";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static script = "script";
+            static workingDirectory = "workingDirectory";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __PowershellExecutionAction_Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb";
-        export module _LoadExtentAction
+        export class _LoadExtentAction
         {
-            export const configuration = "configuration";
-            export const dropExisting = "dropExisting";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static configuration = "configuration";
+            static dropExisting = "dropExisting";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __LoadExtentAction_Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee";
-        export module _DropExtentAction
+        export class _DropExtentAction
         {
-            export const workspace = "workspace";
-            export const extentUri = "extentUri";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static workspace = "workspace";
+            static extentUri = "extentUri";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __DropExtentAction_Uri = "dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09";
-        export module _CreateWorkspaceAction
+        export class _CreateWorkspaceAction
         {
-            export const workspace = "workspace";
-            export const annotation = "annotation";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static workspace = "workspace";
+            static annotation = "annotation";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __CreateWorkspaceAction_Uri = "dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe";
-        export module _DropWorkspaceAction
+        export class _DropWorkspaceAction
         {
-            export const workspace = "workspace";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static workspace = "workspace";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __DropWorkspaceAction_Uri = "dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8";
-        export module _CopyElementsAction
+        export class _CopyElementsAction
         {
-            export const sourcePath = "sourcePath";
-            export const targetPath = "targetPath";
-            export const moveOnly = "moveOnly";
-            export const sourceWorkspace = "sourceWorkspace";
-            export const targetWorkspace = "targetWorkspace";
-            export const emptyTarget = "emptyTarget";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static sourcePath = "sourcePath";
+            static targetPath = "targetPath";
+            static moveOnly = "moveOnly";
+            static sourceWorkspace = "sourceWorkspace";
+            static targetWorkspace = "targetWorkspace";
+            static emptyTarget = "emptyTarget";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __CopyElementsAction_Uri = "dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed";
-        export module _ExportToXmiAction
+        export class _ExportToXmiAction
         {
-            export const sourcePath = "sourcePath";
-            export const filePath = "filePath";
-            export const sourceWorkspaceId = "sourceWorkspaceId";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static sourcePath = "sourcePath";
+            static filePath = "filePath";
+            static sourceWorkspaceId = "sourceWorkspaceId";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __ExportToXmiAction_Uri = "dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863";
-        export module _ClearCollectionAction
+        export class _ClearCollectionAction
         {
-            export const workspace = "workspace";
-            export const path = "path";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static workspace = "workspace";
+            static path = "path";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __ClearCollectionAction_Uri = "dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae";
-        export module _TransformItemsAction
+        export class _TransformItemsAction
         {
-            export const metaClass = "metaClass";
-            export const runtimeClass = "runtimeClass";
-            export const workspace = "workspace";
-            export const path = "path";
-            export const excludeDescendents = "excludeDescendents";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static metaClass = "metaClass";
+            static runtimeClass = "runtimeClass";
+            static workspace = "workspace";
+            static path = "path";
+            static excludeDescendents = "excludeDescendents";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __TransformItemsAction_Uri = "dm:///_internal/types/internal#Actions.ItemTransformationActionHandler";
-        export module _EchoAction
+        export class _EchoAction
         {
-            export const shallSuccess = "shallSuccess";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static shallSuccess = "shallSuccess";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __EchoAction_Uri = "dm:///_internal/types/internal#DatenMeister.Actions.EchoAction";
-        export module _DocumentOpenAction
+        export class _DocumentOpenAction
         {
-            export const filePath = "filePath";
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static filePath = "filePath";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __DocumentOpenAction_Uri = "dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74";
-        export module _Reports
+        export namespace _Reports
         {
-            export module _SimpleReportAction
+            export class _SimpleReportAction
             {
-                export const path = "path";
-                export const configuration = "configuration";
-                export const workspaceId = "workspaceId";
-                export const filePath = "filePath";
-                export const name = "name";
-                export const isDisabled = "isDisabled";
+                static path = "path";
+                static configuration = "configuration";
+                static workspaceId = "workspaceId";
+                static filePath = "filePath";
+                static _name_ = "name";
+                static isDisabled = "isDisabled";
             }
 
             export const __SimpleReportAction_Uri = "dm:///_internal/types/internal#Actions.SimpleReportAction";
-            export module _AdocReportAction
+            export class _AdocReportAction
             {
-                export const filePath = "filePath";
-                export const reportInstance = "reportInstance";
-                export const name = "name";
-                export const isDisabled = "isDisabled";
+                static filePath = "filePath";
+                static reportInstance = "reportInstance";
+                static _name_ = "name";
+                static isDisabled = "isDisabled";
             }
 
             export const __AdocReportAction_Uri = "dm:///_internal/types/internal#Actions.AdocReportAction";
-            export module _HtmlReportAction
+            export class _HtmlReportAction
             {
-                export const filePath = "filePath";
-                export const reportInstance = "reportInstance";
-                export const name = "name";
-                export const isDisabled = "isDisabled";
+                static filePath = "filePath";
+                static reportInstance = "reportInstance";
+                static _name_ = "name";
+                static isDisabled = "isDisabled";
             }
 
             export const __HtmlReportAction_Uri = "dm:///_internal/types/internal#Actions.HtmlReportAction";
         }
 
-        export module _Action
+        export class _Action
         {
-            export const name = "name";
-            export const isDisabled = "isDisabled";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
         }
 
         export const __Action_Uri = "dm:///_internal/types/internal#Actions.Action";
     }
 
-    export module _DataViews
+    export namespace _DataViews
     {
-        export module _DataView
+        export class _DataView
         {
-            export const name = "name";
-            export const workspace = "workspace";
-            export const uri = "uri";
-            export const viewNode = "viewNode";
+            static _name_ = "name";
+            static workspace = "workspace";
+            static uri = "uri";
+            static viewNode = "viewNode";
         }
 
         export const __DataView_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DataView";
-        export module _ViewNode
+        export class _ViewNode
         {
-            export const name = "name";
+            static _name_ = "name";
         }
 
         export const __ViewNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode";
-        export module _SourceExtentNode
+        export class _SourceExtentNode
         {
-            export const extentUri = "extentUri";
-            export const workspace = "workspace";
-            export const name = "name";
+            static extentUri = "extentUri";
+            static workspace = "workspace";
+            static _name_ = "name";
         }
 
         export const __SourceExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
-        export module _FlattenNode
+        export class _FlattenNode
         {
-            export const input = "input";
-            export const name = "name";
+            static input = "input";
+            static _name_ = "name";
         }
 
         export const __FlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
-        export module _FilterPropertyNode
+        export class _FilterPropertyNode
         {
-            export const input = "input";
-            export const property = "property";
-            export const value = "value";
-            export const comparisonMode = "comparisonMode";
-            export const name = "name";
+            static input = "input";
+            static property = "property";
+            static value = "value";
+            static comparisonMode = "comparisonMode";
+            static _name_ = "name";
         }
 
         export const __FilterPropertyNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode";
-        export module _FilterTypeNode
+        export class _FilterTypeNode
         {
-            export const input = "input";
-            export const type = "type";
-            export const includeInherits = "includeInherits";
-            export const name = "name";
+            static input = "input";
+            static type = "type";
+            static includeInherits = "includeInherits";
+            static _name_ = "name";
         }
 
         export const __FilterTypeNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode";
@@ -313,62 +313,62 @@ export module _DatenMeister
             LighterOrEqualThan
         }
 
-        export module _SelectByFullNameNode
+        export class _SelectByFullNameNode
         {
-            export const input = "input";
-            export const path = "path";
-            export const name = "name";
+            static input = "input";
+            static path = "path";
+            static _name_ = "name";
         }
 
         export const __SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
-        export module _DynamicSourceNode
+        export class _DynamicSourceNode
         {
-            export const nodeName = "nodeName";
-            export const name = "name";
+            static nodeName = "nodeName";
+            static _name_ = "name";
         }
 
         export const __DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
     }
 
-    export module _Reports
+    export namespace _Reports
     {
-        export module _ReportDefinition
+        export class _ReportDefinition
         {
-            export const name = "name";
-            export const title = "title";
-            export const elements = "elements";
+            static _name_ = "name";
+            static title = "title";
+            static elements = "elements";
         }
 
         export const __ReportDefinition_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition";
-        export module _ReportInstanceSource
+        export class _ReportInstanceSource
         {
-            export const name = "name";
-            export const workspaceId = "workspaceId";
-            export const path = "path";
+            static _name_ = "name";
+            static workspaceId = "workspaceId";
+            static path = "path";
         }
 
         export const __ReportInstanceSource_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource";
-        export module _ReportInstance
+        export class _ReportInstance
         {
-            export const name = "name";
-            export const reportDefinition = "reportDefinition";
-            export const sources = "sources";
+            static _name_ = "name";
+            static reportDefinition = "reportDefinition";
+            static sources = "sources";
         }
 
         export const __ReportInstance_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance";
-        export module _AdocReportInstance
+        export class _AdocReportInstance
         {
-            export const name = "name";
-            export const reportDefinition = "reportDefinition";
-            export const sources = "sources";
+            static _name_ = "name";
+            static reportDefinition = "reportDefinition";
+            static sources = "sources";
         }
 
         export const __AdocReportInstance_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance";
-        export module _HtmlReportInstance
+        export class _HtmlReportInstance
         {
-            export const name = "name";
-            export const reportDefinition = "reportDefinition";
-            export const sources = "sources";
+            static _name_ = "name";
+            static reportDefinition = "reportDefinition";
+            static sources = "sources";
         }
 
         export const __HtmlReportInstance_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance";
@@ -386,54 +386,54 @@ export module _DatenMeister
             PerPackage
         }
 
-        export module _SimpleReportConfiguration
+        export class _SimpleReportConfiguration
         {
-            export const name = "name";
-            export const showDescendents = "showDescendents";
-            export const rootElement = "rootElement";
-            export const showRootElement = "showRootElement";
-            export const showMetaClasses = "showMetaClasses";
-            export const showFullName = "showFullName";
-            export const form = "form";
-            export const descendentMode = "descendentMode";
-            export const typeMode = "typeMode";
-            export const workspaceId = "workspaceId";
+            static _name_ = "name";
+            static showDescendents = "showDescendents";
+            static rootElement = "rootElement";
+            static showRootElement = "showRootElement";
+            static showMetaClasses = "showMetaClasses";
+            static showFullName = "showFullName";
+            static form = "form";
+            static descendentMode = "descendentMode";
+            static typeMode = "typeMode";
+            static workspaceId = "workspaceId";
         }
 
         export const __SimpleReportConfiguration_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration";
-        export module _Elements
+        export namespace _Elements
         {
-            export module _ReportElement
+            export class _ReportElement
             {
-                export const name = "name";
+                static _name_ = "name";
             }
 
             export const __ReportElement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement";
-            export module _ReportHeadline
+            export class _ReportHeadline
             {
-                export const title = "title";
-                export const name = "name";
+                static title = "title";
+                static _name_ = "name";
             }
 
             export const __ReportHeadline_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline";
-            export module _ReportParagraph
+            export class _ReportParagraph
             {
-                export const paragraph = "paragraph";
-                export const cssClass = "cssClass";
-                export const viewNode = "viewNode";
-                export const evalProperties = "evalProperties";
-                export const evalParagraph = "evalParagraph";
-                export const name = "name";
+                static paragraph = "paragraph";
+                static cssClass = "cssClass";
+                static viewNode = "viewNode";
+                static evalProperties = "evalProperties";
+                static evalParagraph = "evalParagraph";
+                static _name_ = "name";
             }
 
             export const __ReportParagraph_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph";
-            export module _ReportTable
+            export class _ReportTable
             {
-                export const cssClass = "cssClass";
-                export const viewNode = "viewNode";
-                export const form = "form";
-                export const evalProperties = "evalProperties";
-                export const name = "name";
+                static cssClass = "cssClass";
+                static viewNode = "viewNode";
+                static form = "form";
+                static evalProperties = "evalProperties";
+                static _name_ = "name";
             }
 
             export const __ReportTable_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable";
@@ -449,11 +449,11 @@ export module _DatenMeister
                 AllTypes
             }
 
-            export module _ReportLoop
+            export class _ReportLoop
             {
-                export const viewNode = "viewNode";
-                export const elements = "elements";
-                export const name = "name";
+                static viewNode = "viewNode";
+                static elements = "elements";
+                static _name_ = "name";
             }
 
             export const __ReportLoop_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportLoop";
@@ -461,451 +461,451 @@ export module _DatenMeister
 
     }
 
-    export module _ExtentLoaderConfigs
+    export namespace _ExtentLoaderConfigs
     {
-        export module _ExtentLoaderConfig
+        export class _ExtentLoaderConfig
         {
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __ExtentLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig";
-        export module _ExcelLoaderConfig
+        export class _ExcelLoaderConfig
         {
-            export const fixRowCount = "fixRowCount";
-            export const fixColumnCount = "fixColumnCount";
-            export const filePath = "filePath";
-            export const sheetName = "sheetName";
-            export const offsetRow = "offsetRow";
-            export const offsetColumn = "offsetColumn";
-            export const countRows = "countRows";
-            export const countColumns = "countColumns";
-            export const hasHeader = "hasHeader";
-            export const tryMergedHeaderCells = "tryMergedHeaderCells";
-            export const onlySetColumns = "onlySetColumns";
-            export const idColumnName = "idColumnName";
-            export const skipEmptyRowsCount = "skipEmptyRowsCount";
-            export const columns = "columns";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static fixRowCount = "fixRowCount";
+            static fixColumnCount = "fixColumnCount";
+            static filePath = "filePath";
+            static sheetName = "sheetName";
+            static offsetRow = "offsetRow";
+            static offsetColumn = "offsetColumn";
+            static countRows = "countRows";
+            static countColumns = "countColumns";
+            static hasHeader = "hasHeader";
+            static tryMergedHeaderCells = "tryMergedHeaderCells";
+            static onlySetColumns = "onlySetColumns";
+            static idColumnName = "idColumnName";
+            static skipEmptyRowsCount = "skipEmptyRowsCount";
+            static columns = "columns";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __ExcelLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig";
-        export module _ExcelReferenceLoaderConfig
+        export class _ExcelReferenceLoaderConfig
         {
-            export const fixRowCount = "fixRowCount";
-            export const fixColumnCount = "fixColumnCount";
-            export const filePath = "filePath";
-            export const sheetName = "sheetName";
-            export const offsetRow = "offsetRow";
-            export const offsetColumn = "offsetColumn";
-            export const countRows = "countRows";
-            export const countColumns = "countColumns";
-            export const hasHeader = "hasHeader";
-            export const tryMergedHeaderCells = "tryMergedHeaderCells";
-            export const onlySetColumns = "onlySetColumns";
-            export const idColumnName = "idColumnName";
-            export const skipEmptyRowsCount = "skipEmptyRowsCount";
-            export const columns = "columns";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static fixRowCount = "fixRowCount";
+            static fixColumnCount = "fixColumnCount";
+            static filePath = "filePath";
+            static sheetName = "sheetName";
+            static offsetRow = "offsetRow";
+            static offsetColumn = "offsetColumn";
+            static countRows = "countRows";
+            static countColumns = "countColumns";
+            static hasHeader = "hasHeader";
+            static tryMergedHeaderCells = "tryMergedHeaderCells";
+            static onlySetColumns = "onlySetColumns";
+            static idColumnName = "idColumnName";
+            static skipEmptyRowsCount = "skipEmptyRowsCount";
+            static columns = "columns";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __ExcelReferenceLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig";
-        export module _ExcelImportLoaderConfig
+        export class _ExcelImportLoaderConfig
         {
-            export const extentPath = "extentPath";
-            export const fixRowCount = "fixRowCount";
-            export const fixColumnCount = "fixColumnCount";
-            export const filePath = "filePath";
-            export const sheetName = "sheetName";
-            export const offsetRow = "offsetRow";
-            export const offsetColumn = "offsetColumn";
-            export const countRows = "countRows";
-            export const countColumns = "countColumns";
-            export const hasHeader = "hasHeader";
-            export const tryMergedHeaderCells = "tryMergedHeaderCells";
-            export const onlySetColumns = "onlySetColumns";
-            export const idColumnName = "idColumnName";
-            export const skipEmptyRowsCount = "skipEmptyRowsCount";
-            export const columns = "columns";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static extentPath = "extentPath";
+            static fixRowCount = "fixRowCount";
+            static fixColumnCount = "fixColumnCount";
+            static filePath = "filePath";
+            static sheetName = "sheetName";
+            static offsetRow = "offsetRow";
+            static offsetColumn = "offsetColumn";
+            static countRows = "countRows";
+            static countColumns = "countColumns";
+            static hasHeader = "hasHeader";
+            static tryMergedHeaderCells = "tryMergedHeaderCells";
+            static onlySetColumns = "onlySetColumns";
+            static idColumnName = "idColumnName";
+            static skipEmptyRowsCount = "skipEmptyRowsCount";
+            static columns = "columns";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __ExcelImportLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig";
-        export module _ExcelExtentLoaderConfig
+        export class _ExcelExtentLoaderConfig
         {
-            export const filePath = "filePath";
-            export const idColumnName = "idColumnName";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static filePath = "filePath";
+            static idColumnName = "idColumnName";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __ExcelExtentLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig";
-        export module _InMemoryLoaderConfig
+        export class _InMemoryLoaderConfig
         {
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __InMemoryLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig";
-        export module _XmlReferenceLoaderConfig
+        export class _XmlReferenceLoaderConfig
         {
-            export const filePath = "filePath";
-            export const keepNamespaces = "keepNamespaces";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static filePath = "filePath";
+            static keepNamespaces = "keepNamespaces";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __XmlReferenceLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig";
-        export module _ExtentFileLoaderConfig
+        export class _ExtentFileLoaderConfig
         {
-            export const filePath = "filePath";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static filePath = "filePath";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __ExtentFileLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig";
-        export module _XmiStorageLoaderConfig
+        export class _XmiStorageLoaderConfig
         {
-            export const filePath = "filePath";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static filePath = "filePath";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __XmiStorageLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig";
-        export module _CsvExtentLoaderConfig
+        export class _CsvExtentLoaderConfig
         {
-            export const settings = "settings";
-            export const filePath = "filePath";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static settings = "settings";
+            static filePath = "filePath";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __CsvExtentLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig";
-        export module _CsvSettings
+        export class _CsvSettings
         {
-            export const encoding = "encoding";
-            export const hasHeader = "hasHeader";
-            export const separator = "separator";
-            export const columns = "columns";
-            export const metaclassUri = "metaclassUri";
+            static encoding = "encoding";
+            static hasHeader = "hasHeader";
+            static separator = "separator";
+            static columns = "columns";
+            static metaclassUri = "metaclassUri";
         }
 
         export const __CsvSettings_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings";
-        export module _ExcelHierarchicalColumnDefinition
+        export class _ExcelHierarchicalColumnDefinition
         {
-            export const name = "name";
-            export const metaClass = "metaClass";
-            export const property = "property";
+            static _name_ = "name";
+            static metaClass = "metaClass";
+            static property = "property";
         }
 
         export const __ExcelHierarchicalColumnDefinition_Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition";
-        export module _ExcelHierarchicalLoaderConfig
+        export class _ExcelHierarchicalLoaderConfig
         {
-            export const hierarchicalColumns = "hierarchicalColumns";
-            export const skipElementsForLastLevel = "skipElementsForLastLevel";
-            export const fixRowCount = "fixRowCount";
-            export const fixColumnCount = "fixColumnCount";
-            export const filePath = "filePath";
-            export const sheetName = "sheetName";
-            export const offsetRow = "offsetRow";
-            export const offsetColumn = "offsetColumn";
-            export const countRows = "countRows";
-            export const countColumns = "countColumns";
-            export const hasHeader = "hasHeader";
-            export const tryMergedHeaderCells = "tryMergedHeaderCells";
-            export const onlySetColumns = "onlySetColumns";
-            export const idColumnName = "idColumnName";
-            export const skipEmptyRowsCount = "skipEmptyRowsCount";
-            export const columns = "columns";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static hierarchicalColumns = "hierarchicalColumns";
+            static skipElementsForLastLevel = "skipElementsForLastLevel";
+            static fixRowCount = "fixRowCount";
+            static fixColumnCount = "fixColumnCount";
+            static filePath = "filePath";
+            static sheetName = "sheetName";
+            static offsetRow = "offsetRow";
+            static offsetColumn = "offsetColumn";
+            static countRows = "countRows";
+            static countColumns = "countColumns";
+            static hasHeader = "hasHeader";
+            static tryMergedHeaderCells = "tryMergedHeaderCells";
+            static onlySetColumns = "onlySetColumns";
+            static idColumnName = "idColumnName";
+            static skipEmptyRowsCount = "skipEmptyRowsCount";
+            static columns = "columns";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __ExcelHierarchicalLoaderConfig_Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig";
-        export module _ExcelColumn
+        export class _ExcelColumn
         {
-            export const header = "header";
-            export const name = "name";
+            static header = "header";
+            static _name_ = "name";
         }
 
         export const __ExcelColumn_Uri = "dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a";
-        export module _EnvironmentalVariableLoaderConfig
+        export class _EnvironmentalVariableLoaderConfig
         {
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __EnvironmentalVariableLoaderConfig_Uri = "dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3";
     }
 
-    export module _Forms
+    export namespace _Forms
     {
-        export module _FieldData
+        export class _FieldData
         {
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __FieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData";
-        export module _SortingOrder
+        export class _SortingOrder
         {
-            export const name = "name";
-            export const isDescending = "isDescending";
+            static _name_ = "name";
+            static isDescending = "isDescending";
         }
 
         export const __SortingOrder_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder";
-        export module _AnyDataFieldData
+        export class _AnyDataFieldData
         {
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __AnyDataFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData";
-        export module _CheckboxFieldData
+        export class _CheckboxFieldData
         {
-            export const lineHeight = "lineHeight";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static lineHeight = "lineHeight";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __CheckboxFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData";
-        export module _ActionFieldData
+        export class _ActionFieldData
         {
-            export const actionName = "actionName";
-            export const parameter = "parameter";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static actionName = "actionName";
+            static parameter = "parameter";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __ActionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData";
-        export module _DateTimeFieldData
+        export class _DateTimeFieldData
         {
-            export const hideDate = "hideDate";
-            export const hideTime = "hideTime";
-            export const showOffsetButtons = "showOffsetButtons";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static hideDate = "hideDate";
+            static hideTime = "hideTime";
+            static showOffsetButtons = "showOffsetButtons";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __DateTimeFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData";
-        export module _FormAssociation
+        export class _FormAssociation
         {
-            export const name = "name";
-            export const formType = "formType";
-            export const metaClass = "metaClass";
-            export const extentType = "extentType";
-            export const viewModeId = "viewModeId";
-            export const parentMetaClass = "parentMetaClass";
-            export const parentProperty = "parentProperty";
-            export const form = "form";
+            static _name_ = "name";
+            static formType = "formType";
+            static metaClass = "metaClass";
+            static extentType = "extentType";
+            static viewModeId = "viewModeId";
+            static parentMetaClass = "parentMetaClass";
+            static parentProperty = "parentProperty";
+            static form = "form";
         }
 
         export const __FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
-        export module _DropDownFieldData
+        export class _DropDownFieldData
         {
-            export const values = "values";
-            export const valuesByEnumeration = "valuesByEnumeration";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static values = "values";
+            static valuesByEnumeration = "valuesByEnumeration";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __DropDownFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData";
-        export module _ValuePair
+        export class _ValuePair
         {
-            export const value = "value";
-            export const name = "name";
+            static value = "value";
+            static _name_ = "name";
         }
 
         export const __ValuePair_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair";
-        export module _MetaClassElementFieldData
+        export class _MetaClassElementFieldData
         {
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __MetaClassElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData";
-        export module _ReferenceFieldData
+        export class _ReferenceFieldData
         {
-            export const isSelectionInline = "isSelectionInline";
-            export const defaultWorkspace = "defaultWorkspace";
-            export const defaultItemUri = "defaultItemUri";
-            export const showAllChildren = "showAllChildren";
-            export const showWorkspaceSelection = "showWorkspaceSelection";
-            export const showExtentSelection = "showExtentSelection";
-            export const metaClassFilter = "metaClassFilter";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static isSelectionInline = "isSelectionInline";
+            static defaultWorkspace = "defaultWorkspace";
+            static defaultItemUri = "defaultItemUri";
+            static showAllChildren = "showAllChildren";
+            static showWorkspaceSelection = "showWorkspaceSelection";
+            static showExtentSelection = "showExtentSelection";
+            static metaClassFilter = "metaClassFilter";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __ReferenceFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData";
-        export module _SubElementFieldData
+        export class _SubElementFieldData
         {
-            export const metaClass = "metaClass";
-            export const form = "form";
-            export const allowOnlyExistingElements = "allowOnlyExistingElements";
-            export const defaultTypesForNewElements = "defaultTypesForNewElements";
-            export const includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
-            export const defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
-            export const defaultExtentOfNewElements = "defaultExtentOfNewElements";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static metaClass = "metaClass";
+            static form = "form";
+            static allowOnlyExistingElements = "allowOnlyExistingElements";
+            static defaultTypesForNewElements = "defaultTypesForNewElements";
+            static includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
+            static defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
+            static defaultExtentOfNewElements = "defaultExtentOfNewElements";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __SubElementFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData";
-        export module _TextFieldData
+        export class _TextFieldData
         {
-            export const lineHeight = "lineHeight";
-            export const width = "width";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static lineHeight = "lineHeight";
+            static width = "width";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __TextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData";
-        export module _EvalTextFieldData
+        export class _EvalTextFieldData
         {
-            export const evalCellProperties = "evalCellProperties";
-            export const lineHeight = "lineHeight";
-            export const width = "width";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static evalCellProperties = "evalCellProperties";
+            static lineHeight = "lineHeight";
+            static width = "width";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __EvalTextFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData";
-        export module _SeparatorLineFieldData
+        export class _SeparatorLineFieldData
         {
-            export const Height = "Height";
+            static Height = "Height";
         }
 
         export const __SeparatorLineFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData";
-        export module _FileSelectionFieldData
+        export class _FileSelectionFieldData
         {
-            export const defaultExtension = "defaultExtension";
-            export const isSaving = "isSaving";
-            export const initialPathToDirectory = "initialPathToDirectory";
-            export const filter = "filter";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static defaultExtension = "defaultExtension";
+            static isSaving = "isSaving";
+            static initialPathToDirectory = "initialPathToDirectory";
+            static filter = "filter";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __FileSelectionFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData";
-        export module _DefaultTypeForNewElement
+        export class _DefaultTypeForNewElement
         {
-            export const name = "name";
-            export const metaClass = "metaClass";
-            export const parentProperty = "parentProperty";
+            static _name_ = "name";
+            static metaClass = "metaClass";
+            static parentProperty = "parentProperty";
         }
 
         export const __DefaultTypeForNewElement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement";
-        export module _FullNameFieldData
+        export class _FullNameFieldData
         {
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __FullNameFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData";
-        export module _CheckboxListTaggingFieldData
+        export class _CheckboxListTaggingFieldData
         {
-            export const values = "values";
-            export const separator = "separator";
-            export const containsFreeText = "containsFreeText";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static values = "values";
+            static separator = "separator";
+            static containsFreeText = "containsFreeText";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __CheckboxListTaggingFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData";
-        export module _NumberFieldData
+        export class _NumberFieldData
         {
-            export const format = "format";
-            export const isInteger = "isInteger";
-            export const isAttached = "isAttached";
-            export const name = "name";
-            export const title = "title";
-            export const isEnumeration = "isEnumeration";
-            export const defaultValue = "defaultValue";
-            export const isReadOnly = "isReadOnly";
+            static format = "format";
+            static isInteger = "isInteger";
+            static isAttached = "isAttached";
+            static _name_ = "name";
+            static title = "title";
+            static isEnumeration = "isEnumeration";
+            static defaultValue = "defaultValue";
+            static isReadOnly = "isReadOnly";
         }
 
         export const __NumberFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData";
@@ -929,97 +929,97 @@ export module _DatenMeister
             TreeItemDetailExtension
         }
 
-        export module _Form
+        export class _Form
         {
-            export const name = "name";
-            export const title = "title";
-            export const isReadOnly = "isReadOnly";
-            export const hideMetaInformation = "hideMetaInformation";
-            export const originalUri = "originalUri";
-            export const creationProtocol = "creationProtocol";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static creationProtocol = "creationProtocol";
         }
 
         export const __Form_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form";
-        export module _DetailForm
+        export class _DetailForm
         {
-            export const buttonApplyText = "buttonApplyText";
-            export const allowNewProperties = "allowNewProperties";
-            export const defaultWidth = "defaultWidth";
-            export const defaultHeight = "defaultHeight";
-            export const tab = "tab";
-            export const field = "field";
-            export const name = "name";
-            export const title = "title";
-            export const isReadOnly = "isReadOnly";
-            export const hideMetaInformation = "hideMetaInformation";
-            export const originalUri = "originalUri";
-            export const creationProtocol = "creationProtocol";
+            static buttonApplyText = "buttonApplyText";
+            static allowNewProperties = "allowNewProperties";
+            static defaultWidth = "defaultWidth";
+            static defaultHeight = "defaultHeight";
+            static tab = "tab";
+            static field = "field";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static creationProtocol = "creationProtocol";
         }
 
         export const __DetailForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm";
-        export module _ListForm
+        export class _ListForm
         {
-            export const property = "property";
-            export const metaClass = "metaClass";
-            export const includeDescendents = "includeDescendents";
-            export const noItemsWithMetaClass = "noItemsWithMetaClass";
-            export const inhibitNewItems = "inhibitNewItems";
-            export const inhibitDeleteItems = "inhibitDeleteItems";
-            export const inhibitEditItems = "inhibitEditItems";
-            export const defaultTypesForNewElements = "defaultTypesForNewElements";
-            export const fastViewFilters = "fastViewFilters";
-            export const field = "field";
-            export const sortingOrder = "sortingOrder";
-            export const viewNode = "viewNode";
-            export const autoGenerateFields = "autoGenerateFields";
-            export const duplicatePerType = "duplicatePerType";
-            export const name = "name";
-            export const title = "title";
-            export const isReadOnly = "isReadOnly";
-            export const hideMetaInformation = "hideMetaInformation";
-            export const originalUri = "originalUri";
-            export const creationProtocol = "creationProtocol";
+            static property = "property";
+            static metaClass = "metaClass";
+            static includeDescendents = "includeDescendents";
+            static noItemsWithMetaClass = "noItemsWithMetaClass";
+            static inhibitNewItems = "inhibitNewItems";
+            static inhibitDeleteItems = "inhibitDeleteItems";
+            static inhibitEditItems = "inhibitEditItems";
+            static defaultTypesForNewElements = "defaultTypesForNewElements";
+            static fastViewFilters = "fastViewFilters";
+            static field = "field";
+            static sortingOrder = "sortingOrder";
+            static viewNode = "viewNode";
+            static autoGenerateFields = "autoGenerateFields";
+            static duplicatePerType = "duplicatePerType";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static creationProtocol = "creationProtocol";
         }
 
         export const __ListForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm";
-        export module _ExtentForm
+        export class _ExtentForm
         {
-            export const tab = "tab";
-            export const autoTabs = "autoTabs";
-            export const name = "name";
-            export const title = "title";
-            export const isReadOnly = "isReadOnly";
-            export const hideMetaInformation = "hideMetaInformation";
-            export const originalUri = "originalUri";
-            export const creationProtocol = "creationProtocol";
+            static tab = "tab";
+            static autoTabs = "autoTabs";
+            static _name_ = "name";
+            static title = "title";
+            static isReadOnly = "isReadOnly";
+            static hideMetaInformation = "hideMetaInformation";
+            static originalUri = "originalUri";
+            static creationProtocol = "creationProtocol";
         }
 
         export const __ExtentForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm";
-        export module _ViewMode
+        export class _ViewMode
         {
-            export const name = "name";
-            export const id = "id";
-            export const defaultExtentType = "defaultExtentType";
+            static _name_ = "name";
+            static id = "id";
+            static defaultExtentType = "defaultExtentType";
         }
 
         export const __ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
     }
 
-    export module _AttachedExtent
+    export namespace _AttachedExtent
     {
-        export module _AttachedExtentConfiguration
+        export class _AttachedExtentConfiguration
         {
-            export const name = "name";
-            export const referencedWorkspace = "referencedWorkspace";
-            export const referencedExtent = "referencedExtent";
-            export const referenceType = "referenceType";
-            export const referenceProperty = "referenceProperty";
+            static _name_ = "name";
+            static referencedWorkspace = "referencedWorkspace";
+            static referencedExtent = "referencedExtent";
+            static referenceType = "referenceType";
+            static referenceProperty = "referenceProperty";
         }
 
         export const __AttachedExtentConfiguration_Uri = "dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration";
     }
 
-    export module _Management
+    export namespace _Management
     {
         export module _ExtentLoadingState
         {
@@ -1039,84 +1039,84 @@ export module _DatenMeister
             LoadedReadOnly
         }
 
-        export module _Extent
+        export class _Extent
         {
-            export const name = "name";
-            export const uri = "uri";
-            export const workspaceId = "workspaceId";
-            export const count = "count";
-            export const totalCount = "totalCount";
-            export const type = "type";
-            export const extentType = "extentType";
-            export const isModified = "isModified";
-            export const alternativeUris = "alternativeUris";
-            export const autoEnumerateType = "autoEnumerateType";
-            export const state = "state";
-            export const failMessage = "failMessage";
-            export const properties = "properties";
-            export const loadingConfiguration = "loadingConfiguration";
+            static _name_ = "name";
+            static uri = "uri";
+            static workspaceId = "workspaceId";
+            static count = "count";
+            static totalCount = "totalCount";
+            static type = "type";
+            static extentType = "extentType";
+            static isModified = "isModified";
+            static alternativeUris = "alternativeUris";
+            static autoEnumerateType = "autoEnumerateType";
+            static state = "state";
+            static failMessage = "failMessage";
+            static properties = "properties";
+            static loadingConfiguration = "loadingConfiguration";
         }
 
         export const __Extent_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent";
-        export module _Workspace
+        export class _Workspace
         {
-            export const id = "id";
-            export const annotation = "annotation";
-            export const extents = "extents";
+            static id = "id";
+            static annotation = "annotation";
+            static extents = "extents";
         }
 
         export const __Workspace_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace";
-        export module _CreateNewWorkspaceModel
+        export class _CreateNewWorkspaceModel
         {
-            export const id = "id";
-            export const annotation = "annotation";
+            static id = "id";
+            static annotation = "annotation";
         }
 
         export const __CreateNewWorkspaceModel_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel";
-        export module _ExtentTypeSetting
+        export class _ExtentTypeSetting
         {
-            export const name = "name";
-            export const rootElementMetaClasses = "rootElementMetaClasses";
+            static _name_ = "name";
+            static rootElementMetaClasses = "rootElementMetaClasses";
         }
 
         export const __ExtentTypeSetting_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentTypeSetting";
-        export module _ExtentProperties
+        export class _ExtentProperties
         {
-            export const name = "name";
-            export const uri = "uri";
-            export const workspaceId = "workspaceId";
-            export const count = "count";
-            export const totalCount = "totalCount";
-            export const type = "type";
-            export const extentType = "extentType";
-            export const isModified = "isModified";
-            export const alternativeUris = "alternativeUris";
-            export const autoEnumerateType = "autoEnumerateType";
-            export const state = "state";
-            export const failMessage = "failMessage";
-            export const properties = "properties";
-            export const loadingConfiguration = "loadingConfiguration";
+            static _name_ = "name";
+            static uri = "uri";
+            static workspaceId = "workspaceId";
+            static count = "count";
+            static totalCount = "totalCount";
+            static type = "type";
+            static extentType = "extentType";
+            static isModified = "isModified";
+            static alternativeUris = "alternativeUris";
+            static autoEnumerateType = "autoEnumerateType";
+            static state = "state";
+            static failMessage = "failMessage";
+            static properties = "properties";
+            static loadingConfiguration = "loadingConfiguration";
         }
 
         export const __ExtentProperties_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties";
-        export module _ExtentPropertyDefinition
+        export class _ExtentPropertyDefinition
         {
-            export const name = "name";
-            export const title = "title";
-            export const metaClass = "metaClass";
+            static _name_ = "name";
+            static title = "title";
+            static metaClass = "metaClass";
         }
 
         export const __ExtentPropertyDefinition_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentPropertyDefinition";
-        export module _ExtentSettings
+        export class _ExtentSettings
         {
-            export const extentTypeSettings = "extentTypeSettings";
-            export const propertyDefinitions = "propertyDefinitions";
+            static extentTypeSettings = "extentTypeSettings";
+            static propertyDefinitions = "propertyDefinitions";
         }
 
         export const __ExtentSettings_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentSettings";
     }
 
-    export module _FastViewFilters
+    export namespace _FastViewFilters
     {
         export module _ComparisonType
         {
@@ -1136,52 +1136,52 @@ export module _DatenMeister
             LighterOrEqualThan
         }
 
-        export module _PropertyComparisonFilter
+        export class _PropertyComparisonFilter
         {
-            export const Property = "Property";
-            export const ComparisonType = "ComparisonType";
-            export const Value = "Value";
+            static Property = "Property";
+            static ComparisonType = "ComparisonType";
+            static Value = "Value";
         }
 
         export const __PropertyComparisonFilter_Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyComparisonFilter";
-        export module _PropertyContainsFilter
+        export class _PropertyContainsFilter
         {
-            export const Property = "Property";
-            export const Value = "Value";
+            static Property = "Property";
+            static Value = "Value";
         }
 
         export const __PropertyContainsFilter_Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyContainsFilter";
     }
 
-    export module _DynamicRuntimeProvider
+    export namespace _DynamicRuntimeProvider
     {
-        export module _DynamicRuntimeLoaderConfig
+        export class _DynamicRuntimeLoaderConfig
         {
-            export const runtimeClass = "runtimeClass";
-            export const configuration = "configuration";
-            export const name = "name";
-            export const extentUri = "extentUri";
-            export const workspaceId = "workspaceId";
-            export const dropExisting = "dropExisting";
+            static runtimeClass = "runtimeClass";
+            static configuration = "configuration";
+            static _name_ = "name";
+            static extentUri = "extentUri";
+            static workspaceId = "workspaceId";
+            static dropExisting = "dropExisting";
         }
 
         export const __DynamicRuntimeLoaderConfig_Uri = "dm:///_internal/types/internal#8be3c0ea-ef40-4b4a-a4ea-9262e924d7b8";
-        export module _Examples
+        export namespace _Examples
         {
-            export module _NumberProviderSettings
+            export class _NumberProviderSettings
             {
-                export const name = "name";
-                export const start = "start";
-                export const end = "end";
+                static _name_ = "name";
+                static start = "start";
+                static end = "end";
             }
 
             export const __NumberProviderSettings_Uri = "dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a";
-            export module _NumberRepresentation
+            export class _NumberRepresentation
             {
-                export const binary = "binary";
-                export const octal = "octal";
-                export const decimal = "decimal";
-                export const hexadecimal = "hexadecimal";
+                static binary = "binary";
+                static octal = "octal";
+                static decimal = "decimal";
+                static hexadecimal = "hexadecimal";
             }
 
             export const __NumberRepresentation_Uri = "dm:///_internal/types/internal#DatenMeister.DynamicRuntimeProviders.Examples.NumberRepresentation";

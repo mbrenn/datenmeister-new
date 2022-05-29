@@ -38,14 +38,14 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
             File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
             File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.cs", true);
-            File.Copy($"{R}/primitivetypes.ts", $"{R}/../DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts", true);
-            File.Copy($"{R}/mof.ts", $"{R}/../DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts", true);
-            File.Copy($"{R}/uml.ts", $"{R}/../DatenMeister.WebServer/wwwroot/js/datenmeister/models/uml.ts", true);
+            File.Copy($"{R}/primitivetypes.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts", true);
+            File.Copy($"{R}/mof.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts", true);
+            File.Copy($"{R}/uml.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/uml.ts", true);
             
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister.Core/Models/DatenMeister.class.cs", true);
-            File.Copy($"./DatenMeister.class.ts", $"{R}/../DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts", true);
-            File.Copy($"./ExcelModels.class.ts", $"{R}/../DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.cs", true);
+            File.Copy($"./DatenMeister.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts", true);
+            File.Copy($"./ExcelModels.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.ts", true);
 #endif
         }
         

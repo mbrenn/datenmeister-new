@@ -60,7 +60,20 @@ namespace DatenMeister.SourcecodeGenerator
             var pathOfClassTree = GetPath(options, ".class.cs");
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
+            
 
+            ////////////////////////////////////////
+            // Creates the TypeScript tree
+            var tsTreeGenerator = new TypeScriptInterfaceGenerator(sourceParser)
+            {
+                Namespace = options.Namespace
+            };
+
+            tsTreeGenerator.Walk(extent);
+
+            var pathOfTsTree = GetPath(options, ".class.ts");
+            var tsFileContent = tsTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfTsTree, tsFileContent);
 
             /*
              * No filler

@@ -12,7 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DatenMeister.Provider.Xmi\DatenMeister.Provider.Xmi.csproj"/>
+      <ProjectReference Include="..\DatenMeister.Provider.Xmi\DatenMeister.Provider.Xmi.csproj" />
     </ItemGroup>
 
 </Project>

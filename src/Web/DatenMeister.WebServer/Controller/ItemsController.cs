@@ -284,7 +284,7 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/items/get_container/{workspaceId}/{itemUri}")]
-        public ActionResult<List<ItemWithNameAndId>> GetContainer(string workspaceId, string itemUri)
+        public ActionResult<List<ItemWithNameAndId>> GetContainer(string workspaceId, string itemUri, bool? self)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
@@ -295,10 +295,15 @@ namespace DatenMeister.WebServer.Controller
             var result = new List<ItemWithNameAndId>();
             var container = foundItem;
 
+            if (self != true)
+            {
+                // If the element itself shall not be returned...
+                container = container.container();
+            }
+
             int maxIteration = 100;
             do
             {
-                container = container.container();
                 if (container == null)
                 {
                     // Container is null
@@ -308,6 +313,8 @@ namespace DatenMeister.WebServer.Controller
                 result.Add(ItemWithNameAndId.Create(container)
                            ?? throw new InvalidOperationException("Should not happen"));
                 maxIteration--;
+                
+                container = container.container(); // Now go one container up
             } while (maxIteration > 0);
             
             // After we are at the root element, now return the management items for extent and workspace
@@ -316,14 +323,14 @@ namespace DatenMeister.WebServer.Controller
             var workspace = extent?.GetWorkspace();
             if (extent != null && workspace != null)
             {
-                result.Add(ItemWithNameAndId.Create(extent)
+                result.Add(ItemWithNameAndId.Create(extent, EntentType.Extent)
                            ?? throw new InvalidOperationException("Should not happen"));
 
                 var managementWorkspaceItem = _workspaceLogic.GetManagementWorkspace()
                     .ResolveById(ExtentManagementUrlHelper.GetIdOfWorkspace(workspace.id));
                 if (managementWorkspaceItem != null)
                 {
-                    result.Add(ItemWithNameAndId.Create(managementWorkspaceItem)
+                    result.Add(ItemWithNameAndId.Create(managementWorkspaceItem, EntentType.Workspace)
                                ?? throw new InvalidOperationException("Should not happen"));
                 }
             }

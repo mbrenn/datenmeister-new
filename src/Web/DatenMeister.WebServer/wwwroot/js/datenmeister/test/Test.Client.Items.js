@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../client/Extents", "../client/Workspace", "../client/Items", "../Mof"], function (require, exports, ClientExtent, ClientWorkspace, ClientItems, Mof_1) {
+define(["require", "exports", "../client/Extents", "../client/Workspace", "../client/Items", "../Mof", "../ApiModels"], function (require, exports, ClientExtent, ClientWorkspace, ClientItems, Mof_1, ApiModels_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -77,7 +77,7 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                         chai.assert.isTrue(result2.success, 'Item was not created');
                         const allItems = yield ClientItems.getRootElements('Test', 'dm:///unittest');
                         chai.assert.equal(allItems.length, 2, "There are less or more items in the root elements");
-                        for (var n in allItems) {
+                        for (let n in allItems) {
                             const item = allItems[n];
                             chai.assert.isTrue(item.uri === "dm:///unittest#" + result.itemId
                                 || item.uri === "dm:///unittest#" + result2.itemId);
@@ -86,6 +86,43 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                         chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
                     });
                 });
+                it('Get Container', () => __awaiter(this, void 0, void 0, function* () {
+                    const result = yield ClientItems.createItemInExtent("Test", "dm:///unittest", {});
+                    const subChild = yield ClientItems.createItemAsChild("Test", "dm:///unittest#" + result.itemId, { property: "packagedElement" });
+                    const subSubChild = yield ClientItems.createItemAsChild("Test", "dm:///unittest#" + subChild.itemId, { property: "packagedElement" });
+                    const extentContainer = yield ClientItems.getContainer("Test", "dm:///unittest#" + result.itemId);
+                    // Should only be extent and the workspace. First item as the extent
+                    chai.assert.isTrue(extentContainer.length === 2, "Test 1: Length should be 2");
+                    chai.assert.isTrue(extentContainer[0].ententType === ApiModels_1.EntentType.Extent, "Test 2: First item should be Extent");
+                    chai.assert.isTrue(extentContainer[1].ententType === ApiModels_1.EntentType.Workspace, "Test 3: First item should be Workspace");
+                    const extentContainer2 = yield ClientItems.getContainer("Test", "dm:///unittest#" + result.itemId, true);
+                    // Should only be extent and the workspace. First item as the extent
+                    chai.assert.isTrue(extentContainer2.length === 3, "Test 4: Length should be 3");
+                    chai.assert.isTrue(extentContainer2[0].ententType === ApiModels_1.EntentType.Item, "Test 5: First item should be Item");
+                    chai.assert.isTrue(extentContainer2[0].uri === "dm:///unittest#" + result.itemId);
+                    chai.assert.isTrue(extentContainer2[1].ententType === ApiModels_1.EntentType.Extent, "Test 6: First item should be Extent");
+                    chai.assert.isTrue(extentContainer2[2].ententType === ApiModels_1.EntentType.Workspace, "Test 7: First item should be Workspace");
+                    const extentContainer3 = yield ClientItems.getContainer("Test", "dm:///unittest#" + subSubChild.itemId, true);
+                    // Should only be extent and the workspace. First item as the extent
+                    chai.assert.isTrue(extentContainer3.length === 5, "Test 8: Length should be 3");
+                    chai.assert.isTrue(extentContainer3[0].ententType === ApiModels_1.EntentType.Item, "Test 9: First item should be Item");
+                    chai.assert.isTrue(extentContainer3[0].uri === "dm:///unittest#" + subSubChild.itemId, "Test 9a");
+                    chai.assert.isTrue(extentContainer3[1].ententType === ApiModels_1.EntentType.Item, "Test 10: First item should be Item");
+                    chai.assert.isTrue(extentContainer3[1].uri === "dm:///unittest#" + subChild.itemId, "Test 10a");
+                    chai.assert.isTrue(extentContainer3[2].ententType === ApiModels_1.EntentType.Item, "Test 11: First item should be Item");
+                    chai.assert.isTrue(extentContainer3[2].uri === "dm:///unittest#" + result.itemId, "Test 11a");
+                    chai.assert.isTrue(extentContainer3[3].ententType === ApiModels_1.EntentType.Extent, "Test 12: First item should be Extent");
+                    chai.assert.isTrue(extentContainer3[4].ententType === ApiModels_1.EntentType.Workspace, "Test 13: First item should be Workspace");
+                    const extentContainer4 = yield ClientItems.getContainer("Test", "dm:///unittest#" + subSubChild.itemId);
+                    // Should only be extent and the workspace. First item as the extent
+                    chai.assert.isTrue(extentContainer4.length === 4, "Test 14: Length should be 4");
+                    chai.assert.isTrue(extentContainer4[0].ententType === ApiModels_1.EntentType.Item, "Test 17 First item should be Item");
+                    chai.assert.isTrue(extentContainer4[0].uri === "dm:///unittest#" + subChild.itemId, "Test 18");
+                    chai.assert.isTrue(extentContainer4[1].ententType === ApiModels_1.EntentType.Item, "Test 19: First item should be Item");
+                    chai.assert.isTrue(extentContainer4[1].uri === "dm:///unittest#" + result.itemId, "Test 20");
+                    chai.assert.isTrue(extentContainer4[2].ententType === ApiModels_1.EntentType.Extent, "Test 21: First item should be Extent");
+                    chai.assert.isTrue(extentContainer4[3].ententType === ApiModels_1.EntentType.Workspace, "Test 22: First item should be Workspace");
+                }));
                 it('Set and get multiple properties', function () {
                     return __awaiter(this, void 0, void 0, function* () {
                         const element = new Mof_1.DmObject();

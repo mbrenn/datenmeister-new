@@ -6,6 +6,19 @@ using DatenMeister.Core.Uml.Helper;
 namespace DatenMeister.Json
 {
     /// <summary>
+    /// This enumeration method is a helper for the GetContainer method and supports to
+    /// describe the type of the element which is reflected in ItemWithNameAndId.
+    /// Default is the Item, but if the calling method knows that there is an extent
+    /// or a workspace described, the corresponding type can be set. 
+    /// </summary>
+    public enum EntentType
+    {
+        Item, 
+        Extent,
+        Workspace
+    }
+    
+    /// <summary>
     /// Defines some standard information about name, extentUri, fullName and id
     /// to have the most relevant information available for the web interface
     /// </summary>
@@ -25,12 +38,15 @@ namespace DatenMeister.Json
 
         public string? typeName { get; set; } = string.Empty;
 
+        public EntentType ententType { get; set; } = EntentType.Item;
+        
+
         /// <summary>
         /// Creates the element out of the attached object 
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static ItemWithNameAndId? Create(IObject? value)
+        public static ItemWithNameAndId? Create(IObject? value, EntentType ententType = EntentType.Item)
         {
             if (value == null)
             {
@@ -48,7 +64,8 @@ namespace DatenMeister.Json
                 id = (value as IHasId)?.Id ?? string.Empty,
                 uri = value.GetUri() ?? string.Empty,
                 workspace = extent?.GetWorkspace()?.id ?? string.Empty,
-                typeName = metaClass == null ? null :  NamedElementMethods.GetName(metaClass)
+                typeName = metaClass == null ? null :  NamedElementMethods.GetName(metaClass),
+                ententType = ententType
             };
 
             return result;

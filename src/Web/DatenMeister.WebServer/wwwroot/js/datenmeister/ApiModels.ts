@@ -1,5 +1,9 @@
 ﻿
-
+export enum EntentType{
+    Item, 
+    Extent, 
+    Workspace
+}
 
 export interface ItemWithNameAndId
 {
@@ -10,7 +14,8 @@ export interface ItemWithNameAndId
     id?: string;
     workspace?: string;
     typeName?: string;
-}
+    ententType?: EntentType;
+}   
 
 
 export interface ISuccessResult {

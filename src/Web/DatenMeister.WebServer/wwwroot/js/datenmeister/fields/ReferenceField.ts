@@ -18,6 +18,11 @@ export class Control {
     /** Defines the field properties */
     field: DmObject;
 
+    /** Defines whether the field flag to create the selection fields directly 
+     * at form creation shall be skipped, even if isSelectionInline is being set.
+     * This flag will be set when user has clicked on 'Set'.  */
+    inhibitInline: boolean;
+    
     _list: JQuery;
 
     /** Initializes a new instance 
@@ -79,7 +84,8 @@ export class Control {
                 this._list.append(containerChangeCell);
 
                 // Checks, whether the Drop-Down Field shall be completely pre-created
-                if (this.field?.get('isSelectionInline', ObjectType.Boolean) === true) {
+                if (this.inhibitInline !== true && 
+                    this.field?.get('isSelectionInline', ObjectType.Boolean) === true) {
                     this.createSelectFields(containerChangeCell, value);
                 }
             }
@@ -90,7 +96,7 @@ export class Control {
 
     /** Creates the GUI elements in which the user is capable to select the items to be reference
      * @param containerChangeCell The cell which will contain the GUI elements. This cell will be emptied
-     * @param value The value that is currently selecetd*/
+     * @param value The value that is currently selected*/
     private async createSelectFields(containerChangeCell: JQuery<HTMLElement>,  value: any) {
         
         const tthis = this;
@@ -113,6 +119,7 @@ export class Control {
 
                 containerChangeCell.empty();
 
+                tthis.inhibitInline = true;
                 await this.reloadValuesFromServer();
             });
 
@@ -193,7 +200,7 @@ export class Field extends Control implements IFormField {
     }
     
     async reloadValuesFromServer() {
-        let value = await ClientItem.getProperty(this.form.workspace, this.element.uri, this.fieldName );
+        let value = await ClientItem.getProperty(this.form.workspace, this.element.uri, this.fieldName);
 
         if (Array.isArray(value)) {
             if (value.length === 1) {

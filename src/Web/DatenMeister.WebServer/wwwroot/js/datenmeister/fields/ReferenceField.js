@@ -60,7 +60,8 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
                     this._list.append(unsetCell);
                     this._list.append(containerChangeCell);
                     // Checks, whether the Drop-Down Field shall be completely pre-created
-                    if (((_a = this.field) === null || _a === void 0 ? void 0 : _a.get('isSelectionInline', Mof_1.ObjectType.Boolean)) === true) {
+                    if (this.inhibitInline !== true &&
+                        ((_a = this.field) === null || _a === void 0 ? void 0 : _a.get('isSelectionInline', Mof_1.ObjectType.Boolean)) === true) {
                         this.createSelectFields(containerChangeCell, value);
                     }
                 }
@@ -69,7 +70,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
         }
         /** Creates the GUI elements in which the user is capable to select the items to be reference
          * @param containerChangeCell The cell which will contain the GUI elements. This cell will be emptied
-         * @param value The value that is currently selecetd*/
+         * @param value The value that is currently selected*/
         createSelectFields(containerChangeCell, value) {
             var _a, _b;
             return __awaiter(this, void 0, void 0, function* () {
@@ -86,6 +87,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
                         workspaceId: selectItem.getUserSelectedWorkspace()
                     });
                     containerChangeCell.empty();
+                    tthis.inhibitInline = true;
                     yield this.reloadValuesFromServer();
                 }));
                 yield selectItem.initAsync(containerChangeCell, settings);

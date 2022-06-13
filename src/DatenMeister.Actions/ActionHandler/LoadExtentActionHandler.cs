@@ -20,6 +20,11 @@ namespace DatenMeister.Actions.ActionHandler
         {
             var configuration =
                 action.getOrDefault<IElement>(_DatenMeister._Actions._LoadExtentAction.configuration);
+            if (configuration == null)
+            {
+                throw new InvalidOperationException("configuration is null");
+            }
+            
             var extentUri =
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri);
             var workspaceId =

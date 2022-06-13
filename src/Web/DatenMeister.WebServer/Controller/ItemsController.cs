@@ -284,7 +284,7 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/items/get_container/{workspaceId}/{itemUri}")]
-        public ActionResult<List<ItemWithNameAndId>> GetContainer(string workspaceId, string itemUri, bool? self)
+        public ActionResult<List<ItemWithNameAndId>> GetContainer(string workspaceId, string itemUri, bool? self = false)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);

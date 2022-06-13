@@ -40,7 +40,7 @@ namespace DatenMeister.WebServer.Controller
                     success =
                         result.LoadingState is ExtentLoadingState.Loaded or ExtentLoadingState.LoadedReadOnly;
 
-                    if (!success) return new ExecuteActionResult(false, result.FailLoadingMessage);
+                    if (!success) return new ExecuteActionResult(false, result.FailLoadingMessage, result.FailLoadingMessage);
                     break;
 
                 case "Execute":
@@ -54,13 +54,13 @@ namespace DatenMeister.WebServer.Controller
                     }
                     catch (Exception exc)
                     {
-                        return new ExecuteActionResult(false, exc.Message);
+                        return new ExecuteActionResult(false, exc.Message, exc.ToString());
                     }
 
                     break;
             }
 
-            return new ExecuteActionResult(success, "ActionNotFound");
+            return new ExecuteActionResult(success, "ActionNotFound", "");
         }
 
         public class ActionParams
@@ -71,7 +71,13 @@ namespace DatenMeister.WebServer.Controller
             public MofObjectAsJson? Parameter { get; set; }
         }
         
-        public record ExecuteActionResult(bool Success, string Reason)
+        /// <summary>
+        /// Defines the record for the ExecuteAction
+        /// </summary>
+        /// <param name="Success">true, if the action has been executed successfully</param>
+        /// <param name="Reason">Reason why it was not created successfully</param>
+        /// <param name="StackTrace">The corresponding stacktrace</param>
+        public record ExecuteActionResult(bool Success, string Reason, string StackTrace)
         {
             public override string ToString()
             {

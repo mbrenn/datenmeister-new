@@ -141,8 +141,27 @@ export class DmObject {
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = { v: {}, m: {} };
+    const result = {v: {}, m: {}};
     const values = result.v;
+
+    function convertValue(elementValue) {
+        if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+            // This is an object, so perform the transformation
+            return createJsonFromObject(elementValue);
+            
+        } else if (Array.isArray(elementValue)) {
+            // Do not send out arrays or objects
+            const value = {};
+            for (let n in elementValue) {
+                const childItem = elementValue[n];
+                value[n] = convertValue(childItem);
+            }
+            return value;
+            
+        } else {
+            return elementValue;
+        }
+    }
 
     for (const key in element.values) {
         if (!element.values.hasOwnProperty(key)) {
@@ -150,13 +169,7 @@ export function createJsonFromObject(element: DmObject) {
         }
 
         let elementValue = element.get(key);
-        if (Array.isArray(elementValue) ||
-            ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
-            // Do not send out arrays or objects
-            continue;
-        }
-
-        values[key] = element.get(key);
+        values[key] = convertValue(elementValue);
     }
 
     if (element.metaClass !== undefined && element.metaClass !== null) {

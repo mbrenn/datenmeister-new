@@ -6,6 +6,9 @@ import * as IIForms from "./forms/Interfaces";
 import * as ECClient from "./client/Extents";
 import * as ItemClient from "./client/Items";
 import * as FormClient from "./client/Forms";
+import * as ActionClient from "./client/Actions";
+import * as DatenMeisterModel from "./models/DatenMeister.class";
+
 import {SubmitMethod} from "./forms/DetailForm";
 
 export module DetailFormActions {
@@ -22,7 +25,9 @@ export module DetailFormActions {
             return await ECClient.getProperties(workspace, extentUri);
         }
 
-        if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
+        if (actionName === "Extent.CreateItem" 
+            || actionName === "Extent.CreateItemInProperty"
+            || actionName === "Workspace.Extent.LoadOrCreate.Step2" ) {
             const metaclass = p.get('metaclass');
             const result = new DmObject();
             if (metaclass !== undefined && metaclass !== null) {
@@ -35,7 +40,6 @@ export module DetailFormActions {
         if (actionName === "Zipcode.Test") {
 
             const result = new DmObject();
-
             result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
             return Promise.resolve(result);
         }
@@ -151,19 +155,37 @@ export module DetailFormActions {
                 const workspaceIdParameter = parameter?.get('workspaceId') ?? "";
                 await FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
                 break;
+            case "Workspace.Extent.LoadOrCreate.Step2":
+                const extentCreationParameter = new DmObject();
+                extentCreationParameter.set('configuration', element);
+                extentCreationParameter.setMetaClassByUri(
+                    DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
+                );
+
+                const result = await ActionClient.executeAction(
+                    "Execute",
+                    {
+                        parameter: extentCreationParameter
+                    }
+                );
+
+                if (result.success !== true) {
+                    alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
+                }
+                else {
+                    alert('Extent was created successfully');
+                }
+
+                break;
             case "Workspace.Extent.LoadOrCreate":
                 const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
                 if (extentType === null || extentType === undefined) {
                     alert('No Extent Type has been selected');
                 } else {
-                    document.location.href= Settings.baseUrl +
+                    document.location.href = Settings.baseUrl +
                         "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaclass=" + encodeURIComponent(extentType.uri);
                 }
 
-                break;
-            case "Workspace.Extent.LoadOrCreate.Step2":
-                
-                
                 break;
             case "Workspace.Extent.Xmi.Create":
                 await ApiConnection.post<any>(

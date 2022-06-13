@@ -11,6 +11,7 @@ export interface ExecuteActionResult
 {
     success: boolean;
     reason: string;
+    stackTrace: string;
 }
 
 export async function executeAction(actionName: string, parameter: ExecuteActionParams)

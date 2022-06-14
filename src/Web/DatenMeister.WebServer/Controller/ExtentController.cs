@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
 {
+
     [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
     [ApiController]
     public class ExtentController : ControllerBase
@@ -21,6 +22,23 @@ namespace DatenMeister.WebServer.Controller
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
+        }
+        
+        public record ExistsResults
+        {
+            public bool Exists { get; set; }
+        }
+
+        [HttpGet("api/extent/exists/{workspace}/{extent}")]
+        public ActionResult<ExistsResults> Exists(string workspace, string extent)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            extent = HttpUtility.UrlDecode(extent);
+
+            var foundExtent = _workspaceLogic.FindExtent(workspace, extent);
+            return foundExtent == null 
+                ? new ExistsResults { Exists = false } 
+                : new ExistsResults { Exists = true };
         }
 
         [HttpPost("api/extent/set_properties/{workspace}/{extent}")]

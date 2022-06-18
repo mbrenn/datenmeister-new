@@ -15,7 +15,7 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
             this.createFormByObject(this.parentHtml, this.configuration);
         }
         createFormByObject(parent, configuration) {
-            var _a, _b, _c, _d, _e, _f;
+            var _a, _b, _c, _d, _e, _f, _g;
             this.parentHtml = parent;
             this.configuration = configuration;
             if (configuration.isReadOnly === undefined) {
@@ -101,9 +101,19 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
             if (!configuration.isReadOnly) {
                 // Add the Cancel and Submit buttons at the end of the creation to the table
                 // allowing the cancelling and setting of the properties
-                tr = $("<tr><td></td><td><button class='btn btn-secondary dm-detail-form-cancel'>Cancel</button>" +
-                    "<button class='btn btn-primary dm-detail-form-save'>Save</button>" +
-                    "<button class='btn btn-primary dm-detail-form-save-and-close'>Save &amp; Close</button></td></tr>");
+                const submitName = (_b = configuration.submitName) !== null && _b !== void 0 ? _b : "Save";
+                const cancelButton = $("<button class='btn btn-secondary dm-detail-form-cancel'>Cancel</button>");
+                const saveButton = $("<button class='btn btn-primary dm-detail-form-save'></button>").text(submitName);
+                const saveAndCloseButton = $("<button class='btn btn-primary dm-detail-form-save-and-close'>Save &amp; Close</button>");
+                tr = $("<tr><td></td><td class='dm-form-submitbutton-cell'></td></tr>");
+                const formSubmitButtonsCell = $('.dm-form-submitbutton-cell', tr);
+                if (configuration.showCancelButton !== false) {
+                    formSubmitButtonsCell.append(cancelButton);
+                }
+                formSubmitButtonsCell.append(saveButton);
+                if (configuration.submitName === undefined) {
+                    formSubmitButtonsCell.append(saveAndCloseButton);
+                }
                 tableBody.append(tr);
                 $(".dm-detail-form-cancel", tr).on('click', () => {
                     if (tthis.onCancel !== undefined && tthis.onCancel !== null) {
@@ -134,10 +144,10 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
             tableInfo.append($("<tr><th>Workspace</th><td class='dm-detail-info-workspace'>W</td></tr>"));
             tableInfo.append($("<tr><th>Extent-Uri</th><td class='dm-detail-info-extenturi'>E</td></tr>"));
             tableInfo.append($("<tr><th>Metaclass</th><td class='dm-detail-info-metaclass'>m</td></tr>"));
-            $(".dm-detail-info-uri", tableInfo).text((_b = this.element.uri) !== null && _b !== void 0 ? _b : "none");
-            $(".dm-detail-info-workspace", tableInfo).text((_c = this.element.workspace) !== null && _c !== void 0 ? _c : "none");
-            $(".dm-detail-info-extenturi", tableInfo).text((_d = this.element.extentUri) !== null && _d !== void 0 ? _d : "none");
-            $(".dm-detail-info-metaclass", tableInfo).text((_f = (_e = this.element.metaClass) === null || _e === void 0 ? void 0 : _e.fullName) !== null && _f !== void 0 ? _f : "none");
+            $(".dm-detail-info-uri", tableInfo).text((_c = this.element.uri) !== null && _c !== void 0 ? _c : "none");
+            $(".dm-detail-info-workspace", tableInfo).text((_d = this.element.workspace) !== null && _d !== void 0 ? _d : "none");
+            $(".dm-detail-info-extenturi", tableInfo).text((_e = this.element.extentUri) !== null && _e !== void 0 ? _e : "none");
+            $(".dm-detail-info-metaclass", tableInfo).text((_g = (_f = this.element.metaClass) === null || _f === void 0 ? void 0 : _f.fullName) !== null && _g !== void 0 ? _g : "none");
             parent.append(tableInfo);
         }
     }

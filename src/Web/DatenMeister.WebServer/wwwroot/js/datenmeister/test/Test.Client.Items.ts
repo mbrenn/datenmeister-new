@@ -2,6 +2,7 @@
 import * as ClientWorkspace from "../client/Workspace"
 import * as ClientItems from "../client/Items"
 import {DmObject} from "../Mof";
+import {EntentType} from "../ApiModels";
 
 export function includeTests() {
     describe('Client', function () {
@@ -104,7 +105,7 @@ export function includeTests() {
 
                 const allItems = await ClientItems.getRootElements('Test', 'dm:///unittest');
                 chai.assert.equal(allItems.length, 2, "There are less or more items in the root elements");
-                for (var n in allItems) {
+                for (let n in allItems) {
                     const item = allItems[n];
                     chai.assert.isTrue(item.uri === "dm:///unittest#" + result.itemId
                         || item.uri === "dm:///unittest#" + result2.itemId);
@@ -112,6 +113,96 @@ export function includeTests() {
 
                 const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
+            });
+            
+            it('Get Container', async () => {
+                const result = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+
+                const subChild = await ClientItems.createItemAsChild(
+                    "Test",
+                    "dm:///unittest#" + result.itemId,
+                    {property: "packagedElement"}
+                );
+
+                const subSubChild = await ClientItems.createItemAsChild(
+                    "Test",
+                    "dm:///unittest#" + subChild.itemId,
+                    {property: "packagedElement"}
+                );
+                
+                const extentContainer = await ClientItems.getContainer(
+                    "Test", 
+                    "dm:///unittest#" + result.itemId
+                );
+                
+                // Should only be extent and the workspace. First item as the extent
+                chai.assert.isTrue(extentContainer.length === 2, "Test 1: Length should be 2");
+                chai.assert.isTrue(extentContainer[0].ententType === EntentType.Extent,
+                    "Test 2: First item should be Extent");
+                chai.assert.isTrue(extentContainer[1].ententType === EntentType.Workspace, 
+                    "Test 3: First item should be Workspace");
+
+                const extentContainer2 = await ClientItems.getContainer(
+                    "Test",
+                    "dm:///unittest#" + result.itemId,
+                    true
+                );
+
+                // Should only be extent and the workspace. First item as the extent
+                chai.assert.isTrue(extentContainer2.length === 3, "Test 4: Length should be 3");
+                chai.assert.isTrue(extentContainer2[0].ententType === EntentType.Item,
+                    "Test 5: First item should be Item");
+                chai.assert.isTrue(extentContainer2[0].uri === "dm:///unittest#" + result.itemId)
+                chai.assert.isTrue(extentContainer2[1].ententType === EntentType.Extent,
+                    "Test 6: First item should be Extent");
+                chai.assert.isTrue(extentContainer2[2].ententType === EntentType.Workspace,
+                    "Test 7: First item should be Workspace");
+
+                const extentContainer3 = await ClientItems.getContainer(
+                    "Test",
+                    "dm:///unittest#" + subSubChild.itemId,
+                    true
+                );
+
+                // Should only be extent and the workspace. First item as the extent
+                chai.assert.isTrue(extentContainer3.length === 5, "Test 8: Length should be 3");
+                chai.assert.isTrue(extentContainer3[0].ententType === EntentType.Item,
+                    "Test 9: First item should be Item");
+                chai.assert.isTrue(extentContainer3[0].uri === "dm:///unittest#" + subSubChild.itemId, "Test 9a")
+                chai.assert.isTrue(extentContainer3[1].ententType === EntentType.Item,
+                    "Test 10: First item should be Item");
+                chai.assert.isTrue(extentContainer3[1].uri === "dm:///unittest#" + subChild.itemId, "Test 10a")
+                chai.assert.isTrue(extentContainer3[2].ententType === EntentType.Item,
+                    "Test 11: First item should be Item");
+                chai.assert.isTrue(extentContainer3[2].uri === "dm:///unittest#" + result.itemId, "Test 11a")
+                chai.assert.isTrue(extentContainer3[3].ententType === EntentType.Extent,
+                    "Test 12: First item should be Extent");
+                chai.assert.isTrue(extentContainer3[4].ententType === EntentType.Workspace,
+                    "Test 13: First item should be Workspace");
+
+                const extentContainer4 = await ClientItems.getContainer(
+                    "Test",
+                    "dm:///unittest#" + subSubChild.itemId
+                );
+
+                // Should only be extent and the workspace. First item as the extent
+                chai.assert.isTrue(extentContainer4.length === 4, "Test 14: Length should be 4");
+                chai.assert.isTrue(extentContainer4[0].ententType === EntentType.Item,
+                    "Test 17 First item should be Item");
+                chai.assert.isTrue(extentContainer4[0].uri === "dm:///unittest#" + subChild.itemId, 
+                    "Test 18")
+                chai.assert.isTrue(extentContainer4[1].ententType === EntentType.Item,
+                    "Test 19: First item should be Item");
+                chai.assert.isTrue(extentContainer4[1].uri === "dm:///unittest#" + result.itemId, 
+                    "Test 20")
+                chai.assert.isTrue(extentContainer4[2].ententType === EntentType.Extent,
+                    "Test 21: First item should be Extent");
+                chai.assert.isTrue(extentContainer4[3].ententType === EntentType.Workspace,
+                    "Test 22: First item should be Workspace");
             });
 
             it('Set and get multiple properties', async function () {

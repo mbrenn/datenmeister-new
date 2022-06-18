@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../client/Elements", "../../burnsystems/Events", "../DomHelper"], function (require, exports, EL, Events_1, DomHelper_1) {
+define(["require", "exports", "../client/Elements", "../client/Items", "../ApiModels", "../../burnsystems/Events", "../DomHelper"], function (require, exports, EL, ItemsClient, ApiModels_1, Events_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SelectItemControl = exports.Settings = void 0;
@@ -23,7 +23,6 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
     exports.Settings = Settings;
     class SelectItemControl {
         constructor() {
-            this.visitedItems = new Array();
             this.loadedWorkspaces = new Array();
             this.loadedExtents = new Array();
             /*
@@ -150,7 +149,6 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 const tthis = this;
                 tthis.htmlWorkspaceSelect.empty();
                 const items = yield EL.getAllWorkspaces();
-                tthis.visitedItems.length = 0;
                 tthis.loadedWorkspaces = items;
                 const none = $("<option value=''>--- None ---</option>");
                 tthis.htmlWorkspaceSelect.append(none);
@@ -196,10 +194,10 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                     throw "DOM is not initialized. Call initDom first";
                 }
                 const item = yield EL.loadNameByUri(workspaceId, itemUri);
+                this.selectedItem = item;
                 yield this.setWorkspaceById(workspaceId);
                 yield this.setExtentByUri(item.extentUri);
                 yield this.loadItems(item.uri);
-                this.selectedItem = item;
                 this.htmlSelectedElements.empty();
                 this.htmlSelectedElements.append(yield (0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
             });
@@ -226,7 +224,6 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 }
                 else {
                     const items = yield EL.getAllExtents(workspaceId);
-                    tthis.visitedItems.length = 0;
                     const none = $("<option value=''>--- None ---</option>");
                     tthis.htmlExtentSelect.append(none);
                     tthis.loadedExtents = items;
@@ -256,15 +253,6 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                 if (workspaceId === "" || extentUri === "") {
                     const select = $("<li>--- Select Extent ---</li>");
                     this.htmlItemsList.append(select);
-                    this.visitedItems.length = 0;
-                    if (extentUri !== "" && extentUri !== undefined && extentUri !== null) {
-                        this.visitedItems.push({
-                            id: extentUri,
-                            name: extentUri,
-                            fullName: extentUri,
-                            extentUri: extentUri
-                        });
-                    }
                     return true;
                 }
                 else {
@@ -282,7 +270,6 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
                                 tthis.itemClicked.invoke(innerItem);
                                 tthis.htmlSelectedElements.empty();
                                 tthis.htmlSelectedElements.append((0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
-                                tthis.visitedItems.push(item);
                                 tthis.refreshBreadcrumb();
                             }))(item);
                             tthis.htmlItemsList.append(option);
@@ -305,40 +292,53 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
         }
         // Refreshes the elements on the bread crumb 
         refreshBreadcrumb() {
-            const tthis = this;
-            this.htmlBreadcrumbList.empty();
-            if (this.settings.showBreadcrumb) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const tthis = this;
                 const currentWorkspace = this.getUserSelectedWorkspace();
                 const currentExtent = this.getUserSelectedExtent();
-                // Starts by showing the button to select to select the Workspaces
-                if (this.settings.showWorkspaceInBreadcrumb) {
-                    this.addBreadcrumbItem("Workspaces", () => tthis.loadWorkspaces());
-                    // Now show the current workspace
-                    if (currentWorkspace !== "" && currentWorkspace !== undefined) {
-                        this.addBreadcrumbItem(currentWorkspace, () => {
-                            tthis.loadExtents();
-                            tthis.visitedItems.length = 0;
-                        });
+                let containerItems;
+                if (this.selectedItem !== undefined && this.selectedItem.uri !== undefined) {
+                    containerItems = yield ItemsClient.getContainer(currentWorkspace, this.selectedItem.uri, true);
+                }
+                this.htmlBreadcrumbList.empty();
+                if (this.settings.showBreadcrumb) {
+                    // Starts by showing the button to select to select the Workspaces
+                    if (this.settings.showWorkspaceInBreadcrumb) {
+                        this.addBreadcrumbItem("Workspaces", () => tthis.loadWorkspaces());
+                        // Now show the current workspace
+                        if (currentWorkspace !== "" && currentWorkspace !== undefined) {
+                            this.addBreadcrumbItem(currentWorkspace, () => {
+                                tthis.loadExtents();
+                            });
+                        }
+                    }
+                    // Shows the extent itself in the breadcrumb, if configured
+                    if (this.settings.showExtentInBreadcrumb) {
+                        if (currentExtent !== "" && currentExtent !== undefined) {
+                            this.addBreadcrumbItem(currentExtent, () => {
+                                tthis.loadItems();
+                            });
+                        }
+                    }
+                    if (containerItems !== undefined) {
+                        // Otherwise, just go to the parents
+                        for (let n = 0; n < containerItems.length; n++) {
+                            const item = containerItems[containerItems.length - 1 - n];
+                            if (item.ententType !== ApiModels_1.EntentType.Item) {
+                                // The shown item is not of type "Item", this means it is an extent or a workspace
+                                // The Extent or Workspace is covered by the source above
+                                continue;
+                            }
+                            ((innerItem) => {
+                                this.addBreadcrumbItem(item.name, () => {
+                                    this.selectedItem = innerItem;
+                                    tthis.loadItems(item.uri);
+                                });
+                            })(item);
+                        }
                     }
                 }
-                // Shows the extent itself in the breadcrumb, if configured
-                if (this.settings.showExtentInBreadcrumb) {
-                    if (currentExtent !== "" && currentExtent !== undefined) {
-                        this.addBreadcrumbItem(currentExtent, () => {
-                            tthis.loadItems();
-                            tthis.visitedItems.length = 0;
-                        });
-                    }
-                }
-                // Otherwise, just go to the parents
-                for (let n = 0; n < this.visitedItems.length; n++) {
-                    const item = this.visitedItems[n];
-                    this.addBreadcrumbItem(item.name, () => {
-                        tthis.loadItems(item.uri);
-                        tthis.visitedItems = tthis.visitedItems.slice(0, n + 1);
-                    });
-                }
-            }
+            });
         }
         // Evaluates the preselection of the workspaces
         evaluatePreSelectedWorkspace() {
@@ -377,10 +377,10 @@ define(["require", "exports", "../client/Elements", "../../burnsystems/Events", 
             const breadcrumbItem = $("<li class='breadcrumb-item active'></li>");
             breadcrumbItem.text(text);
             // Remove all breadcrumb items till that one
-            breadcrumbItem.on('click', () => {
+            breadcrumbItem.on('click', () => __awaiter(this, void 0, void 0, function* () {
                 onClick();
-                tthis.refreshBreadcrumb();
-            });
+                yield tthis.refreshBreadcrumb();
+            }));
             this.htmlBreadcrumbList.append(breadcrumbItem);
         }
     }

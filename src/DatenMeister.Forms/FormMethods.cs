@@ -260,12 +260,14 @@ namespace DatenMeister.Forms
                 // Nothing to do, when no default types are set
                 return;
             }
-            
+
             var handled = new List<IObject>();
 
             foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
             {
                 var metaClass = element.getOrDefault<IObject>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
+                if (metaClass == null) continue;
+
                 if (handled.Any(x => x.@equals(metaClass)))
                 {
                     defaultNewTypesForElements.remove(element);

@@ -2,6 +2,20 @@
 import * as ApiConnection from "../ApiConnection"
 import * as Mof from "../Mof";
 
+export interface IExistsResult
+{
+    exists: boolean;
+}
+
+export async function exists(workspaceId: string, extent: string) {
+    let url = Settings.baseUrl +
+        "api/extent/exists/"
+        + encodeURIComponent(workspaceId) + "/"
+        + encodeURIComponent(extent);
+
+    return await ApiConnection.get<IExistsResult>(url);
+}
+
 export function createXmi(params: ICreateXmiParams) {
     return new Promise<ICreateXmiResult>((resolve, reject) => {
 

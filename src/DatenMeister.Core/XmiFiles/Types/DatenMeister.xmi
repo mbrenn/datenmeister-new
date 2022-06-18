@@ -563,6 +563,17 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Actions.EchoAction" name="EchoAction">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="55233f60-c637-410f-ba32-84ffe3ec8752" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+      </generalization>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b8a3ea8f-b505-46bc-ab43-1bed0922e2f4" name="shallSuccess" type-ref="dm:///_internal/model/primitivetypes#String">
+      </ownedAttribute>
+    </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="04878741-802e-4b7f-8003-21d25f38ac74" name="DocumentOpenAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
@@ -925,7 +936,7 @@
       </packagedElement>
     </packagedElement>
   </item>
-  <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="277cc881-eab8-4457-88d6-09f89f2f1bbc">
+  <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="DatenMeister.ExtentLoaderConfigs">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9f928238-ab4d-46f4-bcd4-2605fa66edda" name="name" type-ref="dm:///_internal/model/primitivetypes#String">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
@@ -1202,8 +1213,8 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ReferenceFieldData" name="ReferenceFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4c7257a4-4e25-4ddc-876e-6dcfc3282249" general-ref="#DatenMeister.Models.Forms.FieldData" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ef02f2f4-ee7e-45b3-af15-c1673b189e9e" name="isSelectionInline" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b2536ba2-97fa-472f-967c-4f70983297a2" name="defaultExtentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d5caf8d-b0e7-4df9-8f64-b06d77279cad" name="defaultWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b2536ba2-97fa-472f-967c-4f70983297a2" name="defaultItemUri" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="30c40e0e-835f-4b6d-ae2e-6095d077d70c" name="showAllChildren" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="887f50c3-31bf-4650-a82e-d14535015898" name="showWorkspaceSelection" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="49107bf3-7371-4139-bc4e-f3747ea698b3" name="showExtentSelection" type-ref="dm:///_internal/model/primitivetypes#Boolean" />

@@ -17,7 +17,9 @@
     <TypeScriptCompile Remove="node_modules\**" />
     <TypeScriptCompile Include="wwwroot\js\**.ts" />
     <TypeScriptCompile Include="wwwroot\js\burnsystems\tests\events.test.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Actions.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Forms.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Elements.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ts" />
   </ItemGroup>
 
@@ -30,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
     <ProjectReference Include="..\..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
@@ -41,6 +44,7 @@
     <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
     <ProjectReference Include="..\..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
   </ItemGroup>
 

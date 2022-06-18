@@ -11,41 +11,15 @@
 <script type="application/javascript">
 $(function()
 {
-    CreateEditForm();
-});
+    requirejs(['forms/ActionForm'], function(actionForm) {
     
-@if (string.IsNullOrEmpty(Model.MetaClass))
-{
-    <text>
-    function CreateEditForm()
-    {
-        requirejs(['forms/ActionForm'], function(actionForm) {
-        
-            actionForm.createActionFormForEmptyObject(
-                $("#form_view"),
-                undefined,
-                {isReadOnly: false, allowAddingNewProperties: true, formUri: @Html.Raw(Model.JsFormUri)}, 
-                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");        
-        });
-    }
-    </text>
-}
-else
-{
-    <text>
-    function CreateEditForm()
-    {
-        requirejs(['forms/ActionForm'], function(actionForm) {
-       
-            actionForm.createActionFormForEmptyObject(
-                $("#form_view"),
-                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.MetaClass))",
-                {isReadOnly: false, allowAddingNewProperties: true, formUri: @Model.JsFormUri},
-                "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");
-        });
-    }
-    </text>
-}
+        actionForm.createActionFormForEmptyObject(
+            $("#form_view"),
+            @(string.IsNullOrEmpty(Model.MetaClass) ? "undefined" : Html.Raw($"\"{HttpUtility.JavaScriptStringEncode(Model.MetaClass)}\"")),
+            {isReadOnly: false, allowAddingNewProperties: true, formUri: @Html.Raw(Model.JsFormUri)}, 
+            "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");        
+    });
+});
 
 </script>
 

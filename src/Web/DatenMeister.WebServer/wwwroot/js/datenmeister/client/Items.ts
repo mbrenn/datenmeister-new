@@ -147,11 +147,18 @@ export async function getRootElements(workspace: string, extentUri: string): Pro
     return result;
 }
 
-export async function getContainer(workspaceId: string, itemUri: string): Promise<Array<ItemWithNameAndId>> {
-    return await ApiConnection.get<Array<ItemWithNameAndId>>(
-        Settings.baseUrl + "api/items/get_container/"
+export async function getContainer(workspaceId: string, itemUri: string, self?: boolean): Promise<Array<ItemWithNameAndId>> {
+    
+    let uri = Settings.baseUrl + "api/items/get_container/"
         + encodeURIComponent(workspaceId) + "/"
-        + encodeURIComponent(itemUri));
+        + encodeURIComponent(itemUri);
+    
+    if ( self === true )
+    {
+        uri += "?self=true";
+    }
+    
+    return await ApiConnection.get<Array<ItemWithNameAndId>>(uri);
 }
 
 export async  function setProperty(
@@ -171,7 +178,7 @@ export async function unsetProperty(
         "/" +
         encodeURIComponent(itemUrl);
 
-    return await ApiConnection.put<any>(url, {property: property});
+    return await ApiConnection.post<any>(url, {property: property});
 }
 
 export async function setPropertiesByStringValues(workspaceId: string, itemUrl: string, params: ISetPropertiesParams): Promise<ISuccessResult> {

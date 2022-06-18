@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./forms/DetailForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, DetailForm_1) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/DetailForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, DetailForm_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -15,40 +15,49 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     (function (DetailFormActions) {
         // Loads the object being used for the action. 
         function loadObjectForAction(actionName) {
-            let p = new URLSearchParams(window.location.search);
-            if (actionName === "Extent.Properties.Update") {
-                const workspace = p.get('workspace');
-                const extentUri = p.get('extent');
-                return ECClient.getProperties(workspace, extentUri);
-            }
-            if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
-                const metaclass = p.get('metaclass');
-                return new Promise(resolve => {
+            return __awaiter(this, void 0, void 0, function* () {
+                let p = new URLSearchParams(window.location.search);
+                if (actionName === "Extent.Properties.Update") {
+                    const workspace = p.get('workspace');
+                    const extentUri = p.get('extent');
+                    return yield ECClient.getProperties(workspace, extentUri);
+                }
+                if (actionName === "Extent.CreateItem"
+                    || actionName === "Extent.CreateItemInProperty"
+                    || actionName === "Workspace.Extent.LoadOrCreate.Step2") {
+                    const metaclass = p.get('metaclass');
                     const result = new Mof_1.DmObject();
                     if (metaclass !== undefined && metaclass !== null) {
                         result.setMetaClassByUri(metaclass);
                     }
-                    resolve(result);
-                });
-            }
-            if (actionName === "Zipcode.Test") {
-                return new Promise(resolve => {
+                    return Promise.resolve(result);
+                }
+                if (actionName === "Zipcode.Test") {
                     const result = new Mof_1.DmObject();
                     result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
-                    resolve(result);
-                });
-            }
-            if (actionName === "Workspace.Extent.Xmi.Create") {
-                return new Promise(resolve => {
+                    return Promise.resolve(result);
+                }
+                if (actionName === "Workspace.Extent.Xmi.Create") {
                     const result = new Mof_1.DmObject();
                     result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
                     result.set("workspaceId", p.get('workspaceId'));
-                    resolve(result);
-                });
-            }
-            return undefined;
+                    return Promise.resolve(result);
+                }
+                /* Nothing has been found, so return an undefined */
+                return Promise.resolve(undefined);
+            });
         }
         DetailFormActions.loadObjectForAction = loadObjectForAction;
+        /* Finds the best form fitting for the action */
+        function loadFormForAction(actionName) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (actionName === 'Workspace.Extent.LoadOrCreate') {
+                    return yield FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
+                }
+                return Promise.resolve(undefined);
+            });
+        }
+        DetailFormActions.loadFormForAction = loadFormForAction;
         function requiresConfirmation(actionName) {
             if (actionName === "Item.Delete"
                 || actionName === "ExtentsList.DeleteItem"
@@ -125,10 +134,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         FormActions.itemNavigateTo(form.workspace, element.uri);
                         break;
                     case "ExtentsList.DeleteItem":
-                        FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
                         break;
                     case "Item.Delete":
-                        FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                         break;
                     case "ZipExample.CreateExample":
                         const id = element.get('id');
@@ -139,7 +148,31 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         break;
                     case "Workspace.Extent.Xmi.Create.Navigate":
                         const workspaceIdParameter = (_a = parameter === null || parameter === void 0 ? void 0 : parameter.get('workspaceId')) !== null && _a !== void 0 ? _a : "";
-                        FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                        yield FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                        break;
+                    case "Workspace.Extent.LoadOrCreate.Step2":
+                        const extentCreationParameter = new Mof_1.DmObject();
+                        extentCreationParameter.set('configuration', element);
+                        extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri);
+                        const result = yield ActionClient.executeAction("Execute", {
+                            parameter: extentCreationParameter
+                        });
+                        if (result.success !== true) {
+                            alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
+                        }
+                        else {
+                            alert('Extent was created successfully');
+                        }
+                        break;
+                    case "Workspace.Extent.LoadOrCreate":
+                        const extentType = yield ItemClient.getProperty("Data", element.uri, "extentType");
+                        if (extentType === null || extentType === undefined) {
+                            alert('No Extent Type has been selected');
+                        }
+                        else {
+                            document.location.href = Settings.baseUrl +
+                                "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaclass=" + encodeURIComponent(extentType.uri);
+                        }
                         break;
                     case "Workspace.Extent.Xmi.Create":
                         yield ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
@@ -208,7 +241,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 }
                 const json = (0, Mof_1.createJsonFromObject)(element);
                 yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
-                    metaClass: (metaClass === undefined || metaClass === undefined) ? "" : metaClass,
+                    metaClass: (metaClass === undefined || metaClass === null) ? "" : metaClass,
                     property: property,
                     asList: true,
                     properties: json

@@ -5,56 +5,65 @@ import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./forms/Interfaces";
 import * as ECClient from "./client/Extents";
 import * as ItemClient from "./client/Items";
+import * as FormClient from "./client/Forms";
+import * as ActionClient from "./client/Actions";
+import * as DatenMeisterModel from "./models/DatenMeister.class";
+
 import {SubmitMethod} from "./forms/DetailForm";
 
 export module DetailFormActions {
 
     // Loads the object being used for the action. 
-    export function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
+    export async function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
 
         let p = new URLSearchParams(window.location.search);
 
         if (actionName === "Extent.Properties.Update") {
-
             const workspace = p.get('workspace');
             const extentUri = p.get('extent');
 
-            return ECClient.getProperties(workspace, extentUri);
+            return await ECClient.getProperties(workspace, extentUri);
         }
 
-        if (actionName === "Extent.CreateItem" || actionName === "Extent.CreateItemInProperty") {
+        if (actionName === "Extent.CreateItem" 
+            || actionName === "Extent.CreateItemInProperty"
+            || actionName === "Workspace.Extent.LoadOrCreate.Step2" ) {
             const metaclass = p.get('metaclass');
-            return new Promise<DmObject>(resolve => {
-                const result = new DmObject();
+            const result = new DmObject();
+            if (metaclass !== undefined && metaclass !== null) {
+                result.setMetaClassByUri(metaclass);
+            }
 
-                if (metaclass !== undefined && metaclass !== null) {
-                    result.setMetaClassByUri(metaclass);
-                }
-
-                resolve(result);
-            });
+            return Promise.resolve(result);
         }
 
         if (actionName === "Zipcode.Test") {
-            return new Promise<DmObject>(resolve => {
-                const result = new DmObject();
 
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
-                resolve(result);
-            });
+            const result = new DmObject();
+            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+            return Promise.resolve(result);
         }
 
         if (actionName === "Workspace.Extent.Xmi.Create") {
-            return new Promise<DmObject>(resolve => {
-                const result = new DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
-                result.set("workspaceId", p.get('workspaceId'));
 
-                resolve(result);
-            });
+            const result = new DmObject();
+            result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+            result.set("workspaceId", p.get('workspaceId'));
+
+            return Promise.resolve(result);
         }
 
-        return undefined;
+        /* Nothing has been found, so return an undefined */
+        return Promise.resolve(undefined);
+    }
+    
+    /* Finds the best form fitting for the action */
+    export async function loadFormForAction(actionName: string) {
+        if (actionName === 'Workspace.Extent.LoadOrCreate') {
+            return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
+        }
+
+        return Promise.resolve(undefined);
     }
 
     export function requiresConfirmation(actionName: string): boolean {
@@ -127,10 +136,10 @@ export module DetailFormActions {
                 FormActions.itemNavigateTo(form.workspace, element.uri);
                 break;
             case "ExtentsList.DeleteItem":
-                FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
                 break;
             case "Item.Delete":
-                FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                await FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                 break;
             case "ZipExample.CreateExample":
                 const id = element.get('id');
@@ -144,7 +153,39 @@ export module DetailFormActions {
                 break;
             case "Workspace.Extent.Xmi.Create.Navigate":
                 const workspaceIdParameter = parameter?.get('workspaceId') ?? "";
-                FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                await FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
+                break;
+            case "Workspace.Extent.LoadOrCreate.Step2":
+                const extentCreationParameter = new DmObject();
+                extentCreationParameter.set('configuration', element);
+                extentCreationParameter.setMetaClassByUri(
+                    DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
+                );
+
+                const result = await ActionClient.executeAction(
+                    "Execute",
+                    {
+                        parameter: extentCreationParameter
+                    }
+                );
+
+                if (result.success !== true) {
+                    alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
+                }
+                else {
+                    alert('Extent was created successfully');
+                }
+
+                break;
+            case "Workspace.Extent.LoadOrCreate":
+                const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
+                if (extentType === null || extentType === undefined) {
+                    alert('No Extent Type has been selected');
+                } else {
+                    document.location.href = Settings.baseUrl +
+                        "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaclass=" + encodeURIComponent(extentType.uri);
+                }
+
                 break;
             case "Workspace.Extent.Xmi.Create":
                 await ApiConnection.post<any>(
@@ -227,7 +268,7 @@ export class FormActions {
         await ApiConnection.post(
             Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl),
             {
-                metaClass: (metaClass === undefined || metaClass === undefined) ? "" : metaClass,
+                metaClass: (metaClass === undefined || metaClass === null) ? "" : metaClass,
                 property: property,
                 asList: true,
                 properties: json

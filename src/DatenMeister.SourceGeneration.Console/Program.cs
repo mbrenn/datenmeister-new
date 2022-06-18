@@ -20,6 +20,8 @@ namespace DatenMeister.SourceGeneration.Console
             // First, creates
             CreateSourceForUmlAndMof();
 
+            CreateTypescriptForUmlAndMof();
+
             CreateSourceForExcel();
 
             // CreateSourceForDataViews();
@@ -28,16 +30,46 @@ namespace DatenMeister.SourceGeneration.Console
 
             CreateSourceCodeForDatenMeisterAllTypes();
 
+            CreateTypescriptForDatenMeisterAllTypes();
+
             System.Console.WriteLine("Closing Source Code Generator");
 
 #if !DEBUG
             File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
             File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
             File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.cs", true);
+            File.Copy($"{R}/primitivetypes.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts", true);
+            File.Copy($"{R}/mof.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts", true);
+            File.Copy($"{R}/uml.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/uml.ts", true);
             
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister.Core/Models/DatenMeister.class.cs", true);
+            File.Copy($"./DatenMeister.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts", true);
+            File.Copy($"./ExcelModels.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.ts", true);
 #endif
+        }
+        
+        private static void CreateTypescriptForDatenMeisterAllTypes()
+        {
+            var dm = GiveMe.DatenMeister();
+
+            System.Console.Write("Create TypeScript for DatenMeister...");
+
+            var pseudoExtent = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage).InternalTypes;
+
+            ////////////////////////////////////////
+            // Creates the class tree
+
+            // Creates the source parser which is needed to navigate through the package
+            var sourceParser = new ElementSourceParser();
+            var classTreeGenerator = new TypeScriptInterfaceGenerator(sourceParser);
+
+            classTreeGenerator.Walk(pseudoExtent);
+
+            var pathOfClassTree = "DatenMeister.class.ts";
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
+            System.Console.WriteLine(" Done");
         }
 
         private static void CreateSourceCodeForDatenMeisterAllTypes()
@@ -101,15 +133,8 @@ namespace DatenMeister.SourceGeneration.Console
 
             generator.Walk(umlExtent);
 
-            /*var extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._UML")
-            {
-                Namespace = "DatenMeister.Models.EMOF"
-            };
-            extentCreator.Walk(umlExtent);*/
-
             File.WriteAllText($"{R}/uml.cs", generator.Result.ToString());
-            // File.WriteAllText($"{R}/FillTheUML.cs", extentCreator.Result.ToString());
-            System.Console.WriteLine("C# Code for UML written");
+            System.Console.WriteLine("TS-Code for UML written");
 
             // Generates tree for MOF
             generator = new ClassTreeGenerator
@@ -118,16 +143,8 @@ namespace DatenMeister.SourceGeneration.Console
             };
             generator.Walk(mofExtent);
 
-            /*7extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._MOF")
-            {
-                Namespace = "DatenMeister.Models.EMOF"
-            };
-
-            extentCreator.Walk(mofExtent);*/
-
             File.WriteAllText($"{R}/mof.cs", generator.Result.ToString());
-            // File.WriteAllText($"{R}/FillTheMOF.cs", extentCreator.Result.ToString());
-            System.Console.WriteLine("C# Code for MOF written");
+            System.Console.WriteLine("TS-Code for MOF written");
 
             // Generates tree for PrimitiveTypes
             generator = new ClassTreeGenerator
@@ -136,15 +153,41 @@ namespace DatenMeister.SourceGeneration.Console
             };
             generator.Walk(primitiveTypeExtent);
 
-            /*extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._PrimitiveTypes")
-            {
-                Namespace = "DatenMeister.Models.EMOF"
-            };
-
-            extentCreator.Walk(primitiveTypeExtent);*/
-
             File.WriteAllText($"{R}/primitivetypes.cs", generator.Result.ToString());
-            // File.WriteAllText($"{R}/FillThePrimitiveTypes.cs", extentCreator.Result.ToString());
+            System.Console.WriteLine("TS-Code for PrimitiveTypes written");
+        }
+
+        private static void CreateTypescriptForUmlAndMof()
+        {
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml, null);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof, null);
+            var primitiveTypeExtent =
+                new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes, null);
+
+            var loader = new SimpleLoader();
+            loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");
+            loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, "data/MOF.xmi");
+            loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent, "data/PrimitiveTypes.xmi");
+
+            // Generates tree for UML
+            var generator = new TypeScriptInterfaceGenerator();
+            generator.Walk(umlExtent);
+
+            File.WriteAllText($"{R}/uml.ts", generator.Result.ToString());
+            System.Console.WriteLine("C# Code for UML written");
+
+            // Generates tree for MOF
+            generator = new TypeScriptInterfaceGenerator();
+            generator.Walk(mofExtent);
+
+            File.WriteAllText($"{R}/mof.ts", generator.Result.ToString());
+            System.Console.WriteLine("C# Code for MOF written");
+
+            // Generates tree for PrimitiveTypes
+            generator = new TypeScriptInterfaceGenerator();
+            generator.Walk(primitiveTypeExtent);
+
+            File.WriteAllText($"{R}/primitivetypes.ts", generator.Result.ToString());
             System.Console.WriteLine("C# Code for PrimitiveTypes written");
         }
     }

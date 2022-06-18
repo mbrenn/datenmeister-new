@@ -1,8 +1,8 @@
 ﻿import * as EL from '../client/Elements';
 import * as ItemsClient from '../client/Items';
-import {ItemWithNameAndId} from "../ApiModels";
+import {EntentType, ItemWithNameAndId} from "../ApiModels";
 import {UserEvent} from "../../burnsystems/Events";
-import {convertDmObjectToDom, convertItemWithNameAndIdToDom} from "../DomHelper";
+import {convertItemWithNameAndIdToDom} from "../DomHelper";
 
 export class Settings {
     showBreadcrumb = true;
@@ -34,7 +34,6 @@ export class SelectItemControl {
     // Defines the settings of the Select Item
     private settings: Settings;
 
-    private visitedItems: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private selectedWorkspace?: ItemWithNameAndId;
@@ -199,7 +198,6 @@ export class SelectItemControl {
 
         const items = await EL.getAllWorkspaces();
 
-        tthis.visitedItems.length = 0;
         tthis.loadedWorkspaces = items;
         const none = $("<option value=''>--- None ---</option>");
         tthis.htmlWorkspaceSelect.append(none);
@@ -252,12 +250,11 @@ export class SelectItemControl {
         }
         
         const item = await EL.loadNameByUri(workspaceId, itemUri);
-        
+
+        this.selectedItem = item;
         await this.setWorkspaceById(workspaceId);
         await this.setExtentByUri(item.extentUri);
-        await this.loadItems(item.uri);
-        
-        this.selectedItem = item;
+        await this.loadItems(item.uri);     
         
         this.htmlSelectedElements.empty();
         this.htmlSelectedElements.append(await convertItemWithNameAndIdToDom(item));
@@ -286,8 +283,6 @@ export class SelectItemControl {
             this.htmlExtentSelect.append(select);
         } else {
             const items = await EL.getAllExtents(workspaceId);
-
-            tthis.visitedItems.length = 0;
 
             const none = $("<option value=''>--- None ---</option>");
             tthis.htmlExtentSelect.append(none);
@@ -327,18 +322,6 @@ export class SelectItemControl {
         if (workspaceId === "" || extentUri === "") {
             const select = $("<li>--- Select Extent ---</li>");
             this.htmlItemsList.append(select);
-            this.visitedItems.length = 0;
-
-            if (extentUri !== "" && extentUri !== undefined && extentUri !== null) {
-                this.visitedItems.push(
-                    {
-                        id: extentUri,
-                        name: extentUri,
-                        fullName: extentUri,
-                        extentUri: extentUri
-                    }
-                );
-            }
 
             return true;
 
@@ -362,7 +345,6 @@ export class SelectItemControl {
                             tthis.htmlSelectedElements.empty();
                             tthis.htmlSelectedElements.append(convertItemWithNameAndIdToDom(item));
                             
-                            tthis.visitedItems.push(item);
                             tthis.refreshBreadcrumb();
                         }))(item);
 
@@ -388,25 +370,30 @@ export class SelectItemControl {
     }
 
     // Refreshes the elements on the bread crumb 
-    refreshBreadcrumb() {
+    async refreshBreadcrumb() {
         const tthis = this;
-        this.htmlBreadcrumbList.empty();
+        const currentWorkspace = this.getUserSelectedWorkspace();
+        const currentExtent = this.getUserSelectedExtent();
 
+        let containerItems;
+        if (this.selectedItem !== undefined && this.selectedItem.uri !== undefined) {
+            containerItems = await ItemsClient.getContainer(currentWorkspace, this.selectedItem.uri, true);
+        }
+
+        this.htmlBreadcrumbList.empty();
+        
         if (this.settings.showBreadcrumb) {
-            const currentWorkspace = this.getUserSelectedWorkspace();
-            const currentExtent = this.getUserSelectedExtent();
 
             // Starts by showing the button to select to select the Workspaces
             if (this.settings.showWorkspaceInBreadcrumb) {
                 this.addBreadcrumbItem("Workspaces", () => tthis.loadWorkspaces());
-                
+
                 // Now show the current workspace
                 if (currentWorkspace !== "" && currentWorkspace !== undefined) {
                     this.addBreadcrumbItem(
                         currentWorkspace,
                         () => {
                             tthis.loadExtents();
-                            tthis.visitedItems.length = 0;
                         }
                     );
                 }
@@ -419,22 +406,31 @@ export class SelectItemControl {
                         currentExtent,
                         () => {
                             tthis.loadItems();
-                            tthis.visitedItems.length = 0;
                         }
                     );
                 }
             }
 
-            // Otherwise, just go to the parents
-            for (let n = 0; n < this.visitedItems.length; n++) {
-                const item = this.visitedItems[n];
+            if (containerItems !== undefined) {
+                
+                // Otherwise, just go to the parents
+                for (let n = 0; n < containerItems.length; n++) {
+                    const item = containerItems[containerItems.length - 1 - n];
+                    if(item.ententType !== EntentType.Item){
+                        // The shown item is not of type "Item", this means it is an extent or a workspace
+                        // The Extent or Workspace is covered by the source above
+                        continue;
+                    }
 
-                this.addBreadcrumbItem(
-                    item.name,
-                    () => {
-                        tthis.loadItems(item.uri);
-                        tthis.visitedItems = tthis.visitedItems.slice(0, n + 1);
-                    });
+                    ((innerItem) => {
+                        this.addBreadcrumbItem(
+                            item.name,
+                            () => {
+                                this.selectedItem = innerItem;
+                                tthis.loadItems(item.uri);
+                            });
+                    })(item);
+                }
             }
         }
     }
@@ -479,9 +475,9 @@ export class SelectItemControl {
         breadcrumbItem.text(text);
 
         // Remove all breadcrumb items till that one
-        breadcrumbItem.on('click', () => {
+        breadcrumbItem.on('click', async () => {
             onClick();
-            tthis.refreshBreadcrumb();
+            await tthis.refreshBreadcrumb();
         });
 
         this.htmlBreadcrumbList.append(breadcrumbItem);

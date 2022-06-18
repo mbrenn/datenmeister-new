@@ -116,11 +116,15 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.getRootElements = getRootElements;
-    function getContainer(workspaceId, itemUri) {
+    function getContainer(workspaceId, itemUri, self) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield ApiConnection.get(Settings.baseUrl + "api/items/get_container/"
+            let uri = Settings.baseUrl + "api/items/get_container/"
                 + encodeURIComponent(workspaceId) + "/"
-                + encodeURIComponent(itemUri));
+                + encodeURIComponent(itemUri);
+            if (self === true) {
+                uri += "?self=true";
+            }
+            return yield ApiConnection.get(uri);
         });
     }
     exports.getContainer = getContainer;
@@ -142,7 +146,7 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
                 encodeURIComponent(workspaceId) +
                 "/" +
                 encodeURIComponent(itemUrl);
-            return yield ApiConnection.put(url, { property: property });
+            return yield ApiConnection.post(url, { property: property });
         });
     }
     exports.unsetProperty = unsetProperty;

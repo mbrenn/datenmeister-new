@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../ApiConnection", "../Settings"], function (require, exports, ApiConnection, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.findBySearchString = exports.loadNameByUri = exports.loadNameOf = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
+    exports.findBySearchString = exports.createTemporaryElement = exports.loadNameByUri = exports.loadNameOf = exports.getAllChildItems = exports.getAllRootItems = exports.getAllExtents = exports.getAllWorkspaces = void 0;
     function getAllWorkspaces() {
         return load(undefined, undefined);
     }
@@ -66,6 +66,15 @@ define(["require", "exports", "../ApiConnection", "../Settings"], function (requ
         });
     }
     exports.loadNameByUri = loadNameByUri;
+    function createTemporaryElement(metaClassUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.put(Settings.baseUrl +
+                "api/elements/create_temporary_element", {
+                metaClassUri: metaClassUri
+            });
+        });
+    }
+    exports.createTemporaryElement = createTemporaryElement;
     function findBySearchString(searchString) {
         return ApiConnection.get(Settings.baseUrl +
             "api/elements/find_by_searchstring?search=" +

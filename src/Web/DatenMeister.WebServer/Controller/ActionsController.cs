@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using DatenMeister.Actions;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -12,24 +14,24 @@ namespace DatenMeister.WebServer.Controller
     public class ActionsController : ControllerBase
     {
         [HttpPost("api/action/{actionName}")]
-        public ActionResult<object> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
+        public async Task<ActionResult<object>> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
         {
             var success = true;
             if (actionParams.Parameter == null)
             {
                 throw new InvalidOperationException("Parameter are not set");
             }
-            
+
             var mofParameter = DirectJsonDeconverter.ConvertToObject(actionParams.Parameter);
             switch (actionName)
             {
                 case "Workspace.Extent.Xmi.Create":
                     if (mofParameter.metaclass?.@equals(_DatenMeister.TheOne.ExtentLoaderConfigs
-                        .__XmiStorageLoaderConfig) != true)
+                            .__XmiStorageLoaderConfig) != true)
                     {
                         throw new InvalidOperationException("Wrong metaclass. Expected XmiStorageLoaderConfig");
                     }
-                    
+
                     var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
                     var extentManager = new ExtentManager(workspaceLogic, GiveMe.Scope.ScopeStorage);
                     var result = extentManager.LoadExtent(
@@ -38,11 +40,27 @@ namespace DatenMeister.WebServer.Controller
                     success =
                         result.LoadingState is ExtentLoadingState.Loaded or ExtentLoadingState.LoadedReadOnly;
 
-                    if (!success) return new { success = false, reason = result.FailLoadingMessage };
+                    if (!success) return new ExecuteActionResult(false, result.FailLoadingMessage, result.FailLoadingMessage);
+                    break;
+
+                case "Execute":
+                    var actionLogic = new ActionLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+                    try
+                    {
+                        await actionLogic.ExecuteAction(
+                            mofParameter
+                        );
+
+                    }
+                    catch (Exception exc)
+                    {
+                        return new ExecuteActionResult(false, exc.Message, exc.ToString());
+                    }
+
                     break;
             }
 
-            return new { success, reason = "ActionNotFound" };
+            return new ExecuteActionResult(success, "ActionNotFound", "");
         }
 
         public class ActionParams
@@ -51,6 +69,20 @@ namespace DatenMeister.WebServer.Controller
             /// Gets or sets the parameter for the action
             /// </summary>
             public MofObjectAsJson? Parameter { get; set; }
+        }
+        
+        /// <summary>
+        /// Defines the record for the ExecuteAction
+        /// </summary>
+        /// <param name="Success">true, if the action has been executed successfully</param>
+        /// <param name="Reason">Reason why it was not created successfully</param>
+        /// <param name="StackTrace">The corresponding stacktrace</param>
+        public record ExecuteActionResult(bool Success, string Reason, string StackTrace)
+        {
+            public override string ToString()
+            {
+                return $"{{ success = {Success}, reason = {Reason} }}";
+            }
         }
     }
 }

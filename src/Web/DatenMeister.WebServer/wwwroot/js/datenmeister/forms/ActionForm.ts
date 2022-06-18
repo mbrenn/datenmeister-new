@@ -4,71 +4,91 @@ import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
 import {DetailFormActions} from "../FormActions";
 import * as ClientForms from '../client/Forms'
+import * as ClientElements from '../client/Elements'
+import * as ClientItems from '../client/Items'
+import * as DataLoader from "../client/Items";
 
-export function createActionFormForEmptyObject(
+export async function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,
     metaClass: string,
     configuration: IFormConfiguration,
     actionName: string) {
-    const tthis = this;
+    
+    configuration.submitName = "Perform Action";
+    configuration.showCancelButton = false;
+    configuration.allowAddingNewProperties = false;
 
     if (configuration.refreshForm === undefined) {
-        configuration.refreshForm = () => {
+        configuration.refreshForm = () => {            
             createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         }
     }
 
     const creator = new Forms.DetailFormCreator();
 
-    configuration.isNewItem = true;
-    configuration.onSubmit = (element, method) => {
-        DetailFormActions.execute(
+    configuration.onSubmit = async (element, method) => {
+
+        // Stores the most recent changes on the server
+        await DataLoader.setProperties("Data", temporaryElement.uri, element);
+
+        // Executes the detail form
+        await DetailFormActions.execute(
             actionName,
             creator,
             undefined,
-            creator.element,
+            element,
             undefined, // The action form cannot provide additional parameters as the ActionButton
             method);
     };
 
-    let deferLoadObjectForAction = DetailFormActions.loadObjectForAction(actionName);
-    if (deferLoadObjectForAction === undefined) {
-        deferLoadObjectForAction = new Promise<DmObject>(resolve => {
-            resolve(new DmObject());
-        });
+    /* Loads the object being used as a base for the new action.
+    * Usually context information from GET-Query are retrieved. Or some default fields are filled out
+    */
+    let element = await DetailFormActions.loadObjectForAction(actionName);
+    if (element === undefined) {
+        element = new DmObject();
+    }
+    
+    // If, we have created the element, we will now have to create the temporary object on the server
+    const temporaryElement = await ClientElements.createTemporaryElement(element.metaClass?.uri);
+    await ClientItems.setProperties("Data", temporaryElement.uri, element);    
+    
+    /* Now find the right form */
+    
+    let form;
+    
+    // After having loaded the object, load the form
+    if (metaClass === undefined && element.metaClass?.uri !== undefined) {
+        // If the returned element has a metaclass, then set the metaClass being used to 
+        // find the right form to the one by the element
+        metaClass = element.metaClass.uri;
+    } else if (element.metaClass === undefined) {
+        // Updates the metaclass, if the metaclass is not set by the element itself
+        element.setMetaClassByUri(metaClass);
     }
 
-    let deferForm;
-
-    deferLoadObjectForAction.then((element) => {
-        if (metaClass === undefined && element.metaClass?.uri !== undefined) {
-            // If the returned element has a metaclass, then set the metaClass being used to 
-            // find the right form to the one by the element
-            metaClass = element.metaClass.uri;
-        } else if (element.metaClass === undefined) {
-            // Updates the metaclass, if the metaclass is not set by the element itself
-            element.setMetaClassByUri(metaClass);
-        }
-
+    // Asks the detail form actions, whether we have a form for the action itself
+    form = await DetailFormActions.loadFormForAction(actionName);
+    if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {
             // Ok, we already have an explicit form
-            deferForm = ClientForms.getForm(configuration.formUri);
+            form = await ClientForms.getForm(configuration.formUri);
         } else if (metaClass === undefined) {
             // If there is no metaclass set, create a total empty form object...
-            deferForm = new Promise<DmObject>(resolve => {
-                resolve(Forms.FormModel.createEmptyFormWithDetail());
-            });
+            form = Forms.FormModel.createEmptyFormWithDetail();
         } else {
-            deferForm = ClientForms.getDefaultFormForMetaClass(metaClass);
+            form = await ClientForms.getDefaultFormForMetaClass(metaClass);
         }
+    }
+    
+    creator.element = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
+    creator.formElement = form;
+    creator.workspace = "Data";
+    creator.extentUri = creator.element.extentUri;
+    
+    // Finally, we have everything together, create the form
+    creator.createFormByObject(parent, configuration);
 
-        deferForm.then((form) => {
-            creator.element = element;
-            creator.formElement = form;
-            creator.createFormByObject(parent, configuration);
-
-            debugElementToDom(form, "#debug_formelement");
-        });
-    });
+    debugElementToDom(form, "#debug_formelement");
 }

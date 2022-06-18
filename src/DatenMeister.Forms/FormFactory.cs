@@ -204,7 +204,7 @@ namespace DatenMeister.Forms
                     new FindFormQuery
                     {
                         metaClass = metaClass,
-                        FormType = _DatenMeister._Forms.___FormType.Detail,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                         viewModeId = configuration.ViewModeId
                     }).FirstOrDefault();
 
@@ -240,7 +240,7 @@ namespace DatenMeister.Forms
                 var formCreationContext = new FormCreationContext
                 {
                     MetaClass = metaClass,
-                    FormType = _DatenMeister._Forms.___FormType.Detail
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
                 };
 
                 CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);

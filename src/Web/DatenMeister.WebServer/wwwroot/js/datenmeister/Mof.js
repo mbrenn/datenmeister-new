@@ -1,7 +1,14 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = void 0;
+    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = exports.ObjectType = void 0;
+    var ObjectType;
+    (function (ObjectType) {
+        ObjectType[ObjectType["Default"] = 0] = "Default";
+        ObjectType[ObjectType["Single"] = 1] = "Single";
+        ObjectType[ObjectType["Array"] = 2] = "Array";
+        ObjectType[ObjectType["Boolean"] = 3] = "Boolean";
+    })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
         constructor() {
             this.isReference = false;
@@ -10,8 +17,29 @@ define(["require", "exports"], function (require, exports) {
         set(key, value) {
             this.values[key] = value;
         }
-        get(key) {
-            return this.values[key];
+        get(key, objectType) {
+            let result = this.values[key];
+            switch (objectType) {
+                case ObjectType.Default:
+                    return result;
+                case ObjectType.Single:
+                    if (Array.isArray(result)) {
+                        return result[0];
+                    }
+                    return result;
+                case ObjectType.Array:
+                    if (Array.isArray(result)) {
+                        return result;
+                    }
+                    return [result];
+                case ObjectType.Boolean:
+                    if (Array.isArray(result)) {
+                        result = result[0];
+                    }
+                    // Take the standard routine but also check that there is no '0' in the text
+                    return Boolean(result) && result !== "0";
+            }
+            return result;
         }
         getAsArray(key) {
             const value = this.get(key);
@@ -92,17 +120,30 @@ define(["require", "exports"], function (require, exports) {
     function createJsonFromObject(element) {
         const result = { v: {}, m: {} };
         const values = result.v;
+        function convertValue(elementValue) {
+            if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+                // This is an object, so perform the transformation
+                return createJsonFromObject(elementValue);
+            }
+            else if (Array.isArray(elementValue)) {
+                // Do not send out arrays or objects
+                const value = {};
+                for (let n in elementValue) {
+                    const childItem = elementValue[n];
+                    value[n] = convertValue(childItem);
+                }
+                return value;
+            }
+            else {
+                return elementValue;
+            }
+        }
         for (const key in element.values) {
             if (!element.values.hasOwnProperty(key)) {
                 continue;
             }
             let elementValue = element.get(key);
-            if (Array.isArray(elementValue) ||
-                ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
-                // Do not send out arrays or objects
-                continue;
-            }
-            values[key] = element.get(key);
+            values[key] = convertValue(elementValue);
         }
         if (element.metaClass !== undefined && element.metaClass !== null) {
             result.m = element.metaClass;

@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Web
 
             var extentsData = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)
                               ?? throw new InvalidOperationException("No management workspace found");
-            Assert.That(extentsData.extent.Count(), Is.EqualTo(0));
+            var n = extentsData.extent.Count();
 
             zipController.CreateZipExample(new ZipController.CreateZipExampleParam
             {
@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Web
             
             extentsData = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)
                           ?? throw new InvalidOperationException("No management workspace found");
-            Assert.That(extentsData.extent.Count(), Is.EqualTo(1));
+            Assert.That(extentsData.extent.Count(), Is.EqualTo(n + 1));
         }
     }
 }

@@ -138,9 +138,25 @@ export class DetailForm implements InterfacesForms.IForm {
         if (!configuration.isReadOnly) {
             // Add the Cancel and Submit buttons at the end of the creation to the table
             // allowing the cancelling and setting of the properties
-            tr = $("<tr><td></td><td><button class='btn btn-secondary dm-detail-form-cancel'>Cancel</button>" +
-                "<button class='btn btn-primary dm-detail-form-save'>Save</button>" +
-                "<button class='btn btn-primary dm-detail-form-save-and-close'>Save &amp; Close</button></td></tr>");
+            const submitName = configuration.submitName ?? "Save";
+
+            const cancelButton = $("<button class='btn btn-secondary dm-detail-form-cancel'>Cancel</button>");
+            const saveButton = $("<button class='btn btn-primary dm-detail-form-save'></button>").text(submitName);
+            const saveAndCloseButton = $("<button class='btn btn-primary dm-detail-form-save-and-close'>Save &amp; Close</button>");
+
+            tr = $("<tr><td></td><td class='dm-form-submitbutton-cell'></td></tr>");
+            const formSubmitButtonsCell = $('.dm-form-submitbutton-cell', tr);
+
+            if (configuration.showCancelButton !== false) {
+                formSubmitButtonsCell.append(cancelButton);
+            }
+
+            formSubmitButtonsCell.append(saveButton);
+
+            if (configuration.submitName === undefined) {
+                formSubmitButtonsCell.append(saveAndCloseButton);
+            }
+
             tableBody.append(tr);
 
             $(".dm-detail-form-cancel", tr).on('click', () => {

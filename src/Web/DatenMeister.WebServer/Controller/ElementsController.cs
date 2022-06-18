@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -6,6 +7,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Json;
+using DatenMeister.TemporaryExtent;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -79,7 +81,6 @@ namespace DatenMeister.WebServer.Controller
             return Internal.FindBySearchString(search);
         }
 
-
         public class FindBySearchStringResult
         {
             public const string ResultTypeNone = "none";
@@ -89,6 +90,53 @@ namespace DatenMeister.WebServer.Controller
             public string resultType { get; set; } = ResultTypeNone;
             
             public ItemWithNameAndId? reference { get; set; }
+        }
+
+        public class CreateTemporaryElementParams
+        {
+            /// <summary>
+            /// Gets or sets the uri of the metaclass
+            /// </summary>
+            public string? MetaClassUri { get; set; }
+        }
+
+        [HttpPut("api/elements/create_temporary_element")]
+        public ActionResult<CreateTemporaryElementResult> CreateTemporaryElement([FromBody] CreateTemporaryElementParams? parameter)
+        {
+            var logic = new TemporaryExtentLogic(_workspaceLogic);
+
+            // Defines the metaclass
+            IElement? metaClass = null;
+            if (parameter != null && !string.IsNullOrEmpty(parameter.MetaClassUri))
+            {
+                metaClass =
+                    _workspaceLogic.GetTypesWorkspace()
+                        .Resolve(parameter.MetaClassUri, ResolveType.Default) as IElement;
+            }
+
+            // Create the temporary element
+            var result = logic.CreateTemporaryElement(metaClass);
+            return new CreateTemporaryElementResult
+            {
+                Success = true,
+                Uri = result.GetUri() ?? throw new InvalidOperationException("No uri defined")
+            };
+        }
+
+        /// <summary>
+        /// Defines the result of the CreateTemporaryElement method 
+        /// </summary>
+        public class CreateTemporaryElementResult
+        {
+            /// <summary>
+            /// Gets or sets a flag indicating the success
+            /// </summary>
+            public bool Success { get; set; }
+
+            /// <summary>
+            /// Gets or sets the uri 
+            /// </summary>
+            public string Uri { get; set; } = string.Empty;
         }
     }
 }

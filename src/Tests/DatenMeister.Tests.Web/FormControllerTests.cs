@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Web
                 zipExtent.contextURI(),
                 ViewModes.Default);
             Assert.That(foundForm, Is.Not.Null);
-            Assert.That(foundForm.Value.IndexOf("tab", StringComparison.Ordinal) != -1);
+            Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
 
         [Test]
@@ -202,10 +202,12 @@ namespace DatenMeister.Tests.Web
                 Workspace = WorkspaceNames.WorkspaceData
             });
 
+            Assert.That(result.Value, Is.Not.Null);
+
             var zipExtent = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!
                 .extent
                 .OfType<IUriExtent>()
-                .FirstOrDefault(x=>x.contextURI() == result.Value.ExtentUri);
+                .FirstOrDefault(x=>x.contextURI() == result.Value!.ExtentUri);
 
             var formsController = new FormsController(dm.WorkspaceLogic, dm.ScopeStorage);
             return (zipExtent!, formsController, new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage));

@@ -18,7 +18,7 @@ $(function()
     {
         let listForm = new Forms.CollectionFormCreator();
         listForm.createListForRootElements(
-            $("#items"),
+            $("#dm-items"),
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
             {isReadOnly: true});
@@ -42,7 +42,7 @@ $(function()
 </div>
 
 <div id="dm-btn-create-item-metaclass"></div>
-<div id="items"></div>
+<div id="dm-items"></div>
 
 <div class="accordion" id="debug_accordion">
     <div class="accordion-item">

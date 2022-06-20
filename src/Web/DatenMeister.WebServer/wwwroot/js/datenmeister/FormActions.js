@@ -30,6 +30,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     if (metaclass !== undefined && metaclass !== null) {
                         result.setMetaClassByUri(metaclass);
                     }
+                    const workspaceId = p.get('workspaceId');
+                    if (workspaceId !== undefined) {
+                        result.set('workspaceId', workspaceId);
+                    }
                     return Promise.resolve(result);
                 }
                 if (actionName === "Zipcode.Test") {
@@ -75,10 +79,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         // itemUrl: The url of the item whose action will be executed
         // element: The element which is reflected within the form
         // parameter: These parameter are retrieved from the actionForm definition from the server and are forwarded
-        //    This supports the server to provide additional paramater for an action button
+        //    This supports the server to provide additional parameter for an action button
         // submitMethod: Describes which button the user has clicked
         function execute(actionName, form, itemUrl, element, parameter, submitMethod) {
-            var _a;
+            var _a, _b, _c;
             return __awaiter(this, void 0, void 0, function* () {
                 let workspaceId;
                 let extentUri;
@@ -146,11 +150,33 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                             document.location.reload();
                         });
                         break;
-                    case "Workspace.Extent.Xmi.Create.Navigate":
+                    case "Workspace.Extent.Xmi.Create.Navigate": {
                         const workspaceIdParameter = (_a = parameter === null || parameter === void 0 ? void 0 : parameter.get('workspaceId')) !== null && _a !== void 0 ? _a : "";
                         yield FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
                         break;
-                    case "Workspace.Extent.LoadOrCreate.Step2":
+                    }
+                    case "Workspace.Extent.LoadOrCreate.Navigate": {
+                        const workspaceIdParameter = (_b = p === null || p === void 0 ? void 0 : p.get('workspaceId')) !== null && _b !== void 0 ? _b : "";
+                        yield FormActions.workspaceExtentLoadAndCreateNavigateTo(workspaceIdParameter);
+                        break;
+                    }
+                    case "Workspace.Extent.LoadOrCreate": {
+                        const workspaceIdParameter = (_c = p === null || p === void 0 ? void 0 : p.get('workspaceId')) !== null && _c !== void 0 ? _c : "";
+                        const extentType = yield ItemClient.getProperty("Data", element.uri, "extentType");
+                        if (extentType === null || extentType === undefined) {
+                            alert('No Extent Type has been selected');
+                        }
+                        else {
+                            document.location.href = Settings.baseUrl +
+                                "ItemAction/Workspace.Extent.LoadOrCreate.Step2" +
+                                "?metaclass=" + encodeURIComponent(extentType.uri) +
+                                (workspaceIdParameter !== undefined
+                                    ? ("&workspaceId=" + encodeURIComponent(workspaceIdParameter))
+                                    : "");
+                        }
+                        break;
+                    }
+                    case "Workspace.Extent.LoadOrCreate.Step2": {
                         const extentCreationParameter = new Mof_1.DmObject();
                         extentCreationParameter.set('configuration', element);
                         extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri);
@@ -164,16 +190,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                             alert('Extent was created successfully');
                         }
                         break;
-                    case "Workspace.Extent.LoadOrCreate":
-                        const extentType = yield ItemClient.getProperty("Data", element.uri, "extentType");
-                        if (extentType === null || extentType === undefined) {
-                            alert('No Extent Type has been selected');
-                        }
-                        else {
-                            document.location.href = Settings.baseUrl +
-                                "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaclass=" + encodeURIComponent(extentType.uri);
-                        }
-                        break;
+                    }
                     case "Workspace.Extent.Xmi.Create":
                         yield ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
                             .then(data => {
@@ -205,6 +222,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         static workspaceExtentCreateXmiNavigateTo(workspaceId) {
             document.location.href =
                 Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
+        }
+        static workspaceExtentLoadAndCreateNavigateTo(workspaceId) {
+            document.location.href =
+                Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
         }
         static extentCreateItem(workspace, extentUri, element, metaClass, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

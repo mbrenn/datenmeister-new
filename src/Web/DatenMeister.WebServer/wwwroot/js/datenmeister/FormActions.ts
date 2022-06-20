@@ -34,6 +34,11 @@ export module DetailFormActions {
                 result.setMetaClassByUri(metaclass);
             }
 
+            const workspaceId = p.get('workspaceId');
+            if (workspaceId !== undefined) {
+                result.set('workspaceId', workspaceId);
+            }
+
             return Promise.resolve(result);
         }
 
@@ -82,7 +87,7 @@ export module DetailFormActions {
     // itemUrl: The url of the item whose action will be executed
     // element: The element which is reflected within the form
     // parameter: These parameter are retrieved from the actionForm definition from the server and are forwarded
-    //    This supports the server to provide additional paramater for an action button
+    //    This supports the server to provide additional parameter for an action button
     // submitMethod: Describes which button the user has clicked
     export async function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod) {
         let workspaceId;
@@ -151,16 +156,41 @@ export module DetailFormActions {
                             document.location.reload();
                         });
                 break;
-            case "Workspace.Extent.Xmi.Create.Navigate":
+            case "Workspace.Extent.Xmi.Create.Navigate": {
                 const workspaceIdParameter = parameter?.get('workspaceId') ?? "";
                 await FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
                 break;
-            case "Workspace.Extent.LoadOrCreate.Step2":
+            }
+
+            case "Workspace.Extent.LoadOrCreate.Navigate": {
+                const workspaceIdParameter = p?.get('workspaceId') ?? "";
+                await FormActions.workspaceExtentLoadAndCreateNavigateTo(workspaceIdParameter);
+                break;
+            }
+            case "Workspace.Extent.LoadOrCreate": {
+                const workspaceIdParameter = p?.get('workspaceId') ?? "";
+                const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
+
+                if (extentType === null || extentType === undefined) {
+                    alert('No Extent Type has been selected');
+                } else {
+                    document.location.href = Settings.baseUrl +
+                        "ItemAction/Workspace.Extent.LoadOrCreate.Step2" +
+                        "?metaclass=" + encodeURIComponent(extentType.uri) +
+                        (workspaceIdParameter !== undefined 
+                            ? ("&workspaceId=" + encodeURIComponent(workspaceIdParameter))
+                            : "");
+                }
+
+                break;
+            }
+
+            case "Workspace.Extent.LoadOrCreate.Step2": {
                 const extentCreationParameter = new DmObject();
                 extentCreationParameter.set('configuration', element);
                 extentCreationParameter.setMetaClassByUri(
                     DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
-                );
+                )
 
                 const result = await ActionClient.executeAction(
                     "Execute",
@@ -171,22 +201,12 @@ export module DetailFormActions {
 
                 if (result.success !== true) {
                     alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
-                }
-                else {
+                } else {
                     alert('Extent was created successfully');
                 }
 
                 break;
-            case "Workspace.Extent.LoadOrCreate":
-                const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
-                if (extentType === null || extentType === undefined) {
-                    alert('No Extent Type has been selected');
-                } else {
-                    document.location.href = Settings.baseUrl +
-                        "ItemAction/Workspace.Extent.LoadOrCreate.Step2?metaclass=" + encodeURIComponent(extentType.uri);
-                }
-
-                break;
+            }
             case "Workspace.Extent.Xmi.Create":
                 await ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
@@ -224,6 +244,11 @@ export class FormActions {
     static workspaceExtentCreateXmiNavigateTo(workspaceId: string) {
         document.location.href =
             Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
+    }
+    
+    static workspaceExtentLoadAndCreateNavigateTo(workspaceId: string) {
+        document.location.href =
+            Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
     }
 
     static async extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string, submitMethod?: SubmitMethod) {

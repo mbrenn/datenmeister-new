@@ -10,6 +10,12 @@
 
 <h1>Items Overview</h1>
 
+<div style="">
+    <select id="dm-viewmode-selection">
+        
+    </select>
+</div>
+
 <script type="application/javascript">
 
 $(function()
@@ -18,7 +24,9 @@ $(function()
     {
         let listForm = new Forms.CollectionFormCreator();
         listForm.createListForRootElements(
-            $("#dm-items"),
+            {
+                itemContainer: $("#dm-items")
+            },
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
             {isReadOnly: true});
@@ -37,7 +45,7 @@ $(function()
 </script>
 
 <div>
-    <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create Item</a>
+    <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
     <btn class="btn btn-secondary dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
 </div>
 
@@ -63,6 +71,10 @@ $(function()
             </button>
         </h2>
         <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
+            <div>
+                <button class="btn btn-light">Create Form</button>
+                <button class="btn btn-light">Create Form and Form Association</button>
+            </div>
             <div class="accordion-body" id="debug_formelement">
             </div>
         </div>

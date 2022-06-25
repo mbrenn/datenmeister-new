@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using System.Collections.Generic;
-using DatenMeister.Modules.UserProperties;
+using DatenMeister.Users.UserProperties;
 using DatenMeister.WPF.Modules.ViewExtensions;
 
 namespace DatenMeister.WPF

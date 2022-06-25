@@ -29,6 +29,11 @@ namespace DatenMeister.Plugins
         ///     After initialization of the AfterBootstrapping has occured. After that event, some internal objects are created
         ///     upon some DatenMeister internal states
         /// </summary>
-        AfterLoadingOfExtents = 8
+        AfterLoadingOfExtents = 8,
+        
+        /// <summary>
+        /// When there is a shutdown request, the plugins can stop there work and background tasks
+        /// </summary>
+        AfterShutdownStarted = 16
     }
 }

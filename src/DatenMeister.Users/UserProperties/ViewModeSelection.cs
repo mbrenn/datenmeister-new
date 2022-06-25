@@ -1,6 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.UserProperties
+namespace DatenMeister.Users.UserProperties
 {
     public class ViewModeSelection
     {

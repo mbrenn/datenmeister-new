@@ -15,7 +15,7 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
 
-namespace DatenMeister.Modules.UserManagement
+namespace DatenMeister.Users.UserManagement
 {
     /// <summary>
     /// Implements the logic for the user

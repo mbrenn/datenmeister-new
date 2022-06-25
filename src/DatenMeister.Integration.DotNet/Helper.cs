@@ -15,14 +15,16 @@ namespace DatenMeister.Integration.DotNet
     /// </summary>
     public static class Helper
     {
+        private static Integrator _integration;
+
         public static IDatenMeisterScope UseDatenMeister(
             this ContainerBuilder kernel,
             IntegrationSettings settings,
             PluginLoaderSettings? pluginLoaderSettings = null)
         {
             pluginLoaderSettings ??= new PluginLoaderSettings();
-            var integration = new Integrator(settings, pluginLoaderSettings);
-            return integration.UseDatenMeister(kernel);
+            _integration = new Integrator(settings, pluginLoaderSettings);
+            return _integration.UseDatenMeister(kernel);
         }
 
         /// <summary>
@@ -32,6 +34,8 @@ namespace DatenMeister.Integration.DotNet
         /// <param name="scope">Kernel to be used to find the appropriate methods</param>
         public static void UnuseDatenMeister(this IDatenMeisterScope scope)
         {
+            _integration.UnuseDatenMeister();
+            
             var integrationSettings = scope.ScopeStorage.Get<IntegrationSettings>();
             if (!integrationSettings.IsReadOnly)
             {

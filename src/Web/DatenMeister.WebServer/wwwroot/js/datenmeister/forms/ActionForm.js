@@ -73,7 +73,9 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
             creator.workspace = "Data";
             creator.extentUri = creator.element.extentUri;
             // Finally, we have everything together, create the form
-            creator.createFormByObject(parent, configuration);
+            creator.createFormByObject({
+                itemContainer: parent
+            }, configuration);
             (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
         });
     }

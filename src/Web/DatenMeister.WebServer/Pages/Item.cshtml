@@ -24,7 +24,9 @@ $(function()
     requirejs(['forms/Forms'], function(Form) {
         const detailForm = new Form.ItemDetailFormCreator();
         detailForm.createForm(
-            $("#form_view"),
+            {
+                itemContainer: $("#form_view")
+            },
             "@HttpUtility.JavaScriptStringEncode(w)",
             "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
     });

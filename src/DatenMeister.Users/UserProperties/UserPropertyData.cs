@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.UserProperties
+namespace DatenMeister.Users.UserProperties
 {
     /// <summary>
     /// This class stores all the user properties belonging to a certain user. This is the aggregation

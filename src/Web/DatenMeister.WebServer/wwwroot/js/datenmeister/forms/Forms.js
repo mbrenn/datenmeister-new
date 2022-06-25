@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./ListForm", "../DomHelper", "./DetailForm", "../Navigator"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, ListForm_1, DomHelper_1, DetailForm_1, Navigator_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.FormMode = exports.CollectionFormCreator = exports.FormModel = void 0;
+    exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.DetailFormHtmlElements = exports.FormMode = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = exports.FormModel = void 0;
     var DmObject = Mof.DmObject;
     var FormModel;
     (function (FormModel) {
@@ -27,18 +27,28 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
         FormModel.createEmptyFormWithDetail = createEmptyFormWithDetail;
     })(FormModel = exports.FormModel || (exports.FormModel = {}));
     /*
+        Defines the html fields which will be used for layouting.
+     */
+    class CollectionFormHtmlElements {
+    }
+    exports.CollectionFormHtmlElements = CollectionFormHtmlElements;
+    /*
         Creates a form containing a collection of items.
         The input for this type is a collection of elements
     */
     class CollectionFormCreator {
-        createListForRootElements(parent, workspace, extentUri, configuration) {
+        createListForRootElements(htmlElements, workspace, extentUri, configuration) {
+            var _a;
+            if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
+                throw "htmlElements.itemContainer is not set";
+            }
             if (configuration.isReadOnly === undefined) {
                 configuration.isReadOnly = true;
             }
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
-                    tthis.createListForRootElements(parent, workspace, extentUri, configuration);
+                    tthis.createListForRootElements(htmlElements, workspace, extentUri, configuration);
                 };
             }
             // Load the object
@@ -52,24 +62,26 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                 tthis.extentUri = extentUri;
                 (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
-                tthis.createFormByCollection(parent, elements, configuration);
+                tthis.createFormByCollection(htmlElements, elements, configuration);
             });
-            parent.empty();
-            parent.text("Loading content and form...");
+            htmlElements.itemContainer.empty()
+                .text("Loading content and form...");
+            (_a = htmlElements.viewModeSelector) === null || _a === void 0 ? void 0 : _a.empty();
         }
-        createFormByCollection(parent, elements, configuration) {
+        createFormByCollection(htmlElements, elements, configuration) {
+            const itemContainer = htmlElements.itemContainer;
             if (configuration.isReadOnly === undefined) {
                 configuration.isReadOnly = true;
             }
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
-                    tthis.createFormByCollection(parent, elements, configuration);
+                    tthis.createFormByCollection(htmlElements, elements, configuration);
                 };
             }
-            parent.empty();
+            itemContainer.empty();
             const creatingElements = $("<div>Creating elements...</div>");
-            parent.append(creatingElements);
+            itemContainer.append(creatingElements);
             const tabs = this.formElement.get("tab");
             let tabCount = Array.isArray(tabs) ? tabs.length : 0;
             for (let n in tabs) {
@@ -88,7 +100,7 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                         listForm.extentUri = this.extentUri;
                         listForm.createFormByCollection(form, configuration);
                     }
-                    parent.append(form);
+                    itemContainer.append(form);
                     tabCount--;
                     if (tabCount === 0) {
                         // Removes the loading information
@@ -109,20 +121,26 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
     })(FormMode = exports.FormMode || (exports.FormMode = {}));
     ;
     /*
+        Defines the html fields which will be used for layouting.
+     */
+    class DetailFormHtmlElements {
+    }
+    exports.DetailFormHtmlElements = DetailFormHtmlElements;
+    /*
         Defines the form creator which also performs the connect to the webserver itself.
         The input for this type of form is a single element
         
         This method handles all allowed form types.
      */
     class DetailFormCreator {
-        createFormByObject(parent, configuration) {
+        createFormByObject(htmlElements, configuration) {
             // First, store the parent and the configuration
-            this.domContainer = parent;
-            this.configuration = configuration;
+            this.domContainer = htmlElements.itemContainer;
+            this.htmlItemContainer = configuration;
             this.createFormForItem();
         }
         createFormForItem() {
-            const configuration = this.configuration;
+            const configuration = this.htmlItemContainer;
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
@@ -179,8 +197,8 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
             this.formMode = formMode;
             this.rebuildForm();
         }
-        createForm(parent, workspace, itemUri) {
-            this.domContainer = parent;
+        createForm(htmlElements, workspace, itemUri) {
+            this.htmlElements = htmlElements;
             this.workspace = workspace;
             this.itemUri = itemUri;
             this.rebuildForm();
@@ -232,7 +250,7 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
             const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, "");
             // Wait for both
             Promise.all([defer1, defer2]).then(([element1, form]) => {
-                this.domContainer.empty();
+                this.htmlElements.itemContainer.empty();
                 const detailForm = new DetailFormCreator();
                 detailForm.workspace = this.workspace;
                 detailForm.itemId = this.itemUri;
@@ -241,14 +259,14 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                 if (this.formMode === FormMode.ViewMode) {
                     const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
                     domEditButton.on('click', () => tthis.switchToMode(FormMode.EditMode));
-                    this.domContainer.append(domEditButton);
+                    this.htmlElements.itemContainer.append(domEditButton);
                 }
-                detailForm.createFormByObject(tthis.domContainer, configuration);
+                detailForm.createFormByObject(tthis.htmlElements, configuration);
                 (0, DomHelper_1.debugElementToDom)(element1, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
             });
-            this.domContainer.empty();
-            this.domContainer.text("Loading content and form...");
+            this.htmlElements.itemContainer.empty();
+            this.htmlElements.itemContainer.text("Loading content and form...");
         }
     }
     exports.ItemDetailFormCreator = ItemDetailFormCreator;

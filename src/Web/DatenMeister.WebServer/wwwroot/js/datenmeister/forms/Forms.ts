@@ -25,6 +25,23 @@ export namespace FormModel {
     }
 }
 
+/* 
+    Defines the html fields which will be used for layouting.
+ */
+export class CollectionFormHtmlElements
+{
+    /*
+    Here, the items themselves will be added.
+    This element should be a 'div' or another container item which is capable to hold a table
+     */
+    itemContainer: JQuery;
+    /*
+    Here, the options for selection will be added. 
+    This element shall be 'select' which is capable to store option elements
+     */
+    viewModeSelector: JQuery;
+}
+
 /*
     Creates a form containing a collection of items. 
     The input for this type is a collection of elements
@@ -34,7 +51,11 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
     formElement: DmObject;
     workspace: string;
 
-    createListForRootElements(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, configuration: IFormConfiguration) {
+    createListForRootElements(htmlElements: CollectionFormHtmlElements, workspace: string, extentUri: string, configuration: IFormConfiguration) {
+        if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
+            throw "htmlElements.itemContainer is not set";
+        }
+        
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -43,7 +64,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createListForRootElements(parent, workspace, extentUri, configuration);
+                tthis.createListForRootElements(htmlElements, workspace, extentUri, configuration);
             }
         }
 
@@ -62,14 +83,18 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             debugElementToDom(elements, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
 
-            tthis.createFormByCollection(parent, elements, configuration);
+            tthis.createFormByCollection(htmlElements, elements, configuration);
         });
 
-        parent.empty();
-        parent.text("Loading content and form...");
+        htmlElements.itemContainer.empty()
+            .text("Loading content and form...");
+        htmlElements.viewModeSelector?.empty();
     }
 
-    createFormByCollection(parent: JQuery<HTMLElement>, elements: Array<Mof.DmObject>, configuration: IFormConfiguration) {
+    createFormByCollection(htmlElements: CollectionFormHtmlElements, elements: Array<Mof.DmObject>, configuration: IFormConfiguration) {
+
+        const itemContainer = htmlElements.itemContainer;
+        
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -78,13 +103,13 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createFormByCollection(parent, elements, configuration);
+                tthis.createFormByCollection(htmlElements, elements, configuration);
             }
         }
 
-        parent.empty();
+        itemContainer.empty();
         const creatingElements = $("<div>Creating elements...</div>");
-        parent.append(creatingElements);
+        itemContainer.append(creatingElements);
 
         const tabs = this.formElement.get("tab") as Array<Mof.DmObject>;
 
@@ -107,7 +132,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                     listForm.createFormByCollection(form, configuration);
                 }
 
-                parent.append(form);
+                itemContainer.append(form);
                 tabCount--;
 
                 if (tabCount === 0) {
@@ -129,6 +154,23 @@ export enum FormMode
     EditMode
 };
 
+/* 
+    Defines the html fields which will be used for layouting.
+ */
+export class DetailFormHtmlElements
+{
+    /*
+    Here, the items themselves will be added.
+    This element should be a 'div' or another container item which is capable to hold a table
+     */
+    itemContainer: JQuery;
+    /*
+    Here, the options for selection will be added. 
+    This element shall be 'select' which is capable to store option elements
+     */
+    viewModeSelector?: JQuery;
+}
+
 
 /* 
     Defines the form creator which also performs the connect to the webserver itself. 
@@ -142,20 +184,20 @@ export class DetailFormCreator implements IForm.IFormNavigation {
     extentUri: string;
     formElement: DmObject;
     domContainer: JQuery;
-    configuration: IFormConfiguration;
+    htmlItemContainer: IFormConfiguration;
     itemId: string;
     workspace: string;
 
-    createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+    createFormByObject(htmlElements: DetailFormHtmlElements, configuration: IFormConfiguration) {
         // First, store the parent and the configuration
-        this.domContainer = parent;
-        this.configuration = configuration;
+        this.domContainer = htmlElements.itemContainer;
+        this.htmlItemContainer = configuration;
         
         this.createFormForItem();
     }
 
     private createFormForItem() {
-        const configuration = this.configuration;
+        const configuration = this.htmlItemContainer;
         const tthis = this;
 
         if (configuration.refreshForm === undefined) {
@@ -213,15 +255,15 @@ export class ItemDetailFormCreator {
     formMode: FormMode = FormMode.ViewMode;
     itemUri: string;
     workspace: string;
-    private domContainer: JQuery;
+    private htmlElements: DetailFormHtmlElements;
 
     switchToMode(formMode: FormMode) {
         this.formMode = formMode;
         this.rebuildForm();
     }
 
-    createForm(parent: JQuery, workspace: string, itemUri: string) {
-        this.domContainer = parent;
+    createForm(htmlElements: DetailFormHtmlElements, workspace: string, itemUri: string) {
+        this.htmlElements = htmlElements;
         this.workspace = workspace;
         this.itemUri = itemUri;
 
@@ -281,7 +323,7 @@ export class ItemDetailFormCreator {
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {
             
-            this.domContainer.empty();
+            this.htmlElements.itemContainer.empty();
             
             const detailForm = new DetailFormCreator();
             detailForm.workspace = this.workspace;
@@ -292,17 +334,17 @@ export class ItemDetailFormCreator {
             if (this.formMode === FormMode.ViewMode) {
                 const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
                 domEditButton.on('click', () => tthis.switchToMode(FormMode.EditMode));
-                this.domContainer.append(domEditButton);
+                this.htmlElements.itemContainer.append(domEditButton);
             }
 
-            detailForm.createFormByObject(tthis.domContainer, configuration);
+            detailForm.createFormByObject(tthis.htmlElements, configuration);
 
             debugElementToDom(element1, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
 
         });
 
-        this.domContainer.empty();
-        this.domContainer.text("Loading content and form...");
+        this.htmlElements.itemContainer.empty();
+        this.htmlElements.itemContainer.text("Loading content and form...");
     }
 }

@@ -13,13 +13,13 @@ export async function createActionFormForEmptyObject(
     metaClass: string,
     configuration: IFormConfiguration,
     actionName: string) {
-    
+
     configuration.submitName = "Perform Action";
     configuration.showCancelButton = false;
     configuration.allowAddingNewProperties = false;
 
     if (configuration.refreshForm === undefined) {
-        configuration.refreshForm = () => {            
+        configuration.refreshForm = () => {
             createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         }
     }
@@ -48,15 +48,15 @@ export async function createActionFormForEmptyObject(
     if (element === undefined) {
         element = new DmObject();
     }
-    
+
     // If, we have created the element, we will now have to create the temporary object on the server
     const temporaryElement = await ClientElements.createTemporaryElement(element.metaClass?.uri);
-    await ClientItems.setProperties("Data", temporaryElement.uri, element);    
-    
+    await ClientItems.setProperties("Data", temporaryElement.uri, element);
+
     /* Now find the right form */
-    
+
     let form;
-    
+
     // After having loaded the object, load the form
     if (metaClass === undefined && element.metaClass?.uri !== undefined) {
         // If the returned element has a metaclass, then set the metaClass being used to 
@@ -81,14 +81,17 @@ export async function createActionFormForEmptyObject(
             form = await ClientForms.getDefaultFormForMetaClass(metaClass);
         }
     }
-    
+
     creator.element = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
     creator.formElement = form;
     creator.workspace = "Data";
     creator.extentUri = creator.element.extentUri;
-    
+
     // Finally, we have everything together, create the form
-    creator.createFormByObject(parent, configuration);
+    creator.createFormByObject(
+        {
+            itemContainer: parent
+        }, configuration);
 
     debugElementToDom(form, "#debug_formelement");
 }

@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Extent" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     </ItemGroup>

@@ -43,6 +43,9 @@ namespace DatenMeister.BootStrap
         /// </summary>
         private IntegrationSettings _settings;
 
+        private PluginManager? _pluginManager;
+        private DatenMeisterScope? _dmScope;
+
         public Integrator(IntegrationSettings settings, PluginLoaderSettings pluginLoaderSettings)
         {
             _settings = settings;
@@ -74,6 +77,11 @@ namespace DatenMeister.BootStrap
 
         public IDatenMeisterScope UseDatenMeister(ContainerBuilder kernel)
         {
+            if (_pluginManager != null)
+            {
+                throw new InvalidOperationException("The Integrator has already been used");
+            }
+            
             MofExtent.GlobalSlimUmlEvaluation = true;
 
             var scopeStorage = new ScopeStorage();
@@ -154,7 +162,8 @@ namespace DatenMeister.BootStrap
             kernel.RegisterType<FormFinder>().As<FormFinder>();
 
             var pluginManager = new PluginManager();
-            scopeStorage.Add(pluginManager);
+            _pluginManager = pluginManager;
+            scopeStorage.Add(_pluginManager);
 
             var pluginLoader = _pluginLoaderSettings.PluginLoader;
             var defaultPluginSettings = _settings.AdditionalSettings.TryGet<DefaultPluginSettings>();
@@ -168,10 +177,10 @@ namespace DatenMeister.BootStrap
             Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();
             var scope = builder.BeginLifetimeScope();
-            var dmScope = new DatenMeisterScope(scope);
+            _dmScope = new DatenMeisterScope(scope);
 
             // Creates the content
-            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
+            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
 
             // Load the default extents
             // Performs the bootstrap
@@ -217,7 +226,7 @@ namespace DatenMeister.BootStrap
 
             Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
-            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
+            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
 
             // Creates the workspace and extent for the types layer which are belonging to the types
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
@@ -241,7 +250,7 @@ namespace DatenMeister.BootStrap
             MofExtent.GlobalSlimUmlEvaluation = false;
 
             // Finally loads the plugin
-            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
+            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
             // Boots up the typical DatenMeister Environment by loading the data
             var extentManager = scope.Resolve<ExtentManager>();
@@ -266,20 +275,36 @@ namespace DatenMeister.BootStrap
             }
 
             // Finally loads the plugin
-            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
+            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
             ResetUpdateFlagsOfExtent(workspaceLogic);
             watch.Stop();
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 
-            return dmScope;
+            return _dmScope;
+        }
+
+        /// <summary>
+        /// Performs a shutdown. This method just calls the plugins currently
+        /// </summary>
+        public void UnuseDatenMeister()
+        {
+            if (_pluginManager == null || _dmScope == null)
+            {
+                throw new InvalidOperationException("The Integrator has not been started by UseDatenMeister");
+            }
+
+            _pluginManager.StartPlugins(
+                _dmScope,
+                _pluginLoaderSettings.PluginLoader,
+                PluginLoadingPosition.AfterShutdownStarted);
         }
 
         /// <summary>
         /// Goes through each extent and resets the update flag for all extents with providers
         /// indicating that they are just a temporary extent
         /// </summary>
-        /// <param name="workspaceLogic"></param>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
         private static void ResetUpdateFlagsOfExtent(IWorkspaceLogic workspaceLogic)
         {
             // After the complete bootstrapping is done, the Update flags for the TemporaryExtents will be removed

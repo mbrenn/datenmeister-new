@@ -239,11 +239,11 @@ namespace DatenMeister.BootStrap
                 internalUserExtent,
                 "DatenMeister");
 
-            var formsPlugin = scope.Resolve<FormsPlugin>();
+            var formMethods = scope.Resolve<FormMethods>();
             packageMethods.ImportByStream(
                 XmiResources.GetDatenMeisterFormsStream(),
                 null,
-                formsPlugin.GetInternalFormExtent(),
+                formMethods.GetInternalFormExtent(),
                 "DatenMeister");
 
             // Deactivates the global slim evaluation since we now have all necessary types imported. 

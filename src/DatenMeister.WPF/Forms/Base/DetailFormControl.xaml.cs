@@ -336,7 +336,7 @@ namespace DatenMeister.WPF.Forms.Base
                     return;
                 }
                 
-                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+                var viewLogic = GiveMe.Scope.Resolve<FormMethods>();
                 var target = viewLogic.GetUserFormExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 

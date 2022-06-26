@@ -57,7 +57,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 UnderlineForLink(idTextBlock);
                 idTextBlock.MouseDown += async (x, y) =>
                 {
-                    var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+                    var formsPlugin = GiveMe.Scope.Resolve<FormMethods>();
                     var form = formsPlugin.GetInternalFormExtent().element("#CommonForms.ChangeId");
 
                     var element = InMemoryObject.CreateEmpty();

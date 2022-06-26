@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Forms.Lists
         internal static FormDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
-            var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+            var formsPlugin = GiveMe.Scope.Resolve<FormMethods>();
             var formFactory = GiveMe.Scope.Resolve<FormFactory>();
 
             var formElement = formsPlugin.GetInternalFormExtent()
@@ -152,7 +152,7 @@ namespace DatenMeister.WPF.Forms.Lists
             string workspaceId,
             INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var viewLogic = GiveMe.Scope.Resolve<FormMethods>();
             var formFactory = GiveMe.Scope.Resolve<FormFactory>();
             var viewExtent = viewLogic.GetInternalFormExtent();
             var result =

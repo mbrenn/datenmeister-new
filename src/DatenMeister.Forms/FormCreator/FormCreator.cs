@@ -58,7 +58,7 @@ namespace DatenMeister.Forms.FormCreator
         ///     Stores the reference to the view logic which is required to get the views
         ///     for the tabs of the extent form
         /// </summary>
-        private readonly FormsPlugin? _formLogic;
+        private readonly FormMethods? _formLogic;
 
         private readonly IScopeStorage _scopeStorage;
 
@@ -107,7 +107,7 @@ namespace DatenMeister.Forms.FormCreator
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage)
         {
-            _formLogic = new FormsPlugin(workspaceLogic, scopeStorage);
+            _formLogic = new FormMethods(workspaceLogic, scopeStorage);
             _scopeStorage = scopeStorage;
             _extentSettings = scopeStorage.Get<ExtentSettings>();
             _workspaceLogic = workspaceLogic;
@@ -123,7 +123,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="parentFormFactory">The parent form factory</param>
         private FormCreator(
             IWorkspaceLogic workspaceLogic,
-            FormsPlugin formLogic,
+            FormMethods formLogic,
             IScopeStorage scopeStorage,
             IFormFactory? parentFormFactory)
         {
@@ -167,8 +167,8 @@ namespace DatenMeister.Forms.FormCreator
             IScopeStorage scopeStorage,
             IFormFactory? parentFormFactory = null)
         {
-            var formLogic = new FormsPlugin(
-                workspaceLogic, new ExtentCreator(workspaceLogic, scopeStorage), scopeStorage);
+            var formLogic = new FormMethods(
+                workspaceLogic, scopeStorage);
             return new FormCreator(
                 workspaceLogic,
                 formLogic,

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System.Diagnostics;
 using Autofac;
 using DatenMeister.BootStrap;
 using DatenMeister.Core;
@@ -15,7 +16,7 @@ namespace DatenMeister.Integration.DotNet
     /// </summary>
     public static class Helper
     {
-        private static Integrator _integration;
+        private static Integrator? _integration;
 
         public static IDatenMeisterScope UseDatenMeister(
             this ContainerBuilder kernel,
@@ -34,6 +35,7 @@ namespace DatenMeister.Integration.DotNet
         /// <param name="scope">Kernel to be used to find the appropriate methods</param>
         public static void UnuseDatenMeister(this IDatenMeisterScope scope)
         {
+            Debug.Assert(_integration != null, nameof(_integration) + " != null");
             _integration.UnuseDatenMeister();
             
             var integrationSettings = scope.ScopeStorage.Get<IntegrationSettings>();

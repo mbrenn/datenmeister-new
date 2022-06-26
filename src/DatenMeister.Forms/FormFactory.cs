@@ -31,12 +31,14 @@ namespace DatenMeister.Forms
         ///     Defines the state for the form plugin
         /// </summary>
         private readonly FormsPluginState _formPluginState;
-        private readonly FormsPlugin _plugin;
+        private readonly FormMethods _plugin;
+        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
 
         public FormFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
-            _plugin = new FormsPlugin(workspaceLogic, scopeStorage);
+            _plugin = new FormMethods(workspaceLogic, scopeStorage);
+            _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
             _formPluginState = scopeStorage.Get<FormsPluginState>();
         }
@@ -533,7 +535,7 @@ namespace DatenMeister.Forms
         private FormCreator.FormCreator CreateFormCreator()
         {
             return FormCreator.FormCreator.Create(
-                _plugin.WorkspaceLogic, _scopeStorage, this
+                _workspaceLogic, _scopeStorage, this
             );
         }
 

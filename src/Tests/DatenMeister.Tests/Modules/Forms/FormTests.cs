@@ -116,7 +116,6 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public void TestRemoveDuplicateDefaultNewTypes()
         {
-            var workspaceLogic = WorkspaceLogic.Create(new WorkspaceData());
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
             var factory = new MofFactory(extent);
 
@@ -147,6 +146,34 @@ namespace DatenMeister.Tests.Modules.Forms
             Assert.That(fields2.Any (x=> x.equals(_DatenMeister.TheOne.Actions.__ActionSet)));
             Assert.That(fields2.Any (x=> x.equals(_DatenMeister.TheOne.Actions.__ClearCollectionAction)));
         }
-        
+
+        [Test]
+        public void TestGetViewModes()
+        {
+            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            var formMethods = new FormMethods(scope.WorkspaceLogic, scope.ScopeStorage);
+
+            // Check, if default view mode is in
+            var viewModes = formMethods.GetViewModes().ToList();
+            Assert.That(
+                viewModes.Any(x => x.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id) == ViewModes.Default),
+                Is.True);
+            Assert.That(
+                viewModes.Any(x => x.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id) == "Test"),
+                Is.False);
+            
+            // Check, if we can add and find a new view mode
+            var userFormExtent = formMethods.GetUserFormExtent();
+            var factory = new MofFactory(userFormExtent);
+
+            var viewMode = factory.create(_DatenMeister.TheOne.Forms.__ViewMode);
+            viewMode.set(_DatenMeister._Forms._ViewMode.id, "Test");
+            userFormExtent.elements().add(viewMode);
+            
+            viewModes = formMethods.GetViewModes().ToList();
+            Assert.That(
+                viewModes.Any(x => x.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id) == "Test"),
+                Is.True);
+        }
     }
 }

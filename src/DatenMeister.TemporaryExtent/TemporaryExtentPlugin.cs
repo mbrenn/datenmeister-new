@@ -51,7 +51,7 @@ namespace DatenMeister.TemporaryExtent
                     var temporaryProvider = new InMemoryProvider();
                     var extent = new MofUriExtent(temporaryProvider, "dm:///_internal/temp", null);
                     _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), extent);
-                    Task.Run(() => CleanTemporaryExtentRunAsync(_taskCancellation));
+                    Task.Run(() => CleanTemporaryExtentRunAsync(_taskCancellation), _taskCancellation);
                     
                     break;
                 case PluginLoadingPosition.AfterShutdownStarted:

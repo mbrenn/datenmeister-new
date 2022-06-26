@@ -66,7 +66,7 @@ namespace DatenMeister.Plugins
             IPluginLoader pluginLoader,
             PluginLoadingPosition loadingPosition)
         {
-            Logger.Debug("Starting Plugins" + loadingPosition);
+            Logger.Debug($"Calling Plugins: {loadingPosition}");
             _pluginTypes ??= pluginLoader.GetPluginTypes();
             var pluginList = _pluginTypes
                 .Where(type => GetPluginLoadingPosition(type).HasFlag(loadingPosition))
@@ -105,7 +105,7 @@ namespace DatenMeister.Plugins
                     // Now, start the plugin
                     pluginList.Remove(plugin);
 
-                    Logger.Info($"Starting plugin [{loadingPosition}]: {plugin.GetType().FullName}");
+                    Logger.Info($"Called plugin [{loadingPosition}]: {plugin.GetType().FullName}");
                     if (Debugger.IsAttached)
                         // When a debugger is attached, we are directly interested to figure out that an exception was thrown
                         plugin.Start(loadingPosition);

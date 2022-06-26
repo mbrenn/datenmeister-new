@@ -114,7 +114,7 @@ namespace DatenMeister.WPF.Controls
             _scrollHorizontal.ValueChanged += (x, y) =>
             {
                 _columnOffset = Convert.ToInt32(_scrollHorizontal.Value);
-                _columnPixelOffset = GetColumnInstantiation(_columnOffset)?.OffsetWidth ?? 0;
+                _columnPixelOffset = GetColumnInstantiation(_columnOffset).OffsetWidth;
                 InvalidateVisual();
                 InvalidateMeasure();
             };
@@ -436,7 +436,7 @@ namespace DatenMeister.WPF.Controls
             // The instantiated row
             var rowInstantiation = new RowInstantiation();
             var c = 0;
-            foreach (var columnInstantiation in _columnInstantiations)
+            foreach (var _ in _columnInstantiations)
             {
                 var cell = new CellInstantiation
                 {

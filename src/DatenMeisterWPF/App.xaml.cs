@@ -6,7 +6,6 @@ using System.Windows;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.BootStrap.PublicSettings;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 
 namespace DatenMeisterWPF

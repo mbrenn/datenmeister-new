@@ -29,7 +29,6 @@ namespace DatenMeister.Forms
         private static readonly ClassLogger Logger = new(typeof(FormMethods));
 
         private readonly IScopeStorage _scopeStorage;
-
         
         /// <summary>
         /// Stores the type of the extent containing the views
@@ -624,7 +623,7 @@ namespace DatenMeister.Forms
                         field.AddCollectionItem(_DatenMeister._Forms._DropDownFieldData.values, element);
                     }
 
-                    FormMethods.AddToFormCreationProtocol(listOrDetailForm,
+                    AddToFormCreationProtocol(listOrDetailForm,
                         $"[FormFactory.ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
                 }
             }
@@ -639,7 +638,7 @@ namespace DatenMeister.Forms
         {
             AddDefaultTypeForListFormsMetaClass(listForm);
             ExpandDropDownValuesOfValueReference(listForm);            
-            FormMethods.RemoveDuplicatingDefaultNewTypes(listForm);
+            RemoveDuplicatingDefaultNewTypes(listForm);
         }
 
         private static void AddDefaultTypeForListFormsMetaClass(IObject listForm)
@@ -648,7 +647,7 @@ namespace DatenMeister.Forms
             var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
             if (metaClass != null)
             {
-                FormMethods.AddDefaultTypeForNewElement(listForm, metaClass);
+                AddDefaultTypeForNewElement(listForm, metaClass);
             }
         }
 
@@ -660,7 +659,7 @@ namespace DatenMeister.Forms
         /// <param name="asElement">The element being evaluated</param>
         public static void AddDefaultTypesInListFormByElementsProperty(IElement foundForm, IElement asElement)
         {
-            var listForms = FormMethods.GetListForms(foundForm);
+            var listForms = GetListForms(foundForm);
             foreach (var listForm in listForms)
             {
                 var property = listForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
@@ -673,7 +672,7 @@ namespace DatenMeister.Forms
                 var propertyType = PropertyMethods.GetPropertyType(propertyInstance);
 
                 if (propertyType == null) continue;
-                FormMethods.AddDefaultTypeForNewElement(listForm, propertyType);
+                AddDefaultTypeForNewElement(listForm, propertyType);
             }
         }
 

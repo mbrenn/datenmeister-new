@@ -23,14 +23,14 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Plugins;
-using DatenMeister.Provider.Xml;
+using DatenMeister.Provider.Xmi.Provider.Xml;
 using DatenMeister.Types;
 
 namespace DatenMeister.BootStrap
 {
     public class Integrator
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
+        private static readonly ClassLogger Logger = new(typeof(Integrator));
 
         private readonly PluginLoaderSettings _pluginLoaderSettings;
         private string? _pathExtents;

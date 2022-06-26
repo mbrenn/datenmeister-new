@@ -104,7 +104,7 @@ namespace DatenMeister.Html
                     else if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__FullNameFieldData) == true)
                     {
                         var result = NamedElementMethods.GetFullNameWithoutElementId(item);
-                        if (result == null || string.IsNullOrEmpty(result))
+                        if (string.IsNullOrEmpty(result))
                         {
                             value = new HtmlRawString("<i>Root</i>");
                         }

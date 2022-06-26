@@ -1,10 +1,6 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.Helper;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.ZipCodeExample.Model;
-using DatenMeister.Types;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages

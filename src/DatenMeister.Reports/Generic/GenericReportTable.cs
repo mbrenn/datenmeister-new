@@ -128,8 +128,8 @@ namespace DatenMeister.Reports.Generic
             {
                 if (isPropertySet)
                 {
-                    var hasDate = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate) != true;
-                    var hasTime = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime) != true;
+                    var hasDate = field.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate) != true;
+                    var hasTime = field.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime) != true;
                     var date = listElement.getOrDefault<DateTime>(property);
 
                     var result = string.Empty;

@@ -4,6 +4,6 @@ namespace DatenMeister.WebServer.Library
 {
     public class AppNavigationDefinition
     {
-        public List<AppNavigationItem> Items { get; } = new List<AppNavigationItem>();
+        public List<AppNavigationItem> Items { get; } = new();
     }
 }

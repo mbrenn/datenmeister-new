@@ -5,7 +5,7 @@ namespace DatenMeister.Core.Runtime.Workspaces.Data
 {
     public class WorkspaceLoader : ObjectFileStorage<WorkspaceFileData>
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLoader));
+        private static readonly ClassLogger Logger = new(typeof(WorkspaceLoader));
 
         /// <summary>
         /// Stores the configuration of the workspace loader

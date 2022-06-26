@@ -7,7 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.Xmi;
-using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.Xmi.Provider.XMI;
 
 namespace DatenMeister.WPF.Windows
 {

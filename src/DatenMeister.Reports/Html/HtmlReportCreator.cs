@@ -17,13 +17,12 @@ namespace DatenMeister.Reports.Html
     /// </summary>
     public class HtmlReportCreator : GenericReportCreator
     {
-        private readonly ClassLogger Logger = new ClassLogger(typeof(HtmlReportCreator));
+        private readonly ClassLogger Logger = new(typeof(HtmlReportCreator));
 
         /// <summary>
         /// Stores the possible source of the report
         /// </summary>
-        private readonly Dictionary<string, IReflectiveCollection> _sources
-            = new Dictionary<string, IReflectiveCollection>();
+        private readonly Dictionary<string, IReflectiveCollection> _sources = new();
 
         private HtmlReport? _htmlReporter;
 

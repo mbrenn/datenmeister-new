@@ -10,7 +10,7 @@ namespace DatenMeister.Users.UserProperties
     /// </summary>
     public class UserPropertyData
     {
-        private List<ViewModeSelection> _viewModeSelection = new List<ViewModeSelection>();
+        private List<ViewModeSelection> _viewModeSelection = new();
 
         /// <summary>
         /// Adds an additional view mode to the selection

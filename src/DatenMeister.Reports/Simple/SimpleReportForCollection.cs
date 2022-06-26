@@ -140,7 +140,7 @@ namespace DatenMeister.Reports.Simple
             var collection = new TemporaryReflectiveSequence(metaClass);
 
             Debug.Assert(_itemFormatter != null, nameof(_itemFormatter) + " != null");
-            _itemFormatter!.FormatCollectionOfItems(collection, form);
+            _itemFormatter.FormatCollectionOfItems(collection, form);
         }
     }
 }

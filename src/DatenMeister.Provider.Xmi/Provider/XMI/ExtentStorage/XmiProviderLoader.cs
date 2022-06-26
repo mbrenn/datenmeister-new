@@ -12,11 +12,11 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Locking;
 
-namespace DatenMeister.Provider.XMI.ExtentStorage
+namespace DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage
 {
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
+        private static readonly ClassLogger Logger = new(typeof(XmiProviderLoader));
 
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
 

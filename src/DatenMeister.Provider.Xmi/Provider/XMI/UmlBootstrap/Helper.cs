@@ -7,7 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 
-namespace DatenMeister.Provider.XMI.UmlBootstrap
+namespace DatenMeister.Provider.Xmi.Provider.XMI.UmlBootstrap
 {
     /// <summary>
     ///     Contains some methods which help to parse and understand the xmi file

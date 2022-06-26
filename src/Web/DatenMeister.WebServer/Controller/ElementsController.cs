@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Json;
 using DatenMeister.TemporaryExtent;
 using Microsoft.AspNetCore.Mvc;

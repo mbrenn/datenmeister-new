@@ -9,7 +9,7 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class DotNetIntegrationGenerator
     {
-        public StringBuilder Result { get; private set; } = new StringBuilder();
+        public StringBuilder Result { get; private set; } = new();
 
         public void Create(
             string nameSpace,

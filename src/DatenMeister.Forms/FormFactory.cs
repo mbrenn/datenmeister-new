@@ -2,7 +2,6 @@
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -686,7 +685,7 @@ namespace DatenMeister.Forms
         /// Cleans up the ist form by executing several default methods like, expanding the
         /// drop down values are removing duplicates
         /// </summary>
-        /// <param name="listForm">Detail form to be evaluated</param>
+        /// <param name="detailForm">Detail form to be evaluated</param>
         public void CleanupDetailForm(IElement detailForm)
         {
             FormMethods.ExpandDropDownValuesOfValueReference(detailForm);

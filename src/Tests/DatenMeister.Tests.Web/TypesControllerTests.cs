@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DatenMeister.WebServer.Controller;
+﻿using DatenMeister.WebServer.Controller;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web

@@ -15,8 +15,8 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Provider.Xml;
+using DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage;
+using DatenMeister.Provider.Xmi.Provider.Xml;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Actions

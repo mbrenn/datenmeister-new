@@ -13,7 +13,7 @@ namespace DatenMeister.Locking
 
         private readonly bool _isReadOnly;
         
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(LockingLogic));
+        private static readonly ClassLogger Logger = new(typeof(LockingLogic));
 
         public LockingLogic(IScopeStorage scopeStorage)
         {

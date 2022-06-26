@@ -50,9 +50,9 @@ namespace DatenMeister.BootStrap
             _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
         }
 
-        private Dictionary<string, IElement> MofClasses { get; } = new Dictionary<string, IElement>();
-        private Dictionary<string, IElement> UmlClasses { get; } = new Dictionary<string, IElement>();
-        private Dictionary<string, IElement> UmlAssociations { get; } = new Dictionary<string, IElement>();
+        private Dictionary<string, IElement> MofClasses { get; } = new();
+        private Dictionary<string, IElement> UmlClasses { get; } = new();
+        private Dictionary<string, IElement> UmlAssociations { get; } = new();
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure

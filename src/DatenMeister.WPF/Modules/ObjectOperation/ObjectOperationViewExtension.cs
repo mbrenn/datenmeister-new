@@ -14,7 +14,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Modules.Xml;
+using DatenMeister.Provider.Xmi;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

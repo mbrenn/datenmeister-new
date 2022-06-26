@@ -11,7 +11,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.XMI
+namespace DatenMeister.Provider.Xmi.Provider.XMI
 {
     /// <summary>
     /// Includes a simple XMI loader which is attribute and element driven.
@@ -22,9 +22,9 @@ namespace DatenMeister.Provider.XMI
         /// <summary>
         /// Defines a list of actions that will be performed after the loading has finished
         /// </summary>
-        private readonly List<Action> _afterLoadActions = new List<Action>();
+        private readonly List<Action> _afterLoadActions = new();
 
-        private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
+        private readonly Dictionary<string, IElement> _idToElement = new();
 
         /// <summary>
         /// Stores the uri resolver being used to figure out the href instances.

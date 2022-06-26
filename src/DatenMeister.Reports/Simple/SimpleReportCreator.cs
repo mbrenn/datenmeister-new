@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
@@ -41,6 +40,7 @@ namespace DatenMeister.Reports.Simple
         /// Initializes a new instance of the simple report reportCreator. 
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="scopeStorage">The scope storage</param>
         /// <param name="simpleReportConfiguration">The configuration defining the layout of the report</param>
         public SimpleReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage, IElement simpleReportConfiguration)
         {
@@ -167,7 +167,7 @@ namespace DatenMeister.Reports.Simple
                     _SimpleReportConfiguration.typeMode);
             var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
             var addFullNameColumn =
-                _reportConfiguration.getOrDefault<bool>(_DatenMeister._Reports._SimpleReportConfiguration.showFullName);
+                _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showFullName);
             var collectionReporter = new SimpleReportForCollection(
                 _formCreator,
                 _itemFormatter ?? throw new InvalidOperationException("itemFormatter is null"), 

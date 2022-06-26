@@ -30,7 +30,7 @@ namespace DatenMeister.Users.UserManagement
         public const string ExtentUri = "dm:///_internal/users";
 
         private const string ExtentTypeName = "DatenMeister.Users";
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
+        private static readonly ClassLogger Logger = new(typeof(UserLogic));
 
         private readonly ExtentCreator _extentCreator;
 

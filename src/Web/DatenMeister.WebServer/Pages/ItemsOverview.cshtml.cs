@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Web;
+﻿using System.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;

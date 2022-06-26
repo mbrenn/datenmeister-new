@@ -14,7 +14,7 @@ namespace DatenMeister.Actions
         /// Gets the action handlers
         /// </summary>
         public List<IActionHandler> ActionHandlers { get; }
-            = new List<IActionHandler>();
+            = new();
 
         /// <summary>
         /// Adds one action handler

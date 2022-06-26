@@ -6,7 +6,7 @@ namespace DatenMeister.Reports.Generic
 {
     public abstract class GenericReportCreator
      {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(GenericReportCreator));
+        private static readonly ClassLogger Logger = new(typeof(GenericReportCreator));
 
         public abstract void StartReport(ReportLogic logic, IObject reportDefinition);
 

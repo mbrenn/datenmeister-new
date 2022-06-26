@@ -20,7 +20,7 @@ namespace DatenMeister.Reports
 {
     public class ReportLogic
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ReportLogic));
+        private static readonly ClassLogger Logger = new(typeof(ReportLogic));
 
         /// <summary>
         /// Stores the possible source of the report

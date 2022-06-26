@@ -15,7 +15,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
-using DatenMeister.Extent.Manager.ExtentStorage;
 using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
 
 namespace DatenMeister.Forms.FormCreator

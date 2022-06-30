@@ -59,3 +59,30 @@ export async function getDefaultFormForItem(workspace: string, item: string, vie
     );
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
+
+export interface GetViewModesResultServer{
+    viewModes: Array<string>;
+}
+
+export interface GetViewModesResult{
+    viewModes: Array<Mof.DmObject>;
+}
+
+export async function getViewModes() : Promise<GetViewModesResult> {
+    const resultFromServer = await ApiConnection.get<GetViewModesResultServer>(
+        Settings.baseUrl +
+        "api/forms/get_viewmodes");
+
+    const result =
+        {
+            viewModes: new Array<Mof.DmObject>()
+        };
+    
+    for (let n in resultFromServer.viewModes) {
+        const value = resultFromServer.viewModes[n];
+
+        result.viewModes.push(Mof.convertJsonObjectToDmObject(value));
+    }
+
+    return result;
+}

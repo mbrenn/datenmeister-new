@@ -1,8 +1,12 @@
-﻿using System.Web;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace DatenMeister.WebServer.Controller
 {
@@ -59,6 +63,26 @@ namespace DatenMeister.WebServer.Controller
             var form = _internal.GetDefaultFormForMetaClassInternal(metaClass, viewMode);
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
+        }
+
+        [HttpGet("api/forms/get_viewmodes")]
+        public ActionResult<GetViewModesResult> GetViewModes()
+        {
+            var viewModes = _internal.GetViewModesInternal();
+            return new GetViewModesResult
+            {
+                ViewModes = viewModes
+                    .Select(x=>MofJsonConverter.ConvertToJsonWithDefaultParameter(x))
+                    .ToList()
+            };
+        }
+
+        public record GetViewModesResult
+        {
+            /// <summary>
+            /// A list of view modes
+            /// </summary>
+            public List<string> ViewModes { get; set; }
         }
     }
 }

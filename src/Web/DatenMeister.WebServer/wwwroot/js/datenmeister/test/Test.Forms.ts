@@ -86,7 +86,7 @@ export function includeTests() {
                 }
             }
             chai.assert.isTrue(found, 'Field with name was not found');
-            
+
             // Check, if we have a metaclass 
             found = false;
             for (let n in fields) {
@@ -95,9 +95,22 @@ export function includeTests() {
                     found = true;
                 }
             }
-            
+
             chai.assert.isTrue(found, 'Fields do not contain a metaclass');
 
+        });
+
+        it('Load ViewModes', async () => {
+            const viewModes = await ClientForms.getViewModes();
+            let found = false;
+            for (let n in viewModes.viewModes) {
+                const v = viewModes.viewModes[n];
+                if (v.get('id') === "Default") {
+                    found = true;
+                }
+            }
+
+            chai.assert.isTrue(found, "The Default viewMode was not found");
         });
 
         after(async function () {

@@ -25,7 +25,8 @@ $(function()
         let listForm = new Forms.CollectionFormCreator();
         listForm.createListForRootElements(
             {
-                itemContainer: $("#dm-items")
+                itemContainer: $("#dm-items"),
+                viewModeSelector: $("#dm-viewmode-selection")
             },
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",

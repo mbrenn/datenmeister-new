@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -117,6 +118,12 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return foundElement;
+        }
+
+        public IEnumerable<IObject> GetViewModesInternal()
+        {
+            var formsController = new FormMethods(_workspaceLogic, _scopeStorage);
+            return formsController.GetViewModes();
         }
     }
 }

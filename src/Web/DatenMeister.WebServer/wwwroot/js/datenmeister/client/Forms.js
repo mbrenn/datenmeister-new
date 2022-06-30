@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getDefaultFormForItem = exports.getForm = exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = void 0;
+    exports.getViewModes = exports.getDefaultFormForItem = exports.getForm = exports.getDefaultFormForMetaClass = exports.getDefaultFormForExtent = void 0;
     /*
         Gets the default form for an extent uri by the webserver
      */
@@ -64,5 +64,20 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.getDefaultFormForItem = getDefaultFormForItem;
+    function getViewModes() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
+                "api/forms/get_viewmodes");
+            const result = {
+                viewModes: new Array()
+            };
+            for (let n in resultFromServer.viewModes) {
+                const value = resultFromServer.viewModes[n];
+                result.viewModes.push(Mof.convertJsonObjectToDmObject(value));
+            }
+            return result;
+        });
+    }
+    exports.getViewModes = getViewModes;
 });
 //# sourceMappingURL=Forms.js.map

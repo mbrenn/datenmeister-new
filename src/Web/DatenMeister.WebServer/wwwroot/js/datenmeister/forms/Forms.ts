@@ -1,14 +1,16 @@
 ﻿import * as Mof from "../Mof";
+import {ObjectType} from "../Mof";
 import * as DataLoader from "../client/Items";
 import * as ClientForms from "../client/Forms";
 import * as DetailForm from "./DetailForm";
+import {SubmitMethod} from "./DetailForm";
 import * as IForm from "./Interfaces";
 import {ListForm} from "./ListForm";
 import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
-import DmObject = Mof.DmObject;
-import {SubmitMethod} from "./DetailForm";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
+import * as _DatenMeister from "../models/DatenMeister.class"
+import DmObject = Mof.DmObject;
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {
@@ -55,7 +57,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
-        
+
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -84,6 +86,17 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             debugElementToDom(form, "#debug_formelement");
 
             tthis.createFormByCollection(htmlElements, elements, configuration);
+        });
+
+        const viewModes = ClientForms.getViewModes();
+        viewModes.then((result) => {
+            for (let n in result.viewModes) {
+                const v = result.viewModes[n];
+                const option = $("<option></option>");
+                option.attr('value', v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, ObjectType.Single));
+                option.text(v.get(_DatenMeister._DatenMeister._Forms._ViewMode._name_, ObjectType.Single));
+                htmlElements.viewModeSelector.append(option);
+            }
         });
 
         htmlElements.itemContainer.empty()

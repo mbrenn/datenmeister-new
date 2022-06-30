@@ -83,6 +83,17 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                 }
                 chai.assert.isTrue(found, 'Fields do not contain a metaclass');
             }));
+            it('Load ViewModes', () => __awaiter(this, void 0, void 0, function* () {
+                const viewModes = yield ClientForms.getViewModes();
+                let found = false;
+                for (let n in viewModes.viewModes) {
+                    const v = viewModes.viewModes[n];
+                    if (v.get('id') === "Default") {
+                        found = true;
+                    }
+                }
+                chai.assert.isTrue(found, "The Default viewMode was not found");
+            }));
             after(function () {
                 return __awaiter(this, void 0, void 0, function* () {
                     yield ClientExtent.deleteExtent({

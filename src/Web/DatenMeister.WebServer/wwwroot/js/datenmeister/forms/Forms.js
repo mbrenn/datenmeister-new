@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./ListForm", "../DomHelper", "./DetailForm", "../Navigator"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, ListForm_1, DomHelper_1, DetailForm_1, Navigator_1) {
+define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./DetailForm", "./ListForm", "../DomHelper", "../Navigator", "../models/DatenMeister.class"], function (require, exports, Mof, Mof_1, DataLoader, ClientForms, DetailForm, DetailForm_1, ListForm_1, DomHelper_1, Navigator_1, _DatenMeister) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.DetailFormHtmlElements = exports.FormMode = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = exports.FormModel = void 0;
@@ -63,6 +63,16 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                 (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
                 tthis.createFormByCollection(htmlElements, elements, configuration);
+            });
+            const viewModes = ClientForms.getViewModes();
+            viewModes.then((result) => {
+                for (let n in result.viewModes) {
+                    const v = result.viewModes[n];
+                    const option = $("<option></option>");
+                    option.attr('value', v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, Mof_1.ObjectType.Single));
+                    option.text(v.get(_DatenMeister._DatenMeister._Forms._ViewMode._name_, Mof_1.ObjectType.Single));
+                    htmlElements.viewModeSelector.append(option);
+                }
             });
             htmlElements.itemContainer.empty()
                 .text("Loading content and form...");

@@ -19,8 +19,10 @@
     <TypeScriptCompile Include="wwwroot\js\burnsystems\tests\events.test.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Actions.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Forms.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\forms\ViewModeLogic.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Elements.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ViewModeLogic.ts" />
   </ItemGroup>
 
   <ItemGroup>

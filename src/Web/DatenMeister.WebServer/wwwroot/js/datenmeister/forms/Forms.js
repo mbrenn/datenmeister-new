@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./DetailForm", "./ListForm", "../DomHelper", "../Navigator", "../models/DatenMeister.class"], function (require, exports, Mof, Mof_1, DataLoader, ClientForms, DetailForm, DetailForm_1, ListForm_1, DomHelper_1, Navigator_1, _DatenMeister) {
+define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./DetailForm", "./ListForm", "../DomHelper", "../Navigator", "../models/DatenMeister.class", "./ViewModeLogic"], function (require, exports, Mof, Mof_1, DataLoader, ClientForms, DetailForm, DetailForm_1, ListForm_1, DomHelper_1, Navigator_1, _DatenMeister, VML) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.DetailFormHtmlElements = exports.FormMode = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = exports.FormModel = void 0;
@@ -64,15 +64,24 @@ define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
                 tthis.createFormByCollection(htmlElements, elements, configuration);
             });
-            const viewModes = ClientForms.getViewModes();
+            const viewModes = VML.getViewModesFromServer();
+            const currentViewMode = VML.getCurrentViewMode();
             viewModes.then((result) => {
-                for (let n in result.viewModes) {
-                    const v = result.viewModes[n];
+                for (let n in result) {
+                    const v = result[n];
                     const option = $("<option></option>");
-                    option.attr('value', v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, Mof_1.ObjectType.Single));
+                    const id = v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, Mof_1.ObjectType.Single);
+                    option.attr('value', id);
                     option.text(v.get(_DatenMeister._DatenMeister._Forms._ViewMode._name_, Mof_1.ObjectType.Single));
+                    if (id === currentViewMode) {
+                        option.attr('selected', 'selected');
+                    }
                     htmlElements.viewModeSelector.append(option);
                 }
+                htmlElements.viewModeSelector.on('change', () => {
+                    const selectedElement = $("option:selected", htmlElements.viewModeSelector);
+                    VML.setCurrentViewMode(selectedElement.attr('value'));
+                });
             });
             htmlElements.itemContainer.empty()
                 .text("Loading content and form...");

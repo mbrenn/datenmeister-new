@@ -10,6 +10,7 @@ import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 import * as _DatenMeister from "../models/DatenMeister.class"
+import * as VML from "./ViewModeLogic"
 import DmObject = Mof.DmObject;
 
 export namespace FormModel {
@@ -88,15 +89,28 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             tthis.createFormByCollection(htmlElements, elements, configuration);
         });
 
-        const viewModes = ClientForms.getViewModes();
+        const viewModes = VML.getViewModesFromServer();
+        const currentViewMode = VML.getCurrentViewMode();
         viewModes.then((result) => {
-            for (let n in result.viewModes) {
-                const v = result.viewModes[n];
+            for (let n in result) {
+                const v = result[n];
                 const option = $("<option></option>");
-                option.attr('value', v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, ObjectType.Single));
+                const id = v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, ObjectType.Single);
+                option.attr('value', id);
                 option.text(v.get(_DatenMeister._DatenMeister._Forms._ViewMode._name_, ObjectType.Single));
+                
+                if (id === currentViewMode) {
+                    option.attr('selected', 'selected');
+                }
+                
                 htmlElements.viewModeSelector.append(option);
             }
+            
+            htmlElements.viewModeSelector.on('change', () =>{
+                const selectedElement = $("option:selected", htmlElements.viewModeSelector);
+                VML.setCurrentViewMode(selectedElement.attr('value'));
+                
+            })
         });
 
         htmlElements.itemContainer.empty()

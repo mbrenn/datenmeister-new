@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./DetailForm", "./ListForm", "../DomHelper", "../Navigator", "../models/DatenMeister.class", "./ViewModeLogic"], function (require, exports, Mof, Mof_1, DataLoader, ClientForms, DetailForm, DetailForm_1, ListForm_1, DomHelper_1, Navigator_1, _DatenMeister, VML) {
+define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./DetailForm", "./ListForm", "../DomHelper", "../Navigator", "./ViewModeSelectionForm", "./ViewModeLogic"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, DetailForm_1, ListForm_1, DomHelper_1, Navigator_1, ViewModeSelectionForm_1, VML) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.DetailFormHtmlElements = exports.FormMode = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = exports.FormModel = void 0;
@@ -45,6 +45,9 @@ define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/
             if (configuration.isReadOnly === undefined) {
                 configuration.isReadOnly = true;
             }
+            if (configuration.viewMode === undefined || configuration.viewMode === null) {
+                configuration.viewMode = VML.getCurrentViewMode();
+            }
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
@@ -54,7 +57,7 @@ define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/
             // Load the object
             const defer1 = DataLoader.getRootElements(workspace, extentUri);
             // Load the form
-            const defer2 = ClientForms.getDefaultFormForExtent(workspace, extentUri, "");
+            const defer2 = ClientForms.getDefaultFormForExtent(workspace, extentUri, configuration.viewMode);
             // Wait for both
             Promise.all([defer1, defer2]).then(([elements, form]) => {
                 tthis.formElement = form;
@@ -64,28 +67,15 @@ define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
                 tthis.createFormByCollection(htmlElements, elements, configuration);
             });
-            const viewModes = VML.getViewModesFromServer();
-            const currentViewMode = VML.getCurrentViewMode();
-            viewModes.then((result) => {
-                for (let n in result) {
-                    const v = result[n];
-                    const option = $("<option></option>");
-                    const id = v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, Mof_1.ObjectType.Single);
-                    option.attr('value', id);
-                    option.text(v.get(_DatenMeister._DatenMeister._Forms._ViewMode._name_, Mof_1.ObjectType.Single));
-                    if (id === currentViewMode) {
-                        option.attr('selected', 'selected');
-                    }
-                    htmlElements.viewModeSelector.append(option);
-                }
-                htmlElements.viewModeSelector.on('change', () => {
-                    const selectedElement = $("option:selected", htmlElements.viewModeSelector);
-                    VML.setCurrentViewMode(selectedElement.attr('value'));
-                });
-            });
+            (_a = htmlElements.viewModeSelectorContainer) === null || _a === void 0 ? void 0 : _a.empty();
+            if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
+                const viewModeForm = new ViewModeSelectionForm_1.ViewModeSelectionForm();
+                const htmlViewModeForm = viewModeForm.createForm();
+                viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
+                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+            }
             htmlElements.itemContainer.empty()
                 .text("Loading content and form...");
-            (_a = htmlElements.viewModeSelector) === null || _a === void 0 ? void 0 : _a.empty();
         }
         createFormByCollection(htmlElements, elements, configuration) {
             const itemContainer = htmlElements.itemContainer;
@@ -263,10 +253,14 @@ define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/
                     tthis.rebuildForm();
                 };
             }
+            // Defines the viewmode, if not already defined by the caller
+            if (configuration.viewMode === undefined || configuration.viewMode === null) {
+                configuration.viewMode = VML.getCurrentViewMode();
+            }
             // Load the object
             const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
             // Load the form
-            const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, "");
+            const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, configuration.viewMode);
             // Wait for both
             Promise.all([defer1, defer2]).then(([element1, form]) => {
                 this.htmlElements.itemContainer.empty();
@@ -286,6 +280,15 @@ define(["require", "exports", "../Mof", "../Mof", "../client/Items", "../client/
             });
             this.htmlElements.itemContainer.empty();
             this.htmlElements.itemContainer.text("Loading content and form...");
+            // Creates the viewmode Selection field
+            if (this.htmlElements.viewModeSelectorContainer !== undefined
+                && this.htmlElements.viewModeSelectorContainer !== null) {
+                this.htmlElements.viewModeSelectorContainer.empty();
+                const viewModeForm = new ViewModeSelectionForm_1.ViewModeSelectionForm();
+                const htmlViewModeForm = viewModeForm.createForm();
+                viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
+                this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+            }
         }
     }
     exports.ItemDetailFormCreator = ItemDetailFormCreator;

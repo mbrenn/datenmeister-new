@@ -10,10 +10,8 @@
 
 <h1>Items Overview</h1>
 
-<div style="">
-    <select id="dm-viewmode-selection">
-        
-    </select>
+<div id="dm-viewmode-selection-container">
+    
 </div>
 
 <script type="application/javascript">
@@ -26,7 +24,7 @@ $(function()
         listForm.createListForRootElements(
             {
                 itemContainer: $("#dm-items"),
-                viewModeSelector: $("#dm-viewmode-selection")
+                viewModeSelectorContainer: $("#dm-viewmode-selection-container")
             },
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",

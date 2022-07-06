@@ -15,4 +15,9 @@ export interface IFormConfiguration {
     onSubmit?: (element: DmObject, method: SubmitMethod) => void;
 
     refreshForm?: () => void;
+
+    /**
+     * Defines the view mode for the configuration
+     */
+    viewMode?: string;
 }

@@ -1,5 +1,4 @@
 ﻿import * as Mof from "../Mof";
-import {ObjectType} from "../Mof";
 import * as DataLoader from "../client/Items";
 import * as ClientForms from "../client/Forms";
 import * as DetailForm from "./DetailForm";
@@ -9,9 +8,9 @@ import {ListForm} from "./ListForm";
 import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
-import * as _DatenMeister from "../models/DatenMeister.class"
-import * as VML from "./ViewModeLogic"
 import DmObject = Mof.DmObject;
+import {ViewModeSelectionForm} from "./ViewModeSelectionForm";
+import * as VML from "./ViewModeLogic"
 
 export namespace FormModel {
     export function createEmptyFormWithDetail() {
@@ -40,9 +39,9 @@ export class CollectionFormHtmlElements
     itemContainer: JQuery;
     /*
     Here, the options for selection will be added. 
-    This element shall be 'select' which is capable to store option elements
+    This element shall be 'div' which is capable to store the select element
      */
-    viewModeSelector: JQuery;
+    viewModeSelectorContainer: JQuery;
 }
 
 /*
@@ -62,6 +61,10 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
+        
+        if(configuration.viewMode === undefined || configuration.viewMode === null) {
+            configuration.viewMode = VML.getCurrentViewMode();
+        }
 
         const tthis = this;
 
@@ -75,7 +78,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const defer1 = DataLoader.getRootElements(workspace, extentUri);
 
         // Load the form
-        const defer2 = ClientForms.getDefaultFormForExtent(workspace, extentUri, "");
+        const defer2 = ClientForms.getDefaultFormForExtent(workspace, extentUri, configuration.viewMode);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([elements, form]) => {
@@ -89,33 +92,18 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             tthis.createFormByCollection(htmlElements, elements, configuration);
         });
 
-        const viewModes = VML.getViewModesFromServer();
-        const currentViewMode = VML.getCurrentViewMode();
-        viewModes.then((result) => {
-            for (let n in result) {
-                const v = result[n];
-                const option = $("<option></option>");
-                const id = v.get(_DatenMeister._DatenMeister._Forms._ViewMode.id, ObjectType.Single);
-                option.attr('value', id);
-                option.text(v.get(_DatenMeister._DatenMeister._Forms._ViewMode._name_, ObjectType.Single));
-                
-                if (id === currentViewMode) {
-                    option.attr('selected', 'selected');
-                }
-                
-                htmlElements.viewModeSelector.append(option);
-            }
-            
-            htmlElements.viewModeSelector.on('change', () =>{
-                const selectedElement = $("option:selected", htmlElements.viewModeSelector);
-                VML.setCurrentViewMode(selectedElement.attr('value'));
-                
-            })
-        });
+        htmlElements.viewModeSelectorContainer?.empty();
+        if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null ) {
+            const viewModeForm = new ViewModeSelectionForm();
+            const htmlViewModeForm = viewModeForm.createForm();
+            viewModeForm.viewModeSelected.addListener(
+                _ => configuration.refreshForm());
 
+            htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+        }
+        
         htmlElements.itemContainer.empty()
             .text("Loading content and form...");
-        htmlElements.viewModeSelector?.empty();
     }
 
     createFormByCollection(htmlElements: CollectionFormHtmlElements, elements: Array<Mof.DmObject>, configuration: IFormConfiguration) {
@@ -193,9 +181,9 @@ export class DetailFormHtmlElements
     itemContainer: JQuery;
     /*
     Here, the options for selection will be added. 
-    This element shall be 'select' which is capable to store option elements
+    This element shall be 'div' which is capable to store the select element
      */
-    viewModeSelector?: JQuery;
+    viewModeSelectorContainer?: JQuery;
 }
 
 
@@ -275,7 +263,8 @@ export class DetailFormCreator implements IForm.IFormNavigation {
 
             this.domContainer.append(form);
         }
-    }
+
+    }    
 }
 
 export class ItemDetailFormCreator {
@@ -341,11 +330,16 @@ export class ItemDetailFormCreator {
             }
         }
 
+        // Defines the viewmode, if not already defined by the caller
+        if(configuration.viewMode === undefined || configuration.viewMode === null) {
+            configuration.viewMode = VML.getCurrentViewMode();
+        }
+
         // Load the object
         const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
 
         // Load the form
-        const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, "");
+        const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, configuration.viewMode);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {
@@ -373,5 +367,18 @@ export class ItemDetailFormCreator {
 
         this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.text("Loading content and form...");
+
+
+        // Creates the viewmode Selection field
+        if (this.htmlElements.viewModeSelectorContainer !== undefined 
+            && this.htmlElements.viewModeSelectorContainer !== null ) {
+            this.htmlElements.viewModeSelectorContainer.empty();
+            
+            const viewModeForm = new ViewModeSelectionForm();
+            const htmlViewModeForm = viewModeForm.createForm();
+            viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
+
+            this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+        }
     }
 }

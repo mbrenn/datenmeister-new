@@ -82,7 +82,7 @@ namespace DatenMeister.WebServer.Controller
             /// <summary>
             /// A list of view modes
             /// </summary>
-            public List<string> ViewModes { get; set; }
+            public List<string> ViewModes { get; set; } = new();
         }
     }
 }

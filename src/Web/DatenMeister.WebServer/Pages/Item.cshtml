@@ -10,6 +10,10 @@
 
 <h1>Item</h1>
 
+<div id="dm-viewmode-selection-container">
+    
+</div>
+
 <div class="dm-breadcrumb">
     @{ var w = Model.Workspace ?? "No Workspace"; }
     <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
@@ -25,7 +29,8 @@ $(function()
         const detailForm = new Form.ItemDetailFormCreator();
         detailForm.createForm(
             {
-                itemContainer: $("#form_view")
+                itemContainer: $("#form_view"),
+                viewModeSelectorContainer: $("#dm-viewmode-selection-container")
             },
             "@HttpUtility.JavaScriptStringEncode(w)",
             "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");

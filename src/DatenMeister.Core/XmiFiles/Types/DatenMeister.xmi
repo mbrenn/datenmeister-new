@@ -595,6 +595,13 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
+
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.CreateFormByMetaclass" name="CreateFormByMetaClass">
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d7342d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///_internal/types/internal#Actions.Action">
+      </generalization>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-fd48b0a435a1" name="metaClass" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1df4e655-2222-4fa2-bec6-adc7383adb2b" name="creationMode" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
     <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="f77015a8-1d70-4f09-beb3-1e20e6303d40" name="Reports">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.SimpleReportAction" name="SimpleReportAction">
         <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />

@@ -136,6 +136,68 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
+        public IElement CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? configuration)
+        {
+            // Ok, not an extent now do the right things
+            IElement? foundForm = null;
+
+            if (configuration.ViaFormFinder)
+            {
+                var viewFinder = CreateFormFinder();
+                foundForm = viewFinder.FindFormsFor(new FindFormQuery
+                {
+                    metaClass = metaClass,
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
+                    viewModeId = configuration.ViewModeId ?? ViewModes.Default
+                }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    Logger.Info("CreateExtentFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                    FormMethods.AddToFormCreationProtocol(foundForm,
+                        "[FormFactory.CreateExtentFormForItem] Found Form via FormFinder: " + foundForm.GetUri());
+                }
+            }
+
+            if (foundForm == null && configuration.ViaFormCreator)
+            {
+                var formCreator = CreateFormCreator();
+                foundForm = formCreator.CreateDetailFormByMetaClass(
+                    metaClass,
+                    new FormFactoryConfiguration { IncludeOnlyCommonProperties = true, AllowFormModifications = false});
+
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateExtentFormForItem] Created Form via FormCreator");
+            }
+
+            if (foundForm != null)
+            {
+                foundForm = CloneForm(foundForm);
+
+                // Adds the extension forms to the found extent
+                AddExtensionFormsToExtentForm(
+                    foundForm,
+                    new FindFormQuery
+                    {
+                        metaClass = metaClass?.getMetaClass(),
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetailExtension,
+                        viewModeId = configuration.ViewModeId ?? ViewModes.Default
+                    });
+                
+                var formCreationContext = new FormCreationContext
+                {
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
+                    MetaClass = metaClass
+                };
+
+                CallPluginsForExtentForm(configuration, formCreationContext, ref foundForm);
+                
+                CleanupExtentForm(foundForm, true);
+            }
+
+            // No Form
+            return foundForm;
+        }
+
         public IElement? CreateDetailFormForItem(IObject element, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;

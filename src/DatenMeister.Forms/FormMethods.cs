@@ -395,7 +395,8 @@ namespace DatenMeister.Forms
         {
             if (_DatenMeister._Forms._DetailForm.field != _DatenMeister._Forms._ListForm.field)
                 throw new InvalidOperationException(
-                    "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
+                    "Something ugly happened here: _FormAndFields._DetailForm.tab != _FormAndFields._ListForm.tab." +
+                    "Please check static type definition");
 
             var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
             return fields

@@ -399,6 +399,25 @@ namespace DatenMeister.Core.Models
             public _DocumentOpenAction @DocumentOpenAction = new _DocumentOpenAction();
             public IElement @__DocumentOpenAction = new MofObjectShadow("dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74");
 
+            public class _CreateFormByMetaClass
+            {
+                public static string @metaClass = "metaClass";
+                public IElement? @_metaClass = null;
+
+                public static string @creationMode = "creationMode";
+                public IElement? @_creationMode = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _CreateFormByMetaClass @CreateFormByMetaClass = new _CreateFormByMetaClass();
+            public IElement @__CreateFormByMetaClass = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass");
+
             public class _Reports
             {
                 public class _SimpleReportAction

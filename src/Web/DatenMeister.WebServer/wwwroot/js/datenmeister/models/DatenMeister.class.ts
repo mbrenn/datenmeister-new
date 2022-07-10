@@ -196,6 +196,15 @@ export namespace _DatenMeister
                 }
 
                 export const __DocumentOpenAction_Uri = "dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74";
+                export class _CreateFormByMetaClass
+                {
+                    static metaClass = "metaClass";
+                    static creationMode = "creationMode";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __CreateFormByMetaClass_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass";
                 export namespace _Reports
                 {
                         export class _SimpleReportAction

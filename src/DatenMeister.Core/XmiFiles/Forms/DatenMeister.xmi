@@ -68,6 +68,21 @@
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="TreeItemDetail" form-ref="#ExtentPropertiesForm" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" name="Association for Extent Property" p1:id="aa43615b-42eb-4c0b-818c-985c961fbba3" />
     </packagedElement>        
   </item>
+  <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Forms" name="Forms">
+   <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" name="Forms - Create By Metaclass" hideMetaInformation="True" allowNewProperties="False" p1:id="Forms.Create.ByMetaClass" comment="Used by Action 'Forms.Create.ByMetaClass'">
+     <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Meta Class" title="Select your MetaClass" p1:id="Forms.Create.ByMetaClass.Detail" name="Select Extent Type">
+       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="metaClass" title="Type of MetaClass" defaultWorkspace="Types" isSelectionInline="true" />
+       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="creationMode" title="Creation Strategy" p1:id="4e536826-8cb6-4217-8c5d-459516ecd616">
+         <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Detail" name="DetailForm w/o Assocation" p1:id="a610cc6c-42b3-4015-a152-fbd0046fc411" />
+         <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Detail_Association" name="DetailForm w/ Assocation" p1:id="b76c2802-fa08-4901-a0ed-43dc43dd499f" />
+         <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="List" name="ListForm w/o Assocation" p1:id="c610cc6c-42b3-4015-a152-fbd0046fc411" />
+         <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="List_Association" name="ListForm w/ Assocation" p1:id="d76c2802-fa08-4901-a0ed-43dc43dd499f" />
+         <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Detail_List" name="Detail- and ListForm w/o Association" p1:id="e610cc6c-42b3-4015-a152-fbd0046fc411" />
+         <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Detail_List_Association" name="Detail- and Listform w/ Assocation" p1:id="f76c2802-fa08-4901-a0ed-43dc43dd499f" />
+       </field>
+     </tab>      
+   </packagedElement>
+  </item>
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" name="Extent - Select Type" hideMetaInformation="True" allowNewProperties="True" p1:id="WorkspacesAndExtents.Extent.SelectType" comment="Used by Action 'LoadOrCreateExtent'">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Extent-Type" title="Select your Extent Type" p1:id="WorkspacesAndExtents.Extent.SelectType.Detail" name="Select Extent Type">

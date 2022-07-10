@@ -15,6 +15,7 @@
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Provider.DynamicRuntime\DatenMeister.Provider.DynamicRuntime.csproj" />
       <ProjectReference Include="..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
+      <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
     </ItemGroup>
 
 </Project>

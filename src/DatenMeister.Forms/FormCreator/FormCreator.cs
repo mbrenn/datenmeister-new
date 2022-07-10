@@ -101,8 +101,7 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="scopeStorage">The scope storage</param>
-        /// <param name="formLogic">View logic being used</param>
-        private FormCreator(
+        public FormCreator(
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage)
         {

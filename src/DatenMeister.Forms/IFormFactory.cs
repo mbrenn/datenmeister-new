@@ -17,6 +17,14 @@ namespace DatenMeister.Forms
         IElement? CreateDetailFormForItem(IObject element, FormFactoryConfiguration configuration);
 
         /// <summary>
+        /// Creates the detail form by a certain metaclass
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be used</param>
+        /// <param name="creationMode">Creation Mode to be used</param>
+        /// <returns></returns>
+        IElement CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode);
+
+        /// <summary>
         /// Gets the extent form for a certain item's metaclass.
         /// This method can be used when the object to which a form shall be provided is not available 
         /// </summary>

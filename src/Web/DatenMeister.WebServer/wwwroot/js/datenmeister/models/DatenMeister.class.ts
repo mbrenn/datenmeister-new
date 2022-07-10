@@ -966,7 +966,7 @@ export namespace _DatenMeister
                     static creationProtocol = "creationProtocol";
                 }
 
-                export const __RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm";
+                export const __RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
                 export class _TableForm
                 {
                     static property = "property";
@@ -992,7 +992,7 @@ export namespace _DatenMeister
                     static creationProtocol = "creationProtocol";
                 }
 
-                export const __TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm";
+                export const __TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
                 export class _CollectionForm
                 {
                     static tab = "tab";
@@ -1006,7 +1006,7 @@ export namespace _DatenMeister
                     static creationProtocol = "creationProtocol";
                 }
 
-                export const __CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm";
+                export const __CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
                 export class _ObjectForm
                 {
                     static tab = "tab";
@@ -1020,7 +1020,7 @@ export namespace _DatenMeister
                     static creationProtocol = "creationProtocol";
                 }
 
-                export const __ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm";
+                export const __ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";
                 export class _ViewMode
                 {
                     static _name_ = "name";

@@ -2085,7 +2085,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _RowForm @RowForm = new _RowForm();
-            public IElement @__RowForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm");
+            public IElement @__RowForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
 
             public class _TableForm
             {
@@ -2155,7 +2155,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _TableForm @TableForm = new _TableForm();
-            public IElement @__TableForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm");
+            public IElement @__TableForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
 
             public class _CollectionForm
             {
@@ -2189,7 +2189,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _CollectionForm @CollectionForm = new _CollectionForm();
-            public IElement @__CollectionForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm");
+            public IElement @__CollectionForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
 
             public class _ObjectForm
             {
@@ -2223,7 +2223,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _ObjectForm @ObjectForm = new _ObjectForm();
-            public IElement @__ObjectForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm");
+            public IElement @__ObjectForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
 
             public class _ViewMode
             {

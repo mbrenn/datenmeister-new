@@ -336,7 +336,7 @@ namespace DatenMeister.Forms
                          .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
                          .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
                          .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType,
-                             _DatenMeister._Forms.___FormType.Detail)
+                             _DatenMeister._Forms.___FormType.Row)
                          .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);

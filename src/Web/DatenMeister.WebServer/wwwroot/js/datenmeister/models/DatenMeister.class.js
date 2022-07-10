@@ -828,21 +828,25 @@ define(["require", "exports"], function (require, exports) {
             _Forms.__NumberFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData";
             let _FormType;
             (function (_FormType) {
-                _FormType.Detail = "Detail";
-                _FormType.TreeItemExtent = "TreeItemExtent";
-                _FormType.TreeItemDetail = "TreeItemDetail";
-                _FormType.ObjectList = "ObjectList";
-                _FormType.TreeItemExtentExtension = "TreeItemExtentExtension";
-                _FormType.TreeItemDetailExtension = "TreeItemDetailExtension";
+                _FormType.Object = "Object";
+                _FormType.Collection = "Collection";
+                _FormType.Row = "Row";
+                _FormType.Table = "Table";
+                _FormType.ObjectExtension = "ObjectExtension";
+                _FormType.CollectionExtension = "CollectionExtension";
+                _FormType.RowExtension = "RowExtension";
+                _FormType.TableExtension = "TableExtension";
             })(_FormType = _Forms._FormType || (_Forms._FormType = {}));
             let ___FormType;
             (function (___FormType) {
-                ___FormType[___FormType["Detail"] = 0] = "Detail";
-                ___FormType[___FormType["TreeItemExtent"] = 1] = "TreeItemExtent";
-                ___FormType[___FormType["TreeItemDetail"] = 2] = "TreeItemDetail";
-                ___FormType[___FormType["ObjectList"] = 3] = "ObjectList";
-                ___FormType[___FormType["TreeItemExtentExtension"] = 4] = "TreeItemExtentExtension";
-                ___FormType[___FormType["TreeItemDetailExtension"] = 5] = "TreeItemDetailExtension";
+                ___FormType[___FormType["Object"] = 0] = "Object";
+                ___FormType[___FormType["Collection"] = 1] = "Collection";
+                ___FormType[___FormType["Row"] = 2] = "Row";
+                ___FormType[___FormType["Table"] = 3] = "Table";
+                ___FormType[___FormType["ObjectExtension"] = 4] = "ObjectExtension";
+                ___FormType[___FormType["CollectionExtension"] = 5] = "CollectionExtension";
+                ___FormType[___FormType["RowExtension"] = 6] = "RowExtension";
+                ___FormType[___FormType["TableExtension"] = 7] = "TableExtension";
             })(___FormType = _Forms.___FormType || (_Forms.___FormType = {}));
             class _Form {
             }

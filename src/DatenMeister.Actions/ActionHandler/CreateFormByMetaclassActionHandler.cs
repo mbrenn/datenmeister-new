@@ -69,7 +69,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (includeFormAssociation)
                 {
                     formMethods.AddFormAssociationForMetaclass(form, metaClass,
-                        _DatenMeister._Forms.___FormType.TreeItemDetail);
+                        _DatenMeister._Forms.___FormType.Object);
                 }
             }
 
@@ -81,7 +81,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (includeFormAssociation)
                 {
                     formMethods.AddFormAssociationForMetaclass(form, metaClass,
-                        _DatenMeister._Forms.___FormType.Detail);
+                        _DatenMeister._Forms.___FormType.Row);
                 }
             }
         }

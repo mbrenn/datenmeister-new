@@ -54,12 +54,12 @@ namespace DatenMeister.Forms.Helper
                     var forms = new List<IObject>();
                     if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true)
                     {
-                        if (context.FormType != _DatenMeister._Forms.___FormType.ObjectList)
+                        if (context.FormType != _DatenMeister._Forms.___FormType.Collection &&
+                            context.FormType != _DatenMeister._Forms.___FormType.CollectionExtension)
                             forms.AddRange(FormMethods.GetRowForms(form));
 
-                        if (context.FormType != _DatenMeister._Forms.___FormType.TreeItemDetail &&
-                            context.FormType != _DatenMeister._Forms.___FormType.Detail &&
-                            context.FormType != _DatenMeister._Forms.___FormType.TreeItemDetailExtension)
+                        if (context.FormType != _DatenMeister._Forms.___FormType.Row &&
+                            context.FormType != _DatenMeister._Forms.___FormType.RowExtension)
                             forms.AddRange(FormMethods.GetTableForms(form));
                     }
                     else

@@ -33,7 +33,7 @@ namespace DatenMeister.Extent.Forms
                 _extentSettings.extentTypeSettings.FirstOrDefault(x => x.name == context.ExtentType);
             var mofFactory = new MofFactory(form);
 
-            if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.TreeItemExtent)
+            if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.Collection)
             {
                 var foundListMetaClasses = new List<IElement>();
                 // First, figure out which list forms we are having...
@@ -43,7 +43,7 @@ namespace DatenMeister.Extent.Forms
                     foundListMetaClasses.Add(metaClass);
                 }
                 
-                // Second, now create the action buttons for the listform without classifier
+                // Second, now create the action buttons for the tableform without classifier
                 foreach (var listForm in FormMethods.GetTableForms(form))
                 {
                     // Selects only the listform which do not have a classifier

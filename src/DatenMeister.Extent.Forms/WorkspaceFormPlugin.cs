@@ -41,7 +41,7 @@ namespace DatenMeister.Extent.Forms
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Workspace,
                             OnCallSuccess = (element, parameter) =>
                             {
@@ -57,7 +57,7 @@ namespace DatenMeister.Extent.Forms
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Workspace,
                             OnCallSuccess = (element, parameter) =>
                             {

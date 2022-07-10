@@ -20,7 +20,7 @@ namespace DatenMeister.Extent.Forms
         public bool ModifyForm(FormCreationContext context, IElement form)
         {
             var extent = context.DetailElement?.GetExtentOf();
-            if (context.FormType == _DatenMeister._Forms.___FormType.ObjectList &&
+            if (context.FormType == _DatenMeister._Forms.___FormType.Table &&
                 extent != null)
             {
                 var added = false;

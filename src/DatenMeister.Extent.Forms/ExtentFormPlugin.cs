@@ -36,7 +36,7 @@ namespace DatenMeister.Extent.Forms
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Extent
                         });
 
@@ -44,14 +44,14 @@ namespace DatenMeister.Extent.Forms
                         formsPlugin,
                         new ActionButtonAdderParameter(NavigationExtentProperties, "View Extent Properties")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Extent
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Detail,
+                            FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Extent
                         });
 
@@ -59,7 +59,7 @@ namespace DatenMeister.Extent.Forms
                         formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "New Item")
                         {
                             MetaClass = _DatenMeister.TheOne.Management.__Extent,
-                            FormType = _DatenMeister._Forms.___FormType.TreeItemExtent
+                            FormType = _DatenMeister._Forms.___FormType.Collection
                         }
                     );
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Extent.Forms
                         new ActionButtonAdderParameter(NavigationExtentNavigateTo, "Items")
                         {
                             ParentMetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                            FormType = _DatenMeister._Forms.___FormType.ObjectList,
+                            FormType = _DatenMeister._Forms.___FormType.Table,
                             ParentPropertyName = _DatenMeister._Management._Workspace.extents,
                             ActionButtonPosition = 0
                         });

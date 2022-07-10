@@ -254,7 +254,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
-                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Detail);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Row);
                 userViewExtent.elements().add(formAssociation);
 
                 MessageBox.Show("View Association created");
@@ -306,10 +306,11 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var formMetaClass = detailAsElement.metaclass;
                 var isRowForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__RowForm);
                 var isCollectionForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__CollectionForm);
+                var isTableForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__TableForm);
                 var formType = 
-                    isCollectionForm ? _DatenMeister._Forms.___FormType.TreeItemDetail :
-                    isRowForm ? _DatenMeister._Forms.___FormType.Detail :
-                    _DatenMeister._Forms.___FormType.TreeItemExtent;
+                    isCollectionForm ? _DatenMeister._Forms.___FormType.Collection :
+                    isRowForm ? _DatenMeister._Forms.___FormType.Row :
+                    isTableForm ? _DatenMeister._Forms.___FormType.Table : _DatenMeister._Forms.___FormType.Object;
 
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailAsElement);

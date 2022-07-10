@@ -35,19 +35,19 @@ namespace DatenMeister.Extent.Forms
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
+                            FormType = _DatenMeister._Forms.___FormType.Object
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.ObjectList
+                            FormType = _DatenMeister._Forms.___FormType.Table
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListDeleteItem, "Delete Item")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.ObjectList
+                            FormType = _DatenMeister._Forms.___FormType.Table
                         });
 
                     formsPlugin.FormModificationPlugins.Add(

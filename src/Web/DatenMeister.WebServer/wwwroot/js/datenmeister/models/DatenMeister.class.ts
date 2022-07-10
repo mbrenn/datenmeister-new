@@ -920,22 +920,26 @@ export namespace _DatenMeister
                 export const __NumberFieldData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData";
                 export module _FormType
                 {
-                    export const Detail = "Detail";
-                    export const TreeItemExtent = "TreeItemExtent";
-                    export const TreeItemDetail = "TreeItemDetail";
-                    export const ObjectList = "ObjectList";
-                    export const TreeItemExtentExtension = "TreeItemExtentExtension";
-                    export const TreeItemDetailExtension = "TreeItemDetailExtension";
+                    export const Object = "Object";
+                    export const Collection = "Collection";
+                    export const Row = "Row";
+                    export const Table = "Table";
+                    export const ObjectExtension = "ObjectExtension";
+                    export const CollectionExtension = "CollectionExtension";
+                    export const RowExtension = "RowExtension";
+                    export const TableExtension = "TableExtension";
                 }
 
                 export enum ___FormType
                 {
-                    Detail,
-                    TreeItemExtent,
-                    TreeItemDetail,
-                    ObjectList,
-                    TreeItemExtentExtension,
-                    TreeItemDetailExtension
+                    Object,
+                    Collection,
+                    Row,
+                    Table,
+                    ObjectExtension,
+                    CollectionExtension,
+                    RowExtension,
+                    TableExtension
                 }
 
                 export class _Form

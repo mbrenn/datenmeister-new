@@ -82,9 +82,8 @@ namespace DatenMeister.Forms.FormFinder
 
                 var associationExtentType = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
                 var associationMetaClass = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
-                var associationViewType = 
-                    element.getOrNull<_DatenMeister._Forms.___FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
-                                    _DatenMeister._Forms.___FormType.Detail;
+                var associationViewType =
+                    element.getOrNull<_DatenMeister._Forms.___FormType>(_DatenMeister._Forms._FormAssociation.formType);
                 var associationParentMetaclass =
                     element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.parentMetaClass);
                 var associationParentProperty =
@@ -94,7 +93,8 @@ namespace DatenMeister.Forms.FormFinder
                 if (associationExtentType == null && associationMetaClass == null
                                                   && associationParentMetaclass == null 
                                                   && associationParentProperty == null
-                                                  && associationViewModeId == null)
+                                                  && associationViewModeId == null
+                                                  && associationViewType == null)
                 {
                     InternalDebug("- - This item is too unspecific");
                     // Skip item because it is too unspecific

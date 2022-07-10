@@ -274,8 +274,8 @@ namespace DatenMeister.WPF.Windows
                 return;
             }
 
-            var width = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultWidth);
-            var height = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultHeight);
+            var width = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultWidth);
+            var height = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultHeight);
             if (width <= 0 && height <= 0)
             {
                 width = 1000;
@@ -393,7 +393,6 @@ namespace DatenMeister.WPF.Windows
             var formDefinition = RequestedFormDefinition;
             
             IObject? effectiveForm = null;
-            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var formFactory = GiveMe.Scope.Resolve<FormFactory>();
 
             // Checks, if there is an overriding form 
@@ -461,7 +460,7 @@ namespace DatenMeister.WPF.Windows
 
                 SetMainContent(control);
 
-                var title = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._DetailForm.title);
+                var title = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._RowForm.title);
                 if (!string.IsNullOrEmpty(title))
                 {
                     Title = title;

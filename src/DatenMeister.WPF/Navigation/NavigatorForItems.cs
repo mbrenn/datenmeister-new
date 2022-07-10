@@ -359,7 +359,7 @@ namespace DatenMeister.WPF.Navigation
                         {
                             // Gets the view definition
                             var fields = y.View
-                                .get<IReflectiveSequence>(_DatenMeister._Forms._DetailForm.field);
+                                .get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
                             var formFactory = new MofFactory(fields);
                             var containerProperty = config.ContainerProperty;
 

@@ -22,7 +22,7 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" p1:id="36dd9478-4385-42ba-ac0c-3ab4c1935370" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="195e3e73-0b8f-47d7-b640-1f2e1781fac2" />
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="IssueFormList" name="Issue - List">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" p1:id="IssueFormList" name="Issue - List">
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail" p1:id="15cd29cc-2a53-441d-9443-8a032e26c4e8">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="7040c279-587c-44e3-8124-41280bfed5c2" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="3715742f-8300-4c22-935d-840b1d0a041b" />
@@ -31,7 +31,7 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="719ad81f-6192-4400-87e3-89a6e859e140" />
         </tab>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="IssuePackageList" name="Packages - List">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm" p1:id="IssuePackageList" name="Packages - List">
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" name="Issues" property="packagedElement" p1:id="af573deb-167d-4eb3-931c-3af39b0697a2" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="IssuePackageList.Issues.id" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="563d34b8-12b9-453e-b6be-549392cf9766" />

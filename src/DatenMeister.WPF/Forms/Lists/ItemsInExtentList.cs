@@ -131,7 +131,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     
                     if (!ClassifierMethods.IsSpecializedClassifierOf(
                         formMetaClass, 
-                        _DatenMeister.TheOne.Forms.__ExtentForm))
+                        _DatenMeister.TheOne.Forms.__CollectionForm))
                     {
                         var formType = formMetaClass?.ToString() ?? "Unclassified";
                         

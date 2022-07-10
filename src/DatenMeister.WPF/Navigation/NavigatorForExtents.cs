@@ -95,7 +95,7 @@ namespace DatenMeister.WPF.Navigation
                     // Add the options for the extent types
                     var foundExtentType =
                         resolvedForm.GetByPropertyFromCollection(
-                            _DatenMeister._Forms._ListForm.field,
+                            _DatenMeister._Forms._TableForm.field,
                             _DatenMeister._Forms._Form.name,
                             _DatenMeister._Management._Extent.extentType).FirstOrDefault();
                     if (foundExtentType == null)

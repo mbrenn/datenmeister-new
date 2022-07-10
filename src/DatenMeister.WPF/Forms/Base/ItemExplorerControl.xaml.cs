@@ -389,7 +389,7 @@ namespace DatenMeister.WPF.Forms.Base
             FormDynamicModifier.ModifyFormDependingOnObject(EffectiveForm, value);
             
             // Now gets the tabs
-            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -448,11 +448,11 @@ namespace DatenMeister.WPF.Forms.Base
             var usedViewExtensions = viewExtensions.ToList();
 
             UserControl? createdUserControl = null;
-            if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
+            if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
             {
                 createdUserControl = CreateDetailForm(value, tabForm, container);
             }
-            else if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+            else if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
             {
                 createdUserControl = CreateListControl(value, tabForm, usedViewExtensions);
             }
@@ -505,7 +505,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Gets the default types by the form definition
             var defaultTypesForNewItems =
-                tabForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements)
+                tabForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements)
                     ?.ToList()
                 ?? new List<object?>();
 
@@ -539,7 +539,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
 
                 // Creates the buttons for the new items
-                var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
+                var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitNewItems);
                 if (!inhibitNewButtons)
                 {
                     // Creates the menu and buttons for the default types. 
@@ -551,7 +551,7 @@ namespace DatenMeister.WPF.Forms.Base
             else
             {
                 // Query all the plugins whether a filter is available
-                var propertyName = tabForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                var propertyName = tabForm.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
 
                 // Goes through the properties
                 if (!string.IsNullOrEmpty(propertyName))
@@ -590,7 +590,7 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                 }
                 
-                var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
+                var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitNewItems);
 
                 if (!inhibitNewButtons)
                 {

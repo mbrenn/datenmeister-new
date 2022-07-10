@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Forms.Lists
                                   extent.elements(),
                                   new FormFactoryConfiguration())
                               ?? throw new InvalidOperationException("List form could not be created");
-                formElement.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
+                formElement.set(_DatenMeister._Forms._TableForm.inhibitNewItems, true);
             }
 
             var formDefinition = new FormDefinition("Workspaces", formElement)
@@ -165,9 +165,9 @@ namespace DatenMeister.WPF.Forms.Lists
                         extent.elements(),
                         new FormFactoryConfiguration()) ??
                     throw new InvalidOperationException("listForm == null");
-                result.set(_DatenMeister._Forms._ListForm.inhibitDeleteItems, true);
-                result.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
-                result.set(_DatenMeister._Forms._ListForm.property,
+                result.set(_DatenMeister._Forms._TableForm.inhibitDeleteItems, true);
+                result.set(_DatenMeister._Forms._TableForm.inhibitNewItems, true);
+                result.set(_DatenMeister._Forms._TableForm.property,
                     nameof(_DatenMeister._Management._Workspace.extents));
             }
 

@@ -304,11 +304,11 @@ namespace DatenMeister.WPF.Modules.FormManager
                     "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
 
                 var formMetaClass = detailAsElement.metaclass;
-                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__DetailForm);
-                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__ExtentForm);
+                var isRowForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__RowForm);
+                var isCollectionForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__CollectionForm);
                 var formType = 
-                    isExtentForm ? _DatenMeister._Forms.___FormType.TreeItemDetail :
-                    isDetailForm ? _DatenMeister._Forms.___FormType.Detail :
+                    isCollectionForm ? _DatenMeister._Forms.___FormType.TreeItemDetail :
+                    isRowForm ? _DatenMeister._Forms.___FormType.Detail :
                     _DatenMeister._Forms.___FormType.TreeItemExtent;
 
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);

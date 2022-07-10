@@ -138,7 +138,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     };
 
             form.set(
-                _DatenMeister._Forms._ListForm.inhibitNewItems,
+                _DatenMeister._Forms._TableForm.inhibitNewItems,
                 _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements));
 
             _listViewControl.SetContent(valueOfElement, form, viewExtensions);
@@ -179,7 +179,7 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             var defaultTypes =
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
             if (defaultTypes == null || defaultTypes.Any(x => x != null && x.Equals(propertyType)))
             {
                 // Already included

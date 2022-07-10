@@ -870,7 +870,7 @@ define(["require", "exports"], function (require, exports) {
             _RowForm.originalUri = "originalUri";
             _RowForm.creationProtocol = "creationProtocol";
             _Forms._RowForm = _RowForm;
-            _Forms.__RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm";
+            _Forms.__RowForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm";
             class _TableForm {
             }
             _TableForm.property = "property";
@@ -895,7 +895,7 @@ define(["require", "exports"], function (require, exports) {
             _TableForm.originalUri = "originalUri";
             _TableForm.creationProtocol = "creationProtocol";
             _Forms._TableForm = _TableForm;
-            _Forms.__TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm";
+            _Forms.__TableForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm";
             class _CollectionForm {
             }
             _CollectionForm.tab = "tab";
@@ -908,7 +908,7 @@ define(["require", "exports"], function (require, exports) {
             _CollectionForm.originalUri = "originalUri";
             _CollectionForm.creationProtocol = "creationProtocol";
             _Forms._CollectionForm = _CollectionForm;
-            _Forms.__CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm";
+            _Forms.__CollectionForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm";
             class _ObjectForm {
             }
             _ObjectForm.tab = "tab";
@@ -921,7 +921,7 @@ define(["require", "exports"], function (require, exports) {
             _ObjectForm.originalUri = "originalUri";
             _ObjectForm.creationProtocol = "creationProtocol";
             _Forms._ObjectForm = _ObjectForm;
-            _Forms.__ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm";
+            _Forms.__ObjectForm_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm";
             class _ViewMode {
             }
             _ViewMode._name_ = "name";

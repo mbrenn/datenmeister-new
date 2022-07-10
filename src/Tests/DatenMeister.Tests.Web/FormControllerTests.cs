@@ -59,7 +59,7 @@ namespace DatenMeister.Tests.Web
                 ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
-            var detailForm = FormMethods.GetDetailForms(foundForm).FirstOrDefault();
+            var detailForm = FormMethods.GetRowForms(foundForm).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
             var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             var foundFields =
@@ -84,7 +84,7 @@ namespace DatenMeister.Tests.Web
                 ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
-            var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
+            var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
             Assert.That(listForm, Is.Not.Null);
             var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
@@ -121,7 +121,7 @@ namespace DatenMeister.Tests.Web
                 ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
-            var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
+            var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
             Assert.That(listForm, Is.Not.Null);
             var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
@@ -148,7 +148,7 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(form, Is.Not.Null);
             Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__CollectionForm), Is.True);
-            var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
+            var detailForm = FormMethods.GetRowForms(form).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
             var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             Assert.That(fields.Count(), Is.GreaterThan(3));
@@ -169,7 +169,7 @@ namespace DatenMeister.Tests.Web
             var form = controller.GetInternal(WorkspaceNames.UriExtentInternalForm + "#DatenMeister.Extent.Properties");
             Assert.That(form, Is.Not.Null);
 
-            var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
+            var detailForm = FormMethods.GetRowForms(form).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
 
             var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);

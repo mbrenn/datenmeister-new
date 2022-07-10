@@ -523,7 +523,7 @@ namespace DatenMeister.Forms.FormCreator
                 }
 
                 var propertyName = umlClassOrProperty.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
-                if (noDuplicate && FormMethods.GetListTabForPropertyName(form, propertyName) != null)
+                if (noDuplicate && FormMethods.GetTableFormForPropertyName(form, propertyName) != null)
                     // List form is already existing
                     return false;
 

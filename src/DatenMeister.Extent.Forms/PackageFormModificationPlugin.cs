@@ -26,7 +26,7 @@ namespace DatenMeister.Extent.Forms
                 && context.DetailElement != null)
             {
                 var tabPackagedElement =
-                    FormMethods.GetListTabForPropertyName(form,
+                    FormMethods.GetTableFormForPropertyName(form,
                         _DatenMeister._CommonTypes._Default._Package.packagedElement);
 
                 if (tabPackagedElement != null)

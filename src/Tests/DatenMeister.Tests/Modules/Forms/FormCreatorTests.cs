@@ -62,7 +62,7 @@ namespace DatenMeister.Tests.Modules.Forms
 
             Assert.That(createdForm, Is.Not.Null);
 
-            var listForm = FormMethods.GetListForms(createdForm!).FirstOrDefault(
+            var listForm = FormMethods.GetTableForms(createdForm!).FirstOrDefault(
                 x =>
                     x.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass)
                         ?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true);

@@ -37,14 +37,14 @@ namespace DatenMeister.Extent.Forms
             {
                 var foundListMetaClasses = new List<IElement>();
                 // First, figure out which list forms we are having...
-                foreach (var listForm in FormMethods.GetListForms(form))
+                foreach (var listForm in FormMethods.GetTableForms(form))
                 {
                     var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass);
                     foundListMetaClasses.Add(metaClass);
                 }
                 
                 // Second, now create the action buttons for the listform without classifier
-                foreach (var listForm in FormMethods.GetListForms(form))
+                foreach (var listForm in FormMethods.GetTableForms(form))
                 {
                     // Selects only the listform which do not have a classifier
                     if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass) != null)

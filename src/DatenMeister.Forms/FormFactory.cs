@@ -294,7 +294,7 @@ namespace DatenMeister.Forms
                 foundForm.equals(_DatenMeister.TheOne.Forms.__CollectionForm) != true && 
             foundForm.equals(_DatenMeister.TheOne.Forms.__ObjectForm) != true)
             {
-                foundForm = FormCreator.FormCreator.CreateExtentFormFromTabs(foundForm);
+                foundForm = FormCreator.FormCreator.CreateCollectionFormFromTabs(foundForm);
                 FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Transformed Form to Extent Form");
             }
 
@@ -558,7 +558,7 @@ namespace DatenMeister.Forms
                 formCreationContext,
                 ref foundForm);
             
-            var detailForms = FormMethods.GetDetailForms(foundForm);
+            var detailForms = FormMethods.GetRowForms(foundForm);
             foreach (var detailForm in detailForms)
             {
                 var listedForm = detailForm; // Get iterative
@@ -571,7 +571,7 @@ namespace DatenMeister.Forms
                     ref listedForm);
             }
 
-            var listForms = FormMethods.GetListForms(foundForm);
+            var listForms = FormMethods.GetTableForms(foundForm);
             foreach (var listForm in listForms)
             {
                 var listedForm = listForm; // Get iterative
@@ -671,7 +671,7 @@ namespace DatenMeister.Forms
         /// <param name="foundForm">The element that has been found</param>
         private void EvaluateListFormsForAutogenerationByElement(IObject element, IElement foundForm)
         {
-            var listForms = FormMethods.GetListForms(foundForm);
+            var listForms = FormMethods.GetTableForms(foundForm);
             foreach (var tab in listForms)
             {
                 var tabMetaClass = tab.getMetaClass();
@@ -731,13 +731,13 @@ namespace DatenMeister.Forms
         {
             if (cleanUpTabs)
             {
-                var detailForms = FormMethods.GetDetailForms(extentForm);
+                var detailForms = FormMethods.GetRowForms(extentForm);
                 foreach (var detailForm in detailForms)
                 {
                     CleanupDetailForm(detailForm);
                 }
 
-                var listForms = FormMethods.GetListForms(extentForm);
+                var listForms = FormMethods.GetTableForms(extentForm);
                 foreach (var listForm in listForms)
                 {
                     FormMethods.CleanupListForm(listForm);

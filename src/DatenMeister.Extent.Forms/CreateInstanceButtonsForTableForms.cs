@@ -15,7 +15,7 @@ namespace DatenMeister.Extent.Forms
     ///     the element is currently belonging to.
     ///     Here, the property 'ExtentConfiguration.ExtentDefaultTypes' is being used to retrieve the values
     /// </summary>
-    public class CreateInstanceButtonsForListForms : IFormModificationPlugin
+    public class CreateInstanceButtonsForTableForms : IFormModificationPlugin
     {
         public bool ModifyForm(FormCreationContext context, IElement form)
         {

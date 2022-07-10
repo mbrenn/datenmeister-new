@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -27,7 +28,10 @@ namespace DatenMeister.Forms
         ///     Logger being used
         /// </summary>
         private static readonly ClassLogger Logger = new(typeof(FormMethods));
-
+        
+        /// <summary>
+        /// Stores the scope storage
+        /// </summary>
         private readonly IScopeStorage _scopeStorage;
         
         /// <summary>
@@ -53,6 +57,9 @@ namespace DatenMeister.Forms
         /// <returns>true, if the form is valid</returns>
         public static bool ValidateForm(IObject form)
         {
+            Debug.Assert(_DatenMeister._Forms._RowForm.field == _DatenMeister._Forms._TableForm.field);
+            Debug.Assert(_DatenMeister._Forms._CollectionForm.tab == _DatenMeister._Forms._ObjectForm.tab);
+            
             var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             if (fields != null)
                 if (!ValidateFields(fields))
@@ -74,7 +81,10 @@ namespace DatenMeister.Forms
         /// <returns>true, if there are no duplications</returns>
         private static bool ValidateFields(IEnumerable fields)
         {
+            // Creates a random GUID to establish a separate namespace for attached fields
             var randomGuid = Guid.NewGuid();
+            
+            // Now go through the hash set
             var set = new HashSet<string>();
             foreach (var field in fields.OfType<IObject>())
             {
@@ -93,7 +103,6 @@ namespace DatenMeister.Forms
 
             return true;
         }
-        
 
         /// <summary>
         /// Gets the internal view extent being empty at each start-up
@@ -244,7 +253,7 @@ namespace DatenMeister.Forms
 
         /// <summary>
         /// Gets an enumeration of all form extents. The form extents have
-        /// to be in the Management Workspace and be of type "DatenMeister.Forms"
+        /// to be in the Management Workspace and be of type "DatenMeister.Forms".
         /// </summary>
         /// <returns>Enumeration of form extents</returns>
         public IEnumerable<IExtent> GetAllFormExtents()
@@ -316,7 +325,7 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="metaClass">The metaclass which shall be used for the detailled form</param>
         /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
-        public bool RemoveFormAssociationForDetailMetaClass(IElement metaClass, IExtent? viewExtent = null)
+        public bool RemoveFormAssociationForObjectMetaClass(IElement metaClass, IExtent? viewExtent = null)
         {
             var result = false;
             viewExtent ??= GetUserFormExtent();
@@ -412,8 +421,13 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>Enumeration of the detail forms</returns>
-        public static IEnumerable<IElement> GetDetailForms(IElement form)
+        public static IEnumerable<IElement> GetRowForms(IElement form)
         {
+            if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
+            {
+                yield return form;
+            }
+            
             foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab))
                 if (tab is IElement asElement
                     && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
@@ -425,8 +439,13 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>Enumeration of the detail forms</returns>
-        public static IEnumerable<IElement> GetListForms(IElement form)
+        public static IEnumerable<IElement> GetTableForms(IElement form)
         {
+            if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
+            {
+                yield return form;
+            }
+
             foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab))
                 if (tab is IElement asElement
                     && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
@@ -439,7 +458,7 @@ namespace DatenMeister.Forms
         /// <param name="form">Form to be evaluated</param>
         /// <param name="propertyName">Name of the property to which the propertyname shall belong</param>
         /// <returns>The found element</returns>
-        public static IElement? GetListTabForPropertyName(IElement form, string propertyName)
+        public static IElement? GetTableFormForPropertyName(IElement form, string propertyName)
         {
             if (_DatenMeister._Forms._CollectionForm.tab != _DatenMeister._Forms._ObjectForm.tab)
                 throw new InvalidOperationException(
@@ -504,9 +523,9 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="subForms">The forms to be added to the extent forms</param>
         /// <returns>The created extent</returns>
-        public static IElement GetExtentFormForSubforms(params IElement[] subForms)
+        public static IElement GetCollectionFormForSubforms(params IElement[] subForms)
         {
-            return FormCreator.FormCreator.CreateExtentFormFromTabs(null, subForms);
+            return FormCreator.FormCreator.CreateCollectionFormFromTabs(null, subForms);
         }
 
         /// <summary>
@@ -655,14 +674,14 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        /// Checks the type of the given element <code>asElement</code> and add its propertytype
+        /// Checks the type of the given element <code>asElement</code> and add its property-type
         /// to the default types
         /// </summary>
         /// <param name="foundForm">The listform to be modified</param>
         /// <param name="asElement">The element being evaluated</param>
         public static void AddDefaultTypesInListFormByElementsProperty(IElement foundForm, IElement asElement)
         {
-            var listForms = GetListForms(foundForm);
+            var listForms = GetTableForms(foundForm);
             foreach (var listForm in listForms)
             {
                 var property = listForm.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);

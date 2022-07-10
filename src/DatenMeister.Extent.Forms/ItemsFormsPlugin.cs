@@ -51,7 +51,7 @@ namespace DatenMeister.Extent.Forms
                         });
 
                     formsPlugin.FormModificationPlugins.Add(
-                        new CreateInstanceButtonsForListForms());
+                        new CreateInstanceButtonsForTableForms());
                     break;
             }
         }

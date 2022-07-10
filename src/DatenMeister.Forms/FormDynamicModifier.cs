@@ -19,9 +19,7 @@ namespace DatenMeister.Forms
         /// <param name="selectedObject">The selected object to be used</param>
         public static void ModifyFormDependingOnObject(IObject? form, IObject selectedObject)
         {
-            if (form == null) return;
-            
-            var tabs = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
+            var tabs = form?.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do

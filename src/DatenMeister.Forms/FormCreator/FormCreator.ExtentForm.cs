@@ -26,7 +26,7 @@ namespace DatenMeister.Forms.FormCreator
         {
             var detailForm = CreateDetailFormForItem(element, configuration);
 
-            return CreateExtentFormFromTabs(new MofFactory(detailForm), detailForm);
+            return CreateCollectionFormFromTabs(new MofFactory(detailForm), detailForm);
         }
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         /// <param name="tabsAsForms">The Forms which are converted to an extent form</param>
         /// <returns>The created extent</returns>
-        public static IElement CreateExtentFormFromTabs(params IElement[] tabsAsForms)
+        public static IElement CreateCollectionFormFromTabs(params IElement[] tabsAsForms)
         {
             var factory = new MofFactory(tabsAsForms.First());
-            return CreateExtentFormFromTabs(factory, tabsAsForms);
+            return CreateCollectionFormFromTabs(factory, tabsAsForms);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="factory">The factory being used</param>
         /// <param name="tabsAsForms">The Forms which are converted to an extent form</param>
         /// <returns>The created extent</returns>
-        public static IElement CreateExtentFormFromTabs(IFactory? factory, params IElement[] tabsAsForms)
+        public static IElement CreateCollectionFormFromTabs(IFactory? factory, params IElement[] tabsAsForms)
         {
             factory ??= new MofFactory(tabsAsForms.First());
             var result = factory.create(_DatenMeister.TheOne.Forms.__CollectionForm);

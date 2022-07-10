@@ -21,7 +21,7 @@ namespace DatenMeister.Forms
         /// <returns>The reflective collection containing the filtered elements</returns>
         public static IReflectiveCollection FilterElements(IObject formElement, IReflectiveCollection elements)
         {
-            if (formElement.getOrDefault<bool>(_DatenMeister._Forms._ListForm.includeDescendents))
+            if (formElement.getOrDefault<bool>(_DatenMeister._Forms._TableForm.includeDescendents))
             {
                 elements = elements.GetAllDescendantsIncludingThemselves();
             }
@@ -32,7 +32,7 @@ namespace DatenMeister.Forms
             // Now performs the sorting
             var sortingOrder =
                 formElement.getOrDefault<IReflectiveCollection>(
-                    _DatenMeister._Forms._ListForm.sortingOrder);
+                    _DatenMeister._Forms._TableForm.sortingOrder);
             if (sortingOrder != null)
             {
                 var sortingColumnNames =
@@ -62,10 +62,10 @@ namespace DatenMeister.Forms
             if (formElement == null) throw new InvalidOperationException("EffectiveForm == null");
             
             var noItemsWithMetaClass =
-                formElement.getOrDefault<bool>(_DatenMeister._Forms._ListForm.noItemsWithMetaClass);
+                formElement.getOrDefault<bool>(_DatenMeister._Forms._TableForm.noItemsWithMetaClass);
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = formElement.getOrDefault<IElement?>(_DatenMeister._Forms._ListForm.metaClass);
+            var metaClass = formElement.getOrDefault<IElement?>(_DatenMeister._Forms._TableForm.metaClass);
 
             if (metaClass != null)
             {

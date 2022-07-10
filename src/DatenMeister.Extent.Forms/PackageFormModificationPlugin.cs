@@ -34,7 +34,7 @@ namespace DatenMeister.Extent.Forms
                     var factory = new MofFactory(form);
 
                     var defaultTypes =
-                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm
+                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm
                             .defaultTypesForNewElements);
 
                     // Checks the preferred types

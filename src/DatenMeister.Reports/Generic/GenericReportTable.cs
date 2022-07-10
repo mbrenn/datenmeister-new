@@ -87,7 +87,7 @@ namespace DatenMeister.Reports.Generic
             StartTable(reportCreator, cssClass);
 
             var cellHeaders = new List<TableCellHeader>();
-            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             foreach (var field in fields.OfType<IElement>())
             {
                 cellHeaders.Add(

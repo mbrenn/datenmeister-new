@@ -39,7 +39,7 @@ namespace DatenMeister.Extent.Forms
                 // First, figure out which list forms we are having...
                 foreach (var listForm in FormMethods.GetListForms(form))
                 {
-                    var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
+                    var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass);
                     foundListMetaClasses.Add(metaClass);
                 }
                 
@@ -47,7 +47,7 @@ namespace DatenMeister.Extent.Forms
                 foreach (var listForm in FormMethods.GetListForms(form))
                 {
                     // Selects only the listform which do not have a classifier
-                    if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass) != null)
+                    if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass) != null)
                     {
                         continue;
                     }

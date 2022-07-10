@@ -42,20 +42,20 @@ namespace DatenMeister.Tests.Web
             var creator = FormCreator.Create(workspaceLogic, scopeStorage);
             var result = creator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
-            var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
+            var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab)
                 .Select(x => x as IElement).FirstOrDefault();
             Assert.That(tab, Is.Not.Null);
             Assert.That(tab
-                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                 .OfType<IElement>()
                 .Count(x => x.getMetaClass()!.ToString()!.Contains("TextFieldData")), Is.EqualTo(2));
             var firstColumn = tab
-                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                 .OfType<IElement>()
                 .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == "zip");
             var secondColumn =
                 tab
-                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                     .OfType<IElement>()
                     .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == "location");
 
@@ -97,17 +97,17 @@ namespace DatenMeister.Tests.Web
             Assert.That(result, Is.Not.Null);
 
             var tab = result
-                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
+                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab)
                 .Select(x => x as IElement).FirstOrDefault();
 
             Assert.That(tab
-                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                     .OfType<IElement>()
                     .Count(x => x.getMetaClass()?.ToString()?.Contains("TextFieldData") == true),
                 Is.EqualTo(2));
 
             Assert.That(tab
-                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                     .OfType<IElement>()
                     .Count(x => x.getMetaClass()?.ToString()?.Contains("SubElementFieldData") == true
                                 || x.getMetaClass()?.ToString()?.Contains("ReferenceFieldData") == true),
@@ -115,16 +115,16 @@ namespace DatenMeister.Tests.Web
 
 
             var firstColumn = tab
-                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                 .OfType<IElement>()
                 .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == "zip");
             var secondColumn =
                 tab
-                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                    .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                     .OfType<IElement>()
                     .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == "location");
             var thirdColumn = tab
-                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                 .OfType<IElement>()
                 .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == "other");
 

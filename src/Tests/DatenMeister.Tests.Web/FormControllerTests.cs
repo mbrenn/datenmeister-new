@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundForm, Is.Not.Null);
             var detailForm = FormMethods.GetDetailForms(foundForm).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
-            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             var foundFields =
                 fields.OfType<IElement>()
                     .Where(
@@ -86,7 +86,7 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundForm, Is.Not.Null);
             var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
             Assert.That(listForm, Is.Not.Null);
-            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
             var foundFields =
                 fields.OfType<IElement>()
@@ -123,7 +123,7 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundForm, Is.Not.Null);
             var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
             Assert.That(listForm, Is.Not.Null);
-            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
             // Check that field is at first position
             var firstField = fields.OfType<IElement>().ElementAtOrDefault(0);
@@ -147,10 +147,10 @@ namespace DatenMeister.Tests.Web
             var form = (controller.GetDefaultFormForMetaClassInternal(zipCodeMetaUrl) as IElement)!;
 
             Assert.That(form, Is.Not.Null);
-            Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ExtentForm), Is.True);
+            Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__CollectionForm), Is.True);
             var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
-            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             Assert.That(fields.Count(), Is.GreaterThan(3));
 
             var positionLat = fields
@@ -172,7 +172,7 @@ namespace DatenMeister.Tests.Web
             var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
 
-            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             Assert.That(fields, Is.Not.Null);
             Assert.That(
                 fields.OfType<IElement>().Any(x =>

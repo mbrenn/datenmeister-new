@@ -229,7 +229,7 @@ namespace DatenMeister.Forms.FormCreator
                 && itemAsAllProperties != null)
             {
                 AddFieldsToFormByPropertyValues(form, item, creationMode, cache);
-                form.set(_DatenMeister._Forms._DetailForm.allowNewProperties, true);
+                form.set(_DatenMeister._Forms._RowForm.allowNewProperties, true);
             }
 
             // Third phase: Add metaclass element itself
@@ -242,7 +242,7 @@ namespace DatenMeister.Forms.FormCreator
                 var metaClassField = MofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                 metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
 
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(metaClassField);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(metaClassField);
 
                 // Sets the information in cache, that the element was already added
                 cache.MetaClassAlreadyAdded = true;
@@ -295,7 +295,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 // Checks, whether the field is already existing
                 var column = form
-                    .get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                    .get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                     .OfType<IObject>()
                     .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == propertyName);
 
@@ -327,7 +327,7 @@ namespace DatenMeister.Forms.FormCreator
                     column.set(_DatenMeister._Forms._FieldData.title, propertyName);
                     column.set(_DatenMeister._Forms._FieldData.isReadOnly, isReadOnly);
 
-                    form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
+                    form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                     FormMethods.AddToFormCreationProtocol(
                         form,
@@ -383,14 +383,14 @@ namespace DatenMeister.Forms.FormCreator
                     continue;
 
                 var isAlreadyIn = form
-                    .get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                    .get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                     .OfType<IObject>()
                     .Any(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == propertyName);
 
                 if (isAlreadyIn) continue;
 
                 var column = CreateFieldForProperty(metaClass, property, propertyName, configuration);
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                 FormMethods.AddToFormCreationProtocol(form,
                     "[FormCreator.AddFieldsToFormByMetaclass]: Added field by Metaclass: " +
@@ -405,7 +405,7 @@ namespace DatenMeister.Forms.FormCreator
                 var metaClassField = MofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                 metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
                 metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Metaclass");
-                form.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(metaClassField);
+                form.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(metaClassField);
 
                 cache.MetaClassAlreadyAdded = true;
 
@@ -449,16 +449,19 @@ namespace DatenMeister.Forms.FormCreator
             // First, select the type of the form
             var isDetailForm =
                 ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(),
-                    _DatenMeister.TheOne.Forms.__DetailForm);
+                    _DatenMeister.TheOne.Forms.__RowForm);
             var isListForm =
                 ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(),
-                    _DatenMeister.TheOne.Forms.__ListForm);
-            var isExtentForm =
+                    _DatenMeister.TheOne.Forms.__TableForm);
+            var isCollectionForm =
                 ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(),
-                    _DatenMeister.TheOne.Forms.__ExtentForm);
-            var isNoneOfTheForms = !(isDetailForm || isListForm || isExtentForm);
+                    _DatenMeister.TheOne.Forms.__CollectionForm);
+            var isTableForm =
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(),
+                    _DatenMeister.TheOne.Forms.__TableForm);
+            var isNoneOfTheForms = !(isDetailForm || isListForm || isCollectionForm || isTableForm);
             if (isNoneOfTheForms)
-                throw new InvalidOperationException("Given element is not a detail, a list or an extent form");
+                throw new InvalidOperationException("Given element is not a detail, a list, a collection or table form");
 
             // Second, select the type of the umlElement
             var isPropertyUml =
@@ -493,7 +496,7 @@ namespace DatenMeister.Forms.FormCreator
                     umlClassOrProperty,
                     null,
                     creationMode);
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                 FormMethods.AddToFormCreationProtocol(form,
                     "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property: " +
@@ -501,7 +504,7 @@ namespace DatenMeister.Forms.FormCreator
                 return true;
             }
 
-            if (isExtentForm && isPropertyUml)
+            if (isCollectionForm && isPropertyUml)
             {
                 var isPropertyACollection = PropertyMethods.IsCollection(umlClassOrProperty);
 
@@ -525,7 +528,7 @@ namespace DatenMeister.Forms.FormCreator
                     return false;
 
                 // Property is a collection, so a list form is created for the property
-                var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+                var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
 
                 // Now try to figure out the metaclass
                 var listForm = CreateListFormForProperty(
@@ -546,7 +549,7 @@ namespace DatenMeister.Forms.FormCreator
                 var propertyName = NamedElementMethods.GetName(umlClassOrProperty)
                     .ToLower(CultureInfo.InvariantCulture);
                 var column = CreateFieldForEnumeration(propertyName, umlClassOrProperty, creationMode);
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).add(column);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                 FormMethods.AddToFormCreationProtocol(form,
                     "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Enumeration: " +
@@ -555,7 +558,7 @@ namespace DatenMeister.Forms.FormCreator
                 return true;
             }
 
-            if (isExtentForm && isEnumerationUml)
+            if (isCollectionForm && isEnumerationUml)
             {
                 var detailForm = GetOrCreateDetailFormIntoExtentForm(form);
                 var result = AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
@@ -773,7 +776,7 @@ namespace DatenMeister.Forms.FormCreator
         
         private static void SortFieldsByImportantProperties(IObject form)
         {
-            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             if (fields == null) return;
             var fieldsAsList = fields.OfType<IElement>().ToList();
 
@@ -789,7 +792,7 @@ namespace DatenMeister.Forms.FormCreator
             }
 
             // Sets it
-            form.set(_DatenMeister._Forms._ListForm.field, fieldsAsList);
+            form.set(_DatenMeister._Forms._TableForm.field, fieldsAsList);
 
             FormMethods.AddToFormCreationProtocol(
                 form,
@@ -805,7 +808,7 @@ namespace DatenMeister.Forms.FormCreator
         {
             // If the field is empty, create an empty textfield with 'name' as a placeholder
             var fieldLength =
-                form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field)?.Count() ?? 0;
+                form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field)?.Count() ?? 0;
             if (fieldLength == 0)
             {
                 var factory = new MofFactory(form);
@@ -813,7 +816,7 @@ namespace DatenMeister.Forms.FormCreator
                 textFieldData.set(_DatenMeister._Forms._TextFieldData.name, "name");
                 textFieldData.set(_DatenMeister._Forms._TextFieldData.title, "name");
 
-                form.AddCollectionItem(_DatenMeister._Forms._ListForm.field, textFieldData);
+                form.AddCollectionItem(_DatenMeister._Forms._TableForm.field, textFieldData);
 
                 FormMethods.AddToFormCreationProtocol(
                     form,

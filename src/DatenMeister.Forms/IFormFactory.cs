@@ -22,7 +22,7 @@ namespace DatenMeister.Forms
         /// <param name="metaClass">Metaclass to be used</param>
         /// <param name="creationMode">Creation Mode to be used</param>
         /// <returns></returns>
-        IElement CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode);
+        IElement? CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode);
 
         /// <summary>
         /// Gets the extent form for a certain item's metaclass.

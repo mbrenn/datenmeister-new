@@ -57,16 +57,16 @@ namespace DatenMeister.Tests.Modules.Actions
             var form = newElements.First() as IElement;
             Assert.That(form, Is.Not.Null);
             Assert.That(form!.metaclass, Is.Not.Null);
-            Assert.That(form.metaclass!.equals(_DatenMeister.TheOne.Forms.__ExtentForm), Is.True);
+            Assert.That(form.metaclass!.equals(_DatenMeister.TheOne.Forms.__CollectionForm), Is.True);
 
-            var detailForms = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._ExtentForm.tab);
+            var detailForms = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
             Assert.That(detailForms, Is.Not.Null);
             Assert.That(detailForms.Count(), Is.EqualTo(1));
 
             var detailForm = detailForms.First() as IElement;
             Assert.That(detailForm, Is.Not.Null);
             Assert.That(detailForm!.metaclass, Is.Not.Null);
-            Assert.That(detailForm!.metaclass!.equals(_DatenMeister.TheOne.Forms.__DetailForm));
+            Assert.That(detailForm!.metaclass!.equals(_DatenMeister.TheOne.Forms.__RowForm));
         }
         
         /// <summary>
@@ -97,16 +97,16 @@ namespace DatenMeister.Tests.Modules.Actions
             var form = newElements.First() as IElement;
             Assert.That(form, Is.Not.Null);
             Assert.That(form!.metaclass, Is.Not.Null);
-            Assert.That(form.metaclass!.equals(_DatenMeister.TheOne.Forms.__ExtentForm), Is.True);
+            Assert.That(form.metaclass!.equals(_DatenMeister.TheOne.Forms.__CollectionForm), Is.True);
 
-            var detailForms = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._ExtentForm.tab);
+            var detailForms = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
             Assert.That(detailForms, Is.Not.Null);
             Assert.That(detailForms.Count(), Is.EqualTo(1));
 
             var detailForm = detailForms.First() as IElement;
             Assert.That(detailForm, Is.Not.Null);
             Assert.That(detailForm!.metaclass, Is.Not.Null);
-            Assert.That(detailForm!.metaclass!.equals(_DatenMeister.TheOne.Forms.__ListForm));
+            Assert.That(detailForm!.metaclass!.equals(_DatenMeister.TheOne.Forms.__RowForm));
         }
         
         /// <summary>

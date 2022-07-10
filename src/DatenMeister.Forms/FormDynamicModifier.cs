@@ -21,7 +21,7 @@ namespace DatenMeister.Forms
         {
             if (form == null) return;
             
-            var tabs = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -35,9 +35,9 @@ namespace DatenMeister.Forms
             foreach (var tab in tabs.OfType<IElement>().ToList())
             {
                 // Confirms the type of the listforms
-                if (tab.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                if (tab.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
                 {
-                    var isDynamicList = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.duplicatePerType);
+                    var isDynamicList = tab.getOrDefault<bool>(_DatenMeister._Forms._TableForm.duplicatePerType);
                     
                     // Only when it is a dynamic list
                     if (isDynamicList)
@@ -55,19 +55,19 @@ namespace DatenMeister.Forms
                         foreach (var group in groups)
                         {
                             foundOne = true;
-                            var title = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.title);
+                            var title = tab.getOrDefault<string>(_DatenMeister._Forms._TableForm.title);
                             
                             var copiesTab = ObjectCopier.Copy(new MofFactory(tab), tab);
                             if (group.MetaClass == null)
                             {
-                                copiesTab.set(_DatenMeister._Forms._ListForm.noItemsWithMetaClass, true);
-                                copiesTab.set(_DatenMeister._Forms._ListForm.name, $"{title} - Unspecified");
+                                copiesTab.set(_DatenMeister._Forms._TableForm.noItemsWithMetaClass, true);
+                                copiesTab.set(_DatenMeister._Forms._TableForm.name, $"{title} - Unspecified");
                             }
                             else
                             {
-                                copiesTab.set(_DatenMeister._Forms._ListForm.metaClass, group.MetaClass);
+                                copiesTab.set(_DatenMeister._Forms._TableForm.metaClass, group.MetaClass);
                                 copiesTab.set(
-                                    _DatenMeister._Forms._ListForm.title,
+                                    _DatenMeister._Forms._TableForm.title,
                                     $"{title} - {NamedElementMethods.GetName(group.MetaClass)}");
                             }
 

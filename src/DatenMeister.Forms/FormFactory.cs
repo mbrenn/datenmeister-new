@@ -136,10 +136,11 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? configuration)
+        public IElement? CreateDetailFormByMetaClass(IElement metaClass, FormFactoryConfiguration? configuration)
         {
             // Ok, not an extent now do the right things
             IElement? foundForm = null;
+            configuration ??= new FormFactoryConfiguration();
 
             if (configuration.ViaFormFinder)
             {
@@ -290,7 +291,8 @@ namespace DatenMeister.Forms
             }
 
             if (foundForm != null &&
-                foundForm.equals(_DatenMeister.TheOne.Forms.__ExtentForm) != true)
+                foundForm.equals(_DatenMeister.TheOne.Forms.__CollectionForm) != true && 
+            foundForm.equals(_DatenMeister.TheOne.Forms.__ObjectForm) != true)
             {
                 foundForm = FormCreator.FormCreator.CreateExtentFormFromTabs(foundForm);
                 FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory] Transformed Form to Extent Form");
@@ -581,9 +583,9 @@ namespace DatenMeister.Forms
                     formCreationContext with
                     {
                         FormType = _DatenMeister._Forms.___FormType.ObjectList,
-                        ParentPropertyName = listedForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property),
+                        ParentPropertyName = listedForm.getOrDefault<string>(_DatenMeister._Forms._TableForm.property),
                         ParentMetaClass = formCreationContext.MetaClass,
-                        MetaClass = listedForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass)
+                        MetaClass = listedForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass)
                     },
                     ref listedForm);
             }
@@ -625,7 +627,7 @@ namespace DatenMeister.Forms
             var viewFinder = CreateFormFinder();
             var foundForms = viewFinder.FindFormsFor(query);
 
-            var tabs = form.get<IReflectiveSequence>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = form.get<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
             foreach (var listForm in foundForms) tabs.add(listForm);
         }
 
@@ -639,16 +641,16 @@ namespace DatenMeister.Forms
         {
             // Go through the list forms and check if we need to auto-populate
             foreach (var tab in
-                     foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab)
+                     foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab)
                          .OfType<IElement>())
             {
                 var tabMetaClass = tab.getMetaClass();
                 if (tabMetaClass == null ||
-                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
+                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__TableForm))
                     // Not a list tab
                     continue;
 
-                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._TableForm.autoGenerateFields);
                 if (autoGenerate)
                 {
                     FormMethods.AddToFormCreationProtocol(foundForm,
@@ -674,15 +676,15 @@ namespace DatenMeister.Forms
             {
                 var tabMetaClass = tab.getMetaClass();
                 if (tabMetaClass == null ||
-                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
+                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__TableForm))
                     // Not a list tab
                     continue;
 
-                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._TableForm.autoGenerateFields);
                 if (autoGenerate)
                 {
                     var formCreator = CreateFormCreator();
-                    var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                    var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
                     if (propertyName == null || string.IsNullOrEmpty(propertyName))
                     {
                         FormMethods.AddToFormCreationProtocol(foundForm,

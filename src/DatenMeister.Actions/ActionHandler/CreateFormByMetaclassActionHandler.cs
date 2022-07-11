@@ -63,7 +63,7 @@ namespace DatenMeister.Actions.ActionHandler
             
             void CreateDetailForm(bool includeFormAssociation)
             {
-                form = formCreator.CreateDetailFormByMetaClass(metaClass);
+                form = formCreator.CreateRowFormByMetaClass(metaClass);
                 formMethods.GetUserFormExtent().elements().add(form);
 
                 if (includeFormAssociation)
@@ -75,7 +75,7 @@ namespace DatenMeister.Actions.ActionHandler
 
             void CreateListForm(bool includeFormAssociation)
             {
-                form = formCreator.CreateExtentFormForItemsMetaClass(metaClass);
+                form = formCreator.CreateCollectionFormForItemsMetaClass(metaClass);
                 formMethods.GetUserFormExtent().elements().add(form);
 
                 if (includeFormAssociation)

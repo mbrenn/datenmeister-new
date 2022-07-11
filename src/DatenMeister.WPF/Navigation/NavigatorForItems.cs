@@ -174,7 +174,7 @@ namespace DatenMeister.WPF.Navigation
             return await navigationHost.NavigateTo(() =>
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, 
+                    var usedForm = formCreator.CreateTableFormForMetaClass(metaClassForForm, 
                         FormFactoryConfiguration.CreateByMetaClassOnly);
 
                     var viewExtensions = new List<ViewExtension>();

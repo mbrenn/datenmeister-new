@@ -404,7 +404,7 @@ namespace DatenMeister.WPF.Windows
                 }
                 else
                 {
-                    effectiveForm = formFactory.CreateDetailFormForItem(DetailElement, new FormFactoryConfiguration());
+                    effectiveForm = formFactory.CreateRowFormForItem(DetailElement, new FormFactoryConfiguration());
                 }
 
                 formDefinition = OverridingFormDefinition;
@@ -424,7 +424,7 @@ namespace DatenMeister.WPF.Windows
                 else
                 {
                     effectiveForm =
-                        formFactory.CreateDetailFormForItem(DetailElement, new FormFactoryConfiguration());
+                        formFactory.CreateRowFormForItem(DetailElement, new FormFactoryConfiguration());
                 }
             }
 

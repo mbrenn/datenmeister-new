@@ -96,7 +96,7 @@ namespace DatenMeister.Reports.Simple
                 var name = NamedElementMethods.GetFullName(rootElement);
                 report.Add(new HtmlHeadline($"Reported Item '{name}'", 1));
                 var detailForm =
-                    _formCreator.CreateDetailFormForItem(rootElement, formFactoryConfiguration);
+                    _formCreator.CreateRowFormForItem(rootElement, formFactoryConfiguration);
                 _itemFormatter.FormatItem(rootElement, detailForm);
             }
             

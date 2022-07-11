@@ -656,7 +656,7 @@ namespace DatenMeister.Forms
         /// drop down values are removing duplicates
         /// </summary>
         /// <param name="listForm">List form to be evaluated</param>
-        public static void CleanupListForm(IElement listForm)
+        public static void CleanupTableForm(IElement listForm)
         {
             AddDefaultTypeForListFormsMetaClass(listForm);
             ExpandDropDownValuesOfValueReference(listForm);            

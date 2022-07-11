@@ -29,7 +29,7 @@ namespace DatenMeister.Tests.Modules.Forms
 
             var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
             var createdForm =
-                formCreator.CreateListFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
+                formCreator.CreateTableFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
             Assert.That(createdForm, Is.Not.Null);
             var fields =
                 createdForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field)
@@ -55,7 +55,7 @@ namespace DatenMeister.Tests.Modules.Forms
             var extent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);
             Assert.That(extent, Is.Not.Null);
 
-            var createdForm = formCreator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration()
+            var createdForm = formCreator.CreateCollectionFormForExtent(extent, new FormFactoryConfiguration()
             {
                 AllowFormModifications = true
             });

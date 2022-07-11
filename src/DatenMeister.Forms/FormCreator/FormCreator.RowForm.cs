@@ -16,7 +16,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="element"></param>
         /// <param name="creationMode"></param>
         /// <returns></returns>
-        public IElement CreateDetailFormForItem(IObject element, FormFactoryConfiguration? creationMode = null)
+        public IElement CreateRowFormForItem(IObject element, FormFactoryConfiguration? creationMode = null)
         {
             creationMode ??= new FormFactoryConfiguration();
             var cache = new FormCreatorCache();
@@ -26,13 +26,13 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 createdForm,
-                "[FormCreator.CreateDetailFormForItem]: " + NamedElementMethods.GetName(element));
+                "[FormCreator.CreateRowFormForItem]: " + NamedElementMethods.GetName(element));
 
             if (!creationMode.AutomaticMetaClassField)
                 createdForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, true);
 
             AddFieldsToForm(createdForm, element, creationMode, cache);
-            CleanupDetailForm(createdForm);
+            CleanupRowForm(createdForm);
             return createdForm;
         }
 
@@ -42,7 +42,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="metaClass">Metaclass to which the form will be created</param>
         /// <param name="creationMode">The creation mode being used</param>
         /// <returns>The created form for the metaclass</returns>
-        public IElement CreateDetailFormByMetaClass(IElement? metaClass, FormFactoryConfiguration? creationMode = null)
+        public IElement CreateRowFormByMetaClass(IElement? metaClass, FormFactoryConfiguration? creationMode = null)
         {
             creationMode ??= new FormFactoryConfiguration();
             var createdForm = MofFactory.create(_DatenMeister.TheOne.Forms.__RowForm);
@@ -57,17 +57,21 @@ namespace DatenMeister.Forms.FormCreator
             if (creationMode.AutomaticMetaClassField)
                 createdForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, true);
 
-            if (!AddFieldsToFormByMetaClass(createdForm, metaClass, creationMode))
+            if (!AddFieldsToRowOrObjectFormByMetaClass(createdForm, metaClass, creationMode))
                 createdForm.set(_DatenMeister._Forms._RowForm.allowNewProperties, true);
 
-            CleanupDetailForm(createdForm);
+            CleanupRowForm(createdForm);
             return createdForm;
         }
         
-        public void CleanupDetailForm(IElement detailForm)
+        public void CleanupTableForm(IElement tableForm)
         {
-            SortFieldsByImportantProperties(detailForm);
-            
+            SortFieldsByImportantProperties(tableForm);
+        }
+        
+        public void CleanupRowForm(IElement rowForm)
+        {
+            SortFieldsByImportantProperties(rowForm);
         }
     }
 }

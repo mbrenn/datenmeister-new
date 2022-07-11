@@ -52,15 +52,20 @@ namespace DatenMeister.Forms.Helper
                     var formMetaClass = form.getMetaClass();
 
                     var forms = new List<IObject>();
-                    if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true)
+                    if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true
+                        || formMetaClass?.equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true)
                     {
-                        if (context.FormType != _DatenMeister._Forms.___FormType.Collection &&
-                            context.FormType != _DatenMeister._Forms.___FormType.CollectionExtension)
-                            forms.AddRange(FormMethods.GetRowForms(form));
-
-                        if (context.FormType != _DatenMeister._Forms.___FormType.Row &&
-                            context.FormType != _DatenMeister._Forms.___FormType.RowExtension)
-                            forms.AddRange(FormMethods.GetTableForms(form));
+                        switch (context.FormType)
+                        {
+                            case _DatenMeister._Forms.___FormType.Row:
+                            case _DatenMeister._Forms.___FormType.RowExtension:
+                                forms.AddRange(FormMethods.GetRowForms(form));
+                                break;
+                            case _DatenMeister._Forms.___FormType.Table:
+                            case _DatenMeister._Forms.___FormType.TableExtension:
+                                forms.AddRange(FormMethods.GetTableForms(form));
+                                break;
+                        }
                     }
                     else
                     {

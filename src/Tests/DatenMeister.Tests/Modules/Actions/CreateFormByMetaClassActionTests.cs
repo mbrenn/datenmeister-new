@@ -158,7 +158,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var newElements = updatedElements.Where(x => !_existingElements.Contains(x)).ToList();
 
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            var detailForm = formFactory.CreateDetailFormForItem(_zipModel.ZipCode, new FormFactoryConfiguration());
+            var detailForm = formFactory.CreateRowFormForItem(_zipModel.ZipCode, new FormFactoryConfiguration());
             
             Assert.That(detailForm.equals(newElements.First() as IObject));
         }

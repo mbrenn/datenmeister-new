@@ -35,7 +35,7 @@ namespace DatenMeister.WebServer.Controller
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            var form = formFactory.CreateExtentFormForItem(item,
+            var form = formFactory.CreateObjectFormForItem(item,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
 
             if (form == null)
@@ -53,7 +53,7 @@ namespace DatenMeister.WebServer.Controller
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            var form = formFactory.CreateExtentFormForExtent(extent,
+            var form = formFactory.CreateCollectionFormForExtent(extent,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
             if (form == null)
             {
@@ -85,7 +85,7 @@ namespace DatenMeister.WebServer.Controller
                 }
             }
 
-            var form = formFactory.CreateExtentFormForItemsMetaClass(
+            var form = formFactory.CreateCollectionFormForItemsMetaClass(
                 resolvedMetaClass,
                 configurationMode);
 

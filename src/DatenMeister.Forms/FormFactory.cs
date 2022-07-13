@@ -2,6 +2,7 @@
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -56,6 +57,7 @@ namespace DatenMeister.Forms
             var extentType = extent.GetConfiguration().ExtentType;
 
             string? packageViewMode = null;
+            
             // Checks if the current item is a package and if the viewmode
             if (DefaultClassifierHints.IsPackageLike(element))
                 packageViewMode =
@@ -98,7 +100,7 @@ namespace DatenMeister.Forms
                 foundForm = CloneForm(foundForm);
 
                 // Adds the extension forms to the found extent
-                AddExtensionFormsToObjectForm(
+                AddExtensionFormsToObjectOrCollectionForm(
                     foundForm,
                     new FindFormQuery
                     {
@@ -110,7 +112,7 @@ namespace DatenMeister.Forms
 
                 if (element is IElement asElement)
                 {
-                    EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
+                    EvaluateTableFormsForAutogenerationByItem(asElement, foundForm);
                     
                     // This call is required to add the new buttons to the list form 
                     // in case the creator of the form did not have these buttons included
@@ -133,6 +135,12 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
+        /// <summary>
+        /// Creates a row form by the given metaclass 
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be evaluated</param>
+        /// <param name="configuration">Form configuration to be used</param>
+        /// <returns></returns>
         public IElement? CreateRowFormByMetaClass(IElement metaClass, FormFactoryConfiguration? configuration)
         {
             // Ok, not an extent now do the right things
@@ -172,7 +180,7 @@ namespace DatenMeister.Forms
                 rowForm = CloneForm(rowForm);
 
                 // Adds the extension forms to the found extent
-                AddExtensionFormsToObjectForm(
+                AddExtensionFormsToObjectOrCollectionForm(
                     rowForm,
                     new FindFormQuery
                     {
@@ -183,7 +191,7 @@ namespace DatenMeister.Forms
                 
                 var formCreationContext = new FormCreationContext
                 {
-                    FormType = _DatenMeister._Forms.___FormType.Object,
+                    FormType = _DatenMeister._Forms.___FormType.Row,
                     MetaClass = metaClass
                 };
 
@@ -196,6 +204,13 @@ namespace DatenMeister.Forms
             return rowForm;
         }
 
+        /// <summary>
+        /// Creates a row form for the specific item
+        /// Here, the metaclass or the included properties are used
+        /// </summary>
+        /// <param name="element">Element to be evaluted</param>
+        /// <param name="configuration">Configuration how this element shall be evaluated</param>
+        /// <returns>The created element</returns>
         public IElement? CreateRowFormForItem(IObject element, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;
@@ -253,7 +268,26 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? CreateCollectionFormForItemsMetaClass(IElement? metaClass, FormFactoryConfiguration configuration)
+        /// <summary>
+        /// Creates an empty collection from with one tab including a table definition with name
+        /// </summary>
+        /// <param name="configuration">Configuration to be used</param>
+        /// <returns>The created collection form</returns>
+        public IElement CreateEmptyCollectionForm(FormFactoryConfiguration configuration)
+        {
+            var collectionForm = CreateFormCreator().CreateCollectionFormForCollection(
+                new TemporaryReflectiveCollection(), configuration, null);
+            return collectionForm;
+        }
+
+        /// <summary>
+        /// Creates a collection form for the given metaclass.
+        /// </summary>
+        /// <param name="metaClass">Metaclass to which a collection form shall be created</param>
+        /// <param name="configuration">Configuration defining the way how the form shall
+        /// be created</param>
+        /// <returns>The collection form being created</returns>
+        public IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
         {
             IElement? foundForm = null;
 
@@ -271,10 +305,10 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
-                    Logger.Info("CreateCollectionFormForItemsMetaClass: Found form: " +
+                    Logger.Info("CreateCollectionFormForMetaClass: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory.CreateCollectionFormForItemsMetaClass] Found Form via FormFinder: " + foundForm.GetUri());
+                        "[FormFactory.CreateCollectionFormForMetaClass] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
 
@@ -282,18 +316,20 @@ namespace DatenMeister.Forms
             {
                 // Ok, we have not found the form. So create one
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateCollectionFormForItemsMetaClass(
+                foundForm = formCreator.CreateCollectionFormForMetaClass(
                     metaClass,
                     configuration with { AllowFormModifications = false});
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateCollectionFormForItemsMetaClass] Found Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateCollectionFormForMetaClass] Found Form via FormCreator");
             }
 
+            // If for whatever reason, we got a row form or table form returned, 
+            // create the collection form
             if (foundForm != null &&
                 foundForm.equals(_DatenMeister.TheOne.Forms.__CollectionForm) != true && 
-            foundForm.equals(_DatenMeister.TheOne.Forms.__ObjectForm) != true)
+                foundForm.equals(_DatenMeister.TheOne.Forms.__ObjectForm) != true)
             {
                 foundForm = FormCreator.FormCreator.CreateCollectionFormFromTabs(foundForm);
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateCollectionFormForItemsMetaClass] Transformed Form to Extent Form");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateCollectionFormForMetaClass] Transformed Form to Extent Form");
             }
 
             if (foundForm != null)
@@ -303,17 +339,26 @@ namespace DatenMeister.Forms
                 var formCreationContext = new FormCreationContext
                 {
                     MetaClass = metaClass,
-                    FormType = _DatenMeister._Forms.___FormType.Collection
+                    FormType = _DatenMeister._Forms.___FormType.Collection,
+                    ViewMode = configuration.ViewModeId
                 };
 
                 CallPluginsForCollectionOrObjectForm(configuration, formCreationContext, ref foundForm);
-                CleanupObjectForm(foundForm, true);
+                CleanupCollectionForm(foundForm, true);
             }
 
             return foundForm;
         }
 
-        public IElement? CreateTableFormForCollection(IReflectiveCollection collection,
+        /// <summary>
+        /// Evaluates the given collection and creates a table form out of it.
+        /// This is a quite slow routine, but at least, it works
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="configuration">Configuration of the form</param>
+        /// <returns>The created form</returns>
+        public IElement? CreateTableFormForCollection(
+            IReflectiveCollection collection,
             FormFactoryConfiguration configuration)
         {
             configuration = configuration with { IsForTableForm = true };
@@ -325,7 +370,7 @@ namespace DatenMeister.Forms
                 foundForm = formCreator.CreateTableFormForCollection(collection,
                     configuration with { AllowFormModifications = false });
                 FormMethods.AddToFormCreationProtocol(foundForm,
-                    "[FormFactory.CreateListFormForCollection] Created Form via FormCreator");
+                    "[FormFactory.CreateTableFormForCollection] Created Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -337,7 +382,8 @@ namespace DatenMeister.Forms
                 _formPluginState.CallFormsModificationPlugins(
                     configuration, new FormCreationContext
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Object
+                        FormType = _DatenMeister._Forms.___FormType.Table,
+                        ViewMode = configuration.ViewModeId
                     },
                     ref foundForm);
 
@@ -347,7 +393,16 @@ namespace DatenMeister.Forms
             return foundForm;
         }
 
-        public IElement? CreateCollectionFormForExtent(IExtent extent, FormFactoryConfiguration configuration)
+        /// <summary>
+        /// Takes the given extent and creates a collection form out of it
+        /// </summary>
+        /// <param name="extent">Extent to be evaluated.</param>
+        /// <param name="configuration">Configuration which defines the way of how this form
+        /// will be generated</param>
+        /// <returns>The created form</returns>
+        public IElement? CreateCollectionFormForExtent(
+            IExtent extent,
+            FormFactoryConfiguration configuration)
         {
             var extentType = extent.GetConfiguration().ExtentType;
             IElement? foundForm = null;
@@ -367,7 +422,7 @@ namespace DatenMeister.Forms
                     Logger.Info("GetExtentForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(
                         foundForm,
-                        $"[FormFactory.CreateExtentFormForExtent] Found Form via FormFinder {foundForm.GetUri()}");
+                        $"[FormFactory.CreateCollectionFormForExtent] Found Form via FormFinder {foundForm.GetUri()}");
                 }
             }
 
@@ -379,12 +434,12 @@ namespace DatenMeister.Forms
                     extent,
                     configuration);
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateExtentFormForExtent] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateCollectionFormForExtent] Created Form via FormCreator");
             }
 
             // Adds the extension forms to the found extent
             if (foundForm != null)
-                AddExtensionFormsToObjectForm(
+                AddExtensionFormsToObjectOrCollectionForm(
                     foundForm,
                     new FindFormQuery
                     {
@@ -398,7 +453,7 @@ namespace DatenMeister.Forms
             {
                 foundForm = CloneForm(foundForm);
 
-                EvaluateListFormsForAutogenerationByReflectiveCollection(extent.elements(), foundForm);
+                EvaluateTableFormsForAutogenerationByReflectiveCollection(extent.elements(), foundForm);
 
                 var formCreationContext = new FormCreationContext
                 {
@@ -409,7 +464,7 @@ namespace DatenMeister.Forms
 
                 CallPluginsForCollectionOrObjectForm(configuration, formCreationContext, ref foundForm);
                 
-                CleanupObjectForm(foundForm, true);
+                CleanupCollectionForm(foundForm, true);
             }
 
             return foundForm;
@@ -436,11 +491,11 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
-                    Logger.Info("CreateListFormForMetaClass: Found form: " +
+                    Logger.Info("CreateTableFormForMetaClass: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
 
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory.CreateListFormForMetaClass] Found Form via FormFinder" + foundForm.GetUri());
+                        "[FormFactory.CreateTableFormForMetaClass] Found Form via FormFinder" + foundForm.GetUri());
                 }
             }
 
@@ -450,7 +505,7 @@ namespace DatenMeister.Forms
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateTableFormForMetaClass(metaClass, configuration);
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateListFormForMetaClass] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateTableFormForMetaClass] Created Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -480,8 +535,11 @@ namespace DatenMeister.Forms
         /// <param name="propertyType">The type of the property</param>
         /// <param name="configuration">The configuration being used to creates the list form</param>
         /// <returns>The created listform</returns>
-        public IElement? CreateTableFormForPropertyValues(IObject? parentElement, string propertyName,
-            IElement? propertyType, FormFactoryConfiguration configuration)
+        public IElement? CreateTableFormForProperty(
+            IObject? parentElement,
+            string propertyName,
+            IElement? propertyType,
+            FormFactoryConfiguration configuration)
         {
             configuration = configuration with { IsForTableForm = true };
             IElement? foundForm = null;
@@ -504,10 +562,10 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
-                    Logger.Info("GetListFormForElementsProperty: Found form: " +
+                    Logger.Info("CreateTableFormForProperty: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        "[FormFactory.CreateListFormForPropertyValues] Found Form via FormFinder: " + foundForm.GetUri());
+                        "[FormFactory.CreateTableFormForProperty] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
 
@@ -518,7 +576,7 @@ namespace DatenMeister.Forms
                     parentElement.get<IReflectiveCollection>(propertyName),
                     new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateListFormForPropertyValues] Found Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateTableFormForProperty] Found Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -639,7 +697,7 @@ namespace DatenMeister.Forms
         ///     Must be of type ExtentForm.
         /// </param>
         /// <param name="query">Defines the query to be evaluated</param>
-        private void AddExtensionFormsToObjectForm(
+        private void AddExtensionFormsToObjectOrCollectionForm(
             IObject form,
             FindFormQuery query)
         {
@@ -655,7 +713,7 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="reflectiveCollection">The reflective collection to be used</param>
         /// <param name="foundForm">The element that has been found</param>
-        private void EvaluateListFormsForAutogenerationByReflectiveCollection(
+        private void EvaluateTableFormsForAutogenerationByReflectiveCollection(
             IReflectiveCollection reflectiveCollection, IElement foundForm)
         {
             // Go through the list forms and check if we need to auto-populate
@@ -666,17 +724,19 @@ namespace DatenMeister.Forms
                 var tabMetaClass = tab.getMetaClass();
                 if (tabMetaClass == null ||
                     !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__TableForm))
-                    // Not a list tab
+                {
+                    // Not a table form
                     continue;
-
+                }
+                
                 var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._TableForm.autoGenerateFields);
                 if (autoGenerate)
                 {
                     FormMethods.AddToFormCreationProtocol(foundForm,
-                        $"[FormFactory.EvaluateListFormsForAutogenerationByReflectiveCollection] Auto Creation of fields by Reflective Collection: {NamedElementMethods.GetName(tab)}");
+                        $"[FormFactory.EvaluateTableFormsForAutogenerationByReflectiveCollection] Auto Creation of fields by Reflective Collection: {NamedElementMethods.GetName(tab)}");
 
                     var formCreator = CreateFormCreator();
-                    formCreator.AddToListFormByElements(
+                    formCreator.AddToTableFormByElements(
                         tab,
                         reflectiveCollection,
                         new FormFactoryConfiguration());
@@ -689,17 +749,20 @@ namespace DatenMeister.Forms
         ///     Each tab within the list form can require an autogeneration by setting the field 'autoGenerateFields'.
         /// </summary>
         /// <param name="element">The element to be used</param>
-        /// <param name="foundForm">The element that has been found</param>
-        private void EvaluateListFormsForAutogenerationByElement(IObject element, IElement foundForm)
+        /// <param name="objectOrCollectionForm">The form that shall be evaluated. It must
+        /// be either an object or a collection form</param>
+        private void EvaluateTableFormsForAutogenerationByItem(IObject element, IElement objectOrCollectionForm)
         {
-            var listForms = FormMethods.GetTableForms(foundForm);
+            var listForms = FormMethods.GetTableForms(objectOrCollectionForm);
             foreach (var tab in listForms)
             {
                 var tabMetaClass = tab.getMetaClass();
                 if (tabMetaClass == null ||
                     !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__TableForm))
-                    // Not a list tab
+                {
+                    // Not a table tab
                     continue;
+                }
 
                 var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._TableForm.autoGenerateFields);
                 if (autoGenerate)
@@ -708,22 +771,22 @@ namespace DatenMeister.Forms
                     var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
                     if (propertyName == null || string.IsNullOrEmpty(propertyName))
                     {
-                        FormMethods.AddToFormCreationProtocol(foundForm,
-                            $"[FormFactory.EvaluateListFormsForAutogenerationByElement] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
+                        FormMethods.AddToFormCreationProtocol(objectOrCollectionForm,
+                            $"[FormFactory.EvaluateTableFormsForAutogenerationByItem] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
 
-                        formCreator.AddToListFormByElements(
+                        formCreator.AddToTableFormByElements(
                             tab,
                             new PropertiesAsReflectiveCollection(element),
                             new FormFactoryConfiguration());
                     }
                     else
                     {
-                        FormMethods.AddToFormCreationProtocol(foundForm,
-                            $"[FormFactory.EvaluateListFormsForAutogenerationByElement] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
+                        FormMethods.AddToFormCreationProtocol(objectOrCollectionForm,
+                            $"[FormFactory.EvaluateTableFormsForAutogenerationByItem] Auto Creation of fields by Element: {NamedElementMethods.GetName(tab)}");
 
                         var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
                         if (reflectiveSequence != null)
-                            formCreator.AddToListFormByElements(
+                            formCreator.AddToTableFormByElements(
                                 tab,
                                 reflectiveSequence,
                                 new FormFactoryConfiguration());
@@ -742,12 +805,12 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        /// Cleans up the extent form. 
+        /// Cleans up the object form. 
         /// </summary>
         /// <param name="objectForm"></param>
         /// <param name="cleanUpTabs">Flag, whether the tabs shall also be cleaned up.
-        /// Per default, the creator of the tabs should call the corresponding CleanupDetail and
-        /// CleanupListForm</param>
+        /// Per default, the creator of the tabs should call the corresponding CleanupRow and
+        /// CleanupTableForm</param>
         public void CleanupObjectForm(IElement objectForm, bool cleanUpTabs = false)
         {
             if (cleanUpTabs)
@@ -767,8 +830,20 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
+        /// Cleans up the object form. 
+        /// </summary>
+        /// <param name="collectionForm">Collection Form to be cleaned up</param>
+        /// <param name="cleanUpTabs">Flag, whether the tabs shall also be cleaned up.
+        /// Per default, the creator of the tabs should call the corresponding CleanupRow and
+        /// CleanupTableForm</param>
+        public void CleanupCollectionForm(IElement collectionForm, bool cleanUpTabs = false)
+        {
+            CleanupObjectForm(collectionForm, cleanUpTabs);
+        }
+
+        /// <summary>
         /// Cleans up the ist form by executing several default methods like, expanding the
-        /// drop down values are removing duplicates
+        /// drop down values.
         /// </summary>
         /// <param name="rowForm">Detail form to be evaluated</param>
         public void CleanupRowForm(IElement rowForm)

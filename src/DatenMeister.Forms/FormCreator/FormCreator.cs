@@ -202,7 +202,7 @@ namespace DatenMeister.Forms.FormCreator
                 if (!cache.CoveredMetaClasses.Contains(metaClass))
                 {
                     cache.CoveredMetaClasses.Add(metaClass);
-                    wasInMetaClass = AddFieldsToRowOrObjectFormByMetaClass(
+                    wasInMetaClass = AddFieldsToRowOrTableFormByMetaClass(
                         rowOrTableForm,
                         metaClass,
                         creationMode with
@@ -356,7 +356,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="configuration">Creation Mode to be used</param>
         /// <param name="cache">Cache of reportCreator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddFieldsToRowOrObjectFormByMetaClass(
+        private bool AddFieldsToRowOrTableFormByMetaClass(
             IObject rowOrObjectForm,
             IObject? metaClass,
             FormFactoryConfiguration configuration,
@@ -512,7 +512,7 @@ namespace DatenMeister.Forms.FormCreator
                 {
                     // Property is a single element, so a field is added to the detail form, if not already
                     // existing
-                    var detailForm = GetOrCreateRowFormIntoExtentForm(form);
+                    var detailForm = GetOrCreateRowFormIntoForm(form);
                     var result = AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
 
                     FormMethods.AddToFormCreationProtocol(form,
@@ -562,7 +562,7 @@ namespace DatenMeister.Forms.FormCreator
 
             if (isCollectionForm && isEnumerationUml)
             {
-                var detailForm = GetOrCreateRowFormIntoExtentForm(form);
+                var detailForm = GetOrCreateRowFormIntoForm(form);
                 var result = AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
 
                 FormMethods.AddToFormCreationProtocol(form,

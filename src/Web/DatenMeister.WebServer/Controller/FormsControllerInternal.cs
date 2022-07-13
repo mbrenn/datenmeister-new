@@ -85,9 +85,17 @@ namespace DatenMeister.WebServer.Controller
                 }
             }
 
-            var form = formFactory.CreateCollectionFormForItemsMetaClass(
-                resolvedMetaClass,
-                configurationMode);
+            IElement? form;
+            if (resolvedMetaClass == null)
+            {
+                form = formFactory.CreateEmptyCollectionForm(configurationMode);
+            }
+            else
+            {
+                form = formFactory.CreateCollectionFormForMetaClass(
+                    resolvedMetaClass,
+                    configurationMode);
+            }
 
             if (form == null)
             {

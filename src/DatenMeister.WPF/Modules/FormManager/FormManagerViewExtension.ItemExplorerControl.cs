@@ -334,7 +334,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 IElement createdForm = type switch
                 {
                     CreateFormByClassifierType.DetailForm => formCreator.CreateRowFormByMetaClass(locatedItem),
-                    CreateFormByClassifierType.ExtentForm => formCreator.CreateCollectionFormForItemsMetaClass(locatedItem),
+                    CreateFormByClassifierType.ExtentForm => formCreator.CreateCollectionFormForMetaClass(locatedItem),
                     CreateFormByClassifierType.ListForm => formCreator.CreateTableFormForMetaClass(
                         locatedItem,
                         FormFactoryConfiguration.CreateByMetaClassOnly),
@@ -398,7 +398,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 ExtentHelper.SetAvailableId(containerExtent, detailForm, name);
                 
                 // Creates the extent form
-                var extentForm = formCreator.CreateCollectionFormForItemsMetaClass(locatedItem);
+                var extentForm = formCreator.CreateCollectionFormForMetaClass(locatedItem);
                 DefaultClassifierHints.AddToExtentOrElement(
                     package, 
                     extentForm);

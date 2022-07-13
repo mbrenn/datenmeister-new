@@ -57,16 +57,11 @@ namespace DatenMeister.Forms.FormCreator
             if (creationMode.AutomaticMetaClassField)
                 createdForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, true);
 
-            if (!AddFieldsToRowOrObjectFormByMetaClass(createdForm, metaClass, creationMode))
+            if (!AddFieldsToRowOrTableFormByMetaClass(createdForm, metaClass, creationMode))
                 createdForm.set(_DatenMeister._Forms._RowForm.allowNewProperties, true);
 
             CleanupRowForm(createdForm);
             return createdForm;
-        }
-        
-        public void CleanupTableForm(IElement tableForm)
-        {
-            SortFieldsByImportantProperties(tableForm);
         }
         
         public void CleanupRowForm(IElement rowForm)

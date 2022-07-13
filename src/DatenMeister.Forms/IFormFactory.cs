@@ -31,7 +31,7 @@ namespace DatenMeister.Forms
         /// <param name="metaClass">MetaClass to which the form shall be provided</param>
         /// <param name="configuration">Configuration to be used</param>
         /// <returns>The instance of the extent form</returns>
-        IElement? CreateCollectionFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+        IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
 
         IElement? CreateTableFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
 
@@ -45,14 +45,14 @@ namespace DatenMeister.Forms
 
         IElement? CreateCollectionFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
 
-        IElement? CreateTableFormForPropertyValues(IObject? element, string propertyName, IElement? propertyType,
+        IElement? CreateTableFormForProperty(IObject? element, string propertyName, IElement? propertyType,
             FormFactoryConfiguration configuration);
 
 
         public IElement? CreateTableFormForPropertyValues(IObject element, string propertyName,
             FormFactoryConfiguration configuration)
         {
-            return CreateTableFormForPropertyValues(element, propertyName, null, configuration);
+            return CreateTableFormForProperty(element, propertyName, null, configuration);
         }
     }
 }

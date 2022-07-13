@@ -75,7 +75,7 @@ namespace DatenMeister.Actions.ActionHandler
 
             void CreateListForm(bool includeFormAssociation)
             {
-                form = formCreator.CreateCollectionFormForItemsMetaClass(metaClass);
+                form = formCreator.CreateCollectionFormForMetaClass(metaClass);
                 formMethods.GetUserFormExtent().elements().add(form);
 
                 if (includeFormAssociation)

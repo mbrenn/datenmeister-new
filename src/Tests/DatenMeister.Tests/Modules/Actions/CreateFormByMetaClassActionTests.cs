@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateFormByMetaClass);
             action.set(
                 _DatenMeister._Actions._CreateFormByMetaClass.creationMode,
-                CreateFormByMetaclassCreationMode.Detail);
+                CreateFormByMetaclassCreationMode.Object);
             action.set(_DatenMeister._Actions._CreateFormByMetaClass.metaClass, _zipModel.ZipCode);
 
             var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
@@ -57,7 +57,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var form = newElements.First() as IElement;
             Assert.That(form, Is.Not.Null);
             Assert.That(form!.metaclass, Is.Not.Null);
-            Assert.That(form.metaclass!.equals(_DatenMeister.TheOne.Forms.__CollectionForm), Is.True);
+            Assert.That(form.metaclass!.equals(_DatenMeister.TheOne.Forms.__ObjectForm), Is.True);
 
             var detailForms = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
             Assert.That(detailForms, Is.Not.Null);
@@ -82,7 +82,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateFormByMetaClass);
             action.set(
                 _DatenMeister._Actions._CreateFormByMetaClass.creationMode,
-                CreateFormByMetaclassCreationMode.List);
+                CreateFormByMetaclassCreationMode.Collection);
             action.set(_DatenMeister._Actions._CreateFormByMetaClass.metaClass, _zipModel.ZipCode);
 
             var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
@@ -122,7 +122,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateFormByMetaClass);
             action.set(
                 _DatenMeister._Actions._CreateFormByMetaClass.creationMode,
-                CreateFormByMetaclassCreationMode.DetailList);
+                CreateFormByMetaclassCreationMode.ObjectCollection);
             action.set(_DatenMeister._Actions._CreateFormByMetaClass.metaClass, _zipModel.ZipCode);
 
             var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
@@ -147,18 +147,17 @@ namespace DatenMeister.Tests.Modules.Actions
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateFormByMetaClass);
             action.set(
                 _DatenMeister._Actions._CreateFormByMetaClass.creationMode,
-                CreateFormByMetaclassCreationMode.DetailAssociation);
+                CreateFormByMetaclassCreationMode.ObjectAssociation);
             action.set(_DatenMeister._Actions._CreateFormByMetaClass.metaClass, _zipModel.ZipCode);
 
             var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
             await actionLogic.ExecuteAction(action);
-            
-            
+
             var updatedElements = _formMethods.GetUserFormExtent().elements().OfType<IObject>().ToList();
             var newElements = updatedElements.Where(x => !_existingElements.Contains(x)).ToList();
 
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            var detailForm = formFactory.CreateRowFormForItem(_zipModel.ZipCode, new FormFactoryConfiguration());
+            var detailForm = formFactory.CreateObjectFormForItem(_zipModel.ZipCode, new FormFactoryConfiguration());
             
             Assert.That(detailForm.equals(newElements.First() as IObject));
         }

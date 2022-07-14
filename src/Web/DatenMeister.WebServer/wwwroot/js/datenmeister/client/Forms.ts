@@ -23,11 +23,11 @@ export async function getDefaultFormForExtent(workspace: string, extentUri: stri
 /*
     Gets the default form for an extent uri by the webserver
  */
-export async function getDefaultFormForMetaClass(metaClassUri: string) {
+export async function getDefaultCollectionFormForMetaClass(metaClassUri: string) {
 
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
-        "api/forms/default_for_metaclass/" +
+        "api/forms/default_collection_for_metaclass/" +
         encodeURIComponent(metaClassUri)
     );
 

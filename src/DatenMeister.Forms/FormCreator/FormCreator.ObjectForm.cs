@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
@@ -21,11 +22,24 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="factory">The factory being used</param>
         /// <param name="tabsAsForms">The Forms which are converted to an extent form</param>
         /// <returns>The created extent</returns>
-        public static IElement CreateObjectFormFromTabs(IFactory? factory, params IElement[] tabsAsForms)
+        public IElement CreateObjectFormFromTabs(IFactory? factory, params IElement[] tabsAsForms)
         {
-            factory ??= new MofFactory(tabsAsForms.First());
-            var result = factory.create(_DatenMeister.TheOne.Forms.__ObjectForm);
+            var result = MofFactory.create(_DatenMeister.TheOne.Forms.__ObjectForm);
             result.set(_DatenMeister._Forms._CollectionForm.tab, tabsAsForms);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates an object form by the definition of a metaclass
+        /// </summary>
+        /// <param name="metaClass">MetaClass to be handled</param>
+        /// <param name="configuration">Configuration of the Form Factory</param>
+        /// <returns>The returned Object Form</returns>
+        public IElement CreateObjectFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
+        {
+            var result = MofFactory.create(_DatenMeister.TheOne.Forms.__ObjectForm);
+            var rowForm = CreateRowFormByMetaClass(metaClass, configuration);
+            result.set(_DatenMeister._Forms._CollectionForm.tab, new []{rowForm});
             return result;
         }
         

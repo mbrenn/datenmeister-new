@@ -78,7 +78,7 @@ export async function createActionFormForEmptyObject(
             // If there is no metaclass set, create a total empty form object...
             form = Forms.FormModel.createEmptyFormWithDetail();
         } else {
-            form = await ClientForms.getDefaultFormForMetaClass(metaClass);
+            form = await ClientForms.getDefaultCollectionFormForMetaClass(metaClass);
         }
     }
 

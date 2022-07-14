@@ -54,7 +54,7 @@ namespace DatenMeister.WebServer.Controller
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
 
-        [HttpGet("api/forms/default_for_metaclass/{metaClass}/{viewMode?}")]
+        [HttpGet("api/forms/default_collection_for_metaclass/{metaClass}/{viewMode?}")]
         public ActionResult<string> GetDefaultFormForMetaClass(string? metaClass, string? viewMode) 
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
@@ -72,7 +72,7 @@ namespace DatenMeister.WebServer.Controller
             return new GetViewModesResult
             {
                 ViewModes = viewModes
-                    .Select(x=>MofJsonConverter.ConvertToJsonWithDefaultParameter(x))
+                    .Select(x=> MofJsonConverter.ConvertToJsonWithDefaultParameter(x))
                     .ToList()
             };
         }

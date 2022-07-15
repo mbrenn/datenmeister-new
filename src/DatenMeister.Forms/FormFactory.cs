@@ -136,6 +136,76 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
+        /// Creates an object form by the metaclass definition
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be queried</param>
+        /// <param name="configuration">The form configuration to be used</param>
+        /// <returns>The found or created form. If none is found, then null will be returned </returns>
+        public IElement? CreateObjectFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
+        {
+            // Ok, not an extent now do the right things
+            IElement? foundForm = null;
+
+            // Checks if the current item is a package and if the viewmode
+
+            if (configuration.ViaFormFinder)
+            {
+                var viewFinder = CreateFormFinder();
+                foundForm = viewFinder.FindFormsFor(new FindFormQuery
+                {
+                    metaClass = metaClass,
+                    FormType = _DatenMeister._Forms.___FormType.Object,
+                    viewModeId = configuration.ViewModeId
+                }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    Logger.Info("CreateObjectFormForMetaClass: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                    FormMethods.AddToFormCreationProtocol(foundForm,
+                        "[FormFactory.CreateObjectFormForMetaClass] Found Form via FormFinder: " + foundForm.GetUri());
+                }
+            }
+
+            if (foundForm == null && configuration.ViaFormCreator)
+            {
+                var formCreator = CreateFormCreator();
+                foundForm = formCreator.CreateObjectFormForMetaClass(
+                    metaClass,
+                    new FormFactoryConfiguration { IncludeOnlyCommonProperties = true, AllowFormModifications = false});
+
+                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateObjectFormForItem] Created Form via FormCreator");
+            }
+
+            if (foundForm != null)
+            {
+                foundForm = CloneForm(foundForm);
+
+                // Adds the extension forms to the found extent
+                AddExtensionFormsToObjectOrCollectionForm(
+                    foundForm,
+                    new FindFormQuery
+                    {
+                        metaClass = metaClass,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectExtension,
+                        viewModeId = configuration.ViewModeId ?? ViewModes.Default
+                    });
+                
+                var formCreationContext = new FormCreationContext
+                {
+                    FormType = _DatenMeister._Forms.___FormType.Object,
+                    MetaClass = metaClass
+                };
+
+                CallPluginsForCollectionOrObjectForm(configuration, formCreationContext, ref foundForm);
+                
+                CleanupObjectForm(foundForm, true);
+            }
+
+            // No Form
+            return foundForm;
+        }
+
+        /// <summary>
         /// Creates a row form by the given metaclass 
         /// </summary>
         /// <param name="metaClass">Metaclass to be evaluated</param>

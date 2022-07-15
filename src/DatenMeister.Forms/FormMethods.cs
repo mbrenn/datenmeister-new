@@ -527,6 +527,16 @@ namespace DatenMeister.Forms
         {
             return FormCreator.FormCreator.CreateCollectionFormFromTabs(null, subForms);
         }
+        
+        /// <summary>
+        ///     Gets the extent form containing the subforms
+        /// </summary>
+        /// <param name="subForms">The forms to be added to the extent forms</param>
+        /// <returns>The created extent</returns>
+        public static IElement GetObjectFormForSubforms(params IElement[] subForms)
+        {
+            return FormCreator.FormCreator.CreateObjectFormFromTabs(null, subForms);
+        }
 
         /// <summary>
         ///     Adds a certain text to the form creation protocol.

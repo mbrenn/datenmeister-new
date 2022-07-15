@@ -27,7 +27,7 @@ export async function getDefaultCollectionFormForMetaClass(metaClassUri: string)
 
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
-        "api/forms/default_collection_for_metaclass/" +
+        "api/forms/default_object_for_metaclass/" +
         encodeURIComponent(metaClassUri)
     );
 

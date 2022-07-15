@@ -135,7 +135,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         ///     Stores the factory to create the fields and forms
         /// </summary>
-        private IFactory MofFactory
+        internal IFactory MofFactory
         {
             get
             {

@@ -33,7 +33,7 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
     function getDefaultCollectionFormForMetaClass(metaClassUri) {
         return __awaiter(this, void 0, void 0, function* () {
             const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
-                "api/forms/default_collection_for_metaclass/" +
+                "api/forms/default_object_for_metaclass/" +
                 encodeURIComponent(metaClassUri));
             return Mof.convertJsonObjectToDmObject(resultFromServer);
         });

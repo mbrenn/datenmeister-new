@@ -35,7 +35,7 @@ namespace DatenMeister.Extent.Forms
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Object
+                            FormType = _DatenMeister._Forms.___FormType.Row
                         });
 
                     ActionButtonToFormAdder.AddActionButton(

@@ -59,7 +59,7 @@ namespace DatenMeister.WPF.Navigation
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
                 formElement =
-                    creator.CreateDetailFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
+                    creator.CreateRowFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailView(

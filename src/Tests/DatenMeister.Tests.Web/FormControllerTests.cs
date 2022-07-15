@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Web
         public void TestDefaultForExtent()
         {
             var (zipExtent, formsController, _) = CreateZipExtent();
-            var foundForm = formsController.GetDefaultFormForExtent(
+            var foundForm = formsController.GetCollectionFormForExtent(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
                 ViewModes.Default);
@@ -37,7 +37,7 @@ namespace DatenMeister.Tests.Web
             var (zipExtent, formsController, _) = CreateZipExtent();
             var firstElement = zipExtent.elements().First() as IElement;
             Assert.That(firstElement, Is.Not.Null);
-            var foundForm = formsController.GetDefaultFormForItem(
+            var foundForm = formsController.GetObjectFormForItem(
                 WorkspaceNames.WorkspaceData,
                 firstElement!.GetUri()!,
                 ViewModes.Default);
@@ -53,15 +53,15 @@ namespace DatenMeister.Tests.Web
             var (zipExtent, formsController, formsInternal) = CreateZipExtent();
             var firstElement = zipExtent.elements().First() as IElement;
             Assert.That(firstElement, Is.Not.Null);
-            var foundForm = formsInternal.GetDefaultFormForItemInternal(
+            var foundForm = formsInternal.GetObjectFormForItemInternal(
                 WorkspaceNames.WorkspaceData,
                 firstElement!.GetUri()!,
                 ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
-            var detailForm = FormMethods.GetDetailForms(foundForm).FirstOrDefault();
+            var detailForm = FormMethods.GetRowForms(foundForm).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
-            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             var foundFields =
                 fields.OfType<IElement>()
                     .Where(
@@ -75,18 +75,18 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestListFormForDefaultButtons()
+        public void TestTableFormForDefaultButtons()
         {
             var (zipExtent, formsController, formsInternal) = CreateZipExtent();
-            var foundForm = formsInternal.GetDefaultFormForExtentInternal(
+            var foundForm = formsInternal.GetCollectionFormForExtentInternal(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
                 ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
-            var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
+            var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
             Assert.That(listForm, Is.Not.Null);
-            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
             var foundFields =
                 fields.OfType<IElement>()
@@ -112,18 +112,18 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestWorkspaceFormForViewExtentButtonInListForm()
+        public void TestWorkspaceFormForViewExtentButtonInTableForm()
         {
             var (zipExtent, formsController, formsInternal) = CreateZipExtent();
-            var foundForm = formsInternal.GetDefaultFormForItemInternal(
+            var foundForm = formsInternal.GetObjectFormForItemInternal(
                 WorkspaceNames.WorkspaceManagement,
                 WorkspaceNames.UriExtentWorkspaces + "#Data",
                 ViewModes.Default)!;
 
             Assert.That(foundForm, Is.Not.Null);
-            var listForm = FormMethods.GetListForms(foundForm).FirstOrDefault();
+            var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
             Assert.That(listForm, Is.Not.Null);
-            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
             // Check that field is at first position
             var firstField = fields.OfType<IElement>().ElementAtOrDefault(0);
@@ -133,7 +133,7 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestExtentFormForMetaClass()
+        public void TestObjectFormForMetaClass()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var localType = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage);
@@ -144,13 +144,13 @@ namespace DatenMeister.Tests.Web
             Assert.That(zipCodeMetaUrl, Is.Not.Null);
 
             var controller = new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
-            var form = (controller.GetDefaultFormForMetaClassInternal(zipCodeMetaUrl) as IElement)!;
+            var form = (controller.GetObjectFormForMetaClassInternal(zipCodeMetaUrl) as IElement)!;
 
             Assert.That(form, Is.Not.Null);
-            Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ExtentForm), Is.True);
-            var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
-            Assert.That(detailForm, Is.Not.Null);
-            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ObjectForm), Is.True);
+            var rowForm = FormMethods.GetRowForms(form).FirstOrDefault();
+            Assert.That(rowForm, Is.Not.Null);
+            var fields = rowForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             Assert.That(fields.Count(), Is.GreaterThan(3));
 
             var positionLat = fields
@@ -161,7 +161,7 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestExtentFormByUri()
+        public void TestFormByUri()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
 
@@ -169,10 +169,10 @@ namespace DatenMeister.Tests.Web
             var form = controller.GetInternal(WorkspaceNames.UriExtentInternalForm + "#DatenMeister.Extent.Properties");
             Assert.That(form, Is.Not.Null);
 
-            var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
+            var detailForm = FormMethods.GetRowForms(form).FirstOrDefault();
             Assert.That(detailForm, Is.Not.Null);
 
-            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             Assert.That(fields, Is.Not.Null);
             Assert.That(
                 fields.OfType<IElement>().Any(x =>

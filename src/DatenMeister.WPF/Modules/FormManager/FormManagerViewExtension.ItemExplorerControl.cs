@@ -199,7 +199,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
                         formAssociation.set(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType);
                         formAssociation.set(_DatenMeister._Forms._FormAssociation.form, itemExplorerControl.EffectiveForm);
-                        formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.TreeItemExtent);
+                        formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Collection);
                         userViewExtent.elements().add(formAssociation);
 
                         MessageBox.Show("View Association created");
@@ -333,9 +333,9 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 IElement createdForm = type switch
                 {
-                    CreateFormByClassifierType.DetailForm => formCreator.CreateDetailFormByMetaClass(locatedItem),
-                    CreateFormByClassifierType.ExtentForm => formCreator.CreateExtentFormForItemsMetaClass(locatedItem),
-                    CreateFormByClassifierType.ListForm => formCreator.CreateListFormForMetaClass(
+                    CreateFormByClassifierType.DetailForm => formCreator.CreateRowFormByMetaClass(locatedItem),
+                    CreateFormByClassifierType.ExtentForm => formCreator.CreateCollectionFormForMetaClass(locatedItem),
+                    CreateFormByClassifierType.ListForm => formCreator.CreateTableFormForMetaClass(
                         locatedItem,
                         FormFactoryConfiguration.CreateByMetaClassOnly),
                     _ => throw new InvalidOperationException()
@@ -390,7 +390,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 ExtentHelper.SetAvailableId(containerExtent, package, packageName);
 
                 // Creates the detail form
-                var detailForm = formCreator.CreateDetailFormByMetaClass(locatedItem);
+                var detailForm = formCreator.CreateRowFormByMetaClass(locatedItem);
                 DefaultClassifierHints.AddToExtentOrElement(
                     package, 
                     detailForm);
@@ -398,7 +398,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 ExtentHelper.SetAvailableId(containerExtent, detailForm, name);
                 
                 // Creates the extent form
-                var extentForm = formCreator.CreateExtentFormForItemsMetaClass(locatedItem);
+                var extentForm = formCreator.CreateCollectionFormForMetaClass(locatedItem);
                 DefaultClassifierHints.AddToExtentOrElement(
                     package, 
                     extentForm);
@@ -408,9 +408,9 @@ namespace DatenMeister.WPF.Modules.FormManager
                 // Creates association
                 var formLogic = GiveMe.Scope.Resolve<FormMethods>();
                 var association1 = 
-                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, _DatenMeister._Forms.___FormType.Detail);
+                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, _DatenMeister._Forms.___FormType.Collection);
                 var association2 = 
-                    formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, _DatenMeister._Forms.___FormType.TreeItemDetail);
+                    formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, _DatenMeister._Forms.___FormType.Object);
                 
                 DefaultClassifierHints.AddToExtentOrElement(package, association1);
                 name = fullName + "AssociationDetail";

@@ -1,5 +1,5 @@
 ﻿import {DmObject} from "../Mof";
-import {SubmitMethod} from "./DetailForm";
+import {SubmitMethod} from "./RowForm";
 
 export interface IFormConfiguration {
     allowAddingNewProperties?: boolean;

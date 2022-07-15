@@ -65,7 +65,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
                     form = Forms.FormModel.createEmptyFormWithDetail();
                 }
                 else {
-                    form = yield ClientForms.getDefaultFormForMetaClass(metaClass);
+                    form = yield ClientForms.getObjectFormForMetaClass(metaClass);
                 }
             }
             creator.element = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);

@@ -1987,18 +1987,22 @@ namespace DatenMeister.Core.Models
 
             public class _FormType
             {
-                public static string @Detail = "Detail";
-                public IElement @__Detail = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-Detail");
-                public static string @TreeItemExtent = "TreeItemExtent";
-                public IElement @__TreeItemExtent = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TreeItemExtent");
-                public static string @TreeItemDetail = "TreeItemDetail";
-                public IElement @__TreeItemDetail = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TreeItemDetail");
-                public static string @ObjectList = "ObjectList";
-                public IElement @__ObjectList = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-ObjectList");
-                public static string @TreeItemExtentExtension = "TreeItemExtentExtension";
-                public IElement? @__TreeItemExtentExtension = null;
-                public static string @TreeItemDetailExtension = "TreeItemDetailExtension";
-                public IElement? @__TreeItemDetailExtension = null;
+                public static string @Object = "Object";
+                public IElement @__Object = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-Object");
+                public static string @Collection = "Collection";
+                public IElement @__Collection = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-Collection");
+                public static string @Row = "Row";
+                public IElement @__Row = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowForm");
+                public static string @Table = "Table";
+                public IElement @__Table = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableForm");
+                public static string @ObjectExtension = "ObjectExtension";
+                public IElement @__ObjectExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-ObjectExtension");
+                public static string @CollectionExtension = "CollectionExtension";
+                public IElement @__CollectionExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-CollectionExtension");
+                public static string @RowExtension = "RowExtension";
+                public IElement @__RowExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowExtension");
+                public static string @TableExtension = "TableExtension";
+                public IElement @__TableExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableExtension");
 
             }
 
@@ -2008,12 +2012,14 @@ namespace DatenMeister.Core.Models
 
             public enum ___FormType
             {
-                @Detail,
-                @TreeItemExtent,
-                @TreeItemDetail,
-                @ObjectList,
-                @TreeItemExtentExtension,
-                @TreeItemDetailExtension
+                @Object,
+                @Collection,
+                @Row,
+                @Table,
+                @ObjectExtension,
+                @CollectionExtension,
+                @RowExtension,
+                @TableExtension
             }
 
             public class _Form
@@ -2044,7 +2050,7 @@ namespace DatenMeister.Core.Models
             public _Form @Form = new _Form();
             public IElement @__Form = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
 
-            public class _DetailForm
+            public class _RowForm
             {
                 public static string @buttonApplyText = "buttonApplyText";
                 public IElement? @_buttonApplyText = null;
@@ -2057,9 +2063,6 @@ namespace DatenMeister.Core.Models
 
                 public static string @defaultHeight = "defaultHeight";
                 public IElement? @_defaultHeight = null;
-
-                public static string @tab = "tab";
-                public IElement? @_tab = null;
 
                 public static string @field = "field";
                 public IElement? @_field = null;
@@ -2087,10 +2090,10 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _DetailForm @DetailForm = new _DetailForm();
-            public IElement @__DetailForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm");
+            public _RowForm @RowForm = new _RowForm();
+            public IElement @__RowForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
 
-            public class _ListForm
+            public class _TableForm
             {
                 public static string @property = "property";
                 public IElement? @_property = null;
@@ -2157,10 +2160,10 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _ListForm @ListForm = new _ListForm();
-            public IElement @__ListForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm");
+            public _TableForm @TableForm = new _TableForm();
+            public IElement @__TableForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
 
-            public class _ExtentForm
+            public class _CollectionForm
             {
                 public static string @tab = "tab";
                 public IElement? @_tab = null;
@@ -2191,8 +2194,42 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _ExtentForm @ExtentForm = new _ExtentForm();
-            public IElement @__ExtentForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm");
+            public _CollectionForm @CollectionForm = new _CollectionForm();
+            public IElement @__CollectionForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
+
+            public class _ObjectForm
+            {
+                public static string @tab = "tab";
+                public IElement? @_tab = null;
+
+                public static string @autoTabs = "autoTabs";
+                public IElement? @_autoTabs = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @title = "title";
+                public IElement? @_title = null;
+
+                public static string @isReadOnly = "isReadOnly";
+                public IElement? @_isReadOnly = null;
+
+                public static string @isAutoGenerated = "isAutoGenerated";
+                public IElement? @_isAutoGenerated = null;
+
+                public static string @hideMetaInformation = "hideMetaInformation";
+                public IElement? @_hideMetaInformation = null;
+
+                public static string @originalUri = "originalUri";
+                public IElement? @_originalUri = null;
+
+                public static string @creationProtocol = "creationProtocol";
+                public IElement? @_creationProtocol = null;
+
+            }
+
+            public _ObjectForm @ObjectForm = new _ObjectForm();
+            public IElement @__ObjectForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
 
             public class _ViewMode
             {

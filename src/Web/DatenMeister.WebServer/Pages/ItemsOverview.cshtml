@@ -21,7 +21,7 @@ $(function()
     requirejs(['forms/Forms'], function (Forms)
     {
         let listForm = new Forms.CollectionFormCreator();
-        listForm.createListForRootElements(
+        listForm.createCollectionForRootElements(
             {
                 itemContainer: $("#dm-items"),
                 viewModeSelectorContainer: $("#dm-viewmode-selection-container")

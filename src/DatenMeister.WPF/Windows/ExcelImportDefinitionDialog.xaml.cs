@@ -22,7 +22,7 @@ namespace DatenMeister.WPF.Windows
     }
 
     /// <summary>
-    /// Interaktionslogik für ExcelImportDefinitioOnClosedxaml
+    /// Interaktionslogik für ExcelImportDefinitionClosedxaml
     /// </summary>
     public partial class ExcelImportDefinitionDialog : Window
     {
@@ -101,7 +101,7 @@ namespace DatenMeister.WPF.Windows
                 {
                     var internalColumnName = "_ " + c;
                     var columnName = columnNames[c];
-                    if (columnName == null)
+                    if (string.IsNullOrEmpty(columnName))
                     {
                         // Skip not set columns
                         continue;

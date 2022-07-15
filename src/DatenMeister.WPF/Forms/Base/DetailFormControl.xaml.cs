@@ -118,8 +118,8 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets the default size
         /// </summary>
         public Size DefaultSize => new Size(
-            EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultWidth) ?? 0.0,
-            EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultHeight) ?? 0.0
+            EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultWidth) ?? 0.0,
+            EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultHeight) ?? 0.0
         );
 
         /// <summary>
@@ -397,14 +397,14 @@ namespace DatenMeister.WPF.Forms.Base
             RefreshViewDefinition();
 
             // Checks, if the form overwrites the allow new properties information. If yes, store it
-            var t = EffectiveForm?.getOrNull<bool>(_DatenMeister._Forms._DetailForm.allowNewProperties);
+            var t = EffectiveForm?.getOrNull<bool>(_DatenMeister._Forms._RowForm.allowNewProperties);
             AllowNewProperties = t ?? AllowNewProperties;
 
             DataGrid.Children.Clear();
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             if (fields == null)
             {
                 return;
@@ -662,7 +662,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (EffectiveForm == null)
                 throw new InvalidOperationException("EffectiveForm == null");
 
-            saveText ??= EffectiveForm.getOrDefault<string>(_DatenMeister._Forms._DetailForm.buttonApplyText);
+            saveText ??= EffectiveForm.getOrDefault<string>(_DatenMeister._Forms._RowForm.buttonApplyText);
             saveText ??= "Save";
 
             if (AllowNewProperties)

@@ -208,7 +208,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 }
 
                 var viewLogic = GiveMe.Scope.Resolve<FormMethods>();
-                if (viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass))
+                if (viewLogic.RemoveFormAssociationForObjectMetaClass(metaClass))
                 {
                     MessageBox.Show("View Association deleted");
                 }
@@ -249,12 +249,12 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var userViewExtent = viewLogic.GetUserFormExtent();
                 var factory = new MofFactory(userViewExtent);
 
-                viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass);
+                viewLogic.RemoveFormAssociationForObjectMetaClass(metaClass);
 
                 var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
-                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Detail);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Row);
                 userViewExtent.elements().add(formAssociation);
 
                 MessageBox.Show("View Association created");
@@ -304,12 +304,13 @@ namespace DatenMeister.WPF.Modules.FormManager
                     "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
 
                 var formMetaClass = detailAsElement.metaclass;
-                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__DetailForm);
-                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__ExtentForm);
+                var isRowForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__RowForm);
+                var isCollectionForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__CollectionForm);
+                var isTableForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__TableForm);
                 var formType = 
-                    isExtentForm ? _DatenMeister._Forms.___FormType.TreeItemDetail :
-                    isDetailForm ? _DatenMeister._Forms.___FormType.Detail :
-                    _DatenMeister._Forms.___FormType.TreeItemExtent;
+                    isCollectionForm ? _DatenMeister._Forms.___FormType.Collection :
+                    isRowForm ? _DatenMeister._Forms.___FormType.Row :
+                    isTableForm ? _DatenMeister._Forms.___FormType.Table : _DatenMeister._Forms.___FormType.Object;
 
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailAsElement);

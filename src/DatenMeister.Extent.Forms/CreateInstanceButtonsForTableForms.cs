@@ -15,12 +15,12 @@ namespace DatenMeister.Extent.Forms
     ///     the element is currently belonging to.
     ///     Here, the property 'ExtentConfiguration.ExtentDefaultTypes' is being used to retrieve the values
     /// </summary>
-    public class CreateInstanceButtonsForListForms : IFormModificationPlugin
+    public class CreateInstanceButtonsForTableForms : IFormModificationPlugin
     {
         public bool ModifyForm(FormCreationContext context, IElement form)
         {
             var extent = context.DetailElement?.GetExtentOf();
-            if (context.FormType == _DatenMeister._Forms.___FormType.ObjectList &&
+            if (context.FormType == _DatenMeister._Forms.___FormType.Table &&
                 extent != null)
             {
                 var added = false;

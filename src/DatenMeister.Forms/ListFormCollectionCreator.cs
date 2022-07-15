@@ -27,7 +27,7 @@ namespace DatenMeister.Forms
                 return extent.elements();
             }
 
-            var propertyName = listForm?.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+            var propertyName = listForm?.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
                 
             return GetPropertiesAsReflection(value, propertyName);
         }

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/DetailForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, DetailForm_1) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -255,7 +255,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     metaClass: metaClass === undefined ? "" : metaClass,
                     properties: element
                 });
-                if (submitMethod === DetailForm_1.SubmitMethod.Save) {
+                if (submitMethod === RowForm_1.SubmitMethod.Save) {
                     // If user has clicked on the save button (without closing), the form shall just be updated
                     Navigator.navigateToItemByUrl(workspace, newItem.itemId);
                 }

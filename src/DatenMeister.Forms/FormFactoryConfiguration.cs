@@ -58,10 +58,10 @@
         public string ViewModeId { get; set; } = string.Empty;
 
         /// <summary>
-        ///     Gets or sets the information whether the created form is just for a list view.
-        ///     If that this is the case, then no subforms will be created
+        ///     Gets or sets the information whether the created form is just for a tableform.
+        ///     If that this is the case, then no fields like SubElementField will be created
         /// </summary>
-        public bool IsForListView { get; set; }
+        public bool IsForTableForm { get; set; }
 
         public static FormFactoryConfiguration CreateByMetaClassOnly =>
             new() {AutomaticMetaClassField = false, CreateByPropertyValues = false};

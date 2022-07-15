@@ -86,7 +86,7 @@ namespace DatenMeister.WPF.Forms.Base
                 CopyToClipboardCommand.Execute(this, CopyType.AsXmi);
             }
 
-            if (EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitEditItems) == false)
+            if (EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitEditItems) == false)
             {
                 yield return
                     new RowItemButtonDefinition(
@@ -95,7 +95,7 @@ namespace DatenMeister.WPF.Forms.Base
                         ButtonPosition.Before);
             }
 
-            if (EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitDeleteItems) == false)
+            if (EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitDeleteItems) == false)
             {
                 yield return
                     new RowItemButtonDefinition(

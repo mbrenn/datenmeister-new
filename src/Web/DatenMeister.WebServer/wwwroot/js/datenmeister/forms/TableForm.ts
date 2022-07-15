@@ -5,7 +5,7 @@ import * as Settings from "../Settings";
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as SIC from "../controls/SelectItemControl";
 
-export class ListForm implements InterfacesForms.IForm {
+export class TableForm implements InterfacesForms.IForm {
     elements: Array<Mof.DmObject>;
     extentUri: string;
     formElement: Mof.DmObject;

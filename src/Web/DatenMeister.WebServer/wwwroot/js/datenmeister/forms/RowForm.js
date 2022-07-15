@@ -1,7 +1,7 @@
 define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"], function (require, exports, Mof, FieldFactory_1, TextField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DetailForm = exports.SubmitMethod = void 0;
+    exports.RowForm = exports.SubmitMethod = void 0;
     // Defines the possible submit methods, a user can chose to close the detail form
     var SubmitMethod;
     (function (SubmitMethod) {
@@ -10,7 +10,7 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
         // The user clicked on the save and close button
         SubmitMethod[SubmitMethod["SaveAndClose"] = 1] = "SaveAndClose";
     })(SubmitMethod = exports.SubmitMethod || (exports.SubmitMethod = {}));
-    class DetailForm {
+    class RowForm {
         refreshForm() {
             this.createFormByObject(this.parentHtml, this.configuration);
         }
@@ -151,6 +151,6 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
             parent.append(tableInfo);
         }
     }
-    exports.DetailForm = DetailForm;
+    exports.RowForm = RowForm;
 });
-//# sourceMappingURL=DetailForm.js.map
+//# sourceMappingURL=RowForm.js.map

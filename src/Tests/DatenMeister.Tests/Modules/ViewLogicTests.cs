@@ -37,7 +37,7 @@ namespace DatenMeister.Tests.Modules
             var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             
-            var listForm = _DatenMeister.TheOne.Forms.__ListForm;
+            var listForm = _DatenMeister.TheOne.Forms.__TableForm;
             
             var n = 0;
             foreach (var _ in viewLogic.GetAllForms())

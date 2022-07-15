@@ -1,8 +1,8 @@
 define(["require", "exports", "./FieldFactory", "../Settings", "../controls/SelectItemControl"], function (require, exports, FieldFactory_1, Settings, SIC) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.openMetaClassSelectionFormForNewItem = exports.ListForm = void 0;
-    class ListForm {
+    exports.openMetaClassSelectionFormForNewItem = exports.TableForm = void 0;
+    class TableForm {
         refreshForm() {
             this.createFormByCollection(this.parentHtml, this.configuration);
         }
@@ -120,7 +120,7 @@ define(["require", "exports", "./FieldFactory", "../Settings", "../controls/Sele
             }
         }
     }
-    exports.ListForm = ListForm;
+    exports.TableForm = TableForm;
     function openMetaClassSelectionFormForNewItem(buttonDiv, containerDiv, workspace, extentUri) {
         const tthis = this;
         buttonDiv.on('click', () => {
@@ -156,4 +156,4 @@ define(["require", "exports", "./FieldFactory", "../Settings", "../controls/Sele
     }
     exports.openMetaClassSelectionFormForNewItem = openMetaClassSelectionFormForNewItem;
 });
-//# sourceMappingURL=ListForm.js.map
+//# sourceMappingURL=TableForm.js.map

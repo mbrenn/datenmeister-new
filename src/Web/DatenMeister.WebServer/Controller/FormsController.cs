@@ -31,36 +31,36 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
-        public ActionResult<string> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
+        public ActionResult<string> GetObjectFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUrl = HttpUtility.UrlDecode(itemUrl);
             viewMode = HttpUtility.UrlDecode(viewMode);
 
-            var form = _internal.GetDefaultFormForItemInternal(workspaceId, itemUrl, viewMode);
+            var form = _internal.GetObjectFormForItemInternal(workspaceId, itemUrl, viewMode);
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
 
         [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
-        public ActionResult<string> GetDefaultFormForExtent(string workspaceId, string extentUri, string? viewMode)
+        public ActionResult<string> GetCollectionFormForExtent(string workspaceId, string extentUri, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
 
-            var form = _internal.GetDefaultFormForExtentInternal(workspaceId, extentUri, viewMode);
+            var form = _internal.GetCollectionFormForExtentInternal(workspaceId, extentUri, viewMode);
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
 
-        [HttpGet("api/forms/default_for_metaclass/{metaClass}/{viewMode?}")]
-        public ActionResult<string> GetDefaultFormForMetaClass(string? metaClass, string? viewMode) 
+        [HttpGet("api/forms/default_object_for_metaclass/{metaClass}/{viewMode?}")]
+        public ActionResult<string> GetObjectFormForMetaClass(string? metaClass, string? viewMode) 
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             metaClass = HttpUtility.UrlDecode(metaClass);
 
-            var form = _internal.GetDefaultFormForMetaClassInternal(metaClass, viewMode);
+            var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode);
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
@@ -72,7 +72,7 @@ namespace DatenMeister.WebServer.Controller
             return new GetViewModesResult
             {
                 ViewModes = viewModes
-                    .Select(x=>MofJsonConverter.ConvertToJsonWithDefaultParameter(x))
+                    .Select(x=> MofJsonConverter.ConvertToJsonWithDefaultParameter(x))
                     .ToList()
             };
         }

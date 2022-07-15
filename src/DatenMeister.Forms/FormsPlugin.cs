@@ -103,9 +103,10 @@ namespace DatenMeister.Forms
                     extent.GetConfiguration()
                         .AddDefaultTypes(new[]
                             {_DatenMeister.TheOne.Forms.__Form,
-                                _DatenMeister.TheOne.Forms.__ExtentForm,
-                                _DatenMeister.TheOne.Forms.__DetailForm,
-                                _DatenMeister.TheOne.Forms.__ListForm,
+                                _DatenMeister.TheOne.Forms.__CollectionForm,
+                                _DatenMeister.TheOne.Forms.__ObjectForm,
+                                _DatenMeister.TheOne.Forms.__TableForm,
+                                _DatenMeister.TheOne.Forms.__RowForm,
                                 _DatenMeister.TheOne.Forms.__FormAssociation});
 
                     break;

@@ -69,7 +69,7 @@ namespace DatenMeister.Modules.ZipCodeExample
                         new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
                         {
                             MetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                            FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
+                            FormType = _DatenMeister._Forms.___FormType.Object,
                             PredicateForElement = 
                                 element => 
                                     element?.getOrDefault<string>(

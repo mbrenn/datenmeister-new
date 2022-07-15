@@ -33,21 +33,23 @@ namespace DatenMeister.Extent.Forms
                 _extentSettings.extentTypeSettings.FirstOrDefault(x => x.name == context.ExtentType);
             var mofFactory = new MofFactory(form);
 
-            if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.TreeItemExtent)
+            if (foundExtentType != null && context.FormType == _DatenMeister._Forms.___FormType.Collection)
             {
                 var foundListMetaClasses = new List<IElement>();
+
+                var tableForms = FormMethods.GetTableForms(form).ToList();
                 // First, figure out which list forms we are having...
-                foreach (var listForm in FormMethods.GetListForms(form))
+                foreach (var listForm in tableForms)
                 {
-                    var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
+                    var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass);
                     foundListMetaClasses.Add(metaClass);
                 }
                 
-                // Second, now create the action buttons for the listform without classifier
-                foreach (var listForm in FormMethods.GetListForms(form))
+                // Second, now create the action buttons for the tableform without classifier
+                foreach (var listForm in tableForms)
                 {
                     // Selects only the listform which do not have a classifier
-                    if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass) != null)
+                    if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass) != null)
                     {
                         continue;
                     }
@@ -66,14 +68,14 @@ namespace DatenMeister.Extent.Forms
                         if (foundListMetaClasses.Contains(resolvedMetaClass))
                         {
                             FormMethods.AddToFormCreationProtocol(listForm,
-                                $"TypesFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
+                                $"ExtentTypeFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
                             continue;
                         }
                         
                         FormMethods.AddDefaultTypeForNewElement(form, resolvedMetaClass);
 
                         FormMethods.AddToFormCreationProtocol(listForm,
-                            $"TypesFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
+                            $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
                     }
                 }
             }

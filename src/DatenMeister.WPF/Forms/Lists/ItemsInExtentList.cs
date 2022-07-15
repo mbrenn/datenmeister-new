@@ -131,7 +131,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     
                     if (!ClassifierMethods.IsSpecializedClassifierOf(
                         formMetaClass, 
-                        _DatenMeister.TheOne.Forms.__ExtentForm))
+                        _DatenMeister.TheOne.Forms.__CollectionForm))
                     {
                         var formType = formMetaClass?.ToString() ?? "Unclassified";
                         
@@ -148,7 +148,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Extent is currently selected
                     // Finds the view by the extent type
-                    form = _formFactory.CreateExtentFormForExtent(
+                    form = _formFactory.CreateCollectionFormForExtent(
                         (IUriExtent)RootItem,
                         new FormFactoryConfiguration { ViewModeId = CurrentViewModeId });
                 }
@@ -166,7 +166,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     }
                     
                     // User has selected a sub element and its children shall be shown
-                    form = _formFactory.CreateExtentFormForItem(
+                    form = _formFactory.CreateObjectFormForItem(
                         SelectedItem,
                         new FormFactoryConfiguration{ViewModeId = viewMode});
                 }

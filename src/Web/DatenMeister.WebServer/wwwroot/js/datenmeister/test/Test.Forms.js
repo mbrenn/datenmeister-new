@@ -33,7 +33,7 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                 });
             });
             it('Load Default Form for Extents', () => __awaiter(this, void 0, void 0, function* () {
-                const form = yield ClientForms.getDefaultFormForExtent('Test', 'dm:///unittest', '');
+                const form = yield ClientForms.getCollectionFormForExtent('Test', 'dm:///unittest', '');
                 chai.assert.isTrue(form !== undefined, 'Form was not found');
                 const tab = form.get('tab');
                 chai.assert.isTrue(tab !== undefined, 'tabs are not defined');
@@ -54,7 +54,7 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                 chai.assert.isTrue(found, 'Field with name was not found');
             }));
             it('Load Default Form for Detail', () => __awaiter(this, void 0, void 0, function* () {
-                const form = yield ClientForms.getDefaultFormForItem('Test', itemUri, '');
+                const form = yield ClientForms.getObjectFormForItem('Test', itemUri, '');
                 chai.assert.isTrue(form !== undefined, 'Form was not found');
                 const tab = form.get('tab');
                 chai.assert.isTrue(tab !== undefined, 'tabs are not defined');

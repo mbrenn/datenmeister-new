@@ -128,7 +128,7 @@
 
 	  </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="7fe103c7-9648-47fe-ae41-3c0530fa30be" name="ExtentList">
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="Workspace.ListFormForExtents" name="ListForm - Extent">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" p1:id="Workspace.ListFormForExtents" name="ListForm - Extent">
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" p1:id="Workspace.TableFormForExtents" title="Extent" name="List" property="extents" inhibitDeleteItems="True" inhibitNewItems="True" inhibitEditItems="True">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="35b359d7-9a18-4ff2-8483-b1be318a8d80" name="name" title="Name" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="4435a1fe-2fd7-4af9-ad4f-739ab77eab9a" name="uri" title="URI" />

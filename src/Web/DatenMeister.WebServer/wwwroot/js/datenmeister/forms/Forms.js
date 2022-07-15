@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./DetailForm", "./DetailForm", "./ListForm", "../DomHelper", "../Navigator", "./ViewModeSelectionForm", "./ViewModeLogic"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, DetailForm_1, ListForm_1, DomHelper_1, Navigator_1, ViewModeSelectionForm_1, VML) {
+define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./RowForm", "./RowForm", "./TableForm", "../DomHelper", "../Navigator", "./ViewModeSelectionForm", "./ViewModeLogic"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, RowForm_1, TableForm_1, DomHelper_1, Navigator_1, ViewModeSelectionForm_1, VML) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.DetailFormHtmlElements = exports.FormMode = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = exports.FormModel = void 0;
@@ -37,7 +37,7 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
         The input for this type is a collection of elements
     */
     class CollectionFormCreator {
-        createListForRootElements(htmlElements, workspace, extentUri, configuration) {
+        createCollectionForRootElements(htmlElements, workspace, extentUri, configuration) {
             var _a;
             if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
                 throw "htmlElements.itemContainer is not set";
@@ -51,13 +51,13 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
-                    tthis.createListForRootElements(htmlElements, workspace, extentUri, configuration);
+                    tthis.createCollectionForRootElements(htmlElements, workspace, extentUri, configuration);
                 };
             }
             // Load the object
             const defer1 = DataLoader.getRootElements(workspace, extentUri);
             // Load the form
-            const defer2 = ClientForms.getDefaultFormForExtent(workspace, extentUri, configuration.viewMode);
+            const defer2 = ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode);
             // Wait for both
             Promise.all([defer1, defer2]).then(([elements, form]) => {
                 tthis.formElement = form;
@@ -101,8 +101,8 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                 window.setTimeout(() => {
                     let form = $("<div />");
                     const tab = tabs[n];
-                    if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                        const listForm = new ListForm_1.ListForm();
+                    if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+                        const listForm = new TableForm_1.TableForm();
                         listForm.elements = elements;
                         listForm.formElement = tab;
                         listForm.workspace = this.workspace;
@@ -165,8 +165,8 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                 }
                 let form = $("<div />");
                 const tab = tabs[n];
-                if (tab.metaClass.id === "DatenMeister.Models.Forms.DetailForm") {
-                    const detailForm = new DetailForm.DetailForm();
+                if (tab.metaClass.id === "DatenMeister.Models.Forms.RowForm") {
+                    const detailForm = new DetailForm.RowForm();
                     detailForm.workspace = this.workspace;
                     detailForm.extentUri = this.extentUri;
                     detailForm.itemId = this.itemId;
@@ -180,8 +180,8 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                         detailForm.onChange = configuration.onSubmit;
                     }
                 }
-                else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                    const listForm = new ListForm_1.ListForm();
+                else if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+                    const listForm = new TableForm_1.TableForm();
                     listForm.workspace = this.workspace;
                     listForm.extentUri = this.extentUri;
                     listForm.itemId = this.itemId;
@@ -226,10 +226,10 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
                     },
                     onSubmit: (element, method) => __awaiter(this, void 0, void 0, function* () {
                         yield DataLoader.setProperties(tthis.workspace, tthis.itemUri, element);
-                        if (method === DetailForm_1.SubmitMethod.Save) {
+                        if (method === RowForm_1.SubmitMethod.Save) {
                             tthis.switchToMode(FormMode.ViewMode);
                         }
-                        if (method === DetailForm_1.SubmitMethod.SaveAndClose) {
+                        if (method === RowForm_1.SubmitMethod.SaveAndClose) {
                             const containers = yield DataLoader.getContainer(tthis.workspace, tthis.itemUri);
                             if (containers !== undefined && containers.length > 0) {
                                 const parentWorkspace = containers[0].workspace;
@@ -260,7 +260,7 @@ define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", ".
             // Load the object
             const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
             // Load the form
-            const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, configuration.viewMode);
+            const defer2 = ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
             // Wait for both
             Promise.all([defer1, defer2]).then(([element1, form]) => {
                 this.htmlElements.itemContainer.empty();

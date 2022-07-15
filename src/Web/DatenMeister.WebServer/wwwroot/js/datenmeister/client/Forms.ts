@@ -6,7 +6,7 @@ import * as ApiConnection from "../ApiConnection"
 /*
     Gets the default form for an extent uri by the webserver
  */
-export async function getDefaultFormForExtent(workspace: string, extentUri: string, viewMode: string) {
+export async function getCollectionFormForExtent(workspace: string, extentUri: string, viewMode: string) {
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
         "api/forms/default_for_extent/" +
@@ -23,7 +23,7 @@ export async function getDefaultFormForExtent(workspace: string, extentUri: stri
 /*
     Gets the default form for an extent uri by the webserver
  */
-export async function getDefaultCollectionFormForMetaClass(metaClassUri: string) {
+export async function getObjectFormForMetaClass(metaClassUri: string) {
 
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
@@ -47,7 +47,7 @@ export async function getForm(formUri: string): Promise<Mof.DmObject> {
 /*
     Gets the default form for a certain item by the webserver
  */
-export async function getDefaultFormForItem(workspace: string, item: string, viewMode: string) {
+export async function getObjectFormForItem(workspace: string, item: string, viewMode: string) {
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
         "api/forms/default_for_item/" +

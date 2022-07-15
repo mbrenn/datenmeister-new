@@ -14,7 +14,7 @@ export enum SubmitMethod
     SaveAndClose
 }
     
-export class DetailForm implements InterfacesForms.IForm {
+export class RowForm implements InterfacesForms.IForm {
     workspace: string;
     extentUri: string;
     itemId: string;

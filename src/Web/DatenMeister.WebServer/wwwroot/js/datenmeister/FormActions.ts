@@ -9,7 +9,7 @@ import * as FormClient from "./client/Forms";
 import * as ActionClient from "./client/Actions";
 import * as DatenMeisterModel from "./models/DatenMeister.class";
 
-import {SubmitMethod} from "./forms/DetailForm";
+import {SubmitMethod} from "./forms/RowForm";
 
 export module DetailFormActions {
 

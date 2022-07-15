@@ -1,10 +1,10 @@
 ﻿import * as Mof from "../Mof";
 import * as DataLoader from "../client/Items";
 import * as ClientForms from "../client/Forms";
-import * as DetailForm from "./DetailForm";
-import {SubmitMethod} from "./DetailForm";
+import * as DetailForm from "./RowForm";
+import {SubmitMethod} from "./RowForm";
 import * as IForm from "./Interfaces";
-import {ListForm} from "./ListForm";
+import {TableForm} from "./TableForm";
 import {debugElementToDom} from "../DomHelper";
 import {IFormConfiguration} from "./IFormConfiguration";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
@@ -53,7 +53,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
     formElement: DmObject;
     workspace: string;
 
-    createListForRootElements(htmlElements: CollectionFormHtmlElements, workspace: string, extentUri: string, configuration: IFormConfiguration) {
+    createCollectionForRootElements(htmlElements: CollectionFormHtmlElements, workspace: string, extentUri: string, configuration: IFormConfiguration) {
         if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
@@ -70,7 +70,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createListForRootElements(htmlElements, workspace, extentUri, configuration);
+                tthis.createCollectionForRootElements(htmlElements, workspace, extentUri, configuration);
             }
         }
 
@@ -78,7 +78,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const defer1 = DataLoader.getRootElements(workspace, extentUri);
 
         // Load the form
-        const defer2 = ClientForms.getDefaultFormForExtent(workspace, extentUri, configuration.viewMode);
+        const defer2 = ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([elements, form]) => {
@@ -138,8 +138,8 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             window.setTimeout(() => {
                 let form = $("<div />");
                 const tab = tabs[n] as DmObject;
-                if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                    const listForm = new ListForm();
+                if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+                    const listForm = new TableForm();
                     listForm.elements = elements;
                     listForm.formElement = tab;
                     listForm.workspace = this.workspace;
@@ -231,8 +231,8 @@ export class DetailFormCreator implements IForm.IFormNavigation {
 
             let form = $("<div />");
             const tab = tabs[n] as DmObject;
-            if (tab.metaClass.id === "DatenMeister.Models.Forms.DetailForm") {
-                const detailForm = new DetailForm.DetailForm();
+            if (tab.metaClass.id === "DatenMeister.Models.Forms.RowForm") {
+                const detailForm = new DetailForm.RowForm();
                 detailForm.workspace = this.workspace;
                 detailForm.extentUri = this.extentUri;
                 detailForm.itemId = this.itemId;
@@ -247,8 +247,8 @@ export class DetailFormCreator implements IForm.IFormNavigation {
                 if (configuration.onSubmit !== undefined) {
                     detailForm.onChange = configuration.onSubmit;
                 }
-            } else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-                const listForm = new ListForm();
+            } else if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+                const listForm = new TableForm();
                 listForm.workspace = this.workspace;
                 listForm.extentUri = this.extentUri;
                 listForm.itemId = this.itemId;
@@ -339,7 +339,7 @@ export class ItemDetailFormCreator {
         const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
 
         // Load the form
-        const defer2 = ClientForms.getDefaultFormForItem(this.workspace, this.itemUri, configuration.viewMode);
+        const defer2 = ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {

@@ -38,7 +38,7 @@ export function includeTests() {
         });
 
         it('Load Default Form for Extents', async () => {
-            const form = await ClientForms.getDefaultFormForExtent('Test', 'dm:///unittest', '');
+            const form = await ClientForms.getCollectionFormForExtent('Test', 'dm:///unittest', '');
             chai.assert.isTrue(form !== undefined, 'Form was not found');
 
             const tab = form.get('tab');
@@ -64,7 +64,7 @@ export function includeTests() {
         });
 
         it('Load Default Form for Detail', async () => {
-            const form = await ClientForms.getDefaultFormForItem('Test', itemUri, '');
+            const form = await ClientForms.getObjectFormForItem('Test', itemUri, '');
             chai.assert.isTrue(form !== undefined, 'Form was not found');
 
             const tab = form.get('tab');

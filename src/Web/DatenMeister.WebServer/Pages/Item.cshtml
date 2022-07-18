@@ -25,8 +25,8 @@
 
 $(function()
 {
-    requirejs(['forms/Forms'], function(Form) {
-        const detailForm = new Form.ItemDetailFormCreator();
+    requirejs(['forms/ObjectForm'], function(Form) {
+        const detailForm = new Form.ObjectFormCreatorForItem();
         detailForm.createForm(
             {
                 itemContainer: $("#form_view"),

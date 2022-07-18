@@ -156,39 +156,3 @@ export class TableForm implements InterfacesForms.IForm {
         }
     }
 }
-
-export function openMetaClassSelectionFormForNewItem(buttonDiv: JQuery, containerDiv: JQuery, workspace: string, extentUri: string) {
-    const tthis = this;
-
-    buttonDiv.on('click', () => {
-        containerDiv.empty();
-        const selectItem = new SIC.SelectItemControl();
-        const settings = new SIC.Settings();
-        settings.showWorkspaceInBreadcrumb = true;
-        settings.showExtentInBreadcrumb = true;
-        selectItem.setWorkspaceById('Types');
-        selectItem.setExtentByUri("dm:///_internal/types/internal");
-        selectItem.itemSelected.addListener(
-            selectedItem => {
-                if (selectedItem === undefined) {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri);
-                } else {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri) +
-                        "&metaclass=" +
-                        encodeURIComponent(selectedItem.uri);
-                }
-            });
-
-        selectItem.init(containerDiv, settings);
-    });
-}

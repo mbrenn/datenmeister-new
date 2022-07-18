@@ -1,7 +1,7 @@
-define(["require", "exports", "./FieldFactory", "../Settings", "../controls/SelectItemControl"], function (require, exports, FieldFactory_1, Settings, SIC) {
+define(["require", "exports", "./FieldFactory", "../Settings"], function (require, exports, FieldFactory_1, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.openMetaClassSelectionFormForNewItem = exports.TableForm = void 0;
+    exports.TableForm = void 0;
     class TableForm {
         refreshForm() {
             this.createFormByCollection(this.parentHtml, this.configuration);
@@ -121,39 +121,5 @@ define(["require", "exports", "./FieldFactory", "../Settings", "../controls/Sele
         }
     }
     exports.TableForm = TableForm;
-    function openMetaClassSelectionFormForNewItem(buttonDiv, containerDiv, workspace, extentUri) {
-        const tthis = this;
-        buttonDiv.on('click', () => {
-            containerDiv.empty();
-            const selectItem = new SIC.SelectItemControl();
-            const settings = new SIC.Settings();
-            settings.showWorkspaceInBreadcrumb = true;
-            settings.showExtentInBreadcrumb = true;
-            selectItem.setWorkspaceById('Types');
-            selectItem.setExtentByUri("dm:///_internal/types/internal");
-            selectItem.itemSelected.addListener(selectedItem => {
-                if (selectedItem === undefined) {
-                    document.location.href =
-                        Settings.baseUrl +
-                            "ItemAction/Extent.CreateItem?workspace=" +
-                            encodeURIComponent(workspace) +
-                            "&extent=" +
-                            encodeURIComponent(extentUri);
-                }
-                else {
-                    document.location.href =
-                        Settings.baseUrl +
-                            "ItemAction/Extent.CreateItem?workspace=" +
-                            encodeURIComponent(workspace) +
-                            "&extent=" +
-                            encodeURIComponent(extentUri) +
-                            "&metaclass=" +
-                            encodeURIComponent(selectedItem.uri);
-                }
-            });
-            selectItem.init(containerDiv, settings);
-        });
-    }
-    exports.openMetaClassSelectionFormForNewItem = openMetaClassSelectionFormForNewItem;
 });
 //# sourceMappingURL=TableForm.js.map

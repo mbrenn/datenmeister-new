@@ -18,26 +18,19 @@
 
 $(function()
 {
-    requirejs(['forms/Forms'], function (Forms)
+    requirejs(['forms/CollectionForm'], function (Forms)
     {
         let listForm = new Forms.CollectionFormCreator();
         listForm.createCollectionForRootElements(
             {
                 itemContainer: $("#dm-items"),
-                viewModeSelectorContainer: $("#dm-viewmode-selection-container")
+                viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
+                createNewItemWithMetaClassBtn: $("#dm-btn-create-item-with-metaclass"),
+                createNewItemWithMetaClassContainer: $("#dm-btn-create-item-metaclass")
             },
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
             {isReadOnly: true});
-    });
-    
-    requirejs(['forms/ListForm'], function (listForm)
-    {
-        listForm.openMetaClassSelectionFormForNewItem(
-            $(".dm-btn-create-item-with-metaclass"),
-            $("#dm-btn-create-item-metaclass"),            
-            "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
-            "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
     });
 });
 
@@ -45,7 +38,7 @@ $(function()
 
 <div>
     <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
-    <btn class="btn btn-secondary dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
+    <btn class="btn btn-secondary" id="dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
 </div>
 
 <div id="dm-btn-create-item-metaclass"></div>

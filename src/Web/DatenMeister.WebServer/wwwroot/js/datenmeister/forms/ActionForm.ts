@@ -2,6 +2,7 @@
 import {DmObject} from "../Mof";
 import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
+import * as ObjectForm from "./ObjectForm";
 import {DetailFormActions} from "../FormActions";
 import * as ClientForms from '../client/Forms'
 import * as ClientElements from '../client/Elements'
@@ -24,7 +25,7 @@ export async function createActionFormForEmptyObject(
         }
     }
 
-    const creator = new Forms.DetailFormCreator();
+    const creator = new ObjectForm.ObjectFormCreator();
 
     configuration.onSubmit = async (element, method) => {
 

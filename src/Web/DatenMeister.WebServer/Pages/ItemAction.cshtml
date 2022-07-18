@@ -11,13 +11,11 @@
 <script type="application/javascript">
 $(function()
 {
-    requirejs(['forms/ActionForm'], function(actionForm) {
-    
-        actionForm.createActionFormForEmptyObject(
-            $("#form_view"),
-            @(string.IsNullOrEmpty(Model.MetaClass) ? "undefined" : Html.Raw($"\"{HttpUtility.JavaScriptStringEncode(Model.MetaClass)}\"")),
-            {isReadOnly: false, allowAddingNewProperties: true, formUri: @Html.Raw(Model.JsFormUri)}, 
-            "@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ActionName))");        
+    requirejs(['page/ItemAction'], function(page) {
+        page.init(
+            "@HttpUtility.JavaScriptStringEncode(Model.ActionName)",
+            "@HttpUtility.JavaScriptStringEncode(Model.MetaClass)",
+            "@HttpUtility.JavaScriptStringEncode(Model.FormUri)");
     });
 });
 

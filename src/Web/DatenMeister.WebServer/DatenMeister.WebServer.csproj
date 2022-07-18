@@ -23,6 +23,9 @@
     <TypeScriptCompile Include="wwwroot\js\datenmeister\forms\ObjectForm.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\forms\ViewModeLogic.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\forms\ViewModeSelectionForm.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\page\Item.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\page\ItemAction.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\page\ItemsOverview.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Elements.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ViewModeLogic.ts" />
@@ -57,11 +60,6 @@
   <!-- Copies the files from the icons foldes to the wwwroot/img folder -->
   <ItemGroup>
     <IconPngFiles Include="../../../assets/icons/output/*.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Pages\ItemsOverview.cshtml.cs">
-      <DependentUpon>ItemsOverview.cshtml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Examples\plz.csv">

@@ -19,6 +19,10 @@ export async function createActionFormForEmptyObject(
     configuration.showCancelButton = false;
     configuration.allowAddingNewProperties = false;
 
+    if (configuration.formUri === "") {
+        configuration.formUri = undefined;
+    }
+
     if (configuration.refreshForm === undefined) {
         configuration.refreshForm = () => {
             createActionFormForEmptyObject(parent, metaClass, configuration, actionName);

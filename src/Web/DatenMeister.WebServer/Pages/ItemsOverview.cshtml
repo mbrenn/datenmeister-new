@@ -18,19 +18,11 @@
 
 $(function()
 {
-    requirejs(['forms/CollectionForm'], function (Forms)
+    requirejs(['page/ItemsOverview'], function (Page)
     {
-        let listForm = new Forms.CollectionFormCreator();
-        listForm.createCollectionForRootElements(
-            {
-                itemContainer: $("#dm-items"),
-                viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
-                createNewItemWithMetaClassBtn: $("#dm-btn-create-item-with-metaclass"),
-                createNewItemWithMetaClassContainer: $("#dm-btn-create-item-metaclass")
-            },
+        Page.init(
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
-            "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
-            {isReadOnly: true});
+            "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
     });
 });
 

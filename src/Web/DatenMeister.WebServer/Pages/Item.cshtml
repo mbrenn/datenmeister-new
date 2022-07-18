@@ -25,14 +25,10 @@
 
 $(function()
 {
-    requirejs(['forms/ObjectForm'], function(Form) {
-        const detailForm = new Form.ObjectFormCreatorForItem();
-        detailForm.createForm(
-            {
-                itemContainer: $("#form_view"),
-                viewModeSelectorContainer: $("#dm-viewmode-selection-container")
-            },
-            "@HttpUtility.JavaScriptStringEncode(w)",
+    requirejs(['page/Item'], function (Page)
+    {
+        Page.init(
+            "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
     });
 });

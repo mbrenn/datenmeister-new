@@ -656,7 +656,7 @@ namespace DatenMeister.Forms
                     }
 
                     AddToFormCreationProtocol(listOrDetailForm,
-                        $"[FormFactory.ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
+                        $"[ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
                 }
             }
         }

@@ -117,7 +117,7 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 result,
-                "[FormCreator.CreateExtentFormForCollection] Using Form Creator");
+                "[FormCreator.CreateCollectionFormForCollection] Using Form Creator");
 
             var elementsAsObjects = elements.OfType<IObject>().ToList();
             var elementsWithoutMetaClass = elementsAsObjects
@@ -159,7 +159,7 @@ namespace DatenMeister.Forms.FormCreator
                     
                     FormMethods.AddToFormCreationProtocol(
                         result,
-                        $"[FormCreator.CreateExtentFormForCollection] Adding listform for '{NamedElementMethods.GetName(extentMetaClass)}' for extent type '{extentTypeSetting.name}'");
+                        $"[FormCreator.CreateCollectionFormForCollection] Adding listform for '{NamedElementMethods.GetName(extentMetaClass)}' for extent type '{extentTypeSetting.name}'");
                 }
             }
 
@@ -176,7 +176,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 FormMethods.AddToFormCreationProtocol(
                     result,
-                    "[FormCreator.CreateExtentFormForCollection]: Create ListForm for unclassified elements");
+                    "[FormCreator.CreateCollectionFormForCollection]: Create ListForm for unclassified elements");
 
                 form.set(_DatenMeister._Forms._TableForm.name, "Unclassified");
                 form.set(_DatenMeister._Forms._TableForm.noItemsWithMetaClass, true);
@@ -213,7 +213,7 @@ namespace DatenMeister.Forms.FormCreator
 
                     FormMethods.AddToFormCreationProtocol(
                         result,
-                        "[FormCreator.CreateExtentFormForCollection]: Create ListForm for metaclass: " +
+                        "[FormCreator.CreateCollectionFormForCollection]: Create ListForm for metaclass: " +
                         NamedElementMethods.GetName(groupedMetaclass));
 
                     form = formCreator.CreateTableFormForMetaClass(
@@ -234,7 +234,7 @@ namespace DatenMeister.Forms.FormCreator
 
                     FormMethods.AddToFormCreationProtocol(
                         form,
-                        "[FormCreator.CreateExtentFormForCollection]: Create Default Type for metaclass: " +
+                        "[FormCreator.CreateCollectionFormForCollection]: Create Default Type for metaclass: " +
                         NamedElementMethods.GetName(groupedMetaclass));
                     FormMethods.AddDefaultTypeForNewElement(form, groupedMetaclass);
                 }
@@ -344,7 +344,7 @@ namespace DatenMeister.Forms.FormCreator
             {
                 FormMethods.AddToFormCreationProtocol(
                     collectionForm,
-                    "[FormCreator.CreateExtentFormForItemsMetaClass]: Add ListForm: " +
+                    "[FormCreator.CreateCollectionFormForItemsMetaClass]: Add ListForm: " +
                     NamedElementMethods.GetName(pair.property));
 
                 var propertyType = PropertyMethods.GetPropertyType(pair.property);
@@ -414,7 +414,7 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 objectForm,
-                "[FormCreator.CreateExtentFormForObject]: Create ExtentForm");
+                "[FormCreator.CreateObjectFormForItem]: Create ExtentForm");
 
             var objectMetaClass = (element as IElement)?.getMetaClass();
 
@@ -494,7 +494,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 FormMethods.AddToFormCreationProtocol(
                     objectForm,
-                    "[FormCreator.CreateExtentFormForObject]: Create DetailForm into Extent");
+                    "[FormCreator.CreateObjectFormForItem]: Create DetailForm into Extent");
 
                 var fields = new List<IElement>();
                 foreach (var pair in propertiesWithoutCollection)
@@ -514,7 +514,7 @@ namespace DatenMeister.Forms.FormCreator
 
                         FormMethods.AddToFormCreationProtocol(
                             objectForm,
-                            "[FormCreator.CreateExtentFormForObject]: Added field to DetailForm: " +
+                            "[FormCreator.CreateObjectFormForItem]: Added field to DetailForm: " +
                             NamedElementMethods.GetName(field));
                     }
 
@@ -531,7 +531,7 @@ namespace DatenMeister.Forms.FormCreator
 
                     FormMethods.AddToFormCreationProtocol(
                         objectForm,
-                        "[FormCreator.CreateExtentFormForObject]: Added metaclass to DetailForm");
+                        "[FormCreator.CreateObjectFormForItem]: Added metaclass to DetailForm");
 
                     cache.MetaClassAlreadyAdded = true;
                 }
@@ -577,7 +577,7 @@ namespace DatenMeister.Forms.FormCreator
 
                         FormMethods.AddToFormCreationProtocol(
                             objectForm,
-                            "[FormCreator.CreateExtentFormForObject]: Added Listform: " +
+                            "[FormCreator.CreateObjectFormForItem]: Added Listform: " +
                             NamedElementMethods.GetName(pair.propertyType));
                         
                         FormMethods.RemoveDuplicatingDefaultNewTypes(form);
@@ -593,7 +593,7 @@ namespace DatenMeister.Forms.FormCreator
                         {
                             FormMethods.AddToFormCreationProtocol(
                                 objectForm,
-                                "[FormCreator.CreateExtentFormForObject]: Add Listform for metaclass:" +
+                                "[FormCreator.CreateObjectFormForItem]: Add Listform for metaclass:" +
                                 NamedElementMethods.GetName(groupedMetaclass));
 
                             var form = _parentFormFactory.CreateTableFormForProperty(
@@ -607,7 +607,7 @@ namespace DatenMeister.Forms.FormCreator
                         {
                             FormMethods.AddToFormCreationProtocol(
                                 objectForm,
-                                "[FormCreator.CreateExtentFormForObject]: Add Listform for metaclass:" +
+                                "[FormCreator.CreateObjectFormForItem]: Add Listform for metaclass:" +
                                 NamedElementMethods.GetName(groupedMetaclass));
 
                             tabs.Add(
@@ -644,7 +644,7 @@ namespace DatenMeister.Forms.FormCreator
 
                             FormMethods.AddToFormCreationProtocol(
                                 form,
-                                "[FormCreator.CreateExtentFormForObject]: Add DefaultTypeForNewElement driven by ExtentType: " +
+                                "[FormCreator.CreateObjectFormForItem]: Add DefaultTypeForNewElement driven by ExtentType: " +
                                 NamedElementMethods.GetName(propertyType));
                         }
                     }

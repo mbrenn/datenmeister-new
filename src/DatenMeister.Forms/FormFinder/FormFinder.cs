@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -61,9 +62,11 @@ namespace DatenMeister.Forms.FormFinder
         /// <returns>The found view or null, if not found</returns>
         public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
+            using var stopWatch = new StopWatchLogger(Logger, $"Find Form: {query}");
             var formAssociations = _formsMethods.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
             InternalDebug("# of FormAssociations: " + formAssociations.Count);
+            stopWatch.IntermediateLog("# of FormAssociations: " + formAssociations.Count);
 
             var foundForms = new List<FoundForm>();
             var queryViewModeIds = query.viewModeId?.Split(' ');
@@ -238,15 +241,18 @@ namespace DatenMeister.Forms.FormFinder
                     foundForms.Add(foundForm);
                 }
             }
+            
+            stopWatch.IntermediateLog("Forms are evaluated");
 
             var selectedForms = foundForms
                 .OrderByDescending(x => x.Points)
                 .Select(x => x.Form)
                 .Select(x =>
                 {
+                    var metaClass = x.metaclass;
                     if (query.FormType == _DatenMeister._Forms.___FormType.Collection
-                        && (x.metaclass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                            x.metaclass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+                        && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
+                            metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
                     {
                         Logger.Info("Friendly conversion from row/table form to collection form:"
                                     + NamedElementMethods.GetName(x));
@@ -255,8 +261,8 @@ namespace DatenMeister.Forms.FormFinder
                     }
 
                     if (query.FormType == _DatenMeister._Forms.___FormType.Object
-                        && (x.metaclass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                            x.metaclass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+                        && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
+                            metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
                     {
                         Logger.Info("Friendly conversion from row/table form to object form:"
                                     + NamedElementMethods.GetName(x));

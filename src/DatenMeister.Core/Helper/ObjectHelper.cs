@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -15,6 +16,11 @@ namespace DatenMeister.Core.Helper
 {
     public static class ObjectHelper
     {
+        /// <summary>
+        /// Creates a new class logger
+        /// </summary>
+        public static readonly ClassLogger Logger = new(typeof(ObjectHelper)); 
+        
         /// <summary>
         /// Gets the given property value as a single element, if the get function returns
         /// a collection or enumeration
@@ -232,6 +238,7 @@ namespace DatenMeister.Core.Helper
                     }
                     catch
                     {
+                        Logger.Warn("Enum value could not be parsed: " + propertyValueAsString + " in enumeration " + typeof(T).Name);
                         return default;
                     }
                 }

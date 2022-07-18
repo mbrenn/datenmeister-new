@@ -62,7 +62,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "../FormActio
                 }
                 else if (metaClass === undefined) {
                     // If there is no metaclass set, create a total empty form object...
-                    form = Forms.FormModel.createEmptyFormWithDetail();
+                    form = Forms.FormModel.createEmptyFormObject();
                 }
                 else {
                     form = yield ClientForms.getObjectFormForMetaClass(metaClass);

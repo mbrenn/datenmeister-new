@@ -7,24 +7,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./RowForm", "./RowForm", "./TableForm", "../DomHelper", "../Navigator", "./ViewModeSelectionForm", "./ViewModeLogic"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, RowForm_1, TableForm_1, DomHelper_1, Navigator_1, ViewModeSelectionForm_1, VML) {
+define(["require", "exports", "../Mof", "../client/Items", "../client/Forms", "./RowForm", "./RowForm", "./TableForm", "../DomHelper", "../Navigator", "./ViewModeSelectionForm", "./ViewModeLogic", "../models/DatenMeister.class"], function (require, exports, Mof, DataLoader, ClientForms, DetailForm, RowForm_1, TableForm_1, DomHelper_1, Navigator_1, ViewModeSelectionForm_1, VML, _DatenMeister) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ItemDetailFormCreator = exports.DetailFormCreator = exports.DetailFormHtmlElements = exports.FormMode = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = exports.FormModel = void 0;
     var DmObject = Mof.DmObject;
     var FormModel;
     (function (FormModel) {
-        function createEmptyFormWithDetail() {
+        function createEmptyFormObject() {
             const form = new Mof.DmObject();
+            form.metaClass =
+                {
+                    id: _DatenMeister._DatenMeister._Forms.__ObjectForm_Uri
+                };
             const detailForm = new Mof.DmObject();
             detailForm.metaClass =
                 {
-                    id: "DatenMeister.Models.Forms.DetailForm"
+                    id: _DatenMeister._DatenMeister._Forms.__RowForm_Uri
                 };
             form.set('tab', [detailForm]);
             return form;
         }
-        FormModel.createEmptyFormWithDetail = createEmptyFormWithDetail;
+        FormModel.createEmptyFormObject = createEmptyFormObject;
     })(FormModel = exports.FormModel || (exports.FormModel = {}));
     /*
         Defines the html fields which will be used for layouting.

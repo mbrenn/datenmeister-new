@@ -52,7 +52,7 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 createdForm,
-                "[FormCreator.CreateDetailFormByMetaClass]: " + NamedElementMethods.GetName(metaClass));
+                "[FormCreator.CreateRowFormByMetaClass]: " + NamedElementMethods.GetName(metaClass));
 
             if (creationMode.AutomaticMetaClassField)
                 createdForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, true);

@@ -430,7 +430,7 @@ namespace DatenMeister.Forms.FormCreator
         ///     The element can be of type enumeration, class or property.
         ///     For the creation rules, see chapter "FormManager" in the Documentation
         /// </summary>
-        /// <param name="form">Form that will be enriched</param>
+        /// <param name="form">Form that will be enriched. It may be an object, collection, row oder table form</param>
         /// <param name="umlClassOrProperty">The uml element, property, class or type that will be added</param>
         /// <param name="creationMode">The creation mode</param>
         /// <param name="umlElementType"></param>
@@ -499,12 +499,12 @@ namespace DatenMeister.Forms.FormCreator
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                 FormMethods.AddToFormCreationProtocol(form,
-                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property: " +
+                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property to row or table form: " +
                     NamedElementMethods.GetName(column));
                 return true;
             }
 
-            if (isCollectionForm && isPropertyUml)
+            if (isCollectionForm && isPropertyUml || isObjectForm && isPropertyUml)
             {
                 var isPropertyACollection = PropertyMethods.IsCollection(umlClassOrProperty);
 
@@ -516,7 +516,7 @@ namespace DatenMeister.Forms.FormCreator
                     var result = AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
 
                     FormMethods.AddToFormCreationProtocol(form,
-                        "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property to Detail: " +
+                        "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property to Collection Form: " +
                         NamedElementMethods.GetName(umlClassOrProperty));
 
                     return result;
@@ -538,7 +538,7 @@ namespace DatenMeister.Forms.FormCreator
                     FormFactoryConfiguration.CreateByMetaClassOnly);
 
                 FormMethods.AddToFormCreationProtocol(form,
-                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property to List: " +
+                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Table Form to Collection Form: " +
                     NamedElementMethods.GetName(umlClassOrProperty));
 
                 tabs.add(listForm);
@@ -554,19 +554,19 @@ namespace DatenMeister.Forms.FormCreator
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                 FormMethods.AddToFormCreationProtocol(form,
-                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Enumeration: " +
+                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Enumeration to row/table form: " +
                     NamedElementMethods.GetName(column));
 
                 return true;
             }
 
-            if (isCollectionForm && isEnumerationUml)
+            if (isCollectionForm && isEnumerationUml || isObjectForm && isEnumerationUml)
             {
                 var detailForm = GetOrCreateRowFormIntoForm(form);
                 var result = AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
 
                 FormMethods.AddToFormCreationProtocol(form,
-                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Enumeration to Detail: " +
+                    "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Enumeration to Collection Form: " +
                     NamedElementMethods.GetName(umlClassOrProperty));
 
                 return result;

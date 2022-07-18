@@ -11,14 +11,20 @@ import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 import DmObject = Mof.DmObject;
 import {ViewModeSelectionForm} from "./ViewModeSelectionForm";
 import * as VML from "./ViewModeLogic"
+import * as _DatenMeister from "../models/DatenMeister.class"
 
 export namespace FormModel {
-    export function createEmptyFormWithDetail() {
+    export function createEmptyFormObject() {
         const form = new Mof.DmObject();
+        form.metaClass =
+            {
+                id: _DatenMeister._DatenMeister._Forms.__ObjectForm_Uri
+            };
+        
         const detailForm = new Mof.DmObject();
         detailForm.metaClass =
             {
-                id: "DatenMeister.Models.Forms.DetailForm"
+                id: _DatenMeister._DatenMeister._Forms.__RowForm_Uri
             };
 
         form.set('tab', [detailForm]);

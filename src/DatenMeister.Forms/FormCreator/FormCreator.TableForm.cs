@@ -57,7 +57,7 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 tableFormForPropertyValues,
-                "[FormCreator.CreateTableFormForPropertyValues]");
+                "[FormCreator.CreateTableFormForProperty]");
 
             AddFieldsToRowOrTableFormByMetaClass(tableFormForPropertyValues, propertyType, creationMode);
             tableFormForPropertyValues.set(_DatenMeister._Forms._TableForm.property, propertyName);
@@ -71,7 +71,7 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 tableFormForPropertyValues,
-                "[FormCreator.CreateTableFormForPropertyValues] Set default type: " +
+                "[FormCreator.CreateTableFormForProperty] Set default type: " +
                 NamedElementMethods.GetName(propertyType));
 
             CleanUpTableForm(tableFormForPropertyValues);
@@ -132,7 +132,7 @@ namespace DatenMeister.Forms.FormCreator
                 
                 FormMethods.AddToFormCreationProtocol(
                     form,
-                    "[FormCreator.CreateListFormForMetaClass] Added Default Type for: " +
+                    "[FormCreator.CreateTableFormForMetaClass] Added Default Type for: " +
                     NamedElementMethods.GetName(metaClass));
                 FormMethods.AddDefaultTypeForNewElement(form, metaClass);
             }
@@ -322,7 +322,7 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 result,
-                "[FormCreator.CreateListFormForProperty] Created for Property: " + propertyName);
+                "[FormCreator.CreateTableFormForProperty] Created for Property: " + propertyName);
 
             if (propertyType != null) AddFieldsToRowOrTableFormByMetaClass(result, propertyType, creationMode);
             result.set(_DatenMeister._Forms._TableForm.property, propertyName);

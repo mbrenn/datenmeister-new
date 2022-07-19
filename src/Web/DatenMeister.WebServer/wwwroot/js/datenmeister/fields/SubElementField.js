@@ -1,4 +1,4 @@
-define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../MofResolver", "../Navigator", "../Settings"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, MofResolver_1, Navigator_1, Settings) {
+define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../Settings", "../DomHelper"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, Settings, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;
@@ -18,26 +18,8 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                 for (let m in value) {
                     if (Object.prototype.hasOwnProperty.call(value, m)) {
                         let innerValue = value[m];
-                        const item = $("<li><a></a></li>");
-                        // Resolve the elements
-                        ((a, b) => {
-                            (0, MofResolver_1.resolve)(a).then(resolvedRaw => {
-                                const resolved = resolvedRaw;
-                                const link = $("a", b);
-                                const name = resolved.get('name');
-                                if (name !== undefined && name !== "") {
-                                    link.text(resolved.get('name'));
-                                }
-                                else {
-                                    link.append($("<em>Unnamed</em>"));
-                                }
-                                link.attr('href', '#');
-                                link.on('click', () => {
-                                    (0, Navigator_1.navigateToItemByUrl)(resolved.workspace, resolved.uri);
-                                    return false;
-                                });
-                            });
-                        })(innerValue, item);
+                        const item = $("<li></li>");
+                        let _ = (0, DomHelper_1.injectNameByUri)(item, innerValue.workspace, innerValue.uri);
                         ul.append(item);
                         foundElements++;
                     }

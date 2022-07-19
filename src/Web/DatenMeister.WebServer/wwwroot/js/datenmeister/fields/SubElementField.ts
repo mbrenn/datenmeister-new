@@ -8,6 +8,7 @@ import {navigateToItemByUrl} from "../Navigator";
 import {IFormConfiguration} from "../forms/IFormConfiguration";
 import {IFormNavigation} from "../forms/Interfaces";
 import * as Settings from "../Settings";
+import {injectNameByUri} from "../DomHelper";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -40,28 +41,9 @@ export class Control {
             for (let m in value) {
                 if (Object.prototype.hasOwnProperty.call(value, m)) {
                     let innerValue = value[m] as DmObject;
-                    const item = $("<li><a></a></li>");
+                    const item = $("<li></li>");
 
-                    // Resolve the elements
-                    ((a: DmObject, b: JQuery) => {
-                        resolve(a).then(resolvedRaw => {
-                            const resolved = resolvedRaw as DmObject;
-                            const link = $("a", b);
-                            const name = resolved.get('name');
-                            if (name !== undefined && name !== "") {
-                                link.text(resolved.get('name'));
-                            } else {
-                                link.append($("<em>Unnamed</em>"));
-                            }
-
-                            link.attr('href', '#');
-                            link.on('click', () => {
-                                navigateToItemByUrl(resolved.workspace, resolved.uri);
-                                return false;
-                            });
-                        });
-                    })(innerValue, item);
-
+                    let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri);
                     ul.append(item);
                     foundElements++;
                 }

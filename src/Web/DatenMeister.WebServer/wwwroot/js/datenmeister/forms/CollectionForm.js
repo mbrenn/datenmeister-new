@@ -1,4 +1,4 @@
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "./ViewModeSelectionForm", "./TableForm", "../controls/SelectItemControl", "../Settings"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionForm_1, TableForm_1, SIC, Settings) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "./ViewModeSelectionForm", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionForm_1, TableForm_1, SIC, Settings, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -84,7 +84,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 window.setTimeout(() => {
                     let form = $("<div />");
                     const tab = tabs[n];
-                    if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+                    if (tab.metaClass.id === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
                         const listForm = new TableForm_1.TableForm();
                         listForm.elements = elements;
                         listForm.formElement = tab;

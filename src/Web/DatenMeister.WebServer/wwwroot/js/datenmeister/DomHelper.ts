@@ -2,6 +2,7 @@
 import * as ApiModels from "./ApiModels";
 import {DmObject} from "./Mof";
 import {loadNameByUri} from "./client/Elements";
+import {ItemWithNameAndId} from "./ApiModels";
 
 export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
 
@@ -32,7 +33,7 @@ export interface IConvertItemWithNameAndIdParameters{
 /*
  * Converts an ItemWithNameAndId to a Dom Element which reflects the content
  */
-export function convertItemWithNameAndIdToDom(item: any, params?: IConvertItemWithNameAndIdParameters): JQuery {
+export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: IConvertItemWithNameAndIdParameters): JQuery {
     let result = $("<span></span>");
     
     // Checks, if we have valid link information, so the user can click on the item to move to it
@@ -62,7 +63,9 @@ export function convertItemWithNameAndIdToDom(item: any, params?: IConvertItemWi
     // Add the metaclass
     if (item.typeName !== undefined && item.typeName !== null) {
         const metaClassText = $("<span class='dm-metaclass'></span>");
-        metaClassText.text(" [" + item.typeName + "]");
+        metaClassText
+            .attr('title',item.typeUri)
+            .text(" [" + item.typeName + "]");
         result.append(metaClassText);
     }
 
@@ -95,7 +98,10 @@ export function convertToDom(mofElement: any): JQuery {
 
         if (asElement.metaClass !== undefined && asElement.metaClass.fullName !== undefined) {
             const row = $("<li><em></em></li>");
-            $("em", row).text("[[MetaClass: " + asElement.metaClass.fullName + "]]");
+            $("em", row)
+                .attr('title', asElement.metaClass.uri)
+                .text("[[MetaClass: " + asElement.metaClass.fullName + "]]");
+                
             list.append(row);
         }
 

@@ -14,6 +14,7 @@ export interface ItemWithNameAndId
     id?: string;
     workspace?: string;
     typeName?: string;
+    typeUri?: string;
     ententType?: EntentType;
 }   
 

@@ -17,7 +17,7 @@ namespace DatenMeister.Json
         Extent,
         Workspace
     }
-    
+
     /// <summary>
     /// Defines some standard information about name, extentUri, fullName and id
     /// to have the most relevant information available for the web interface
@@ -38,8 +38,13 @@ namespace DatenMeister.Json
 
         public string? typeName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets the name of the uri to the corresponding type
+        /// </summary>
+        public string? typeUri { get; set; } = string.Empty;
+
         public EntentType ententType { get; set; } = EntentType.Item;
-        
+
 
         /// <summary>
         /// Creates the element out of the attached object 
@@ -64,7 +69,8 @@ namespace DatenMeister.Json
                 id = (value as IHasId)?.Id ?? string.Empty,
                 uri = value.GetUri() ?? string.Empty,
                 workspace = extent?.GetWorkspace()?.id ?? string.Empty,
-                typeName = metaClass == null ? null :  NamedElementMethods.GetName(metaClass),
+                typeName = metaClass == null ? null : NamedElementMethods.GetName(metaClass),
+                typeUri = metaClass?.GetUri(),
                 ententType = ententType
             };
 

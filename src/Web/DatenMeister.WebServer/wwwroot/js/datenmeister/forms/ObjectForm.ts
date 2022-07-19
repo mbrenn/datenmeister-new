@@ -15,6 +15,7 @@ import {ViewModeSelectionForm} from "./ViewModeSelectionForm";
 import * as Mof from "../Mof";
 import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 export class ObjectFormHtmlElements
 {
@@ -75,7 +76,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
 
             let form = $("<div />");
             const tab = tabs[n] as Mof.DmObject;
-            if (tab.metaClass.id === "DatenMeister.Models.Forms.RowForm") {
+            if (tab.metaClass.uri === _DatenMeister._Forms.__RowForm_Uri) {
                 const detailForm = new DetailForm.RowForm();
                 detailForm.workspace = this.workspace;
                 detailForm.extentUri = this.extentUri;
@@ -91,7 +92,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 if (configuration.onSubmit !== undefined) {
                     detailForm.onChange = configuration.onSubmit;
                 }
-            } else if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+            } else if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
                 const listForm = new TableForm();
                 listForm.workspace = this.workspace;
                 listForm.extentUri = this.extentUri;

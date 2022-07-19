@@ -156,13 +156,15 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             window.setTimeout(() => {
                 let form = $("<div />");
                 const tab = tabs[n] as Mof.DmObject;
-                if (tab.metaClass.id === _DatenMeister._Forms.__TableForm_Uri) {
+                if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
                     const listForm = new TableForm();
                     listForm.elements = elements;
                     listForm.formElement = tab;
                     listForm.workspace = this.workspace;
                     listForm.extentUri = this.extentUri;
                     listForm.createFormByCollection(form, configuration);
+                } else {
+                    alert('Unknown tab: ' + tab.metaClass.uri);
                 }
 
                 itemContainer.append(form);

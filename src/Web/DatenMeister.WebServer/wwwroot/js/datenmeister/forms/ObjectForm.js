@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "./ViewModeSelectionForm", "../Mof", "./Forms"], function (require, exports, DetailForm, TableForm_1, DataLoader, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionForm_1, Mof, Forms_1) {
+define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "./ViewModeSelectionForm", "../Mof", "./Forms", "../models/DatenMeister.class"], function (require, exports, DetailForm, TableForm_1, DataLoader, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionForm_1, Mof, Forms_1, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
@@ -44,7 +44,7 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
                 }
                 let form = $("<div />");
                 const tab = tabs[n];
-                if (tab.metaClass.id === "DatenMeister.Models.Forms.RowForm") {
+                if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__RowForm_Uri) {
                     const detailForm = new DetailForm.RowForm();
                     detailForm.workspace = this.workspace;
                     detailForm.extentUri = this.extentUri;
@@ -59,7 +59,7 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
                         detailForm.onChange = configuration.onSubmit;
                     }
                 }
-                else if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+                else if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
                     const listForm = new TableForm_1.TableForm();
                     listForm.workspace = this.workspace;
                     listForm.extentUri = this.extentUri;

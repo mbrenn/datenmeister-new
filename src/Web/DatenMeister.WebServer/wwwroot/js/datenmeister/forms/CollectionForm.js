@@ -84,13 +84,16 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 window.setTimeout(() => {
                     let form = $("<div />");
                     const tab = tabs[n];
-                    if (tab.metaClass.id === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
+                    if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
                         const listForm = new TableForm_1.TableForm();
                         listForm.elements = elements;
                         listForm.formElement = tab;
                         listForm.workspace = this.workspace;
                         listForm.extentUri = this.extentUri;
                         listForm.createFormByCollection(form, configuration);
+                    }
+                    else {
+                        alert('Unknown tab: ' + tab.metaClass.uri);
                     }
                     itemContainer.append(form);
                     tabCount--;

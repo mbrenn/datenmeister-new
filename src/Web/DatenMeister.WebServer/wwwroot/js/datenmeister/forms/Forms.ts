@@ -1,15 +1,4 @@
 ﻿import * as Mof from "../Mof";
-import * as DataLoader from "../client/Items";
-import * as ClientForms from "../client/Forms";
-import * as DetailForm from "./RowForm";
-import {SubmitMethod} from "./RowForm";
-import * as IForm from "./Interfaces";
-import {TableForm} from "./TableForm";
-import {IFormConfiguration} from "./IFormConfiguration";
-import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
-import DmObject = Mof.DmObject;
-import {ViewModeSelectionForm} from "./ViewModeSelectionForm";
-import * as VML from "./ViewModeLogic"
 import * as _DatenMeister from "../models/DatenMeister.class"
 
 export namespace FormModel {

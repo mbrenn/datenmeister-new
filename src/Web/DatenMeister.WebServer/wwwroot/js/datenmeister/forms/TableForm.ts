@@ -134,8 +134,9 @@ export class TableForm implements InterfacesForms.IForm {
                         let cell = $("<td></td>");
 
                         const fieldMetaClassId = field.metaClass.id;
+                        const fieldMetaClassUri = field.metaClass.uri;
                         const fieldElement = createField(
-                            fieldMetaClassId,
+                            fieldMetaClassUri,
                             {
                                 configuration: configuration,
                                 field: field,

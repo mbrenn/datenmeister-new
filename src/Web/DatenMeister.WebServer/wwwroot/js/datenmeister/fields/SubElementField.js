@@ -65,7 +65,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                         for (let fieldDataKey in fieldsData) {
                             const td = $("<td></td>");
                             let fieldData = fieldsData[fieldDataKey];
-                            const field = FieldFactory.createField(fieldData.metaClass.id, {
+                            const field = FieldFactory.createField(fieldData.metaClass.uri, {
                                 field: fieldData,
                                 isReadOnly: true,
                                 itemUrl: innerValue.uri,

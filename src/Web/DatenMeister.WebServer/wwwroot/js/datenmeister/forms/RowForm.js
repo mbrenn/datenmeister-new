@@ -47,9 +47,10 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                 const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
                 $(".key", tr).text(name);
                 const fieldMetaClassId = field.metaClass.id;
+                const fieldMetaClassUri = field.metaClass.uri;
                 let fieldElement = null; // The instance if IFormField allowing to create the dom
                 let htmlElement; // The dom that had been created... 
-                fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassId, {
+                fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassUri, {
                     configuration: configuration,
                     field: field,
                     itemUrl: itemUri,

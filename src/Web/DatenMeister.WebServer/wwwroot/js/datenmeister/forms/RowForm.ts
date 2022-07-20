@@ -73,11 +73,12 @@ export class RowForm implements InterfacesForms.IForm {
             $(".key", tr).text(name);
 
             const fieldMetaClassId = field.metaClass.id;
+            const fieldMetaClassUri = field.metaClass.uri;
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created... 
 
             fieldElement = createField(
-                fieldMetaClassId,
+                fieldMetaClassUri,
                 {
                     configuration: configuration,
                     field: field,

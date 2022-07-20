@@ -101,7 +101,7 @@ export class Control {
                         let fieldData = fieldsData[fieldDataKey];
 
                         const field = FieldFactory.createField(
-                            fieldData.metaClass.id,
+                            fieldData.metaClass.uri,
                             {
                                 field: fieldData,
                                 isReadOnly: true,

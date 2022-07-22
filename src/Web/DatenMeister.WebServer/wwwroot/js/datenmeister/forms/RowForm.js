@@ -43,13 +43,11 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                 if (!fields.hasOwnProperty(n))
                     continue;
                 const field = fields[n];
-                tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
-                const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
-                $(".key", tr).text(name);
                 const fieldMetaClassId = field.metaClass.id;
                 const fieldMetaClassUri = field.metaClass.uri;
                 let fieldElement = null; // The instance if IFormField allowing to create the dom
                 let htmlElement; // The dom that had been created... 
+                // Creates the field to be shown 
                 fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassUri, {
                     configuration: configuration,
                     field: field,
@@ -57,6 +55,20 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                     isReadOnly: configuration.isReadOnly,
                     form: this
                 });
+                const singleColumn = (fieldElement === null || fieldElement === void 0 ? void 0 : fieldElement.showNameField) === undefined ? false : fieldElement.showNameField();
+                // Creates the row
+                if (singleColumn) {
+                    tr = $("<tr><td class='value' colspan='2'></td></tr>");
+                }
+                else {
+                    tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+                }
+                // Creates the key column content
+                if (!singleColumn) {
+                    const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
+                    $(".key", tr).text(name);
+                }
+                // Creates the value column content
                 if (fieldElement === null) {
                     // No field element was created.
                     htmlElement = $("<em></em>");
@@ -70,7 +82,9 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                     fieldElement.itemUrl = itemUri;
                     htmlElement = fieldElement.createDom(this.element);
                 }
+                // Pushes the field to the internal field list, so the data can be retrieved afterwards
                 this.fieldElements.push(fieldElement);
+                // And finally adds it 
                 $(".value", tr).append(htmlElement);
                 tableBody.append(tr);
             }

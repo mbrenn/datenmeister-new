@@ -22,6 +22,13 @@ export interface IFormField
 
     // Evaluates the result of the user and injects it into the given element
     evaluateDom(dmElement: Mof.DmObject);
+
+    /**
+     * Gets a value whether the name of the corresponding field shall be shown.
+     * This can be used for RowForms when we need a content cell which covers
+     * the name column, but also the value column.
+     */
+    showNameField?(): boolean;
 }
 
 export class BaseField

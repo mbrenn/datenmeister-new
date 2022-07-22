@@ -19,6 +19,7 @@
     <TypeScriptCompile Include="wwwroot\js\burnsystems\tests\events.test.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Actions.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Forms.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\fields\SeparatorLineField.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\forms\CollectionForm.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\forms\ObjectForm.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\forms\ViewModeLogic.ts" />

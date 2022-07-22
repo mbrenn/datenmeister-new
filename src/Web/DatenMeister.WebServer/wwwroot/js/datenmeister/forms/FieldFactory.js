@@ -1,4 +1,4 @@
-define(["require", "exports", "../models/DatenMeister.class", "../fields/TextField", "../fields/CheckboxField", "../fields/DropDownField", "../fields/MetaClassElementField", "../fields/ActionField", "../fields/AnyDataField", "../fields/SubElementField", "../fields/ReferenceField", "../fields/UnknownField"], function (require, exports, DatenMeister_class_1, TextField, CheckboxField, DropDownField, MetaClassElementField, ActionField, AnyDataField, SubElementField, ReferenceField, UnknownField) {
+define(["require", "exports", "../models/DatenMeister.class", "../fields/TextField", "../fields/CheckboxField", "../fields/DropDownField", "../fields/MetaClassElementField", "../fields/ActionField", "../fields/AnyDataField", "../fields/SubElementField", "../fields/SeparatorLineField", "../fields/ReferenceField", "../fields/UnknownField"], function (require, exports, DatenMeister_class_1, TextField, CheckboxField, DropDownField, MetaClassElementField, ActionField, AnyDataField, SubElementField, SeparatorLineField, ReferenceField, UnknownField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createField = void 0;
@@ -28,6 +28,9 @@ define(["require", "exports", "../models/DatenMeister.class", "../fields/TextFie
                 break;
             case DatenMeister_class_1._DatenMeister._Forms.__AnyDataFieldData_Uri:
                 result = new AnyDataField.Field();
+                break;
+            case DatenMeister_class_1._DatenMeister._Forms.__SeparatorLineFieldData_Uri:
+                result = new SeparatorLineField.Field();
                 break;
             default:
                 result = new UnknownField.Field(fieldMetaClassUri);

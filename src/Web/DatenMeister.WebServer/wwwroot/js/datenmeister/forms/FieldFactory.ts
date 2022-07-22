@@ -6,6 +6,7 @@ import * as MetaClassElementField from "../fields/MetaClassElementField";
 import * as ActionField from "../fields/ActionField";
 import * as AnyDataField from "../fields/AnyDataField";
 import * as SubElementField from "../fields/SubElementField";
+import * as SeparatorLineField from "../fields/SeparatorLineField";
 import * as ReferenceField from "../fields/ReferenceField";
 import * as UnknownField from "../fields/UnknownField";
 import {IFormField} from "../fields/Interfaces";
@@ -48,6 +49,9 @@ export function createField(fieldMetaClassUri: string, parameter: ICreateFieldPa
             break;
         case _DatenMeister._Forms.__AnyDataFieldData_Uri:
             result = new AnyDataField.Field();
+            break;
+        case _DatenMeister._Forms.__SeparatorLineFieldData_Uri:
+            result = new SeparatorLineField.Field();
             break;
         default:
             result = new UnknownField.Field(fieldMetaClassUri);

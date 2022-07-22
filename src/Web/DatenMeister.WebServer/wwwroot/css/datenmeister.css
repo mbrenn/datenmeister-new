@@ -221,6 +221,16 @@ a {
     font-style: italic;
 }
 
+/*
+ * Being used as separator line
+ */
+.dm-separatorline
+{
+    border: 1px solid black;
+    margin: 2px;
+    opacity: 1;
+}
+
 
 
 /* Mocha Configuration

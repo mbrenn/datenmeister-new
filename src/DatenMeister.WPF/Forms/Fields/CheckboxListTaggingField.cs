@@ -53,7 +53,7 @@ namespace DatenMeister.WPF.Forms.Fields
             var copyCurrentValue = currentValue;
             var currentList = currentValue.Split(new [] {_separator}, StringSplitOptions.RemoveEmptyEntries);
 
-            _options = new List<CheckBox>();
+            _options = new List<CheckBox>();    
             foreach (var pair in valuePairs.OfType<IElement>())
             {
                 var name = pair.getOrDefault<string>(_DatenMeister._Forms._ValuePair.name);

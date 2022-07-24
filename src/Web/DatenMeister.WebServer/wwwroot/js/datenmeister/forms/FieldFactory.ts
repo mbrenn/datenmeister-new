@@ -1,6 +1,7 @@
 ﻿import {_DatenMeister} from "../models/DatenMeister.class"
 import * as TextField from "../fields/TextField";
 import * as CheckboxField from "../fields/CheckboxField";
+import * as CheckboxListTaggingField from "../fields/CheckboxListTaggingField";
 import * as DropDownField from "../fields/DropDownField";
 import * as MetaClassElementField from "../fields/MetaClassElementField";
 import * as ActionField from "../fields/ActionField";
@@ -37,6 +38,9 @@ export function createField(fieldMetaClassUri: string, parameter: ICreateFieldPa
             break;
         case _DatenMeister._Forms.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();
+            break;
+        case _DatenMeister._Forms.__CheckboxListTaggingFieldData_Uri:
+            result = new CheckboxListTaggingField.Field();
             break;
         case _DatenMeister._Forms.__DropDownFieldData_Uri:
             result = new DropDownField.Field();

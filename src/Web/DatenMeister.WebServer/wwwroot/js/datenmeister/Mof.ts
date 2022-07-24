@@ -3,9 +3,17 @@
 export enum ObjectType{
     Default, 
     Single, 
+    String,
     Array,
     Boolean
 }
+
+type DmObjectReturnType<T> = 
+    T extends ObjectType.Default ? any : 
+        T extends ObjectType.Single ? any:
+            T extends ObjectType.String ? string : 
+                T extends ObjectType.Array ? Array<any> :
+                    T extends ObjectType.Boolean ? boolean : any;
 
 export class DmObject {
     values: Array<any>;
@@ -28,34 +36,39 @@ export class DmObject {
         this.values[key] = value;
     }
 
-    get(key: string, objectType?: ObjectType): any {
+    get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> {
         let result = this.values[key];
         
         switch (objectType) {
             case ObjectType.Default:
-                return result;
+                return result as DmObjectReturnType<T>;
             case ObjectType.Single:
                 if (Array.isArray(result)) {
-                    return result[0];
+                    return result[0] as DmObjectReturnType<T>;
                 }
 
                 return result;
+                
             case ObjectType.Array:
                 if (Array.isArray(result)) {
-                    return result;
+                    return result as DmObjectReturnType<T>;
                 }
-
-                return [result];
+                return [result] as DmObjectReturnType<T>;
+                
+            case ObjectType.String:
+                const resultString = this.get(key, ObjectType.Single);
+                return resultString.toString() as DmObjectReturnType<T>;
+                
             case ObjectType.Boolean:
                 if (Array.isArray(result)) {
                     result = result[0];
                 }
                 
                 // Take the standard routine but also check that there is no '0' in the text
-                return Boolean(result) && result !== "0";
+                return (Boolean(result) && result !== "0") as DmObjectReturnType<T>;
         }
         
-        return result;
+        return result as DmObjectReturnType<T>;
     }
 
     getAsArray(key: string): any {

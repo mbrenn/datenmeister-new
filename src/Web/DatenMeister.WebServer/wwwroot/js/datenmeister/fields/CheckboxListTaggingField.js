@@ -62,8 +62,11 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
                 }
                 this._freeText.text(freeTextText);
                 // Creates the row
+                const rowOptions = $("<tr><td class='small'>Other:</td></tr>");
+                $("td", rowOptions).append(this._freeText);
+                result.append(rowOptions);
                 const row = $("<tr><td></td></tr>");
-                $("td", row).append(freeTextText);
+                $("td", row).append(this._freeText);
                 result.append(row);
             }
             return result;

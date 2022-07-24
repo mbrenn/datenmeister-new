@@ -16,7 +16,7 @@ type DmObjectReturnType<T> =
                     T extends ObjectType.Boolean ? boolean : any;
 
 export class DmObject {
-    values: Array<any>;
+    private readonly values: Array<any>;
 
     metaClass: ItemWithNameAndId;
 
@@ -32,13 +32,33 @@ export class DmObject {
         this.values = new Array<any>();
     }
 
+    /**
+     * Modifies the key that it can be used for internal array storage. 
+     * Unfortunately, the array has some functions and these functions cannot be overwritten
+     * @param key
+     */
+    static internalizeKey(key:string)
+    {
+        return "_" + key;        
+    }
+
+    /**
+     * Modifies the key that the internal key value can be used for external access. 
+     * This is the opposite of internalizeKey
+     * @param key
+     */
+    static externalizeKey(key: string)
+    {
+        return key.substring(1);
+    }
+
     set(key: string, value: any): void {
-        this.values[key] = value;
+        this.values[DmObject.internalizeKey(key)] = value;
     }
 
     get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> {
-        let result = this.values[key];
-        
+        let result = this.values[DmObject.internalizeKey(key)];
+
         switch (objectType) {
             case ObjectType.Default:
                 return result as DmObjectReturnType<T>;
@@ -48,26 +68,29 @@ export class DmObject {
                 }
 
                 return result;
-                
+
             case ObjectType.Array:
+                if (result === undefined || result === null) {
+                    return [] as DmObjectReturnType<T>;
+                }
                 if (Array.isArray(result)) {
                     return result as DmObjectReturnType<T>;
                 }
                 return [result] as DmObjectReturnType<T>;
-                
+
             case ObjectType.String:
                 const resultString = this.get(key, ObjectType.Single);
                 return resultString.toString() as DmObjectReturnType<T>;
-                
+
             case ObjectType.Boolean:
                 if (Array.isArray(result)) {
                     result = result[0];
                 }
-                
+
                 // Take the standard routine but also check that there is no '0' in the text
                 return (Boolean(result) && result !== "0") as DmObjectReturnType<T>;
         }
-        
+
         return result as DmObjectReturnType<T>;
     }
 
@@ -88,16 +111,35 @@ export class DmObject {
         }
     }
 
+    /**
+     * Gets an enumeration of all property values. 
+     * This method is used to protect the internal transformation of key values according
+     * internalize and externalize
+     */
+    getPropertyValues() {
+        const result = new Array<any>();
+        for (let n in this.values) {
+
+            if (!this.values.hasOwnProperty(n)) {
+                continue;
+            }
+            
+            result[DmObject.externalizeKey(n)] = this.values[n];
+        }
+
+        return result;
+    }
+
     isSet(key: string): boolean {
-        return this.values[key] !== undefined;
+        return this.values[DmObject.internalizeKey(key)] !== undefined;
     }
 
     unset(key: string): void {
-        this.values[key] = undefined;
+        this.values[DmObject.internalizeKey(key)] = undefined;
     }
 
     toString(): string {
-        let values = this.values;
+        let values = this.getPropertyValues();
 
         return DmObject.valueToString(values);
     }
@@ -129,8 +171,9 @@ export class DmObject {
             for (let key in item) {
                 if (Object.prototype.hasOwnProperty.call(item, key)) {
                     const value = item[key];
-
-                    result += `${komma}\r\n${indent}${key}: ${DmObject.valueToString(value, indent + "  ")}`;
+                    const externalKey = DmObject.externalizeKey(key);
+                    
+                    result += `${komma}\r\n${indent}${externalKey}: ${DmObject.valueToString(value, indent + "  ")}`;
                     komma = ", ";
                 }
             }
@@ -176,11 +219,7 @@ export function createJsonFromObject(element: DmObject) {
         }
     }
 
-    for (const key in element.values) {
-        if (!element.values.hasOwnProperty(key)) {
-            continue;
-        }
-
+    for (const key in element.getPropertyValues()) {
         let elementValue = element.get(key);
         values[key] = convertValue(elementValue);
     }

@@ -26,6 +26,18 @@ namespace DatenMeister.Extent.Forms
             _extentSettings = extentSettings;
         }
 
+        /// <summary>
+        /// Modifies the form by figuring out the extent type of the currently shown Collection Form.
+        /// The extent type includes information about the supported metaclasses of the extent type themselves. 
+        /// After that, they are going through each table form and adds the buttons to create new instances.
+        ///
+        /// The table form which is not associated to a classifier will receive creation buttons for all
+        /// to the extenttype's associated classifiers except the ones where a table form is already existing.
+        ///  
+        /// </summary>
+        /// <param name="context">Form Creation Context to be used</param>
+        /// <param name="form">Form to be used</param>
+        /// <returns>true, if the form has been modified. </returns>
         public bool ModifyForm(FormCreationContext context, IElement form)
         {
             // Finds the extent type fitting to the extent to be shown

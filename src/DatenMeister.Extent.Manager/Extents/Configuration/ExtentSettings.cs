@@ -15,7 +15,9 @@ namespace DatenMeister.Extent.Manager.Extents.Configuration
         public string name = "Extent Settings";
         
         /// <summary>
-        /// Stores the extent type setting
+        /// Stores an enumeration of possible standard extentTypeSettings.
+        /// This enumeration can be used to figure out which extent types are supported by the
+        /// current instance of DatenMeister. 
         /// </summary>
         public List<ExtentType> extentTypeSettings { get; } = new();
         

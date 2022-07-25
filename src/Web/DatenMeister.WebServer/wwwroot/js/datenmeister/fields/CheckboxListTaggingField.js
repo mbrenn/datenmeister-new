@@ -30,13 +30,17 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
             // Now go through the values and create the option fields
             for (let n in valuePairs) {
                 const valuePair = valuePairs[n];
-                const valueName = valuePair.get(DatenMeister_class_1._DatenMeister._Forms._ValuePair.name, Mof_1.ObjectType.String);
+                const valueName = valuePair.get(DatenMeister_class_1._DatenMeister._Forms._ValuePair._name_, Mof_1.ObjectType.String);
                 const valueContent = valuePair.get(DatenMeister_class_1._DatenMeister._Forms._ValuePair.value, Mof_1.ObjectType.String);
                 // Creates the checkbox
                 const checkbox = $("<input type='checkbox' />");
                 checkbox.attr('name', valueName);
                 checkbox.attr('data-value', valueContent);
-                checkbox.attr('disabled', this._isReadOnly ? 'disabled' : '');
+                if (this._isReadOnly) {
+                    checkbox.attr('disabled', this._isReadOnly ? 'disabled' : '');
+                }
+                const label = $("<label></label>");
+                label.text(valueName);
                 const index = currentList.indexOf(valueContent);
                 if (index !== -1) {
                     checkbox.attr('checked', 'checked');
@@ -46,6 +50,7 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
                 // Creates the row
                 const row = $("<tr><td></td></tr>");
                 $("td", row).append(checkbox);
+                $("td", row).append(label);
                 result.append(row);
             }
             // If user also wants to have a freetext, add it

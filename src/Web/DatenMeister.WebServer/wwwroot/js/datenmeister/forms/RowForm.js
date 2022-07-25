@@ -1,4 +1,4 @@
-define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"], function (require, exports, Mof, FieldFactory_1, TextField) {
+define(["require", "exports", "../Mof", "../Mof", "./FieldFactory", "../fields/TextField", "../models/DatenMeister.class"], function (require, exports, Mof, Mof_1, FieldFactory_1, TextField, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.RowForm = exports.SubmitMethod = void 0;
@@ -141,7 +141,10 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                             if (!tthis.fieldElements.hasOwnProperty(m))
                                 continue;
                             const fieldElement = tthis.fieldElements[m];
-                            fieldElement.evaluateDom(tthis.element);
+                            if (fieldElement.field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly, Mof_1.ObjectType.Boolean) !== true) {
+                                // Just take the fields which are not readonly
+                                fieldElement.evaluateDom(tthis.element);
+                            }
                         }
                         tthis.onChange(tthis.element, method);
                     }

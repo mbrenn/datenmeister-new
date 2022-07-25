@@ -201,11 +201,7 @@ export function createJsonFromObject(element: DmObject) {
     const values = result.v;
 
     function convertValue(elementValue) {
-        if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
-            // This is an object, so perform the transformation
-            return createJsonFromObject(elementValue);
-            
-        } else if (Array.isArray(elementValue)) {
+        if (Array.isArray(elementValue)) {
             // Do not send out arrays or objects
             const value = {};
             for (let n in elementValue) {
@@ -213,6 +209,10 @@ export function createJsonFromObject(element: DmObject) {
                 value[n] = convertValue(childItem);
             }
             return value;
+
+        } else if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+            // This is an object, so perform the transformation
+            return createJsonFromObject(elementValue);
             
         } else {
             return elementValue;

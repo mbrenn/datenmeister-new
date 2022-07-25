@@ -46,14 +46,20 @@ export class Field extends BaseField implements IFormField {
         // Now go through the values and create the option fields
         for (let n in valuePairs) {
             const valuePair = valuePairs[n] as DmObject;
-            const valueName = valuePair.get(_DatenMeister._Forms._ValuePair.name, ObjectType.String);
+            const valueName = valuePair.get(_DatenMeister._Forms._ValuePair._name_, ObjectType.String);
             const valueContent = valuePair.get(_DatenMeister._Forms._ValuePair.value, ObjectType.String);
 
             // Creates the checkbox
             const checkbox = $("<input type='checkbox' />");
             checkbox.attr('name', valueName);
             checkbox.attr('data-value', valueContent);
-            checkbox.attr('disabled', this._isReadOnly ? 'disabled' : '');
+
+            if (this._isReadOnly) {
+                checkbox.attr('disabled', this._isReadOnly ? 'disabled' : '');
+            }
+
+            const label = $("<label></label>");
+            label.text(valueName);
 
             const index = currentList.indexOf(valueContent);
             if (index !== -1) {
@@ -66,7 +72,8 @@ export class Field extends BaseField implements IFormField {
 
             // Creates the row
             const row = $("<tr><td></td></tr>");
-            $("td", row).append(checkbox)
+            $("td", row).append(checkbox);
+            $("td", row).append(label);
             result.append(row);
         }
 

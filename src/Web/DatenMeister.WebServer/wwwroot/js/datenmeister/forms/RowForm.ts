@@ -1,9 +1,11 @@
 ﻿import * as InterfacesForms from "../forms/Interfaces";
 import * as InterfacesFields from "../fields/Interfaces";
 import * as Mof from "../Mof";
+import {ObjectType} from "../Mof";
 import {createField} from "./FieldFactory";
 import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 // Defines the possible submit methods, a user can chose to close the detail form
 export enum SubmitMethod
@@ -187,7 +189,10 @@ export class RowForm implements InterfacesForms.IForm {
                         if (!tthis.fieldElements.hasOwnProperty(m)) continue;
 
                         const fieldElement = tthis.fieldElements[m];
-                        fieldElement.evaluateDom(tthis.element);
+                        if ( fieldElement.field.get( _DatenMeister._Forms._FieldData.isReadOnly, ObjectType.Boolean) !== true) {
+                            // Just take the fields which are not readonly
+                            fieldElement.evaluateDom(tthis.element);
+                        }
                     }
 
                     tthis.onChange(tthis.element, method);

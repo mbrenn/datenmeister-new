@@ -142,20 +142,22 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
             const defer2 = ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
             // Wait for both
             Promise.all([defer1, defer2]).then(([element1, form]) => {
+                // First the debug information
+                (0, DomHelper_1.debugElementToDom)(element1, "#debug_mofelement");
+                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+                // Now created the object form
                 this.htmlElements.itemContainer.empty();
-                const detailForm = new ObjectFormCreator();
-                detailForm.workspace = this.workspace;
-                detailForm.itemId = this.itemUri;
-                detailForm.element = element1;
-                detailForm.formElement = form;
+                const objectFormCreator = new ObjectFormCreator();
+                objectFormCreator.workspace = this.workspace;
+                objectFormCreator.itemId = this.itemUri;
+                objectFormCreator.element = element1;
+                objectFormCreator.formElement = form;
                 if (this.formMode === Forms_1.FormMode.ViewMode) {
                     const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
                     domEditButton.on('click', () => tthis.switchToMode(Forms_1.FormMode.EditMode));
                     this.htmlElements.itemContainer.append(domEditButton);
                 }
-                detailForm.createFormByObject(tthis.htmlElements, configuration);
-                (0, DomHelper_1.debugElementToDom)(element1, "#debug_mofelement");
-                (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
+                objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
             });
             this.htmlElements.itemContainer.empty();
             this.htmlElements.itemContainer.text("Loading content and form...");

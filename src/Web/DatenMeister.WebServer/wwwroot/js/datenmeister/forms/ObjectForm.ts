@@ -188,14 +188,18 @@ export class ObjectFormCreatorForItem {
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {
-
+            // First the debug information
+            debugElementToDom(element1, "#debug_mofelement");
+            debugElementToDom(form, "#debug_formelement");
+            
+            // Now created the object form
             this.htmlElements.itemContainer.empty();
 
-            const detailForm = new ObjectFormCreator();
-            detailForm.workspace = this.workspace;
-            detailForm.itemId = this.itemUri;
-            detailForm.element = element1;
-            detailForm.formElement = form;
+            const objectFormCreator = new ObjectFormCreator();
+            objectFormCreator.workspace = this.workspace;
+            objectFormCreator.itemId = this.itemUri;
+            objectFormCreator.element = element1;
+            objectFormCreator.formElement = form;
 
             if (this.formMode === FormMode.ViewMode) {
                 const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
@@ -203,10 +207,8 @@ export class ObjectFormCreatorForItem {
                 this.htmlElements.itemContainer.append(domEditButton);
             }
 
-            detailForm.createFormByObject(tthis.htmlElements, configuration);
+            objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
 
-            debugElementToDom(element1, "#debug_mofelement");
-            debugElementToDom(form, "#debug_formelement");
 
         });
 

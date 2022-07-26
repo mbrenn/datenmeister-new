@@ -114,8 +114,8 @@ export function convertToDom(mofElement: any): JQuery {
 
             list.append(row);
         }
-        if (asElement.values !== undefined) {
-            for (let n in asElement.values) {
+        if (asElement.getPropertyValues !== undefined) {
+            for (let n in asElement.getPropertyValues()) {
                 let value = asElement.get(n);
 
                 const row = $("<li></li>");

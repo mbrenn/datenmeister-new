@@ -6,7 +6,7 @@ define(["require", "exports", "../Mof"], function (require, exports, mof) {
         describe('Mof', function () {
             describe('Element', function () {
                 it('Setting and Getting should work', function () {
-                    var element = new mof.DmObject();
+                    const element = new mof.DmObject();
                     chai.assert.equal(element.isSet('test'), false);
                     element.set('test', 'yes');
                     chai.assert.equal(element.get('test'), 'yes');
@@ -23,6 +23,12 @@ define(["require", "exports", "../Mof"], function (require, exports, mof) {
                     chai.assert.equal(Array.isArray(array2), true);
                     chai.assert.equal(array2.length, 1);
                     chai.assert.equal(array2[0], 'yes');
+                });
+                it('Internalize and Externalize', function () {
+                    chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("name")) == "name", "name");
+                    chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("_name_")) == "_name_", "_name_");
+                    chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("_name")) == "_name", "_name");
+                    chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("___")) == "___", "___");
                 });
             });
         });

@@ -401,8 +401,9 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="form">Form to be evaluated</param>
         /// <param name="fieldName">Name of the field</param>
+        /// <param name="metaClass">If not null, the field will only be returned, if the metaclass is fitting</param>
         /// <returns>The found element or null, if not found</returns>
-        public static IElement? GetField(IElement form, string fieldName)
+        public static IElement? GetField(IElement form, string fieldName, IElement? metaClass = null)
         {
             if (_DatenMeister._Forms._RowForm.field != _DatenMeister._Forms._TableForm.field)
                 throw new InvalidOperationException(
@@ -413,7 +414,8 @@ namespace DatenMeister.Forms
             return fields
                 .WhenPropertyHasValue(_DatenMeister._Forms._FieldData.name, fieldName)
                 .OfType<IElement>()
-                .FirstOrDefault();
+                .FirstOrDefault(
+                    x => metaClass == null || x.metaclass?.equals(metaClass) == true);
         }
 
         /// <summary>

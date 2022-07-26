@@ -4,6 +4,7 @@ import * as Mof from "../Mof";
 import {createField} from "./FieldFactory";
 import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 // Defines the possible submit methods, a user can chose to close the detail form
 export enum SubmitMethod
@@ -92,9 +93,14 @@ export class RowForm implements InterfacesForms.IForm {
 
             // Creates the key column content
             if (!singleColumn) {
-                const name =
-                    (field.get("title") as any as string) ??
-                    (field.get("name") as any as string);
+                let name =
+                    (field.get(_DatenMeister._Forms._FieldData.title) as any as string) ??
+                    (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
+
+                const isReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly);
+                if (isReadOnly) {
+                    name += " [R]";
+                }
 
                 $(".key", tr).text(name);
             }
@@ -183,14 +189,21 @@ export class RowForm implements InterfacesForms.IForm {
 
             function saveHelper(method: SubmitMethod) {
                 if (tthis.onChange !== undefined && tthis.onCancel !== null) {
+                    const saveElement = new Mof.DmObject();
                     for (let m in tthis.fieldElements) {
                         if (!tthis.fieldElements.hasOwnProperty(m)) continue;
 
                         const fieldElement = tthis.fieldElements[m];
-                        fieldElement.evaluateDom(tthis.element);
+                        if (fieldElement.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                            // Just take the fields which are not readonly
+                            fieldElement.evaluateDom(tthis.element);
+                            // Now evaluates the field and put only the properties being shown
+                            // into the DmObject to avoid overwriting of protected and non-shown properties
+                            fieldElement.evaluateDom(saveElement);
+                        }
                     }
 
-                    tthis.onChange(tthis.element, method);
+                    tthis.onChange(saveElement, method);
                 }
             }
 

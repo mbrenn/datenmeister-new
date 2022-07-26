@@ -35,7 +35,7 @@ namespace DatenMeister.Extent.Manager.Extents
         /// </summary>
         /// <param name="collection">The reflectivecollection into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
-        public CreateableTypeResult GetCreatableTypes(IReflectiveCollection collection) =>
+        public CreatableTypeResult GetCreatableTypes(IReflectiveCollection collection) =>
             GetCreatableTypes(((IHasExtent) collection)?.Extent ?? throw new InvalidOperationException("No extent"));
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace DatenMeister.Extent.Manager.Extents
         /// </summary>
         /// <param name="element">The reflectivecollection into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
-        public CreateableTypeResult GetCreatableTypes(IElement element) =>
+        public CreatableTypeResult GetCreatableTypes(IElement element) =>
             GetCreatableTypes(((IHasExtent) element)?.Extent ?? throw new InvalidOperationException("No extent"));
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DatenMeister.Extent.Manager.Extents
         /// </summary>
         /// <param name="extent">The extent into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
-        public CreateableTypeResult GetCreatableTypes(IExtent extent)
+        public CreatableTypeResult GetCreatableTypes(IExtent extent)
         {
             var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
             if (dataLayer == null)
@@ -69,14 +69,14 @@ namespace DatenMeister.Extent.Manager.Extents
             if (classType == null)
             {
                 // We did not find the corresponding class type
-                return new CreateableTypeResult
+                return new CreatableTypeResult
                 {
                     MetaLayer = typeLayer,
                     CreatableTypes = new IElement[] { }
                 };
             }
 
-            return new CreateableTypeResult
+            return new CreatableTypeResult
             {
                 MetaLayer = typeLayer,
                 CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer!)
@@ -86,7 +86,7 @@ namespace DatenMeister.Extent.Manager.Extents
             };
         }
 
-        public class CreateableTypeResult
+        public class CreatableTypeResult
         {
             public Workspace? MetaLayer { get; set; }
             public IList<IElement>? CreatableTypes { get; set; }

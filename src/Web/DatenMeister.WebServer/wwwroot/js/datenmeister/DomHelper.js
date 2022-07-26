@@ -102,8 +102,8 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
                 row.append(span);
                 list.append(row);
             }
-            if (asElement.values !== undefined) {
-                for (let n in asElement.values) {
+            if (asElement.getPropertyValues !== undefined) {
+                for (let n in asElement.getPropertyValues()) {
                     let value = asElement.get(n);
                     const row = $("<li></li>");
                     const span = $("<span></span>");

@@ -1,4 +1,4 @@
-define(["require", "exports", "../Mof", "../Mof", "./FieldFactory", "../fields/TextField", "../models/DatenMeister.class"], function (require, exports, Mof, Mof_1, FieldFactory_1, TextField, DatenMeister_class_1) {
+define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField", "../models/DatenMeister.class"], function (require, exports, Mof, FieldFactory_1, TextField, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.RowForm = exports.SubmitMethod = void 0;
@@ -65,7 +65,11 @@ define(["require", "exports", "../Mof", "../Mof", "./FieldFactory", "../fields/T
                 }
                 // Creates the key column content
                 if (!singleColumn) {
-                    const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
+                    let name = (_a = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.title)) !== null && _a !== void 0 ? _a : field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.name);
+                    const isReadOnly = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly);
+                    if (isReadOnly) {
+                        name += " [R]";
+                    }
                     $(".key", tr).text(name);
                 }
                 // Creates the value column content
@@ -137,16 +141,20 @@ define(["require", "exports", "../Mof", "../Mof", "./FieldFactory", "../fields/T
                 });
                 function saveHelper(method) {
                     if (tthis.onChange !== undefined && tthis.onCancel !== null) {
+                        const saveElement = new Mof.DmObject();
                         for (let m in tthis.fieldElements) {
                             if (!tthis.fieldElements.hasOwnProperty(m))
                                 continue;
                             const fieldElement = tthis.fieldElements[m];
-                            if (fieldElement.field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly, Mof_1.ObjectType.Boolean) !== true) {
+                            if (fieldElement.field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
                                 // Just take the fields which are not readonly
                                 fieldElement.evaluateDom(tthis.element);
+                                // Now evaluates the field and put only the properties being shown
+                                // into the DmObject to avoid overwriting of protected and non-shown properties
+                                fieldElement.evaluateDom(saveElement);
                             }
                         }
-                        tthis.onChange(tthis.element, method);
+                        tthis.onChange(saveElement, method);
                     }
                 }
                 $(".dm-detail-form-save", tr).on('click', () => {

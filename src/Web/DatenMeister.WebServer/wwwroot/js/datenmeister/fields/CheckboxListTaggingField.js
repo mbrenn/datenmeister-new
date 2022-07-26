@@ -21,7 +21,7 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
             }
             const containsFreeText = this.field.get(DatenMeister_class_1._DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText, Mof_1.ObjectType.Boolean);
             const valuePairs = this.field.get(DatenMeister_class_1._DatenMeister._Forms._CheckboxListTaggingFieldData.values, Mof_1.ObjectType.Array);
-            this._isReadOnly = this.field.get(DatenMeister_class_1._DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, Mof_1.ObjectType.Boolean);
+            this._isFieldReadOnly = this.field.get(DatenMeister_class_1._DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, Mof_1.ObjectType.Boolean);
             // Gets the value and splits it
             const currentValue = dmElement.get(this._name, Mof_1.ObjectType.String);
             const currentList = currentValue.split(this._separator);
@@ -36,8 +36,8 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
                 const checkbox = $("<input type='checkbox' />");
                 checkbox.attr('name', valueName);
                 checkbox.attr('data-value', valueContent);
-                if (this._isReadOnly) {
-                    checkbox.attr('disabled', this._isReadOnly ? 'disabled' : '');
+                if (this._isFieldReadOnly || this.isReadOnly) {
+                    checkbox.attr('disabled', 'disabled');
                 }
                 const label = $("<label></label>");
                 label.text(valueName);
@@ -56,6 +56,9 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
             // If user also wants to have a freetext, add it
             if (containsFreeText) {
                 this._freeText = $("<input type='text' />");
+                if (this._isFieldReadOnly || this.isReadOnly) {
+                    this._freeText.attr('disabled', 'disabled');
+                }
                 // Combines the residual attributes
                 let freeTextText = "";
                 let komma = "";
@@ -65,7 +68,7 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
                     freeTextText += listItem;
                     komma = ",";
                 }
-                this._freeText.text(freeTextText);
+                this._freeText.val(freeTextText);
                 // Creates the row
                 const rowOptions = $("<tr><td class='small'>Other:</td></tr>");
                 $("td", rowOptions).append(this._freeText);
@@ -81,7 +84,7 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
          * @param dmElement Element to which the data shall be added
          */
         evaluateDom(dmElement) {
-            if (this._isReadOnly)
+            if (this.isReadOnly || this._isFieldReadOnly)
                 return;
             let result = "";
             let komma = "";
@@ -95,7 +98,7 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
             }
             if (this._freeText !== undefined) {
                 result += komma;
-                result += this._freeText.text();
+                result += this._freeText.val();
             }
             dmElement.set(this._name, result);
         }

@@ -1,4 +1,4 @@
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "./ViewModeSelectionForm", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionForm_1, TableForm_1, SIC, Settings, DatenMeister_class_1) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionControl_1, TableForm_1, SIC, Settings, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -45,7 +45,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
              */
             (_a = htmlElements.viewModeSelectorContainer) === null || _a === void 0 ? void 0 : _a.empty();
             if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
-                const viewModeForm = new ViewModeSelectionForm_1.ViewModeSelectionForm();
+                const viewModeForm = new ViewModeSelectionControl_1.ViewModeSelectionControl();
                 const htmlViewModeForm = viewModeForm.createForm();
                 viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
                 htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);

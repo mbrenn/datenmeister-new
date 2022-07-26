@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "./ViewModeSelectionForm", "../Mof", "./Forms", "../models/DatenMeister.class"], function (require, exports, DetailForm, TableForm_1, DataLoader, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionForm_1, Mof, Forms_1, DatenMeister_class_1) {
+define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class"], function (require, exports, DetailForm, TableForm_1, DataLoader, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
@@ -165,10 +165,18 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
             if (this.htmlElements.viewModeSelectorContainer !== undefined
                 && this.htmlElements.viewModeSelectorContainer !== null) {
                 this.htmlElements.viewModeSelectorContainer.empty();
-                const viewModeForm = new ViewModeSelectionForm_1.ViewModeSelectionForm();
+                const viewModeForm = new ViewModeSelectionControl_1.ViewModeSelectionControl();
                 const htmlViewModeForm = viewModeForm.createForm();
                 viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
                 this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+            }
+            // Creates the form selection
+            if (this.htmlElements.formSelectorContainer !== undefined
+                && this.htmlElements.formSelectorContainer !== null) {
+                this.htmlElements.formSelectorContainer.empty();
+                const formControl = new FormSelectionControl_1.FormSelectionControl();
+                formControl.formSelected.addListener(selectedForm => alert(selectedForm));
+                const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
             }
         }
     }

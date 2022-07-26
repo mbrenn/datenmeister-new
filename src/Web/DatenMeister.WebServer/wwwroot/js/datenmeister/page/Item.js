@@ -6,7 +6,8 @@ define(["require", "exports", "../forms/ObjectForm"], function (require, exports
         const detailForm = new Form.ObjectFormCreatorForItem();
         detailForm.createForm({
             itemContainer: $("#form_view"),
-            viewModeSelectorContainer: $("#dm-viewmode-selection-container")
+            viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
+            formSelectorContainer: $("#form_selection_container")
         }, workspace, itemUri);
     }
     exports.init = init;

@@ -283,6 +283,7 @@ export class SelectItemControl {
             this.htmlExtentSelect.append(select);
         } else {
             const items = await EL.getAllExtents(workspaceId);
+            this.htmlExtentSelect.empty();
 
             const none = $("<option value=''>--- None ---</option>");
             tthis.htmlExtentSelect.append(none);

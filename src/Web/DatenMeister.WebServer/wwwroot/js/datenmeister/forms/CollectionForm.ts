@@ -7,7 +7,7 @@ import * as VML from "./ViewModeLogic";
 import * as DataLoader from "../client/Items";
 import * as ClientForms from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
-import {ViewModeSelectionForm} from "./ViewModeSelectionForm";
+import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import * as IForm from "./Interfaces";
 import * as Mof from "../Mof";
 import {TableForm} from "./TableForm";
@@ -100,7 +100,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
          */
         htmlElements.viewModeSelectorContainer?.empty();
         if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
-            const viewModeForm = new ViewModeSelectionForm();
+            const viewModeForm = new ViewModeSelectionControl();
             const htmlViewModeForm = viewModeForm.createForm();
             viewModeForm.viewModeSelected.addListener(
                 _ => configuration.refreshForm());

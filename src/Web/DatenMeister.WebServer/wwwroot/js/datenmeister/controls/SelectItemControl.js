@@ -224,6 +224,7 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                 }
                 else {
                     const items = yield EL.getAllExtents(workspaceId);
+                    this.htmlExtentSelect.empty();
                     const none = $("<option value=''>--- None ---</option>");
                     tthis.htmlExtentSelect.append(none);
                     tthis.loadedExtents = items;

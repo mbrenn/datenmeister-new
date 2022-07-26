@@ -11,7 +11,8 @@ import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 import * as VML from "./ViewModeLogic";
 import * as ClientForms from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
-import {ViewModeSelectionForm} from "./ViewModeSelectionForm";
+import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
+import {FormSelectionControl} from "../controls/FormSelectionControl"
 import * as Mof from "../Mof";
 import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
@@ -29,6 +30,13 @@ export class ObjectFormHtmlElements
     This element shall be 'div' which is capable to store the select element
      */
     viewModeSelectorContainer?: JQuery;
+
+    /**
+     * Here, the user can select the form to be explicitly used for the current form.
+     * When the user selects a certain form, then it will override the automatically selected form. 
+     */
+    formSelectorContainer?: JQuery;
+    
 }
 
 
@@ -160,9 +168,8 @@ export class ObjectFormCreatorForItem {
                             } else {
                                 navigateToItemByUrl(parentWorkspace, containers[0].uri);
                             }
-                        }
-                        else{
-                            alert ('Something wrong happened. I cannot retrieve the parent...');
+                        } else {
+                            alert('Something wrong happened. I cannot retrieve the parent...');
                         }
                     }
                 }
@@ -176,7 +183,7 @@ export class ObjectFormCreatorForItem {
         }
 
         // Defines the viewmode, if not already defined by the caller
-        if(configuration.viewMode === undefined || configuration.viewMode === null) {
+        if (configuration.viewMode === undefined || configuration.viewMode === null) {
             configuration.viewMode = VML.getCurrentViewMode();
         }
 
@@ -191,7 +198,7 @@ export class ObjectFormCreatorForItem {
             // First the debug information
             debugElementToDom(element1, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
-            
+
             // Now created the object form
             this.htmlElements.itemContainer.empty();
 
@@ -208,24 +215,34 @@ export class ObjectFormCreatorForItem {
             }
 
             objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
-
-
         });
 
         this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.text("Loading content and form...");
 
-
         // Creates the viewmode Selection field
         if (this.htmlElements.viewModeSelectorContainer !== undefined
-            && this.htmlElements.viewModeSelectorContainer !== null ) {
+            && this.htmlElements.viewModeSelectorContainer !== null) {
             this.htmlElements.viewModeSelectorContainer.empty();
 
-            const viewModeForm = new ViewModeSelectionForm();
+            const viewModeForm = new ViewModeSelectionControl();
             const htmlViewModeForm = viewModeForm.createForm();
             viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
 
             this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+        }
+
+        // Creates the form selection
+        if (this.htmlElements.formSelectorContainer !== undefined
+            && this.htmlElements.formSelectorContainer !== null) {
+            this.htmlElements.formSelectorContainer.empty();
+
+            const formControl = new FormSelectionControl();
+            formControl.formSelected.addListener(
+                selectedForm => alert(selectedForm)
+            );
+
+            const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
         }
     }
 }

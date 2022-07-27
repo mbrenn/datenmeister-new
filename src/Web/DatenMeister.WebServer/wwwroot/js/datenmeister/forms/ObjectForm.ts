@@ -17,6 +17,8 @@ import * as Mof from "../Mof";
 import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
+import {DmObject} from "../Mof";
+import {getObjectByUri} from "../client/Items";
 
 export class ObjectFormHtmlElements
 {
@@ -40,11 +42,11 @@ export class ObjectFormHtmlElements
 }
 
 
-/* 
-    Defines the form creator which also performs the connect to the webserver itself. 
-    The input for this type of form is a single element
-    
-    This method handles all allowed form types.  
+/**
+ * Defines the form creator which also performs the connect to the webserver itself. 
+ * The input for this type of form is a single element
+ * 
+ * This method handles all allowed form types.  
  */
 export class ObjectFormCreator implements IForm.IFormNavigation {
 
@@ -126,6 +128,16 @@ export class ObjectFormCreatorForItem {
     workspace: string;
     private htmlElements: ObjectFormHtmlElements;
 
+    /**
+     * Defines the form url being used to select the form for the object form. 
+     * If the value is undefined, the standard form as being provided
+     * by the server will be chosen. 
+     * 
+     * If this property is set the item will be retrieved within the Management Workspace
+     * @private
+     */
+    private _overrideFormUrl?: string;
+
     switchToMode(formMode: FormMode) {
         this.formMode = formMode;
         this.rebuildForm();
@@ -191,7 +203,10 @@ export class ObjectFormCreatorForItem {
         const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
 
         // Load the form
-        const defer2 = ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
+        const defer2 =
+            this._overrideFormUrl === undefined ?
+                ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
+                getObjectByUri("Management", this._overrideFormUrl);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {
@@ -239,8 +254,15 @@ export class ObjectFormCreatorForItem {
 
             const formControl = new FormSelectionControl();
             formControl.formSelected.addListener(
-                selectedForm => alert(selectedForm)
-            );
+                selectedItem => {
+                    this._overrideFormUrl = selectedItem.selectedForm.uri;
+                    this.rebuildForm();
+                });
+            formControl.formResetted.addListener(
+                () => {
+                    this._overrideFormUrl = undefined;
+                    this.rebuildForm();
+                })
 
             const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
         }

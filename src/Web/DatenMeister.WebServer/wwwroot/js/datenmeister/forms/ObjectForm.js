@@ -7,18 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class"], function (require, exports, DetailForm, TableForm_1, DataLoader, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1) {
+define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class", "../client/Items"], function (require, exports, DetailForm, TableForm_1, DataLoader, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1, Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
     class ObjectFormHtmlElements {
     }
     exports.ObjectFormHtmlElements = ObjectFormHtmlElements;
-    /*
-        Defines the form creator which also performs the connect to the webserver itself.
-        The input for this type of form is a single element
-        
-        This method handles all allowed form types.
+    /**
+     * Defines the form creator which also performs the connect to the webserver itself.
+     * The input for this type of form is a single element
+     *
+     * This method handles all allowed form types.
      */
     class ObjectFormCreator {
         createFormByObject(htmlElements, configuration) {
@@ -139,7 +139,9 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
             // Load the object
             const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
             // Load the form
-            const defer2 = ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
+            const defer2 = this._overrideFormUrl === undefined ?
+                ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
+                (0, Items_1.getObjectByUri)("Management", this._overrideFormUrl);
             // Wait for both
             Promise.all([defer1, defer2]).then(([element1, form]) => {
                 // First the debug information
@@ -175,7 +177,14 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
                 && this.htmlElements.formSelectorContainer !== null) {
                 this.htmlElements.formSelectorContainer.empty();
                 const formControl = new FormSelectionControl_1.FormSelectionControl();
-                formControl.formSelected.addListener(selectedForm => alert(selectedForm));
+                formControl.formSelected.addListener(selectedItem => {
+                    this._overrideFormUrl = selectedItem.selectedForm.uri;
+                    this.rebuildForm();
+                });
+                formControl.formResetted.addListener(() => {
+                    this._overrideFormUrl = undefined;
+                    this.rebuildForm();
+                });
                 const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
             }
         }

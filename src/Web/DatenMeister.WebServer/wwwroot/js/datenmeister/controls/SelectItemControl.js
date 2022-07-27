@@ -18,6 +18,7 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             this.showExtentInBreadcrumb = false;
             this.showCancelButton = true;
             this.hideAtStartup = false;
+            this.setButtonText = "Set";
         }
     }
     exports.Settings = Settings;
@@ -83,6 +84,7 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             $(".dm-sic-selected", div).append(this.htmlSelectedElements);
             this.htmlBreadcrumbList = $(".breadcrumb", div);
             const setButton = $(".dm-sic-button", div);
+            setButton.text(settings.setButtonText);
             setButton.on('click', () => {
                 tthis.itemSelected.invoke(tthis.selectedItem);
             });

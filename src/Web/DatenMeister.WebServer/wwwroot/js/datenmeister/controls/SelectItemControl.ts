@@ -10,6 +10,7 @@ export class Settings {
     showExtentInBreadcrumb = false;
     showCancelButton = true;
     hideAtStartup = false;
+    setButtonText = "Set";
 }
 
 export class SelectItemControl {
@@ -124,6 +125,7 @@ export class SelectItemControl {
         $(".dm-sic-selected", div).append(this.htmlSelectedElements);
         this.htmlBreadcrumbList = $(".breadcrumb", div);
         const setButton = $(".dm-sic-button", div);
+        setButton.text(settings.setButtonText);
         setButton.on('click', () => {
             tthis.itemSelected.invoke(tthis.selectedItem);
         });

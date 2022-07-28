@@ -254,8 +254,6 @@ namespace DatenMeister.Forms.FormFinder
                         && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
                             metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
                     {
-
-
                         var converted = FormMethods.GetCollectionFormForSubforms(x);
                         converted.set(_DatenMeister._Forms._Form.originalUri, x.GetUri());
 
@@ -265,7 +263,6 @@ namespace DatenMeister.Forms.FormFinder
                             + NamedElementMethods.GetName(x));
                         return converted;
                     }
-
                     if (query.FormType == _DatenMeister._Forms.___FormType.Object
                         && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
                             metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
@@ -280,6 +277,8 @@ namespace DatenMeister.Forms.FormFinder
                         
                         return converted;
                     }
+                    
+                    x.set(_DatenMeister._Forms._Form.originalUri, x.GetUri());
 
                     return x;
                 });

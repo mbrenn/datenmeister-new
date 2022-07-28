@@ -54,6 +54,9 @@ define(["require", "exports"], function (require, exports) {
                     return [result];
                 case ObjectType.String:
                     const resultString = this.get(key, ObjectType.Single);
+                    if (resultString === undefined) {
+                        return undefined;
+                    }
                     return resultString.toString();
                 case ObjectType.Boolean:
                     if (Array.isArray(result)) {
@@ -112,8 +115,8 @@ define(["require", "exports"], function (require, exports) {
             this.metaClass = { id: metaClassId };
         }
         static valueToString(item, indent = "") {
-            var result = "";
-            var komma = "";
+            let result = "";
+            let komma = "";
             if (Array.isArray(item)) {
                 result = `\r\n${indent}[`;
                 for (let n in item) {

@@ -160,6 +160,44 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
                     this.htmlElements.itemContainer.append(domEditButton);
                 }
                 objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
+                // Creates the form selection
+                if (this.htmlElements.formSelectorContainer !== undefined
+                    && this.htmlElements.formSelectorContainer !== null) {
+                    this.htmlElements.formSelectorContainer.empty();
+                    const formControl = new FormSelectionControl_1.FormSelectionControl();
+                    formControl.formSelected.addListener(selectedItem => {
+                        this._overrideFormUrl = selectedItem.selectedForm.uri;
+                        this.rebuildForm();
+                    });
+                    formControl.formResetted.addListener(() => {
+                        this._overrideFormUrl = undefined;
+                        this.rebuildForm();
+                    });
+                    let formUrl;
+                    if (this._overrideFormUrl !== undefined) {
+                        formUrl = {
+                            workspace: "Management",
+                            itemUrl: this._overrideFormUrl
+                        };
+                    }
+                    else {
+                        const byForm = form.get(DatenMeister_class_1._DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                        if (form.uri !== undefined && byForm === undefined) {
+                            formUrl = {
+                                workspace: form.workspace,
+                                itemUrl: form.uri
+                            };
+                        }
+                        else if (byForm !== undefined) {
+                            formUrl = {
+                                workspace: "Management",
+                                itemUrl: byForm
+                            };
+                        }
+                    }
+                    formControl.setCurrentFormUrl(formUrl);
+                    const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
+                }
             });
             this.htmlElements.itemContainer.empty();
             this.htmlElements.itemContainer.text("Loading content and form...");
@@ -171,21 +209,6 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
                 const htmlViewModeForm = viewModeForm.createForm();
                 viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
                 this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
-            }
-            // Creates the form selection
-            if (this.htmlElements.formSelectorContainer !== undefined
-                && this.htmlElements.formSelectorContainer !== null) {
-                this.htmlElements.formSelectorContainer.empty();
-                const formControl = new FormSelectionControl_1.FormSelectionControl();
-                formControl.formSelected.addListener(selectedItem => {
-                    this._overrideFormUrl = selectedItem.selectedForm.uri;
-                    this.rebuildForm();
-                });
-                formControl.formResetted.addListener(() => {
-                    this._overrideFormUrl = undefined;
-                    this.rebuildForm();
-                });
-                const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
             }
         }
     }

@@ -80,6 +80,9 @@ export class DmObject {
 
             case ObjectType.String:
                 const resultString = this.get(key, ObjectType.Single);
+                if (resultString === undefined) {
+                    return undefined;
+                }
                 return resultString.toString() as DmObjectReturnType<T>;
 
             case ObjectType.Boolean:
@@ -154,8 +157,8 @@ export class DmObject {
 
     static valueToString(item: any, indent: string = ""): string {
 
-        var result = "";
-        var komma = "";
+        let result = "";
+        let komma = "";
 
         if (Array.isArray(item)) {
             result = `\r\n${indent}[`;

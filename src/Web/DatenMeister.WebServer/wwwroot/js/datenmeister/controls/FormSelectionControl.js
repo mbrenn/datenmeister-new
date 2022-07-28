@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events", "../client/Items"], function (require, exports, SIC, Events, ClientItems) {
+define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events", "../client/Items", "../DomHelper"], function (require, exports, SIC, Events, ClientItems, DomHelper) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormSelectionControl = void 0;
@@ -26,14 +26,29 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
             this.formResetted = new Events.UserEvent();
         }
         /**
+         * Sets the current form url..
+         * This method must be called before calling createControl
+         * @param formUrl
+         */
+        setCurrentFormUrl(formUrl) {
+            this._currentFormUrl = formUrl;
+        }
+        /**
          * Creates the form in which the user can select a specific form
          * @param control Parent control in which the control shall be updated
          */
         createControl(control) {
             return __awaiter(this, void 0, void 0, function* () {
-                const result = $("<div><div class='dm-form-selection-control-select'></div><div class='dm_form-selection-control-reset'></div></div>");
+                const result = $("<div><div class='dm-form-selection-control-current'>Current Form: <span class='dm-form-selection-control-current-span'></span></div><div class='dm-form-selection-control-select'></div><div class='dm_form-selection-control-reset'></div></div>");
                 const controlSelect = $(".dm-form-selection-control-select", result);
                 const controlReset = $(".dm_form-selection-control-reset", result);
+                const currentForm = $(".dm-form-selection-control-current-span", result);
+                if (this._currentFormUrl !== undefined) {
+                    const _ = DomHelper.injectNameByUri(currentForm, this._currentFormUrl.workspace, this._currentFormUrl.itemUrl);
+                }
+                else {
+                    currentForm.append($("<em>Auto-Generated</em>"));
+                }
                 // Creates the selection field
                 this._selectionField = new SIC.SelectItemControl();
                 this._selectionField.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {

@@ -106,7 +106,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 ClientItems.getObjectByUri("Management", this._overrideFormUrl);
 
         // Wait for both
-        Promise.all([defer1, defer2]).then(([elements, form]) => {
+        Promise.all([defer1, defer2]).then(async ([elements, form]) => {
             tthis.formElement = form;
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
@@ -115,20 +115,64 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             debugElementToDom(form, "#debug_formelement");
 
             tthis.createFormByCollection(htmlElements, elements, configuration);
+
+            /* 
+             Creates the form for the View Mode Selection
+             */
+            htmlElements.viewModeSelectorContainer?.empty();
+            if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
+                const viewModeForm = new ViewModeSelectionControl();
+                const htmlViewModeForm = viewModeForm.createForm();
+                viewModeForm.viewModeSelected.addListener(
+                    _ => configuration.refreshForm());
+
+                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm)
+
+                // Creates the form selection
+                if (htmlElements.formSelectorContainer !== undefined
+                    && htmlElements.formSelectorContainer !== null) {
+                    htmlElements.formSelectorContainer.empty();
+
+                    const formControl = new FormSelectionControl();
+                    formControl.formSelected.addListener(
+                        selectedItem => {
+                            this._overrideFormUrl = selectedItem.selectedForm.uri;
+                            configuration.refreshForm();
+                        });
+                    formControl.formResetted.addListener(
+                        () => {
+                            this._overrideFormUrl = undefined;
+                            configuration.refreshForm();
+                        });
+
+                    let formUrl;
+
+                    if (this._overrideFormUrl !== undefined) {
+                        formUrl = {
+                            workspace: "Management",
+                            itemUrl: this._overrideFormUrl
+                        };
+                    } else {
+                        const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                        if (form.uri !== undefined && byForm === undefined) {
+                            formUrl = {
+                                workspace: form.workspace,
+                                itemUrl: form.uri
+                            };
+                        } else if (byForm !== undefined) {
+                            formUrl = {
+                                workspace: "Management",
+                                itemUrl: byForm
+                            };
+                        }
+                    }
+                    
+                    formControl.setCurrentFormUrl(formUrl);
+
+                    await formControl.createControl(htmlElements.formSelectorContainer);
+                }
+            }
         });
-
-        /* 
-         Creates the form for the View Mode Selection
-         */
-        htmlElements.viewModeSelectorContainer?.empty();
-        if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
-            const viewModeForm = new ViewModeSelectionControl();
-            const htmlViewModeForm = viewModeForm.createForm();
-            viewModeForm.viewModeSelected.addListener(
-                _ => configuration.refreshForm());
-
-            htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
-        }
 
         /* 
          Creates the form for the creation of Metaclasses
@@ -140,26 +184,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 $("#dm-btn-create-item-metaclass"),
                 workspace,
                 extentUri);
-        }
-
-        // Creates the form selection
-        if (htmlElements.formSelectorContainer !== undefined
-            && htmlElements.formSelectorContainer !== null) {
-            htmlElements.formSelectorContainer.empty();
-
-            const formControl = new FormSelectionControl();
-            formControl.formSelected.addListener(
-                selectedItem => {
-                    this._overrideFormUrl = selectedItem.selectedForm.uri;
-                    configuration.refreshForm();
-                });
-            formControl.formResetted.addListener(
-                () => {
-                    this._overrideFormUrl = undefined;
-                    configuration.refreshForm();
-                })
-
-            const _ = formControl.createControl(htmlElements.formSelectorContainer);
         }
 
         htmlElements.itemContainer.empty()

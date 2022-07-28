@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Uml.Helper;

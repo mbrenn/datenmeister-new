@@ -2,6 +2,8 @@
 import * as Events from "../../burnsystems/Events"
 import * as Mof from "../Mof" 
 import * as ClientItems from "../client/Items"
+import {ItemLink} from "../ApiModels";
+import * as DomHelper from "../DomHelper"
 
 /**
  * This event is thrown when the user has selected a form
@@ -26,20 +28,42 @@ export class FormSelectionControl {
      */
     formSelected: Events.UserEvent<FormSelectedEvent> = new Events.UserEvent<FormSelectedEvent>();
 
-
     /**
      * This event is thrown when the user has selected a specific form
      */
     formResetted: Events.UserEvent<void> = new Events.UserEvent<void>();
 
     /**
+     * Defines the current form url which is used to link the current form
+     * @private
+     */
+    private _currentFormUrl?: ItemLink;
+
+    /**
+     * Sets the current form url..
+     * This method must be called before calling createControl
+     * @param formUrl
+     */
+    setCurrentFormUrl(formUrl: ItemLink) {
+        this._currentFormUrl = formUrl;
+    }
+
+    /**
      * Creates the form in which the user can select a specific form
      * @param control Parent control in which the control shall be updated
      */
     async createControl(control: JQuery) {
-        const result = $("<div><div class='dm-form-selection-control-select'></div><div class='dm_form-selection-control-reset'></div></div>");
+        const result = $("<div><div class='dm-form-selection-control-current'>Current Form: <span class='dm-form-selection-control-current-span'></span></div><div class='dm-form-selection-control-select'></div><div class='dm_form-selection-control-reset'></div></div>");
         const controlSelect = $(".dm-form-selection-control-select", result);
         const controlReset = $(".dm_form-selection-control-reset", result);
+        const currentForm = $(".dm-form-selection-control-current-span", result);
+
+        if (this._currentFormUrl !== undefined) {
+            const _ = DomHelper.injectNameByUri(currentForm, this._currentFormUrl.workspace, this._currentFormUrl.itemUrl);
+        }
+        else {
+            currentForm.append($("<em>Auto-Generated</em>"));
+        }
 
         // Creates the selection field
         this._selectionField = new SIC.SelectItemControl();
@@ -47,7 +71,7 @@ export class FormSelectionControl {
         this._selectionField.itemSelected.addListener(
             async selectedItem => {
                 if (selectedItem !== undefined) {
-                    const foundItem = await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri );
+                    const foundItem = await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
                     this.formSelected.invoke(
                         {
                             selectedForm: foundItem
@@ -57,7 +81,7 @@ export class FormSelectionControl {
                 }
             }
         );
-        
+
         const t2 = this._selectionField.setWorkspaceById("Management")
             .then(async () => {
                 await this._selectionField.setExtentByUri("dm:///_internal/forms/user");

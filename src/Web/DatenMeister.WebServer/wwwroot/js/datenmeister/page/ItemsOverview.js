@@ -9,7 +9,8 @@ define(["require", "exports", "../forms/CollectionForm"], function (require, exp
             viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
             createNewItemWithMetaClassBtn: $("#dm-btn-create-item-with-metaclass"),
             createNewItemWithMetaClassContainer: $("#dm-btn-create-item-metaclass"),
-            storeCurrentFormBtn: $("dm-store-current-form-btn")
+            storeCurrentFormBtn: $("dm-store-current-form-btn"),
+            formSelectorContainer: $("#form_selection_container")
         }, workspace, extentUri, { isReadOnly: true });
     }
     exports.init = init;

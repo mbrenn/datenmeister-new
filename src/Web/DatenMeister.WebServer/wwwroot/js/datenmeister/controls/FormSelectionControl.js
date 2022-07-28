@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events"], function (require, exports, SIC, Events) {
+define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events", "../client/Items"], function (require, exports, SIC, Events, ClientItems) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormSelectionControl = void 0;
@@ -36,21 +36,23 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events"]
                 const controlReset = $(".dm_form-selection-control-reset", result);
                 // Creates the selection field
                 this._selectionField = new SIC.SelectItemControl();
-                this._selectionField.itemSelected.addListener(selectedItem => {
-                    if (selectedItem !== undefined && selectedItem.selectedItem !== undefined) {
+                this._selectionField.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
+                    if (selectedItem !== undefined) {
+                        const foundItem = yield ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
                         this.formSelected.invoke({
-                            selectedForm: selectedItem
+                            selectedForm: foundItem
                         });
                     }
                     else {
                         alert('Not a valid form has been selected');
                     }
-                });
+                }));
                 const t2 = this._selectionField.setWorkspaceById("Management")
                     .then(() => __awaiter(this, void 0, void 0, function* () {
                     yield this._selectionField.setExtentByUri("dm:///_internal/forms/user");
                     const settings = new SIC.Settings();
                     settings.setButtonText = "Change Form";
+                    settings.headline = "Select Form:";
                     yield this._selectionField.init(controlSelect, settings);
                 }));
                 // Creates the reset button

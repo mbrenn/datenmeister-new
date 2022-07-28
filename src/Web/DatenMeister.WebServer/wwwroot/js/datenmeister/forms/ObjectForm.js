@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class", "../client/Items"], function (require, exports, DetailForm, TableForm_1, DataLoader, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1, Items_1) {
+define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./RowForm", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class"], function (require, exports, DetailForm, TableForm_1, ClientItems, RowForm_1, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
@@ -104,12 +104,12 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
                         tthis.switchToMode(Forms_1.FormMode.ViewMode);
                     },
                     onSubmit: (element, method) => __awaiter(this, void 0, void 0, function* () {
-                        yield DataLoader.setProperties(tthis.workspace, tthis.itemUri, element);
+                        yield ClientItems.setProperties(tthis.workspace, tthis.itemUri, element);
                         if (method === RowForm_1.SubmitMethod.Save) {
                             tthis.switchToMode(Forms_1.FormMode.ViewMode);
                         }
                         if (method === RowForm_1.SubmitMethod.SaveAndClose) {
-                            const containers = yield DataLoader.getContainer(tthis.workspace, tthis.itemUri);
+                            const containers = yield ClientItems.getContainer(tthis.workspace, tthis.itemUri);
                             if (containers !== undefined && containers.length > 0) {
                                 const parentWorkspace = containers[0].workspace;
                                 if (containers.length === 2) {
@@ -137,11 +137,11 @@ define(["require", "exports", "./RowForm", "./TableForm", "../client/Items", "./
                 configuration.viewMode = VML.getCurrentViewMode();
             }
             // Load the object
-            const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
+            const defer1 = ClientItems.getObjectByUri(this.workspace, this.itemUri);
             // Load the form
             const defer2 = this._overrideFormUrl === undefined ?
                 ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
-                (0, Items_1.getObjectByUri)("Management", this._overrideFormUrl);
+                ClientItems.getObjectByUri("Management", this._overrideFormUrl);
             // Wait for both
             Promise.all([defer1, defer2]).then(([element1, form]) => {
                 // First the debug information

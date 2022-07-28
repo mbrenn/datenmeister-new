@@ -254,20 +254,31 @@ namespace DatenMeister.Forms.FormFinder
                         && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
                             metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
                     {
-                        Logger.Info("Friendly conversion from row/table form to collection form:"
-                                    + NamedElementMethods.GetName(x));
-                        
-                        return FormMethods.GetCollectionFormForSubforms(x);
+
+
+                        var converted = FormMethods.GetCollectionFormForSubforms(x);
+                        converted.set(_DatenMeister._Forms._Form.originalUri, x.GetUri());
+
+                        FormMethods.AddToFormCreationProtocol(
+                            converted,
+                            "Friendly conversion from row/table form to collection form:"
+                            + NamedElementMethods.GetName(x));
+                        return converted;
                     }
 
                     if (query.FormType == _DatenMeister._Forms.___FormType.Object
                         && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
                             metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
                     {
-                        Logger.Info("Friendly conversion from row/table form to object form:"
-                                    + NamedElementMethods.GetName(x));
+                        var converted = FormMethods.GetCollectionFormForSubforms(x);
+                        converted.set(_DatenMeister._Forms._Form.originalUri, x.GetUri());
                         
-                        return FormMethods.GetCollectionFormForSubforms(x);
+                        FormMethods.AddToFormCreationProtocol(
+                            converted,
+                            "Friendly conversion from row/table form to object form:"
+                            + NamedElementMethods.GetName(x));
+                        
+                        return converted;
                     }
 
                     return x;

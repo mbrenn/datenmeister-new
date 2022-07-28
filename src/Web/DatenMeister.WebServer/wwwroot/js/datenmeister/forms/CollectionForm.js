@@ -1,4 +1,4 @@
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionControl_1, TableForm_1, SIC, Settings, DatenMeister_class_1) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl", "../client/Items"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionControl_1, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1, ClientItems) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -30,7 +30,9 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             // Load the object
             const defer1 = DataLoader.getRootElements(workspace, extentUri);
             // Load the form
-            const defer2 = ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode);
+            const defer2 = this._overrideFormUrl === undefined ?
+                ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
+                ClientItems.getObjectByUri("Management", this._overrideFormUrl);
             // Wait for both
             Promise.all([defer1, defer2]).then(([elements, form]) => {
                 tthis.formElement = form;
@@ -56,6 +58,21 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             if (htmlElements.createNewItemWithMetaClassBtn !== undefined &&
                 htmlElements.createNewItemWithMetaClassContainer !== undefined) {
                 createMetaClassSelectionButtonForNewItem($("#dm-btn-create-item-with-metaclass"), $("#dm-btn-create-item-metaclass"), workspace, extentUri);
+            }
+            // Creates the form selection
+            if (htmlElements.formSelectorContainer !== undefined
+                && htmlElements.formSelectorContainer !== null) {
+                htmlElements.formSelectorContainer.empty();
+                const formControl = new FormSelectionControl_1.FormSelectionControl();
+                formControl.formSelected.addListener(selectedItem => {
+                    this._overrideFormUrl = selectedItem.selectedForm.uri;
+                    configuration.refreshForm();
+                });
+                formControl.formResetted.addListener(() => {
+                    this._overrideFormUrl = undefined;
+                    configuration.refreshForm();
+                });
+                const _ = formControl.createControl(htmlElements.formSelectorContainer);
             }
             htmlElements.itemContainer.empty()
                 .text("Loading content and form...");

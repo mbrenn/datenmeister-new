@@ -5,7 +5,7 @@
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as DetailForm from "./RowForm";
 import {TableForm} from "./TableForm";
-import * as DataLoader from "../client/Items";
+import * as ClientItems from "../client/Items";
 import {SubmitMethod} from "./RowForm";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 import * as VML from "./ViewModeLogic";
@@ -17,8 +17,6 @@ import * as Mof from "../Mof";
 import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
-import {DmObject} from "../Mof";
-import {getObjectByUri} from "../client/Items";
 
 export class ObjectFormHtmlElements
 {
@@ -129,10 +127,10 @@ export class ObjectFormCreatorForItem {
     private htmlElements: ObjectFormHtmlElements;
 
     /**
-     * Defines the form url being used to select the form for the object form. 
+     * Defines the form url being used to select the form for the object form.
      * If the value is undefined, the standard form as being provided
-     * by the server will be chosen. 
-     * 
+     * by the server will be chosen.
+     *
      * If this property is set the item will be retrieved within the Management Workspace
      * @private
      */
@@ -164,14 +162,14 @@ export class ObjectFormCreatorForItem {
                     tthis.switchToMode(FormMode.ViewMode);
                 },
                 onSubmit: async (element, method) => {
-                    await DataLoader.setProperties(tthis.workspace, tthis.itemUri, element);
+                    await ClientItems.setProperties(tthis.workspace, tthis.itemUri, element);
 
                     if (method === SubmitMethod.Save) {
                         tthis.switchToMode(FormMode.ViewMode);
                     }
 
                     if (method === SubmitMethod.SaveAndClose) {
-                        const containers = await DataLoader.getContainer(tthis.workspace, tthis.itemUri);
+                        const containers = await ClientItems.getContainer(tthis.workspace, tthis.itemUri);
                         if (containers !== undefined && containers.length > 0) {
                             const parentWorkspace = containers[0].workspace;
                             if (containers.length === 2) {
@@ -200,13 +198,13 @@ export class ObjectFormCreatorForItem {
         }
 
         // Load the object
-        const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
+        const defer1 = ClientItems.getObjectByUri(this.workspace, this.itemUri);
 
         // Load the form
         const defer2 =
             this._overrideFormUrl === undefined ?
                 ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
-                getObjectByUri("Management", this._overrideFormUrl);
+                ClientItems.getObjectByUri("Management", this._overrideFormUrl);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {

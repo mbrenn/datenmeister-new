@@ -1,6 +1,7 @@
 ﻿import * as SIC from "./SelectItemControl";
 import * as Events from "../../burnsystems/Events"
 import * as Mof from "../Mof" 
+import * as ClientItems from "../client/Items"
 
 /**
  * This event is thrown when the user has selected a form
@@ -44,23 +45,26 @@ export class FormSelectionControl {
         this._selectionField = new SIC.SelectItemControl();
 
         this._selectionField.itemSelected.addListener(
-            selectedItem => {
-                if (selectedItem !== undefined && selectedItem.selectedItem !== undefined) {
+            async selectedItem => {
+                if (selectedItem !== undefined) {
+                    const foundItem = await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri );
                     this.formSelected.invoke(
                         {
-                            selectedForm: selectedItem
+                            selectedForm: foundItem
                         });
                 } else {
                     alert('Not a valid form has been selected')
                 }
             }
         );
+        
         const t2 = this._selectionField.setWorkspaceById("Management")
             .then(async () => {
                 await this._selectionField.setExtentByUri("dm:///_internal/forms/user");
 
                 const settings = new SIC.Settings();
                 settings.setButtonText = "Change Form";
+                settings.headline = "Select Form:";
                 await this._selectionField.init(controlSelect, settings);
             });
 

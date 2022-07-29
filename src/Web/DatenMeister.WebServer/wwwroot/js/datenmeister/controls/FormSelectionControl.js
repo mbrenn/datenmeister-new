@@ -64,11 +64,16 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                 }));
                 const t2 = this._selectionField.setWorkspaceById("Management")
                     .then(() => __awaiter(this, void 0, void 0, function* () {
-                    yield this._selectionField.setExtentByUri("dm:///_internal/forms/user");
                     const settings = new SIC.Settings();
                     settings.setButtonText = "Change Form";
                     settings.headline = "Select Form:";
-                    yield this._selectionField.init(controlSelect, settings);
+                    yield this._selectionField.initAsync(controlSelect, settings);
+                    if (this._currentFormUrl !== undefined) {
+                        yield this._selectionField.setItemByUri("Management", this._currentFormUrl.itemUrl);
+                    }
+                    else {
+                        yield this._selectionField.setExtentByUri("dm:///_internal/forms/internal");
+                    }
                 }));
                 // Creates the reset button
                 const resetButton = $("<button class='btn btn-secondary'>Reset form</button>");

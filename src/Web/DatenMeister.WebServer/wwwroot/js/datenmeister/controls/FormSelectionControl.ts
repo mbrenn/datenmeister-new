@@ -60,8 +60,7 @@ export class FormSelectionControl {
 
         if (this._currentFormUrl !== undefined) {
             const _ = DomHelper.injectNameByUri(currentForm, this._currentFormUrl.workspace, this._currentFormUrl.itemUrl);
-        }
-        else {
+        } else {
             currentForm.append($("<em>Auto-Generated</em>"));
         }
 
@@ -84,12 +83,17 @@ export class FormSelectionControl {
 
         const t2 = this._selectionField.setWorkspaceById("Management")
             .then(async () => {
-                await this._selectionField.setExtentByUri("dm:///_internal/forms/user");
 
                 const settings = new SIC.Settings();
                 settings.setButtonText = "Change Form";
                 settings.headline = "Select Form:";
-                await this._selectionField.init(controlSelect, settings);
+                await this._selectionField.initAsync(controlSelect, settings);
+
+                if (this._currentFormUrl !== undefined) {
+                    await this._selectionField.setItemByUri("Management", this._currentFormUrl.itemUrl);
+                } else {
+                    await this._selectionField.setExtentByUri("dm:///_internal/forms/internal");
+                }
             });
 
         // Creates the reset button

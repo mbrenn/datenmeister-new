@@ -719,5 +719,53 @@ namespace DatenMeister.Forms
         {
             GetFormExtent(type).elements().add(form);
         }
+
+        /// <summary>
+        /// Takes the given form and evaluates the requested form type.
+        /// If the requested FormType is a Object or Collection-Form, but the sent form is just a row or
+        /// table form, then the form a new Object/Collection Form will be created and the provided form will
+        /// be added as a child form to the new form.
+        ///
+        /// This allows some loose handling of the correct form type. 
+        /// </summary>
+        /// <param name="form">Form to be evaluated</param>
+        /// <param name="formType">Type of the form which is requested</param>
+        /// <returns>The converted form</returns>
+        public static IElement ConvertFormToObjectOrCollectionForm(IElement form, _DatenMeister._Forms.___FormType formType)
+        {
+            var metaClass = form.metaclass;
+            if (formType == _DatenMeister._Forms.___FormType.Collection
+                && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
+                    metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+            {
+                var converted = FormMethods.GetCollectionFormForSubforms(form);
+                converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+
+                FormMethods.AddToFormCreationProtocol(
+                    converted,
+                    "Friendly conversion from row/table form to collection form:"
+                    + NamedElementMethods.GetName(form));
+                return converted;
+            }
+
+            if (formType == _DatenMeister._Forms.___FormType.Object
+                && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
+                    metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+            {
+                var converted = FormMethods.GetObjectFormForSubforms(form);
+                converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+
+                FormMethods.AddToFormCreationProtocol(
+                    converted,
+                    "Friendly conversion from row/table form to object form:"
+                    + NamedElementMethods.GetName(form));
+
+                return converted;
+            }
+
+            form.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+
+            return form;
+        }
     }
 }

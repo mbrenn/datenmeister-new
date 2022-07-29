@@ -249,38 +249,9 @@ namespace DatenMeister.Forms.FormFinder
                 .Select(x => x.Form)
                 .Select(x =>
                 {
-                    var metaClass = x.metaclass;
-                    if (query.FormType == _DatenMeister._Forms.___FormType.Collection
-                        && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                            metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
-                    {
-                        var converted = FormMethods.GetCollectionFormForSubforms(x);
-                        converted.set(_DatenMeister._Forms._Form.originalUri, x.GetUri());
+                    var formType = query.FormType;
 
-                        FormMethods.AddToFormCreationProtocol(
-                            converted,
-                            "Friendly conversion from row/table form to collection form:"
-                            + NamedElementMethods.GetName(x));
-                        return converted;
-                    }
-                    if (query.FormType == _DatenMeister._Forms.___FormType.Object
-                        && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                            metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
-                    {
-                        var converted = FormMethods.GetCollectionFormForSubforms(x);
-                        converted.set(_DatenMeister._Forms._Form.originalUri, x.GetUri());
-                        
-                        FormMethods.AddToFormCreationProtocol(
-                            converted,
-                            "Friendly conversion from row/table form to object form:"
-                            + NamedElementMethods.GetName(x));
-                        
-                        return converted;
-                    }
-                    
-                    x.set(_DatenMeister._Forms._Form.originalUri, x.GetUri());
-
-                    return x;
+                    return FormMethods.ConvertFormToObjectOrCollectionForm(x, formType);
                 });
 
             return selectedForms;

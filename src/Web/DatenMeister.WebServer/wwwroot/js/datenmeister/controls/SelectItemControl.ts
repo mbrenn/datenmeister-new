@@ -125,13 +125,13 @@ export class SelectItemControl {
         $(".dm-sic-items", div).append(this.htmlItemsList);
         $(".dm-sic-selected", div).append(this.htmlSelectedElements);
         
-        if ( settings.headline !== undefined) {
+        if (this.settings.headline !== undefined) {
             $(".dm-selectitemcontrol-headline", div).text(settings.headline);
         }
         
         this.htmlBreadcrumbList = $(".breadcrumb", div);
         const setButton = $(".dm-sic-button", div);
-        setButton.text(settings.setButtonText);
+        setButton.text(this.settings.setButtonText);
         setButton.on('click', () => {
             tthis.itemSelected.invoke(tthis.selectedItem);
         });

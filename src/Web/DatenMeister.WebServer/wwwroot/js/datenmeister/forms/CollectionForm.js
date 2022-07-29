@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl", "../client/Items"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionControl_1, Mof, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1, ClientItems) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, DataLoader, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -40,7 +40,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             // Load the form
             const defer2 = this._overrideFormUrl === undefined ?
                 ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
-                ClientItems.getObjectByUri("Management", this._overrideFormUrl);
+                ClientForms.getForm(this._overrideFormUrl, Forms_1.FormType.Collection);
             // Wait for both
             Promise.all([defer1, defer2]).then(([elements, form]) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
@@ -163,8 +163,6 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             const settings = new SIC.Settings();
             settings.showWorkspaceInBreadcrumb = true;
             settings.showExtentInBreadcrumb = true;
-            selectItem.setWorkspaceById('Types');
-            selectItem.setExtentByUri("dm:///_internal/types/internal");
             selectItem.itemSelected.addListener(selectedItem => {
                 if (selectedItem === undefined) {
                     document.location.href =
@@ -185,6 +183,8 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                             encodeURIComponent(selectedItem.uri);
                 }
             });
+            selectItem.setWorkspaceById('Types');
+            selectItem.setExtentByUri("dm:///_internal/types/internal");
             selectItem.init(containerDiv, settings);
         });
     }

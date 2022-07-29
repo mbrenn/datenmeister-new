@@ -34,13 +34,25 @@ export async function getObjectFormForMetaClass(metaClassUri: string) {
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
 
+/**
+ * Defines the form types
+ */
+export enum FormType
+{
+    Object= "object", 
+    Collection = "collection", 
+    Row = "row", 
+    Table = "table"
+}
 
-export async function getForm(formUri: string): Promise<Mof.DmObject> {
+export async function getForm(formUri: string, formType?: FormType): Promise<Mof.DmObject> {
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
         "api/forms/get/" +
-        encodeURIComponent(formUri)
+        encodeURIComponent(formUri) +
+        (formType === undefined ? "" : "?formtype=" + encodeURIComponent(formType))
     );
+    
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
 

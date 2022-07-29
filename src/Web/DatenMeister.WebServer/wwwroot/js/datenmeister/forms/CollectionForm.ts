@@ -1,11 +1,11 @@
-﻿
-/* 
+﻿/* 
     Defines the html fields which will be used for layouting.
  */
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as VML from "./ViewModeLogic";
 import * as DataLoader from "../client/Items";
 import * as ClientForms from "../client/Forms";
+import {FormType} from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import * as IForm from "./Interfaces";
@@ -15,7 +15,6 @@ import * as SIC from "../controls/SelectItemControl";
 import * as Settings from "../Settings";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {FormSelectionControl} from "../controls/FormSelectionControl";
-import * as ClientItems from "../client/Items";
 
 export class CollectionFormHtmlElements
 {
@@ -103,7 +102,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const defer2 =
             this._overrideFormUrl === undefined ?
                 ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
-                ClientItems.getObjectByUri("Management", this._overrideFormUrl);
+                ClientForms.getForm(this._overrideFormUrl, FormType.Collection);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(async ([elements, form]) => {
@@ -257,8 +256,6 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
-        selectItem.setWorkspaceById('Types');
-        selectItem.setExtentByUri("dm:///_internal/types/internal");
         selectItem.itemSelected.addListener(
             selectedItem => {
                 if (selectedItem === undefined) {
@@ -279,6 +276,9 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
                         encodeURIComponent(selectedItem.uri);
                 }
             });
+        
+        selectItem.setWorkspaceById('Types');
+        selectItem.setExtentByUri("dm:///_internal/types/internal");
 
         selectItem.init(containerDiv, settings);
     });

@@ -1,12 +1,13 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DatenMeister.Core;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Forms;
 using DatenMeister.Json;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 
 namespace DatenMeister.WebServer.Controller
 {
@@ -22,10 +23,21 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/forms/get/{formUri}")]
-        public ActionResult<string> Get(string formUri)
+        public ActionResult<string> Get(string formUri, string? formType)
         {
             formUri = HttpUtility.UrlDecode(formUri);
             var form = _internal.GetInternal(formUri);
+
+            // Performs a friendly conversion from the actual form type to the requested form type
+            if (formType != null && form != null)
+            {
+                if(Enum.TryParse<_DatenMeister._Forms.___FormType>(formType, true, out var result))
+                {
+                    form = FormMethods.ConvertFormToObjectOrCollectionForm(
+                        form,
+                        result);
+                }
+            }
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }

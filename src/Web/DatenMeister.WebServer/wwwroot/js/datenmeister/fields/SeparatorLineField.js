@@ -3,19 +3,15 @@ define(["require", "exports", "./Interfaces"], function (require, exports, Inter
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     class Field extends Interfaces_1.BaseField {
-        constructor(unknownFieldUri) {
-            super();
-            this.unknownFieldUri = unknownFieldUri;
-        }
         createDom(dmElement) {
-            var _a;
-            const result = $("<em></em>");
-            result.text((_a = this.unknownFieldUri) !== null && _a !== void 0 ? _a : "unknown");
-            return result;
+            return $("<hr class='dm-separatorline'/>");
         }
         evaluateDom(dmElement) {
+        }
+        showNameField() {
+            return true;
         }
     }
     exports.Field = Field;
 });
-//# sourceMappingURL=UnknownField.js.map
+//# sourceMappingURL=SeparatorLineField.js.map

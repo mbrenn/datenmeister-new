@@ -1,4 +1,13 @@
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "./ViewModeSelectionForm", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class"], function (require, exports, VML, DataLoader, ClientForms, DomHelper_1, ViewModeSelectionForm_1, TableForm_1, SIC, Settings, DatenMeister_class_1) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, DataLoader, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -11,7 +20,6 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
     */
     class CollectionFormCreator {
         createCollectionForRootElements(htmlElements, workspace, extentUri, configuration) {
-            var _a;
             if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
                 throw "htmlElements.itemContainer is not set";
             }
@@ -30,26 +38,67 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             // Load the object
             const defer1 = DataLoader.getRootElements(workspace, extentUri);
             // Load the form
-            const defer2 = ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode);
+            const defer2 = this._overrideFormUrl === undefined ?
+                ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
+                ClientForms.getForm(this._overrideFormUrl, Forms_1.FormType.Collection);
             // Wait for both
-            Promise.all([defer1, defer2]).then(([elements, form]) => {
+            Promise.all([defer1, defer2]).then(([elements, form]) => __awaiter(this, void 0, void 0, function* () {
+                var _a;
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
                 (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
                 tthis.createFormByCollection(htmlElements, elements, configuration);
-            });
-            /*
-             Creates the form for the View Mode Selection
-             */
-            (_a = htmlElements.viewModeSelectorContainer) === null || _a === void 0 ? void 0 : _a.empty();
-            if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
-                const viewModeForm = new ViewModeSelectionForm_1.ViewModeSelectionForm();
-                const htmlViewModeForm = viewModeForm.createForm();
-                viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
-                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
-            }
+                /*
+                 Creates the form for the View Mode Selection
+                 */
+                (_a = htmlElements.viewModeSelectorContainer) === null || _a === void 0 ? void 0 : _a.empty();
+                if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
+                    const viewModeForm = new ViewModeSelectionControl_1.ViewModeSelectionControl();
+                    const htmlViewModeForm = viewModeForm.createForm();
+                    viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
+                    htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+                    // Creates the form selection
+                    if (htmlElements.formSelectorContainer !== undefined
+                        && htmlElements.formSelectorContainer !== null) {
+                        htmlElements.formSelectorContainer.empty();
+                        const formControl = new FormSelectionControl_1.FormSelectionControl();
+                        formControl.formSelected.addListener(selectedItem => {
+                            this._overrideFormUrl = selectedItem.selectedForm.uri;
+                            configuration.refreshForm();
+                        });
+                        formControl.formResetted.addListener(() => {
+                            this._overrideFormUrl = undefined;
+                            configuration.refreshForm();
+                        });
+                        let formUrl;
+                        if (this._overrideFormUrl !== undefined) {
+                            formUrl = {
+                                workspace: "Management",
+                                itemUrl: this._overrideFormUrl
+                            };
+                        }
+                        else {
+                            const byForm = form.get(DatenMeister_class_1._DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                            if (form.uri !== undefined && byForm === undefined) {
+                                formUrl = {
+                                    workspace: form.workspace,
+                                    itemUrl: form.uri
+                                };
+                            }
+                            else if (byForm !== undefined) {
+                                formUrl = {
+                                    workspace: "Management",
+                                    itemUrl: byForm
+                                };
+                            }
+                        }
+                        formControl.setCurrentFormUrl(formUrl);
+                        yield formControl.createControl(htmlElements.formSelectorContainer);
+                    }
+                }
+            }));
             /*
              Creates the form for the creation of Metaclasses
              */
@@ -84,13 +133,16 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 window.setTimeout(() => {
                     let form = $("<div />");
                     const tab = tabs[n];
-                    if (tab.metaClass.id === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
+                    if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
                         const listForm = new TableForm_1.TableForm();
                         listForm.elements = elements;
                         listForm.formElement = tab;
                         listForm.workspace = this.workspace;
                         listForm.extentUri = this.extentUri;
                         listForm.createFormByCollection(form, configuration);
+                    }
+                    else {
+                        alert('Unknown tab: ' + tab.metaClass.uri);
                     }
                     itemContainer.append(form);
                     tabCount--;
@@ -111,8 +163,6 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             const settings = new SIC.Settings();
             settings.showWorkspaceInBreadcrumb = true;
             settings.showExtentInBreadcrumb = true;
-            selectItem.setWorkspaceById('Types');
-            selectItem.setExtentByUri("dm:///_internal/types/internal");
             selectItem.itemSelected.addListener(selectedItem => {
                 if (selectedItem === undefined) {
                     document.location.href =
@@ -133,6 +183,8 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                             encodeURIComponent(selectedItem.uri);
                 }
             });
+            selectItem.setWorkspaceById('Types');
+            selectItem.setExtentByUri("dm:///_internal/types/internal");
             selectItem.init(containerDiv, settings);
         });
     }

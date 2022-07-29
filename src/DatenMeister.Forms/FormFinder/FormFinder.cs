@@ -249,28 +249,9 @@ namespace DatenMeister.Forms.FormFinder
                 .Select(x => x.Form)
                 .Select(x =>
                 {
-                    var metaClass = x.metaclass;
-                    if (query.FormType == _DatenMeister._Forms.___FormType.Collection
-                        && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                            metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
-                    {
-                        Logger.Info("Friendly conversion from row/table form to collection form:"
-                                    + NamedElementMethods.GetName(x));
-                        
-                        return FormMethods.GetCollectionFormForSubforms(x);
-                    }
+                    var formType = query.FormType;
 
-                    if (query.FormType == _DatenMeister._Forms.___FormType.Object
-                        && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                            metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
-                    {
-                        Logger.Info("Friendly conversion from row/table form to object form:"
-                                    + NamedElementMethods.GetName(x));
-                        
-                        return FormMethods.GetCollectionFormForSubforms(x);
-                    }
-
-                    return x;
+                    return FormMethods.ConvertFormToObjectOrCollectionForm(x, formType);
                 });
 
             return selectedForms;

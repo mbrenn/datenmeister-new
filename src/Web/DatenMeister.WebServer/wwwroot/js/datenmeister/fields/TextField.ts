@@ -35,7 +35,7 @@ export class Field extends BaseField implements IFormField
             const div = $("<div />");
             const value = dmElement.get(fieldName);
             if (value === undefined) {
-                div.append($("<em>undefined</em>"));
+                div.append($("<em class='dm-undefined'>undefined</em>"));
             } else {
                 div.text(dmElement.get(fieldName)?.toString() ?? "undefined");
             }

@@ -1,9 +1,9 @@
-﻿import * as VML from "./ViewModeLogic";
+﻿import * as VML from "../forms/ViewModeLogic";
 import {ObjectType} from "../Mof";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {UserEvent} from "../../burnsystems/Events";
 
-export class ViewModeSelectionForm {
+export class ViewModeSelectionControl {
 
     /**
      * Describes the event which is called when the user selects another viewMode

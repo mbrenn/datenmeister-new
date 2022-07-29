@@ -3,7 +3,8 @@ import * as ClientExtent from "../client/Extents";
 import * as ClientWorkspace from "../client/Workspace";
 import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
-import {DmObject} from "../Mof";
+import {DmObject, ObjectType} from "../Mof";
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 export function includeTests() {
     describe('Forms', () => {
@@ -61,6 +62,33 @@ export function includeTests() {
             }
 
             chai.assert.isTrue(found, 'Field with name was not found');
+        });
+        
+        it('Load Specific Form with different Form Types', async () => {
+            // Test that default form is a row form
+            const form = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent');
+            
+            chai.assert.isTrue(form.metaClass.name === "RowForm", 'Not a row Form');
+            
+            // Test that retrieval as collection form is working
+            const formAsCollection = await ClientForms.getForm(
+                'dm:///_internal/forms/internal#ImportManagerFindExtent', 
+                ClientForms.FormType.Collection);
+            chai.assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
+            
+            const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
+            chai.assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
+            chai.assert.isTrue((tabs[0] as DmObject).metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
+
+            // Test that retrieval as Object Form is working
+            const formAsObject = await ClientForms.getForm(
+                'dm:///_internal/forms/internal#ImportManagerFindExtent',
+                ClientForms.FormType.Object);
+            chai.assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
+
+            const tabsObject = formAsObject.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
+            chai.assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');
+            chai.assert.isTrue((tabsObject[0] as DmObject).metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
         });
 
         it('Load Default Form for Detail', async () => {

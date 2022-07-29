@@ -1,8 +1,8 @@
-define(["require", "exports", "./ViewModeLogic", "../Mof", "../models/DatenMeister.class", "../../burnsystems/Events"], function (require, exports, VML, Mof_1, DatenMeister_class_1, Events_1) {
+define(["require", "exports", "../forms/ViewModeLogic", "../Mof", "../models/DatenMeister.class", "../../burnsystems/Events"], function (require, exports, VML, Mof_1, DatenMeister_class_1, Events_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ViewModeSelectionForm = void 0;
-    class ViewModeSelectionForm {
+    exports.ViewModeSelectionControl = void 0;
+    class ViewModeSelectionControl {
         constructor() {
             /**
              * Describes the event which is called when the user selects another viewMode
@@ -35,6 +35,6 @@ define(["require", "exports", "./ViewModeLogic", "../Mof", "../models/DatenMeist
             return selectField;
         }
     }
-    exports.ViewModeSelectionForm = ViewModeSelectionForm;
+    exports.ViewModeSelectionControl = ViewModeSelectionControl;
 });
-//# sourceMappingURL=ViewModeSelectionForm.js.map
+//# sourceMappingURL=ViewModeSelectionControl.js.map

@@ -1,20 +1,22 @@
-﻿
-/* 
+﻿/* 
     Defines the html fields which will be used for layouting.
  */
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as DetailForm from "./RowForm";
-import {TableForm} from "./TableForm";
-import * as DataLoader from "../client/Items";
 import {SubmitMethod} from "./RowForm";
+import {TableForm} from "./TableForm";
+import * as ClientItems from "../client/Items";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 import * as VML from "./ViewModeLogic";
 import * as ClientForms from "../client/Forms";
+import {FormType} from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
-import {ViewModeSelectionForm} from "./ViewModeSelectionForm";
+import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
+import {FormSelectionControl} from "../controls/FormSelectionControl"
 import * as Mof from "../Mof";
 import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 export class ObjectFormHtmlElements
 {
@@ -28,14 +30,21 @@ export class ObjectFormHtmlElements
     This element shall be 'div' which is capable to store the select element
      */
     viewModeSelectorContainer?: JQuery;
+
+    /**
+     * Here, the user can select the form to be explicitly used for the current form.
+     * When the user selects a certain form, then it will override the automatically selected form. 
+     */
+    formSelectorContainer?: JQuery;
+    
 }
 
 
-/* 
-    Defines the form creator which also performs the connect to the webserver itself. 
-    The input for this type of form is a single element
-    
-    This method handles all allowed form types.  
+/**
+ * Defines the form creator which also performs the connect to the webserver itself. 
+ * The input for this type of form is a single element
+ * 
+ * This method handles all allowed form types.  
  */
 export class ObjectFormCreator implements IForm.IFormNavigation {
 
@@ -75,7 +84,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
 
             let form = $("<div />");
             const tab = tabs[n] as Mof.DmObject;
-            if (tab.metaClass.id === "DatenMeister.Models.Forms.RowForm") {
+            if (tab.metaClass.uri === _DatenMeister._Forms.__RowForm_Uri) {
                 const detailForm = new DetailForm.RowForm();
                 detailForm.workspace = this.workspace;
                 detailForm.extentUri = this.extentUri;
@@ -91,7 +100,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 if (configuration.onSubmit !== undefined) {
                     detailForm.onChange = configuration.onSubmit;
                 }
-            } else if (tab.metaClass.id === "DatenMeister.Models.Forms.TableForm") {
+            } else if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
                 const listForm = new TableForm();
                 listForm.workspace = this.workspace;
                 listForm.extentUri = this.extentUri;
@@ -116,6 +125,16 @@ export class ObjectFormCreatorForItem {
     itemUri: string;
     workspace: string;
     private htmlElements: ObjectFormHtmlElements;
+
+    /**
+     * Defines the form url being used to select the form for the object form.
+     * If the value is undefined, the standard form as being provided
+     * by the server will be chosen.
+     *
+     * If this property is set the item will be retrieved within the Management Workspace
+     * @private
+     */
+    private _overrideFormUrl?: string;
 
     switchToMode(formMode: FormMode) {
         this.formMode = formMode;
@@ -143,14 +162,14 @@ export class ObjectFormCreatorForItem {
                     tthis.switchToMode(FormMode.ViewMode);
                 },
                 onSubmit: async (element, method) => {
-                    await DataLoader.setProperties(tthis.workspace, tthis.itemUri, element);
+                    await ClientItems.setProperties(tthis.workspace, tthis.itemUri, element);
 
                     if (method === SubmitMethod.Save) {
                         tthis.switchToMode(FormMode.ViewMode);
                     }
 
                     if (method === SubmitMethod.SaveAndClose) {
-                        const containers = await DataLoader.getContainer(tthis.workspace, tthis.itemUri);
+                        const containers = await ClientItems.getContainer(tthis.workspace, tthis.itemUri);
                         if (containers !== undefined && containers.length > 0) {
                             const parentWorkspace = containers[0].workspace;
                             if (containers.length === 2) {
@@ -159,9 +178,8 @@ export class ObjectFormCreatorForItem {
                             } else {
                                 navigateToItemByUrl(parentWorkspace, containers[0].uri);
                             }
-                        }
-                        else{
-                            alert ('Something wrong happened. I cannot retrieve the parent...');
+                        } else {
+                            alert('Something wrong happened. I cannot retrieve the parent...');
                         }
                     }
                 }
@@ -175,26 +193,33 @@ export class ObjectFormCreatorForItem {
         }
 
         // Defines the viewmode, if not already defined by the caller
-        if(configuration.viewMode === undefined || configuration.viewMode === null) {
+        if (configuration.viewMode === undefined || configuration.viewMode === null) {
             configuration.viewMode = VML.getCurrentViewMode();
         }
 
         // Load the object
-        const defer1 = DataLoader.getObjectByUri(this.workspace, this.itemUri);
+        const defer1 = ClientItems.getObjectByUri(this.workspace, this.itemUri);
 
         // Load the form
-        const defer2 = ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
+        const defer2 =
+            this._overrideFormUrl === undefined ?
+                ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
+                ClientForms.getForm(this._overrideFormUrl, FormType.Object);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(([element1, form]) => {
+            // First the debug information
+            debugElementToDom(element1, "#debug_mofelement");
+            debugElementToDom(form, "#debug_formelement");
 
+            // Now created the object form
             this.htmlElements.itemContainer.empty();
 
-            const detailForm = new ObjectFormCreator();
-            detailForm.workspace = this.workspace;
-            detailForm.itemId = this.itemUri;
-            detailForm.element = element1;
-            detailForm.formElement = form;
+            const objectFormCreator = new ObjectFormCreator();
+            objectFormCreator.workspace = this.workspace;
+            objectFormCreator.itemId = this.itemUri;
+            objectFormCreator.element = element1;
+            objectFormCreator.formElement = form;
 
             if (this.formMode === FormMode.ViewMode) {
                 const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
@@ -202,23 +227,61 @@ export class ObjectFormCreatorForItem {
                 this.htmlElements.itemContainer.append(domEditButton);
             }
 
-            detailForm.createFormByObject(tthis.htmlElements, configuration);
+                objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
 
-            debugElementToDom(element1, "#debug_mofelement");
-            debugElementToDom(form, "#debug_formelement");
+            // Creates the form selection
+            if (this.htmlElements.formSelectorContainer !== undefined
+                && this.htmlElements.formSelectorContainer !== null) {
+                this.htmlElements.formSelectorContainer.empty();
 
+                const formControl = new FormSelectionControl();
+                formControl.formSelected.addListener(
+                    selectedItem => {
+                        this._overrideFormUrl = selectedItem.selectedForm.uri;
+                        this.rebuildForm();
+                    });
+                formControl.formResetted.addListener(
+                    () => {
+                        this._overrideFormUrl = undefined;
+                        this.rebuildForm();
+                    });
+                
+                let formUrl;
+                if (this._overrideFormUrl !== undefined) {
+                    formUrl = {
+                        workspace: "Management",
+                        itemUrl: this._overrideFormUrl
+                    };
+                } else {
+                    const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                    if (form.uri !== undefined && byForm === undefined) {
+                        formUrl = {
+                            workspace: form.workspace,
+                            itemUrl: form.uri
+                        };
+                    } else if (byForm !== undefined) {
+                        formUrl = {
+                            workspace: "Management",
+                            itemUrl: byForm
+                        };
+                    }
+                }
+
+                formControl.setCurrentFormUrl(formUrl);
+
+                const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
+            }
         });
 
         this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.text("Loading content and form...");
 
-
         // Creates the viewmode Selection field
         if (this.htmlElements.viewModeSelectorContainer !== undefined
-            && this.htmlElements.viewModeSelectorContainer !== null ) {
+            && this.htmlElements.viewModeSelectorContainer !== null) {
             this.htmlElements.viewModeSelectorContainer.empty();
 
-            const viewModeForm = new ViewModeSelectionForm();
+            const viewModeForm = new ViewModeSelectionControl();
             const htmlViewModeForm = viewModeForm.createForm();
             viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
 

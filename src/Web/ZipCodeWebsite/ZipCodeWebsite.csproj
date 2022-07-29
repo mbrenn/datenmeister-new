@@ -37,7 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <TypeScriptCompile Include="wwwroot\js\dm.zipcodefinder.ts" />
+      <TypeScriptCompile Include="wwwroot\js\*.ts" />
     </ItemGroup>
     <Target Name="AfterBuid" AfterTargets="Build">
         <Message Text="Copying 'wwwroot' to Output-Directory" Importance="high" />

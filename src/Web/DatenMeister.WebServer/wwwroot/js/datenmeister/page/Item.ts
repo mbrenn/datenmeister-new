@@ -6,7 +6,8 @@ export function init(workspace: string, itemUri: string) {
     detailForm.createForm(
         {
             itemContainer: $("#form_view"),
-            viewModeSelectorContainer: $("#dm-viewmode-selection-container")
+            viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
+            formSelectorContainer: $("#form_selection_container")
         },
         workspace,
         itemUri);

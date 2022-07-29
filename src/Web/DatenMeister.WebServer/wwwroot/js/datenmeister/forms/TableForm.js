@@ -103,7 +103,8 @@ define(["require", "exports", "./FieldFactory", "../Settings"], function (requir
                             const field = fields[n];
                             let cell = $("<td></td>");
                             const fieldMetaClassId = field.metaClass.id;
-                            const fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassId, {
+                            const fieldMetaClassUri = field.metaClass.uri;
+                            const fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassUri, {
                                 configuration: configuration,
                                 field: field,
                                 itemUrl: element.uri,

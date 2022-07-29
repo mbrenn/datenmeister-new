@@ -2,6 +2,7 @@
 
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Uml.Helper;
 
 // ReSharper disable InconsistentNaming
 
@@ -23,5 +24,21 @@ namespace DatenMeister.Forms.FormFinder
         /// Gets or sets the id of the view mode being used for the query
         /// </summary>
         public string viewModeId { get; set; } = string.Empty;
+
+        public override string ToString()
+        {
+            var result = $"{FormType}";
+            if (metaClass != null)
+            {
+                result += $", MetaClass: {NamedElementMethods.GetName(metaClass)}";
+            }
+            
+            if (!string.IsNullOrEmpty(extentType))
+            {
+                result += $", ExtentType: {extentType}";
+            }
+
+            return result;
+        }
     }
 }

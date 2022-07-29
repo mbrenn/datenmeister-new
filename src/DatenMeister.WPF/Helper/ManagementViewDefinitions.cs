@@ -46,13 +46,13 @@ namespace DatenMeister.WPF.Helper
         /// <returns>The created type</returns>
         public IElement GetFindTypeForm(FindTypeFormParameter parameter, string? buttonName = null)
         {
-            var detailForm = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__DetailForm);
-            detailForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
-            detailForm.set(_DatenMeister._Forms._DetailForm.defaultHeight, 600);
-            detailForm.set(_DatenMeister._Forms._DetailForm.defaultWidth, 700);
-            detailForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, false);
+            var detailForm = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__RowForm);
+            detailForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, true);
+            detailForm.set(_DatenMeister._Forms._RowForm.defaultHeight, 600);
+            detailForm.set(_DatenMeister._Forms._RowForm.defaultWidth, 700);
+            detailForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, false);
 
-            if (buttonName != null) detailForm.set(_DatenMeister._Forms._DetailForm.buttonApplyText, buttonName);
+            if (buttonName != null) detailForm.set(_DatenMeister._Forms._RowForm.buttonApplyText, buttonName);
 
             var type2Field = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.name, "selectedType");
@@ -61,7 +61,7 @@ namespace DatenMeister.WPF.Helper
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace, parameter.WorkspaceName);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultItemUri, parameter.ExtentUri);
 
-            detailForm.set(_DatenMeister._Forms._DetailForm.field, new[] { type2Field });
+            detailForm.set(_DatenMeister._Forms._RowForm.field, new[] { type2Field });
 
             return detailForm ?? throw new InvalidOperationException("Form could not be created");
         }

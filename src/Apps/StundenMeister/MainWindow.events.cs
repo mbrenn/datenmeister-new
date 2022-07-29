@@ -5,7 +5,6 @@ using DatenMeister.Core;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Reports;
 using DatenMeister.Reports.Html;

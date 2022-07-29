@@ -29,11 +29,8 @@ namespace DatenMeister.WPF.Controls
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_workspaceLogic != null)
-            {
-                UpdateWorkspaces();
-                UpdateExtents();
-            }
+            UpdateWorkspaces();
+            UpdateExtents();
         }
         
         /// <summary>

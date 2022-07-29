@@ -13,7 +13,7 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.Xmi.Provider.XMI;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi

@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Navigation
         /// <returns></returns>
         public static async Task<NavigateToElementDetailResult?>? CreateNewWorkspace(INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var viewLogic = GiveMe.Scope.Resolve<FormMethods>();
             var viewExtent = viewLogic.GetInternalFormExtent();
 
             var formElement = NamedElementMethods.GetByFullName(
@@ -59,7 +59,7 @@ namespace DatenMeister.WPF.Navigation
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
                 formElement =
-                    creator.CreateDetailFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
+                    creator.CreateRowFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailView(

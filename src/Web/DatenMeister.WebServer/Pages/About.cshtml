@@ -1,5 +1,6 @@
 ﻿@page "/About"
 @using System.Web
+@using DatenMeister.WebServer.Pages
 @model DatenMeister.WebServer.Pages.AboutModel
 
 
@@ -10,7 +11,7 @@
 
 <h1>About</h1>
 
-DatenMeister.Net<br />
+<h2>DatenMeister.Net</h2>
 Welcome to the About-Page
 
 <table class="table table-striped">
@@ -26,6 +27,17 @@ Welcome to the About-Page
             <a href="#" onclick="setWorkspaceToClipboard(); return false;">@Model.WorkspacePath</a>
         </td>
     </tr>
+    <tr>
+        <td>Known ExtentTypes</td>
+        <td>
+            <ul>
+                @foreach (var knownExtentType in AboutModel.KnownExtentTypes)
+                {
+                    <li>@knownExtentType</li>
+                }
+            </ul>
+        </td>
+    </tr>
 </table>
 
 <script type="text/ecmascript">
@@ -35,4 +47,3 @@ Welcome to the About-Page
         alert('Path copied');
     }
 </script>
-

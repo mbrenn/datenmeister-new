@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
@@ -96,7 +95,7 @@ namespace DatenMeister.WPF.Navigation
                     // Add the options for the extent types
                     var foundExtentType =
                         resolvedForm.GetByPropertyFromCollection(
-                            _DatenMeister._Forms._ListForm.field,
+                            _DatenMeister._Forms._TableForm.field,
                             _DatenMeister._Forms._Form.name,
                             _DatenMeister._Management._Extent.extentType).FirstOrDefault();
                     if (foundExtentType == null)
@@ -162,7 +161,7 @@ namespace DatenMeister.WPF.Navigation
             INavigationHost window,
             string workspaceId)
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var viewLogic = GiveMe.Scope.Resolve<FormMethods>();
             var form =
                 viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
                 ?? throw new InvalidOperationException(ManagementViewDefinitions.IdNewXmiDetailForm + " was not found");

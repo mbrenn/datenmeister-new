@@ -1,5 +1,5 @@
 ﻿import {DmObject} from "../Mof";
-import {SubmitMethod} from "./DetailForm";
+import {SubmitMethod} from "./RowForm";
 
 export interface IFormConfiguration {
     allowAddingNewProperties?: boolean;
@@ -15,4 +15,9 @@ export interface IFormConfiguration {
     onSubmit?: (element: DmObject, method: SubmitMethod) => void;
 
     refreshForm?: () => void;
+
+    /**
+     * Defines the view mode for the configuration
+     */
+    viewMode?: string;
 }

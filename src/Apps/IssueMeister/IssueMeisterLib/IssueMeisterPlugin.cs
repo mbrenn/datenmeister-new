@@ -16,7 +16,7 @@ namespace IssueMeisterLib
         public const string TargetPackageName = "Apps::IssueMeister";
         public const string ExtentTypeName = "IssueMeister";
         private readonly PackageMethods _packageMethods;
-        private readonly FormsPlugin _formsPlugin;
+        private readonly FormMethods _formsPlugin;
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly ExtentSettings _extentSettings;
 
@@ -27,7 +27,7 @@ namespace IssueMeisterLib
         /// <param name="formsPlugin">Sets the form logic</param>
         /// <param name="localTypeSupport">Sets the local type support</param>
         /// <param name="scopeStorage">The settings for the extent</param>
-        public IssueMeisterPlugin(PackageMethods packageMethods, FormsPlugin formsPlugin,
+        public IssueMeisterPlugin(PackageMethods packageMethods, FormMethods formsPlugin,
             LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
         {
             _packageMethods = packageMethods;

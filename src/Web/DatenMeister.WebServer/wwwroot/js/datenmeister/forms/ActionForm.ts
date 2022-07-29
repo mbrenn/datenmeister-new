@@ -2,6 +2,7 @@
 import {DmObject} from "../Mof";
 import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
+import * as ObjectForm from "./ObjectForm";
 import {DetailFormActions} from "../FormActions";
 import * as ClientForms from '../client/Forms'
 import * as ClientElements from '../client/Elements'
@@ -13,18 +14,22 @@ export async function createActionFormForEmptyObject(
     metaClass: string,
     configuration: IFormConfiguration,
     actionName: string) {
-    
+
     configuration.submitName = "Perform Action";
     configuration.showCancelButton = false;
     configuration.allowAddingNewProperties = false;
 
+    if (configuration.formUri === "") {
+        configuration.formUri = undefined;
+    }
+
     if (configuration.refreshForm === undefined) {
-        configuration.refreshForm = () => {            
+        configuration.refreshForm = () => {
             createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         }
     }
 
-    const creator = new Forms.DetailFormCreator();
+    const creator = new ObjectForm.ObjectFormCreator();
 
     configuration.onSubmit = async (element, method) => {
 
@@ -48,15 +53,15 @@ export async function createActionFormForEmptyObject(
     if (element === undefined) {
         element = new DmObject();
     }
-    
+
     // If, we have created the element, we will now have to create the temporary object on the server
     const temporaryElement = await ClientElements.createTemporaryElement(element.metaClass?.uri);
-    await ClientItems.setProperties("Data", temporaryElement.uri, element);    
-    
+    await ClientItems.setProperties("Data", temporaryElement.uri, element);
+
     /* Now find the right form */
-    
+
     let form;
-    
+
     // After having loaded the object, load the form
     if (metaClass === undefined && element.metaClass?.uri !== undefined) {
         // If the returned element has a metaclass, then set the metaClass being used to 
@@ -76,19 +81,22 @@ export async function createActionFormForEmptyObject(
             form = await ClientForms.getForm(configuration.formUri);
         } else if (metaClass === undefined) {
             // If there is no metaclass set, create a total empty form object...
-            form = Forms.FormModel.createEmptyFormWithDetail();
+            form = Forms.FormModel.createEmptyFormObject();
         } else {
-            form = await ClientForms.getDefaultFormForMetaClass(metaClass);
+            form = await ClientForms.getObjectFormForMetaClass(metaClass);
         }
     }
-    
+
     creator.element = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
     creator.formElement = form;
     creator.workspace = "Data";
     creator.extentUri = creator.element.extentUri;
-    
+
     // Finally, we have everything together, create the form
-    creator.createFormByObject(parent, configuration);
+    creator.createFormByObject(
+        {
+            itemContainer: parent
+        }, configuration);
 
     debugElementToDom(form, "#debug_formelement");
 }

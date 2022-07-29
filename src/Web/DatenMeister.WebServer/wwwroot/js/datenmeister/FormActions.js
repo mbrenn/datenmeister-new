@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/DetailForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, DetailForm_1) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -57,6 +57,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             return __awaiter(this, void 0, void 0, function* () {
                 if (actionName === 'Workspace.Extent.LoadOrCreate') {
                     return yield FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
+                }
+                if (actionName === 'Forms.Create.ByMetaClass') {
+                    return yield FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
                 }
                 return Promise.resolve(undefined);
             });
@@ -191,6 +194,21 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         }
                         break;
                     }
+                    case "Forms.Create.ByMetaClass": {
+                        const extentCreationParameter = new Mof_1.DmObject();
+                        extentCreationParameter.set('configuration', element);
+                        extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri);
+                        const result = yield ActionClient.executeAction("Execute", {
+                            parameter: extentCreationParameter
+                        });
+                        if (result.success !== true) {
+                            alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
+                        }
+                        else {
+                            alert('Form was created successfully');
+                        }
+                        break;
+                    }
                     case "Workspace.Extent.Xmi.Create":
                         yield ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
                             .then(data => {
@@ -237,7 +255,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     metaClass: metaClass === undefined ? "" : metaClass,
                     properties: element
                 });
-                if (submitMethod === DetailForm_1.SubmitMethod.Save) {
+                if (submitMethod === RowForm_1.SubmitMethod.Save) {
                     // If user has clicked on the save button (without closing), the form shall just be updated
                     Navigator.navigateToItemByUrl(workspace, newItem.itemId);
                 }

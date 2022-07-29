@@ -16,11 +16,6 @@
   <ItemGroup>
     <TypeScriptCompile Remove="node_modules\**" />
     <TypeScriptCompile Include="wwwroot\js\**.ts" />
-    <TypeScriptCompile Include="wwwroot\js\burnsystems\tests\events.test.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Actions.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Forms.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Elements.ts" />
-    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Forms.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,11 +47,6 @@
   <!-- Copies the files from the icons foldes to the wwwroot/img folder -->
   <ItemGroup>
     <IconPngFiles Include="../../../assets/icons/output/*.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Pages\ItemsOverview.cshtml.cs">
-      <DependentUpon>ItemsOverview.cshtml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Examples\plz.csv">

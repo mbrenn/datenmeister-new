@@ -5,7 +5,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Provider.EnvironmentalVariableProvider
+namespace DatenMeister.Provider.Environmental
 {
     [PluginLoading(PluginLoadingPosition.AfterInitialization |PluginLoadingPosition.AfterLoadingOfExtents)]
     // ReSharper disable once UnusedType.Global
@@ -32,7 +32,7 @@ namespace DatenMeister.Provider.EnvironmentalVariableProvider
                     var mapper = ScopeStorage.Get<ConfigurationToExtentStorageMapper>();
                     mapper.AddMapping(
                         _DatenMeister.TheOne.ExtentLoaderConfigs.__EnvironmentalVariableLoaderConfig,
-                        manager => new EnvironmentalProvider());
+                        _ => new EnvironmentalProvider());
                     break;
                 }
                 case PluginLoadingPosition.AfterLoadingOfExtents:

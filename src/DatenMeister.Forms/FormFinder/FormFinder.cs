@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -29,16 +30,16 @@ namespace DatenMeister.Forms.FormFinder
         private const bool ConfigurationActivateDebuggingForViewRetrieval = false;
 #endif
 
-        private readonly FormsPlugin _formsPlugin;
+        private readonly FormMethods _formsMethods;
 
         /// <summary>
         /// Initializes a new instance of the ViewFinder class
         /// </summary>
-        /// <param name="formsPlugin">View logic</param>
+        /// <param name="formsMethods">View logic</param>
         public FormFinder(
-            FormsPlugin formsPlugin)
+            FormMethods formsMethods)
         {
-            _formsPlugin = formsPlugin;
+            _formsMethods = formsMethods;
         }
 
         private class FoundForm
@@ -61,9 +62,11 @@ namespace DatenMeister.Forms.FormFinder
         /// <returns>The found view or null, if not found</returns>
         public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
-            var formAssociations = _formsPlugin.GetAllFormAssociations().Select(x => x as IElement).ToList();
+            using var stopWatch = new StopWatchLogger(Logger, $"Find Form: {query}");
+            var formAssociations = _formsMethods.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
             InternalDebug("# of FormAssociations: " + formAssociations.Count);
+            stopWatch.IntermediateLog("# of FormAssociations: " + formAssociations.Count);
 
             var foundForms = new List<FoundForm>();
             var queryViewModeIds = query.viewModeId?.Split(' ');
@@ -80,21 +83,24 @@ namespace DatenMeister.Forms.FormFinder
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
-                var associationExtentType = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
-                var associationMetaClass = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
-                var associationViewType = 
-                    element.getOrNull<_DatenMeister._Forms.___FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
-                                    _DatenMeister._Forms.___FormType.Detail;
+                var associationExtentType =
+                    element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
+                var associationMetaClass =
+                    element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
+                var associationViewType =
+                    element.getOrNull<_DatenMeister._Forms.___FormType>(_DatenMeister._Forms._FormAssociation.formType);
                 var associationParentMetaclass =
                     element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.parentMetaClass);
                 var associationParentProperty =
                     element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.parentProperty);
                 var associationForm = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.form);
-                var associationViewModeId = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.viewModeId);
+                var associationViewModeId =
+                    element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.viewModeId);
                 if (associationExtentType == null && associationMetaClass == null
-                                                  && associationParentMetaclass == null 
+                                                  && associationParentMetaclass == null
                                                   && associationParentProperty == null
-                                                  && associationViewModeId == null)
+                                                  && associationViewModeId == null
+                                                  && associationViewType == null)
                 {
                     InternalDebug("- - This item is too unspecific");
                     // Skip item because it is too unspecific
@@ -103,7 +109,8 @@ namespace DatenMeister.Forms.FormFinder
 
                 if (associationForm == null)
                 {
-                    Logger.Warn("Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
+                    Logger.Warn(
+                        "Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
                     continue;
                 }
 
@@ -129,7 +136,7 @@ namespace DatenMeister.Forms.FormFinder
                         isMatching = false;
                     }
                 }
-                
+
                 // ViewMode Id
                 if (!string.IsNullOrEmpty(associationViewModeId))
                 {
@@ -177,22 +184,26 @@ namespace DatenMeister.Forms.FormFinder
                 }
                 else
                 {
-                    InternalDebug("-- MATCH: viewType: " + query.FormType + ", FormAssociation viewType: " + associationViewType);
+                    InternalDebug("-- MATCH: viewType: " + query.FormType + ", FormAssociation viewType: " +
+                                  associationViewType);
                 }
 
                 // ´ParentMetaClass
                 if (associationParentMetaclass != null)
                 {
-                    if (query.parentMetaClass != null && query.parentMetaClass?.equals(associationParentMetaclass) == true)
+                    if (query.parentMetaClass != null &&
+                        query.parentMetaClass?.equals(associationParentMetaclass) == true)
                     {
-                        InternalDebug("-- MATCH: parentMetaClass: " + NamedElementMethods.GetName(query.parentMetaClass) +
+                        InternalDebug("-- MATCH: parentMetaClass: " +
+                                      NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", FormAssociation parentMetaClass: " +
                                       NamedElementMethods.GetName(associationParentMetaclass));
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: parentMetaClass: " + NamedElementMethods.GetName(query.parentMetaClass) +
+                        InternalDebug("-- NO MATCH: parentMetaClass: " +
+                                      NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", FormAssociation parentMetaClass: " +
                                       NamedElementMethods.GetName(associationParentMetaclass));
                         isMatching = false;
@@ -202,15 +213,18 @@ namespace DatenMeister.Forms.FormFinder
                 // ParentProperty
                 if (!string.IsNullOrEmpty(associationParentProperty))
                 {
-                    if (!string.IsNullOrEmpty(query.parentProperty) && query.parentProperty?.Equals(associationParentProperty) == true)
+                    if (!string.IsNullOrEmpty(query.parentProperty) &&
+                        query.parentProperty?.Equals(associationParentProperty) == true)
                     {
-                        InternalDebug("-- MATCH: ParentProperty: " + query.parentProperty + ", FormAssociation ParentProperty: " +
+                        InternalDebug("-- MATCH: ParentProperty: " + query.parentProperty +
+                                      ", FormAssociation ParentProperty: " +
                                       associationParentProperty);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: ParentProperty: " + query.parentProperty + ", FormAssociation ParentProperty: " +
+                        InternalDebug("-- NO MATCH: ParentProperty: " + query.parentProperty +
+                                      ", FormAssociation ParentProperty: " +
                                       associationParentProperty);
                         isMatching = false;
                     }
@@ -227,8 +241,20 @@ namespace DatenMeister.Forms.FormFinder
                     foundForms.Add(foundForm);
                 }
             }
+            
+            stopWatch.IntermediateLog("Forms are evaluated");
 
-            return foundForms.OrderByDescending(x => x.Points).Select(x => x.Form);
+            var selectedForms = foundForms
+                .OrderByDescending(x => x.Points)
+                .Select(x => x.Form)
+                .Select(x =>
+                {
+                    var formType = query.FormType;
+
+                    return FormMethods.ConvertFormToObjectOrCollectionForm(x, formType);
+                });
+
+            return selectedForms;
         }
 
         /// <summary>

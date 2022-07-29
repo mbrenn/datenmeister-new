@@ -5,7 +5,7 @@ import * as Settings from "../Settings";
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as SIC from "../controls/SelectItemControl";
 
-export class ListForm implements InterfacesForms.IForm {
+export class TableForm implements InterfacesForms.IForm {
     elements: Array<Mof.DmObject>;
     extentUri: string;
     formElement: Mof.DmObject;
@@ -134,8 +134,9 @@ export class ListForm implements InterfacesForms.IForm {
                         let cell = $("<td></td>");
 
                         const fieldMetaClassId = field.metaClass.id;
+                        const fieldMetaClassUri = field.metaClass.uri;
                         const fieldElement = createField(
-                            fieldMetaClassId,
+                            fieldMetaClassUri,
                             {
                                 configuration: configuration,
                                 field: field,
@@ -155,40 +156,4 @@ export class ListForm implements InterfacesForms.IForm {
             parent.append(table);
         }
     }
-}
-
-export function openMetaClassSelectionFormForNewItem(buttonDiv: JQuery, containerDiv: JQuery, workspace: string, extentUri: string) {
-    const tthis = this;
-
-    buttonDiv.on('click', () => {
-        containerDiv.empty();
-        const selectItem = new SIC.SelectItemControl();
-        const settings = new SIC.Settings();
-        settings.showWorkspaceInBreadcrumb = true;
-        settings.showExtentInBreadcrumb = true;
-        selectItem.setWorkspaceById('Types');
-        selectItem.setExtentByUri("dm:///_internal/types/internal");
-        selectItem.itemSelected.addListener(
-            selectedItem => {
-                if (selectedItem === undefined) {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri);
-                } else {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri) +
-                        "&metaclass=" +
-                        encodeURIComponent(selectedItem.uri);
-                }
-            });
-
-        selectItem.init(containerDiv, settings);
-    });
 }

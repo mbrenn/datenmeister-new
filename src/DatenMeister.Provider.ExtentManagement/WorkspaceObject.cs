@@ -31,7 +31,7 @@ namespace DatenMeister.Provider.ExtentManagement
             AddMapping(
                 _DatenMeister._Management._Workspace.id,
                 w => w.id,
-                (w, v) => throw new InvalidOperationException("Id cannot be set"));
+                (_, _) => throw new InvalidOperationException("Id cannot be set"));
 
             AddMapping(
                 _DatenMeister._Management._Workspace.annotation,
@@ -85,7 +85,7 @@ namespace DatenMeister.Provider.ExtentManagement
 
                     return resultAsCollection;
                 },
-                (w, v) => throw new InvalidOperationException("Extent cannot be set"));
+                (_, _) => throw new InvalidOperationException("Extent cannot be set"));
         }
 
         /// <summary>

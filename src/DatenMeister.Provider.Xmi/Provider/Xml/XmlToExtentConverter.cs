@@ -8,7 +8,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 
-namespace DatenMeister.Provider.Xml
+namespace DatenMeister.Provider.Xmi.Provider.Xml
 {
     /// <summary>
     /// Converts an xml file to an extent and its elements

@@ -29,14 +29,14 @@ namespace DatenMeister.Tests.Modules.Forms
 
             var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
             var createdForm =
-                formCreator.CreateListFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
+                formCreator.CreateTableFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
             Assert.That(createdForm, Is.Not.Null);
             var fields =
-                createdForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field)
+                createdForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field)
                     ?.OfType<IElement>()
                     .ToList();
             Assert.That(fields, Is.Not.Null);
-            Assert.That(createdForm.metaclass?.equals(_DatenMeister.TheOne.Forms.__ListForm), Is.True);
+            Assert.That(createdForm.metaclass?.equals(_DatenMeister.TheOne.Forms.__TableForm), Is.True);
             Assert.That(fields!.Any(x =>
                 x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == nameof(ZipCode.name)));
             Assert.That(fields!.Any(x =>
@@ -55,21 +55,21 @@ namespace DatenMeister.Tests.Modules.Forms
             var extent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);
             Assert.That(extent, Is.Not.Null);
 
-            var createdForm = formCreator.CreateExtentFormForExtent(extent, new FormFactoryConfiguration()
+            var createdForm = formCreator.CreateCollectionFormForExtent(extent, new FormFactoryConfiguration()
             {
                 AllowFormModifications = true
             });
 
             Assert.That(createdForm, Is.Not.Null);
 
-            var listForm = FormMethods.GetListForms(createdForm!).FirstOrDefault(
+            var listForm = FormMethods.GetTableForms(createdForm!).FirstOrDefault(
                 x =>
-                    x.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass)
+                    x.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass)
                         ?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true);
             Assert.That(listForm, Is.Not.Null);
 
             var defaultTypesForNewElements =
-                listForm.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+                listForm.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
             Assert.That(
                 defaultTypesForNewElements.OfType<IElement>().Any(
                     x => x?.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass)

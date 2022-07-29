@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime;
 
-namespace DatenMeister.Modules.Xml
+namespace DatenMeister.Provider.Xmi
 {
     /// <summary>
     /// Defines a class which is capable to import an xml to

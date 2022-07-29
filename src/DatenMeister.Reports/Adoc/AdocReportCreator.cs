@@ -11,7 +11,7 @@ namespace DatenMeister.Reports.Adoc
 {
     public class AdocReportCreator : GenericReportCreator
     {
-        private readonly ClassLogger Logger = new ClassLogger(typeof(AdocReportCreator));
+        private readonly ClassLogger Logger = new(typeof(AdocReportCreator));
 
         /// <summary>
         /// Gets or sets the text writer to be used for the report reportCreator
@@ -21,8 +21,6 @@ namespace DatenMeister.Reports.Adoc
         /// <summary>
         /// Initializes a new instance of the AdocReportCreator
         /// </summary>
-        /// <param name="workspaceLogic">Workspace logic to be used</param>
-        /// <param name="scopeStorage">Scope storage to be used</param>
         /// <param name="textWriter">Text writer in which the report shall be stored</param>
         public AdocReportCreator(
             TextWriter textWriter)
@@ -35,6 +33,7 @@ namespace DatenMeister.Reports.Adoc
         /// It is important that the reportDefinition value is not of type ReportInstance.
         /// If a report shall be generated upon a Report Instance, use GenerateByInstance
         /// </summary>
+        /// <param name="reportLogic">The report logic</param>
         /// <param name="reportDefinition">The report definition to be used</param>
         public override void StartReport(ReportLogic reportLogic, IObject reportDefinition)
         {

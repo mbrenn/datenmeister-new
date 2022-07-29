@@ -1,7 +1,6 @@
 ﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Json;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;

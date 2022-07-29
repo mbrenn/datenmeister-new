@@ -7,7 +7,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 
-namespace DatenMeister.Provider.XMI
+namespace DatenMeister.Provider.Xmi.Provider.XMI
 {
     /// <summary>
     /// Converts a given object to an xml object
@@ -111,8 +111,6 @@ namespace DatenMeister.Provider.XMI
             {
                 foreach (var attribute in node.Attributes())
                 {
-                    if (attribute == null) continue;
-
                     if ((attribute.Name.ToString() == "href" || attribute.Name.ToString().EndsWith("-ref")) &&
                         attribute.Value.StartsWith(extentPath))
                     {

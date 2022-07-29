@@ -5,7 +5,7 @@ namespace DatenMeister.HtmlEngine
 {
     public class HtmlTableRow : HtmlElement
     {
-        private List<HtmlElement> Cells { get; } = new List<HtmlElement>();
+        private List<HtmlElement> Cells { get; } = new();
 
         public HtmlTableRow()
         {

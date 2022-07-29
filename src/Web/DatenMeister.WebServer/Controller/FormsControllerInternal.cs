@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -28,13 +29,13 @@ namespace DatenMeister.WebServer.Controller
             return item;
         }
 
-        public IElement GetDefaultFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
+        public IElement GetObjectFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
         {
             var item = GetItemByUriParameter(workspaceId, itemUrl);
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            var form = formFactory.CreateExtentFormForItem(item,
+            var form = formFactory.CreateObjectFormForItem(item,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
 
             if (form == null)
@@ -45,14 +46,14 @@ namespace DatenMeister.WebServer.Controller
             return form;
         }
 
-        public IElement GetDefaultFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
+        public IElement GetCollectionFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
         {
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            var form = formFactory.CreateExtentFormForExtent(extent,
+            var form = formFactory.CreateCollectionFormForExtent(extent,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
             if (form == null)
             {
@@ -68,7 +69,7 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="metaClass">MetaClass to be given</param>
         /// <param name="viewMode">The view mode</param>
         /// <returns>The found form</returns>
-        public IObject GetDefaultFormForMetaClassInternal(string? metaClass, string? viewMode = null)
+        public IObject GetObjectFormForMetaClassInternal(string? metaClass, string? viewMode = null)
         {
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
 
@@ -84,9 +85,17 @@ namespace DatenMeister.WebServer.Controller
                 }
             }
 
-            var form = formFactory.CreateExtentFormForItemsMetaClass(
-                resolvedMetaClass,
-                configurationMode);
+            IElement? form;
+            if (resolvedMetaClass == null)
+            {
+                form = formFactory.CreateEmptyObjectForm(configurationMode);
+            }
+            else
+            {
+                form = formFactory.CreateObjectFormForMetaClass(
+                    resolvedMetaClass,
+                    configurationMode);
+            }
 
             if (form == null)
             {
@@ -117,6 +126,12 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return foundElement;
+        }
+
+        public IEnumerable<IObject> GetViewModesInternal()
+        {
+            var formsController = new FormMethods(_workspaceLogic, _scopeStorage);
+            return formsController.GetViewModes();
         }
     }
 }

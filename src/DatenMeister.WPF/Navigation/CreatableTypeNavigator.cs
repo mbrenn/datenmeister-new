@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Navigation
             string? extentUri = null)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var viewLogic = GiveMe.Scope.Resolve<FormMethods>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
             // Gets metaworkspace and metaextent 

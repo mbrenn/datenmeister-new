@@ -12,7 +12,7 @@ namespace DatenMeister.Reports.Html
         /// <summary>
         /// Stores the html report evaluators
         /// </summary>
-        private readonly List<IGenericReportEvaluator<HtmlReportCreator>> _htmlReportEvaluators = new List<IGenericReportEvaluator<HtmlReportCreator>>();
+        private readonly List<IGenericReportEvaluator<HtmlReportCreator>> _htmlReportEvaluators = new();
         
         /// <summary>
         /// Gets the evaluators

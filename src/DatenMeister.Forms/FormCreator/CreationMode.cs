@@ -35,7 +35,7 @@ namespace DatenMeister.Forms.FormCreator
         /// Creates only fields that are usable in a list form.
         /// So most of the time only 'TextFields'.
         /// </summary>
-        ForListForms = 0x10,
+        ForTableForms = 0x10,
             
         /// <summary>
         /// This flag is evaluated by the list form reportCreator.

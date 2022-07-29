@@ -6,19 +6,36 @@ define(["require", "exports"], function (require, exports) {
     (function (ObjectType) {
         ObjectType[ObjectType["Default"] = 0] = "Default";
         ObjectType[ObjectType["Single"] = 1] = "Single";
-        ObjectType[ObjectType["Array"] = 2] = "Array";
-        ObjectType[ObjectType["Boolean"] = 3] = "Boolean";
+        ObjectType[ObjectType["String"] = 2] = "String";
+        ObjectType[ObjectType["Array"] = 3] = "Array";
+        ObjectType[ObjectType["Boolean"] = 4] = "Boolean";
     })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
         constructor() {
             this.isReference = false;
             this.values = new Array();
         }
+        /**
+         * Modifies the key that it can be used for internal array storage.
+         * Unfortunately, the array has some functions and these functions cannot be overwritten
+         * @param key
+         */
+        static internalizeKey(key) {
+            return "_" + key;
+        }
+        /**
+         * Modifies the key that the internal key value can be used for external access.
+         * This is the opposite of internalizeKey
+         * @param key
+         */
+        static externalizeKey(key) {
+            return key.substring(1);
+        }
         set(key, value) {
-            this.values[key] = value;
+            this.values[DmObject.internalizeKey(key)] = value;
         }
         get(key, objectType) {
-            let result = this.values[key];
+            let result = this.values[DmObject.internalizeKey(key)];
             switch (objectType) {
                 case ObjectType.Default:
                     return result;
@@ -28,16 +45,25 @@ define(["require", "exports"], function (require, exports) {
                     }
                     return result;
                 case ObjectType.Array:
+                    if (result === undefined || result === null) {
+                        return [];
+                    }
                     if (Array.isArray(result)) {
                         return result;
                     }
                     return [result];
+                case ObjectType.String:
+                    const resultString = this.get(key, ObjectType.Single);
+                    if (resultString === undefined) {
+                        return undefined;
+                    }
+                    return resultString.toString();
                 case ObjectType.Boolean:
                     if (Array.isArray(result)) {
                         result = result[0];
                     }
                     // Take the standard routine but also check that there is no '0' in the text
-                    return Boolean(result) && result !== "0";
+                    return (Boolean(result) && result !== "0");
             }
             return result;
         }
@@ -57,14 +83,29 @@ define(["require", "exports"], function (require, exports) {
                 return newArray;
             }
         }
+        /**
+         * Gets an enumeration of all property values.
+         * This method is used to protect the internal transformation of key values according
+         * internalize and externalize
+         */
+        getPropertyValues() {
+            const result = new Array();
+            for (let n in this.values) {
+                if (!this.values.hasOwnProperty(n)) {
+                    continue;
+                }
+                result[DmObject.externalizeKey(n)] = this.values[n];
+            }
+            return result;
+        }
         isSet(key) {
-            return this.values[key] !== undefined;
+            return this.values[DmObject.internalizeKey(key)] !== undefined;
         }
         unset(key) {
-            this.values[key] = undefined;
+            this.values[DmObject.internalizeKey(key)] = undefined;
         }
         toString() {
-            let values = this.values;
+            let values = this.getPropertyValues();
             return DmObject.valueToString(values);
         }
         setMetaClassByUri(metaClassUri) {
@@ -74,8 +115,8 @@ define(["require", "exports"], function (require, exports) {
             this.metaClass = { id: metaClassId };
         }
         static valueToString(item, indent = "") {
-            var result = "";
-            var komma = "";
+            let result = "";
+            let komma = "";
             if (Array.isArray(item)) {
                 result = `\r\n${indent}[`;
                 for (let n in item) {
@@ -91,7 +132,8 @@ define(["require", "exports"], function (require, exports) {
                 for (let key in item) {
                     if (Object.prototype.hasOwnProperty.call(item, key)) {
                         const value = item[key];
-                        result += `${komma}\r\n${indent}${key}: ${DmObject.valueToString(value, indent + "  ")}`;
+                        const externalKey = DmObject.externalizeKey(key);
+                        result += `${komma}\r\n${indent}${externalKey}: ${DmObject.valueToString(value, indent + "  ")}`;
                         komma = ", ";
                     }
                 }
@@ -121,11 +163,7 @@ define(["require", "exports"], function (require, exports) {
         const result = { v: {}, m: {} };
         const values = result.v;
         function convertValue(elementValue) {
-            if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
-                // This is an object, so perform the transformation
-                return createJsonFromObject(elementValue);
-            }
-            else if (Array.isArray(elementValue)) {
+            if (Array.isArray(elementValue)) {
                 // Do not send out arrays or objects
                 const value = {};
                 for (let n in elementValue) {
@@ -134,14 +172,15 @@ define(["require", "exports"], function (require, exports) {
                 }
                 return value;
             }
+            else if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+                // This is an object, so perform the transformation
+                return createJsonFromObject(elementValue);
+            }
             else {
                 return elementValue;
             }
         }
-        for (const key in element.values) {
-            if (!element.values.hasOwnProperty(key)) {
-                continue;
-            }
+        for (const key in element.getPropertyValues()) {
             let elementValue = element.get(key);
             values[key] = convertValue(elementValue);
         }

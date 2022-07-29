@@ -12,8 +12,7 @@ namespace DatenMeister.Reports.Adoc
         /// <summary>
         /// Stores the html report evaluators
         /// </summary>
-        private readonly List<IGenericReportEvaluator<AdocReportCreator>> _adocReportEvaluators = 
-            new List<IGenericReportEvaluator<AdocReportCreator>>();
+        private readonly List<IGenericReportEvaluator<AdocReportCreator>> _adocReportEvaluators = new();
         
         /// <summary>
         /// Gets the evaluators

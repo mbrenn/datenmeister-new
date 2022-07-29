@@ -16,6 +16,7 @@ namespace DatenMeister.Reports.Generic
         /// <summary>
         /// Performs the evaluation
         /// </summary>
+        /// <param name="reportLogic">The report logic</param>
         /// <param name="reportCreator">Report reportCreator</param>
         /// <param name="reportNode">The report node</param>
         public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNode)

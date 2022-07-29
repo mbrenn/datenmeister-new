@@ -174,7 +174,7 @@ namespace DatenMeister.WPF.Navigation
             return await navigationHost.NavigateTo(() =>
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, 
+                    var usedForm = formCreator.CreateTableFormForMetaClass(metaClassForForm, 
                         FormFactoryConfiguration.CreateByMetaClassOnly);
 
                     var viewExtensions = new List<ViewExtension>();
@@ -359,7 +359,7 @@ namespace DatenMeister.WPF.Navigation
                         {
                             // Gets the view definition
                             var fields = y.View
-                                .get<IReflectiveSequence>(_DatenMeister._Forms._DetailForm.field);
+                                .get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
                             var formFactory = new MofFactory(fields);
                             var containerProperty = config.ContainerProperty;
 

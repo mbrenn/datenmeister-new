@@ -47,7 +47,7 @@ namespace DatenMeister.Tests.Modules.Reports
             /* Create the report paragraph and its corresponding view node */
             var reportTable = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportTable);
 
-            var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var form = factory.create(_DatenMeister.TheOne.Forms.__TableForm);
             var field = factory.create(_DatenMeister.TheOne.Forms.__EvalTextFieldData)
                 .SetProperties(
                     new Dictionary<string, object>
@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Modules.Reports
                             " c.cssClass=\"under18\"\r\n" +
                             "end}}"
                     });
-            form.set(_DatenMeister._Forms._ListForm.field, new[] {field});
+            form.set(_DatenMeister._Forms._TableForm.field, new[] {field});
 
             reportTable.SetProperties(
                 new Dictionary<string, object>

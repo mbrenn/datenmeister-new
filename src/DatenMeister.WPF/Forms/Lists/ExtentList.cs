@@ -81,7 +81,7 @@ namespace DatenMeister.WPF.Forms.Lists
             else if (SelectedItem != null)
             {
                 var formFactory = GiveMe.Scope.Resolve<FormFactory>();
-                var form = formFactory.CreateExtentFormForItem(
+                var form = formFactory.CreateObjectFormForItem(
                                SelectedItem,
                                new FormFactoryConfiguration() { ViewModeId = CurrentViewModeId })
                            ?? throw new InvalidOperationException("form == null");

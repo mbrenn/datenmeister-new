@@ -37,7 +37,7 @@ namespace DatenMeister.Html
         /// <param name="extentForm">The extent form being used to create the tables</param>
         public void FormatCollectionOfItems(IReflectiveCollection collection, IObject extentForm)
         {
-            var tabs = extentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = extentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
             if (tabs == null)
             {
                 FormatCollectionByTab(collection, extentForm);
@@ -53,7 +53,7 @@ namespace DatenMeister.Html
         private void FormatCollectionByTab(IEnumerable<object?> collection, IObject listForm)
         {
             var table = new HtmlTable();
-            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
             if (fields == null)
             {
@@ -104,7 +104,7 @@ namespace DatenMeister.Html
                     else if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__FullNameFieldData) == true)
                     {
                         var result = NamedElementMethods.GetFullNameWithoutElementId(item);
-                        if (result == null || string.IsNullOrEmpty(result))
+                        if (string.IsNullOrEmpty(result))
                         {
                             value = new HtmlRawString("<i>Root</i>");
                         }
@@ -175,7 +175,7 @@ namespace DatenMeister.Html
 
             CreateDetailRowsForFields(item, detailForm, table);
 
-            var tabs = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.tab);
+            var tabs = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
             if (tabs != null)
             {
                 foreach (var tab in tabs.OfType<IElement>())
@@ -196,7 +196,7 @@ namespace DatenMeister.Html
         /// <param name="table">The Html Table in which the fields will be include</param>
         private static void CreateDetailRowsForFields(IObject item, IObject form, HtmlTable table)
         {
-            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             if (fields == null)
             {
                 throw new InvalidOperationException("Fields are null...");

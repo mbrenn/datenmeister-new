@@ -10,25 +10,17 @@
 
 <h1>Items Overview</h1>
 
+<div id="dm-viewmode-selection-container">
+    
+</div>
+
 <script type="application/javascript">
 
 $(function()
 {
-    requirejs(['forms/Forms'], function (Forms)
+    requirejs(['page/ItemsOverview'], function (Page)
     {
-        let listForm = new Forms.CollectionFormCreator();
-        listForm.createListForRootElements(
-            $("#items"),
-            "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
-            "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
-            {isReadOnly: true});
-    });
-    
-    requirejs(['forms/ListForm'], function (listForm)
-    {
-        listForm.openMetaClassSelectionFormForNewItem(
-            $(".dm-btn-create-item-with-metaclass"),
-            $("#dm-btn-create-item-metaclass"),            
+        Page.init(
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
     });
@@ -37,12 +29,12 @@ $(function()
 </script>
 
 <div>
-    <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create Item</a>
-    <btn class="btn btn-secondary dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
+    <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
+    <btn class="btn btn-secondary" id="dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
 </div>
 
 <div id="dm-btn-create-item-metaclass"></div>
-<div id="items"></div>
+<div id="dm-items"></div>
 
 <div class="accordion" id="debug_accordion">
     <div class="accordion-item">
@@ -63,7 +55,13 @@ $(function()
             </button>
         </h2>
         <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
-            <div class="accordion-body" id="debug_formelement">
+            <div class="accordion-body">
+                <div id="form_selection_container"></div>
+                <div>
+                    <button class="btn btn-light" id="dm-store-current-form-btn">Store auto-generated form</button>
+                </div>
+                <div id="debug_formelement">
+                </div>
             </div>
         </div>
     </div>

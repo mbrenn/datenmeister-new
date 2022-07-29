@@ -7,7 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Provider.XMI.UmlBootstrap;
+using DatenMeister.Provider.Xmi.Provider.XMI.UmlBootstrap;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -17,7 +17,7 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class WalkPackageClass
     {
-        protected Version FactoryVersion = new Version(1, 0, 1, 0);
+        protected Version FactoryVersion = new(1, 0, 1, 0);
 
         /// <summary>
         /// Stores the source parser to find out the elements and attributes
@@ -325,7 +325,7 @@ namespace DatenMeister.SourcecodeGenerator
             /// <summary>
             /// Gets the callstack for the next level
             /// </summary>
-            public CallStack Next => new CallStack(this);
+            public CallStack Next => new(this);
 
             /// <summary>
             ///     Creates an indented callstack without increasing the level.

@@ -49,17 +49,14 @@ namespace DatenMeister.WPF.Commands
                 var document = XDocument.Parse(dataAsXmi);
                 if (document.Root?.Name == "item") // Just one item
                 {
-                    if (_targetElement != null)
-                    {
-                        var xmiProvider = new XmiProvider();
-                        var tempExtent = new MofExtent(xmiProvider);
+                    var xmiProvider = new XmiProvider();
+                    var tempExtent = new MofExtent(xmiProvider);
 
-                        var providerObject = xmiProvider.CreateProviderObject(document.Root);
-                        var element = new MofElement(providerObject, tempExtent);
+                    var providerObject = xmiProvider.CreateProviderObject(document.Root);
+                    var element = new MofElement(providerObject, tempExtent);
 
-                        var copier = new ObjectCopier(new MofFactory(tempExtent));
-                        copier.CopyProperties(element, _targetElement);
-                    }
+                    var copier = new ObjectCopier(new MofFactory(tempExtent));
+                    copier.CopyProperties(element, _targetElement);
                 }
                 else
                 {

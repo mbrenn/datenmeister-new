@@ -1,5 +1,4 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Models;
 using System;
 using System.Collections.Generic;
 using DatenMeister.Forms.FormModifications;
@@ -20,7 +19,7 @@ namespace DatenMeister.Forms.Helper
         /// Gets the dictionary of parameters being used to give additional information to the action buttons.
         /// These parameter will be moved to the client within the action button information as subelement
         /// </summary>
-        public Dictionary<string, string> Parameter { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Parameter { get; } = new();
         
         /// <summary>
         /// The title being used. 

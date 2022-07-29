@@ -1,7 +1,7 @@
-define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"], function (require, exports, Mof, FieldFactory_1, TextField) {
+define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField", "../models/DatenMeister.class"], function (require, exports, Mof, FieldFactory_1, TextField, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DetailForm = exports.SubmitMethod = void 0;
+    exports.RowForm = exports.SubmitMethod = void 0;
     // Defines the possible submit methods, a user can chose to close the detail form
     var SubmitMethod;
     (function (SubmitMethod) {
@@ -10,7 +10,7 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
         // The user clicked on the save and close button
         SubmitMethod[SubmitMethod["SaveAndClose"] = 1] = "SaveAndClose";
     })(SubmitMethod = exports.SubmitMethod || (exports.SubmitMethod = {}));
-    class DetailForm {
+    class RowForm {
         refreshForm() {
             this.createFormByObject(this.parentHtml, this.configuration);
         }
@@ -43,19 +43,36 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                 if (!fields.hasOwnProperty(n))
                     continue;
                 const field = fields[n];
-                tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
-                const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
-                $(".key", tr).text(name);
                 const fieldMetaClassId = field.metaClass.id;
+                const fieldMetaClassUri = field.metaClass.uri;
                 let fieldElement = null; // The instance if IFormField allowing to create the dom
                 let htmlElement; // The dom that had been created... 
-                fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassId, {
+                // Creates the field to be shown 
+                fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassUri, {
                     configuration: configuration,
                     field: field,
                     itemUrl: itemUri,
                     isReadOnly: configuration.isReadOnly,
                     form: this
                 });
+                const singleColumn = (fieldElement === null || fieldElement === void 0 ? void 0 : fieldElement.showNameField) === undefined ? false : fieldElement.showNameField();
+                // Creates the row
+                if (singleColumn) {
+                    tr = $("<tr><td class='value' colspan='2'></td></tr>");
+                }
+                else {
+                    tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+                }
+                // Creates the key column content
+                if (!singleColumn) {
+                    let name = (_a = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.title)) !== null && _a !== void 0 ? _a : field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.name);
+                    const isReadOnly = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly);
+                    if (isReadOnly) {
+                        name += " [R]";
+                    }
+                    $(".key", tr).text(name);
+                }
+                // Creates the value column content
                 if (fieldElement === null) {
                     // No field element was created.
                     htmlElement = $("<em></em>");
@@ -69,7 +86,9 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                     fieldElement.itemUrl = itemUri;
                     htmlElement = fieldElement.createDom(this.element);
                 }
+                // Pushes the field to the internal field list, so the data can be retrieved afterwards
                 this.fieldElements.push(fieldElement);
+                // And finally adds it 
                 $(".value", tr).append(htmlElement);
                 tableBody.append(tr);
             }
@@ -122,13 +141,20 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
                 });
                 function saveHelper(method) {
                     if (tthis.onChange !== undefined && tthis.onCancel !== null) {
+                        const saveElement = new Mof.DmObject();
                         for (let m in tthis.fieldElements) {
                             if (!tthis.fieldElements.hasOwnProperty(m))
                                 continue;
                             const fieldElement = tthis.fieldElements[m];
-                            fieldElement.evaluateDom(tthis.element);
+                            if (fieldElement.field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                                // Just take the fields which are not readonly
+                                fieldElement.evaluateDom(tthis.element);
+                                // Now evaluates the field and put only the properties being shown
+                                // into the DmObject to avoid overwriting of protected and non-shown properties
+                                fieldElement.evaluateDom(saveElement);
+                            }
                         }
-                        tthis.onChange(tthis.element, method);
+                        tthis.onChange(saveElement, method);
                     }
                 }
                 $(".dm-detail-form-save", tr).on('click', () => {
@@ -151,6 +177,6 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField"]
             parent.append(tableInfo);
         }
     }
-    exports.DetailForm = DetailForm;
+    exports.RowForm = RowForm;
 });
-//# sourceMappingURL=DetailForm.js.map
+//# sourceMappingURL=RowForm.js.map

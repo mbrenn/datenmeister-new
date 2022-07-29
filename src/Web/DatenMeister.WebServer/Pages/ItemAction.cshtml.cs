@@ -21,13 +21,6 @@ namespace DatenMeister.WebServer.Pages
 
         [Parameter] public string? FormUri { get; set; } = string.Empty;
 
-        /// <summary>
-        /// The javascript equivalent for the FormUri
-        /// </summary>
-        public string JsFormUri =>
-            string.IsNullOrEmpty(FormUri)
-                ? "undefined"
-                : $"\"{HttpUtility.JavaScriptStringEncode(FormUri)}\"";
 
         public ActionResult OnGet(string actionName, string? formUri, string? metaclass = null)
         {

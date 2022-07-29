@@ -21,12 +21,12 @@ namespace DatenMeister.Extent.Forms
         public bool ModifyForm(FormCreationContext context, IElement form)
         {
             if (context.MetaClass?.Equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true
-                && context.FormType == _DatenMeister._Forms.___FormType.Detail
+                && context.FormType == _DatenMeister._Forms.___FormType.Object
                 && context.ParentPropertyName == string.Empty
                 && context.DetailElement != null)
             {
                 var tabPackagedElement =
-                    FormMethods.GetListTabForPropertyName(form,
+                    FormMethods.GetTableFormForPropertyName(form,
                         _DatenMeister._CommonTypes._Default._Package.packagedElement);
 
                 if (tabPackagedElement != null)
@@ -34,7 +34,7 @@ namespace DatenMeister.Extent.Forms
                     var factory = new MofFactory(form);
 
                     var defaultTypes =
-                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm
+                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm
                             .defaultTypesForNewElements);
 
                     // Checks the preferred types

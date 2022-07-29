@@ -3,14 +3,14 @@ define(["require", "exports", "./Interfaces"], function (require, exports, Inter
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
     class Field extends Interfaces_1.BaseField {
-        constructor(unknownFieldName) {
+        constructor(unknownFieldUri) {
             super();
-            this.unknownFieldName = unknownFieldName;
+            this.unknownFieldUri = unknownFieldUri;
         }
         createDom(dmElement) {
             var _a;
             const result = $("<em></em>");
-            result.text((_a = this.unknownFieldName) !== null && _a !== void 0 ? _a : "unknown");
+            result.text((_a = this.unknownFieldUri) !== null && _a !== void 0 ? _a : "unknown");
             return result;
         }
         evaluateDom(dmElement) {

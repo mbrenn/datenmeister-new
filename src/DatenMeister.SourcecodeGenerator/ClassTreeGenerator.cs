@@ -62,8 +62,10 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}public class _{name}");
             Result.AppendLine($"{stack.Indentation}{{");
 
-            var innerStack = new CallStack(stack);
-            innerStack.Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}";
+            var innerStack = new CallStack(stack)
+            {
+                Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}"
+            };
 
             base.WalkPackage(element, stack);
 

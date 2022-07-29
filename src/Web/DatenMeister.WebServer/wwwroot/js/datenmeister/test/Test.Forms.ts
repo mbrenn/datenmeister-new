@@ -3,7 +3,8 @@ import * as ClientExtent from "../client/Extents";
 import * as ClientWorkspace from "../client/Workspace";
 import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
-import {DmObject} from "../Mof";
+import {DmObject, ObjectType} from "../Mof";
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 export function includeTests() {
     describe('Forms', () => {
@@ -38,7 +39,7 @@ export function includeTests() {
         });
 
         it('Load Default Form for Extents', async () => {
-            const form = await ClientForms.getDefaultFormForExtent('Test', 'dm:///unittest', '');
+            const form = await ClientForms.getCollectionFormForExtent('Test', 'dm:///unittest', '');
             chai.assert.isTrue(form !== undefined, 'Form was not found');
 
             const tab = form.get('tab');
@@ -62,9 +63,36 @@ export function includeTests() {
 
             chai.assert.isTrue(found, 'Field with name was not found');
         });
+        
+        it('Load Specific Form with different Form Types', async () => {
+            // Test that default form is a row form
+            const form = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent');
+            
+            chai.assert.isTrue(form.metaClass.name === "RowForm", 'Not a row Form');
+            
+            // Test that retrieval as collection form is working
+            const formAsCollection = await ClientForms.getForm(
+                'dm:///_internal/forms/internal#ImportManagerFindExtent', 
+                ClientForms.FormType.Collection);
+            chai.assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
+            
+            const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
+            chai.assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
+            chai.assert.isTrue((tabs[0] as DmObject).metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
+
+            // Test that retrieval as Object Form is working
+            const formAsObject = await ClientForms.getForm(
+                'dm:///_internal/forms/internal#ImportManagerFindExtent',
+                ClientForms.FormType.Object);
+            chai.assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
+
+            const tabsObject = formAsObject.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
+            chai.assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');
+            chai.assert.isTrue((tabsObject[0] as DmObject).metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
+        });
 
         it('Load Default Form for Detail', async () => {
-            const form = await ClientForms.getDefaultFormForItem('Test', itemUri, '');
+            const form = await ClientForms.getObjectFormForItem('Test', itemUri, '');
             chai.assert.isTrue(form !== undefined, 'Form was not found');
 
             const tab = form.get('tab');
@@ -86,7 +114,7 @@ export function includeTests() {
                 }
             }
             chai.assert.isTrue(found, 'Field with name was not found');
-            
+
             // Check, if we have a metaclass 
             found = false;
             for (let n in fields) {
@@ -95,9 +123,22 @@ export function includeTests() {
                     found = true;
                 }
             }
-            
+
             chai.assert.isTrue(found, 'Fields do not contain a metaclass');
 
+        });
+
+        it('Load ViewModes', async () => {
+            const viewModes = await ClientForms.getViewModes();
+            let found = false;
+            for (let n in viewModes.viewModes) {
+                const v = viewModes.viewModes[n];
+                if (v.get('id') === "Default") {
+                    found = true;
+                }
+            }
+
+            chai.assert.isTrue(found, "The Default viewMode was not found");
         });
 
         after(async function () {

@@ -48,7 +48,7 @@ class ZipCodeLoader {
 
         this.getZipCodes(searchText).done(
             (data: ZipCodeData) => {
-                if (this.step != currentStep) return;
+                if (this.step !== currentStep) return;
                 
                 let htmlResult = "";
                 if (data.truncated === true)

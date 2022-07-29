@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Forms.Lists
         internal static FormDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
-            var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+            var formsPlugin = GiveMe.Scope.Resolve<FormMethods>();
             var formFactory = GiveMe.Scope.Resolve<FormFactory>();
 
             var formElement = formsPlugin.GetInternalFormExtent()
@@ -59,11 +59,11 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 // The form was not found, so the form is created automatically
                 // Creates the form out of the properties of the workspace
-                formElement = formFactory.CreateListFormForCollection(
+                formElement = formFactory.CreateTableFormForCollection(
                                   extent.elements(),
                                   new FormFactoryConfiguration())
                               ?? throw new InvalidOperationException("List form could not be created");
-                formElement.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
+                formElement.set(_DatenMeister._Forms._TableForm.inhibitNewItems, true);
             }
 
             var formDefinition = new FormDefinition("Workspaces", formElement)
@@ -152,7 +152,7 @@ namespace DatenMeister.WPF.Forms.Lists
             string workspaceId,
             INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var viewLogic = GiveMe.Scope.Resolve<FormMethods>();
             var formFactory = GiveMe.Scope.Resolve<FormFactory>();
             var viewExtent = viewLogic.GetInternalFormExtent();
             var result =
@@ -161,13 +161,13 @@ namespace DatenMeister.WPF.Forms.Lists
             if (result == null)
             {
                 result =
-                    formFactory.CreateListFormForCollection(
+                    formFactory.CreateTableFormForCollection(
                         extent.elements(),
                         new FormFactoryConfiguration()) ??
                     throw new InvalidOperationException("listForm == null");
-                result.set(_DatenMeister._Forms._ListForm.inhibitDeleteItems, true);
-                result.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
-                result.set(_DatenMeister._Forms._ListForm.property,
+                result.set(_DatenMeister._Forms._TableForm.inhibitDeleteItems, true);
+                result.set(_DatenMeister._Forms._TableForm.inhibitNewItems, true);
+                result.set(_DatenMeister._Forms._TableForm.property,
                     nameof(_DatenMeister._Management._Workspace.extents));
             }
 

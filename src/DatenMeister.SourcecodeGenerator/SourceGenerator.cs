@@ -35,14 +35,11 @@ namespace DatenMeister.SourcecodeGenerator
                         IntegrateInheritedProperties = false
                     });
 
-                if (typeObject != null)
-                {
-                    // And adds the converted elements to package and the package to the temporary MOF Extent
-                    PackageMethods.AddObjectToPackage(package, typeObject);
-                    extent.TypeLookup.Add(
-                        typeObject.GetUri() ?? throw new InvalidOperationException("GetUri() == null"),
-                        type);
-                }
+                // And adds the converted elements to package and the package to the temporary MOF Extent
+                PackageMethods.AddObjectToPackage(package, typeObject);
+                extent.TypeLookup.Add(
+                    typeObject.GetUri() ?? throw new InvalidOperationException("GetUri() == null"),
+                    type);
             }
 
             // Creates the source parser which is needed to navigate through the package
@@ -97,8 +94,8 @@ namespace DatenMeister.SourcecodeGenerator
             // Creates the Dot Net Integration Parser
             var dotNetGenerator = new DotNetIntegrationGenerator();
             dotNetGenerator.Create(
-                options.Namespace ?? string.Empty,
-                options.Name ?? string.Empty,
+                options.Namespace,
+                options.Name,
                 options.Types);
 
             var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");

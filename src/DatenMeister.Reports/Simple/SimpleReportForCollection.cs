@@ -93,13 +93,13 @@ namespace DatenMeister.Reports.Simple
 
                     if (metaClass.Key == null)
                     {
-                        foundForm = _formCreator.CreateListFormForCollection(
+                        foundForm = _formCreator.CreateTableFormForCollection(
                             collection,
                             creationMode);
                     }
                     else
                     {
-                        foundForm = _formCreator.CreateListFormForMetaClass(metaClass.Key, creationMode);
+                        foundForm = _formCreator.CreateTableFormForMetaClass(metaClass.Key, creationMode);
                     }
 
                     AddFullNameColumnIfNecessary(foundForm);
@@ -111,7 +111,7 @@ namespace DatenMeister.Reports.Simple
             {
                 if (foundForm == null)
                 {
-                    foundForm = _formCreator.CreateListFormForCollection(
+                    foundForm = _formCreator.CreateTableFormForCollection(
                         elements,
                         creationMode);
 
@@ -130,7 +130,7 @@ namespace DatenMeister.Reports.Simple
                 var fullNamefield = MofFactory.Create(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
                 fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
                 fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
-                foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, fullNamefield);
+                foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(0, fullNamefield);
             }
         }
 
@@ -140,7 +140,7 @@ namespace DatenMeister.Reports.Simple
             var collection = new TemporaryReflectiveSequence(metaClass);
 
             Debug.Assert(_itemFormatter != null, nameof(_itemFormatter) + " != null");
-            _itemFormatter!.FormatCollectionOfItems(collection, form);
+            _itemFormatter.FormatCollectionOfItems(collection, form);
         }
     }
 }

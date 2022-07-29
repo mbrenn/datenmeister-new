@@ -10,8 +10,8 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Locking;
-using DatenMeister.Provider.XMI;
-using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Provider.Xmi.Provider.XMI;
+using DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi.Runtime

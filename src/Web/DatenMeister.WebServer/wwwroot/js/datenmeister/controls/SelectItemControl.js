@@ -18,6 +18,8 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             this.showExtentInBreadcrumb = false;
             this.showCancelButton = true;
             this.hideAtStartup = false;
+            this.setButtonText = "Set";
+            this.headline = undefined;
         }
     }
     exports.Settings = Settings;
@@ -66,6 +68,7 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             this.htmlWorkspaceSelect.on('change', () => tthis.onWorkspaceChangedByUser());
             this.htmlExtentSelect.on('change', () => tthis.onExtentChangedByUser());
             const div = $("<table class='dm-selectitemcontrol'>" +
+                "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
                 "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
                 "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
                 "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
@@ -81,8 +84,12 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             $(".dm-sic-extent", div).append(this.htmlExtentSelect);
             $(".dm-sic-items", div).append(this.htmlItemsList);
             $(".dm-sic-selected", div).append(this.htmlSelectedElements);
+            if (this.settings.headline !== undefined) {
+                $(".dm-selectitemcontrol-headline", div).text(settings.headline);
+            }
             this.htmlBreadcrumbList = $(".breadcrumb", div);
             const setButton = $(".dm-sic-button", div);
+            setButton.text(this.settings.setButtonText);
             setButton.on('click', () => {
                 tthis.itemSelected.invoke(tthis.selectedItem);
             });
@@ -224,6 +231,7 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                 }
                 else {
                     const items = yield EL.getAllExtents(workspaceId);
+                    this.htmlExtentSelect.empty();
                     const none = $("<option value=''>--- None ---</option>");
                     tthis.htmlExtentSelect.append(none);
                     tthis.loadedExtents = items;

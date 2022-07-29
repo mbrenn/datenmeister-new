@@ -1,5 +1,4 @@
 ﻿ using System;
- using System.Collections.Generic;
  using System.Linq;
  using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -15,7 +14,6 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class TypeScriptInterfaceGenerator : WalkPackageClass
     {
-
         /// <summary>
         ///     Initializes a new instance of the ClassTreeGenerator
         /// </summary>
@@ -34,8 +32,6 @@ namespace DatenMeister.SourcecodeGenerator
         /// </param>
         public override void Walk(IUriExtent extent)
         {
-            
-
             base.Walk(extent);
         }
 
@@ -58,7 +54,7 @@ namespace DatenMeister.SourcecodeGenerator
                 Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}"
             };
 
-            base.WalkPackage(element, stack);
+            base.WalkPackage(element, innerStack);
             Result.AppendLine($"{stack.Indentation}}}");
             Result.AppendLine();
         }
@@ -104,7 +100,6 @@ namespace DatenMeister.SourcecodeGenerator
         /// May be null, then WalkEnumLiteral will be called</param>
         protected override void WalkEnum(IObject enumInstance, CallStack stack, Action<IObject, CallStack>? callee = null)
         {
-            var asElement = (IElement) enumInstance;
             var name = GetNameOfElement(enumInstance);
 
             Result.AppendLine($"{stack.Indentation}export module _{name}");
@@ -160,7 +155,7 @@ namespace DatenMeister.SourcecodeGenerator
             return name;
         }
         
-        private string[]? _reservedKeywords = null;
+        private string[]? _reservedKeywords;
         
         /// <summary>
         /// Gets an array of the reserved keywords

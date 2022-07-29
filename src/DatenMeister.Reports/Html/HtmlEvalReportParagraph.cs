@@ -10,7 +10,7 @@ namespace DatenMeister.Reports.Html
             var htmlParagraph = new HtmlParagraph(paragraph);
 
             // Gets the cssClass
-            if (!string.IsNullOrEmpty(cssClass) && cssClass != null)
+            if (!string.IsNullOrEmpty(cssClass))
             {
                 htmlParagraph.CssClass = cssClass;
             }

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../client/Extents", "../client/Workspace", "../client/Items", "../client/Forms"], function (require, exports, ClientExtent, ClientWorkspace, ClientItems, ClientForms) {
+define(["require", "exports", "../client/Extents", "../client/Workspace", "../client/Items", "../client/Forms", "../Mof", "../models/DatenMeister.class"], function (require, exports, ClientExtent, ClientWorkspace, ClientItems, ClientForms, Mof_1, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -33,7 +33,7 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                 });
             });
             it('Load Default Form for Extents', () => __awaiter(this, void 0, void 0, function* () {
-                const form = yield ClientForms.getDefaultFormForExtent('Test', 'dm:///unittest', '');
+                const form = yield ClientForms.getCollectionFormForExtent('Test', 'dm:///unittest', '');
                 chai.assert.isTrue(form !== undefined, 'Form was not found');
                 const tab = form.get('tab');
                 chai.assert.isTrue(tab !== undefined, 'tabs are not defined');
@@ -53,8 +53,25 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                 }
                 chai.assert.isTrue(found, 'Field with name was not found');
             }));
+            it('Load Specific Form with different Form Types', () => __awaiter(this, void 0, void 0, function* () {
+                // Test that default form is a row form
+                const form = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent');
+                chai.assert.isTrue(form.metaClass.name === "RowForm", 'Not a row Form');
+                // Test that retrieval as collection form is working
+                const formAsCollection = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', ClientForms.FormType.Collection);
+                chai.assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
+                const tabs = formAsCollection.get(DatenMeister_class_1._DatenMeister._Forms._CollectionForm.tab, Mof_1.ObjectType.Array);
+                chai.assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
+                chai.assert.isTrue(tabs[0].metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
+                // Test that retrieval as Object Form is working
+                const formAsObject = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', ClientForms.FormType.Object);
+                chai.assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
+                const tabsObject = formAsObject.get(DatenMeister_class_1._DatenMeister._Forms._CollectionForm.tab, Mof_1.ObjectType.Array);
+                chai.assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');
+                chai.assert.isTrue(tabsObject[0].metaClass.name === "RowForm", 'Tab of ObjectForm is not a RowForm');
+            }));
             it('Load Default Form for Detail', () => __awaiter(this, void 0, void 0, function* () {
-                const form = yield ClientForms.getDefaultFormForItem('Test', itemUri, '');
+                const form = yield ClientForms.getObjectFormForItem('Test', itemUri, '');
                 chai.assert.isTrue(form !== undefined, 'Form was not found');
                 const tab = form.get('tab');
                 chai.assert.isTrue(tab !== undefined, 'tabs are not defined');
@@ -82,6 +99,17 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                     }
                 }
                 chai.assert.isTrue(found, 'Fields do not contain a metaclass');
+            }));
+            it('Load ViewModes', () => __awaiter(this, void 0, void 0, function* () {
+                const viewModes = yield ClientForms.getViewModes();
+                let found = false;
+                for (let n in viewModes.viewModes) {
+                    const v = viewModes.viewModes[n];
+                    if (v.get('id') === "Default") {
+                        found = true;
+                    }
+                }
+                chai.assert.isTrue(found, "The Default viewMode was not found");
             }));
             after(function () {
                 return __awaiter(this, void 0, void 0, function* () {

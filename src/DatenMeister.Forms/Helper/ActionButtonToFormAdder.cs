@@ -52,15 +52,20 @@ namespace DatenMeister.Forms.Helper
                     var formMetaClass = form.getMetaClass();
 
                     var forms = new List<IObject>();
-                    if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__ExtentForm) == true)
+                    if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true
+                        || formMetaClass?.equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true)
                     {
-                        if (context.FormType != _DatenMeister._Forms.___FormType.ObjectList)
-                            forms.AddRange(FormMethods.GetDetailForms(form));
-
-                        if (context.FormType != _DatenMeister._Forms.___FormType.TreeItemDetail &&
-                            context.FormType != _DatenMeister._Forms.___FormType.Detail &&
-                            context.FormType != _DatenMeister._Forms.___FormType.TreeItemDetailExtension)
-                            forms.AddRange(FormMethods.GetListForms(form));
+                        switch (context.FormType)
+                        {
+                            case _DatenMeister._Forms.___FormType.Row:
+                            case _DatenMeister._Forms.___FormType.RowExtension:
+                                forms.AddRange(FormMethods.GetRowForms(form));
+                                break;
+                            case _DatenMeister._Forms.___FormType.Table:
+                            case _DatenMeister._Forms.___FormType.TableExtension:
+                                forms.AddRange(FormMethods.GetTableForms(form));
+                                break;
+                        }
                     }
                     else
                     {
@@ -69,7 +74,7 @@ namespace DatenMeister.Forms.Helper
 
                     foreach (var formWithFields in forms)
                     {
-                        var fields = formWithFields.get<IReflectiveSequence>(_DatenMeister._Forms._DetailForm.field);
+                        var fields = formWithFields.get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
                         var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, _parameter.ActionName);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);

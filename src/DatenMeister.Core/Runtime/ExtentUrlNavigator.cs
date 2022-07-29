@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Net;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;

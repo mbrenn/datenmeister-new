@@ -9,7 +9,7 @@ import * as FormClient from "./client/Forms";
 import * as ActionClient from "./client/Actions";
 import * as DatenMeisterModel from "./models/DatenMeister.class";
 
-import {SubmitMethod} from "./forms/DetailForm";
+import {SubmitMethod} from "./forms/RowForm";
 
 export module DetailFormActions {
 
@@ -66,6 +66,9 @@ export module DetailFormActions {
     export async function loadFormForAction(actionName: string) {
         if (actionName === 'Workspace.Extent.LoadOrCreate') {
             return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
+        }
+        if (actionName === 'Forms.Create.ByMetaClass') {
+            return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
         }
 
         return Promise.resolve(undefined);
@@ -207,6 +210,32 @@ export module DetailFormActions {
 
                 break;
             }
+
+
+            case "Forms.Create.ByMetaClass": {
+                const extentCreationParameter = new DmObject();
+                extentCreationParameter.set('configuration', element);
+                extentCreationParameter.setMetaClassByUri(
+                    DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri
+                )
+
+                const result = await ActionClient.executeAction(
+                    "Execute",
+                    {
+                        parameter: extentCreationParameter
+                    }
+                );
+
+                if (result.success !== true) {
+                    alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
+                } else {
+                    alert('Form was created successfully');
+                }
+
+                break;
+            }
+
+
             case "Workspace.Extent.Xmi.Create":
                 await ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",

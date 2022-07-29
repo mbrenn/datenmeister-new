@@ -9,7 +9,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.Xml
+namespace DatenMeister.Provider.Xmi.Provider.Xml
 {
     public class XmlReferenceLoader : IProviderLoader
     {

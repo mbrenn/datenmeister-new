@@ -12,9 +12,17 @@ namespace DatenMeister.Forms
         /// <param name="element">Element to which the form is requested</param>
         /// <param name="configuration">Configuration to be used</param>
         /// <returns>The instance of the extent form</returns>
-        IElement? CreateExtentFormForItem(IObject element, FormFactoryConfiguration configuration);
+        IElement? CreateObjectFormForItem(IObject element, FormFactoryConfiguration configuration);
 
-        IElement? CreateDetailFormForItem(IObject element, FormFactoryConfiguration configuration);
+        IElement? CreateRowFormForItem(IObject element, FormFactoryConfiguration configuration);
+
+        /// <summary>
+        /// Creates the detail form by a certain metaclass
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be used</param>
+        /// <param name="creationMode">Creation Mode to be used</param>
+        /// <returns></returns>
+        IElement? CreateRowFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode);
 
         /// <summary>
         /// Gets the extent form for a certain item's metaclass.
@@ -23,9 +31,9 @@ namespace DatenMeister.Forms
         /// <param name="metaClass">MetaClass to which the form shall be provided</param>
         /// <param name="configuration">Configuration to be used</param>
         /// <returns>The instance of the extent form</returns>
-        IElement? CreateExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+        IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
 
-        IElement? CreateListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
+        IElement? CreateTableFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
 
         /// <summary>
         ///     Creates the list form for a specific meta class.
@@ -33,18 +41,18 @@ namespace DatenMeister.Forms
         /// <param name="metaClass">Metaclass to be handled</param>
         /// <param name="configuration">Configuration of the metaclass. </param>
         /// <returns></returns>
-        IElement? CreateListFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+        IElement? CreateTableFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
 
-        IElement? CreateExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
+        IElement? CreateCollectionFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
 
-        IElement? CreateListFormForPropertyValues(IObject? element, string propertyName, IElement? propertyType,
+        IElement? CreateTableFormForProperty(IObject? element, string propertyName, IElement? propertyType,
             FormFactoryConfiguration configuration);
 
 
-        public IElement? CreateListFormForPropertyValues(IObject element, string propertyName,
+        public IElement? CreateTableFormForPropertyValues(IObject element, string propertyName,
             FormFactoryConfiguration configuration)
         {
-            return CreateListFormForPropertyValues(element, propertyName, null, configuration);
+            return CreateTableFormForProperty(element, propertyName, null, configuration);
         }
     }
 }

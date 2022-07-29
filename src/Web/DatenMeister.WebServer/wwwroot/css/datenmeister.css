@@ -115,6 +115,13 @@ a {
     margin-bottom: 0;
 }
 
+/* Used to style undefined values in textfields and other fields with a light color to de-emphasize 
+ * the visibility of these items
+*/
+.dm-undefined{
+    color: darkgray;
+}
+
 .dm-selectitemcontrol {
     border-collapse: collapse;
 }
@@ -219,6 +226,16 @@ a {
     color: dimgray;
     font-size: 80%;
     font-style: italic;
+}
+
+/*
+ * Being used as separator line
+ */
+.dm-separatorline
+{
+    border: 1px solid black;
+    margin: 2px;
+    opacity: 1;
 }
 
 

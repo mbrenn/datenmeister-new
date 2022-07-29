@@ -23,7 +23,7 @@ var ZipCodeLoader = /** @class */ (function () {
         this.step++;
         var currentStep = this.step;
         this.getZipCodes(searchText).done(function (data) {
-            if (_this.step != currentStep)
+            if (_this.step !== currentStep)
                 return;
             var htmlResult = "";
             if (data.truncated === true) {

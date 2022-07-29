@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -11,8 +12,10 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms.FormFinder;
 
 namespace DatenMeister.Forms
 {
@@ -25,9 +28,17 @@ namespace DatenMeister.Forms
         ///     Logger being used
         /// </summary>
         private static readonly ClassLogger Logger = new(typeof(FormMethods));
-
+        
+        /// <summary>
+        /// Stores the scope storage
+        /// </summary>
         private readonly IScopeStorage _scopeStorage;
-
+        
+        /// <summary>
+        /// Stores the type of the extent containing the views
+        /// </summary>
+        public const string FormExtentType = "DatenMeister.Forms";
+        
         /// <summary>
         ///     Stores the workspacelogic
         /// </summary>
@@ -46,12 +57,15 @@ namespace DatenMeister.Forms
         /// <returns>true, if the form is valid</returns>
         public static bool ValidateForm(IObject form)
         {
-            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            Debug.Assert(_DatenMeister._Forms._RowForm.field == _DatenMeister._Forms._TableForm.field);
+            Debug.Assert(_DatenMeister._Forms._CollectionForm.tab == _DatenMeister._Forms._ObjectForm.tab);
+            
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             if (fields != null)
                 if (!ValidateFields(fields))
                     return false;
 
-            var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
             if (tabs != null)
                 foreach (var tab in tabs.OfType<IObject>())
                     if (!ValidateForm(tab))
@@ -67,7 +81,10 @@ namespace DatenMeister.Forms
         /// <returns>true, if there are no duplications</returns>
         private static bool ValidateFields(IEnumerable fields)
         {
+            // Creates a random GUID to establish a separate namespace for attached fields
             var randomGuid = Guid.NewGuid();
+            
+            // Now go through the hash set
             var set = new HashSet<string>();
             foreach (var field in fields.OfType<IObject>())
             {
@@ -88,6 +105,269 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
+        /// Gets the internal view extent being empty at each start-up
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent GetInternalFormExtent()
+        {
+            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
+            {
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
+            }
+
+            return foundExtent;
+        }
+
+        /// <summary>
+        /// Gets the internal view extent being empty at each start-up
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent? GetInternalFormExtent(bool mayFail)
+        {
+            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
+            {
+                if (mayFail)
+                {
+                    return null;
+                }
+
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
+            }
+
+            return foundExtent;
+        }
+
+        /// <summary>
+        /// Gets the extent of the user being stored on permanent storage
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent GetUserFormExtent()
+        {
+            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
+            {
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
+            }
+
+            return foundExtent;
+        }
+
+        /// <summary>
+        /// Gets the extent of the user being stored on permanent storage
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent? GetUserFormExtent(bool mayFail)
+        {
+            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
+            {
+                if (mayFail)
+                {
+                    return null;
+                }
+
+                throw new InvalidOperationException(
+                    $"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
+            }
+
+            return foundExtent;
+        }
+
+        /// <summary>
+        /// Gets the view extent.. Whether the default internal or the default external
+        /// </summary>
+        /// <param name="locationType">Type of the location to be used</param>
+        /// <returns>The found extent of the given location</returns>
+        public IUriExtent GetFormExtent(FormLocationType locationType)
+        {
+            return locationType switch
+            {
+                FormLocationType.Internal => GetInternalFormExtent(),
+                FormLocationType.User => GetUserFormExtent(),
+                _ => throw new ArgumentOutOfRangeException(nameof(locationType), locationType, null)
+            };
+        }
+
+        /// <summary>
+        /// Gets the view as given by the url of the view
+        /// </summary>
+        /// <param name="url">The Url to be queried</param>
+        /// <returns>The found view or null if not found</returns>
+        public IObject? GetFormByUrl(string url)
+        {
+            if (url.StartsWith(WorkspaceNames.UriExtentInternalForm))
+            {
+                return GetUserFormExtent().element(url);
+            }
+
+            return GetInternalFormExtent().element(url);
+        }
+
+        /// <summary>
+        /// Gets all forms and returns them as an enumeration
+        /// </summary>
+        /// <returns>Enumeration of forms</returns>
+        public IReflectiveCollection GetAllForms()
+        {
+            return
+                new TemporaryReflectiveCollection(
+                    GetAllFormExtents()
+                        .SelectMany(x => x.elements()
+                            .GetAllDescendants(new[]
+                                {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                            .WhenMetaClassIsOneOf(
+                                _DatenMeister.TheOne.Forms.__Form,
+                                _DatenMeister.TheOne.Forms.__ObjectForm,
+                                _DatenMeister.TheOne.Forms.__CollectionForm,
+                                _DatenMeister.TheOne.Forms.__RowForm,
+                                _DatenMeister.TheOne.Forms.__TableForm)),
+                    true);
+        }
+
+
+        /// <summary>
+        /// Adds a new form association between the form and the metaclass
+        /// </summary>
+        /// <param name="form">Form to be used to create the form association</param>
+        /// <param name="metaClass">The metaclass being used for form association</param>
+        /// <param name="formType">Type to be added</param>
+        /// <returns></returns>
+        public IElement AddFormAssociationForMetaclass(
+            IElement form,
+            IElement metaClass,
+            _DatenMeister._Forms.___FormType formType)
+        {
+            var factory = new MofFactory(form);
+
+            var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
+            var name = NamedElementMethods.GetName(form);
+
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.form, form);
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.name, $"Association for {name}");
+
+            return formAssociation;
+        }
+
+        /// <summary>
+        /// Gets an enumeration of all form extents. The form extents have
+        /// to be in the Management Workspace and be of type "DatenMeister.Forms".
+        /// </summary>
+        /// <returns>Enumeration of form extents</returns>
+        public IEnumerable<IExtent> GetAllFormExtents()
+        {
+            var result = _workspaceLogic.GetManagementWorkspace().extent
+                .Where(x => x.GetConfiguration().ContainsExtentType(FormExtentType))
+                .OfType<IUriExtent>()
+                .ToList();
+
+            // Even if internal extent or user form extent does not have the the flag
+            var internalFormExtent = GetInternalFormExtent();
+            if (result.All(x => x.contextURI() != internalFormExtent.contextURI()))
+            {
+                result.Add(internalFormExtent);
+            }
+
+            var userFormExtent = GetInternalFormExtent();
+            if (result.All(x => x.contextURI() != userFormExtent.contextURI()))
+            {
+                result.Add(userFormExtent);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all view associations and returns them as an enumeration
+        /// </summary>
+        /// <returns>Enumeration of associations</returns>
+        public IReflectiveCollection GetAllFormAssociations()
+        {
+            return new TemporaryReflectiveCollection(
+                GetAllFormExtents()
+                    .SelectMany(x =>
+                        x.elements()
+                            .GetAllDescendants(new[]
+                                {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                            .WhenMetaClassIsOneOf(_DatenMeister.TheOne.Forms.__FormAssociation)),
+                true);
+        }
+
+        /// <summary>
+        /// Removes the view association from the database
+        /// </summary>
+        /// <param name="selectedExtentType">Extent type which is currently selected</param>
+        /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
+        public bool RemoveFormAssociationForExtentType(string selectedExtentType, IExtent? viewExtent = null)
+        {
+            var result = false;
+            viewExtent ??= GetUserFormExtent();
+
+            foreach (var foundElement in viewExtent
+                         .elements()
+                         .GetAllDescendantsIncludingThemselves()
+                         .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
+                         .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType)
+                         .OfType<IElement>())
+            {
+                RemoveElement(viewExtent, foundElement);
+
+                result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Removes the view association from the database
+        /// </summary>
+        /// <param name="metaClass">The metaclass which shall be used for the detailled form</param>
+        /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
+        public bool RemoveFormAssociationForObjectMetaClass(IElement metaClass, IExtent? viewExtent = null)
+        {
+            var result = false;
+            viewExtent ??= GetUserFormExtent();
+
+            foreach (var foundElement in viewExtent
+                         .elements()
+                         .GetAllDescendantsIncludingThemselves()
+                         .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
+                         .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
+                         .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType,
+                             _DatenMeister._Forms.___FormType.Row)
+                         .OfType<IElement>())
+            {
+                RemoveElement(viewExtent, foundElement);
+
+                result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Removes the element from the given extent.
+        /// This is more a helper method 
+        /// </summary>
+        /// <param name="viewExtent">The extent in which the element is located</param>
+        /// <param name="foundElement">The found element</param>
+        private static void RemoveElement(IExtent viewExtent, IElement foundElement)
+        {
+            var container = foundElement.container();
+            if (container != null)
+            {
+                container.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
+                    ?.remove(foundElement);
+            }
+            else
+            {
+                viewExtent.elements().remove(foundElement);
+            }
+        }
+
+        /// <summary>
         ///     Checks if the given element already has a metaclass within the form
         /// </summary>
         /// <param name="form">Form to be checked</param>
@@ -96,7 +376,7 @@ namespace DatenMeister.Forms
         {
             var formAndFields = _DatenMeister.TheOne.Forms;
             return form
-                .get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
+                .get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
                 .OfType<IElement>()
                 .Any(x => x.getMetaClass()?.equals(formAndFields.__MetaClassElementFieldData) ?? false);
         }
@@ -121,18 +401,21 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="form">Form to be evaluated</param>
         /// <param name="fieldName">Name of the field</param>
+        /// <param name="metaClass">If not null, the field will only be returned, if the metaclass is fitting</param>
         /// <returns>The found element or null, if not found</returns>
-        public static IElement? GetField(IElement form, string fieldName)
+        public static IElement? GetField(IElement form, string fieldName, IElement? metaClass = null)
         {
-            if (_DatenMeister._Forms._DetailForm.field != _DatenMeister._Forms._ListForm.field)
+            if (_DatenMeister._Forms._RowForm.field != _DatenMeister._Forms._TableForm.field)
                 throw new InvalidOperationException(
-                    "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
+                    "Something ugly happened here: _FormAndFields._DetailForm.tab != _FormAndFields._ListForm.tab." +
+                    "Please check static type definition");
 
-            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
             return fields
                 .WhenPropertyHasValue(_DatenMeister._Forms._FieldData.name, fieldName)
                 .OfType<IElement>()
-                .FirstOrDefault();
+                .FirstOrDefault(
+                    x => metaClass == null || x.metaclass?.equals(metaClass) == true);
         }
 
         /// <summary>
@@ -140,11 +423,16 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>Enumeration of the detail forms</returns>
-        public static IEnumerable<IElement> GetDetailForms(IElement form)
+        public static IEnumerable<IElement> GetRowForms(IElement form)
         {
-            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
+            if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
+            {
+                yield return form;
+            }
+            
+            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab))
                 if (tab is IElement asElement
-                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
                     yield return asElement;
         }
 
@@ -153,11 +441,16 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>Enumeration of the detail forms</returns>
-        public static IEnumerable<IElement> GetListForms(IElement form)
+        public static IEnumerable<IElement> GetTableForms(IElement form)
         {
-            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
+            if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
+            {
+                yield return form;
+            }
+
+            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab))
                 if (tab is IElement asElement
-                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
                     yield return asElement;
         }
 
@@ -167,23 +460,34 @@ namespace DatenMeister.Forms
         /// <param name="form">Form to be evaluated</param>
         /// <param name="propertyName">Name of the property to which the propertyname shall belong</param>
         /// <returns>The found element</returns>
-        public static IElement? GetListTabForPropertyName(IElement form, string propertyName)
+        public static IElement? GetTableFormForPropertyName(IElement form, string propertyName)
         {
-            if (_DatenMeister._Forms._ExtentForm.tab != _DatenMeister._Forms._DetailForm.tab)
+            if (_DatenMeister._Forms._CollectionForm.tab != _DatenMeister._Forms._ObjectForm.tab)
                 throw new InvalidOperationException(
                     "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
-            var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+            var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
 
             foreach (var tab in tabs.OfType<IElement>())
                 if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(),
-                        _DatenMeister.TheOne.Forms.__ListForm))
+                        _DatenMeister.TheOne.Forms.__TableForm))
                 {
-                    var property = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                    var property = tab.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
                     if (property == propertyName) return tab;
                 }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets all available view modes which are stored within the management workspace
+        /// </summary>
+        /// <returns>Enumeration of view modes. These elements are of type 'ViewMode'</returns>
+        public IEnumerable<IObject> GetViewModes()
+        {
+            var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
+            return managementWorkspace.GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
+                .OfType<IObject>();
         }
 
         /// <summary>
@@ -221,9 +525,19 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="subForms">The forms to be added to the extent forms</param>
         /// <returns>The created extent</returns>
-        public static IElement GetExtentFormForSubforms(params IElement[] subForms)
+        public static IElement GetCollectionFormForSubforms(params IElement[] subForms)
         {
-            return FormCreator.FormCreator.CreateExtentFormFromTabs(null, subForms);
+            return FormCreator.FormCreator.CreateCollectionFormFromTabs(null, subForms);
+        }
+        
+        /// <summary>
+        ///     Gets the extent form containing the subforms
+        /// </summary>
+        /// <param name="subForms">The forms to be added to the extent forms</param>
+        /// <returns>The created extent</returns>
+        public static IElement GetObjectFormForSubforms(params IElement[] subForms)
+        {
+            return FormCreator.FormCreator.CreateObjectFormFromTabs(null, subForms);
         }
 
         /// <summary>
@@ -254,7 +568,7 @@ namespace DatenMeister.Forms
         public static void RemoveDuplicatingDefaultNewTypes(IObject form)
         {
             var defaultNewTypesForElements =
-                form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+                form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
             if (defaultNewTypesForElements == null)
             {
                 // Nothing to do, when no default types are set
@@ -288,7 +602,7 @@ namespace DatenMeister.Forms
         public static void AddDefaultTypeForNewElement(IObject form, IObject defaultType)
         {
             var currentDefaultPackages =
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
             if (currentDefaultPackages.OfType<IElement>().Any(x =>
                     x.getOrDefault<IElement>(
                             _DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
@@ -323,7 +637,7 @@ namespace DatenMeister.Forms
         public static void ExpandDropDownValuesOfValueReference(IElement listOrDetailForm)
         {
             var factory = new MofFactory(listOrDetailForm);
-            var fields = listOrDetailForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields = listOrDetailForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             foreach (var field in fields.OfType<IElement>())
             {
                 if (field.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DropDownFieldData) != true) continue;
@@ -343,8 +657,8 @@ namespace DatenMeister.Forms
                         field.AddCollectionItem(_DatenMeister._Forms._DropDownFieldData.values, element);
                     }
 
-                    FormMethods.AddToFormCreationProtocol(listOrDetailForm,
-                        $"[FormFactory.ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
+                    AddToFormCreationProtocol(listOrDetailForm,
+                        $"[ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
                 }
             }
         }
@@ -354,35 +668,35 @@ namespace DatenMeister.Forms
         /// drop down values are removing duplicates
         /// </summary>
         /// <param name="listForm">List form to be evaluated</param>
-        public static void CleanupListForm(IElement listForm)
+        public static void CleanupTableForm(IElement listForm)
         {
             AddDefaultTypeForListFormsMetaClass(listForm);
             ExpandDropDownValuesOfValueReference(listForm);            
-            FormMethods.RemoveDuplicatingDefaultNewTypes(listForm);
+            RemoveDuplicatingDefaultNewTypes(listForm);
         }
 
         private static void AddDefaultTypeForListFormsMetaClass(IObject listForm)
         {
             // Adds the default type corresponding to the list form
-            var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.metaClass);
+            var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass);
             if (metaClass != null)
             {
-                FormMethods.AddDefaultTypeForNewElement(listForm, metaClass);
+                AddDefaultTypeForNewElement(listForm, metaClass);
             }
         }
 
         /// <summary>
-        /// Checks the type of the given element <code>asElement</code> and add its propertytype
+        /// Checks the type of the given element <code>asElement</code> and add its property-type
         /// to the default types
         /// </summary>
         /// <param name="foundForm">The listform to be modified</param>
         /// <param name="asElement">The element being evaluated</param>
         public static void AddDefaultTypesInListFormByElementsProperty(IElement foundForm, IElement asElement)
         {
-            var listForms = FormMethods.GetListForms(foundForm);
+            var listForms = GetTableForms(foundForm);
             foreach (var listForm in listForms)
             {
-                var property = listForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                var property = listForm.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
                 var objectMetaClass = asElement.getMetaClass();
 
                 if (property == null || objectMetaClass == null) continue;
@@ -392,8 +706,66 @@ namespace DatenMeister.Forms
                 var propertyType = PropertyMethods.GetPropertyType(propertyInstance);
 
                 if (propertyType == null) continue;
-                FormMethods.AddDefaultTypeForNewElement(listForm, propertyType);
+                AddDefaultTypeForNewElement(listForm, propertyType);
             }
+        }
+
+        /// <summary>
+        /// Adds a view to the system
+        /// </summary>
+        /// <param name="type">Location Type to which the element shall be added</param>
+        /// <param name="form">View to be added</param>
+        public void Add(FormLocationType type, IObject form)
+        {
+            GetFormExtent(type).elements().add(form);
+        }
+
+        /// <summary>
+        /// Takes the given form and evaluates the requested form type.
+        /// If the requested FormType is a Object or Collection-Form, but the sent form is just a row or
+        /// table form, then the form a new Object/Collection Form will be created and the provided form will
+        /// be added as a child form to the new form.
+        ///
+        /// This allows some loose handling of the correct form type. 
+        /// </summary>
+        /// <param name="form">Form to be evaluated</param>
+        /// <param name="formType">Type of the form which is requested</param>
+        /// <returns>The converted form</returns>
+        public static IElement ConvertFormToObjectOrCollectionForm(IElement form, _DatenMeister._Forms.___FormType formType)
+        {
+            var metaClass = form.metaclass;
+            if (formType == _DatenMeister._Forms.___FormType.Collection
+                && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
+                    metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+            {
+                var converted = FormMethods.GetCollectionFormForSubforms(form);
+                converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+
+                FormMethods.AddToFormCreationProtocol(
+                    converted,
+                    "Friendly conversion from row/table form to collection form:"
+                    + NamedElementMethods.GetName(form));
+                return converted;
+            }
+
+            if (formType == _DatenMeister._Forms.___FormType.Object
+                && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
+                    metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+            {
+                var converted = FormMethods.GetObjectFormForSubforms(form);
+                converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+
+                FormMethods.AddToFormCreationProtocol(
+                    converted,
+                    "Friendly conversion from row/table form to object form:"
+                    + NamedElementMethods.GetName(form));
+
+                return converted;
+            }
+
+            form.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+
+            return form;
         }
     }
 }

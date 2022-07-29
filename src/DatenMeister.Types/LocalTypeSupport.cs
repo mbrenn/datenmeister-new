@@ -30,7 +30,7 @@ namespace DatenMeister.Types
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class LocalTypeSupport : IDatenMeisterPlugin
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(LocalTypeSupport));
+        private static readonly ClassLogger Logger = new(typeof(LocalTypeSupport));
 
         private readonly ExtentCreator _extentCreator;
         private readonly IntegrationSettings _integrationSettings;

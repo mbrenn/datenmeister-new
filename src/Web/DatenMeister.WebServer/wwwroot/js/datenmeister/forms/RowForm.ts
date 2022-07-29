@@ -4,6 +4,7 @@ import * as Mof from "../Mof";
 import {createField} from "./FieldFactory";
 import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 // Defines the possible submit methods, a user can chose to close the detail form
 export enum SubmitMethod
@@ -14,7 +15,7 @@ export enum SubmitMethod
     SaveAndClose
 }
     
-export class DetailForm implements InterfacesForms.IForm {
+export class RowForm implements InterfacesForms.IForm {
     workspace: string;
     extentUri: string;
     itemId: string;
@@ -64,20 +65,15 @@ export class DetailForm implements InterfacesForms.IForm {
         for (let n in fields) {
             if (!fields.hasOwnProperty(n)) continue;
             const field = fields[n] as Mof.DmObject;
-            tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
-
-            const name =
-                (field.get("title") as any as string) ??
-                (field.get("name") as any as string);
-
-            $(".key", tr).text(name);
 
             const fieldMetaClassId = field.metaClass.id;
+            const fieldMetaClassUri = field.metaClass.uri;
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created... 
 
+            // Creates the field to be shown 
             fieldElement = createField(
-                fieldMetaClassId,
+                fieldMetaClassUri,
                 {
                     configuration: configuration,
                     field: field,
@@ -86,6 +82,30 @@ export class DetailForm implements InterfacesForms.IForm {
                     form: this
                 });
 
+            const singleColumn = fieldElement?.showNameField === undefined ? false : fieldElement.showNameField();
+
+            // Creates the row
+            if (singleColumn) {
+                tr = $("<tr><td class='value' colspan='2'></td></tr>");
+            } else {
+                tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+            }
+
+            // Creates the key column content
+            if (!singleColumn) {
+                let name =
+                    (field.get(_DatenMeister._Forms._FieldData.title) as any as string) ??
+                    (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
+
+                const isReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly);
+                if (isReadOnly) {
+                    name += " [R]";
+                }
+
+                $(".key", tr).text(name);
+            }
+
+            // Creates the value column content
             if (fieldElement === null) {
                 // No field element was created.
                 htmlElement = $("<em></em>");
@@ -100,8 +120,10 @@ export class DetailForm implements InterfacesForms.IForm {
                 htmlElement = fieldElement.createDom(this.element);
             }
 
+            // Pushes the field to the internal field list, so the data can be retrieved afterwards
             this.fieldElements.push(fieldElement);
 
+            // And finally adds it 
             $(".value", tr).append(htmlElement);
             tableBody.append(tr);
         }
@@ -167,14 +189,21 @@ export class DetailForm implements InterfacesForms.IForm {
 
             function saveHelper(method: SubmitMethod) {
                 if (tthis.onChange !== undefined && tthis.onCancel !== null) {
+                    const saveElement = new Mof.DmObject();
                     for (let m in tthis.fieldElements) {
                         if (!tthis.fieldElements.hasOwnProperty(m)) continue;
 
                         const fieldElement = tthis.fieldElements[m];
-                        fieldElement.evaluateDom(tthis.element);
+                        if (fieldElement.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                            // Just take the fields which are not readonly
+                            fieldElement.evaluateDom(tthis.element);
+                            // Now evaluates the field and put only the properties being shown
+                            // into the DmObject to avoid overwriting of protected and non-shown properties
+                            fieldElement.evaluateDom(saveElement);
+                        }
                     }
 
-                    tthis.onChange(tthis.element, method);
+                    tthis.onChange(saveElement, method);
                 }
             }
 

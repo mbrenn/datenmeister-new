@@ -10,10 +10,11 @@ export class Settings {
     showExtentInBreadcrumb = false;
     showCancelButton = true;
     hideAtStartup = false;
+    setButtonText = "Set";
+    headline:string|undefined = undefined;
 }
 
 export class SelectItemControl {
-
 
     // Defines the dropdown element in which the user can select the extent
     private htmlExtentSelect: JQuery<HTMLElement>;
@@ -106,6 +107,7 @@ export class SelectItemControl {
 
         const div = $(
             "<table class='dm-selectitemcontrol'>" +
+            "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
             "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
             "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
             "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
@@ -122,8 +124,14 @@ export class SelectItemControl {
         $(".dm-sic-extent", div).append(this.htmlExtentSelect);
         $(".dm-sic-items", div).append(this.htmlItemsList);
         $(".dm-sic-selected", div).append(this.htmlSelectedElements);
+        
+        if (this.settings.headline !== undefined) {
+            $(".dm-selectitemcontrol-headline", div).text(settings.headline);
+        }
+        
         this.htmlBreadcrumbList = $(".breadcrumb", div);
         const setButton = $(".dm-sic-button", div);
+        setButton.text(this.settings.setButtonText);
         setButton.on('click', () => {
             tthis.itemSelected.invoke(tthis.selectedItem);
         });
@@ -283,6 +291,7 @@ export class SelectItemControl {
             this.htmlExtentSelect.append(select);
         } else {
             const items = await EL.getAllExtents(workspaceId);
+            this.htmlExtentSelect.empty();
 
             const none = $("<option value=''>--- None ---</option>");
             tthis.htmlExtentSelect.append(none);

@@ -15,7 +15,7 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
 
-namespace DatenMeister.Modules.UserManagement
+namespace DatenMeister.Users.UserManagement
 {
     /// <summary>
     /// Implements the logic for the user
@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.UserManagement
         public const string ExtentUri = "dm:///_internal/users";
 
         private const string ExtentTypeName = "DatenMeister.Users";
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
+        private static readonly ClassLogger Logger = new(typeof(UserLogic));
 
         private readonly ExtentCreator _extentCreator;
 

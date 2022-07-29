@@ -9,7 +9,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.EnvironmentalVariableProvider
+namespace DatenMeister.Provider.Environmental
 {
     /// <summary>
     /// Gets the environmental provider

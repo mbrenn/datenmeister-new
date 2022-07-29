@@ -37,7 +37,7 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// <summary>
         /// Defines an enumeration of environmental variables which are added at startup.
         /// </summary>
-        public List<PublicEnvironmentVariable> environmentVariable { get; } = new List<PublicEnvironmentVariable>();
+        public List<PublicEnvironmentVariable> environmentVariable { get; } = new();
     }
 
     public class PublicEnvironmentVariable

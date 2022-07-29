@@ -6,6 +6,7 @@ import * as ClientElements from "./Test.Client.Elements"
 import * as ClientActions from "./Test.Client.Actions"
 import * as ControlSelectItemControl from "./Test.Controls.SelectItemControl"
 import * as Forms from "./Test.Forms"
+import * as ViewModeLogic from "./Test.Forms.ViewModeLogic"
 import * as UserEvents from "../../burnsystems/tests/events.test"
 
 export function includeTests()
@@ -18,6 +19,6 @@ export function includeTests()
     ClientElements.includeTests();
     ClientActions.includeTests();
     ControlSelectItemControl.includeTests();
-    Forms.includeTests();
+    ViewModeLogic.includeTests();
     Forms.includeTests();
 }

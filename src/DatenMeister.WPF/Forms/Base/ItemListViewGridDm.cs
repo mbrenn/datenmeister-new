@@ -43,7 +43,7 @@ namespace DatenMeister.WPF.Forms.Base
             _currentForm = formDefinition;
             ColumnDefinitions.Clear();
             
-            var fields = _currentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields = _currentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             foreach (var field in fields.Cast<IElement>())
             {
                 var fieldMetaClass = field.getMetaClass();

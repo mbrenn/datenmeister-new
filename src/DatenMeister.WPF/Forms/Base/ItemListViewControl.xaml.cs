@@ -214,7 +214,7 @@ namespace DatenMeister.WPF.Forms.Base
             EvaluateViewExtensions();
 
             watch.IntermediateLog("UpdateColumnDefinitions done");
-            var fields2 = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields2 = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
             if (EffectiveForm is IElement currentForm && Items != null && fields2 != null)
             {
                 DataGrid2.SetForm(currentForm, ViewExtensions);
@@ -257,7 +257,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Checks, if we have a view node
-            var viewNode = _effectiveForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.viewNode);
+            var viewNode = _effectiveForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.viewNode);
             if (viewNode != null)
             {
                 var dataviewHandler =
@@ -289,8 +289,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Go through the form and create the creation button
             var defaultTypes =
-                EffectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
-            if (Items != null && EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems) == false)
+                EffectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
+            if (Items != null && EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitNewItems) == false)
             {
                 foreach (var defaultType in defaultTypes.OfType<IElement>().Distinct())
                 {
@@ -479,7 +479,7 @@ namespace DatenMeister.WPF.Forms.Base
                                                     throw new InvalidOperationException("EffectiveForm == null");
 
                                 // Remove the field with property
-                                var fields = b.View.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field);
+                                var fields = b.View.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field);
                                 var propertyField = QueryHelper.GetChildWithProperty(fields,
                                     _DatenMeister._Forms._FieldData.name,
                                     _DatenMeister._FastViewFilters._PropertyComparisonFilter.Property);
@@ -495,7 +495,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                                 var pairs = new List<IObject>();
                                 foreach (var field in
-                                    effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field)
+                                    effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field)
                                         .OfType<IObject>())
                                 {
                                     if (!field.isSet(_DatenMeister._Forms._FieldData.name)) continue;
@@ -535,7 +535,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var effectiveForm = EffectiveForm 
                                 ?? throw new InvalidOperationException("EffectiveForm == null");
-            effectiveForm.AddCollectionItem(_DatenMeister._Forms._ListForm.fastViewFilters, fastFilter);
+            effectiveForm.AddCollectionItem(_DatenMeister._Forms._TableForm.fastViewFilters, fastFilter);
             UpdateFastFilterTexts();
             UpdateForm();
         }
@@ -547,7 +547,7 @@ namespace DatenMeister.WPF.Forms.Base
             
             FastViewFilterPanel.Children.Clear();
             var fastFilters =
-                effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.fastViewFilters);
+                effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.fastViewFilters);
 
             foreach (var filter in fastFilters.OfType<IElement>())
             {
@@ -578,7 +578,7 @@ namespace DatenMeister.WPF.Forms.Base
             var effectiveForm = EffectiveForm
                                 ?? throw new InvalidOperationException("EffectiveForm == null"); 
                                 
-            return effectiveForm.ForceAsEnumerable(_DatenMeister._Forms._ListForm.fastViewFilters).OfType<IElement>();
+            return effectiveForm.ForceAsEnumerable(_DatenMeister._Forms._TableForm.fastViewFilters).OfType<IElement>();
         }
 
         private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)

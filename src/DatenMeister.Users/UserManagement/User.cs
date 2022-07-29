@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Modules.UserManagement
+﻿namespace DatenMeister.Users.UserManagement
 {
     /// <summary>
     /// Defines the model for the user

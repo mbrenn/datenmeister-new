@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Modules.UserManagement
+﻿namespace DatenMeister.Users.UserManagement
 {
     /// <summary>
     /// Gets or sets the settings of the usermanagement

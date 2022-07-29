@@ -10,6 +10,6 @@ namespace DatenMeister.Core.Runtime.Workspaces.Data
         /// <summary>
         /// Stores the workspaces
         /// </summary>
-        public List<WorkspaceInfo> workspaces { get; set; } = new List<WorkspaceInfo>();
+        public List<WorkspaceInfo> workspaces { get; set; } = new();
     }
 }

@@ -13,7 +13,7 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabiltyOfInternalViews()
         {
             var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
-            var viewLogic = datenMeister.Resolve<FormsPlugin>();
+            var viewLogic = datenMeister.Resolve<FormMethods>();
             var internalViewExtent = viewLogic.GetInternalFormExtent();
 
             Assert.That(internalViewExtent, Is.Not.Null);
@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabilityOfUserViews()
         {
             var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
-            var viewLogic = datenMeister.Resolve<FormsPlugin>();
+            var viewLogic = datenMeister.Resolve<FormMethods>();
             var userViewExtent = viewLogic.GetUserFormExtent();
 
             Assert.That(userViewExtent, Is.Not.Null);
@@ -33,11 +33,11 @@ namespace DatenMeister.Tests.Modules
         public void TestGetAllViews()
         {
             var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
-            var viewLogic = datenMeister.Resolve<FormsPlugin>();
+            var viewLogic = datenMeister.Resolve<FormMethods>();
             var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             
-            var listForm = _DatenMeister.TheOne.Forms.__ListForm;
+            var listForm = _DatenMeister.TheOne.Forms.__TableForm;
             
             var n = 0;
             foreach (var _ in viewLogic.GetAllForms())

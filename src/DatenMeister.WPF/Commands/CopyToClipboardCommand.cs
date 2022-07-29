@@ -47,9 +47,9 @@ namespace DatenMeister.WPF.Commands
         {
             // Checks, whether we can retrieve the selected item directly or if we need to use the IHasSelectedItems interface
             var selectedItems = 
-                hasSelectedItems.GetSelectedItems();
+                hasSelectedItems.GetSelectedItems().ToArray();
 
-            if (selectedItems == null)
+            if (!selectedItems.Any())
             {
                 var selectedItem = hasSelectedItems.GetSelectedItem();
                 if (selectedItem != null)

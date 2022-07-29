@@ -10,6 +10,10 @@
 
 <h1>Item</h1>
 
+<div id="dm-viewmode-selection-container">
+    
+</div>
+
 <div class="dm-breadcrumb">
     @{ var w = Model.Workspace ?? "No Workspace"; }
     <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
@@ -21,11 +25,10 @@
 
 $(function()
 {
-    requirejs(['forms/Forms'], function(Form) {
-        const detailForm = new Form.ItemDetailFormCreator();
-        detailForm.createForm(
-            $("#form_view"),
-            "@HttpUtility.JavaScriptStringEncode(w)",
+    requirejs(['page/Item'], function (Page)
+    {
+        Page.init(
+            "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
             "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
     });
 });
@@ -52,7 +55,9 @@ $(function()
             </button>
         </h2>
         <div id="debug_formelement_body" class="accordion-collapse collapse" aria-labelledby="debug_formelement_heading" data-bs-parent="#debug_accordion">
-            <div class="accordion-body" id="debug_formelement">
+            <div class="accordion-body">
+                <div id="form_selection_container"></div>
+                <div id="debug_formelement"></div>
             </div>
         </div>
     </div>

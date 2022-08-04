@@ -53,7 +53,13 @@ export class FormSelectionControl {
      * @param control Parent control in which the control shall be updated
      */
     async createControl(control: JQuery) {
-        const result = $("<div><div class='dm-form-selection-control-current'>Current Form: <span class='dm-form-selection-control-current-span'></span></div><div class='dm-form-selection-control-select'></div><div class='dm_form-selection-control-reset'></div></div>");
+        const result = $("<div>" +
+            "<div class='dm-form-selection-control-current'>" +
+            "Current Form: <span class='dm-form-selection-control-current-span'></span>" +
+            "</div>" +
+            "<div class='dm-form-selection-control-select'></div>" +
+            "<div class='dm_form-selection-control-reset'></div>" +
+            "</div>");
         const controlSelect = $(".dm-form-selection-control-select", result);
         const controlReset = $(".dm_form-selection-control-reset", result);
         const currentForm = $(".dm-form-selection-control-current-span", result);
@@ -92,7 +98,7 @@ export class FormSelectionControl {
                 if (this._currentFormUrl !== undefined) {
                     await this._selectionField.setItemByUri("Management", this._currentFormUrl.itemUrl);
                 } else {
-                    await this._selectionField.setExtentByUri("dm:///_internal/forms/internal");
+                    await this._selectionField.setExtentByUri("Management", "dm:///_internal/forms/internal");
                 }
             });
 

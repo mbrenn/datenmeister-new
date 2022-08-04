@@ -34,8 +34,7 @@ define(["require", "exports", "../DomHelper", "./Interfaces", "../controls/Selec
                     changeMetaClassDiv.empty();
                     const selectItemCtrl = new SelectItemControl_1.SelectItemControl();
                     const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
-                    selectItemCtrl.setWorkspaceById('Types');
-                    selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
+                    selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
                     selectItemCtrl.itemSelected.addListener((selectedItem) => {
                         (0, Items_1.setMetaclass)(tthis.form.workspace, tthis.itemUrl, selectedItem.uri)
                             .then(() => divSelectItem.remove()).then(() => {

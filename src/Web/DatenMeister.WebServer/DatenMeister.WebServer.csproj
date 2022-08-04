@@ -16,6 +16,8 @@
   <ItemGroup>
     <TypeScriptCompile Remove="node_modules\**" />
     <TypeScriptCompile Include="wwwroot\js\**.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\controls\TypeSelectionControl.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\page\Actions.ts" />
   </ItemGroup>
 
   <ItemGroup>

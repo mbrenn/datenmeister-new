@@ -1,4 +1,4 @@
-﻿import {ItemWithNameAndId} from "./ApiModels";
+﻿import {EntentType, ItemWithNameAndId} from "./ApiModels";
 
 export enum ObjectType{
     Default, 
@@ -192,6 +192,22 @@ export class DmObject {
 
         return result;
     }
+}
+
+/**
+ * Takes the given object and exports it as an ItemWithNameAndId
+ * @param element
+ */
+export function convertToItemWithNameAndId(element: DmObject) {
+    const result =
+        {
+            uri: element.uri,
+            extentUri: element.extentUri,
+            workspace: element.workspace,
+            ententType: EntentType.Item
+        };
+
+    return result;
 }
 
 /*

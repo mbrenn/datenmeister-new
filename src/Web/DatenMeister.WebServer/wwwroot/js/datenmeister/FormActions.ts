@@ -211,13 +211,12 @@ export module DetailFormActions {
                 break;
             }
 
-
             case "Forms.Create.ByMetaClass": {
                 const extentCreationParameter = new DmObject();
                 extentCreationParameter.set('configuration', element);
                 extentCreationParameter.setMetaClassByUri(
                     DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri
-                )
+                );
 
                 const result = await ActionClient.executeAction(
                     "Execute",

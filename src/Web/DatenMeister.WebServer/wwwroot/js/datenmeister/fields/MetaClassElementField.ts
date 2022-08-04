@@ -41,8 +41,7 @@ export class Field extends BaseField implements IFormField {
                 const selectItemCtrl = new SelectItemControl();
                 const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
 
-                selectItemCtrl.setWorkspaceById('Types');
-                selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
+                selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
 
                 selectItemCtrl.itemSelected.addListener(
                     (selectedItem) => {

@@ -51,7 +51,7 @@ export class Control {
 
 
             if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
-                const div = $("<div><em>undefined</em></null>");
+                const div = $("<div><em class='dm-undefined'>undefined</em></div>");
                 this._list.append(div);
             } else {
                 const div = $("<div />");
@@ -113,7 +113,7 @@ export class Control {
                     {
                         property: tthis.propertyName,
                         referenceUri: selectedItem.uri,
-                        workspaceId: selectItem.getUserSelectedWorkspace()
+                        workspaceId: selectItem.getUserSelectedWorkspaceId()
                     }
                 );
 
@@ -183,7 +183,7 @@ export class Field extends Control implements IFormField {
                 
         if (this.isReadOnly === true) {
             if (value === undefined) {
-                this._list.html("<em>undefined</em>");
+                this._list.html("<em class='dm-undefined'>undefined</em>");
             } else {
                 this._list.text(value.get('name'));
             }

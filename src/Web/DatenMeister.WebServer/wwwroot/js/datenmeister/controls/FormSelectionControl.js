@@ -39,7 +39,13 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
          */
         createControl(control) {
             return __awaiter(this, void 0, void 0, function* () {
-                const result = $("<div><div class='dm-form-selection-control-current'>Current Form: <span class='dm-form-selection-control-current-span'></span></div><div class='dm-form-selection-control-select'></div><div class='dm_form-selection-control-reset'></div></div>");
+                const result = $("<div>" +
+                    "<div class='dm-form-selection-control-current'>" +
+                    "Current Form: <span class='dm-form-selection-control-current-span'></span>" +
+                    "</div>" +
+                    "<div class='dm-form-selection-control-select'></div>" +
+                    "<div class='dm_form-selection-control-reset'></div>" +
+                    "</div>");
                 const controlSelect = $(".dm-form-selection-control-select", result);
                 const controlReset = $(".dm_form-selection-control-reset", result);
                 const currentForm = $(".dm-form-selection-control-current-span", result);
@@ -72,7 +78,7 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                         yield this._selectionField.setItemByUri("Management", this._currentFormUrl.itemUrl);
                     }
                     else {
-                        yield this._selectionField.setExtentByUri("dm:///_internal/forms/internal");
+                        yield this._selectionField.setExtentByUri("Management", "dm:///_internal/forms/internal");
                     }
                 }));
                 // Creates the reset button

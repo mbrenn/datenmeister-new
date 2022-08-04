@@ -148,7 +148,7 @@ export class Field extends BaseField implements IFormField {
         let value = this._fieldValue;
         if (value === null || value === undefined
             || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
-            const div = $("<div><em>Not set</em></null>");
+            const div = $("<div><em class='dm-undefined'>Undefined</em></div>");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Reference) {
             if(Array.isArray(value)) {
@@ -182,7 +182,7 @@ export class Field extends BaseField implements IFormField {
             const fieldName = this.field.get('name').toString();
             if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                 // Nothing is selected... ==> Null value
-                const div = $("<div><em>null</em></null>");
+                const div = $("<div><em class='dm-undefined'>undefined</em></null>");
                 this._domElement.append(div);
             } else {
                 // An element is selected. The name can be shown
@@ -226,7 +226,7 @@ export class Field extends BaseField implements IFormField {
                                 {
                                     property: tthis.field.get('name'),
                                     referenceUri: selectedItem.uri,
-                                    workspaceId: selectItem.getUserSelectedWorkspace()
+                                    workspaceId: selectItem.getUserSelectedWorkspaceId()
                                 }
                             );
 
@@ -250,9 +250,9 @@ export class Field extends BaseField implements IFormField {
 
                         // Sets the extent, if defined
                         if (value?.extentUri !== undefined) {
-                            await selectItem.setWorkspaceById(value.extentUri);
+                            await selectItem.setWorkspaceById(value.workspace);
                         } else if (this._element?.extentUri !== undefined) {
-                            await selectItem.setExtentByUri(tthis._element.extentUri);
+                            await selectItem.setExtentByUri(value.workspace, tthis._element.extentUri);
                         }
                     }
                     

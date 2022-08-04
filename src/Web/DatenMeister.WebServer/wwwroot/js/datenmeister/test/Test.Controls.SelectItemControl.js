@@ -83,8 +83,7 @@ define(["require", "exports", "../client/Workspace", "../client/Extents", "../cl
                         itemCounter++;
                     });
                     const query = yield sic.initAsync(div);
-                    yield sic.setWorkspaceById('Test');
-                    yield sic.setExtentByUri('dm:///unittest');
+                    yield sic.setExtentByUri("Test", 'dm:///unittest');
                     const items = $(".dm-sic-items ul", query);
                     chai.assert.isTrue(items !== undefined, "No select given");
                     const children = items.children();
@@ -96,18 +95,15 @@ define(["require", "exports", "../client/Workspace", "../client/Extents", "../cl
                     if (foundItem === undefined)
                         throw 'Should not happen';
                     foundItem.click();
+                    yield sic.loadItems();
                     // The click should have happened synchronously.
                     chai.assert.isTrue(itemCounter === 1, "Item Counter is not 1");
-                    yield new Promise(resolve => {
-                        sic.domItemsUpdated.addListener(() => {
-                            const items = $(".dm-sic-items ul", query);
-                            chai.assert.isTrue(items !== undefined, "No select given");
-                            const children = items.children();
-                            let { found, foundItem } = lookForChildWithText(children, 'ChildElement');
-                            chai.assert.isTrue(found, "Child was not found");
-                            resolve();
-                        });
-                    });
+                    // Check, if the enumerated list is given
+                    const itemsUl = $(".dm-sic-items ul", query);
+                    chai.assert.isTrue(itemsUl !== undefined, "No select given");
+                    const childrenUl = itemsUl.children();
+                    let result = lookForChildWithText(childrenUl, 'ChildElement');
+                    chai.assert.isTrue(result.found, "Child was not found");
                     div.remove();
                 }));
             });

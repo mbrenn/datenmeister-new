@@ -35,7 +35,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
             }
             else {
                 if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
-                    const div = $("<div><em>undefined</em></null>");
+                    const div = $("<div><em class='dm-undefined'>undefined</em></div>");
                     this._list.append(div);
                 }
                 else {
@@ -84,7 +84,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
                     yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                         property: tthis.propertyName,
                         referenceUri: selectedItem.uri,
-                        workspaceId: selectItem.getUserSelectedWorkspace()
+                        workspaceId: selectItem.getUserSelectedWorkspaceId()
                     });
                     containerChangeCell.empty();
                     tthis.inhibitInline = true;
@@ -138,7 +138,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
             this.itemUrl = dmElement.uri;
             if (this.isReadOnly === true) {
                 if (value === undefined) {
-                    this._list.html("<em>undefined</em>");
+                    this._list.html("<em class='dm-undefined'>undefined</em>");
                 }
                 else {
                     this._list.text(value.get('name'));

@@ -1,0 +1,61 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+define(["require", "exports", "../controls/SelectItemControl"], function (require, exports, SIC) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.pageOpenSelectItemControlWithItem = exports.pageOpenSelectItemControlWithExtent = exports.pageOpenSelectItemControlWithWorkspace = exports.pageOpenSelectItemControlFullBreadcrumb = exports.pageOpenSelectItemControl = void 0;
+    function pageOpenSelectItemControl() {
+        return __awaiter(this, void 0, void 0, function* () {
+            $("#selectitemcontrol").empty();
+            const control = new SIC.SelectItemControl();
+            yield control.initAsync($("#selectitemcontrol"));
+        });
+    }
+    exports.pageOpenSelectItemControl = pageOpenSelectItemControl;
+    function pageOpenSelectItemControlFullBreadcrumb() {
+        return __awaiter(this, void 0, void 0, function* () {
+            $("#selectitemcontrol").empty();
+            const control = new SIC.SelectItemControl();
+            const settings = new SIC.Settings();
+            settings.showExtentInBreadcrumb = true;
+            settings.showWorkspaceInBreadcrumb = true;
+            yield control.initAsync($("#selectitemcontrol"), settings);
+        });
+    }
+    exports.pageOpenSelectItemControlFullBreadcrumb = pageOpenSelectItemControlFullBreadcrumb;
+    function pageOpenSelectItemControlWithWorkspace() {
+        return __awaiter(this, void 0, void 0, function* () {
+            $("#selectitemcontrol").empty();
+            const control = new SIC.SelectItemControl();
+            yield control.setWorkspaceById("Types");
+            yield control.initAsync($("#selectitemcontrol"));
+        });
+    }
+    exports.pageOpenSelectItemControlWithWorkspace = pageOpenSelectItemControlWithWorkspace;
+    function pageOpenSelectItemControlWithExtent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            $("#selectitemcontrol").empty();
+            const control = new SIC.SelectItemControl();
+            yield control.setExtentByUri("Types", "dm:///_internal/types/internal");
+            yield control.initAsync($("#selectitemcontrol"));
+        });
+    }
+    exports.pageOpenSelectItemControlWithExtent = pageOpenSelectItemControlWithExtent;
+    function pageOpenSelectItemControlWithItem() {
+        return __awaiter(this, void 0, void 0, function* () {
+            $("#selectitemcontrol").empty();
+            const control = new SIC.SelectItemControl();
+            yield control.setItemByUri("Types", "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+            yield control.initAsync($("#selectitemcontrol"));
+        });
+    }
+    exports.pageOpenSelectItemControlWithItem = pageOpenSelectItemControlWithItem;
+});
+//# sourceMappingURL=Actions.js.map

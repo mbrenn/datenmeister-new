@@ -1,7 +1,7 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "./ApiModels"], function (require, exports, ApiModels_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = exports.ObjectType = void 0;
+    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.convertToItemWithNameAndId = exports.DmObject = exports.ObjectType = void 0;
     var ObjectType;
     (function (ObjectType) {
         ObjectType[ObjectType["Default"] = 0] = "Default";
@@ -154,6 +154,20 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.DmObject = DmObject;
+    /**
+     * Takes the given object and exports it as an ItemWithNameAndId
+     * @param element
+     */
+    function convertToItemWithNameAndId(element) {
+        const result = {
+            uri: element.uri,
+            extentUri: element.extentUri,
+            workspace: element.workspace,
+            ententType: ApiModels_1.EntentType.Item
+        };
+        return result;
+    }
+    exports.convertToItemWithNameAndId = convertToItemWithNameAndId;
     /*
         Converts the given element to a json element that it can be used to send to the webserver
         The receiving function is MofJsonDeconverter.Convert in which the retrieved

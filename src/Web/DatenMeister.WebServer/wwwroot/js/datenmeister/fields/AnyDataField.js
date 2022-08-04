@@ -113,7 +113,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
             let value = this._fieldValue;
             if (value === null || value === undefined
                 || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
-                const div = $("<div><em>Not set</em></null>");
+                const div = $("<div><em class='dm-undefined'>Undefined</em></div>");
                 this._domElement.append(div);
             }
             else if (this._mode === ModeValue.Reference) {
@@ -147,7 +147,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                 const fieldName = this.field.get('name').toString();
                 if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                     // Nothing is selected... ==> Null value
-                    const div = $("<div><em>null</em></null>");
+                    const div = $("<div><em class='dm-undefined'>undefined</em></null>");
                     this._domElement.append(div);
                 }
                 else {
@@ -187,7 +187,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                             yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                                 property: tthis.field.get('name'),
                                 referenceUri: selectedItem.uri,
-                                workspaceId: selectItem.getUserSelectedWorkspace()
+                                workspaceId: selectItem.getUserSelectedWorkspaceId()
                             });
                             yield tthis.reloadAndUpdateDomContent();
                         }));
@@ -207,10 +207,10 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                             }
                             // Sets the extent, if defined
                             if ((value === null || value === void 0 ? void 0 : value.extentUri) !== undefined) {
-                                yield selectItem.setWorkspaceById(value.extentUri);
+                                yield selectItem.setWorkspaceById(value.workspace);
                             }
                             else if (((_c = this._element) === null || _c === void 0 ? void 0 : _c.extentUri) !== undefined) {
-                                yield selectItem.setExtentByUri(tthis._element.extentUri);
+                                yield selectItem.setExtentByUri(value.workspace, tthis._element.extentUri);
                             }
                         }
                         selectItem.showControl();

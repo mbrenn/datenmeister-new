@@ -29,7 +29,7 @@ namespace DatenMeister.WebServer.Controller
             var form = _internal.GetInternal(formUri);
 
             // Performs a friendly conversion from the actual form type to the requested form type
-            if (formType != null && form != null)
+            if (formType != null)
             {
                 if(Enum.TryParse<_DatenMeister._Forms.___FormType>(formType, true, out var result))
                 {

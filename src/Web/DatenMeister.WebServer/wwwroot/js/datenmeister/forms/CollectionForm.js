@@ -184,7 +184,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 }
             });
             selectItem.setWorkspaceById('Types');
-            selectItem.setExtentByUri("dm:///_internal/types/internal");
+            selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
             selectItem.init(containerDiv, settings);
         });
     }

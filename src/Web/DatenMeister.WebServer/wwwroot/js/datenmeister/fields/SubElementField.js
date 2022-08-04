@@ -1,4 +1,4 @@
-define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../Settings", "../DomHelper"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, Settings, DomHelper_1) {
+define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../Settings", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, Settings, DomHelper_1, DatenMeister_class_1, TypeSelectionControl) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;
@@ -39,7 +39,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                 let fieldsData = new Array();
                 if (fields === undefined) {
                     const nameField = new Mof_1.DmObject();
-                    nameField.setMetaClassById("DatenMeister.Models.Forms.TextFieldData");
+                    nameField.setMetaClassByUri(DatenMeister_class_1._DatenMeister._Forms.__TextFieldData_Uri);
                     nameField.set('name', 'name');
                     nameField.set('title', 'Name');
                     nameField.set('isReadOnly', true);
@@ -104,7 +104,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                         ClientItems.addReferenceToCollection(tthis.form.workspace, tthis.itemUrl, {
                             property: tthis.propertyName,
                             referenceUri: selectedItem.uri,
-                            workspaceId: selectItem.getUserSelectedWorkspace()
+                            workspaceId: selectItem.getUserSelectedWorkspaceId()
                         }).then(() => {
                             this.reloadValuesFromServer();
                         });
@@ -113,18 +113,28 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                     return false;
                 });
                 this._list.append(attachItem);
-                const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn></div>");
+                const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn>" +
+                    "<div class='dm-subelements-appenditem-container'></div></div>");
                 newItem.on('click', () => {
-                    document.location.href =
-                        Settings.baseUrl +
-                            "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                            encodeURIComponent(tthis.form.workspace) +
-                            "&itemUrl=" +
-                            encodeURIComponent(tthis.itemUrl) +
-                            /*"&metaclass=" +
-                            encodeURIComponent(uri) +*/
-                            "&property=" +
-                            encodeURIComponent(tthis.propertyName);
+                    const container = $(".dm-subelements-appenditem-container");
+                    container.empty();
+                    const control = new TypeSelectionControl.TypeSelectionControl(container);
+                    control.typeSelected.addListener(x => {
+                        if (x === undefined || x.uri === undefined) {
+                            alert('Nothing is selected.');
+                            return;
+                        }
+                        document.location.href =
+                            Settings.baseUrl +
+                                "ItemAction/Extent.CreateItemInProperty?workspace=" +
+                                encodeURIComponent(tthis.form.workspace) +
+                                "&itemUrl=" +
+                                encodeURIComponent(tthis.itemUrl) +
+                                "&metaclass=" +
+                                encodeURIComponent(x.uri) +
+                                "&property=" +
+                                encodeURIComponent(tthis.propertyName);
+                    });
                 });
                 this._list.append(newItem);
             }

@@ -1,0 +1,99 @@
+﻿import * as Mof from "../Mof"
+import * as SIC from "./SelectItemControl";
+import * as Events from "../../burnsystems/Events";
+import {ItemLink} from "../ApiModels";
+import * as ClientItems from "../client/Items";
+
+/**
+ * This parameter is given when the user has selected a certain type
+ */
+export interface TypeSelectedEvent {
+    selectedType: Mof.DmObject;
+}
+
+/**
+ * Within this control, the user can select a type 
+ */
+export class TypeSelectionControl {
+    private _selectionField: SIC.SelectItemControl;
+
+    /**
+     * This event is thrown when the user has selected a specific form
+     */
+    typeSelected: Events.UserEvent<TypeSelectedEvent> = new Events.UserEvent<TypeSelectedEvent>();
+
+    /**
+     * This JQuery element contains the control
+     * @private
+     */
+    private _container: JQuery;
+
+    /**
+     * The constructor for this control
+     * @param container The element in which the element shall be contained
+     */
+    constructor(container: JQuery) {
+        this._container = container;
+    }
+
+    /**
+     * Defines the current form url which is used to link the current form
+     * @private
+     */
+    private _currentTypeUrl?: ItemLink;
+
+    /**
+     * Sets the current type url..
+     * This method must be called before calling createControl
+     * @param formUrl
+     */
+    setCurrentTypeUrl(formUrl: ItemLink) {
+        this._currentTypeUrl = formUrl;
+    }
+
+    async createControl() {
+        const result = $("<div>" +
+            "<div class='dm-form-selection-control-select'></div>" +
+            "</div>");
+        const controlSelect = $(".dm-form-selection-control-select", result);
+
+
+        // Creates the selection field
+        this._selectionField = new SIC.SelectItemControl();
+
+        this._selectionField.itemSelected.addListener(
+            async selectedItem => {
+                if (selectedItem !== undefined) {
+                    const foundItem = await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
+                    this.typeSelected.invoke(
+                        {
+                            selectedType: foundItem
+                        });
+                } else {
+                    alert('Not a valid form has been selected')
+                }
+            }
+        );
+
+        const t2 = this._selectionField.setWorkspaceById("Management")
+            .then(async () => {
+
+                const settings = new SIC.Settings();
+                settings.setButtonText = "Use Type";
+                settings.headline = "Select Type:";
+                await this._selectionField.initAsync(controlSelect, settings);
+
+                if (this._currentTypeUrl !== undefined) {
+                    await this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
+                } else {
+                    await this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
+                }
+            });
+        
+        // Finalize the GUI
+        this._container.append(result);
+
+        // Now wait for the task 
+        await t2;
+    }
+}

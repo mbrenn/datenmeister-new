@@ -3,12 +3,12 @@ import {DmObject, ObjectType} from "../Mof";
 import * as FieldFactory from "../forms/FieldFactory";
 import * as SIC from "../controls/SelectItemControl";
 import * as ClientItems from "../client/Items";
-import {resolve} from "../MofResolver"
-import {navigateToItemByUrl} from "../Navigator";
 import {IFormConfiguration} from "../forms/IFormConfiguration";
 import {IFormNavigation} from "../forms/Interfaces";
 import * as Settings from "../Settings";
 import {injectNameByUri} from "../DomHelper";
+import {_DatenMeister} from "../models/DatenMeister.class";
+import * as TypeSelectionControl from "../controls/TypeSelectionControl";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -67,7 +67,7 @@ export class Control {
             let fieldsData = new Array<DmObject>();
             if (fields === undefined) {
                 const nameField = new DmObject();
-                nameField.setMetaClassById("DatenMeister.Models.Forms.TextFieldData");
+                nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri);
                 nameField.set('name', 'name');
                 nameField.set('title', 'Name');
                 nameField.set('isReadOnly', true);
@@ -153,7 +153,7 @@ export class Control {
                             {
                                 property: tthis.propertyName,
                                 referenceUri: selectedItem.uri,
-                                workspaceId: selectItem.getUserSelectedWorkspace()
+                                workspaceId: selectItem.getUserSelectedWorkspaceId()
                             }
                         ).then(() => {
                             this.reloadValuesFromServer();
@@ -167,18 +167,32 @@ export class Control {
 
             this._list.append(attachItem);
 
-            const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn></div>");
+            const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn>" +
+                "<div class='dm-subelements-appenditem-container'></div></div>");
             newItem.on('click', () => {
-                document.location.href =
-                    Settings.baseUrl +
-                    "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                    encodeURIComponent(tthis.form.workspace) +
-                    "&itemUrl=" +
-                    encodeURIComponent(tthis.itemUrl) +
-                    /*"&metaclass=" +
-                    encodeURIComponent(uri) +*/
-                    "&property=" +
-                    encodeURIComponent(tthis.propertyName);
+                const container = $(".dm-subelements-appenditem-container");
+                container.empty();
+
+                const control = new TypeSelectionControl.TypeSelectionControl(container);
+                control.typeSelected.addListener(x => {
+
+                    if (x === undefined || x.uri === undefined) {
+                        alert('Nothing is selected.');
+                        return;
+                    }
+
+                    document.location.href =
+                        Settings.baseUrl +
+                        "ItemAction/Extent.CreateItemInProperty?workspace=" +
+                        encodeURIComponent(tthis.form.workspace) +
+                        "&itemUrl=" +
+                        encodeURIComponent(tthis.itemUrl) +
+                        "&metaclass=" +
+                        encodeURIComponent(x.uri) +
+                        "&property=" +
+                        encodeURIComponent(tthis.propertyName);
+                });
+
             });
 
             this._list.append(newItem);

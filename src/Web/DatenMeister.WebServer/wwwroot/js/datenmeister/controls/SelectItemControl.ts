@@ -3,7 +3,6 @@ import * as ItemsClient from '../client/Items';
 import {EntentType, ItemWithNameAndId} from "../ApiModels";
 import {UserEvent} from "../../burnsystems/Events";
 import {convertItemWithNameAndIdToDom} from "../DomHelper";
-import {convertToItemWithNameAndId} from "../Mof";
 
 export class Settings {
     showBreadcrumb = true;
@@ -120,11 +119,11 @@ export class SelectItemControl {
             "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
             "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
             "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
-            "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
             "<tr><td>Items: </td>" +
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
+            "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
             "<tr><td></td><td class='selected'>" +
             (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
             "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
@@ -354,7 +353,14 @@ export class SelectItemControl {
     async setExtentByUri(workspaceId: string, extentUri: string) {
         this.preSelectWorkspaceById = workspaceId;
         this.preSelectExtentByUri = extentUri;
-
+        this.selectedItem =
+            {
+                workspace: workspaceId,
+                extentUri: extentUri,
+                ententType: EntentType.Extent,
+                uri: extentUri
+            };
+        
         if (this.isDomInitializationDone) {
             await this.loadWorkspaces();
         }
@@ -392,11 +398,21 @@ export class SelectItemControl {
 
         // Checks, whether the user has selected or preselected an item
         if (this.preSelectItemUri !== undefined) {
-            selectedItem =
-                {
-                    uri: this.preSelectItemUri,
-                    workspace: this.getUserSelectedWorkspaceId()
-                };
+            if (this.preSelectItemUri === "") {
+                // Empty string is used to indicate that the user would like to select the 
+                // complete extent
+                selectedItem = undefined;
+            } else {
+                // User has selected a specfic item
+                selectedItem =
+                    {
+                        uri: this.preSelectItemUri,
+                        workspace: this.getUserSelectedWorkspaceId()
+                    };
+            }
+
+            // Now get rid of it
+            this.preSelectItemUri = undefined;
         }
 
         const workspaceId = this.getUserSelectedWorkspaceId();
@@ -408,16 +424,14 @@ export class SelectItemControl {
             || selectedItem === undefined) {
             const select = $("<li>--- Select Extent ---</li>");
             this.htmlItemsList.append(select);
-
-            return true;
         } else {
             const item = await ItemsClient.getItemWithNameAndId(selectedItem.workspace, selectedItem.uri);
-            
-            if ( item !== undefined) {
+
+            if (item !== undefined) {
                 this.htmlSelectedElements.empty();
                 this.htmlSelectedElements.append(convertItemWithNameAndIdToDom(item));
             }
-            
+
             const funcElements = (items: ItemWithNameAndId[]) => {
 
                 for (const n in items) {
@@ -431,8 +445,8 @@ export class SelectItemControl {
                     ((innerItem) =>
                         option.on('click', async () => {
                             tthis.selectedItem = innerItem;
-                            await tthis.loadItems();
                             tthis.itemClicked.invoke(innerItem);
+                            await tthis.loadItems();
 
                             tthis.htmlSelectedElements.empty();
                             tthis.htmlSelectedElements.append(convertItemWithNameAndIdToDom(item));
@@ -479,7 +493,7 @@ export class SelectItemControl {
                 this.addBreadcrumbItem("Workspaces", async () => {
                     this.preSelectWorkspaceById = "";
                     this.preSelectExtentByUri = "";
-                    this.preSelectItemUri = "";
+                    this.selectedItem = undefined;
                     await tthis.loadWorkspaces();
                 });
 
@@ -489,7 +503,7 @@ export class SelectItemControl {
                         currentWorkspace,
                         async () => {
                             this.preSelectExtentByUri = "";
-                            this.preSelectItemUri = "";
+                            this.selectedItem = undefined;
                             await tthis.loadExtents();
                         }
                     );
@@ -503,7 +517,13 @@ export class SelectItemControl {
                         currentExtent,
                         async () => {
                             this.preSelectExtentByUri = currentExtent;
-                            this.preSelectItemUri = "";
+                            this.selectedItem =
+                                {
+                                    workspace: this.getUserSelectedWorkspaceId(),
+                                    extentUri: this.getUserSelectedExtentUri(),
+                                    ententType: EntentType.Extent,
+                                    uri: this.getUserSelectedExtentUri()
+                                };
                             await tthis.loadExtents();
                         }
                     );

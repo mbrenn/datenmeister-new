@@ -82,11 +82,11 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                 "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
                 "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
                 "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
-                "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
                 "<tr><td>Items: </td>" +
                 "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
                 "<div class='dm-sic-items'></div>" +
                 "</td></tr>" +
+                "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
                 "<tr><td></td><td class='selected'>" +
                 (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
                 "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
@@ -289,6 +289,13 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             return __awaiter(this, void 0, void 0, function* () {
                 this.preSelectWorkspaceById = workspaceId;
                 this.preSelectExtentByUri = extentUri;
+                this.selectedItem =
+                    {
+                        workspace: workspaceId,
+                        extentUri: extentUri,
+                        ententType: ApiModels_1.EntentType.Extent,
+                        uri: extentUri
+                    };
                 if (this.isDomInitializationDone) {
                     yield this.loadWorkspaces();
                 }
@@ -324,11 +331,21 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                 let selectedItem = this.selectedItem;
                 // Checks, whether the user has selected or preselected an item
                 if (this.preSelectItemUri !== undefined) {
-                    selectedItem =
-                        {
-                            uri: this.preSelectItemUri,
-                            workspace: this.getUserSelectedWorkspaceId()
-                        };
+                    if (this.preSelectItemUri === "") {
+                        // Empty string is used to indicate that the user would like to select the 
+                        // complete extent
+                        selectedItem = undefined;
+                    }
+                    else {
+                        // User has selected a specfic item
+                        selectedItem =
+                            {
+                                uri: this.preSelectItemUri,
+                                workspace: this.getUserSelectedWorkspaceId()
+                            };
+                    }
+                    // Now get rid of it
+                    this.preSelectItemUri = undefined;
                 }
                 const workspaceId = this.getUserSelectedWorkspaceId();
                 const extentUri = this.getUserSelectedExtentUri();
@@ -338,7 +355,6 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                     || selectedItem === undefined) {
                     const select = $("<li>--- Select Extent ---</li>");
                     this.htmlItemsList.append(select);
-                    return true;
                 }
                 else {
                     const item = yield ItemsClient.getItemWithNameAndId(selectedItem.workspace, selectedItem.uri);
@@ -356,8 +372,8 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                             // Creates the clickability of the list of items
                             ((innerItem) => option.on('click', () => __awaiter(this, void 0, void 0, function* () {
                                 tthis.selectedItem = innerItem;
-                                yield tthis.loadItems();
                                 tthis.itemClicked.invoke(innerItem);
+                                yield tthis.loadItems();
                                 tthis.htmlSelectedElements.empty();
                                 tthis.htmlSelectedElements.append((0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
                                 yield tthis.refreshBreadcrumb();
@@ -396,14 +412,14 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                         this.addBreadcrumbItem("Workspaces", () => __awaiter(this, void 0, void 0, function* () {
                             this.preSelectWorkspaceById = "";
                             this.preSelectExtentByUri = "";
-                            this.preSelectItemUri = "";
+                            this.selectedItem = undefined;
                             yield tthis.loadWorkspaces();
                         }));
                         // Now show the current workspace
                         if (currentWorkspace !== "" && currentWorkspace !== undefined) {
                             this.addBreadcrumbItem(currentWorkspace, () => __awaiter(this, void 0, void 0, function* () {
                                 this.preSelectExtentByUri = "";
-                                this.preSelectItemUri = "";
+                                this.selectedItem = undefined;
                                 yield tthis.loadExtents();
                             }));
                         }
@@ -413,7 +429,13 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                         if (currentExtent !== "" && currentExtent !== undefined) {
                             this.addBreadcrumbItem(currentExtent, () => __awaiter(this, void 0, void 0, function* () {
                                 this.preSelectExtentByUri = currentExtent;
-                                this.preSelectItemUri = "";
+                                this.selectedItem =
+                                    {
+                                        workspace: this.getUserSelectedWorkspaceId(),
+                                        extentUri: this.getUserSelectedExtentUri(),
+                                        ententType: ApiModels_1.EntentType.Extent,
+                                        uri: this.getUserSelectedExtentUri()
+                                    };
                                 yield tthis.loadExtents();
                             }));
                         }

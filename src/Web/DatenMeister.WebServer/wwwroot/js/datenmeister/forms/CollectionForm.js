@@ -142,7 +142,13 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                         listForm.createFormByCollection(form, configuration);
                     }
                     else {
-                        alert('Unknown tab: ' + tab.metaClass.uri);
+                        form.addClass('alert alert-warning');
+                        const nameValue = tab.get('name', Mof.ObjectType.String);
+                        let name = tab.metaClass.uri;
+                        if (nameValue !== undefined) {
+                            name = `${nameValue} (${tab.metaClass.uri})`;
+                        }
+                        form.text('Unknown tab: ' + name);
                     }
                     itemContainer.append(form);
                     tabCount--;

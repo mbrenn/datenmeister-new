@@ -57,7 +57,6 @@ export class TypeSelectionControl {
             "</div>");
         const controlSelect = $(".dm-form-selection-control-select", result);
 
-
         // Creates the selection field
         this._selectionField = new SIC.SelectItemControl();
 
@@ -73,27 +72,20 @@ export class TypeSelectionControl {
                     alert('Not a valid form has been selected')
                 }
             }
-        );
+        )
 
-        const t2 = this._selectionField.setWorkspaceById("Management")
-            .then(async () => {
+        if (this._currentTypeUrl !== undefined) {
+            await this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
+        } else {
+            await this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
+        }
 
-                const settings = new SIC.Settings();
-                settings.setButtonText = "Use Type";
-                settings.headline = "Select Type:";
-                await this._selectionField.initAsync(controlSelect, settings);
+        const settings = new SIC.Settings();
+        settings.setButtonText = "Use Type";
+        settings.headline = "Select Type:";
+        await this._selectionField.initAsync(controlSelect, settings);
 
-                if (this._currentTypeUrl !== undefined) {
-                    await this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
-                } else {
-                    await this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
-                }
-            });
-        
         // Finalize the GUI
         this._container.append(result);
-
-        // Now wait for the task 
-        await t2;
     }
 }

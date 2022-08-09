@@ -75,6 +75,16 @@
         </field>
       </tab>
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Item - Move or Copy" hideMetaInformation="True" allowNewProperties="False" p1:id="Item.MoveOrCopy" comment="Used by Action 'Item.MoveOrCopy'">
+      <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Copy or Move" title="Copy or Move">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="element" title="Element" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="target" title="Target" defaultWorkspace="Data" isSelectionInline="true" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="copyMode" title="Copy or Move">
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Move" name="Move" />
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Copy" name="Copy" />
+        </field>
+      </tab>
+    </packagedElement>
   </item>
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Extent - Select Type" hideMetaInformation="True" allowNewProperties="True" p1:id="WorkspacesAndExtents.Extent.SelectType" comment="Used by Action 'LoadOrCreateExtent'">

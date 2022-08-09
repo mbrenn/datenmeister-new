@@ -61,6 +61,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 if (actionName === 'Forms.Create.ByMetaClass') {
                     return yield FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
                 }
+                if (actionName === 'Item.MoveOrCopy') {
+                    return yield FormClient.getForm("dm:///_internal/forms/internal#Item.MoveOrCopy");
+                }
                 return Promise.resolve(undefined);
             });
         }
@@ -134,7 +137,8 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                             const workspace = p.get('workspace');
                             const itemUrl = p.get('itemUrl');
                             const property = p.get('property');
-                            yield FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
+                            const metaclass = p.get('metaclass');
+                            yield FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element, metaclass);
                         }
                         break;
                     case "ExtentsList.ViewItem":
@@ -275,9 +279,6 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         }
         static extentCreateItemInProperty(workspace, itemUrl, property, element, metaClass) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (metaClass === undefined) {
-                    metaClass = element.metaClass.uri;
-                }
                 const json = (0, Mof_1.createJsonFromObject)(element);
                 yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
                     metaClass: (metaClass === undefined || metaClass === null) ? "" : metaClass,

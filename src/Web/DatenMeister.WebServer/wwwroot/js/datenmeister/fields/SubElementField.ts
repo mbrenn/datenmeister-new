@@ -137,9 +137,16 @@ export class Control {
                 }
             }
 
-            const attachItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach Item</btn><div class='dm-subelements-appenditem-box'></div></div>");
-            $(".dm-subelements-appenditem-btn", attachItem).on('click', () => {
-                const containerDiv = $(".dm-subelements-appenditem-box", attachItem);
+            const attachItem = $("<div>" +
+                "<div>" +
+                "<btn class='btn btn-secondary dm-subelements-attachitem-btn'>Attach Item</btn>" +
+                "<btn class='btn btn-secondary dm-subelements-createitem-btn'>Create Item</btn>" +
+                "</div>" +
+                "<div class='dm-subelements-attachitem-box'></div>" +
+                "<div class='dm-subelements-createitem-box'></div>" +
+                "</div>");
+            $(".dm-subelements-attachitem-btn", attachItem).on('click', () => {
+                const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
                 containerDiv.empty();
                 const selectItem = new SIC.SelectItemControl();
                 const settings = new SIC.Settings();
@@ -165,18 +172,16 @@ export class Control {
                 return false;
             });
 
-            this._list.append(attachItem);
-
-            const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn>" +
-                "<div class='dm-subelements-appenditem-container'></div></div>");
-            newItem.on('click', () => {
-                const container = $(".dm-subelements-appenditem-container");
+            $(".dm-subelements-createitem-btn", attachItem).on('click', async () => {
+                const container = $(".dm-subelements-createitem-box", attachItem);
                 container.empty();
 
                 const control = new TypeSelectionControl.TypeSelectionControl(container);
-                control.typeSelected.addListener(x => {
+                control.typeSelected.addListener(async x => {
 
-                    if (x === undefined || x.uri === undefined) {
+                    if (x === undefined ||
+                        x.selectedType === undefined ||
+                        x.selectedType.uri === undefined) {
                         alert('Nothing is selected.');
                         return;
                     }
@@ -188,14 +193,15 @@ export class Control {
                         "&itemUrl=" +
                         encodeURIComponent(tthis.itemUrl) +
                         "&metaclass=" +
-                        encodeURIComponent(x.uri) +
+                        encodeURIComponent(x.selectedType.uri) +
                         "&property=" +
                         encodeURIComponent(tthis.propertyName);
                 });
-
+                
+                await control.createControl();
             });
 
-            this._list.append(newItem);
+            this._list.append(attachItem);
         }
 
         const refreshBtn = $("<div><btn class='dm-subelements-refresh-btn'><img src='/img/refresh-16.png' alt='Refresh' /></btn></div>");
@@ -212,8 +218,10 @@ export class Control {
         alert('reloadValuesFromServer is not overridden.');
     }
 
-    // Returns the default definition of a name.
-    // This method can be overridden by the right field definitions
+    /**
+     * Returns the default definition of a name.
+     * method can be overridden by the right field definitions
+     */
     getFieldDefinitions(): Array<DmObject> | undefined {
         return undefined;
     }

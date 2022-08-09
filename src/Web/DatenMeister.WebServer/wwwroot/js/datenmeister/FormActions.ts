@@ -70,6 +70,9 @@ export module DetailFormActions {
         if (actionName === 'Forms.Create.ByMetaClass') {
             return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
         }
+        if (actionName === 'Item.MoveOrCopy') {
+            return await FormClient.getForm("dm:///_internal/forms/internal#Item.MoveOrCopy");
+        }
 
         return Promise.resolve(undefined);
     }
@@ -137,7 +140,8 @@ export module DetailFormActions {
                     const workspace = p.get('workspace');
                     const itemUrl = p.get('itemUrl');
                     const property = p.get('property');
-                    await FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
+                    const metaclass = p.get('metaclass');
+                    await FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element, metaclass);
                 }
                 break;
             case "ExtentsList.ViewItem":
@@ -234,7 +238,6 @@ export module DetailFormActions {
                 break;
             }
 
-
             case "Workspace.Extent.Xmi.Create":
                 await ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
@@ -313,10 +316,6 @@ export class FormActions {
     }
 
     static async extentCreateItemInProperty(workspace: string, itemUrl: string, property: string, element: DmObject, metaClass?: string) {
-        if (metaClass === undefined) {
-            metaClass = element.metaClass.uri
-        }
-
         const json = createJsonFromObject(element);
         await ApiConnection.post(
             Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl),

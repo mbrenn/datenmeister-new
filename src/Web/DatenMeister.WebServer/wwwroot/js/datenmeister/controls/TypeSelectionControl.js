@@ -53,23 +53,18 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                         alert('Not a valid form has been selected');
                     }
                 }));
-                const t2 = this._selectionField.setWorkspaceById("Management")
-                    .then(() => __awaiter(this, void 0, void 0, function* () {
-                    const settings = new SIC.Settings();
-                    settings.setButtonText = "Use Type";
-                    settings.headline = "Select Type:";
-                    yield this._selectionField.initAsync(controlSelect, settings);
-                    if (this._currentTypeUrl !== undefined) {
-                        yield this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
-                    }
-                    else {
-                        yield this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
-                    }
-                }));
+                if (this._currentTypeUrl !== undefined) {
+                    yield this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
+                }
+                else {
+                    yield this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
+                }
+                const settings = new SIC.Settings();
+                settings.setButtonText = "Use Type";
+                settings.headline = "Select Type:";
+                yield this._selectionField.initAsync(controlSelect, settings);
                 // Finalize the GUI
                 this._container.append(result);
-                // Now wait for the task 
-                yield t2;
             });
         }
     }

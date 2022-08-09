@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../Settings", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, Settings, DomHelper_1, DatenMeister_class_1, TypeSelectionControl) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -92,9 +101,16 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                         table.append(tr);
                     }
                 }
-                const attachItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Attach Item</btn><div class='dm-subelements-appenditem-box'></div></div>");
-                $(".dm-subelements-appenditem-btn", attachItem).on('click', () => {
-                    const containerDiv = $(".dm-subelements-appenditem-box", attachItem);
+                const attachItem = $("<div>" +
+                    "<div>" +
+                    "<btn class='btn btn-secondary dm-subelements-attachitem-btn'>Attach Item</btn>" +
+                    "<btn class='btn btn-secondary dm-subelements-createitem-btn'>Create Item</btn>" +
+                    "</div>" +
+                    "<div class='dm-subelements-attachitem-box'></div>" +
+                    "<div class='dm-subelements-createitem-box'></div>" +
+                    "</div>");
+                $(".dm-subelements-attachitem-btn", attachItem).on('click', () => {
+                    const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
                     containerDiv.empty();
                     const selectItem = new SIC.SelectItemControl();
                     const settings = new SIC.Settings();
@@ -112,15 +128,14 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                     selectItem.init(containerDiv, settings);
                     return false;
                 });
-                this._list.append(attachItem);
-                const newItem = $("<div><btn class='btn btn-secondary dm-subelements-appenditem-btn'>Create Item</btn>" +
-                    "<div class='dm-subelements-appenditem-container'></div></div>");
-                newItem.on('click', () => {
-                    const container = $(".dm-subelements-appenditem-container");
+                $(".dm-subelements-createitem-btn", attachItem).on('click', () => __awaiter(this, void 0, void 0, function* () {
+                    const container = $(".dm-subelements-createitem-box", attachItem);
                     container.empty();
                     const control = new TypeSelectionControl.TypeSelectionControl(container);
-                    control.typeSelected.addListener(x => {
-                        if (x === undefined || x.uri === undefined) {
+                    control.typeSelected.addListener((x) => __awaiter(this, void 0, void 0, function* () {
+                        if (x === undefined ||
+                            x.selectedType === undefined ||
+                            x.selectedType.uri === undefined) {
                             alert('Nothing is selected.');
                             return;
                         }
@@ -131,12 +146,13 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                                 "&itemUrl=" +
                                 encodeURIComponent(tthis.itemUrl) +
                                 "&metaclass=" +
-                                encodeURIComponent(x.uri) +
+                                encodeURIComponent(x.selectedType.uri) +
                                 "&property=" +
                                 encodeURIComponent(tthis.propertyName);
-                    });
-                });
-                this._list.append(newItem);
+                    }));
+                    yield control.createControl();
+                }));
+                this._list.append(attachItem);
             }
             const refreshBtn = $("<div><btn class='dm-subelements-refresh-btn'><img src='/img/refresh-16.png' alt='Refresh' /></btn></div>");
             $(".dm-subelements-refresh-btn", refreshBtn).on('click', () => {
@@ -148,8 +164,10 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
         reloadValuesFromServer() {
             alert('reloadValuesFromServer is not overridden.');
         }
-        // Returns the default definition of a name.
-        // This method can be overridden by the right field definitions
+        /**
+         * Returns the default definition of a name.
+         * method can be overridden by the right field definitions
+         */
         getFieldDefinitions() {
             return undefined;
         }

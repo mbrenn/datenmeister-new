@@ -1427,7 +1427,7 @@
     </packagedElement>
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="8d1b9f36-3768-4494-9066-9b0bd64fdc85" name="DynamicRuntimeProvider" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="8be3c0ea-ef40-4b4a-a4ea-9262e924d7b8" name="DynamicRuntimeLoaderConfig">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DynamicRuntimeProvider.DynamicRuntimeLoaderConfig" name="DynamicRuntimeLoaderConfig">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
       <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />

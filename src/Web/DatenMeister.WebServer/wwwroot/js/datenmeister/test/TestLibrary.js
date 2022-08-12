@@ -1,4 +1,4 @@
-define(["require", "exports", "./MofTests", "./Test.Client.Workspace", "./Test.Client.Extents", "./Test.Client.Items", "./Test.Client.Elements", "./Test.Client.Actions", "./Test.Controls.SelectItemControl", "./Test.Forms", "./Test.Forms.ViewModeLogic", "../../burnsystems/tests/events.test"], function (require, exports, MofTests, ClientWorkspace, ClientExtent, ClientItems, ClientElements, ClientActions, ControlSelectItemControl, Forms, ViewModeLogic, UserEvents) {
+define(["require", "exports", "./MofTests", "./Test.Client.Workspace", "./Test.Client.Extents", "./Test.Client.Items", "./Test.Client.Types", "./Test.Client.Elements", "./Test.Client.Actions", "./Test.Controls.SelectItemControl", "./Test.Forms", "./Test.Forms.ViewModeLogic", "../../burnsystems/tests/events.test"], function (require, exports, MofTests, ClientWorkspace, ClientExtent, ClientItems, ClientTypes, ClientElements, ClientActions, ControlSelectItemControl, Forms, ViewModeLogic, UserEvents) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -8,6 +8,7 @@ define(["require", "exports", "./MofTests", "./Test.Client.Workspace", "./Test.C
         ClientWorkspace.includeTests();
         ClientExtent.includeTests();
         ClientItems.includeTests();
+        ClientTypes.includeTests();
         ClientElements.includeTests();
         ClientActions.includeTests();
         ControlSelectItemControl.includeTests();

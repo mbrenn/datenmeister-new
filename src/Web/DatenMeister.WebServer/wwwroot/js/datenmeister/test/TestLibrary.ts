@@ -2,6 +2,7 @@
 import * as ClientWorkspace from "./Test.Client.Workspace"
 import * as ClientExtent from "./Test.Client.Extents"
 import * as ClientItems from "./Test.Client.Items"
+import * as ClientTypes from "./Test.Client.Types"
 import * as ClientElements from "./Test.Client.Elements"
 import * as ClientActions from "./Test.Client.Actions"
 import * as ControlSelectItemControl from "./Test.Controls.SelectItemControl"
@@ -16,6 +17,7 @@ export function includeTests()
     ClientWorkspace.includeTests();
     ClientExtent.includeTests();
     ClientItems.includeTests();
+    ClientTypes.includeTests();
     ClientElements.includeTests();
     ClientActions.includeTests();
     ControlSelectItemControl.includeTests();

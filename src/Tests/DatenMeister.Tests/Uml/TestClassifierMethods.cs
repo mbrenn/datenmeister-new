@@ -2,11 +2,13 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager;
 using NUnit.Framework;
+using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
 
 namespace DatenMeister.Tests.Uml
 {
@@ -65,7 +67,6 @@ namespace DatenMeister.Tests.Uml
         public void TestGeneralizedProperties()
         {
             using var builder = DatenMeisterTests.GetDatenMeisterScope();
-            using var scope = builder.BeginLifetimeScope();
 
             // Gets the logic
             var feature = builder.WorkspaceLogic.GetUmlWorkspace()
@@ -80,7 +81,6 @@ namespace DatenMeister.Tests.Uml
             Assert.That(properties.Contains(_UML._CommonStructure._NamedElement.name), Is.True,
                 "name (Parent of Parent)");
         }
-
 
         [Test]
         public void TestGeneralizationEvaluation()
@@ -123,6 +123,32 @@ namespace DatenMeister.Tests.Uml
             Assert.That(ClassifierMethods.IsOfPrimitiveType(activity!), Is.False);
 
             Assert.That(ClassifierMethods.IsOfPrimitiveType(integer!), Is.True);
+        }
+
+        [Test]
+        public void TestGetPropertyTypeOfMetaClass()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var commandLineMetaClass = dm.WorkspaceLogic.GetTypesWorkspace()
+                    .Resolve(_DatenMeister.TheOne.CommonTypes.OSIntegration.__CommandLineApplication.GetUri()!,
+                        ResolveType.Default)
+                as IElement;
+            
+            Assert.That(commandLineMetaClass, Is.Not.Null);
+
+            var foundPropertyType = ClassifierMethods.GetPropertyType(commandLineMetaClass,
+                _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.name);
+            Assert.That(foundPropertyType, Is.Not.Null);
+            Assert.That(foundPropertyType!.equals(_PrimitiveTypes.TheOne.__String));
+
+            var dynamicRuntimeProvider = dm.WorkspaceLogic.GetTypesWorkspace()
+                    .Resolve(_DatenMeister.TheOne.DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig.GetUri()!,
+                        ResolveType.Default)
+                as IElement;
+            var foundPropertyType2 = ClassifierMethods.GetPropertyType(dynamicRuntimeProvider,
+                _DatenMeister._DynamicRuntimeProvider._DynamicRuntimeLoaderConfig.configuration);
+
+            Assert.That(foundPropertyType2, Is.Null);
         }
     }
 }

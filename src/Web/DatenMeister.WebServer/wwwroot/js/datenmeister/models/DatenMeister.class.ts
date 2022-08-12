@@ -245,6 +245,11 @@ export namespace _DatenMeister
                 }
 
                 export const __Action_Uri = "dm:///_internal/types/internal#Actions.Action";
+                export class _MoveOrCopyAction
+                {
+                }
+
+                export const __MoveOrCopyAction_Uri = "dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7";
         }
 
         export namespace _DataViews
@@ -1195,7 +1200,7 @@ export namespace _DatenMeister
                     static dropExisting = "dropExisting";
                 }
 
-                export const __DynamicRuntimeLoaderConfig_Uri = "dm:///_internal/types/internal#8be3c0ea-ef40-4b4a-a4ea-9262e924d7b8";
+                export const __DynamicRuntimeLoaderConfig_Uri = "dm:///_internal/types/internal#DynamicRuntimeProvider.DynamicRuntimeLoaderConfig";
                 export namespace _Examples
                 {
                         export class _NumberProviderSettings

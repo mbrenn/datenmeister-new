@@ -218,6 +218,10 @@ define(["require", "exports"], function (require, exports) {
             _Action.isDisabled = "isDisabled";
             _Actions._Action = _Action;
             _Actions.__Action_Uri = "dm:///_internal/types/internal#Actions.Action";
+            class _MoveOrCopyAction {
+            }
+            _Actions._MoveOrCopyAction = _MoveOrCopyAction;
+            _Actions.__MoveOrCopyAction_Uri = "dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
         let _DataViews;
         (function (_DataViews) {
@@ -1076,7 +1080,7 @@ define(["require", "exports"], function (require, exports) {
             _DynamicRuntimeLoaderConfig.workspaceId = "workspaceId";
             _DynamicRuntimeLoaderConfig.dropExisting = "dropExisting";
             _DynamicRuntimeProvider._DynamicRuntimeLoaderConfig = _DynamicRuntimeLoaderConfig;
-            _DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig_Uri = "dm:///_internal/types/internal#8be3c0ea-ef40-4b4a-a4ea-9262e924d7b8";
+            _DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig_Uri = "dm:///_internal/types/internal#DynamicRuntimeProvider.DynamicRuntimeLoaderConfig";
             let _Examples;
             (function (_Examples) {
                 class _NumberProviderSettings {

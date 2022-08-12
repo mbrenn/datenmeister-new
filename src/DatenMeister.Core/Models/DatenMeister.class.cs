@@ -500,6 +500,13 @@ namespace DatenMeister.Core.Models
             public _Action @Action = new _Action();
             public IElement @__Action = new MofObjectShadow("dm:///_internal/types/internal#Actions.Action");
 
+            public class _MoveOrCopyAction
+            {
+            }
+
+            public _MoveOrCopyAction @MoveOrCopyAction = new _MoveOrCopyAction();
+            public IElement @__MoveOrCopyAction = new MofObjectShadow("dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7");
+
         }
 
         public _Actions Actions = new _Actions();
@@ -2570,7 +2577,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _DynamicRuntimeLoaderConfig @DynamicRuntimeLoaderConfig = new _DynamicRuntimeLoaderConfig();
-            public IElement @__DynamicRuntimeLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#8be3c0ea-ef40-4b4a-a4ea-9262e924d7b8");
+            public IElement @__DynamicRuntimeLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DynamicRuntimeProvider.DynamicRuntimeLoaderConfig");
 
             public class _Examples
             {

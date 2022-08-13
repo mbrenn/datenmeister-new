@@ -151,10 +151,6 @@ export class DmObject {
         this.metaClass = {uri: metaClassUri};
     }
 
-    setMetaClassById(metaClassId: string) {
-        this.metaClass = {id: metaClassId};
-    }
-
     static valueToString(item: any, indent: string = ""): string {
 
         let result = "";
@@ -199,15 +195,12 @@ export class DmObject {
  * @param element
  */
 export function convertToItemWithNameAndId(element: DmObject) {
-    const result =
-        {
-            uri: element.uri,
-            extentUri: element.extentUri,
-            workspace: element.workspace,
-            ententType: EntentType.Item
-        };
-
-    return result;
+    return {
+        uri: element.uri,
+        extentUri: element.extentUri,
+        workspace: element.workspace,
+        ententType: EntentType.Item
+    };
 }
 
 /*
@@ -250,7 +243,7 @@ export function createJsonFromObject(element: DmObject) {
     return result;
 }
 
-/*
+/**
  * Converts the Object as given by the server to the JS-World. 
  * In case of native objects, the native object will be returned. 
  * In case of arrays, the arrays. 

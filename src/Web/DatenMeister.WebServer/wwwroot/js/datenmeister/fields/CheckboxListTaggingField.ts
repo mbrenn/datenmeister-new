@@ -9,43 +9,46 @@ export class Field extends BaseField implements IFormField {
      * value of the selected checkboxes
      * @private
      */
-    private _checkboxes = new Array<JQuery>();
+    private checkboxes = new Array<JQuery>();
 
-    private _freeText: JQuery;
+    private freeText: JQuery;
 
-    private _separator: string;
+    private separator: string;
 
-    private _name: string;
+    private name: string;
 
-    private _isFieldReadOnly: boolean;
+    private isFieldReadOnly: boolean;
 
     constructor() {
         super();
     }
 
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
         // Ensure local availability of field information
-        this._name = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData._name_, ObjectType.String);
-        this._separator = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator, ObjectType.String);
+        this.name = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData._name_, ObjectType.String);
+        this.separator = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator, ObjectType.String);
 
-        if (this._separator === "" || this._separator === undefined) {
-            this._separator = ",";
+        if (this.separator === "" || this.separator === undefined) {
+            this.separator = ",";
         }
 
         const containsFreeText = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText, ObjectType.Boolean);
 
         const valuePairs = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, ObjectType.Array);
-        this._isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, ObjectType.Boolean);
+        this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, ObjectType.Boolean);
 
         // Gets the value and splits it
-        const currentValue = dmElement.get(this._name, ObjectType.String);
-        const currentList = currentValue.split(this._separator);
+        const currentValue = dmElement.get(this.name, ObjectType.String);
+        const currentList = currentValue.split(this.separator);
 
         // Create the element       
         const result = $("<table></table>");
 
         // Now go through the values and create the option fields
         for (let n in valuePairs) {
+            if (!Object.prototype.hasOwnProperty.call(valuePairs, n))
+                continue;
+
             const valuePair = valuePairs[n] as DmObject;
             const valueName = valuePair.get(_DatenMeister._Forms._ValuePair._name_, ObjectType.String);
             const valueContent = valuePair.get(_DatenMeister._Forms._ValuePair.value, ObjectType.String);
@@ -55,7 +58,7 @@ export class Field extends BaseField implements IFormField {
             checkbox.attr('name', valueName);
             checkbox.attr('data-value', valueContent);
 
-            if (this._isFieldReadOnly || this.isReadOnly) {
+            if (this.isFieldReadOnly || this.isReadOnly) {
                 checkbox.attr('disabled', 'disabled');
             }
 
@@ -69,7 +72,7 @@ export class Field extends BaseField implements IFormField {
                 currentList.splice(index, 1);
             }
 
-            this._checkboxes.push(checkbox);
+            this.checkboxes.push(checkbox);
 
             // Creates the row
             const row = $("<tr><td></td></tr>");
@@ -80,10 +83,10 @@ export class Field extends BaseField implements IFormField {
 
         // If user also wants to have a freetext, add it
         if (containsFreeText) {
-            this._freeText = $("<input type='text' />");
+            this.freeText = $("<input type='text' />");
 
-            if (this._isFieldReadOnly || this.isReadOnly) {
-                this._freeText.attr('disabled', 'disabled');
+            if (this.isFieldReadOnly || this.isReadOnly) {
+                this.freeText.attr('disabled', 'disabled');
             }
 
             // Combines the residual attributes
@@ -96,14 +99,14 @@ export class Field extends BaseField implements IFormField {
                 komma = ",";
             }
 
-            this._freeText.val(freeTextText);
+            this.freeText.val(freeTextText);
 
             // Creates the row
             const rowOptions = $("<tr><td class='small'>Other:</td></tr>");
-            $("td", rowOptions).append(this._freeText)
+            $("td", rowOptions).append(this.freeText)
             result.append(rowOptions);
             const row = $("<tr><td></td></tr>");
-            $("td", row).append(this._freeText)
+            $("td", row).append(this.freeText)
             result.append(row);
         }
 
@@ -115,25 +118,25 @@ export class Field extends BaseField implements IFormField {
      * @param dmElement Element to which the data shall be added
      */
     evaluateDom(dmElement: DmObject) {
-        if (this.isReadOnly || this._isFieldReadOnly) return;
+        if (this.isReadOnly || this.isFieldReadOnly) return;
 
         let result = "";
         let komma = "";
 
-        for (let n in this._checkboxes) {
-            const checkbox = this._checkboxes[n];
+        for (let n in this.checkboxes) {
+            const checkbox = this.checkboxes[n];
             if (checkbox.prop('checked')) {
                 result += komma;
                 result += checkbox.attr('data-value');
-                komma = this._separator;
+                komma = this.separator;
             }
         }
 
-        if (this._freeText !== undefined) {
+        if (this.freeText !== undefined) {
             result += komma;
-            result += this._freeText.val();
+            result += this.freeText.val();
         }
 
-        dmElement.set(this._name, result);
+        dmElement.set(this.name, result);
     }
 }

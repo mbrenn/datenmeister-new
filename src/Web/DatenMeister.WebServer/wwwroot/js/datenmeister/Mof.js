@@ -111,9 +111,6 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         setMetaClassByUri(metaClassUri) {
             this.metaClass = { uri: metaClassUri };
         }
-        setMetaClassById(metaClassId) {
-            this.metaClass = { id: metaClassId };
-        }
         static valueToString(item, indent = "") {
             let result = "";
             let komma = "";
@@ -159,13 +156,12 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
      * @param element
      */
     function convertToItemWithNameAndId(element) {
-        const result = {
+        return {
             uri: element.uri,
             extentUri: element.extentUri,
             workspace: element.workspace,
             ententType: ApiModels_1.EntentType.Item
         };
-        return result;
     }
     exports.convertToItemWithNameAndId = convertToItemWithNameAndId;
     /*
@@ -204,7 +200,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         return result;
     }
     exports.createJsonFromObject = createJsonFromObject;
-    /*
+    /**
      * Converts the Object as given by the server to the JS-World.
      * In case of native objects, the native object will be returned.
      * In case of arrays, the arrays.

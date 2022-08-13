@@ -120,34 +120,36 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
     exports.Control = Control;
     class Field extends Control {
         createDom(dmElement) {
-            this.element = dmElement;
-            this._list.empty();
-            this.fieldName = this.field.get('name');
-            let value = dmElement.get(this.fieldName);
-            if (Array.isArray(value)) {
-                if (value.length === 1) {
-                    value = value[0];
+            return __awaiter(this, void 0, void 0, function* () {
+                this.element = dmElement;
+                this._list.empty();
+                this.fieldName = this.field.get('name');
+                let value = dmElement.get(this.fieldName);
+                if (Array.isArray(value)) {
+                    if (value.length === 1) {
+                        value = value[0];
+                    }
+                    else {
+                        this._list.append($("<em>The value is an array and not supported by the referencefield</em>"));
+                        return this._list;
+                    }
+                }
+                // Sets the properties being required by the parent class
+                this.propertyName = this.fieldName;
+                this.itemUrl = dmElement.uri;
+                if (this.isReadOnly === true) {
+                    if (value === undefined || value === null) {
+                        this._list.html("<em class='dm-undefined'>undefined</em>");
+                    }
+                    else {
+                        this._list.text(value.get('name'));
+                    }
                 }
                 else {
-                    this._list.append($("<em>The value is an array and not supported by the referencefield</em>"));
-                    return this._list;
+                    return this.createDomByValue(value);
                 }
-            }
-            // Sets the properties being required by the parent class
-            this.propertyName = this.fieldName;
-            this.itemUrl = dmElement.uri;
-            if (this.isReadOnly === true) {
-                if (value === undefined) {
-                    this._list.html("<em class='dm-undefined'>undefined</em>");
-                }
-                else {
-                    this._list.text(value.get('name'));
-                }
-            }
-            else {
-                return this.createDomByValue(value);
-            }
-            return this._list;
+                return this._list;
+            });
         }
         evaluateDom(dmElement) {
         }

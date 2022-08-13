@@ -8,12 +8,14 @@ define(["require", "exports", "../Mof", "../models/DatenMeister.class"], functio
             const form = new Mof.DmObject();
             form.metaClass =
                 {
-                    id: _DatenMeister._DatenMeister._Forms.__ObjectForm_Uri
+                    id: _DatenMeister._DatenMeister._Forms.__ObjectForm_Uri,
+                    uri: _DatenMeister._DatenMeister._Forms.__ObjectForm_Uri
                 };
             const detailForm = new Mof.DmObject();
             detailForm.metaClass =
                 {
-                    id: _DatenMeister._DatenMeister._Forms.__RowForm_Uri
+                    id: _DatenMeister._DatenMeister._Forms.__RowForm_Uri,
+                    uri: _DatenMeister._DatenMeister._Forms.__RowForm_Uri
                 };
             form.set('tab', [detailForm]);
             return form;

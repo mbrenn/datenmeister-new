@@ -9,15 +9,15 @@ export enum EntentType {
  * Correspondent to DatenMeister.Json.ItemLink.cs
  */
 export interface ItemLink {
-    workspace: string;
-    itemUrl: string;
+    workspace?: string;
+    uri: string;
 }
 
 /**
  * Correspondent to DatenMeister.Json.ItemWithNameAndId
  */
 export interface ItemWithNameAndId {
-    uri?: string;
+    uri: string;
     name?: string;
     extentUri?: string;
     fullName?: string;

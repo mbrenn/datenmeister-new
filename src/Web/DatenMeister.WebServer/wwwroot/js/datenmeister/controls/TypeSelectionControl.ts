@@ -69,13 +69,13 @@ export class TypeSelectionControl {
                             selectedType: foundItem
                         });
                 } else {
-                    alert('Not a valid form has been selected')
+                    alert("Not a valid form has been selected")
                 }
             }
         )
 
         if (this._currentTypeUrl !== undefined) {
-            await this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
+            await this._selectionField.setItemByUri("Types", this._currentTypeUrl.uri);
         } else {
             await this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
         }

@@ -50,11 +50,11 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                         });
                     }
                     else {
-                        alert('Not a valid form has been selected');
+                        alert("Not a valid form has been selected");
                     }
                 }));
                 if (this._currentTypeUrl !== undefined) {
-                    yield this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
+                    yield this._selectionField.setItemByUri("Types", this._currentTypeUrl.uri);
                 }
                 else {
                     yield this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");

@@ -75,8 +75,8 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             this.htmlSelectedElements = $("<div></div>");
             this.htmlItemsList = $("<ul></ul>");
             // Defines the handler whenever the user changes something
-            this.htmlWorkspaceSelect.on('change', () => tthis.onWorkspaceChangedByUser());
-            this.htmlExtentSelect.on('change', () => tthis.onExtentChangedByUser());
+            this.htmlWorkspaceSelect.on("change", () => tthis.onWorkspaceChangedByUser());
+            this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
             // Creates the template
             const div = $("<table class='dm-selectitemcontrol'>" +
                 "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
@@ -105,17 +105,17 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             this.htmlBreadcrumbList = $(".breadcrumb", div);
             // throws the event, when the user clicks on the set button
             setButton.text(this.settings.setButtonText);
-            setButton.on('click', () => {
+            setButton.on("click", () => {
                 tthis.itemSelected.invoke(tthis.selectedItem);
             });
-            cancelButton.on('click', () => {
+            cancelButton.on("click", () => {
                 this.removeControl();
             });
             if (settings === null || settings === void 0 ? void 0 : settings.hideAtStartup) {
                 div.hide();
             }
             container.append(div);
-            this._containerDiv = div;
+            this.containerDiv = div;
             this.isDomInitializationDone = true;
             return div;
         }
@@ -123,8 +123,8 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
          * Shows the control (by revoking the hide status)
          */
         showControl() {
-            if (this._containerDiv !== undefined) {
-                this._containerDiv.show();
+            if (this.containerDiv !== undefined) {
+                this.containerDiv.show();
             }
         }
         /**
@@ -132,8 +132,8 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
          */
         removeControl() {
             var _a;
-            (_a = this._containerDiv) === null || _a === void 0 ? void 0 : _a.remove();
-            this._containerDiv = undefined;
+            (_a = this.containerDiv) === null || _a === void 0 ? void 0 : _a.remove();
+            this.containerDiv = undefined;
         }
         /**
          * This method will be called when the user changed the selected workspace
@@ -370,7 +370,7 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                             const option = $("<li class='dm-sic-item'></li>");
                             option.append((0, DomHelper_1.convertItemWithNameAndIdToDom)(item, { inhibitItemLink: true }));
                             // Creates the clickability of the list of items
-                            ((innerItem) => option.on('click', () => __awaiter(this, void 0, void 0, function* () {
+                            ((innerItem) => option.on("click", () => __awaiter(this, void 0, void 0, function* () {
                                 tthis.selectedItem = innerItem;
                                 tthis.itemClicked.invoke(innerItem);
                                 yield tthis.loadItems();
@@ -472,7 +472,7 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             const breadcrumbItem = $("<li class='breadcrumb-item active'></li>");
             breadcrumbItem.text(text);
             // Remove all breadcrumb items till that one
-            breadcrumbItem.on('click', () => __awaiter(this, void 0, void 0, function* () {
+            breadcrumbItem.on("click", () => __awaiter(this, void 0, void 0, function* () {
                 onClick();
                 yield tthis.refreshBreadcrumb();
             }));

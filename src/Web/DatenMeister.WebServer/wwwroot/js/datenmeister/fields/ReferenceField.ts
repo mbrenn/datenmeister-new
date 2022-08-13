@@ -159,7 +159,7 @@ export class Field extends Control implements IFormField {
     // The name of the field being derived from the field
     fieldName: string;
 
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         this.element = dmElement;
         
@@ -182,7 +182,7 @@ export class Field extends Control implements IFormField {
         this.itemUrl = dmElement.uri;
                 
         if (this.isReadOnly === true) {
-            if (value === undefined) {
+            if (value === undefined || value === null) {
                 this._list.html("<em class='dm-undefined'>undefined</em>");
             } else {
                 this._list.text(value.get('name'));

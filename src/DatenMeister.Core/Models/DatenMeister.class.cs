@@ -502,6 +502,12 @@ namespace DatenMeister.Core.Models
 
             public class _MoveOrCopyAction
             {
+                public static string @actionType = "actionType";
+                public IElement? @_actionType = null;
+
+                public static string @value = "value";
+                public IElement? @_value = null;
+
             }
 
             public _MoveOrCopyAction @MoveOrCopyAction = new _MoveOrCopyAction();

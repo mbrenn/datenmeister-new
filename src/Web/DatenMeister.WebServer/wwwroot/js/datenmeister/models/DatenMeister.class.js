@@ -220,6 +220,8 @@ define(["require", "exports"], function (require, exports) {
             _Actions.__Action_Uri = "dm:///_internal/types/internal#Actions.Action";
             class _MoveOrCopyAction {
             }
+            _MoveOrCopyAction.actionType = "actionType";
+            _MoveOrCopyAction.value = "value";
             _Actions._MoveOrCopyAction = _MoveOrCopyAction;
             _Actions.__MoveOrCopyAction_Uri = "dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));

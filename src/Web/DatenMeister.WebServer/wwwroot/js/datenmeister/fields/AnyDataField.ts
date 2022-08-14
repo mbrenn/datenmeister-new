@@ -237,7 +237,7 @@ export class Field extends BaseField implements IFormField {
                     await selectItem.initAsync(containerChangeCell, settings);
 
                     // Sets the item, if defined
-                    if (value.workspace !== undefined && value.uri !== undefined) {
+                    if (value?.workspace !== undefined && value.uri !== undefined) {
                         await selectItem.setItemByUri(value.workspace, value.uri);
 
                     } else {
@@ -251,8 +251,8 @@ export class Field extends BaseField implements IFormField {
                         // Sets the extent, if defined
                         if (value?.extentUri !== undefined) {
                             await selectItem.setWorkspaceById(value.workspace);
-                        } else if (this._element?.extentUri !== undefined) {
-                            await selectItem.setExtentByUri(value.workspace, tthis._element.extentUri);
+                        } else if (this._element?.extentUri !== undefined && this._element.workspace !== undefined) {
+                            await selectItem.setExtentByUri(this._element.workspace, tthis._element.extentUri);
                         }
                     }
                     

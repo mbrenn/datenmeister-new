@@ -201,7 +201,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                             containerChangeCell.empty();
                             yield selectItem.initAsync(containerChangeCell, settings);
                             // Sets the item, if defined
-                            if (value.workspace !== undefined && value.uri !== undefined) {
+                            if ((value === null || value === void 0 ? void 0 : value.workspace) !== undefined && value.uri !== undefined) {
                                 yield selectItem.setItemByUri(value.workspace, value.uri);
                             }
                             else {
@@ -216,8 +216,8 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                                 if ((value === null || value === void 0 ? void 0 : value.extentUri) !== undefined) {
                                     yield selectItem.setWorkspaceById(value.workspace);
                                 }
-                                else if (((_c = this._element) === null || _c === void 0 ? void 0 : _c.extentUri) !== undefined) {
-                                    yield selectItem.setExtentByUri(value.workspace, tthis._element.extentUri);
+                                else if (((_c = this._element) === null || _c === void 0 ? void 0 : _c.extentUri) !== undefined && this._element.workspace !== undefined) {
+                                    yield selectItem.setExtentByUri(this._element.workspace, tthis._element.extentUri);
                                 }
                             }
                             selectItem.showControl();

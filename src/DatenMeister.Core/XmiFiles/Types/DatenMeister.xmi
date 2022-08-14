@@ -768,7 +768,7 @@
         <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b51637dd-3e68-4e86-9e39-5f5f0b63ad1b" name="value" lower="1" upper="1">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b51637dd-3e68-4e86-9e39-5f5f0b63ad1b" name="target" lower="1" upper="1">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
         <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
         <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
@@ -778,6 +778,23 @@
         <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6d63a4f8-2e5c-410a-ad7e-d049ace9d500" name="source">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Enumeration" p2:id="bb497efd-5acc-4c00-b996-00375efdb41a" name="MoveOrCopyType">
+      <isAbstract href="dm:///_internal/model/uml#Classifier-isAbstract-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="eab02b63-6817-4ee6-8742-bfd78e93bfe6" name="Copy" />
+      <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="e0cbd213-72b6-4cf3-b24e-0a45391565b7" name="Move" />
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

@@ -505,13 +505,35 @@ namespace DatenMeister.Core.Models
                 public static string @actionType = "actionType";
                 public IElement? @_actionType = null;
 
-                public static string @value = "value";
-                public IElement? @_value = null;
+                public static string @target = "target";
+                public IElement? @_target = null;
+
+                public static string @source = "source";
+                public IElement? @_source = null;
 
             }
 
             public _MoveOrCopyAction @MoveOrCopyAction = new _MoveOrCopyAction();
             public IElement @__MoveOrCopyAction = new MofObjectShadow("dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7");
+
+            public class _MoveOrCopyType
+            {
+                public static string @Copy = "Copy";
+                public IElement? @__Copy = null;
+                public static string @Move = "Move";
+                public IElement? @__Move = null;
+
+            }
+
+            public _MoveOrCopyType @MoveOrCopyType = new _MoveOrCopyType();
+            public IElement @__MoveOrCopyType = new MofObjectShadow("dm:///_internal/types/internal#bb497efd-5acc-4c00-b996-00375efdb41a");
+
+
+            public enum ___MoveOrCopyType
+            {
+                @Copy,
+                @Move
+            }
 
         }
 

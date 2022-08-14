@@ -117,13 +117,13 @@ export class SelectItemControl {
         const div = $(
             "<table class='dm-selectitemcontrol'>" +
             "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
-            "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
-            "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
-            "<tr><td>Items: </td>" +
+            "<tr><th>Workspace: </th><td class='dm-sic-workspace'></td></tr>" +
+            "<tr><th>Extent: </th><td class='dm-sic-extent'></td></tr>" +
+            "<tr><th>Selected Item: </th><td><div class='dm-sic-selected'></div></td></tr>" +
+            "<tr><th>Children: </th>" +
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
             "<tr><td></td><td class='selected'>" +
             (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
             "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
@@ -411,6 +411,8 @@ export class SelectItemControl {
                     };
             }
 
+            this.selectedItem = selectedItem;
+            
             // Now get rid of it
             this.preSelectItemUri = undefined;
         }

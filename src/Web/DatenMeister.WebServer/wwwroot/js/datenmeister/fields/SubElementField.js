@@ -137,7 +137,6 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                         // Get the property type
                         if (this.propertyType !== undefined) {
                             control.setCurrentTypeUrl(this.propertyType);
-                            alert(this.propertyType.id);
                         }
                         control.typeSelected.addListener((x) => __awaiter(this, void 0, void 0, function* () {
                             if (x === undefined ||

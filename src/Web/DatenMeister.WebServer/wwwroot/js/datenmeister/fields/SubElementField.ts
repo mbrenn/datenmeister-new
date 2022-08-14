@@ -190,7 +190,6 @@ export class Control {
                 // Get the property type
                 if(this.propertyType !== undefined) {
                     control.setCurrentTypeUrl(this.propertyType);
-                    alert(this.propertyType.id);
                 }
                 
                 control.typeSelected.addListener(async x => {

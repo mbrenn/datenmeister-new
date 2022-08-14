@@ -6,7 +6,6 @@ import {setMetaclass} from "../client/Items";
 import {DmObject} from "../Mof";
 
 export class Field extends BaseField implements IFormField {
-    _textBox: JQuery<HTMLInputElement>;
 
     async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
         const tthis = this;
@@ -28,7 +27,6 @@ export class Field extends BaseField implements IFormField {
         }
 
         divContainer.append(div);
-
 
         // Create button to change metaClass
         if (!this.isReadOnly) {

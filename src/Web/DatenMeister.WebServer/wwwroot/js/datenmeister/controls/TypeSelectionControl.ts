@@ -15,7 +15,7 @@ export interface TypeSelectedEvent {
  * Within this control, the user can select a type 
  */
 export class TypeSelectionControl {
-    private _selectionField: SIC.SelectItemControl;
+    private selectionField: SIC.SelectItemControl;
 
     /**
      * This event is thrown when the user has selected a specific form
@@ -58,9 +58,9 @@ export class TypeSelectionControl {
         const controlSelect = $(".dm-form-selection-control-select", result);
 
         // Creates the selection field
-        this._selectionField = new SIC.SelectItemControl();
+        this.selectionField = new SIC.SelectItemControl();
 
-        this._selectionField.itemSelected.addListener(
+        this.selectionField.itemSelected.addListener(
             async selectedItem => {
                 if (selectedItem !== undefined) {
                     const foundItem = await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
@@ -69,21 +69,21 @@ export class TypeSelectionControl {
                             selectedType: foundItem
                         });
                 } else {
-                    alert("Not a valid form has been selected")
+                    alert("No valid type has been selected")
                 }
             }
         )
 
         if (this._currentTypeUrl !== undefined) {
-            await this._selectionField.setItemByUri("Types", this._currentTypeUrl.uri);
+            await this.selectionField.setItemByUri(this._currentTypeUrl.workspace, this._currentTypeUrl.uri);
         } else {
-            await this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
+            await this.selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
         }
 
         const settings = new SIC.Settings();
         settings.setButtonText = "Use Type";
         settings.headline = "Select Type:";
-        await this._selectionField.initAsync(controlSelect, settings);
+        await this.selectionField.initAsync(controlSelect, settings);
 
         // Finalize the GUI
         this._container.append(result);

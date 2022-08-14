@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Web;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -44,6 +47,10 @@ namespace DatenMeister.Json
         /// </summary>
         public string? typeUri { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Defines the enum type
+        /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public EntentType ententType { get; set; } = EntentType.Item;
 
 
@@ -81,6 +88,78 @@ namespace DatenMeister.Json
         public override string ToString()
         {
             return name ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Converts this given ItemWithNameAndId to a JSON obkect
+        /// </summary>
+        /// <param name="builder"></param>
+        public void AppendJson(StringBuilder builder)
+        {
+            var komma = string.Empty;
+            builder.Append("{");
+
+            if (workspace != null)
+            {
+                builder.Append($"{komma}\"workspace\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(workspace)}\"");
+                komma = ",";
+            }
+
+            if (name != null)
+            {
+                builder.Append($"{komma}\"name\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(name)}\"");
+                komma = ",";
+            }
+
+            if (id != null)
+            {
+                builder.Append($"{komma}\"id\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(id)}\"");
+                komma = ",";
+            }
+
+            if (extentUri != null)
+            {
+                builder.Append($"{komma}\"extentUri\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(extentUri)}\"");
+                komma = ",";
+            }
+
+            if (fullName != null)
+            {
+                builder.Append($"{komma}\"fullName\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(fullName)}\"");
+                komma = ",";
+            }
+
+            if (uri != null)
+            {
+                builder.Append($"{komma}\"uri\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(uri)}\"");
+                komma = ",";
+            }
+
+            if (typeName != null)
+            {
+                builder.Append($"{komma}\"typeName\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(typeName)}\"");
+                komma = ",";
+            }
+
+            if (typeUri != null)
+            {
+                builder.Append($"{komma}\"typeUri\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(typeUri)}\"");
+                komma = ",";
+            }
+
+            builder.Append($"{komma}\"ententType\": ");
+            builder.Append($"\"{HttpUtility.JavaScriptStringEncode(ententType.ToString())}\"");
+            
+            builder.Append("}");
+
         }
     }
 }

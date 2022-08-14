@@ -270,13 +270,17 @@ export class Field extends Control implements IFormField {
             this._element = dmElement;
             const value = dmElement.get(this.propertyName);
 
-            if (this._element.metaClass?.uri !== undefined) {
+            if (this._element.metaClass?.uri !== undefined
+                && this.propertyName !== undefined
+                && !this.isReadOnly) {
                 this.propertyType =
-                    await ClientTypes.getPropertyType(this._element.metaClass.uri,
+                    await ClientTypes.getPropertyType(
+                        this._element.metaClass.workspace,
+                        this._element.metaClass.uri,
                         this.propertyName);
             }
 
-            this.createDomByFieldValue(value);
+            await this.createDomByFieldValue(value);
 
             return this._list
         }

@@ -1,8 +1,8 @@
 ﻿
 export enum EntentType {
-    Item,
-    Extent,
-    Workspace
+    Item= "Item",
+    Extent = "Extent",
+    Workspace = "Workspace"
 }
 
 /**

@@ -201,11 +201,13 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                 else {
                     this._element = dmElement;
                     const value = dmElement.get(this.propertyName);
-                    if (((_a = this._element.metaClass) === null || _a === void 0 ? void 0 : _a.uri) !== undefined) {
+                    if (((_a = this._element.metaClass) === null || _a === void 0 ? void 0 : _a.uri) !== undefined
+                        && this.propertyName !== undefined
+                        && !this.isReadOnly) {
                         this.propertyType =
-                            yield ClientTypes.getPropertyType(this._element.metaClass.uri, this.propertyName);
+                            yield ClientTypes.getPropertyType(this._element.metaClass.workspace, this._element.metaClass.uri, this.propertyName);
                     }
-                    this.createDomByFieldValue(value);
+                    yield this.createDomByFieldValue(value);
                     return this._list;
                 }
             });

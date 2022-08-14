@@ -13,9 +13,10 @@ export async function getAllTypes() {
  * @param metaClass Uri of the metaClass to be queried
  * @param propertyName
  */
-export async function getPropertyType(metaClass: string, propertyName: string) {
+export async function getPropertyType(workspace: string, metaClass: string, propertyName: string) {
     return await ApiConnection.get<ItemWithNameAndId>(
         Settings.baseUrl + "api/types/propertytype/"
+        + encodeURIComponent(workspace) + "/"
         + encodeURIComponent(metaClass) + "/"
         + encodeURIComponent(propertyName));
 }

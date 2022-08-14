@@ -117,20 +117,8 @@ namespace DatenMeister.Json
                 var item = ItemWithNameAndId.Create(asElement.getMetaClass());
                 if (item != null)
                 {
-                    builder.Append(", \"m\": {");
-
-                    builder.Append("\"name\": ");
-                    AppendValue(builder, item.name, recursionDepth);
-                    builder.Append(", \"id\": ");
-                    AppendValue(builder, item.id, recursionDepth);
-                    builder.Append(", \"extentUri\": ");
-                    AppendValue(builder, item.extentUri, recursionDepth);
-                    builder.Append(", \"fullName\": ");
-                    AppendValue(builder, item.fullName, recursionDepth);
-                    builder.Append(", \"uri\": ");
-                    AppendValue(builder, item.uri, recursionDepth);
-
-                    builder.Append("}");
+                    builder.Append(", \"m\": ");
+                    item.AppendJson(builder);
                 }
             }
 

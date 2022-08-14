@@ -28,8 +28,6 @@ namespace DatenMeister.WebServer
 
             _performRestart = restart;
             await _host.StopAsync();
-
-            TheLog.Info("Good bye - Your DatenMeister");
         }
 
         public static void Main(string[] args)
@@ -59,6 +57,8 @@ namespace DatenMeister.WebServer
 
             // Unloads the DatenMeister
             GiveMe.TryGetScope()?.UnuseDatenMeister();
+
+            TheLog.Info("Good bye - Your DatenMeister");
         }
 
         private static void InitializeLogging()

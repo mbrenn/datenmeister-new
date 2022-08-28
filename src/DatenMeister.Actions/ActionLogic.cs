@@ -33,6 +33,12 @@ namespace DatenMeister.Actions
 
     public class ActionLogic
     {
+        /// <summary>
+        /// Gets or sets a flag whether an asynchronous execution shall be performed
+        /// that means whether the action itself shall be executed in a task. 
+        /// </summary>
+        private const bool asyncExecution = true;
+
         private static readonly ILogger ClassLogger = new ClassLogger(typeof(ActionLogic));
         
         public IWorkspaceLogic WorkspaceLogic { get; }
@@ -83,24 +89,39 @@ namespace DatenMeister.Actions
             var found = false;
             foreach (var actionHandler in ScopeStorage.Get<ActionLogicState>().ActionHandlers)
             {
-                if (actionHandler.IsResponsible(action))
+                if (!actionHandler.IsResponsible(action))
                 {
-                    await Task.Run(() =>
-                    {
-                        try
-                        {
-                            actionHandler.Evaluate(this, action);
-                        }
-                        catch (Exception exc)
-                        {
-                            var message = $"An exception occurred during execution of {action}:\r\n\r\n{exc.Message}";
-                            ClassLogger.Error(exc.ToString());
-                            throw new InvalidOperationException(message, exc);
-                        }
-                    });
-                    
-                    found = true;
+                    continue;
                 }
+                
+                // Defines the action to be executed
+                var fct = new Action(() =>
+                {
+                    try
+                    {
+                        actionHandler.Evaluate(this, action);
+                    }
+                    catch (Exception exc)
+                    {
+                        var message =
+                            $"An exception occurred during execution of {action}:\r\n\r\n{exc.Message}";
+                        ClassLogger.Error(exc.ToString());
+                        throw new InvalidOperationException(message, exc);
+                    }
+                });
+
+#pragma warning disable CS0162
+                if (asyncExecution)
+                {
+                    await Task.Run(() => { fct(); });
+                }
+                else
+                {
+                    fct();
+                }
+#pragma warning restore CS0162
+
+                found = true;
             }
 
             if (!found)
@@ -108,6 +129,7 @@ namespace DatenMeister.Actions
                 var metaClass = action.metaclass;
                 var metaClassName = metaClass == null ? "Unknown Type" : NamedElementMethods.GetFullName(metaClass);
                 var message = $"Did not found action handler for {action}: {metaClassName}";
+                
                 ClassLogger.Warn(message);
                 throw new InvalidOperationException(message);
             }

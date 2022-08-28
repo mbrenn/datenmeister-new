@@ -175,7 +175,7 @@ namespace DatenMeister.Core.Functions.Queries
         /// <returns>The descendents of each list item of the enumeration</returns>
         /// <param name="parent">Parent to be evaluated</param>
         private IEnumerable<IObject> GetDescendentsInternal(
-            IEnumerable valueAsEnumerable,
+            IEnumerable? valueAsEnumerable,
             ICollection<string>? byFollowingProperties,
             IObject? parent,
             bool onlyComposites = false)

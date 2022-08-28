@@ -48,6 +48,7 @@ namespace DatenMeister.Actions
             logicState.AddActionHandler(new OpenDocumentActionHandler());
             logicState.AddActionHandler(new EchoActionHandler());
             logicState.AddActionHandler(new CreateFormByMetaclassActionHandler());
+            logicState.AddActionHandler(new MoveOrCopyActionHandler());
 
             return logicState;
         }

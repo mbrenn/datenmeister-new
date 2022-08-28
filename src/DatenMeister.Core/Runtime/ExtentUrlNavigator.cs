@@ -45,6 +45,17 @@ namespace DatenMeister.Core.Runtime
         {
             _cacheIds.Clear();
         }
+        
+        /// <summary>
+        /// Removes the element with the given id from the resolve cache  
+        /// </summary>
+        /// <param name="id">Id of the element to be removed. This id of the element
+        /// shall not contain the id of the extent</param>
+        public void RemoveFromResolveCache(string id)
+        {
+            // This is the easy implementation
+            ClearResolveCache();
+        }
 
         /// <summary>
         /// Gets the sub element by the uri or null, if the extent does not contain the uri, null is returned

@@ -48,8 +48,6 @@ export class Control {
             const div = $("<em>Element needs to be saved first</em>");
             this._list.append(div);
         } else {
-
-
             if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                 const div = $("<div><em class='dm-undefined'>undefined</em></div>");
                 this._list.append(div);

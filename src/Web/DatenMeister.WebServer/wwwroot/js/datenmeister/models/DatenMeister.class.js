@@ -224,7 +224,7 @@ define(["require", "exports"], function (require, exports) {
             _MoveOrCopyAction.target = "target";
             _MoveOrCopyAction.source = "source";
             _Actions._MoveOrCopyAction = _MoveOrCopyAction;
-            _Actions.__MoveOrCopyAction_Uri = "dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7";
+            _Actions.__MoveOrCopyAction_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction";
             let _MoveOrCopyType;
             (function (_MoveOrCopyType) {
                 _MoveOrCopyType.Copy = "Copy";

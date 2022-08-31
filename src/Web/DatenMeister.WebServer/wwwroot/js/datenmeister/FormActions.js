@@ -7,13 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm", "./models/DatenMeister.class"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
     var DetailFormActions;
     (function (DetailFormActions) {
         // Loads the object being used for the action. 
+        var _MoveOrCopyAction = DatenMeister_class_1._DatenMeister._Actions._MoveOrCopyAction;
         function loadObjectForAction(actionName) {
             return __awaiter(this, void 0, void 0, function* () {
                 let p = new URLSearchParams(window.location.search);
@@ -45,6 +46,18 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     const result = new Mof_1.DmObject();
                     result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
                     result.set("workspaceId", p.get('workspaceId'));
+                    return Promise.resolve(result);
+                }
+                if (actionName === "Item.MoveOrCopy") {
+                    const result = new Mof_1.DmObject();
+                    result.setMetaClassByUri(DatenMeister_class_1._DatenMeister._Actions.__MoveOrCopyAction_Uri);
+                    // TODO: Set Result
+                    const sourceWorkspace = p.get('workspaceId');
+                    const sourceItemUri = p.get('itemUri');
+                    const source = new Mof_1.DmObject();
+                    source.workspace = sourceWorkspace;
+                    source.uri = sourceItemUri;
+                    result.set(_MoveOrCopyAction.source, source);
                     return Promise.resolve(result);
                 }
                 /* Nothing has been found, so return an undefined */
@@ -226,6 +239,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                             }
                         });
                         break;
+                    case "Item.MoveOrCopy.Navigate":
+                        yield FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
+                        break;
                     case "JSON.Item.Alert":
                         alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
                         break;
@@ -248,6 +264,11 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         static workspaceExtentLoadAndCreateNavigateTo(workspaceId) {
             document.location.href =
                 Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
+        }
+        static itemMoveOrCopyNavigateTo(workspaceId, itemUri) {
+            document.location.href =
+                Settings.baseUrl + "ItemAction/Item.MoveOrCopy?workspaceId=" + encodeURIComponent(workspaceId)
+                    + "&itemUri=" + encodeURIComponent(itemUri);
         }
         static extentCreateItem(workspace, extentUri, element, metaClass, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

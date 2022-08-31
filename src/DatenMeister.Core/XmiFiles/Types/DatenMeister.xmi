@@ -753,7 +753,7 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7" name="MoveOrCopyAction">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.MoveOrCopyAction" name="MoveOrCopyAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
       <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />

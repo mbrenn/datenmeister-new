@@ -34,12 +34,12 @@ namespace DatenMeister.Tests.Json
         [Test]
         public void TestJsonDeconverter()
         {
-            Assert.That(DirectJsonDeconverter.ConvertJsonValue(2), Is.EqualTo(2));
-            Assert.That(DirectJsonDeconverter.ConvertJsonValue("ABC"), Is.EqualTo("ABC"));
-            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("true").RootElement), Is.True);
-            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("false").RootElement), Is.False);
-            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("2").RootElement), Is.EqualTo(2));
-            Assert.That(DirectJsonDeconverter.ConvertJsonValue(JsonDocument.Parse("\"abc\"").RootElement), Is.EqualTo("abc"));
+            Assert.That(new DirectJsonDeconverter().ConvertJsonValue(2), Is.EqualTo(2));
+            Assert.That(new DirectJsonDeconverter().ConvertJsonValue("ABC"), Is.EqualTo("ABC"));
+            Assert.That(new DirectJsonDeconverter().ConvertJsonValue(JsonDocument.Parse("true").RootElement), Is.True);
+            Assert.That(new DirectJsonDeconverter().ConvertJsonValue(JsonDocument.Parse("false").RootElement), Is.False);
+            Assert.That(new DirectJsonDeconverter().ConvertJsonValue(JsonDocument.Parse("2").RootElement), Is.EqualTo(2));
+            Assert.That(new DirectJsonDeconverter().ConvertJsonValue(JsonDocument.Parse("\"abc\"").RootElement), Is.EqualTo("abc"));
         }
     }
 }

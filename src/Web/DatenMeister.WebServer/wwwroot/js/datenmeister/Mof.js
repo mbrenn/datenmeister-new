@@ -170,7 +170,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         value is returned to MofObject
      */
     function createJsonFromObject(element) {
-        const result = { v: {}, m: {} };
+        const result = { v: {}, m: {}, r: {}, w: {} };
         const values = result.v;
         function convertValue(elementValue) {
             if (Array.isArray(elementValue)) {
@@ -190,9 +190,16 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
                 return elementValue;
             }
         }
-        for (const key in element.getPropertyValues()) {
-            let elementValue = element.get(key);
-            values[key] = convertValue(elementValue);
+        if (!element.isReference) {
+            for (const key in element.getPropertyValues()) {
+                let elementValue = element.get(key);
+                values[key] = convertValue(elementValue);
+            }
+        }
+        else {
+            // Object is reference
+            result.r = element.uri;
+            result.w = element.workspace;
         }
         if (element.metaClass !== undefined && element.metaClass !== null) {
             result.m = element.metaClass;

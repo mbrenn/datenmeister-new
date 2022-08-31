@@ -10,10 +10,13 @@ import * as ActionClient from "./client/Actions";
 import * as DatenMeisterModel from "./models/DatenMeister.class";
 
 import {SubmitMethod} from "./forms/RowForm";
+import {_DatenMeister} from "./models/DatenMeister.class";
 
 export module DetailFormActions {
 
     // Loads the object being used for the action. 
+    import _MoveOrCopyAction = _DatenMeister._Actions._MoveOrCopyAction;
+
     export async function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
 
         let p = new URLSearchParams(window.location.search);
@@ -54,6 +57,24 @@ export module DetailFormActions {
             const result = new DmObject();
             result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
             result.set("workspaceId", p.get('workspaceId'));
+
+            return Promise.resolve(result);
+        }
+
+        if (actionName === "Item.MoveOrCopy") {
+
+            const result = new DmObject();
+            result.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
+            
+            // TODO: Set Result
+            const sourceWorkspace = p.get('workspaceId');
+            const sourceItemUri = p.get('itemUri');
+            
+            const source = new DmObject();
+            source.workspace = sourceWorkspace;
+            source.uri = sourceItemUri;
+            
+            result.set(_MoveOrCopyAction.source, source);
 
             return Promise.resolve(result);
         }
@@ -174,6 +195,7 @@ export module DetailFormActions {
                 await FormActions.workspaceExtentLoadAndCreateNavigateTo(workspaceIdParameter);
                 break;
             }
+            
             case "Workspace.Extent.LoadOrCreate": {
                 const workspaceIdParameter = p?.get('workspaceId') ?? "";
                 const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
@@ -252,6 +274,10 @@ export module DetailFormActions {
                         }
                     });
                 break;
+                
+            case "Item.MoveOrCopy.Navigate":
+                await FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
+                break;
             case "JSON.Item.Alert":
                 alert(JSON.stringify(createJsonFromObject(element)));
                 break;
@@ -280,6 +306,12 @@ export class FormActions {
     static workspaceExtentLoadAndCreateNavigateTo(workspaceId: string) {
         document.location.href =
             Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
+    }
+    
+    static itemMoveOrCopyNavigateTo(workspaceId: string, itemUri: string) {
+        document.location.href =
+            Settings.baseUrl + "ItemAction/Item.MoveOrCopy?workspaceId=" + encodeURIComponent(workspaceId) 
+            + "&itemUri=" + encodeURIComponent(itemUri);
     }
 
     static async extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string, submitMethod?: SubmitMethod) {

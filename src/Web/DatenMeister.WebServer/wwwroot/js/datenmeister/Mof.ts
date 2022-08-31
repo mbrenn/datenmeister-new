@@ -209,7 +209,7 @@ export function convertToItemWithNameAndId(element: DmObject) {
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v: {}, m: {}};
+    const result = {v: {}, m: {}, r: {}, w: {}};
     const values = result.v;
 
     function convertValue(elementValue) {
@@ -231,9 +231,16 @@ export function createJsonFromObject(element: DmObject) {
         }
     }
 
-    for (const key in element.getPropertyValues()) {
-        let elementValue = element.get(key);
-        values[key] = convertValue(elementValue);
+    if ( !element.isReference) {
+        for (const key in element.getPropertyValues()) {
+            let elementValue = element.get(key);
+            values[key] = convertValue(elementValue);
+        }
+    }
+    else {
+        // Object is reference
+        result.r = element.uri;
+        result.w = element.workspace;
     }
 
     if (element.metaClass !== undefined && element.metaClass !== null) {

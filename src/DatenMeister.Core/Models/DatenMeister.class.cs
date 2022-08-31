@@ -514,7 +514,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _MoveOrCopyAction @MoveOrCopyAction = new _MoveOrCopyAction();
-            public IElement @__MoveOrCopyAction = new MofObjectShadow("dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7");
+            public IElement @__MoveOrCopyAction = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction");
 
             public class _MoveOrCopyType
             {

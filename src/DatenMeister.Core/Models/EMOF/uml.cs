@@ -216,7 +216,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Activity @Activity = new _Activity();
-            public IElement @__Activity = new MofObjectShadow("dm:///_internal/model/uml#Activity");
+            public MofObjectShadow @__Activity = new MofObjectShadow("dm:///_internal/model/uml#Activity");
 
             public class _ActivityEdge
             {
@@ -289,7 +289,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActivityEdge @ActivityEdge = new _ActivityEdge();
-            public IElement @__ActivityEdge = new MofObjectShadow("dm:///_internal/model/uml#ActivityEdge");
+            public MofObjectShadow @__ActivityEdge = new MofObjectShadow("dm:///_internal/model/uml#ActivityEdge");
 
             public class _ActivityFinalNode
             {
@@ -356,7 +356,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActivityFinalNode @ActivityFinalNode = new _ActivityFinalNode();
-            public IElement @__ActivityFinalNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityFinalNode");
+            public MofObjectShadow @__ActivityFinalNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityFinalNode");
 
             public class _ActivityGroup
             {
@@ -405,7 +405,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActivityGroup @ActivityGroup = new _ActivityGroup();
-            public IElement @__ActivityGroup = new MofObjectShadow("dm:///_internal/model/uml#ActivityGroup");
+            public MofObjectShadow @__ActivityGroup = new MofObjectShadow("dm:///_internal/model/uml#ActivityGroup");
 
             public class _ActivityNode
             {
@@ -472,7 +472,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActivityNode @ActivityNode = new _ActivityNode();
-            public IElement @__ActivityNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityNode");
+            public MofObjectShadow @__ActivityNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityNode");
 
             public class _ActivityParameterNode
             {
@@ -560,7 +560,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActivityParameterNode @ActivityParameterNode = new _ActivityParameterNode();
-            public IElement @__ActivityParameterNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityParameterNode");
+            public MofObjectShadow @__ActivityParameterNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityParameterNode");
 
             public class _ActivityPartition
             {
@@ -630,7 +630,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActivityPartition @ActivityPartition = new _ActivityPartition();
-            public IElement @__ActivityPartition = new MofObjectShadow("dm:///_internal/model/uml#ActivityPartition");
+            public MofObjectShadow @__ActivityPartition = new MofObjectShadow("dm:///_internal/model/uml#ActivityPartition");
 
             public class _CentralBufferNode
             {
@@ -715,7 +715,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CentralBufferNode @CentralBufferNode = new _CentralBufferNode();
-            public IElement @__CentralBufferNode = new MofObjectShadow("dm:///_internal/model/uml#CentralBufferNode");
+            public MofObjectShadow @__CentralBufferNode = new MofObjectShadow("dm:///_internal/model/uml#CentralBufferNode");
 
             public class _ControlFlow
             {
@@ -788,7 +788,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ControlFlow @ControlFlow = new _ControlFlow();
-            public IElement @__ControlFlow = new MofObjectShadow("dm:///_internal/model/uml#ControlFlow");
+            public MofObjectShadow @__ControlFlow = new MofObjectShadow("dm:///_internal/model/uml#ControlFlow");
 
             public class _ControlNode
             {
@@ -855,7 +855,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ControlNode @ControlNode = new _ControlNode();
-            public IElement @__ControlNode = new MofObjectShadow("dm:///_internal/model/uml#ControlNode");
+            public MofObjectShadow @__ControlNode = new MofObjectShadow("dm:///_internal/model/uml#ControlNode");
 
             public class _DataStoreNode
             {
@@ -940,7 +940,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DataStoreNode @DataStoreNode = new _DataStoreNode();
-            public IElement @__DataStoreNode = new MofObjectShadow("dm:///_internal/model/uml#DataStoreNode");
+            public MofObjectShadow @__DataStoreNode = new MofObjectShadow("dm:///_internal/model/uml#DataStoreNode");
 
             public class _DecisionNode
             {
@@ -1013,7 +1013,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DecisionNode @DecisionNode = new _DecisionNode();
-            public IElement @__DecisionNode = new MofObjectShadow("dm:///_internal/model/uml#DecisionNode");
+            public MofObjectShadow @__DecisionNode = new MofObjectShadow("dm:///_internal/model/uml#DecisionNode");
 
             public class _ExceptionHandler
             {
@@ -1041,7 +1041,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExceptionHandler @ExceptionHandler = new _ExceptionHandler();
-            public IElement @__ExceptionHandler = new MofObjectShadow("dm:///_internal/model/uml#ExceptionHandler");
+            public MofObjectShadow @__ExceptionHandler = new MofObjectShadow("dm:///_internal/model/uml#ExceptionHandler");
 
             public class _ExecutableNode
             {
@@ -1111,7 +1111,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExecutableNode @ExecutableNode = new _ExecutableNode();
-            public IElement @__ExecutableNode = new MofObjectShadow("dm:///_internal/model/uml#ExecutableNode");
+            public MofObjectShadow @__ExecutableNode = new MofObjectShadow("dm:///_internal/model/uml#ExecutableNode");
 
             public class _FinalNode
             {
@@ -1178,7 +1178,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _FinalNode @FinalNode = new _FinalNode();
-            public IElement @__FinalNode = new MofObjectShadow("dm:///_internal/model/uml#FinalNode");
+            public MofObjectShadow @__FinalNode = new MofObjectShadow("dm:///_internal/model/uml#FinalNode");
 
             public class _FlowFinalNode
             {
@@ -1245,7 +1245,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _FlowFinalNode @FlowFinalNode = new _FlowFinalNode();
-            public IElement @__FlowFinalNode = new MofObjectShadow("dm:///_internal/model/uml#FlowFinalNode");
+            public MofObjectShadow @__FlowFinalNode = new MofObjectShadow("dm:///_internal/model/uml#FlowFinalNode");
 
             public class _ForkNode
             {
@@ -1312,7 +1312,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ForkNode @ForkNode = new _ForkNode();
-            public IElement @__ForkNode = new MofObjectShadow("dm:///_internal/model/uml#ForkNode");
+            public MofObjectShadow @__ForkNode = new MofObjectShadow("dm:///_internal/model/uml#ForkNode");
 
             public class _InitialNode
             {
@@ -1379,7 +1379,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InitialNode @InitialNode = new _InitialNode();
-            public IElement @__InitialNode = new MofObjectShadow("dm:///_internal/model/uml#InitialNode");
+            public MofObjectShadow @__InitialNode = new MofObjectShadow("dm:///_internal/model/uml#InitialNode");
 
             public class _InterruptibleActivityRegion
             {
@@ -1434,7 +1434,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InterruptibleActivityRegion @InterruptibleActivityRegion = new _InterruptibleActivityRegion();
-            public IElement @__InterruptibleActivityRegion = new MofObjectShadow("dm:///_internal/model/uml#InterruptibleActivityRegion");
+            public MofObjectShadow @__InterruptibleActivityRegion = new MofObjectShadow("dm:///_internal/model/uml#InterruptibleActivityRegion");
 
             public class _JoinNode
             {
@@ -1507,7 +1507,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _JoinNode @JoinNode = new _JoinNode();
-            public IElement @__JoinNode = new MofObjectShadow("dm:///_internal/model/uml#JoinNode");
+            public MofObjectShadow @__JoinNode = new MofObjectShadow("dm:///_internal/model/uml#JoinNode");
 
             public class _MergeNode
             {
@@ -1574,7 +1574,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _MergeNode @MergeNode = new _MergeNode();
-            public IElement @__MergeNode = new MofObjectShadow("dm:///_internal/model/uml#MergeNode");
+            public MofObjectShadow @__MergeNode = new MofObjectShadow("dm:///_internal/model/uml#MergeNode");
 
             public class _ObjectFlow
             {
@@ -1659,7 +1659,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ObjectFlow @ObjectFlow = new _ObjectFlow();
-            public IElement @__ObjectFlow = new MofObjectShadow("dm:///_internal/model/uml#ObjectFlow");
+            public MofObjectShadow @__ObjectFlow = new MofObjectShadow("dm:///_internal/model/uml#ObjectFlow");
 
             public class _ObjectNode
             {
@@ -1744,7 +1744,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ObjectNode @ObjectNode = new _ObjectNode();
-            public IElement @__ObjectNode = new MofObjectShadow("dm:///_internal/model/uml#ObjectNode");
+            public MofObjectShadow @__ObjectNode = new MofObjectShadow("dm:///_internal/model/uml#ObjectNode");
 
             public class _Variable
             {
@@ -1814,7 +1814,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Variable @Variable = new _Variable();
-            public IElement @__Variable = new MofObjectShadow("dm:///_internal/model/uml#Variable");
+            public MofObjectShadow @__Variable = new MofObjectShadow("dm:///_internal/model/uml#Variable");
 
             public class _ObjectNodeOrderingKind
             {
@@ -1894,7 +1894,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Duration @Duration = new _Duration();
-            public IElement @__Duration = new MofObjectShadow("dm:///_internal/model/uml#Duration");
+            public MofObjectShadow @__Duration = new MofObjectShadow("dm:///_internal/model/uml#Duration");
 
             public class _DurationConstraint
             {
@@ -1946,7 +1946,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DurationConstraint @DurationConstraint = new _DurationConstraint();
-            public IElement @__DurationConstraint = new MofObjectShadow("dm:///_internal/model/uml#DurationConstraint");
+            public MofObjectShadow @__DurationConstraint = new MofObjectShadow("dm:///_internal/model/uml#DurationConstraint");
 
             public class _DurationInterval
             {
@@ -1995,7 +1995,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DurationInterval @DurationInterval = new _DurationInterval();
-            public IElement @__DurationInterval = new MofObjectShadow("dm:///_internal/model/uml#DurationInterval");
+            public MofObjectShadow @__DurationInterval = new MofObjectShadow("dm:///_internal/model/uml#DurationInterval");
 
             public class _DurationObservation
             {
@@ -2041,7 +2041,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DurationObservation @DurationObservation = new _DurationObservation();
-            public IElement @__DurationObservation = new MofObjectShadow("dm:///_internal/model/uml#DurationObservation");
+            public MofObjectShadow @__DurationObservation = new MofObjectShadow("dm:///_internal/model/uml#DurationObservation");
 
             public class _Expression
             {
@@ -2090,7 +2090,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Expression @Expression = new _Expression();
-            public IElement @__Expression = new MofObjectShadow("dm:///_internal/model/uml#Expression");
+            public MofObjectShadow @__Expression = new MofObjectShadow("dm:///_internal/model/uml#Expression");
 
             public class _Interval
             {
@@ -2139,7 +2139,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Interval @Interval = new _Interval();
-            public IElement @__Interval = new MofObjectShadow("dm:///_internal/model/uml#Interval");
+            public MofObjectShadow @__Interval = new MofObjectShadow("dm:///_internal/model/uml#Interval");
 
             public class _IntervalConstraint
             {
@@ -2188,7 +2188,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _IntervalConstraint @IntervalConstraint = new _IntervalConstraint();
-            public IElement @__IntervalConstraint = new MofObjectShadow("dm:///_internal/model/uml#IntervalConstraint");
+            public MofObjectShadow @__IntervalConstraint = new MofObjectShadow("dm:///_internal/model/uml#IntervalConstraint");
 
             public class _LiteralBoolean
             {
@@ -2234,7 +2234,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LiteralBoolean @LiteralBoolean = new _LiteralBoolean();
-            public IElement @__LiteralBoolean = new MofObjectShadow("dm:///_internal/model/uml#LiteralBoolean");
+            public MofObjectShadow @__LiteralBoolean = new MofObjectShadow("dm:///_internal/model/uml#LiteralBoolean");
 
             public class _LiteralInteger
             {
@@ -2280,7 +2280,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LiteralInteger @LiteralInteger = new _LiteralInteger();
-            public IElement @__LiteralInteger = new MofObjectShadow("dm:///_internal/model/uml#LiteralInteger");
+            public MofObjectShadow @__LiteralInteger = new MofObjectShadow("dm:///_internal/model/uml#LiteralInteger");
 
             public class _LiteralNull
             {
@@ -2323,7 +2323,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LiteralNull @LiteralNull = new _LiteralNull();
-            public IElement @__LiteralNull = new MofObjectShadow("dm:///_internal/model/uml#LiteralNull");
+            public MofObjectShadow @__LiteralNull = new MofObjectShadow("dm:///_internal/model/uml#LiteralNull");
 
             public class _LiteralReal
             {
@@ -2369,7 +2369,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LiteralReal @LiteralReal = new _LiteralReal();
-            public IElement @__LiteralReal = new MofObjectShadow("dm:///_internal/model/uml#LiteralReal");
+            public MofObjectShadow @__LiteralReal = new MofObjectShadow("dm:///_internal/model/uml#LiteralReal");
 
             public class _LiteralSpecification
             {
@@ -2412,7 +2412,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LiteralSpecification @LiteralSpecification = new _LiteralSpecification();
-            public IElement @__LiteralSpecification = new MofObjectShadow("dm:///_internal/model/uml#LiteralSpecification");
+            public MofObjectShadow @__LiteralSpecification = new MofObjectShadow("dm:///_internal/model/uml#LiteralSpecification");
 
             public class _LiteralString
             {
@@ -2458,7 +2458,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LiteralString @LiteralString = new _LiteralString();
-            public IElement @__LiteralString = new MofObjectShadow("dm:///_internal/model/uml#LiteralString");
+            public MofObjectShadow @__LiteralString = new MofObjectShadow("dm:///_internal/model/uml#LiteralString");
 
             public class _LiteralUnlimitedNatural
             {
@@ -2504,7 +2504,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LiteralUnlimitedNatural @LiteralUnlimitedNatural = new _LiteralUnlimitedNatural();
-            public IElement @__LiteralUnlimitedNatural = new MofObjectShadow("dm:///_internal/model/uml#LiteralUnlimitedNatural");
+            public MofObjectShadow @__LiteralUnlimitedNatural = new MofObjectShadow("dm:///_internal/model/uml#LiteralUnlimitedNatural");
 
             public class _Observation
             {
@@ -2544,7 +2544,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Observation @Observation = new _Observation();
-            public IElement @__Observation = new MofObjectShadow("dm:///_internal/model/uml#Observation");
+            public MofObjectShadow @__Observation = new MofObjectShadow("dm:///_internal/model/uml#Observation");
 
             public class _OpaqueExpression
             {
@@ -2599,7 +2599,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _OpaqueExpression @OpaqueExpression = new _OpaqueExpression();
-            public IElement @__OpaqueExpression = new MofObjectShadow("dm:///_internal/model/uml#OpaqueExpression");
+            public MofObjectShadow @__OpaqueExpression = new MofObjectShadow("dm:///_internal/model/uml#OpaqueExpression");
 
             public class _StringExpression
             {
@@ -2660,7 +2660,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StringExpression @StringExpression = new _StringExpression();
-            public IElement @__StringExpression = new MofObjectShadow("dm:///_internal/model/uml#StringExpression");
+            public MofObjectShadow @__StringExpression = new MofObjectShadow("dm:///_internal/model/uml#StringExpression");
 
             public class _TimeConstraint
             {
@@ -2712,7 +2712,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TimeConstraint @TimeConstraint = new _TimeConstraint();
-            public IElement @__TimeConstraint = new MofObjectShadow("dm:///_internal/model/uml#TimeConstraint");
+            public MofObjectShadow @__TimeConstraint = new MofObjectShadow("dm:///_internal/model/uml#TimeConstraint");
 
             public class _TimeExpression
             {
@@ -2761,7 +2761,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TimeExpression @TimeExpression = new _TimeExpression();
-            public IElement @__TimeExpression = new MofObjectShadow("dm:///_internal/model/uml#TimeExpression");
+            public MofObjectShadow @__TimeExpression = new MofObjectShadow("dm:///_internal/model/uml#TimeExpression");
 
             public class _TimeInterval
             {
@@ -2810,7 +2810,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TimeInterval @TimeInterval = new _TimeInterval();
-            public IElement @__TimeInterval = new MofObjectShadow("dm:///_internal/model/uml#TimeInterval");
+            public MofObjectShadow @__TimeInterval = new MofObjectShadow("dm:///_internal/model/uml#TimeInterval");
 
             public class _TimeObservation
             {
@@ -2856,7 +2856,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TimeObservation @TimeObservation = new _TimeObservation();
-            public IElement @__TimeObservation = new MofObjectShadow("dm:///_internal/model/uml#TimeObservation");
+            public MofObjectShadow @__TimeObservation = new MofObjectShadow("dm:///_internal/model/uml#TimeObservation");
 
             public class _ValueSpecification
             {
@@ -2899,7 +2899,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ValueSpecification @ValueSpecification = new _ValueSpecification();
-            public IElement @__ValueSpecification = new MofObjectShadow("dm:///_internal/model/uml#ValueSpecification");
+            public MofObjectShadow @__ValueSpecification = new MofObjectShadow("dm:///_internal/model/uml#ValueSpecification");
 
         }
 
@@ -3032,7 +3032,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Actor @Actor = new _Actor();
-            public IElement @__Actor = new MofObjectShadow("dm:///_internal/model/uml#Actor");
+            public MofObjectShadow @__Actor = new MofObjectShadow("dm:///_internal/model/uml#Actor");
 
             public class _Extend
             {
@@ -3087,7 +3087,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Extend @Extend = new _Extend();
-            public IElement @__Extend = new MofObjectShadow("dm:///_internal/model/uml#Extend");
+            public MofObjectShadow @__Extend = new MofObjectShadow("dm:///_internal/model/uml#Extend");
 
             public class _ExtensionPoint
             {
@@ -3133,7 +3133,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExtensionPoint @ExtensionPoint = new _ExtensionPoint();
-            public IElement @__ExtensionPoint = new MofObjectShadow("dm:///_internal/model/uml#ExtensionPoint");
+            public MofObjectShadow @__ExtensionPoint = new MofObjectShadow("dm:///_internal/model/uml#ExtensionPoint");
 
             public class _Include
             {
@@ -3182,7 +3182,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Include @Include = new _Include();
-            public IElement @__Include = new MofObjectShadow("dm:///_internal/model/uml#Include");
+            public MofObjectShadow @__Include = new MofObjectShadow("dm:///_internal/model/uml#Include");
 
             public class _UseCase
             {
@@ -3321,7 +3321,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _UseCase @UseCase = new _UseCase();
-            public IElement @__UseCase = new MofObjectShadow("dm:///_internal/model/uml#UseCase");
+            public MofObjectShadow @__UseCase = new MofObjectShadow("dm:///_internal/model/uml#UseCase");
 
         }
 
@@ -3463,7 +3463,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Association @Association = new _Association();
-            public IElement @__Association = new MofObjectShadow("dm:///_internal/model/uml#Association");
+            public MofObjectShadow @__Association = new MofObjectShadow("dm:///_internal/model/uml#Association");
 
             public class _AssociationClass
             {
@@ -3641,7 +3641,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _AssociationClass @AssociationClass = new _AssociationClass();
-            public IElement @__AssociationClass = new MofObjectShadow("dm:///_internal/model/uml#AssociationClass");
+            public MofObjectShadow @__AssociationClass = new MofObjectShadow("dm:///_internal/model/uml#AssociationClass");
 
             public class _Class
             {
@@ -3801,7 +3801,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Class @Class = new _Class();
-            public IElement @__Class = new MofObjectShadow("dm:///_internal/model/uml#Class");
+            public MofObjectShadow @__Class = new MofObjectShadow("dm:///_internal/model/uml#Class");
 
             public class _Collaboration
             {
@@ -3943,7 +3943,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Collaboration @Collaboration = new _Collaboration();
-            public IElement @__Collaboration = new MofObjectShadow("dm:///_internal/model/uml#Collaboration");
+            public MofObjectShadow @__Collaboration = new MofObjectShadow("dm:///_internal/model/uml#Collaboration");
 
             public class _CollaborationUse
             {
@@ -3983,7 +3983,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CollaborationUse @CollaborationUse = new _CollaborationUse();
-            public IElement @__CollaborationUse = new MofObjectShadow("dm:///_internal/model/uml#CollaborationUse");
+            public MofObjectShadow @__CollaborationUse = new MofObjectShadow("dm:///_internal/model/uml#CollaborationUse");
 
             public class _Component
             {
@@ -4158,7 +4158,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Component @Component = new _Component();
-            public IElement @__Component = new MofObjectShadow("dm:///_internal/model/uml#Component");
+            public MofObjectShadow @__Component = new MofObjectShadow("dm:///_internal/model/uml#Component");
 
             public class _ComponentRealization
             {
@@ -4222,7 +4222,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ComponentRealization @ComponentRealization = new _ComponentRealization();
-            public IElement @__ComponentRealization = new MofObjectShadow("dm:///_internal/model/uml#ComponentRealization");
+            public MofObjectShadow @__ComponentRealization = new MofObjectShadow("dm:///_internal/model/uml#ComponentRealization");
 
             public class _ConnectableElement
             {
@@ -4268,7 +4268,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ConnectableElement @ConnectableElement = new _ConnectableElement();
-            public IElement @__ConnectableElement = new MofObjectShadow("dm:///_internal/model/uml#ConnectableElement");
+            public MofObjectShadow @__ConnectableElement = new MofObjectShadow("dm:///_internal/model/uml#ConnectableElement");
 
             public class _ConnectableElementTemplateParameter
             {
@@ -4299,7 +4299,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ConnectableElementTemplateParameter @ConnectableElementTemplateParameter = new _ConnectableElementTemplateParameter();
-            public IElement @__ConnectableElementTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#ConnectableElementTemplateParameter");
+            public MofObjectShadow @__ConnectableElementTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#ConnectableElementTemplateParameter");
 
             public class _Connector
             {
@@ -4363,7 +4363,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Connector @Connector = new _Connector();
-            public IElement @__Connector = new MofObjectShadow("dm:///_internal/model/uml#Connector");
+            public MofObjectShadow @__Connector = new MofObjectShadow("dm:///_internal/model/uml#Connector");
 
             public class _ConnectorEnd
             {
@@ -4406,7 +4406,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ConnectorEnd @ConnectorEnd = new _ConnectorEnd();
-            public IElement @__ConnectorEnd = new MofObjectShadow("dm:///_internal/model/uml#ConnectorEnd");
+            public MofObjectShadow @__ConnectorEnd = new MofObjectShadow("dm:///_internal/model/uml#ConnectorEnd");
 
             public class _EncapsulatedClassifier
             {
@@ -4539,7 +4539,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _EncapsulatedClassifier @EncapsulatedClassifier = new _EncapsulatedClassifier();
-            public IElement @__EncapsulatedClassifier = new MofObjectShadow("dm:///_internal/model/uml#EncapsulatedClassifier");
+            public MofObjectShadow @__EncapsulatedClassifier = new MofObjectShadow("dm:///_internal/model/uml#EncapsulatedClassifier");
 
             public class _Port
             {
@@ -4696,7 +4696,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Port @Port = new _Port();
-            public IElement @__Port = new MofObjectShadow("dm:///_internal/model/uml#Port");
+            public MofObjectShadow @__Port = new MofObjectShadow("dm:///_internal/model/uml#Port");
 
             public class _StructuredClassifier
             {
@@ -4826,7 +4826,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StructuredClassifier @StructuredClassifier = new _StructuredClassifier();
-            public IElement @__StructuredClassifier = new MofObjectShadow("dm:///_internal/model/uml#StructuredClassifier");
+            public MofObjectShadow @__StructuredClassifier = new MofObjectShadow("dm:///_internal/model/uml#StructuredClassifier");
 
             public class _ConnectorKind
             {
@@ -4903,7 +4903,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ConnectionPointReference @ConnectionPointReference = new _ConnectionPointReference();
-            public IElement @__ConnectionPointReference = new MofObjectShadow("dm:///_internal/model/uml#ConnectionPointReference");
+            public MofObjectShadow @__ConnectionPointReference = new MofObjectShadow("dm:///_internal/model/uml#ConnectionPointReference");
 
             public class _FinalState
             {
@@ -5015,7 +5015,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _FinalState @FinalState = new _FinalState();
-            public IElement @__FinalState = new MofObjectShadow("dm:///_internal/model/uml#FinalState");
+            public MofObjectShadow @__FinalState = new MofObjectShadow("dm:///_internal/model/uml#FinalState");
 
             public class _ProtocolConformance
             {
@@ -5046,7 +5046,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ProtocolConformance @ProtocolConformance = new _ProtocolConformance();
-            public IElement @__ProtocolConformance = new MofObjectShadow("dm:///_internal/model/uml#ProtocolConformance");
+            public MofObjectShadow @__ProtocolConformance = new MofObjectShadow("dm:///_internal/model/uml#ProtocolConformance");
 
             public class _ProtocolStateMachine
             {
@@ -5245,7 +5245,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ProtocolStateMachine @ProtocolStateMachine = new _ProtocolStateMachine();
-            public IElement @__ProtocolStateMachine = new MofObjectShadow("dm:///_internal/model/uml#ProtocolStateMachine");
+            public MofObjectShadow @__ProtocolStateMachine = new MofObjectShadow("dm:///_internal/model/uml#ProtocolStateMachine");
 
             public class _ProtocolTransition
             {
@@ -5339,7 +5339,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ProtocolTransition @ProtocolTransition = new _ProtocolTransition();
-            public IElement @__ProtocolTransition = new MofObjectShadow("dm:///_internal/model/uml#ProtocolTransition");
+            public MofObjectShadow @__ProtocolTransition = new MofObjectShadow("dm:///_internal/model/uml#ProtocolTransition");
 
             public class _Pseudostate
             {
@@ -5391,7 +5391,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Pseudostate @Pseudostate = new _Pseudostate();
-            public IElement @__Pseudostate = new MofObjectShadow("dm:///_internal/model/uml#Pseudostate");
+            public MofObjectShadow @__Pseudostate = new MofObjectShadow("dm:///_internal/model/uml#Pseudostate");
 
             public class _Region
             {
@@ -5467,7 +5467,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Region @Region = new _Region();
-            public IElement @__Region = new MofObjectShadow("dm:///_internal/model/uml#Region");
+            public MofObjectShadow @__Region = new MofObjectShadow("dm:///_internal/model/uml#Region");
 
             public class _State
             {
@@ -5579,7 +5579,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _State @State = new _State();
-            public IElement @__State = new MofObjectShadow("dm:///_internal/model/uml#State");
+            public MofObjectShadow @__State = new MofObjectShadow("dm:///_internal/model/uml#State");
 
             public class _StateMachine
             {
@@ -5775,7 +5775,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StateMachine @StateMachine = new _StateMachine();
-            public IElement @__StateMachine = new MofObjectShadow("dm:///_internal/model/uml#StateMachine");
+            public MofObjectShadow @__StateMachine = new MofObjectShadow("dm:///_internal/model/uml#StateMachine");
 
             public class _Transition
             {
@@ -5860,7 +5860,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Transition @Transition = new _Transition();
-            public IElement @__Transition = new MofObjectShadow("dm:///_internal/model/uml#Transition");
+            public MofObjectShadow @__Transition = new MofObjectShadow("dm:///_internal/model/uml#Transition");
 
             public class _Vertex
             {
@@ -5903,7 +5903,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Vertex @Vertex = new _Vertex();
-            public IElement @__Vertex = new MofObjectShadow("dm:///_internal/model/uml#Vertex");
+            public MofObjectShadow @__Vertex = new MofObjectShadow("dm:///_internal/model/uml#Vertex");
 
             public class _PseudostateKind
             {
@@ -6101,7 +6101,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _BehavioredClassifier @BehavioredClassifier = new _BehavioredClassifier();
-            public IElement @__BehavioredClassifier = new MofObjectShadow("dm:///_internal/model/uml#BehavioredClassifier");
+            public MofObjectShadow @__BehavioredClassifier = new MofObjectShadow("dm:///_internal/model/uml#BehavioredClassifier");
 
             public class _DataType
             {
@@ -6225,7 +6225,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DataType @DataType = new _DataType();
-            public IElement @__DataType = new MofObjectShadow("dm:///_internal/model/uml#DataType");
+            public MofObjectShadow @__DataType = new MofObjectShadow("dm:///_internal/model/uml#DataType");
 
             public class _Enumeration
             {
@@ -6352,7 +6352,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Enumeration @Enumeration = new _Enumeration();
-            public IElement @__Enumeration = new MofObjectShadow("dm:///_internal/model/uml#Enumeration");
+            public MofObjectShadow @__Enumeration = new MofObjectShadow("dm:///_internal/model/uml#Enumeration");
 
             public class _EnumerationLiteral
             {
@@ -6410,7 +6410,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _EnumerationLiteral @EnumerationLiteral = new _EnumerationLiteral();
-            public IElement @__EnumerationLiteral = new MofObjectShadow("dm:///_internal/model/uml#EnumerationLiteral");
+            public MofObjectShadow @__EnumerationLiteral = new MofObjectShadow("dm:///_internal/model/uml#EnumerationLiteral");
 
             public class _Interface
             {
@@ -6546,7 +6546,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Interface @Interface = new _Interface();
-            public IElement @__Interface = new MofObjectShadow("dm:///_internal/model/uml#Interface");
+            public MofObjectShadow @__Interface = new MofObjectShadow("dm:///_internal/model/uml#Interface");
 
             public class _InterfaceRealization
             {
@@ -6610,7 +6610,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InterfaceRealization @InterfaceRealization = new _InterfaceRealization();
-            public IElement @__InterfaceRealization = new MofObjectShadow("dm:///_internal/model/uml#InterfaceRealization");
+            public MofObjectShadow @__InterfaceRealization = new MofObjectShadow("dm:///_internal/model/uml#InterfaceRealization");
 
             public class _PrimitiveType
             {
@@ -6734,7 +6734,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _PrimitiveType @PrimitiveType = new _PrimitiveType();
-            public IElement @__PrimitiveType = new MofObjectShadow("dm:///_internal/model/uml#PrimitiveType");
+            public MofObjectShadow @__PrimitiveType = new MofObjectShadow("dm:///_internal/model/uml#PrimitiveType");
 
             public class _Reception
             {
@@ -6822,7 +6822,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Reception @Reception = new _Reception();
-            public IElement @__Reception = new MofObjectShadow("dm:///_internal/model/uml#Reception");
+            public MofObjectShadow @__Reception = new MofObjectShadow("dm:///_internal/model/uml#Reception");
 
             public class _Signal
             {
@@ -6943,7 +6943,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Signal @Signal = new _Signal();
-            public IElement @__Signal = new MofObjectShadow("dm:///_internal/model/uml#Signal");
+            public MofObjectShadow @__Signal = new MofObjectShadow("dm:///_internal/model/uml#Signal");
 
         }
 
@@ -7091,7 +7091,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Extension @Extension = new _Extension();
-            public IElement @__Extension = new MofObjectShadow("dm:///_internal/model/uml#Extension");
+            public MofObjectShadow @__Extension = new MofObjectShadow("dm:///_internal/model/uml#Extension");
 
             public class _ExtensionEnd
             {
@@ -7227,7 +7227,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExtensionEnd @ExtensionEnd = new _ExtensionEnd();
-            public IElement @__ExtensionEnd = new MofObjectShadow("dm:///_internal/model/uml#ExtensionEnd");
+            public MofObjectShadow @__ExtensionEnd = new MofObjectShadow("dm:///_internal/model/uml#ExtensionEnd");
 
             public class _Image
             {
@@ -7252,7 +7252,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Image @Image = new _Image();
-            public IElement @__Image = new MofObjectShadow("dm:///_internal/model/uml#Image");
+            public MofObjectShadow @__Image = new MofObjectShadow("dm:///_internal/model/uml#Image");
 
             public class _Model
             {
@@ -7343,7 +7343,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Model @Model = new _Model();
-            public IElement @__Model = new MofObjectShadow("dm:///_internal/model/uml#Model");
+            public MofObjectShadow @__Model = new MofObjectShadow("dm:///_internal/model/uml#Model");
 
             public class _Package
             {
@@ -7431,7 +7431,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Package @Package = new _Package();
-            public IElement @__Package = new MofObjectShadow("dm:///_internal/model/uml#Package");
+            public MofObjectShadow @__Package = new MofObjectShadow("dm:///_internal/model/uml#Package");
 
             public class _PackageMerge
             {
@@ -7462,7 +7462,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _PackageMerge @PackageMerge = new _PackageMerge();
-            public IElement @__PackageMerge = new MofObjectShadow("dm:///_internal/model/uml#PackageMerge");
+            public MofObjectShadow @__PackageMerge = new MofObjectShadow("dm:///_internal/model/uml#PackageMerge");
 
             public class _Profile
             {
@@ -7556,7 +7556,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Profile @Profile = new _Profile();
-            public IElement @__Profile = new MofObjectShadow("dm:///_internal/model/uml#Profile");
+            public MofObjectShadow @__Profile = new MofObjectShadow("dm:///_internal/model/uml#Profile");
 
             public class _ProfileApplication
             {
@@ -7590,7 +7590,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ProfileApplication @ProfileApplication = new _ProfileApplication();
-            public IElement @__ProfileApplication = new MofObjectShadow("dm:///_internal/model/uml#ProfileApplication");
+            public MofObjectShadow @__ProfileApplication = new MofObjectShadow("dm:///_internal/model/uml#ProfileApplication");
 
             public class _Stereotype
             {
@@ -7756,7 +7756,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Stereotype @Stereotype = new _Stereotype();
-            public IElement @__Stereotype = new MofObjectShadow("dm:///_internal/model/uml#Stereotype");
+            public MofObjectShadow @__Stereotype = new MofObjectShadow("dm:///_internal/model/uml#Stereotype");
 
         }
 
@@ -7817,7 +7817,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActionExecutionSpecification @ActionExecutionSpecification = new _ActionExecutionSpecification();
-            public IElement @__ActionExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#ActionExecutionSpecification");
+            public MofObjectShadow @__ActionExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#ActionExecutionSpecification");
 
             public class _BehaviorExecutionSpecification
             {
@@ -7872,7 +7872,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _BehaviorExecutionSpecification @BehaviorExecutionSpecification = new _BehaviorExecutionSpecification();
-            public IElement @__BehaviorExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#BehaviorExecutionSpecification");
+            public MofObjectShadow @__BehaviorExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#BehaviorExecutionSpecification");
 
             public class _CombinedFragment
             {
@@ -7927,7 +7927,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CombinedFragment @CombinedFragment = new _CombinedFragment();
-            public IElement @__CombinedFragment = new MofObjectShadow("dm:///_internal/model/uml#CombinedFragment");
+            public MofObjectShadow @__CombinedFragment = new MofObjectShadow("dm:///_internal/model/uml#CombinedFragment");
 
             public class _ConsiderIgnoreFragment
             {
@@ -7985,7 +7985,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ConsiderIgnoreFragment @ConsiderIgnoreFragment = new _ConsiderIgnoreFragment();
-            public IElement @__ConsiderIgnoreFragment = new MofObjectShadow("dm:///_internal/model/uml#ConsiderIgnoreFragment");
+            public MofObjectShadow @__ConsiderIgnoreFragment = new MofObjectShadow("dm:///_internal/model/uml#ConsiderIgnoreFragment");
 
             public class _Continuation
             {
@@ -8034,7 +8034,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Continuation @Continuation = new _Continuation();
-            public IElement @__Continuation = new MofObjectShadow("dm:///_internal/model/uml#Continuation");
+            public MofObjectShadow @__Continuation = new MofObjectShadow("dm:///_internal/model/uml#Continuation");
 
             public class _DestructionOccurrenceSpecification
             {
@@ -8089,7 +8089,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DestructionOccurrenceSpecification @DestructionOccurrenceSpecification = new _DestructionOccurrenceSpecification();
-            public IElement @__DestructionOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#DestructionOccurrenceSpecification");
+            public MofObjectShadow @__DestructionOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#DestructionOccurrenceSpecification");
 
             public class _ExecutionOccurrenceSpecification
             {
@@ -8144,7 +8144,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExecutionOccurrenceSpecification @ExecutionOccurrenceSpecification = new _ExecutionOccurrenceSpecification();
-            public IElement @__ExecutionOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#ExecutionOccurrenceSpecification");
+            public MofObjectShadow @__ExecutionOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#ExecutionOccurrenceSpecification");
 
             public class _ExecutionSpecification
             {
@@ -8196,7 +8196,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExecutionSpecification @ExecutionSpecification = new _ExecutionSpecification();
-            public IElement @__ExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#ExecutionSpecification");
+            public MofObjectShadow @__ExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#ExecutionSpecification");
 
             public class _Gate
             {
@@ -8233,7 +8233,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Gate @Gate = new _Gate();
-            public IElement @__Gate = new MofObjectShadow("dm:///_internal/model/uml#Gate");
+            public MofObjectShadow @__Gate = new MofObjectShadow("dm:///_internal/model/uml#Gate");
 
             public class _GeneralOrdering
             {
@@ -8273,7 +8273,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _GeneralOrdering @GeneralOrdering = new _GeneralOrdering();
-            public IElement @__GeneralOrdering = new MofObjectShadow("dm:///_internal/model/uml#GeneralOrdering");
+            public MofObjectShadow @__GeneralOrdering = new MofObjectShadow("dm:///_internal/model/uml#GeneralOrdering");
 
             public class _Interaction
             {
@@ -8484,7 +8484,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Interaction @Interaction = new _Interaction();
-            public IElement @__Interaction = new MofObjectShadow("dm:///_internal/model/uml#Interaction");
+            public MofObjectShadow @__Interaction = new MofObjectShadow("dm:///_internal/model/uml#Interaction");
 
             public class _InteractionConstraint
             {
@@ -8539,7 +8539,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InteractionConstraint @InteractionConstraint = new _InteractionConstraint();
-            public IElement @__InteractionConstraint = new MofObjectShadow("dm:///_internal/model/uml#InteractionConstraint");
+            public MofObjectShadow @__InteractionConstraint = new MofObjectShadow("dm:///_internal/model/uml#InteractionConstraint");
 
             public class _InteractionFragment
             {
@@ -8585,7 +8585,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InteractionFragment @InteractionFragment = new _InteractionFragment();
-            public IElement @__InteractionFragment = new MofObjectShadow("dm:///_internal/model/uml#InteractionFragment");
+            public MofObjectShadow @__InteractionFragment = new MofObjectShadow("dm:///_internal/model/uml#InteractionFragment");
 
             public class _InteractionOperand
             {
@@ -8655,7 +8655,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InteractionOperand @InteractionOperand = new _InteractionOperand();
-            public IElement @__InteractionOperand = new MofObjectShadow("dm:///_internal/model/uml#InteractionOperand");
+            public MofObjectShadow @__InteractionOperand = new MofObjectShadow("dm:///_internal/model/uml#InteractionOperand");
 
             public class _InteractionUse
             {
@@ -8716,7 +8716,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InteractionUse @InteractionUse = new _InteractionUse();
-            public IElement @__InteractionUse = new MofObjectShadow("dm:///_internal/model/uml#InteractionUse");
+            public MofObjectShadow @__InteractionUse = new MofObjectShadow("dm:///_internal/model/uml#InteractionUse");
 
             public class _Lifeline
             {
@@ -8765,7 +8765,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Lifeline @Lifeline = new _Lifeline();
-            public IElement @__Lifeline = new MofObjectShadow("dm:///_internal/model/uml#Lifeline");
+            public MofObjectShadow @__Lifeline = new MofObjectShadow("dm:///_internal/model/uml#Lifeline");
 
             public class _Message
             {
@@ -8823,7 +8823,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Message @Message = new _Message();
-            public IElement @__Message = new MofObjectShadow("dm:///_internal/model/uml#Message");
+            public MofObjectShadow @__Message = new MofObjectShadow("dm:///_internal/model/uml#Message");
 
             public class _MessageEnd
             {
@@ -8860,7 +8860,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _MessageEnd @MessageEnd = new _MessageEnd();
-            public IElement @__MessageEnd = new MofObjectShadow("dm:///_internal/model/uml#MessageEnd");
+            public MofObjectShadow @__MessageEnd = new MofObjectShadow("dm:///_internal/model/uml#MessageEnd");
 
             public class _MessageOccurrenceSpecification
             {
@@ -8915,7 +8915,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _MessageOccurrenceSpecification @MessageOccurrenceSpecification = new _MessageOccurrenceSpecification();
-            public IElement @__MessageOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#MessageOccurrenceSpecification");
+            public MofObjectShadow @__MessageOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#MessageOccurrenceSpecification");
 
             public class _OccurrenceSpecification
             {
@@ -8967,7 +8967,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _OccurrenceSpecification @OccurrenceSpecification = new _OccurrenceSpecification();
-            public IElement @__OccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#OccurrenceSpecification");
+            public MofObjectShadow @__OccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#OccurrenceSpecification");
 
             public class _PartDecomposition
             {
@@ -9028,7 +9028,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _PartDecomposition @PartDecomposition = new _PartDecomposition();
-            public IElement @__PartDecomposition = new MofObjectShadow("dm:///_internal/model/uml#PartDecomposition");
+            public MofObjectShadow @__PartDecomposition = new MofObjectShadow("dm:///_internal/model/uml#PartDecomposition");
 
             public class _StateInvariant
             {
@@ -9077,7 +9077,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StateInvariant @StateInvariant = new _StateInvariant();
-            public IElement @__StateInvariant = new MofObjectShadow("dm:///_internal/model/uml#StateInvariant");
+            public MofObjectShadow @__StateInvariant = new MofObjectShadow("dm:///_internal/model/uml#StateInvariant");
 
             public class _InteractionOperatorKind
             {
@@ -9258,7 +9258,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InformationFlow @InformationFlow = new _InformationFlow();
-            public IElement @__InformationFlow = new MofObjectShadow("dm:///_internal/model/uml#InformationFlow");
+            public MofObjectShadow @__InformationFlow = new MofObjectShadow("dm:///_internal/model/uml#InformationFlow");
 
             public class _InformationItem
             {
@@ -9379,7 +9379,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InformationItem @InformationItem = new _InformationItem();
-            public IElement @__InformationItem = new MofObjectShadow("dm:///_internal/model/uml#InformationItem");
+            public MofObjectShadow @__InformationItem = new MofObjectShadow("dm:///_internal/model/uml#InformationItem");
 
         }
 
@@ -9518,7 +9518,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Artifact @Artifact = new _Artifact();
-            public IElement @__Artifact = new MofObjectShadow("dm:///_internal/model/uml#Artifact");
+            public MofObjectShadow @__Artifact = new MofObjectShadow("dm:///_internal/model/uml#Artifact");
 
             public class _CommunicationPath
             {
@@ -9654,7 +9654,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CommunicationPath @CommunicationPath = new _CommunicationPath();
-            public IElement @__CommunicationPath = new MofObjectShadow("dm:///_internal/model/uml#CommunicationPath");
+            public MofObjectShadow @__CommunicationPath = new MofObjectShadow("dm:///_internal/model/uml#CommunicationPath");
 
             public class _DeployedArtifact
             {
@@ -9688,7 +9688,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DeployedArtifact @DeployedArtifact = new _DeployedArtifact();
-            public IElement @__DeployedArtifact = new MofObjectShadow("dm:///_internal/model/uml#DeployedArtifact");
+            public MofObjectShadow @__DeployedArtifact = new MofObjectShadow("dm:///_internal/model/uml#DeployedArtifact");
 
             public class _Deployment
             {
@@ -9752,7 +9752,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Deployment @Deployment = new _Deployment();
-            public IElement @__Deployment = new MofObjectShadow("dm:///_internal/model/uml#Deployment");
+            public MofObjectShadow @__Deployment = new MofObjectShadow("dm:///_internal/model/uml#Deployment");
 
             public class _DeploymentSpecification
             {
@@ -9894,7 +9894,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DeploymentSpecification @DeploymentSpecification = new _DeploymentSpecification();
-            public IElement @__DeploymentSpecification = new MofObjectShadow("dm:///_internal/model/uml#DeploymentSpecification");
+            public MofObjectShadow @__DeploymentSpecification = new MofObjectShadow("dm:///_internal/model/uml#DeploymentSpecification");
 
             public class _DeploymentTarget
             {
@@ -9934,7 +9934,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DeploymentTarget @DeploymentTarget = new _DeploymentTarget();
-            public IElement @__DeploymentTarget = new MofObjectShadow("dm:///_internal/model/uml#DeploymentTarget");
+            public MofObjectShadow @__DeploymentTarget = new MofObjectShadow("dm:///_internal/model/uml#DeploymentTarget");
 
             public class _Device
             {
@@ -10103,7 +10103,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Device @Device = new _Device();
-            public IElement @__Device = new MofObjectShadow("dm:///_internal/model/uml#Device");
+            public MofObjectShadow @__Device = new MofObjectShadow("dm:///_internal/model/uml#Device");
 
             public class _ExecutionEnvironment
             {
@@ -10272,7 +10272,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExecutionEnvironment @ExecutionEnvironment = new _ExecutionEnvironment();
-            public IElement @__ExecutionEnvironment = new MofObjectShadow("dm:///_internal/model/uml#ExecutionEnvironment");
+            public MofObjectShadow @__ExecutionEnvironment = new MofObjectShadow("dm:///_internal/model/uml#ExecutionEnvironment");
 
             public class _Manifestation
             {
@@ -10333,7 +10333,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Manifestation @Manifestation = new _Manifestation();
-            public IElement @__Manifestation = new MofObjectShadow("dm:///_internal/model/uml#Manifestation");
+            public MofObjectShadow @__Manifestation = new MofObjectShadow("dm:///_internal/model/uml#Manifestation");
 
             public class _Node
             {
@@ -10502,7 +10502,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Node @Node = new _Node();
-            public IElement @__Node = new MofObjectShadow("dm:///_internal/model/uml#Node");
+            public MofObjectShadow @__Node = new MofObjectShadow("dm:///_internal/model/uml#Node");
 
         }
 
@@ -10566,7 +10566,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Abstraction @Abstraction = new _Abstraction();
-            public IElement @__Abstraction = new MofObjectShadow("dm:///_internal/model/uml#Abstraction");
+            public MofObjectShadow @__Abstraction = new MofObjectShadow("dm:///_internal/model/uml#Abstraction");
 
             public class _Comment
             {
@@ -10588,7 +10588,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Comment @Comment = new _Comment();
-            public IElement @__Comment = new MofObjectShadow("dm:///_internal/model/uml#Comment");
+            public MofObjectShadow @__Comment = new MofObjectShadow("dm:///_internal/model/uml#Comment");
 
             public class _Constraint
             {
@@ -10637,7 +10637,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Constraint @Constraint = new _Constraint();
-            public IElement @__Constraint = new MofObjectShadow("dm:///_internal/model/uml#Constraint");
+            public MofObjectShadow @__Constraint = new MofObjectShadow("dm:///_internal/model/uml#Constraint");
 
             public class _Dependency
             {
@@ -10692,7 +10692,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Dependency @Dependency = new _Dependency();
-            public IElement @__Dependency = new MofObjectShadow("dm:///_internal/model/uml#Dependency");
+            public MofObjectShadow @__Dependency = new MofObjectShadow("dm:///_internal/model/uml#Dependency");
 
             public class _DirectedRelationship
             {
@@ -10717,7 +10717,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DirectedRelationship @DirectedRelationship = new _DirectedRelationship();
-            public IElement @__DirectedRelationship = new MofObjectShadow("dm:///_internal/model/uml#DirectedRelationship");
+            public MofObjectShadow @__DirectedRelationship = new MofObjectShadow("dm:///_internal/model/uml#DirectedRelationship");
 
             public class _Element
             {
@@ -10733,7 +10733,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Element @Element = new _Element();
-            public IElement @__Element = new MofObjectShadow("dm:///_internal/model/uml#Element");
+            public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/uml#Element");
 
             public class _ElementImport
             {
@@ -10770,7 +10770,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ElementImport @ElementImport = new _ElementImport();
-            public IElement @__ElementImport = new MofObjectShadow("dm:///_internal/model/uml#ElementImport");
+            public MofObjectShadow @__ElementImport = new MofObjectShadow("dm:///_internal/model/uml#ElementImport");
 
             public class _MultiplicityElement
             {
@@ -10804,7 +10804,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _MultiplicityElement @MultiplicityElement = new _MultiplicityElement();
-            public IElement @__MultiplicityElement = new MofObjectShadow("dm:///_internal/model/uml#MultiplicityElement");
+            public MofObjectShadow @__MultiplicityElement = new MofObjectShadow("dm:///_internal/model/uml#MultiplicityElement");
 
             public class _NamedElement
             {
@@ -10838,7 +10838,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _NamedElement @NamedElement = new _NamedElement();
-            public IElement @__NamedElement = new MofObjectShadow("dm:///_internal/model/uml#NamedElement");
+            public MofObjectShadow @__NamedElement = new MofObjectShadow("dm:///_internal/model/uml#NamedElement");
 
             public class _Namespace
             {
@@ -10890,7 +10890,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Namespace @Namespace = new _Namespace();
-            public IElement @__Namespace = new MofObjectShadow("dm:///_internal/model/uml#Namespace");
+            public MofObjectShadow @__Namespace = new MofObjectShadow("dm:///_internal/model/uml#Namespace");
 
             public class _PackageableElement
             {
@@ -10930,7 +10930,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _PackageableElement @PackageableElement = new _PackageableElement();
-            public IElement @__PackageableElement = new MofObjectShadow("dm:///_internal/model/uml#PackageableElement");
+            public MofObjectShadow @__PackageableElement = new MofObjectShadow("dm:///_internal/model/uml#PackageableElement");
 
             public class _PackageImport
             {
@@ -10964,7 +10964,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _PackageImport @PackageImport = new _PackageImport();
-            public IElement @__PackageImport = new MofObjectShadow("dm:///_internal/model/uml#PackageImport");
+            public MofObjectShadow @__PackageImport = new MofObjectShadow("dm:///_internal/model/uml#PackageImport");
 
             public class _ParameterableElement
             {
@@ -10986,7 +10986,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ParameterableElement @ParameterableElement = new _ParameterableElement();
-            public IElement @__ParameterableElement = new MofObjectShadow("dm:///_internal/model/uml#ParameterableElement");
+            public MofObjectShadow @__ParameterableElement = new MofObjectShadow("dm:///_internal/model/uml#ParameterableElement");
 
             public class _Realization
             {
@@ -11044,7 +11044,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Realization @Realization = new _Realization();
-            public IElement @__Realization = new MofObjectShadow("dm:///_internal/model/uml#Realization");
+            public MofObjectShadow @__Realization = new MofObjectShadow("dm:///_internal/model/uml#Realization");
 
             public class _Relationship
             {
@@ -11063,7 +11063,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Relationship @Relationship = new _Relationship();
-            public IElement @__Relationship = new MofObjectShadow("dm:///_internal/model/uml#Relationship");
+            public MofObjectShadow @__Relationship = new MofObjectShadow("dm:///_internal/model/uml#Relationship");
 
             public class _TemplateableElement
             {
@@ -11085,7 +11085,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TemplateableElement @TemplateableElement = new _TemplateableElement();
-            public IElement @__TemplateableElement = new MofObjectShadow("dm:///_internal/model/uml#TemplateableElement");
+            public MofObjectShadow @__TemplateableElement = new MofObjectShadow("dm:///_internal/model/uml#TemplateableElement");
 
             public class _TemplateBinding
             {
@@ -11119,7 +11119,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TemplateBinding @TemplateBinding = new _TemplateBinding();
-            public IElement @__TemplateBinding = new MofObjectShadow("dm:///_internal/model/uml#TemplateBinding");
+            public MofObjectShadow @__TemplateBinding = new MofObjectShadow("dm:///_internal/model/uml#TemplateBinding");
 
             public class _TemplateParameter
             {
@@ -11150,7 +11150,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TemplateParameter @TemplateParameter = new _TemplateParameter();
-            public IElement @__TemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#TemplateParameter");
+            public MofObjectShadow @__TemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#TemplateParameter");
 
             public class _TemplateParameterSubstitution
             {
@@ -11178,7 +11178,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TemplateParameterSubstitution @TemplateParameterSubstitution = new _TemplateParameterSubstitution();
-            public IElement @__TemplateParameterSubstitution = new MofObjectShadow("dm:///_internal/model/uml#TemplateParameterSubstitution");
+            public MofObjectShadow @__TemplateParameterSubstitution = new MofObjectShadow("dm:///_internal/model/uml#TemplateParameterSubstitution");
 
             public class _TemplateSignature
             {
@@ -11203,7 +11203,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TemplateSignature @TemplateSignature = new _TemplateSignature();
-            public IElement @__TemplateSignature = new MofObjectShadow("dm:///_internal/model/uml#TemplateSignature");
+            public MofObjectShadow @__TemplateSignature = new MofObjectShadow("dm:///_internal/model/uml#TemplateSignature");
 
             public class _Type
             {
@@ -11246,7 +11246,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Type @Type = new _Type();
-            public IElement @__Type = new MofObjectShadow("dm:///_internal/model/uml#Type");
+            public MofObjectShadow @__Type = new MofObjectShadow("dm:///_internal/model/uml#Type");
 
             public class _TypedElement
             {
@@ -11283,7 +11283,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TypedElement @TypedElement = new _TypedElement();
-            public IElement @__TypedElement = new MofObjectShadow("dm:///_internal/model/uml#TypedElement");
+            public MofObjectShadow @__TypedElement = new MofObjectShadow("dm:///_internal/model/uml#TypedElement");
 
             public class _Usage
             {
@@ -11338,7 +11338,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Usage @Usage = new _Usage();
-            public IElement @__Usage = new MofObjectShadow("dm:///_internal/model/uml#Usage");
+            public MofObjectShadow @__Usage = new MofObjectShadow("dm:///_internal/model/uml#Usage");
 
             public class _VisibilityKind
             {
@@ -11409,7 +11409,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _AnyReceiveEvent @AnyReceiveEvent = new _AnyReceiveEvent();
-            public IElement @__AnyReceiveEvent = new MofObjectShadow("dm:///_internal/model/uml#AnyReceiveEvent");
+            public MofObjectShadow @__AnyReceiveEvent = new MofObjectShadow("dm:///_internal/model/uml#AnyReceiveEvent");
 
             public class _Behavior
             {
@@ -11593,7 +11593,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Behavior @Behavior = new _Behavior();
-            public IElement @__Behavior = new MofObjectShadow("dm:///_internal/model/uml#Behavior");
+            public MofObjectShadow @__Behavior = new MofObjectShadow("dm:///_internal/model/uml#Behavior");
 
             public class _CallEvent
             {
@@ -11636,7 +11636,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CallEvent @CallEvent = new _CallEvent();
-            public IElement @__CallEvent = new MofObjectShadow("dm:///_internal/model/uml#CallEvent");
+            public MofObjectShadow @__CallEvent = new MofObjectShadow("dm:///_internal/model/uml#CallEvent");
 
             public class _ChangeEvent
             {
@@ -11679,7 +11679,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ChangeEvent @ChangeEvent = new _ChangeEvent();
-            public IElement @__ChangeEvent = new MofObjectShadow("dm:///_internal/model/uml#ChangeEvent");
+            public MofObjectShadow @__ChangeEvent = new MofObjectShadow("dm:///_internal/model/uml#ChangeEvent");
 
             public class _Event
             {
@@ -11719,7 +11719,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Event @Event = new _Event();
-            public IElement @__Event = new MofObjectShadow("dm:///_internal/model/uml#Event");
+            public MofObjectShadow @__Event = new MofObjectShadow("dm:///_internal/model/uml#Event");
 
             public class _FunctionBehavior
             {
@@ -11909,7 +11909,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _FunctionBehavior @FunctionBehavior = new _FunctionBehavior();
-            public IElement @__FunctionBehavior = new MofObjectShadow("dm:///_internal/model/uml#FunctionBehavior");
+            public MofObjectShadow @__FunctionBehavior = new MofObjectShadow("dm:///_internal/model/uml#FunctionBehavior");
 
             public class _MessageEvent
             {
@@ -11949,7 +11949,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _MessageEvent @MessageEvent = new _MessageEvent();
-            public IElement @__MessageEvent = new MofObjectShadow("dm:///_internal/model/uml#MessageEvent");
+            public MofObjectShadow @__MessageEvent = new MofObjectShadow("dm:///_internal/model/uml#MessageEvent");
 
             public class _OpaqueBehavior
             {
@@ -12139,7 +12139,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _OpaqueBehavior @OpaqueBehavior = new _OpaqueBehavior();
-            public IElement @__OpaqueBehavior = new MofObjectShadow("dm:///_internal/model/uml#OpaqueBehavior");
+            public MofObjectShadow @__OpaqueBehavior = new MofObjectShadow("dm:///_internal/model/uml#OpaqueBehavior");
 
             public class _SignalEvent
             {
@@ -12182,7 +12182,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _SignalEvent @SignalEvent = new _SignalEvent();
-            public IElement @__SignalEvent = new MofObjectShadow("dm:///_internal/model/uml#SignalEvent");
+            public MofObjectShadow @__SignalEvent = new MofObjectShadow("dm:///_internal/model/uml#SignalEvent");
 
             public class _TimeEvent
             {
@@ -12228,7 +12228,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TimeEvent @TimeEvent = new _TimeEvent();
-            public IElement @__TimeEvent = new MofObjectShadow("dm:///_internal/model/uml#TimeEvent");
+            public MofObjectShadow @__TimeEvent = new MofObjectShadow("dm:///_internal/model/uml#TimeEvent");
 
             public class _Trigger
             {
@@ -12268,7 +12268,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Trigger @Trigger = new _Trigger();
-            public IElement @__Trigger = new MofObjectShadow("dm:///_internal/model/uml#Trigger");
+            public MofObjectShadow @__Trigger = new MofObjectShadow("dm:///_internal/model/uml#Trigger");
 
         }
 
@@ -12338,7 +12338,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Substitution @Substitution = new _Substitution();
-            public IElement @__Substitution = new MofObjectShadow("dm:///_internal/model/uml#Substitution");
+            public MofObjectShadow @__Substitution = new MofObjectShadow("dm:///_internal/model/uml#Substitution");
 
             public class _BehavioralFeature
             {
@@ -12423,7 +12423,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _BehavioralFeature @BehavioralFeature = new _BehavioralFeature();
-            public IElement @__BehavioralFeature = new MofObjectShadow("dm:///_internal/model/uml#BehavioralFeature");
+            public MofObjectShadow @__BehavioralFeature = new MofObjectShadow("dm:///_internal/model/uml#BehavioralFeature");
 
             public class _Classifier
             {
@@ -12541,7 +12541,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Classifier @Classifier = new _Classifier();
-            public IElement @__Classifier = new MofObjectShadow("dm:///_internal/model/uml#Classifier");
+            public MofObjectShadow @__Classifier = new MofObjectShadow("dm:///_internal/model/uml#Classifier");
 
             public class _ClassifierTemplateParameter
             {
@@ -12578,7 +12578,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ClassifierTemplateParameter @ClassifierTemplateParameter = new _ClassifierTemplateParameter();
-            public IElement @__ClassifierTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#ClassifierTemplateParameter");
+            public MofObjectShadow @__ClassifierTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#ClassifierTemplateParameter");
 
             public class _Feature
             {
@@ -12627,7 +12627,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Feature @Feature = new _Feature();
-            public IElement @__Feature = new MofObjectShadow("dm:///_internal/model/uml#Feature");
+            public MofObjectShadow @__Feature = new MofObjectShadow("dm:///_internal/model/uml#Feature");
 
             public class _Generalization
             {
@@ -12664,7 +12664,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Generalization @Generalization = new _Generalization();
-            public IElement @__Generalization = new MofObjectShadow("dm:///_internal/model/uml#Generalization");
+            public MofObjectShadow @__Generalization = new MofObjectShadow("dm:///_internal/model/uml#Generalization");
 
             public class _GeneralizationSet
             {
@@ -12716,7 +12716,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _GeneralizationSet @GeneralizationSet = new _GeneralizationSet();
-            public IElement @__GeneralizationSet = new MofObjectShadow("dm:///_internal/model/uml#GeneralizationSet");
+            public MofObjectShadow @__GeneralizationSet = new MofObjectShadow("dm:///_internal/model/uml#GeneralizationSet");
 
             public class _InstanceSpecification
             {
@@ -12771,7 +12771,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InstanceSpecification @InstanceSpecification = new _InstanceSpecification();
-            public IElement @__InstanceSpecification = new MofObjectShadow("dm:///_internal/model/uml#InstanceSpecification");
+            public MofObjectShadow @__InstanceSpecification = new MofObjectShadow("dm:///_internal/model/uml#InstanceSpecification");
 
             public class _InstanceValue
             {
@@ -12817,7 +12817,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InstanceValue @InstanceValue = new _InstanceValue();
-            public IElement @__InstanceValue = new MofObjectShadow("dm:///_internal/model/uml#InstanceValue");
+            public MofObjectShadow @__InstanceValue = new MofObjectShadow("dm:///_internal/model/uml#InstanceValue");
 
             public class _Operation
             {
@@ -12953,7 +12953,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Operation @Operation = new _Operation();
-            public IElement @__Operation = new MofObjectShadow("dm:///_internal/model/uml#Operation");
+            public MofObjectShadow @__Operation = new MofObjectShadow("dm:///_internal/model/uml#Operation");
 
             public class _OperationTemplateParameter
             {
@@ -12984,7 +12984,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _OperationTemplateParameter @OperationTemplateParameter = new _OperationTemplateParameter();
-            public IElement @__OperationTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#OperationTemplateParameter");
+            public MofObjectShadow @__OperationTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#OperationTemplateParameter");
 
             public class _Parameter
             {
@@ -13072,7 +13072,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Parameter @Parameter = new _Parameter();
-            public IElement @__Parameter = new MofObjectShadow("dm:///_internal/model/uml#Parameter");
+            public MofObjectShadow @__Parameter = new MofObjectShadow("dm:///_internal/model/uml#Parameter");
 
             public class _ParameterSet
             {
@@ -13112,7 +13112,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ParameterSet @ParameterSet = new _ParameterSet();
-            public IElement @__ParameterSet = new MofObjectShadow("dm:///_internal/model/uml#ParameterSet");
+            public MofObjectShadow @__ParameterSet = new MofObjectShadow("dm:///_internal/model/uml#ParameterSet");
 
             public class _Property
             {
@@ -13248,7 +13248,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Property @Property = new _Property();
-            public IElement @__Property = new MofObjectShadow("dm:///_internal/model/uml#Property");
+            public MofObjectShadow @__Property = new MofObjectShadow("dm:///_internal/model/uml#Property");
 
             public class _RedefinableElement
             {
@@ -13291,7 +13291,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _RedefinableElement @RedefinableElement = new _RedefinableElement();
-            public IElement @__RedefinableElement = new MofObjectShadow("dm:///_internal/model/uml#RedefinableElement");
+            public MofObjectShadow @__RedefinableElement = new MofObjectShadow("dm:///_internal/model/uml#RedefinableElement");
 
             public class _RedefinableTemplateSignature
             {
@@ -13352,7 +13352,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _RedefinableTemplateSignature @RedefinableTemplateSignature = new _RedefinableTemplateSignature();
-            public IElement @__RedefinableTemplateSignature = new MofObjectShadow("dm:///_internal/model/uml#RedefinableTemplateSignature");
+            public MofObjectShadow @__RedefinableTemplateSignature = new MofObjectShadow("dm:///_internal/model/uml#RedefinableTemplateSignature");
 
             public class _Slot
             {
@@ -13377,7 +13377,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Slot @Slot = new _Slot();
-            public IElement @__Slot = new MofObjectShadow("dm:///_internal/model/uml#Slot");
+            public MofObjectShadow @__Slot = new MofObjectShadow("dm:///_internal/model/uml#Slot");
 
             public class _StructuralFeature
             {
@@ -13450,7 +13450,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StructuralFeature @StructuralFeature = new _StructuralFeature();
-            public IElement @__StructuralFeature = new MofObjectShadow("dm:///_internal/model/uml#StructuralFeature");
+            public MofObjectShadow @__StructuralFeature = new MofObjectShadow("dm:///_internal/model/uml#StructuralFeature");
 
             public class _AggregationKind
             {
@@ -13644,7 +13644,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ValueSpecificationAction @ValueSpecificationAction = new _ValueSpecificationAction();
-            public IElement @__ValueSpecificationAction = new MofObjectShadow("dm:///_internal/model/uml#ValueSpecificationAction");
+            public MofObjectShadow @__ValueSpecificationAction = new MofObjectShadow("dm:///_internal/model/uml#ValueSpecificationAction");
 
             public class _VariableAction
             {
@@ -13735,7 +13735,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _VariableAction @VariableAction = new _VariableAction();
-            public IElement @__VariableAction = new MofObjectShadow("dm:///_internal/model/uml#VariableAction");
+            public MofObjectShadow @__VariableAction = new MofObjectShadow("dm:///_internal/model/uml#VariableAction");
 
             public class _WriteLinkAction
             {
@@ -13829,7 +13829,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _WriteLinkAction @WriteLinkAction = new _WriteLinkAction();
-            public IElement @__WriteLinkAction = new MofObjectShadow("dm:///_internal/model/uml#WriteLinkAction");
+            public MofObjectShadow @__WriteLinkAction = new MofObjectShadow("dm:///_internal/model/uml#WriteLinkAction");
 
             public class _WriteStructuralFeatureAction
             {
@@ -13929,7 +13929,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _WriteStructuralFeatureAction @WriteStructuralFeatureAction = new _WriteStructuralFeatureAction();
-            public IElement @__WriteStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#WriteStructuralFeatureAction");
+            public MofObjectShadow @__WriteStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#WriteStructuralFeatureAction");
 
             public class _WriteVariableAction
             {
@@ -14023,7 +14023,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _WriteVariableAction @WriteVariableAction = new _WriteVariableAction();
-            public IElement @__WriteVariableAction = new MofObjectShadow("dm:///_internal/model/uml#WriteVariableAction");
+            public MofObjectShadow @__WriteVariableAction = new MofObjectShadow("dm:///_internal/model/uml#WriteVariableAction");
 
             public class _ExpansionKind
             {
@@ -14145,7 +14145,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _AcceptCallAction @AcceptCallAction = new _AcceptCallAction();
-            public IElement @__AcceptCallAction = new MofObjectShadow("dm:///_internal/model/uml#AcceptCallAction");
+            public MofObjectShadow @__AcceptCallAction = new MofObjectShadow("dm:///_internal/model/uml#AcceptCallAction");
 
             public class _AcceptEventAction
             {
@@ -14242,7 +14242,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _AcceptEventAction @AcceptEventAction = new _AcceptEventAction();
-            public IElement @__AcceptEventAction = new MofObjectShadow("dm:///_internal/model/uml#AcceptEventAction");
+            public MofObjectShadow @__AcceptEventAction = new MofObjectShadow("dm:///_internal/model/uml#AcceptEventAction");
 
             public class _Action
             {
@@ -14330,7 +14330,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Action @Action = new _Action();
-            public IElement @__Action = new MofObjectShadow("dm:///_internal/model/uml#Action");
+            public MofObjectShadow @__Action = new MofObjectShadow("dm:///_internal/model/uml#Action");
 
             public class _ActionInputPin
             {
@@ -14439,7 +14439,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ActionInputPin @ActionInputPin = new _ActionInputPin();
-            public IElement @__ActionInputPin = new MofObjectShadow("dm:///_internal/model/uml#ActionInputPin");
+            public MofObjectShadow @__ActionInputPin = new MofObjectShadow("dm:///_internal/model/uml#ActionInputPin");
 
             public class _AddStructuralFeatureValueAction
             {
@@ -14545,7 +14545,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _AddStructuralFeatureValueAction @AddStructuralFeatureValueAction = new _AddStructuralFeatureValueAction();
-            public IElement @__AddStructuralFeatureValueAction = new MofObjectShadow("dm:///_internal/model/uml#AddStructuralFeatureValueAction");
+            public MofObjectShadow @__AddStructuralFeatureValueAction = new MofObjectShadow("dm:///_internal/model/uml#AddStructuralFeatureValueAction");
 
             public class _AddVariableValueAction
             {
@@ -14645,7 +14645,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _AddVariableValueAction @AddVariableValueAction = new _AddVariableValueAction();
-            public IElement @__AddVariableValueAction = new MofObjectShadow("dm:///_internal/model/uml#AddVariableValueAction");
+            public MofObjectShadow @__AddVariableValueAction = new MofObjectShadow("dm:///_internal/model/uml#AddVariableValueAction");
 
             public class _BroadcastSignalAction
             {
@@ -14742,7 +14742,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _BroadcastSignalAction @BroadcastSignalAction = new _BroadcastSignalAction();
-            public IElement @__BroadcastSignalAction = new MofObjectShadow("dm:///_internal/model/uml#BroadcastSignalAction");
+            public MofObjectShadow @__BroadcastSignalAction = new MofObjectShadow("dm:///_internal/model/uml#BroadcastSignalAction");
 
             public class _CallAction
             {
@@ -14842,7 +14842,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CallAction @CallAction = new _CallAction();
-            public IElement @__CallAction = new MofObjectShadow("dm:///_internal/model/uml#CallAction");
+            public MofObjectShadow @__CallAction = new MofObjectShadow("dm:///_internal/model/uml#CallAction");
 
             public class _CallBehaviorAction
             {
@@ -14945,7 +14945,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CallBehaviorAction @CallBehaviorAction = new _CallBehaviorAction();
-            public IElement @__CallBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#CallBehaviorAction");
+            public MofObjectShadow @__CallBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#CallBehaviorAction");
 
             public class _CallOperationAction
             {
@@ -15051,7 +15051,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CallOperationAction @CallOperationAction = new _CallOperationAction();
-            public IElement @__CallOperationAction = new MofObjectShadow("dm:///_internal/model/uml#CallOperationAction");
+            public MofObjectShadow @__CallOperationAction = new MofObjectShadow("dm:///_internal/model/uml#CallOperationAction");
 
             public class _Clause
             {
@@ -15085,7 +15085,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Clause @Clause = new _Clause();
-            public IElement @__Clause = new MofObjectShadow("dm:///_internal/model/uml#Clause");
+            public MofObjectShadow @__Clause = new MofObjectShadow("dm:///_internal/model/uml#Clause");
 
             public class _ClearAssociationAction
             {
@@ -15179,7 +15179,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ClearAssociationAction @ClearAssociationAction = new _ClearAssociationAction();
-            public IElement @__ClearAssociationAction = new MofObjectShadow("dm:///_internal/model/uml#ClearAssociationAction");
+            public MofObjectShadow @__ClearAssociationAction = new MofObjectShadow("dm:///_internal/model/uml#ClearAssociationAction");
 
             public class _ClearStructuralFeatureAction
             {
@@ -15276,7 +15276,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ClearStructuralFeatureAction @ClearStructuralFeatureAction = new _ClearStructuralFeatureAction();
-            public IElement @__ClearStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#ClearStructuralFeatureAction");
+            public MofObjectShadow @__ClearStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#ClearStructuralFeatureAction");
 
             public class _ClearVariableAction
             {
@@ -15367,7 +15367,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ClearVariableAction @ClearVariableAction = new _ClearVariableAction();
-            public IElement @__ClearVariableAction = new MofObjectShadow("dm:///_internal/model/uml#ClearVariableAction");
+            public MofObjectShadow @__ClearVariableAction = new MofObjectShadow("dm:///_internal/model/uml#ClearVariableAction");
 
             public class _ConditionalNode
             {
@@ -15518,7 +15518,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ConditionalNode @ConditionalNode = new _ConditionalNode();
-            public IElement @__ConditionalNode = new MofObjectShadow("dm:///_internal/model/uml#ConditionalNode");
+            public MofObjectShadow @__ConditionalNode = new MofObjectShadow("dm:///_internal/model/uml#ConditionalNode");
 
             public class _CreateLinkAction
             {
@@ -15612,7 +15612,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CreateLinkAction @CreateLinkAction = new _CreateLinkAction();
-            public IElement @__CreateLinkAction = new MofObjectShadow("dm:///_internal/model/uml#CreateLinkAction");
+            public MofObjectShadow @__CreateLinkAction = new MofObjectShadow("dm:///_internal/model/uml#CreateLinkAction");
 
             public class _CreateLinkObjectAction
             {
@@ -15709,7 +15709,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CreateLinkObjectAction @CreateLinkObjectAction = new _CreateLinkObjectAction();
-            public IElement @__CreateLinkObjectAction = new MofObjectShadow("dm:///_internal/model/uml#CreateLinkObjectAction");
+            public MofObjectShadow @__CreateLinkObjectAction = new MofObjectShadow("dm:///_internal/model/uml#CreateLinkObjectAction");
 
             public class _CreateObjectAction
             {
@@ -15803,7 +15803,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _CreateObjectAction @CreateObjectAction = new _CreateObjectAction();
-            public IElement @__CreateObjectAction = new MofObjectShadow("dm:///_internal/model/uml#CreateObjectAction");
+            public MofObjectShadow @__CreateObjectAction = new MofObjectShadow("dm:///_internal/model/uml#CreateObjectAction");
 
             public class _DestroyLinkAction
             {
@@ -15897,7 +15897,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DestroyLinkAction @DestroyLinkAction = new _DestroyLinkAction();
-            public IElement @__DestroyLinkAction = new MofObjectShadow("dm:///_internal/model/uml#DestroyLinkAction");
+            public MofObjectShadow @__DestroyLinkAction = new MofObjectShadow("dm:///_internal/model/uml#DestroyLinkAction");
 
             public class _DestroyObjectAction
             {
@@ -15994,7 +15994,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _DestroyObjectAction @DestroyObjectAction = new _DestroyObjectAction();
-            public IElement @__DestroyObjectAction = new MofObjectShadow("dm:///_internal/model/uml#DestroyObjectAction");
+            public MofObjectShadow @__DestroyObjectAction = new MofObjectShadow("dm:///_internal/model/uml#DestroyObjectAction");
 
             public class _ExpansionNode
             {
@@ -16085,7 +16085,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExpansionNode @ExpansionNode = new _ExpansionNode();
-            public IElement @__ExpansionNode = new MofObjectShadow("dm:///_internal/model/uml#ExpansionNode");
+            public MofObjectShadow @__ExpansionNode = new MofObjectShadow("dm:///_internal/model/uml#ExpansionNode");
 
             public class _ExpansionRegion
             {
@@ -16233,7 +16233,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ExpansionRegion @ExpansionRegion = new _ExpansionRegion();
-            public IElement @__ExpansionRegion = new MofObjectShadow("dm:///_internal/model/uml#ExpansionRegion");
+            public MofObjectShadow @__ExpansionRegion = new MofObjectShadow("dm:///_internal/model/uml#ExpansionRegion");
 
             public class _InputPin
             {
@@ -16339,7 +16339,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InputPin @InputPin = new _InputPin();
-            public IElement @__InputPin = new MofObjectShadow("dm:///_internal/model/uml#InputPin");
+            public MofObjectShadow @__InputPin = new MofObjectShadow("dm:///_internal/model/uml#InputPin");
 
             public class _InvocationAction
             {
@@ -16433,7 +16433,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _InvocationAction @InvocationAction = new _InvocationAction();
-            public IElement @__InvocationAction = new MofObjectShadow("dm:///_internal/model/uml#InvocationAction");
+            public MofObjectShadow @__InvocationAction = new MofObjectShadow("dm:///_internal/model/uml#InvocationAction");
 
             public class _LinkAction
             {
@@ -16527,7 +16527,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LinkAction @LinkAction = new _LinkAction();
-            public IElement @__LinkAction = new MofObjectShadow("dm:///_internal/model/uml#LinkAction");
+            public MofObjectShadow @__LinkAction = new MofObjectShadow("dm:///_internal/model/uml#LinkAction");
 
             public class _LinkEndCreationData
             {
@@ -16558,7 +16558,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LinkEndCreationData @LinkEndCreationData = new _LinkEndCreationData();
-            public IElement @__LinkEndCreationData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndCreationData");
+            public MofObjectShadow @__LinkEndCreationData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndCreationData");
 
             public class _LinkEndData
             {
@@ -16583,7 +16583,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LinkEndData @LinkEndData = new _LinkEndData();
-            public IElement @__LinkEndData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndData");
+            public MofObjectShadow @__LinkEndData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndData");
 
             public class _LinkEndDestructionData
             {
@@ -16614,7 +16614,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LinkEndDestructionData @LinkEndDestructionData = new _LinkEndDestructionData();
-            public IElement @__LinkEndDestructionData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndDestructionData");
+            public MofObjectShadow @__LinkEndDestructionData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndDestructionData");
 
             public class _LoopNode
             {
@@ -16780,7 +16780,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _LoopNode @LoopNode = new _LoopNode();
-            public IElement @__LoopNode = new MofObjectShadow("dm:///_internal/model/uml#LoopNode");
+            public MofObjectShadow @__LoopNode = new MofObjectShadow("dm:///_internal/model/uml#LoopNode");
 
             public class _OpaqueAction
             {
@@ -16880,7 +16880,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _OpaqueAction @OpaqueAction = new _OpaqueAction();
-            public IElement @__OpaqueAction = new MofObjectShadow("dm:///_internal/model/uml#OpaqueAction");
+            public MofObjectShadow @__OpaqueAction = new MofObjectShadow("dm:///_internal/model/uml#OpaqueAction");
 
             public class _OutputPin
             {
@@ -16986,7 +16986,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _OutputPin @OutputPin = new _OutputPin();
-            public IElement @__OutputPin = new MofObjectShadow("dm:///_internal/model/uml#OutputPin");
+            public MofObjectShadow @__OutputPin = new MofObjectShadow("dm:///_internal/model/uml#OutputPin");
 
             public class _Pin
             {
@@ -17092,7 +17092,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Pin @Pin = new _Pin();
-            public IElement @__Pin = new MofObjectShadow("dm:///_internal/model/uml#Pin");
+            public MofObjectShadow @__Pin = new MofObjectShadow("dm:///_internal/model/uml#Pin");
 
             public class _QualifierValue
             {
@@ -17114,7 +17114,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _QualifierValue @QualifierValue = new _QualifierValue();
-            public IElement @__QualifierValue = new MofObjectShadow("dm:///_internal/model/uml#QualifierValue");
+            public MofObjectShadow @__QualifierValue = new MofObjectShadow("dm:///_internal/model/uml#QualifierValue");
 
             public class _RaiseExceptionAction
             {
@@ -17205,7 +17205,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _RaiseExceptionAction @RaiseExceptionAction = new _RaiseExceptionAction();
-            public IElement @__RaiseExceptionAction = new MofObjectShadow("dm:///_internal/model/uml#RaiseExceptionAction");
+            public MofObjectShadow @__RaiseExceptionAction = new MofObjectShadow("dm:///_internal/model/uml#RaiseExceptionAction");
 
             public class _ReadExtentAction
             {
@@ -17299,7 +17299,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadExtentAction @ReadExtentAction = new _ReadExtentAction();
-            public IElement @__ReadExtentAction = new MofObjectShadow("dm:///_internal/model/uml#ReadExtentAction");
+            public MofObjectShadow @__ReadExtentAction = new MofObjectShadow("dm:///_internal/model/uml#ReadExtentAction");
 
             public class _ReadIsClassifiedObjectAction
             {
@@ -17399,7 +17399,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadIsClassifiedObjectAction @ReadIsClassifiedObjectAction = new _ReadIsClassifiedObjectAction();
-            public IElement @__ReadIsClassifiedObjectAction = new MofObjectShadow("dm:///_internal/model/uml#ReadIsClassifiedObjectAction");
+            public MofObjectShadow @__ReadIsClassifiedObjectAction = new MofObjectShadow("dm:///_internal/model/uml#ReadIsClassifiedObjectAction");
 
             public class _ReadLinkAction
             {
@@ -17496,7 +17496,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadLinkAction @ReadLinkAction = new _ReadLinkAction();
-            public IElement @__ReadLinkAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkAction");
+            public MofObjectShadow @__ReadLinkAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkAction");
 
             public class _ReadLinkObjectEndAction
             {
@@ -17593,7 +17593,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadLinkObjectEndAction @ReadLinkObjectEndAction = new _ReadLinkObjectEndAction();
-            public IElement @__ReadLinkObjectEndAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkObjectEndAction");
+            public MofObjectShadow @__ReadLinkObjectEndAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkObjectEndAction");
 
             public class _ReadLinkObjectEndQualifierAction
             {
@@ -17690,7 +17690,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadLinkObjectEndQualifierAction @ReadLinkObjectEndQualifierAction = new _ReadLinkObjectEndQualifierAction();
-            public IElement @__ReadLinkObjectEndQualifierAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkObjectEndQualifierAction");
+            public MofObjectShadow @__ReadLinkObjectEndQualifierAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkObjectEndQualifierAction");
 
             public class _ReadSelfAction
             {
@@ -17781,7 +17781,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadSelfAction @ReadSelfAction = new _ReadSelfAction();
-            public IElement @__ReadSelfAction = new MofObjectShadow("dm:///_internal/model/uml#ReadSelfAction");
+            public MofObjectShadow @__ReadSelfAction = new MofObjectShadow("dm:///_internal/model/uml#ReadSelfAction");
 
             public class _ReadStructuralFeatureAction
             {
@@ -17878,7 +17878,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadStructuralFeatureAction @ReadStructuralFeatureAction = new _ReadStructuralFeatureAction();
-            public IElement @__ReadStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#ReadStructuralFeatureAction");
+            public MofObjectShadow @__ReadStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#ReadStructuralFeatureAction");
 
             public class _ReadVariableAction
             {
@@ -17972,7 +17972,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReadVariableAction @ReadVariableAction = new _ReadVariableAction();
-            public IElement @__ReadVariableAction = new MofObjectShadow("dm:///_internal/model/uml#ReadVariableAction");
+            public MofObjectShadow @__ReadVariableAction = new MofObjectShadow("dm:///_internal/model/uml#ReadVariableAction");
 
             public class _ReclassifyObjectAction
             {
@@ -18072,7 +18072,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReclassifyObjectAction @ReclassifyObjectAction = new _ReclassifyObjectAction();
-            public IElement @__ReclassifyObjectAction = new MofObjectShadow("dm:///_internal/model/uml#ReclassifyObjectAction");
+            public MofObjectShadow @__ReclassifyObjectAction = new MofObjectShadow("dm:///_internal/model/uml#ReclassifyObjectAction");
 
             public class _ReduceAction
             {
@@ -18172,7 +18172,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReduceAction @ReduceAction = new _ReduceAction();
-            public IElement @__ReduceAction = new MofObjectShadow("dm:///_internal/model/uml#ReduceAction");
+            public MofObjectShadow @__ReduceAction = new MofObjectShadow("dm:///_internal/model/uml#ReduceAction");
 
             public class _RemoveStructuralFeatureValueAction
             {
@@ -18278,7 +18278,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _RemoveStructuralFeatureValueAction @RemoveStructuralFeatureValueAction = new _RemoveStructuralFeatureValueAction();
-            public IElement @__RemoveStructuralFeatureValueAction = new MofObjectShadow("dm:///_internal/model/uml#RemoveStructuralFeatureValueAction");
+            public MofObjectShadow @__RemoveStructuralFeatureValueAction = new MofObjectShadow("dm:///_internal/model/uml#RemoveStructuralFeatureValueAction");
 
             public class _RemoveVariableValueAction
             {
@@ -18378,7 +18378,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _RemoveVariableValueAction @RemoveVariableValueAction = new _RemoveVariableValueAction();
-            public IElement @__RemoveVariableValueAction = new MofObjectShadow("dm:///_internal/model/uml#RemoveVariableValueAction");
+            public MofObjectShadow @__RemoveVariableValueAction = new MofObjectShadow("dm:///_internal/model/uml#RemoveVariableValueAction");
 
             public class _ReplyAction
             {
@@ -18475,7 +18475,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReplyAction @ReplyAction = new _ReplyAction();
-            public IElement @__ReplyAction = new MofObjectShadow("dm:///_internal/model/uml#ReplyAction");
+            public MofObjectShadow @__ReplyAction = new MofObjectShadow("dm:///_internal/model/uml#ReplyAction");
 
             public class _SendObjectAction
             {
@@ -18575,7 +18575,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _SendObjectAction @SendObjectAction = new _SendObjectAction();
-            public IElement @__SendObjectAction = new MofObjectShadow("dm:///_internal/model/uml#SendObjectAction");
+            public MofObjectShadow @__SendObjectAction = new MofObjectShadow("dm:///_internal/model/uml#SendObjectAction");
 
             public class _SendSignalAction
             {
@@ -18675,7 +18675,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _SendSignalAction @SendSignalAction = new _SendSignalAction();
-            public IElement @__SendSignalAction = new MofObjectShadow("dm:///_internal/model/uml#SendSignalAction");
+            public MofObjectShadow @__SendSignalAction = new MofObjectShadow("dm:///_internal/model/uml#SendSignalAction");
 
             public class _SequenceNode
             {
@@ -18817,7 +18817,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _SequenceNode @SequenceNode = new _SequenceNode();
-            public IElement @__SequenceNode = new MofObjectShadow("dm:///_internal/model/uml#SequenceNode");
+            public MofObjectShadow @__SequenceNode = new MofObjectShadow("dm:///_internal/model/uml#SequenceNode");
 
             public class _StartClassifierBehaviorAction
             {
@@ -18908,7 +18908,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StartClassifierBehaviorAction @StartClassifierBehaviorAction = new _StartClassifierBehaviorAction();
-            public IElement @__StartClassifierBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#StartClassifierBehaviorAction");
+            public MofObjectShadow @__StartClassifierBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#StartClassifierBehaviorAction");
 
             public class _StartObjectBehaviorAction
             {
@@ -19011,7 +19011,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StartObjectBehaviorAction @StartObjectBehaviorAction = new _StartObjectBehaviorAction();
-            public IElement @__StartObjectBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#StartObjectBehaviorAction");
+            public MofObjectShadow @__StartObjectBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#StartObjectBehaviorAction");
 
             public class _StructuralFeatureAction
             {
@@ -19105,7 +19105,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StructuralFeatureAction @StructuralFeatureAction = new _StructuralFeatureAction();
-            public IElement @__StructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#StructuralFeatureAction");
+            public MofObjectShadow @__StructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#StructuralFeatureAction");
 
             public class _StructuredActivityNode
             {
@@ -19244,7 +19244,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _StructuredActivityNode @StructuredActivityNode = new _StructuredActivityNode();
-            public IElement @__StructuredActivityNode = new MofObjectShadow("dm:///_internal/model/uml#StructuredActivityNode");
+            public MofObjectShadow @__StructuredActivityNode = new MofObjectShadow("dm:///_internal/model/uml#StructuredActivityNode");
 
             public class _TestIdentityAction
             {
@@ -19341,7 +19341,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _TestIdentityAction @TestIdentityAction = new _TestIdentityAction();
-            public IElement @__TestIdentityAction = new MofObjectShadow("dm:///_internal/model/uml#TestIdentityAction");
+            public MofObjectShadow @__TestIdentityAction = new MofObjectShadow("dm:///_internal/model/uml#TestIdentityAction");
 
             public class _UnmarshallAction
             {
@@ -19438,7 +19438,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _UnmarshallAction @UnmarshallAction = new _UnmarshallAction();
-            public IElement @__UnmarshallAction = new MofObjectShadow("dm:///_internal/model/uml#UnmarshallAction");
+            public MofObjectShadow @__UnmarshallAction = new MofObjectShadow("dm:///_internal/model/uml#UnmarshallAction");
 
             public class _ValuePin
             {
@@ -19547,7 +19547,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ValuePin @ValuePin = new _ValuePin();
-            public IElement @__ValuePin = new MofObjectShadow("dm:///_internal/model/uml#ValuePin");
+            public MofObjectShadow @__ValuePin = new MofObjectShadow("dm:///_internal/model/uml#ValuePin");
 
         }
 

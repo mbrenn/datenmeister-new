@@ -106,7 +106,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
-            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
+            Result.AppendLine($"{stack.Indentation}public MofObjectShadow @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
             Result.AppendLine();
         }
 

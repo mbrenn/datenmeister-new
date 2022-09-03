@@ -362,7 +362,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 const data = yield ItemClient.deleteItem(workspace, itemUri);
                 const success = data.success;
                 if (success) {
-                    Navigator.navigateToExtent(workspace, extentUri);
+                    Navigator.navigateToWorkspace(workspace);
                 }
                 else {
                     alert('Deletion was not successful.');

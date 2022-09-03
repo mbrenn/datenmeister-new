@@ -15,14 +15,14 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _URIExtent @URIExtent = new _URIExtent();
-            public IElement @__URIExtent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
+            public MofObjectShadow @__URIExtent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public IElement @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-Extent");
+            public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-Extent");
 
         }
 
@@ -44,7 +44,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Tag @Tag = new _Tag();
-            public IElement @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag");
+            public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag");
 
         }
 
@@ -69,7 +69,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Tag @Tag = new _Tag();
-            public IElement @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag");
+            public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag");
 
         }
 
@@ -82,14 +82,14 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
-            public IElement @__ReflectiveSequence = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
+            public MofObjectShadow @__ReflectiveSequence = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
 
             public class _ReflectiveCollection
             {
             }
 
             public _ReflectiveCollection @ReflectiveCollection = new _ReflectiveCollection();
-            public IElement @__ReflectiveCollection = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection");
+            public MofObjectShadow @__ReflectiveCollection = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection");
 
         }
 
@@ -108,14 +108,14 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Factory @Factory = new _Factory();
-            public IElement @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
+            public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
 
             public class _Element
             {
             }
 
             public _Element @Element = new _Element();
-            public IElement @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
+            public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
 
             public class _Argument
             {
@@ -128,14 +128,14 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Argument @Argument = new _Argument();
-            public IElement @__Argument = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
+            public MofObjectShadow @__Argument = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public IElement @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
+            public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
 
             public class _Link
             {
@@ -151,7 +151,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Link @Link = new _Link();
-            public IElement @__Link = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
+            public MofObjectShadow @__Link = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
 
             public class _Exception
             {
@@ -167,7 +167,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Exception @Exception = new _Exception();
-            public IElement @__Exception = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception");
+            public MofObjectShadow @__Exception = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception");
 
         }
 
@@ -186,21 +186,21 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Factory @Factory = new _Factory();
-            public IElement @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory");
+            public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory");
 
             public class _Type
             {
             }
 
             public _Type @Type = new _Type();
-            public IElement @__Type = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Type");
+            public MofObjectShadow @__Type = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Type");
 
             public class _Object
             {
             }
 
             public _Object @Object = new _Object();
-            public IElement @__Object = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Object");
+            public MofObjectShadow @__Object = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Object");
 
             public class _Element
             {
@@ -210,7 +210,7 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Element @Element = new _Element();
-            public IElement @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element");
+            public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element");
 
         }
 

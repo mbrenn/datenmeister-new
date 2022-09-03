@@ -434,7 +434,7 @@ export class FormActions {
 
         const success = data.success;
         if (success) {
-            Navigator.navigateToExtent(workspace, extentUri);
+            Navigator.navigateToWorkspace(workspace);
         } else {
             alert('Deletion was not successful.');
         }

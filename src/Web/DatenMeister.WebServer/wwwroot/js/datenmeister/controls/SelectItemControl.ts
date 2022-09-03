@@ -1,5 +1,5 @@
-﻿import * as EL from '../client/Elements';
-import * as ItemsClient from '../client/Items';
+﻿import * as EL from "../client/Elements";
+import * as ItemsClient from "../client/Items";
 import {EntentType, ItemWithNameAndId} from "../ApiModels";
 import {UserEvent} from "../../burnsystems/Events";
 import {convertItemWithNameAndIdToDom} from "../DomHelper";
@@ -38,7 +38,7 @@ export class SelectItemControl {
     private loadedWorkspaces: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private loadedExtents: Array<ItemWithNameAndId> = new Array<ItemWithNameAndId>();
     private selectedItem?: ItemWithNameAndId;
-    private _containerDiv: JQuery;
+    private containerDiv: JQuery;
 
     // Defines the id of the workspace, when the workspace shall be pre-selected
     // This value is set to undefined, when no selection shall be given
@@ -110,20 +110,20 @@ export class SelectItemControl {
         this.htmlItemsList = $("<ul></ul>");
 
         // Defines the handler whenever the user changes something
-        this.htmlWorkspaceSelect.on('change', () => tthis.onWorkspaceChangedByUser());
-        this.htmlExtentSelect.on('change', () => tthis.onExtentChangedByUser());
+        this.htmlWorkspaceSelect.on("change", () => tthis.onWorkspaceChangedByUser());
+        this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
 
         // Creates the template
         const div = $(
             "<table class='dm-selectitemcontrol'>" +
             "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
-            "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
-            "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
-            "<tr><td>Items: </td>" +
+            "<tr><th>Workspace: </th><td class='dm-sic-workspace'></td></tr>" +
+            "<tr><th>Extent: </th><td class='dm-sic-extent'></td></tr>" +
+            "<tr><th>Selected Item: </th><td><div class='dm-sic-selected'></div></td></tr>" +
+            "<tr><th>Children: </th>" +
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
             "<tr><td></td><td class='selected'>" +
             (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
             "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
@@ -147,11 +147,11 @@ export class SelectItemControl {
 
         // throws the event, when the user clicks on the set button
         setButton.text(this.settings.setButtonText);
-        setButton.on('click', () => {
+        setButton.on("click", () => {
             tthis.itemSelected.invoke(tthis.selectedItem);
         });
 
-        cancelButton.on('click', () => {
+        cancelButton.on("click", () => {
             this.removeControl();
         });
 
@@ -160,7 +160,7 @@ export class SelectItemControl {
         }
 
         container.append(div);
-        this._containerDiv = div;
+        this.containerDiv = div;
         this.isDomInitializationDone = true;
         return div;
     }
@@ -169,8 +169,8 @@ export class SelectItemControl {
      * Shows the control (by revoking the hide status)
      */
     showControl() {
-        if (this._containerDiv !== undefined) {
-            this._containerDiv.show();
+        if (this.containerDiv !== undefined) {
+            this.containerDiv.show();
         }
     }
 
@@ -178,8 +178,8 @@ export class SelectItemControl {
      * Removes the control. This means that 'init(Async)' must be called again
      */
     removeControl() {
-        this._containerDiv?.remove();
-        this._containerDiv = undefined;
+        this.containerDiv?.remove();
+        this.containerDiv = undefined;
     }
 
     /**
@@ -411,6 +411,8 @@ export class SelectItemControl {
                     };
             }
 
+            this.selectedItem = selectedItem;
+            
             // Now get rid of it
             this.preSelectItemUri = undefined;
         }
@@ -443,7 +445,7 @@ export class SelectItemControl {
 
                     // Creates the clickability of the list of items
                     ((innerItem) =>
-                        option.on('click', async () => {
+                        option.on("click", async () => {
                             tthis.selectedItem = innerItem;
                             tthis.itemClicked.invoke(innerItem);
                             await tthis.loadItems();
@@ -568,7 +570,7 @@ export class SelectItemControl {
         breadcrumbItem.text(text);
 
         // Remove all breadcrumb items till that one
-        breadcrumbItem.on('click', async () => {
+        breadcrumbItem.on("click", async () => {
             onClick();
             await tthis.refreshBreadcrumb();
         });

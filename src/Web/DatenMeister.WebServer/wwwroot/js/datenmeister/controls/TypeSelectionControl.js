@@ -41,8 +41,8 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                     "</div>");
                 const controlSelect = $(".dm-form-selection-control-select", result);
                 // Creates the selection field
-                this._selectionField = new SIC.SelectItemControl();
-                this._selectionField.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
+                this.selectionField = new SIC.SelectItemControl();
+                this.selectionField.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
                     if (selectedItem !== undefined) {
                         const foundItem = yield ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
                         this.typeSelected.invoke({
@@ -50,19 +50,19 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                         });
                     }
                     else {
-                        alert('Not a valid form has been selected');
+                        alert("No valid type has been selected");
                     }
                 }));
                 if (this._currentTypeUrl !== undefined) {
-                    yield this._selectionField.setItemByUri("Types", this._currentTypeUrl.itemUrl);
+                    yield this.selectionField.setItemByUri(this._currentTypeUrl.workspace, this._currentTypeUrl.uri);
                 }
                 else {
-                    yield this._selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
+                    yield this.selectionField.setExtentByUri("Types", "dm:///_internal/types/internal");
                 }
                 const settings = new SIC.Settings();
                 settings.setButtonText = "Use Type";
                 settings.headline = "Select Type:";
-                yield this._selectionField.initAsync(controlSelect, settings);
+                yield this.selectionField.initAsync(controlSelect, settings);
                 // Finalize the GUI
                 this._container.append(result);
             });

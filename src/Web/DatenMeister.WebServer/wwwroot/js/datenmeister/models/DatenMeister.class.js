@@ -220,8 +220,21 @@ define(["require", "exports"], function (require, exports) {
             _Actions.__Action_Uri = "dm:///_internal/types/internal#Actions.Action";
             class _MoveOrCopyAction {
             }
+            _MoveOrCopyAction.actionType = "actionType";
+            _MoveOrCopyAction.target = "target";
+            _MoveOrCopyAction.source = "source";
             _Actions._MoveOrCopyAction = _MoveOrCopyAction;
-            _Actions.__MoveOrCopyAction_Uri = "dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7";
+            _Actions.__MoveOrCopyAction_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction";
+            let _MoveOrCopyType;
+            (function (_MoveOrCopyType) {
+                _MoveOrCopyType.Copy = "Copy";
+                _MoveOrCopyType.Move = "Move";
+            })(_MoveOrCopyType = _Actions._MoveOrCopyType || (_Actions._MoveOrCopyType = {}));
+            let ___MoveOrCopyType;
+            (function (___MoveOrCopyType) {
+                ___MoveOrCopyType[___MoveOrCopyType["Copy"] = 0] = "Copy";
+                ___MoveOrCopyType[___MoveOrCopyType["Move"] = 1] = "Move";
+            })(___MoveOrCopyType = _Actions.___MoveOrCopyType || (_Actions.___MoveOrCopyType = {}));
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
         let _DataViews;
         (function (_DataViews) {

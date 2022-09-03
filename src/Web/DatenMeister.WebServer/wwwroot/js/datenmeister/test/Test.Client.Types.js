@@ -22,9 +22,9 @@ define(["require", "exports", "../client/Types", "../models/DatenMeister.class"]
                 });
                 it('Get Property Type', function () {
                     return __awaiter(this, void 0, void 0, function* () {
-                        let result = yield ClientTypes.getPropertyType(DatenMeister_class_1._DatenMeister._CommonTypes._OSIntegration.__CommandLineApplication_Uri, DatenMeister_class_1._DatenMeister._CommonTypes._OSIntegration._CommandLineApplication._name_);
+                        let result = yield ClientTypes.getPropertyType("Types", DatenMeister_class_1._DatenMeister._CommonTypes._OSIntegration.__CommandLineApplication_Uri, DatenMeister_class_1._DatenMeister._CommonTypes._OSIntegration._CommandLineApplication._name_);
                         chai.assert.isTrue(result.id === "String");
-                        result = yield ClientTypes.getPropertyType(DatenMeister_class_1._DatenMeister._DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig_Uri, DatenMeister_class_1._DatenMeister._DynamicRuntimeProvider._DynamicRuntimeLoaderConfig.configuration);
+                        result = yield ClientTypes.getPropertyType("Types", DatenMeister_class_1._DatenMeister._DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig_Uri, DatenMeister_class_1._DatenMeister._DynamicRuntimeProvider._DynamicRuntimeLoaderConfig.configuration);
                         chai.assert.isTrue(result === undefined);
                     });
                 });

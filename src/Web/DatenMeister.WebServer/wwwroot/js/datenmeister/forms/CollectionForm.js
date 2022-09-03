@@ -76,7 +76,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                         if (this._overrideFormUrl !== undefined) {
                             formUrl = {
                                 workspace: "Management",
-                                itemUrl: this._overrideFormUrl
+                                uri: this._overrideFormUrl
                             };
                         }
                         else {
@@ -84,13 +84,13 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                             if (form.uri !== undefined && byForm === undefined) {
                                 formUrl = {
                                     workspace: form.workspace,
-                                    itemUrl: form.uri
+                                    uri: form.uri
                                 };
                             }
                             else if (byForm !== undefined) {
                                 formUrl = {
                                     workspace: "Management",
-                                    itemUrl: byForm
+                                    uri: byForm
                                 };
                             }
                         }

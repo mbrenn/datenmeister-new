@@ -151,10 +151,6 @@ export class DmObject {
         this.metaClass = {uri: metaClassUri};
     }
 
-    setMetaClassById(metaClassId: string) {
-        this.metaClass = {id: metaClassId};
-    }
-
     static valueToString(item: any, indent: string = ""): string {
 
         let result = "";
@@ -199,15 +195,12 @@ export class DmObject {
  * @param element
  */
 export function convertToItemWithNameAndId(element: DmObject) {
-    const result =
-        {
-            uri: element.uri,
-            extentUri: element.extentUri,
-            workspace: element.workspace,
-            ententType: EntentType.Item
-        };
-
-    return result;
+    return {
+        uri: element.uri,
+        extentUri: element.extentUri,
+        workspace: element.workspace,
+        ententType: EntentType.Item
+    };
 }
 
 /*
@@ -216,7 +209,7 @@ export function convertToItemWithNameAndId(element: DmObject) {
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v: {}, m: {}};
+    const result = {v: {}, m: {}, r: {}, w: {}};
     const values = result.v;
 
     function convertValue(elementValue) {
@@ -238,9 +231,16 @@ export function createJsonFromObject(element: DmObject) {
         }
     }
 
-    for (const key in element.getPropertyValues()) {
-        let elementValue = element.get(key);
-        values[key] = convertValue(elementValue);
+    if ( !element.isReference) {
+        for (const key in element.getPropertyValues()) {
+            let elementValue = element.get(key);
+            values[key] = convertValue(elementValue);
+        }
+    }
+    else {
+        // Object is reference
+        result.r = element.uri;
+        result.w = element.workspace;
     }
 
     if (element.metaClass !== undefined && element.metaClass !== null) {
@@ -250,7 +250,7 @@ export function createJsonFromObject(element: DmObject) {
     return result;
 }
 
-/*
+/**
  * Converts the Object as given by the server to the JS-World. 
  * In case of native objects, the native object will be returned. 
  * In case of arrays, the arrays. 

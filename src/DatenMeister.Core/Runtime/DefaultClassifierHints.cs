@@ -133,7 +133,12 @@ namespace DatenMeister.Core.Runtime
             else
             {
                 var propertyName = GetDefaultPackagePropertyName(container);
-                container.RemoveCollectionItem(propertyName, child);
+                if (!container.RemoveCollectionItem(propertyName, child))
+                {
+                    throw new InvalidOperationException(
+                        $"The element {NamedElementMethods.GetName(child)} could not be removed as " +
+                        $"expected from container {NamedElementMethods.GetName(container)}");
+                }
             }
         }
 

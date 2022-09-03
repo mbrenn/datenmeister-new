@@ -16,7 +16,7 @@ namespace DatenMeister.Extent.Forms
         public const string NavigationItemDelete = "Item.Delete";
         public const string NavigationExtentsListViewItem = "ExtentsList.ViewItem";
         public const string NavigationExtentsListDeleteItem = "ExtentsList.DeleteItem";
-        public const string NavigationItemMoveOrCopy = "Item.MoveOrCopy";
+        public const string NavigationItemMoveOrCopyNavigate = "Item.MoveOrCopy.Navigate";
 
         private readonly IScopeStorage _scopeStorage;
 
@@ -41,7 +41,7 @@ namespace DatenMeister.Extent.Forms
                     
 
                     ActionButtonToFormAdder.AddActionButton(
-                        formsPlugin, new ActionButtonAdderParameter(NavigationItemMoveOrCopy, "Move/Copy")
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemMoveOrCopyNavigate, "Move/Copy")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Row
                         });

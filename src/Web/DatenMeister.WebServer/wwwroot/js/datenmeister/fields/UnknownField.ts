@@ -10,8 +10,8 @@ export class Field extends BaseField implements IFormField {
         super();
         this.unknownFieldUri = unknownFieldUri;
     }
-    
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
         const result = $("<em></em>");
         result.text(this.unknownFieldUri ?? "unknown");
         return result;

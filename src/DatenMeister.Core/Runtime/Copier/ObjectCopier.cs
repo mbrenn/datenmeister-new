@@ -129,7 +129,7 @@ namespace DatenMeister.Core.Runtime.Copier
 
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
-            if (!(sourceElement is IObjectAllProperties elementAsExt))
+            if (sourceElement is not IObjectAllProperties elementAsExt)
             {
                 throw new ArgumentException($"{nameof(sourceElement)} is not of type IObjectAllProperties");
             }

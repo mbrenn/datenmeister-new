@@ -3,12 +3,14 @@ import {DmObject, ObjectType} from "../Mof";
 import * as FieldFactory from "../forms/FieldFactory";
 import * as SIC from "../controls/SelectItemControl";
 import * as ClientItems from "../client/Items";
+import * as ClientTypes from "../client/Types";
 import {IFormConfiguration} from "../forms/IFormConfiguration";
 import {IFormNavigation} from "../forms/Interfaces";
 import * as Settings from "../Settings";
 import {injectNameByUri} from "../DomHelper";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl";
+import {ItemWithNameAndId} from "../ApiModels";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -19,28 +21,34 @@ export class Control {
     form: IFormNavigation;
     propertyName: string;
 
+    /**
+     * Stores the property type. This information is used to pre-select the
+     * SubElementField in which the user can define the metaclass for a element to be created
+     */
+    propertyType: ItemWithNameAndId;
+
     _list: JQuery;
 
     constructor() {
         this._list = $("<div></div>");
     }
 
-    createDomByValue(value: any): JQuery<HTMLElement> {
+    async createDomByFieldValue(fieldValue: any): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
         this._list.empty();
 
         if (this.isReadOnly) {
-            if (!Array.isArray(value)) {
+            if (!Array.isArray(fieldValue)) {
                 return $("<div><em>Element is not an Array</em></div>")
             }
 
             let ul = $("<ul class='list-unstyled'></ul>");
 
             let foundElements = 0;
-            for (let m in value) {
-                if (Object.prototype.hasOwnProperty.call(value, m)) {
-                    let innerValue = value[m] as DmObject;
+            for (let m in fieldValue) {
+                if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
+                    let innerValue = fieldValue[m] as DmObject;
                     const item = $("<li></li>");
 
                     let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri);
@@ -55,8 +63,8 @@ export class Control {
 
             this._list.append(ul);
         } else {
-            if (!Array.isArray(value)) {
-                value = [];
+            if (!Array.isArray(fieldValue)) {
+                fieldValue = [];
             }
 
             const table = $("<table><tbody></tbody></table>");
@@ -68,9 +76,9 @@ export class Control {
             if (fields === undefined) {
                 const nameField = new DmObject();
                 nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri);
-                nameField.set('name', 'name');
-                nameField.set('title', 'Name');
-                nameField.set('isReadOnly', true);
+                nameField.set("name", "name");
+                nameField.set("title", "Name");
+                nameField.set("isReadOnly", true);
                 fieldsData.push(nameField);
             }
 
@@ -81,7 +89,7 @@ export class Control {
                 let fieldData = fieldsData[fieldDataKey];
 
                 let header = $("<th></th>");
-                header.text(fieldData.get('title'));
+                header.text(fieldData.get("title"));
                 tr.append(header);
             }
 
@@ -91,10 +99,10 @@ export class Control {
             tBody.append(tr);
 
             /* Creates the rows */
-            for (let m in value) {
-                if (Object.prototype.hasOwnProperty.call(value, m)) {
+            for (let m in fieldValue) {
+                if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
                     const tr = $("<tr></tr>");
-                    let innerValue = value[m] as DmObject;
+                    let innerValue = fieldValue[m] as DmObject;
 
                     for (let fieldDataKey in fieldsData) {
                         const td = $("<td></td>");
@@ -109,14 +117,14 @@ export class Control {
                                 configuration: {},
                                 form: tthis.form
                             });
-                        const dom = field.createDom(innerValue);
+                        const dom = await field.createDom(innerValue);
                         td.append(dom);
                         tr.append(td);
                     }
 
                     /* Creates the delete button */
                     let deleteCell = $("<td><btn class='btn btn-secondary'>Delete</btn></td>");
-                    $("btn", deleteCell).on('click',
+                    $("btn", deleteCell).on("click",
                         () => {
                             ClientItems.removeReferenceFromCollection(
                                 tthis.form.workspace,
@@ -145,7 +153,7 @@ export class Control {
                 "<div class='dm-subelements-attachitem-box'></div>" +
                 "<div class='dm-subelements-createitem-box'></div>" +
                 "</div>");
-            $(".dm-subelements-attachitem-btn", attachItem).on('click', () => {
+            $(".dm-subelements-attachitem-btn", attachItem).on("click", () => {
                 const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
                 containerDiv.empty();
                 const selectItem = new SIC.SelectItemControl();
@@ -172,17 +180,24 @@ export class Control {
                 return false;
             });
 
-            $(".dm-subelements-createitem-btn", attachItem).on('click', async () => {
+            $(".dm-subelements-createitem-btn", attachItem).on("click", async () => {
                 const container = $(".dm-subelements-createitem-box", attachItem);
                 container.empty();
-
+                
+                // Create the Type Selection Control element in which the user can select the right 
                 const control = new TypeSelectionControl.TypeSelectionControl(container);
+
+                // Get the property type
+                if(this.propertyType !== undefined) {
+                    control.setCurrentTypeUrl(this.propertyType);
+                }
+                
                 control.typeSelected.addListener(async x => {
 
                     if (x === undefined ||
                         x.selectedType === undefined ||
                         x.selectedType.uri === undefined) {
-                        alert('Nothing is selected.');
+                        alert("Nothing is selected.");
                         return;
                     }
 
@@ -205,7 +220,7 @@ export class Control {
         }
 
         const refreshBtn = $("<div><btn class='dm-subelements-refresh-btn'><img src='/img/refresh-16.png' alt='Refresh' /></btn></div>");
-        $(".dm-subelements-refresh-btn", refreshBtn).on('click', () => {
+        $(".dm-subelements-refresh-btn", refreshBtn).on("click", () => {
             tthis.reloadValuesFromServer();
         });
 
@@ -215,7 +230,7 @@ export class Control {
     }
 
     reloadValuesFromServer() {
-        alert('reloadValuesFromServer is not overridden.');
+        alert("reloadValuesFromServer is not overridden.");
     }
 
     /**
@@ -237,16 +252,16 @@ export class Field extends Control implements IFormField {
         const url = this._element.uri;
 
         ClientItems.getProperty(this.form.workspace, url, this.propertyName).then(
-            x => tthis.createDomByValue(x)
+            x => tthis.createDomByFieldValue(x)
         );
     }
 
     getFieldDefinitions(): Array<DmObject> {
-        return this.field.get('form', ObjectType.Single)?.get('field', ObjectType.Array) as Array<DmObject>;
+        return this.field.get("form", ObjectType.Single)?.get("field", ObjectType.Array) as Array<DmObject>;
     }
 
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
-        this.propertyName = this.field.get('name');
+    async createDom(dmElement: DmObject) {
+        this.propertyName = this.field.get("name");
 
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");
@@ -254,7 +269,17 @@ export class Field extends Control implements IFormField {
             this._element = dmElement;
             const value = dmElement.get(this.propertyName);
 
-            this.createDomByValue(value);
+            if (this._element.metaClass?.uri !== undefined
+                && this.propertyName !== undefined
+                && !this.isReadOnly) {
+                this.propertyType =
+                    await ClientTypes.getPropertyType(
+                        this._element.metaClass.workspace,
+                        this._element.metaClass.uri,
+                        this.propertyName);
+            }
+
+            await this.createDomByFieldValue(value);
 
             return this._list
         }

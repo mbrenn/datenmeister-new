@@ -31,7 +31,7 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
          * @param formUrl
          */
         setCurrentFormUrl(formUrl) {
-            this._currentFormUrl = formUrl;
+            this.currentFormUrl = formUrl;
         }
         /**
          * Creates the form in which the user can select a specific form
@@ -49,15 +49,15 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                 const controlSelect = $(".dm-form-selection-control-select", result);
                 const controlReset = $(".dm_form-selection-control-reset", result);
                 const currentForm = $(".dm-form-selection-control-current-span", result);
-                if (this._currentFormUrl !== undefined) {
-                    const _ = DomHelper.injectNameByUri(currentForm, this._currentFormUrl.workspace, this._currentFormUrl.itemUrl);
+                if (this.currentFormUrl !== undefined) {
+                    const _ = DomHelper.injectNameByUri(currentForm, this.currentFormUrl.workspace, this.currentFormUrl.uri);
                 }
                 else {
                     currentForm.append($("<em>Auto-Generated</em>"));
                 }
                 // Creates the selection field
-                this._selectionField = new SIC.SelectItemControl();
-                this._selectionField.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
+                this.selectionField = new SIC.SelectItemControl();
+                this.selectionField.itemSelected.addListener((selectedItem) => __awaiter(this, void 0, void 0, function* () {
                     if (selectedItem !== undefined) {
                         const foundItem = yield ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
                         this.formSelected.invoke({
@@ -65,26 +65,26 @@ define(["require", "exports", "./SelectItemControl", "../../burnsystems/Events",
                         });
                     }
                     else {
-                        alert('Not a valid form has been selected');
+                        alert("Not a valid form has been selected");
                     }
                 }));
-                const t2 = this._selectionField.setWorkspaceById("Management")
+                const t2 = this.selectionField.setWorkspaceById("Management")
                     .then(() => __awaiter(this, void 0, void 0, function* () {
                     const settings = new SIC.Settings();
                     settings.setButtonText = "Change Form";
                     settings.headline = "Select Form:";
-                    yield this._selectionField.initAsync(controlSelect, settings);
-                    if (this._currentFormUrl !== undefined) {
-                        yield this._selectionField.setItemByUri("Management", this._currentFormUrl.itemUrl);
+                    yield this.selectionField.initAsync(controlSelect, settings);
+                    if (this.currentFormUrl !== undefined) {
+                        yield this.selectionField.setItemByUri("Management", this.currentFormUrl.uri);
                     }
                     else {
-                        yield this._selectionField.setExtentByUri("Management", "dm:///_internal/forms/internal");
+                        yield this.selectionField.setExtentByUri("Management", "dm:///_internal/forms/internal");
                     }
                 }));
                 // Creates the reset button
                 const resetButton = $("<button class='btn btn-secondary'>Reset form</button>");
-                resetButton.on('click', () => {
-                    this.formResetted.invoke();
+                resetButton.on("click", () => {
+                    this.formResetted.invoke(null);
                 });
                 controlReset.append(resetButton);
                 // Finalize the GUI

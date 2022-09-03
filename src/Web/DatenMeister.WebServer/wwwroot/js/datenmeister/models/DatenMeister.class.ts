@@ -247,9 +247,24 @@ export namespace _DatenMeister
                 export const __Action_Uri = "dm:///_internal/types/internal#Actions.Action";
                 export class _MoveOrCopyAction
                 {
+                    static actionType = "actionType";
+                    static target = "target";
+                    static source = "source";
                 }
 
-                export const __MoveOrCopyAction_Uri = "dm:///_internal/types/internal#c8d4c839-d38e-4a59-94ed-8e3b8e2d53d7";
+                export const __MoveOrCopyAction_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction";
+                export module _MoveOrCopyType
+                {
+                    export const Copy = "Copy";
+                    export const Move = "Move";
+                }
+
+                export enum ___MoveOrCopyType
+                {
+                    Copy,
+                    Move
+                }
+
         }
 
         export namespace _DataViews

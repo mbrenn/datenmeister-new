@@ -18,16 +18,16 @@ define(["require", "exports", "../forms/ViewModeLogic", "../Mof", "../models/Dat
                     const v = result[n];
                     const option = $("<option></option>");
                     const id = v.get(DatenMeister_class_1._DatenMeister._Forms._ViewMode.id, Mof_1.ObjectType.Single);
-                    option.attr('value', id);
+                    option.attr("value", id);
                     option.text(v.get(DatenMeister_class_1._DatenMeister._Forms._ViewMode._name_, Mof_1.ObjectType.Single));
                     if (id === currentViewMode) {
-                        option.attr('selected', 'selected');
+                        option.attr("selected", "selected");
                     }
                     selectField.append(option);
                 }
-                selectField.on('change', () => {
+                selectField.on("change", () => {
                     const selectedElement = $("option:selected", selectField);
-                    const viewModeId = selectedElement.attr('value');
+                    const viewModeId = selectedElement.attr("value");
                     VML.setCurrentViewMode(viewModeId);
                     this.viewModeSelected.invoke(viewModeId);
                 });

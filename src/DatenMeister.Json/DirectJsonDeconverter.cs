@@ -3,6 +3,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.InMemory;
 using System.Linq;
 using System.Text.Json;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Json
 {
@@ -11,6 +13,18 @@ namespace DatenMeister.Json
     /// </summary>
     public class DirectJsonDeconverter
     {
+        private readonly IWorkspaceLogic? _workspaceLogic;
+
+        public DirectJsonDeconverter()
+        {
+            
+        }
+
+        public DirectJsonDeconverter(IWorkspaceLogic workspaceLogic)
+        {
+            _workspaceLogic = workspaceLogic;
+        }
+        
         /// <summary>
         /// Converts the given json value to a .Net value
         /// </summary>
@@ -18,7 +32,7 @@ namespace DatenMeister.Json
         /// type of the element is a JsonElement, then this element will
         /// be converted to a .Net value</param>
         /// <returns>Converted value</returns>
-        public static object? ConvertJsonValue(object? value)
+        public object? ConvertJsonValue(object? value)
         {
             object? propertyValue = null;
             if (value is JsonElement jsonElement)
@@ -47,16 +61,32 @@ namespace DatenMeister.Json
         /// </summary>
         /// <param name="jsonObject">Json Object to be converted</param>
         /// <returns>The converted Json Object</returns>
-        public static IElement ConvertToObject(MofObjectAsJson jsonObject)
+        public IElement? ConvertToObject(MofObjectAsJson jsonObject)
         {
-            var result = InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
-
-            foreach (var pair in jsonObject.v)
+            if (!string.IsNullOrEmpty(jsonObject.r) && !string.IsNullOrEmpty(jsonObject.w))
             {
-                result.set(pair.Key, ConvertJsonValue(pair.Value));
-            }
+                if (_workspaceLogic != null)
+                {
+                    // We have a reference
+                    return _workspaceLogic.FindItem(
+                        jsonObject.w,
+                        jsonObject.r
+                    );
+                }
 
-            return result;
+                throw new InvalidOperationException("No workspace collection is given for reference");
+            }
+            else
+            {
+                var result = InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
+
+                foreach (var pair in jsonObject.v)
+                {
+                    result.set(pair.Key, ConvertJsonValue(pair.Value));
+                }
+
+                return result;
+            }
         }
     }
 }

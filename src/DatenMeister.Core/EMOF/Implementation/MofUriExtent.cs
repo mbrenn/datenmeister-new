@@ -22,7 +22,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Defines the name for the uri property
         /// </summary>
         public const string UriPropertyName = "__uri";
-
+        
         /// <summary>
         /// Defines a possible logger
         /// </summary>
@@ -116,8 +116,12 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             // Check, if we have a cache...
             var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
-            if (cachedResult != null)
+            if (cachedResult != null && false)
             {
+                // TODO: Find here a better solution than just blocking the resolver
+                // Issue is that, when there is a new extent with the same extent uri,
+                // duplicate items will be just being able to resolved once, even though
+                // a new extent is being created. This effects especially dm://temp
                 return cachedResult;
             }
 

@@ -15,6 +15,7 @@ import * as SIC from "../controls/SelectItemControl";
 import * as Settings from "../Settings";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {FormSelectionControl} from "../controls/FormSelectionControl";
+import {ItemLink} from "../ApiModels";
 
 export class CollectionFormHtmlElements
 {
@@ -144,24 +145,24 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                             configuration.refreshForm();
                         });
 
-                    let formUrl;
+                    let formUrl:ItemLink;
 
                     if (this._overrideFormUrl !== undefined) {
                         formUrl = {
                             workspace: "Management",
-                            itemUrl: this._overrideFormUrl
+                            uri: this._overrideFormUrl
                         };
                     } else {
                         const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
                         if (form.uri !== undefined && byForm === undefined) {
                             formUrl = {
                                 workspace: form.workspace,
-                                itemUrl: form.uri
+                                uri: form.uri
                             };
                         } else if (byForm !== undefined) {
                             formUrl = {
                                 workspace: "Management",
-                                itemUrl: byForm
+                                uri: byForm
                             };
                         }
                     }

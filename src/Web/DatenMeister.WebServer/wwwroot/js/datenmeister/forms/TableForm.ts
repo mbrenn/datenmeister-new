@@ -133,7 +133,6 @@ export class TableForm implements InterfacesForms.IForm {
                         const field = fields[n] as Mof.DmObject;
                         let cell = $("<td></td>");
 
-                        const fieldMetaClassId = field.metaClass.id;
                         const fieldMetaClassUri = field.metaClass.uri;
                         const fieldElement = createField(
                             fieldMetaClassUri,
@@ -144,8 +143,12 @@ export class TableForm implements InterfacesForms.IForm {
                                 isReadOnly: configuration.isReadOnly,
                                 form: this
                             });
-                        
-                        cell.append(fieldElement.createDom(element));
+
+                        fieldElement.createDom(element).then(
+                            x => {
+                                cell.append(x);
+                            }
+                        );
                         row.append(cell);
                     }
 

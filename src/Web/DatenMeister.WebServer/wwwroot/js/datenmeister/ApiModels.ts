@@ -1,23 +1,23 @@
 ﻿
 export enum EntentType {
-    Item,
-    Extent,
-    Workspace
+    Item= "Item",
+    Extent = "Extent",
+    Workspace = "Workspace"
 }
 
 /**
  * Correspondent to DatenMeister.Json.ItemLink.cs
  */
 export interface ItemLink {
-    workspace: string;
-    itemUrl: string;
+    workspace?: string;
+    uri: string;
 }
 
 /**
  * Correspondent to DatenMeister.Json.ItemWithNameAndId
  */
 export interface ItemWithNameAndId {
-    uri?: string;
+    uri: string;
     name?: string;
     extentUri?: string;
     fullName?: string;

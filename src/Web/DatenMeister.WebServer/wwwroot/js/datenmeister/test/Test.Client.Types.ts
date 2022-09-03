@@ -11,6 +11,7 @@ export function includeTests() {
 
             it('Get Property Type', async function () {
                 let result = await ClientTypes.getPropertyType(
+                    "Types",
                     _DatenMeister._CommonTypes._OSIntegration.__CommandLineApplication_Uri,
                     _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication._name_);
 
@@ -18,6 +19,7 @@ export function includeTests() {
 
 
                 result = await ClientTypes.getPropertyType(
+                    "Types",
                     _DatenMeister._DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig_Uri,
                     _DatenMeister._DynamicRuntimeProvider._DynamicRuntimeLoaderConfig.configuration);
 

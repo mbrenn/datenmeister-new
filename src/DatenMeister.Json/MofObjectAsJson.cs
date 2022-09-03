@@ -15,6 +15,12 @@ namespace DatenMeister.Json
         public string? r { get; set; }= string.Empty;
         
         /// <summary>
+        /// If the element can't be fully resolved, then this reference value
+        /// will contain the workspace of the original object 
+        /// </summary>
+        public string? w { get; set; }= string.Empty;
+        
+        /// <summary>
         /// Defines the values of the element
         /// </summary>
         public Dictionary<string, object> v { get; set; }= new();

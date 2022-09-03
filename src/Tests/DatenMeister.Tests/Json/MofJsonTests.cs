@@ -51,10 +51,10 @@ namespace DatenMeister.Tests.Json
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
             Assert.That(asJsonObject, Is.Not.Null);
 
-            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject!);
-
+            var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!);
+            
             Assert.That(deconverted, Is.Not.Null);
-            Assert.That(deconverted.isSet("name"), Is.True);
+            Assert.That(deconverted!.isSet("name"), Is.True);
             Assert.That(deconverted.get<string>("name"), Is.EqualTo("Brenn"));
             Assert.That(deconverted.get<string>("prename"), Is.EqualTo("Martin"));
             Assert.That(deconverted.get<string>("location"), Is.EqualTo("Germany"));
@@ -81,7 +81,7 @@ namespace DatenMeister.Tests.Json
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
             Assert.That(asJsonObject, Is.Not.Null);
 
-            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject!);
+            var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!);
             Assert.That(deconverted, Is.Not.Null);
             Assert.That(deconverted.getOrDefault<string>("name"), Is.EqualTo("parent"));
 
@@ -114,8 +114,8 @@ namespace DatenMeister.Tests.Json
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
             Assert.That(asJsonObject, Is.Not.Null);
 
-            var deconverted = DirectJsonDeconverter.ConvertToObject(asJsonObject!);
-            Assert.IsTrue(deconverted.metaclass!.equals(new MofObjectShadow("dm:///meta1")));
+            var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!);
+            Assert.IsTrue(deconverted?.metaclass!.equals(new MofObjectShadow("dm:///meta1")));
 
             var child2 = deconverted.get<IElement>("child");
             Assert.That(child2, Is.Not.Null);

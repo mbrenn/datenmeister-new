@@ -45,21 +45,23 @@ namespace DatenMeister.WebServer.Controller
         /// This is a helper-method for the SubElements View, so the user gets already the right
         /// property type pre-selected when he wants to create a new subelement
         /// </summary>
+        /// <param name="workspace">Name of the queried workspace</param>
         /// <param name="metaClass">Metaclass of the element to which a new element shall
         /// be created within one of its properties</param>
         /// <param name="propertyName">Name of the property to which the subelement
         /// shall be added to. </param>
         /// <returns>The item with name and id containing the type of the property</returns>
-        [HttpGet("api/types/propertytype/{metaClass}/{propertyName}")]
-        public ActionResult<ItemWithNameAndId?> GetPropertyType(string metaClass, string propertyName)
+        [HttpGet("api/types/propertytype/{workspace}/{metaClass}/{propertyName}")]
+        public ActionResult<ItemWithNameAndId?> GetPropertyType(string workspace, string metaClass, string propertyName)
         {
+            workspace = HttpUtility.UrlDecode(workspace);
             metaClass = HttpUtility.UrlDecode(metaClass);
             propertyName = HttpUtility.UrlDecode(propertyName);
             
-            var foundMetaClass = _workspaceLogic.GetTypesWorkspace().FindElementByUri(metaClass);
+            var foundMetaClass = _workspaceLogic.GetWorkspace(workspace)?.FindElementByUri(metaClass);
             if (foundMetaClass == null)
             {
-                return NotFound($"MetaClass '{metaClass}' is not found");
+                return NotFound($"MetaClass '{workspace}-{metaClass}' is not found");
             }
 
             var property = ClassifierMethods.GetPropertyOfClassifier(foundMetaClass, propertyName);

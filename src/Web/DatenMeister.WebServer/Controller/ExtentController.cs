@@ -51,7 +51,8 @@ namespace DatenMeister.WebServer.Controller
             var foundExtent = _workspaceLogic.FindExtent(workspace, extent)
                               ?? throw new InvalidOperationException("The extent was not found");
 
-            var asObject = DirectJsonDeconverter.ConvertToObject(properties);
+            var asObject = new DirectJsonDeconverter(_workspaceLogic).ConvertToObject(properties)
+                           ?? throw new InvalidOperationException("Should not happen");
             var asAllProperties = asObject as IObjectAllProperties
                                   ?? throw new InvalidOperationException(
                                       "For whatever reason, the properties could not be converted");

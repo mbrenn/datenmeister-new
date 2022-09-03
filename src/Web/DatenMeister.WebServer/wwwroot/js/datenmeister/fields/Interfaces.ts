@@ -18,7 +18,7 @@ export interface IFormField
     form: IFormNavigation;
 
     // Creates the dom depending on the given field and the internal object
-    createDom(dmElement: Mof.DmObject) : JQuery<HTMLElement>;
+    createDom(dmElement: Mof.DmObject) : Promise<JQuery<HTMLElement>>;
 
     // Evaluates the result of the user and injects it into the given element
     evaluateDom(dmElement: Mof.DmObject);

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DatenMeister.Actions;
+using DatenMeister.Core;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Json;
@@ -13,6 +15,15 @@ namespace DatenMeister.WebServer.Controller
     [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
     public class ActionsController : ControllerBase
     {
+        private readonly IScopeStorage _scopeStorage;
+        private readonly IWorkspaceLogic _workspaceLogic;
+
+        public ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        {
+            _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
+        }
+        
         [HttpPost("api/action/{actionName}")]
         public async Task<ActionResult<object>> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
         {
@@ -22,7 +33,8 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Parameter are not set");
             }
 
-            var mofParameter = DirectJsonDeconverter.ConvertToObject(actionParams.Parameter);
+            var mofParameter = new DirectJsonDeconverter(_workspaceLogic).ConvertToObject(actionParams.Parameter)
+                ?? throw new InvalidOperationException("Conversion was not successful");
             switch (actionName)
             {
                 case "Workspace.Extent.Xmi.Create":

@@ -102,7 +102,6 @@ define(["require", "exports", "./FieldFactory", "../Settings"], function (requir
                                 continue;
                             const field = fields[n];
                             let cell = $("<td></td>");
-                            const fieldMetaClassId = field.metaClass.id;
                             const fieldMetaClassUri = field.metaClass.uri;
                             const fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassUri, {
                                 configuration: configuration,
@@ -111,7 +110,9 @@ define(["require", "exports", "./FieldFactory", "../Settings"], function (requir
                                 isReadOnly: configuration.isReadOnly,
                                 form: this
                             });
-                            cell.append(fieldElement.createDom(element));
+                            fieldElement.createDom(element).then(x => {
+                                cell.append(x);
+                            });
                             row.append(cell);
                         }
                         table.append(row);

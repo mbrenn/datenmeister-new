@@ -22,9 +22,10 @@ define(["require", "exports", "../Settings", "../ApiConnection"], function (requ
      * @param metaClass Uri of the metaClass to be queried
      * @param propertyName
      */
-    function getPropertyType(metaClass, propertyName) {
+    function getPropertyType(workspace, metaClass, propertyName) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield ApiConnection.get(Settings.baseUrl + "api/types/propertytype/"
+                + encodeURIComponent(workspace) + "/"
                 + encodeURIComponent(metaClass) + "/"
                 + encodeURIComponent(propertyName));
         });

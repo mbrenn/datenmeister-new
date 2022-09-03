@@ -48,8 +48,6 @@ export class Control {
             const div = $("<em>Element needs to be saved first</em>");
             this._list.append(div);
         } else {
-
-
             if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                 const div = $("<div><em class='dm-undefined'>undefined</em></div>");
                 this._list.append(div);
@@ -159,7 +157,7 @@ export class Field extends Control implements IFormField {
     // The name of the field being derived from the field
     fieldName: string;
 
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         this.element = dmElement;
         
@@ -182,7 +180,7 @@ export class Field extends Control implements IFormField {
         this.itemUrl = dmElement.uri;
                 
         if (this.isReadOnly === true) {
-            if (value === undefined) {
+            if (value === undefined || value === null) {
                 this._list.html("<em class='dm-undefined'>undefined</em>");
             } else {
                 this._list.text(value.get('name'));

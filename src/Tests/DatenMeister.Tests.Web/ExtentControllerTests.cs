@@ -60,7 +60,7 @@ namespace DatenMeister.Tests.Web
 
             var result = extentController.GetProperties(WorkspaceNames.WorkspaceData, "dm:///test");
             var deserializedGetProperties = JsonSerializer.Deserialize<MofObjectAsJson>(result.Value!);
-            var getProperties = DirectJsonDeconverter.ConvertToObject(deserializedGetProperties!);
+            var getProperties = new DirectJsonDeconverter().ConvertToObject(deserializedGetProperties!);
             Assert.That(getProperties.getOrDefault<string>(ExtentConfiguration.NameProperty), Is.EqualTo("name"));
             Assert.That(getProperties.getOrDefault<string>(ExtentConfiguration.ExtentTypeProperty),
                 Is.EqualTo("extentType"));

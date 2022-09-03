@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -190,6 +191,12 @@ namespace DatenMeister.Core.Runtime.Workspaces
                         $"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
                 }
 
+                if (newExtent.contextURI() == string.Empty)
+                {
+                    Logger.Error($"Empty contextUri() for Extent given");
+                    Debugger.Break();
+                }
+                
                 Logger.Debug($"Added extent to workspace: {newExtent.contextURI()} --> {id}");
                 _extent.Add(newExtent);
                 asMofExtent.Workspace = this;

@@ -54,9 +54,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     // TODO: Set Result
                     const sourceWorkspace = p.get('workspaceId');
                     const sourceItemUri = p.get('itemUri');
-                    const source = new Mof_1.DmObject();
-                    source.workspace = sourceWorkspace;
-                    source.uri = sourceItemUri;
+                    const source = Mof_1.DmObject.createFromReference(sourceWorkspace, sourceItemUri);
                     result.set(_MoveOrCopyAction.source, source);
                     return Promise.resolve(result);
                 }

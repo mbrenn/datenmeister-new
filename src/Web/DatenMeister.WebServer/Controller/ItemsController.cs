@@ -450,7 +450,9 @@ namespace DatenMeister.WebServer.Controller
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in propertiesParams.Properties)
+            {
                 foundItem.set(propertyParam.Key, propertyParam.Value);
+            }
 
             return new {success = true};
         }

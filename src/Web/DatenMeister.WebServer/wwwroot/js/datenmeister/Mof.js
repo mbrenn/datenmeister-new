@@ -15,6 +15,13 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
             this.isReference = false;
             this.values = new Array();
         }
+        static createFromReference(workspaceId, itemUri) {
+            const result = new DmObject();
+            result.isReference = true;
+            result.workspace = workspaceId;
+            result.uri = itemUri;
+            return result;
+        }
         /**
          * Modifies the key that it can be used for internal array storage.
          * Unfortunately, the array has some functions and these functions cannot be overwritten
@@ -63,7 +70,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
                         result = result[0];
                     }
                     // Take the standard routine but also check that there is no '0' in the text
-                    return (Boolean(result) && result !== "0");
+                    return (Boolean(result) && result !== "0" && result !== "false");
             }
             return result;
         }
@@ -170,7 +177,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         value is returned to MofObject
      */
     function createJsonFromObject(element) {
-        const result = { v: {}, m: {}, r: {}, w: {} };
+        const result = { v: {}, m: {}, r: "", w: "" };
         const values = result.v;
         function convertValue(elementValue) {
             if (Array.isArray(elementValue)) {

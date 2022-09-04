@@ -70,10 +70,7 @@ export module DetailFormActions {
             const sourceWorkspace = p.get('workspaceId');
             const sourceItemUri = p.get('itemUri');
             
-            const source = new DmObject();
-            source.workspace = sourceWorkspace;
-            source.uri = sourceItemUri;
-            
+            const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);            
             result.set(_MoveOrCopyAction.source, source);
 
             return Promise.resolve(result);

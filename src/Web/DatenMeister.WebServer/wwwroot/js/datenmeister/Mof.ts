@@ -31,6 +31,16 @@ export class DmObject {
     constructor() {
         this.values = new Array<any>();
     }
+    
+    static createFromReference(workspaceId: string, itemUri: string)
+    {
+        const result = new DmObject();
+        result.isReference = true;
+        result.workspace = workspaceId;
+        result.uri = itemUri;
+        
+        return result;
+    }
 
     /**
      * Modifies the key that it can be used for internal array storage. 
@@ -91,7 +101,7 @@ export class DmObject {
                 }
 
                 // Take the standard routine but also check that there is no '0' in the text
-                return (Boolean(result) && result !== "0") as DmObjectReturnType<T>;
+                return (Boolean(result) && result !== "0" && result !== "false") as DmObjectReturnType<T>;
         }
 
         return result as DmObjectReturnType<T>;
@@ -209,7 +219,7 @@ export function convertToItemWithNameAndId(element: DmObject) {
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v: {}, m: {}, r: {}, w: {}};
+    const result = {v: {}, m: {}, r: "", w: ""};
     const values = result.v;
 
     function convertValue(elementValue) {

@@ -218,7 +218,7 @@ export module DetailFormActions {
                     DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
                 )
 
-                const result = await ActionClient.executeAction(
+                const result = await ActionClient.executeActionDirectly(
                     "Execute",
                     {
                         parameter: extentCreationParameter
@@ -241,7 +241,7 @@ export module DetailFormActions {
                     DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri
                 );
 
-                const result = await ActionClient.executeAction(
+                const result = await ActionClient.executeActionDirectly(
                     "Execute",
                     {
                         parameter: extentCreationParameter
@@ -280,6 +280,23 @@ export module DetailFormActions {
                 break;
             case "Zipcode.Test":
                 alert(element.get('zip').toString());
+                break;
+                
+            case "Item.MoveOrCopy":
+            case "Action.Execute":
+                // Executes the action directly
+                const result = await ActionClient.executeAction(
+                    element.workspace,
+                    element.uri
+                );
+                
+                if (result.success) {
+                    alert('Success');
+                }
+                else {
+                    alert('Failure');
+                }
+                
                 break;
 
             default:

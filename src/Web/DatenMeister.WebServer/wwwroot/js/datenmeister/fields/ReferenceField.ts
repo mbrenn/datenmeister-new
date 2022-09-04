@@ -99,10 +99,13 @@ export class Control {
         
         const tthis = this;
         containerChangeCell.empty();
+        
+        
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
+        
         selectItem.itemSelected.addListener(
             async selectedItem => {
                 await ClientItem.setPropertyReference(
@@ -111,7 +114,7 @@ export class Control {
                     {
                         property: tthis.propertyName,
                         referenceUri: selectedItem.uri,
-                        workspaceId: selectItem.getUserSelectedWorkspaceId()
+                        workspaceId: selectedItem.workspace
                     }
                 );
 

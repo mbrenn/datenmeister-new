@@ -198,7 +198,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         const extentCreationParameter = new Mof_1.DmObject();
                         extentCreationParameter.set('configuration', element);
                         extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri);
-                        const result = yield ActionClient.executeAction("Execute", {
+                        const result = yield ActionClient.executeActionDirectly("Execute", {
                             parameter: extentCreationParameter
                         });
                         if (result.success !== true) {
@@ -213,7 +213,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         const extentCreationParameter = new Mof_1.DmObject();
                         extentCreationParameter.set('configuration', element);
                         extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri);
-                        const result = yield ActionClient.executeAction("Execute", {
+                        const result = yield ActionClient.executeActionDirectly("Execute", {
                             parameter: extentCreationParameter
                         });
                         if (result.success !== true) {
@@ -245,6 +245,17 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         break;
                     case "Zipcode.Test":
                         alert(element.get('zip').toString());
+                        break;
+                    case "Item.MoveOrCopy":
+                    case "Action.Execute":
+                        // Executes the action directly
+                        const result = yield ActionClient.executeAction(element.workspace, element.uri);
+                        if (result.success) {
+                            alert('Success');
+                        }
+                        else {
+                            alert('Failure');
+                        }
                         break;
                     default:
                         alert("Unknown action type: " + actionName);

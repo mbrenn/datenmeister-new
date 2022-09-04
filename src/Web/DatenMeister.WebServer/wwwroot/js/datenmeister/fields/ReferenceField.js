@@ -86,7 +86,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
                     yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                         property: tthis.propertyName,
                         referenceUri: selectedItem.uri,
-                        workspaceId: selectItem.getUserSelectedWorkspaceId()
+                        workspaceId: selectedItem.workspace
                     });
                     containerChangeCell.empty();
                     tthis.inhibitInline = true;

@@ -22,14 +22,14 @@ define(["require", "exports", "../client/Actions", "../client/Extents", "../Mof"
                         const parameter = new Mof.DmObject();
                         parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction");
                         parameter.set('shallSuccess', 'OK');
-                        const result = yield ClientActions.executeAction("Execute", { parameter: parameter });
+                        const result = yield ClientActions.executeActionDirectly("Execute", { parameter: parameter });
                         chai.assert.isTrue(result.success === true);
                     }));
                     it('No success Echo', () => __awaiter(this, void 0, void 0, function* () {
                         const parameter = new Mof.DmObject();
                         parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction");
                         parameter.set('shallSuccess', 'NO');
-                        const result = yield ClientActions.executeAction("Execute", { parameter: parameter });
+                        const result = yield ClientActions.executeActionDirectly("Execute", { parameter: parameter });
                         chai.assert.isTrue(result.success === false);
                     }));
                     it('Create Extent via Action', () => __awaiter(this, void 0, void 0, function* () {
@@ -42,14 +42,14 @@ define(["require", "exports", "../client/Actions", "../client/Extents", "../Mof"
                         configuration.set(_InMemoryLoaderConfig.extentUri, "dm:///unittestaction");
                         configuration.set(_InMemoryLoaderConfig._name_, "UnitTest");
                         parameter.set(_LoadExtentAction.configuration, configuration);
-                        yield ClientActions.executeAction("Execute", { parameter: parameter });
+                        yield ClientActions.executeActionDirectly("Execute", { parameter: parameter });
                         success = yield ClientExtent.exists("Data", "dm:///unittestaction");
                         chai.assert.isTrue(success.exists === true);
                         const drop = new Mof.DmObject();
                         drop.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__DropExtentAction_Uri);
                         drop.set(_DropExtentAction.workspace, "Data");
                         drop.set(_DropExtentAction.extentUri, "dm:///unittestaction");
-                        yield ClientActions.executeAction("Execute", { parameter: drop });
+                        yield ClientActions.executeActionDirectly("Execute", { parameter: drop });
                         success = yield ClientExtent.exists("Data", "dm:///unittestaction");
                         chai.assert.isTrue(success.exists === false);
                     }));

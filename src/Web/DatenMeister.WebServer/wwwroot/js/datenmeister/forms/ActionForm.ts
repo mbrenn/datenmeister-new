@@ -35,7 +35,9 @@ export async function createActionFormForEmptyObject(
 
         // Stores the most recent changes on the server
         await DataLoader.setProperties("Data", temporaryElement.uri, element);
-
+        element.workspace = "Data";
+        element.uri = temporaryElement.uri;
+        
         // Executes the detail form
         await DetailFormActions.execute(
             actionName,

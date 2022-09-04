@@ -514,7 +514,7 @@ namespace DatenMeister.Forms
 
             return managementWorkspace
                 .GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
-                .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.id, "Default")
+                .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.id, ViewModes.Default)
                 .OfType<IElement>()
                 .FirstOrDefault();
         }

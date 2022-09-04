@@ -14,7 +14,7 @@ const sessionPropertyName = "dm_current_viewmode";
 export function getCurrentViewMode() {
     let viewMode = sessionStorage.getItem(sessionPropertyName);
     if (viewMode === null) {
-        return "Default";
+        return "ViewMode.Default";
     }
 
     return viewMode;

@@ -69,8 +69,13 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                     listForm.createFormByCollection(form, { isReadOnly: true });
                 }
                 else {
-                    form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
-                    $(".id", form).text(tab.metaClass.id);
+                    form.addClass('alert alert-warning');
+                    const nameValue = tab.get('name', Mof.ObjectType.String);
+                    let name = tab.metaClass.uri;
+                    if (nameValue !== undefined) {
+                        name = `${nameValue} (${tab.metaClass.uri})`;
+                    }
+                    form.text('Unknown tab: ' + name);
                 }
                 this.domContainer.append(form);
             }
@@ -177,7 +182,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                     if (this._overrideFormUrl !== undefined) {
                         formUrl = {
                             workspace: "Management",
-                            itemUrl: this._overrideFormUrl
+                            uri: this._overrideFormUrl
                         };
                     }
                     else {
@@ -185,13 +190,13 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                         if (form.uri !== undefined && byForm === undefined) {
                             formUrl = {
                                 workspace: form.workspace,
-                                itemUrl: form.uri
+                                uri: form.uri
                             };
                         }
                         else if (byForm !== undefined) {
                             formUrl = {
                                 workspace: "Management",
-                                itemUrl: byForm
+                                uri: byForm
                             };
                         }
                     }

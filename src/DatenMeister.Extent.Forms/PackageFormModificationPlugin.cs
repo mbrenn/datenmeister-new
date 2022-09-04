@@ -91,7 +91,7 @@ namespace DatenMeister.Extent.Forms
 
                 FormMethods.AddToFormCreationProtocol(
                     form,
-                    "[PackageFormModificationPlugin]: Add DefaultType by preferredtypes" +
+                    "[PackageFormModificationPlugin]: Add DefaultType by preferred Types" +
                     NamedElementMethods.GetName(defaultType));
             }
         }

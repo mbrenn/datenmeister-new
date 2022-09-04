@@ -215,7 +215,7 @@ namespace DatenMeister.Core.Uml.Helper
         public static IEnumerable<string> GetPropertyNamesOfClassifier(IElement classifier)
         {
             return GetPropertiesOfClassifier(classifier)
-                .Select(x => x.get("name"))
+                .Select(x => x.get(_UML._CommonStructure._NamedElement.name))
                 .Where(x => x != null)
                 .Select(x => x?.ToString() ?? string.Empty);
         }
@@ -325,6 +325,29 @@ namespace DatenMeister.Core.Uml.Helper
                 return null;
             }
 
+            var propertyType = PropertyMethods.GetPropertyType(property);
+            return propertyType;
+        }
+
+        /// <summary>
+        /// Gets the property type of the metaclass' property by referencing the property name
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be queried</param>
+        /// <param name="propertyName">Name of the property</param>
+        /// <returns>The found property type or null, if not found</returns>
+        public static IElement? GetPropertyType(IElement? metaClass, string propertyName)
+        {
+            if (metaClass == null)
+            {
+                return null;
+            }
+
+            var property = GetPropertyOfClassifier(metaClass, propertyName);
+            if (property == null)
+            {
+                return null;
+            }
+            
             var propertyType = PropertyMethods.GetPropertyType(property);
             return propertyType;
         }

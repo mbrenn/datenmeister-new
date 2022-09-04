@@ -126,6 +126,24 @@ export async function getObjectByUri(workspace: string, url: string): Promise<Mo
     }
 }
 
+export async function getItemWithNameAndId(workspace: string, url: string): Promise<ItemWithNameAndId | undefined> {
+    try {
+        const resultFromServer = await ApiConnection.get<ItemWithNameAndId>(
+            Settings.baseUrl +
+            "api/items/get_itemwithnameandid/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(url)
+        );
+
+        return resultFromServer;
+    }
+    catch(e)
+    {
+        return undefined;
+    }
+}
+
 export async function getRootElements(workspace: string, extentUri: string): Promise<Array<Mof.DmObject>> {
     const resultFromServer = await ApiConnection.get<string>(
         Settings.baseUrl +

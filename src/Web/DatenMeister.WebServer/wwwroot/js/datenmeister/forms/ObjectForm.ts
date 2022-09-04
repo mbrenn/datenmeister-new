@@ -17,6 +17,7 @@ import * as Mof from "../Mof";
 import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
+import {ItemLink} from "../ApiModels";
 
 export class ObjectFormHtmlElements
 {
@@ -110,8 +111,14 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
 
                 listForm.createFormByCollection(form, {isReadOnly: true});
             } else {
-                form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
-                $(".id", form).text(tab.metaClass.id);
+                form.addClass('alert alert-warning');
+                const nameValue = tab.get('name', Mof.ObjectType.String);
+                let name = tab.metaClass.uri;
+                if (nameValue !== undefined) {
+                    name = `${nameValue} (${tab.metaClass.uri})`;
+                }
+
+                form.text('Unknown tab: ' + name);
             }
 
             this.domContainer.append(form);
@@ -246,23 +253,23 @@ export class ObjectFormCreatorForItem {
                         this.rebuildForm();
                     });
                 
-                let formUrl;
+                let formUrl: ItemLink;
                 if (this._overrideFormUrl !== undefined) {
                     formUrl = {
                         workspace: "Management",
-                        itemUrl: this._overrideFormUrl
+                        uri: this._overrideFormUrl
                     };
                 } else {
                     const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
                     if (form.uri !== undefined && byForm === undefined) {
                         formUrl = {
                             workspace: form.workspace,
-                            itemUrl: form.uri
+                            uri: form.uri
                         };
                     } else if (byForm !== undefined) {
                         formUrl = {
                             workspace: "Management",
-                            itemUrl: byForm
+                            uri: byForm
                         };
                     }
                 }

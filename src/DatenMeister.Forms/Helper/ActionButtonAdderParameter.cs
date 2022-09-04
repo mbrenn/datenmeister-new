@@ -41,7 +41,8 @@ namespace DatenMeister.Forms.Helper
         public Action<IObject?, ActionButtonAdderParameter>? OnCallSuccess { get; set; }
 
         /// <summary>
-        /// Gets or sets the position at which the button shall be added
+        /// Gets or sets the position at which the button shall be added.
+        /// -1, if the button shall be set at the end of the table. 
         /// </summary>
         public int ActionButtonPosition { get; set; } = -1;
     }

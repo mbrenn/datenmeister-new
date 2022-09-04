@@ -62,7 +62,7 @@ namespace DatenMeister.Forms.FormFinder
         /// <returns>The found view or null, if not found</returns>
         public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
-            using var stopWatch = new StopWatchLogger(Logger, $"Find Form: {query}");
+            using var stopWatch = new StopWatchLogger(Logger, $"Find Form: {query}", LogLevel.Trace);
             var formAssociations = _formsMethods.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
             InternalDebug("# of FormAssociations: " + formAssociations.Count);

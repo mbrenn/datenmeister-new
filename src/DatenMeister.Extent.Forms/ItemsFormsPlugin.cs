@@ -9,13 +9,14 @@ namespace DatenMeister.Extent.Forms
     // ReSharper disable once UnusedType.Global
     /// <summary>
     /// Defines the default form extensions which are used to navigate through the
-    /// items, extens and also offers the simple creation and deletion of items. 
+    /// items also offers the simple creation and deletion of items. 
     /// </summary>
     public class ItemsFormsPlugin : IDatenMeisterPlugin
     {
         public const string NavigationItemDelete = "Item.Delete";
         public const string NavigationExtentsListViewItem = "ExtentsList.ViewItem";
         public const string NavigationExtentsListDeleteItem = "ExtentsList.DeleteItem";
+        public const string NavigationItemMoveOrCopyNavigate = "Item.MoveOrCopy.Navigate";
 
         private readonly IScopeStorage _scopeStorage;
 
@@ -37,10 +38,18 @@ namespace DatenMeister.Extent.Forms
                         {
                             FormType = _DatenMeister._Forms.___FormType.Row
                         });
+                    
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemMoveOrCopyNavigate, "Move/Copy")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Row
+                        });
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
                         {
+                            ActionButtonPosition = 0, 
                             FormType = _DatenMeister._Forms.___FormType.Table
                         });
 

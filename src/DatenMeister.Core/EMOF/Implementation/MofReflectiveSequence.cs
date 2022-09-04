@@ -164,8 +164,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                 result = MofObject.ProviderObject.RemoveFromProperty(PropertyName, value);
             }
 
+            if (result)
+            {
+                UpdateContent();
+            }
 
-            UpdateContent();
             return result;
         }
 

@@ -8,7 +8,7 @@ import * as DomHelper from "../DomHelper"
 /**
  * This event is thrown when the user has selected a form
  */
-export interface FormSelectedEvent{
+export interface IFormSelectedEvent{
 
     /**
      * Defines the form which has been selected
@@ -21,12 +21,12 @@ export interface FormSelectedEvent{
  */
 export class FormSelectionControl {
 
-    private _selectionField: SIC.SelectItemControl;
+    private selectionField: SIC.SelectItemControl;
 
     /**
      * This event is thrown when the user has selected a specific form
      */
-    formSelected: Events.UserEvent<FormSelectedEvent> = new Events.UserEvent<FormSelectedEvent>();
+    formSelected: Events.UserEvent<IFormSelectedEvent> = new Events.UserEvent<IFormSelectedEvent>();
 
     /**
      * This event is thrown when the user has selected a specific form
@@ -37,7 +37,7 @@ export class FormSelectionControl {
      * Defines the current form url which is used to link the current form
      * @private
      */
-    private _currentFormUrl?: ItemLink;
+    private currentFormUrl?: ItemLink;
 
     /**
      * Sets the current form url..
@@ -45,7 +45,7 @@ export class FormSelectionControl {
      * @param formUrl
      */
     setCurrentFormUrl(formUrl: ItemLink) {
-        this._currentFormUrl = formUrl;
+        this.currentFormUrl = formUrl;
     }
 
     /**
@@ -53,21 +53,27 @@ export class FormSelectionControl {
      * @param control Parent control in which the control shall be updated
      */
     async createControl(control: JQuery) {
-        const result = $("<div><div class='dm-form-selection-control-current'>Current Form: <span class='dm-form-selection-control-current-span'></span></div><div class='dm-form-selection-control-select'></div><div class='dm_form-selection-control-reset'></div></div>");
+        const result = $("<div>" +
+            "<div class='dm-form-selection-control-current'>" +
+            "Current Form: <span class='dm-form-selection-control-current-span'></span>" +
+            "</div>" +
+            "<div class='dm-form-selection-control-select'></div>" +
+            "<div class='dm_form-selection-control-reset'></div>" +
+            "</div>");
         const controlSelect = $(".dm-form-selection-control-select", result);
         const controlReset = $(".dm_form-selection-control-reset", result);
         const currentForm = $(".dm-form-selection-control-current-span", result);
 
-        if (this._currentFormUrl !== undefined) {
-            const _ = DomHelper.injectNameByUri(currentForm, this._currentFormUrl.workspace, this._currentFormUrl.itemUrl);
+        if (this.currentFormUrl !== undefined) {
+            const _ = DomHelper.injectNameByUri(currentForm, this.currentFormUrl.workspace, this.currentFormUrl.uri);
         } else {
             currentForm.append($("<em>Auto-Generated</em>"));
         }
 
         // Creates the selection field
-        this._selectionField = new SIC.SelectItemControl();
+        this.selectionField = new SIC.SelectItemControl();
 
-        this._selectionField.itemSelected.addListener(
+        this.selectionField.itemSelected.addListener(
             async selectedItem => {
                 if (selectedItem !== undefined) {
                     const foundItem = await ClientItems.getObjectByUri(selectedItem.workspace, selectedItem.uri);
@@ -76,32 +82,32 @@ export class FormSelectionControl {
                             selectedForm: foundItem
                         });
                 } else {
-                    alert('Not a valid form has been selected')
+                    alert("Not a valid form has been selected")
                 }
             }
         );
 
-        const t2 = this._selectionField.setWorkspaceById("Management")
+        const t2 = this.selectionField.setWorkspaceById("Management")
             .then(async () => {
 
                 const settings = new SIC.Settings();
                 settings.setButtonText = "Change Form";
                 settings.headline = "Select Form:";
-                await this._selectionField.initAsync(controlSelect, settings);
+                await this.selectionField.initAsync(controlSelect, settings);
 
-                if (this._currentFormUrl !== undefined) {
-                    await this._selectionField.setItemByUri("Management", this._currentFormUrl.itemUrl);
+                if (this.currentFormUrl !== undefined) {
+                    await this.selectionField.setItemByUri("Management", this.currentFormUrl.uri);
                 } else {
-                    await this._selectionField.setExtentByUri("dm:///_internal/forms/internal");
+                    await this.selectionField.setExtentByUri("Management", "dm:///_internal/forms/internal");
                 }
             });
 
         // Creates the reset button
         const resetButton = $("<button class='btn btn-secondary'>Reset form</button>");
-        resetButton.on('click', () => {
-            this.formResetted.invoke();
+        resetButton.on("click", () => {
+            this.formResetted.invoke(null);
         });
-        controlReset.append(resetButton)
+        controlReset.append(resetButton);
 
         // Finalize the GUI
         control.append(result);

@@ -7,7 +7,8 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
-    <TypeScriptNuGetToolsVersion>4.5.3</TypeScriptNuGetToolsVersion>
+    <TypeScriptToolsVersion>4.7.4</TypeScriptToolsVersion>
+    <TypeScriptNuGetToolsVersion>4.7.4</TypeScriptNuGetToolsVersion>
     <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptESModuleInterop>True</TypeScriptESModuleInterop>
@@ -16,10 +17,13 @@
   <ItemGroup>
     <TypeScriptCompile Remove="node_modules\**" />
     <TypeScriptCompile Include="wwwroot\js\**.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Types.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\controls\TypeSelectionControl.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\page\Actions.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.5.3">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.7.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

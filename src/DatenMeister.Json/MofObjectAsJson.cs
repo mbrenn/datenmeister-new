@@ -12,7 +12,13 @@ namespace DatenMeister.Json
         /// If the element can't be fully resolved, then this reference value
         /// will contain the url of the original object. 
         /// </summary>
-        public string? r { get; set; }= string.Empty;
+        public string? r { get; set; } = string.Empty;
+        
+        /// <summary>
+        /// If the element can't be fully resolved, then this reference value
+        /// will contain the workspace of the original object 
+        /// </summary>
+        public string? w { get; set; }= string.Empty;
         
         /// <summary>
         /// Defines the values of the element

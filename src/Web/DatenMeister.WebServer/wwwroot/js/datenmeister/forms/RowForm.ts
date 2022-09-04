@@ -33,7 +33,7 @@ export class RowForm implements InterfacesForms.IForm {
         this.createFormByObject(this.parentHtml, this.configuration);
     }
 
-    createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+    async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         this.parentHtml = parent;
         this.configuration = configuration;
         if (configuration.isReadOnly === undefined) {
@@ -94,8 +94,11 @@ export class RowForm implements InterfacesForms.IForm {
             // Creates the key column content
             if (!singleColumn) {
                 let name =
-                    (field.get(_DatenMeister._Forms._FieldData.title) as any as string) ??
-                    (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
+                    (field.get(_DatenMeister._Forms._FieldData.title) as any as string);
+
+                if (name === undefined || name === null || name === "") {
+                    name = (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
+                }
 
                 const isReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly);
                 if (isReadOnly) {
@@ -118,13 +121,19 @@ export class RowForm implements InterfacesForms.IForm {
                 fieldElement.itemUrl = itemUri;
 
                 htmlElement = fieldElement.createDom(this.element);
+
+                // Pushes the field to the internal field list, so the data can be retrieved afterwards
+                this.fieldElements.push(fieldElement);
+
+                // We have to create a function which is then executed within the closure. 
+                ((trInner, htmlElementInner) => {
+                    htmlElementInner.then(x => {
+                        // And finally adds it            
+                        $(".value", trInner).append(x);
+                    });
+                })(tr, htmlElement);
             }
 
-            // Pushes the field to the internal field list, so the data can be retrieved afterwards
-            this.fieldElements.push(fieldElement);
-
-            // And finally adds it 
-            $(".value", tr).append(htmlElement);
             tableBody.append(tr);
         }
 
@@ -147,7 +156,11 @@ export class RowForm implements InterfacesForms.IForm {
                     () => {
                         return propertyTextField.val().toString();
                     };
-                rowValue.append(textField.createDom(tthis.element));
+
+                textField.createDom(tthis.element).then(
+                    x => {
+                        rowValue.append(x);
+                    });
 
                 tthis.fieldElements.push(textField);
                 newRow.insertBefore($('.dm-row-newproperty'));

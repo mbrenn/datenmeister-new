@@ -8,6 +8,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Forms.Helper;
+using DatenMeister.Modules.ZipCodeExample.Forms;
 using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
@@ -17,7 +18,10 @@ namespace DatenMeister.Modules.ZipCodeExample
     /// <summary>
     /// Integrates the zip code example into the DatenMeister framework
     /// </summary>
-    [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterBootstrapping)]
+    [PluginLoading(
+        PluginLoadingPosition.AfterInitialization 
+        | PluginLoadingPosition.AfterBootstrapping
+        | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class ZipCodePlugin : IDatenMeisterPlugin
     {
         public const string ZipCodeExtentType = "DatenMeister.Example.ZipCodes";
@@ -81,6 +85,14 @@ namespace DatenMeister.Modules.ZipCodeExample
                 case PluginLoadingPosition.AfterBootstrapping:
                     _extentSettings.extentTypeSettings.Add(
                         new ExtentType(ZipCodeExtentType));
+                    break;
+                
+                case PluginLoadingPosition.AfterLoadingOfExtents:
+                    // Loads the Zipcode Form Modification Plugin in which the user may directly create an zip
+                    // code example in a workspace object
+                    var formsPluginState = _scopeStorage.Get<FormsPluginState>();
+                    formsPluginState.FormModificationPlugins.Add(
+                        new ZipCodeFormModificationPlugin());
                     break;
             }
         }

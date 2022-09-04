@@ -125,11 +125,13 @@ namespace DatenMeister.Tests.Web
             Assert.That(listForm, Is.Not.Null);
             var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
 
-            // Check that field is at first position
-            var firstField = fields.OfType<IElement>().ElementAtOrDefault(0);
+            // Check that field is at first five positions
+            var firstField =
+                fields.OfType<IElement>()
+                    .Take(5)
+                    .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
+                                         ExtentFormPlugin.NavigationExtentNavigateTo);
             Assert.That(firstField, Is.Not.Null);
-            Assert.That(firstField.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
-                        ExtentFormPlugin.NavigationExtentNavigateTo);
         }
 
         [Test]

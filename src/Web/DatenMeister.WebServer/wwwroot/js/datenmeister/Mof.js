@@ -1,7 +1,7 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "./ApiModels"], function (require, exports, ApiModels_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.DmObject = exports.ObjectType = void 0;
+    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.convertToItemWithNameAndId = exports.DmObject = exports.ObjectType = void 0;
     var ObjectType;
     (function (ObjectType) {
         ObjectType[ObjectType["Default"] = 0] = "Default";
@@ -14,6 +14,13 @@ define(["require", "exports"], function (require, exports) {
         constructor() {
             this.isReference = false;
             this.values = new Array();
+        }
+        static createFromReference(workspaceId, itemUri) {
+            const result = new DmObject();
+            result.isReference = true;
+            result.workspace = workspaceId;
+            result.uri = itemUri;
+            return result;
         }
         /**
          * Modifies the key that it can be used for internal array storage.
@@ -63,7 +70,7 @@ define(["require", "exports"], function (require, exports) {
                         result = result[0];
                     }
                     // Take the standard routine but also check that there is no '0' in the text
-                    return (Boolean(result) && result !== "0");
+                    return (Boolean(result) && result !== "0" && result !== "false");
             }
             return result;
         }
@@ -111,9 +118,6 @@ define(["require", "exports"], function (require, exports) {
         setMetaClassByUri(metaClassUri) {
             this.metaClass = { uri: metaClassUri };
         }
-        setMetaClassById(metaClassId) {
-            this.metaClass = { id: metaClassId };
-        }
         static valueToString(item, indent = "") {
             let result = "";
             let komma = "";
@@ -154,13 +158,26 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.DmObject = DmObject;
+    /**
+     * Takes the given object and exports it as an ItemWithNameAndId
+     * @param element
+     */
+    function convertToItemWithNameAndId(element) {
+        return {
+            uri: element.uri,
+            extentUri: element.extentUri,
+            workspace: element.workspace,
+            ententType: ApiModels_1.EntentType.Item
+        };
+    }
+    exports.convertToItemWithNameAndId = convertToItemWithNameAndId;
     /*
         Converts the given element to a json element that it can be used to send to the webserver
         The receiving function is MofJsonDeconverter.Convert in which the retrieved
         value is returned to MofObject
      */
     function createJsonFromObject(element) {
-        const result = { v: {}, m: {} };
+        const result = { v: {}, m: {}, r: "", w: "" };
         const values = result.v;
         function convertValue(elementValue) {
             if (Array.isArray(elementValue)) {
@@ -180,9 +197,16 @@ define(["require", "exports"], function (require, exports) {
                 return elementValue;
             }
         }
-        for (const key in element.getPropertyValues()) {
-            let elementValue = element.get(key);
-            values[key] = convertValue(elementValue);
+        if (!element.isReference) {
+            for (const key in element.getPropertyValues()) {
+                let elementValue = element.get(key);
+                values[key] = convertValue(elementValue);
+            }
+        }
+        else {
+            // Object is reference
+            result.r = element.uri;
+            result.w = element.workspace;
         }
         if (element.metaClass !== undefined && element.metaClass !== null) {
             result.m = element.metaClass;
@@ -190,7 +214,7 @@ define(["require", "exports"], function (require, exports) {
         return result;
     }
     exports.createJsonFromObject = createJsonFromObject;
-    /*
+    /**
      * Converts the Object as given by the server to the JS-World.
      * In case of native objects, the native object will be returned.
      * In case of arrays, the arrays.

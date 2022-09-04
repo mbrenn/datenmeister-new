@@ -5,7 +5,7 @@ import { DmObject } from "../Mof";
 export class Field extends BaseField implements IFormField {
     _checkbox: JQuery<HTMLElement>;
 
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         this._checkbox = $("<input type='checkbox'/>");
 

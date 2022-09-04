@@ -32,7 +32,7 @@ export class Field extends BaseField implements IFormField {
     private _fieldValue: any;
 
     // Creates the overall DOM
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
         const tthis = this;
         this._element = dmElement;
 
@@ -128,27 +128,27 @@ export class Field extends BaseField implements IFormField {
             this.field.get('name').toString()
         );
         
-        tthis.updateDomContent();
+        await tthis.updateDomContent();
     }
     
     // Performs a 'reload' of the complete DOM
-    private updateDomContent() {
+    private async updateDomContent() {
         this._domElement.empty();
 
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
-            this.updateDomContentReadOnly();
+            await this.updateDomContentReadOnly();
         } else {
-            this.updateDomContentEditable();
+            await this.updateDomContentEditable();
         }
     }
 
     // Rebuilds the BOM in the read-only mode
-    private updateDomContentReadOnly() {
+    private async updateDomContentReadOnly() {
         let value = this._fieldValue;
         if (value === null || value === undefined
             || (this._mode === ModeValue.Reference && (typeof value !== "object" && typeof value !== "function"))) {
-            const div = $("<div><em>Not set</em></null>");
+            const div = $("<div><em class='dm-undefined'>Undefined</em></div>");
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Reference) {
             if(Array.isArray(value)) {
@@ -156,7 +156,7 @@ export class Field extends BaseField implements IFormField {
             }
             
             const field = this.createReferenceFieldInstance();            
-            const element = field.createDomByValue(value);
+            const element = await field.createDomByValue(value);
             this._domElement.append(element);
         } else if (this._mode === ModeValue.Value) {
             const div = $("<div />");
@@ -164,13 +164,13 @@ export class Field extends BaseField implements IFormField {
             this._domElement.append(div);
         } else if (this._mode === ModeValue.Collection) {
             const field = this.createSubElementFieldInstance();
-            const element = field.createDomByValue(value);
+            const element = await field.createDomByFieldValue(value);
             this._domElement.append(element);
         }
     }
 
     // Rebuilds the DOM in the edit mode
-    private updateDomContentEditable() {
+    private async updateDomContentEditable() {
         if (this._mode === ModeValue.Reference) {
             const tthis = this;
 
@@ -182,7 +182,7 @@ export class Field extends BaseField implements IFormField {
             const fieldName = this.field.get('name').toString();
             if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
                 // Nothing is selected... ==> Null value
-                const div = $("<div><em>null</em></null>");
+                const div = $("<div><em class='dm-undefined'>undefined</em></null>");
                 this._domElement.append(div);
             } else {
                 // An element is selected. The name can be shown
@@ -226,7 +226,7 @@ export class Field extends BaseField implements IFormField {
                                 {
                                     property: tthis.field.get('name'),
                                     referenceUri: selectedItem.uri,
-                                    workspaceId: selectItem.getUserSelectedWorkspace()
+                                    workspaceId: selectItem.getUserSelectedWorkspaceId()
                                 }
                             );
 
@@ -237,7 +237,7 @@ export class Field extends BaseField implements IFormField {
                     await selectItem.initAsync(containerChangeCell, settings);
 
                     // Sets the item, if defined
-                    if (value.workspace !== undefined && value.uri !== undefined) {
+                    if (value?.workspace !== undefined && value.uri !== undefined) {
                         await selectItem.setItemByUri(value.workspace, value.uri);
 
                     } else {
@@ -250,9 +250,9 @@ export class Field extends BaseField implements IFormField {
 
                         // Sets the extent, if defined
                         if (value?.extentUri !== undefined) {
-                            await selectItem.setWorkspaceById(value.extentUri);
-                        } else if (this._element?.extentUri !== undefined) {
-                            await selectItem.setExtentByUri(tthis._element.extentUri);
+                            await selectItem.setWorkspaceById(value.workspace);
+                        } else if (this._element?.extentUri !== undefined && this._element.workspace !== undefined) {
+                            await selectItem.setExtentByUri(this._element.workspace, tthis._element.extentUri);
                         }
                     }
                     
@@ -278,7 +278,7 @@ export class Field extends BaseField implements IFormField {
                 this._domElement.append(div);
             } else {
                 const field = this.createSubElementFieldInstance();
-                const element = field.createDomByValue(value);
+                const element = await field.createDomByFieldValue(value);
                 this._domElement.append(element);
             }
         }

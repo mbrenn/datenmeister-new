@@ -24,49 +24,51 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
         /** Creates the overall DOM-elements by getting the object */
         createDomByValue(value) {
             var _a;
-            this._list.empty();
-            const tthis = this;
-            const asDmObject = value;
-            if (this.configuration.isNewItem) {
-                // Unfortunately, for non-saved items, the user cannot select a reference since we 
-                // will not find the reference again
-                const div = $("<em>Element needs to be saved first</em>");
-                this._list.append(div);
-            }
-            else {
-                if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
-                    const div = $("<div><em>undefined</em></null>");
+            return __awaiter(this, void 0, void 0, function* () {
+                this._list.empty();
+                const tthis = this;
+                const asDmObject = value;
+                if (this.configuration.isNewItem) {
+                    // Unfortunately, for non-saved items, the user cannot select a reference since we 
+                    // will not find the reference again
+                    const div = $("<em>Element needs to be saved first</em>");
                     this._list.append(div);
                 }
                 else {
-                    const div = $("<div />");
-                    (0, DomHelper_1.injectNameByUri)(div, asDmObject.workspace, asDmObject.uri);
-                    this._list.append(div);
-                }
-                if (!this.isReadOnly) {
-                    const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
-                    const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
-                    const containerChangeCell = $("<div></div>");
-                    unsetCell.on('click', () => {
-                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(() => __awaiter(this, void 0, void 0, function* () {
-                            yield tthis.reloadValuesFromServer();
+                    if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
+                        const div = $("<div><em class='dm-undefined'>undefined</em></div>");
+                        this._list.append(div);
+                    }
+                    else {
+                        const div = $("<div />");
+                        (0, DomHelper_1.injectNameByUri)(div, asDmObject.workspace, asDmObject.uri);
+                        this._list.append(div);
+                    }
+                    if (!this.isReadOnly) {
+                        const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
+                        const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
+                        const containerChangeCell = $("<div></div>");
+                        unsetCell.on('click', () => {
+                            ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(() => __awaiter(this, void 0, void 0, function* () {
+                                yield tthis.reloadValuesFromServer();
+                            }));
+                        });
+                        changeCell.on('click', () => __awaiter(this, void 0, void 0, function* () {
+                            yield this.createSelectFields(containerChangeCell, value);
+                            return false;
                         }));
-                    });
-                    changeCell.on('click', () => __awaiter(this, void 0, void 0, function* () {
-                        yield this.createSelectFields(containerChangeCell, value);
-                        return false;
-                    }));
-                    this._list.append(changeCell);
-                    this._list.append(unsetCell);
-                    this._list.append(containerChangeCell);
-                    // Checks, whether the Drop-Down Field shall be completely pre-created
-                    if (this.inhibitInline !== true &&
-                        ((_a = this.field) === null || _a === void 0 ? void 0 : _a.get('isSelectionInline', Mof_1.ObjectType.Boolean)) === true) {
-                        this.createSelectFields(containerChangeCell, value);
+                        this._list.append(changeCell);
+                        this._list.append(unsetCell);
+                        this._list.append(containerChangeCell);
+                        // Checks, whether the Drop-Down Field shall be completely pre-created
+                        if (this.inhibitInline !== true &&
+                            ((_a = this.field) === null || _a === void 0 ? void 0 : _a.get('isSelectionInline', Mof_1.ObjectType.Boolean)) === true) {
+                            yield this.createSelectFields(containerChangeCell, value);
+                        }
                     }
                 }
-            }
-            return this._list;
+                return this._list;
+            });
         }
         /** Creates the GUI elements in which the user is capable to select the items to be reference
          * @param containerChangeCell The cell which will contain the GUI elements. This cell will be emptied
@@ -84,7 +86,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
                     yield ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
                         property: tthis.propertyName,
                         referenceUri: selectedItem.uri,
-                        workspaceId: selectItem.getUserSelectedWorkspace()
+                        workspaceId: selectedItem.workspace
                     });
                     containerChangeCell.empty();
                     tthis.inhibitInline = true;
@@ -120,34 +122,36 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
     exports.Control = Control;
     class Field extends Control {
         createDom(dmElement) {
-            this.element = dmElement;
-            this._list.empty();
-            this.fieldName = this.field.get('name');
-            let value = dmElement.get(this.fieldName);
-            if (Array.isArray(value)) {
-                if (value.length === 1) {
-                    value = value[0];
+            return __awaiter(this, void 0, void 0, function* () {
+                this.element = dmElement;
+                this._list.empty();
+                this.fieldName = this.field.get('name');
+                let value = dmElement.get(this.fieldName);
+                if (Array.isArray(value)) {
+                    if (value.length === 1) {
+                        value = value[0];
+                    }
+                    else {
+                        this._list.append($("<em>The value is an array and not supported by the referencefield</em>"));
+                        return this._list;
+                    }
+                }
+                // Sets the properties being required by the parent class
+                this.propertyName = this.fieldName;
+                this.itemUrl = dmElement.uri;
+                if (this.isReadOnly === true) {
+                    if (value === undefined || value === null) {
+                        this._list.html("<em class='dm-undefined'>undefined</em>");
+                    }
+                    else {
+                        this._list.text(value.get('name'));
+                    }
                 }
                 else {
-                    this._list.append($("<em>The value is an array and not supported by the referencefield</em>"));
-                    return this._list;
+                    return yield this.createDomByValue(value);
                 }
-            }
-            // Sets the properties being required by the parent class
-            this.propertyName = this.fieldName;
-            this.itemUrl = dmElement.uri;
-            if (this.isReadOnly === true) {
-                if (value === undefined) {
-                    this._list.html("<em>undefined</em>");
-                }
-                else {
-                    this._list.text(value.get('name'));
-                }
-            }
-            else {
-                return this.createDomByValue(value);
-            }
-            return this._list;
+                return this._list;
+            });
         }
         evaluateDom(dmElement) {
         }
@@ -164,7 +168,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
                         return;
                     }
                 }
-                this.createDomByValue(value);
+                yield this.createDomByValue(value);
             });
         }
     }

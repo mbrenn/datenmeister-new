@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Json;
 using DatenMeister.Types;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +33,51 @@ namespace DatenMeister.WebServer.Controller
             var result = new List<ItemWithNameAndId>();
 
             var allTypes = _localTypeSupport.GetAllTypes();
-            
+
             result.AddRange(
                 allTypes.OfType<IObject>().Select(o => ItemWithNameAndId.Create(o)!));
-            
+
             return result;
+        }
+
+        /// <summary>
+        /// Gets the property type of a certain property within a metaclass.
+        /// This is a helper-method for the SubElements View, so the user gets already the right
+        /// property type pre-selected when he wants to create a new subelement
+        /// </summary>
+        /// <param name="workspace">Name of the queried workspace</param>
+        /// <param name="metaClass">Metaclass of the element to which a new element shall
+        /// be created within one of its properties</param>
+        /// <param name="propertyName">Name of the property to which the subelement
+        /// shall be added to. </param>
+        /// <returns>The item with name and id containing the type of the property</returns>
+        [HttpGet("api/types/propertytype/{workspace}/{metaClass}/{propertyName}")]
+        public ActionResult<ItemWithNameAndId?> GetPropertyType(string workspace, string metaClass, string propertyName)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            metaClass = HttpUtility.UrlDecode(metaClass);
+            propertyName = HttpUtility.UrlDecode(propertyName);
+            
+            var foundMetaClass = _workspaceLogic.GetWorkspace(workspace)?.FindElementByUri(metaClass);
+            if (foundMetaClass == null)
+            {
+                return NotFound($"MetaClass '{workspace}-{metaClass}' is not found");
+            }
+
+            var property = ClassifierMethods.GetPropertyOfClassifier(foundMetaClass, propertyName);
+            if (property == null)
+            {
+                return NotFound($"Property {propertyName} is not found");
+            }
+            
+            var propertyType = 
+                PropertyMethods.GetPropertyType(property);
+            if (propertyType == null)
+            {
+                return new ActionResult<ItemWithNameAndId?>((ItemWithNameAndId?) null);
+            }
+
+            return ItemWithNameAndId.Create(propertyType);
         }
     }
 }

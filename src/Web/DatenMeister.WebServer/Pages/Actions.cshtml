@@ -53,8 +53,77 @@
         <li>
             <a href="~/ItemAction/Zipcode.Test?metaclass=@HttpUtility.UrlEncode(Model.GetZipCodeMetaClassUri())">Alerting of a Zipcode (Form Creation by Meta Class)</a>
         </li>
+        <li>
+            <a onclick="openSelectItemControl(); return false;" href="#">Open Select Item Control</a>
+        </li>
+        <li>
+            <a onclick="openSelectItemControlFullBreadcrumb(); return false;" href="#">Open Select Item Control w/ Full Breadcrumb</a>
+        </li>
+        <li>
+            <a onclick="openSelectItemControlWorkspace(); return false;" href="#">Open Select Item Control with Workspace</a>
+        </li>
+        <li>
+            <a onclick="openSelectItemControlExtent(); return false;" href="#">Open Select Item Control with Extent</a>
+        </li>
+        <li>
+            <a onclick="openSelectItemControlItem(); return false;" href="#">Open Select Item Control with Item</a>
+        </li>
     </ul>
 </div>
+<div id="selectitemcontrol"></div>
+
+<script type="application/javascript">
+
+function openSelectItemControl()
+{
+    requirejs(['page/Actions'], function (Action)
+    {
+        Action.pageOpenSelectItemControl();
+    });
+    
+    return false;
+}
+
+function openSelectItemControlFullBreadcrumb()
+{
+    requirejs(['page/Actions'], function (Action)
+    {
+        Action.pageOpenSelectItemControlFullBreadcrumb();
+    });
+    
+    return false;
+}
+
+function openSelectItemControlWorkspace()
+{
+    requirejs(['page/Actions'], function (Action)
+    {
+        Action.pageOpenSelectItemControlWithWorkspace();
+    });
+    
+    return false;
+}
+
+function openSelectItemControlExtent()
+{
+    requirejs(['page/Actions'], function (Action)
+    {
+        Action.pageOpenSelectItemControlWithExtent();
+    });
+    
+    return false;
+}
+
+function openSelectItemControlItem()
+{
+    requirejs(['page/Actions'], function (Action)
+    {
+        Action.pageOpenSelectItemControlWithItem();
+    });
+    
+    return false;
+}
+</script>
 
 <h2>Forms</h2>
 <div>

@@ -76,7 +76,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                         if (this._overrideFormUrl !== undefined) {
                             formUrl = {
                                 workspace: "Management",
-                                itemUrl: this._overrideFormUrl
+                                uri: this._overrideFormUrl
                             };
                         }
                         else {
@@ -84,13 +84,13 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                             if (form.uri !== undefined && byForm === undefined) {
                                 formUrl = {
                                     workspace: form.workspace,
-                                    itemUrl: form.uri
+                                    uri: form.uri
                                 };
                             }
                             else if (byForm !== undefined) {
                                 formUrl = {
                                     workspace: "Management",
-                                    itemUrl: byForm
+                                    uri: byForm
                                 };
                             }
                         }
@@ -142,7 +142,13 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                         listForm.createFormByCollection(form, configuration);
                     }
                     else {
-                        alert('Unknown tab: ' + tab.metaClass.uri);
+                        form.addClass('alert alert-warning');
+                        const nameValue = tab.get('name', Mof.ObjectType.String);
+                        let name = tab.metaClass.uri;
+                        if (nameValue !== undefined) {
+                            name = `${nameValue} (${tab.metaClass.uri})`;
+                        }
+                        form.text('Unknown tab: ' + name);
                     }
                     itemContainer.append(form);
                     tabCount--;
@@ -184,7 +190,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 }
             });
             selectItem.setWorkspaceById('Types');
-            selectItem.setExtentByUri("dm:///_internal/types/internal");
+            selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
             selectItem.init(containerDiv, settings);
         });
     }

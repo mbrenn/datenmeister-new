@@ -28,51 +28,62 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
             this.loadedWorkspaces = new Array();
             this.loadedExtents = new Array();
             /*
-             * The events that can be subscribed
+             * Thsee events that can be subscribed
              */
             // This method will be called whenever the user has selected an item via the 'Set' button 
             this.itemSelected = new Events_1.UserEvent();
-            // This method will be called whenever the user has selected an item in the dropdown
+            /**
+             * This method will be called whenever the user has selected an item in the dropdown
+             */
             this.itemClicked = new Events_1.UserEvent();
-            // This method will be called when the workspace DOM elements have been updated
-            this.domWorkspaceUpdated = new Events_1.UserEvent();
-            // This method will be called when the extents DOM elements have been updated
-            this.domExtentUpdated = new Events_1.UserEvent();
-            // This method will be called when the domItems are updated
-            this.domItemsUpdated = new Events_1.UserEvent();
             this.isDomInitializationDone = false;
         }
         // Initializes the Select Item Control and adds it to the given parent
         init(parent, settings) {
+            // Performs the initialization of the DOM, providing all elements
+            // and event handlers
             const div = this.initDom(settings, parent);
-            this.loadWorkspaces();
+            // Loads the workspaces
+            const _ = this.loadWorkspaces();
             return div;
         }
         // Initializes the Select Item Control and adds it to the given parent
         // The promise is resolved as soon as the complete GUI is loaded 
         initAsync(parent, settings) {
             return __awaiter(this, void 0, void 0, function* () {
+                // Performs the initialization of the DOM, providing all elements
+                // and event handlers
                 const div = this.initDom(settings, parent);
+                // Loads the workspaces
                 yield this.loadWorkspaces();
                 return div;
             });
         }
-        initDom(settings, parent) {
+        /**
+         * This method just creates the DOM and connects the events of the elements to the
+         * invocation methods
+         * @param settings Settings to be used
+         * @param container JQuery-Container Element hosting the content
+         * @private
+         */
+        initDom(settings, container) {
             this.settings = settings !== null && settings !== void 0 ? settings : new Settings();
             const tthis = this;
+            // Creates the elements
             this.htmlWorkspaceSelect = $("<select></select>");
             this.htmlExtentSelect = $("<select></select>");
             this.htmlSelectedElements = $("<div></div>");
             this.htmlItemsList = $("<ul></ul>");
             // Defines the handler whenever the user changes something
-            this.htmlWorkspaceSelect.on('change', () => tthis.onWorkspaceChangedByUser());
-            this.htmlExtentSelect.on('change', () => tthis.onExtentChangedByUser());
+            this.htmlWorkspaceSelect.on("change", () => tthis.onWorkspaceChangedByUser());
+            this.htmlExtentSelect.on("change", () => tthis.onExtentChangedByUser());
+            // Creates the template
             const div = $("<table class='dm-selectitemcontrol'>" +
                 "<tr><th colspan='2' class='dm-selectitemcontrol-headline'>Select item:</th></tr>" +
-                "<tr><td>Workspace: </td><td class='dm-sic-workspace'></td></tr>" +
-                "<tr><td>Extent: </td><td class='dm-sic-extent'></td></tr>" +
-                "<tr><td>Selected Item: </td><td class='dm-sic-selected'></td></tr>" +
-                "<tr><td>Items: </td>" +
+                "<tr><th>Workspace: </th><td class='dm-sic-workspace'></td></tr>" +
+                "<tr><th>Extent: </th><td class='dm-sic-extent'></td></tr>" +
+                "<tr><th>Selected Item: </th><td><div class='dm-sic-selected'></div></td></tr>" +
+                "<tr><th>Children: </th>" +
                 "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
                 "<div class='dm-sic-items'></div>" +
                 "</td></tr>" +
@@ -80,85 +91,128 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                 (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
                 "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
                 "</table>");
+            const setButton = $(".dm-sic-button", div);
+            const cancelButton = $(".dm-sic-cancelbtn", div);
+            // Adds the elements
             $(".dm-sic-workspace", div).append(this.htmlWorkspaceSelect);
             $(".dm-sic-extent", div).append(this.htmlExtentSelect);
             $(".dm-sic-items", div).append(this.htmlItemsList);
             $(".dm-sic-selected", div).append(this.htmlSelectedElements);
+            // Checks whether we need a headline
             if (this.settings.headline !== undefined) {
                 $(".dm-selectitemcontrol-headline", div).text(settings.headline);
             }
             this.htmlBreadcrumbList = $(".breadcrumb", div);
-            const setButton = $(".dm-sic-button", div);
+            // throws the event, when the user clicks on the set button
             setButton.text(this.settings.setButtonText);
-            setButton.on('click', () => {
+            setButton.on("click", () => {
                 tthis.itemSelected.invoke(tthis.selectedItem);
             });
-            const cancelButton = $(".dm-sic-cancelbtn", div);
-            cancelButton.on('click', () => {
-                this.collapse();
+            cancelButton.on("click", () => {
+                this.removeControl();
             });
             if (settings === null || settings === void 0 ? void 0 : settings.hideAtStartup) {
                 div.hide();
             }
-            parent.append(div);
-            this._containerDiv = div;
+            container.append(div);
+            this.containerDiv = div;
             this.isDomInitializationDone = true;
             return div;
         }
+        /**
+         * Shows the control (by revoking the hide status)
+         */
         showControl() {
-            if (this._containerDiv !== undefined) {
-                this._containerDiv.show();
+            if (this.containerDiv !== undefined) {
+                this.containerDiv.show();
             }
         }
-        // This method will be called when the user changed the workspace
+        /**
+         * Removes the control. This means that 'init(Async)' must be called again
+         */
+        removeControl() {
+            var _a;
+            (_a = this.containerDiv) === null || _a === void 0 ? void 0 : _a.remove();
+            this.containerDiv = undefined;
+        }
+        /**
+         * This method will be called when the user changed the selected workspace
+         * @private
+         */
         onWorkspaceChangedByUser() {
             return __awaiter(this, void 0, void 0, function* () {
                 // Find the selected workspace
-                this.selectedWorkspace = undefined;
-                const currentWorkspace = this.getUserSelectedWorkspace();
-                if (currentWorkspace !== "" && currentWorkspace !== undefined) {
-                    for (let n = 0; n < this.loadedWorkspaces.length; n++) {
-                        const item = this.loadedWorkspaces[n];
-                        if (item.id === currentWorkspace) {
-                            this.selectedWorkspace = item;
-                            break;
-                        }
-                    }
-                }
+                this.selectedItem = undefined;
+                this.htmlExtentSelect.val("");
+                this.preSelectExtentByUri = "";
                 yield this.loadExtents();
             });
         }
-        // This method will be called when the user changed the extent select item
+        /**
+         * This method will be called when the user changed the extent select item
+         * @private
+         */
         onExtentChangedByUser() {
             return __awaiter(this, void 0, void 0, function* () {
                 // Find the selected extent
-                this.selectedExtent = undefined;
-                const currentExtent = this.getUserSelectedExtent();
-                if (currentExtent !== "" && currentExtent != undefined) {
-                    for (let n = 0; n < this.loadedExtents.length; n++) {
-                        const item = this.loadedExtents[n];
-                        if (item.extentUri === currentExtent) {
-                            this.selectedExtent = item;
-                            break;
-                        }
-                    }
-                }
+                this.preSelectItemUri = undefined;
+                this.selectedItem =
+                    {
+                        workspace: this.getUserSelectedWorkspaceId(),
+                        extentUri: this.getUserSelectedExtentUri(),
+                        ententType: ApiModels_1.EntentType.Extent,
+                        uri: this.getUserSelectedExtentUri()
+                    };
                 yield this.loadItems();
             });
         }
-        collapse() {
-            var _a;
-            (_a = this._containerDiv) === null || _a === void 0 ? void 0 : _a.remove();
-            this._containerDiv = undefined;
+        /**
+         * Gets the selected workspace
+         */
+        getSelectedWorkspace() {
+            const currentWorkspace = this.getUserSelectedWorkspaceId();
+            if (currentWorkspace !== "" && currentWorkspace !== undefined) {
+                for (let n = 0; n < this.loadedWorkspaces.length; n++) {
+                    const item = this.loadedWorkspaces[n];
+                    if (item.id === currentWorkspace) {
+                        return item;
+                    }
+                }
+            }
+            return undefined;
         }
+        /**
+         * Gets the selected extent
+         */
+        getSelectedExtent() {
+            const currentExtent = this.getUserSelectedExtentUri();
+            if (currentExtent !== "" && currentExtent != undefined) {
+                for (let n = 0; n < this.loadedExtents.length; n++) {
+                    const item = this.loadedExtents[n];
+                    if (item.extentUri === currentExtent) {
+                        return item;
+                    }
+                }
+            }
+            return undefined;
+        }
+        /**
+         * Loads the workspaces and adds them into the control element containing the parameter
+         * @private
+         */
         loadWorkspaces() {
             return __awaiter(this, void 0, void 0, function* () {
-                const tthis = this;
-                tthis.htmlWorkspaceSelect.empty();
+                this.htmlWorkspaceSelect.empty();
+                let currentlySelectedWorkspace = this.getUserSelectedWorkspaceId();
+                if (this.preSelectWorkspaceById !== undefined) {
+                    // If there is a pre-selection, the pre-selection is valid
+                    currentlySelectedWorkspace = this.preSelectWorkspaceById;
+                    this.preSelectWorkspaceById = undefined;
+                }
                 const items = yield EL.getAllWorkspaces();
-                tthis.loadedWorkspaces = items;
+                this.loadedWorkspaces = items;
                 const none = $("<option value=''>--- None ---</option>");
-                tthis.htmlWorkspaceSelect.append(none);
+                this.htmlWorkspaceSelect.append(none);
                 for (const n in items) {
                     if (!items.hasOwnProperty(n))
                         continue;
@@ -166,64 +220,39 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                     const option = $("<option></option>");
                     option.val(item.id);
                     option.text(item.name);
-                    tthis.htmlWorkspaceSelect.append(option);
+                    this.htmlWorkspaceSelect.append(option);
                 }
-                tthis.refreshBreadcrumb();
-                const p1 = tthis.evaluatePreSelectedWorkspace();
-                const p2 = this.loadExtents();
-                // Calls the DOM workspace updated event
-                Promise.all([p1]).then(() => {
-                    tthis.domWorkspaceUpdated.invoke();
-                });
-                yield Promise.all([p1, p2]);
-                return true;
+                // Restores the currently selected workspace
+                if (currentlySelectedWorkspace !== undefined) {
+                    this.htmlWorkspaceSelect.val(currentlySelectedWorkspace);
+                }
+                yield this.loadExtents();
             });
         }
-        // This call may also be given before the workspaces has been loaded
-        // The promise is resolved when the GUI is updated 
+        /**
+         * This call may also be given before the workspaces has been loaded
+         * The promise is resolved when the GUI is updated
+         *
+         * @param workspaceId ID of the workspace which is preselected.
+         */
         setWorkspaceById(workspaceId) {
             return __awaiter(this, void 0, void 0, function* () {
                 this.preSelectWorkspaceById = workspaceId;
-                yield this.evaluatePreSelectedWorkspace();
-            });
-        }
-        // This call may also be given before the extents has been loaded
-        // The promise is resolved when the GUI is updated
-        setExtentByUri(extentUri) {
-            return __awaiter(this, void 0, void 0, function* () {
-                this.preSelectExtentByUri = extentUri;
-                yield this.evaluatePreSelectedExtent();
-            });
-        }
-        setItemByUri(workspaceId, itemUri) {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (!this.isDomInitializationDone) {
-                    throw "DOM is not initialized. Call initDom first";
+                if (this.isDomInitializationDone) {
+                    yield this.loadWorkspaces();
                 }
-                const item = yield EL.loadNameByUri(workspaceId, itemUri);
-                this.selectedItem = item;
-                yield this.setWorkspaceById(workspaceId);
-                yield this.setExtentByUri(item.extentUri);
-                yield this.loadItems(item.uri);
-                this.htmlSelectedElements.empty();
-                this.htmlSelectedElements.append(yield (0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
             });
-        }
-        // Sets the workspace by given the id
-        getUserSelectedWorkspace() {
-            var _a, _b;
-            return (_b = (_a = this.htmlWorkspaceSelect.val()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
-        }
-        // Sets the extent by given the uri
-        getUserSelectedExtent() {
-            var _a, _b;
-            return (_b = (_a = this.htmlExtentSelect.val()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
         }
         loadExtents() {
             return __awaiter(this, void 0, void 0, function* () {
                 const tthis = this;
-                const workspaceId = this.getUserSelectedWorkspace();
+                const workspaceId = this.getUserSelectedWorkspaceId();
                 tthis.htmlSelectedElements.text(workspaceId);
+                let extentUri = this.getUserSelectedExtentUri();
+                if (this.preSelectExtentByUri !== undefined) {
+                    extentUri = this.preSelectExtentByUri;
+                    this.preSelectExtentByUri = undefined;
+                }
                 this.htmlExtentSelect.empty();
                 if (workspaceId === "") {
                     const select = $("<option value=''>--- Select Workspace ---</option>");
@@ -244,26 +273,96 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                         option.text(item.name);
                         tthis.htmlExtentSelect.append(option);
                     }
-                    tthis.evaluatePreSelectedExtent();
+                    // Restores the selected item
+                    if (extentUri !== undefined) {
+                        this.htmlExtentSelect.val(extentUri);
+                        tthis.htmlSelectedElements.text(extentUri);
+                    }
                 }
-                tthis.refreshBreadcrumb();
-                yield this.loadItems();
-                this.domExtentUpdated.invoke();
+                yield tthis.loadItems();
                 return true;
             });
         }
-        loadItems(selectedItem) {
+        // This call may also be given before the extents has been loaded
+        // The promise is resolved when the GUI is updated
+        setExtentByUri(workspaceId, extentUri) {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.preSelectWorkspaceById = workspaceId;
+                this.preSelectExtentByUri = extentUri;
+                this.selectedItem =
+                    {
+                        workspace: workspaceId,
+                        extentUri: extentUri,
+                        ententType: ApiModels_1.EntentType.Extent,
+                        uri: extentUri
+                    };
+                if (this.isDomInitializationDone) {
+                    yield this.loadWorkspaces();
+                }
+            });
+        }
+        setItemByUri(workspaceId, itemUri) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const item = yield EL.loadNameByUri(workspaceId, itemUri);
+                if (item === undefined) {
+                    throw "Item: " + workspaceId + ":" + itemUri + " has not been found";
+                }
+                this.preSelectWorkspaceById = workspaceId;
+                this.preSelectExtentByUri = item.extentUri;
+                this.preSelectItemUri = item.uri;
+                if (this.isDomInitializationDone) {
+                    yield this.loadWorkspaces();
+                }
+            });
+        }
+        // Sets the workspace by given the id
+        getUserSelectedWorkspaceId() {
+            var _a, _b;
+            return (_b = (_a = this.htmlWorkspaceSelect.val()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
+        }
+        // Sets the extent by given the uri
+        getUserSelectedExtentUri() {
+            var _a, _b;
+            return (_b = (_a = this.htmlExtentSelect.val()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
+        }
+        loadItems() {
             return __awaiter(this, void 0, void 0, function* () {
                 const tthis = this;
-                const workspaceId = this.getUserSelectedWorkspace();
-                const extentUri = this.getUserSelectedExtent();
+                let selectedItem = this.selectedItem;
+                // Checks, whether the user has selected or preselected an item
+                if (this.preSelectItemUri !== undefined) {
+                    if (this.preSelectItemUri === "") {
+                        // Empty string is used to indicate that the user would like to select the 
+                        // complete extent
+                        selectedItem = undefined;
+                    }
+                    else {
+                        // User has selected a specfic item
+                        selectedItem =
+                            {
+                                uri: this.preSelectItemUri,
+                                workspace: this.getUserSelectedWorkspaceId()
+                            };
+                    }
+                    this.selectedItem = selectedItem;
+                    // Now get rid of it
+                    this.preSelectItemUri = undefined;
+                }
+                const workspaceId = this.getUserSelectedWorkspaceId();
+                const extentUri = this.getUserSelectedExtentUri();
                 this.htmlItemsList.empty();
-                if (workspaceId === "" || extentUri === "") {
+                if (workspaceId === "" || workspaceId === undefined
+                    || extentUri === "" || extentUri === undefined
+                    || selectedItem === undefined) {
                     const select = $("<li>--- Select Extent ---</li>");
                     this.htmlItemsList.append(select);
-                    return true;
                 }
                 else {
+                    const item = yield ItemsClient.getItemWithNameAndId(selectedItem.workspace, selectedItem.uri);
+                    if (item !== undefined) {
+                        this.htmlSelectedElements.empty();
+                        this.htmlSelectedElements.append((0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
+                    }
                     const funcElements = (items) => {
                         for (const n in items) {
                             if (!items.hasOwnProperty(n))
@@ -272,38 +371,37 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                             const option = $("<li class='dm-sic-item'></li>");
                             option.append((0, DomHelper_1.convertItemWithNameAndIdToDom)(item, { inhibitItemLink: true }));
                             // Creates the clickability of the list of items
-                            ((innerItem) => option.on('click', () => {
+                            ((innerItem) => option.on("click", () => __awaiter(this, void 0, void 0, function* () {
                                 tthis.selectedItem = innerItem;
-                                tthis.loadItems(innerItem.uri);
                                 tthis.itemClicked.invoke(innerItem);
+                                yield tthis.loadItems();
                                 tthis.htmlSelectedElements.empty();
                                 tthis.htmlSelectedElements.append((0, DomHelper_1.convertItemWithNameAndIdToDom)(item));
-                                tthis.refreshBreadcrumb();
-                            }))(item);
+                                yield tthis.refreshBreadcrumb();
+                            })))(item);
                             tthis.htmlItemsList.append(option);
                         }
                         return true;
                     };
-                    if (selectedItem === undefined || selectedItem === null) {
+                    if (selectedItem.ententType === ApiModels_1.EntentType.Extent || selectedItem === undefined || selectedItem === null) {
                         tthis.htmlSelectedElements.text(extentUri);
                         const rootElements = yield EL.getAllRootItems(workspaceId, extentUri);
                         funcElements(rootElements);
                     }
                     else {
-                        const childElements = yield EL.getAllChildItems(workspaceId, selectedItem);
+                        const childElements = yield EL.getAllChildItems(workspaceId, selectedItem.uri);
                         funcElements(childElements);
                     }
                 }
-                tthis.refreshBreadcrumb();
-                this.domItemsUpdated.invoke();
+                yield tthis.refreshBreadcrumb();
             });
         }
         // Refreshes the elements on the bread crumb 
         refreshBreadcrumb() {
             return __awaiter(this, void 0, void 0, function* () {
                 const tthis = this;
-                const currentWorkspace = this.getUserSelectedWorkspace();
-                const currentExtent = this.getUserSelectedExtent();
+                const currentWorkspace = this.getUserSelectedWorkspaceId();
+                const currentExtent = this.getUserSelectedExtentUri();
                 let containerItems;
                 if (this.selectedItem !== undefined && this.selectedItem.uri !== undefined) {
                     containerItems = yield ItemsClient.getContainer(currentWorkspace, this.selectedItem.uri, true);
@@ -312,20 +410,35 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                 if (this.settings.showBreadcrumb) {
                     // Starts by showing the button to select to select the Workspaces
                     if (this.settings.showWorkspaceInBreadcrumb) {
-                        this.addBreadcrumbItem("Workspaces", () => tthis.loadWorkspaces());
+                        this.addBreadcrumbItem("Workspaces", () => __awaiter(this, void 0, void 0, function* () {
+                            this.preSelectWorkspaceById = "";
+                            this.preSelectExtentByUri = "";
+                            this.selectedItem = undefined;
+                            yield tthis.loadWorkspaces();
+                        }));
                         // Now show the current workspace
                         if (currentWorkspace !== "" && currentWorkspace !== undefined) {
-                            this.addBreadcrumbItem(currentWorkspace, () => {
-                                tthis.loadExtents();
-                            });
+                            this.addBreadcrumbItem(currentWorkspace, () => __awaiter(this, void 0, void 0, function* () {
+                                this.preSelectExtentByUri = "";
+                                this.selectedItem = undefined;
+                                yield tthis.loadExtents();
+                            }));
                         }
                     }
                     // Shows the extent itself in the breadcrumb, if configured
                     if (this.settings.showExtentInBreadcrumb) {
                         if (currentExtent !== "" && currentExtent !== undefined) {
-                            this.addBreadcrumbItem(currentExtent, () => {
-                                tthis.loadItems();
-                            });
+                            this.addBreadcrumbItem(currentExtent, () => __awaiter(this, void 0, void 0, function* () {
+                                this.preSelectExtentByUri = currentExtent;
+                                this.selectedItem =
+                                    {
+                                        workspace: this.getUserSelectedWorkspaceId(),
+                                        extentUri: this.getUserSelectedExtentUri(),
+                                        ententType: ApiModels_1.EntentType.Extent,
+                                        uri: this.getUserSelectedExtentUri()
+                                    };
+                                yield tthis.loadExtents();
+                            }));
                         }
                     }
                     if (containerItems !== undefined) {
@@ -338,54 +451,29 @@ define(["require", "exports", "../client/Elements", "../client/Items", "../ApiMo
                                 continue;
                             }
                             ((innerItem) => {
-                                this.addBreadcrumbItem(item.name, () => {
+                                this.addBreadcrumbItem(item.name, () => __awaiter(this, void 0, void 0, function* () {
                                     this.selectedItem = innerItem;
-                                    tthis.loadItems(item.uri);
-                                });
+                                    yield tthis.loadItems();
+                                }));
                             })(item);
                         }
                     }
                 }
             });
         }
-        // Evaluates the preselection of the workspaces
-        evaluatePreSelectedWorkspace() {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (this.preSelectWorkspaceById === undefined || !this.isDomInitializationDone) {
-                    return;
-                }
-                this.htmlWorkspaceSelect.val(this.preSelectWorkspaceById);
-                this.preSelectWorkspaceById = undefined;
-                yield this.loadExtents();
-            });
-        }
-        // Evaluates the preselection of the workspaces
-        evaluatePreSelectedExtent() {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (this.preSelectExtentByUri === undefined || !this.isDomInitializationDone) {
-                    return;
-                }
-                this.htmlExtentSelect.val(this.preSelectExtentByUri);
-                this.preSelectExtentByUri = undefined;
-                yield this.loadItems();
-            });
-        }
-        // Evaluates the preselection of the workspaces
-        evaluatePreselectedItem() {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (this.preSelectItemUri === undefined || !this.isDomInitializationDone) {
-                    return;
-                }
-                yield this.loadItems(this.preSelectItemUri);
-                this.preSelectItemUri = undefined;
-            });
-        }
+        /**
+         * Adds a breadcrump item. This is just a helper method for the
+         * breadcrumb creation
+         * @param text Text to be added
+         * @param onClick The event that is meant to be connected to the item
+         * @private
+         */
         addBreadcrumbItem(text, onClick) {
             const tthis = this;
             const breadcrumbItem = $("<li class='breadcrumb-item active'></li>");
             breadcrumbItem.text(text);
             // Remove all breadcrumb items till that one
-            breadcrumbItem.on('click', () => __awaiter(this, void 0, void 0, function* () {
+            breadcrumbItem.on("click", () => __awaiter(this, void 0, void 0, function* () {
                 onClick();
                 yield tthis.refreshBreadcrumb();
             }));

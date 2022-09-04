@@ -111,8 +111,7 @@ export function includeTests() {
 
                             const query = await sic.initAsync(div);
 
-                            await sic.setWorkspaceById('Test');
-                            await sic.setExtentByUri('dm:///unittest');
+                            await sic.setExtentByUri("Test", 'dm:///unittest');
 
                             const items = $(".dm-sic-items ul", query);
                             chai.assert.isTrue(items !== undefined, "No select given");
@@ -124,28 +123,26 @@ export function includeTests() {
                             chai.assert.isTrue(found, "Item was not found was not found");
                             chai.assert.isTrue(foundItem !== undefined, "Item Dom was not found was not found");
                             chai.assert.isTrue(itemCounter === 0, "Item Counter is not 0");
-                            
+
                             if (foundItem === undefined) throw 'Should not happen';
                             foundItem.click();
 
+                            await sic.loadItems();
+
                             // The click should have happened synchronously.
                             chai.assert.isTrue(itemCounter === 1, "Item Counter is not 1");
-                            
-                            await new Promise<void>(resolve => {
-                                sic.domItemsUpdated.addListener(() => {
-                                    const items = $(".dm-sic-items ul", query);
-                                    chai.assert.isTrue(items !== undefined, "No select given");
 
-                                    const children = items.children();
-                                    let {found, foundItem} = lookForChildWithText(children, 'ChildElement');
-                                    chai.assert.isTrue(found, "Child was not found")
-                                    resolve();
-                                });
-                            });
+                            // Check, if the enumerated list is given
+                            const itemsUl = $(".dm-sic-items ul", query);
+                            chai.assert.isTrue(itemsUl !== undefined, "No select given");
+
+                            const childrenUl = itemsUl.children();
+
+                            let result = lookForChildWithText(childrenUl, 'ChildElement');
+                            chai.assert.isTrue(result.found, "Child was not found");
 
                             div.remove();
                         });
                 });
         });
-
 }

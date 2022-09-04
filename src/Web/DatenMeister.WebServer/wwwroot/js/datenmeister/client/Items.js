@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.removeReferenceFromCollection = exports.setPropertyReference = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
+    exports.removeReferenceFromCollection = exports.setPropertyReference = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getItemWithNameAndId = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
     function createItemInExtent(workspaceId, extentUri, param) {
         return __awaiter(this, void 0, void 0, function* () {
             const evaluatedParameter = {
@@ -97,6 +97,22 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.getObjectByUri = getObjectByUri;
+    function getItemWithNameAndId(workspace, url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
+                    "api/items/get_itemwithnameandid/" +
+                    encodeURIComponent(workspace) +
+                    "/" +
+                    encodeURIComponent(url));
+                return resultFromServer;
+            }
+            catch (e) {
+                return undefined;
+            }
+        });
+    }
+    exports.getItemWithNameAndId = getItemWithNameAndId;
     function getRootElements(workspace, extentUri) {
         return __awaiter(this, void 0, void 0, function* () {
             const resultFromServer = yield ApiConnection.get(Settings.baseUrl +

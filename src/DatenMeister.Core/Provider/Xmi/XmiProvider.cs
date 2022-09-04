@@ -224,14 +224,17 @@ namespace DatenMeister.Core.Provider.Xmi
         /// <returns>The returned meta node</returns>
         private XElement GetMetaNode()
         {
-            var metaNode = _rootNode.Element(XMetaXmlNodeName);
-            if (metaNode == null)
+            lock (LockObject)
             {
-                metaNode = new XElement(XMetaXmlNodeName);
-                _rootNode.AddFirst(metaNode);
-            }
+                var metaNode = _rootNode.Element(XMetaXmlNodeName);
+                if (metaNode == null)
+                {
+                    metaNode = new XElement(XMetaXmlNodeName);
+                    _rootNode.AddFirst(metaNode);
+                }
 
-            return metaNode;
+                return metaNode;
+            }
         }
 
         /// <summary>

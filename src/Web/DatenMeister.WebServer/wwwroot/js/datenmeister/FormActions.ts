@@ -10,10 +10,13 @@ import * as ActionClient from "./client/Actions";
 import * as DatenMeisterModel from "./models/DatenMeister.class";
 
 import {SubmitMethod} from "./forms/RowForm";
+import {_DatenMeister} from "./models/DatenMeister.class";
 
 export module DetailFormActions {
 
     // Loads the object being used for the action. 
+    import _MoveOrCopyAction = _DatenMeister._Actions._MoveOrCopyAction;
+
     export async function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
 
         let p = new URLSearchParams(window.location.search);
@@ -58,6 +61,21 @@ export module DetailFormActions {
             return Promise.resolve(result);
         }
 
+        if (actionName === "Item.MoveOrCopy") {
+
+            const result = new DmObject();
+            result.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
+            
+            // TODO: Set Result
+            const sourceWorkspace = p.get('workspaceId');
+            const sourceItemUri = p.get('itemUri');
+            
+            const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);            
+            result.set(_MoveOrCopyAction.source, source);
+
+            return Promise.resolve(result);
+        }
+
         /* Nothing has been found, so return an undefined */
         return Promise.resolve(undefined);
     }
@@ -69,6 +87,9 @@ export module DetailFormActions {
         }
         if (actionName === 'Forms.Create.ByMetaClass') {
             return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
+        }
+        if (actionName === 'Item.MoveOrCopy') {
+            return await FormClient.getForm("dm:///_internal/forms/internal#Item.MoveOrCopy");
         }
 
         return Promise.resolve(undefined);
@@ -137,7 +158,8 @@ export module DetailFormActions {
                     const workspace = p.get('workspace');
                     const itemUrl = p.get('itemUrl');
                     const property = p.get('property');
-                    await FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element);
+                    const metaclass = p.get('metaclass');
+                    await FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element, metaclass);
                 }
                 break;
             case "ExtentsList.ViewItem":
@@ -170,6 +192,7 @@ export module DetailFormActions {
                 await FormActions.workspaceExtentLoadAndCreateNavigateTo(workspaceIdParameter);
                 break;
             }
+            
             case "Workspace.Extent.LoadOrCreate": {
                 const workspaceIdParameter = p?.get('workspaceId') ?? "";
                 const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
@@ -195,7 +218,7 @@ export module DetailFormActions {
                     DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
                 )
 
-                const result = await ActionClient.executeAction(
+                const result = await ActionClient.executeActionDirectly(
                     "Execute",
                     {
                         parameter: extentCreationParameter
@@ -211,15 +234,14 @@ export module DetailFormActions {
                 break;
             }
 
-
             case "Forms.Create.ByMetaClass": {
                 const extentCreationParameter = new DmObject();
                 extentCreationParameter.set('configuration', element);
                 extentCreationParameter.setMetaClassByUri(
                     DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri
-                )
+                );
 
-                const result = await ActionClient.executeAction(
+                const result = await ActionClient.executeActionDirectly(
                     "Execute",
                     {
                         parameter: extentCreationParameter
@@ -235,7 +257,6 @@ export module DetailFormActions {
                 break;
             }
 
-
             case "Workspace.Extent.Xmi.Create":
                 await ApiConnection.post<any>(
                     Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
@@ -250,11 +271,32 @@ export module DetailFormActions {
                         }
                     });
                 break;
+                
+            case "Item.MoveOrCopy.Navigate":
+                await FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
+                break;
             case "JSON.Item.Alert":
                 alert(JSON.stringify(createJsonFromObject(element)));
                 break;
             case "Zipcode.Test":
                 alert(element.get('zip').toString());
+                break;
+                
+            case "Item.MoveOrCopy":
+            case "Action.Execute":
+                // Executes the action directly
+                const result = await ActionClient.executeAction(
+                    element.workspace,
+                    element.uri
+                );
+                
+                if (result.success) {
+                    alert('Success');
+                }
+                else {
+                    alert('Failure');
+                }
+                
                 break;
 
             default:
@@ -278,6 +320,12 @@ export class FormActions {
     static workspaceExtentLoadAndCreateNavigateTo(workspaceId: string) {
         document.location.href =
             Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
+    }
+    
+    static itemMoveOrCopyNavigateTo(workspaceId: string, itemUri: string) {
+        document.location.href =
+            Settings.baseUrl + "ItemAction/Item.MoveOrCopy?workspaceId=" + encodeURIComponent(workspaceId) 
+            + "&itemUri=" + encodeURIComponent(itemUri);
     }
 
     static async extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string, submitMethod?: SubmitMethod) {
@@ -314,10 +362,6 @@ export class FormActions {
     }
 
     static async extentCreateItemInProperty(workspace: string, itemUrl: string, property: string, element: DmObject, metaClass?: string) {
-        if (metaClass === undefined) {
-            metaClass = element.metaClass.uri
-        }
-
         const json = createJsonFromObject(element);
         await ApiConnection.post(
             Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl),
@@ -404,7 +448,7 @@ export class FormActions {
 
         const success = data.success;
         if (success) {
-            Navigator.navigateToExtent(workspace, extentUri);
+            Navigator.navigateToWorkspace(workspace);
         } else {
             alert('Deletion was not successful.');
         }

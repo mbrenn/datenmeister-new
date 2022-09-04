@@ -1,6 +1,7 @@
 import * as Mof from "../Mof";
 
 import {BaseField, IFormField} from "./Interfaces";
+import {DmObject} from "../Mof";
 
 export class Field extends BaseField implements IFormField
 {
@@ -10,7 +11,7 @@ export class Field extends BaseField implements IFormField
     
     _textBox: JQuery<HTMLElement>;
 
-    createDom(dmElement: Mof.DmObject) {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
         const fieldName = this.field.get('name')?.toString() ?? "";
 
         /* Returns a list element in case an array is given */

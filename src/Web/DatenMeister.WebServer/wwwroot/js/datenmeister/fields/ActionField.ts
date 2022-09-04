@@ -8,7 +8,7 @@ export class Field extends BaseField implements IFormField {
 
     private inConfirmation: boolean;
 
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
         const title = this.field.get('title');

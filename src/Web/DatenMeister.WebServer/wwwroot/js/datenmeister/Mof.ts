@@ -1,4 +1,4 @@
-﻿import {ItemWithNameAndId} from "./ApiModels";
+﻿import {EntentType, ItemWithNameAndId} from "./ApiModels";
 
 export enum ObjectType{
     Default, 
@@ -30,6 +30,16 @@ export class DmObject {
 
     constructor() {
         this.values = new Array<any>();
+    }
+    
+    static createFromReference(workspaceId: string, itemUri: string)
+    {
+        const result = new DmObject();
+        result.isReference = true;
+        result.workspace = workspaceId;
+        result.uri = itemUri;
+        
+        return result;
     }
 
     /**
@@ -91,7 +101,7 @@ export class DmObject {
                 }
 
                 // Take the standard routine but also check that there is no '0' in the text
-                return (Boolean(result) && result !== "0") as DmObjectReturnType<T>;
+                return (Boolean(result) && result !== "0" && result !== "false") as DmObjectReturnType<T>;
         }
 
         return result as DmObjectReturnType<T>;
@@ -151,10 +161,6 @@ export class DmObject {
         this.metaClass = {uri: metaClassUri};
     }
 
-    setMetaClassById(metaClassId: string) {
-        this.metaClass = {id: metaClassId};
-    }
-
     static valueToString(item: any, indent: string = ""): string {
 
         let result = "";
@@ -194,13 +200,26 @@ export class DmObject {
     }
 }
 
+/**
+ * Takes the given object and exports it as an ItemWithNameAndId
+ * @param element
+ */
+export function convertToItemWithNameAndId(element: DmObject) {
+    return {
+        uri: element.uri,
+        extentUri: element.extentUri,
+        workspace: element.workspace,
+        ententType: EntentType.Item
+    };
+}
+
 /*
     Converts the given element to a json element that it can be used to send to the webserver
     The receiving function is MofJsonDeconverter.Convert in which the retrieved
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v: {}, m: {}};
+    const result = {v: {}, m: {}, r: "", w: ""};
     const values = result.v;
 
     function convertValue(elementValue) {
@@ -222,9 +241,16 @@ export function createJsonFromObject(element: DmObject) {
         }
     }
 
-    for (const key in element.getPropertyValues()) {
-        let elementValue = element.get(key);
-        values[key] = convertValue(elementValue);
+    if ( !element.isReference) {
+        for (const key in element.getPropertyValues()) {
+            let elementValue = element.get(key);
+            values[key] = convertValue(elementValue);
+        }
+    }
+    else {
+        // Object is reference
+        result.r = element.uri;
+        result.w = element.workspace;
     }
 
     if (element.metaClass !== undefined && element.metaClass !== null) {
@@ -234,7 +260,7 @@ export function createJsonFromObject(element: DmObject) {
     return result;
 }
 
-/*
+/**
  * Converts the Object as given by the server to the JS-World. 
  * In case of native objects, the native object will be returned. 
  * In case of arrays, the arrays. 

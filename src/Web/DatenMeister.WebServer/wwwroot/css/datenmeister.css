@@ -126,9 +126,17 @@ a {
     border-collapse: collapse;
 }
 
+.dm-selectitemcontrol th {
+    padding: 5px 10px 5px 10px;
+    font-weight: bold;
+    border: black 1px solid;
+    vertical-align: top;
+}
+
 .dm-selectitemcontrol td {
     padding: 5px 10px 5px 10px;
     border: black 1px solid;
+    vertical-align: top;
 }
 
 .dm-selectitemcontrol select {
@@ -161,6 +169,23 @@ a {
     margin-bottom: 2px;
     font-size: 80%;    
     cursor: pointer;
+}
+
+.dm-selectitemcontrol .dm-sic-selected
+{
+    background: lightskyblue;
+    border: 1px solid dimgray;
+    border-radius: 2px;
+    padding: 3px 10px 3px 10px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: black;
+}
+
+
+.dm-selectitemcontrol .dm-sic-selected a
+{
+    color: black;
 }
 
 .dm-table-nofullwidth {

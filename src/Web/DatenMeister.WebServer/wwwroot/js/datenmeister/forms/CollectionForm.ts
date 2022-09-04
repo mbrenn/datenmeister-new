@@ -15,6 +15,7 @@ import * as SIC from "../controls/SelectItemControl";
 import * as Settings from "../Settings";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {FormSelectionControl} from "../controls/FormSelectionControl";
+import {ItemLink} from "../ApiModels";
 
 export class CollectionFormHtmlElements
 {
@@ -144,24 +145,24 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                             configuration.refreshForm();
                         });
 
-                    let formUrl;
+                    let formUrl:ItemLink;
 
                     if (this._overrideFormUrl !== undefined) {
                         formUrl = {
                             workspace: "Management",
-                            itemUrl: this._overrideFormUrl
+                            uri: this._overrideFormUrl
                         };
                     } else {
                         const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
                         if (form.uri !== undefined && byForm === undefined) {
                             formUrl = {
                                 workspace: form.workspace,
-                                itemUrl: form.uri
+                                uri: form.uri
                             };
                         } else if (byForm !== undefined) {
                             formUrl = {
                                 workspace: "Management",
-                                itemUrl: byForm
+                                uri: byForm
                             };
                         }
                     }
@@ -232,7 +233,14 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                     listForm.extentUri = this.extentUri;
                     listForm.createFormByCollection(form, configuration);
                 } else {
-                    alert('Unknown tab: ' + tab.metaClass.uri);
+                    form.addClass('alert alert-warning');
+                    const nameValue = tab.get('name', Mof.ObjectType.String);
+                    let name = tab.metaClass.uri;
+                    if (nameValue !== undefined) {
+                        name = `${nameValue} (${tab.metaClass.uri})`;
+                    }
+
+                    form.text('Unknown tab: ' + name);
                 }
 
                 itemContainer.append(form);
@@ -278,7 +286,7 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
             });
         
         selectItem.setWorkspaceById('Types');
-        selectItem.setExtentByUri("dm:///_internal/types/internal");
+        selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
 
         selectItem.init(containerDiv, settings);
     });

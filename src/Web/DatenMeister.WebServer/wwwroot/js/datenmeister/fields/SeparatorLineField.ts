@@ -3,7 +3,7 @@ import {DmObject} from "../Mof";
 
 export class Field extends BaseField implements IFormField
 {
-    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
         return $("<hr class='dm-separatorline'/>");
     }
 

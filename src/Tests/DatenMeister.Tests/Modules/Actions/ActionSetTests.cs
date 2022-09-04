@@ -67,8 +67,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
-
-
+            
             var createWorkspaceAction =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
@@ -152,6 +151,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var targetProvider = new InMemoryProvider();
             var sourceExtent = new MofUriExtent(sourceProvider, "dm:///source/", actionLogic.ScopeStorage);
             var targetExtent = new MofUriExtent(targetProvider, "dm:///target/", actionLogic.ScopeStorage);
+            
             var sourceFactory = new MofFactory(sourceExtent);
             var targetFactory = new MofFactory(targetExtent);
 
@@ -159,33 +159,40 @@ namespace DatenMeister.Tests.Modules.Actions
             workspaceLogic.AddExtent(workspaceLogic.GetDataWorkspace(), targetExtent);
 
             var sourceElement1 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "source1"});
+                .SetProperties(new Dictionary<string, object> {["name"] = "source1"})
+                .SetId("source1");
             var sourceElement1_1 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "source1.1"});
+                .SetProperties(new Dictionary<string, object> {["name"] = "source1.1"})
+                .SetId("source1.1");
             var sourceElement1_2 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "source1.2"});
+                .SetProperties(new Dictionary<string, object> {["name"] = "source1.2"})
+                .SetId("source1.2");
             var sourceElement1_3 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "source1.3"});
+                .SetProperties(new Dictionary<string, object> {["name"] = "source1.3"})
+                .SetId("source1.3");
             var sourceElement1_4 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "source1.4"});
+                .SetProperties(new Dictionary<string, object> {["name"] = "source1.4"})
+                .SetId("source1.4");
 
             sourceElement1.set(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement1),
                 new[] {sourceElement1_1, sourceElement1_2, sourceElement1_3, sourceElement1_4});
 
             var sourceElement2 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "source2"});
+                .SetProperties(new Dictionary<string, object> {["name"] = "source2"})
+                .SetId("source2");;
 
             sourceExtent.elements().add(sourceElement1);
             sourceExtent.elements().add(sourceElement2);
 
             var targetElement1 = targetFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "target1"});
-            var targetElement1_1 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "target1.1"});
+                .SetProperties(new Dictionary<string, object> {["name"] = "target1"})
+                .SetId("target1");
+            var targetElement1_1 = targetFactory.create(null)
+                .SetProperties(new Dictionary<string, object> {["name"] = "target1.1"})
+                .SetId("target1.1");
             targetElement1.set(DefaultClassifierHints.GetDefaultPackagePropertyName(targetElement1),
                 new[] {targetElement1_1});
             targetExtent.elements().add(targetElement1);
-
 
             return (sourceExtent, targetExtent);
         }

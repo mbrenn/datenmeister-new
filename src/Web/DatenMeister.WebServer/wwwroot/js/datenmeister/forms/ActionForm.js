@@ -29,6 +29,8 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
             configuration.onSubmit = (element, method) => __awaiter(this, void 0, void 0, function* () {
                 // Stores the most recent changes on the server
                 yield DataLoader.setProperties("Data", temporaryElement.uri, element);
+                element.workspace = "Data";
+                element.uri = temporaryElement.uri;
                 // Executes the detail form
                 yield FormActions_1.DetailFormActions.execute(actionName, creator, undefined, element, undefined, // The action form cannot provide additional parameters as the ActionButton
                 method);

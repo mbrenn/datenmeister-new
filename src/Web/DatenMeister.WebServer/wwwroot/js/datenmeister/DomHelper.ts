@@ -40,20 +40,18 @@ export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: 
     // The link will only be shown when the parameter does inhibit this. The inhibition might be required
     // in case the calling element wants to include its own action.
     const validLinkInformation = 
-        item.extentUri !== undefined && item.workspace !== undefined && 
-        item.extentUri !== "" && item.workspace !== "" &&
-        item.id !== "" && item.id !== undefined;
+        item.uri !== undefined && item.workspace !== undefined && 
+        item.uri !== "" && item.workspace !== "";
     
     const inhibitLink = params !== undefined && params.inhibitItemLink;
     
     if (validLinkInformation && !inhibitLink) {
-
         const linkElement = $("<a></a>");
         linkElement.text(item.name);
         linkElement.attr(
             "href",
             "/Item/" + encodeURIComponent(item.workspace) +
-            "/" + encodeURIComponent(item.extentUri + "#" + item.id));
+            "/" + encodeURIComponent(item.uri));
         result.append(linkElement);
         
     } else {

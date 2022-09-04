@@ -59,7 +59,7 @@ namespace DatenMeister.WebServer.Controller
                 foreach (var propertyParam in values)
                 {
                     var value = propertyParam.Value;
-                    var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
+                    var propertyValue = new DirectJsonDeconverter(_workspaceLogic).ConvertJsonValue(value);
 
                     if (propertyValue != null) item.set(propertyParam.Key, propertyValue);
                 }
@@ -118,7 +118,7 @@ namespace DatenMeister.WebServer.Controller
                 foreach (var propertyParam in values)
                 {
                     var value = propertyParam.Value;
-                    var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
+                    var propertyValue = new DirectJsonDeconverter(_workspaceLogic).ConvertJsonValue(value);
 
                     if (propertyValue != null) child.set(propertyParam.Key, propertyValue);
                 }
@@ -244,6 +244,17 @@ namespace DatenMeister.WebServer.Controller
             return convertedElement;
         }
 
+        [HttpGet("api/items/get_itemwithnameandid/{workspaceId}/{itemUri}")]
+        public ActionResult<object> GetItemWithNameAndId(string workspaceId, string itemUri)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
+
+            return ItemWithNameAndId.Create(foundElement)!;
+        }
+
         [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
         public ActionResult<object> GetRootElements(string workspaceId, string extentUri)
         {
@@ -288,38 +299,48 @@ namespace DatenMeister.WebServer.Controller
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
-
-            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri) as IElement
-                            ?? throw new InvalidOperationException("Item was not found");
-
             var result = new List<ItemWithNameAndId>();
-            var container = foundItem;
 
-            if (self != true)
-            {
-                // If the element itself shall not be returned...
-                container = container.container();
-            }
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri) as IElement;
 
-            int maxIteration = 100;
-            do
+            IUriExtent? extent;
+            // Checks, if we have found the item
+            if (foundItem != null)
             {
-                if (container == null)
+                // Yes, the item was found
+                var container = foundItem;
+
+                if (self != true)
                 {
-                    // Container is null
-                    break;
+                    // If the element itself shall not be returned...
+                    container = container.container();
                 }
 
-                result.Add(ItemWithNameAndId.Create(container)
-                           ?? throw new InvalidOperationException("Should not happen"));
-                maxIteration--;
+                int maxIteration = 100;
+                do
+                {
+                    if (container == null)
+                    {
+                        // Container is null
+                        break;
+                    }
+
+                    result.Add(ItemWithNameAndId.Create(container)
+                               ?? throw new InvalidOperationException("Should not happen"));
+                    maxIteration--;
+
+                    container = container.container(); // Now go one container up
+                } while (maxIteration > 0);
                 
-                container = container.container(); // Now go one container up
-            } while (maxIteration > 0);
-            
+                extent = foundItem.GetExtentOf() as IUriExtent;
+            }
+            else
+            {
+                extent = _workspaceLogic.FindExtent(workspaceId, itemUri) as IUriExtent;
+            }
+
             // After we are at the root element, now return the management items for extent and workspace
             // First the extent
-            var extent = foundItem.GetExtentOf() as IUriExtent;
             var workspace = extent?.GetWorkspace();
             if (extent != null && workspace != null)
             {
@@ -429,7 +450,9 @@ namespace DatenMeister.WebServer.Controller
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in propertiesParams.Properties)
+            {
                 foundItem.set(propertyParam.Key, propertyParam.Value);
+            }
 
             return new {success = true};
         }
@@ -482,7 +505,7 @@ namespace DatenMeister.WebServer.Controller
             foreach (var propertyParam in jsonObject.v)
             {
                 var value = propertyParam.Value;
-                var propertyValue = DirectJsonDeconverter.ConvertJsonValue(value);
+                var propertyValue = new DirectJsonDeconverter(_workspaceLogic).ConvertJsonValue(value);
 
                 if (propertyValue != null) foundItem.set(propertyParam.Key, propertyValue);
             }
@@ -574,7 +597,8 @@ namespace DatenMeister.WebServer.Controller
             itemUri = HttpUtility.UrlDecode(itemUri);
 
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
-                            ?? throw new InvalidOperationException("Item was not found");
+                            ?? throw new InvalidOperationException(
+                                $"Item was not found: {workspaceId}:{itemUri}");
 
             var reference = _internal.GetItemByUriParameter(
                                 parameters.WorkspaceId,

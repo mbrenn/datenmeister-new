@@ -3,11 +3,11 @@ import {injectNameByUri} from "../DomHelper";
 import {BaseField, IFormField} from "./Interfaces";
 import {SelectItemControl} from "../controls/SelectItemControl";
 import {setMetaclass} from "../client/Items";
+import {DmObject} from "../Mof";
 
 export class Field extends BaseField implements IFormField {
-    _textBox: JQuery<HTMLInputElement>;
 
-    createDom(dmElement: Mof.DmObject) {
+    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
         const tthis = this;
 
         const divContainer = $("<div />");
@@ -28,7 +28,6 @@ export class Field extends BaseField implements IFormField {
 
         divContainer.append(div);
 
-
         // Create button to change metaClass
         if (!this.isReadOnly) {
             const changeMetaClassDiv = $("<div></div>");
@@ -41,8 +40,7 @@ export class Field extends BaseField implements IFormField {
                 const selectItemCtrl = new SelectItemControl();
                 const divSelectItem = selectItemCtrl.init(changeMetaClassDiv);
 
-                selectItemCtrl.setWorkspaceById('Types');
-                selectItemCtrl.setExtentByUri("dm:///_internal/types/internal");
+                selectItemCtrl.setExtentByUri("Types", "dm:///_internal/types/internal");
 
                 selectItemCtrl.itemSelected.addListener(
                     (selectedItem) => {

@@ -4,9 +4,9 @@ define(["require", "exports"], function (require, exports) {
     exports.EntentType = void 0;
     var EntentType;
     (function (EntentType) {
-        EntentType[EntentType["Item"] = 0] = "Item";
-        EntentType[EntentType["Extent"] = 1] = "Extent";
-        EntentType[EntentType["Workspace"] = 2] = "Workspace";
+        EntentType["Item"] = "Item";
+        EntentType["Extent"] = "Extent";
+        EntentType["Workspace"] = "Workspace";
     })(EntentType = exports.EntentType || (exports.EntentType = {}));
 });
 //# sourceMappingURL=ApiModels.js.map

@@ -300,6 +300,7 @@
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="ViewModes" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="3af75e2d-6ba1-4431-943d-d426b9b32dd4">
-    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" id="Default" name="Default" p1:id="995b7b77-d8e2-4890-bfc8-1b96f3f2d547" />
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" id="ViewMode.Default" name="Default" p1:id="995b7b77-d8e2-4890-bfc8-1b96f3f2d547" />
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" id="ViewMode.AutoGenerate" name="Auto Generation" p1:id="885b7b77-d8e2-4890-bfc8-1b96f3f2d547" />
   </item>
 </item>

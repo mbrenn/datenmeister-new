@@ -22,7 +22,7 @@ define(["require", "exports", "../client/Forms"], function (require, exports, Fo
     function getCurrentViewMode() {
         let viewMode = sessionStorage.getItem(sessionPropertyName);
         if (viewMode === null) {
-            return "Default";
+            return "ViewMode.Default";
         }
         return viewMode;
     }

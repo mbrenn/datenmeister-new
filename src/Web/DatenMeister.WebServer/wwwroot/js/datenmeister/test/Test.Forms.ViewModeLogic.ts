@@ -7,7 +7,7 @@ export function includeTests() {
         {   
             VML.clearCurrentViewMode();
             let viewMode = VML.getCurrentViewMode();            
-            chai.assert.isTrue(viewMode === "Default", "viewMode needs to be 'Default'");
+            chai.assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");
             
             VML.setCurrentViewMode('Test');
             viewMode = VML.getCurrentViewMode();
@@ -15,7 +15,7 @@ export function includeTests() {
 
             VML.clearCurrentViewMode();
             viewMode = VML.getCurrentViewMode();
-            chai.assert.isTrue(viewMode === "Default", "viewMode needs to be 'Default'");
+            chai.assert.isTrue(viewMode === "ViewMode.Default", "viewMode needs to be 'Default'");
         });
     });
 }

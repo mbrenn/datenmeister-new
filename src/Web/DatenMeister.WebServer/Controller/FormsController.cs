@@ -66,7 +66,7 @@ namespace DatenMeister.WebServer.Controller
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
 
-        [HttpGet("api/forms/default_object_for_metaclass/{metaClass}/{viewMode?}")]
+        [HttpGet("api/forms/default_object_for_metaclass/{metaClass?}/{viewMode?}")]
         public ActionResult<string> GetObjectFormForMetaClass(string? metaClass, string? viewMode) 
         {
             viewMode = HttpUtility.UrlDecode(viewMode);

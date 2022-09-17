@@ -99,7 +99,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         //    This supports the server to provide additional parameter for an action button
         // submitMethod: Describes which button the user has clicked
         function execute(actionName, form, itemUrl, element, parameter, submitMethod) {
-            var _a, _b, _c;
+            var _a, _b, _c, _d, _e;
             return __awaiter(this, void 0, void 0, function* () {
                 let workspaceId;
                 let extentUri;
@@ -225,17 +225,22 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         break;
                     }
                     case "Workspace.Extent.Xmi.Create":
-                        yield ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
-                            .then(data => {
-                            if (data.success) {
+                        {
+                            const extentCreationParameter = new Mof_1.DmObject();
+                            extentCreationParameter.set('configuration', element);
+                            extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri);
+                            const result = yield ActionClient.executeActionDirectly("Execute", {
+                                parameter: extentCreationParameter
+                            });
+                            if (result.success) {
                                 document.location.href = Settings.baseUrl
                                     + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
                                     "/" + encodeURIComponent(element.get("extentUri"));
                             }
                             else {
-                                alert(data.reason);
+                                alert(result.reason);
                             }
-                        });
+                        }
                         break;
                     case "Item.MoveOrCopy.Navigate":
                         yield FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
@@ -244,7 +249,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
                         break;
                     case "Zipcode.Test":
-                        alert(element.get('zip').toString());
+                        alert((_e = (_d = element.get('zip')) === null || _d === void 0 ? void 0 : _d.toString()) !== null && _e !== void 0 ? _e : "No Zip Code given");
                         break;
                     case "Item.MoveOrCopy":
                     case "Action.Execute":
@@ -268,7 +273,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     class FormActions {
         static workspaceExtentCreateXmiNavigateTo(workspaceId) {
             document.location.href =
-                Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
+                Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?metaClass=" +
+                    encodeURIComponent(DatenMeister_class_1._DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri) +
+                    "&workspaceId=" + encodeURIComponent(workspaceId);
         }
         static workspaceExtentLoadAndCreateNavigateTo(workspaceId) {
             document.location.href =

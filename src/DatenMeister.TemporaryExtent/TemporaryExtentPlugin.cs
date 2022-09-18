@@ -24,7 +24,7 @@ namespace DatenMeister.TemporaryExtent
         
         private readonly IWorkspaceLogic _workspaceLogic;
         private CancellationToken _taskCancellation;
-        private CancellationTokenSource? _source;
+        private CancellationTokenSource? _taskCancellationSource;
 
         /// <summary>
         /// Defines the period time in which the background task shall be activated
@@ -46,8 +46,8 @@ namespace DatenMeister.TemporaryExtent
             switch (position)
             {
                 case PluginLoadingPosition.AfterBootstrapping:
-                    _source = new CancellationTokenSource();
-                    _taskCancellation = _source.Token;
+                    _taskCancellationSource = new CancellationTokenSource();
+                    _taskCancellation = _taskCancellationSource.Token;
                     var temporaryProvider = new InMemoryProvider();
                     var extent = new MofUriExtent(temporaryProvider, "dm:///_internal/temp", null);
                     _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), extent);
@@ -56,9 +56,9 @@ namespace DatenMeister.TemporaryExtent
                     break;
                 case PluginLoadingPosition.AfterShutdownStarted:
                     // Being called after the shutdown started
-                    if (_source != null)
+                    if (_taskCancellationSource != null)
                     {
-                        _source.Cancel();
+                        _taskCancellationSource.Cancel();
                     }
                     else
                     {

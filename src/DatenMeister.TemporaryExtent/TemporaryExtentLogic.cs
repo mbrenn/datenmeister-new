@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -23,9 +25,10 @@ namespace DatenMeister.TemporaryExtent
         public static TimeSpan DefaultCleanupTime { get; set; } = TimeSpan.FromHours(1);
 
         /// <summary>
-        /// Defines the default cleanup time name
+        /// Maps the element to a datetime until when it shall be deleted.
+        /// If the element is not found here, then it will be directly deleted
         /// </summary>
-        public const string CleanUpTimeFieldName = "_toBeCleanedUp";
+        private static readonly ConcurrentDictionary<string, DateTime> _elementMapping = new ();
 
         public TemporaryExtentLogic(IWorkspaceLogic workspaceLogic)
         {
@@ -44,7 +47,9 @@ namespace DatenMeister.TemporaryExtent
                 ?? throw new InvalidOperationException("The temporary extent was not found");
 
             var created = MofFactory.Create(foundExtent, metaClass);
-            created.set(CleanUpTimeFieldName, DateTime.Now + DefaultCleanupTime);
+            var id = (created as IHasId)?.Id 
+                     ?? throw new InvalidOperationException("Element does not has an id");
+            _elementMapping[id] = DateTime.Now + DefaultCleanupTime;
             foundExtent.elements().add(created);
 
             return created;
@@ -61,14 +66,29 @@ namespace DatenMeister.TemporaryExtent
             // Go through the elements and collect these ones whose clean up time has passed
             var itemsToBeDeleted = 
                 foundExtent.elements()
-                    .OfType<IObject>()
-                    .Where(element => element.getOrDefault<DateTime>(CleanUpTimeFieldName) < currentTime)
+                    .OfType<IHasId>()
+                    .Where(element =>
+                        {
+                            var id = element.Id;
+                            if (id != null && _elementMapping.TryGetValue(id, out var time))
+                            {
+                                return time < currentTime;
+                            }
+                            
+                            // If item is not in element-mapping, it will be directly deleted
+                            return true;
+                        })
                     .ToList();
 
             // Now delete these items
             foreach (var element in itemsToBeDeleted)
             {
                 foundExtent.elements().remove(element);
+                var id = element.Id;
+                if (id != null)
+                {
+                    _elementMapping.Remove(id, out _);
+                }
             }
 
             // Logging, if something was deleted

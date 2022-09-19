@@ -830,6 +830,28 @@
         <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="110207a7-cc45-46d9-918d-ca65a31dc136" name="container">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7519f4e6-f329-4810-9696-64851f734237" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isID="True" isComposite="True">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

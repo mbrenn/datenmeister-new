@@ -562,6 +562,12 @@ namespace DatenMeister.Core.Models
                 public static string @direction = "direction";
                 public IElement? @_direction = null;
 
+                public static string @container = "container";
+                public IElement? @_container = null;
+
+                public static string @property = "property";
+                public IElement? @_property = null;
+
             }
 
             public _MoveAction @MoveAction = new _MoveAction();

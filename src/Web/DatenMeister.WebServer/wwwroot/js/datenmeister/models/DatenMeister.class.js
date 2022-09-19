@@ -249,6 +249,8 @@ define(["require", "exports"], function (require, exports) {
             }
             _MoveAction.element = "element";
             _MoveAction.direction = "direction";
+            _MoveAction.container = "container";
+            _MoveAction.property = "property";
             _Actions._MoveAction = _MoveAction;
             _Actions.__MoveAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));

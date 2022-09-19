@@ -281,6 +281,8 @@ export namespace _DatenMeister
                 {
                     static element = "element";
                     static direction = "direction";
+                    static container = "container";
+                    static property = "property";
                 }
 
                 export const __MoveAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";

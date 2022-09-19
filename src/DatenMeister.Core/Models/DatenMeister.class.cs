@@ -535,6 +535,38 @@ namespace DatenMeister.Core.Models
                 @Move
             }
 
+            public class _MoveDirectionType
+            {
+                public static string @Up = "Up";
+                public IElement? @__Up = null;
+                public static string @Down = "Down";
+                public IElement? @__Down = null;
+
+            }
+
+            public _MoveDirectionType @MoveDirectionType = new _MoveDirectionType();
+            public IElement @__MoveDirectionType = new MofObjectShadow("dm:///_internal/types/internal#45928e05-c8fc-4f90-a726-ecffebc2a566");
+
+
+            public enum ___MoveDirectionType
+            {
+                @Up,
+                @Down
+            }
+
+            public class _MoveAction
+            {
+                public static string @element = "element";
+                public IElement? @_element = null;
+
+                public static string @direction = "direction";
+                public IElement? @_direction = null;
+
+            }
+
+            public _MoveAction @MoveAction = new _MoveAction();
+            public MofObjectShadow @__MoveAction = new MofObjectShadow("dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54");
+
         }
 
         public _Actions Actions = new _Actions();

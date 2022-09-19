@@ -265,6 +265,25 @@ export namespace _DatenMeister
                     Move
                 }
 
+                export module _MoveDirectionType
+                {
+                    export const Up = "Up";
+                    export const Down = "Down";
+                }
+
+                export enum ___MoveDirectionType
+                {
+                    Up,
+                    Down
+                }
+
+                export class _MoveAction
+                {
+                    static element = "element";
+                    static direction = "direction";
+                }
+
+                export const __MoveAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";
         }
 
         export namespace _DataViews

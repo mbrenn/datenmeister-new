@@ -7,7 +7,7 @@ using DatenMeister.Core.Models;
 
 namespace DatenMeister.Actions.ActionHandler
 {
-    public class MoveActionHandler : IActionHandler
+    public class MoveUpDownActionHandler : IActionHandler
     {
         public bool IsResponsible(IElement node)
         {
@@ -41,13 +41,20 @@ namespace DatenMeister.Actions.ActionHandler
             switch (direction)
             {
                 case _DatenMeister._Actions.___MoveDirectionType.Up:
-                    CollectionHelper.MoveElementUp(collection, element);
+                    if (!CollectionHelper.MoveElementUp(collection, element))
+                    {
+                        throw new InvalidOperationException("Element was not found");
+                    }
                     break;
                 case _DatenMeister._Actions.___MoveDirectionType.Down:
-                    CollectionHelper.MoveElementDown(collection, element);
+                    if (!CollectionHelper.MoveElementDown(collection, element))
+                    {
+                        throw new InvalidOperationException("Element was not found");
+                    }
+
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("direction");
+                    throw new InvalidOperationException("direction is not known: " + direction);
             }
         }
     }

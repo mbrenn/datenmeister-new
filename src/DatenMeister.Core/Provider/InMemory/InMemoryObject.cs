@@ -266,5 +266,26 @@ namespace DatenMeister.Core.Provider.InMemory
 
             return result;
         }
+
+        /// <inheritdoc />
+        public override bool Equals(object? obj)
+        {
+            if (obj is InMemoryObject inMemoryObject)
+            {
+                return inMemoryObject.Id == Id;
+            }
+            
+            return base.Equals(obj);
+        }
+
+        protected bool Equals(InMemoryObject other)
+        {
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

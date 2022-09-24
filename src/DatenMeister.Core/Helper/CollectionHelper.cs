@@ -157,7 +157,7 @@ namespace DatenMeister.Core.Helper
             // Check now, if something has found, 
             if (position == -1 || position == 0)
             {
-                // If position is the first one, then nothing can be changed
+                // If position is the first one, then nothing can be changed, but operation is successful
                 return position == 0;
             }
             
@@ -211,7 +211,7 @@ namespace DatenMeister.Core.Helper
             // Check now, if something has found, 
             if (position == -1 || position == count - 1)
             {
-                // If position is the first one, then nothing can be changed
+                // If position is the first one, then nothing can be changed, but operation is successful
                 return position == count - 1;
             }
 

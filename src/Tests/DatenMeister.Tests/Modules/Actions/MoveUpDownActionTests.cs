@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace DatenMeister.Tests.Modules.Actions
 {
     [TestFixture]
-    public class MoveActionTests
+    public class MoveUpDownActionTests
     {
         [Test]
         public async Task TestMovingInExtent()
@@ -46,7 +46,10 @@ namespace DatenMeister.Tests.Modules.Actions
                 (extent.elements().ElementAt(1) as IElement).getOrDefault<string>("name"),
                 Is.EqualTo("i2")
             );
-
+            Assert.That(
+                ((extent.elements().ElementAt(1) as IElement) as IHasId)?.Id,
+                Is.EqualTo("i2")
+            );
             //
             // Now, move it up!
             var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic);
@@ -54,10 +57,10 @@ namespace DatenMeister.Tests.Modules.Actions
                 _DatenMeister.TheOne.Actions.__MoveAction);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.container, 
-                "dm:///test");
+                extent);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.element, 
-                "dm:///test#i2");
+                i2);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Up);
@@ -75,10 +78,10 @@ namespace DatenMeister.Tests.Modules.Actions
                 _DatenMeister.TheOne.Actions.__MoveAction);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.container, 
-                "dm:///test");
+                extent);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.element, 
-                "dm:///test#i2");
+                i2);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Down);
@@ -104,6 +107,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var parent = factory.create(null);
             parent.set("name", "parent");
             (parent as ICanSetId)!.Id = "parent";
+            extent.elements().add(parent);
             var collection = parent.get<IReflectiveSequence>("children");
 
             // Adds the three test items
@@ -133,13 +137,13 @@ namespace DatenMeister.Tests.Modules.Actions
                 _DatenMeister.TheOne.Actions.__MoveAction);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.container, 
-                "dm:///test#parent");
+                parent);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.property, 
                 "children");
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.element, 
-                "dm:///test#i2");
+                i2);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Up);
@@ -157,13 +161,13 @@ namespace DatenMeister.Tests.Modules.Actions
                 _DatenMeister.TheOne.Actions.__MoveAction);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.container, 
-                "dm:///test#parent");
+                parent);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.property, 
                 "children");
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.element, 
-                "dm:///test#i2");
+                i2);
             moveAction.set(
                 _DatenMeister._Actions._MoveAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Down);

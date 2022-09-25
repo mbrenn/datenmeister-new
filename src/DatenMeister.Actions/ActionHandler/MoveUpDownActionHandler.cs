@@ -12,20 +12,20 @@ namespace DatenMeister.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.equals(
-                _DatenMeister.TheOne.Actions.__MoveAction) == true;
+                _DatenMeister.TheOne.Actions.__MoveUpDownAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
             var direction = action.getOrDefault<_DatenMeister._Actions.___MoveDirectionType>(
-                _DatenMeister._Actions._MoveAction.direction);
+                _DatenMeister._Actions._MoveUpDownAction.direction);
             var element = action.getOrDefault<IElement>(
-                _DatenMeister._Actions._MoveAction.element)
+                _DatenMeister._Actions._MoveUpDownAction.element)
                           ?? throw new InvalidOperationException("element is null");
             var property = action.getOrDefault<string>(
-                _DatenMeister._Actions._MoveAction.property);
+                _DatenMeister._Actions._MoveUpDownAction.property);
             var container = action.getOrDefault<IObject>(
-                _DatenMeister._Actions._MoveAction.container)
+                _DatenMeister._Actions._MoveUpDownAction.container)
                 ?? throw new InvalidOperationException("container is null");
 
             IReflectiveSequence collection;

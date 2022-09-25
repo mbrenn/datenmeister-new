@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Modules.Actions
     public class MoveUpDownActionTests
     {
         [Test]
-        public async Task TestMovingInExtent()
+        public async Task TestMovingUpDownInExtent()
         {
             await using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var actionLogic = dm.Resolve<ActionLogic>();
@@ -54,15 +54,15 @@ namespace DatenMeister.Tests.Modules.Actions
             // Now, move it up!
             var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic);
             var moveAction = temporaryExtentLogic.CreateTemporaryElement(
-                _DatenMeister.TheOne.Actions.__MoveAction);
+                _DatenMeister.TheOne.Actions.__MoveUpDownAction);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.container, 
+                _DatenMeister._Actions._MoveUpDownAction.container, 
                 extent);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.element, 
+                _DatenMeister._Actions._MoveUpDownAction.element, 
                 i2);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.direction, 
+                _DatenMeister._Actions._MoveUpDownAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Up);
             await actionLogic.ExecuteAction(moveAction);
             
@@ -75,15 +75,15 @@ namespace DatenMeister.Tests.Modules.Actions
             //
             // Now, move it down again. Twice
             moveAction = temporaryExtentLogic.CreateTemporaryElement(
-                _DatenMeister.TheOne.Actions.__MoveAction);
+                _DatenMeister.TheOne.Actions.__MoveUpDownAction);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.container, 
+                _DatenMeister._Actions._MoveUpDownAction.container, 
                 extent);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.element, 
+                _DatenMeister._Actions._MoveUpDownAction.element, 
                 i2);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.direction, 
+                _DatenMeister._Actions._MoveUpDownAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Down);
             await actionLogic.ExecuteAction(moveAction);
             await actionLogic.ExecuteAction(moveAction);
@@ -96,7 +96,7 @@ namespace DatenMeister.Tests.Modules.Actions
         }
         
         [Test]
-        public async Task TestMovingInCollection()
+        public async Task TestMovingUpDownInCollection()
         {
             await using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var actionLogic = dm.Resolve<ActionLogic>();
@@ -134,18 +134,18 @@ namespace DatenMeister.Tests.Modules.Actions
             // Now, move it up!
             var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic);
             var moveAction = temporaryExtentLogic.CreateTemporaryElement(
-                _DatenMeister.TheOne.Actions.__MoveAction);
+                _DatenMeister.TheOne.Actions.__MoveUpDownAction);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.container, 
+                _DatenMeister._Actions._MoveUpDownAction.container, 
                 parent);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.property, 
+                _DatenMeister._Actions._MoveUpDownAction.property, 
                 "children");
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.element, 
+                _DatenMeister._Actions._MoveUpDownAction.element, 
                 i2);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.direction, 
+                _DatenMeister._Actions._MoveUpDownAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Up);
             await actionLogic.ExecuteAction(moveAction);
             
@@ -158,18 +158,18 @@ namespace DatenMeister.Tests.Modules.Actions
             //
             // Now, move it down again. Twice
             moveAction = temporaryExtentLogic.CreateTemporaryElement(
-                _DatenMeister.TheOne.Actions.__MoveAction);
+                _DatenMeister.TheOne.Actions.__MoveUpDownAction);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.container, 
+                _DatenMeister._Actions._MoveUpDownAction.container, 
                 parent);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.property, 
+                _DatenMeister._Actions._MoveUpDownAction.property, 
                 "children");
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.element, 
+                _DatenMeister._Actions._MoveUpDownAction.element, 
                 i2);
             moveAction.set(
-                _DatenMeister._Actions._MoveAction.direction, 
+                _DatenMeister._Actions._MoveUpDownAction.direction, 
                 _DatenMeister._Actions.___MoveDirectionType.Down);
             await actionLogic.ExecuteAction(moveAction);
             await actionLogic.ExecuteAction(moveAction);

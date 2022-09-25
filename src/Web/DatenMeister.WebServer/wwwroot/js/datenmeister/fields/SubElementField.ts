@@ -123,6 +123,20 @@ export class Control {
                     }
 
                     /* Creates the delete button */
+                    let moveUp = $("<td><btn class='btn btn-secondary dm-item-moveup-button'>⬆️</btn>" +
+                        "<btn class='btn btn-secondary dm-item-movedown-button'>⬇️</btn></td>");
+                    $("dm-item-moveup-button", moveUp).on("click",
+                        () => {
+                        alert('Up');
+                        });
+                    $("dm-item-dm-item-movedown-button-button", moveUp).on("click",
+                        () => {
+                            alert('Down');
+                        });
+
+                    tr.append(moveUp);
+
+                    /* Creates the delete button */
                     let deleteCell = $("<td><btn class='btn btn-secondary'>Delete</btn></td>");
                     $("btn", deleteCell).on("click",
                         () => {

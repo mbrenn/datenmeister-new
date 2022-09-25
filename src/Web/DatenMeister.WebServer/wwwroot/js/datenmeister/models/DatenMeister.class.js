@@ -245,14 +245,14 @@ define(["require", "exports"], function (require, exports) {
                 ___MoveDirectionType[___MoveDirectionType["Up"] = 0] = "Up";
                 ___MoveDirectionType[___MoveDirectionType["Down"] = 1] = "Down";
             })(___MoveDirectionType = _Actions.___MoveDirectionType || (_Actions.___MoveDirectionType = {}));
-            class _MoveAction {
+            class _MoveUpDownAction {
             }
-            _MoveAction.element = "element";
-            _MoveAction.direction = "direction";
-            _MoveAction.container = "container";
-            _MoveAction.property = "property";
-            _Actions._MoveAction = _MoveAction;
-            _Actions.__MoveAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";
+            _MoveUpDownAction.element = "element";
+            _MoveUpDownAction.direction = "direction";
+            _MoveUpDownAction.container = "container";
+            _MoveUpDownAction.property = "property";
+            _Actions._MoveUpDownAction = _MoveUpDownAction;
+            _Actions.__MoveUpDownAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
         let _DataViews;
         (function (_DataViews) {

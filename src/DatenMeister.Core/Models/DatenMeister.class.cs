@@ -554,7 +554,7 @@ namespace DatenMeister.Core.Models
                 @Down
             }
 
-            public class _MoveAction
+            public class _MoveUpDownAction
             {
                 public static string @element = "element";
                 public IElement? @_element = null;
@@ -570,8 +570,8 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _MoveAction @MoveAction = new _MoveAction();
-            public MofObjectShadow @__MoveAction = new MofObjectShadow("dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54");
+            public _MoveUpDownAction @MoveUpDownAction = new _MoveUpDownAction();
+            public MofObjectShadow @__MoveUpDownAction = new MofObjectShadow("dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54");
 
         }
 

@@ -285,6 +285,7 @@ export module DetailFormActions {
             case "Item.MoveOrCopy.Navigate":
                 await FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
                 break;
+                
             case "JSON.Item.Alert":
                 alert(JSON.stringify(createJsonFromObject(element)));
                 break;

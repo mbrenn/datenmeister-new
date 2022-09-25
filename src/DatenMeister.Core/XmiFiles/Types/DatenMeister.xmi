@@ -803,7 +803,7 @@
       <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="8e4663f8-cdbb-4e59-9f47-0619825b9641" name="Up" />
       <ownedLiteral p2:type="dm:///_internal/model/uml#EnumerationLiteral" p2:id="ebf2b924-a078-4494-9f77-069720bd542b" name="Down" />
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="bc4952bf-a3f5-4516-be26-5b773e38bd54" name="MoveAction">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="bc4952bf-a3f5-4516-be26-5b773e38bd54" name="MoveUpDownAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
       <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />

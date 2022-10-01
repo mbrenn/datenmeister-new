@@ -28,8 +28,16 @@ export class DmObject {
 
     workspace: string;
 
-    constructor() {
+    /**
+     * Creates a new instance of the MofObject
+      * @param metaClassUri A possible metaclass Uri
+     */    
+    constructor(metaClassUri?: string | undefined) {
         this.values = new Array<any>();
+
+        if (metaClassUri !== undefined) {
+            this.setMetaClassByUri(metaClassUri);
+        }
     }
     
     static createFromReference(workspaceId: string, itemUri: string)

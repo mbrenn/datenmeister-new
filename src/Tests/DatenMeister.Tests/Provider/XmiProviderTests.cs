@@ -122,7 +122,7 @@ namespace DatenMeister.Tests.Provider
             var provider = new XmiProvider();
             var mofExtent = new MofUriExtent(provider, "dm:///test", null);
 
-            var element = MofFactory.Create(mofExtent, null);
+            var element = MofFactory.CreateElement(mofExtent, null);
             mofExtent.elements().add(element);
 
             var list = new List<string> {"ABC", "DEF", "GHI", "JKL"};

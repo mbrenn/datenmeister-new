@@ -24,7 +24,10 @@ export function includeTests() {
                         });
                 });
                 
-                it('MoveUp', async () => {
+                it('MoveUp/Down in Collection', async () => {
+                    
+                    await ClientItems.deleteRootElements("Test", "dm:///unittest");
+                    
                     const result = await ClientItems.createItemInExtent(
                         "Test",
                         "dm:///unittest",
@@ -80,10 +83,78 @@ export function includeTests() {
                         result.itemId,
                         "packagedElement",
                         subChild2.itemId);
+                    await ClientActionsItem.moveItemInCollectionDown(
+                        "Test",
+                        result.itemId,
+                        "packagedElement",
+                        subChild2.itemId);
 
                     const newChildren2 =
                         await ClientItems.getProperty("Test", result.itemId, "packagedElement" );
-                    const child1Name2 = (newChildren2[1] as DmObject).get("name", ObjectType.String);
+                    const child1Name2 = (newChildren2[2] as DmObject).get("name", ObjectType.String);
+
+                    chai.assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");
+                });
+
+                it('MoveUp/Down in Extent', async () => {
+                    
+                    await ClientItems.deleteRootElements("Test", "dm:///unittest");
+                    
+                    const subChild1 = await ClientItems.createItemInExtent(
+                        "Test",
+                        "dm:///unittest",
+                        {}
+                    );
+
+                    await ClientItems.setProperty("Test", subChild1.itemId, "name", "Child 1");
+
+                    const subChild2 = await ClientItems.createItemInExtent(
+                        "Test",
+                        "dm:///unittest",
+                        {}
+                    );
+
+                    await ClientItems.setProperty("Test", subChild2.itemId, "name", "Child 2");
+
+                    const subChild3 = await ClientItems.createItemInExtent(
+                        "Test",
+                        "dm:///unittest",
+                        {}
+                    );
+
+                    await ClientItems.setProperty("Test", subChild3.itemId, "name", "Child 3");
+
+                    const children =
+                        await ClientItems.getRootElements("Test", "dm:///unittest");
+                    chai.assert.isTrue(Array.isArray(children) === true, "Array has to be true");
+                    chai.assert.isTrue((children as Array<any>).length === 3, "Length of array has to be 3");
+                    const child2Name = (children[1] as DmObject).get("name", ObjectType.String);
+
+                    chai.assert.isTrue(child2Name === "Child 2", "Name is not found");
+
+                    await ClientActionsItem.moveItemInExtentUp(
+                        "Test",
+                        "dm:///unittest",
+                        subChild2.itemId);
+
+                    const newChildren =
+                        await ClientItems.getRootElements("Test", "dm:///unittest");
+                    const child1Name = (newChildren[1] as DmObject).get("name", ObjectType.String);
+
+                    chai.assert.isTrue(child1Name === "Child 1", "Item has not been moved");
+
+                    await ClientActionsItem.moveItemInExtentDown(
+                        "Test",
+                        "dm:///unittest",
+                        subChild2.itemId);
+                    await ClientActionsItem.moveItemInExtentDown(
+                        "Test",
+                        "dm:///unittest",
+                        subChild2.itemId);
+
+                    const newChildren2 =
+                        await ClientItems.getRootElements("Test", "dm:///unittest");
+                    const child1Name2 = (newChildren2[2] as DmObject).get("name", ObjectType.String);
 
                     chai.assert.isTrue(child1Name2 === "Child 2", "Item has not been moved back");
                 });

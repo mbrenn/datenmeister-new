@@ -206,7 +206,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="metaClass">Meta class whose element will be created. Ot may also be null,
         /// if it is type-less</param>
         /// <returns>The created element</returns>
-        public static IElement Create(IExtent extent, IElement? metaClass)
+        public static IElement CreateElement(IExtent extent, IElement? metaClass)
         {
             return new MofFactory(extent).create(metaClass);
         }
@@ -217,7 +217,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="element">Element to be included</param>
         /// <param name="metaClass">Meta class whose element will be created</param>
         /// <returns>The created element</returns>
-        public static IElement Create(IObject element, IElement? metaClass)
+        public static IElement CreateElement(IObject element, IElement? metaClass)
         {
             return new MofFactory(element).create(metaClass);
         }

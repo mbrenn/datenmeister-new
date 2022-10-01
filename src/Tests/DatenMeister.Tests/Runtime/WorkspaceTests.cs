@@ -1,5 +1,11 @@
 ﻿using System.Linq;
+using BurnSystems.Collections;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Runtime.Workspaces.Data;
 using NUnit.Framework;
@@ -125,6 +131,32 @@ namespace DatenMeister.Tests.Runtime
             
             workSpaceCollection.RemoveWorkspace("id");
             Assert.That(counter,Is.EqualTo(0));
+        }
+        
+        [Test]
+        public void TestFindingOfAnExtentAndItem()
+        {
+            var workSpaceCollection = (WorkspaceLogic.GetDefaultLogic() as WorkspaceLogic)!;
+            Assert.That(workSpaceCollection, Is.Not.Null);
+
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///unittest", null);
+            workSpaceCollection.GetDataWorkspace().AddExtent(extent);
+
+            var item = MofFactory.CreateElement(extent, null);
+            item.set("name", "Yes");
+            (item as ICanSetId)!.Id = "yes"; 
+            extent.elements().add(item);
+
+            var found = workSpaceCollection.FindItem(WorkspaceNames.WorkspaceData, "dm:///unittest");
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found, Is.InstanceOf<IUriExtent>());
+            var extentFound = found as IUriExtent;
+            Assert.That(extentFound!.contextURI(), Is.EqualTo("dm:///unittest"));
+
+            
+            var found2 = workSpaceCollection.FindItem(WorkspaceNames.WorkspaceData, "dm:///unittest#yes");
+            Assert.That(found2, Is.Not.Null);
+            Assert.That(found2.getOrDefault<string>("name"), Is.EqualTo("Yes"));
         }
         
         /// <summary>

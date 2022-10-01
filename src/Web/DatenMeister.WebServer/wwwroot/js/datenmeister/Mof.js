@@ -11,9 +11,16 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         ObjectType[ObjectType["Boolean"] = 4] = "Boolean";
     })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
-        constructor() {
+        /**
+         * Creates a new instance of the MofObject
+          * @param metaClassUri A possible metaclass Uri
+         */
+        constructor(metaClassUri) {
             this.isReference = false;
             this.values = new Array();
+            if (metaClassUri !== undefined) {
+                this.setMetaClassByUri(metaClassUri);
+            }
         }
         static createFromReference(workspaceId, itemUri) {
             const result = new DmObject();

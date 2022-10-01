@@ -46,7 +46,7 @@ namespace DatenMeister.TemporaryExtent
                 _workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri)
                 ?? throw new InvalidOperationException("The temporary extent was not found");
 
-            var created = MofFactory.Create(foundExtent, metaClass);
+            var created = MofFactory.CreateElement(foundExtent, metaClass);
             var id = (created as IHasId)?.Id 
                      ?? throw new InvalidOperationException("Element does not has an id");
             _elementMapping[id] = DateTime.Now + DefaultCleanupTime;

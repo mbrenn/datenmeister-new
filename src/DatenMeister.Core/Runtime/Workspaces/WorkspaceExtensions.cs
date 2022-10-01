@@ -294,17 +294,24 @@ namespace DatenMeister.Core.Runtime.Workspaces
         }
 
         /// <summary>
-        /// Finds the extent with the given uri in one of the workspaces in the database
+        /// Finds the extent with the given uri in one of the workspaces in the database.
+        /// Returns the extent, if the uri points to the extent directly
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="uri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IElement? FindItem(
+        public static IObject? FindItem(
             this IWorkspaceLogic collection,
             string workspaceId,
             string uri)
         {
+            var extent = collection.FindExtent(workspaceId, uri);
+            if (extent != null)
+            {
+                return extent;
+            }
+            
             return collection.Workspaces
                 .Where(x=>x.id == workspaceId)
                 .SelectMany(x => x.extent)

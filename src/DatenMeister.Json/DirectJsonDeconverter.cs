@@ -61,7 +61,7 @@ namespace DatenMeister.Json
         /// </summary>
         /// <param name="jsonObject">Json Object to be converted</param>
         /// <returns>The converted Json Object</returns>
-        public IElement? ConvertToObject(MofObjectAsJson jsonObject)
+        public IObject? ConvertToObject(MofObjectAsJson jsonObject)
         {
             if (!string.IsNullOrEmpty(jsonObject.r) && !string.IsNullOrEmpty(jsonObject.w))
             {

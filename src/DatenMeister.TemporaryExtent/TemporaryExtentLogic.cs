@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -35,6 +36,20 @@ namespace DatenMeister.TemporaryExtent
             _workspaceLogic = workspaceLogic;
         }
 
+        public IUriExtent TemporaryExtent =>
+            _workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri) as IUriExtent
+            ?? throw new InvalidOperationException("The temporary extent was not found");
+
+        /// <summary>
+        /// Tries to find the temporary extent. May also be null
+        /// </summary>
+        /// <returns>Found extent or null, if not found</returns>
+        public IUriExtent? TryGetTemporaryExtent()
+        {
+            return _workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri)
+                as IUriExtent;
+        }
+        
         /// <summary>
         /// Creates a simple temporary element
         /// </summary>

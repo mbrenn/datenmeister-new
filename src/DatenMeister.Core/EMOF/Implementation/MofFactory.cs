@@ -214,6 +214,28 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Just a short call to create a new mof factory instance and call the create method
         /// </summary>
+        /// <param name="extent">Extent for which the element will be created. The element will not be included
+        /// into the extent</param>
+        /// <param name="metaClass">Meta class whose element will be created. Ot may also be null,
+        /// if it is type-less</param>
+        /// <returns>The created element</returns>
+        public static IElement CreateElementWithMetaClassUri(IExtent extent, string metaClass)
+        {
+            var result = new MofFactory(extent).create(null);
+
+            if (!string.IsNullOrEmpty(metaClass))
+            {
+                (result as MofElement
+                 ?? throw new InvalidOperationException("Created item does not support setting of metaclass"))
+                    .SetMetaClass(metaClass);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Just a short call to create a new mof factory instance and call the create method
+        /// </summary>
         /// <param name="element">Element to be included</param>
         /// <param name="metaClass">Meta class whose element will be created</param>
         /// <returns>The created element</returns>

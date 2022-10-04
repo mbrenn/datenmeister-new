@@ -134,7 +134,8 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             if (result != null)
             {
-                _resolverCache.AddElementFor(uri, resolveType, result);
+                // Deactivated
+                //_resolverCache.AddElementFor(uri, resolveType, result);
             }
 
             return result;
@@ -246,7 +247,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // If still not found, do a full search in every extent in every workspace
-            if (resolveType == ResolveType.Default && _cachedWorkspaceLogic != null)
+            if (resolveType.HasFlagFast(ResolveType.Default) && _cachedWorkspaceLogic != null)
             {
                 foreach (var workspace in _cachedWorkspaceLogic.Workspaces)
                 {
@@ -256,6 +257,14 @@ namespace DatenMeister.Core.EMOF.Implementation
                         continue;
                     }
 
+                    // Check, if there is an extent with the name
+                    var extent = workspace.FindExtent(uri);
+                    if (extent != null)
+                    {
+                        return extent;
+                    }
+
+                    // If there is not an extent, then check, if there is an item
                     foreach (var result in
                              workspace.extent
                                  .OfType<IUriExtent>()

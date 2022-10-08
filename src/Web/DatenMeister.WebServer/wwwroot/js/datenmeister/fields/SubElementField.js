@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../client/Types", "../Settings", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, ClientTypes, Settings, DomHelper_1, DatenMeister_class_1, TypeSelectionControl) {
+define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../client/Types", "../Settings", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl", "../client/Actions.Items"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, ClientTypes, Settings, DomHelper_1, DatenMeister_class_1, TypeSelectionControl, Actions_Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;
@@ -64,7 +64,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                         header.text(fieldData.get("title"));
                         tr.append(header);
                     }
-                    let deleteHeader = $("<th>Delete</th>");
+                    let deleteHeader = $("<th>Actions</th>");
                     tr.append(deleteHeader);
                     tBody.append(tr);
                     /* Creates the rows */
@@ -87,15 +87,16 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                                 tr.append(td);
                             }
                             /* Creates the delete button */
-                            let moveUp = $("<td><btn class='btn btn-secondary dm-item-moveup-button'>⬆️</btn>" +
-                                "<btn class='btn btn-secondary dm-item-movedown-button'>⬇️</btn></td>");
-                            $("dm-item-moveup-button", moveUp).on("click", () => {
-                                alert('Up');
-                            });
-                            $("dm-item-dm-item-movedown-button-button", moveUp).on("click", () => {
-                                alert('Down');
-                            });
-                            tr.append(moveUp);
+                            const moveUp = $("<btn class='btn btn-secondary dm-item-moveup-button'>⬆️</btn>");
+                            const moveDown = $("<btn class='btn btn-secondary dm-item-movedown-button'>⬇️</btn>");
+                            moveUp.on("click", () => __awaiter(this, void 0, void 0, function* () {
+                                yield (0, Actions_Items_1.moveItemInCollectionUp)(this.form.workspace, this.itemUrl, this.propertyName, innerValue.uri);
+                                yield this.reloadValuesFromServer();
+                            }));
+                            moveDown.on("click", () => __awaiter(this, void 0, void 0, function* () {
+                                yield (0, Actions_Items_1.moveItemInCollectionDown)(this.form.workspace, this.itemUrl, this.propertyName, innerValue.uri);
+                                yield this.reloadValuesFromServer();
+                            }));
                             /* Creates the delete button */
                             let deleteCell = $("<td><btn class='btn btn-secondary'>Delete</btn></td>");
                             $("btn", deleteCell).on("click", () => {
@@ -109,6 +110,8 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                                 });
                             });
                             tr.append(deleteCell);
+                            deleteCell.append(moveUp);
+                            deleteCell.append(moveDown);
                             table.append(tr);
                         }
                     }

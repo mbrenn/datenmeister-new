@@ -11,6 +11,7 @@ import * as DatenMeisterModel from "./models/DatenMeister.class";
 
 import {SubmitMethod} from "./forms/RowForm";
 import {_DatenMeister} from "./models/DatenMeister.class";
+import {moveItemInExtentDown, moveItemInExtentUp} from "./client/Actions.Items";
 
 export module DetailFormActions {
 
@@ -167,6 +168,12 @@ export module DetailFormActions {
                 break;
             case "ExtentsList.DeleteItem":
                 await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                break;
+            case "ExtentsList.MoveUpItem":
+                await FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, itemUrl);
+                break;
+            case "ExtentsList.MoveDownItem":
+                await FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, itemUrl);
                 break;
             case "Item.Delete":
                 await FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
@@ -488,5 +495,15 @@ export class FormActions {
         } else {
             alert('Deletion was not successful.');
         }
+    }
+    
+    static async extentsListMoveUpItem(workspace: string, extentUri: string, itemId: string) {
+        await moveItemInExtentUp(workspace, extentUri, itemId);
+        document.location.reload();
+    }
+    
+    static async extentsListMoveDownItem(workspace: string, extentUri: string, itemId: string) {
+        await moveItemInExtentDown(workspace, extentUri, itemId);
+        document.location.reload();
     }
 }

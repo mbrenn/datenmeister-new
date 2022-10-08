@@ -11,6 +11,7 @@ import * as DatenMeisterModel from "./models/DatenMeister.class";
 
 import {SubmitMethod} from "./forms/RowForm";
 import {_DatenMeister} from "./models/DatenMeister.class";
+import {moveItemInExtentDown, moveItemInExtentUp} from "./client/Actions.Items";
 
 export module DetailFormActions {
 
@@ -168,6 +169,12 @@ export module DetailFormActions {
             case "ExtentsList.DeleteItem":
                 await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
                 break;
+            case "ExtentsList.MoveUpItem":
+                await FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, itemUrl);
+                break;
+            case "ExtentsList.MoveDownItem":
+                await FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, itemUrl);
+                break;
             case "Item.Delete":
                 await FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                 break;
@@ -285,6 +292,7 @@ export module DetailFormActions {
             case "Item.MoveOrCopy.Navigate":
                 await FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
                 break;
+                
             case "JSON.Item.Alert":
                 alert(JSON.stringify(createJsonFromObject(element)));
                 break;
@@ -487,5 +495,15 @@ export class FormActions {
         } else {
             alert('Deletion was not successful.');
         }
+    }
+    
+    static async extentsListMoveUpItem(workspace: string, extentUri: string, itemId: string) {
+        await moveItemInExtentUp(workspace, extentUri, itemId);
+        document.location.reload();
+    }
+    
+    static async extentsListMoveDownItem(workspace: string, extentUri: string, itemId: string) {
+        await moveItemInExtentDown(workspace, extentUri, itemId);
+        document.location.reload();
     }
 }

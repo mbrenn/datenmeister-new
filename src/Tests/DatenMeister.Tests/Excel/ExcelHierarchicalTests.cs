@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public void TestHierarchicalExcelLoad()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var filePath = Path.Combine(currentDirectory!, "Excel/Hierarchical Test.xlsx");
 

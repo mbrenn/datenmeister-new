@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm", "./models/DatenMeister.class"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1, DatenMeister_class_1) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm", "./models/DatenMeister.class", "./client/Actions.Items"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1, DatenMeister_class_1, Actions_Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -157,6 +157,12 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         break;
                     case "ExtentsList.DeleteItem":
                         yield FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                        break;
+                    case "ExtentsList.MoveUpItem":
+                        yield FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, itemUrl);
+                        break;
+                    case "ExtentsList.MoveDownItem":
+                        yield FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, itemUrl);
                         break;
                     case "Item.Delete":
                         yield FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
@@ -403,6 +409,18 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 else {
                     alert('Deletion was not successful.');
                 }
+            });
+        }
+        static extentsListMoveUpItem(workspace, extentUri, itemId) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInExtentUp)(workspace, extentUri, itemId);
+                document.location.reload();
+            });
+        }
+        static extentsListMoveDownItem(workspace, extentUri, itemId) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInExtentDown)(workspace, extentUri, itemId);
+                document.location.reload();
             });
         }
     }

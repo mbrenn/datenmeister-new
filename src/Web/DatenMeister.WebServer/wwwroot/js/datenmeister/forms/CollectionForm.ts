@@ -226,12 +226,12 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 let form = $("<div />");
                 const tab = tabs[n] as Mof.DmObject;
                 if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
-                    const listForm = new TableForm();
-                    listForm.elements = elements;
-                    listForm.formElement = tab;
-                    listForm.workspace = this.workspace;
-                    listForm.extentUri = this.extentUri;
-                    listForm.createFormByCollection(form, configuration);
+                    const tableForm = new TableForm();
+                    tableForm.elements = elements;
+                    tableForm.formElement = tab;
+                    tableForm.workspace = this.workspace;
+                    tableForm.extentUri = this.extentUri;
+                    tableForm.createFormByCollection(form, configuration);
                 } else {
                     form.addClass('alert alert-warning');
                     const nameValue = tab.get('name', Mof.ObjectType.String);

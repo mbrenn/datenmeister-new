@@ -235,6 +235,24 @@ define(["require", "exports"], function (require, exports) {
                 ___MoveOrCopyType[___MoveOrCopyType["Copy"] = 0] = "Copy";
                 ___MoveOrCopyType[___MoveOrCopyType["Move"] = 1] = "Move";
             })(___MoveOrCopyType = _Actions.___MoveOrCopyType || (_Actions.___MoveOrCopyType = {}));
+            let _MoveDirectionType;
+            (function (_MoveDirectionType) {
+                _MoveDirectionType.Up = "Up";
+                _MoveDirectionType.Down = "Down";
+            })(_MoveDirectionType = _Actions._MoveDirectionType || (_Actions._MoveDirectionType = {}));
+            let ___MoveDirectionType;
+            (function (___MoveDirectionType) {
+                ___MoveDirectionType[___MoveDirectionType["Up"] = 0] = "Up";
+                ___MoveDirectionType[___MoveDirectionType["Down"] = 1] = "Down";
+            })(___MoveDirectionType = _Actions.___MoveDirectionType || (_Actions.___MoveDirectionType = {}));
+            class _MoveUpDownAction {
+            }
+            _MoveUpDownAction.element = "element";
+            _MoveUpDownAction.direction = "direction";
+            _MoveUpDownAction.container = "container";
+            _MoveUpDownAction.property = "property";
+            _Actions._MoveUpDownAction = _MoveUpDownAction;
+            _Actions.__MoveUpDownAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
         let _DataViews;
         (function (_DataViews) {

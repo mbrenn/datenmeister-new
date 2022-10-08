@@ -127,7 +127,7 @@ namespace DatenMeister.AttachedExtent
             var referenceType =
                 configuration.getOrDefault<IElement>(_AttachedExtentConfiguration.referenceType);
 
-            var newItem = MofFactory.Create(attachedExtent, referenceType);
+            var newItem = MofFactory.CreateElement(attachedExtent, referenceType);
             newItem.set(configuration.getOrDefault<string>(_AttachedExtentConfiguration.referenceProperty),
                 originalItem);
             attachedExtent.elements().add(newItem);

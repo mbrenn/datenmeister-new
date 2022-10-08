@@ -725,7 +725,7 @@ namespace DatenMeister.WPF.Forms.Base
             var capabilities = (detailElement.GetExtentOf() as MofExtent)?.Provider.GetCapabilities();
             if (capabilities != null && !capabilities.CanCreateElements) return true;
             
-            var inMemory = MofFactory.Create(
+            var inMemory = MofFactory.CreateElement(
                 detailElement.GetExtentOf() ?? InMemoryProvider.TemporaryExtent,
                 (detailElement as IElement)?.metaclass);
             

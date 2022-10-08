@@ -63,7 +63,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             foreach (var element in value)
             {
                 if (element == null) continue;
-                
+
                 if (result == null)
                 {
                     result = add(element);
@@ -96,7 +96,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     UpdateContent();
                     return result;
                 }
-                
+
                 return false;
             }
 
@@ -105,7 +105,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 //_extent.Provider.DeleteElement(shadow);
             }
 
-            throw new NotImplementedException("Only the deletion of values are supported");
+            throw new NotImplementedException("Only the deletion of MofObjects are supported: "
+                                              + (value?.GetType().ToString() ?? "null"));
         }
 
         /// <inheritdoc />
@@ -153,18 +154,24 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             UpdateContent();
-            
+
             return true;
         }
 
         /// <inheritdoc />
         public object get(int index)
-            => _extent.Provider.GetRootObjects().ElementAt(index);
+            =>
+                new MofElement(
+                    _extent.Provider.GetRootObjects().ElementAt(index),
+                    _extent);
 
         /// <inheritdoc />
         public void remove(int index)
         {
-            remove(_extent.Provider.GetRootObjects().ElementAt(index));
+            remove(
+                new MofObject(
+                    _extent.Provider.GetRootObjects().ElementAt(index),
+                    _extent));
             UpdateContent();
         }
 

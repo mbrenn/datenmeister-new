@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web;
 using DatenMeister.Actions;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -34,7 +35,8 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Parameter are not set");
             }
 
-            var mofParameter = new DirectJsonDeconverter(_workspaceLogic).ConvertToObject(actionParams.Parameter)
+            var mofParameter = 
+                new DirectJsonDeconverter(_workspaceLogic).ConvertToObject(actionParams.Parameter) as IElement
                 ?? throw new InvalidOperationException("Conversion was not successful");
             switch (actionName)
             {
@@ -82,7 +84,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
             
-            var action = GiveMe.Scope.WorkspaceLogic.FindItem(workspaceId, itemUri);
+            var action = GiveMe.Scope.WorkspaceLogic.FindItem(workspaceId, itemUri) as IElement;
             if (action == null)
             {
                 return NotFound();

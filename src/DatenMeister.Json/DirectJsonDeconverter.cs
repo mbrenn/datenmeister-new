@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.Json
 {
@@ -61,7 +62,7 @@ namespace DatenMeister.Json
         /// </summary>
         /// <param name="jsonObject">Json Object to be converted</param>
         /// <returns>The converted Json Object</returns>
-        public IElement? ConvertToObject(MofObjectAsJson jsonObject)
+        public IObject? ConvertToObject(MofObjectAsJson jsonObject)
         {
             if (!string.IsNullOrEmpty(jsonObject.r) && !string.IsNullOrEmpty(jsonObject.w))
             {
@@ -78,7 +79,20 @@ namespace DatenMeister.Json
             }
             else
             {
-                var result = InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
+                IElement? result = null;
+                if (_workspaceLogic != null)
+                {
+                    var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic);
+                    var temporaryExtent = temporaryExtentLogic.TryGetTemporaryExtent();
+                    if (temporaryExtent != null)
+                    {
+                        result = MofFactory.CreateElementWithMetaClassUri(
+                            temporaryExtentLogic.TemporaryExtent,
+                            jsonObject.m?.uri ?? string.Empty);
+                    }
+                }
+
+                result ??= InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
 
                 foreach (var pair in jsonObject.v)
                 {

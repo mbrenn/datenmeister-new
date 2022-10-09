@@ -9,6 +9,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         ObjectType[ObjectType["String"] = 2] = "String";
         ObjectType[ObjectType["Array"] = 3] = "Array";
         ObjectType[ObjectType["Boolean"] = 4] = "Boolean";
+        ObjectType[ObjectType["Number"] = 5] = "Number";
     })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
         /**
@@ -78,6 +79,8 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
                     }
                     // Take the standard routine but also check that there is no '0' in the text
                     return (Boolean(result) && result !== "0" && result !== "false");
+                case ObjectType.Number:
+                    return result === undefined ? undefined : Number(result);
             }
             return result;
         }

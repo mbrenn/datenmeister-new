@@ -5,7 +5,8 @@ export enum ObjectType{
     Single, 
     String,
     Array,
-    Boolean
+    Boolean,
+    Number
 }
 
 type DmObjectReturnType<T> = 
@@ -13,7 +14,8 @@ type DmObjectReturnType<T> =
         T extends ObjectType.Single ? any:
             T extends ObjectType.String ? string : 
                 T extends ObjectType.Array ? Array<any> :
-                    T extends ObjectType.Boolean ? boolean : any;
+                    T extends ObjectType.Boolean ? boolean :
+                        T extends ObjectType.Number ? number : any;
 
 export class DmObject {
     private readonly values: Array<any>;
@@ -107,9 +109,12 @@ export class DmObject {
                 if (Array.isArray(result)) {
                     result = result[0];
                 }
-
+                
                 // Take the standard routine but also check that there is no '0' in the text
                 return (Boolean(result) && result !== "0" && result !== "false") as DmObjectReturnType<T>;
+
+            case ObjectType.Number:
+                 return result === undefined ? undefined : Number(result) as DmObjectReturnType<T>;
         }
 
         return result as DmObjectReturnType<T>;

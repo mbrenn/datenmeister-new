@@ -69,7 +69,6 @@ export class Field extends BaseField implements IFormField
             }
                 
             this._textBox.val(value);
-
             return this._textBox;
         }
     }

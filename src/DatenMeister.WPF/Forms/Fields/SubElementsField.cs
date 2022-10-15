@@ -186,7 +186,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 return;
             }
 
-            var defaultType = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            var defaultType = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
             defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, propertyType);
             defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
             defaultTypes.add(defaultType);

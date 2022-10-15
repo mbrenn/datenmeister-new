@@ -40,7 +40,7 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField",
                 parent.empty();
                 this.fieldElements = new Array();
                 const fields = this.formElement.getAsArray("field");
-                table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+                table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-rowform'></table>");
                 const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
                 table.append(tableBody);
                 const itemUri = this.itemId === undefined

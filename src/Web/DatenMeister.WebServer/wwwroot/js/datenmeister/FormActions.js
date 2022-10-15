@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm", "./models/DatenMeister.class"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1, DatenMeister_class_1) {
+define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm", "./models/DatenMeister.class", "./client/Actions.Items"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1, DatenMeister_class_1, Actions_Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FormActions = exports.DetailFormActions = void 0;
@@ -99,7 +99,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         //    This supports the server to provide additional parameter for an action button
         // submitMethod: Describes which button the user has clicked
         function execute(actionName, form, itemUrl, element, parameter, submitMethod) {
-            var _a, _b, _c;
+            var _a, _b, _c, _d, _e;
             return __awaiter(this, void 0, void 0, function* () {
                 let workspaceId;
                 let extentUri;
@@ -157,6 +157,12 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         break;
                     case "ExtentsList.DeleteItem":
                         yield FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                        break;
+                    case "ExtentsList.MoveUpItem":
+                        yield FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, itemUrl);
+                        break;
+                    case "ExtentsList.MoveDownItem":
+                        yield FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, itemUrl);
                         break;
                     case "Item.Delete":
                         yield FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
@@ -225,17 +231,22 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         break;
                     }
                     case "Workspace.Extent.Xmi.Create":
-                        yield ApiConnection.post(Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create", { Parameter: (0, Mof_1.createJsonFromObject)(element) })
-                            .then(data => {
-                            if (data.success) {
+                        {
+                            const extentCreationParameter = new Mof_1.DmObject();
+                            extentCreationParameter.set('configuration', element);
+                            extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri);
+                            const result = yield ActionClient.executeActionDirectly("Execute", {
+                                parameter: extentCreationParameter
+                            });
+                            if (result.success) {
                                 document.location.href = Settings.baseUrl
                                     + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
                                     "/" + encodeURIComponent(element.get("extentUri"));
                             }
                             else {
-                                alert(data.reason);
+                                alert(result.reason);
                             }
-                        });
+                        }
                         break;
                     case "Item.MoveOrCopy.Navigate":
                         yield FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
@@ -244,7 +255,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
                         break;
                     case "Zipcode.Test":
-                        alert(element.get('zip').toString());
+                        alert((_e = (_d = element.get('zip')) === null || _d === void 0 ? void 0 : _d.toString()) !== null && _e !== void 0 ? _e : "No Zip Code given");
                         break;
                     case "Item.MoveOrCopy":
                     case "Action.Execute":
@@ -268,7 +279,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     class FormActions {
         static workspaceExtentCreateXmiNavigateTo(workspaceId) {
             document.location.href =
-                Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
+                Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?metaClass=" +
+                    encodeURIComponent(DatenMeister_class_1._DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri) +
+                    "&workspaceId=" + encodeURIComponent(workspaceId);
         }
         static workspaceExtentLoadAndCreateNavigateTo(workspaceId) {
             document.location.href =
@@ -396,6 +409,18 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 else {
                     alert('Deletion was not successful.');
                 }
+            });
+        }
+        static extentsListMoveUpItem(workspace, extentUri, itemId) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInExtentUp)(workspace, extentUri, itemId);
+                document.location.reload();
+            });
+        }
+        static extentsListMoveDownItem(workspace, extentUri, itemId) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInExtentDown)(workspace, extentUri, itemId);
+                document.location.reload();
             });
         }
     }

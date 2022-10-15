@@ -596,7 +596,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                         return asMofObject.ProviderObject;
                     }
 
-                    var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
+                    // If the object to be added is not connected to an extent, we have to copy 
+                    // the element to the right provider type, but we keep the id
+                    var result = (MofElement) ObjectCopier.Copy(
+                        new MofFactory(extent),
+                        asMofObject, 
+                        new CopyOption {CopyId = true});
                     return result.ProviderObject;
                 }
 

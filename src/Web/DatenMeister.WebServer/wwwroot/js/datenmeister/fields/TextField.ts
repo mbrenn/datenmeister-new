@@ -1,7 +1,9 @@
 import * as Mof from "../Mof";
+import {DmObject, ObjectType} from "../Mof";
 
 import {BaseField, IFormField} from "./Interfaces";
-import {DmObject} from "../Mof";
+import {_DatenMeister} from "../models/DatenMeister.class";
+import _TextFieldData = _DatenMeister._Forms._TextFieldData;
 
 export class Field extends BaseField implements IFormField
 {
@@ -33,7 +35,7 @@ export class Field extends BaseField implements IFormField
 
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
-            const div = $("<div />");
+            const div = $("<div class='dm-textfield'/>");
             const value = dmElement.get(fieldName);
             if (value === undefined) {
                 div.append($("<em class='dm-undefined'>undefined</em>"));
@@ -43,9 +45,30 @@ export class Field extends BaseField implements IFormField
             return div;
         } else {
             const value = dmElement.get(fieldName)?.toString() ?? "";
-            this._textBox = $("<input />");
-            this._textBox.val(value);
+            const lineHeight = this.field.get(_TextFieldData.lineHeight, ObjectType.Number);
+            const width = this.field.get(_TextFieldData.width, ObjectType.Number);
+            
+            if (lineHeight === undefined || Number.isNaN(lineHeight) || lineHeight <= 1 ) {
+                this._textBox = $("<input class='dm-textfield' />");
 
+                if (width !== undefined && !Number.isNaN(width) && width > 0) {
+                    this._textBox.attr('size', width);
+                } else {
+                    this._textBox.attr('size', 70);
+                }
+            }
+            else {
+                this._textBox = $("<textarea class='dm-textfield' />");
+                this._textBox.attr('rows', lineHeight);
+
+                if (width !== undefined && !Number.isNaN(width) && width > 0) {
+                    this._textBox.attr('cols', width);
+                } else {
+                    this._textBox.attr('cols', 80);
+                }
+            }
+                
+            this._textBox.val(value);
             return this._textBox;
         }
     }

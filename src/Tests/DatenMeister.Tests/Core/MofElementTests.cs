@@ -14,8 +14,8 @@ namespace DatenMeister.Tests.Core
         {
             var extent = new MofUriExtent(new InMemoryProvider(), null);
 
-            var element1 = MofFactory.Create(extent, null);
-            var element2 = MofFactory.Create(extent, null);
+            var element1 = MofFactory.CreateElement(extent, null);
+            var element2 = MofFactory.CreateElement(extent, null);
 
             extent.elements().add(element1);
             extent.elements().add(element2);

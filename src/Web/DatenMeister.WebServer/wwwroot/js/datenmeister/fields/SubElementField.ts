@@ -11,6 +11,7 @@ import {injectNameByUri} from "../DomHelper";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl";
 import {ItemWithNameAndId} from "../ApiModels";
+import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -93,7 +94,7 @@ export class Control {
                 tr.append(header);
             }
 
-            let deleteHeader = $("<th>Delete</th>");
+            let deleteHeader = $("<th>Actions</th>");
             tr.append(deleteHeader);
 
             tBody.append(tr);
@@ -123,6 +124,21 @@ export class Control {
                     }
 
                     /* Creates the delete button */
+                    const moveUp = $("<btn class='btn btn-secondary dm-item-moveup-button'>⬆️</btn>");
+                    const moveDown = $("<btn class='btn btn-secondary dm-item-movedown-button'>⬇️</btn>");
+                    
+                    moveUp.on("click",
+                        async () => {
+                            await moveItemInCollectionUp(this.form.workspace, this.itemUrl, this.propertyName, innerValue.uri);
+                            await this.reloadValuesFromServer();
+                    });
+                    moveDown.on("click",
+                        async () => {
+                            await moveItemInCollectionDown(this.form.workspace, this.itemUrl, this.propertyName, innerValue.uri);
+                            await this.reloadValuesFromServer();
+                        });
+
+                    /* Creates the delete button */
                     let deleteCell = $("<td><btn class='btn btn-secondary'>Delete</btn></td>");
                     $("btn", deleteCell).on("click",
                         () => {
@@ -140,6 +156,8 @@ export class Control {
                         });
 
                     tr.append(deleteCell);
+                    deleteCell.append(moveUp);
+                    deleteCell.append(moveDown);
 
                     table.append(tr);
                 }

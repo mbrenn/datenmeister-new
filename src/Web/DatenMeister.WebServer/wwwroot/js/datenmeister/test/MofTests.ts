@@ -3,7 +3,7 @@
 export function includeTests() {
     describe('Mof', function () {
         describe('Element', function () {
-            it('Setting and Getting should work', function () {
+            it('Setting and Getting should work', () => {
                 const element = new mof.DmObject();
                 chai.assert.equal(element.isSet('test'), false);
                 element.set('test', 'yes');
@@ -25,13 +25,27 @@ export function includeTests() {
                 chai.assert.equal(array2[0], 'yes');
             });
 
-            it('Internalize and Externalize', function () {
+            it('Internalize and Externalize', () => {
                 chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("name")) == "name", "name");
                 chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("_name_")) == "_name_", "_name_");
                 chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("_name")) == "_name", "_name");
                 chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("___")) == "___", "___");
             });
+
+            it('Constructor with Metaclass', () =>{
+                const mofObject = new mof.DmObject();
+                chai.assert.isTrue(mofObject.metaClass === undefined, 
+                    "Metaclass needs to be undefined");
+
+                const mofObject2 = new mof.DmObject("dm:///test#test");
+                chai.assert.isTrue(mofObject2.metaClass !== undefined, 
+                    "Metaclass needs to be undefined");
+                chai.assert.isTrue(mofObject2.metaClass.uri === "dm:///test#test", 
+                    "Metaclass needs to be undefined");
+            });
         });
+        
+        
     });
 
 }

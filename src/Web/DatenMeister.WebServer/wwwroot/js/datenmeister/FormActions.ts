@@ -11,6 +11,7 @@ import * as DatenMeisterModel from "./models/DatenMeister.class";
 
 import {SubmitMethod} from "./forms/RowForm";
 import {_DatenMeister} from "./models/DatenMeister.class";
+import {moveItemInExtentDown, moveItemInExtentUp} from "./client/Actions.Items";
 
 export module DetailFormActions {
 
@@ -28,9 +29,9 @@ export module DetailFormActions {
             return await ECClient.getProperties(workspace, extentUri);
         }
 
-        if (actionName === "Extent.CreateItem" 
+        if (actionName === "Extent.CreateItem"
             || actionName === "Extent.CreateItemInProperty"
-            || actionName === "Workspace.Extent.LoadOrCreate.Step2" ) {
+            || actionName === "Workspace.Extent.LoadOrCreate.Step2") {
             const metaclass = p.get('metaclass');
             const result = new DmObject();
             if (metaclass !== undefined && metaclass !== null) {
@@ -65,12 +66,12 @@ export module DetailFormActions {
 
             const result = new DmObject();
             result.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
-            
+
             // TODO: Set Result
             const sourceWorkspace = p.get('workspaceId');
             const sourceItemUri = p.get('itemUri');
-            
-            const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);            
+
+            const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);
             result.set(_MoveOrCopyAction.source, source);
 
             return Promise.resolve(result);
@@ -79,7 +80,7 @@ export module DetailFormActions {
         /* Nothing has been found, so return an undefined */
         return Promise.resolve(undefined);
     }
-    
+
     /* Finds the best form fitting for the action */
     export async function loadFormForAction(actionName: string) {
         if (actionName === 'Workspace.Extent.LoadOrCreate') {
@@ -168,6 +169,12 @@ export module DetailFormActions {
             case "ExtentsList.DeleteItem":
                 await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
                 break;
+            case "ExtentsList.MoveUpItem":
+                await FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, itemUrl);
+                break;
+            case "ExtentsList.MoveDownItem":
+                await FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, itemUrl);
+                break;
             case "Item.Delete":
                 await FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                 break;
@@ -192,7 +199,7 @@ export module DetailFormActions {
                 await FormActions.workspaceExtentLoadAndCreateNavigateTo(workspaceIdParameter);
                 break;
             }
-            
+
             case "Workspace.Extent.LoadOrCreate": {
                 const workspaceIdParameter = p?.get('workspaceId') ?? "";
                 const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
@@ -203,7 +210,7 @@ export module DetailFormActions {
                     document.location.href = Settings.baseUrl +
                         "ItemAction/Workspace.Extent.LoadOrCreate.Step2" +
                         "?metaclass=" + encodeURIComponent(extentType.uri) +
-                        (workspaceIdParameter !== undefined 
+                        (workspaceIdParameter !== undefined
                             ? ("&workspaceId=" + encodeURIComponent(workspaceIdParameter))
                             : "");
                 }
@@ -257,31 +264,42 @@ export module DetailFormActions {
                 break;
             }
 
-            case "Workspace.Extent.Xmi.Create":
-                await ApiConnection.post<any>(
-                    Settings.baseUrl + "api/action/Workspace.Extent.Xmi.Create",
-                    {Parameter: createJsonFromObject(element)})
-                    .then(data => {
-                        if (data.success) {
-                            document.location.href = Settings.baseUrl
-                                + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
-                                "/" + encodeURIComponent(element.get("extentUri"))
-                        } else {
-                            alert(data.reason);
-                        }
-                    });
-                break;
+            case "Workspace.Extent.Xmi.Create": {
+
+                const extentCreationParameter = new DmObject();
+                extentCreationParameter.set('configuration', element);
+                extentCreationParameter.setMetaClassByUri(
+                    DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
+                );
                 
+                const result = await ActionClient.executeActionDirectly(
+                    "Execute",
+                    {
+                            parameter: extentCreationParameter
+                    }
+                );
+
+                if (result.success) {
+                    document.location.href = Settings.baseUrl
+                        + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
+                        "/" + encodeURIComponent(element.get("extentUri"))
+                } else {
+                    alert(result.reason);
+                }
+            }
+                break;
+
             case "Item.MoveOrCopy.Navigate":
                 await FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
                 break;
+                
             case "JSON.Item.Alert":
                 alert(JSON.stringify(createJsonFromObject(element)));
                 break;
             case "Zipcode.Test":
-                alert(element.get('zip').toString());
+                alert(element.get('zip')?.toString() ?? "No Zip Code given");
                 break;
-                
+
             case "Item.MoveOrCopy":
             case "Action.Execute":
                 // Executes the action directly
@@ -289,14 +307,13 @@ export module DetailFormActions {
                     element.workspace,
                     element.uri
                 );
-                
+
                 if (result.success) {
                     alert('Success');
-                }
-                else {
+                } else {
                     alert('Failure');
                 }
-                
+
                 break;
 
             default:
@@ -314,7 +331,9 @@ export class FormActions {
 
     static workspaceExtentCreateXmiNavigateTo(workspaceId: string) {
         document.location.href =
-            Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?workspaceId=" + encodeURIComponent(workspaceId);
+            Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?metaClass=" +
+            encodeURIComponent(_DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri) +
+            "&workspaceId=" + encodeURIComponent(workspaceId);
     }
     
     static workspaceExtentLoadAndCreateNavigateTo(workspaceId: string) {
@@ -476,5 +495,15 @@ export class FormActions {
         } else {
             alert('Deletion was not successful.');
         }
+    }
+    
+    static async extentsListMoveUpItem(workspace: string, extentUri: string, itemId: string) {
+        await moveItemInExtentUp(workspace, extentUri, itemId);
+        document.location.reload();
+    }
+    
+    static async extentsListMoveDownItem(workspace: string, extentUri: string, itemId: string) {
+        await moveItemInExtentDown(workspace, extentUri, itemId);
+        document.location.reload();
     }
 }

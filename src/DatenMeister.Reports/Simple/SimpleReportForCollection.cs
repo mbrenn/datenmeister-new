@@ -127,7 +127,7 @@ namespace DatenMeister.Reports.Simple
             if (AddFullNameColumn)
             {
                 // Create the metaclass as a field
-                var fullNamefield = MofFactory.Create(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
+                var fullNamefield = MofFactory.CreateElement(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
                 fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
                 fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
                 foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(0, fullNamefield);

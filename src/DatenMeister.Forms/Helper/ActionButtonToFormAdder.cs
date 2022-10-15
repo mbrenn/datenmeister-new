@@ -75,14 +75,14 @@ namespace DatenMeister.Forms.Helper
                     foreach (var formWithFields in forms)
                     {
                         var fields = formWithFields.get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
-                        var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
+                        var actionField = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, _parameter.ActionName);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.name, _parameter.ActionName);
 
                         if (_parameter.Parameter.Count > 0)
                         {
-                            var parameter = MofFactory.Create(form, null);
+                            var parameter = MofFactory.CreateElement(form, null);
                             foreach (var (key, value) in _parameter.Parameter)
                             {
                                 parameter.set(key, value);

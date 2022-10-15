@@ -26,7 +26,7 @@ namespace DatenMeister.Modules.ZipCodeExample.Forms
                 // Ok, I got it
 
                 var fields = form.get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
-                var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
+                var actionField = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
                 actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, "ZipExample.CreateExample");
                 actionField.set(_DatenMeister._Forms._ActionFieldData.title, "Create Zip Model");
                 actionField.set(_DatenMeister._Forms._ActionFieldData.name, "CreateZipModel");

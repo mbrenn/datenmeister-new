@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -21,19 +22,21 @@ namespace DatenMeister.TemporaryExtent
         /// The Uri of the temporary extent
         /// </summary>
         public const string Uri = "dm:///_internal/temp";
-        
+
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IScopeStorage _scopeStorage;
         private CancellationToken _taskCancellation;
-        private CancellationTokenSource? _source;
+        private CancellationTokenSource? _taskCancellationSource;
 
         /// <summary>
         /// Defines the period time in which the background task shall be activated
         /// </summary>
         public TimeSpan CleaningPeriod { get; } = TimeSpan.FromMinutes(1); 
 
-        public TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic)
+        public TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
         }
         
         /// <summary>
@@ -46,19 +49,19 @@ namespace DatenMeister.TemporaryExtent
             switch (position)
             {
                 case PluginLoadingPosition.AfterBootstrapping:
-                    _source = new CancellationTokenSource();
-                    _taskCancellation = _source.Token;
+                    _taskCancellationSource = new CancellationTokenSource();
+                    _taskCancellation = _taskCancellationSource.Token;
                     var temporaryProvider = new InMemoryProvider();
-                    var extent = new MofUriExtent(temporaryProvider, "dm:///_internal/temp", null);
+                    var extent = new MofUriExtent(temporaryProvider, "dm:///_internal/temp", _scopeStorage);
                     _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), extent);
                     Task.Run(() => CleanTemporaryExtentRunAsync(_taskCancellation), _taskCancellation);
                     
                     break;
                 case PluginLoadingPosition.AfterShutdownStarted:
                     // Being called after the shutdown started
-                    if (_source != null)
+                    if (_taskCancellationSource != null)
                     {
-                        _source.Cancel();
+                        _taskCancellationSource.Cancel();
                     }
                     else
                     {

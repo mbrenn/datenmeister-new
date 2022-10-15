@@ -98,8 +98,8 @@ namespace DatenMeister.Tests.Modules
         public void TestAttachedItems()
         {
             var setup = CreateTestSetup();
-            var originalItem1 = MofFactory.Create(setup.OriginalExtent!, null);
-            var originalItem2 = MofFactory.Create(setup.OriginalExtent!, null);
+            var originalItem1 = MofFactory.CreateElement(setup.OriginalExtent!, null);
+            var originalItem2 = MofFactory.CreateElement(setup.OriginalExtent!, null);
 
             setup.OriginalExtent!.elements().add(originalItem1);
             setup.OriginalExtent.elements().add(originalItem2);
@@ -152,7 +152,7 @@ namespace DatenMeister.Tests.Modules
                 NonConnectedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///nonconnectedExtent", null)
             };
 
-            var type = MofFactory.Create(testSetup.TypeExtent, null);
+            var type = MofFactory.CreateElement(testSetup.TypeExtent, null);
             testSetup.TypeExtent.elements().add(type);
             type.set("name", "ReferenceType");
             testSetup.ReferenceType = type;

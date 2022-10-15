@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Web;
 using DatenMeister.Actions;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -24,8 +26,8 @@ namespace DatenMeister.WebServer.Controller
             _scopeStorage = scopeStorage;
         }
         
-        [HttpPost("api/action/{actionName}")]
-        public async Task<ActionResult<object>> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
+        [HttpPost("api/action/execute_directly/{actionName}")]
+        public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
         {
             var success = true;
             if (actionParams.Parameter == null)
@@ -33,7 +35,8 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Parameter are not set");
             }
 
-            var mofParameter = new DirectJsonDeconverter(_workspaceLogic).ConvertToObject(actionParams.Parameter)
+            var mofParameter = 
+                new DirectJsonDeconverter(_workspaceLogic).ConvertToObject(actionParams.Parameter) as IElement
                 ?? throw new InvalidOperationException("Conversion was not successful");
             switch (actionName)
             {
@@ -73,6 +76,34 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return new ExecuteActionResult(success, "ActionNotFound", "");
+        }
+
+        [HttpPost("api/action/execute/{workspaceId}/{itemUri}")]
+        public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(string workspaceId, string itemUri)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+            
+            var action = GiveMe.Scope.WorkspaceLogic.FindItem(workspaceId, itemUri) as IElement;
+            if (action == null)
+            {
+                return NotFound();
+            }
+            
+            var actionLogic = new ActionLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+            try
+            {
+                await actionLogic.ExecuteAction(
+                    action
+                );
+                
+                return new ExecuteActionResult(true, string.Empty, string.Empty);
+
+            }
+            catch (Exception exc)
+            {
+                return new ExecuteActionResult(false, exc.Message, exc.ToString());
+            }
         }
 
         public class ActionParams

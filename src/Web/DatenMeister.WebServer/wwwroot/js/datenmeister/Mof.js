@@ -9,11 +9,26 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         ObjectType[ObjectType["String"] = 2] = "String";
         ObjectType[ObjectType["Array"] = 3] = "Array";
         ObjectType[ObjectType["Boolean"] = 4] = "Boolean";
+        ObjectType[ObjectType["Number"] = 5] = "Number";
     })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
-        constructor() {
+        /**
+         * Creates a new instance of the MofObject
+          * @param metaClassUri A possible metaclass Uri
+         */
+        constructor(metaClassUri) {
             this.isReference = false;
             this.values = new Array();
+            if (metaClassUri !== undefined) {
+                this.setMetaClassByUri(metaClassUri);
+            }
+        }
+        static createFromReference(workspaceId, itemUri) {
+            const result = new DmObject();
+            result.isReference = true;
+            result.workspace = workspaceId;
+            result.uri = itemUri;
+            return result;
         }
         /**
          * Modifies the key that it can be used for internal array storage.
@@ -63,7 +78,9 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
                         result = result[0];
                     }
                     // Take the standard routine but also check that there is no '0' in the text
-                    return (Boolean(result) && result !== "0");
+                    return (Boolean(result) && result !== "0" && result !== "false");
+                case ObjectType.Number:
+                    return result === undefined ? undefined : Number(result);
             }
             return result;
         }
@@ -170,7 +187,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         value is returned to MofObject
      */
     function createJsonFromObject(element) {
-        const result = { v: {}, m: {}, r: {}, w: {} };
+        const result = { v: {}, m: {}, r: "", w: "" };
         const values = result.v;
         function convertValue(elementValue) {
             if (Array.isArray(elementValue)) {

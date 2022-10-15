@@ -35,13 +35,14 @@ export async function createActionFormForEmptyObject(
 
         // Stores the most recent changes on the server
         await DataLoader.setProperties("Data", temporaryElement.uri, element);
-
+        let loadedElement = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
+        
         // Executes the detail form
         await DetailFormActions.execute(
             actionName,
             creator,
             undefined,
-            element,
+            loadedElement,
             undefined, // The action form cannot provide additional parameters as the ActionButton
             method);
     };

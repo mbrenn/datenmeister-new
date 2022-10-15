@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-  <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms" __uri="dm:///datenmeister.forms/" />
   <item p1:id="_package_Common_Forms" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="CommonForms">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" p1:id="ImportManagerFindExtent" name="Find Extent">
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True" defaultItemUri="dm:///_internal/workspaces/" showAllChildren="True" p1:id="19d57ee5-4222-48cc-a85a-ab012a1b6bc7" />
@@ -61,6 +60,7 @@
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="Object" form-ref="#ExtentPropertiesForm" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" name="Association for Extent Property" p1:id="aa43615b-42eb-4c0b-818c-985c961fbba3" />
     </packagedElement>
   </item>
+  <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms" __uri="dm:///datenmeister.forms/" />
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Forms" name="Forms">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Forms - Create By Metaclass" hideMetaInformation="True" allowNewProperties="False" p1:id="Forms.Create.ByMetaClass" comment="Used by Action 'Forms.Create.ByMetaClass'">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Meta Class" title="Select your MetaClass" p1:id="Forms.Create.ByMetaClass.Detail" name="Select Extent Type">
@@ -77,7 +77,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Item - Move or Copy" hideMetaInformation="True" allowNewProperties="False" p1:id="Item.MoveOrCopy" comment="Used by Action 'Item.MoveOrCopy'">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Copy or Move" title="Copy or Move" p1:id="44c46187-1d1a-4ee5-8d69-9c93c4b0f9ce">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="source" title="Source" isSelectionInline="true" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="source" title="Source" isSelectionInline="false" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="target" title="Target" defaultWorkspace="Data" isSelectionInline="true" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="copyMode" title="Copy or Move">
           <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Move" name="Move" />
@@ -300,6 +300,7 @@
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="ViewModes" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="3af75e2d-6ba1-4431-943d-d426b9b32dd4">
-    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" id="Default" name="Default" p1:id="995b7b77-d8e2-4890-bfc8-1b96f3f2d547" />
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" id="ViewMode.Default" name="Default" p1:id="995b7b77-d8e2-4890-bfc8-1b96f3f2d547" />
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" id="ViewMode.AutoGenerate" name="Auto Generation" p1:id="885b7b77-d8e2-4890-bfc8-1b96f3f2d547" />
   </item>
 </item>

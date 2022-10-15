@@ -13,30 +13,33 @@
 <ul>
     @foreach (var workspace in Model.Workspaces)
     {
-        var uriExtent = HttpUtility.UrlEncode(ManagementProviderPlugin.UriExtentWorkspaces);
-        var workspaceId = HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(Model.GetIdOfWorkspace(workspace)));
+        var uriExtent = ManagementProviderPlugin.UriExtentWorkspaces;
+        var workspaceUrl = HttpUtility.HtmlAttributeEncode(HttpUtility.UrlEncode(
+            uriExtent + "#" + Model.GetIdOfWorkspace(workspace)));
 
         <li>
-            <a href="~/Item/Management/@uriExtent/@Html.Raw(workspaceId)">@workspace.id - @workspace.annotation</a>
+            <a href="~/Item/Management/@Html.Raw(workspaceUrl)">@workspace.id - @workspace.annotation</a>
         </li>
         <ul>
             @foreach (var extent in workspace.extents)
             {
                 try
                 {
-                    var extentId = HttpUtility.HtmlAttributeEncode(
-                        HttpUtility.UrlEncode(Model.GetIdOfExtent(workspace, extent)));
+                    var extentId = Model.GetIdOfExtent(workspace, extent);
+                    var extentUrl = HttpUtility.HtmlAttributeEncode(
+                        HttpUtility.UrlEncode(uriExtent + "#" + extentId));
                     var extentsPropertiesId = HttpUtility.HtmlAttributeEncode(
-                        HttpUtility.UrlEncode(Model.GetIdOfExtentsProperties(workspace, extent)));
-
+                        HttpUtility.UrlEncode(
+                            uriExtent + "#" + Model.GetIdOfExtentsProperties(workspace, extent)));
+ 
                     var extentName = extent.uri;
                     if (string.IsNullOrEmpty(extentName))
                     {
                         extentName = "No Uri given";
                     }
                     <li>
-                        <a href="~/Item/Management/@uriExtent/@Html.Raw(extentId)">@extentName</a>
-                        (<a href="~/Item/Management/@uriExtent/@Html.Raw(extentsPropertiesId)">Properties</a>)
+                        <a href="~/Item/Management/@Html.Raw(extentUrl)">@extentName</a>
+                        (<a href="~/Item/Management/@Html.Raw(extentsPropertiesId)">Properties</a>)
                     </li>
                 }
                 catch (Exception)

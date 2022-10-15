@@ -37,7 +37,7 @@ export class Control {
     }
 
     /** Creates the overall DOM-elements by getting the object */    
-    createDomByValue(value: any): JQuery<HTMLElement> {
+    async createDomByValue(value: any): Promise<JQuery<HTMLElement>> {
         this._list.empty();
         const tthis = this;
 
@@ -84,7 +84,7 @@ export class Control {
                 // Checks, whether the Drop-Down Field shall be completely pre-created
                 if (this.inhibitInline !== true && 
                     this.field?.get('isSelectionInline', ObjectType.Boolean) === true) {
-                    this.createSelectFields(containerChangeCell, value);
+                    await this.createSelectFields(containerChangeCell, value);
                 }
             }
         }       
@@ -99,10 +99,13 @@ export class Control {
         
         const tthis = this;
         containerChangeCell.empty();
+        
+        
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
+        
         selectItem.itemSelected.addListener(
             async selectedItem => {
                 await ClientItem.setPropertyReference(
@@ -111,7 +114,7 @@ export class Control {
                     {
                         property: tthis.propertyName,
                         referenceUri: selectedItem.uri,
-                        workspaceId: selectItem.getUserSelectedWorkspaceId()
+                        workspaceId: selectedItem.workspace
                     }
                 );
 
@@ -150,17 +153,17 @@ export class Control {
 export class Field extends Control implements IFormField {
     // The information about the field configuration
     field: DmObject;
-    
+
     // The element being shown
-    element: DmObject; 
-    
+    element: DmObject;
+
     // The name of the field being derived from the field
     fieldName: string;
 
     async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         this.element = dmElement;
-        
+
         this._list.empty();
 
         this.fieldName = this.field.get('name');
@@ -178,7 +181,7 @@ export class Field extends Control implements IFormField {
         // Sets the properties being required by the parent class
         this.propertyName = this.fieldName
         this.itemUrl = dmElement.uri;
-                
+
         if (this.isReadOnly === true) {
             if (value === undefined || value === null) {
                 this._list.html("<em class='dm-undefined'>undefined</em>");
@@ -187,7 +190,7 @@ export class Field extends Control implements IFormField {
             }
         } else {
 
-            return this.createDomByValue(value);
+            return await this.createDomByValue(value);
         }
 
         return this._list;
@@ -196,7 +199,7 @@ export class Field extends Control implements IFormField {
     evaluateDom(dmElement: DmObject) {
 
     }
-    
+
     async reloadValuesFromServer() {
         let value = await ClientItem.getProperty(this.form.workspace, this.element.uri, this.fieldName);
 
@@ -209,7 +212,7 @@ export class Field extends Control implements IFormField {
                 return;
             }
         }
-        
-        this.createDomByValue(value);
+
+        await this.createDomByValue(value);
     }
 }

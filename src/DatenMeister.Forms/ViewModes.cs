@@ -8,6 +8,11 @@
         /// <summary>
         /// Names of the default viewmode
         /// </summary>
-        public const string Default = "Default";
+        public const string Default = "ViewMode.Default";
+        
+        /// <summary>
+        /// Name of the view mode which enforces an auto-generation
+        /// </summary>
+        public const string AutoGenerate = "ViewMode.AutoGenerate";
     }
 }

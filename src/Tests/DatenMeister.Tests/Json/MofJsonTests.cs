@@ -114,7 +114,7 @@ namespace DatenMeister.Tests.Json
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
             Assert.That(asJsonObject, Is.Not.Null);
 
-            var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!);
+            var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!) as IElement;
             Assert.IsTrue(deconverted?.metaclass!.equals(new MofObjectShadow("dm:///meta1")));
 
             var child2 = deconverted.get<IElement>("child");

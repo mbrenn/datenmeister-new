@@ -10,13 +10,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Settings", "../ApiConnection", "../Mof"], function (require, exports, Settings, ApiConnection, Mof) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.executeAction = void 0;
-    function executeAction(actionName, parameter) {
+    exports.executeAction = exports.executeActionDirectly = void 0;
+    function executeActionDirectly(actionName, parameter) {
         return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
-                "api/action/" +
+                "api/action/execute_directly/" +
                 encodeURIComponent(actionName);
             return yield ApiConnection.post(url, { parameter: Mof.createJsonFromObject(parameter.parameter) });
+        });
+    }
+    exports.executeActionDirectly = executeActionDirectly;
+    function executeAction(workspaceId, itemUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/action/execute/" +
+                encodeURIComponent(workspaceId) + "/" +
+                encodeURIComponent(itemUri);
+            return yield ApiConnection.post(url, {});
         });
     }
     exports.executeAction = executeAction;

@@ -133,7 +133,7 @@ export function includeTests() {
             let found = false;
             for (let n in viewModes.viewModes) {
                 const v = viewModes.viewModes[n];
-                if (v.get('id') === "Default") {
+                if (v.get('id') === "ViewMode.Default") {
                     found = true;
                 }
             }

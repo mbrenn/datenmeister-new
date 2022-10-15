@@ -107,7 +107,20 @@ namespace DatenMeister.Core.Provider.Xmi
             {
                 if (valueAsObject is XmiProviderObject providerObject)
                 {
-                    _rootNode.Add(providerObject.XmlNode);
+                    var count = _rootNode.Elements(ElementName).Count();
+                    if (index == 0)
+                    {
+                        _rootNode.AddFirst(providerObject.XmlNode);
+                    }
+                    else if (index < 0 || index >= count)
+                    {
+                        _rootNode.Add(providerObject.XmlNode);
+                    }
+                    else
+                    {
+                        var before = _rootNode.Elements(ElementName).ElementAt(index - 1);
+                        before.AddAfterSelf(providerObject.XmlNode);
+                    }
                 }
             }
         }

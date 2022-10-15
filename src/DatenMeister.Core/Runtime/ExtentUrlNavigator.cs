@@ -80,7 +80,10 @@ namespace DatenMeister.Core.Runtime
 
             if (posQuestion == -1 && posHash == -1)
             {
-                return element("#" + uri);
+                // If element is not an extent, support the user by trying to find
+                // an element with the given id within this extent
+                var tryAsHash = element("#" + uri);
+                return tryAsHash;
             }
 
             // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 

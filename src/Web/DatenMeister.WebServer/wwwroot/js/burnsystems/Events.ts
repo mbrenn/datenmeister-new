@@ -11,7 +11,7 @@ export class UserEvent<T> {
     private assigned: Array<Subscription<T>> = new Array<Subscription<T>>();
 
     // Adds a new listener to the event handler
-    addListener(func: (T) => void): SubscriptionHandle<T> {
+    addListener(func: (argument:T) => void): SubscriptionHandle<T> {
         const result =
             {
                 func: func

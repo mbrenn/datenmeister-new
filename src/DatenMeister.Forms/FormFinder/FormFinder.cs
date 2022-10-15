@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -62,6 +61,13 @@ namespace DatenMeister.Forms.FormFinder
         /// <returns>The found view or null, if not found</returns>
         public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
+            // Check, if the view mode is AutoGenerate. If that is the case, then no query will be performed
+            if (query.viewModeId == ViewModes.AutoGenerate)
+            {
+                return Array.Empty<IElement>();
+            }
+            
+            // Ok, View Mode is not AutoGenerate ==> Standard procedure to be executed
             using var stopWatch = new StopWatchLogger(Logger, $"Find Form: {query}", LogLevel.Trace);
             var formAssociations = _formsMethods.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");

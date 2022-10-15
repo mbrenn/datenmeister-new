@@ -51,7 +51,7 @@ export class RowForm implements InterfacesForms.IForm {
 
         const fields = this.formElement.getAsArray("field");
 
-        table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+        table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-rowform'></table>");
         const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
         table.append(tableBody);
 
@@ -94,8 +94,11 @@ export class RowForm implements InterfacesForms.IForm {
             // Creates the key column content
             if (!singleColumn) {
                 let name =
-                    (field.get(_DatenMeister._Forms._FieldData.title) as any as string) ??
-                    (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
+                    (field.get(_DatenMeister._Forms._FieldData.title) as any as string);
+
+                if (name === undefined || name === null || name === "") {
+                    name = (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
+                }
 
                 const isReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly);
                 if (isReadOnly) {

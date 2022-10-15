@@ -156,7 +156,7 @@ export class Field extends BaseField implements IFormField {
             }
             
             const field = this.createReferenceFieldInstance();            
-            const element = field.createDomByValue(value);
+            const element = await field.createDomByValue(value);
             this._domElement.append(element);
         } else if (this._mode === ModeValue.Value) {
             const div = $("<div />");

@@ -126,7 +126,7 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
                         value = value[0];
                     }
                     const field = this.createReferenceFieldInstance();
-                    const element = field.createDomByValue(value);
+                    const element = yield field.createDomByValue(value);
                     this._domElement.append(element);
                 }
                 else if (this._mode === ModeValue.Value) {

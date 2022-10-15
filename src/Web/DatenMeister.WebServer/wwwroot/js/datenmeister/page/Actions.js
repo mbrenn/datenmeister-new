@@ -15,6 +15,7 @@ define(["require", "exports", "../controls/SelectItemControl"], function (requir
         return __awaiter(this, void 0, void 0, function* () {
             $("#selectitemcontrol").empty();
             const control = new SIC.SelectItemControl();
+            control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
             yield control.initAsync($("#selectitemcontrol"));
         });
     }
@@ -23,6 +24,7 @@ define(["require", "exports", "../controls/SelectItemControl"], function (requir
         return __awaiter(this, void 0, void 0, function* () {
             $("#selectitemcontrol").empty();
             const control = new SIC.SelectItemControl();
+            control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
             const settings = new SIC.Settings();
             settings.showExtentInBreadcrumb = true;
             settings.showWorkspaceInBreadcrumb = true;
@@ -34,6 +36,7 @@ define(["require", "exports", "../controls/SelectItemControl"], function (requir
         return __awaiter(this, void 0, void 0, function* () {
             $("#selectitemcontrol").empty();
             const control = new SIC.SelectItemControl();
+            control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
             yield control.setWorkspaceById("Types");
             yield control.initAsync($("#selectitemcontrol"));
         });
@@ -43,6 +46,7 @@ define(["require", "exports", "../controls/SelectItemControl"], function (requir
         return __awaiter(this, void 0, void 0, function* () {
             $("#selectitemcontrol").empty();
             const control = new SIC.SelectItemControl();
+            control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
             yield control.setExtentByUri("Types", "dm:///_internal/types/internal");
             yield control.initAsync($("#selectitemcontrol"));
         });
@@ -52,6 +56,7 @@ define(["require", "exports", "../controls/SelectItemControl"], function (requir
         return __awaiter(this, void 0, void 0, function* () {
             $("#selectitemcontrol").empty();
             const control = new SIC.SelectItemControl();
+            control.itemSelected.addListener(x => alert("Uri:" + x.uri + ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
             yield control.setItemByUri("Types", "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
             yield control.initAsync($("#selectitemcontrol"));
         });

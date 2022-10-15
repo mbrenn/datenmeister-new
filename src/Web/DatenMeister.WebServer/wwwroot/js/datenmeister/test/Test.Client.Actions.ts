@@ -15,7 +15,7 @@ export function includeTests() {
                 parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction")
                 parameter.set('shallSuccess', 'OK');
 
-                const result = await ClientActions.executeAction(
+                const result = await ClientActions.executeActionDirectly(
                     "Execute",
                     {parameter: parameter}
                 );
@@ -28,7 +28,7 @@ export function includeTests() {
                 parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction")
                 parameter.set('shallSuccess', 'NO');
 
-                const result = await ClientActions.executeAction(
+                const result = await ClientActions.executeActionDirectly(
                     "Execute",
                     {parameter: parameter}
                 );
@@ -50,7 +50,7 @@ export function includeTests() {
                 configuration.set(_InMemoryLoaderConfig._name_, "UnitTest");
                 parameter.set(_LoadExtentAction.configuration, configuration);
                 
-                await ClientActions.executeAction("Execute", {parameter: parameter});
+                await ClientActions.executeActionDirectly("Execute", {parameter: parameter});
 
                 success = await ClientExtent.exists("Data", "dm:///unittestaction");
                 chai.assert.isTrue(success.exists === true);
@@ -61,7 +61,7 @@ export function includeTests() {
                 drop.set(_DropExtentAction.workspace, "Data");
                 drop.set(_DropExtentAction.extentUri, "dm:///unittestaction");
 
-                await ClientActions.executeAction("Execute", {parameter: drop});
+                await ClientActions.executeActionDirectly("Execute", {parameter: drop});
 
                 success = await ClientExtent.exists("Data", "dm:///unittestaction");
                 chai.assert.isTrue(success.exists === false);

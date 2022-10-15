@@ -16,8 +16,8 @@ namespace DatenMeister.Actions.ActionHandler
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var source = action.getOrDefault<IElement>(_DatenMeister._Actions._MoveOrCopyAction.source);
-            var value = action.getOrDefault<IElement>(_DatenMeister._Actions._MoveOrCopyAction.target);
+            var source = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.source);
+            var value = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.target);
             var actionType = action.getOrDefault<_DatenMeister._Actions.___MoveOrCopyType>(
                 _DatenMeister._Actions._MoveOrCopyAction.actionType);
 

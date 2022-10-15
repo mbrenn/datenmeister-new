@@ -30,6 +30,10 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_name/{workspace}/{extentUri}/{itemId}")]
         public ActionResult<object> GetName(string workspace, string extentUri, string itemId)
         {
+            workspace = HttpUtility.UrlDecode(workspace);
+            extentUri = HttpUtility.UrlDecode(extentUri);
+            itemId = HttpUtility.UrlDecode(itemId);
+
             var foundItem = _workspaceLogic.FindObject(workspace, extentUri, itemId);
             if (foundItem == null)
             {
@@ -42,7 +46,10 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_name/{workspace}/{uri}")]
         public ActionResult<ItemWithNameAndId> GetName(string? workspace, string uri)
         {
-            IElement? foundItem;
+            workspace = HttpUtility.UrlDecode(workspace);
+            uri = HttpUtility.UrlDecode(uri);
+            
+            IObject? foundItem;
             if (string.IsNullOrEmpty(workspace) || workspace == "_")
             {
                 foundItem = _workspaceLogic.FindItem(HttpUtility.UrlDecode(uri));
@@ -51,7 +58,7 @@ namespace DatenMeister.WebServer.Controller
             {
                 foundItem =
                     _workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.NoMetaWorkspaces)
-                        as IElement;
+                        as IObject;
             }
 
             if (foundItem == null)
@@ -65,6 +72,9 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
         public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId, string? itemUrl)
         {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUrl = HttpUtility.UrlDecode(itemUrl);
+            
             var result = Internal.GetComposites(workspaceId, itemUrl);
             if (result == null)
             {

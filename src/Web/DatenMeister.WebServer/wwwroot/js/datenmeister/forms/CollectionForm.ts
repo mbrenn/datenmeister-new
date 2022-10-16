@@ -3,19 +3,22 @@
  */
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as VML from "./ViewModeLogic";
-import * as DataLoader from "../client/Items";
+import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
 import {FormType} from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import * as IForm from "./Interfaces";
 import * as Mof from "../Mof";
+import {DmObject, ObjectType} from "../Mof";
 import {TableForm} from "./TableForm";
 import * as SIC from "../controls/SelectItemControl";
 import * as Settings from "../Settings";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {FormSelectionControl} from "../controls/FormSelectionControl";
 import {ItemLink} from "../ApiModels";
+import _TableForm = _DatenMeister._Forms._TableForm;
+import {IGetRootElementsParameter} from "../client/Items";
 
 export class CollectionFormHtmlElements
 {
@@ -56,14 +59,13 @@ export class CollectionFormHtmlElements
 }
 
 /*
-    Creates a form containing a collection of items. 
+    Creates a form containing a collection of root items of an extent 
     The input for this type is a collection of elements
 */
 export class CollectionFormCreator implements IForm.IFormNavigation {
     extentUri: string;
     formElement: Mof.DmObject;
     workspace: string;
-
 
     /**
      * Defines the form url being used to select the form for the object form.
@@ -96,9 +98,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             }
         }
 
-        // Load the object
-        const defer1 = DataLoader.getRootElements(workspace, extentUri);
-
         // Load the form
         const defer2 =
             this._overrideFormUrl === undefined ?
@@ -106,15 +105,15 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 ClientForms.getForm(this._overrideFormUrl, FormType.Collection);
 
         // Wait for both
-        Promise.all([defer1, defer2]).then(async ([elements, form]) => {
+        Promise.all([defer2]).then(async ([form]) => {
             tthis.formElement = form;
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
 
-            debugElementToDom(elements, "#debug_mofelement");
+/*            debugElementToDom(elements, "#debug_mofelement");*/
             debugElementToDom(form, "#debug_formelement");
 
-            tthis.createFormByCollection(htmlElements, elements, configuration);
+            tthis.createFormByCollection(htmlElements, configuration);
 
             /* 
              Creates the form for the View Mode Selection
@@ -126,51 +125,54 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 viewModeForm.viewModeSelected.addListener(
                     _ => configuration.refreshForm());
 
-                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm)
+                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+            }
 
-                // Creates the form selection
-                if (htmlElements.formSelectorContainer !== undefined
-                    && htmlElements.formSelectorContainer !== null) {
-                    htmlElements.formSelectorContainer.empty();
+            // Creates the form selection
+            if (htmlElements.formSelectorContainer !== undefined
+                && htmlElements.formSelectorContainer !== null) {
+                // Empty the container for the formselector
+                htmlElements.formSelectorContainer.empty();
 
-                    const formControl = new FormSelectionControl();
-                    formControl.formSelected.addListener(
-                        selectedItem => {
-                            this._overrideFormUrl = selectedItem.selectedForm.uri;
-                            configuration.refreshForm();
-                        });
-                    formControl.formResetted.addListener(
-                        () => {
-                            this._overrideFormUrl = undefined;
-                            configuration.refreshForm();
-                        });
+                const formControl = new FormSelectionControl();
+                formControl.formSelected.addListener(
+                    selectedItem => {
+                        this._overrideFormUrl = selectedItem.selectedForm.uri;
+                        configuration.refreshForm();
+                    });
+                formControl.formResetted.addListener(
+                    () => {
+                        this._overrideFormUrl = undefined;
+                        configuration.refreshForm();
+                    });
 
-                    let formUrl:ItemLink;
+                let formUrl: ItemLink;
 
-                    if (this._overrideFormUrl !== undefined) {
+                // Tries to retrieve the current form uri
+                if (this._overrideFormUrl !== undefined) {
+                    formUrl = {
+                        workspace: "Management",
+                        uri: this._overrideFormUrl
+                    };
+                } else {
+                    const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                    if (form.uri !== undefined && byForm === undefined) {
+                        formUrl = {
+                            workspace: form.workspace,
+                            uri: form.uri
+                        };
+                    } else if (byForm !== undefined) {
                         formUrl = {
                             workspace: "Management",
-                            uri: this._overrideFormUrl
+                            uri: byForm
                         };
-                    } else {
-                        const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                        if (form.uri !== undefined && byForm === undefined) {
-                            formUrl = {
-                                workspace: form.workspace,
-                                uri: form.uri
-                            };
-                        } else if (byForm !== undefined) {
-                            formUrl = {
-                                workspace: "Management",
-                                uri: byForm
-                            };
-                        }
                     }
-                    
-                    formControl.setCurrentFormUrl(formUrl);
-
-                    await formControl.createControl(htmlElements.formSelectorContainer);
                 }
+
+                // Sets the current formurl and creates the control
+                formControl.setCurrentFormUrl(formUrl);
+
+                await formControl.createControl(htmlElements.formSelectorContainer);
             }
         });
 
@@ -192,7 +194,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
     createFormByCollection(
         htmlElements: CollectionFormHtmlElements,
-        elements: Array<Mof.DmObject>, 
         configuration: IFormConfiguration) {
 
         const itemContainer = htmlElements.itemContainer;
@@ -205,7 +206,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createFormByCollection(htmlElements, elements, configuration);
+                tthis.createFormByCollection(htmlElements, configuration);
             }
         }
 
@@ -217,40 +218,60 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {
+
+            const tab = tabs[n] as Mof.DmObject;
+            
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
 
-            // Do it asynchronously. 
-            window.setTimeout(() => {
-                let form = $("<div />");
-                const tab = tabs[n] as Mof.DmObject;
-                if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
-                    const tableForm = new TableForm();
-                    tableForm.elements = elements;
-                    tableForm.formElement = tab;
-                    tableForm.workspace = this.workspace;
-                    tableForm.extentUri = this.extentUri;
-                    tableForm.createFormByCollection(form, configuration);
-                } else {
-                    form.addClass('alert alert-warning');
-                    const nameValue = tab.get('name', Mof.ObjectType.String);
-                    let name = tab.metaClass.uri;
-                    if (nameValue !== undefined) {
-                        name = `${nameValue} (${tab.metaClass.uri})`;
+            // The function which is capable to create the content of the tab
+            // This function must be indirectly created since it works in the enumeration value
+            const tabCreationFunction = function(tab:DmObject, form: JQuery)
+            {
+                return async () => {
+
+                    const parameter = {} as ClientItems.IGetRootElementsParameter;
+                    const viewNodeUrl = tab.get(_TableForm.viewNode, ObjectType.Single) as DmObject;
+                    if (viewNodeUrl !== undefined) {
+                        parameter.viewNode = viewNodeUrl.uri;
                     }
 
-                    form.text('Unknown tab: ' + name);
-                }
+                    // Load the object for the specific form
+                    const elements = await ClientItems.getRootElements(
+                        tthis.workspace, tthis.extentUri, parameter);
 
-                itemContainer.append(form);
-                tabCount--;
+                    if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
+                        const tableForm = new TableForm();
+                        tableForm.elements = elements;
+                        tableForm.formElement = tab;
+                        tableForm.workspace = tthis.workspace;
+                        tableForm.extentUri = tthis.extentUri;
+                        tableForm.createFormByCollection(form, configuration);
+                    } else {
+                        form.addClass('alert alert-warning');
+                        const nameValue = tab.get('name', Mof.ObjectType.String);
+                        let name = tab.metaClass.uri;
+                        if (nameValue !== undefined) {
+                            name = `${nameValue} (${tab.metaClass.uri})`;
+                        }
 
-                if (tabCount === 0) {
-                    // Removes the loading information
-                    creatingElements.remove();
-                }
-            });
+                        form.text('Unknown form type for tab: ' + name);
+                    }
+
+                    tabCount--;
+
+                    if (tabCount === 0) {
+                        // Removes the loading information
+                        creatingElements.remove();
+                    }
+                };
+            }
+
+            let tabFormContainer = $("<div />");
+            itemContainer.append(tabFormContainer);
+            // Do it asynchronously. 
+            window.setTimeout(tabCreationFunction(tab, tabFormContainer));
         }
     }
 }

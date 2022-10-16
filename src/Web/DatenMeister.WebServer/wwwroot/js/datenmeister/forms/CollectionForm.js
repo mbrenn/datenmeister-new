@@ -7,15 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, DataLoader, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, ClientItems, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
+    var _TableForm = DatenMeister_class_1._DatenMeister._Forms._TableForm;
     class CollectionFormHtmlElements {
     }
     exports.CollectionFormHtmlElements = CollectionFormHtmlElements;
     /*
-        Creates a form containing a collection of items.
+        Creates a form containing a collection of root items of an extent
         The input for this type is a collection of elements
     */
     class CollectionFormCreator {
@@ -35,21 +36,19 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                     tthis.createCollectionForRootElements(htmlElements, workspace, extentUri, configuration);
                 };
             }
-            // Load the object
-            const defer1 = DataLoader.getRootElements(workspace, extentUri);
             // Load the form
             const defer2 = this._overrideFormUrl === undefined ?
                 ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
                 ClientForms.getForm(this._overrideFormUrl, Forms_1.FormType.Collection);
             // Wait for both
-            Promise.all([defer1, defer2]).then(([elements, form]) => __awaiter(this, void 0, void 0, function* () {
+            Promise.all([defer2]).then(([form]) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
-                (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
+                /*            debugElementToDom(elements, "#debug_mofelement");*/
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
-                tthis.createFormByCollection(htmlElements, elements, configuration);
+                tthis.createFormByCollection(htmlElements, configuration);
                 /*
                  Creates the form for the View Mode Selection
                  */
@@ -59,44 +58,47 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                     const htmlViewModeForm = viewModeForm.createForm();
                     viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
                     htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
-                    // Creates the form selection
-                    if (htmlElements.formSelectorContainer !== undefined
-                        && htmlElements.formSelectorContainer !== null) {
-                        htmlElements.formSelectorContainer.empty();
-                        const formControl = new FormSelectionControl_1.FormSelectionControl();
-                        formControl.formSelected.addListener(selectedItem => {
-                            this._overrideFormUrl = selectedItem.selectedForm.uri;
-                            configuration.refreshForm();
-                        });
-                        formControl.formResetted.addListener(() => {
-                            this._overrideFormUrl = undefined;
-                            configuration.refreshForm();
-                        });
-                        let formUrl;
-                        if (this._overrideFormUrl !== undefined) {
+                }
+                // Creates the form selection
+                if (htmlElements.formSelectorContainer !== undefined
+                    && htmlElements.formSelectorContainer !== null) {
+                    // Empty the container for the formselector
+                    htmlElements.formSelectorContainer.empty();
+                    const formControl = new FormSelectionControl_1.FormSelectionControl();
+                    formControl.formSelected.addListener(selectedItem => {
+                        this._overrideFormUrl = selectedItem.selectedForm.uri;
+                        configuration.refreshForm();
+                    });
+                    formControl.formResetted.addListener(() => {
+                        this._overrideFormUrl = undefined;
+                        configuration.refreshForm();
+                    });
+                    let formUrl;
+                    // Tries to retrieve the current form uri
+                    if (this._overrideFormUrl !== undefined) {
+                        formUrl = {
+                            workspace: "Management",
+                            uri: this._overrideFormUrl
+                        };
+                    }
+                    else {
+                        const byForm = form.get(DatenMeister_class_1._DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                        if (form.uri !== undefined && byForm === undefined) {
                             formUrl = {
-                                workspace: "Management",
-                                uri: this._overrideFormUrl
+                                workspace: form.workspace,
+                                uri: form.uri
                             };
                         }
-                        else {
-                            const byForm = form.get(DatenMeister_class_1._DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                            if (form.uri !== undefined && byForm === undefined) {
-                                formUrl = {
-                                    workspace: form.workspace,
-                                    uri: form.uri
-                                };
-                            }
-                            else if (byForm !== undefined) {
-                                formUrl = {
-                                    workspace: "Management",
-                                    uri: byForm
-                                };
-                            }
+                        else if (byForm !== undefined) {
+                            formUrl = {
+                                workspace: "Management",
+                                uri: byForm
+                            };
                         }
-                        formControl.setCurrentFormUrl(formUrl);
-                        yield formControl.createControl(htmlElements.formSelectorContainer);
                     }
+                    // Sets the current formurl and creates the control
+                    formControl.setCurrentFormUrl(formUrl);
+                    yield formControl.createControl(htmlElements.formSelectorContainer);
                 }
             }));
             /*
@@ -109,7 +111,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             htmlElements.itemContainer.empty()
                 .text("Loading content and form...");
         }
-        createFormByCollection(htmlElements, elements, configuration) {
+        createFormByCollection(htmlElements, configuration) {
             const itemContainer = htmlElements.itemContainer;
             if (configuration.isReadOnly === undefined) {
                 configuration.isReadOnly = true;
@@ -117,7 +119,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
-                    tthis.createFormByCollection(htmlElements, elements, configuration);
+                    tthis.createFormByCollection(htmlElements, configuration);
                 };
             }
             itemContainer.empty();
@@ -126,37 +128,49 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             const tabs = this.formElement.get("tab");
             let tabCount = Array.isArray(tabs) ? tabs.length : 0;
             for (let n in tabs) {
+                const tab = tabs[n];
                 if (!tabs.hasOwnProperty(n)) {
                     continue;
                 }
-                // Do it asynchronously. 
-                window.setTimeout(() => {
-                    let form = $("<div />");
-                    const tab = tabs[n];
-                    if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
-                        const tableForm = new TableForm_1.TableForm();
-                        tableForm.elements = elements;
-                        tableForm.formElement = tab;
-                        tableForm.workspace = this.workspace;
-                        tableForm.extentUri = this.extentUri;
-                        tableForm.createFormByCollection(form, configuration);
-                    }
-                    else {
-                        form.addClass('alert alert-warning');
-                        const nameValue = tab.get('name', Mof.ObjectType.String);
-                        let name = tab.metaClass.uri;
-                        if (nameValue !== undefined) {
-                            name = `${nameValue} (${tab.metaClass.uri})`;
+                // The function which is capable to create the content of the tab
+                // This function must be indirectly created since it works in the enumeration value
+                const tabCreationFunction = function (tab, form) {
+                    return () => __awaiter(this, void 0, void 0, function* () {
+                        const parameter = {};
+                        const viewNodeUrl = tab.get(_TableForm.viewNode, Mof_1.ObjectType.Single);
+                        if (viewNodeUrl !== undefined) {
+                            parameter.viewNode = viewNodeUrl.uri;
                         }
-                        form.text('Unknown tab: ' + name);
-                    }
-                    itemContainer.append(form);
-                    tabCount--;
-                    if (tabCount === 0) {
-                        // Removes the loading information
-                        creatingElements.remove();
-                    }
-                });
+                        // Load the object for the specific form
+                        const elements = yield ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
+                        if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
+                            const tableForm = new TableForm_1.TableForm();
+                            tableForm.elements = elements;
+                            tableForm.formElement = tab;
+                            tableForm.workspace = tthis.workspace;
+                            tableForm.extentUri = tthis.extentUri;
+                            tableForm.createFormByCollection(form, configuration);
+                        }
+                        else {
+                            form.addClass('alert alert-warning');
+                            const nameValue = tab.get('name', Mof.ObjectType.String);
+                            let name = tab.metaClass.uri;
+                            if (nameValue !== undefined) {
+                                name = `${nameValue} (${tab.metaClass.uri})`;
+                            }
+                            form.text('Unknown form type for tab: ' + name);
+                        }
+                        tabCount--;
+                        if (tabCount === 0) {
+                            // Removes the loading information
+                            creatingElements.remove();
+                        }
+                    });
+                };
+                let tabFormContainer = $("<div />");
+                itemContainer.append(tabFormContainer);
+                // Do it asynchronously. 
+                window.setTimeout(tabCreationFunction(tab, tabFormContainer));
             }
         }
     }

@@ -9,10 +9,10 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DataView;
 using DatenMeister.Reports.Generic;
 using DatenMeister.TextTemplates;
 

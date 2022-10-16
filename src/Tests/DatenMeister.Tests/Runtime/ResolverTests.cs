@@ -8,11 +8,10 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Modules.DataViews;
+using DatenMeister.DataView;
 using DatenMeister.Plugins;
 using NUnit.Framework;
 

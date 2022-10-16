@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj"/>
-        <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj"/>
+        <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
+        <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Core.Modules.DataViews.Evaluation
+namespace DatenMeister.DataView.Evaluation
 {
     public class FlattenNodeEvaluation : IDataViewNodeEvaluation
     {

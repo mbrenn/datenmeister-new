@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Core.Modules.DataViews
+namespace DatenMeister.DataView
 {
     public class DataViewHelper
     {

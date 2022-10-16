@@ -3,9 +3,8 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.Modules.DataViews;
 
-namespace DatenMeister.DataView.DataViews
+namespace DatenMeister.DataView
 {
     public class DataViewResolveHook : IResolveHook
     {

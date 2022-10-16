@@ -6,7 +6,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Core.Modules.DataViews.Evaluation
+namespace DatenMeister.DataView.Evaluation
 {
     public class SourceExtentNodeEvaluation : IDataViewNodeEvaluation
     {

@@ -1,12 +1,10 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation.Hooks;
-using DatenMeister.Core.Modules.DataViews;
-using DatenMeister.Core.Modules.DataViews.Evaluation;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DataView.DataViews;
+using DatenMeister.DataView.Evaluation;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Modules.DataViews
+namespace DatenMeister.DataView
 {
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class DataViewPlugin : IDatenMeisterPlugin

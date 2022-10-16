@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.Modules.DataViews
+namespace DatenMeister.DataView
 {
     public interface IDataViewNodeEvaluation
     {

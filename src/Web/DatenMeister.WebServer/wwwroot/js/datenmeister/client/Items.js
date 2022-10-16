@@ -113,13 +113,18 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.getItemWithNameAndId = getItemWithNameAndId;
-    function getRootElements(workspace, extentUri) {
+    function getRootElements(workspace, extentUri, parameter) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resultFromServer = yield ApiConnection.get(Settings.baseUrl +
+            let url = Settings.baseUrl +
                 "api/items/get_root_elements/" +
                 encodeURIComponent(workspace) +
                 "/" +
-                encodeURIComponent(extentUri));
+                encodeURIComponent(extentUri);
+            // Checks, if there is a view node being attached
+            if ((parameter === null || parameter === void 0 ? void 0 : parameter.viewNode) !== undefined) {
+                url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
+            }
+            const resultFromServer = yield ApiConnection.get(url);
             const x = JSON.parse(resultFromServer);
             let result = new Array();
             for (let n in x) {

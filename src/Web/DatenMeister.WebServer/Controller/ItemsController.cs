@@ -1,6 +1,8 @@
 ﻿// Configuration parameter which limits the number of elements
 
+#if DEBUG
 #define LimitNumberOfElements
+#endif
 
 using System;
 using System.Collections.Generic;
@@ -260,9 +262,10 @@ namespace DatenMeister.WebServer.Controller
         /// </summary>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUri">Uri of the extent from which the items are retrieved</param>
+        /// <param name="viewNode">The view node being used to filter the items</param>
         /// <returns></returns>
         [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
-        public ActionResult<object> GetRootElements(string workspaceId, string extentUri)
+        public ActionResult<object> GetRootElements(string workspaceId, string extentUri, string? viewNode = null)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
@@ -275,18 +278,23 @@ namespace DatenMeister.WebServer.Controller
             var result = new StringBuilder();
             result.Append('[');
             var komma = string.Empty;
-
-
+            
             var elements = extent.elements().OfType<IElement>();
-
+            
+            /*
+             * Checks, if a view node was specified, if a view node was specified, the elements will be filtered
+             * according the viewnode
+             */
+            if (viewNode != null)
+            {
+                
+            }
 
 #if LimitNumberOfElements
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
-
             elements = elements.Take(100);
-
 #endif
-
+            
             foreach (var item in elements)
             {
                 result.Append(komma);

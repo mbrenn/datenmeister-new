@@ -7,10 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, ClientItems, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, ClientItems, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
+    var _TableForm = DatenMeister_class_1._DatenMeister._Forms._TableForm;
     class CollectionFormHtmlElements {
     }
     exports.CollectionFormHtmlElements = CollectionFormHtmlElements;
@@ -127,39 +128,49 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             const tabs = this.formElement.get("tab");
             let tabCount = Array.isArray(tabs) ? tabs.length : 0;
             for (let n in tabs) {
+                const tab = tabs[n];
                 if (!tabs.hasOwnProperty(n)) {
                     continue;
                 }
-                // Do it asynchronously. 
-                window.setTimeout(() => __awaiter(this, void 0, void 0, function* () {
-                    // Load the object for the specific form
-                    const elements = yield ClientItems.getRootElements(tthis.workspace, tthis.extentUri);
-                    let form = $("<div />");
-                    const tab = tabs[n];
-                    if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
-                        const tableForm = new TableForm_1.TableForm();
-                        tableForm.elements = elements;
-                        tableForm.formElement = tab;
-                        tableForm.workspace = this.workspace;
-                        tableForm.extentUri = this.extentUri;
-                        tableForm.createFormByCollection(form, configuration);
-                    }
-                    else {
-                        form.addClass('alert alert-warning');
-                        const nameValue = tab.get('name', Mof.ObjectType.String);
-                        let name = tab.metaClass.uri;
-                        if (nameValue !== undefined) {
-                            name = `${nameValue} (${tab.metaClass.uri})`;
+                // The function which is capable to create the content of the tab
+                // This function must be indirectly created since it works in the enumeration value
+                const tabCreationFunction = function (tab, form) {
+                    return () => __awaiter(this, void 0, void 0, function* () {
+                        const parameter = {};
+                        const viewNodeUrl = tab.get(_TableForm.viewNode, Mof_1.ObjectType.Single);
+                        if (viewNodeUrl !== undefined) {
+                            parameter.viewNode = viewNodeUrl.uri;
                         }
-                        form.text('Unknown form type for tab: ' + name);
-                    }
-                    itemContainer.append(form);
-                    tabCount--;
-                    if (tabCount === 0) {
-                        // Removes the loading information
-                        creatingElements.remove();
-                    }
-                }));
+                        // Load the object for the specific form
+                        const elements = yield ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
+                        if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
+                            const tableForm = new TableForm_1.TableForm();
+                            tableForm.elements = elements;
+                            tableForm.formElement = tab;
+                            tableForm.workspace = tthis.workspace;
+                            tableForm.extentUri = tthis.extentUri;
+                            tableForm.createFormByCollection(form, configuration);
+                        }
+                        else {
+                            form.addClass('alert alert-warning');
+                            const nameValue = tab.get('name', Mof.ObjectType.String);
+                            let name = tab.metaClass.uri;
+                            if (nameValue !== undefined) {
+                                name = `${nameValue} (${tab.metaClass.uri})`;
+                            }
+                            form.text('Unknown form type for tab: ' + name);
+                        }
+                        tabCount--;
+                        if (tabCount === 0) {
+                            // Removes the loading information
+                            creatingElements.remove();
+                        }
+                    });
+                };
+                let tabFormContainer = $("<div />");
+                itemContainer.append(tabFormContainer);
+                // Do it asynchronously. 
+                window.setTimeout(tabCreationFunction(tab, tabFormContainer));
             }
         }
     }

@@ -148,7 +148,7 @@ export interface IGetRootElementsParameter{
     /**
      * Url to the view node being used to retrieve the elements
      */
-    viewNode: string;    
+    viewNode?: string;    
 }
 
 export async function getRootElements(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<Array<Mof.DmObject>> {

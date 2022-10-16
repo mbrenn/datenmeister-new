@@ -10,12 +10,15 @@ import {debugElementToDom} from "../DomHelper";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import * as IForm from "./Interfaces";
 import * as Mof from "../Mof";
+import {DmObject, ObjectType} from "../Mof";
 import {TableForm} from "./TableForm";
 import * as SIC from "../controls/SelectItemControl";
 import * as Settings from "../Settings";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {FormSelectionControl} from "../controls/FormSelectionControl";
 import {ItemLink} from "../ApiModels";
+import _TableForm = _DatenMeister._Forms._TableForm;
+import {IGetRootElementsParameter} from "../client/Items";
 
 export class CollectionFormHtmlElements
 {
@@ -215,44 +218,60 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {
+
+            const tab = tabs[n] as Mof.DmObject;
+            
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
 
-            // Do it asynchronously. 
-            window.setTimeout(async() => {
+            // The function which is capable to create the content of the tab
+            // This function must be indirectly created since it works in the enumeration value
+            const tabCreationFunction = function(tab:DmObject, form: JQuery)
+            {
+                return async () => {
 
-                // Load the object for the specific form
-                const elements = await ClientItems.getRootElements(tthis.workspace, tthis.extentUri);
-
-                let form = $("<div />");
-                const tab = tabs[n] as Mof.DmObject;
-                if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
-                    const tableForm = new TableForm();
-                    tableForm.elements = elements;
-                    tableForm.formElement = tab;
-                    tableForm.workspace = this.workspace;
-                    tableForm.extentUri = this.extentUri;
-                    tableForm.createFormByCollection(form, configuration);
-                } else {
-                    form.addClass('alert alert-warning');
-                    const nameValue = tab.get('name', Mof.ObjectType.String);
-                    let name = tab.metaClass.uri;
-                    if (nameValue !== undefined) {
-                        name = `${nameValue} (${tab.metaClass.uri})`;
+                    const parameter = {} as ClientItems.IGetRootElementsParameter;
+                    const viewNodeUrl = tab.get(_TableForm.viewNode, ObjectType.Single) as DmObject;
+                    if (viewNodeUrl !== undefined) {
+                        parameter.viewNode = viewNodeUrl.uri;
                     }
 
-                    form.text('Unknown form type for tab: ' + name);
-                }
+                    // Load the object for the specific form
+                    const elements = await ClientItems.getRootElements(
+                        tthis.workspace, tthis.extentUri, parameter);
 
-                itemContainer.append(form);
-                tabCount--;
+                    if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
+                        const tableForm = new TableForm();
+                        tableForm.elements = elements;
+                        tableForm.formElement = tab;
+                        tableForm.workspace = tthis.workspace;
+                        tableForm.extentUri = tthis.extentUri;
+                        tableForm.createFormByCollection(form, configuration);
+                    } else {
+                        form.addClass('alert alert-warning');
+                        const nameValue = tab.get('name', Mof.ObjectType.String);
+                        let name = tab.metaClass.uri;
+                        if (nameValue !== undefined) {
+                            name = `${nameValue} (${tab.metaClass.uri})`;
+                        }
 
-                if (tabCount === 0) {
-                    // Removes the loading information
-                    creatingElements.remove();
-                }
-            });
+                        form.text('Unknown form type for tab: ' + name);
+                    }
+
+                    tabCount--;
+
+                    if (tabCount === 0) {
+                        // Removes the loading information
+                        creatingElements.remove();
+                    }
+                };
+            }
+
+            let tabFormContainer = $("<div />");
+            itemContainer.append(tabFormContainer);
+            // Do it asynchronously. 
+            window.setTimeout(tabCreationFunction(tab, tabFormContainer));
         }
     }
 }

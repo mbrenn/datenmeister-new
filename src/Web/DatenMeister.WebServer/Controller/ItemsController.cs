@@ -255,6 +255,12 @@ namespace DatenMeister.WebServer.Controller
             return ItemWithNameAndId.Create(foundElement)!;
         }
 
+        /// <summary>
+        /// Gets the root elements of a certain extent and workspace
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUri">Uri of the extent from which the items are retrieved</param>
+        /// <returns></returns>
         [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
         public ActionResult<object> GetRootElements(string workspaceId, string extentUri)
         {

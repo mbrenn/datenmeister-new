@@ -126,51 +126,54 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 viewModeForm.viewModeSelected.addListener(
                     _ => configuration.refreshForm());
 
-                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm)
+                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+            }
 
-                // Creates the form selection
-                if (htmlElements.formSelectorContainer !== undefined
-                    && htmlElements.formSelectorContainer !== null) {
-                    htmlElements.formSelectorContainer.empty();
+            // Creates the form selection
+            if (htmlElements.formSelectorContainer !== undefined
+                && htmlElements.formSelectorContainer !== null) {
+                // Empty the container for the formselector
+                htmlElements.formSelectorContainer.empty();
 
-                    const formControl = new FormSelectionControl();
-                    formControl.formSelected.addListener(
-                        selectedItem => {
-                            this._overrideFormUrl = selectedItem.selectedForm.uri;
-                            configuration.refreshForm();
-                        });
-                    formControl.formResetted.addListener(
-                        () => {
-                            this._overrideFormUrl = undefined;
-                            configuration.refreshForm();
-                        });
+                const formControl = new FormSelectionControl();
+                formControl.formSelected.addListener(
+                    selectedItem => {
+                        this._overrideFormUrl = selectedItem.selectedForm.uri;
+                        configuration.refreshForm();
+                    });
+                formControl.formResetted.addListener(
+                    () => {
+                        this._overrideFormUrl = undefined;
+                        configuration.refreshForm();
+                    });
 
-                    let formUrl:ItemLink;
+                let formUrl: ItemLink;
 
-                    if (this._overrideFormUrl !== undefined) {
+                // Tries to retrieve the current form uri
+                if (this._overrideFormUrl !== undefined) {
+                    formUrl = {
+                        workspace: "Management",
+                        uri: this._overrideFormUrl
+                    };
+                } else {
+                    const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                    if (form.uri !== undefined && byForm === undefined) {
+                        formUrl = {
+                            workspace: form.workspace,
+                            uri: form.uri
+                        };
+                    } else if (byForm !== undefined) {
                         formUrl = {
                             workspace: "Management",
-                            uri: this._overrideFormUrl
+                            uri: byForm
                         };
-                    } else {
-                        const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                        if (form.uri !== undefined && byForm === undefined) {
-                            formUrl = {
-                                workspace: form.workspace,
-                                uri: form.uri
-                            };
-                        } else if (byForm !== undefined) {
-                            formUrl = {
-                                workspace: "Management",
-                                uri: byForm
-                            };
-                        }
                     }
-                    
-                    formControl.setCurrentFormUrl(formUrl);
-
-                    await formControl.createControl(htmlElements.formSelectorContainer);
                 }
+
+                // Sets the current formurl and creates the control
+                formControl.setCurrentFormUrl(formUrl);
+
+                await formControl.createControl(htmlElements.formSelectorContainer);
             }
         });
 
@@ -240,7 +243,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                         name = `${nameValue} (${tab.metaClass.uri})`;
                     }
 
-                    form.text('Unknown tab: ' + name);
+                    form.text('Unknown form type for tab: ' + name);
                 }
 
                 itemContainer.append(form);

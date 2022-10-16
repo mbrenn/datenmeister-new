@@ -3,7 +3,7 @@
  */
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as VML from "./ViewModeLogic";
-import * as DataLoader from "../client/Items";
+import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
 import {FormType} from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
@@ -56,14 +56,13 @@ export class CollectionFormHtmlElements
 }
 
 /*
-    Creates a form containing a collection of items. 
+    Creates a form containing a collection of root items of an extent 
     The input for this type is a collection of elements
 */
 export class CollectionFormCreator implements IForm.IFormNavigation {
     extentUri: string;
     formElement: Mof.DmObject;
     workspace: string;
-
 
     /**
      * Defines the form url being used to select the form for the object form.
@@ -96,9 +95,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             }
         }
 
-        // Load the object
-        const defer1 = DataLoader.getRootElements(workspace, extentUri);
-
         // Load the form
         const defer2 =
             this._overrideFormUrl === undefined ?
@@ -106,15 +102,15 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 ClientForms.getForm(this._overrideFormUrl, FormType.Collection);
 
         // Wait for both
-        Promise.all([defer1, defer2]).then(async ([elements, form]) => {
+        Promise.all([defer2]).then(async ([form]) => {
             tthis.formElement = form;
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
 
-            debugElementToDom(elements, "#debug_mofelement");
+/*            debugElementToDom(elements, "#debug_mofelement");*/
             debugElementToDom(form, "#debug_formelement");
 
-            tthis.createFormByCollection(htmlElements, elements, configuration);
+            tthis.createFormByCollection(htmlElements, configuration);
 
             /* 
              Creates the form for the View Mode Selection
@@ -195,7 +191,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
     createFormByCollection(
         htmlElements: CollectionFormHtmlElements,
-        elements: Array<Mof.DmObject>, 
         configuration: IFormConfiguration) {
 
         const itemContainer = htmlElements.itemContainer;
@@ -208,7 +203,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createFormByCollection(htmlElements, elements, configuration);
+                tthis.createFormByCollection(htmlElements, configuration);
             }
         }
 
@@ -225,7 +220,11 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             }
 
             // Do it asynchronously. 
-            window.setTimeout(() => {
+            window.setTimeout(async() => {
+
+                // Load the object for the specific form
+                const elements = await ClientItems.getRootElements(tthis.workspace, tthis.extentUri);
+
                 let form = $("<div />");
                 const tab = tabs[n] as Mof.DmObject;
                 if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {

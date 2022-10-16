@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, DataLoader, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, ClientItems, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -15,7 +15,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
     }
     exports.CollectionFormHtmlElements = CollectionFormHtmlElements;
     /*
-        Creates a form containing a collection of items.
+        Creates a form containing a collection of root items of an extent
         The input for this type is a collection of elements
     */
     class CollectionFormCreator {
@@ -35,21 +35,19 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                     tthis.createCollectionForRootElements(htmlElements, workspace, extentUri, configuration);
                 };
             }
-            // Load the object
-            const defer1 = DataLoader.getRootElements(workspace, extentUri);
             // Load the form
             const defer2 = this._overrideFormUrl === undefined ?
                 ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
                 ClientForms.getForm(this._overrideFormUrl, Forms_1.FormType.Collection);
             // Wait for both
-            Promise.all([defer1, defer2]).then(([elements, form]) => __awaiter(this, void 0, void 0, function* () {
+            Promise.all([defer2]).then(([form]) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
-                (0, DomHelper_1.debugElementToDom)(elements, "#debug_mofelement");
+                /*            debugElementToDom(elements, "#debug_mofelement");*/
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
-                tthis.createFormByCollection(htmlElements, elements, configuration);
+                tthis.createFormByCollection(htmlElements, configuration);
                 /*
                  Creates the form for the View Mode Selection
                  */
@@ -112,7 +110,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             htmlElements.itemContainer.empty()
                 .text("Loading content and form...");
         }
-        createFormByCollection(htmlElements, elements, configuration) {
+        createFormByCollection(htmlElements, configuration) {
             const itemContainer = htmlElements.itemContainer;
             if (configuration.isReadOnly === undefined) {
                 configuration.isReadOnly = true;
@@ -120,7 +118,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             const tthis = this;
             if (configuration.refreshForm === undefined) {
                 configuration.refreshForm = () => {
-                    tthis.createFormByCollection(htmlElements, elements, configuration);
+                    tthis.createFormByCollection(htmlElements, configuration);
                 };
             }
             itemContainer.empty();
@@ -133,7 +131,9 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                     continue;
                 }
                 // Do it asynchronously. 
-                window.setTimeout(() => {
+                window.setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                    // Load the object for the specific form
+                    const elements = yield ClientItems.getRootElements(tthis.workspace, tthis.extentUri);
                     let form = $("<div />");
                     const tab = tabs[n];
                     if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
@@ -159,7 +159,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                         // Removes the loading information
                         creatingElements.remove();
                     }
-                });
+                }));
             }
         }
     }

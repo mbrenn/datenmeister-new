@@ -112,7 +112,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
             var zipCodeModel =
-                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?fn=" +
+                typesWorkspace.FindObjectByUri("dm:///_internal/types/internal?fn=" +
                                                 ZipCodeModel.PackagePath);
 
             var dataWorkspace = workspaceLogic.GetDataWorkspace();
@@ -188,7 +188,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
             var zipCodeModel =
-                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?fn=" +
+                typesWorkspace.FindObjectByUri("dm:///_internal/types/internal?fn=" +
                                                 ZipCodeModel.PackagePath) as IElement;
             Assert.That(zipCodeModel, Is.Not.Null);
 

@@ -11,10 +11,12 @@ using System.Text;
 using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DataView;
 using DatenMeister.Json;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Models;
@@ -269,6 +271,7 @@ namespace DatenMeister.WebServer.Controller
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
+            viewNode = HttpUtility.UrlDecode(viewNode);
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, extentUri);
             if (foundElement is not IExtent extent) return NotFound();
@@ -279,7 +282,7 @@ namespace DatenMeister.WebServer.Controller
             result.Append('[');
             var komma = string.Empty;
             
-            var elements = extent.elements().OfType<IElement>();
+            var elements = extent.elements() as IReflectiveCollection;
             
             /*
              * Checks, if a view node was specified, if a view node was specified, the elements will be filtered
@@ -287,12 +290,27 @@ namespace DatenMeister.WebServer.Controller
              */
             if (viewNode != null)
             {
-                
+                var dataviewHandler =
+                    new DataViewEvaluation(_workspaceLogic, _scopeStorage);
+                dataviewHandler.AddDynamicSource("input", elements);
+
+                var viewNodeElement = _workspaceLogic.FindElement(
+                    WorkspaceNames.WorkspaceManagement, viewNode);
+                if (viewNodeElement != null)
+                {
+                    elements = dataviewHandler.GetElementsForViewNode(viewNodeElement);
+                }
+                else
+                {
+                    return new NotFoundResult();
+                }
             }
 
 #if LimitNumberOfElements
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
-            elements = elements.Take(100);
+            var finalElements = elements.Take(100).ToList();
+#else
+            var finalElements = elements.ToList()
 #endif
             
             foreach (var item in elements)
@@ -315,11 +333,10 @@ namespace DatenMeister.WebServer.Controller
             itemUri = HttpUtility.UrlDecode(itemUri);
             var result = new List<ItemWithNameAndId>();
 
-            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri) as IElement;
-
             IUriExtent? extent;
+            
             // Checks, if we have found the item
-            if (foundItem != null)
+            if (_internal.GetItemByUriParameter(workspaceId, itemUri) is IElement foundItem)
             {
                 // Yes, the item was found
                 var container = foundItem;
@@ -330,7 +347,7 @@ namespace DatenMeister.WebServer.Controller
                     container = container.container();
                 }
 
-                int maxIteration = 100;
+                var maxIteration = 100;
                 do
                 {
                     if (container == null)

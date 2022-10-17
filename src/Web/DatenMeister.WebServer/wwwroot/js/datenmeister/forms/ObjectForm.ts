@@ -57,15 +57,15 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     itemId: string;
     workspace: string;
 
-    createFormByObject(htmlElements: ObjectFormHtmlElements, configuration: IFormConfiguration) {
+    async createFormByObject(htmlElements: ObjectFormHtmlElements, configuration: IFormConfiguration) {
         // First, store the parent and the configuration
         this.domContainer = htmlElements.itemContainer;
         this.htmlItemContainer = configuration;
 
-        this.createFormForItem();
+        await this.createFormForItem();
     }
 
-    private createFormForItem() {
+    private async createFormForItem() {
         const configuration = this.htmlItemContainer;
         const tthis = this;
 
@@ -93,7 +93,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 detailForm.formElement = tab;
                 detailForm.element = this.element;
 
-                detailForm.createFormByObject(form, configuration);
+                await detailForm.createFormByObject(form, configuration);
                 if (configuration.onCancel !== undefined) {
                     detailForm.onCancel = configuration.onCancel;
                 }
@@ -109,7 +109,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 listForm.formElement = tab;
                 listForm.elements = this.element.get(tab.get("property"));
 
-                listForm.createFormByCollection(form, {isReadOnly: true});
+                await listForm.createFormByCollection(form, {isReadOnly: true});
             } else {
                 form.addClass('alert alert-warning');
                 const nameValue = tab.get('name', Mof.ObjectType.String);

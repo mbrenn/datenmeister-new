@@ -43,6 +43,8 @@ namespace DatenMeister.Forms.Helper
             /// <returns>true, if the form has been modified</returns>
             public bool ModifyForm(FormCreationContext context, IElement form)
             {
+                _parameter.OnCall?.Invoke(context.DetailElement, _parameter);
+                
                 if (
                     FormCreationContext.EvaluateMatching(_parameter, context) && 
                     (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)))

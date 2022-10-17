@@ -84,7 +84,7 @@ namespace DatenMeister.Forms.FormCreator
             var extentFormConfiguration = new CollectionFormConfiguration();
             var extentTypes = extent.GetConfiguration().ExtentTypes;
             extentFormConfiguration.ExtentTypes.AddRange(extentTypes);
-
+           
             return CreateCollectionFormForCollection(
                 extent.elements().TakeFirst(100),
                 creationMode,

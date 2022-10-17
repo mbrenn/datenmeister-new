@@ -545,7 +545,8 @@ namespace DatenMeister.Forms
                     {
                         extentType = extentType,
                         FormType = _DatenMeister._Forms.___FormType.CollectionExtension,
-                        viewModeId = configuration.ViewModeId ?? ""
+                        viewModeId = configuration.ViewModeId ?? "",
+                        metaClass = _DatenMeister.TheOne.Management.__Extent
                     });
 
             // 
@@ -559,7 +560,8 @@ namespace DatenMeister.Forms
                 {
                     DetailElement = extent,
                     FormType = _DatenMeister._Forms.___FormType.Collection,
-                    ExtentType = extentType
+                    ExtentType = extentType,
+                    MetaClass = _DatenMeister.TheOne.Management.__Extent
                 };
 
                 CallPluginsForCollectionOrObjectForm(configuration, formCreationContext, ref foundForm);
@@ -725,11 +727,16 @@ namespace DatenMeister.Forms
         /// <param name="configuration">Used configuration to call the plugins</param>
         /// <param name="formCreationContext">Form Creation context to be used</param>
         /// <param name="foundForm">The form being found</param>
+        /// <param name="overrideParentMetaClassForTabs">If the tabs shall be queried with a specific
+        /// parent metaclass and not by the metaclass of the formCreationContext, then this information
+        /// can be stored here. This is used for table form from the extent in which the parent property
+        /// is the extent and not the item to which is filtered</param>
         /// <returns>Element being called</returns>
         private void CallPluginsForCollectionOrObjectForm(
             FormFactoryConfiguration configuration, 
             FormCreationContext formCreationContext, 
-            ref IElement foundForm)
+            ref IElement foundForm,
+            IElement? overrideParentMetaClassForTabs = null)
         {
             _formPluginState.CallFormsModificationPlugins(
                 configuration,

@@ -22,63 +22,67 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
      */
     class ObjectFormCreator {
         createFormByObject(htmlElements, configuration) {
-            // First, store the parent and the configuration
-            this.domContainer = htmlElements.itemContainer;
-            this.htmlItemContainer = configuration;
-            this.createFormForItem();
+            return __awaiter(this, void 0, void 0, function* () {
+                // First, store the parent and the configuration
+                this.domContainer = htmlElements.itemContainer;
+                this.htmlItemContainer = configuration;
+                yield this.createFormForItem();
+            });
         }
         createFormForItem() {
-            const configuration = this.htmlItemContainer;
-            const tthis = this;
-            if (configuration.refreshForm === undefined) {
-                configuration.refreshForm = () => {
-                    tthis.createFormForItem();
-                };
-            }
-            if (this.element == null)
-                this.element = new Mof.DmObject();
-            const tabs = this.formElement.getAsArray("tab");
-            for (let n in tabs) {
-                if (!tabs.hasOwnProperty(n)) {
-                    continue;
+            return __awaiter(this, void 0, void 0, function* () {
+                const configuration = this.htmlItemContainer;
+                const tthis = this;
+                if (configuration.refreshForm === undefined) {
+                    configuration.refreshForm = () => {
+                        tthis.createFormForItem();
+                    };
                 }
-                let form = $("<div />");
-                const tab = tabs[n];
-                if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__RowForm_Uri) {
-                    const detailForm = new DetailForm.RowForm();
-                    detailForm.workspace = this.workspace;
-                    detailForm.extentUri = this.extentUri;
-                    detailForm.itemId = this.itemId;
-                    detailForm.formElement = tab;
-                    detailForm.element = this.element;
-                    detailForm.createFormByObject(form, configuration);
-                    if (configuration.onCancel !== undefined) {
-                        detailForm.onCancel = configuration.onCancel;
+                if (this.element == null)
+                    this.element = new Mof.DmObject();
+                const tabs = this.formElement.getAsArray("tab");
+                for (let n in tabs) {
+                    if (!tabs.hasOwnProperty(n)) {
+                        continue;
                     }
-                    if (configuration.onSubmit !== undefined) {
-                        detailForm.onChange = configuration.onSubmit;
+                    let form = $("<div />");
+                    const tab = tabs[n];
+                    if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__RowForm_Uri) {
+                        const detailForm = new DetailForm.RowForm();
+                        detailForm.workspace = this.workspace;
+                        detailForm.extentUri = this.extentUri;
+                        detailForm.itemId = this.itemId;
+                        detailForm.formElement = tab;
+                        detailForm.element = this.element;
+                        yield detailForm.createFormByObject(form, configuration);
+                        if (configuration.onCancel !== undefined) {
+                            detailForm.onCancel = configuration.onCancel;
+                        }
+                        if (configuration.onSubmit !== undefined) {
+                            detailForm.onChange = configuration.onSubmit;
+                        }
                     }
-                }
-                else if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
-                    const listForm = new TableForm_1.TableForm();
-                    listForm.workspace = this.workspace;
-                    listForm.extentUri = this.extentUri;
-                    listForm.itemId = this.itemId;
-                    listForm.formElement = tab;
-                    listForm.elements = this.element.get(tab.get("property"));
-                    listForm.createFormByCollection(form, { isReadOnly: true });
-                }
-                else {
-                    form.addClass('alert alert-warning');
-                    const nameValue = tab.get('name', Mof.ObjectType.String);
-                    let name = tab.metaClass.uri;
-                    if (nameValue !== undefined) {
-                        name = `${nameValue} (${tab.metaClass.uri})`;
+                    else if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
+                        const listForm = new TableForm_1.TableForm();
+                        listForm.workspace = this.workspace;
+                        listForm.extentUri = this.extentUri;
+                        listForm.itemId = this.itemId;
+                        listForm.formElement = tab;
+                        listForm.elements = this.element.get(tab.get("property"));
+                        yield listForm.createFormByCollection(form, { isReadOnly: true });
                     }
-                    form.text('Unknown tab: ' + name);
+                    else {
+                        form.addClass('alert alert-warning');
+                        const nameValue = tab.get('name', Mof.ObjectType.String);
+                        let name = tab.metaClass.uri;
+                        if (nameValue !== undefined) {
+                            name = `${nameValue} (${tab.metaClass.uri})`;
+                        }
+                        form.text('Unknown tab: ' + name);
+                    }
+                    this.domContainer.append(form);
                 }
-                this.domContainer.append(form);
-            }
+            });
         }
     }
     exports.ObjectFormCreator = ObjectFormCreator;

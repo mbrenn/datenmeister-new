@@ -59,20 +59,22 @@ namespace DatenMeister.Extent.Forms
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListMoveUpItem, "⬆️")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Table
+                            FormType = _DatenMeister._Forms.___FormType.Table,
+                            ParentMetaClass = _DatenMeister.TheOne.Management.__Extent
                         });
-                    
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListMoveDownItem, "⬇️")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Table
+                            FormType = _DatenMeister._Forms.___FormType.Table,
+                            ParentMetaClass = _DatenMeister.TheOne.Management.__Extent
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListDeleteItem, "❌")
                         {
-                            FormType = _DatenMeister._Forms.___FormType.Table
+                            FormType = _DatenMeister._Forms.___FormType.Table,
+                            ParentMetaClass = _DatenMeister.TheOne.Management.__Extent
                         });
 
                     formsPlugin.FormModificationPlugins.Add(

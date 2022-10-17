@@ -32,11 +32,18 @@ namespace DatenMeister.Forms.Helper
         /// If the element is set, then the predicate must return true, to add the filter element 
         /// </summary>
         public Func<IObject?, bool>? PredicateForElement { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the delegate that will be called, when the 
         /// the filter is evaluated. This allows setting a breakpoint for the debugger
         /// during issue finding
+        /// </summary>
+        public Action<IObject?, ActionButtonAdderParameter>? OnCall { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the delegate that will be called, when the 
+        /// the filter is evaluated and a match has been figured out.
+        /// This allows setting a breakpoint for the debugger during issue finding
         /// </summary>
         public Action<IObject?, ActionButtonAdderParameter>? OnCallSuccess { get; set; }
 

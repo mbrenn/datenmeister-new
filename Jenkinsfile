@@ -2,26 +2,32 @@ pipeline {
     agent any
 
     stages {
-	    stage ('Build Debug') 
+        stage ('Builds')
         {
-            steps 
-            {
-                sh """ 
-                    cd src/Web/DatenMeister.WebServer
-                    npm install 
-                    cd ../../..
-                """
+            parallel
+            {        
+                stage ('Build Debug') 
+                {
+                    steps 
+                    {
+                        sh """ 
+                            cd src/Web/DatenMeister.WebServer
+                            npm install 
+                            cd ../../..
+                        """
 
- 			    // Shell build step
-                dotnetBuild project: 'datenmeister-new.sln', workDirectory: 'src'
-            }
-	    }
+                        // Shell build step
+                        dotnetBuild project: 'datenmeister-new.sln', workDirectory: 'src'
+                    }
+                }
 
-        stage ('Build Release')
-        {
-            steps
-            {
-                dotnetBuild configuration: 'Release', project: 'datenmeister-new.sln', workDirectory: 'src'
+                stage ('Build Release')
+                {
+                    steps
+                    {
+                        dotnetBuild configuration: 'Release', project: 'datenmeister-new.sln', workDirectory: 'src'
+                    }
+                }
             }
         }
 

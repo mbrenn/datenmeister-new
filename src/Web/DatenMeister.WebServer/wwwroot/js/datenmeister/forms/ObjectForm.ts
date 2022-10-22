@@ -54,7 +54,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     formElement: Mof.DmObject;
     domContainer: JQuery;
     htmlItemContainer: IFormConfiguration;
-    itemId: string;
+    itemUrl: string;    
     workspace: string;
 
     async createFormByObject(htmlElements: ObjectFormHtmlElements, configuration: IFormConfiguration) {
@@ -89,7 +89,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 const detailForm = new DetailForm.RowForm();
                 detailForm.workspace = this.workspace;
                 detailForm.extentUri = this.extentUri;
-                detailForm.itemId = this.itemId;
+                detailForm.itemUrl = this.itemUrl;
                 detailForm.formElement = tab;
                 detailForm.element = this.element;
 
@@ -105,7 +105,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 const listForm = new TableForm();
                 listForm.workspace = this.workspace;
                 listForm.extentUri = this.extentUri;
-                listForm.itemId = this.itemId;
+                listForm.itemUrl = this.itemUrl;
                 listForm.formElement = tab;
                 listForm.elements = this.element.get(tab.get("property"));
 
@@ -224,7 +224,7 @@ export class ObjectFormCreatorForItem {
 
             const objectFormCreator = new ObjectFormCreator();
             objectFormCreator.workspace = this.workspace;
-            objectFormCreator.itemId = this.itemUri;
+            objectFormCreator.itemUrl = this.itemUri;
             objectFormCreator.element = element1;
             objectFormCreator.formElement = form;
 

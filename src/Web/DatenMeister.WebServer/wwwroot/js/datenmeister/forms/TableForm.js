@@ -54,7 +54,7 @@ define(["require", "exports", "./FieldFactory", "../Settings"], function (requir
                                             "ItemAction/Extent.CreateItemInProperty?workspace=" +
                                             encodeURIComponent(tthis.workspace) +
                                             "&itemUrl=" +
-                                            encodeURIComponent(tthis.itemId) +
+                                            encodeURIComponent(tthis.itemUrl) +
                                             "&metaclass=" +
                                             encodeURIComponent(uri) +
                                             "&property=" +

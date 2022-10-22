@@ -80,24 +80,27 @@ namespace DatenMeister.Extent.Forms
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
-                        formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveUpItem, "⬆️")
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveUpItem, "⬆️I")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Table,
-                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName)
+                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
+                            IsReadOnly = false
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
-                        formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveDownItem, "⬇️")
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveDownItem, "⬇️I")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Table,
-                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName)
+                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
+                            IsReadOnly = false
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
-                        formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "❌")
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "❌I")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Table,
-                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName)
+                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
+                            IsReadOnly = false
                         });
 
                     formsPlugin.FormModificationPlugins.Add(

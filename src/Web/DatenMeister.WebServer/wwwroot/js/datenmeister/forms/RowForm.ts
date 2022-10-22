@@ -18,7 +18,7 @@ export enum SubmitMethod
 export class RowForm implements InterfacesForms.IForm {
     workspace: string;
     extentUri: string;
-    itemId: string;
+    itemUrl: string;
     element: Mof.DmObject;
     formElement: Mof.DmObject;
 
@@ -55,11 +55,11 @@ export class RowForm implements InterfacesForms.IForm {
         const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
         table.append(tableBody);
 
-        const itemUri = this.itemId === undefined
+        const itemUri = this.itemUrl === undefined
             ? ""
-            : tthis.itemId.indexOf('#') === -1
-                ? tthis.extentUri + "#" + tthis.itemId
-                : tthis.itemId;
+            : tthis.itemUrl.indexOf('#') === -1
+                ? tthis.extentUri + "#" + tthis.itemUrl
+                : tthis.itemUrl;
 
         // Creates the fields for the item
         for (let n in fields) {

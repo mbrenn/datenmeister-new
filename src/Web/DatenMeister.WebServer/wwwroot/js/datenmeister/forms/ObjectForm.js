@@ -51,7 +51,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                         const detailForm = new DetailForm.RowForm();
                         detailForm.workspace = this.workspace;
                         detailForm.extentUri = this.extentUri;
-                        detailForm.itemId = this.itemId;
+                        detailForm.itemUrl = this.itemUrl;
                         detailForm.formElement = tab;
                         detailForm.element = this.element;
                         yield detailForm.createFormByObject(form, configuration);
@@ -66,7 +66,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                         const listForm = new TableForm_1.TableForm();
                         listForm.workspace = this.workspace;
                         listForm.extentUri = this.extentUri;
-                        listForm.itemId = this.itemId;
+                        listForm.itemUrl = this.itemUrl;
                         listForm.formElement = tab;
                         listForm.elements = this.element.get(tab.get("property"));
                         yield listForm.createFormByCollection(form, { isReadOnly: true });
@@ -160,7 +160,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                 this.htmlElements.itemContainer.empty();
                 const objectFormCreator = new ObjectFormCreator();
                 objectFormCreator.workspace = this.workspace;
-                objectFormCreator.itemId = this.itemUri;
+                objectFormCreator.itemUrl = this.itemUri;
                 objectFormCreator.element = element1;
                 objectFormCreator.formElement = form;
                 if (this.formMode === Forms_2.FormMode.ViewMode) {

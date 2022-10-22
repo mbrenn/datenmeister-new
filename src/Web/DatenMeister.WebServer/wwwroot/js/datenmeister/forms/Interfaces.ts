@@ -3,6 +3,13 @@
 export interface IFormNavigation {
     workspace: string;
     extentUri: string;
+
+    /**
+     * This is the item for which the form is currently displayed. It may be the same as the extent
+     * in case the extent is being shown 
+     */
+    itemUrl: string;  
+     
     formElement: Mof.DmObject;
 }
 

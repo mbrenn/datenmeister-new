@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 
 namespace DatenMeister.Forms.FormModifications
@@ -44,6 +45,12 @@ namespace DatenMeister.Forms.FormModifications
         /// The view mode to which the action button shall be added
         /// </summary>
         public string? ViewMode { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the information, if the associated form creation context is read-only or not.
+        /// If the parameter is not set, then there is no information and no filter will be applied 
+        /// </summary>
+        public bool? IsReadOnly { get; set; }
 
         /// <summary>
         /// Checks whether two form creation contexts are missing.
@@ -54,26 +61,29 @@ namespace DatenMeister.Forms.FormModifications
         /// <returns>true, if the two elements are fitting</returns>
         public static bool EvaluateMatching(FormCreationContext template, FormCreationContext instance)
         {
-         return ((template.FormType == null ||
-                  template.FormType == instance.FormType) &&
+         return (template.FormType == null ||
+                 template.FormType == instance.FormType) &&
 
-                 (string.IsNullOrEmpty(template.ExtentType) ||
-                  template.ExtentType == instance.ExtentType) &&
+                (string.IsNullOrEmpty(template.ExtentType) ||
+                 template.ExtentType == instance.ExtentType) &&
 
-                 (template.DetailElement == null ||
-                  template.DetailElement?.@equals(instance.DetailElement) == true) &&
+                (template.DetailElement == null ||
+                 template.DetailElement?.equals(instance.DetailElement) == true) &&
 
-                 (string.IsNullOrEmpty(template.ParentPropertyName) ||
-                  template.ParentPropertyName == instance.ParentPropertyName) &&
+                (string.IsNullOrEmpty(template.ParentPropertyName) ||
+                 template.ParentPropertyName == instance.ParentPropertyName) &&
 
-                 (template.MetaClass == null ||
-                  template.MetaClass?.@equals(instance.MetaClass) == true) &&
+                (template.MetaClass == null ||
+                 template.MetaClass?.equals(instance.MetaClass) == true) &&
 
-                 (string.IsNullOrEmpty(template.ViewMode) ||
-                  template.ViewMode == instance.ViewMode) &&
+                (string.IsNullOrEmpty(template.ViewMode) ||
+                 template.ViewMode == instance.ViewMode) &&
 
-                 (template.ParentMetaClass == null ||
-                  template.ParentMetaClass?.@equals(instance.ParentMetaClass) == true))!;
+                (template.IsReadOnly == null ||
+                template.IsReadOnly == instance.IsReadOnly) &&
+
+                (template.ParentMetaClass == null ||
+                 template.ParentMetaClass?.equals(instance.ParentMetaClass) == true);
         }
 
         public override string ToString()

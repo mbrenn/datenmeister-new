@@ -9,7 +9,7 @@ export class TableForm implements InterfacesForms.IForm {
     elements: Array<Mof.DmObject>;
     extentUri: string;
     formElement: Mof.DmObject;
-    itemId: string;
+    itemUrl: string;
     workspace: string;
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
@@ -61,7 +61,7 @@ export class TableForm implements InterfacesForms.IForm {
                                 "ItemAction/Extent.CreateItemInProperty?workspace=" +
                                 encodeURIComponent(tthis.workspace) +
                                 "&itemUrl=" +
-                                encodeURIComponent(tthis.itemId) +
+                                encodeURIComponent(tthis.itemUrl) +
                                 "&metaclass=" +
                                 encodeURIComponent(uri) +
                                 "&property=" +

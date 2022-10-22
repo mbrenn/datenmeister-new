@@ -66,6 +66,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
     extentUri: string;
     formElement: Mof.DmObject;
     workspace: string;
+    itemUrl: string;
 
     /**
      * Defines the form url being used to select the form for the object form.
@@ -109,6 +110,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             tthis.formElement = form;
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
+            tthis.itemUrl = extentUri;
 
 /*            debugElementToDom(elements, "#debug_mofelement");*/
             debugElementToDom(form, "#debug_formelement");

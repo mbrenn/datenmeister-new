@@ -310,7 +310,7 @@ namespace DatenMeister.WebServer.Controller
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
             var finalElements = elements.Take(100).ToList();
 #else
-            var finalElements = elements.ToList()
+            var finalElements = elements.ToList();
 #endif
             
             foreach (var item in elements)

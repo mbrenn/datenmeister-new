@@ -14,6 +14,8 @@ namespace DatenMeister.Extent.Forms
     public class ItemsFormsPlugin : IDatenMeisterPlugin
     {
         public const string NavigationItemDelete = "Item.Delete";
+        public const string NavigationItemPropertyMoveUpItem = "Item.MoveUpItem";
+        public const string NavigationItemPropertyMoveDownItem = "Item.MoveDownItem";
         public const string NavigationExtentsListViewItem = "ExtentsList.ViewItem";
         public const string NavigationExtentsListDeleteItem = "ExtentsList.DeleteItem";
         public const string NavigationExtentsListMoveUpItem = "ExtentsList.MoveUpItem";
@@ -75,6 +77,27 @@ namespace DatenMeister.Extent.Forms
                         {
                             FormType = _DatenMeister._Forms.___FormType.Table,
                             ParentMetaClass = _DatenMeister.TheOne.Management.__Extent
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveUpItem, "⬆️")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Table,
+                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName)
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveDownItem, "⬇️")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Table,
+                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName)
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "❌")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Table,
+                            PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName)
                         });
 
                     formsPlugin.FormModificationPlugins.Add(

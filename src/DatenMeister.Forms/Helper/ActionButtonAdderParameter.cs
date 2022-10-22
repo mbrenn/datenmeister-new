@@ -32,6 +32,13 @@ namespace DatenMeister.Forms.Helper
         /// If the element is set, then the predicate must return true, to add the filter element 
         /// </summary>
         public Func<IObject?, bool>? PredicateForElement { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the predicate that can be used as an additional filtering option fitting
+        /// to the FormCreationContext. If the element is set, than it will be added as an AND
+        /// evaluation to all the other filterings.
+        /// </summary>
+        public Func<FormCreationContext, bool>? PredicateForContext { get; set; }
 
         /// <summary>
         /// Gets or sets the delegate that will be called, when the 

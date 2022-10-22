@@ -520,7 +520,8 @@ namespace DatenMeister.Forms
                     {
                         extentType = extentType,
                         FormType = _DatenMeister._Forms.___FormType.Collection,
-                        viewModeId = configuration.ViewModeId ?? ""
+                        viewModeId = configuration.ViewModeId ?? "",
+                        metaClass = _DatenMeister.TheOne.Management.__Extent
                     }).FirstOrDefault();
 
                 if (foundForm != null)

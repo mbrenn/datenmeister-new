@@ -46,6 +46,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 tthis.formElement = form;
                 tthis.workspace = workspace;
                 tthis.extentUri = extentUri;
+                tthis.itemUrl = extentUri;
                 /*            debugElementToDom(elements, "#debug_mofelement");*/
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
                 tthis.createFormByCollection(htmlElements, configuration);

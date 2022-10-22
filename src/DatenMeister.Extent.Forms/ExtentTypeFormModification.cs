@@ -38,7 +38,6 @@ namespace DatenMeister.Extent.Forms
         {
             var result = false;
             result |= IncludeCreationButtonsForClassifierOfExtentType(context, form);
-
             result |= IncludeExtentTypesForTableFormOfExtent(context, form);
 
             return result;

@@ -9,7 +9,7 @@ export class TableForm implements InterfacesForms.IForm {
     elements: Array<Mof.DmObject>;
     extentUri: string;
     formElement: Mof.DmObject;
-    itemId: string;
+    itemUrl: string;
     workspace: string;
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
@@ -18,7 +18,7 @@ export class TableForm implements InterfacesForms.IForm {
         this.createFormByCollection(this.parentHtml, this.configuration);
     }
 
-    createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+    async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         this.parentHtml = parent;
         this.configuration = configuration;
         const tthis = this;
@@ -61,7 +61,7 @@ export class TableForm implements InterfacesForms.IForm {
                                 "ItemAction/Extent.CreateItemInProperty?workspace=" +
                                 encodeURIComponent(tthis.workspace) +
                                 "&itemUrl=" +
-                                encodeURIComponent(tthis.itemId) +
+                                encodeURIComponent(tthis.itemUrl) +
                                 "&metaclass=" +
                                 encodeURIComponent(uri) +
                                 "&property=" +
@@ -144,11 +144,9 @@ export class TableForm implements InterfacesForms.IForm {
                                 form: this
                             });
 
-                        fieldElement.createDom(element).then(
-                            x => {
-                                cell.append(x);
-                            }
-                        );
+                        const dom = await fieldElement.createDom(element);
+                        
+                        cell.append(dom);
                         row.append(cell);
                     }
 

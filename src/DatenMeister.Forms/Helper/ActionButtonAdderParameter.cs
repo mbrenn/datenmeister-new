@@ -34,9 +34,23 @@ namespace DatenMeister.Forms.Helper
         public Func<IObject?, bool>? PredicateForElement { get; set; }
         
         /// <summary>
+        /// Gets or sets the predicate that can be used as an additional filtering option fitting
+        /// to the FormCreationContext. If the element is set, than it will be added as an AND
+        /// evaluation to all the other filterings.
+        /// </summary>
+        public Func<FormCreationContext, bool>? PredicateForContext { get; set; }
+
+        /// <summary>
         /// Gets or sets the delegate that will be called, when the 
         /// the filter is evaluated. This allows setting a breakpoint for the debugger
         /// during issue finding
+        /// </summary>
+        public Action<IObject?, ActionButtonAdderParameter>? OnCall { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the delegate that will be called, when the 
+        /// the filter is evaluated and a match has been figured out.
+        /// This allows setting a breakpoint for the debugger during issue finding
         /// </summary>
         public Action<IObject?, ActionButtonAdderParameter>? OnCallSuccess { get; set; }
 

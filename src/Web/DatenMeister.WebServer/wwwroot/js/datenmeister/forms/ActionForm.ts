@@ -3,7 +3,7 @@ import {DmObject} from "../Mof";
 import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
 import * as ObjectForm from "./ObjectForm";
-import {DetailFormActions} from "../FormActions";
+import * as FormActions from "../FormActions";
 import * as ClientForms from '../client/Forms'
 import * as ClientElements from '../client/Elements'
 import * as ClientItems from '../client/Items'
@@ -38,7 +38,7 @@ export async function createActionFormForEmptyObject(
         let loadedElement = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
         
         // Executes the detail form
-        await DetailFormActions.execute(
+        await FormActions.execute(
             actionName,
             creator,
             loadedElement,
@@ -49,7 +49,7 @@ export async function createActionFormForEmptyObject(
     /* Loads the object being used as a base for the new action.
     * Usually context information from GET-Query are retrieved. Or some default fields are filled out
     */
-    let element = await DetailFormActions.loadObjectForAction(actionName);
+    let element = await FormActions.loadObjectForAction(actionName);
     if (element === undefined) {
         element = new DmObject();
     }
@@ -73,7 +73,7 @@ export async function createActionFormForEmptyObject(
     }
 
     // Asks the detail form actions, whether we have a form for the action itself
-    form = await DetailFormActions.loadFormForAction(actionName);
+    form = await FormActions.loadFormForAction(actionName);
     if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {

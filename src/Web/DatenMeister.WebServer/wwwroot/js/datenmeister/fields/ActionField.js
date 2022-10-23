@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "./Interfaces"], function (require, exports, FormActions_1, Interfaces_1) {
+define(["require", "exports", "../FormActions", "./Interfaces"], function (require, exports, FormActions, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
@@ -19,7 +19,7 @@ define(["require", "exports", "../FormActions", "./Interfaces"], function (requi
                 const action = this.field.get('actionName');
                 const parameter = this.field.get('parameter');
                 this.inConfirmation = false;
-                const requireConfirmation = FormActions_1.DetailFormActions.requiresConfirmation(action);
+                const requireConfirmation = FormActions.requiresConfirmation(action);
                 this.button = $("<button class='btn btn-secondary' type='button'></button>");
                 this.button.text(title);
                 this.button.on('click', () => {
@@ -27,7 +27,7 @@ define(["require", "exports", "../FormActions", "./Interfaces"], function (requi
                     // If this is the case, then the button itself is asking for confirmation upon the first 
                     // click. Only then, the DetailForm itself is executed. 
                     if (!requireConfirmation || tthis.inConfirmation) {
-                        FormActions_1.DetailFormActions.execute(action, tthis.form, dmElement, parameter);
+                        FormActions.execute(action, tthis.form, dmElement, parameter);
                     }
                     if (requireConfirmation && !tthis.inConfirmation) {
                         this.button.text("Are you sure?");

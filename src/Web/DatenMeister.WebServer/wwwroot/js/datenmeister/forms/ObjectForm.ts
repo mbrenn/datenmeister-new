@@ -54,18 +54,18 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     formElement: Mof.DmObject;
     domContainer: JQuery;
     htmlItemContainer: IFormConfiguration;
-    itemId: string;
+    itemUrl: string;    
     workspace: string;
 
-    createFormByObject(htmlElements: ObjectFormHtmlElements, configuration: IFormConfiguration) {
+    async createFormByObject(htmlElements: ObjectFormHtmlElements, configuration: IFormConfiguration) {
         // First, store the parent and the configuration
         this.domContainer = htmlElements.itemContainer;
         this.htmlItemContainer = configuration;
 
-        this.createFormForItem();
+        await this.createFormForItem();
     }
 
-    private createFormForItem() {
+    private async createFormForItem() {
         const configuration = this.htmlItemContainer;
         const tthis = this;
 
@@ -89,11 +89,11 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 const detailForm = new DetailForm.RowForm();
                 detailForm.workspace = this.workspace;
                 detailForm.extentUri = this.extentUri;
-                detailForm.itemId = this.itemId;
+                detailForm.itemUrl = this.itemUrl;
                 detailForm.formElement = tab;
                 detailForm.element = this.element;
 
-                detailForm.createFormByObject(form, configuration);
+                await detailForm.createFormByObject(form, configuration);
                 if (configuration.onCancel !== undefined) {
                     detailForm.onCancel = configuration.onCancel;
                 }
@@ -105,11 +105,11 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 const listForm = new TableForm();
                 listForm.workspace = this.workspace;
                 listForm.extentUri = this.extentUri;
-                listForm.itemId = this.itemId;
+                listForm.itemUrl = this.itemUrl;
                 listForm.formElement = tab;
                 listForm.elements = this.element.get(tab.get("property"));
 
-                listForm.createFormByCollection(form, {isReadOnly: true});
+                await listForm.createFormByCollection(form, {isReadOnly: true});
             } else {
                 form.addClass('alert alert-warning');
                 const nameValue = tab.get('name', Mof.ObjectType.String);
@@ -224,7 +224,7 @@ export class ObjectFormCreatorForItem {
 
             const objectFormCreator = new ObjectFormCreator();
             objectFormCreator.workspace = this.workspace;
-            objectFormCreator.itemId = this.itemUri;
+            objectFormCreator.itemUrl = this.itemUri;
             objectFormCreator.element = element1;
             objectFormCreator.formElement = form;
 

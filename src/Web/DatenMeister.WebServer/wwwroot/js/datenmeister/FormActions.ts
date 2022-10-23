@@ -11,7 +11,12 @@ import * as DatenMeisterModel from "./models/DatenMeister.class";
 
 import {SubmitMethod} from "./forms/RowForm";
 import {_DatenMeister} from "./models/DatenMeister.class";
-import {moveItemInExtentDown, moveItemInExtentUp} from "./client/Actions.Items";
+import {
+    moveItemInCollectionDown,
+    moveItemInCollectionUp,
+    moveItemInExtentDown,
+    moveItemInExtentUp
+} from "./client/Actions.Items";
 
 export module DetailFormActions {
 
@@ -114,7 +119,13 @@ export module DetailFormActions {
     // parameter: These parameter are retrieved from the actionForm definition from the server and are forwarded
     //    This supports the server to provide additional parameter for an action button
     // submitMethod: Describes which button the user has clicked
-    export async function execute(actionName: string, form: IIForms.IFormNavigation, itemUrl: string, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod) {
+    export async function execute(
+        actionName: string, 
+        form: IIForms.IFormNavigation,
+        itemUrl: string,
+        element: DmObject, 
+        parameter?: DmObject,
+        submitMethod?: SubmitMethod) {
         let workspaceId;
         let extentUri;
         let p = new URLSearchParams(window.location.search);
@@ -177,6 +188,20 @@ export module DetailFormActions {
                 break;
             case "Item.Delete":
                 await FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                break;
+            case "Item.MoveDownItem":
+                await FormActions.itemMoveDownItem(
+                    form.workspace,
+                    form.itemUrl,
+                    form.formElement.get(_DatenMeister._Forms._TableForm.property), 
+                    itemUrl);
+                break;
+            case "Item.MoveUpItem":
+                await FormActions.itemMoveUpItem(
+                    form.workspace,
+                    form.itemUrl,
+                    form.formElement.get(_DatenMeister._Forms._TableForm.property),
+                    itemUrl);
                 break;
             case "ZipExample.CreateExample":
                 const id = element.get('id');
@@ -335,15 +360,15 @@ export class FormActions {
             encodeURIComponent(_DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri) +
             "&workspaceId=" + encodeURIComponent(workspaceId);
     }
-    
+
     static workspaceExtentLoadAndCreateNavigateTo(workspaceId: string) {
         document.location.href =
             Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
     }
-    
+
     static itemMoveOrCopyNavigateTo(workspaceId: string, itemUri: string) {
         document.location.href =
-            Settings.baseUrl + "ItemAction/Item.MoveOrCopy?workspaceId=" + encodeURIComponent(workspaceId) 
+            Settings.baseUrl + "ItemAction/Item.MoveOrCopy?workspaceId=" + encodeURIComponent(workspaceId)
             + "&itemUri=" + encodeURIComponent(itemUri);
     }
 
@@ -462,7 +487,7 @@ export class FormActions {
     }
 
     static async itemDelete(workspace: string, extentUri: string, itemUri: string) {
-        
+
         const data = await ItemClient.deleteItem(workspace, itemUri);
 
         const success = data.success;
@@ -471,6 +496,16 @@ export class FormActions {
         } else {
             alert('Deletion was not successful.');
         }
+    }
+
+    static async itemMoveUpItem(workspace: string, parentUri: string, property: string, itemUrl: string) {
+        await moveItemInCollectionUp(workspace, parentUri, property, itemUrl);
+        document.location.reload();
+    }
+
+    static async itemMoveDownItem(workspace: string, parentUri: string, property: string, itemUrl: string) {
+        await moveItemInCollectionDown(workspace, parentUri, property, itemUrl);
+        document.location.reload();
     }
 
     static extentsListViewItem(workspace: string, extentUri: string, itemId: string) {
@@ -488,7 +523,7 @@ export class FormActions {
             encodeURIComponent(itemId),
             {}
         );
-        
+
         const success = data.success;
         if (success) {
             document.location.reload();
@@ -496,12 +531,12 @@ export class FormActions {
             alert('Deletion was not successful.');
         }
     }
-    
+
     static async extentsListMoveUpItem(workspace: string, extentUri: string, itemId: string) {
         await moveItemInExtentUp(workspace, extentUri, itemId);
         document.location.reload();
     }
-    
+
     static async extentsListMoveDownItem(workspace: string, extentUri: string, itemId: string) {
         await moveItemInExtentDown(workspace, extentUri, itemId);
         document.location.reload();

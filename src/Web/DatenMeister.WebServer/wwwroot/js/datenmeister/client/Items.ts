@@ -144,14 +144,26 @@ export async function getItemWithNameAndId(workspace: string, url: string): Prom
     }
 }
 
-export async function getRootElements(workspace: string, extentUri: string): Promise<Array<Mof.DmObject>> {
-    const resultFromServer = await ApiConnection.get<string>(
-        Settings.baseUrl +
+export interface IGetRootElementsParameter{
+    /**
+     * Url to the view node being used to retrieve the elements
+     */
+    viewNode?: string;    
+}
+
+export async function getRootElements(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<Array<Mof.DmObject>> {
+    let url = Settings.baseUrl +
         "api/items/get_root_elements/" +
         encodeURIComponent(workspace) +
         "/" +
-        encodeURIComponent(extentUri)
-    );
+        encodeURIComponent(extentUri);
+
+    // Checks, if there is a view node being attached
+    if (parameter?.viewNode !== undefined) {
+        url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
+    }
+
+    const resultFromServer = await ApiConnection.get<string>(url);
 
     const x = JSON.parse(resultFromServer);
     let result = new Array<Mof.DmObject>();

@@ -38,15 +38,20 @@ namespace DatenMeister.Core.Runtime.Workspaces
             return element;
         }
 
-        public static IObject? FindElementByUri(this Workspace workspace, string uri)
+        public static IObject? FindObjectByUri(this Workspace workspace, string uri)
         {
-            return FindElementByUri(
+            return FindObjectByUri(
                 workspace.extent.Select(x => x as IUriExtent)
                     .Where(x => x != null)!,
                 uri);
         }
+        
+        public static IElement? FindElement(this IWorkspaceLogic workspaceLogic, string workspace, string uri)
+        {
+            return workspaceLogic.FindItem(workspace, uri) as IElement;
+        }
 
-        public static IObject? FindElementByUri(this IEnumerable<IUriExtent> extents, string uri)
+        public static IObject? FindObjectByUri(this IEnumerable<IUriExtent> extents, string uri)
         {
             foreach (var extent in extents)
             {

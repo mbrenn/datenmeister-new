@@ -167,6 +167,12 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     case "Item.Delete":
                         yield FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                         break;
+                    case "Item.MoveDownItem":
+                        yield FormActions.itemMoveDownItem(form.workspace, form.itemUrl, form.formElement.get(DatenMeister_class_1._DatenMeister._Forms._TableForm.property), itemUrl);
+                        break;
+                    case "Item.MoveUpItem":
+                        yield FormActions.itemMoveUpItem(form.workspace, form.itemUrl, form.formElement.get(DatenMeister_class_1._DatenMeister._Forms._TableForm.property), itemUrl);
+                        break;
                     case "ZipExample.CreateExample":
                         const id = element.get('id');
                         yield ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
@@ -389,6 +395,18 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 else {
                     alert('Deletion was not successful.');
                 }
+            });
+        }
+        static itemMoveUpItem(workspace, parentUri, property, itemUrl) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInCollectionUp)(workspace, parentUri, property, itemUrl);
+                document.location.reload();
+            });
+        }
+        static itemMoveDownItem(workspace, parentUri, property, itemUrl) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInCollectionDown)(workspace, parentUri, property, itemUrl);
+                document.location.reload();
             });
         }
         static extentsListViewItem(workspace, extentUri, itemId) {

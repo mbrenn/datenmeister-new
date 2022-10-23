@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Core.Modules.DataViews
+namespace DatenMeister.DataView
 {
     public class DataViewExtentPlugin : IEnumerable<IExtent>
     {

@@ -9,7 +9,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Proxies.ReadOnly;
 
-namespace DatenMeister.Core.Modules.DataViews
+namespace DatenMeister.DataView
 {
     public class DataViewExtent : IUriExtent
     {

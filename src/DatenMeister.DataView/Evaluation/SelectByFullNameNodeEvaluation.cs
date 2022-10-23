@@ -7,7 +7,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Core.Modules.DataViews.Evaluation
+namespace DatenMeister.DataView.Evaluation
 {
     public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
     {

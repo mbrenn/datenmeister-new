@@ -43,11 +43,11 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField",
                 table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-rowform'></table>");
                 const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr></tbody>");
                 table.append(tableBody);
-                const itemUri = this.itemId === undefined
+                const itemUri = this.itemUrl === undefined
                     ? ""
-                    : tthis.itemId.indexOf('#') === -1
-                        ? tthis.extentUri + "#" + tthis.itemId
-                        : tthis.itemId;
+                    : tthis.itemUrl.indexOf('#') === -1
+                        ? tthis.extentUri + "#" + tthis.itemUrl
+                        : tthis.itemUrl;
                 // Creates the fields for the item
                 for (let n in fields) {
                     if (!fields.hasOwnProperty(n))

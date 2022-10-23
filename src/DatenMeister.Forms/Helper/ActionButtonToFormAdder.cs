@@ -43,9 +43,13 @@ namespace DatenMeister.Forms.Helper
             /// <returns>true, if the form has been modified</returns>
             public bool ModifyForm(FormCreationContext context, IElement form)
             {
+                _parameter.OnCall?.Invoke(context.DetailElement, _parameter);
+
                 if (
-                    FormCreationContext.EvaluateMatching(_parameter, context) && 
-                    (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)))
+                    FormCreationContext.EvaluateMatching(_parameter, context) &&
+                    (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)) &&
+                    (_parameter.PredicateForContext == null || _parameter.PredicateForContext(context))
+                )
                 {
                     // Calls the OnCall method to allow property debugging
                     _parameter.OnCallSuccess?.Invoke(context.DetailElement, _parameter);
@@ -87,10 +91,10 @@ namespace DatenMeister.Forms.Helper
                             {
                                 parameter.set(key, value);
                             }
-                            
+
                             actionField.set(_DatenMeister._Forms._ActionFieldData.parameter, parameter);
                         }
-                        
+
                         if (_parameter.ActionButtonPosition == -1)
                         {
                             fields.add(actionField);

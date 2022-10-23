@@ -31,7 +31,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                 yield DataLoader.setProperties("Data", temporaryElement.uri, element);
                 let loadedElement = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
                 // Executes the detail form
-                yield FormActions_1.DetailFormActions.execute(actionName, creator, undefined, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
+                yield FormActions_1.DetailFormActions.execute(actionName, creator, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
                 method);
             });
             /* Loads the object being used as a base for the new action.

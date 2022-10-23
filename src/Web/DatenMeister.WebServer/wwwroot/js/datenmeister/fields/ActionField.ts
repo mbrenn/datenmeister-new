@@ -28,7 +28,7 @@ export class Field extends BaseField implements IFormField {
                 // If this is the case, then the button itself is asking for confirmation upon the first 
                 // click. Only then, the DetailForm itself is executed. 
                 if (!requireConfirmation || tthis.inConfirmation) {
-                    DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement, parameter);
+                    DetailFormActions.execute(action, tthis.form, dmElement, parameter);
                 }                
                 
                 if (requireConfirmation && !tthis.inConfirmation) {

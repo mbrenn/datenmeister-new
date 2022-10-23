@@ -41,7 +41,6 @@ export async function createActionFormForEmptyObject(
         await DetailFormActions.execute(
             actionName,
             creator,
-            undefined,
             loadedElement,
             undefined, // The action form cannot provide additional parameters as the ActionButton
             method);

@@ -98,7 +98,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         // parameter: These parameter are retrieved from the actionForm definition from the server and are forwarded
         //    This supports the server to provide additional parameter for an action button
         // submitMethod: Describes which button the user has clicked
-        function execute(actionName, form, itemUrl, element, parameter, submitMethod) {
+        function execute(actionName, form, element, parameter, submitMethod) {
             var _a, _b, _c, _d, _e;
             return __awaiter(this, void 0, void 0, function* () {
                 let workspaceId;
@@ -156,22 +156,22 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                         FormActions.itemNavigateTo(form.workspace, element.uri);
                         break;
                     case "ExtentsList.DeleteItem":
-                        yield FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.extentsListDeleteItem(form.workspace, form.extentUri, element.uri);
                         break;
                     case "ExtentsList.MoveUpItem":
-                        yield FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, element.uri);
                         break;
                     case "ExtentsList.MoveDownItem":
-                        yield FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, element.uri);
                         break;
                     case "Item.Delete":
-                        yield FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                        yield FormActions.itemDelete(form.workspace, form.extentUri, element.uri);
                         break;
                     case "Item.MoveDownItem":
-                        yield FormActions.itemMoveDownItem(form.workspace, form.itemUrl, form.formElement.get(DatenMeister_class_1._DatenMeister._Forms._TableForm.property), itemUrl);
+                        yield FormActions.itemMoveDownItem(form.workspace, form.itemUrl, form.formElement.get(DatenMeister_class_1._DatenMeister._Forms._TableForm.property), element.uri);
                         break;
                     case "Item.MoveUpItem":
-                        yield FormActions.itemMoveUpItem(form.workspace, form.itemUrl, form.formElement.get(DatenMeister_class_1._DatenMeister._Forms._TableForm.property), itemUrl);
+                        yield FormActions.itemMoveUpItem(form.workspace, form.itemUrl, form.formElement.get(DatenMeister_class_1._DatenMeister._Forms._TableForm.property), element.uri);
                         break;
                     case "ZipExample.CreateExample":
                         const id = element.get('id');

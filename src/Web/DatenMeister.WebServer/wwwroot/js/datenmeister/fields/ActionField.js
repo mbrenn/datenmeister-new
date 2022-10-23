@@ -27,7 +27,7 @@ define(["require", "exports", "../FormActions", "./Interfaces"], function (requi
                     // If this is the case, then the button itself is asking for confirmation upon the first 
                     // click. Only then, the DetailForm itself is executed. 
                     if (!requireConfirmation || tthis.inConfirmation) {
-                        FormActions_1.DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement, parameter);
+                        FormActions_1.DetailFormActions.execute(action, tthis.form, dmElement, parameter);
                     }
                     if (requireConfirmation && !tthis.inConfirmation) {
                         this.button.text("Are you sure?");

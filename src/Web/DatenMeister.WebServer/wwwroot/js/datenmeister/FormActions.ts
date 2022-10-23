@@ -18,6 +18,62 @@ import {
     moveItemInExtentUp
 } from "./client/Actions.Items";
 
+/**
+ * This interface describes one module being used for the action form
+ * One module hosts exactly one action, a plugin can add multiple modules 
+ * to the manager, if one plugin covers multiple modules. 
+ */
+export interface IItemFormActionModule
+{
+    /**
+     * Defines the name of the action. This name is used to look up the action 
+     */
+    actionName: string;
+
+    /**
+     * Defines the verb of the action. This information is used to fill the button
+     */
+    actionVerb: string;
+
+    /**
+     * Loads the object for a certain action. 
+     * Can be undefined, if a default object can be used
+     */
+    loadObject(): Promise<DmObject> | undefined;
+
+    /**
+     * Loads a certain form fitting to the action
+     * Can be undefined, if a default form shall be generated 
+     */
+    loadForm(): Promise<DmObject> | undefined;
+
+    /**
+     * Will be called to execute the action 
+     * @param form The form that has been used to trigger the action by the 
+     * user. It contains additional information of the workspace and extent
+     * @param itemUrl The itemUrl of the element which has been clicked
+     * @param element The element itself which has been clicked
+     * @param parameter The parameters which are provided by the server for this
+     * specific action. These parameters are typically set by the configuration
+     * of the action button
+     * @param submitMethod The type of the submit action being clicked by the
+     * user. 
+     */
+    execute(
+        form: IIForms.IFormNavigation,
+        itemUrl: string,
+        element: DmObject,
+        parameter?: DmObject,
+        submitMethod?: SubmitMethod) : Promise<void>;
+
+    /**
+     * Contains a flag, whether the action is a 'dangerous' action
+     * and a reconfirmation by the user is expected.
+     */
+    requiresConfirmation: boolean | undefined;
+}
+
+
 export module DetailFormActions {
 
     // Loads the object being used for the action. 
@@ -122,7 +178,6 @@ export module DetailFormActions {
     export async function execute(
         actionName: string, 
         form: IIForms.IFormNavigation,
-        itemUrl: string,
         element: DmObject, 
         parameter?: DmObject,
         submitMethod?: SubmitMethod) {
@@ -178,30 +233,30 @@ export module DetailFormActions {
                 FormActions.itemNavigateTo(form.workspace, element.uri);
                 break;
             case "ExtentsList.DeleteItem":
-                await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, itemUrl);
+                await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, element.uri);
                 break;
             case "ExtentsList.MoveUpItem":
-                await FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, itemUrl);
+                await FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, element.uri);
                 break;
             case "ExtentsList.MoveDownItem":
-                await FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, itemUrl);
+                await FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, element.uri);
                 break;
             case "Item.Delete":
-                await FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
+                await FormActions.itemDelete(form.workspace, form.extentUri, element.uri);
                 break;
             case "Item.MoveDownItem":
                 await FormActions.itemMoveDownItem(
                     form.workspace,
                     form.itemUrl,
-                    form.formElement.get(_DatenMeister._Forms._TableForm.property), 
-                    itemUrl);
+                    form.formElement.get(_DatenMeister._Forms._TableForm.property),
+                    element.uri);
                 break;
             case "Item.MoveUpItem":
                 await FormActions.itemMoveUpItem(
                     form.workspace,
                     form.itemUrl,
                     form.formElement.get(_DatenMeister._Forms._TableForm.property),
-                    itemUrl);
+                    element.uri);
                 break;
             case "ZipExample.CreateExample":
                 const id = element.get('id');

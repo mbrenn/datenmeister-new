@@ -34,6 +34,11 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     exports.getModule = getModule;
     function loadObjectForAction(actionName) {
         return __awaiter(this, void 0, void 0, function* () {
+            const foundModule = getModule(actionName);
+            if (foundModule !== undefined) {
+                return foundModule.loadObject();
+            }
+            // Now the default handling
             let p = new URLSearchParams(window.location.search);
             if (actionName === "Extent.Properties.Update") {
                 const workspace = p.get('workspace');
@@ -83,6 +88,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     /* Finds the best form fitting for the action */
     function loadFormForAction(actionName) {
         return __awaiter(this, void 0, void 0, function* () {
+            const foundModule = getModule(actionName);
+            if (foundModule !== undefined) {
+                return foundModule.loadForm();
+            }
             if (actionName === 'Workspace.Extent.LoadOrCreate') {
                 return yield FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
             }
@@ -97,6 +106,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     }
     exports.loadFormForAction = loadFormForAction;
     function requiresConfirmation(actionName) {
+        const foundModule = getModule(actionName);
+        if (foundModule !== undefined) {
+            return foundModule.requiresConfirmation === true;
+        }
         if (actionName === "Item.Delete"
             || actionName === "ExtentsList.DeleteItem"
             || actionName === "Extent.DeleteExtent") {
@@ -118,6 +131,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     function execute(actionName, form, element, parameter, submitMethod) {
         var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function* () {
+            const foundModule = getModule(actionName);
+            if (foundModule !== undefined) {
+                return foundModule.execute(form, element, parameter, submitMethod);
+            }
             let workspaceId;
             let extentUri;
             let p = new URLSearchParams(window.location.search);

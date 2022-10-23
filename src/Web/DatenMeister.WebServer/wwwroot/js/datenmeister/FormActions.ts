@@ -62,7 +62,6 @@ export interface IItemFormActionModule
      */
     execute(
         form: IIForms.IFormNavigation,
-        itemUrl: string,
         element: DmObject,
         parameter?: DmObject,
         submitMethod?: SubmitMethod) : Promise<void>;
@@ -98,7 +97,12 @@ export function getModule(actionName:string): IItemFormActionModule | undefined 
 }
 
 export async function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
+    const foundModule = getModule(actionName);
+    if (foundModule !== undefined) {
+        return foundModule.loadObject();
+    }
 
+    // Now the default handling
     let p = new URLSearchParams(window.location.search);
 
     if (actionName === "Extent.Properties.Update") {
@@ -162,6 +166,11 @@ export async function loadObjectForAction(actionName: string): Promise<DmObject>
 
 /* Finds the best form fitting for the action */
 export async function loadFormForAction(actionName: string) {
+    const foundModule = getModule(actionName);
+    if (foundModule !== undefined) {
+        return foundModule.loadForm();
+    }
+    
     if (actionName === 'Workspace.Extent.LoadOrCreate') {
         return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
     }
@@ -176,6 +185,12 @@ export async function loadFormForAction(actionName: string) {
 }
 
 export function requiresConfirmation(actionName: string): boolean {
+
+    const foundModule = getModule(actionName);
+    if (foundModule !== undefined) {
+        return foundModule.requiresConfirmation === true;
+    }
+    
     if (actionName === "Item.Delete"
         || actionName === "ExtentsList.DeleteItem"
         || actionName === "Extent.DeleteExtent") {
@@ -184,8 +199,6 @@ export function requiresConfirmation(actionName: string): boolean {
         return false;
     }
 }
-
-
 
 // Calls to execute the form actions.
 // actionName: Name of the action to be executed. This is a simple string describing the action
@@ -201,6 +214,12 @@ export async function execute(
     element: DmObject,
     parameter?: DmObject,
     submitMethod?: SubmitMethod) {
+
+    const foundModule = getModule(actionName);
+    if (foundModule !== undefined) {
+        return foundModule.execute(form, element, parameter, submitMethod);
+    }
+    
     let workspaceId;
     let extentUri;
     let p = new URLSearchParams(window.location.search);

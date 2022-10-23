@@ -52,6 +52,20 @@ export async function createActionFormForEmptyObject(
     let element = await FormActions.loadObjectForAction(actionName);
     if (element === undefined) {
         element = new DmObject();
+        
+        // Sets the metaclass and workspace id upon url, if not created by Modules
+        let p = new URLSearchParams(window.location.search);
+        const metaclass = p.get('metaclass');
+        const result = new DmObject();
+        if (metaclass !== undefined && metaclass !== null) {
+            result.setMetaClassByUri(metaclass);
+        }
+
+        const workspaceId = p.get('workspaceId');
+        if (workspaceId !== undefined) {
+            result.set('workspaceId', workspaceId);
+        }
+
     }
 
     // If, we have created the element, we will now have to create the temporary object on the server

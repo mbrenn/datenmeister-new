@@ -10,6 +10,4 @@ export function init(actionName: string, metaClass: undefined | string, formUri:
         metaClass,
         {isReadOnly: false, allowAddingNewProperties: true, formUri: formUri},
         actionName);
-    
-    
 }

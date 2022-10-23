@@ -1,4 +1,4 @@
-define(["require", "exports", "./ZipCodeModules"], function (require, exports, ZipCodeModules) {
+define(["require", "exports", "./ZipCodeModules", "./ExtentModules", "./ItemModules", "./WorkspaceModules"], function (require, exports, ZipCodeModules, ExtentModules, ItemModules, WorkspaceModules) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadDefaultModules = void 0;
@@ -6,6 +6,9 @@ define(["require", "exports", "./ZipCodeModules"], function (require, exports, Z
     function loadDefaultModules() {
         if (!loaded) {
             ZipCodeModules.loadModules();
+            ExtentModules.loadModules();
+            ItemModules.loadModules();
+            WorkspaceModules.loadModules();
         }
         loaded = true;
     }

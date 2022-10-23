@@ -40,6 +40,17 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
             let element = yield FormActions.loadObjectForAction(actionName);
             if (element === undefined) {
                 element = new Mof_1.DmObject();
+                // Sets the metaclass and workspace id upon url, if not created by Modules
+                let p = new URLSearchParams(window.location.search);
+                const metaclass = p.get('metaclass');
+                const result = new Mof_1.DmObject();
+                if (metaclass !== undefined && metaclass !== null) {
+                    result.setMetaClassByUri(metaclass);
+                }
+                const workspaceId = p.get('workspaceId');
+                if (workspaceId !== undefined) {
+                    result.set('workspaceId', workspaceId);
+                }
             }
             // If, we have created the element, we will now have to create the temporary object on the server
             const temporaryElement = yield ClientElements.createTemporaryElement((_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri);

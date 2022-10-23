@@ -43,13 +43,12 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                 // Sets the metaclass and workspace id upon url, if not created by Modules
                 let p = new URLSearchParams(window.location.search);
                 const metaclass = p.get('metaclass');
-                const result = new Mof_1.DmObject();
                 if (metaclass !== undefined && metaclass !== null) {
-                    result.setMetaClassByUri(metaclass);
+                    element.setMetaClassByUri(metaclass);
                 }
                 const workspaceId = p.get('workspaceId');
                 if (workspaceId !== undefined) {
-                    result.set('workspaceId', workspaceId);
+                    element.set('workspaceId', workspaceId);
                 }
             }
             // If, we have created the element, we will now have to create the temporary object on the server

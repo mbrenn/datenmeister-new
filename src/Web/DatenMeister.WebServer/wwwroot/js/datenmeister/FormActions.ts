@@ -52,7 +52,6 @@ export interface IItemFormActionModule
      * Will be called to execute the action 
      * @param form The form that has been used to trigger the action by the 
      * user. It contains additional information of the workspace and extent
-     * @param itemUrl The itemUrl of the element which has been clicked
      * @param element The element itself which has been clicked
      * @param parameter The parameters which are provided by the server for this
      * specific action. These parameters are typically set by the configuration
@@ -73,7 +72,29 @@ export interface IItemFormActionModule
     requiresConfirmation: boolean | undefined;
 }
 
-let modules: Array<IItemFormActionModule>;
+/**
+ * Defines the base implementation which can be overridden
+ */
+export class ItemFormActionModuleBase implements IItemFormActionModule
+{
+    actionName: string;
+    actionVerb: string;
+    requiresConfirmation: boolean | undefined;
+
+    execute(form: IIForms.IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        return Promise.resolve(undefined);
+    }
+
+    loadForm(): Promise<DmObject> | undefined {
+        return Promise.resolve(undefined);
+    }
+
+    loadObject(): Promise<DmObject> | undefined {
+        return Promise.resolve(undefined);
+    }    
+}
+
+let modules: Array<IItemFormActionModule> = new Array<IItemFormActionModule>();
 
 export function addModule(module: IItemFormActionModule) {
     // Checks, if there is already a module register. If yes, throw an exception
@@ -126,13 +147,6 @@ export async function loadObjectForAction(actionName: string): Promise<DmObject>
             result.set('workspaceId', workspaceId);
         }
 
-        return Promise.resolve(result);
-    }
-
-    if (actionName === "Zipcode.Test") {
-
-        const result = new DmObject();
-        result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
         return Promise.resolve(result);
     }
 
@@ -297,16 +311,6 @@ export async function execute(
                 form.formElement.get(_DatenMeister._Forms._TableForm.property),
                 element.uri);
             break;
-        case "ZipExample.CreateExample":
-            const id = element.get('id');
-            await ApiConnection.post(
-                Settings.baseUrl + "api/zip/create",
-                {workspace: id})
-                .then(
-                    data => {
-                        document.location.reload();
-                    });
-            break;
         case "Workspace.Extent.Xmi.Create.Navigate": {
             const workspaceIdParameter = parameter?.get('workspaceId') ?? "";
             await FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
@@ -414,9 +418,6 @@ export async function execute(
 
         case "JSON.Item.Alert":
             alert(JSON.stringify(createJsonFromObject(element)));
-            break;
-        case "Zipcode.Test":
-            alert(element.get('zip')?.toString() ?? "No Zip Code given");
             break;
 
         case "Item.MoveOrCopy":

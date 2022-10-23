@@ -10,9 +10,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Extents", "./client/Items", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./forms/RowForm", "./models/DatenMeister.class", "./client/Actions.Items"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, ECClient, ItemClient, FormClient, ActionClient, DatenMeisterModel, RowForm_1, DatenMeister_class_1, Actions_Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.FormActions = exports.execute = exports.requiresConfirmation = exports.loadFormForAction = exports.loadObjectForAction = exports.getModule = exports.addModule = void 0;
+    exports.FormActions = exports.execute = exports.requiresConfirmation = exports.loadFormForAction = exports.loadObjectForAction = exports.getModule = exports.addModule = exports.ItemFormActionModuleBase = void 0;
     var _MoveOrCopyAction = DatenMeister_class_1._DatenMeister._Actions._MoveOrCopyAction;
-    let modules;
+    /**
+     * Defines the base implementation which can be overridden
+     */
+    class ItemFormActionModuleBase {
+        execute(form, element, parameter, submitMethod) {
+            return Promise.resolve(undefined);
+        }
+        loadForm() {
+            return Promise.resolve(undefined);
+        }
+        loadObject() {
+            return Promise.resolve(undefined);
+        }
+    }
+    exports.ItemFormActionModuleBase = ItemFormActionModuleBase;
+    let modules = new Array();
     function addModule(module) {
         // Checks, if there is already a module register. If yes, throw an exception
         if (getModule(module.actionName) !== undefined) {
@@ -57,11 +72,6 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                 if (workspaceId !== undefined) {
                     result.set('workspaceId', workspaceId);
                 }
-                return Promise.resolve(result);
-            }
-            if (actionName === "Zipcode.Test") {
-                const result = new Mof_1.DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
                 return Promise.resolve(result);
             }
             if (actionName === "Workspace.Extent.Xmi.Create") {
@@ -129,7 +139,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
     //    This supports the server to provide additional parameter for an action button
     // submitMethod: Describes which button the user has clicked
     function execute(actionName, form, element, parameter, submitMethod) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             const foundModule = getModule(actionName);
             if (foundModule !== undefined) {
@@ -206,13 +216,6 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     break;
                 case "Item.MoveUpItem":
                     yield FormActions.itemMoveUpItem(form.workspace, form.itemUrl, form.formElement.get(DatenMeister_class_1._DatenMeister._Forms._TableForm.property), element.uri);
-                    break;
-                case "ZipExample.CreateExample":
-                    const id = element.get('id');
-                    yield ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
-                        .then(data => {
-                        document.location.reload();
-                    });
                     break;
                 case "Workspace.Extent.Xmi.Create.Navigate": {
                     const workspaceIdParameter = (_a = parameter === null || parameter === void 0 ? void 0 : parameter.get('workspaceId')) !== null && _a !== void 0 ? _a : "";
@@ -293,9 +296,6 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
                     break;
                 case "JSON.Item.Alert":
                     alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
-                    break;
-                case "Zipcode.Test":
-                    alert((_e = (_d = element.get('zip')) === null || _d === void 0 ? void 0 : _d.toString()) !== null && _e !== void 0 ? _e : "No Zip Code given");
                     break;
                 case "Item.MoveOrCopy":
                 case "Action.Execute":

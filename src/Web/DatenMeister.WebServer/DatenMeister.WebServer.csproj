@@ -20,6 +20,8 @@
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Actions.Items.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Types.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\controls\TypeSelectionControl.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\DefaultLoader.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ZipCodeModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\page\Actions.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Actions.Item.ts" />
   </ItemGroup>

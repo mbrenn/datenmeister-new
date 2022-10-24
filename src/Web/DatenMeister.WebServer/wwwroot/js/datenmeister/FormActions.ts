@@ -105,6 +105,11 @@ export function getModule(actionName:string): IItemFormActionModule | undefined 
     return undefined;
 }
 
+
+/*
+    Supporting methods
+ */
+
 export async function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
     const foundModule = getModule(actionName);
     if (foundModule !== undefined) {
@@ -132,11 +137,7 @@ export function requiresConfirmation(actionName: string): boolean {
         return foundModule.requiresConfirmation === true;
     }
     
-    if (actionName === "ExtentsList.DeleteItem") {
-        return true;
-    } else {
-        return false;
-    }
+    return false;
 }
 
 // Calls to execute the form actions.
@@ -159,28 +160,5 @@ export async function execute(
         return foundModule.execute(form, element, parameter, submitMethod);
     }
 
-    switch (actionName) {
-        case "JSON.Item.Alert":
-            alert(JSON.stringify(createJsonFromObject(element)));
-            break;
-        
-        case "Action.Execute":
-            // Executes the action directly
-            const result = await ActionClient.executeAction(
-                element.workspace,
-                element.uri
-            );
-
-            if (result.success) {
-                alert('Success');
-            } else {
-                alert('Failure');
-            }
-
-            break;
-
-        default:
-            alert("Unknown action type: " + actionName);
-            break;
-    }
+    alert("Unknown action type: " + actionName);
 }

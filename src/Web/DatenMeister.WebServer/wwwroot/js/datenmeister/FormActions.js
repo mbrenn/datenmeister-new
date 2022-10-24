@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Mof", "./client/Actions"], function (require, exports, Mof_1, ActionClient) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.execute = exports.requiresConfirmation = exports.loadFormForAction = exports.loadObjectForAction = exports.getModule = exports.addModule = exports.ItemFormActionModuleBase = void 0;
@@ -49,6 +49,9 @@ define(["require", "exports", "./Mof", "./client/Actions"], function (require, e
         return undefined;
     }
     exports.getModule = getModule;
+    /*
+        Supporting methods
+     */
     function loadObjectForAction(actionName) {
         return __awaiter(this, void 0, void 0, function* () {
             const foundModule = getModule(actionName);
@@ -76,12 +79,7 @@ define(["require", "exports", "./Mof", "./client/Actions"], function (require, e
         if (foundModule !== undefined) {
             return foundModule.requiresConfirmation === true;
         }
-        if (actionName === "ExtentsList.DeleteItem") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return false;
     }
     exports.requiresConfirmation = requiresConfirmation;
     // Calls to execute the form actions.
@@ -98,24 +96,7 @@ define(["require", "exports", "./Mof", "./client/Actions"], function (require, e
             if (foundModule !== undefined) {
                 return foundModule.execute(form, element, parameter, submitMethod);
             }
-            switch (actionName) {
-                case "JSON.Item.Alert":
-                    alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
-                    break;
-                case "Action.Execute":
-                    // Executes the action directly
-                    const result = yield ActionClient.executeAction(element.workspace, element.uri);
-                    if (result.success) {
-                        alert('Success');
-                    }
-                    else {
-                        alert('Failure');
-                    }
-                    break;
-                default:
-                    alert("Unknown action type: " + actionName);
-                    break;
-            }
+            alert("Unknown action type: " + actionName);
         });
     }
     exports.execute = execute;

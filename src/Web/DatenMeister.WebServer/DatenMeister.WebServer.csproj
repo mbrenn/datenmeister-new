@@ -20,6 +20,7 @@
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Actions.Items.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\client\Types.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\controls\TypeSelectionControl.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ActionModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\DefaultLoader.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ExtentModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\FormModules.ts" />

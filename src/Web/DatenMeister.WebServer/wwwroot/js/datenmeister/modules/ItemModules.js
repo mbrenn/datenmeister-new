@@ -69,7 +69,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     }
     class ItemDeleteAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super("Item.MoveOrCopy");
+            super("Item.Delete");
             this.requiresConfirmation = true;
         }
         execute(form, element, parameter, submitMethod) {

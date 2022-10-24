@@ -7,10 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", "./Mof", "./client/Forms", "./client/Actions", "./models/DatenMeister.class", "./client/Actions.Items"], function (require, exports, Settings, ApiConnection, Navigator, Mof_1, FormClient, ActionClient, DatenMeisterModel, Actions_Items_1) {
+define(["require", "exports", "./Mof", "./client/Actions"], function (require, exports, Mof_1, ActionClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.FormActions = exports.execute = exports.requiresConfirmation = exports.loadFormForAction = exports.loadObjectForAction = exports.getModule = exports.addModule = exports.ItemFormActionModuleBase = void 0;
+    exports.execute = exports.requiresConfirmation = exports.loadFormForAction = exports.loadObjectForAction = exports.getModule = exports.addModule = exports.ItemFormActionModuleBase = void 0;
     /**
      * Defines the base implementation which can be overridden
      */
@@ -67,9 +67,6 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             if (foundModule !== undefined) {
                 return foundModule.loadForm();
             }
-            if (actionName === 'Forms.Create.ByMetaClass') {
-                return yield FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
-            }
             return Promise.resolve(undefined);
         });
     }
@@ -101,49 +98,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
             if (foundModule !== undefined) {
                 return foundModule.execute(form, element, parameter, submitMethod);
             }
-            let workspaceId;
-            let extentUri;
-            let p = new URLSearchParams(window.location.search);
             switch (actionName) {
-                case "Extent.CreateItemInProperty":
-                    if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
-                        alert('There is no itemUrl given');
-                    }
-                    else {
-                        const workspace = p.get('workspace');
-                        const itemUrl = p.get('itemUrl');
-                        const property = p.get('property');
-                        const metaclass = p.get('metaclass');
-                        yield FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element, metaclass);
-                    }
-                    break;
-                case "ExtentsList.ViewItem":
-                    FormActions.itemNavigateTo(form.workspace, element.uri);
-                    break;
-                case "ExtentsList.DeleteItem":
-                    yield FormActions.extentsListDeleteItem(form.workspace, form.extentUri, element.uri);
-                    break;
-                case "ExtentsList.MoveUpItem":
-                    yield FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, element.uri);
-                    break;
-                case "ExtentsList.MoveDownItem":
-                    yield FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, element.uri);
-                    break;
-                case "Forms.Create.ByMetaClass": {
-                    const extentCreationParameter = new Mof_1.DmObject();
-                    extentCreationParameter.set('configuration', element);
-                    extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri);
-                    const result = yield ActionClient.executeActionDirectly("Execute", {
-                        parameter: extentCreationParameter
-                    });
-                    if (result.success !== true) {
-                        alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
-                    }
-                    else {
-                        alert('Form was created successfully');
-                    }
-                    break;
-                }
                 case "JSON.Item.Alert":
                     alert(JSON.stringify((0, Mof_1.createJsonFromObject)(element)));
                     break;
@@ -164,54 +119,5 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator", ".
         });
     }
     exports.execute = execute;
-    class FormActions {
-        static workspaceNavigateTo(workspace) {
-            document.location.href =
-                Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
-        }
-        static extentCreateItemInProperty(workspace, itemUrl, property, element, metaClass) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const json = (0, Mof_1.createJsonFromObject)(element);
-                yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
-                    metaClass: (metaClass === undefined || metaClass === null) ? "" : metaClass,
-                    property: property,
-                    asList: true,
-                    properties: json
-                });
-                Navigator.navigateToItemByUrl(workspace, itemUrl);
-            });
-        }
-        // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
-        static itemNavigateTo(workspace, itemUrl) {
-            Navigator.navigateToItemByUrl(workspace, itemUrl);
-        }
-        static extentsListDeleteItem(workspace, extentUri, itemId) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const data = yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
-                    + encodeURIComponent(workspace) + "/" +
-                    encodeURIComponent(itemId), {});
-                const success = data.success;
-                if (success) {
-                    document.location.reload();
-                }
-                else {
-                    alert('Deletion was not successful.');
-                }
-            });
-        }
-        static extentsListMoveUpItem(workspace, extentUri, itemId) {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield (0, Actions_Items_1.moveItemInExtentUp)(workspace, extentUri, itemId);
-                document.location.reload();
-            });
-        }
-        static extentsListMoveDownItem(workspace, extentUri, itemId) {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield (0, Actions_Items_1.moveItemInExtentDown)(workspace, extentUri, itemId);
-                document.location.reload();
-            });
-        }
-    }
-    exports.FormActions = FormActions;
 });
 //# sourceMappingURL=FormActions.js.map

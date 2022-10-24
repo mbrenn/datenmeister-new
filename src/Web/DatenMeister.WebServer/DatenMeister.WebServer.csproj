@@ -22,6 +22,7 @@
     <TypeScriptCompile Include="wwwroot\js\datenmeister\controls\TypeSelectionControl.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\DefaultLoader.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ExtentModules.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\FormModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ItemModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\WorkspaceModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ZipCodeModules.ts" />

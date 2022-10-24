@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", "../ApiConnection", "../Settings", "../client/Extents", "../client/Items", "../Navigator"], function (require, exports, FormActions, Mof_1, RowForm_1, ApiConnection, Settings, ECClient, ItemClient, Navigator) {
+define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", "../ApiConnection", "../Settings", "../client/Extents", "../client/Items", "../Navigator", "../client/Actions.Items"], function (require, exports, FormActions, Mof_1, RowForm_1, ApiConnection, Settings, ECClient, ItemClient, Navigator, Actions_Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -17,6 +17,11 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
         FormActions.addModule(new ExtentDeleteAction());
         FormActions.addModule(new ExtentNavigateToAction());
         FormActions.addModule(new ExtentPropertiesAction());
+        FormActions.addModule(new ExtentCreateItemInPropertyAction());
+        FormActions.addModule(new ExtentsListViewItemAction());
+        FormActions.addModule(new ExtentsListDeleteItemAction());
+        FormActions.addModule(new ExtentsListMoveUpItemAction());
+        FormActions.addModule(new ExtentsListMoveDownItemAction());
     }
     exports.loadModules = loadModules;
     class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
@@ -89,6 +94,33 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
             });
         }
     }
+    class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Extent.CreateItemInProperty");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let p = new URLSearchParams(window.location.search);
+                if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
+                    alert('There is no itemUrl given');
+                }
+                else {
+                    const workspace = p.get('workspace');
+                    const itemUrl = p.get('itemUrl');
+                    const property = p.get('property');
+                    const metaclass = p.get('metaclass');
+                    const json = (0, Mof_1.createJsonFromObject)(element);
+                    yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
+                        metaClass: (metaclass === undefined || metaclass === null) ? "" : metaclass,
+                        property: property,
+                        asList: true,
+                        properties: json
+                    });
+                    Navigator.navigateToItemByUrl(workspace, itemUrl);
+                }
+            });
+        }
+    }
     class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.DeleteExtent");
@@ -135,6 +167,57 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
                         encodeURIComponent(workspaceId) +
                         "&extent=" +
                         encodeURIComponent(extentUri);
+            });
+        }
+    }
+    class ExtentsListViewItemAction extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("ExtentsList.ViewItem");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Navigator.navigateToItemByUrl(form.workspace, element.uri);
+            });
+        }
+    }
+    class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("ExtentsList.DeleteItem");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const data = yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
+                    + encodeURIComponent(form.workspace) + "/" +
+                    encodeURIComponent(form.itemUrl), {});
+                const success = data.success;
+                if (success) {
+                    document.location.reload();
+                }
+                else {
+                    alert('Deletion was not successful.');
+                }
+            });
+        }
+    }
+    class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("ExtentsList.MoveUpItem");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInExtentUp)(form.workspace, form.extentUri, form.itemUrl);
+                document.location.reload();
+            });
+        }
+    }
+    class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("ExtentsList.MoveDownItem");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield (0, Actions_Items_1.moveItemInExtentDown)(form.workspace, form.extentUri, form.itemUrl);
+                document.location.reload();
             });
         }
     }

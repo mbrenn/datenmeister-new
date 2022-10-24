@@ -1,16 +1,7 @@
-﻿import * as Settings from "./Settings";
-import * as ApiConnection from "./ApiConnection";
-import * as Navigator from "./Navigator";
-import {createJsonFromObject, DmObject} from "./Mof";
+﻿import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./forms/Interfaces";
-import * as FormClient from "./client/Forms";
 import * as ActionClient from "./client/Actions";
-import * as DatenMeisterModel from "./models/DatenMeister.class";
 import {SubmitMethod} from "./forms/RowForm";
-import {
-    moveItemInExtentDown,
-    moveItemInExtentUp
-} from "./client/Actions.Items";
 
 /**
  * This interface describes one module being used for the action form
@@ -131,10 +122,6 @@ export async function loadFormForAction(actionName: string) {
         return foundModule.loadForm();
     }
     
-    if (actionName === 'Forms.Create.ByMetaClass') {
-        return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
-    }
-
     return Promise.resolve(undefined);
 }
 
@@ -171,58 +158,8 @@ export async function execute(
     if (foundModule !== undefined) {
         return foundModule.execute(form, element, parameter, submitMethod);
     }
-    
-    let workspaceId;
-    let extentUri;
-    let p = new URLSearchParams(window.location.search);
+
     switch (actionName) {
-        case "Extent.CreateItemInProperty":
-            if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
-                alert('There is no itemUrl given');
-            } else {
-                const workspace = p.get('workspace');
-                const itemUrl = p.get('itemUrl');
-                const property = p.get('property');
-                const metaclass = p.get('metaclass');
-                await FormActions.extentCreateItemInProperty(workspace, itemUrl, property, element, metaclass);
-            }
-            break;
-        case "ExtentsList.ViewItem":
-            FormActions.itemNavigateTo(form.workspace, element.uri);
-            break;
-        case "ExtentsList.DeleteItem":
-            await FormActions.extentsListDeleteItem(form.workspace, form.extentUri, element.uri);
-            break;
-        case "ExtentsList.MoveUpItem":
-            await FormActions.extentsListMoveUpItem(form.workspace, form.extentUri, element.uri);
-            break;
-        case "ExtentsList.MoveDownItem":
-            await FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, element.uri);
-            break;
-
-        case "Forms.Create.ByMetaClass": {
-            const extentCreationParameter = new DmObject();
-            extentCreationParameter.set('configuration', element);
-            extentCreationParameter.setMetaClassByUri(
-                DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri
-            );
-
-            const result = await ActionClient.executeActionDirectly(
-                "Execute",
-                {
-                    parameter: extentCreationParameter
-                }
-            );
-
-            if (result.success !== true) {
-                alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
-            } else {
-                alert('Form was created successfully');
-            }
-
-            break;
-        }
-
         case "JSON.Item.Alert":
             alert(JSON.stringify(createJsonFromObject(element)));
             break;
@@ -245,66 +182,5 @@ export async function execute(
         default:
             alert("Unknown action type: " + actionName);
             break;
-    }
-}
-
-interface IDeleteCallbackData {
-    success: boolean;
-}
-
-export class FormActions {
-
-    static workspaceNavigateTo(workspace: string) {
-        document.location.href =
-            Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
-    }
-
-    static async extentCreateItemInProperty(workspace: string, itemUrl: string, property: string, element: DmObject, metaClass?: string) {
-        const json = createJsonFromObject(element);
-        await ApiConnection.post(
-            Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl),
-            {
-                metaClass: (metaClass === undefined || metaClass === null) ? "" : metaClass,
-                property: property,
-                asList: true,
-                properties: json
-            }
-        );
-
-        Navigator.navigateToItemByUrl(workspace, itemUrl);
-    }
-    
-    // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
-    static itemNavigateTo(workspace: string, itemUrl: string) {
-        Navigator.navigateToItemByUrl(
-            workspace,
-            itemUrl);
-    }
-
-    static async extentsListDeleteItem(workspace: string, extentUri: string, itemId: string) {
-
-        const data = await ApiConnection.deleteRequest<IDeleteCallbackData>(
-            Settings.baseUrl + "api/items/delete/"
-            + encodeURIComponent(workspace) + "/" +
-            encodeURIComponent(itemId),
-            {}
-        );
-
-        const success = data.success;
-        if (success) {
-            document.location.reload();
-        } else {
-            alert('Deletion was not successful.');
-        }
-    }
-
-    static async extentsListMoveUpItem(workspace: string, extentUri: string, itemId: string) {
-        await moveItemInExtentUp(workspace, extentUri, itemId);
-        document.location.reload();
-    }
-
-    static async extentsListMoveDownItem(workspace: string, extentUri: string, itemId: string) {
-        await moveItemInExtentDown(workspace, extentUri, itemId);
-        document.location.reload();
     }
 }

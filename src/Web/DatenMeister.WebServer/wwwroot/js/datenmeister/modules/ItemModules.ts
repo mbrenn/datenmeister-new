@@ -17,7 +17,6 @@ export function loadModules() {
     FormActions.addModule(new ItemDeleteAction());
     FormActions.addModule(new ItemMoveUpItemAction());
     FormActions.addModule(new ItemMoveDownItemAction());
-
 }
 
 class ItemMoveOrCopyActionNavigate extends FormActions.ItemFormActionModuleBase {
@@ -76,7 +75,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
 
 class ItemDeleteAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super("Item.MoveOrCopy");
+        super("Item.Delete");
         this.requiresConfirmation = true;
     }
     

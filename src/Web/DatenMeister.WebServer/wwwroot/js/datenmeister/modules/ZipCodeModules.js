@@ -18,8 +18,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", ".
     exports.loadModules = loadModules;
     class ZipCodeTestAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super();
-            this.actionName = "Zipcode.Test";
+            super("Zipcode.Test");
         }
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -37,8 +36,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", ".
     }
     class CreateZipExampleAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super();
-            this.actionName = "ZipExample.CreateExample";
+            super("ZipExample.CreateExample");
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

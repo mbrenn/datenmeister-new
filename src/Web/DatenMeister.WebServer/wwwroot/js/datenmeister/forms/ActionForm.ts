@@ -65,7 +65,6 @@ export async function createActionFormForEmptyObject(
         if (workspaceId !== undefined) {
             element.set('workspaceId', workspaceId);
         }
-
     }
 
     // If, we have created the element, we will now have to create the temporary object on the server

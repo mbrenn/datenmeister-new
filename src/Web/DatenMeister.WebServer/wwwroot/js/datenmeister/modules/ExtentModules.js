@@ -21,8 +21,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     exports.loadModules = loadModules;
     class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super();
-            this.actionName = "Extent.Properties.Update";
+            super("Extent.Properties.Update");
         }
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -49,8 +48,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     }
     class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super();
-            this.actionName = "Extent.CreateItem";
+            super("Extent.CreateItem");
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -93,8 +91,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     }
     class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super();
-            this.actionName = "Extent.DeleteExtent";
+            super("Extent.DeleteExtent");
             this.requiresConfirmation = true;
         }
         execute(form, element, parameter, submitMethod) {
@@ -112,8 +109,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     }
     class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super();
-            this.actionName = "Extent.NavigateTo";
+            super("Extent.NavigateTo");
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -125,8 +121,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     }
     class ExtentPropertiesAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super();
-            this.actionName = "Extent.Properties";
+            super("Extent.Properties");
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

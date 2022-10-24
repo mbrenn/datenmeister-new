@@ -3,17 +3,11 @@ import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {createJsonFromObject, DmObject} from "./Mof";
 import * as IIForms from "./forms/Interfaces";
-import * as ItemClient from "./client/Items";
 import * as FormClient from "./client/Forms";
 import * as ActionClient from "./client/Actions";
 import * as DatenMeisterModel from "./models/DatenMeister.class";
-import _MoveOrCopyAction = _DatenMeister._Actions._MoveOrCopyAction;
-
 import {SubmitMethod} from "./forms/RowForm";
-import {_DatenMeister} from "./models/DatenMeister.class";
 import {
-    moveItemInCollectionDown,
-    moveItemInCollectionUp,
     moveItemInExtentDown,
     moveItemInExtentUp
 } from "./client/Actions.Items";
@@ -76,6 +70,10 @@ export interface IItemFormActionModule
  */
 export class ItemFormActionModuleBase implements IItemFormActionModule
 {
+    constructor(actionName?:string) {
+        this.actionName = actionName;
+    }
+    
     actionName: string;
     actionVerb: string;
     requiresConfirmation: boolean | undefined;
@@ -122,33 +120,6 @@ export async function loadObjectForAction(actionName: string): Promise<DmObject>
         return foundModule.loadObject();
     }
 
-    // Now the default handling
-    let p = new URLSearchParams(window.location.search);
-
-    if (actionName === "Workspace.Extent.Xmi.Create") {
-
-        const result = new DmObject();
-        result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
-        result.set("workspaceId", p.get('workspaceId'));
-
-        return Promise.resolve(result);
-    }
-
-    if (actionName === "Item.MoveOrCopy") {
-
-        const result = new DmObject();
-        result.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
-
-        // TODO: Set Result
-        const sourceWorkspace = p.get('workspaceId');
-        const sourceItemUri = p.get('itemUri');
-
-        const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);
-        result.set(_MoveOrCopyAction.source, source);
-
-        return Promise.resolve(result);
-    }
-
     /* Nothing has been found, so return an undefined */
     return Promise.resolve(undefined);
 }
@@ -160,14 +131,8 @@ export async function loadFormForAction(actionName: string) {
         return foundModule.loadForm();
     }
     
-    if (actionName === 'Workspace.Extent.LoadOrCreate') {
-        return await FormClient.getForm("dm:///_internal/forms/internal#WorkspacesAndExtents.Extent.SelectType");
-    }
     if (actionName === 'Forms.Create.ByMetaClass') {
         return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
-    }
-    if (actionName === 'Item.MoveOrCopy') {
-        return await FormClient.getForm("dm:///_internal/forms/internal#Item.MoveOrCopy");
     }
 
     return Promise.resolve(undefined);
@@ -180,8 +145,7 @@ export function requiresConfirmation(actionName: string): boolean {
         return foundModule.requiresConfirmation === true;
     }
     
-    if (actionName === "Item.Delete"
-        || actionName === "ExtentsList.DeleteItem") {
+    if (actionName === "ExtentsList.DeleteItem") {
         return true;
     } else {
         return false;
@@ -235,75 +199,6 @@ export async function execute(
         case "ExtentsList.MoveDownItem":
             await FormActions.extentsListMoveDownItem(form.workspace, form.extentUri, element.uri);
             break;
-        case "Item.Delete":
-            await FormActions.itemDelete(form.workspace, form.extentUri, element.uri);
-            break;
-        case "Item.MoveDownItem":
-            await FormActions.itemMoveDownItem(
-                form.workspace,
-                form.itemUrl,
-                form.formElement.get(_DatenMeister._Forms._TableForm.property),
-                element.uri);
-            break;
-        case "Item.MoveUpItem":
-            await FormActions.itemMoveUpItem(
-                form.workspace,
-                form.itemUrl,
-                form.formElement.get(_DatenMeister._Forms._TableForm.property),
-                element.uri);
-            break;
-        case "Workspace.Extent.Xmi.Create.Navigate": {
-            const workspaceIdParameter = parameter?.get('workspaceId') ?? "";
-            await FormActions.workspaceExtentCreateXmiNavigateTo(workspaceIdParameter);
-            break;
-        }
-
-        case "Workspace.Extent.LoadOrCreate.Navigate": {
-            const workspaceIdParameter = p?.get('workspaceId') ?? "";
-            await FormActions.workspaceExtentLoadAndCreateNavigateTo(workspaceIdParameter);
-            break;
-        }
-
-        case "Workspace.Extent.LoadOrCreate": {
-            const workspaceIdParameter = p?.get('workspaceId') ?? "";
-            const extentType = await ItemClient.getProperty("Data", element.uri, "extentType") as DmObject;
-
-            if (extentType === null || extentType === undefined) {
-                alert('No Extent Type has been selected');
-            } else {
-                document.location.href = Settings.baseUrl +
-                    "ItemAction/Workspace.Extent.LoadOrCreate.Step2" +
-                    "?metaclass=" + encodeURIComponent(extentType.uri) +
-                    (workspaceIdParameter !== undefined
-                        ? ("&workspaceId=" + encodeURIComponent(workspaceIdParameter))
-                        : "");
-            }
-
-            break;
-        }
-
-        case "Workspace.Extent.LoadOrCreate.Step2": {
-            const extentCreationParameter = new DmObject();
-            extentCreationParameter.set('configuration', element);
-            extentCreationParameter.setMetaClassByUri(
-                DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
-            )
-
-            const result = await ActionClient.executeActionDirectly(
-                "Execute",
-                {
-                    parameter: extentCreationParameter
-                }
-            );
-
-            if (result.success !== true) {
-                alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
-            } else {
-                alert('Extent was created successfully');
-            }
-
-            break;
-        }
 
         case "Forms.Create.ByMetaClass": {
             const extentCreationParameter = new DmObject();
@@ -328,40 +223,10 @@ export async function execute(
             break;
         }
 
-        case "Workspace.Extent.Xmi.Create": {
-
-            const extentCreationParameter = new DmObject();
-            extentCreationParameter.set('configuration', element);
-            extentCreationParameter.setMetaClassByUri(
-                DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
-            );
-
-            const result = await ActionClient.executeActionDirectly(
-                "Execute",
-                {
-                    parameter: extentCreationParameter
-                }
-            );
-
-            if (result.success) {
-                document.location.href = Settings.baseUrl
-                    + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
-                    "/" + encodeURIComponent(element.get("extentUri"))
-            } else {
-                alert(result.reason);
-            }
-        }
-            break;
-
-        case "Item.MoveOrCopy.Navigate":
-            await FormActions.itemMoveOrCopyNavigateTo(element.workspace, element.uri);
-            break;
-
         case "JSON.Item.Alert":
             alert(JSON.stringify(createJsonFromObject(element)));
             break;
-
-        case "Item.MoveOrCopy":
+        
         case "Action.Execute":
             // Executes the action directly
             const result = await ActionClient.executeAction(
@@ -389,26 +254,6 @@ interface IDeleteCallbackData {
 
 export class FormActions {
 
-    static workspaceExtentCreateXmiNavigateTo(workspaceId: string) {
-        document.location.href =
-            Settings.baseUrl + "ItemAction/Workspace.Extent.Xmi.Create?metaClass=" +
-            encodeURIComponent(_DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri) +
-            "&workspaceId=" + encodeURIComponent(workspaceId);
-    }
-
-    static workspaceExtentLoadAndCreateNavigateTo(workspaceId: string) {
-        document.location.href =
-            Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
-    }
-
-    static itemMoveOrCopyNavigateTo(workspaceId: string, itemUri: string) {
-        document.location.href =
-            Settings.baseUrl + "ItemAction/Item.MoveOrCopy?workspaceId=" + encodeURIComponent(workspaceId)
-            + "&itemUri=" + encodeURIComponent(itemUri);
-    }
-
-    
-
     static workspaceNavigateTo(workspace: string) {
         document.location.href =
             Settings.baseUrl + "Item/Management/dm:%2F%2F%2F_internal%2Fworkspaces/" + encodeURIComponent(workspace);
@@ -428,61 +273,12 @@ export class FormActions {
 
         Navigator.navigateToItemByUrl(workspace, itemUrl);
     }
-
-    static extentNavigateTo(workspace: string, extentUri: string): void {
-        document.location.href =
-            Settings.baseUrl + "ItemsOverview/" +
-            encodeURIComponent(workspace) + "/" +
-            encodeURIComponent(extentUri);
-    }
-
+    
     // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
     static itemNavigateTo(workspace: string, itemUrl: string) {
         Navigator.navigateToItemByUrl(
             workspace,
             itemUrl);
-    }
-
-    static itemNew(workspace: string, extentUri: string) {
-        ApiConnection.post(
-            Settings.baseUrl + "api/items/create",
-            {
-                workspace: workspace,
-                extentUri: extentUri
-            })
-            .then(
-                data => {
-                    document.location.reload();
-                });
-    }
-
-    static async itemDelete(workspace: string, extentUri: string, itemUri: string) {
-
-        const data = await ItemClient.deleteItem(workspace, itemUri);
-
-        const success = data.success;
-        if (success) {
-            Navigator.navigateToWorkspace(workspace);
-        } else {
-            alert('Deletion was not successful.');
-        }
-    }
-
-    static async itemMoveUpItem(workspace: string, parentUri: string, property: string, itemUrl: string) {
-        await moveItemInCollectionUp(workspace, parentUri, property, itemUrl);
-        document.location.reload();
-    }
-
-    static async itemMoveDownItem(workspace: string, parentUri: string, property: string, itemUrl: string) {
-        await moveItemInCollectionDown(workspace, parentUri, property, itemUrl);
-        document.location.reload();
-    }
-
-    static extentsListViewItem(workspace: string, extentUri: string, itemId: string) {
-        document.location.href = Settings.baseUrl + "Item/" +
-            encodeURIComponent(workspace) + "/" +
-            encodeURIComponent(extentUri) + "/" +
-            encodeURIComponent(itemId);
     }
 
     static async extentsListDeleteItem(workspace: string, extentUri: string, itemId: string) {

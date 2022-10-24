@@ -18,8 +18,7 @@ export function loadModules() {
 
 class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super();
-        this.actionName = "Extent.Properties.Update";
+        super("Extent.Properties.Update");
     }
 
     async loadObject(): Promise<DmObject> | undefined {
@@ -50,8 +49,7 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
 
 class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super();
-        this.actionName = "Extent.CreateItem";
+        super("Extent.CreateItem");
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -98,8 +96,7 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
 
 class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super();
-        this.actionName = "Extent.DeleteExtent";
+        super("Extent.DeleteExtent");
         this.requiresConfirmation = true;
     }
     
@@ -123,8 +120,7 @@ class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
 
 class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super();
-        this.actionName = "Extent.NavigateTo";
+        super("Extent.NavigateTo");
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -138,8 +134,7 @@ class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
 
 class ExtentPropertiesAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super();
-        this.actionName = "Extent.Properties";
+        super("Extent.Properties");
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

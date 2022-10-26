@@ -125,7 +125,10 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 const viewModeForm = new ViewModeSelectionControl();
                 const htmlViewModeForm = viewModeForm.createForm();
                 viewModeForm.viewModeSelected.addListener(
-                    _ => configuration.refreshForm());
+                    _ => {
+                        configuration.viewMode = VML.getCurrentViewMode();
+                        configuration.refreshForm();
+                    });
 
                 htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
             }
@@ -249,7 +252,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                         tableForm.formElement = tab;
                         tableForm.workspace = tthis.workspace;
                         tableForm.extentUri = tthis.extentUri;
-                        tableForm.createFormByCollection(form, configuration);
+                        await tableForm.createFormByCollection(form, configuration);
                     } else {
                         form.addClass('alert alert-warning');
                         const nameValue = tab.get('name', Mof.ObjectType.String);
@@ -281,7 +284,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, containerDiv: JQuery, workspace: string, extentUri: string) {
     const tthis = this;
 
-    buttonDiv.on('click', () => {
+    buttonDiv.on('click', async () => {
         containerDiv.empty();
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
@@ -308,8 +311,8 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
                 }
             });
         
-        selectItem.setWorkspaceById('Types');
-        selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
+        await selectItem.setWorkspaceById('Types');
+        await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
 
         selectItem.init(containerDiv, settings);
     });

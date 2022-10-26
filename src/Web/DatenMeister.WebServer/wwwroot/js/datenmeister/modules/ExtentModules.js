@@ -188,7 +188,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
             return __awaiter(this, void 0, void 0, function* () {
                 const data = yield ApiConnection.deleteRequest(Settings.baseUrl + "api/items/delete/"
                     + encodeURIComponent(form.workspace) + "/" +
-                    encodeURIComponent(form.itemUrl), {});
+                    encodeURIComponent(element.uri), {});
                 const success = data.success;
                 if (success) {
                     document.location.reload();
@@ -205,7 +205,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                yield (0, Actions_Items_1.moveItemInExtentUp)(form.workspace, form.extentUri, form.itemUrl);
+                yield (0, Actions_Items_1.moveItemInExtentUp)(form.workspace, element.extentUri, element.uri);
                 document.location.reload();
             });
         }
@@ -216,7 +216,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                yield (0, Actions_Items_1.moveItemInExtentDown)(form.workspace, form.extentUri, form.itemUrl);
+                yield (0, Actions_Items_1.moveItemInExtentDown)(form.workspace, element.extentUri, element.uri);
                 document.location.reload();
             });
         }

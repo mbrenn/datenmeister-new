@@ -62,7 +62,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
                     alert('Success');
                 }
                 else {
-                    alert('Failure');
+                    alert('Failure: \r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
                 }
             });
         }

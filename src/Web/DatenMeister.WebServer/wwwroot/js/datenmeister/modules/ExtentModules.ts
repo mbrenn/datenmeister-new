@@ -220,7 +220,7 @@ class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
         const data = await ApiConnection.deleteRequest<IDeleteCallbackData>(
             Settings.baseUrl + "api/items/delete/"
             + encodeURIComponent(form.workspace) + "/" +
-            encodeURIComponent(form.itemUrl),
+            encodeURIComponent(element.uri),
             {}
         );
 
@@ -240,7 +240,7 @@ class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        await moveItemInExtentUp(form.workspace, form.extentUri, form.itemUrl);
+        await moveItemInExtentUp(form.workspace, element.extentUri, element.uri);
         document.location.reload();
     }
 }
@@ -252,7 +252,7 @@ class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        await moveItemInExtentDown(form.workspace, form.extentUri, form.itemUrl);
+        await moveItemInExtentDown(form.workspace, element.extentUri, element.uri);
         document.location.reload();
     }
 }

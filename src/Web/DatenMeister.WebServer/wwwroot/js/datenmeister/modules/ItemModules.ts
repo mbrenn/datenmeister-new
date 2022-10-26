@@ -68,7 +68,7 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         if (result.success) {
             alert('Success');
         } else {
-            alert('Failure');
+            alert('Failure: \r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
         }
     }
 }

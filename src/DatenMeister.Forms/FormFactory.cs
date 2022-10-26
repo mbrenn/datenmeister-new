@@ -555,11 +555,18 @@ namespace DatenMeister.Forms
                         viewModeId = configuration.ViewModeId ?? "",
                         metaClass = _DatenMeister.TheOne.Management.__Extent
                     });
+            
 
             // 
             if (foundForm != null)
             {
                 foundForm = CloneForm(foundForm);
+                
+                // Strip the ParentPropertyNames from the table forms. This is used to avoid that the wrong plugins are called
+                foreach (var tableForm in FormMethods.GetTableForms(foundForm))
+                {
+                    tableForm.unset(_DatenMeister._Forms._TableForm.property);
+                }
 
                 EvaluateTableFormsForAutogenerationByReflectiveCollection(extent.elements(), foundForm);
 

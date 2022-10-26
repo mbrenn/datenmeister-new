@@ -1,4 +1,5 @@
-import {DetailFormActions} from "../FormActions";
+
+import * as FormActions from "../FormActions";
 import {BaseField, IFormField} from "./Interfaces";
 import {DmObject} from "../Mof";
 
@@ -17,7 +18,7 @@ export class Field extends BaseField implements IFormField {
         const parameter = this.field.get('parameter');
 
         this.inConfirmation = false;
-        const requireConfirmation = DetailFormActions.requiresConfirmation(action);
+        const requireConfirmation = FormActions.requiresConfirmation(action);
 
         this.button = $("<button class='btn btn-secondary' type='button'></button>");
         this.button.text(title);
@@ -28,7 +29,7 @@ export class Field extends BaseField implements IFormField {
                 // If this is the case, then the button itself is asking for confirmation upon the first 
                 // click. Only then, the DetailForm itself is executed. 
                 if (!requireConfirmation || tthis.inConfirmation) {
-                    DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement, parameter);
+                    FormActions.execute(action, tthis.form, dmElement, parameter);
                 }                
                 
                 if (requireConfirmation && !tthis.inConfirmation) {

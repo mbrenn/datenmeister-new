@@ -1,8 +1,10 @@
 ﻿
 import * as Form from "../forms/CollectionForm"
+import {loadDefaultModules} from "../modules/DefaultLoader";
 
-export function init(workspace: string, extentUri: string)
-{       
+export function init(workspace: string, extentUri: string) {
+    loadDefaultModules();
+    
     let listForm = new Form.CollectionFormCreator();
     listForm.createCollectionForRootElements(
         {
@@ -15,7 +17,7 @@ export function init(workspace: string, extentUri: string)
 
 
         },
-        workspace, 
+        workspace,
         extentUri,
         {isReadOnly: true});
 }

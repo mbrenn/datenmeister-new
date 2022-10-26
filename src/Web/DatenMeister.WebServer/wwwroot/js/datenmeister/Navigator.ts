@@ -7,8 +7,8 @@ export function navigateToWorkspaces() {
 
 export function navigateToWorkspace(workspace: string) {
     document.location.href =
-        Settings.baseUrl + "Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/" +
-        encodeURIComponent(workspace);
+        Settings.baseUrl + "Item/Management/" +
+        encodeURIComponent("dm:///_internal/workspaces#" + workspace);
 }
 
 export function navigateToExtent(workspace: string, extentUri: string) {

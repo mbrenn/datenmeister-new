@@ -3,6 +3,7 @@ using System.Threading;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
 using NUnit.Framework;
 
@@ -16,7 +17,7 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
         {
             using var scope = DatenMeisterTests.GetDatenMeisterScope();
 
-            var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic);
+            var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             var element = temporaryLogic.CreateTemporaryElement(null);
             Assert.That(element, Is.Not.Null);
             
@@ -39,7 +40,7 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
             
             using var scope = DatenMeisterTests.GetDatenMeisterScope();
 
-            var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic);
+            var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             var element = temporaryLogic.CreateTemporaryElement(null);
             Assert.That(element, Is.Not.Null);
             
@@ -48,7 +49,7 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
             element.set("name", "Yes");
             
             // Create new temporary logic, like in real life
-            temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic);
+            temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             temporaryLogic.CleanElements();
             
             // Now find it, this should happen in less than 150 ms
@@ -70,6 +71,30 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
 
             // Restore the clean up time, perhaps some other test is dependent on that
             TemporaryExtentLogic.DefaultCleanupTime = oldValue;
+        }
+
+        [Test]
+        public void TestAutomaticRecreationOfTemporaryExtent()
+        {
+            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
+            
+            Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
+
+            var element = temporaryLogic.CreateTemporaryElement(null);
+            Assert.That(element, Is.Not.Null);
+
+            scope.WorkspaceLogic.GetDataWorkspace().RemoveExtent(TemporaryExtentLogic.InternalTempUri);
+            Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
+            
+            element = temporaryLogic.CreateTemporaryElement(null);
+            Assert.That(element, Is.Not.Null);
+            Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
+
+            scope.WorkspaceLogic.GetDataWorkspace().RemoveExtent(TemporaryExtentLogic.InternalTempUri);
+            Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
+            temporaryLogic.CleanElements();
+            Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
         }
     }
 }

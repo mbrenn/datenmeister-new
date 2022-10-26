@@ -36,7 +36,8 @@ namespace DatenMeister.WebServer.Controller
             }
 
             var mofParameter = 
-                new DirectJsonDeconverter(_workspaceLogic).ConvertToObject(actionParams.Parameter) as IElement
+                new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+                    .ConvertToObject(actionParams.Parameter) as IElement
                 ?? throw new InvalidOperationException("Conversion was not successful");
             switch (actionName)
             {

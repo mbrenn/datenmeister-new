@@ -1,7 +1,10 @@
 ﻿
 import * as Form from "../forms/ObjectForm"
+import {loadDefaultModules} from "../modules/DefaultLoader"
 
 export function init(workspace: string, itemUri: string) {
+    loadDefaultModules();
+    
     const detailForm = new Form.ObjectFormCreatorForItem();
     detailForm.createForm(
         {

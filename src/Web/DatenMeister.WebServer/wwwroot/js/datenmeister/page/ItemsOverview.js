@@ -1,8 +1,9 @@
-define(["require", "exports", "../forms/CollectionForm"], function (require, exports, Form) {
+define(["require", "exports", "../forms/CollectionForm", "../modules/DefaultLoader"], function (require, exports, Form, DefaultLoader_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.init = void 0;
     function init(workspace, extentUri) {
+        (0, DefaultLoader_1.loadDefaultModules)();
         let listForm = new Form.CollectionFormCreator();
         listForm.createCollectionForRootElements({
             itemContainer: $("#dm-items"),

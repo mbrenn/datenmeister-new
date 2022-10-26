@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.InMemory;
 using System.Linq;
 using System.Text.Json;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
@@ -15,15 +16,17 @@ namespace DatenMeister.Json
     public class DirectJsonDeconverter
     {
         private readonly IWorkspaceLogic? _workspaceLogic;
+        private readonly IScopeStorage? _scopeStorage;
 
         public DirectJsonDeconverter()
         {
             
         }
 
-        public DirectJsonDeconverter(IWorkspaceLogic workspaceLogic)
+        public DirectJsonDeconverter(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
         }
         
         /// <summary>
@@ -80,9 +83,9 @@ namespace DatenMeister.Json
             else
             {
                 IElement? result = null;
-                if (_workspaceLogic != null)
+                if (_workspaceLogic != null && _scopeStorage != null)
                 {
-                    var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic);
+                    var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
                     var temporaryExtent = temporaryExtentLogic.TryGetTemporaryExtent();
                     if (temporaryExtent != null)
                     {

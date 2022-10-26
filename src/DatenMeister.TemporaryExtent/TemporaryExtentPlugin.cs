@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
@@ -51,9 +52,10 @@ namespace DatenMeister.TemporaryExtent
                 case PluginLoadingPosition.AfterBootstrapping:
                     _taskCancellationSource = new CancellationTokenSource();
                     _taskCancellation = _taskCancellationSource.Token;
-                    var temporaryProvider = new InMemoryProvider();
-                    var extent = new MofUriExtent(temporaryProvider, "dm:///_internal/temp", _scopeStorage);
-                    _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), extent);
+                    
+                    var logic = new TemporaryExtentLogic(_workspaceLogic,_scopeStorage);
+                    logic.CreateTemporaryExtent();
+                    
                     Task.Run(() => CleanTemporaryExtentRunAsync(_taskCancellation), _taskCancellation);
                     
                     break;
@@ -76,7 +78,7 @@ namespace DatenMeister.TemporaryExtent
         /// </summary>
         public async void CleanTemporaryExtentRunAsync(CancellationToken cancellationToken)
         {
-            var logic = new TemporaryExtentLogic(_workspaceLogic);
+            var logic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
             try
             {
                 while (!cancellationToken.IsCancellationRequested)

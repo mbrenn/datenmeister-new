@@ -3,10 +3,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.TemporaryExtent
@@ -16,13 +17,16 @@ namespace DatenMeister.TemporaryExtent
     /// </summary>
     public class TemporaryExtentLogic
     {
+        public const string InternalTempUri = "dm:///_internal/temp";
+
         /// <summary>
         /// Defines the logger
         /// </summary>
         private static readonly ILogger ClassLogger = new ClassLogger(typeof(TemporaryExtentLogic));
         
         private readonly IWorkspaceLogic _workspaceLogic;
-        
+        private readonly IScopeStorage _scopeStorage;
+
         public static TimeSpan DefaultCleanupTime { get; set; } = TimeSpan.FromHours(1);
 
         /// <summary>
@@ -31,14 +35,31 @@ namespace DatenMeister.TemporaryExtent
         /// </summary>
         private static readonly ConcurrentDictionary<string, DateTime> _elementMapping = new ();
 
-        public TemporaryExtentLogic(IWorkspaceLogic workspaceLogic)
+        public TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
         }
 
-        public IUriExtent TemporaryExtent =>
-            _workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri) as IUriExtent
-            ?? throw new InvalidOperationException("The temporary extent was not found");
+        /// <summary>
+        /// Gets the temporary extent and creates a new one, if necessary
+        /// </summary>
+        public IUriExtent TemporaryExtent
+        {
+            get
+            {
+                if (_workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri) 
+                    is not IUriExtent foundExtent)
+                {
+                    // Somebody deleted the extent... So, we will create a new one
+                    ClassLogger.Warn($"Temporary Extent was deleted, we will recreate it");
+                    foundExtent = CreateTemporaryExtent();
+                }
+
+                return foundExtent;
+            }
+        }
+        
 
         /// <summary>
         /// Tries to find the temporary extent. May also be null
@@ -57,9 +78,7 @@ namespace DatenMeister.TemporaryExtent
         /// <returns>The created element itself</returns>
         public IElement CreateTemporaryElement(IElement? metaClass)
         {
-            var foundExtent =
-                _workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri)
-                ?? throw new InvalidOperationException("The temporary extent was not found");
+            var foundExtent = TemporaryExtent;
 
             var created = MofFactory.CreateElement(foundExtent, metaClass);
             var id = (created as IHasId)?.Id 
@@ -72,9 +91,7 @@ namespace DatenMeister.TemporaryExtent
 
         public void CleanElements()
         {
-            var foundExtent =
-                _workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri)
-                ?? throw new InvalidOperationException("The temporary extent was not found");
+            var foundExtent = TemporaryExtent;
 
             var currentTime = DateTime.Now;
 
@@ -111,6 +128,18 @@ namespace DatenMeister.TemporaryExtent
             {
                 ClassLogger.Info($"{itemsToBeDeleted.Count} items deleted");
             }
+        }
+
+        /// <summary>
+        /// Creates the temporary extent and adds it to the workspace logic
+        /// The temporary extent will not be added to the loaded Extents
+        /// </summary>
+        public IUriExtent CreateTemporaryExtent()
+        {
+            var temporaryProvider = new InMemoryProvider();
+            var extent = new MofUriExtent(temporaryProvider, InternalTempUri, _scopeStorage);
+            _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), extent);
+            return extent;
         }
     }
 }

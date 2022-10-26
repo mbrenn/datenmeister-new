@@ -52,7 +52,7 @@ namespace DatenMeister.Tests.Modules.Actions
             );
             //
             // Now, move it up!
-            var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic);
+            var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic, dm.ScopeStorage);
             var moveAction = temporaryExtentLogic.CreateTemporaryElement(
                 _DatenMeister.TheOne.Actions.__MoveUpDownAction);
             moveAction.set(
@@ -132,7 +132,7 @@ namespace DatenMeister.Tests.Modules.Actions
 
             //
             // Now, move it up!
-            var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic);
+            var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic, dm.ScopeStorage);
             var moveAction = temporaryExtentLogic.CreateTemporaryElement(
                 _DatenMeister.TheOne.Actions.__MoveUpDownAction);
             moveAction.set(

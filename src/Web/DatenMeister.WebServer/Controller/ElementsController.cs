@@ -112,7 +112,7 @@ namespace DatenMeister.WebServer.Controller
         [HttpPut("api/elements/create_temporary_element")]
         public ActionResult<CreateTemporaryElementResult> CreateTemporaryElement([FromBody] CreateTemporaryElementParams? parameter)
         {
-            var logic = new TemporaryExtentLogic(_workspaceLogic);
+            var logic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
 
             // Defines the metaclass
             IElement? metaClass = null;

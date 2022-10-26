@@ -1,10 +1,12 @@
-﻿using DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Json
 {
     public class MofJsonDeconverter : DirectJsonDeconverter
     {
-        public MofJsonDeconverter(IWorkspaceLogic workspaceLogic) : base (workspaceLogic)
+        public MofJsonDeconverter(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) 
+            : base (workspaceLogic, scopeStorage)
         {
             
         }

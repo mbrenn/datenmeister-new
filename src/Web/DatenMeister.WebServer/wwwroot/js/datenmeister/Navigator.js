@@ -9,8 +9,8 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
     exports.navigateToWorkspaces = navigateToWorkspaces;
     function navigateToWorkspace(workspace) {
         document.location.href =
-            Settings.baseUrl + "Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/" +
-                encodeURIComponent(workspace);
+            Settings.baseUrl + "Item/Management/" +
+                encodeURIComponent("dm:///_internal/workspaces#" + workspace);
     }
     exports.navigateToWorkspace = navigateToWorkspace;
     function navigateToExtent(workspace, extentUri) {

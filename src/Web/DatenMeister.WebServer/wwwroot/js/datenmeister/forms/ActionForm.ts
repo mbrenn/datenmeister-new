@@ -3,7 +3,7 @@ import {DmObject} from "../Mof";
 import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
 import * as ObjectForm from "./ObjectForm";
-import {DetailFormActions} from "../FormActions";
+import * as FormActions from "../FormActions";
 import * as ClientForms from '../client/Forms'
 import * as ClientElements from '../client/Elements'
 import * as ClientItems from '../client/Items'
@@ -38,10 +38,9 @@ export async function createActionFormForEmptyObject(
         let loadedElement = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
         
         // Executes the detail form
-        await DetailFormActions.execute(
+        await FormActions.execute(
             actionName,
             creator,
-            undefined,
             loadedElement,
             undefined, // The action form cannot provide additional parameters as the ActionButton
             method);
@@ -50,9 +49,22 @@ export async function createActionFormForEmptyObject(
     /* Loads the object being used as a base for the new action.
     * Usually context information from GET-Query are retrieved. Or some default fields are filled out
     */
-    let element = await DetailFormActions.loadObjectForAction(actionName);
+    let element = await FormActions.loadObjectForAction(actionName);
     if (element === undefined) {
+        
         element = new DmObject();
+        
+        // Sets the metaclass and workspace id upon url, if not created by Modules
+        let p = new URLSearchParams(window.location.search);
+        const metaclass = p.get('metaclass');
+        if (metaclass !== undefined && metaclass !== null) {
+            element.setMetaClassByUri(metaclass);
+        }
+
+        const workspaceId = p.get('workspaceId');
+        if (workspaceId !== undefined) {
+            element.set('workspaceId', workspaceId);
+        }
     }
 
     // If, we have created the element, we will now have to create the temporary object on the server
@@ -74,7 +86,7 @@ export async function createActionFormForEmptyObject(
     }
 
     // Asks the detail form actions, whether we have a form for the action itself
-    form = await DetailFormActions.loadFormForAction(actionName);
+    form = await FormActions.loadFormForAction(actionName);
     if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {

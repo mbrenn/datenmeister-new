@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm", "../FormActions", "../client/Forms", "../client/Elements", "../client/Items", "../client/Items"], function (require, exports, Mof_1, DomHelper_1, Forms, ObjectForm, FormActions_1, ClientForms, ClientElements, ClientItems, DataLoader) {
+define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm", "../FormActions", "../client/Forms", "../client/Elements", "../client/Items", "../client/Items"], function (require, exports, Mof_1, DomHelper_1, Forms, ObjectForm, FormActions, ClientForms, ClientElements, ClientItems, DataLoader) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createActionFormForEmptyObject = void 0;
@@ -31,15 +31,25 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                 yield DataLoader.setProperties("Data", temporaryElement.uri, element);
                 let loadedElement = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
                 // Executes the detail form
-                yield FormActions_1.DetailFormActions.execute(actionName, creator, undefined, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
+                yield FormActions.execute(actionName, creator, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
                 method);
             });
             /* Loads the object being used as a base for the new action.
             * Usually context information from GET-Query are retrieved. Or some default fields are filled out
             */
-            let element = yield FormActions_1.DetailFormActions.loadObjectForAction(actionName);
+            let element = yield FormActions.loadObjectForAction(actionName);
             if (element === undefined) {
                 element = new Mof_1.DmObject();
+                // Sets the metaclass and workspace id upon url, if not created by Modules
+                let p = new URLSearchParams(window.location.search);
+                const metaclass = p.get('metaclass');
+                if (metaclass !== undefined && metaclass !== null) {
+                    element.setMetaClassByUri(metaclass);
+                }
+                const workspaceId = p.get('workspaceId');
+                if (workspaceId !== undefined) {
+                    element.set('workspaceId', workspaceId);
+                }
             }
             // If, we have created the element, we will now have to create the temporary object on the server
             const temporaryElement = yield ClientElements.createTemporaryElement((_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri);
@@ -57,7 +67,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                 element.setMetaClassByUri(metaClass);
             }
             // Asks the detail form actions, whether we have a form for the action itself
-            form = yield FormActions_1.DetailFormActions.loadFormForAction(actionName);
+            form = yield FormActions.loadFormForAction(actionName);
             if (form === undefined) {
                 // Defines the form
                 if (configuration.formUri !== undefined) {

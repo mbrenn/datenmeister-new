@@ -6,7 +6,9 @@ export interface IFormNavigation {
 
     /**
      * This is the item for which the form is currently displayed. It may be the same as the extent
-     * in case the extent is being shown 
+     * in case the extent is being shown. 
+     * 
+     * For property lists, it contains the element whose properties are listed.
      */
     itemUrl: string;  
      

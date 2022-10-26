@@ -63,7 +63,8 @@ namespace DatenMeister.WebServer.Controller
                 foreach (var propertyParam in values)
                 {
                     var value = propertyParam.Value;
-                    var propertyValue = new DirectJsonDeconverter(_workspaceLogic).ConvertJsonValue(value);
+                    var propertyValue = new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+                        .ConvertJsonValue(value);
 
                     if (propertyValue != null) item.set(propertyParam.Key, propertyValue);
                 }
@@ -122,7 +123,8 @@ namespace DatenMeister.WebServer.Controller
                 foreach (var propertyParam in values)
                 {
                     var value = propertyParam.Value;
-                    var propertyValue = new DirectJsonDeconverter(_workspaceLogic).ConvertJsonValue(value);
+                    var propertyValue = new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+                        .ConvertJsonValue(value);
 
                     if (propertyValue != null) child.set(propertyParam.Key, propertyValue);
                 }
@@ -536,7 +538,8 @@ namespace DatenMeister.WebServer.Controller
             foreach (var propertyParam in jsonObject.v)
             {
                 var value = propertyParam.Value;
-                var propertyValue = new DirectJsonDeconverter(_workspaceLogic).ConvertJsonValue(value);
+                var propertyValue = new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+                    .ConvertJsonValue(value);
 
                 if (propertyValue != null) foundItem.set(propertyParam.Key, propertyValue);
             }

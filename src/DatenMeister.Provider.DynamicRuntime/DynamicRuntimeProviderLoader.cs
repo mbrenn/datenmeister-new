@@ -68,5 +68,11 @@ namespace DatenMeister.Provider.DynamicRuntime
         {
             // There is no need to store this
         }
+
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities()
+        {
+            IsPersistant = false,
+            AreChangesPersistant = false
+        };
     }
 }

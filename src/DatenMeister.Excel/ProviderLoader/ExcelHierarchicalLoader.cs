@@ -169,6 +169,12 @@ namespace DatenMeister.Excel.ProviderLoader
             // Storing is not supported
         }
 
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities
+        {
+            IsPersistant = true,
+            AreChangesPersistant = false
+        };
+
         private class DefinitionColumn
         {
             public string Name { get; set; }

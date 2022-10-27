@@ -34,5 +34,12 @@ namespace DatenMeister.Core.Provider.InMemory
         {
             Logger.Info("Storing of in Memory Object is not possible");
         }
+
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } =
+            new()
+            {
+                IsPersistant = false,
+                AreChangesPersistant = false
+            };
     }
 }

@@ -48,5 +48,12 @@ namespace DatenMeister.Excel.ProviderLoader
         {
             Debug.Write("Not implemented up to now");
         }
+
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } =
+            new ProviderLoaderCapabilities
+            {
+                IsPersistant = true,
+                AreChangesPersistant = false
+            };
     }
 }

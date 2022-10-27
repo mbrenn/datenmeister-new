@@ -61,5 +61,11 @@ namespace DatenMeister.Excel.ProviderLoader
         {
             throw new NotImplementedException();
         }
+
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities
+        {
+            IsPersistant = true,
+            AreChangesPersistant = false
+        };
     }
 }

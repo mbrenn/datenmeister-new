@@ -4,18 +4,23 @@ pipeline {
     stages {
         stage ('Builds')
         {
+            stage ('NPM install')
+            {
+                steps
+                {                    
+                    sh """ 
+                        cd src/Web/DatenMeister.WebServer
+                        npm install 
+                        cd ../../..
+                    """
+                }
+            }
             parallel
             {        
                 stage ('Build Debug') 
                 {
                     steps 
                     {
-                        sh """ 
-                            cd src/Web/DatenMeister.WebServer
-                            npm install 
-                            cd ../../..
-                        """
-
                         // Shell build step
                         dotnetBuild project: 'datenmeister-new.sln', workDirectory: 'src'
                     }
@@ -25,6 +30,7 @@ pipeline {
                 {
                     steps
                     {
+
                         dotnetBuild configuration: 'Release', project: 'datenmeister-new.sln', workDirectory: 'src'
                     }
                 }

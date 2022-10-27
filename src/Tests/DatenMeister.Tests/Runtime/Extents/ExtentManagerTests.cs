@@ -64,5 +64,31 @@ namespace DatenMeister.Tests.Runtime.Extents
             loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
             Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
         }
+
+
+        [Test]
+        public void TestGetProviderAndConfiguration()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var extentManager = dm.Resolve<ExtentManager>();
+
+            var loaderConfig =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
+                WorkspaceNames.WorkspaceData);
+            loaderConfig.set("Test", "test");
+            
+            var loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+
+            var result = extentManager.GetProviderLoaderAndConfiguration(
+                WorkspaceNames.WorkspaceData, "dm:///test");
+            
+            Assert.That(result.providerLoader, Is.Not.Null);
+            Assert.That(result.loadConfiguration, Is.Not.Null);
+            
+            Assert.That(result.providerLoader, Is.TypeOf(typeof(InMemoryProviderLoader)));
+            Assert.That(result.loadConfiguration.getOrDefault<string>("Test"), Is.EqualTo("test"));
+        }
     }
 }

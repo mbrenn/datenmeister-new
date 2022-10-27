@@ -151,6 +151,43 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             LoadExtentWithoutAddingInternal(configuration, ExtentCreationFlags.LoadOnly, ref extentInformation);
 
         /// <summary>
+        /// Gets the provider loader for a given uri
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUri">Uri of the extent to which the provider loader is
+        /// queried</param>
+        /// <returns>The ProviderLoader fitting to the given extent</returns>
+        public IProviderLoader? GetProviderLoader(string workspaceId, string extentUri)
+        {
+            var information = GetExtentInformation(workspaceId, extentUri);
+            if (information == null)
+            {
+                return null;
+            }
+            
+            return CreateProviderLoader(information.Configuration);
+        }
+
+        /// <summary>
+        /// Gets the provider loader and configuration for a certain
+        ///extent and its uri
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUri">Uri of the extent</param>
+        /// <returns></returns>
+        public (IProviderLoader? providerLoader, IElement? loadConfiguration)
+            GetProviderLoaderAndConfiguration(string workspaceId, string extentUri)
+        {
+            var information = GetExtentInformation(workspaceId, extentUri);
+            if (information == null)
+            {
+                return (null, null);
+            }
+
+            return (CreateProviderLoader(information.Configuration), information.Configuration);
+        }
+
+        /// <summary>
         /// Loads the extent according given configuration and returns the information dataset
         /// describing the used loaded configuration
         /// </summary>

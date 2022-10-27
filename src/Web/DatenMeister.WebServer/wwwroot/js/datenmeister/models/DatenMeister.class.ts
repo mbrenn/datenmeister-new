@@ -286,6 +286,15 @@ export namespace _DatenMeister
                 }
 
                 export const __MoveUpDownAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";
+                export class _StoreExtentAction
+                {
+                    static workspaceId = "workspaceId";
+                    static extentUri = "extentUri";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __StoreExtentAction_Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1";
         }
 
         export namespace _DataViews

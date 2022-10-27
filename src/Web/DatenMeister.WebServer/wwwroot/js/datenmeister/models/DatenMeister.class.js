@@ -253,6 +253,14 @@ define(["require", "exports"], function (require, exports) {
             _MoveUpDownAction.property = "property";
             _Actions._MoveUpDownAction = _MoveUpDownAction;
             _Actions.__MoveUpDownAction_Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54";
+            class _StoreExtentAction {
+            }
+            _StoreExtentAction.workspaceId = "workspaceId";
+            _StoreExtentAction.extentUri = "extentUri";
+            _StoreExtentAction._name_ = "name";
+            _StoreExtentAction.isDisabled = "isDisabled";
+            _Actions._StoreExtentAction = _StoreExtentAction;
+            _Actions.__StoreExtentAction_Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
         let _DataViews;
         (function (_DataViews) {

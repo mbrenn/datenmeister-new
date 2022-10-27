@@ -82,6 +82,13 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage
             xmlExtent.Document.Save(fileStream);
         }
 
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } =
+            new()
+            {
+                IsPersistant = true,
+                AreChangesPersistant = true
+            };
+
         public bool IsLocked(IElement configuration)
         {
             var lockingLogic =
@@ -95,7 +102,6 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage
         {
             var lockingLogic =
                 new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
-
 
             var path = GetLockFilePath(configuration);
             lockingLogic.Lock(path);

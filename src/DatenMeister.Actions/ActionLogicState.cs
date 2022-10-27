@@ -35,6 +35,7 @@ namespace DatenMeister.Actions
             logicState.AddActionHandler(new CommandExecutionActionHandler());
             logicState.AddActionHandler(new CreateWorkspaceActionHandler());
             logicState.AddActionHandler(new DropExtentActionHandler());
+            logicState.AddActionHandler(new StoreExtentActionHandler());
             logicState.AddActionHandler(new DropWorkspaceActionHandler());
             logicState.AddActionHandler(new LoadExtentActionHandler());
             logicState.AddActionHandler(new CopyElementsActionHandler());

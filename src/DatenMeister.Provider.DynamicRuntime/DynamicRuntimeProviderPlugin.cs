@@ -24,7 +24,7 @@ namespace DatenMeister.Provider.DynamicRuntime
             {
                 case PluginLoadingPosition.AfterInitialization:
                 {
-                    var mapper = ScopeStorage.Get<ConfigurationToExtentStorageMapper>();
+                    var mapper = ScopeStorage.Get<ProviderToProviderLoaderMapper>();
                     mapper.AddMapping(
                         _DatenMeister.TheOne.DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig,
                         manager => new DynamicRuntimeProviderLoader());

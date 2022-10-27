@@ -14,11 +14,11 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
     public class XmiPlugin : IDatenMeisterPlugin
     {
-        private readonly ConfigurationToExtentStorageMapper _storageMapper;
+        private readonly ProviderToProviderLoaderMapper _storageMapper;
 
         public XmiPlugin(IScopeStorage scopeStorage)
         {
-            _storageMapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
+            _storageMapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
         }
 
         public void Start(PluginLoadingPosition position)

@@ -573,6 +573,25 @@ namespace DatenMeister.Core.Models
             public _MoveUpDownAction @MoveUpDownAction = new _MoveUpDownAction();
             public MofObjectShadow @__MoveUpDownAction = new MofObjectShadow("dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54");
 
+            public class _StoreExtentAction
+            {
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _StoreExtentAction @StoreExtentAction = new _StoreExtentAction();
+            public MofObjectShadow @__StoreExtentAction = new MofObjectShadow("dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1");
+
         }
 
         public _Actions Actions = new _Actions();

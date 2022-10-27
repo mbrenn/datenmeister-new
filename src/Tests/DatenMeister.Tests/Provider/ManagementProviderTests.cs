@@ -91,7 +91,7 @@ namespace DatenMeister.Tests.Provider
             scopeStorage.Add(WorkspaceLogic.InitDefault());
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
-            var mapper = new ConfigurationToExtentStorageMapper();
+            var mapper = new ProviderToProviderLoaderMapper();
             scopeStorage.Add(mapper);
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,

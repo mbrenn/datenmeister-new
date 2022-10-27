@@ -7,10 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", "../ApiConnection", "../Settings", "../client/Extents", "../client/Items", "../Navigator", "../client/Actions.Items"], function (require, exports, FormActions, Mof_1, RowForm_1, ApiConnection, Settings, ECClient, ItemClient, Navigator, Actions_Items_1) {
+define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", "../ApiConnection", "../Settings", "../client/Extents", "../client/Items", "../Navigator", "../client/Actions.Items", "../Mof", "../client/Actions", "../models/DatenMeister.class"], function (require, exports, FormActions, Mof_1, RowForm_1, ApiConnection, Settings, ECClient, ItemClient, Navigator, Actions_Items_1, Mof, Actions, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
+    var _StoreExtentAction = DatenMeister_class_1._DatenMeister._Actions._StoreExtentAction;
     function loadModules() {
         FormActions.addModule(new ExtentPropertiesUpdateAction());
         FormActions.addModule(new ExtentCreateItemAction());
@@ -22,6 +23,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
         FormActions.addModule(new ExtentsListDeleteItemAction());
         FormActions.addModule(new ExtentsListMoveUpItemAction());
         FormActions.addModule(new ExtentsListMoveDownItemAction());
+        FormActions.addModule(new ExtentsStoreAction());
     }
     exports.loadModules = loadModules;
     class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
@@ -218,6 +220,23 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
             return __awaiter(this, void 0, void 0, function* () {
                 yield (0, Actions_Items_1.moveItemInExtentDown)(form.workspace, element.extentUri, element.uri);
                 document.location.reload();
+            });
+        }
+    }
+    class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Extent.Store");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const action = new Mof.DmObject(DatenMeister_class_1._DatenMeister._Actions.__StoreExtentAction_Uri);
+                action.set(_StoreExtentAction.workspaceId, element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId));
+                action.set(_StoreExtentAction.extentUri, element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri));
+                const actionParams = {
+                    parameter: action
+                };
+                yield Actions.executeActionDirectly("Execute", actionParams);
+                alert('Extent has been stored.');
             });
         }
     }

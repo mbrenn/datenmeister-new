@@ -49,7 +49,7 @@ namespace DatenMeister.Tests.Runtime
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             File.WriteAllText(CSVExtentTests.PathForTemporaryDataFile, csvFile);
 
-            var mapper = new ConfigurationToExtentStorageMapper();
+            var mapper = new ProviderToProviderLoaderMapper();
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
                 scope => new CsvProviderLoader());

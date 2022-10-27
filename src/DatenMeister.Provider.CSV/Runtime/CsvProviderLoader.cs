@@ -77,5 +77,11 @@ namespace DatenMeister.Provider.CSV.Runtime
             
             provider.Save(extent, filePath, settings);
         }
+
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new()
+        {
+            IsPersistant = true,
+            AreChangesPersistant = false
+        };
     }
 }

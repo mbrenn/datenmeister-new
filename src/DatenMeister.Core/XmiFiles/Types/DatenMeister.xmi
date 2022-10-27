@@ -853,6 +853,33 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="43b0764e-b70f-42bb-b37d-ae8586ec45f1" name="StoreExtentAction">
+      <isAbstract p2:id="bde71657-f495-4a1d-af2f-69396d0885a6" />
+      <isActive p2:id="825ee877-31b3-46c6-9b7a-b474d2f88dcd" />
+      <isFinalSpecialization p2:id="48133f34-a9c7-4d1a-911e-fa17160e5bb6" />
+      <isLeaf p2:id="0c7dbaec-6db3-4bdf-8cf9-59997ee11ce0" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="990dafb5-a2cc-4d6e-ba0b-4b1fb7b40cdd" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId">
+        <aggregation p2:id="1265f561-26c7-4097-84ee-fdffe3205c94" />
+        <isDerived p2:id="d571aa17-8ae9-4ee6-b878-f3a6c2fee9eb" />
+        <isDerivedUnion p2:id="29e222e9-7ec6-424b-ae51-c758356ef2d6" />
+        <isReadOnly p2:id="09b93d07-da2f-4da7-9b66-8f3ba3f62e00" />
+        <isOrdered p2:id="9858c7a2-cefb-40a1-88bc-b24a9f914a1b" />
+        <isUnique p2:id="2587ad93-e6f9-4ad7-ad7b-898c26f299ce" />
+        <isStatic p2:id="e30d387b-b012-4f4b-8e2f-74e81e93bda3" />
+        <isLeaf p2:id="1bf7559b-9a55-4790-84ab-3d87ab70cb7a" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="ddb2ec7e-3f41-413a-b3d5-e8173b71e1ce" name="extentUri">
+        <aggregation p2:id="bdac005f-3a97-443b-8849-ba4dd51cb5dd" />
+        <isDerived p2:id="c02d466c-5f51-4b4e-96df-445a89fcb40c" />
+        <isDerivedUnion p2:id="45bdbb52-be55-49e1-8df1-56109f188b4c" />
+        <isReadOnly p2:id="8e10b8ad-edc9-4993-8aaa-cf634fe32366" />
+        <isOrdered p2:id="3029684f-13cb-4094-97bb-26bf6690494c" />
+        <isUnique p2:id="705a74c6-bfe7-4ad1-8f8b-9693fa7bf502" />
+        <isStatic p2:id="5c714101-657c-4f41-bd54-7a4e641a44c6" />
+        <isLeaf p2:id="92eb6fef-b6b1-4543-9254-5d82cd955622" />
+      </ownedAttribute>
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f71dd2c1-8b7c-4076-8b0f-92435fd81916" isSubstitutable="True" general-ref="dm:///_internal/types/internal#Actions.Action" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

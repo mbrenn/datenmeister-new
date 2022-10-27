@@ -2,19 +2,21 @@ pipeline {
     agent any
 
     stages {
+        
+        stage('NPM install')
+        {
+            steps
+            {                    
+                sh """ 
+                    cd src/Web/DatenMeister.WebServer
+                    npm install 
+                    cd ../../..
+                """
+            }
+        }
+
         stage ('Builds')
         {
-            stage ('NPM install')
-            {
-                steps
-                {                    
-                    sh """ 
-                        cd src/Web/DatenMeister.WebServer
-                        npm install 
-                        cd ../../..
-                    """
-                }
-            }
             parallel
             {        
                 stage ('Build Debug') 

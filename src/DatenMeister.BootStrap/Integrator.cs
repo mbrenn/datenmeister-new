@@ -119,7 +119,7 @@ namespace DatenMeister.BootStrap
             watch.Start();
 
             // Finds the loader for a certain extent type
-            var storageMap = new ConfigurationToExtentStorageMapper();
+            var storageMap = new ProviderToProviderLoaderMapper();
             scopeStorage.Add(storageMap);
 
             // Defines the extent storage data
@@ -139,7 +139,7 @@ namespace DatenMeister.BootStrap
             scopeStorage.Add(extentSettings);
 
             // Extent Manager
-            var mapper = new ConfigurationToExtentStorageMapper();
+            var mapper = new ProviderToProviderLoaderMapper();
             scopeStorage.Add(mapper);
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,

@@ -89,9 +89,9 @@ namespace DatenMeister.Tests.Modules.Actions
         }
 
 
-        public static ConfigurationToExtentStorageMapper GetDefaultMapper()
+        public static ProviderToProviderLoaderMapper GetDefaultMapper()
         {
-            var result = new ConfigurationToExtentStorageMapper();
+            var result = new ProviderToProviderLoaderMapper();
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
                 manager => new InMemoryProviderLoader());
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,

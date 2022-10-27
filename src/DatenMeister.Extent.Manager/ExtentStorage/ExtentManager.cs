@@ -41,7 +41,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// <summary>
         /// Stores the mapping between configuration types and storage provider
         /// </summary>
-        private readonly ConfigurationToExtentStorageMapper _map;
+        private readonly ProviderToProviderLoaderMapper _map;
 
         public ExtentManager(
             IWorkspaceLogic workspaceLogic,
@@ -55,7 +55,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             _lockingHandler = _integrationSettings.IsLockingActivated ? new LockingLogic(scopeStorage) : null;
 
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
-            _map = ScopeStorage.Get<ConfigurationToExtentStorageMapper>();
+            _map = ScopeStorage.Get<ProviderToProviderLoaderMapper>();
         }
 
         public IScopeStorage ScopeStorage { get; }

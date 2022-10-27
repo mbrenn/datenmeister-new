@@ -1,5 +1,7 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
@@ -16,13 +18,16 @@ namespace DatenMeister.Extent.Forms
         public const string NavigationExtentNavigateTo = "Extent.NavigateTo";
         public const string NavigationExtentDeleteExtent = "Extent.DeleteExtent";
         public const string NavigationExtentProperties = "Extent.Properties";
+        public const string NavigationStore = "Extent.Store";
         public const string NavigationItemNew = "Item.New";
 
         private readonly IScopeStorage _scopeStorage;
+        private readonly ExtentManager _extentManager;
 
-        public ExtentFormPlugin(IScopeStorage scopeStorage)
+        public ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentManager)
         {
             _scopeStorage = scopeStorage;
+            _extentManager = extentManager;
         }
 
         public void Start(PluginLoadingPosition position)
@@ -38,6 +43,18 @@ namespace DatenMeister.Extent.Forms
                         {
                             FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Extent
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationStore, "Store Extent")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Row,
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent,
+                            PredicateForElement =
+                                element => _extentManager.GetProviderLoaderAndConfiguration(
+                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
+                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.uri))
+                                    .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true
                         });
 
                     ActionButtonToFormAdder.AddActionButton(

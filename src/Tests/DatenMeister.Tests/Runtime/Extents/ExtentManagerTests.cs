@@ -65,7 +65,6 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
         }
 
-
         [Test]
         public void TestGetProviderAndConfiguration()
         {

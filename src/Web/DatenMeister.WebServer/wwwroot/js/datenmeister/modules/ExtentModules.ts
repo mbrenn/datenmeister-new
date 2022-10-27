@@ -8,6 +8,10 @@ import * as ECClient from "../client/Extents";
 import * as ItemClient from "../client/Items";
 import * as Navigator from "../Navigator";
 import {moveItemInExtentDown, moveItemInExtentUp} from "../client/Actions.Items";
+import * as Mof from "../Mof";
+import * as Actions from "../client/Actions";
+import {_DatenMeister} from "../models/DatenMeister.class";
+import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -20,7 +24,7 @@ export function loadModules() {
     FormActions.addModule(new ExtentsListDeleteItemAction());
     FormActions.addModule(new ExtentsListMoveUpItemAction());
     FormActions.addModule(new ExtentsListMoveDownItemAction());
-    
+    FormActions.addModule(new ExtentsStoreAction());
 }
 
 class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
@@ -254,5 +258,26 @@ class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInExtentDown(form.workspace, element.extentUri, element.uri);
         document.location.reload();
+    }
+}
+
+class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
+    constructor() {
+        super("Extent.Store");
+    }
+    
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const action = new Mof.DmObject(_DatenMeister._Actions.__StoreExtentAction_Uri);
+        action.set(_StoreExtentAction.workspaceId, element.get(_DatenMeister._Management._Extent.workspaceId));
+        action.set(_StoreExtentAction.extentUri, element.get(_DatenMeister._Management._Extent.uri));
+
+        const actionParams: Actions.ExecuteActionParams =
+            {
+                parameter: action
+            };
+
+        await Actions.executeActionDirectly("Execute", actionParams);
+        
+        alert('Extent has been stored.');
     }
 }

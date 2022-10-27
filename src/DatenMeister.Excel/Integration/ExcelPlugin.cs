@@ -21,7 +21,7 @@ namespace DatenMeister.Excel.Integration
             switch (position)
             {
                 case PluginLoadingPosition.AfterBootstrapping:
-                    var mapper = _scopeStorage.Get<ConfigurationToExtentStorageMapper>();
+                    var mapper = _scopeStorage.Get<ProviderToProviderLoaderMapper>();
                     mapper.AddMapping(
                         _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelExtentLoaderConfig,
                         manager => new ExcelFileProviderLoader());

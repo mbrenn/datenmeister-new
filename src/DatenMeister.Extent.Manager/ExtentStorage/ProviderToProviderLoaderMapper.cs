@@ -12,12 +12,12 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
     /// Maps the extent storage type to a configuration type which is used by the logic to find out the best type
     /// which can be used to satisfy a load request.
     /// </summary>
-    public class ConfigurationToExtentStorageMapper
+    public class ProviderToProviderLoaderMapper
     {
         /// <summary>
         /// Stores the configuration information
         /// </summary>
-        private class ConfigurationInfo
+        private class LoaderInfo
         {
             /// <summary>
             /// The function to create the provider loader
@@ -34,7 +34,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             /// </summary>
             /// <param name="function">Function to be hadnled</param>
             /// <param name="connectedMetaClass">Connected meta class</param>
-            public ConfigurationInfo(Func<ExtentManager, IProviderLoader> function, IElement connectedMetaClass)
+            public LoaderInfo(Func<ExtentManager, IProviderLoader> function, IElement connectedMetaClass)
             {
                 Function = function;
                 ConnectedMetaClass = connectedMetaClass;
@@ -51,19 +51,19 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             }
         }
 
-        private static readonly ClassLogger Logger = new(typeof(ConfigurationToExtentStorageMapper));
+        private static readonly ClassLogger Logger = new(typeof(ProviderToProviderLoaderMapper));
 
         /// <summary>
         /// Stores the types being used for the mapping
         /// </summary>
-        private readonly List<ConfigurationInfo> _mapping = new();
+        private readonly List<LoaderInfo> _mapping = new();
 
         public void AddMapping(IElement typeConfigurationClass, Func<ExtentManager, IProviderLoader> factoryExtentStorage)
         {
             lock (_mapping)
             {
                 _mapping.Add(
-                    new ConfigurationInfo(factoryExtentStorage, typeConfigurationClass));
+                    new LoaderInfo(factoryExtentStorage, typeConfigurationClass));
             }
         }
 

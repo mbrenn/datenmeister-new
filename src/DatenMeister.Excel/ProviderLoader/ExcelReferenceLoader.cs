@@ -49,6 +49,12 @@ namespace DatenMeister.Excel.ProviderLoader
             // Nothing to store, since the Excel Reference Provider is just a read-only thing
         }
 
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities()
+        {
+            IsPersistant = true,
+            AreChangesPersistant = false
+        };
+
         /// <summary>
         /// Imports the excel into the extent
         /// </summary>

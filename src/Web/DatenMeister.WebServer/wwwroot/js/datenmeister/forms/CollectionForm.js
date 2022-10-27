@@ -57,7 +57,10 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
                     const viewModeForm = new ViewModeSelectionControl_1.ViewModeSelectionControl();
                     const htmlViewModeForm = viewModeForm.createForm();
-                    viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
+                    viewModeForm.viewModeSelected.addListener(_ => {
+                        configuration.viewMode = VML.getCurrentViewMode();
+                        configuration.refreshForm();
+                    });
                     htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
                 }
                 // Creates the form selection
@@ -150,7 +153,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                             tableForm.formElement = tab;
                             tableForm.workspace = tthis.workspace;
                             tableForm.extentUri = tthis.extentUri;
-                            tableForm.createFormByCollection(form, configuration);
+                            yield tableForm.createFormByCollection(form, configuration);
                         }
                         else {
                             form.addClass('alert alert-warning');
@@ -178,7 +181,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
     exports.CollectionFormCreator = CollectionFormCreator;
     function createMetaClassSelectionButtonForNewItem(buttonDiv, containerDiv, workspace, extentUri) {
         const tthis = this;
-        buttonDiv.on('click', () => {
+        buttonDiv.on('click', () => __awaiter(this, void 0, void 0, function* () {
             containerDiv.empty();
             const selectItem = new SIC.SelectItemControl();
             const settings = new SIC.Settings();
@@ -204,10 +207,10 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                             encodeURIComponent(selectedItem.uri);
                 }
             });
-            selectItem.setWorkspaceById('Types');
-            selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
+            yield selectItem.setWorkspaceById('Types');
+            yield selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
             selectItem.init(containerDiv, settings);
-        });
+        }));
     }
     exports.createMetaClassSelectionButtonForNewItem = createMetaClassSelectionButtonForNewItem;
 });

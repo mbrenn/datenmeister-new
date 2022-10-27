@@ -16,8 +16,10 @@ namespace DatenMeister.Actions.ActionHandler
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var source = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.source);
-            var value = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.target);
+            var source = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.source)
+                         ?? throw new InvalidOperationException("'Source' is not set.");
+            var value = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.target)
+                        ?? throw new InvalidOperationException("'target' is not set");
             var actionType = action.getOrDefault<_DatenMeister._Actions.___MoveOrCopyType>(
                 _DatenMeister._Actions._MoveOrCopyAction.actionType);
 

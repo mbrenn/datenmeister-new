@@ -29,7 +29,7 @@ namespace DatenMeister.Provider.Environmental
             {
                 case PluginLoadingPosition.AfterInitialization:
                 {
-                    var mapper = ScopeStorage.Get<ConfigurationToExtentStorageMapper>();
+                    var mapper = ScopeStorage.Get<ProviderToProviderLoaderMapper>();
                     mapper.AddMapping(
                         _DatenMeister.TheOne.ExtentLoaderConfigs.__EnvironmentalVariableLoaderConfig,
                         _ => new EnvironmentalProvider());

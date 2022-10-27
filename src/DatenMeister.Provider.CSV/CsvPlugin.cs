@@ -14,11 +14,11 @@ namespace DatenMeister.Provider.CSV
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
     public class CsvPlugin : IDatenMeisterPlugin
     {
-        private readonly ConfigurationToExtentStorageMapper _configurationToExtentStorageMapper;
+        private readonly ProviderToProviderLoaderMapper _providerToProviderLoaderMapper;
 
         public CsvPlugin(IScopeStorage scopeStorage)
         {
-            _configurationToExtentStorageMapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
+            _providerToProviderLoaderMapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
         }
 
         public void Start(PluginLoadingPosition position)
@@ -26,7 +26,7 @@ namespace DatenMeister.Provider.CSV
             switch (position)
             {
                 case PluginLoadingPosition.AfterBootstrapping:
-                    _configurationToExtentStorageMapper.AddMapping(
+                    _providerToProviderLoaderMapper.AddMapping(
                         _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
                         manager => new CsvProviderLoader());
                     break;

@@ -35,5 +35,11 @@ namespace DatenMeister.Provider.Xmi.Provider.Xml
         {
             // No storing at the moment
         }
+
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities()
+        {
+            IsPersistant = true,
+            AreChangesPersistant = false
+        };
     }
 }

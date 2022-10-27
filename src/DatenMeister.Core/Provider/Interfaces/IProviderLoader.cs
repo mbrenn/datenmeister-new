@@ -3,6 +3,22 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.Provider.Interfaces
 {
+    public class ProviderLoaderCapabilities
+    {
+        /// <summary>
+        /// Gets or sets the information whether the data is loaded from a
+        /// persistant storage or whether it has been created completely from memory.
+        /// The value is true, when the content is the same at two start-ups. 
+        /// </summary>
+        public bool IsPersistant = false;
+
+        /// <summary>
+        /// Gets or sets the information whether changes which have been done
+        /// are also persistant on the dist. Or whether this is a read-only
+        /// provider.
+        /// </summary>
+        public bool AreChangesPersistant = false;
+    }
     /// <summary>
     /// Defines the interface to store an extent persistently whether in a database or
     /// in the file.
@@ -38,5 +54,10 @@ namespace DatenMeister.Core.Provider.Interfaces
         /// <param name="extent">Extent to be stored</param>
         /// <param name="configuration">Configuration to be added</param>
         void StoreProvider(IProvider extent, IElement configuration);
+
+        /// <summary>
+        /// Gets the provider loader capabilities
+        /// </summary>
+        ProviderLoaderCapabilities ProviderLoaderCapabilities { get; }
     }
 }

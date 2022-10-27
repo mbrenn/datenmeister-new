@@ -44,5 +44,11 @@ namespace DatenMeister.Provider.Environmental
         public void StoreProvider(IProvider extent, IElement configuration)
         {
         }
+
+        public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities()
+        {
+            IsPersistant = false,
+            AreChangesPersistant = false
+        };
     }
 }

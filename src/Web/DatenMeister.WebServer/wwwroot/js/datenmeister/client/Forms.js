@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getViewModes = exports.getObjectFormForItem = exports.getForm = exports.FormType = exports.getObjectFormForMetaClass = exports.getCollectionFormForExtent = void 0;
+    exports.getViewModes = exports.getObjectFormForItem = exports.getForm = exports.getObjectFormForMetaClass = exports.getCollectionFormForExtent = void 0;
     /*
         Gets the default form for an extent uri by the webserver
      */
@@ -39,16 +39,6 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.getObjectFormForMetaClass = getObjectFormForMetaClass;
-    /**
-     * Defines the form types
-     */
-    var FormType;
-    (function (FormType) {
-        FormType["Object"] = "object";
-        FormType["Collection"] = "collection";
-        FormType["Row"] = "row";
-        FormType["Table"] = "table";
-    })(FormType = exports.FormType || (exports.FormType = {}));
     function getForm(formUri, formType) {
         return __awaiter(this, void 0, void 0, function* () {
             const resultFromServer = yield ApiConnection.get(Settings.baseUrl +

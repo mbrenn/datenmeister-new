@@ -1,4 +1,5 @@
 ﻿import * as InterfacesForms from "../forms/Interfaces";
+import {FormType} from "../forms/Interfaces";
 import * as InterfacesFields from "../fields/Interfaces";
 import * as Mof from "../Mof";
 import {createField} from "./FieldFactory";
@@ -22,6 +23,7 @@ export class RowForm implements InterfacesForms.IForm {
     element: Mof.DmObject;
     formElement: Mof.DmObject;
 
+    formType: FormType = FormType.Row;
     fieldElements: Array<InterfacesFields.IFormField>;
 
     onCancel: () => void;

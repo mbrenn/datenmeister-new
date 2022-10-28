@@ -127,6 +127,12 @@ a {
     resize: both;
 }
 
+
+.dm-tableform .dm-textfield {
+    white-space: pre-wrap;
+}
+
+
 /* Used to style undefined values in textfields and other fields with a light color to de-emphasize 
  * the visibility of these items
 */

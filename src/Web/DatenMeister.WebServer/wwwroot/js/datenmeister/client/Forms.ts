@@ -1,6 +1,7 @@
 ﻿import * as Mof from "../Mof"
 import * as Settings from "../Settings"
 import * as ApiConnection from "../ApiConnection"
+import {FormType} from "../forms/Interfaces";
 
 
 /*
@@ -33,18 +34,7 @@ export async function getObjectFormForMetaClass(metaClassUri: string) {
 
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
-
-/**
- * Defines the form types
- */
-export enum FormType
-{
-    Object= "object", 
-    Collection = "collection", 
-    Row = "row", 
-    Table = "table"
-}
-
+    
 export async function getForm(formUri: string, formType?: FormType): Promise<Mof.DmObject> {
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +

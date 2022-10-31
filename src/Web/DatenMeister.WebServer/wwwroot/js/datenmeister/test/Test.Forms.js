@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../client/Extents", "../client/Workspace", "../client/Items", "../client/Forms", "../Mof", "../models/DatenMeister.class"], function (require, exports, ClientExtent, ClientWorkspace, ClientItems, ClientForms, Mof_1, DatenMeister_class_1) {
+define(["require", "exports", "../client/Extents", "../client/Workspace", "../client/Items", "../client/Forms", "../Mof", "../models/DatenMeister.class", "../forms/Interfaces"], function (require, exports, ClientExtent, ClientWorkspace, ClientItems, ClientForms, Mof_1, DatenMeister_class_1, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -58,13 +58,13 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                 const form = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent');
                 chai.assert.isTrue(form.metaClass.name === "RowForm", 'Not a row Form');
                 // Test that retrieval as collection form is working
-                const formAsCollection = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', ClientForms.FormType.Collection);
+                const formAsCollection = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', Interfaces_1.FormType.Collection);
                 chai.assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
                 const tabs = formAsCollection.get(DatenMeister_class_1._DatenMeister._Forms._CollectionForm.tab, Mof_1.ObjectType.Array);
                 chai.assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
                 chai.assert.isTrue(tabs[0].metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
                 // Test that retrieval as Object Form is working
-                const formAsObject = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', ClientForms.FormType.Object);
+                const formAsObject = yield ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent', Interfaces_1.FormType.Object);
                 chai.assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
                 const tabsObject = formAsObject.get(DatenMeister_class_1._DatenMeister._Forms._CollectionForm.tab, Mof_1.ObjectType.Array);
                 chai.assert.isTrue(tabsObject.length === 1, '# of tabs of ObjectForm is not 1');

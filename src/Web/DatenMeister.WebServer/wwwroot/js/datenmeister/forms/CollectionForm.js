@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl"], function (require, exports, VML, ClientItems, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl", "./Interfaces"], function (require, exports, VML, ClientItems, ClientForms, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -20,6 +20,9 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
         The input for this type is a collection of elements
     */
     class CollectionFormCreator {
+        constructor() {
+            this.formType = Interfaces_1.FormType.Collection;
+        }
         createCollectionForRootElements(htmlElements, workspace, extentUri, configuration) {
             if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
                 throw "htmlElements.itemContainer is not set";
@@ -39,7 +42,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
             // Load the form
             const defer2 = this._overrideFormUrl === undefined ?
                 ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
-                ClientForms.getForm(this._overrideFormUrl, Forms_1.FormType.Collection);
+                ClientForms.getForm(this._overrideFormUrl, Interfaces_1.FormType.Collection);
             // Wait for both
             Promise.all([defer2]).then(([form]) => __awaiter(this, void 0, void 0, function* () {
                 var _a;

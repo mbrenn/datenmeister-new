@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../client/Items", "../Navigator", "./ViewModeLogic", "../client/Forms", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class"], function (require, exports, DetailForm, RowForm_1, TableForm_1, ClientItems, Navigator_1, VML, ClientForms, Forms_1, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_2, DatenMeister_class_1) {
+define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../client/Items", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class", "./Interfaces"], function (require, exports, DetailForm, RowForm_1, TableForm_1, ClientItems, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
@@ -21,6 +21,9 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
      * This method handles all allowed form types.
      */
     class ObjectFormCreator {
+        constructor() {
+            this.formType = Interfaces_1.FormType.Object;
+        }
         createFormByObject(htmlElements, configuration) {
             return __awaiter(this, void 0, void 0, function* () {
                 // First, store the parent and the configuration
@@ -88,7 +91,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
     exports.ObjectFormCreator = ObjectFormCreator;
     class ObjectFormCreatorForItem {
         constructor() {
-            this.formMode = Forms_2.FormMode.ViewMode;
+            this.formMode = Forms_1.FormMode.ViewMode;
         }
         switchToMode(formMode) {
             this.formMode = formMode;
@@ -103,19 +106,19 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
         rebuildForm() {
             const tthis = this;
             let configuration;
-            if (this.formMode === Forms_2.FormMode.ViewMode) {
+            if (this.formMode === Forms_1.FormMode.ViewMode) {
                 configuration = { isReadOnly: true };
             }
             else {
                 configuration = {
                     isReadOnly: false,
                     onCancel: () => {
-                        tthis.switchToMode(Forms_2.FormMode.ViewMode);
+                        tthis.switchToMode(Forms_1.FormMode.ViewMode);
                     },
                     onSubmit: (element, method) => __awaiter(this, void 0, void 0, function* () {
                         yield ClientItems.setProperties(tthis.workspace, tthis.itemUri, element);
                         if (method === RowForm_1.SubmitMethod.Save) {
-                            tthis.switchToMode(Forms_2.FormMode.ViewMode);
+                            tthis.switchToMode(Forms_1.FormMode.ViewMode);
                         }
                         if (method === RowForm_1.SubmitMethod.SaveAndClose) {
                             const containers = yield ClientItems.getContainer(tthis.workspace, tthis.itemUri);
@@ -150,7 +153,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
             // Load the form
             const defer2 = this._overrideFormUrl === undefined ?
                 ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
-                ClientForms.getForm(this._overrideFormUrl, Forms_1.FormType.Object);
+                ClientForms.getForm(this._overrideFormUrl, Interfaces_1.FormType.Object);
             // Wait for both
             Promise.all([defer1, defer2]).then(([element1, form]) => {
                 // First the debug information
@@ -163,9 +166,9 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                 objectFormCreator.itemUrl = this.itemUri;
                 objectFormCreator.element = element1;
                 objectFormCreator.formElement = form;
-                if (this.formMode === Forms_2.FormMode.ViewMode) {
+                if (this.formMode === Forms_1.FormMode.ViewMode) {
                     const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
-                    domEditButton.on('click', () => tthis.switchToMode(Forms_2.FormMode.EditMode));
+                    domEditButton.on('click', () => tthis.switchToMode(Forms_1.FormMode.EditMode));
                     this.htmlElements.itemContainer.append(domEditButton);
                 }
                 objectFormCreator.createFormByObject(tthis.htmlElements, configuration);

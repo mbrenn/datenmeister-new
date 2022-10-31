@@ -9,7 +9,6 @@ import * as ClientItems from "../client/Items";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 import * as VML from "./ViewModeLogic";
 import * as ClientForms from "../client/Forms";
-import {FormType} from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import {FormSelectionControl} from "../controls/FormSelectionControl"
@@ -18,6 +17,7 @@ import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {ItemLink} from "../ApiModels";
+import {FormType} from "./Interfaces";
 
 export class ObjectFormHtmlElements
 {
@@ -56,6 +56,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     htmlItemContainer: IFormConfiguration;
     itemUrl: string;    
     workspace: string;
+    formType: FormType = FormType.Object;
 
     async createFormByObject(htmlElements: ObjectFormHtmlElements, configuration: IFormConfiguration) {
         // First, store the parent and the configuration

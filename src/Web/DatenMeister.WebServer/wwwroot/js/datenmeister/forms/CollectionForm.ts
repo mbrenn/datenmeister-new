@@ -5,7 +5,6 @@ import {IFormConfiguration} from "./IFormConfiguration";
 import * as VML from "./ViewModeLogic";
 import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
-import {FormType} from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import * as IForm from "./Interfaces";
@@ -18,7 +17,7 @@ import {_DatenMeister} from "../models/DatenMeister.class";
 import {FormSelectionControl} from "../controls/FormSelectionControl";
 import {ItemLink} from "../ApiModels";
 import _TableForm = _DatenMeister._Forms._TableForm;
-import {IGetRootElementsParameter} from "../client/Items";
+import {FormType} from "./Interfaces";
 
 export class CollectionFormHtmlElements
 {
@@ -67,6 +66,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
     formElement: Mof.DmObject;
     workspace: string;
     itemUrl: string;
+    formType: FormType = FormType.Collection;
 
     /**
      * Defines the form url being used to select the form for the object form.

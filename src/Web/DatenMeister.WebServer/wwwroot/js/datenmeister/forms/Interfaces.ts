@@ -1,5 +1,17 @@
 ﻿import * as Mof from "../Mof";
 
+
+/**
+ * Defines the form types
+ */
+export enum FormType
+{
+    Object= "object",
+    Collection = "collection",
+    Row = "row",
+    Table = "table"
+}
+
 export interface IFormNavigation {
     workspace: string;
     extentUri: string;
@@ -13,6 +25,11 @@ export interface IFormNavigation {
     itemUrl: string;  
      
     formElement: Mof.DmObject;
+
+    /**
+     * Defines the form type of the current form in which the field will be embedded.
+     */
+    formType: FormType;
 }
 
 export interface IForm extends IFormNavigation

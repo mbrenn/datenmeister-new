@@ -5,6 +5,7 @@ import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
 import {DmObject, ObjectType} from "../Mof";
 import {_DatenMeister} from "../models/DatenMeister.class";
+import {FormType} from "../forms/Interfaces";
 
 export function includeTests() {
     describe('Forms', () => {
@@ -73,7 +74,7 @@ export function includeTests() {
             // Test that retrieval as collection form is working
             const formAsCollection = await ClientForms.getForm(
                 'dm:///_internal/forms/internal#ImportManagerFindExtent', 
-                ClientForms.FormType.Collection);
+                FormType.Collection);
             chai.assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
             
             const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
@@ -83,7 +84,7 @@ export function includeTests() {
             // Test that retrieval as Object Form is working
             const formAsObject = await ClientForms.getForm(
                 'dm:///_internal/forms/internal#ImportManagerFindExtent',
-                ClientForms.FormType.Object);
+                FormType.Object);
             chai.assert.isTrue(formAsObject.metaClass.name === "ObjectForm", 'Not an Object Form');
 
             const tabsObject = formAsObject.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);

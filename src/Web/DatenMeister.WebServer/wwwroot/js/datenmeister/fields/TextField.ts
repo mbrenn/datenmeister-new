@@ -1,10 +1,10 @@
 import * as Mof from "../Mof";
 import {DmObject, ObjectType} from "../Mof";
-
 import {BaseField, IFormField} from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {FormType} from "../forms/Interfaces";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
+import {truncateText} from "../../burnsystems/StringManipulation";
 
 export class Field extends BaseField implements IFormField
 {
@@ -23,9 +23,7 @@ export class Field extends BaseField implements IFormField
         // If we are in a table view, then reduce the length of the text to 100 
         // characters. 
         if (this.form.formType === FormType.Table) {
-            if (value.length >= 80) {
-                value = value.substring(0, 80) + "…";
-            }
+            value = truncateText(value, {maxLength: 200});
         }
         
         // Checks, if we are having an array, then we will just show the 

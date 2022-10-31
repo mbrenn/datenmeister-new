@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/DatenMeister.class", "../forms/Interfaces"], function (require, exports, Mof, Mof_1, Interfaces_1, DatenMeister_class_1, Interfaces_2) {
+define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/DatenMeister.class", "../forms/Interfaces", "../../burnsystems/StringManipulation"], function (require, exports, Mof, Mof_1, Interfaces_1, DatenMeister_class_1, Interfaces_2, StringManipulation_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
@@ -22,9 +22,7 @@ define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/Dat
                 // If we are in a table view, then reduce the length of the text to 100 
                 // characters. 
                 if (this.form.formType === Interfaces_2.FormType.Table) {
-                    if (value.length >= 80) {
-                        value = value.substring(0, 80) + "…";
-                    }
+                    value = (0, StringManipulation_1.truncateText)(value, { maxLength: 200 });
                 }
                 // Checks, if we are having an array, then we will just show the 
                 // enumeration

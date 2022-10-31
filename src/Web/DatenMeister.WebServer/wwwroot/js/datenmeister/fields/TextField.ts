@@ -23,7 +23,11 @@ export class Field extends BaseField implements IFormField
         // If we are in a table view, then reduce the length of the text to 100 
         // characters. 
         if (this.form.formType === FormType.Table) {
-            value = truncateText(value, {maxLength: 200});
+            value = truncateText(value, {
+                useWordBoundary: true,
+                maxLines: 3,
+                maxLength: 100                
+            });
         }
         
         // Checks, if we are having an array, then we will just show the 

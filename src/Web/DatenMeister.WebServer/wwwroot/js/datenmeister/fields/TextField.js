@@ -22,7 +22,11 @@ define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/Dat
                 // If we are in a table view, then reduce the length of the text to 100 
                 // characters. 
                 if (this.form.formType === Interfaces_2.FormType.Table) {
-                    value = (0, StringManipulation_1.truncateText)(value, { maxLength: 200 });
+                    value = (0, StringManipulation_1.truncateText)(value, {
+                        useWordBoundary: true,
+                        maxLines: 3,
+                        maxLength: 100
+                    });
                 }
                 // Checks, if we are having an array, then we will just show the 
                 // enumeration

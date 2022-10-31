@@ -3,6 +3,7 @@ import {DmObject, ObjectType} from "../Mof";
 
 import {BaseField, IFormField} from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
+import {FormType} from "../forms/Interfaces";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
 
 export class Field extends BaseField implements IFormField
@@ -17,7 +18,18 @@ export class Field extends BaseField implements IFormField
         const fieldName = this.field.get('name')?.toString() ?? "";
 
         /* Returns a list element in case an array is given */
-        const value = dmElement.get(fieldName);
+        let value = dmElement.get(fieldName, ObjectType.String) ?? "";
+        
+        // If we are in a table view, then reduce the length of the text to 100 
+        // characters. 
+        if (this.form.formType === FormType.Table) {
+            if (value.length >= 80) {
+                value = value.substring(0, 80) + "…";
+            }
+        }
+        
+        // Checks, if we are having an array, then we will just show the 
+        // enumeration
         if (Array.isArray(value)) {
             let enumeration = $("<ul class='list-unstyled'></ul>");
             for (let m in value) {
@@ -36,15 +48,13 @@ export class Field extends BaseField implements IFormField
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
             const div = $("<div class='dm-textfield'/>");
-            const value = dmElement.get(fieldName);
             if (value === undefined) {
                 div.append($("<em class='dm-undefined'>undefined</em>"));
             } else {
-                div.text(dmElement.get(fieldName)?.toString() ?? "undefined");
+                div.text(value ?? "undefined");
             }
             return div;
         } else {
-            const value = dmElement.get(fieldName)?.toString() ?? "";
             const lineHeight = this.field.get(_TextFieldData.lineHeight, ObjectType.Number);
             const width = this.field.get(_TextFieldData.width, ObjectType.Number);
             

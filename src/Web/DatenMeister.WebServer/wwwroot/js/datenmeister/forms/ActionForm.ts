@@ -106,7 +106,7 @@ export async function createActionFormForEmptyObject(
     creator.extentUri = creator.element.extentUri;
 
     // Finally, we have everything together, create the form
-    creator.createFormByObject(
+    await creator.createFormByObject(
         {
             itemContainer: parent
         }, configuration);

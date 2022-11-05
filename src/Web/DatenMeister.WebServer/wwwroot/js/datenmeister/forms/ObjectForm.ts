@@ -58,7 +58,9 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     workspace: string;
     formType: FormType = FormType.Object;
 
-    async createFormByObject(htmlElements: ObjectFormHtmlElements, configuration: IFormConfiguration) {
+    async createFormByObject(
+        htmlElements: ObjectFormHtmlElements, 
+        configuration: IFormConfiguration) {
         // First, store the parent and the configuration
         this.domContainer = htmlElements.itemContainer;
         this.htmlItemContainer = configuration;

@@ -18,6 +18,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Forms.Create.ByMetaClass");
+            this.actionVerb = "Create by MetaClass";
         }
         loadForm() {
             return __awaiter(this, void 0, void 0, function* () {

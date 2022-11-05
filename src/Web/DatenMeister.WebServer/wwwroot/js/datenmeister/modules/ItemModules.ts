@@ -34,6 +34,7 @@ class ItemMoveOrCopyActionNavigate extends FormActions.ItemFormActionModuleBase 
 class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.MoveOrCopy");
+        this.actionVerb = "Move/Copy Item";
     }
     
     async loadObject(): Promise<DmObject> | undefined {
@@ -77,6 +78,7 @@ class ItemDeleteAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.Delete");
         this.requiresConfirmation = true;
+        this.actionVerb = "Delete Item";
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -94,6 +96,7 @@ class ItemDeleteAction extends FormActions.ItemFormActionModuleBase {
 class ItemMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.MoveDownItem");
+        this.actionVerb = "Move Up";
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -109,6 +112,7 @@ class ItemMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
 class ItemMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.MoveUpItem");
+        this.actionVerb = "Move Down";
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

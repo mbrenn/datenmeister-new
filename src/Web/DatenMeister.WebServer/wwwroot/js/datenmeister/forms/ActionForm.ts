@@ -14,6 +14,13 @@ export async function createActionFormForEmptyObject(
     metaClass: string,
     configuration: IFormConfiguration,
     actionName: string) {
+    
+    const module = FormActions.getModule(actionName);
+    if (module === undefined)
+    {
+        parent.text("Unknown action: " + actionName);
+        return;
+    }
 
     configuration.submitName = "Perform Action";
     configuration.showCancelButton = false;
@@ -49,7 +56,7 @@ export async function createActionFormForEmptyObject(
     /* Loads the object being used as a base for the new action.
     * Usually context information from GET-Query are retrieved. Or some default fields are filled out
     */
-    let element = await FormActions.loadObjectForAction(actionName);
+    let element = await module.loadObject();
     if (element === undefined) {
         
         element = new DmObject();
@@ -86,7 +93,7 @@ export async function createActionFormForEmptyObject(
     }
 
     // Asks the detail form actions, whether we have a form for the action itself
-    form = await FormActions.loadFormForAction(actionName);
+    form = await module.loadForm();
     if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {
@@ -104,6 +111,8 @@ export async function createActionFormForEmptyObject(
     creator.formElement = form;
     creator.workspace = "Data";
     creator.extentUri = creator.element.extentUri;
+    
+    configuration.submitName = module.actionVerb;
 
     // Finally, we have everything together, create the form
     await creator.createFormByObject(

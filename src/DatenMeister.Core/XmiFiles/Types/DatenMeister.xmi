@@ -868,7 +868,7 @@
         <isStatic p2:id="e30d387b-b012-4f4b-8e2f-74e81e93bda3" />
         <isLeaf p2:id="1bf7559b-9a55-4790-84ab-3d87ab70cb7a" />
       </ownedAttribute>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="ddb2ec7e-3f41-413a-b3d5-e8173b71e1ce" name="extentUri">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="ddb2ec7e-3f41-413a-b3d5-e8173b71e1ce" type-ref="dm:///_internal/model/primitivetypes#String" name="extentUri">
         <aggregation p2:id="bdac005f-3a97-443b-8849-ba4dd51cb5dd" />
         <isDerived p2:id="c02d466c-5f51-4b4e-96df-445a89fcb40c" />
         <isDerivedUnion p2:id="45bdbb52-be55-49e1-8df1-56109f188b4c" />

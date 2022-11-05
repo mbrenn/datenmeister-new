@@ -52,6 +52,7 @@ class WorkspaceExtentLoadOrCreateNavigateAction extends FormActions.ItemFormActi
 class WorkspaceExtentLoadOrCreateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Workspace.Extent.LoadOrCreate");
+        this.actionVerb = "Choose Extent Type";
     }
     
     async loadForm(): Promise<DmObject> | undefined {
@@ -81,6 +82,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
 
     constructor() {
         super("Workspace.Extent.LoadOrCreate.Step2");
+        this.actionVerb = "Create/Load Extent";
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -109,6 +111,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
 class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Workspace.Extent.Xmi.Create");
+        this.actionVerb = "Create Xmi Extent";
     }
     
     async loadObject(): Promise<DmObject> | undefined {

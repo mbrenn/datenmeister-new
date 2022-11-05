@@ -13,11 +13,14 @@ export function loadModules() {
 class JsonItemAlertAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("JSON.Item.Alert");
+        this.actionVerb = "Trigger JSON Alert";
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert(JSON.stringify(createJsonFromObject(element)));
     }
+    
+
 }
 
 class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {

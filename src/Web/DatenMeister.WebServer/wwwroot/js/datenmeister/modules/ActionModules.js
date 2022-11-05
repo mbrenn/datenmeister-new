@@ -19,6 +19,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions"], 
     class JsonItemAlertAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("JSON.Item.Alert");
+            this.actionVerb = "Trigger JSON Alert";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

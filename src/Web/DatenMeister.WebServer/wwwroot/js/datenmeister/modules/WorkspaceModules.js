@@ -51,6 +51,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions", "
     class WorkspaceExtentLoadOrCreateAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Workspace.Extent.LoadOrCreate");
+            this.actionVerb = "Choose Extent Type";
         }
         loadForm() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -80,6 +81,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions", "
     class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Workspace.Extent.LoadOrCreate.Step2");
+            this.actionVerb = "Create/Load Extent";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -101,6 +103,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions", "
     class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Workspace.Extent.Xmi.Create");
+            this.actionVerb = "Create Xmi Extent";
         }
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {

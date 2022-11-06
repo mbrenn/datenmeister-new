@@ -59,7 +59,8 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                     const fieldMetaClassId = field.metaClass.id;
                     const fieldMetaClassUri = field.metaClass.uri;
                     let fieldElement = null; // The instance if IFormField allowing to create the dom
-                    let htmlElement; // The dom that had been created... 
+                    let htmlElement; // The dom that had been created...
+                    const isFieldReadOnly = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly);
                     // Creates the field to be shown 
                     fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassUri, {
                         configuration: configuration,
@@ -82,8 +83,7 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                         if (name === undefined || name === null || name === "") {
                             name = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.name);
                         }
-                        const isReadOnly = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly);
-                        if (isReadOnly) {
+                        if (isFieldReadOnly) {
                             name += " [R]";
                         }
                         $(".key", tr).text(name);
@@ -97,7 +97,7 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                     }
                     else {
                         fieldElement.field = field;
-                        fieldElement.isReadOnly = configuration.isReadOnly;
+                        fieldElement.isReadOnly = configuration.isReadOnly || isFieldReadOnly;
                         fieldElement.form = this;
                         fieldElement.itemUrl = itemUri;
                         htmlElement = fieldElement.createDom(this.element);

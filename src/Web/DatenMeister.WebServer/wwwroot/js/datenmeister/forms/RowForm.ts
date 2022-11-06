@@ -71,8 +71,9 @@ export class RowForm implements InterfacesForms.IForm {
             const fieldMetaClassId = field.metaClass.id;
             const fieldMetaClassUri = field.metaClass.uri;
             let fieldElement = null; // The instance if IFormField allowing to create the dom
-            let htmlElement; // The dom that had been created... 
-
+            let htmlElement; // The dom that had been created...
+            const isFieldReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly);
+            
             // Creates the field to be shown 
             fieldElement = createField(
                 fieldMetaClassUri,
@@ -102,8 +103,7 @@ export class RowForm implements InterfacesForms.IForm {
                     name = (field.get(_DatenMeister._Forms._FieldData.name) as any as string);
                 }
 
-                const isReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly);
-                if (isReadOnly) {
+                if (isFieldReadOnly) {
                     name += " [R]";
                 }
 
@@ -118,7 +118,7 @@ export class RowForm implements InterfacesForms.IForm {
                 $(".value", tr).append(fieldElement);
             } else {
                 fieldElement.field = field;
-                fieldElement.isReadOnly = configuration.isReadOnly;
+                fieldElement.isReadOnly = configuration.isReadOnly || isFieldReadOnly;
                 fieldElement.form = this;
                 fieldElement.itemUrl = itemUri;
 

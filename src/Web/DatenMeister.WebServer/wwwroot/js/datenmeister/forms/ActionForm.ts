@@ -107,6 +107,7 @@ export async function createActionFormForEmptyObject(
         }
     }
 
+    // Creates the object as being provided by the uri
     creator.element = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
     creator.formElement = form;
     creator.workspace = "Data";

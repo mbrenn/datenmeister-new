@@ -9,13 +9,14 @@ using DatenMeister.Forms;
 using DatenMeister.Forms.FormModifications;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Actions
+namespace DatenMeister.Actions.Forms
 {
     /// <summary>
     /// Defines the plugin which adds the Execute Action Button for all items belonging to actions 
     /// </summary>
     // ReSharper disable once UnusedType.Global
-    public class ActionFormPlugin: IDatenMeisterPlugin
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class ActionFormPlugin : IDatenMeisterPlugin
     {
         private readonly IScopeStorage _scopeStorage;
 
@@ -23,13 +24,13 @@ namespace DatenMeister.Actions
         {
             _scopeStorage = scopeStorage;
         }
-        
+
         public void Start(PluginLoadingPosition position)
         {
             switch (position)
             {
                 case PluginLoadingPosition.AfterLoadingOfExtents:
-                    
+
                     var formsPluginState = _scopeStorage.Get<FormsPluginState>();
                     formsPluginState.FormModificationPlugins.Add(
                         new ActionFormModificationPlugin());
@@ -46,7 +47,7 @@ namespace DatenMeister.Actions
             {
                 var isAction = ClassifierMethods.IsSpecializedClassifierOf(
                     context.MetaClass, _DatenMeister.TheOne.Actions.__Action);
-                
+
                 if (isAction
                     && context.FormType == _DatenMeister._Forms.___FormType.Row
                     && context.ParentPropertyName == string.Empty
@@ -66,6 +67,6 @@ namespace DatenMeister.Actions
                 return false;
             }
         }
-            
+
     }
 }

@@ -89,7 +89,6 @@ namespace DatenMeister.Forms
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateObjectFormForItem(
                     element,
-                    extent,
                     new FormFactoryConfiguration { IncludeOnlyCommonProperties = true, AllowFormModifications = false});
 
                 FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateObjectFormForItem] Created Form via FormCreator");

@@ -1,9 +1,11 @@
 ﻿using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Modules.ZipCodeExample;
@@ -41,6 +43,71 @@ namespace DatenMeister.Tests.Modules.Forms
                 x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == nameof(ZipCode.name)));
             Assert.That(fields!.Any(x =>
                 x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == nameof(ZipCode.zip)));
+        }
+
+        [Test]
+        public void TestNoReadOnlyOnDetailFormByMetaClass()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.WorkspaceLogic;
+            var scopeStorage = dm.ScopeStorage;
+
+            var zipModel = scopeStorage.Get<ZipCodeModel>();
+
+            var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+            var createdForm =
+                formCreator.CreateObjectFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
+            var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
+            Assert.That(detailForm, Is.Not.Null);
+
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+            Assert.That(fields, Is.Not.Null);
+
+            var any = false;
+            foreach (var field in fields.OfType<IElement>())
+            {
+                if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__TextFieldData) != true)
+                    continue;
+                
+                // Testing only on TextFields
+                any = true;
+                Assert.That(field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly), Is.False);
+            }
+
+            Assert.That(any, Is.True);
+        }
+
+        [Test]
+        public void TestNoReadOnlyOnDetailFormByObject()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.WorkspaceLogic;
+            var scopeStorage = dm.ScopeStorage;
+
+            var zipModel = scopeStorage.Get<ZipCodeModel>();
+            var instance = InMemoryObject.CreateEmpty(zipModel.ZipCode!);
+
+            var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+            var createdForm =
+                formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
+            var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
+            Assert.That(detailForm, Is.Not.Null);
+
+            var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+            Assert.That(fields, Is.Not.Null);
+
+            var any = false;
+            foreach (var field in fields.OfType<IElement>())
+            {
+                if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__TextFieldData) != true)
+                    continue;
+                
+                // Testing only on TextFields
+                any = true;
+                Assert.That(field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly), Is.False);
+            }
+
+            Assert.That(any, Is.True);
         }
 
         [Test]

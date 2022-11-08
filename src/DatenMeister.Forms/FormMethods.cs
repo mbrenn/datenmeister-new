@@ -384,10 +384,9 @@ namespace DatenMeister.Forms
         /// <summary>
         ///     Checks if the given element already has a metaclass within the form
         /// </summary>
-        /// <param name="extent">Defines the extent</param>
         /// <param name="fields">Enumeration fo fields</param>
         /// <returns>true, if the form already contains a metaclass form</returns>
-        public bool HasMetaClassFieldInForm(IExtent extent, IEnumerable<object> fields)
+        public bool HasMetaClassFieldInForm(IEnumerable<object> fields)
         {
             var typesWorkspace = _workspaceLogic.GetTypesWorkspace();
 

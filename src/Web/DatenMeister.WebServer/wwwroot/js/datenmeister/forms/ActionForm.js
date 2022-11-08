@@ -87,6 +87,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                     form = yield ClientForms.getObjectFormForMetaClass(metaClass);
                 }
             }
+            // Creates the object as being provided by the uri
             creator.element = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
             creator.formElement = form;
             creator.workspace = "Data";

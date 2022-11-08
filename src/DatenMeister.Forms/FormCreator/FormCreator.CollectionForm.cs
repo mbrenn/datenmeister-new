@@ -498,6 +498,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 var fields = new List<IElement>();
                 foreach (var pair in propertiesWithoutCollection)
+                {
                     if (pair.propertyName != null)
                     {
                         var property =
@@ -509,7 +510,7 @@ namespace DatenMeister.Forms.FormCreator
                             objectMetaClass,
                             property,
                             pair.propertyName,
-                            creationMode with { IsReadOnly = true });
+                            creationMode);
                         fields.Add(field);
 
                         FormMethods.AddToFormCreationProtocol(
@@ -517,6 +518,7 @@ namespace DatenMeister.Forms.FormCreator
                             "[FormCreator.CreateObjectFormForItem]: Added field to DetailForm: " +
                             NamedElementMethods.GetName(field));
                     }
+                }
 
                 if (!cache.MetaClassAlreadyAdded
                     && creationMode.AutomaticMetaClassField

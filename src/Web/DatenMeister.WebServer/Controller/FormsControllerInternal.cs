@@ -19,6 +19,10 @@ namespace DatenMeister.WebServer.Controller
             _scopeStorage = scopeStorage;
         }
 
+        public IScopeStorage ScopeStorage => _scopeStorage;
+
+        public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
+
         public IElement GetInternal(string formUri)
         {
             if (GetItemByUriParameter(WorkspaceNames.WorkspaceManagement, formUri) is not IElement item)
@@ -50,8 +54,7 @@ namespace DatenMeister.WebServer.Controller
         {
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
-
-            var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
+            
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateCollectionFormForExtent(extent,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});

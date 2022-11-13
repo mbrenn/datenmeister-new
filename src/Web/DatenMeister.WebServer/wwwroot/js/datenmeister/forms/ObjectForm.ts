@@ -237,7 +237,7 @@ export class ObjectFormCreatorForItem {
                 this.htmlElements.itemContainer.append(domEditButton);
             }
 
-                objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
+            objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
 
             // Creates the form selection
             if (this.htmlElements.formSelectorContainer !== undefined

@@ -14,8 +14,6 @@ export function init(workspace: string, extentUri: string) {
             createNewItemWithMetaClassContainer: $("#dm-btn-create-item-metaclass"),
             storeCurrentFormBtn: $("dm-store-current-form-btn"),
             formSelectorContainer: $("#form_selection_container")
-
-
         },
         workspace,
         extentUri,

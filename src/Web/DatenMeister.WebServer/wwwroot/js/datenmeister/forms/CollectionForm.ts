@@ -133,7 +133,9 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
             }
 
-            // Creates the form selection
+            /*
+             *  Creates the form selection in which the user can manually select a form
+             */
             if (htmlElements.formSelectorContainer !== undefined
                 && htmlElements.formSelectorContainer !== null) {
                 // Empty the container for the formselector
@@ -174,9 +176,17 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                     }
                 }
 
+                /*
+                 * Handles the store auto-generated form button
+                 */
+                if (htmlElements.storeCurrentFormBtn !== undefined) {
+                    htmlElements.storeCurrentFormBtn.click(() => {
+                            
+                        })
+                }
+
                 // Sets the current formurl and creates the control
                 formControl.setCurrentFormUrl(formUrl);
-
                 await formControl.createControl(htmlElements.formSelectorContainer);
             }
         });

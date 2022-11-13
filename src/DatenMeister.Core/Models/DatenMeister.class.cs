@@ -1836,6 +1836,9 @@ namespace DatenMeister.Core.Models
                 public static string @defaultExtentOfNewElements = "defaultExtentOfNewElements";
                 public IElement? @_defaultExtentOfNewElements = null;
 
+                public static string @actionName = "actionName";
+                public IElement? @_actionName = null;
+
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
 

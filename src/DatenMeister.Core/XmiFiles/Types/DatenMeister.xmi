@@ -1360,6 +1360,16 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="634a840c-786f-4960-bc71-6da7e7c15cf4" name="includeSpecializationsForDefaultTypes" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7f641fce-248d-4415-b8f7-0ef4e53df927" name="defaultWorkspaceOfNewElements" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="c0dc1ee6-9011-4bc3-a8f1-e6583b7e0437" name="defaultExtentOfNewElements" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1d9ae5aa-83e2-4f9b-bbdb-0a1fc8c72085" type-ref="dm:///_internal/model/primitivetypes#String" name="actionName" isID="True" isComposite="True">
+        <aggregation p1:id="cf7883f0-7daa-405b-856c-f035a11293c7" />
+        <isDerived p1:id="3d7d31a7-5414-44d8-a5b7-e78a3bad07a4" />
+        <isDerivedUnion p1:id="c8b73468-2fdd-4a40-a01f-db24281ba32a" />
+        <isReadOnly p1:id="43a7d19f-46ae-4f95-8308-2379506cb08f" />
+        <isOrdered p1:id="a04fbc74-8800-4203-839c-86ef492019a8" />
+        <isUnique p1:id="7a7992c4-50d1-45c8-84ef-2a1ee956447b" />
+        <isStatic p1:id="0f9df123-8899-4800-98ed-964aabe57954" />
+        <isLeaf p1:id="eedd5c09-55d4-4a5c-a004-1ae6e83aa1a8" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.TextFieldData" name="TextFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4a3c3292-2df3-494b-9b00-32c86b786a58" general-ref="#DatenMeister.Models.Forms.FieldData" />

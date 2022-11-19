@@ -8,7 +8,8 @@ define(["require", "exports", "../forms/ObjectForm", "../modules/DefaultLoader"]
         detailForm.createForm({
             itemContainer: $("#form_view"),
             viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
-            formSelectorContainer: $("#form_selection_container")
+            formSelectorContainer: $("#form_selection_container"),
+            storeCurrentFormBtn: $("#dm-store-current-form-btn")
         }, workspace, itemUri);
     }
     exports.init = init;

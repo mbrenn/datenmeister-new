@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../client/Items", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class", "./Interfaces"], function (require, exports, DetailForm, RowForm_1, TableForm_1, ClientItems, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1, Interfaces_1) {
+define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../client/Items", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "../models/DatenMeister.class", "./Interfaces", "../Navigator"], function (require, exports, DetailForm, RowForm_1, TableForm_1, ClientItems, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, DatenMeister_class_1, Interfaces_1, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
@@ -211,8 +211,6 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                     const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
                 }
             });
-            this.htmlElements.itemContainer.empty();
-            this.htmlElements.itemContainer.text("Loading content and form...");
             // Creates the viewmode Selection field
             if (this.htmlElements.viewModeSelectorContainer !== undefined
                 && this.htmlElements.viewModeSelectorContainer !== null) {
@@ -222,6 +220,20 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                 viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
                 this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
             }
+            /*
+             * Creates the handler for the automatic creation of forms for extent
+             */
+            if (this.htmlElements.storeCurrentFormBtn !== undefined) {
+                this.htmlElements.storeCurrentFormBtn.click(() => __awaiter(this, void 0, void 0, function* () {
+                    const result = yield ClientForms.createObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
+                    Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
+                }));
+            }
+            /*
+             * Introduces the loading text
+             */
+            this.htmlElements.itemContainer.empty();
+            this.htmlElements.itemContainer.text("Loading content and form...");
         }
     }
     exports.ObjectFormCreatorForItem = ObjectFormCreatorForItem;

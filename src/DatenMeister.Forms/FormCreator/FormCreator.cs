@@ -135,19 +135,21 @@ namespace DatenMeister.Forms.FormCreator
         /// <summary>
         ///     Stores the factory to create the fields and forms
         /// </summary>
-        internal IFactory MofFactory
+        internal IFactory GetMofFactory(FormFactoryConfiguration? configuration)
         {
-            get
+            if (configuration?.Factory != null)
             {
-                if (_f != null) return _f;
-
-                var userExtent = _formLogic?.GetUserFormExtent(true);
-                _f = userExtent != null
-                    ? new MofFactory(userExtent)
-                    : InMemoryObject.TemporaryFactory;
-
-                return _f;
+                return configuration.Factory;
             }
+
+            if (_f != null) return _f;
+
+            var userExtent = _formLogic?.GetUserFormExtent(true);
+            _f = userExtent != null
+                ? new MofFactory(userExtent)
+                : InMemoryObject.TemporaryFactory;
+
+            return _f;
         }
 
         /// <summary>
@@ -239,7 +241,7 @@ namespace DatenMeister.Forms.FormCreator
                 && !FormMethods.HasMetaClassFieldInForm(rowOrTableForm))
             {
                 // Add the element itself
-                var metaClassField = MofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
+                var metaClassField = GetMofFactory(creationMode).create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                 metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
 
                 rowOrTableForm.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(metaClassField);
@@ -279,6 +281,7 @@ namespace DatenMeister.Forms.FormCreator
                 return;
 
             var isReadOnly = creationMode.IsReadOnly;
+            var factory = GetMofFactory(creationMode);
 
             // Creates the form out of the properties of the item
             var properties = itemAsAllProperties.getPropertiesBeingSet();
@@ -311,16 +314,16 @@ namespace DatenMeister.Forms.FormCreator
 
                     if (DotNetHelper.IsEnumeration(propertyType))
                     {
-                        column = MofFactory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
+                        column = factory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
                     }
                     else if (propertyValue is IObject)
                     {
-                        column = MofFactory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
+                        column = factory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
                         column.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, false);
                     }
                     else
                     {
-                        column = MofFactory.create(_DatenMeister.TheOne.Forms.__TextFieldData);
+                        column = factory.create(_DatenMeister.TheOne.Forms.__TextFieldData);
                     }
 
                     column.set(_DatenMeister._Forms._FieldData.name, propertyName);
@@ -402,7 +405,7 @@ namespace DatenMeister.Forms.FormCreator
                 && configuration.AutomaticMetaClassField
                 && !FormMethods.HasMetaClassFieldInForm(rowOrObjectForm))
             {
-                var metaClassField = MofFactory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
+                var metaClassField = GetMofFactory(configuration).create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                 metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
                 metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Metaclass");
                 rowOrObjectForm.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(metaClassField);
@@ -609,6 +612,8 @@ namespace DatenMeister.Forms.FormCreator
             if (property == null && propertyName == null)
                 throw new InvalidOperationException("property == null && propertyName == null");
 
+            var factory = GetMofFactory(configuration);
+
             var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
 
             propertyName ??= property.get<string>("name");
@@ -634,7 +639,7 @@ namespace DatenMeister.Forms.FormCreator
                 if (propertyType.equals(_booleanType))
                 {
                     // If we have a boolean and the field is not for a list form
-                    var checkbox = MofFactory.create(_DatenMeister.TheOne.Forms.__CheckboxFieldData);
+                    var checkbox = factory.create(_DatenMeister.TheOne.Forms.__CheckboxFieldData);
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.title, propertyName);
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.isReadOnly, isReadOnly);
@@ -643,7 +648,7 @@ namespace DatenMeister.Forms.FormCreator
 
                 if (propertyType.equals(_dateTimeType))
                 {
-                    var dateTimeField = MofFactory.create(_DatenMeister.TheOne.Forms.__DateTimeFieldData);
+                    var dateTimeField = factory.create(_DatenMeister.TheOne.Forms.__DateTimeFieldData);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.title, propertyName);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.isReadOnly, isReadOnly);
@@ -659,8 +664,8 @@ namespace DatenMeister.Forms.FormCreator
                     // If we have something else than a primitive type and it is not for a list form
                     if (propertyIsEnumeration)
                     {
-                        // It can contain multiple elements
-                        var elementsField = MofFactory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
+                        // It can contain multiple factory
+                        var elementsField = factory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
                         elementsField.set(_DatenMeister._Forms._SubElementFieldData.name, propertyName);
                         elementsField.set(_DatenMeister._Forms._SubElementFieldData.title, propertyName);
                         elementsField.set(_DatenMeister._Forms._SubElementFieldData.isReadOnly,
@@ -700,7 +705,7 @@ namespace DatenMeister.Forms.FormCreator
                     }
 
                     // It can just contain one element (or is in list view)
-                    var reference = MofFactory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
+                    var reference = factory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
                     reference.set(_DatenMeister._Forms._ReferenceFieldData.name, propertyName);
                     reference.set(_DatenMeister._Forms._ReferenceFieldData.title, propertyName);
                     reference.set(_DatenMeister._Forms._ReferenceFieldData.isReadOnly, isReadOnly);
@@ -716,7 +721,7 @@ namespace DatenMeister.Forms.FormCreator
             if (propertyType == null)
             {
                 // If we have something else than a primitive type and it is not for a list form
-                var element = MofFactory.create(propertyIsEnumeration
+                var element = factory.create(propertyIsEnumeration
                     ? _DatenMeister.TheOne.Forms.__SubElementFieldData
                     : _DatenMeister.TheOne.Forms.__AnyDataFieldData);
 
@@ -735,7 +740,7 @@ namespace DatenMeister.Forms.FormCreator
             }
 
             // Per default, assume some kind of text
-            var column = MofFactory.create(_DatenMeister.TheOne.Forms.__TextFieldData);
+            var column = factory.create(_DatenMeister.TheOne.Forms.__TextFieldData);
             column.set(_DatenMeister._Forms._TextFieldData.name, propertyName);
             column.set(_DatenMeister._Forms._TextFieldData.title, propertyName);
             column.set(_DatenMeister._Forms._TextFieldData.isReadOnly, isReadOnly);
@@ -756,9 +761,10 @@ namespace DatenMeister.Forms.FormCreator
         private IElement CreateFieldForEnumeration(string propertyName, IElement propertyType,
             FormFactoryConfiguration creationMode)
         {
+            var factory = GetMofFactory(creationMode);
             var isReadOnly = creationMode.IsReadOnly;
             // If we have an enumeration (C#: Enum) and the field is not for a list form
-            var comboBox = MofFactory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
+            var comboBox = factory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
             comboBox.set(_DatenMeister._Forms._DropDownFieldData.name, propertyName);
             comboBox.set(_DatenMeister._Forms._DropDownFieldData.title, propertyName);
             comboBox.set(_DatenMeister._Forms._DropDownFieldData.isReadOnly, isReadOnly);
@@ -768,7 +774,7 @@ namespace DatenMeister.Forms.FormCreator
                 _DatenMeister._Forms._DropDownFieldData.values,
                 values.Select(x =>
                 {
-                    var data = MofFactory.create(_DatenMeister.TheOne.Forms.__ValuePair);
+                    var data = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
                     data.set(_DatenMeister._Forms._ValuePair.name, x);
                     data.set(_DatenMeister._Forms._ValuePair.value, x);
                     return data;

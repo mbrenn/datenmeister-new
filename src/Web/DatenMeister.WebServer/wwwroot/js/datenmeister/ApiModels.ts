@@ -23,8 +23,8 @@ export interface ItemWithNameAndId {
     fullName?: string;
     id?: string;
     workspace?: string;
-    typeName?: string;
-    typeUri?: string;
+    metaClassName?: string;
+    metaClassUri?: string;
     ententType?: EntentType;
 }   
 

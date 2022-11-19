@@ -1,5 +1,11 @@
-﻿namespace DatenMeister.Forms
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+
+namespace DatenMeister.Forms
 {
+    /// <summary>
+    /// A configuration being used for the form factories to define the behavior of how to
+    /// create a form upon a certain request
+    /// </summary>
     public record FormFactoryConfiguration
     {
         /// <summary>
@@ -65,5 +71,10 @@
 
         public static FormFactoryConfiguration CreateByMetaClassOnly =>
             new() {AutomaticMetaClassField = false, CreateByPropertyValues = false};
+
+        /// <summary>
+        /// Defines the factory to be used to create the items
+        /// </summary>
+        public IFactory? Factory { get; set; }
     }
 }

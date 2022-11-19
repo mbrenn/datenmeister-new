@@ -90,7 +90,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         {
             lock (_syncObject)
             {
-                var result = _extent
+                var result = extent
                     .Select(theExtent =>
                         (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
                     .FirstOrDefault(found => found != null);

@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Linq;
+using System.Web;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -179,6 +180,65 @@ namespace DatenMeister.Tests.Web
             Assert.That(
                 fields.OfType<IElement>().Any(x =>
                     x.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) == "DefaultTypes"), Is.True);
+        }
+
+
+        [Test]
+        public void TestCreateCollectionFormByExtent()
+        {
+            var (zipExtent, formsController, formsInternal) = CreateZipExtent();
+            var formMethods = new FormMethods(formsInternal.WorkspaceLogic, formsInternal.ScopeStorage);
+            var actionResult = formsController.CreateCollectionFormForExtent(
+                WorkspaceNames.WorkspaceData,
+                zipExtent.contextURI(),
+                ViewModes.Default);
+
+            var result = actionResult.Value!;
+            Assert.That(result, Is.Not.Null);
+            var createdForm = result.CreatedForm!;
+            Assert.That(createdForm, Is.Not.Null);
+
+            // Checks, if the workspace and extent are correct
+            Assert.That(createdForm.workspace, Is.EqualTo(WorkspaceNames.WorkspaceManagement));
+            Assert.That(createdForm.extentUri, Is.EqualTo(
+                WorkspaceNames.UriExtentUserForm));
+
+            // Checks, if the item itself is correct
+            var foundElement = formMethods.GetUserFormExtent().element(createdForm.id!)!;
+            Assert.That(foundElement, Is.Not.Null);
+            Assert.That(
+                foundElement.metaclass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true);
+        }
+
+
+        [Test]
+        public void TestCreateObjectFormByItem()
+        {
+            var (zipExtent, formsController, formsInternal) = CreateZipExtent();
+            var formMethods = new FormMethods(formsInternal.WorkspaceLogic, formsInternal.ScopeStorage);
+
+            var zipItem = zipExtent.elements().OfType<IObject>().First();
+            Assert.That(zipItem, Is.Not.Null);
+            var actionResult = formsController.CreateObjectFormForItem(
+                WorkspaceNames.WorkspaceData,
+                HttpUtility.UrlEncode(zipItem.GetUri()!),
+                ViewModes.Default);
+
+            var result = actionResult.Value!;
+            Assert.That(result, Is.Not.Null);
+            var createdForm = result.CreatedForm!;
+            Assert.That(createdForm, Is.Not.Null);
+
+            // Checks, if the workspace and extent are correct
+            Assert.That(createdForm.workspace, Is.EqualTo(WorkspaceNames.WorkspaceManagement));
+            Assert.That(createdForm.extentUri, Is.EqualTo(
+                WorkspaceNames.UriExtentUserForm));
+
+            // Checks, if the item itself is correct
+            var foundElement = formMethods.GetUserFormExtent().element(createdForm.id!)!;
+            Assert.That(foundElement, Is.Not.Null);
+            Assert.That(
+                foundElement.metaclass?.equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true);
         }
 
 

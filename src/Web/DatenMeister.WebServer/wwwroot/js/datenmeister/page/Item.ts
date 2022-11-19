@@ -10,7 +10,9 @@ export function init(workspace: string, itemUri: string) {
         {
             itemContainer: $("#form_view"),
             viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
-            formSelectorContainer: $("#form_selection_container")
+            formSelectorContainer: $("#form_selection_container"),
+            storeCurrentFormBtn: $("#dm-store-current-form-btn")
+            
         },
         workspace,
         itemUri);

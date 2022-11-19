@@ -30,7 +30,6 @@ namespace DatenMeister.Actions.ActionHandler
             var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._CreateFormByMetaClass.metaClass);
             var creationMode = action.getOrDefault<string>(_DatenMeister._Actions._CreateFormByMetaClass.creationMode);
             
-            
             var formCreator = new FormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             var formMethods = new FormMethods(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
 

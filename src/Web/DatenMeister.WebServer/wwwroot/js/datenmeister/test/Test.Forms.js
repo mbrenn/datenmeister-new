@@ -100,6 +100,22 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                 }
                 chai.assert.isTrue(found, 'Fields do not contain a metaclass');
             }));
+            it('Create Collection Form For Extent', () => __awaiter(this, void 0, void 0, function* () {
+                const result = yield ClientForms.createCollectionFormForExtent("Types", "dm:///_internal/types/internal");
+                const foundForm = yield ClientItems.getItemWithNameAndId(result.createdForm.workspace, result.createdForm.uri);
+                chai.assert.isTrue(foundForm !== undefined, "Form was not found");
+                chai.assert.isTrue(foundForm.workspace === "Management", "Form is not in management");
+                chai.assert.isTrue(foundForm.metaClassName === "CollectionForm", "Form is not Collection Form");
+                yield ClientItems.deleteItem(result.createdForm.workspace, result.createdForm.uri);
+            }));
+            it('Create Object Form For Extent', () => __awaiter(this, void 0, void 0, function* () {
+                const result = yield ClientForms.createObjectFormForItem("Management", "dm:///_internal/forms/internal#ImportManagerFindExtent");
+                const foundForm = yield ClientItems.getItemWithNameAndId(result.createdForm.workspace, result.createdForm.uri);
+                chai.assert.isTrue(foundForm !== undefined, "Form was not found");
+                chai.assert.isTrue(foundForm.workspace === "Management", "Form is not in management");
+                chai.assert.isTrue(foundForm.metaClassName === "ObjectForm", "Form is not ObjectForm Form");
+                yield ClientItems.deleteItem(result.createdForm.workspace, result.createdForm.uri);
+            }));
             it('Load ViewModes', () => __awaiter(this, void 0, void 0, function* () {
                 const viewModes = yield ClientForms.getViewModes();
                 let found = false;

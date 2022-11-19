@@ -73,7 +73,7 @@ namespace DatenMeister.WebServer.Controller
         /// <summary>
         /// Defines the result for the function Create Collection Form For Extent
         /// </summary>
-        public class CreateFormForExtentResult
+        public class CreateCollectionFormForExtentResult
         {
             /// <summary>
             /// The uri and name of the created form
@@ -86,11 +86,11 @@ namespace DatenMeister.WebServer.Controller
         /// The form will be stored in the management extent
         /// </summary>
         /// <param name="workspaceId">Id of the workspace</param>
-        /// <param name="extentUri">Extent of the uri</param>
+        /// <param name="extentUri">Uri of the extent itself</param>
         /// <param name="viewMode">Viewmode of the extent</param>
         /// <returns></returns>
-        [HttpPost("api/forms/create_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
-        public ActionResult<CreateFormForExtentResult> CreateCollectionFormForExtent(string workspaceId,
+        [HttpPost("api/forms/create_collection_form_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
+        public ActionResult<CreateCollectionFormForExtentResult> CreateCollectionFormForExtent(string workspaceId,
             string extentUri, string? viewMode)
         {
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
@@ -120,10 +120,21 @@ namespace DatenMeister.WebServer.Controller
 
             formMethods.GetUserFormExtent().elements().add(form);
             
-            return new CreateFormForExtentResult
+            return new CreateCollectionFormForExtentResult
             {
                 CreatedForm = ItemWithNameAndId.Create(form)
             };
+        }
+
+        /// <summary>
+        /// Defines the result for the function Create Collection Form For Extent
+        /// </summary>
+        public class CreateObjectFormForItemResult
+        {
+            /// <summary>
+            /// The uri and name of the created form
+            /// </summary>
+            public ItemWithNameAndId? CreatedForm { get; set; }
         }
 
 
@@ -132,12 +143,12 @@ namespace DatenMeister.WebServer.Controller
         /// The form will be stored in the management extent
         /// </summary>
         /// <param name="workspaceId">Id of the workspace</param>
-        /// <param name="extentUri">Extent of the uri</param>
+        /// <param name="itemUri">Uri of the item itself</param>
         /// <param name="viewMode">Viewmode of the extent</param>
         /// <returns></returns>
-        [HttpPost("api/forms/create_for_item/{workspaceId}/{itemUri}/{viewMode?}")]
-        public ActionResult<CreateFormForExtentResult> CreateObjectFormForItem(string workspaceId,
-            string itemUri, string? viewMode)
+        [HttpPost("api/forms/create_object_form_for_item/{workspaceId}/{itemUri}/{viewMode?}")]
+        public ActionResult<CreateObjectFormForItemResult> CreateObjectFormForItem(
+            string workspaceId, string itemUri, string? viewMode)
         {
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
             var formCreator = new FormCreator(_internal.WorkspaceLogic, _internal.ScopeStorage);
@@ -152,7 +163,6 @@ namespace DatenMeister.WebServer.Controller
             if (element == null)
             {
                 throw new InvalidOperationException($"Extent not found: {workspaceId} - {itemUri}");
-
             }
 
             // Creates the form itself
@@ -166,7 +176,7 @@ namespace DatenMeister.WebServer.Controller
 
             formMethods.GetUserFormExtent().elements().add(form);
 
-            return new CreateFormForExtentResult
+            return new CreateObjectFormForItemResult
             {
                 CreatedForm = ItemWithNameAndId.Create(form)
             };

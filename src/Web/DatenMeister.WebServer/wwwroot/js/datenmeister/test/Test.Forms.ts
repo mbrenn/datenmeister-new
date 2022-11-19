@@ -1,5 +1,4 @@
-﻿import * as Forms from '../forms/Forms'
-import * as ClientExtent from "../client/Extents";
+﻿import * as ClientExtent from "../client/Extents";
 import * as ClientWorkspace from "../client/Workspace";
 import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
@@ -16,7 +15,7 @@ export function includeTests() {
             await ClientWorkspace.createWorkspace(
                 "Test",
                 "Annotation",
-                {skipIfExisting: true});
+                { skipIfExisting: true });
 
             await ClientExtent.createXmi(
                 {
@@ -33,7 +32,7 @@ export function includeTests() {
             await ClientItems.setProperty(
                 'Test', itemUri, 'name', 'NamedElement');
 
-            const createdChild = await ClientItems.createItemAsChild('Test', itemUri, {property: 'packagedElement'});
+            const createdChild = await ClientItems.createItemAsChild('Test', itemUri, { property: 'packagedElement' });
             const childItem = 'dm:///unittest#' + createdChild.itemId;
             await ClientItems.setProperty(
                 'Test', childItem, 'name', 'ChildElement');
@@ -64,19 +63,19 @@ export function includeTests() {
 
             chai.assert.isTrue(found, 'Field with name was not found');
         });
-        
+
         it('Load Specific Form with different Form Types', async () => {
             // Test that default form is a row form
             const form = await ClientForms.getForm('dm:///_internal/forms/internal#ImportManagerFindExtent');
-            
+
             chai.assert.isTrue(form.metaClass.name === "RowForm", 'Not a row Form');
-            
+
             // Test that retrieval as collection form is working
             const formAsCollection = await ClientForms.getForm(
-                'dm:///_internal/forms/internal#ImportManagerFindExtent', 
+                'dm:///_internal/forms/internal#ImportManagerFindExtent',
                 FormType.Collection);
             chai.assert.isTrue(formAsCollection.metaClass.name === "CollectionForm", 'Not a collection Form');
-            
+
             const tabs = formAsCollection.get(_DatenMeister._Forms._CollectionForm.tab, ObjectType.Array);
             chai.assert.isTrue(tabs.length === 1, '# of tabs of CollectionForm is not 1');
             chai.assert.isTrue((tabs[0] as DmObject).metaClass.name === "RowForm", 'Tab of CollectionForm is not a RowForm');
@@ -127,6 +126,34 @@ export function includeTests() {
 
             chai.assert.isTrue(found, 'Fields do not contain a metaclass');
 
+        });
+
+        it('Create Collection Form For Extent', async() => 
+        {
+            const result =
+                await ClientForms.createCollectionFormForExtent("Types", "dm:///_internal/types/internal");
+
+            const foundForm = await ClientItems.getItemWithNameAndId(result.createdForm.workspace, result.createdForm.uri);
+
+            chai.assert.isTrue(foundForm !== undefined, "Form was not found");
+            chai.assert.isTrue(foundForm.workspace === "Management", "Form is not in management");
+            chai.assert.isTrue(foundForm.metaClassName === "CollectionForm", "Form is not Collection Form");
+
+            await ClientItems.deleteItem(result.createdForm.workspace, result.createdForm.uri);
+        });
+
+
+        it('Create Object Form For Extent', async () => {
+            const result =
+                await ClientForms.createObjectFormForItem("Management", "dm:///_internal/forms/internal#ImportManagerFindExtent");
+
+            const foundForm = await ClientItems.getItemWithNameAndId(result.createdForm.workspace, result.createdForm.uri);
+
+            chai.assert.isTrue(foundForm !== undefined, "Form was not found");
+            chai.assert.isTrue(foundForm.workspace === "Management", "Form is not in management");
+            chai.assert.isTrue(foundForm.metaClassName === "ObjectForm", "Form is not ObjectForm Form");
+
+            await ClientItems.deleteItem(result.createdForm.workspace, result.createdForm.uri);
         });
 
         it('Load ViewModes', async () => {

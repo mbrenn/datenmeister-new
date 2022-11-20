@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.BootStrap.PublicSettings
@@ -28,12 +30,14 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// Loads the public settings for the DatenMeister
         /// </summary>
         /// <param name="directoryPath">Path to the directory</param>
+        /// <param name="configurationExtent">The configuration extent</param>
         /// <returns>The found public integrations settings</returns>
-        public static PublicIntegrationSettings? LoadSettingsFromDirectory(string directoryPath)
+        public static PublicIntegrationSettings? LoadSettingsFromDirectory(
+            string directoryPath, out IExtent? configurationExtent)
         {
             var path = Path.Combine(directoryPath, XmiFileName);
 
-            var result = LoadSettingsFromFile(path);
+            var result = ParseSettingsFromFile(path, out configurationExtent);
             if (result == null)
             {
                 Logger.Info($"No Configuration file found in {directoryPath}");
@@ -45,35 +49,33 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// <summary>
         /// Loads the settings from 
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path from which the settings will be loaded</param>
+        /// <param name="extentConfiguration">The extent which was loaded and which
+        /// contains the configuration. It can be null, if no configuration
+        /// has been found</param>
+        /// <returns>The integration settings</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private static PublicIntegrationSettings? LoadSettingsFromFile(string path)
+        private static PublicIntegrationSettings? ParseSettingsFromFile(
+            string path,
+            out IExtent? extentConfiguration)
         {
+            extentConfiguration = null;
             PublicIntegrationSettings? settings = null;
             
             if (File.Exists(path))
             {
                 try
                 {
+                    // Loads the settings
                     Logger.Info($"Loading public integration from {path}");
-                    var extent = ConfigurationLoader.LoadSetting(path);
-                    // Goes through all elements
-                    foreach (var element in extent.elements().OfType<IElement>())
+                    extentConfiguration = ConfigurationLoader.LoadSetting(path);
+                    
+                    settings = ParsePublicIntegrationSettings(extentConfiguration);
+                    if (settings != null)
                     {
-                        settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
                         settings.settingsFilePath = path;
-                        settings.databasePath = settings.databasePath != null
-                            ? Environment.ExpandEnvironmentVariables(settings.databasePath)
-                            : null;
-
-                        foreach (var variable in settings.environmentVariable
-                            .Where(variable => variable.key != null && variable.value != null))
-                        {
-                            Environment.SetEnvironmentVariable(variable.key!, variable.value);
-                            Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
-                        }
                     }
+
                 }
                 catch (Exception exc)
                 {
@@ -114,6 +116,35 @@ namespace DatenMeister.BootStrap.PublicSettings
                             folderName));
                 }
             }
+        }
+
+        /// <summary>
+        /// Parses the extent for configuration and returns the public integration
+        /// setting information
+        /// </summary>
+        /// <param name="extent">Extent to be parsed. All elements will be evaluated
+        /// </param>
+        /// <returns>The configuration itself</returns>
+        private static PublicIntegrationSettings? ParsePublicIntegrationSettings(IExtent extent)
+        {
+            PublicIntegrationSettings? settings = null;
+            foreach (var element in extent.elements().OfType<IElement>())
+            {
+                settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+
+                settings.databasePath = settings.databasePath != null
+                    ? Environment.ExpandEnvironmentVariables(settings.databasePath)
+                    : null;
+
+                foreach (var variable in settings.environmentVariable
+                             .Where(variable => variable.key != null && variable.value != null))
+                {
+                    Environment.SetEnvironmentVariable(variable.key!, variable.value);
+                    Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
+                }
+            }
+
+            return settings;
         }
     }
 }

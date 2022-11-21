@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines the available server settings
     /// </summary>
-    public class ServerSettings
+    public class WebServerSettings
     {
         /// <summary>
         /// Gets or sets the background-color

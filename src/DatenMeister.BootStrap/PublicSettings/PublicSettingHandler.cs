@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using BurnSystems.Logging;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -19,8 +18,8 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// <summary>
         /// Defines the XmiFileName
         /// </summary>
-        public static string XmiFileName = "DatenMeister.Settings.xmi";
-        
+        public const string XmiFileName = "DatenMeister.Settings.xmi";
+
         /// <summary>
         /// Defines the class logger
         /// </summary>
@@ -35,22 +34,7 @@ namespace DatenMeister.BootStrap.PublicSettings
         public static PublicIntegrationSettings? LoadSettingsFromDirectory(
             string directoryPath, out IExtent? configurationExtent)
         {
-            configurationExtent = null;
-            var path = Path.Combine(directoryPath, XmiFileName);
-
-            if (File.Exists(path))
-            {
-                try
-                {
-                    // Loads the settings
-                    Logger.Info($"Loading public integration from {path}");
-                    configurationExtent = ConfigurationLoader.LoadSetting(path);
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error($"Exception occured during Loading of Xmi: {exc.Message}");
-                }
-            }
+            configurationExtent = LoadExtentFromDirectory(directoryPath, out var path);
 
             if (configurationExtent != null)
             {
@@ -72,6 +56,33 @@ namespace DatenMeister.BootStrap.PublicSettings
         }
 
         /// <summary>
+        /// Loads the extent from the directory
+        /// </summary>
+        /// <param name="directoryPath">Path of the directory</param>
+        /// <param name="path">Path to file where the configuration is loaded</param>
+        /// <returns>The extent storing the configuration</returns>
+        public static IExtent? LoadExtentFromDirectory(string directoryPath, out string path)
+        {
+            path = Path.Combine(directoryPath, XmiFileName);
+
+            if (File.Exists(path))
+            {
+                try
+                {
+                    // Loads the settings
+                    Logger.Info($"Loading public integration from {path}");
+                    return ConfigurationLoader.LoadSetting(path);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error($"Exception occured during Loading of Xmi: {exc.Message}");
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Loads the settings from 
         /// </summary>
         /// <param name="extentConfiguration">The extent which was loaded and which
@@ -79,12 +90,10 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// has been found</param>
         /// <returns>The integration settings</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private static PublicIntegrationSettings? ParseSettingsFromFile(
+        public static PublicIntegrationSettings? ParseSettingsFromFile(
             IExtent extentConfiguration)
         {
-            PublicIntegrationSettings? settings = null;
-
-            settings = ParsePublicIntegrationSettings(extentConfiguration);
+            var settings = ParsePublicIntegrationSettings(extentConfiguration);
 
             // Now starts to set the set the environment according the public settings
             if (!string.IsNullOrEmpty(settings?.databasePath))

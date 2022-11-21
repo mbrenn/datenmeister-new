@@ -16,7 +16,7 @@ public class ServerConfigurationTests
         var xmlDocument = XDocument.Parse(text);
 
         var configurationExtent = ConfigurationLoader.LoadConfigurationByXml(xmlDocument);
-        var webConfiguration = SettingsLoader.LoadSettingsFromExtent(configurationExtent);
+        var webConfiguration = WebServerSettingsLoader.LoadSettingsFromExtent(configurationExtent);
         
         Assert.That(webConfiguration.backgroundColor, Is.EqualTo("#ffeedd"));
     }

@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets or sets the background-color
         /// </summary>
-        public string backgroundColor { get; set; }
+        public string backgroundColor { get; set; } = string.Empty;
     }
 }

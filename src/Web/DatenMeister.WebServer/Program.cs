@@ -78,7 +78,7 @@ namespace DatenMeister.WebServer
                     Path.GetDirectoryName(publicSettingsPath) ??
                     throw new InvalidOperationException("Path returned null"), 
                     out var extent);
-            if (publicSettings == null || publicSettings.logLocation != LogLocation.None)
+            if (publicSettings is not { logLocation: LogLocation.None })
             {
                 var location = publicSettings?.logLocation ?? LogLocation.Application;
 

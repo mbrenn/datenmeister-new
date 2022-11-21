@@ -35,60 +35,63 @@ namespace DatenMeister.BootStrap.PublicSettings
         public static PublicIntegrationSettings? LoadSettingsFromDirectory(
             string directoryPath, out IExtent? configurationExtent)
         {
+            configurationExtent = null;
             var path = Path.Combine(directoryPath, XmiFileName);
 
-            var result = ParseSettingsFromFile(path, out configurationExtent);
-            if (result == null)
-            {
-                Logger.Info($"No Configuration file found in {directoryPath}");
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Loads the settings from 
-        /// </summary>
-        /// <param name="path">Path from which the settings will be loaded</param>
-        /// <param name="extentConfiguration">The extent which was loaded and which
-        /// contains the configuration. It can be null, if no configuration
-        /// has been found</param>
-        /// <returns>The integration settings</returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        private static PublicIntegrationSettings? ParseSettingsFromFile(
-            string path,
-            out IExtent? extentConfiguration)
-        {
-            extentConfiguration = null;
-            PublicIntegrationSettings? settings = null;
-            
             if (File.Exists(path))
             {
                 try
                 {
                     // Loads the settings
                     Logger.Info($"Loading public integration from {path}");
-                    extentConfiguration = ConfigurationLoader.LoadSetting(path);
-                    
-                    settings = ParsePublicIntegrationSettings(extentConfiguration);
-                    if (settings != null)
-                    {
-                        settings.settingsFilePath = path;
-                    }
-
+                    configurationExtent = ConfigurationLoader.LoadSetting(path);
                 }
                 catch (Exception exc)
                 {
                     Logger.Error($"Exception occured during Loading of Xmi: {exc.Message}");
                 }
             }
-            
+
+            if (configurationExtent != null)
+            {
+                var result = ParseSettingsFromFile(configurationExtent);
+        
+                if (result == null)
+                {
+                    Logger.Info($"No Configuration file found in {directoryPath}");
+                    return null;
+                }
+                
+                result.settingsFilePath = path;
+                return result;
+            }
+
+            Logger.Info($"No Configuration file found in {directoryPath}");
+
+            return null;
+        }
+
+        /// <summary>
+        /// Loads the settings from 
+        /// </summary>
+        /// <param name="extentConfiguration">The extent which was loaded and which
+        /// contains the configuration. It can be null, if no configuration
+        /// has been found</param>
+        /// <returns>The integration settings</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        private static PublicIntegrationSettings? ParseSettingsFromFile(
+            IExtent extentConfiguration)
+        {
+            PublicIntegrationSettings? settings = null;
+
+            settings = ParsePublicIntegrationSettings(extentConfiguration);
+
             // Now starts to set the set the environment according the public settings
             if (!string.IsNullOrEmpty(settings?.databasePath))
             {
                 Environment.SetEnvironmentVariable("dm_DatabasePath", settings?.databasePath);
             }
-                                
+
             // Now set the default paths, if they are not set
             SetEnvironmentVariableToDesktopFolderIfNotExisting(
                 "dm_ImportPath", "import");
@@ -96,12 +99,11 @@ namespace DatenMeister.BootStrap.PublicSettings
                 "dm_ReportPath", "report");
             SetEnvironmentVariableToDesktopFolderIfNotExisting(
                 "dm_ExportPath", "export");
-                    
+
             Environment.SetEnvironmentVariable(
                 "dm_ApplicationPath",
                 Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location));
 
-            Logger.Info($"No Xmi-File for external configuration found in: {path}");
             return settings;
 
             void SetEnvironmentVariableToDesktopFolderIfNotExisting(string dmImportPath, string folderName)

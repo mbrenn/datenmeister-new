@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl", "./Interfaces"], function (require, exports, VML, ClientItems, ClientForms, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, TableForm_1, SIC, Settings, DatenMeister_class_1, FormSelectionControl_1, Interfaces_1) {
+define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Navigator", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl", "./Interfaces"], function (require, exports, VML, ClientItems, ClientForms, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, TableForm_1, SIC, Navigator, Settings, DatenMeister_class_1, FormSelectionControl_1, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -66,7 +66,9 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                     });
                     htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
                 }
-                // Creates the form selection
+                /*
+                 *  Creates the form selection in which the user can manually select a form
+                 */
                 if (htmlElements.formSelectorContainer !== undefined
                     && htmlElements.formSelectorContainer !== null) {
                     // Empty the container for the formselector
@@ -103,6 +105,13 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                             };
                         }
                     }
+                    /*
+                     * Handles the store auto-generated form button
+                     */
+                    if (htmlElements.storeCurrentFormBtn !== undefined) {
+                        htmlElements.storeCurrentFormBtn.click(() => {
+                        });
+                    }
                     // Sets the current formurl and creates the control
                     formControl.setCurrentFormUrl(formUrl);
                     yield formControl.createControl(htmlElements.formSelectorContainer);
@@ -115,6 +124,18 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                 htmlElements.createNewItemWithMetaClassContainer !== undefined) {
                 createMetaClassSelectionButtonForNewItem($("#dm-btn-create-item-with-metaclass"), $("#dm-btn-create-item-metaclass"), workspace, extentUri);
             }
+            /*
+             * Creates the handler for the automatic creation of forms for extent
+             */
+            if (htmlElements.storeCurrentFormBtn !== undefined) {
+                htmlElements.storeCurrentFormBtn.click(() => __awaiter(this, void 0, void 0, function* () {
+                    const result = yield ClientForms.createCollectionFormForExtent(workspace, extentUri, configuration.viewMode);
+                    Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
+                }));
+            }
+            /*
+             * Introduces the loading text
+             */
             htmlElements.itemContainer.empty()
                 .text("Loading content and form...");
         }

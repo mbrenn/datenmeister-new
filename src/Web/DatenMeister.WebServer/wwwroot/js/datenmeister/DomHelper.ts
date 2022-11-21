@@ -77,11 +77,11 @@ export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: 
     }
     
     // Add the metaclass
-    if (item.typeName !== undefined && item.typeName !== null) {
+    if (item.metaClassName !== undefined && item.metaClassName !== null) {
         const metaClassText = $("<span class='dm-metaclass'></span>");
         metaClassText
-            .attr('title',item.typeUri)
-            .text(" [" + item.typeName + "]");
+            .attr('title',item.metaClassUri)
+            .text(" [" + item.metaClassName + "]");
         result.append(metaClassText);
     }
 

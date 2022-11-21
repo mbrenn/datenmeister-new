@@ -33,7 +33,7 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// Defines the standard location of the logging
         /// </summary>
         public LogLocation logLocation { get; set; }
-        
+
         /// <summary>
         /// Defines an enumeration of environmental variables which are added at startup.
         /// </summary>

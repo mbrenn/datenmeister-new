@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getViewModes = exports.getObjectFormForItem = exports.getForm = exports.getObjectFormForMetaClass = exports.getCollectionFormForExtent = void 0;
+    exports.getViewModes = exports.createObjectFormForItem = exports.createCollectionFormForExtent = exports.getObjectFormForItem = exports.getForm = exports.getObjectFormForMetaClass = exports.getCollectionFormForExtent = void 0;
     /*
         Gets the default form for an extent uri by the webserver
      */
@@ -65,6 +65,30 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.getObjectFormForItem = getObjectFormForItem;
+    function createCollectionFormForExtent(workspace, extentUri, viewMode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.post(Settings.baseUrl +
+                "api/forms/create_collection_form_for_extent/" +
+                encodeURIComponent(workspace) +
+                "/" +
+                encodeURIComponent(extentUri) +
+                "/" +
+                encodeURIComponent(viewMode !== null && viewMode !== void 0 ? viewMode : ""), {});
+        });
+    }
+    exports.createCollectionFormForExtent = createCollectionFormForExtent;
+    function createObjectFormForItem(workspace, extentUri, viewMode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield ApiConnection.post(Settings.baseUrl +
+                "api/forms/create_object_form_for_item/" +
+                encodeURIComponent(workspace) +
+                "/" +
+                encodeURIComponent(extentUri) +
+                "/" +
+                encodeURIComponent(viewMode !== null && viewMode !== void 0 ? viewMode : ""), {});
+        });
+    }
+    exports.createObjectFormForItem = createObjectFormForItem;
     function getViewModes() {
         return __awaiter(this, void 0, void 0, function* () {
             const resultFromServer = yield ApiConnection.get(Settings.baseUrl +

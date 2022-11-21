@@ -68,6 +68,7 @@ namespace DatenMeister.WebServer
                 {
                     var webserverConfig = WebServerSettingsLoader.LoadSettingsFromExtent(configuration);
                     GiveMe.Scope.ScopeStorage.Add(webserverConfig);
+                    WebServerSettingHandler.TheOne.WebServerSettings = webserverConfig;
                 }
 
                 _performRestart = false;

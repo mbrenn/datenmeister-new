@@ -20,8 +20,9 @@ namespace DatenMeister.Tests.Modules
                 File.Delete(filename);
             }
 
-            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
-
+            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory, out var extent);
+            
+            Assert.That(extent, Is.Null);
             Assert.That(settings, Is.Null);
         }
 
@@ -39,9 +40,10 @@ namespace DatenMeister.Tests.Modules
             File.WriteAllText(filename,
                 @"<xmi><settings databasePath=""test""></settings></xmi>");
 
-            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
+            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory, out var extent);
 
             Assert.That(settings, Is.Not.Null);
+            Assert.That(extent, Is.Not.Null);
             Assert.That(settings!.databasePath, Is.EqualTo("test"));
         }
 
@@ -60,7 +62,7 @@ namespace DatenMeister.Tests.Modules
             File.WriteAllText(filename,
                 @"<xmi><settings databasePath=""%VARIABLE%\test""></settings></xmi>");
 
-            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
+            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory, out _);
 
             Assert.That(settings, Is.Not.Null);
             Assert.That(settings!.databasePath, Is.EqualTo("Test\\test"));
@@ -83,7 +85,7 @@ namespace DatenMeister.Tests.Modules
   <environmentVariable key=""key2"" value=""value2"" />
 </settings></xmi>");
 
-            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
+            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory, out _);
 
             Assert.That(settings, Is.Not.Null);
             Assert.That(settings!.environmentVariable.Any(x => x.key == "key"), Is.True);

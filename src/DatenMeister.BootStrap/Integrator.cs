@@ -338,7 +338,7 @@ namespace DatenMeister.BootStrap
                 if (path != null)
                 {
                     _publicSettings = PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(path) ??
-                        throw new InvalidOperationException("Path is null"));
+                        throw new InvalidOperationException("Path is null"), out _);
                     if (_publicSettings != null)
                     {
                         if (_publicSettings.databasePath != null && !string.IsNullOrEmpty(_publicSettings.databasePath))

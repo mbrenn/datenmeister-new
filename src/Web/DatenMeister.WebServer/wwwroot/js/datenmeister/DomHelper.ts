@@ -1,15 +1,23 @@
 ﻿import * as ElementClient from "./client/Elements"
-import * as ApiModels from "./ApiModels";
 import {DmObject} from "./Mof";
-import {loadNameByUri} from "./client/Elements";
 import {ItemWithNameAndId} from "./ApiModels";
 
-export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string) {
+export interface IInjectNameByUriParams {
+    onClick?: (item: ItemWithNameAndId) => (void);
+}
+
+export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string, parameter?: IInjectNameByUriParams) {
 
     const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
 
     domElement.empty();
-    domElement.append(convertItemWithNameAndIdToDom(x));
+
+    const paramCall: IConvertItemWithNameAndIdParameters = {};
+    if (parameter !== undefined) {
+        paramCall.onClick = parameter.onClick;
+    }
+    
+    domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
     
 }
 
@@ -28,6 +36,7 @@ export function debugElementToDom(mofElement: any, domSelector: string) {
 
 export interface IConvertItemWithNameAndIdParameters{
     inhibitItemLink?: boolean;
+    onClick?: (item: ItemWithNameAndId) => (void);
 }
 
 /*
@@ -48,10 +57,20 @@ export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: 
     if (validLinkInformation && !inhibitLink) {
         const linkElement = $("<a></a>");
         linkElement.text(item.name);
-        linkElement.attr(
-            "href",
-            "/Item/" + encodeURIComponent(item.workspace) +
-            "/" + encodeURIComponent(item.uri));
+
+        if (params?.onClick !== undefined) {
+            // There is a special click handler, so we execute that one instead of a generic uri
+            linkElement.attr('href', '#');
+            linkElement.on('click', () => { params.onClick(item); return false; });
+        }
+        else {
+            linkElement.attr(
+                "href",
+                "/Item/" + encodeURIComponent(item.workspace) +
+                "/" + encodeURIComponent(item.uri));
+
+        }
+
         result.append(linkElement);
         
     } else {

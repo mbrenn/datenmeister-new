@@ -130,13 +130,13 @@ namespace DatenMeister.Forms.FormFinder
                     if (!string.IsNullOrEmpty(query.extentType)
                         && query.extentType.Contains(associationExtentType))
                     {
-                        InternalDebug("-- MATCH: ExtentType: " + query.extentType + ", FormAssociation ExtentType: " +
+                        InternalDebug("-- MATCH: Requested ExtentType: " + query.extentType + ", FormAssociation ExtentType: " +
                                       associationExtentType);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: ExtentType: " + query.extentType +
+                        InternalDebug("-- NO MATCH: Requested ExtentType: " + query.extentType +
                                       ", FormAssociation ExtentType: " +
                                       associationExtentType);
                         isMatching = false;
@@ -149,13 +149,13 @@ namespace DatenMeister.Forms.FormFinder
                     if (queryViewModeIds != null
                         && queryViewModeIds.Contains(associationViewModeId))
                     {
-                        InternalDebug("-- MATCH: ViewMode: " + query.viewModeId + ", FormAssociation ViewModeId: " +
+                        InternalDebug("-- MATCH: Requested ViewMode: " + query.viewModeId + ", FormAssociation ViewModeId: " +
                                       associationViewModeId);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: ViewMode: " + query.viewModeId +
+                        InternalDebug("-- NO MATCH: Requested ViewMode: " + query.viewModeId +
                                       ", FormAssociation ViewMode: " +
                                       associationViewModeId);
                         isMatching = false;
@@ -167,14 +167,14 @@ namespace DatenMeister.Forms.FormFinder
                 {
                     if (query.metaClass != null && query.metaClass?.equals(associationMetaClass) == true)
                     {
-                        InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(query.metaClass) +
+                        InternalDebug("-- MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.metaClass) +
                                       ", FormAssociation innerMetaClass: " +
                                       NamedElementMethods.GetName(associationMetaClass));
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: metaClass: " + NamedElementMethods.GetName(query.metaClass) +
+                        InternalDebug("-- NO MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.metaClass) +
                                       ", FormAssociation innerMetaClass: " +
                                       NamedElementMethods.GetName(associationMetaClass));
                         isMatching = false;
@@ -184,13 +184,13 @@ namespace DatenMeister.Forms.FormFinder
                 // ViewType
                 if (!query.FormType.Equals(associationViewType))
                 {
-                    InternalDebug("-- NO MATCH: viewType: " + query.FormType + ", FormAssociation viewType: " +
+                    InternalDebug("-- NO MATCH: Requested viewType: " + query.FormType + ", FormAssociation viewType: " +
                                   associationViewType);
                     isMatching = false;
                 }
                 else
                 {
-                    InternalDebug("-- MATCH: viewType: " + query.FormType + ", FormAssociation viewType: " +
+                    InternalDebug("-- MATCH: Requested viewType: " + query.FormType + ", FormAssociation viewType: " +
                                   associationViewType);
                 }
 
@@ -200,7 +200,7 @@ namespace DatenMeister.Forms.FormFinder
                     if (query.parentMetaClass != null &&
                         query.parentMetaClass?.equals(associationParentMetaclass) == true)
                     {
-                        InternalDebug("-- MATCH: parentMetaClass: " +
+                        InternalDebug("-- MATCH: Requested parentMetaClass: " +
                                       NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", FormAssociation parentMetaClass: " +
                                       NamedElementMethods.GetName(associationParentMetaclass));
@@ -208,7 +208,7 @@ namespace DatenMeister.Forms.FormFinder
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: parentMetaClass: " +
+                        InternalDebug("-- NO MATCH: Requested parentMetaClass: " +
                                       NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", FormAssociation parentMetaClass: " +
                                       NamedElementMethods.GetName(associationParentMetaclass));
@@ -222,21 +222,21 @@ namespace DatenMeister.Forms.FormFinder
                     if (!string.IsNullOrEmpty(query.parentProperty) &&
                         query.parentProperty?.Equals(associationParentProperty) == true)
                     {
-                        InternalDebug("-- MATCH: ParentProperty: " + query.parentProperty +
+                        InternalDebug("-- MATCH: Requested ParentProperty: " + query.parentProperty +
                                       ", FormAssociation ParentProperty: " +
                                       associationParentProperty);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: ParentProperty: " + query.parentProperty +
+                        InternalDebug("-- NO MATCH: Requested ParentProperty: " + query.parentProperty +
                                       ", FormAssociation ParentProperty: " +
                                       associationParentProperty);
                         isMatching = false;
                     }
                 }
 
-                InternalDebug("-- Points: " + points + ", Matched" + isMatching);
+                InternalDebug("-- Points: " + points + ", Matched: " + isMatching);
 
                 // The matching view with the maximum points win
                 if (isMatching)

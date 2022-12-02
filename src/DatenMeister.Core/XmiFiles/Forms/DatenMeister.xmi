@@ -160,7 +160,7 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="1b6d7b39-8aa9-4668-846d-695c946cf299" name="Metaclass" title="Metaclass" />
         </tab>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="9ffde4e3-fa9c-463d-9e82-ec2c9c55b024" form-ref="dm:///_internal/forms/internal#51c7b715-cdb8-4c0b-b2f6-8fe194f32862" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace" formType="Collection" name="Assocation for CollectionForm of Workspace" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="9ffde4e3-fa9c-463d-9e82-ec2c9c55b024" form-ref="dm:///_internal/forms/internal#51c7b715-cdb8-4c0b-b2f6-8fe194f32862" extentType="DatenMeister.Workspaces" formType="Collection" name="Assocation for CollectionForm of Workspace" />
     </packagedElement>
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e0d85e06-1168-4840-b757-eef4e0a9baf3" name="DefaultTypes" xmlns:p2="http://www.omg.org/spec/XMI/20131001">

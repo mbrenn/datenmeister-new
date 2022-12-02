@@ -1,9 +1,9 @@
 import * as InterfacesForms from "./Interfaces";
+import {FormType} from "./Interfaces";
 import * as Mof from "../Mof";
 import {createField} from "./FieldFactory";
 import * as Settings from "../Settings";
 import {IFormConfiguration} from "./IFormConfiguration";
-import * as SIC from "../controls/SelectItemControl";
 
 export class TableForm implements InterfacesForms.IForm {
     elements: Array<Mof.DmObject>;
@@ -13,6 +13,7 @@ export class TableForm implements InterfacesForms.IForm {
     workspace: string;
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
+    formType: FormType = FormType.Table;
 
     refreshForm(): void {
         this.createFormByCollection(this.parentHtml, this.configuration);
@@ -87,7 +88,7 @@ export class TableForm implements InterfacesForms.IForm {
             parent.append(div);
         } else {
 
-            let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+            let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
             const fields = this.formElement.getAsArray("field");
 
             const headerRow = $("<tbody><tr></tr></tbody>");

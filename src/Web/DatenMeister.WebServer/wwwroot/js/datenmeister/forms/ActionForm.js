@@ -14,6 +14,11 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
+            const module = FormActions.getModule(actionName);
+            if (module === undefined) {
+                parent.text("Unknown action: " + actionName);
+                return;
+            }
             configuration.submitName = "Perform Action";
             configuration.showCancelButton = false;
             configuration.allowAddingNewProperties = false;
@@ -37,7 +42,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
             /* Loads the object being used as a base for the new action.
             * Usually context information from GET-Query are retrieved. Or some default fields are filled out
             */
-            let element = yield FormActions.loadObjectForAction(actionName);
+            let element = yield module.loadObject();
             if (element === undefined) {
                 element = new Mof_1.DmObject();
                 // Sets the metaclass and workspace id upon url, if not created by Modules
@@ -67,7 +72,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                 element.setMetaClassByUri(metaClass);
             }
             // Asks the detail form actions, whether we have a form for the action itself
-            form = yield FormActions.loadFormForAction(actionName);
+            form = yield module.loadForm();
             if (form === undefined) {
                 // Defines the form
                 if (configuration.formUri !== undefined) {
@@ -82,12 +87,14 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                     form = yield ClientForms.getObjectFormForMetaClass(metaClass);
                 }
             }
+            // Creates the object as being provided by the uri
             creator.element = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
             creator.formElement = form;
             creator.workspace = "Data";
             creator.extentUri = creator.element.extentUri;
+            configuration.submitName = module.actionVerb;
             // Finally, we have everything together, create the form
-            creator.createFormByObject({
+            yield creator.createFormByObject({
                 itemContainer: parent
             }, configuration);
             (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");

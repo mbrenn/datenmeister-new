@@ -1,7 +1,8 @@
 ﻿import * as Mof from "../Mof"
 import * as Settings from "../Settings"
 import * as ApiConnection from "../ApiConnection"
-
+import {FormType} from "../forms/Interfaces";
+import { ItemWithNameAndId } from "../ApiModels";
 
 /*
     Gets the default form for an extent uri by the webserver
@@ -33,18 +34,7 @@ export async function getObjectFormForMetaClass(metaClassUri: string) {
 
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
-
-/**
- * Defines the form types
- */
-export enum FormType
-{
-    Object= "object", 
-    Collection = "collection", 
-    Row = "row", 
-    Table = "table"
-}
-
+    
 export async function getForm(formUri: string, formType?: FormType): Promise<Mof.DmObject> {
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
@@ -70,6 +60,42 @@ export async function getObjectFormForItem(workspace: string, item: string, view
         encodeURIComponent(viewMode)
     );
     return Mof.convertJsonObjectToDmObject(resultFromServer);
+}
+
+export interface ICreateCollectionFormForExtentResult {
+    createdForm: ItemWithNameAndId;
+}
+
+export async function createCollectionFormForExtent(workspace: string, extentUri: string, viewMode?: string):
+    Promise<ICreateCollectionFormForExtentResult> {
+    return await ApiConnection.post<ICreateCollectionFormForExtentResult>(
+        Settings.baseUrl +
+        "api/forms/create_collection_form_for_extent/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri) +
+        "/" +
+        encodeURIComponent(viewMode ?? ""),
+        {}
+    );
+}
+
+export interface ICreateObjectFormForItemResult {
+    createdForm: ItemWithNameAndId;
+}
+
+export async function createObjectFormForItem(workspace: string, extentUri: string, viewMode?: string):
+    Promise<ICreateObjectFormForItemResult> {
+    return await ApiConnection.post<ICreateObjectFormForItemResult>(
+        Settings.baseUrl +
+        "api/forms/create_object_form_for_item/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri) +
+        "/" +
+        encodeURIComponent(viewMode ?? ""),
+        {}
+    );
 }
 
 export interface GetViewModesResultServer{

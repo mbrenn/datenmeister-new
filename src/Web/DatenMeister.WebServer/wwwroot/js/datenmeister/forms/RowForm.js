@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField", "../models/DatenMeister.class"], function (require, exports, Mof, FieldFactory_1, TextField, DatenMeister_class_1) {
+define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory", "../fields/TextField", "../models/DatenMeister.class"], function (require, exports, Interfaces_1, Mof, FieldFactory_1, TextField, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.RowForm = exports.SubmitMethod = void 0;
@@ -20,6 +20,9 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField",
         SubmitMethod[SubmitMethod["SaveAndClose"] = 1] = "SaveAndClose";
     })(SubmitMethod = exports.SubmitMethod || (exports.SubmitMethod = {}));
     class RowForm {
+        constructor() {
+            this.formType = Interfaces_1.FormType.Row;
+        }
         refreshForm() {
             this.createFormByObject(this.parentHtml, this.configuration);
         }
@@ -56,7 +59,8 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField",
                     const fieldMetaClassId = field.metaClass.id;
                     const fieldMetaClassUri = field.metaClass.uri;
                     let fieldElement = null; // The instance if IFormField allowing to create the dom
-                    let htmlElement; // The dom that had been created... 
+                    let htmlElement; // The dom that had been created...
+                    const isFieldReadOnly = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly);
                     // Creates the field to be shown 
                     fieldElement = (0, FieldFactory_1.createField)(fieldMetaClassUri, {
                         configuration: configuration,
@@ -79,8 +83,7 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField",
                         if (name === undefined || name === null || name === "") {
                             name = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.name);
                         }
-                        const isReadOnly = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly);
-                        if (isReadOnly) {
+                        if (isFieldReadOnly) {
                             name += " [R]";
                         }
                         $(".key", tr).text(name);
@@ -94,7 +97,7 @@ define(["require", "exports", "../Mof", "./FieldFactory", "../fields/TextField",
                     }
                     else {
                         fieldElement.field = field;
-                        fieldElement.isReadOnly = configuration.isReadOnly;
+                        fieldElement.isReadOnly = configuration.isReadOnly || isFieldReadOnly;
                         fieldElement.form = this;
                         fieldElement.itemUrl = itemUri;
                         htmlElement = fieldElement.createDom(this.element);

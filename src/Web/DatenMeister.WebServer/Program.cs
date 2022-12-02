@@ -5,8 +5,10 @@ using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.BootStrap.PublicSettings;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Plugins;
+using DatenMeister.WebServer.Library.ServerConfiguration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -32,7 +34,18 @@ namespace DatenMeister.WebServer
 
         public static void Main(string[] args)
         {
-            InitializeLogging();
+            var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
+            var configuration = PublicSettingHandler.LoadExtentFromDirectory(
+                Path.GetDirectoryName(publicSettingsPath) 
+                    ?? throw new InvalidOperationException("Something obscure happened"), 
+                out var path);
+
+            if (configuration != null)
+            {
+                var settings = InitializeLogging(configuration);
+                settings.settingsFilePath = path;
+            }
+
             TheLog.Info("Welcome to DatenMeister");
 
             // Starts the webserver
@@ -50,6 +63,14 @@ namespace DatenMeister.WebServer
 
                 GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
 
+                // Loads the configuration for the webserver
+                if (configuration != null)
+                {
+                    var webserverConfig = WebServerSettingsLoader.LoadSettingsFromExtent(configuration);
+                    GiveMe.Scope.ScopeStorage.Add(webserverConfig);
+                    WebServerSettingHandler.TheOne.WebServerSettings = webserverConfig;
+                }
+
                 _performRestart = false;
                 _host = CreateHostBuilder(args).Build();
                 _host.Run();
@@ -57,11 +78,10 @@ namespace DatenMeister.WebServer
 
             // Unloads the DatenMeister
             GiveMe.TryGetScope()?.UnuseDatenMeister();
-
             TheLog.Info("Good bye - Your DatenMeister");
         }
 
-        private static void InitializeLogging()
+        private static PublicIntegrationSettings InitializeLogging(IExtent configurationExtent)
         {
 #if DEBUG
             TheLog.FilterThreshold = LogLevel.Trace;
@@ -70,14 +90,11 @@ namespace DatenMeister.WebServer
 #else
             TheLog.AddProvider(InMemoryDatabaseProvider.TheOne);
 #endif
-
             // Preload Public Settings
-            var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
-            var publicSettings =
-                PublicSettingHandler.LoadSettingsFromDirectory(
-                    Path.GetDirectoryName(publicSettingsPath) ??
-                    throw new InvalidOperationException("Path returned null"));
-            if (publicSettings == null || publicSettings.logLocation != LogLocation.None)
+            var publicSettings = 
+                PublicSettingHandler.ParseSettingsFromFile(configurationExtent)
+                    ?? new PublicIntegrationSettings();
+            if (publicSettings is not { logLocation: LogLocation.None })
             {
                 var location = publicSettings?.logLocation ?? LogLocation.Application;
 
@@ -101,6 +118,7 @@ namespace DatenMeister.WebServer
             }
 
             TheLog.AddProvider(new ConsoleProvider(), LogLevel.Debug);
+            return publicSettings!;
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

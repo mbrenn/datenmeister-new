@@ -35,6 +35,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Item.MoveOrCopy");
+            this.actionVerb = "Move/Copy Item";
         }
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -71,6 +72,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         constructor() {
             super("Item.Delete");
             this.requiresConfirmation = true;
+            this.actionVerb = "Delete Item";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -88,6 +90,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     class ItemMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Item.MoveDownItem");
+            this.actionVerb = "Move Up";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -99,6 +102,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     class ItemMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Item.MoveUpItem");
+            this.actionVerb = "Move Down";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

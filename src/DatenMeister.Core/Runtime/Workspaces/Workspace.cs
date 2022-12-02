@@ -88,16 +88,13 @@ namespace DatenMeister.Core.Runtime.Workspaces
 
         public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
-            lock (_syncObject)
-            {
-                var result = _extent
-                    .Select(theExtent =>
-                        (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
-                    .FirstOrDefault(found => found != null);
-                if (result == null && traceFailing) Logger.Trace($"URI not resolved: {uri}");
+            var result = extent
+                .Select(theExtent =>
+                    (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
+                .FirstOrDefault(found => found != null);
+            if (result == null && traceFailing) Logger.Trace($"URI not resolved: {uri}");
 
-                return result;
-            }
+            return result;
         }
 
         public IElement? ResolveById(string elementId)

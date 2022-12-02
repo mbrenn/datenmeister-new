@@ -7,11 +7,12 @@ import * as ClientTypes from "../client/Types";
 import {IFormConfiguration} from "../forms/IFormConfiguration";
 import {IFormNavigation} from "../forms/Interfaces";
 import * as Settings from "../Settings";
-import {injectNameByUri} from "../DomHelper";
+import {IInjectNameByUriParams, injectNameByUri} from "../DomHelper";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl";
 import {ItemWithNameAndId} from "../ApiModels";
 import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items";
+import * as FormActions from "../FormActions";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -21,6 +22,10 @@ export class Control {
     itemUrl: string;
     form: IFormNavigation;
     propertyName: string;
+    /**
+     * The name of the action that shall be executed when the user clicks on the item
+     */
+    itemActionName: string;
 
     /**
      * Stores the property type. This information is used to pre-select the
@@ -37,11 +42,11 @@ export class Control {
     async createDomByFieldValue(fieldValue: any): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
-        this._list.empty();
+        this._list.empty();       
 
         if (this.isReadOnly) {
             if (!Array.isArray(fieldValue)) {
-                return $("<div><em>Element is not an Array</em></div>")
+                return $("<div><em>Element is not an Array</em></div>");
             }
 
             let ul = $("<ul class='list-unstyled'></ul>");
@@ -51,8 +56,17 @@ export class Control {
                 if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
                     let innerValue = fieldValue[m] as DmObject;
                     const item = $("<li></li>");
+                    
+                    const injectParams: IInjectNameByUriParams = {};
+                    if (this.itemActionName !== undefined) {
+                        injectParams.onClick = async x =>  {
+                            const readObject = await ClientItems.getObjectByUri(x.workspace, x.uri);
+                            await FormActions.execute(this.itemActionName, tthis.form, readObject);
+                            return false;
+                        }
+                    }
 
-                    let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri);
+                    let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri, injectParams);
                     ul.append(item);
                     foundElements++;
                 }
@@ -279,7 +293,8 @@ export class Field extends Control implements IFormField {
     }
 
     async createDom(dmElement: DmObject) {
-        this.propertyName = this.field.get("name");
+        this.propertyName = this.field.get(_DatenMeister._Forms._ActionFieldData._name_);
+        this.itemActionName = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName);        
 
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");

@@ -46,8 +46,8 @@ namespace DatenMeister.Core
                 if (File.Exists(path))
                 {
                     Logger.Info($"Loading public integration from {path}");
-                    var provider = new XmiProvider(XDocument.Load(path));
-                    return new MofExtent(provider);
+                    var loadedXml = XDocument.Load(path);
+                    return LoadConfigurationByXml(loadedXml);
                 }
             }
             catch (Exception exc)
@@ -57,6 +57,17 @@ namespace DatenMeister.Core
 
             Logger.Error($"There is no configuration file at {path}");
             throw new InvalidOperationException($"There is no configuration file at {path}");
+        }
+
+        /// <summary>
+        /// Loads the configuration by the xml
+        /// </summary>
+        /// <param name="loadedXml">The xml Document storing the configuration</param>
+        /// <returns>The extent</returns>
+        public static MofExtent LoadConfigurationByXml(XDocument loadedXml)
+        {
+            var provider = new XmiProvider(loadedXml);
+            return new MofExtent(provider);
         }
     }
 }

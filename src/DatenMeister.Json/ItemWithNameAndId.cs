@@ -40,12 +40,12 @@ namespace DatenMeister.Json
 
         public string? workspace { get; set; } = string.Empty;
 
-        public string? typeName { get; set; } = string.Empty;
+        public string? metaClassName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the name of the uri to the corresponding type
         /// </summary>
-        public string? typeUri { get; set; } = string.Empty;
+        public string? metaClassUri { get; set; } = string.Empty;
 
         /// <summary>
         /// Defines the enum type
@@ -77,8 +77,8 @@ namespace DatenMeister.Json
                 id = (value as IHasId)?.Id ?? string.Empty,
                 uri = value.GetUri() ?? string.Empty,
                 workspace = extent?.GetWorkspace()?.id ?? string.Empty,
-                typeName = metaClass == null ? null : NamedElementMethods.GetName(metaClass),
-                typeUri = metaClass?.GetUri(),
+                metaClassName = metaClass == null ? null : NamedElementMethods.GetName(metaClass),
+                metaClassUri = metaClass?.GetUri(),
                 ententType = ententType
             };
 
@@ -141,17 +141,17 @@ namespace DatenMeister.Json
                 komma = ",";
             }
 
-            if (typeName != null)
+            if (metaClassName != null)
             {
-                builder.Append($"{komma}\"typeName\": ");
-                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(typeName)}\"");
+                builder.Append($"{komma}\"metaClassName\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(metaClassName)}\"");
                 komma = ",";
             }
 
-            if (typeUri != null)
+            if (metaClassUri != null)
             {
-                builder.Append($"{komma}\"typeUri\": ");
-                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(typeUri)}\"");
+                builder.Append($"{komma}\"metaClassUri\": ");
+                builder.Append($"\"{HttpUtility.JavaScriptStringEncode(metaClassUri)}\"");
                 komma = ",";
             }
 

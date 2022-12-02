@@ -11,11 +11,15 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.convertToDom = exports.convertItemWithNameAndIdToDom = exports.debugElementToDom = exports.convertDmObjectToDom = exports.injectNameByUri = void 0;
-    function injectNameByUri(domElement, workspaceId, elementUri) {
+    function injectNameByUri(domElement, workspaceId, elementUri, parameter) {
         return __awaiter(this, void 0, void 0, function* () {
             const x = yield ElementClient.loadNameByUri(workspaceId, elementUri);
             domElement.empty();
-            domElement.append(convertItemWithNameAndIdToDom(x));
+            const paramCall = {};
+            if (parameter !== undefined) {
+                paramCall.onClick = parameter.onClick;
+            }
+            domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
         });
     }
     exports.injectNameByUri = injectNameByUri;
@@ -48,19 +52,26 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
         if (validLinkInformation && !inhibitLink) {
             const linkElement = $("<a></a>");
             linkElement.text(item.name);
-            linkElement.attr("href", "/Item/" + encodeURIComponent(item.workspace) +
-                "/" + encodeURIComponent(item.uri));
+            if ((params === null || params === void 0 ? void 0 : params.onClick) !== undefined) {
+                // There is a special click handler, so we execute that one instead of a generic uri
+                linkElement.attr('href', '#');
+                linkElement.on('click', () => { params.onClick(item); return false; });
+            }
+            else {
+                linkElement.attr("href", "/Item/" + encodeURIComponent(item.workspace) +
+                    "/" + encodeURIComponent(item.uri));
+            }
             result.append(linkElement);
         }
         else {
             result.text(item.name);
         }
         // Add the metaclass
-        if (item.typeName !== undefined && item.typeName !== null) {
+        if (item.metaClassName !== undefined && item.metaClassName !== null) {
             const metaClassText = $("<span class='dm-metaclass'></span>");
             metaClassText
-                .attr('title', item.typeUri)
-                .text(" [" + item.typeName + "]");
+                .attr('title', item.metaClassUri)
+                .text(" [" + item.metaClassName + "]");
             result.append(metaClassText);
         }
         return result;

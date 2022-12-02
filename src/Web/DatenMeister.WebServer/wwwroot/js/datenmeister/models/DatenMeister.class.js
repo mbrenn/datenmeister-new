@@ -775,6 +775,7 @@ define(["require", "exports"], function (require, exports) {
             _SubElementFieldData.includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
             _SubElementFieldData.defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
             _SubElementFieldData.defaultExtentOfNewElements = "defaultExtentOfNewElements";
+            _SubElementFieldData.actionName = "actionName";
             _SubElementFieldData.isAttached = "isAttached";
             _SubElementFieldData._name_ = "name";
             _SubElementFieldData.title = "title";

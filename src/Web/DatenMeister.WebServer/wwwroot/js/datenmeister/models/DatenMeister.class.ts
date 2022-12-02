@@ -865,6 +865,7 @@ export namespace _DatenMeister
                     static includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
                     static defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
                     static defaultExtentOfNewElements = "defaultExtentOfNewElements";
+                    static actionName = "actionName";
                     static isAttached = "isAttached";
                     static _name_ = "name";
                     static title = "title";

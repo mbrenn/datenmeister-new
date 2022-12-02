@@ -19,6 +19,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", ".
     class ZipCodeTestAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Zipcode.Test");
+            this.actionVerb = "Test of Zipcode";
         }
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -37,6 +38,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", ".
     class CreateZipExampleAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("ZipExample.CreateExample");
+            this.actionVerb = "Create Example";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

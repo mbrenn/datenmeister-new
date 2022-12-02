@@ -56,6 +56,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.CreateItem");
+            this.actionVerb = "Create Item";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -99,6 +100,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.CreateItemInProperty");
+            this.actionVerb = "Create Item";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -126,6 +128,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.DeleteExtent");
+            this.actionVerb = "Delete Extent";
             this.requiresConfirmation = true;
         }
         execute(form, element, parameter, submitMethod) {
@@ -185,6 +188,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("ExtentsList.DeleteItem");
+            this.actionVerb = "Delete Item";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -204,6 +208,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("ExtentsList.MoveUpItem");
+            this.actionVerb = "Move Up";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -215,6 +220,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("ExtentsList.MoveDownItem");
+            this.actionVerb = "Move Down";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -226,6 +232,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
     class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.Store");
+            this.actionVerb = "Store Extent";
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

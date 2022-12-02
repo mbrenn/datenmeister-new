@@ -2,18 +2,20 @@
 
 export async function pageOpenSelectItemControl()
 {
-    $("#selectitemcontrol").empty();
+    const selectItemControl =$("#selectitemcontrol"); 
+    selectItemControl.empty();
     const control = new SIC.SelectItemControl();
     control.itemSelected.addListener(x => 
         alert ( 
             "Uri:" + x.uri+ ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
-    await control.initAsync($("#selectitemcontrol"));
+    await control.initAsync(selectItemControl);
 }
 
 
 export async function pageOpenSelectItemControlFullBreadcrumb()
 {
-    $("#selectitemcontrol").empty();
+    const selectItemControl =$("#selectitemcontrol");
+    selectItemControl.empty();
     const control = new SIC.SelectItemControl();
     control.itemSelected.addListener(x =>
         alert (
@@ -23,41 +25,44 @@ export async function pageOpenSelectItemControlFullBreadcrumb()
     settings.showExtentInBreadcrumb = true;
     settings.showWorkspaceInBreadcrumb = true;
     
-    await control.initAsync($("#selectitemcontrol"), settings);
+    await control.initAsync(selectItemControl, settings);
 }
 
 export async function pageOpenSelectItemControlWithWorkspace()
 {
-    $("#selectitemcontrol").empty();
+    const selectItemControl =$("#selectitemcontrol");
+    selectItemControl.empty();
     const control = new SIC.SelectItemControl();
     control.itemSelected.addListener(x =>
         alert (
             "Uri:" + x.uri+ ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
     
     await control.setWorkspaceById("Types");
-    await control.initAsync($("#selectitemcontrol"));
+    await control.initAsync(selectItemControl);
 }
 
 export async function pageOpenSelectItemControlWithExtent()
 {
-    $("#selectitemcontrol").empty();
+    const selectItemControl =$("#selectitemcontrol");
+    selectItemControl.empty();
     const control = new SIC.SelectItemControl();
     control.itemSelected.addListener(x =>
         alert (
             "Uri:" + x.uri+ ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
     
     await control.setExtentByUri("Types", "dm:///_internal/types/internal");
-    await control.initAsync($("#selectitemcontrol"));
+    await control.initAsync(selectItemControl);
 }
 
 export async function pageOpenSelectItemControlWithItem()
 {
-    $("#selectitemcontrol").empty();
+    const selectItemControl =$("#selectitemcontrol");
+    selectItemControl.empty();
     const control = new SIC.SelectItemControl();
     control.itemSelected.addListener(x =>
         alert (
             "Uri:" + x.uri+ ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
     
     await control.setItemByUri("Types", "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
-    await control.initAsync($("#selectitemcontrol"));
+    await control.initAsync(selectItemControl);
 }

@@ -7,11 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./FieldFactory", "../Settings"], function (require, exports, FieldFactory_1, Settings) {
+define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings"], function (require, exports, Interfaces_1, FieldFactory_1, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TableForm = void 0;
     class TableForm {
+        constructor() {
+            this.formType = Interfaces_1.FormType.Table;
+        }
         refreshForm() {
             this.createFormByCollection(this.parentHtml, this.configuration);
         }
@@ -76,7 +79,7 @@ define(["require", "exports", "./FieldFactory", "../Settings"], function (requir
                     parent.append(div);
                 }
                 else {
-                    let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+                    let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
                     const fields = this.formElement.getAsArray("field");
                     const headerRow = $("<tbody><tr></tr></tbody>");
                     const innerRow = $("tr", headerRow);

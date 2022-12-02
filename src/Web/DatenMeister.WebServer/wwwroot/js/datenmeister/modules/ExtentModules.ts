@@ -61,6 +61,7 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
 class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.CreateItem");
+        this.actionVerb = "Create Item";
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -108,6 +109,7 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
 class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.CreateItemInProperty");
+        this.actionVerb = "Create Item";
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -140,6 +142,7 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
 class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.DeleteExtent");
+        this.actionVerb = "Delete Extent";
         this.requiresConfirmation = true;
     }
     
@@ -171,7 +174,6 @@ class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
         Navigator.navigateToExtent(workspaceId, extentUri);
-        
     }
 }
 
@@ -217,6 +219,7 @@ interface IDeleteCallbackData {
 class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ExtentsList.DeleteItem");
+        this.actionVerb = "Delete Item";
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -241,6 +244,7 @@ class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
 class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ExtentsList.MoveUpItem");
+        this.actionVerb = "Move Up";
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -253,6 +257,7 @@ class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
 class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ExtentsList.MoveDownItem");
+        this.actionVerb = "Move Down";
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -264,6 +269,7 @@ class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase
 class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
     constructor() {
         super("Extent.Store");
+        this.actionVerb = "Store Extent";
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

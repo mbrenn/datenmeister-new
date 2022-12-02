@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../client/Types", "../Settings", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl", "../client/Actions.Items"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, ClientTypes, Settings, DomHelper_1, DatenMeister_class_1, TypeSelectionControl, Actions_Items_1) {
+define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../client/Types", "../Settings", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl", "../client/Actions.Items", "../FormActions"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, ClientTypes, Settings, DomHelper_1, DatenMeister_class_1, TypeSelectionControl, Actions_Items_1, FormActions) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;
@@ -31,7 +31,11 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                             const item = $("<li></li>");
                             const injectParams = {};
                             if (this.itemActionName !== undefined) {
-                                injectParams.onClick = x => alert(this.itemActionName + x.uri);
+                                injectParams.onClick = (x) => __awaiter(this, void 0, void 0, function* () {
+                                    const readObject = yield ClientItems.getObjectByUri(x.workspace, x.uri);
+                                    yield FormActions.execute(this.itemActionName, tthis.form, readObject);
+                                    return false;
+                                });
                             }
                             let _ = (0, DomHelper_1.injectNameByUri)(item, innerValue.workspace, innerValue.uri, injectParams);
                             ul.append(item);

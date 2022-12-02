@@ -61,7 +61,7 @@ export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: 
         if (params?.onClick !== undefined) {
             // There is a special click handler, so we execute that one instead of a generic uri
             linkElement.attr('href', '#');
-            linkElement.on('click', () => { params.onClick(item); });
+            linkElement.on('click', () => { params.onClick(item); return false; });
         }
         else {
             linkElement.attr(

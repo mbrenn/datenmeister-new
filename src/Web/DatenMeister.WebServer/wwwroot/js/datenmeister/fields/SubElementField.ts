@@ -12,6 +12,7 @@ import {_DatenMeister} from "../models/DatenMeister.class";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl";
 import {ItemWithNameAndId} from "../ApiModels";
 import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items";
+import * as FormActions from "../FormActions";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -45,7 +46,7 @@ export class Control {
 
         if (this.isReadOnly) {
             if (!Array.isArray(fieldValue)) {
-                return $("<div><em>Element is not an Array</em></div>")
+                return $("<div><em>Element is not an Array</em></div>");
             }
 
             let ul = $("<ul class='list-unstyled'></ul>");
@@ -58,7 +59,11 @@ export class Control {
                     
                     const injectParams: IInjectNameByUriParams = {};
                     if (this.itemActionName !== undefined) {
-                        injectParams.onClick = x => alert(this.itemActionName + x.uri);
+                        injectParams.onClick = async x =>  {
+                            const readObject = await ClientItems.getObjectByUri(x.workspace, x.uri);
+                            await FormActions.execute(this.itemActionName, tthis.form, readObject);
+                            return false;
+                        }
                     }
 
                     let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri, injectParams);

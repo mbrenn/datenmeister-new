@@ -55,7 +55,7 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
             if ((params === null || params === void 0 ? void 0 : params.onClick) !== undefined) {
                 // There is a special click handler, so we execute that one instead of a generic uri
                 linkElement.attr('href', '#');
-                linkElement.on('click', () => { params.onClick(item); });
+                linkElement.on('click', () => { params.onClick(item); return false; });
             }
             else {
                 linkElement.attr("href", "/Item/" + encodeURIComponent(item.workspace) +

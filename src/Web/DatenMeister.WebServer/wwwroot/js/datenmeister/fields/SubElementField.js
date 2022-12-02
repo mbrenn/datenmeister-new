@@ -29,7 +29,11 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                         if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
                             let innerValue = fieldValue[m];
                             const item = $("<li></li>");
-                            let _ = (0, DomHelper_1.injectNameByUri)(item, innerValue.workspace, innerValue.uri);
+                            const injectParams = {};
+                            if (this.itemActionName !== undefined) {
+                                injectParams.onClick = x => alert(this.itemActionName + x.uri);
+                            }
+                            let _ = (0, DomHelper_1.injectNameByUri)(item, innerValue.workspace, innerValue.uri, injectParams);
                             ul.append(item);
                             foundElements++;
                         }
@@ -206,7 +210,8 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
         createDom(dmElement) {
             var _a;
             return __awaiter(this, void 0, void 0, function* () {
-                this.propertyName = this.field.get("name");
+                this.propertyName = this.field.get(DatenMeister_class_1._DatenMeister._Forms._ActionFieldData._name_);
+                this.itemActionName = this.field.get(DatenMeister_class_1._DatenMeister._Forms._ActionFieldData.actionName);
                 if (this.configuration.isNewItem) {
                     return $("<em>Element needs to be saved first</em>");
                 }

@@ -16,6 +16,7 @@ export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspace
     if (parameter !== undefined) {
         paramCall.onClick = parameter.onClick;
     }
+    
     domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
     
 }

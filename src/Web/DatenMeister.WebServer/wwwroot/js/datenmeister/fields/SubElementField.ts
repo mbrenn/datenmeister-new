@@ -7,7 +7,7 @@ import * as ClientTypes from "../client/Types";
 import {IFormConfiguration} from "../forms/IFormConfiguration";
 import {IFormNavigation} from "../forms/Interfaces";
 import * as Settings from "../Settings";
-import {injectNameByUri} from "../DomHelper";
+import {IInjectNameByUriParams, injectNameByUri} from "../DomHelper";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl";
 import {ItemWithNameAndId} from "../ApiModels";
@@ -21,6 +21,10 @@ export class Control {
     itemUrl: string;
     form: IFormNavigation;
     propertyName: string;
+    /**
+     * The name of the action that shall be executed when the user clicks on the item
+     */
+    itemActionName: string;
 
     /**
      * Stores the property type. This information is used to pre-select the
@@ -37,7 +41,7 @@ export class Control {
     async createDomByFieldValue(fieldValue: any): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
-        this._list.empty();
+        this._list.empty();       
 
         if (this.isReadOnly) {
             if (!Array.isArray(fieldValue)) {
@@ -51,8 +55,13 @@ export class Control {
                 if (Object.prototype.hasOwnProperty.call(fieldValue, m)) {
                     let innerValue = fieldValue[m] as DmObject;
                     const item = $("<li></li>");
+                    
+                    const injectParams: IInjectNameByUriParams = {};
+                    if (this.itemActionName !== undefined) {
+                        injectParams.onClick = x => alert(this.itemActionName + x.uri);
+                    }
 
-                    let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri);
+                    let _ = injectNameByUri(item, innerValue.workspace, innerValue.uri, injectParams);
                     ul.append(item);
                     foundElements++;
                 }
@@ -279,7 +288,8 @@ export class Field extends Control implements IFormField {
     }
 
     async createDom(dmElement: DmObject) {
-        this.propertyName = this.field.get("name");
+        this.propertyName = this.field.get(_DatenMeister._Forms._ActionFieldData._name_);
+        this.itemActionName = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName);        
 
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");

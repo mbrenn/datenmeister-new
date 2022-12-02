@@ -30,13 +30,29 @@ namespace DatenMeister.Forms.FormFinder
             var result = $"{FormType}";
             if (metaClass != null)
             {
-                result += $", MetaClass: {NamedElementMethods.GetName(metaClass)}";
+                result += $", metaClass: {NamedElementMethods.GetName(metaClass)}";
             }
-            
+
             if (!string.IsNullOrEmpty(extentType))
             {
-                result += $", ExtentType: {extentType}";
+                result += $", extentType: {extentType}";
             }
+            
+            if (parentMetaClass != null)
+            {
+                result += $", parentMetaClass: {NamedElementMethods.GetName(parentMetaClass)}";
+            }
+
+            if (!string.IsNullOrEmpty(parentProperty))
+            {
+                result += $", parentProperty: {parentProperty}";
+            }
+
+            if (!string.IsNullOrEmpty(viewModeId))
+            {
+                result += $", viewModeId: {viewModeId}";
+            }
+
 
             return result;
         }

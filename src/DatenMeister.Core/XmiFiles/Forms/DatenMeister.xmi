@@ -156,7 +156,7 @@
           <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="005a3940-6c9f-4ec6-9414-833de84caa54" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace" name="Workspace" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="c75df3b2-a606-47fb-994d-37987bbe3b8b" name="id" title="id" isReadOnly="True" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="da2c86f0-18ed-4acf-9c01-1f493e433b9e" name="annotation" title="annotation" isReadOnly="True" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" p1:id="5733e1f4-d060-468b-bfa0-5fa68cfe66a5" name="extents" title="extents" includeSpecializationsForDefaultTypes="True" isReadOnly="True" isEnumeration="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" p1:id="5733e1f4-d060-468b-bfa0-5fa68cfe66a5" isReadOnly="True" isEnumeration="True" title="extents" name="extents" actionName="Extent.NavigateTo" includeSpecializationsForDefaultTypes="True" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="1b6d7b39-8aa9-4668-846d-695c946cf299" name="Metaclass" title="Metaclass" />
         </tab>
       </packagedElement>

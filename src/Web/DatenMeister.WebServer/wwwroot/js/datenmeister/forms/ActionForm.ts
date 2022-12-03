@@ -93,7 +93,7 @@ export async function createActionFormForEmptyObject(
     }
 
     // Asks the detail form actions, whether we have a form for the action itself
-    form = await module.loadForm();
+    form = await module.loadForm(metaClass);
     if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {

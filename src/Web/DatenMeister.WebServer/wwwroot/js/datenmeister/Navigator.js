@@ -1,7 +1,7 @@
 define(["require", "exports", "./Settings"], function (require, exports, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.navigateToItemByUrl = exports.navigateToItem = exports.navigateToExtent = exports.navigateToWorkspace = exports.navigateToWorkspaces = void 0;
+    exports.navigateToCreateNewItemInExtent = exports.navigateToItemByUrl = exports.navigateToItem = exports.navigateToExtent = exports.navigateToWorkspace = exports.navigateToWorkspaces = void 0;
     function navigateToWorkspaces() {
         document.location.href =
             Settings.baseUrl + "ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces";
@@ -34,5 +34,15 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
                 encodeURIComponent(itemUrl);
     }
     exports.navigateToItemByUrl = navigateToItemByUrl;
+    function navigateToCreateNewItemInExtent(workspace, extentUri, metaclass) {
+        document.location.href = Settings.baseUrl +
+            "ItemAction/Extent.CreateItem?workspace=" +
+            encodeURIComponent(workspace) +
+            "&extent=" +
+            encodeURIComponent(extentUri) +
+            "&metaclass=" +
+            encodeURIComponent(metaclass);
+    }
+    exports.navigateToCreateNewItemInExtent = navigateToCreateNewItemInExtent;
 });
 //# sourceMappingURL=Navigator.js.map

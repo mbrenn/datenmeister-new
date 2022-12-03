@@ -6,6 +6,7 @@ import {createField} from "./FieldFactory";
 import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
 import {_DatenMeister} from "../models/DatenMeister.class";
+import {DmObject} from "../Mof";
 
 // Defines the possible submit methods, a user can chose to close the detail form
 export enum SubmitMethod
@@ -207,32 +208,15 @@ export class RowForm implements InterfacesForms.IForm {
                 }
             });
 
-            function saveHelper(method: SubmitMethod) {
-                if (tthis.onChange !== undefined && tthis.onCancel !== null) {
-                    const saveElement = new Mof.DmObject();
-                    for (let m in tthis.fieldElements) {
-                        if (!tthis.fieldElements.hasOwnProperty(m)) continue;
-
-                        const fieldElement = tthis.fieldElements[m];
-                        if (fieldElement.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
-                            // Just take the fields which are not readonly
-                            fieldElement.evaluateDom(tthis.element);
-                            // Now evaluates the field and put only the properties being shown
-                            // into the DmObject to avoid overwriting of protected and non-shown properties
-                            fieldElement.evaluateDom(saveElement);
-                        }
-                    }
-
-                    tthis.onChange(saveElement, method);
-                }
-            }
 
             $(".dm-detail-form-save", tr).on('click', () => {
-                saveHelper(SubmitMethod.Save);
+                const result = this.storeFormValuesIntoDom();
+                tthis.onChange(result, SubmitMethod.Save);
             });
 
             $(".dm-detail-form-save-and-close", tr).on('click', () => {
-                saveHelper(SubmitMethod.SaveAndClose);
+                const result = this.storeFormValuesIntoDom();
+                tthis.onChange(result, SubmitMethod.SaveAndClose);
             });
         }
 
@@ -254,5 +238,25 @@ export class RowForm implements InterfacesForms.IForm {
         $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri ?? "none");
         $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName ?? "none");
         parent.append(tableInfo);
+    }
+
+    storeFormValuesIntoDom(): DmObject {
+        if (this.onChange !== undefined && this.onCancel !== null) {
+            const saveElement = this.element ?? new Mof.DmObject();
+            for (let m in this.fieldElements) {
+                if (!this.fieldElements.hasOwnProperty(m)) continue;
+
+                const fieldElement = this.fieldElements[m];
+                if (fieldElement.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                    // Just take the fields which are not readonly
+                    fieldElement.evaluateDom(this.element);
+                    // Now evaluates the field and put only the properties being shown
+                    // into the DmObject to avoid overwriting of protected and non-shown properties
+                    fieldElement.evaluateDom(saveElement);
+                }
+            }
+            
+            return saveElement;
+        }
     }
 }

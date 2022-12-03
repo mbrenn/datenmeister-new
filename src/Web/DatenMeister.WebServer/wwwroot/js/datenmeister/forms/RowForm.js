@@ -166,29 +166,13 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                             tthis.onCancel();
                         }
                     });
-                    function saveHelper(method) {
-                        if (tthis.onChange !== undefined && tthis.onCancel !== null) {
-                            const saveElement = new Mof.DmObject();
-                            for (let m in tthis.fieldElements) {
-                                if (!tthis.fieldElements.hasOwnProperty(m))
-                                    continue;
-                                const fieldElement = tthis.fieldElements[m];
-                                if (fieldElement.field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
-                                    // Just take the fields which are not readonly
-                                    fieldElement.evaluateDom(tthis.element);
-                                    // Now evaluates the field and put only the properties being shown
-                                    // into the DmObject to avoid overwriting of protected and non-shown properties
-                                    fieldElement.evaluateDom(saveElement);
-                                }
-                            }
-                            tthis.onChange(saveElement, method);
-                        }
-                    }
                     $(".dm-detail-form-save", tr).on('click', () => {
-                        saveHelper(SubmitMethod.Save);
+                        const result = this.storeFormValuesIntoDom();
+                        tthis.onChange(result, SubmitMethod.Save);
                     });
                     $(".dm-detail-form-save-and-close", tr).on('click', () => {
-                        saveHelper(SubmitMethod.SaveAndClose);
+                        const result = this.storeFormValuesIntoDom();
+                        tthis.onChange(result, SubmitMethod.SaveAndClose);
                     });
                 }
                 parent.append(table);
@@ -203,6 +187,25 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                 $(".dm-detail-info-metaclass", tableInfo).text((_f = (_e = this.element.metaClass) === null || _e === void 0 ? void 0 : _e.fullName) !== null && _f !== void 0 ? _f : "none");
                 parent.append(tableInfo);
             });
+        }
+        storeFormValuesIntoDom() {
+            var _a;
+            if (this.onChange !== undefined && this.onCancel !== null) {
+                const saveElement = (_a = this.element) !== null && _a !== void 0 ? _a : new Mof.DmObject();
+                for (let m in this.fieldElements) {
+                    if (!this.fieldElements.hasOwnProperty(m))
+                        continue;
+                    const fieldElement = this.fieldElements[m];
+                    if (fieldElement.field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
+                        // Just take the fields which are not readonly
+                        fieldElement.evaluateDom(this.element);
+                        // Now evaluates the field and put only the properties being shown
+                        // into the DmObject to avoid overwriting of protected and non-shown properties
+                        fieldElement.evaluateDom(saveElement);
+                    }
+                }
+                return saveElement;
+            }
         }
     }
     exports.RowForm = RowForm;

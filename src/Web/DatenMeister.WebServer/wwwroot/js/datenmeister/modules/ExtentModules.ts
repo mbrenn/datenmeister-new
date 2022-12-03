@@ -1,5 +1,6 @@
 ﻿import * as FormActions from "../FormActions"
-import {createJsonFromObject, DmObject} from "../Mof";
+import * as Mof from "../Mof";
+import {createJsonFromObject, DmObject, ObjectType} from "../Mof";
 import {SubmitMethod} from "../forms/RowForm";
 import {IFormNavigation} from "../forms/Interfaces";
 import * as ApiConnection from "../ApiConnection";
@@ -8,10 +9,14 @@ import * as ECClient from "../client/Extents";
 import * as ItemClient from "../client/Items";
 import * as Navigator from "../Navigator";
 import {moveItemInExtentDown, moveItemInExtentUp} from "../client/Actions.Items";
-import * as Mof from "../Mof";
 import * as Actions from "../client/Actions";
 import {_DatenMeister} from "../models/DatenMeister.class";
+import * as ClientForms from "../client/Forms";
 import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
+import _ObjectForm = _DatenMeister._Forms._ObjectForm;
+import _RowForm = _DatenMeister._Forms._RowForm;
+import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
+import {navigateToCreateNewItemInExtent} from "../Navigator";
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -63,9 +68,33 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         super("Extent.CreateItem");
         this.actionVerb = "Create Item";
     }
+    
+    override async loadForm(metaClass:string): Promise<DmObject> | undefined {
+        const form = await ClientForms.getObjectFormForMetaClass(metaClass);
+        
+        const tabs = form.get(_ObjectForm.tab, ObjectType.Array);
+        const firstTab = tabs[0] as DmObject;
+        const fields = firstTab.get(_RowForm.field, ObjectType.Array);
+        
+        const parameter = new DmObject();
+        parameter.set('name', 'CreateItemAndAnotherOne');
+        
+        // Adds the additional button 
+        const actionButton = new DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
+        actionButton.set(_ActionFieldData.title, "Create Item and another one");
+        actionButton.set(_ActionFieldData.parameter, parameter);
+        actionButton.set(_ActionFieldData.actionName, this.actionName);
+        fields.push(actionButton);
+        
+        return form;
+    }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
+        if(parameter?.get('name', ObjectType.String) === 'CreateItemAndAnotherOne') {
+            submitMethod = SubmitMethod.UserDefined1;
+        }
+        
         let p = new URLSearchParams(window.location.search);
 
         if (!p.has("extent") || !p.has("workspace")) {
@@ -95,7 +124,11 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         if (submitMethod === SubmitMethod.Save) {
             // If user has clicked on the save button (without closing), the form shall just be updated
             Navigator.navigateToItemByUrl(workspace, newItem.itemId);
-        } else {
+        }  if (submitMethod === SubmitMethod.UserDefined1) {
+            // Recreate a new item
+            Navigator.navigateToCreateNewItemInExtent(workspace, extentUri, metaClass);
+        }
+        else {
             // Else, move to the overall items overview
             document.location.href = Settings.baseUrl +
                 "ItemsOverview/" +

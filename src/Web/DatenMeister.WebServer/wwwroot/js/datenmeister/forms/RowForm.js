@@ -18,6 +18,10 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
         SubmitMethod[SubmitMethod["Save"] = 0] = "Save";
         // The user clicked on the save and close button
         SubmitMethod[SubmitMethod["SaveAndClose"] = 1] = "SaveAndClose";
+        // Some user defined actions are supported here
+        SubmitMethod[SubmitMethod["UserDefined1"] = 2] = "UserDefined1";
+        SubmitMethod[SubmitMethod["UserDefined2"] = 3] = "UserDefined2";
+        SubmitMethod[SubmitMethod["UserDefined3"] = 4] = "UserDefined3";
     })(SubmitMethod = exports.SubmitMethod || (exports.SubmitMethod = {}));
     class RowForm {
         constructor() {

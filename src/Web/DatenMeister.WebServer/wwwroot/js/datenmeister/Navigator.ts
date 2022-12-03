@@ -31,3 +31,13 @@ export function navigateToItemByUrl(workspace: string, itemUrl: string) {
         encodeURIComponent(workspace) + "/" +
         encodeURIComponent(itemUrl);
 }
+
+export function navigateToCreateNewItemInExtent(workspace: string, extentUri: string, metaclass: string) {
+    document.location.href = Settings.baseUrl +
+        "ItemAction/Extent.CreateItem?workspace=" +
+        encodeURIComponent(workspace) +
+        "&extent=" +
+        encodeURIComponent(extentUri) +
+        "&metaclass=" +
+        encodeURIComponent(metaclass);
+}

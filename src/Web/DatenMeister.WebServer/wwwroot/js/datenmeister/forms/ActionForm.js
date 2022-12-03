@@ -72,7 +72,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                 element.setMetaClassByUri(metaClass);
             }
             // Asks the detail form actions, whether we have a form for the action itself
-            form = yield module.loadForm();
+            form = yield module.loadForm(metaClass);
             if (form === undefined) {
                 // Defines the form
                 if (configuration.formUri !== undefined) {

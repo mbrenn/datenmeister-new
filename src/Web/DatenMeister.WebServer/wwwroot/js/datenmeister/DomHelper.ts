@@ -18,7 +18,6 @@ export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspace
     }
     
     domElement.append(convertItemWithNameAndIdToDom(x, paramCall));
-    
 }
 
 export async function convertDmObjectToDom(item: DmObject, params?: IConvertItemWithNameAndIdParameters) {

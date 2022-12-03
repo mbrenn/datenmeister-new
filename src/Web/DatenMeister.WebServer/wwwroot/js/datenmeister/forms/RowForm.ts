@@ -13,7 +13,12 @@ export enum SubmitMethod
     // The user clicked on the save button
     Save,
     // The user clicked on the save and close button
-    SaveAndClose
+    SaveAndClose,
+    
+    // Some user defined actions are supported here
+    UserDefined1,
+    UserDefined2,
+    UserDefined3
 }
     
 export class RowForm implements InterfacesForms.IForm {

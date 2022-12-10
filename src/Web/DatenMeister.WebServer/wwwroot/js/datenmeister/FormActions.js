@@ -21,7 +21,7 @@ define(["require", "exports"], function (require, exports) {
         execute(form, element, parameter, submitMethod) {
             return Promise.resolve(undefined);
         }
-        loadForm() {
+        loadForm(metaClass) {
             return Promise.resolve(undefined);
         }
         loadObject() {

@@ -1,5 +1,6 @@
 ﻿@page "/About"
 @using System.Web
+@using DatenMeister.WebServer
 @using DatenMeister.WebServer.Pages
 @model DatenMeister.WebServer.Pages.AboutModel
 
@@ -21,6 +22,12 @@ Welcome to the About-Page
         <th>Value</th>
     </tr>
     </tbody>
+    <tr>
+        <td>Git Commit-Id</td>
+        <td>
+            <a href="https://github.com/mbrenn/datenmeister-new/commit/@Commit.Id">@Commit.Id</a>
+        </td>
+    </tr>
     <tr>
         <td>Workspace-Folder</td>
         <td>

@@ -7,11 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", "../ApiConnection", "../Settings", "../client/Extents", "../client/Items", "../Navigator", "../client/Actions.Items", "../Mof", "../client/Actions", "../models/DatenMeister.class"], function (require, exports, FormActions, Mof_1, RowForm_1, ApiConnection, Settings, ECClient, ItemClient, Navigator, Actions_Items_1, Mof, Actions, DatenMeister_class_1) {
+define(["require", "exports", "../FormActions", "../Mof", "../Mof", "../forms/RowForm", "../ApiConnection", "../Settings", "../client/Extents", "../client/Items", "../Navigator", "../client/Actions.Items", "../client/Actions", "../models/DatenMeister.class", "../client/Forms"], function (require, exports, FormActions, Mof, Mof_1, RowForm_1, ApiConnection, Settings, ECClient, ItemClient, Navigator, Actions_Items_1, Actions, DatenMeister_class_1, ClientForms) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
     var _StoreExtentAction = DatenMeister_class_1._DatenMeister._Actions._StoreExtentAction;
+    var _ObjectForm = DatenMeister_class_1._DatenMeister._Forms._ObjectForm;
+    var _RowForm = DatenMeister_class_1._DatenMeister._Forms._RowForm;
+    var _ActionFieldData = DatenMeister_class_1._DatenMeister._Forms._ActionFieldData;
     function loadModules() {
         FormActions.addModule(new ExtentPropertiesUpdateAction());
         FormActions.addModule(new ExtentCreateItemAction());
@@ -58,8 +61,28 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
             super("Extent.CreateItem");
             this.actionVerb = "Create Item";
         }
+        loadForm(metaClass) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const form = yield ClientForms.getObjectFormForMetaClass(metaClass);
+                const tabs = form.get(_ObjectForm.tab, Mof_1.ObjectType.Array);
+                const firstTab = tabs[0];
+                const fields = firstTab.get(_RowForm.field, Mof_1.ObjectType.Array);
+                const parameter = new Mof_1.DmObject();
+                parameter.set('name', 'CreateItemAndAnotherOne');
+                // Adds the additional button 
+                const actionButton = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._Forms.__ActionFieldData_Uri);
+                actionButton.set(_ActionFieldData.title, "Create Item and another one");
+                actionButton.set(_ActionFieldData.parameter, parameter);
+                actionButton.set(_ActionFieldData.actionName, this.actionName);
+                fields.push(actionButton);
+                return form;
+            });
+        }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
+                if ((parameter === null || parameter === void 0 ? void 0 : parameter.get('name', Mof_1.ObjectType.String)) === 'CreateItemAndAnotherOne') {
+                    submitMethod = RowForm_1.SubmitMethod.UserDefined1;
+                }
                 let p = new URLSearchParams(window.location.search);
                 if (!p.has("extent") || !p.has("workspace")) {
                     alert('There is no extent given');
@@ -85,6 +108,10 @@ define(["require", "exports", "../FormActions", "../Mof", "../forms/RowForm", ".
                 if (submitMethod === RowForm_1.SubmitMethod.Save) {
                     // If user has clicked on the save button (without closing), the form shall just be updated
                     Navigator.navigateToItemByUrl(workspace, newItem.itemId);
+                }
+                if (submitMethod === RowForm_1.SubmitMethod.UserDefined1) {
+                    // Recreate a new item
+                    Navigator.navigateToCreateNewItemInExtent(workspace, extentUri, metaClass);
                 }
                 else {
                     // Else, move to the overall items overview

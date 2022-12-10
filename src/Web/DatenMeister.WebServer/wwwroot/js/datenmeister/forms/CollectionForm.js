@@ -109,7 +109,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                      * Handles the store auto-generated form button
                      */
                     if (htmlElements.storeCurrentFormBtn !== undefined) {
-                        htmlElements.storeCurrentFormBtn.click(() => {
+                        htmlElements.storeCurrentFormBtn.on('click', () => {
                         });
                     }
                     // Sets the current formurl and creates the control

@@ -69,17 +69,25 @@
   </ItemGroup>
   
 
-  <Target Name="CopyIconPngFiles" BeforeTargets="Compile">
+  <Target Name="CopyIconPngFiles" BeforeTargets="BeforeCompile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
   </Target>
 
 
-  <Target Name="CopyNodeModules" BeforeTargets="Compile">
+  <Target Name="CopyNodeModules" BeforeTargets="BeforeBuild">
     <ItemGroup>
       <NodeModules Include="./node_modules/**/*.js" />
       <NodeModules Include="./node_modules/**/*.css" />
     </ItemGroup>
     <Copy SourceFiles="@(NodeModules)" DestinationFolder="wwwroot/js/node_modules/%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+  
+  <Target Name="Update Commit ID" BeforeTargets="BeforeBuild">
+    <Exec Command="python3 ../../../scripts/create_git_commit_file.py" />
+    <ItemGroup>
+      <Compile Remove="Commit.cs" />
+      <Compile Include="Commit.cs" />
+    </ItemGroup>
   </Target>
 
   <ProjectExtensions><VisualStudio><UserProperties tsconfig_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

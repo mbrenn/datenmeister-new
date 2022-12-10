@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             xmiStorageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
                 DatenMeisterTests.GetPathForTemporaryStorage("data.xml"));
 
-            var xmiStorage = new XmiProviderLoader
+            var xmiStorage = new XmiStorageProviderLoader
             {
                 ScopeStorage = new ScopeStorage().Add(new ExtentStorageData())
             };

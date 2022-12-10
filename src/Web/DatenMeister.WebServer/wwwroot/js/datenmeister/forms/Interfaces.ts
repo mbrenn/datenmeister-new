@@ -30,11 +30,15 @@ export interface IFormNavigation {
      * Defines the form type of the current form in which the field will be embedded.
      */
     formType: FormType;
+
+    /**
+     * Stores the values of the form into the DOM, this is an optional method
+     */
+    storeFormValuesIntoDom?(): Mof.DmObject;
 }
 
 export interface IForm extends IFormNavigation
 {
-
     // Just performs a refresh of the form
     refreshForm(): void;
 }

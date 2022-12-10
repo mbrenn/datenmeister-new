@@ -181,7 +181,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                  * Handles the store auto-generated form button
                  */
                 if (htmlElements.storeCurrentFormBtn !== undefined) {
-                    htmlElements.storeCurrentFormBtn.click(() => {
+                    htmlElements.storeCurrentFormBtn.on('click',() => {
                             
                         })
                 }
@@ -222,7 +222,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         /*
          * Introduces the loading text
          */
-
         htmlElements.itemContainer.empty()
             .text("Loading content and form...");
     }

@@ -30,7 +30,7 @@ export interface IItemFormActionModule
      * Loads a certain form fitting to the action
      * Can be undefined, if a default form shall be generated 
      */
-    loadForm(): Promise<DmObject> | undefined;
+    loadForm(metaClass?: string): Promise<DmObject> | undefined;
 
     /**
      * Will be called to execute the action 
@@ -73,7 +73,7 @@ export class ItemFormActionModuleBase implements IItemFormActionModule
         return Promise.resolve(undefined);
     }
 
-    loadForm(): Promise<DmObject> | undefined {
+    loadForm(metaClass?:string): Promise<DmObject> | undefined {
         return Promise.resolve(undefined);
     }
 

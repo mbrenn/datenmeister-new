@@ -27,7 +27,7 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI
             {
                 case PluginLoadingPosition.AfterBootstrapping:
                     _storageMapper.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig,
-                        _ => new XmiProviderLoader());
+                        _ => new XmiStorageProviderLoader());
                     break;
             }
         }

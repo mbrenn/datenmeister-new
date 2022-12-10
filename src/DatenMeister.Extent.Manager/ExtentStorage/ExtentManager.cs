@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
@@ -93,11 +94,17 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId);
                 var extentUri =
                     configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri);
+                
+                // Checks, if workspace is not set, and then override it with 'Data'
+                if (string.IsNullOrEmpty(workspaceId))
+                {
+                    workspaceId = WorkspaceLogic.GetDefaultWorkspace()?.id ?? WorkspaceNames.WorkspaceData;
+                    configuration.set(_ExtentLoaderConfig.workspaceId, workspaceId);
+                }
 
+                // Checks, if that extent is already loaded
                 lock (_extentStorageData.LoadedExtents)
                 {
-                    // Checks, if we have a workspace in the loaded extent which is not existing anymore
-                    
                     // Now, perform the check itself
                     if (_extentStorageData.LoadedExtents.Any(
                             x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)

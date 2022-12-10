@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.Core;
+﻿using DatenMeister.Core;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -53,26 +52,10 @@ namespace DatenMeister.Extent.Forms
                             MetaClass = _DatenMeister.TheOne.Management.__Extent,
                             PredicateForElement =
                                 element =>
-                                {
-                                    var workspaceId =
-                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId);
-                                    var extentUri = element.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
-                                    Console.WriteLine("Found: " + workspaceId + " - " + extentUri);
-
-                                    var result = _extentManager.GetProviderLoaderAndConfiguration(
-                                            workspaceId,
-                                            extentUri)
-                                        .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true;
-
-                                    var loaderAndConfig = _extentManager.GetProviderLoaderAndConfiguration(
-                                        workspaceId,
-                                        extentUri);
-                                    Console.WriteLine("Provider: " + (loaderAndConfig.providerLoader?.ToString() ?? "NULL"));
-                                    Console.WriteLine("Capabilities: " + (loaderAndConfig.providerLoader?.ProviderLoaderCapabilities.ToString() ?? "NULL"));
-                                    
-                                    Console.WriteLine(result);
-                                    return result;
-                                }
+                                    _extentManager.GetProviderLoaderAndConfiguration(
+                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
+                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.uri))
+                                    .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true
                         });
 
                     ActionButtonToFormAdder.AddActionButton(

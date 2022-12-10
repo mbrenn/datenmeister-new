@@ -89,5 +89,38 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(result.providerLoader, Is.TypeOf(typeof(InMemoryProviderLoader)));
             Assert.That(result.loadConfiguration.getOrDefault<string>("Test"), Is.EqualTo("test"));
         }
+
+        [Test]
+        public void GetExtentInformationWithoutSetWorkspace()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var extentManager = dm.Resolve<ExtentManager>();
+
+            var loaderConfig =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+            
+            var loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            
+            // First, check if loading was success
+            Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
+            
+            // Second, check that extent can be retrieved
+            var extent = dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///test");
+            Assert.That(extent, Is.Not.Null);
+            
+            // Third, check that we can retrieve the extent info
+            var extentInfo = extentManager.GetExtentInformation(WorkspaceNames.WorkspaceData, "dm:///test");
+            Assert.That(extentInfo, Is.Not.Null);
+            
+            // Fourth
+            var providerAndLoader =
+                extentManager.GetProviderLoaderAndConfiguration(WorkspaceNames.WorkspaceData, "dm:///test");
+            Assert.That(providerAndLoader.providerLoader, Is.Not.Null);
+            Assert.That(providerAndLoader.providerLoader, Is.TypeOf<InMemoryProviderLoader>());
+            
+            Assert.That(providerAndLoader.loadConfiguration, Is.Not.Null);
+            Assert.That(providerAndLoader.loadConfiguration?.metaclass?.equals(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig) == true);
+        }
     }
 }

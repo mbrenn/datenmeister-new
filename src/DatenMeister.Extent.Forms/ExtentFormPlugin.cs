@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core;
+﻿using System;
+using DatenMeister.Core;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -51,10 +52,21 @@ namespace DatenMeister.Extent.Forms
                             FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Extent,
                             PredicateForElement =
-                                element => _extentManager.GetProviderLoaderAndConfiguration(
-                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
-                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.uri))
-                                    .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true
+                                element =>
+                                {
+                                    var workspaceId =
+                                        element.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId);
+                                    var extentUri = element.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+                                    Console.WriteLine("Found: " + workspaceId + " - " + extentUri);
+
+                                    var result = _extentManager.GetProviderLoaderAndConfiguration(
+                                            workspaceId,
+                                            extentUri)
+                                        .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true;
+                                    
+                                    Console.WriteLine(result);
+                                    return result;
+                                }
                         });
 
                     ActionButtonToFormAdder.AddActionButton(

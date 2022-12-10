@@ -97,7 +97,7 @@ namespace DatenMeister.Tests.Modules.Actions
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
                 manager => new CsvProviderLoader());
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig,
-                manager => new XmiProviderLoader());
+                manager => new XmiStorageProviderLoader());
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
                 manager => new XmlReferenceLoader());
             return result;

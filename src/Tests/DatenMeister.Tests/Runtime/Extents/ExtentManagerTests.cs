@@ -120,7 +120,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(providerAndLoader.providerLoader, Is.TypeOf<InMemoryProviderLoader>());
             
             Assert.That(providerAndLoader.loadConfiguration, Is.Not.Null);
-            Assert.That(providerAndLoader.loadConfiguration?.metaclass?.equals(_DatenMeister.TheOne.ExtentLoaderConfigs.InMemoryLoaderConfig) == true);
+            Assert.That(providerAndLoader.loadConfiguration?.metaclass?.equals(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig) == true);
         }
     }
 }

@@ -181,9 +181,11 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             var information = GetExtentInformation(workspaceId, extentUri);
             if (information == null)
             {
+                Console.WriteLine("NULL, NULL");
                 return (null, null);
             }
 
+            Console.Write($"F: {CreateProviderLoader(information.Configuration)?.ToString() ?? "NULL"}");
             return (CreateProviderLoader(information.Configuration), information.Configuration);
         }
 

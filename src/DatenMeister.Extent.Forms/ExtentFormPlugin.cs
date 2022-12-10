@@ -51,7 +51,8 @@ namespace DatenMeister.Extent.Forms
                             FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Extent,
                             PredicateForElement =
-                                element => _extentManager.GetProviderLoaderAndConfiguration(
+                                element =>
+                                    _extentManager.GetProviderLoaderAndConfiguration(
                                         element.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
                                         element.getOrDefault<string>(_DatenMeister._Management._Extent.uri))
                                     .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true

@@ -70,8 +70,13 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             lock (_extentStorageData.LoadedExtents)
             {
                 return _extentStorageData.LoadedExtents.FirstOrDefault(
-                    x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
-                         && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                    x =>
+                    {
+                        Console.WriteLine("Should W: " + workspaceId + "<->" + x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId));
+                        Console.WriteLine("Should E: " + extentUri + "<->" + x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                        return workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
+                               && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri);
+                    });
             }
         }
 

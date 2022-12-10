@@ -63,6 +63,12 @@ namespace DatenMeister.Extent.Forms
                                             workspaceId,
                                             extentUri)
                                         .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true;
+
+                                    var loaderAndConfig = _extentManager.GetProviderLoaderAndConfiguration(
+                                        workspaceId,
+                                        extentUri);
+                                    Console.WriteLine("Provider: " + (loaderAndConfig.providerLoader?.ToString() ?? "NULL"));
+                                    Console.WriteLine("Capabilities: " + (loaderAndConfig.providerLoader?.ProviderLoaderCapabilities.ToString() ?? "NULL"));
                                     
                                     Console.WriteLine(result);
                                     return result;

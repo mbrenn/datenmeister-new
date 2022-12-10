@@ -18,6 +18,12 @@ namespace DatenMeister.Core.Provider.Interfaces
         /// provider.
         /// </summary>
         public bool AreChangesPersistant = false;
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"IsPersistant: {IsPersistant}, AreChangesPersistant: {AreChangesPersistant}";
+        }
     }
     /// <summary>
     /// Defines the interface to store an extent persistently whether in a database or

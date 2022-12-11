@@ -284,7 +284,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                Navigator.navigateToAction("Extent.ExportXmi", "dm:///datenmeister.forms/#DatenMeister.Export.Xmi", {
+                Navigator.navigateToAction("Extent.ExportXmi", "dm:///_internal/forms/internal#DatenMeister.Export.Xmi", {
                     workspaceId: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
                     extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
                 });
@@ -302,7 +302,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                Navigator.navigateToAction("Extent.ImportXmi", "dm:///datenmeister.forms/#DatenMeister.Export.Xmi", {
+                Navigator.navigateToAction("Extent.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Export.Xmi", {
                     workspaceId: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
                     extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
                 });

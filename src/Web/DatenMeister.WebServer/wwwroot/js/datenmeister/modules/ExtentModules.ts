@@ -333,7 +333,7 @@ class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Extent.ExportXmi",
-            "dm:///datenmeister.forms/#DatenMeister.Export.Xmi",
+            "dm:///_internal/forms/internal#DatenMeister.Export.Xmi",
             {
                 workspaceId: element.get(_DatenMeister._Management._Extent.workspaceId),
                 extentUri: element.get(_DatenMeister._Management._Extent.uri)
@@ -341,7 +341,6 @@ class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
         );
     }
 }
-
 
 class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
     constructor() {
@@ -357,7 +356,7 @@ class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Extent.ImportXmi",
-            "dm:///datenmeister.forms/#DatenMeister.Export.Xmi",
+            "dm:///_internal/forms/internal#DatenMeister.Export.Xmi",
             {
                 workspaceId: element.get(_DatenMeister._Management._Extent.workspaceId),
                 extentUri: element.get(_DatenMeister._Management._Extent.uri)

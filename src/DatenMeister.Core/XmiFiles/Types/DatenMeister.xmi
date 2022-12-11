@@ -21,8 +21,11 @@
           <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
         </ownedAttribute>
       </packagedElement>
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1" name="XmiExportContainer">
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="xmi" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="1f901e57-0e10-488e-9ab6-c58e21f00f2a" />
+      </packagedElement>
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="ExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="Package_ExtentManager" name="ExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ExtentManager.ImportSettings" name="ImportSettings">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="07f34b89-8ccc-4aea-a003-2c3a75b4a3b7" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" defaultValue="dm:///" p1:id="19a9d20f-710f-4865-99af-daf571f9cdcb" />

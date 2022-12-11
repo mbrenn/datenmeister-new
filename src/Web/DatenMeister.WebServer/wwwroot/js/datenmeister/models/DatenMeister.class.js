@@ -25,6 +25,11 @@ define(["require", "exports"], function (require, exports) {
                 _Package.defaultViewMode = "defaultViewMode";
                 _Default._Package = _Package;
                 _Default.__Package_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package";
+                class _XmiExportContainer {
+                }
+                _XmiExportContainer.xmi = "xmi";
+                _Default._XmiExportContainer = _XmiExportContainer;
+                _Default.__XmiExportContainer_Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1";
             })(_Default = _CommonTypes._Default || (_CommonTypes._Default = {}));
             let _ExtentManager;
             (function (_ExtentManager) {

@@ -24,6 +24,12 @@ export namespace _DatenMeister
                         }
 
                         export const __Package_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package";
+                        export class _XmiExportContainer
+                        {
+                            static xmi = "xmi";
+                        }
+
+                        export const __XmiExportContainer_Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1";
                 }
 
                 export namespace _ExtentManager

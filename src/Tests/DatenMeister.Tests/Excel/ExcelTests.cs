@@ -28,7 +28,6 @@ namespace DatenMeister.Tests.Excel
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
 
-            Console.WriteLine(excelExtent.ToString());
             foreach (var sheet in excelExtent.GetRootObjects().Take(1))
             {
                 var allProperties = ((IEnumerable<object>)sheet.GetProperty("items")!).First() as IProviderObject;

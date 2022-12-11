@@ -71,13 +71,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             lock (_extentStorageData.LoadedExtents)
             {
                 return _extentStorageData.LoadedExtents.FirstOrDefault(
-                    x =>
-                    {
-                        Console.WriteLine("Should W: " + workspaceId + "<->" + x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId));
-                        Console.WriteLine("Should E: " + extentUri + "<->" + x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
-                        return workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
-                               && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri);
-                    });
+                    x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
+                         && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
             }
         }
 
@@ -193,11 +188,9 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             var information = GetExtentInformation(workspaceId, extentUri);
             if (information == null)
             {
-                Console.WriteLine("NULL, NULL");
                 return (null, null);
             }
 
-            Console.Write($"F: {CreateProviderLoader(information.Configuration)?.ToString() ?? "NULL"}");
             return (CreateProviderLoader(information.Configuration), information.Configuration);
         }
 

@@ -41,3 +41,22 @@ export function navigateToCreateNewItemInExtent(workspace: string, extentUri: st
         "&metaclass=" +
         encodeURIComponent(metaclass);
 }
+
+export function navigateToAction(actionName: string, formUri?: string, parameter?: any) {
+    let urlParameter = "";
+    
+    if ( parameter !== undefined) {
+        urlParameter = "?";
+        let ampersand = "";
+
+        for (let key in parameter) {
+            var value = parameter[key];
+            
+            urlParameter += ampersand + encodeURIComponent(key) + "=" + encodeURIComponent(value);
+            ampersand = "&";
+        }
+    }
+    
+    document.location.href =
+        `${Settings.baseUrl}ItemAction/${actionName}/${encodeURIComponent(formUri ?? "")}${urlParameter}`;
+}

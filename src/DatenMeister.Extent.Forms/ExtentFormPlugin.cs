@@ -19,6 +19,8 @@ namespace DatenMeister.Extent.Forms
         public const string NavigationExtentDeleteExtent = "Extent.DeleteExtent";
         public const string NavigationExtentProperties = "Extent.Properties";
         public const string NavigationStore = "Extent.Store";
+        public const string NavigationExportXmi = "Extent.ExportXmi.Navigate";
+        public const string NavigationImportXmi = "Extent.ImportXmi.Navigate";
         public const string NavigationItemNew = "Item.New";
 
         private readonly IScopeStorage _scopeStorage;
@@ -89,6 +91,23 @@ namespace DatenMeister.Extent.Forms
                             FormType = _DatenMeister._Forms.___FormType.Table,
                             ParentPropertyName = _DatenMeister._Management._Workspace.extents,
                             ActionButtonPosition = 0
+                        });
+                    
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin,
+                        new ActionButtonAdderParameter(NavigationExportXmi, "Export Xmi")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Row,
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin,
+                        new ActionButtonAdderParameter(NavigationImportXmi, "Import Xmi")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Row,
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent
                         });
                     break;
             }

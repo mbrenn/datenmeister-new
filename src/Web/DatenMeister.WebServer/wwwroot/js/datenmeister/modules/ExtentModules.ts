@@ -1,22 +1,21 @@
-﻿import * as FormActions from "../FormActions"
-import * as Mof from "../Mof";
-import {createJsonFromObject, DmObject, ObjectType} from "../Mof";
-import {SubmitMethod} from "../forms/RowForm";
-import {IFormNavigation} from "../forms/Interfaces";
-import * as ApiConnection from "../ApiConnection";
-import * as Settings from "../Settings";
-import * as ECClient from "../client/Extents";
-import * as ItemClient from "../client/Items";
-import * as Navigator from "../Navigator";
-import {moveItemInExtentDown, moveItemInExtentUp} from "../client/Actions.Items";
+﻿import * as ApiConnection from "../ApiConnection";
 import * as Actions from "../client/Actions";
-import {_DatenMeister} from "../models/DatenMeister.class";
+import { moveItemInExtentDown, moveItemInExtentUp } from "../client/Actions.Items";
+import * as ECClient from "../client/Extents";
 import * as ClientForms from "../client/Forms";
+import * as ItemClient from "../client/Items";
+import * as FormActions from "../FormActions";
+import { IFormNavigation } from "../forms/Interfaces";
+import { SubmitMethod } from "../forms/RowForm";
+import { _DatenMeister } from "../models/DatenMeister.class";
+import * as Mof from "../Mof";
+import { createJsonFromObject, DmObject, ObjectType } from "../Mof";
+import * as Navigator from "../Navigator";
+import * as Settings from "../Settings";
 import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
 import _ObjectForm = _DatenMeister._Forms._ObjectForm;
 import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
-import {navigateToCreateNewItemInExtent} from "../Navigator";
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -30,6 +29,10 @@ export function loadModules() {
     FormActions.addModule(new ExtentsListMoveUpItemAction());
     FormActions.addModule(new ExtentsListMoveDownItemAction());
     FormActions.addModule(new ExtentsStoreAction());
+    FormActions.addModule(new ExtentXmiExportNavigate());
+    FormActions.addModule(new ExtentXmiExport());
+    FormActions.addModule(new ExtentXmiImportNavigate());
+    FormActions.addModule(new ExtentXmiImport());
 }
 
 class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
@@ -318,5 +321,53 @@ class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
         await Actions.executeActionDirectly("Execute", actionParams);
         
         alert('Extent has been stored.');
+    }
+}
+
+
+class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Extent.ExportXmi.Navigate");
+    }
+
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        Navigator.navigateToAction(
+            "Extent.ExportXmi",
+            "dm:///datenmeister.forms/#DatenMeister.Export.Xmi",
+            {
+                workspaceId: element.get(_DatenMeister._Management._Extent.workspaceId),
+                extentUri: element.get(_DatenMeister._Management._Extent.uri)
+            }
+        );
+    }
+}
+
+
+class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Extent.ExportXmi");
+    }
+}
+
+class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Extent.ImportXmi.Navigate");
+    }
+
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        Navigator.navigateToAction(
+            "Extent.ImportXmi",
+            "dm:///datenmeister.forms/#DatenMeister.Export.Xmi",
+            {
+                workspaceId: element.get(_DatenMeister._Management._Extent.workspaceId),
+                extentUri: element.get(_DatenMeister._Management._Extent.uri)
+            }
+        );
+    }
+}
+
+class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Extent.ImportXmi");
     }
 }

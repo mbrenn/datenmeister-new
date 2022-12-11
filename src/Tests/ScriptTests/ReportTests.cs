@@ -74,12 +74,8 @@ namespace ScriptTests
                 reportCreator.CreateReport(writer);
 
                 var absolutePath = Path.Combine(GetScriptFolder(), fileName);
-                Console.WriteLine(absolutePath);
-
                 DotNetHelper.CreateProcess(absolutePath);
             }
-
-            Console.WriteLine(testExtent);
         }
     }
 }

@@ -15,6 +15,8 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DataView;
 using DatenMeister.Json;
@@ -654,6 +656,36 @@ namespace DatenMeister.WebServer.Controller
             public string? WorkspaceId { get; set; } = null;
 
             public string ReferenceUri { get; set; } = string.Empty;
+        }
+        
+        
+        public class ExportXmiResult
+        {
+            public string Xmi { get; set; } = string.Empty;
+        }
+
+        [HttpGet("api/item/export_xmi/{workspace}/{itemUri}")]
+        public ActionResult<ExportXmiResult> ExportXmi(string workspace, string itemUri)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+            var foundItem = _workspaceLogic.FindItem(workspace, itemUri);
+            if (foundItem == null)
+            {
+                throw new InvalidOperationException("Item has not been found");
+            }
+            
+            var provider = new XmiProvider();
+            var tempExtent = new MofUriExtent(provider, "dm:///export", _scopeStorage);
+
+            // Now do the copying. it makes us all happy
+            tempExtent.elements().add(
+                ObjectCopier.Copy(new MofFactory(tempExtent), foundItem, CopyOptions.CopyId));
+
+            return new ExportXmiResult
+            {
+                Xmi = provider.Document.ToString()
+            };
         }
     }
 }

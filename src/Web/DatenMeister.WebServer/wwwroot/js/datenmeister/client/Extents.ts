@@ -16,7 +16,6 @@ export async function exists(workspaceId: string, extent: string) {
     return await ApiConnection.get<IExistsResult>(url);
 }
 
-
 export class ExportXmiResult
 {
     public xmi: string;

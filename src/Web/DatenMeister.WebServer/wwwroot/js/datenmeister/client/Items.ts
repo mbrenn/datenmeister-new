@@ -344,3 +344,31 @@ export interface IRemoveReferenceFromCollectionParameter {
     referenceUri: string;
     referenceWorkspaceId?: string;
 }
+
+
+export class ExportXmiResult
+{
+    public xmi: string;
+}
+export async function exportXmi(workspace: string, itemUri: string) {
+    let url = Settings.baseUrl +
+        "api/item/export_xmi/"
+        + encodeURIComponent(workspace) + "/"
+        + encodeURIComponent(itemUri);
+    return await ApiConnection.get<ExportXmiResult>(url);
+}
+
+export class ImportXmiResult
+{
+    public success: boolean;
+}
+
+export async function importXmi(workspace: string, itemUri: string, property: string, xmi: string) {
+    let url = Settings.baseUrl +
+        "api/item/import_xmi/"
+        + encodeURIComponent(workspace) + "/"
+        + encodeURIComponent(itemUri) + "?property=" +
+        + encodeURIComponent(property);
+
+    return await ApiConnection.post<ImportXmiResult>(url, {xmi: xmi});
+}

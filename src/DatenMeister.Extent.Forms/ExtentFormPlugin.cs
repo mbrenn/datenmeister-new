@@ -92,7 +92,6 @@ namespace DatenMeister.Extent.Forms
                             ParentPropertyName = _DatenMeister._Management._Workspace.extents,
                             ActionButtonPosition = 0
                         });
-                    
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin,

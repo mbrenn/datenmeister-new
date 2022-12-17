@@ -90,6 +90,11 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="3a7d0381-a84b-4e8d-a923-8945e89921a8" isReadOnly="True" title="Xmi" name="xmi" supportClipboardCopy="True" shortenTextLength="1000" lineHeight="20" />
       </tab>
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" p1:id="DatenMeister.Import.Xmi" title="Importing the Xmi" name="Import Xmi - Object Form">
+      <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" p1:id="401b8734-ff80-4c40-bb5e-c88d2a8aebed" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" title="Export Data">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="c612bc08-216f-45bd-b518-c2d7a463661d" title="Xmi" name="xmi" lineHeight="20" />
+      </tab>
+    </packagedElement>
   </item>
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Extent - Select Type" hideMetaInformation="True" allowNewProperties="True" p1:id="WorkspacesAndExtents.Extent.SelectType" comment="Used by Action 'LoadOrCreateExtent'">

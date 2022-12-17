@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Settings", "../ApiConnection", "../Mof"], function (require, exports, Settings, ApiConnection, Mof) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getProperties = exports.setProperties = exports.deleteExtent = exports.createXmi = exports.exportXmi = exports.ExportXmiResult = exports.exists = void 0;
+    exports.getProperties = exports.setProperties = exports.deleteExtent = exports.createXmi = exports.importXmi = exports.ImportXmiResult = exports.exportXmi = exports.ExportXmiResult = exports.exists = void 0;
     function exists(workspaceId, extent) {
         return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
@@ -34,6 +34,19 @@ define(["require", "exports", "../Settings", "../ApiConnection", "../Mof"], func
         });
     }
     exports.exportXmi = exportXmi;
+    class ImportXmiResult {
+    }
+    exports.ImportXmiResult = ImportXmiResult;
+    function importXmi(workspace, extentUri, xmi) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/extent/import_xmi/"
+                + encodeURIComponent(workspace) + "/"
+                + encodeURIComponent(extentUri);
+            return yield ApiConnection.post(url, { xmi: xmi });
+        });
+    }
+    exports.importXmi = importXmi;
     function createXmi(params) {
         return new Promise((resolve, reject) => {
             let url = Settings.baseUrl +

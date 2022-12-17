@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Web;
+using DatenMeister.Actions;
+using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -125,6 +129,11 @@ namespace DatenMeister.WebServer.Controller
                 Success = result
             };
         }
+        
+        public class ExportXmiResult
+        {
+            public string Xmi { get; set; } = string.Empty;
+        }
 
         [HttpGet("api/extent/export_xmi/{workspace}/{extent}")]
         public ActionResult<ExportXmiResult> ExportXmi(string workspace, string extent)
@@ -150,9 +159,33 @@ namespace DatenMeister.WebServer.Controller
             };
         }
 
-        public class ExportXmiResult
+        public class ImportXmiParams
         {
             public string Xmi { get; set; } = string.Empty;
+        }
+
+        public class ImportXmiResult
+        {
+            public bool Success { get; set; }
+        }
+
+        [HttpPost("api/extent/import_xmi/{workspace}/{extent}")]
+        public ActionResult<ImportXmiResult> ImportXmi(string workspace, string extent, [FromBody] ImportXmiParams param)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            extent = HttpUtility.UrlDecode(extent);
+
+            // Performs the import via the action handler...
+            var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
+            var importXmi = new ImportXmiActionHandler();
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
+            action.set(_DatenMeister._Actions._ImportXmiAction.workspace, workspace);
+            action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, extent);
+            action.set(_DatenMeister._Actions._ImportXmiAction.xmi, param.Xmi);
+            
+            importXmi.Evaluate(actionLogic, action);
+
+            return new ImportXmiResult { Success = true };
         }
 
         /// <summary>

@@ -883,6 +883,52 @@
       </ownedAttribute>
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f71dd2c1-8b7c-4076-8b0f-92435fd81916" isSubstitutable="True" general-ref="dm:///_internal/types/internal#Actions.Action" />
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d" name="ImportXmiAction">
+      <isAbstract p2:id="061f5643-1e97-4c96-8460-e08efb5fcad0" />
+      <isActive p2:id="27775dce-d732-4c85-b9d1-b25ad64326ab" />
+      <isFinalSpecialization p2:id="61a29a29-49a3-4a35-9c47-ab21ca544612" />
+      <isLeaf p2:id="1d1184fe-e247-4b63-bbad-7bc7c341ef04" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d7d4d1c9-075e-4abc-9d00-a227def28777" type-ref="dm:///_internal/model/primitivetypes#String" name="workspace" isID="True" isComposite="True">
+        <aggregation p2:id="cd30e215-9886-441d-a87c-c8da7f2c6878" />
+        <isDerived p2:id="af23a844-6710-44fe-8c7e-edb394cd635d" />
+        <isDerivedUnion p2:id="202e73d6-2fcc-48da-b858-9b27a6c9452c" />
+        <isReadOnly p2:id="bb286895-99a2-4278-8954-ff9ac8950ada" />
+        <isOrdered p2:id="2008aead-32de-4cfe-ab41-560008b5bad8" />
+        <isUnique p2:id="f072ac98-5344-458c-8c33-06db09ac1f5f" />
+        <isStatic p2:id="6fa77b47-185e-4f39-b8f3-a0ea1cd4b1ec" />
+        <isLeaf p2:id="292caa8d-c6c1-4238-99b4-64278e94ee7c" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="af1d9aab-3dba-4b2c-833a-9653ec11e4ea" type-ref="dm:///_internal/model/primitivetypes#String" name="itemUri" isID="True" isComposite="True">
+        <aggregation p2:id="dd331ee2-6986-4892-99c5-c08dcb0b643a" />
+        <isDerived p2:id="99eb9775-d044-4eb4-8342-908ed3da9383" />
+        <isDerivedUnion p2:id="bf757903-05d9-4218-8ab5-0fca437f0ae1" />
+        <isReadOnly p2:id="588fc1da-ee4f-4282-a0c0-b86baf911921" />
+        <isOrdered p2:id="e50b03b8-5f1e-4d6b-856b-1120ce5fb01b" />
+        <isUnique p2:id="74699c4d-2334-43e9-873a-f01a43ac51b9" />
+        <isStatic p2:id="183eb854-7da6-481f-80af-27a56a48433d" />
+        <isLeaf p2:id="cfc8449a-2fa0-4785-9ded-51e223dc4a45" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f539c39b-9b09-428f-b2d7-896bb4b5930e" type-ref="dm:///_internal/model/primitivetypes#String" name="xmi" isID="True" isComposite="True">
+        <aggregation p2:id="9c3a38d9-4a48-467b-ad6c-a2327c39eb0f" />
+        <isDerived p2:id="4dee5219-87c9-4827-a1fd-4422ed848d37" />
+        <isDerivedUnion p2:id="16956ab9-208c-404c-8a01-c013c634c444" />
+        <isReadOnly p2:id="a33b4238-6022-4d73-ad00-b0bf78045308" />
+        <isOrdered p2:id="1af1a2a1-e818-475d-a317-baf8d51808b6" />
+        <isUnique p2:id="82763669-3755-42fe-832b-d89fd16808fe" />
+        <isStatic p2:id="48772e20-9030-48e5-b7ee-d25fb02c236a" />
+        <isLeaf p2:id="519fc49b-0dc5-49bc-b80e-baf2ece76da8" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c943ca90-ccc8-4977-8e64-8d8e961964c2" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isID="True" isComposite="True">
+        <aggregation p2:id="23e37183-cb44-4711-a662-153af7ab774d" />
+        <isDerived p2:id="d4a5fef8-597f-4013-8f38-0c10b6b33ac5" />
+        <isDerivedUnion p2:id="c16e2da8-17be-4558-b3f8-1501db6b3df3" />
+        <isReadOnly p2:id="29ada207-bce3-48bd-9ee9-564cf481e608" />
+        <isOrdered p2:id="23dc064f-391d-4d59-9569-e5d2575e7e67" />
+        <isUnique p2:id="57d58aa3-b803-4f73-9d4a-39eafb8de543" />
+        <isStatic p2:id="1004be64-7846-4dd4-94be-62ddb0038e14" />
+        <isLeaf p2:id="b8b2e89e-a18c-4317-be60-7b6c03c79477" />
+      </ownedAttribute>
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

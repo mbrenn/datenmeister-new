@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -114,7 +115,7 @@ namespace DatenMeister.Tests.Web
             martin.set("name", "Martin");
             martinson.set("name", "Martinson");
             martin.set("child", martinson);
-            
+
             newExtent.elements().add(martin);
 
             var result = extentController.ExportXmi(WorkspaceNames.WorkspaceData, "dm:///test");
@@ -124,5 +125,35 @@ namespace DatenMeister.Tests.Web
             Assert.That(result.Value.Xmi.Contains("child"), Is.True);
             Assert.That(result.Value.Xmi.Contains("Martinson"), Is.True);
         }
-}
+
+        [Test]
+        public void TestImportXmi()
+        {
+            var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
+
+            var extentController = new ExtentController(workspaceLogic, scopeStorage);
+            var newExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", scopeStorage);
+            workspaceLogic.AddExtent(workspaceLogic.GetDataWorkspace(), newExtent);
+
+            var xmi = @"<xmi>
+    <meta p2:id=""1ca6dd3b-be32-4cd4-896b-23506a23a81d"" __uri=""dm:///export"" xmlns:p2=""http://www.omg.org/spec/XMI/20131001"" xmlns=""http://datenmeister.net/"" />
+    <item p2:type=""dm:///_internal/types/internal#IssueMeister.Issue"" p2:id=""2"" description=""Link to item does link to 404 and not to Item1"" state=""Closed"" name=""Detail Form - Bread Crumb1"" id=""2"" _toBeCleanedUp=""09/18/2022 12:22:44"" xmlns:p2=""http://www.omg.org/spec/XMI/20131001"" />
+    <item p2:type=""dm:///_internal/types/internal#IssueMeister.Issue"" p2:id=""1"" _toBeCleanedUp=""09/18/2022 12:22:02"" id=""1"" name=""Moving up and Down"" state=""Closed"" description=""List Tables shall support the move up and move down of items&#xA;&#xA;fdsa"" xmlns:p2=""http://www.omg.org/spec/XMI/20131001"" />
+</xmi>";
+
+            extentController.ImportXmi(
+                WorkspaceNames.WorkspaceData,
+                "dm:///test",
+                new ExtentController.ImportXmiParams
+                {
+                    Xmi = xmi
+                });
+
+            Assert.That(newExtent.elements().Count(), Is.EqualTo(2));
+            Assert.That(newExtent.elements().OfType<IElement>().First().getOrDefault<string>("state"),
+                Is.EqualTo("Closed"));
+            Assert.That(newExtent.elements().OfType<IElement>().ElementAt(1).getOrDefault<string>("name"),
+                Is.EqualTo("Moving up and Down"));
+        }
+    }
 }

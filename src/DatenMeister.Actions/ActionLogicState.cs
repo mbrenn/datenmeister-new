@@ -51,6 +51,7 @@ namespace DatenMeister.Actions
             logicState.AddActionHandler(new CreateFormByMetaclassActionHandler());
             logicState.AddActionHandler(new MoveOrCopyActionHandler());
             logicState.AddActionHandler(new MoveUpDownActionHandler());
+            logicState.AddActionHandler(new ImportXmiActionHandler());
             
             return logicState;
         }

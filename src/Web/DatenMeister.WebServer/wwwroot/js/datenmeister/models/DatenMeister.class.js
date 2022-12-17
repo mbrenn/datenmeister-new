@@ -266,6 +266,14 @@ define(["require", "exports"], function (require, exports) {
             _StoreExtentAction.isDisabled = "isDisabled";
             _Actions._StoreExtentAction = _StoreExtentAction;
             _Actions.__StoreExtentAction_Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1";
+            class _ImportXmiAction {
+            }
+            _ImportXmiAction.workspace = "workspace";
+            _ImportXmiAction.itemUri = "itemUri";
+            _ImportXmiAction.xmi = "xmi";
+            _ImportXmiAction.property = "property";
+            _Actions._ImportXmiAction = _ImportXmiAction;
+            _Actions.__ImportXmiAction_Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
         let _DataViews;
         (function (_DataViews) {

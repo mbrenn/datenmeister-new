@@ -602,6 +602,25 @@ namespace DatenMeister.Core.Models
             public _StoreExtentAction @StoreExtentAction = new _StoreExtentAction();
             public MofObjectShadow @__StoreExtentAction = new MofObjectShadow("dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1");
 
+            public class _ImportXmiAction
+            {
+                public static string @workspace = "workspace";
+                public IElement? @_workspace = null;
+
+                public static string @itemUri = "itemUri";
+                public IElement? @_itemUri = null;
+
+                public static string @xmi = "xmi";
+                public IElement? @_xmi = null;
+
+                public static string @property = "property";
+                public IElement? @_property = null;
+
+            }
+
+            public _ImportXmiAction @ImportXmiAction = new _ImportXmiAction();
+            public MofObjectShadow @__ImportXmiAction = new MofObjectShadow("dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d");
+
         }
 
         public _Actions Actions = new _Actions();

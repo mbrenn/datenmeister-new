@@ -301,6 +301,15 @@ export namespace _DatenMeister
                 }
 
                 export const __StoreExtentAction_Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1";
+                export class _ImportXmiAction
+                {
+                    static workspace = "workspace";
+                    static itemUri = "itemUri";
+                    static xmi = "xmi";
+                    static property = "property";
+                }
+
+                export const __ImportXmiAction_Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d";
         }
 
         export namespace _DataViews

@@ -381,7 +381,7 @@ class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
             "Extent.ImportXmi",
             "dm:///_internal/forms/internal#DatenMeister.Import.Xmi",
             {
-                workspaceId: element.get(_DatenMeister._Management._Extent.workspaceId),
+                workspace: element.get(_DatenMeister._Management._Extent.workspaceId),
                 extentUri: element.get(_DatenMeister._Management._Extent.uri)
             }
         );
@@ -393,7 +393,7 @@ class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
         super("Extent.ImportXmi");
         this.actionVerb = "Perform Import";
     }
-    
+
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert('Now, we do the import');
         let p = new URLSearchParams(window.location.search);
@@ -406,7 +406,13 @@ class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
             const extentUri = p.get('extentUri');
 
             // Export the Xmi and stores it into the element
-            const exportedXmi = await ECClient.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, ObjectType.String));
+            const importedXmi = await ECClient.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, ObjectType.String));
+
+            if (importedXmi.success) {
+                Navigator.navigateToExtent(workspace, extentUri);
+            } else {
+                alert('Something failed');
+            }
         }
     }
 }

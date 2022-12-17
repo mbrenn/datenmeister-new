@@ -326,7 +326,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
                 Navigator.navigateToAction("Extent.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Import.Xmi", {
-                    workspaceId: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
+                    workspace: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
                     extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
                 });
             });
@@ -349,7 +349,13 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     const workspace = p.get('workspace');
                     const extentUri = p.get('extentUri');
                     // Export the Xmi and stores it into the element
-                    const exportedXmi = yield ECClient.importXmi(workspace, extentUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof_1.ObjectType.String));
+                    const importedXmi = yield ECClient.importXmi(workspace, extentUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof_1.ObjectType.String));
+                    if (importedXmi.success) {
+                        Navigator.navigateToExtent(workspace, extentUri);
+                    }
+                    else {
+                        alert('Something failed');
+                    }
                 }
             });
         }

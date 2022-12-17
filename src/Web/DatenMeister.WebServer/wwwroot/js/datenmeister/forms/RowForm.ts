@@ -110,7 +110,7 @@ export class RowForm implements InterfacesForms.IForm {
                 }
 
                 if (isFieldReadOnly) {
-                    name += " [R]";
+                    // name += " [R]";
                 }
 
                 $(".key", tr).text(name);

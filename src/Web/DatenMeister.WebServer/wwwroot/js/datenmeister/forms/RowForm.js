@@ -88,7 +88,7 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                             name = field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.name);
                         }
                         if (isFieldReadOnly) {
-                            name += " [R]";
+                            // name += " [R]";
                         }
                         $(".key", tr).text(name);
                     }

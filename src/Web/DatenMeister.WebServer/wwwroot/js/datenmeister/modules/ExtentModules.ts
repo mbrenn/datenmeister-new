@@ -335,7 +335,7 @@ class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
             "Extent.ExportXmi",
             "dm:///_internal/forms/internal#DatenMeister.Export.Xmi",
             {
-                workspaceId: element.get(_DatenMeister._Management._Extent.workspaceId),
+                workspace: element.get(_DatenMeister._Management._Extent.workspaceId),
                 extentUri: element.get(_DatenMeister._Management._Extent.uri)
             }
         );
@@ -345,6 +345,25 @@ class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
 class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.ExportXmi");
+    }
+    
+    async loadObject(): Promise<DmObject>
+    {
+        let p = new URLSearchParams(window.location.search);
+
+        if (!p.has("extentUri") || !p.has("workspace")) {
+            alert('There is no workspace and extentUri given');
+            throw 'There is no workspace and extentUri given';
+        } else {
+            const workspace = p.get('workspace');
+            const extentUri = p.get('extentUri');
+
+            // Export the Xmi and stores it into the element
+            const exportedXmi = await ECClient.exportXmi(workspace, extentUri);
+            const result = new DmObject(_DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);            
+            result.set(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, exportedXmi.xmi);
+            return result;
+        }
     }
 }
 

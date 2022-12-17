@@ -285,7 +285,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
                 Navigator.navigateToAction("Extent.ExportXmi", "dm:///_internal/forms/internal#DatenMeister.Export.Xmi", {
-                    workspaceId: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
+                    workspace: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
                     extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
                 });
             });
@@ -294,6 +294,24 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.ExportXmi");
+        }
+        loadObject() {
+            return __awaiter(this, void 0, void 0, function* () {
+                let p = new URLSearchParams(window.location.search);
+                if (!p.has("extentUri") || !p.has("workspace")) {
+                    alert('There is no workspace and extentUri given');
+                    throw 'There is no workspace and extentUri given';
+                }
+                else {
+                    const workspace = p.get('workspace');
+                    const extentUri = p.get('extentUri');
+                    // Export the Xmi and stores it into the element
+                    const exportedXmi = yield ECClient.exportXmi(workspace, extentUri);
+                    const result = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
+                    result.set(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, exportedXmi.xmi);
+                    return result;
+                }
+            });
         }
     }
     class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {

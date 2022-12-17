@@ -19,6 +19,7 @@ export class Field extends BaseField implements IFormField
 
         /* Returns a list element in case an array is given */
         let value = dmElement.get(fieldName, ObjectType.String) ?? "";
+        const originalValue = value;
         
         // If we are in a table view, then reduce the length of the text to 100 
         // characters. 
@@ -28,6 +29,12 @@ export class Field extends BaseField implements IFormField
                 maxLines: 3,
                 maxLength: 100                
             });
+        }
+        else {
+            const shortenTextLength = this.field.get(_DatenMeister._Forms._TextFieldData.shortenTextLength, ObjectType.Number);
+            if (shortenTextLength !== undefined && shortenTextLength > 0) {
+                value = truncateText(value, {useWordBoundary: true, maxLength: shortenTextLength});
+            }
         }
         
         // Checks, if we are having an array, then we will just show the 
@@ -49,13 +56,28 @@ export class Field extends BaseField implements IFormField
 
         /* Otherwise just create the correct field type. */
         if (this.isReadOnly) {
+            const divContainer = $("<div class='dm-textfield-container'></div>");
+            
+            if (this.field.get(_DatenMeister._Forms._TextFieldData.supportClipboardCopy, ObjectType.Boolean)) {
+                const button = $("<button class='btn btn-secondary'>Copy to Clipboard</button>");
+                button.on('click', () =>
+                {
+                    navigator.clipboard.writeText(originalValue);
+                    alert('Text copied to clipboard');
+                });
+                
+                divContainer.append(button);
+            }
+            
             const div = $("<div class='dm-textfield'/>");
             if (value === undefined) {
                 div.append($("<em class='dm-undefined'>undefined</em>"));
             } else {
                 div.text(value ?? "undefined");
             }
-            return div;
+            
+            divContainer.append(div);
+            return divContainer;
         } else {
             const lineHeight = this.field.get(_TextFieldData.lineHeight, ObjectType.Number);
             const width = this.field.get(_TextFieldData.width, ObjectType.Number);

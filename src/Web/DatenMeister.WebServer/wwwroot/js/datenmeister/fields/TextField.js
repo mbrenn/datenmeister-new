@@ -19,6 +19,7 @@ define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/Dat
                 const fieldName = (_b = (_a = this.field.get('name')) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "";
                 /* Returns a list element in case an array is given */
                 let value = (_c = dmElement.get(fieldName, Mof_1.ObjectType.String)) !== null && _c !== void 0 ? _c : "";
+                const originalValue = value;
                 // If we are in a table view, then reduce the length of the text to 100 
                 // characters. 
                 if (this.form.formType === Interfaces_2.FormType.Table) {
@@ -27,6 +28,12 @@ define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/Dat
                         maxLines: 3,
                         maxLength: 100
                     });
+                }
+                else {
+                    const shortenTextLength = this.field.get(DatenMeister_class_1._DatenMeister._Forms._TextFieldData.shortenTextLength, Mof_1.ObjectType.Number);
+                    if (shortenTextLength !== undefined && shortenTextLength > 0) {
+                        value = (0, StringManipulation_1.truncateText)(value, { useWordBoundary: true, maxLength: shortenTextLength });
+                    }
                 }
                 // Checks, if we are having an array, then we will just show the 
                 // enumeration
@@ -44,6 +51,15 @@ define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/Dat
                 }
                 /* Otherwise just create the correct field type. */
                 if (this.isReadOnly) {
+                    const divContainer = $("<div class='dm-textfield-container'></div>");
+                    if (this.field.get(DatenMeister_class_1._DatenMeister._Forms._TextFieldData.supportClipboardCopy, Mof_1.ObjectType.Boolean)) {
+                        const button = $("<button class='btn btn-secondary'>Copy to Clipboard</button>");
+                        button.on('click', () => {
+                            navigator.clipboard.writeText(originalValue);
+                            alert('Text copied to clipboard');
+                        });
+                        divContainer.append(button);
+                    }
                     const div = $("<div class='dm-textfield'/>");
                     if (value === undefined) {
                         div.append($("<em class='dm-undefined'>undefined</em>"));
@@ -51,7 +67,8 @@ define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/Dat
                     else {
                         div.text(value !== null && value !== void 0 ? value : "undefined");
                     }
-                    return div;
+                    divContainer.append(div);
+                    return divContainer;
                 }
                 else {
                     const lineHeight = this.field.get(_TextFieldData.lineHeight, Mof_1.ObjectType.Number);

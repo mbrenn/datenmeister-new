@@ -152,7 +152,7 @@ namespace DatenMeister.WebServer.Controller
 
         public class ExportXmiResult
         {
-            public string Xmi { get; set; }
+            public string Xmi { get; set; } = string.Empty;
         }
 
         /// <summary>

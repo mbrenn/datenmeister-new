@@ -87,7 +87,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" p1:id="DatenMeister.Export.Xmi" name="Export Xmi - Object Form" title="Exporting the Xmi">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" title="Export Data" p1:id="cd2c5140-ca42-4bcf-a2e8-e24441d0cd4a">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="3a7d0381-a84b-4e8d-a923-8945e89921a8" name="xmi" title="Xmi" lineHeight="20" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="3a7d0381-a84b-4e8d-a923-8945e89921a8" isReadOnly="True" title="Xmi" name="xmi" lineHeight="20" />
       </tab>
     </packagedElement>
   </item>

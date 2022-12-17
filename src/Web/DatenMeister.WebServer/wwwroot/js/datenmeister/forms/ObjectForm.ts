@@ -223,7 +223,7 @@ export class ObjectFormCreatorForItem {
                 ClientForms.getForm(this._overrideFormUrl, FormType.Object);
 
         // Wait for both
-        Promise.all([defer1, defer2]).then(([element1, form]) => {
+        Promise.all([defer1, defer2]).then(async ([element1, form]) => {
             // First the debug information
             debugElementToDom(element1, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
@@ -243,7 +243,7 @@ export class ObjectFormCreatorForItem {
                 this.htmlElements.itemContainer.append(domEditButton);
             }
 
-            objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
+            await objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
 
             // Creates the form selection
             if (this.htmlElements.formSelectorContainer !== undefined
@@ -316,10 +316,7 @@ export class ObjectFormCreatorForItem {
                 Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
             });
         }
-
-
-
-
+        
         /*
          * Introduces the loading text
          */

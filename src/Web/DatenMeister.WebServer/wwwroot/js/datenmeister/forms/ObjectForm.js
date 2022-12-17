@@ -155,7 +155,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                 ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
                 ClientForms.getForm(this._overrideFormUrl, Interfaces_1.FormType.Object);
             // Wait for both
-            Promise.all([defer1, defer2]).then(([element1, form]) => {
+            Promise.all([defer1, defer2]).then(([element1, form]) => __awaiter(this, void 0, void 0, function* () {
                 // First the debug information
                 (0, DomHelper_1.debugElementToDom)(element1, "#debug_mofelement");
                 (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
@@ -171,7 +171,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                     domEditButton.on('click', () => tthis.switchToMode(Forms_1.FormMode.EditMode));
                     this.htmlElements.itemContainer.append(domEditButton);
                 }
-                objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
+                yield objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
                 // Creates the form selection
                 if (this.htmlElements.formSelectorContainer !== undefined
                     && this.htmlElements.formSelectorContainer !== null) {
@@ -210,7 +210,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                     formControl.setCurrentFormUrl(formUrl);
                     const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
                 }
-            });
+            }));
             // Creates the viewmode Selection field
             if (this.htmlElements.viewModeSelectorContainer !== undefined
                 && this.htmlElements.viewModeSelectorContainer !== null) {

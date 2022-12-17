@@ -242,7 +242,7 @@ export class RowForm implements InterfacesForms.IForm {
 
     storeFormValuesIntoDom(): DmObject {
         if (this.onChange !== undefined && this.onCancel !== null) {
-            const saveElement = this.element ?? new Mof.DmObject();
+            const saveElement = new Mof.DmObject();
             for (let m in this.fieldElements) {
                 if (!this.fieldElements.hasOwnProperty(m)) continue;
 

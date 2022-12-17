@@ -189,9 +189,8 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
             });
         }
         storeFormValuesIntoDom() {
-            var _a;
             if (this.onChange !== undefined && this.onCancel !== null) {
-                const saveElement = (_a = this.element) !== null && _a !== void 0 ? _a : new Mof.DmObject();
+                const saveElement = new Mof.DmObject();
                 for (let m in this.fieldElements) {
                     if (!this.fieldElements.hasOwnProperty(m))
                         continue;

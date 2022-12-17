@@ -240,9 +240,13 @@ export class RowForm implements InterfacesForms.IForm {
         parent.append(tableInfo);
     }
 
-    storeFormValuesIntoDom(): DmObject {
+    storeFormValuesIntoDom(reuseExistingElement?: boolean): DmObject {
         if (this.onChange !== undefined && this.onCancel !== null) {
-            const saveElement = new Mof.DmObject();
+            
+            // If the caller indicates that the element shall be reused, then the already provided value is taken
+            // This method is not default since for submitting object forms, the only the supported fields should be 
+            // returned to the server
+            const saveElement = reuseExistingElement === true ? (this.element ?? new Mof.DmObject()) : new Mof.DmObject;
             for (let m in this.fieldElements) {
                 if (!this.fieldElements.hasOwnProperty(m)) continue;
 

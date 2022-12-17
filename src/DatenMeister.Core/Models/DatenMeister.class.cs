@@ -1880,6 +1880,12 @@ namespace DatenMeister.Core.Models
                 public static string @width = "width";
                 public IElement? @_width = null;
 
+                public static string @shortenTextLength = "shortenTextLength";
+                public IElement? @_shortenTextLength = null;
+
+                public static string @supportClipboardCopy = "supportClipboardCopy";
+                public IElement? @_supportClipboardCopy = null;
+
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
 
@@ -1913,6 +1919,12 @@ namespace DatenMeister.Core.Models
 
                 public static string @width = "width";
                 public IElement? @_width = null;
+
+                public static string @shortenTextLength = "shortenTextLength";
+                public IElement? @_shortenTextLength = null;
+
+                public static string @supportClipboardCopy = "supportClipboardCopy";
+                public IElement? @_supportClipboardCopy = null;
 
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;

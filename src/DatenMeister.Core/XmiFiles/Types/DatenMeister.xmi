@@ -1378,6 +1378,26 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4a3c3292-2df3-494b-9b00-32c86b786a58" general-ref="#DatenMeister.Models.Forms.FieldData" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5cc0db9b-3cd7-459f-9859-566fa7232ab3" name="lineHeight" type-ref="dm:///_internal/model/primitivetypes#Integer" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="90eb00db-fee9-4f1e-9e5c-01b97fb71823" name="width" type-ref="dm:///_internal/model/primitivetypes#Integer" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7e63288b-0ed8-4680-ba79-6de132551313" type-ref="dm:///_internal/model/primitivetypes#Integer" name="shortenTextLength" isID="True" isComposite="True">
+        <aggregation p1:id="34710639-9ac0-4816-b017-c625c256c357" />
+        <isDerived p1:id="9ea0277b-d5df-41d6-b0d0-541bd1c45ef3" />
+        <isDerivedUnion p1:id="c694b285-d92d-4244-a7fc-7b998d342922" />
+        <isReadOnly p1:id="2c727690-c42c-4e41-bf31-fcafb894874f" />
+        <isOrdered p1:id="689947b9-dad3-4371-9046-58d6d99076a0" />
+        <isUnique p1:id="068f7a1d-069c-4157-83c6-a66e3d78d514" />
+        <isStatic p1:id="9edf8418-0858-440b-9bf3-71ed144d5d8a" />
+        <isLeaf p1:id="abf1b3e0-f381-41d7-8299-d0959f9607ab" />
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cff81544-b1f9-432f-a8b8-f0b4efa5f133" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="supportClipboardCopy" isID="True" isComposite="True">
+        <aggregation p1:id="3f682cec-d3f1-4b37-8ede-3811dbd9ff02" />
+        <isDerived p1:id="40eaf1c0-6efd-4c0d-9bc4-b6757d8e84d3" />
+        <isDerivedUnion p1:id="c3686d89-da65-4c3b-b98f-c263c6a2550f" />
+        <isReadOnly p1:id="354bf196-3ebf-48b6-8312-f9044227ec7d" />
+        <isOrdered p1:id="c2a972fb-0910-44ae-afea-f4ba613f99bb" />
+        <isUnique p1:id="23e2a48f-d528-4340-8f26-4624160260cb" />
+        <isStatic p1:id="d26b2587-06b3-4658-9951-5dd32f98b666" />
+        <isLeaf p1:id="62a0eae3-3e07-48d0-8428-ca06ae3c50a3" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.EvalTextFieldData" name="EvalTextFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="647af3a7-ee7a-48d5-a1d0-4ed02a45b5c2" general-ref="#DatenMeister.Models.Forms.TextFieldData" />

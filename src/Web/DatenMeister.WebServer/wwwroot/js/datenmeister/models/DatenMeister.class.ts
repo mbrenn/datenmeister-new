@@ -885,6 +885,8 @@ export namespace _DatenMeister
                 {
                     static lineHeight = "lineHeight";
                     static width = "width";
+                    static shortenTextLength = "shortenTextLength";
+                    static supportClipboardCopy = "supportClipboardCopy";
                     static isAttached = "isAttached";
                     static _name_ = "name";
                     static title = "title";
@@ -899,6 +901,8 @@ export namespace _DatenMeister
                     static evalCellProperties = "evalCellProperties";
                     static lineHeight = "lineHeight";
                     static width = "width";
+                    static shortenTextLength = "shortenTextLength";
+                    static supportClipboardCopy = "supportClipboardCopy";
                     static isAttached = "isAttached";
                     static _name_ = "name";
                     static title = "title";

@@ -5,6 +5,7 @@
         <OutputType>Exe</OutputType>
         <Configurations>Debug;Release;WPF</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

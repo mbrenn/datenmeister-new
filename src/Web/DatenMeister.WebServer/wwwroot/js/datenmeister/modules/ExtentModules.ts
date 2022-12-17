@@ -1,15 +1,15 @@
 ﻿import * as ApiConnection from "../ApiConnection";
 import * as Actions from "../client/Actions";
-import { moveItemInExtentDown, moveItemInExtentUp } from "../client/Actions.Items";
+import {moveItemInExtentDown, moveItemInExtentUp} from "../client/Actions.Items";
 import * as ECClient from "../client/Extents";
 import * as ClientForms from "../client/Forms";
 import * as ItemClient from "../client/Items";
 import * as FormActions from "../FormActions";
-import { IFormNavigation } from "../forms/Interfaces";
-import { SubmitMethod } from "../forms/RowForm";
-import { _DatenMeister } from "../models/DatenMeister.class";
+import {IFormNavigation} from "../forms/Interfaces";
+import {SubmitMethod} from "../forms/RowForm";
+import {_DatenMeister} from "../models/DatenMeister.class";
 import * as Mof from "../Mof";
-import { createJsonFromObject, DmObject, ObjectType } from "../Mof";
+import {createJsonFromObject, DmObject, ObjectType} from "../Mof";
 import * as Navigator from "../Navigator";
 import * as Settings from "../Settings";
 import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
@@ -365,6 +365,10 @@ class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
             return result;
         }
     }
+
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        alert('Nothing to do');
+    }
 }
 
 class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
@@ -375,7 +379,7 @@ class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Extent.ImportXmi",
-            "dm:///_internal/forms/internal#DatenMeister.Export.Xmi",
+            "dm:///_internal/forms/internal#DatenMeister.Import.Xmi",
             {
                 workspaceId: element.get(_DatenMeister._Management._Extent.workspaceId),
                 extentUri: element.get(_DatenMeister._Management._Extent.uri)
@@ -387,5 +391,22 @@ class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
 class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.ImportXmi");
+        this.actionVerb = "Perform Import";
+    }
+    
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        alert('Now, we do the import');
+        let p = new URLSearchParams(window.location.search);
+
+        if (!p.has("extentUri") || !p.has("workspace")) {
+            alert('There is no workspace and extentUri given');
+            throw 'There is no workspace and extentUri given';
+        } else {
+            const workspace = p.get('workspace');
+            const extentUri = p.get('extentUri');
+
+            // Export the Xmi and stores it into the element
+            const exportedXmi = await ECClient.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, ObjectType.String));
+        }
     }
 }

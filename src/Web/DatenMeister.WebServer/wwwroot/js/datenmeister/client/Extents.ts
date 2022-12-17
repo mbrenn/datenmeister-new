@@ -29,6 +29,20 @@ export async function exportXmi(workspace: string, extentUri: string) {
     return await ApiConnection.get<ExportXmiResult>(url);
 }
 
+export class ImportXmiResult
+{
+    public success: boolean;
+}
+
+export async function importXmi(workspace: string, extentUri: string, xmi: string) {
+    let url = Settings.baseUrl +
+        "api/extent/import_xmi/"
+        + encodeURIComponent(workspace) + "/"
+        + encodeURIComponent(extentUri);
+    
+    return await ApiConnection.post<ImportXmiResult>(url, {xmi: xmi});
+}
+
 export function createXmi(params: ICreateXmiParams) {
     return new Promise<ICreateXmiResult>((resolve, reject) => {
 

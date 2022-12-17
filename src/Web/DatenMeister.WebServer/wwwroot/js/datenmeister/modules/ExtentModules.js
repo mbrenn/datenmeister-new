@@ -313,6 +313,11 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                 }
             });
         }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                alert('Nothing to do');
+            });
+        }
     }
     class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
         constructor() {
@@ -320,7 +325,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                Navigator.navigateToAction("Extent.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Export.Xmi", {
+                Navigator.navigateToAction("Extent.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Import.Xmi", {
                     workspaceId: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
                     extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
                 });
@@ -330,6 +335,23 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.ImportXmi");
+            this.actionVerb = "Perform Import";
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                alert('Now, we do the import');
+                let p = new URLSearchParams(window.location.search);
+                if (!p.has("extentUri") || !p.has("workspace")) {
+                    alert('There is no workspace and extentUri given');
+                    throw 'There is no workspace and extentUri given';
+                }
+                else {
+                    const workspace = p.get('workspace');
+                    const extentUri = p.get('extentUri');
+                    // Export the Xmi and stores it into the element
+                    const exportedXmi = yield ECClient.importXmi(workspace, extentUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof_1.ObjectType.String));
+                }
+            });
         }
     }
 });

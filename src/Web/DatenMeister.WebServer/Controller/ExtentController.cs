@@ -125,6 +125,11 @@ namespace DatenMeister.WebServer.Controller
                 Success = result
             };
         }
+        
+        public class ExportXmiResult
+        {
+            public string Xmi { get; set; } = string.Empty;
+        }
 
         [HttpGet("api/extent/export_xmi/{workspace}/{extent}")]
         public ActionResult<ExportXmiResult> ExportXmi(string workspace, string extent)
@@ -150,9 +155,23 @@ namespace DatenMeister.WebServer.Controller
             };
         }
 
-        public class ExportXmiResult
+        public class ImportXmiParams
         {
             public string Xmi { get; set; } = string.Empty;
+        }
+
+        public class ImportXmiResult
+        {
+            public bool Success { get; set; }
+        }
+
+        [HttpPost("api/extent/import_xmi/{workspace}/{extent}")]
+        public ActionResult<ImportXmiResult> ImportXmi(string workspace, string extent, [FromBody] ImportXmiParams param)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            extent = HttpUtility.UrlDecode(extent);
+
+            return new ImportXmiResult { Success = true };
         }
 
         /// <summary>

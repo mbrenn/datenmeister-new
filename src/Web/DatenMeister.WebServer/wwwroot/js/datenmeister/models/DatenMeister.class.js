@@ -793,6 +793,8 @@ define(["require", "exports"], function (require, exports) {
             }
             _TextFieldData.lineHeight = "lineHeight";
             _TextFieldData.width = "width";
+            _TextFieldData.shortenTextLength = "shortenTextLength";
+            _TextFieldData.supportClipboardCopy = "supportClipboardCopy";
             _TextFieldData.isAttached = "isAttached";
             _TextFieldData._name_ = "name";
             _TextFieldData.title = "title";
@@ -806,6 +808,8 @@ define(["require", "exports"], function (require, exports) {
             _EvalTextFieldData.evalCellProperties = "evalCellProperties";
             _EvalTextFieldData.lineHeight = "lineHeight";
             _EvalTextFieldData.width = "width";
+            _EvalTextFieldData.shortenTextLength = "shortenTextLength";
+            _EvalTextFieldData.supportClipboardCopy = "supportClipboardCopy";
             _EvalTextFieldData.isAttached = "isAttached";
             _EvalTextFieldData._name_ = "name";
             _EvalTextFieldData.title = "title";

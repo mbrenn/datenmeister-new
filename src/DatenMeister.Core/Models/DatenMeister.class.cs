@@ -47,6 +47,16 @@ namespace DatenMeister.Core.Models
                 public _Package @Package = new _Package();
                 public MofObjectShadow @__Package = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package");
 
+                public class _XmiExportContainer
+                {
+                    public static string @xmi = "xmi";
+                    public IElement? @_xmi = null;
+
+                }
+
+                public _XmiExportContainer @XmiExportContainer = new _XmiExportContainer();
+                public MofObjectShadow @__XmiExportContainer = new MofObjectShadow("dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1");
+
             }
 
             public _Default Default = new _Default();
@@ -1870,6 +1880,12 @@ namespace DatenMeister.Core.Models
                 public static string @width = "width";
                 public IElement? @_width = null;
 
+                public static string @shortenTextLength = "shortenTextLength";
+                public IElement? @_shortenTextLength = null;
+
+                public static string @supportClipboardCopy = "supportClipboardCopy";
+                public IElement? @_supportClipboardCopy = null;
+
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
 
@@ -1903,6 +1919,12 @@ namespace DatenMeister.Core.Models
 
                 public static string @width = "width";
                 public IElement? @_width = null;
+
+                public static string @shortenTextLength = "shortenTextLength";
+                public IElement? @_shortenTextLength = null;
+
+                public static string @supportClipboardCopy = "supportClipboardCopy";
+                public IElement? @_supportClipboardCopy = null;
 
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;

@@ -98,5 +98,31 @@ namespace DatenMeister.Tests.Web
             Assert.That(dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.Count(),
                 Is.EqualTo(n));
         }
-    }
+
+        [Test]
+        public void TestExportXmi()
+        {
+            var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
+
+            var extentController = new ExtentController(workspaceLogic, scopeStorage);
+            var newExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", scopeStorage);
+            workspaceLogic.AddExtent(workspaceLogic.GetDataWorkspace(), newExtent);
+
+            var factory = new MofFactory(newExtent);
+            var martin = factory.create(null);
+            var martinson = factory.create(null);
+            martin.set("name", "Martin");
+            martinson.set("name", "Martinson");
+            martin.set("child", martinson);
+            
+            newExtent.elements().add(martin);
+
+            var result = extentController.ExportXmi(WorkspaceNames.WorkspaceData, "dm:///test");
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(result.Value.Xmi.Contains("Martin"), Is.True);
+            Assert.That(result.Value.Xmi.Contains("child"), Is.True);
+            Assert.That(result.Value.Xmi.Contains("Martinson"), Is.True);
+        }
+}
 }

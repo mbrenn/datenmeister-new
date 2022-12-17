@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../client/Extents", "../client/Workspace", "../Mof"], function (require, exports, ClientExtent, ClientWorkspace, Mof_1) {
+define(["require", "exports", "../client/Extents", "../client/Items", "../client/Workspace", "../Mof"], function (require, exports, ClientExtent, ClientItem, ClientWorkspace, Mof_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -19,72 +19,62 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../Mo
                         yield ClientWorkspace.createWorkspace("Test", "Annotation", { skipIfExisting: true });
                     });
                 });
-                it('Create and delete Xmi Extent', function (done) {
-                    ClientExtent.deleteExtent({
-                        workspace: "Test",
-                        extentUri: "dm:///unittest"
-                    }).then(() => {
-                        return ClientExtent.createXmi({
+                it('Create and delete Xmi Extent', function () {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield ClientExtent.deleteExtent({
+                            workspace: "Test",
+                            extentUri: "dm:///unittest"
+                        });
+                        const createXmiResult = yield ClientExtent.createXmi({
                             extentUri: "dm:///unittest",
                             filePath: "./unittest.xmi",
                             workspace: "Test"
                         });
-                    }).then(result => {
-                        chai.assert.isTrue(result.success, "Creation did not work");
-                        return ClientExtent.deleteExtent({
+                        chai.assert.isTrue(createXmiResult.success, "Creation did not work");
+                        const deleteExtentResult = yield ClientExtent.deleteExtent({
                             workspace: "Test",
                             extentUri: "dm:///unittest"
                         });
-                    }).then(result => {
-                        chai.assert.isTrue(result.success, "Deletion did not work");
-                        done();
-                    }).catch(e => done(e));
+                        chai.assert.isTrue(deleteExtentResult.success, "Deletion did not work");
+                    });
                 });
-                it('Delete and Create and skip, if (not) existing', function (done) {
-                    ClientExtent.deleteExtent({
-                        workspace: "Test",
-                        extentUri: "dm:///notexisting",
-                        skipIfNotExisting: true
-                    })
-                        .then(result => {
-                        chai.assert.isTrue(result.success, "Tried Deletion was not successful");
-                        chai.assert.isTrue(result.skipped, "Was not skipped");
-                        return ClientExtent.deleteExtent({
+                it('Delete and Create and skip, if (not) existing', function () {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        let deleteExtentResult = yield ClientExtent.deleteExtent({
+                            workspace: "Test",
+                            extentUri: "dm:///notexisting",
+                            skipIfNotExisting: true
+                        });
+                        chai.assert.isTrue(deleteExtentResult.success, "Tried Deletion was not successful");
+                        chai.assert.isTrue(deleteExtentResult.skipped, "Was not skipped");
+                        deleteExtentResult = yield ClientExtent.deleteExtent({
                             workspace: "Test",
                             extentUri: "dm:///newexisting",
                             skipIfNotExisting: true
                         });
-                    })
-                        .then(result => {
-                        chai.assert.isTrue(result.success, " Deletion was not successful");
-                        return ClientExtent.createXmi({
+                        chai.assert.isTrue(deleteExtentResult.success, " Deletion was not successful");
+                        deleteExtentResult = yield ClientExtent.createXmi({
                             filePath: "./unittests.xmi",
                             workspace: "Test",
                             extentUri: "dm:///newexisting",
                             skipIfExisting: true
                         });
-                    })
-                        .then(result => {
-                        chai.assert.isTrue(result.success, " Creation was not successful");
-                        chai.assert.isFalse(result.skipped, "Should not be skipped");
-                        return ClientExtent.createXmi({
+                        chai.assert.isTrue(deleteExtentResult.success, " Creation was not successful");
+                        chai.assert.isFalse(deleteExtentResult.skipped, "Should not be skipped");
+                        deleteExtentResult = yield ClientExtent.createXmi({
                             filePath: "./unittests.xmi",
                             workspace: "Test",
                             extentUri: "dm:///newexisting",
                             skipIfExisting: true
                         });
-                    })
-                        .then(result => {
-                        chai.assert.isTrue(result.success, "Creation was not successful");
-                        chai.assert.isTrue(result.skipped, "Should be skipped");
+                        chai.assert.isTrue(deleteExtentResult.success, "Creation was not successful");
+                        chai.assert.isTrue(deleteExtentResult.skipped, "Should be skipped");
                         return ClientExtent.deleteExtent({
                             workspace: "Test",
                             extentUri: "dm:///newexisting",
                             skipIfNotExisting: true
                         });
-                    })
-                        .then(_ => done())
-                        .catch(e => done(e));
+                    });
                 });
                 it('GetAnd Set Extent Properties', function () {
                     return __awaiter(this, void 0, void 0, function* () {
@@ -108,6 +98,19 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../Mo
                         }
                     });
                 });
+                it('ExportXmi', () => __awaiter(this, void 0, void 0, function* () {
+                    let result = yield ClientExtent.createXmi({
+                        filePath: "./unittests.xmi",
+                        workspace: "Test",
+                        extentUri: "dm:///newexisting",
+                        skipIfExisting: true
+                    });
+                    const newItem = yield ClientItem.createItemInExtent("Test", "dm:///newexisting", {});
+                    yield ClientItem.setProperty('Test', "dm:///newexisting#" + newItem.itemId, 'name', 'Martin');
+                    const exportResult = yield ClientExtent.exportXmi('Test', 'dm:///newexisting');
+                    chai.assert.isTrue(exportResult.xmi.indexOf('name') !== -1);
+                    chai.assert.isTrue(exportResult.xmi.indexOf('Martin') !== -1);
+                }));
                 after(function () {
                     return __awaiter(this, void 0, void 0, function* () {
                         yield ClientExtent.deleteExtent({

@@ -25,6 +25,11 @@ define(["require", "exports"], function (require, exports) {
                 _Package.defaultViewMode = "defaultViewMode";
                 _Default._Package = _Package;
                 _Default.__Package_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package";
+                class _XmiExportContainer {
+                }
+                _XmiExportContainer.xmi = "xmi";
+                _Default._XmiExportContainer = _XmiExportContainer;
+                _Default.__XmiExportContainer_Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1";
             })(_Default = _CommonTypes._Default || (_CommonTypes._Default = {}));
             let _ExtentManager;
             (function (_ExtentManager) {
@@ -788,6 +793,8 @@ define(["require", "exports"], function (require, exports) {
             }
             _TextFieldData.lineHeight = "lineHeight";
             _TextFieldData.width = "width";
+            _TextFieldData.shortenTextLength = "shortenTextLength";
+            _TextFieldData.supportClipboardCopy = "supportClipboardCopy";
             _TextFieldData.isAttached = "isAttached";
             _TextFieldData._name_ = "name";
             _TextFieldData.title = "title";
@@ -801,6 +808,8 @@ define(["require", "exports"], function (require, exports) {
             _EvalTextFieldData.evalCellProperties = "evalCellProperties";
             _EvalTextFieldData.lineHeight = "lineHeight";
             _EvalTextFieldData.width = "width";
+            _EvalTextFieldData.shortenTextLength = "shortenTextLength";
+            _EvalTextFieldData.supportClipboardCopy = "supportClipboardCopy";
             _EvalTextFieldData.isAttached = "isAttached";
             _EvalTextFieldData._name_ = "name";
             _EvalTextFieldData.title = "title";

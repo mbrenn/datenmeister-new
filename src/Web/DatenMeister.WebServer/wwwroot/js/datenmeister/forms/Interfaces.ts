@@ -18,12 +18,12 @@ export interface IFormNavigation {
 
     /**
      * This is the item for which the form is currently displayed. It may be the same as the extent
-     * in case the extent is being shown. 
-     * 
+     * in case the extent is being shown.
+     *
      * For property lists, it contains the element whose properties are listed.
      */
-    itemUrl: string;  
-     
+    itemUrl: string;
+
     formElement: Mof.DmObject;
 
     /**
@@ -33,8 +33,10 @@ export interface IFormNavigation {
 
     /**
      * Stores the values of the form into the DOM, this is an optional method
+     * @param reuseExistingElement This parameter decides whether the already provided element shall be 
+     * directly returned or if a completely new element shall be created to only consider the diff
      */
-    storeFormValuesIntoDom?(): Mof.DmObject;
+    storeFormValuesIntoDom?(reuseExistingElement?: boolean): Mof.DmObject;
 }
 
 export interface IForm extends IFormNavigation

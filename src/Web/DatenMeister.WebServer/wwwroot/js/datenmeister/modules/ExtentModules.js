@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../Mof", "../forms/RowForm", "../ApiConnection", "../Settings", "../client/Extents", "../client/Items", "../Navigator", "../client/Actions.Items", "../client/Actions", "../models/DatenMeister.class", "../client/Forms"], function (require, exports, FormActions, Mof, Mof_1, RowForm_1, ApiConnection, Settings, ECClient, ItemClient, Navigator, Actions_Items_1, Actions, DatenMeister_class_1, ClientForms) {
+define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../Mof", "../Navigator", "../Settings"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ECClient, ClientForms, ItemClient, FormActions, RowForm_1, DatenMeister_class_1, Mof, Mof_1, Navigator, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -27,6 +27,10 @@ define(["require", "exports", "../FormActions", "../Mof", "../Mof", "../forms/Ro
         FormActions.addModule(new ExtentsListMoveUpItemAction());
         FormActions.addModule(new ExtentsListMoveDownItemAction());
         FormActions.addModule(new ExtentsStoreAction());
+        FormActions.addModule(new ExtentXmiExportNavigate());
+        FormActions.addModule(new ExtentXmiExport());
+        FormActions.addModule(new ExtentXmiImportNavigate());
+        FormActions.addModule(new ExtentXmiImport());
     }
     exports.loadModules = loadModules;
     class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
@@ -272,6 +276,60 @@ define(["require", "exports", "../FormActions", "../Mof", "../Mof", "../forms/Ro
                 yield Actions.executeActionDirectly("Execute", actionParams);
                 alert('Extent has been stored.');
             });
+        }
+    }
+    class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Extent.ExportXmi.Navigate");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Navigator.navigateToAction("Extent.ExportXmi", "dm:///_internal/forms/internal#DatenMeister.Export.Xmi", {
+                    workspace: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
+                    extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
+                });
+            });
+        }
+    }
+    class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Extent.ExportXmi");
+        }
+        loadObject() {
+            return __awaiter(this, void 0, void 0, function* () {
+                let p = new URLSearchParams(window.location.search);
+                if (!p.has("extentUri") || !p.has("workspace")) {
+                    alert('There is no workspace and extentUri given');
+                    throw 'There is no workspace and extentUri given';
+                }
+                else {
+                    const workspace = p.get('workspace');
+                    const extentUri = p.get('extentUri');
+                    // Export the Xmi and stores it into the element
+                    const exportedXmi = yield ECClient.exportXmi(workspace, extentUri);
+                    const result = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
+                    result.set(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, exportedXmi.xmi);
+                    return result;
+                }
+            });
+        }
+    }
+    class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Extent.ImportXmi.Navigate");
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Navigator.navigateToAction("Extent.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Export.Xmi", {
+                    workspaceId: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
+                    extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
+                });
+            });
+        }
+    }
+    class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Extent.ImportXmi");
         }
     }
 });

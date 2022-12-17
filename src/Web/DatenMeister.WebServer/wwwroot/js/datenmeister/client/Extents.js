@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Settings", "../ApiConnection", "../Mof"], function (require, exports, Settings, ApiConnection, Mof) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getProperties = exports.setProperties = exports.deleteExtent = exports.createXmi = exports.exists = void 0;
+    exports.getProperties = exports.setProperties = exports.deleteExtent = exports.createXmi = exports.exportXmi = exports.ExportXmiResult = exports.exists = void 0;
     function exists(workspaceId, extent) {
         return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
@@ -21,6 +21,19 @@ define(["require", "exports", "../Settings", "../ApiConnection", "../Mof"], func
         });
     }
     exports.exists = exists;
+    class ExportXmiResult {
+    }
+    exports.ExportXmiResult = ExportXmiResult;
+    function exportXmi(workspace, extentUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/extent/export_xmi/"
+                + encodeURIComponent(workspace) + "/"
+                + encodeURIComponent(extentUri);
+            return yield ApiConnection.get(url);
+        });
+    }
+    exports.exportXmi = exportXmi;
     function createXmi(params) {
         return new Promise((resolve, reject) => {
             let url = Settings.baseUrl +

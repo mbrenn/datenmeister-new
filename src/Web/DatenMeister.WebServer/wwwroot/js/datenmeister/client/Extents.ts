@@ -16,6 +16,19 @@ export async function exists(workspaceId: string, extent: string) {
     return await ApiConnection.get<IExistsResult>(url);
 }
 
+
+export class ExportXmiResult
+{
+    public xmi: string;
+}
+export async function exportXmi(workspace: string, extentUri: string) {
+    let url = Settings.baseUrl +
+        "api/extent/export_xmi/"
+        + encodeURIComponent(workspace) + "/"
+        + encodeURIComponent(extentUri);
+    return await ApiConnection.get<ExportXmiResult>(url);
+}
+
 export function createXmi(params: ICreateXmiParams) {
     return new Promise<ICreateXmiResult>((resolve, reject) => {
 

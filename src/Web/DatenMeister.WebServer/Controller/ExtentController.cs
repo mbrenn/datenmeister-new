@@ -3,6 +3,8 @@ using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Json;
@@ -122,6 +124,35 @@ namespace DatenMeister.WebServer.Controller
             {
                 Success = result
             };
+        }
+
+        [HttpGet("api/extent/export_xmi/{workspace}/{extent}")]
+        public ActionResult<ExportXmiResult> ExportXmi(string workspace, string extent)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            extent = HttpUtility.UrlDecode(extent);
+            var foundExtent = _workspaceLogic.FindExtent(workspace, extent);
+            if (foundExtent == null)
+            {
+                throw new InvalidOperationException("Extent has not been found");
+            }
+            
+            var provider = new XmiProvider();
+            var tempExtent = new MofUriExtent(provider, "dm:///export", _scopeStorage);
+
+            // Now do the copying. it makes us all happy
+            var extentCopier = new ExtentCopier(new MofFactory(tempExtent));
+            extentCopier.Copy(foundExtent.elements(), tempExtent.elements(), CopyOptions.CopyId);
+
+            return new ExportXmiResult
+            {
+                Xmi = provider.Document.ToString()
+            };
+        }
+
+        public class ExportXmiResult
+        {
+            public string Xmi { get; set; } = string.Empty;
         }
 
         /// <summary>

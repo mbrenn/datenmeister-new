@@ -30,7 +30,7 @@ export class Field extends BaseField implements IFormField {
                 // click. Only then, the DetailForm itself is executed. 
                 if (!requireConfirmation || tthis.inConfirmation) {
                     if (tthis.form.storeFormValuesIntoDom !== undefined) {
-                        tthis.form.storeFormValuesIntoDom();
+                        tthis.form.storeFormValuesIntoDom(true);
                     }
 
                     FormActions.execute(action, tthis.form, dmElement, parameter);

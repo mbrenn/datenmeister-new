@@ -616,6 +616,9 @@ namespace DatenMeister.Core.Models
                 public static string @property = "property";
                 public IElement? @_property = null;
 
+                public static string @addToCollection = "addToCollection";
+                public IElement? @_addToCollection = null;
+
             }
 
             public _ImportXmiAction @ImportXmiAction = new _ImportXmiAction();

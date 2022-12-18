@@ -272,6 +272,7 @@ define(["require", "exports"], function (require, exports) {
             _ImportXmiAction.itemUri = "itemUri";
             _ImportXmiAction.xmi = "xmi";
             _ImportXmiAction.property = "property";
+            _ImportXmiAction.addToCollection = "addToCollection";
             _Actions._ImportXmiAction = _ImportXmiAction;
             _Actions.__ImportXmiAction_Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d";
         })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));

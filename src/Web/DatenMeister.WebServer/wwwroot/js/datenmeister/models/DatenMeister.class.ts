@@ -307,6 +307,7 @@ export namespace _DatenMeister
                     static itemUri = "itemUri";
                     static xmi = "xmi";
                     static property = "property";
+                    static addToCollection = "addToCollection";
                 }
 
                 export const __ImportXmiAction_Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d";

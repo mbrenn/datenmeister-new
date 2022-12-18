@@ -928,6 +928,16 @@
         <isStatic p2:id="1004be64-7846-4dd4-94be-62ddb0038e14" />
         <isLeaf p2:id="b8b2e89e-a18c-4317-be60-7b6c03c79477" />
       </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a596ed8a-d0fd-4d12-9a72-e0ceebb3ff05" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="addToCollection" isID="True" isComposite="True">
+        <aggregation p2:id="6f64b392-620c-421d-a0fb-b66f409f9064" />
+        <isDerived p2:id="6af401d7-495e-4c18-96c9-1cff5340ffcd" />
+        <isDerivedUnion p2:id="7e9a80a8-4ad3-469f-8265-8f132090c4c5" />
+        <isReadOnly p2:id="c3dfa304-e097-445c-a2ec-7ae9d5c0b7c1" />
+        <isOrdered p2:id="a28bd537-23b0-4fed-a6e0-ffeda1f8d6a9" />
+        <isUnique p2:id="e0a7a0d3-a911-40da-a767-b422ca556b7e" />
+        <isStatic p2:id="c68c90ee-156f-424f-87c1-e0069cf90888" />
+        <isLeaf p2:id="580c4b8a-3ffa-499e-9920-5d12994fcb7c" />
+      </ownedAttribute>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

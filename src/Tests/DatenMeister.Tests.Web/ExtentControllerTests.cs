@@ -127,6 +127,18 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestExportXmiOfManagement()
+        {
+            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            
+            var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
+            var result = extentController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces");
+            
+            Assert.That(result.Value.Xmi.Contains("dm:///_internal/temp"), Is.True);
+        }
+        
+
+        [Test]
         public void TestImportXmi()
         {
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();

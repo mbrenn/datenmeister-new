@@ -324,7 +324,6 @@ class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
     }
 }
 
-
 class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.ExportXmi.Navigate");

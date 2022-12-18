@@ -21,6 +21,8 @@ namespace DatenMeister.Extent.Forms
         public const string NavigationExtentsListMoveUpItem = "ExtentsList.MoveUpItem";
         public const string NavigationExtentsListMoveDownItem = "ExtentsList.MoveDownItem";
         public const string NavigationItemMoveOrCopyNavigate = "Item.MoveOrCopy.Navigate";
+        public const string NavigationExportXmi = "Item.ExportXmi.Navigate";
+        public const string NavigationImportXmi = "Item.ImportXmi.Navigate";
 
         private readonly IScopeStorage _scopeStorage;
 
@@ -46,6 +48,20 @@ namespace DatenMeister.Extent.Forms
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationItemMoveOrCopyNavigate, "Move/Copy")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Row
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin,
+                        new ActionButtonAdderParameter(NavigationExportXmi, "Export Item as Xmi")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Row
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin,
+                        new ActionButtonAdderParameter(NavigationImportXmi, "Import Item as Xmi")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Row
                         });

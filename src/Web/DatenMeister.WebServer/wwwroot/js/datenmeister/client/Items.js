@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.removeReferenceFromCollection = exports.setPropertyReference = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getItemWithNameAndId = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
+    exports.importXmi = exports.ImportXmiResult = exports.exportXmi = exports.ExportXmiResult = exports.removeReferenceFromCollection = exports.setPropertyReference = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getItemWithNameAndId = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
     function createItemInExtent(workspaceId, extentUri, param) {
         return __awaiter(this, void 0, void 0, function* () {
             const evaluatedParameter = {
@@ -263,5 +263,32 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.removeReferenceFromCollection = removeReferenceFromCollection;
+    class ExportXmiResult {
+    }
+    exports.ExportXmiResult = ExportXmiResult;
+    function exportXmi(workspace, itemUri) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/item/export_xmi/"
+                + encodeURIComponent(workspace) + "/"
+                + encodeURIComponent(itemUri);
+            return yield ApiConnection.get(url);
+        });
+    }
+    exports.exportXmi = exportXmi;
+    class ImportXmiResult {
+    }
+    exports.ImportXmiResult = ImportXmiResult;
+    function importXmi(workspace, itemUri, property, xmi) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = Settings.baseUrl +
+                "api/item/import_xmi/"
+                + encodeURIComponent(workspace) + "/"
+                + encodeURIComponent(itemUri) + "?property=" +
+                +encodeURIComponent(property);
+            return yield ApiConnection.post(url, { xmi: xmi });
+        });
+    }
+    exports.importXmi = importXmi;
 });
 //# sourceMappingURL=Items.js.map

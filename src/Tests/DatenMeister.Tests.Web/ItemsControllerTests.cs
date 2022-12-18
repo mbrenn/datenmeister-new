@@ -306,5 +306,17 @@ namespace DatenMeister.Tests.Web
             Assert.That(container7[3].name, Is.EqualTo("Data"));
             Assert.That(container7[3].workspace, Is.EqualTo("Management"));
         }
+        
+
+        [Test]
+        public void TestExportXmiOfManagement()
+        {
+            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+            var result = itemsController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces#Data");
+            
+            Assert.That(result.Value.Xmi.Contains("dm:///_internal/temp"), Is.True);
+        }
     }
 }

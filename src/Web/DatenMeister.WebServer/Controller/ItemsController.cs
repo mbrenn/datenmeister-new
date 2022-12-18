@@ -674,17 +674,20 @@ namespace DatenMeister.WebServer.Controller
             {
                 throw new InvalidOperationException("Item has not been found");
             }
-            
+
             var provider = new XmiProvider();
             var tempExtent = new MofUriExtent(provider, "dm:///export", _scopeStorage);
 
             // Now do the copying. it makes us all happy
-            tempExtent.elements().add(
-                ObjectCopier.Copy(new MofFactory(tempExtent), foundItem, CopyOptions.CopyId));
+            var copiedElement = ObjectCopier.Copy(new MofFactory(tempExtent), foundItem, CopyOptions.CopyId);
 
             return new ExportXmiResult
             {
-                Xmi = provider.Document.ToString()
+                Xmi = (
+                        (copiedElement as MofElement ?? throw new InvalidOperationException("Not a MofElement"))
+                        .ProviderObject as XmiProviderObject
+                        ?? throw new InvalidOperationException("not an XmiProviderObject"))
+                    .XmlNode.ToString()
             };
         }
     }

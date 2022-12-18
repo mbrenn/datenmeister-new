@@ -252,12 +252,16 @@ namespace DatenMeister.Core.Provider.Xmi
                 var result = new List<string>();
                 foreach (var attribute in XmlNode.Attributes())
                 {
+                    // Skip the Xml-Namespace attributes
                     var xmlNamespace = attribute.Name.Namespace;
-                    if (xmlNamespace == Namespaces.Xmi || xmlNamespace == Namespaces.XmlNamespace)
+                    if (xmlNamespace == Namespaces.Xmi 
+                        || xmlNamespace == Namespaces.XmlNamespace
+                        || attribute.Name.LocalName == "xmlns")
                     {
                         continue;
                     }
 
+                    // Handle the -ref attributes
                     var attributeName = attribute.Name.ToString();
                     if (attributeName.EndsWith("-ref"))
                     {
@@ -561,8 +565,8 @@ namespace DatenMeister.Core.Provider.Xmi
             {
                 if (_xmiProvider.NormalizationCache.TryGetValue(property, out var value)) return value;
 
-                value = property == "href"
-                    ? "_href"
+                value = property == "href" ? "_href"
+                    : property == "xmlns" ? "_xmlns"
                     : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
 
                 _xmiProvider.NormalizationCache[property] = value;
@@ -570,8 +574,8 @@ namespace DatenMeister.Core.Provider.Xmi
             }
             else
             {
-                var value = property == "href"
-                    ? "_href"
+                var value = property == "href" ? "_href"
+                    : property == "xmlns" ? "_xmlns"
                     : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
 
                 return value;
@@ -588,6 +592,7 @@ namespace DatenMeister.Core.Provider.Xmi
         public static string DenormalizePropertyName(string property)
         {
             if (property == "_href") return "href";
+            if (property == "_xmlns") return "href";
 
             return XmlConvert.DecodeName(property)
                    ?? throw new InvalidOperationException("Should not happen");

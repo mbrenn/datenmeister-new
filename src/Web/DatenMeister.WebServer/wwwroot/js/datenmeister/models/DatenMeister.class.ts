@@ -30,6 +30,14 @@ export namespace _DatenMeister
                         }
 
                         export const __XmiExportContainer_Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1";
+                        export class _XmiImportContainer
+                        {
+                            static xmi = "xmi";
+                            static property = "property";
+                            static addToCollection = "addToCollection";
+                        }
+
+                        export const __XmiImportContainer_Uri = "dm:///_internal/types/internal#73c8c24e-6040-4700-b11d-c60f2379523a";
                 }
 
                 export namespace _ExtentManager

@@ -30,6 +30,13 @@ define(["require", "exports"], function (require, exports) {
                 _XmiExportContainer.xmi = "xmi";
                 _Default._XmiExportContainer = _XmiExportContainer;
                 _Default.__XmiExportContainer_Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1";
+                class _XmiImportContainer {
+                }
+                _XmiImportContainer.xmi = "xmi";
+                _XmiImportContainer.property = "property";
+                _XmiImportContainer.addToCollection = "addToCollection";
+                _Default._XmiImportContainer = _XmiImportContainer;
+                _Default.__XmiImportContainer_Uri = "dm:///_internal/types/internal#73c8c24e-6040-4700-b11d-c60f2379523a";
             })(_Default = _CommonTypes._Default || (_CommonTypes._Default = {}));
             let _ExtentManager;
             (function (_ExtentManager) {

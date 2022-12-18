@@ -184,12 +184,12 @@ class ItemXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Extent.ImportXmi",
-            "dm:///_internal/forms/internal#DatenMeister.Import.Xmi",
+            "dm:///_internal/forms/internal#DatenMeister.Import.Item.Xmi",
             {
                 workspace: element.get(_DatenMeister._Management._Extent.workspaceId),
-                extentUri: element.get(_DatenMeister._Management._Extent.uri)
-            }
-        );
+                itemUri: element.get(_DatenMeister._Management._Extent.uri),
+                metaClass: _DatenMeister._CommonTypes._Default.__XmiImportContainer_Uri
+            });
     }
 }
 
@@ -208,13 +208,18 @@ class ItemXmiImport extends FormActions.ItemFormActionModuleBase {
             throw 'There is no workspace and extentUri given';
         } else {
             const workspace = p.get('workspace');
-            const extentUri = p.get('extentUri');
+            const itemUri = p.get('itemUri');
 
             // Export the Xmi and stores it into the element
-            const importedXmi = await ECClient.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, ObjectType.String));
+            const importedXmi = await ItemClient.importXmi(
+                workspace,
+                itemUri,
+                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.property, ObjectType.String),
+                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.addToCollection, ObjectType.Boolean),
+                element.get(_DatenMeister._CommonTypes._Default._XmiImportContainer.xmi, ObjectType.String));
 
             if (importedXmi.success) {
-                Navigator.navigateToExtent(workspace, extentUri);
+                Navigator.navigateToItemByUrl(workspace, itemUri);
             } else {
                 alert('Something failed');
             }

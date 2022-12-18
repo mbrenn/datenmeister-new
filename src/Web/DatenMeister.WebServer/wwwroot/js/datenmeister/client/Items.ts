@@ -363,7 +363,7 @@ export class ImportXmiResult
     public success: boolean;
 }
 
-export async function importXmi(workspace: string, itemUri: string, property: string, xmi: string) {
+export async function importXmi(workspace: string, itemUri: string, property: string, addToCollection: boolean, xmi: string) {
     let url = Settings.baseUrl +
         "api/item/import_xmi/"
         + encodeURIComponent(workspace) + "/"

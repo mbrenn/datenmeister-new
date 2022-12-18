@@ -692,13 +692,17 @@ namespace DatenMeister.Core.Provider.Xmi
             var result = XmlNode.Attribute(TypeAttribute)?.Value;
             if (result == null)
             {
+                return null;
+                /*
+                 Return null. What we are seeing below was the old implementation.  
+                 
                 // Ok, we don't have a type, so return a pseudo-type dependent on the name of the xml
                 // node or null, if it is the default element node
                 var element = XmlNode.Name;
                 return
                     ((XmiProvider) Provider).ElementName == element
                         ? null
-                        : $"{NodeMetaClassPrefix}{XmlNode.Name}";
+                        : $"{NodeMetaClassPrefix}{XmlNode.Name}";*/
             }
 
             // Checks, if there is a colon within the metaclass

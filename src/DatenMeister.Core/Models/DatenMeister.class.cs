@@ -57,6 +57,22 @@ namespace DatenMeister.Core.Models
                 public _XmiExportContainer @XmiExportContainer = new _XmiExportContainer();
                 public MofObjectShadow @__XmiExportContainer = new MofObjectShadow("dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1");
 
+                public class _XmiImportContainer
+                {
+                    public static string @xmi = "xmi";
+                    public IElement? @_xmi = null;
+
+                    public static string @property = "property";
+                    public IElement? @_property = null;
+
+                    public static string @addToCollection = "addToCollection";
+                    public IElement? @_addToCollection = null;
+
+                }
+
+                public _XmiImportContainer @XmiImportContainer = new _XmiImportContainer();
+                public MofObjectShadow @__XmiImportContainer = new MofObjectShadow("dm:///_internal/types/internal#73c8c24e-6040-4700-b11d-c60f2379523a");
+
             }
 
             public _Default Default = new _Default();
@@ -615,6 +631,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @property = "property";
                 public IElement? @_property = null;
+
+                public static string @addToCollection = "addToCollection";
+                public IElement? @_addToCollection = null;
 
             }
 

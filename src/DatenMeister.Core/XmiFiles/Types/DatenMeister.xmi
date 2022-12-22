@@ -24,6 +24,44 @@
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1" name="XmiExportContainer">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="xmi" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="1f901e57-0e10-488e-9ab6-c58e21f00f2a" />
       </packagedElement>
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="73c8c24e-6040-4700-b11d-c60f2379523a" name="XmiImportContainer">
+        <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+        <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+        <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="405bae4b-b378-4c20-8367-58488cf61008" name="xmi" type-ref="dm:///_internal/model/primitivetypes#String">
+          <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+          <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+          <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+          <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+          <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+          <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+          <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+          <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+          <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+        </ownedAttribute>
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a8901f30-7e86-4149-ac09-16393b8ed66b" type-ref="dm:///_internal/model/primitivetypes#String" name="property" isID="True" isComposite="True">
+          <aggregation p1:id="d206185d-b274-4814-8b1f-48e8c1095ead" />
+          <isDerived p1:id="43d41746-965e-454e-8e46-b17fcfb5a77c" />
+          <isDerivedUnion p1:id="49659246-7374-43e3-9320-0813f7821d50" />
+          <isReadOnly p1:id="5dc71a6c-d495-4e53-9abe-081851b9764b" />
+          <isOrdered p1:id="8270a8c3-a14e-4ff4-9a31-c70e62374298" />
+          <isUnique p1:id="f32b459d-6ac8-4539-bdd0-8fe132ed773e" />
+          <isStatic p1:id="aafa2b95-010a-468c-b37e-ddb9e642b9e5" />
+          <isLeaf p1:id="d936ec6b-2fff-49a4-acac-6fed983fac22" />
+        </ownedAttribute>
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="01429fa5-30e1-42b1-8ef8-640d68012538" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="addToCollection" isID="True" isComposite="True">
+          <aggregation p1:id="32a2132a-3d69-46e5-a451-14d12a5d06b1" />
+          <isDerived p1:id="ba476c30-526b-4d66-ba83-df26c8e5d022" />
+          <isDerivedUnion p1:id="80d56a48-29d7-45db-95a0-e16e8b5eaafa" />
+          <isReadOnly p1:id="942d708f-ff4b-46fb-9993-9f6c05599b3e" />
+          <isOrdered p1:id="860003a0-e230-48b9-9c35-7d9de35a3fb8" />
+          <isUnique p1:id="3f275642-e0d8-4332-8159-7e9148147275" />
+          <isStatic p1:id="cc6b1057-7fb3-43d5-9564-67c91f8f59c2" />
+          <isLeaf p1:id="7284ca3f-3f3f-41b4-9e2b-b8953bd4db48" />
+        </ownedAttribute>
+      </packagedElement>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="Package_ExtentManager" name="ExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ExtentManager.ImportSettings" name="ImportSettings">
@@ -927,6 +965,16 @@
         <isUnique p2:id="57d58aa3-b803-4f73-9d4a-39eafb8de543" />
         <isStatic p2:id="1004be64-7846-4dd4-94be-62ddb0038e14" />
         <isLeaf p2:id="b8b2e89e-a18c-4317-be60-7b6c03c79477" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a596ed8a-d0fd-4d12-9a72-e0ceebb3ff05" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="addToCollection" isID="True" isComposite="True">
+        <aggregation p2:id="6f64b392-620c-421d-a0fb-b66f409f9064" />
+        <isDerived p2:id="6af401d7-495e-4c18-96c9-1cff5340ffcd" />
+        <isDerivedUnion p2:id="7e9a80a8-4ad3-469f-8265-8f132090c4c5" />
+        <isReadOnly p2:id="c3dfa304-e097-445c-a2ec-7ae9d5c0b7c1" />
+        <isOrdered p2:id="a28bd537-23b0-4fed-a6e0-ffeda1f8d6a9" />
+        <isUnique p2:id="e0a7a0d3-a911-40da-a767-b422ca556b7e" />
+        <isStatic p2:id="c68c90ee-156f-424f-87c1-e0069cf90888" />
+        <isLeaf p2:id="580c4b8a-3ffa-499e-9920-5d12994fcb7c" />
       </ownedAttribute>
     </packagedElement>
   </item>

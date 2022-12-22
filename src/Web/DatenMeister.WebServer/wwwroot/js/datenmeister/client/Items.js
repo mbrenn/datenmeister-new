@@ -279,13 +279,14 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
     class ImportXmiResult {
     }
     exports.ImportXmiResult = ImportXmiResult;
-    function importXmi(workspace, itemUri, property, xmi) {
+    function importXmi(workspace, itemUri, property, addToCollection, xmi) {
         return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
                 "api/item/import_xmi/"
                 + encodeURIComponent(workspace) + "/"
-                + encodeURIComponent(itemUri) + "?property=" +
-                +encodeURIComponent(property);
+                + encodeURIComponent(itemUri)
+                + "?property=" + encodeURIComponent(property)
+                + "&addToCollection=" + (addToCollection ? "true" : "false");
             return yield ApiConnection.post(url, { xmi: xmi });
         });
     }

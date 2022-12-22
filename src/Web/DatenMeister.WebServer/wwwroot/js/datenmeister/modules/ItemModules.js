@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../Navigator", "../client/Actions.Items", "../client/Extents"], function (require, exports, FormActions, Mof_1, FormClient, ActionClient, Settings, DatenMeister_class_1, ItemClient, Navigator, Actions_Items_1, ECClient) {
+define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../Navigator", "../client/Actions.Items"], function (require, exports, FormActions, Mof_1, FormClient, ActionClient, Settings, DatenMeister_class_1, ItemClient, Navigator, Actions_Items_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -162,9 +162,10 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                Navigator.navigateToAction("Extent.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Import.Xmi", {
-                    workspace: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
-                    extentUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri)
+                Navigator.navigateToAction("Item.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Import.Item.Xmi", {
+                    workspace: element.workspace,
+                    itemUri: element.uri,
+                    metaClass: DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiImportContainer_Uri
                 });
             });
         }
@@ -178,17 +179,17 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
             return __awaiter(this, void 0, void 0, function* () {
                 alert('Now, we do the import');
                 let p = new URLSearchParams(window.location.search);
-                if (!p.has("extentUri") || !p.has("workspace")) {
+                if (!p.has("itemUri") || !p.has("workspace")) {
                     alert('There is no workspace and extentUri given');
                     throw 'There is no workspace and extentUri given';
                 }
                 else {
                     const workspace = p.get('workspace');
-                    const extentUri = p.get('extentUri');
+                    const itemUri = p.get('itemUri');
                     // Export the Xmi and stores it into the element
-                    const importedXmi = yield ECClient.importXmi(workspace, extentUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof_1.ObjectType.String));
+                    const importedXmi = yield ItemClient.importXmi(workspace, itemUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiImportContainer.property, Mof_1.ObjectType.String), element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiImportContainer.addToCollection, Mof_1.ObjectType.Boolean), element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiImportContainer.xmi, Mof_1.ObjectType.String));
                     if (importedXmi.success) {
-                        Navigator.navigateToExtent(workspace, extentUri);
+                        Navigator.navigateToItemByUrl(workspace, itemUri);
                     }
                     else {
                         alert('Something failed');

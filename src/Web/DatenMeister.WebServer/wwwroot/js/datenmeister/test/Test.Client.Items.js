@@ -168,6 +168,14 @@ define(["require", "exports", "../client/Extents", "../client/Workspace", "../cl
                     chai.assert.isTrue(reference !== undefined, "Item is still undefined");
                     chai.assert.isTrue(reference.get("name") === "item2", "Name is not correctly set");
                 }));
+                it('Import Xmi', () => __awaiter(this, void 0, void 0, function* () {
+                    const result = yield ClientItems.createItemInExtent("Test", "dm:///unittest", {});
+                    yield ClientItems.importXmi("Test", "dm:///unittest#" + result.itemId, "child", false, "<item p1:type=\"dm:///_internal/types/internal#IssueMeister.Issue\" state=\"Closed\" name=\"Yes\" xmlns:p1=\"http://www.omg.org/spec/XMI/20131001\" />");
+                    const child = yield ClientItems.getProperty("Test", "dm:///unittest#" + result.itemId, "child");
+                    const asDmObject = child[0];
+                    chai.assert.isTrue(asDmObject !== undefined);
+                    chai.assert.isTrue(asDmObject.get("state", Mof_1.ObjectType.String) === "Closed");
+                }));
                 after(function () {
                     return __awaiter(this, void 0, void 0, function* () {
                         yield ClientExtent.deleteExtent({

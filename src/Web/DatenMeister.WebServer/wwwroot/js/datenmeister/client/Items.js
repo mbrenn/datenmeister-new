@@ -284,8 +284,9 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
             let url = Settings.baseUrl +
                 "api/item/import_xmi/"
                 + encodeURIComponent(workspace) + "/"
-                + encodeURIComponent(itemUri) + "?property=" +
-                +encodeURIComponent(property);
+                + encodeURIComponent(itemUri)
+                + "?property=" + encodeURIComponent(property)
+                + "&addToCollection=" + (addToCollection ? "true" : "false");
             return yield ApiConnection.post(url, { xmi: xmi });
         });
     }

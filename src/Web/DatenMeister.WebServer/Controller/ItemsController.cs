@@ -9,12 +9,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using DatenMeister.Actions;
+using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -689,6 +693,41 @@ namespace DatenMeister.WebServer.Controller
                         ?? throw new InvalidOperationException("not an XmiProviderObject"))
                     .XmlNode.ToString()
             };
+        }
+
+        public class ImportXmiParams
+        {
+            public string Xmi { get; set; } = string.Empty;
+        }
+
+        public class ImportXmiResult
+        {
+            public bool Success { get; set; }
+        }
+
+        [HttpPost("api/item/import_xmi/{workspace}/{itemUri}")]
+        public ActionResult<ImportXmiResult> ImportXmi(
+            string workspace, string itemUri,
+            [FromQuery(Name = "property")] string property, 
+            [FromQuery(Name = "addToCollection")] bool addToCollection,
+            [FromBody] ImportXmiParams parameter)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            // Performs the import via the action handler...
+            var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
+            var importXmi = new ImportXmiActionHandler();
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
+            action.set(_DatenMeister._Actions._ImportXmiAction.workspace, workspace);
+            action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, itemUri);
+            action.set(_DatenMeister._Actions._ImportXmiAction.property, property);
+            action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, addToCollection);
+            action.set(_DatenMeister._Actions._ImportXmiAction.xmi, parameter.Xmi);
+            
+            importXmi.Evaluate(actionLogic, action);
+
+            return new ImportXmiResult { Success = true };
         }
     }
 }

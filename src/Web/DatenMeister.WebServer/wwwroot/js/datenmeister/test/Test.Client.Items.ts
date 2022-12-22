@@ -1,7 +1,7 @@
 ﻿import * as ClientExtent from "../client/Extents"
 import * as ClientWorkspace from "../client/Workspace"
 import * as ClientItems from "../client/Items"
-import {DmObject} from "../Mof";
+import {DmObject, ObjectType} from "../Mof";
 import {EntentType} from "../ApiModels";
 
 export function includeTests() {
@@ -274,6 +274,32 @@ export function includeTests() {
                 reference = await ClientItems.getProperty("Test", result.itemId, "reference");
                 chai.assert.isTrue(reference !== undefined, "Item is still undefined");
                 chai.assert.isTrue((reference as DmObject).get("name") === "item2", "Name is not correctly set");                
+            });
+            
+            it ( 'Import Xmi', async () =>{
+                const result = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+                
+                await ClientItems.importXmi(
+                    "Test", 
+                    "dm:///unittest#" + result.itemId, 
+                    "child",
+                    false,
+                    "<item p1:type=\"dm:///_internal/types/internal#IssueMeister.Issue\" state=\"Closed\" name=\"Yes\" xmlns:p1=\"http://www.omg.org/spec/XMI/20131001\" />"
+                );
+                
+                const child = await ClientItems.getProperty(
+                    "Test",
+                    "dm:///unittest#" + result.itemId,
+                    "child"
+                );
+                
+                const asDmObject = child[0] as DmObject;
+                chai.assert.isTrue(asDmObject !== undefined);
+                chai.assert.isTrue(asDmObject.get("state", ObjectType.String) === "Closed");
             });
 
             after(async function () {

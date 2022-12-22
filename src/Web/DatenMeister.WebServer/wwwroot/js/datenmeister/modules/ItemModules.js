@@ -162,9 +162,9 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                Navigator.navigateToAction("Extent.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Import.Item.Xmi", {
-                    workspace: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.workspaceId),
-                    itemUri: element.get(DatenMeister_class_1._DatenMeister._Management._Extent.uri),
+                Navigator.navigateToAction("Item.ImportXmi", "dm:///_internal/forms/internal#DatenMeister.Import.Item.Xmi", {
+                    workspace: element.workspace,
+                    itemUri: element.uri,
                     metaClass: DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiImportContainer_Uri
                 });
             });
@@ -179,7 +179,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
             return __awaiter(this, void 0, void 0, function* () {
                 alert('Now, we do the import');
                 let p = new URLSearchParams(window.location.search);
-                if (!p.has("extentUri") || !p.has("workspace")) {
+                if (!p.has("itemUri") || !p.has("workspace")) {
                     alert('There is no workspace and extentUri given');
                     throw 'There is no workspace and extentUri given';
                 }

@@ -183,11 +183,11 @@ class ItemXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
-            "Extent.ImportXmi",
+            "Item.ImportXmi",
             "dm:///_internal/forms/internal#DatenMeister.Import.Item.Xmi",
             {
-                workspace: element.get(_DatenMeister._Management._Extent.workspaceId),
-                itemUri: element.get(_DatenMeister._Management._Extent.uri),
+                workspace: element.workspace,
+                itemUri: element.uri,
                 metaClass: _DatenMeister._CommonTypes._Default.__XmiImportContainer_Uri
             });
     }
@@ -203,7 +203,7 @@ class ItemXmiImport extends FormActions.ItemFormActionModuleBase {
         alert('Now, we do the import');
         let p = new URLSearchParams(window.location.search);
 
-        if (!p.has("extentUri") || !p.has("workspace")) {
+        if (!p.has("itemUri") || !p.has("workspace")) {
             alert('There is no workspace and extentUri given');
             throw 'There is no workspace and extentUri given';
         } else {

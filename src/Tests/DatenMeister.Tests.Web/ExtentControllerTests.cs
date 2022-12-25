@@ -101,6 +101,33 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
+        public void TestClearExtent()
+        {
+            var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
+
+            var extentController = new ExtentController(workspaceLogic, scopeStorage);
+            var newExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", scopeStorage);
+            workspaceLogic.AddExtent(workspaceLogic.GetDataWorkspace(), newExtent);
+
+            var factory = new MofFactory(newExtent);
+            var martin = factory.create(null);
+            var martinson = factory.create(null);
+            newExtent.elements().add(martinson);
+            newExtent.elements().add(martin);
+            
+            Assert.That(newExtent.elements().Count(), Is.EqualTo(2));
+            
+            var result = extentController.ClearExtent(new ExtentController.ClearExtentParams
+            {
+                Workspace =WorkspaceNames.WorkspaceData,
+                ExtentUri = "dm:///test"
+            });
+            
+            Assert.That(newExtent.elements().Count(), Is.EqualTo(0));
+            Assert.That(result.Value?.Success, Is.True);
+        }
+
+        [Test]
         public void TestExportXmi()
         {
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();

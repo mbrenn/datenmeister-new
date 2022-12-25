@@ -66,6 +66,18 @@ export interface ICreateXmiParams {
 export interface ICreateXmiResult {
     success: boolean;
     skipped: boolean;
+    message: string;
+}
+
+export interface IDeleteExtentsParams {
+    extentUri: string;
+    workspace: string;
+    skipIfNotExisting?: boolean;
+}
+
+export interface IDeleteExtentsResult {
+    success: boolean;
+    skipped: boolean;
 }
 
 export function deleteExtent(params: IDeleteExtentsParams) {
@@ -82,16 +94,31 @@ export function deleteExtent(params: IDeleteExtentsParams) {
     });
 }
 
-export interface IDeleteExtentsParams {
+
+export interface IClearExtentParams {
     extentUri: string;
     workspace: string;
-    skipIfNotExisting?: boolean;
 }
 
-export interface IDeleteExtentsResult {
+export interface IClearExtentsResult {
     success: boolean;
-    skipped: boolean;
 }
+
+export function clearExtent(params: IClearExtentParams) {
+    return new Promise<IClearExtentsResult>((resolve, reject) => {
+
+        let url = Settings.baseUrl +
+            "api/extent/clear";
+
+        ApiConnection.post(
+            url, params
+        ).then((result: any) => {
+            resolve(result);
+        });
+    });
+}
+
+
 
 export function setProperties(workspace: string, extentUri: string, properties: Mof.DmObject): Promise<void> {
     return ApiConnection.post(

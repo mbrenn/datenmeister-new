@@ -111,6 +111,28 @@ define(["require", "exports", "../client/Extents", "../client/Items", "../client
                     chai.assert.isTrue(exportResult.xmi.indexOf('name') !== -1);
                     chai.assert.isTrue(exportResult.xmi.indexOf('Martin') !== -1);
                 }));
+                it('Clear Extent', () => __awaiter(this, void 0, void 0, function* () {
+                    const createResult = yield ClientExtent.createXmi({
+                        filePath: "./unittests_clear.xmi",
+                        workspace: "Test",
+                        extentUri: "dm:///newexisting_clear",
+                        skipIfExisting: true
+                    });
+                    chai.assert.isTrue(createResult.success);
+                    yield ClientItem.createItemInExtent("Test", "dm:///newexisting_clear", {});
+                    let items = yield ClientItem.getRootElements("Test", "dm:///newexisting_clear");
+                    chai.assert.isTrue(items.length === 1);
+                    yield ClientExtent.clearExtent({
+                        workspace: "Test",
+                        extentUri: "dm:///newexisting_clear"
+                    });
+                    items = yield ClientItem.getRootElements("Test", "dm:///newexisting_clear");
+                    chai.assert.isTrue(items.length === 0);
+                    yield ClientExtent.deleteExtent({
+                        workspace: "Test",
+                        extentUri: "dm:///newexisting_clear"
+                    });
+                }));
                 after(function () {
                     return __awaiter(this, void 0, void 0, function* () {
                         yield ClientExtent.deleteExtent({

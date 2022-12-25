@@ -115,11 +115,11 @@ namespace DatenMeister.WebServer.Controller
             public bool Success { get; set; }
         
             public bool Skipped { get; set; }
-            
+
             /// <summary>
             /// Gets or sets the message which is given when the creation of the extent has failed
             /// </summary>
-            public string Message { get; set; }
+            public string Message { get; set; } = string.Empty;
         }
 
         [HttpPost("api/extent/create_xmi")]

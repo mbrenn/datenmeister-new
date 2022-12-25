@@ -7,7 +7,7 @@ namespace DatenMeister.TextTemplates
 {
     public class NullDmObject : ScriptObject, IConvertible
     {
-        public override string ToString(TemplateContext context, SourceSpan span)
+        public override string ToString(string format, IFormatProvider formatProvider)
         {
             return string.Empty;
         }
@@ -78,7 +78,7 @@ namespace DatenMeister.TextTemplates
             return 0;
         }
 
-        public string ToString(IFormatProvider? provider)
+        public new string ToString(IFormatProvider? provider)
         {
             return string.Empty;
         }

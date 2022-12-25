@@ -171,7 +171,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     workspace: workspaceId,
                     extentUri: extentUri
                 });
-                Navigator.navigateToExtent(workspaceId, extentUri);
+                Navigator.navigateToExtentProperties(workspaceId, extentUri);
             });
         }
     }

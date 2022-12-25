@@ -1,7 +1,7 @@
 define(["require", "exports", "./Settings"], function (require, exports, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.navigateToAction = exports.navigateToCreateNewItemInExtent = exports.navigateToItemByUrl = exports.navigateToItem = exports.navigateToExtent = exports.navigateToWorkspace = exports.navigateToWorkspaces = void 0;
+    exports.navigateToAction = exports.navigateToCreateNewItemInExtent = exports.navigateToItemByUrl = exports.navigateToItem = exports.navigateToExtentProperties = exports.navigateToExtent = exports.navigateToWorkspace = exports.navigateToWorkspaces = void 0;
     function navigateToWorkspaces() {
         document.location.href =
             Settings.baseUrl + "ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces";
@@ -20,6 +20,13 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
                 encodeURIComponent(extentUri);
     }
     exports.navigateToExtent = navigateToExtent;
+    function navigateToExtentProperties(workspace, extentUri) {
+        document.location.href =
+            Settings.baseUrl + "Item/Management/" +
+                encodeURIComponent(workspace) + "_" +
+                encodeURIComponent(extentUri);
+    }
+    exports.navigateToExtentProperties = navigateToExtentProperties;
     function navigateToItem(workspace, extentUri, itemId) {
         document.location.href =
             Settings.baseUrl + "Item/" +

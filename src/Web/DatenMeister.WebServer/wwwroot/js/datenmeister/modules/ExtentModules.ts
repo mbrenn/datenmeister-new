@@ -16,6 +16,7 @@ import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
 import _ObjectForm = _DatenMeister._Forms._ObjectForm;
 import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
+import {navigateToExtentProperties} from "../Navigator";
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -195,7 +196,7 @@ class ExtentClearAction extends FormActions.ItemFormActionModuleBase {
             }
         );
 
-        Navigator.navigateToExtent(workspaceId, extentUri);
+        Navigator.navigateToExtentProperties(workspaceId, extentUri);
     }
 }
     

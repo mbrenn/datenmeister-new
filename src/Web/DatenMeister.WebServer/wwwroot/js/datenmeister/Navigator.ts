@@ -18,6 +18,13 @@ export function navigateToExtent(workspace: string, extentUri: string) {
         encodeURIComponent(extentUri);
 }
 
+export function navigateToExtentProperties(workspace: string, extentUri: string) {
+    document.location.href =
+        Settings.baseUrl + "Item/Management/" +
+        encodeURIComponent(workspace) + "_" +
+        encodeURIComponent(extentUri);
+}
+
 export function navigateToItem(workspace: string, extentUri: string, itemId: string) {
     document.location.href =
         Settings.baseUrl + "Item/" +

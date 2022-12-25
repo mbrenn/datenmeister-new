@@ -18,6 +18,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     function loadModules() {
         FormActions.addModule(new ExtentPropertiesUpdateAction());
         FormActions.addModule(new ExtentCreateItemAction());
+        FormActions.addModule(new ExtentClearAction());
         FormActions.addModule(new ExtentDeleteAction());
         FormActions.addModule(new ExtentNavigateToAction());
         FormActions.addModule(new ExtentPropertiesAction());
@@ -156,9 +157,27 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
             });
         }
     }
+    class ExtentClearAction extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Extent.Clear");
+            this.actionVerb = "Clear Item";
+            this.requiresConfirmation = true;
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let extentUri = element.get('uri');
+                let workspaceId = element.get('workspaceId');
+                yield ECClient.clearExtent({
+                    workspace: workspaceId,
+                    extentUri: extentUri
+                });
+                Navigator.navigateToExtentProperties(workspaceId, extentUri);
+            });
+        }
+    }
     class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
-            super("Extent.DeleteExtent");
+            super("Extent.Delete");
             this.actionVerb = "Delete Extent";
             this.requiresConfirmation = true;
         }

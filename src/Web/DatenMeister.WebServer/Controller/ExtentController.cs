@@ -86,6 +86,42 @@ namespace DatenMeister.WebServer.Controller
                 : new MofJsonConverter().ConvertToJson(metaObject);
         }
 
+        /// <summary>
+        /// Defines the parameter to create an xmi extent.
+        /// Please be aware that the implementation may access every file folder and is absolutely insecure
+        /// </summary>
+        public class CreateXmiExtentParams
+        {
+            /// <summary>
+            /// Gets or sets the file path in which the extent shall be added
+            /// </summary>
+            public string FilePath { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the extent uri
+            /// </summary>
+            public string ExtentUri { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Creates a new workspace
+            /// </summary>
+            public string Workspace { get; set; } = string.Empty;
+            
+            public bool SkipIfExisting { get; set; }
+        }
+
+        public class CreateXmiExtentResult
+        {
+            public bool Success { get; set; }
+        
+            public bool Skipped { get; set; }
+            
+            /// <summary>
+            /// Gets or sets the message which is given when the creation of the extent has failed
+            /// </summary>
+            public string Message { get; set; }
+        }
+
         [HttpPost("api/extent/create_xmi")]
         public ActionResult<CreateXmiExtentResult> CreateXmi([FromBody] CreateXmiExtentParams param)
         {
@@ -104,8 +140,28 @@ namespace DatenMeister.WebServer.Controller
 
             var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
             var loaded = extentManager.CreateAndAddXmiExtent(param.ExtentUri, param.FilePath, workspace);
+            
             return new CreateXmiExtentResult
-                {Success = loaded.LoadingState == ExtentLoadingState.Loaded};
+            {
+                Success = loaded.LoadingState == ExtentLoadingState.Loaded,
+                Skipped = false,
+                Message = loaded.FailLoadingMessage
+            };
+        }
+
+        public class DeleteExtentParams
+        {
+            public string Workspace { get; set; } = string.Empty;
+            public string ExtentUri { get; set; } = string.Empty;
+            
+            public bool SkipIfNotExisting { get; set; }
+        }
+
+        public class DeleteExtentResult
+        {
+            public bool Success { get; set; }
+        
+            public bool Skipped { get; set; }
         }
 
         [HttpDelete("api/extent/delete")]
@@ -127,6 +183,33 @@ namespace DatenMeister.WebServer.Controller
             return new DeleteExtentResult
             {
                 Success = result
+            };
+        }
+
+        public class ClearExtentParams
+        {
+            public string Workspace { get; set; } = string.Empty;
+            public string ExtentUri { get; set; } = string.Empty;
+        }
+
+        public class ClearExtentResult
+        {
+            public bool Success { get; set; }
+        }
+
+        [HttpPost("api/extent/clear")]
+        public ActionResult<ClearExtentResult> ClearExtent([FromBody] ClearExtentParams param)
+        {
+            var extent = _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri);
+            if (extent == null)
+            {
+                throw new InvalidOperationException("Extent has not been found");
+            }
+
+            extent.elements().clear();
+            return new ClearExtentResult
+            {
+                Success = true
             };
         }
         
@@ -186,52 +269,6 @@ namespace DatenMeister.WebServer.Controller
             importXmi.Evaluate(actionLogic, action);
 
             return new ImportXmiResult { Success = true };
-        }
-
-        /// <summary>
-        /// Defines the parameter to create an xmi extent.
-        /// Please be aware that the implementation may access every file folder and is absolutely insecure
-        /// </summary>
-        public class CreateXmiExtentParams
-        {
-            /// <summary>
-            /// Gets or sets the file path in which the extent shall be added
-            /// </summary>
-            public string FilePath { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Gets or sets the extent uri
-            /// </summary>
-            public string ExtentUri { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Creates a new workspace
-            /// </summary>
-            public string Workspace { get; set; } = string.Empty;
-            
-            public bool SkipIfExisting { get; set; }
-        }
-
-        public class CreateXmiExtentResult
-        {
-            public bool Success { get; set; }
-        
-            public bool Skipped { get; set; }
-        }
-
-        public class DeleteExtentParams
-        {
-            public string Workspace { get; set; } = string.Empty;
-            public string ExtentUri { get; set; } = string.Empty;
-            
-            public bool SkipIfNotExisting { get; set; }
-        }
-
-        public class DeleteExtentResult
-        {
-            public bool Success { get; set; }
-        
-            public bool Skipped { get; set; }
         }
     }
 }

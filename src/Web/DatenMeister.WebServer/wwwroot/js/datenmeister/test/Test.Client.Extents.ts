@@ -132,6 +132,41 @@ export function includeTests() {
                 
             });
 
+            it('Clear Extent', async () => {
+
+                const createResult = await ClientExtent.createXmi(
+                    {
+                        filePath: "./unittests_clear.xmi",
+                        workspace: "Test",
+                        extentUri: "dm:///newexisting_clear",
+                        skipIfExisting: true
+                    });
+                
+                chai.assert.isTrue(createResult.success);
+
+                await ClientItem.createItemInExtent("Test", "dm:///newexisting_clear", {});
+
+                let items = await ClientItem.getRootElements("Test", "dm:///newexisting_clear");
+                chai.assert.isTrue(items.length === 1);
+
+                await ClientExtent.clearExtent(
+                    {
+                        workspace: "Test",
+                        extentUri: "dm:///newexisting_clear"
+                    }
+                );
+
+                items = await ClientItem.getRootElements("Test", "dm:///newexisting_clear");
+                chai.assert.isTrue(items.length === 0);
+                
+                await ClientExtent.deleteExtent(
+                    {
+                        workspace: "Test",
+                        extentUri: "dm:///newexisting_clear"
+                    });                
+            });
+            
+
             after(async function () {
 
                 await ClientExtent.deleteExtent({

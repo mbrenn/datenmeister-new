@@ -20,6 +20,7 @@ import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
     FormActions.addModule(new ExtentCreateItemAction());
+    FormActions.addModule(new ExtentClearAction());
     FormActions.addModule(new ExtentDeleteAction());
     FormActions.addModule(new ExtentNavigateToAction());
     FormActions.addModule(new ExtentPropertiesAction());
@@ -174,10 +175,33 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
         }
     }
 }
+
+class ExtentClearAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Extent.Clear");
+        this.actionVerb = "Clear Item";
+        this.requiresConfirmation = true;
+    }
+
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+
+        let extentUri = element.get('uri');
+        let workspaceId = element.get('workspaceId');
+        
+        await ECClient.clearExtent(
+            {
+                workspace: workspaceId, 
+                extentUri: extentUri
+            }
+        );
+
+        Navigator.navigateToExtent(workspaceId, extentUri);
+    }
+}
     
 class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super("Extent.DeleteExtent");
+        super("Extent.Delete");
         this.actionVerb = "Delete Extent";
         this.requiresConfirmation = true;
     }

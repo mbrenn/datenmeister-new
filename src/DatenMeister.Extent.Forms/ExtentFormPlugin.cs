@@ -16,7 +16,8 @@ namespace DatenMeister.Extent.Forms
     public class ExtentFormPlugin : IDatenMeisterPlugin
     {
         public const string NavigationExtentNavigateTo = "Extent.NavigateTo";
-        public const string NavigationExtentDeleteExtent = "Extent.DeleteExtent";
+        public const string NavigationExtentDeleteExtent = "Extent.Delete";
+        public const string NavigationExtentClear = "Extent.Clear";
         public const string NavigationExtentProperties = "Extent.Properties";
         public const string NavigationStore = "Extent.Store";
         public const string NavigationExportXmi = "Extent.ExportXmi.Navigate";
@@ -70,6 +71,13 @@ namespace DatenMeister.Extent.Forms
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin, new ActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
+                        {
+                            FormType = _DatenMeister._Forms.___FormType.Row,
+                            MetaClass = _DatenMeister.TheOne.Management.__Extent
+                        });
+
+                    ActionButtonToFormAdder.AddActionButton(
+                        formsPlugin, new ActionButtonAdderParameter(NavigationExtentClear, "Clear Extent")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Row,
                             MetaClass = _DatenMeister.TheOne.Management.__Extent

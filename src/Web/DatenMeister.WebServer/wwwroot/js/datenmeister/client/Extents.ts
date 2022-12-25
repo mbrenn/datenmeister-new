@@ -94,7 +94,6 @@ export function deleteExtent(params: IDeleteExtentsParams) {
     });
 }
 
-
 export interface IClearExtentParams {
     extentUri: string;
     workspace: string;
@@ -117,8 +116,6 @@ export function clearExtent(params: IClearExtentParams) {
         });
     });
 }
-
-
 
 export function setProperties(workspace: string, extentUri: string, properties: Mof.DmObject): Promise<void> {
     return ApiConnection.post(

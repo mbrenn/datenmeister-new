@@ -55,10 +55,10 @@ namespace DatenMeister.TextTemplates
             return false;
         }
 
-        
-        public override void SetValue(TemplateContext context, SourceSpan span, string member, object value, bool readOnly)
+        public override bool TrySetValue(TemplateContext context, SourceSpan span, string member, object value, bool readOnly)
         {
             _value?.set(member, value);
+            return true;
         }
     }
 }

@@ -17,6 +17,7 @@
       <ProjectReference Include="..\..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Extent.Verifier\DatenMeister.Extent.Verifier.csproj" />
       <ProjectReference Include="..\..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
       <ProjectReference Include="..\..\DatenMeister.TextTemplates\DatenMeister.TextTemplates.csproj" />

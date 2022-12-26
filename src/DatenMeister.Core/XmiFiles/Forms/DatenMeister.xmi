@@ -50,11 +50,11 @@
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Workspaces and Extents" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="1eb3f426-9edd-44e0-94a3-99bed960c818">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Extent Properties" hideMetaInformation="True" allowNewProperties="True" p1:id="ExtentPropertiesForm">
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" name="Extent Properties" hideMetaInformation="True" allowNewProperties="True" p1:id="ExtentPropertiesFormDetail">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="Name" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__uri" title="Uri" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__ExtentType" title="Extent Type" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="__DatenMeister.DefaultTypes" title="Default Types" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="__DatenMeister.DefaultTypePackage" title="Package for Types" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="Name" p1:id="ddbc518b-0fea-4629-9178-5a2bdb53abd9" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__uri" title="Uri" p1:id="dccb5b87-5fa4-4792-9cfe-208d50e0a2b8" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__ExtentType" title="Extent Type" p1:id="002a36d1-7c37-4ccb-a90e-a8940d879dd4" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="__DatenMeister.DefaultTypes" title="Default Types" p1:id="a83b4159-575f-4d3a-ad58-ab2d74b83f7c" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="__DatenMeister.DefaultTypePackage" title="Package for Types" p1:id="4d0b5981-9328-45d7-a683-6dc422681df4" />
         </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="Object" form-ref="#ExtentPropertiesForm" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" name="Association for Extent Property" p1:id="aa43615b-42eb-4c0b-818c-985c961fbba3" />
@@ -64,7 +64,7 @@
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Forms" name="Forms">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Forms - Create By Metaclass" hideMetaInformation="True" allowNewProperties="False" p1:id="Forms.Create.ByMetaClass" comment="Used by Action 'Forms.Create.ByMetaClass'">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Meta Class" title="Select your MetaClass" p1:id="Forms.Create.ByMetaClass.Detail" name="Select Extent Type">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="metaClass" title="Type of MetaClass" defaultWorkspace="Types" isSelectionInline="true" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="metaClass" title="Type of MetaClass" defaultWorkspace="Types" isSelectionInline="true" p1:id="2cd08ab1-de63-453e-b5e3-903c30bb8a16" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="creationMode" title="Creation Strategy" p1:id="4e536826-8cb6-4217-8c5d-459516ecd616">
           <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection" name="Collection w/o Assocation" p1:id="a610cc6c-42b3-4015-a152-fbd0046fc411" />
           <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Association" name="Collection w/ Assocation" p1:id="b76c2802-fa08-4901-a0ed-43dc43dd499f" />
@@ -77,11 +77,11 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Item - Move or Copy" hideMetaInformation="True" allowNewProperties="False" p1:id="Item.MoveOrCopy" comment="Used by Action 'Item.MoveOrCopy'">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Copy or Move" title="Copy or Move" p1:id="44c46187-1d1a-4ee5-8d69-9c93c4b0f9ce">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="source" title="Source" isSelectionInline="false" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="target" title="Target" defaultWorkspace="Data" isSelectionInline="true" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="copyMode" title="Copy or Move">
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Move" name="Move" />
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Copy" name="Copy" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="source" title="Source" isSelectionInline="false" p1:id="715e2805-80ad-43d8-86b2-73be309edd39" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="target" title="Target" defaultWorkspace="Data" isSelectionInline="true" p1:id="1229ac21-f22a-49db-84e4-34ff75367f2b" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="copyMode" title="Copy or Move" p1:id="1d76dbb7-4c6e-450a-ad2c-3eabb3fce396">
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Move" name="Move" p1:id="c97a9f4e-1914-4ba6-9f04-8912123356a4" />
+          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Copy" name="Copy" p1:id="e674a40f-64c2-46db-90c4-7a477c13cba6" />
         </field>
       </tab>
     </packagedElement>
@@ -98,8 +98,8 @@
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" p1:id="DatenMeister.Import.Item.Xmi" title="Importing the Xmi" name="Import Xmi in Item - Object Form">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" p1:id="401b8734-ff80-4c40-bb5e-c88d2a8aebed" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" title="Export Data">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="c612bc08-216f-45bd-b518-c2d7a463661d" title="Xmi" name="xmi" lineHeight="20" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="property" title="Property" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="addToCollection" title="Add To Colleciton" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="property" title="Property" p1:id="69ed837a-a55f-488b-843c-62c584570108" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="addToCollection" title="Add To Colleciton" p1:id="57a8a4db-45ec-406a-af4a-527fa58e956b" />
       </tab>
     </packagedElement>
   </item>

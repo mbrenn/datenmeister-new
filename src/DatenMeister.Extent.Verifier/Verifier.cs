@@ -1,6 +1,10 @@
 ﻿using System.Collections.Concurrent;
+using System.Reflection.PortableExecutable;
 using BurnSystems.Logging;
+using DatenMeister.Core;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.Extent.Verifier;
 
@@ -18,6 +22,8 @@ public class Verifier : IWorkspaceVerifierLog
     /// Defines the workspace logic
     /// </summary>
     private readonly IWorkspaceLogic _workspaceLogic;
+
+    private readonly IScopeStorage _scopeStorage;
 
     /// <summary>
     /// Stores the verify entries
@@ -40,9 +46,10 @@ public class Verifier : IWorkspaceVerifierLog
     /// </summary>
     public List<VerifyEntry> VerifyEntries => _verifyEntries.ToList();
 
-    public Verifier(IWorkspaceLogic workspaceLogic)
+    public Verifier(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
         _workspaceLogic = workspaceLogic;
+        _scopeStorage = scopeStorage;
     }
 
     /// <summary>
@@ -74,6 +81,19 @@ public class Verifier : IWorkspaceVerifierLog
     public void AddEntry(VerifyEntry entry)
     {
         Logger.Info("Verification issue: " + entry);
+        
+        // Creates a new item into the database
+        var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
+        
+        var newElement =
+            temporaryExtentLogic.CreateTemporaryElement(_DatenMeister.TheOne.Verifier.__VerifyEntry,
+                TimeSpan.FromDays(30));
+        
+        newElement.set(_DatenMeister._Verifier._VerifyEntry.workspaceId, entry.WorkspaceId);
+        newElement.set(_DatenMeister._Verifier._VerifyEntry.itemUri, entry.ItemUri);
+        newElement.set(_DatenMeister._Verifier._VerifyEntry.message, entry.Message);
+        newElement.set(_DatenMeister._Verifier._VerifyEntry.category, entry.Category);
+        
         _verifyEntries.Add(entry);
     }
 }

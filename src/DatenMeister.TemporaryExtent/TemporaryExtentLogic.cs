@@ -75,15 +75,17 @@ namespace DatenMeister.TemporaryExtent
         /// Creates a simple temporary element
         /// </summary>
         /// <param name="metaClass">Metaclass to be used</param>
+        /// <param name="cleanUpTime">Defines the cleanup time for the given item.
+        /// If this is not set, then the default time is taken</param>
         /// <returns>The created element itself</returns>
-        public IElement CreateTemporaryElement(IElement? metaClass)
+        public IElement CreateTemporaryElement(IElement? metaClass, TimeSpan? cleanUpTime = null)
         {
             var foundExtent = TemporaryExtent;
 
             var created = MofFactory.CreateElement(foundExtent, metaClass);
             var id = (created as IHasId)?.Id 
                      ?? throw new InvalidOperationException("Element does not has an id");
-            _elementMapping[id] = DateTime.Now + DefaultCleanupTime;
+            _elementMapping[id] = DateTime.Now + (cleanUpTime ?? DefaultCleanupTime);
             foundExtent.elements().add(created);
 
             return created;

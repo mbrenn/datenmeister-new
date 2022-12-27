@@ -2772,6 +2772,31 @@ namespace DatenMeister.Core.Models
 
         public _DynamicRuntimeProvider DynamicRuntimeProvider = new _DynamicRuntimeProvider();
 
+        public class _Verifier
+        {
+            public class _VerifyEntry
+            {
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @itemUri = "itemUri";
+                public IElement? @_itemUri = null;
+
+                public static string @category = "category";
+                public IElement? @_category = null;
+
+                public static string @message = "message";
+                public IElement? @_message = null;
+
+            }
+
+            public _VerifyEntry @VerifyEntry = new _VerifyEntry();
+            public MofObjectShadow @__VerifyEntry = new MofObjectShadow("dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768");
+
+        }
+
+        public _Verifier Verifier = new _Verifier();
+
         public static readonly _DatenMeister TheOne = new _DatenMeister();
 
     }

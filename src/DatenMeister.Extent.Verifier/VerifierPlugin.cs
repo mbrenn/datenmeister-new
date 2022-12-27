@@ -23,7 +23,7 @@ public class VerifierPlugin : IDatenMeisterPlugin
         switch (position)
         {
             case PluginLoadingPosition.BeforeBootstrapping:
-                _verifier = new Verifier(_workspaceLogic);
+                _verifier = new Verifier(_workspaceLogic, _scopeStorage);
                 Initializer.InitWithDefaultVerifiers(_workspaceLogic, _verifier);
                 _scopeStorage.Add(_verifier);
                 break;

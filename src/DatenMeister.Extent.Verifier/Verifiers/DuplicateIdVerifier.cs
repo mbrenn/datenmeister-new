@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Extent.Verifier.Verifiers;
 
@@ -43,8 +44,7 @@ public class DuplicateIdVerifier : IWorkspaceVerifier
                                     WorkspaceId = workspace.id,
                                     ItemUri = item.GetUri() ?? "Unknown Uri",
                                     Category = "DuplicateId",
-                                    Message = "Duplicate ID: " + asId.Id
-
+                                    Message = "Duplicate ID: " + item.GetUri() + " with item " + NamedElementMethods.GetFullName(item)
                                 });
                         }
 

@@ -1165,6 +1165,17 @@ define(["require", "exports"], function (require, exports) {
                 _Examples.__NumberRepresentation_Uri = "dm:///_internal/types/internal#DatenMeister.DynamicRuntimeProviders.Examples.NumberRepresentation";
             })(_Examples = _DynamicRuntimeProvider._Examples || (_DynamicRuntimeProvider._Examples = {}));
         })(_DynamicRuntimeProvider = _DatenMeister._DynamicRuntimeProvider || (_DatenMeister._DynamicRuntimeProvider = {}));
+        let _Verifier;
+        (function (_Verifier) {
+            class _VerifyEntry {
+            }
+            _VerifyEntry.workspaceId = "workspaceId";
+            _VerifyEntry.itemUri = "itemUri";
+            _VerifyEntry.category = "category";
+            _VerifyEntry.message = "message";
+            _Verifier._VerifyEntry = _VerifyEntry;
+            _Verifier.__VerifyEntry_Uri = "dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768";
+        })(_Verifier = _DatenMeister._Verifier || (_DatenMeister._Verifier = {}));
     })(_DatenMeister = exports._DatenMeister || (exports._DatenMeister = {}));
 });
 //# sourceMappingURL=DatenMeister.class.js.map

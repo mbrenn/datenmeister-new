@@ -12,7 +12,7 @@
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="In Work Issues" input-ref="#IssueMeister.FilterInWork.Node1" property="state" value="InWork" comparisonMode="Equal" p1:id="IssueMeister.InWorkIssuesViews" />
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterInWork.Node1" />
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter In Work" p1:id="34fdd75a-49db-4bf2-8305-740ca33c46ba">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter In Work" p1:id="34fdd35a-49db-4bf2-8305-740ca33c46ba">
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="Closed Issues" input-ref="#IssueMeister.FilterClosed.Node1" property="state" value="Closed" comparisonMode="Equal" p1:id="IssueMeister.ClosedIssuesViews" />
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterClosed.Node1" />
       </packagedElement>
@@ -52,25 +52,25 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="495a07f0-fc9b-447c-97ad-bf1a195e9126" />
           <defaultTypesForNewElements name="Issue" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" parentProperty="packagedElement" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="2711be61-8d54-4840-8419-a9dce086f9ba" />
         </tab>
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="Closed Issues" property="packagedElement" p1:id="af573deb-167d-4eb3-931c-3af39b0697a2" viewNode-ref="#IssueMeister.ClosedIssuesViews">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="IssuePackageList.Issues.id" />
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="Closed Issues" property="packagedElement" p1:id="af573d3b-167d-4eb3-931c-3af39b0697a2" viewNode-ref="#IssueMeister.ClosedIssuesViews">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="IssuePackageList.ClosedIssues.id" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="563d34b8-12b9-453e-b6be-549392cf9766" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" isReadOnly="True" p1:id="IssuePackageList.Issues.state" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" p1:id="ee7b63f1-5a4e-4287-86ed-0d4aaf791689" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="218deeca-5c4a-437e-bcce-b6a2075973f0" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" isReadOnly="True" p1:id="IssuePackageList.ClosedIssues.state" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" p1:id="ae7b63f1-5a4e-4287-86ed-0d4aaf791689" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="218eeeca-5c4a-437e-bcce-b6a2075973f0" />
           <defaultTypesForNewElements name="Issue" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" parentProperty="packagedElement" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="e3f5ba1e-dc70-4070-b780-1e08e1b49ca4" />
-          <sortingOrder isDescending="true" p1:id="da066fdc-24a6-4ff9-aa84-0197f7dca515" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder" field-ref="dm:///issuemeister.forms#IssuePackageList.Issues.state" />
+          <sortingOrder isDescending="true" p1:id="aa066fdc-24a6-4ff9-aa84-0197f7dca515" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder" field-ref="dm:///issuemeister.forms#IssuePackageList.Issues.state" />
           <sortingOrder p1:id="363fced8-c1da-4074-907c-bf2eda2fbce8" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder" field-ref="dm:///issuemeister.forms#IssuePackageList.Issues.id" />
         </tab>
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="All Issues" property="packagedElement" p1:id="af573deb-167d-4eb3-931c-3af39b0697a2" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="IssuePackageList.Issues.id" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="563d34b8-12b9-453e-b6be-549392cf9766" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" isReadOnly="True" p1:id="IssuePackageList.Issues.state" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="IssuePackageList.AllIssues.id" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="569d34b8-12b9-453e-b6be-549392cf9766" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" isReadOnly="True" p1:id="IssuePackageList.AllIssues.state" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" p1:id="ee7b63f1-5a4e-4287-86ed-0d4aaf791689" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="218deeca-5c4a-437e-bcce-b6a2075973f0" />
-          <defaultTypesForNewElements name="Issue" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" parentProperty="packagedElement" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="e3f5ba1e-dc70-4070-b780-1e08e1b49ca4" />
+          <defaultTypesForNewElements name="Issue" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" parentProperty="packagedElement" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="e3f2ba1e-dc70-4070-b780-1e08e1b49ca4" />
           <sortingOrder isDescending="true" p1:id="da066fdc-24a6-4ff9-aa84-0197f7dca515" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder" field-ref="dm:///issuemeister.forms#IssuePackageList.Issues.state" />
-          <sortingOrder p1:id="363fced8-c1da-4074-907c-bf2eda2fbce8" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder" field-ref="dm:///issuemeister.forms#IssuePackageList.Issues.id" />
+          <sortingOrder p1:id="363fced8-c1da-4074-907c-bf2eda2fbce9" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder" field-ref="dm:///issuemeister.forms#IssuePackageList.Issues.id" />
         </tab>
       </packagedElement>
       <!-- The Form Associations -->

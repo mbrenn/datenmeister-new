@@ -1298,5 +1298,18 @@ export namespace _DatenMeister
 
         }
 
+        export namespace _Verifier
+        {
+                export class _VerifyEntry
+                {
+                    static workspaceId = "workspaceId";
+                    static itemUri = "itemUri";
+                    static category = "category";
+                    static message = "message";
+                }
+
+                export const __VerifyEntry_Uri = "dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768";
+        }
+
 }
 

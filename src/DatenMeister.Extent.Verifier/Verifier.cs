@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Reflection.PortableExecutable;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -58,9 +59,10 @@ public class Verifier : IWorkspaceVerifierLog
     public async Task VerifyExtents()
     {
         Logger.Info("Starting Verification");
+        var stopWatch = Stopwatch.StartNew();
+        
         try
         {
-
             foreach (var verifierFactory in _extentVerifyFactories)
             {
                 await verifierFactory().VerifyExtents(this);
@@ -71,7 +73,8 @@ public class Verifier : IWorkspaceVerifierLog
             Logger.Error("Failure during verification: " + exc);
         }
 
-        Logger.Info("Finalized Verification");
+        stopWatch.Stop();
+        Logger.Info("Finalized Verification: " + stopWatch.ElapsedMilliseconds + " ms");
     }
 
     /// <summary>

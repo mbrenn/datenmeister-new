@@ -2355,7 +2355,7 @@ namespace DatenMeister.Core.Models
             public class _ObjectForm
             {
                 public static string @tab = "tab";
-                public IElement? @_tab = null;
+                public IElement @_tab = new MofObjectShadow("dm:///_internal/types/internal#c19bbfec-6afb-4%23c19cbfec-6afb-4017-94c2-d2992853a25c017-94c2-d2992853a25c");
 
                 public static string @autoTabs = "autoTabs";
                 public IElement? @_autoTabs = null;

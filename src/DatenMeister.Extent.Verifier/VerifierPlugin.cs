@@ -28,7 +28,13 @@ public class VerifierPlugin : IDatenMeisterPlugin
                 _scopeStorage.Add(_verifier);
                 break;
             case PluginLoadingPosition.AfterLoadingOfExtents:
-                Task.Run(() => _verifier?.VerifyExtents());
+                Task.Run(async () =>
+                {
+                    _ =_verifier ?? throw new InvalidOperationException("Verifier is not set");
+
+                    await Task.Delay(1000);
+                    await _verifier.VerifyExtents();
+                });
                 break;
         }
     }

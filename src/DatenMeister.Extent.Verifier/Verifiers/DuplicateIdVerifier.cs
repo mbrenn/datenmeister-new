@@ -18,11 +18,14 @@ public class DuplicateIdVerifier : IWorkspaceVerifier
     {
         foreach (Workspace workspace in _workspaceLogic.Workspaces)
         {
-            if (workspace.id is WorkspaceNames.WorkspaceMof or WorkspaceNames.WorkspaceUml or WorkspaceNames.WorkspaceViews)
+            if (workspace.id is
+                WorkspaceNames.WorkspaceMof
+                or WorkspaceNames.WorkspaceUml
+                or WorkspaceNames.WorkspaceViews)
             {
                 continue;
             }
-            
+
             foreach (IExtent extent in workspace.extent)
             {
                 await Task.Run(() =>
@@ -31,7 +34,7 @@ public class DuplicateIdVerifier : IWorkspaceVerifier
                     foreach (var item in extent.elements().GetAllDescendantsIncludingThemselves().OfType<IObject>())
                     {
                         if (item is not IHasId asId || asId.Id == null) continue;
-                        
+
                         if (bag.Contains(asId.Id))
                         {
                             log.AddEntry(
@@ -41,7 +44,7 @@ public class DuplicateIdVerifier : IWorkspaceVerifier
                                     ItemUri = item.GetUri() ?? "Unknown Uri",
                                     Category = "DuplicateId",
                                     Message = "Duplicate ID: " + asId.Id
-                                        
+
                                 });
                         }
 

@@ -213,7 +213,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
             return __awaiter(this, void 0, void 0, function* () {
                 const foundElement = element.get("metaClass", Mof_1.ObjectType.Default);
                 const temporaryElement = yield ClientElements.createTemporaryElement(foundElement.uri);
-                Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri);
+                Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri, { editMode: true });
             });
         }
     }

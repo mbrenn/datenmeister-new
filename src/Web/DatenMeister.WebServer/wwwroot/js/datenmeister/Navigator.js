@@ -27,20 +27,34 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
                 encodeURIComponent(extentUri);
     }
     exports.navigateToExtentProperties = navigateToExtentProperties;
-    function navigateToItem(workspace, extentUri, itemId) {
+    function navigateToItem(workspace, extentUri, itemId, param) {
         document.location.href =
             Settings.baseUrl + "Item/" +
                 encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(extentUri + "#" + itemId);
+                encodeURIComponent(extentUri + "#" + itemId) +
+                parseNavigateToItemParam(param);
     }
     exports.navigateToItem = navigateToItem;
-    function navigateToItemByUrl(workspace, itemUrl) {
+    function navigateToItemByUrl(workspace, itemUrl, param) {
         document.location.href =
             Settings.baseUrl + "Item/" +
                 encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(itemUrl);
+                encodeURIComponent(itemUrl) +
+                parseNavigateToItemParam(param);
     }
     exports.navigateToItemByUrl = navigateToItemByUrl;
+    function parseNavigateToItemParam(param) {
+        if (param === undefined) {
+            return "";
+        }
+        let result = '';
+        let ampersand = '?';
+        if (param.editMode === true) {
+            result += ampersand + "edit=true";
+            ampersand = '&';
+        }
+        return result;
+    }
     function navigateToCreateNewItemInExtent(workspace, extentUri, metaclass) {
         document.location.href = Settings.baseUrl +
             "ItemAction/Extent.CreateItem?workspace=" +

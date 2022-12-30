@@ -234,7 +234,6 @@ class ItemCreateTemporarySetMetaclass extends FormActions.ItemFormActionModuleBa
         this.actionVerb = "Define Metaclass";
     }
 
-
     async loadForm(): Promise<DmObject> | undefined {
         return await FormClient.getForm("dm:///_internal/forms/internal#Item.Create.Temporary.SetMetaclass");
     }
@@ -243,6 +242,6 @@ class ItemCreateTemporarySetMetaclass extends FormActions.ItemFormActionModuleBa
         const foundElement = element.get("metaClass", ObjectType.Default) as DmObject;
         
         const temporaryElement = await ClientElements.createTemporaryElement(foundElement.uri);        
-        Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri);
+        Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri, {editMode: true});
     }
 }

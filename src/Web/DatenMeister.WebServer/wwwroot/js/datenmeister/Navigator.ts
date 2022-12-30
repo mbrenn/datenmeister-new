@@ -25,18 +25,45 @@ export function navigateToExtentProperties(workspace: string, extentUri: string)
         encodeURIComponent(extentUri);
 }
 
-export function navigateToItem(workspace: string, extentUri: string, itemId: string) {
+export interface INavigateToItemParams
+{
+    /**
+     * Defines whether the user shall move to the edit mode
+     */
+    editMode?: boolean;
+}
+export function navigateToItem(workspace: string, extentUri: string, itemId: string, param?: INavigateToItemParams) {
     document.location.href =
         Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +
-        encodeURIComponent(extentUri + "#" + itemId);
+        encodeURIComponent(extentUri + "#" + itemId) + 
+        parseNavigateToItemParam(param);
 }
 
-export function navigateToItemByUrl(workspace: string, itemUrl: string) {
+export function navigateToItemByUrl(workspace: string, itemUrl: string, param?: INavigateToItemParams) {
     document.location.href =
         Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +
-        encodeURIComponent(itemUrl);
+        encodeURIComponent(itemUrl) +
+        parseNavigateToItemParam(param);
+}
+
+function parseNavigateToItemParam(param? : INavigateToItemParams)
+{
+    if ( param === undefined) {
+        return "";
+    }
+    
+    let result = '';
+    let ampersand = '?';
+    if ( param.editMode === true)
+    {
+        result += ampersand + "edit=true"
+        ampersand = '&';
+    }
+    
+    return result;
+    
 }
 
 export function navigateToCreateNewItemInExtent(workspace: string, extentUri: string, metaclass: string) {

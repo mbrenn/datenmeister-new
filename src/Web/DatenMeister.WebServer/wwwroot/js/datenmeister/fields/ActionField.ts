@@ -2,6 +2,7 @@
 import * as FormActions from "../FormActions";
 import {BaseField, IFormField} from "./Interfaces";
 import {DmObject} from "../Mof";
+import * as ClientItems from "../client/Items";
 
 export class Field extends BaseField implements IFormField {
 
@@ -24,7 +25,7 @@ export class Field extends BaseField implements IFormField {
         this.button.text(title);
 
         this.button.on('click',
-            () => {
+            async () => {
                 // There is the option whether a form action requires a separate confirmation
                 // If this is the case, then the button itself is asking for confirmation upon the first 
                 // click. Only then, the DetailForm itself is executed. 
@@ -33,7 +34,10 @@ export class Field extends BaseField implements IFormField {
                         tthis.form.storeFormValuesIntoDom(true);
                     }
 
-                    FormActions.execute(action, tthis.form, dmElement, parameter);
+                    // We need to set the properties of the item, so the action handler can directly work on the item
+                    await ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+
+                    await FormActions.execute(action, tthis.form, dmElement, parameter);
                 }             
                 
                 if (requireConfirmation && !tthis.inConfirmation) {

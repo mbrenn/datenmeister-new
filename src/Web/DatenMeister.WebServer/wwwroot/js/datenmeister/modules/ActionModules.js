@@ -39,7 +39,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions"], 
                     alert('Success');
                 }
                 else {
-                    alert('Failure');
+                    alert("Unfortunately, the action failed: \n\n" + result.reason);
                 }
             });
         }

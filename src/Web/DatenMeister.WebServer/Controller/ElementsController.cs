@@ -128,6 +128,7 @@ namespace DatenMeister.WebServer.Controller
             return new CreateTemporaryElementResult
             {
                 Success = true,
+                Workspace = logic.WorkspaceName,
                 Uri = result.GetUri() ?? throw new InvalidOperationException("No uri defined")
             };
         }
@@ -141,6 +142,11 @@ namespace DatenMeister.WebServer.Controller
             /// Gets or sets a flag indicating the success
             /// </summary>
             public bool Success { get; set; }
+
+            /// <summary>
+            /// Gets or sets the workspace
+            /// </summary>
+            public string Workspace { get; set; } = string.Empty;
 
             /// <summary>
             /// Gets or sets the uri 

@@ -39,7 +39,7 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
         if (result.success) {
             alert('Success');
         } else {
-            alert('Failure');
+            alert("Unfortunately, the action failed: \n\n" + result.reason);
         }
 
     }

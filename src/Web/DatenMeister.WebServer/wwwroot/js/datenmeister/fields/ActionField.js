@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "./Interfaces"], function (require, exports, FormActions, Interfaces_1) {
+define(["require", "exports", "../FormActions", "./Interfaces", "../client/Items"], function (require, exports, FormActions, Interfaces_1, ClientItems) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = void 0;
@@ -22,7 +22,7 @@ define(["require", "exports", "../FormActions", "./Interfaces"], function (requi
                 const requireConfirmation = FormActions.requiresConfirmation(action);
                 this.button = $("<button class='btn btn-secondary' type='button'></button>");
                 this.button.text(title);
-                this.button.on('click', () => {
+                this.button.on('click', () => __awaiter(this, void 0, void 0, function* () {
                     // There is the option whether a form action requires a separate confirmation
                     // If this is the case, then the button itself is asking for confirmation upon the first 
                     // click. Only then, the DetailForm itself is executed. 
@@ -30,13 +30,15 @@ define(["require", "exports", "../FormActions", "./Interfaces"], function (requi
                         if (tthis.form.storeFormValuesIntoDom !== undefined) {
                             tthis.form.storeFormValuesIntoDom(true);
                         }
-                        FormActions.execute(action, tthis.form, dmElement, parameter);
+                        // We need to set the properties of the item, so the action handler can directly work on the item
+                        yield ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+                        yield FormActions.execute(action, tthis.form, dmElement, parameter);
                     }
                     if (requireConfirmation && !tthis.inConfirmation) {
                         this.button.text("Are you sure?");
                         tthis.inConfirmation = true;
                     }
-                });
+                }));
                 return this.button;
             });
         }

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../Navigator", "../client/Actions.Items"], function (require, exports, FormActions, Mof_1, FormClient, ActionClient, Settings, DatenMeister_class_1, ItemClient, Navigator, Actions_Items_1) {
+define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../Navigator", "../client/Actions.Items", "../client/Elements"], function (require, exports, FormActions, Mof_1, FormClient, ActionClient, Settings, DatenMeister_class_1, ItemClient, Navigator, Actions_Items_1, ClientElements) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -22,6 +22,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         FormActions.addModule(new ItemXmiExport());
         FormActions.addModule(new ItemXmiImportNavigate());
         FormActions.addModule(new ItemXmiImport());
+        FormActions.addModule(new ItemCreateTemporarySetMetaclass());
     }
     exports.loadModules = loadModules;
     class ItemMoveOrCopyActionNavigate extends FormActions.ItemFormActionModuleBase {
@@ -195,6 +196,24 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
                         alert('Something failed');
                     }
                 }
+            });
+        }
+    }
+    class ItemCreateTemporarySetMetaclass extends FormActions.ItemFormActionModuleBase {
+        constructor() {
+            super("Item.Create.Temporary.SetMetaclass");
+            this.actionVerb = "Define Metaclass";
+        }
+        loadForm() {
+            return __awaiter(this, void 0, void 0, function* () {
+                return yield FormClient.getForm("dm:///_internal/forms/internal#Item.Create.Temporary.SetMetaclass");
+            });
+        }
+        execute(form, element, parameter, submitMethod) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const foundElement = element.get("metaClass", Mof_1.ObjectType.Default);
+                const temporaryElement = yield ClientElements.createTemporaryElement(foundElement.uri);
+                Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri);
             });
         }
     }

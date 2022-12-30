@@ -8,6 +8,11 @@
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="52bbe9c3-70d7-4145-af3d-b1da051051ed" name="oldId" title="Old ID" isReadOnly="True" />
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="580b12b1-443e-4cbb-9d5b-544a4c1531ab" name="newId" title="New ID" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" p1:id="Item.Create.Temporary.SetMetaclass" name="Create Temporary Element by Metaclass">
+      <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" name="Detail" p1:id="e5c98725-369e-4c6c-bcf0-657ed1ba5c77">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="metaClass" title="Type of MetaClass" defaultItemUri="dm:///_internal/types/internal#DatenMeister.Types.Actions" defaultWorkspace="Types" isSelectionInline="true" p1:id="2cd08ab1-de63-453e-b5e3-303c30bb8a16" />
+      </tab>
+    </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="ad3e302f-c756-46d7-a67f-49f3b54bef55">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" name="Form SimpleConfiguration" hideMetaInformation="True" allowNewProperties="True" p1:id="Form.Report.SimpleConfiguration">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showDescendents" title="Show all Descendents" p1:id="7d261015-80e8-41e8-8a91-3cbacd2cc773" />
@@ -59,6 +64,7 @@
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="Object" form-ref="#ExtentPropertiesForm" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" name="Association for Extent Property" p1:id="aa43615b-42eb-4c0b-818c-985c961fbba3" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" p1:id="0ba1698c-4ba2-4361-8263-25ee389dcdae" name="Item.Create.Temporary.SetMetaclass" title="Select Metaclass for temporary element" />
   </item>
   <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms" __uri="dm:///datenmeister.forms/" />
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Forms" name="Forms">

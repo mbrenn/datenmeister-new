@@ -6,11 +6,11 @@ import {IFormNavigation} from "../forms/Interfaces";
 import {SubmitMethod} from "../forms/RowForm";
 import * as Settings from "../Settings";
 import {_DatenMeister} from "../models/DatenMeister.class";
-import _MoveOrCopyAction = _DatenMeister._Actions._MoveOrCopyAction;
 import * as ItemClient from "../client/Items";
 import * as Navigator from "../Navigator";
 import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items";
-import * as ECClient from "../client/Extents";
+import _MoveOrCopyAction = _DatenMeister._Actions._MoveOrCopyAction;
+import * as ClientElements from "../client/Elements";
 
 export function loadModules() {   
     FormActions.addModule(new ItemMoveOrCopyActionNavigate());
@@ -22,6 +22,7 @@ export function loadModules() {
     FormActions.addModule(new ItemXmiExport());
     FormActions.addModule(new ItemXmiImportNavigate());
     FormActions.addModule(new ItemXmiImport());
+    FormActions.addModule(new ItemCreateTemporarySetMetaclass());
 }
 
 class ItemMoveOrCopyActionNavigate extends FormActions.ItemFormActionModuleBase {
@@ -224,5 +225,24 @@ class ItemXmiImport extends FormActions.ItemFormActionModuleBase {
                 alert('Something failed');
             }
         }
+    }
+}
+
+class ItemCreateTemporarySetMetaclass extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Item.Create.Temporary.SetMetaclass");
+        this.actionVerb = "Define Metaclass";
+    }
+
+
+    async loadForm(): Promise<DmObject> | undefined {
+        return await FormClient.getForm("dm:///_internal/forms/internal#Item.Create.Temporary.SetMetaclass");
+    }
+    
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const foundElement = element.get("metaClass", ObjectType.Default) as DmObject;
+        
+        const temporaryElement = await ClientElements.createTemporaryElement(foundElement.uri);        
+        Navigator.navigateToItemByUrl(temporaryElement.workspace, temporaryElement.uri);
     }
 }

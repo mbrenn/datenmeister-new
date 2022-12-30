@@ -10,6 +10,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         ObjectType[ObjectType["Array"] = 3] = "Array";
         ObjectType[ObjectType["Boolean"] = 4] = "Boolean";
         ObjectType[ObjectType["Number"] = 5] = "Number";
+        ObjectType[ObjectType["Object"] = 6] = "Object";
     })(ObjectType = exports.ObjectType || (exports.ObjectType = {}));
     class DmObject {
         /**
@@ -53,6 +54,8 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
             let result = this.values[DmObject.internalizeKey(key)];
             switch (objectType) {
                 case ObjectType.Default:
+                    return result;
+                case ObjectType.Object:
                     return result;
                 case ObjectType.Single:
                     if (Array.isArray(result)) {

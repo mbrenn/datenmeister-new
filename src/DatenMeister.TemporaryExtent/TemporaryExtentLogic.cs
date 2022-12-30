@@ -30,6 +30,11 @@ namespace DatenMeister.TemporaryExtent
         public static TimeSpan DefaultCleanupTime { get; set; } = TimeSpan.FromHours(1);
 
         /// <summary>
+        /// Gets the name of the workspace
+        /// </summary>
+        public string WorkspaceName => _workspaceLogic.GetDataWorkspace().id;
+
+        /// <summary>
         /// Maps the element to a datetime until when it shall be deleted.
         /// If the element is not found here, then it will be directly deleted
         /// </summary>

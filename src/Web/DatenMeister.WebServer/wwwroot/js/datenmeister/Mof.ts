@@ -6,7 +6,9 @@ export enum ObjectType{
     String,
     Array,
     Boolean,
-    Number
+    Number,
+    
+    Object
 }
 
 type DmObjectReturnType<T> = 
@@ -15,7 +17,8 @@ type DmObjectReturnType<T> =
             T extends ObjectType.String ? string : 
                 T extends ObjectType.Array ? Array<any> :
                     T extends ObjectType.Boolean ? boolean :
-                        T extends ObjectType.Number ? number : any;
+                        T extends ObjectType.Object ? DmObject :
+                            T extends ObjectType.Number ? number : any;
 
 export class DmObject {
     private readonly values: Array<any>;
@@ -81,6 +84,8 @@ export class DmObject {
 
         switch (objectType) {
             case ObjectType.Default:
+                return result as DmObjectReturnType<T>;
+            case ObjectType.Object:
                 return result as DmObjectReturnType<T>;
             case ObjectType.Single:
                 if (Array.isArray(result)) {

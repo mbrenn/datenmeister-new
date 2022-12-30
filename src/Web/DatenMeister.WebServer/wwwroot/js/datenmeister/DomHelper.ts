@@ -1,6 +1,7 @@
 ﻿import * as ElementClient from "./client/Elements"
 import {DmObject} from "./Mof";
 import {ItemWithNameAndId} from "./ApiModels";
+import * as Navigator from "Navigator";
 
 export interface IInjectNameByUriParams {
     onClick?: (item: ItemWithNameAndId) => (void);
@@ -35,6 +36,7 @@ export function debugElementToDom(mofElement: any, domSelector: string) {
 
 export interface IConvertItemWithNameAndIdParameters{
     inhibitItemLink?: boolean;
+    inhibitEditItemLink?: boolean;
     onClick?: (item: ItemWithNameAndId) => (void);
 }
 
@@ -52,26 +54,43 @@ export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: 
         item.uri !== "" && item.workspace !== "";
     
     const inhibitLink = params !== undefined && params.inhibitItemLink;
+    const inhibitEditLink = params !== undefined && params.inhibitEditItemLink;
     
-    if (validLinkInformation && !inhibitLink) {
-        const linkElement = $("<a></a>");
-        linkElement.text(item.name);
+    if (validLinkInformation) {
+        // The inhibition link
+        if (!inhibitLink) {
+            const linkElement = $("<a></a>");
+            linkElement.text(item.name);
 
-        if (params?.onClick !== undefined) {
-            // There is a special click handler, so we execute that one instead of a generic uri
-            linkElement.attr('href', '#');
-            linkElement.on('click', () => { params.onClick(item); return false; });
+            if (params?.onClick !== undefined) {
+                // There is a special click handler, so we execute that one instead of a generic uri
+                linkElement.attr('href', '#');
+                linkElement.on('click', () => {
+                    params.onClick(item);
+                    return false;
+                });
+            } else {
+                linkElement.attr(
+                    "href",
+                    "/Item/" + encodeURIComponent(item.workspace) +
+                    "/" + encodeURIComponent(item.uri));
+                linkElement.on('click', () => {
+                    Navigator.navigateToItemByUrl(item.workspace, item.uri)
+                });
+            }
+
+            result.append(linkElement);
         }
-        else {
-            linkElement.attr(
-                "href",
-                "/Item/" + encodeURIComponent(item.workspace) +
-                "/" + encodeURIComponent(item.uri));
 
+        // The Edit link
+        if (!inhibitEditLink) {
+            const linkElement = $("<span>✒️</span>");
+            linkElement.on('click', () => {
+                Navigator.navigateToItemByUrl(item.workspace, item.uri, {editMode: true});
+            });
+
+            result.append(linkElement);
         }
-
-        result.append(linkElement);
-        
     } else {
         result.text(item.name);
     }

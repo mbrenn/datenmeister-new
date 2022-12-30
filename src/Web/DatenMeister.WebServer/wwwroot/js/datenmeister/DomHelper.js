@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./client/Elements"], function (require, exports, ElementClient) {
+define(["require", "exports", "./client/Elements", "Navigator"], function (require, exports, ElementClient, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.convertToDom = exports.convertItemWithNameAndIdToDom = exports.debugElementToDom = exports.convertDmObjectToDom = exports.injectNameByUri = void 0;
@@ -49,19 +49,37 @@ define(["require", "exports", "./client/Elements"], function (require, exports, 
         const validLinkInformation = item.uri !== undefined && item.workspace !== undefined &&
             item.uri !== "" && item.workspace !== "";
         const inhibitLink = params !== undefined && params.inhibitItemLink;
-        if (validLinkInformation && !inhibitLink) {
-            const linkElement = $("<a></a>");
-            linkElement.text(item.name);
-            if ((params === null || params === void 0 ? void 0 : params.onClick) !== undefined) {
-                // There is a special click handler, so we execute that one instead of a generic uri
-                linkElement.attr('href', '#');
-                linkElement.on('click', () => { params.onClick(item); return false; });
+        const inhibitEditLink = params !== undefined && params.inhibitEditItemLink;
+        if (validLinkInformation) {
+            // The inhibition link
+            if (!inhibitLink) {
+                const linkElement = $("<a></a>");
+                linkElement.text(item.name);
+                if ((params === null || params === void 0 ? void 0 : params.onClick) !== undefined) {
+                    // There is a special click handler, so we execute that one instead of a generic uri
+                    linkElement.attr('href', '#');
+                    linkElement.on('click', () => {
+                        params.onClick(item);
+                        return false;
+                    });
+                }
+                else {
+                    linkElement.attr("href", "/Item/" + encodeURIComponent(item.workspace) +
+                        "/" + encodeURIComponent(item.uri));
+                    linkElement.on('click', () => {
+                        Navigator.navigateToItemByUrl(item.workspace, item.uri);
+                    });
+                }
+                result.append(linkElement);
             }
-            else {
-                linkElement.attr("href", "/Item/" + encodeURIComponent(item.workspace) +
-                    "/" + encodeURIComponent(item.uri));
+            // The Edit link
+            if (!inhibitEditLink) {
+                const linkElement = $("<span>✒️</span>");
+                linkElement.on('click', () => {
+                    Navigator.navigateToItemByUrl(item.workspace, item.uri, { editMode: true });
+                });
+                result.append(linkElement);
             }
-            result.append(linkElement);
         }
         else {
             result.text(item.name);

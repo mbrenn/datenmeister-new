@@ -6,6 +6,7 @@ import * as DetailForm from "./RowForm";
 import {SubmitMethod} from "./RowForm";
 import {TableForm} from "./TableForm";
 import * as ClientItems from "../client/Items";
+import * as Navigator from "../Navigator";
 import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
 import * as VML from "./ViewModeLogic";
 import * as ClientForms from "../client/Forms";
@@ -17,8 +18,6 @@ import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import {ItemLink} from "../ApiModels";
-import { FormType } from "./Interfaces";
-import * as Navigator from "../Navigator";
 
 export class ObjectFormHtmlElements
 {
@@ -62,7 +61,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     htmlItemContainer: IFormConfiguration;
     itemUrl: string;    
     workspace: string;
-    formType: FormType = FormType.Object;
+    formType: IForm.FormType = IForm.FormType.Object;
 
     async createFormByObject(
         htmlElements: ObjectFormHtmlElements, 
@@ -162,6 +161,12 @@ export class ObjectFormCreatorForItem {
         this.workspace = workspace;
         this.itemUri = itemUri;
 
+        // Check the edit parameter
+        let p = new URLSearchParams(window.location.search);
+        if (p.get('edit') === 'true') {
+            this.formMode = FormMode.EditMode;
+        }
+
         this.rebuildForm();
     }
 
@@ -220,7 +225,7 @@ export class ObjectFormCreatorForItem {
         const defer2 =
             this._overrideFormUrl === undefined ?
                 ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
-                ClientForms.getForm(this._overrideFormUrl, FormType.Object);
+                ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Object);
 
         // Wait for both
         Promise.all([defer1, defer2]).then(async ([element1, form]) => {

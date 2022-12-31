@@ -20,6 +20,7 @@ export function loadModules() {
 class WorkspaceExtentXmiCreateNavigateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Workspace.Extent.Xmi.Create.Navigate");
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -37,6 +38,7 @@ class WorkspaceExtentLoadOrCreateNavigateAction extends FormActions.ItemFormActi
 {
     constructor() {
         super("Workspace.Extent.LoadOrCreate.Navigate");
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

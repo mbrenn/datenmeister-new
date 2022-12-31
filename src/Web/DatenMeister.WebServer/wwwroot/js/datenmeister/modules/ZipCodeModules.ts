@@ -15,6 +15,7 @@ class ZipCodeTestAction extends FormActions.ItemFormActionModuleBase{
     constructor() {
         super("Zipcode.Test");
         this.actionVerb = "Test of Zipcode";
+        this.skipSaving = true;
     }
     
     async loadObject(): Promise<DmObject> | undefined {
@@ -32,6 +33,7 @@ class CreateZipExampleAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ZipExample.CreateExample");
         this.actionVerb = "Create Example";
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

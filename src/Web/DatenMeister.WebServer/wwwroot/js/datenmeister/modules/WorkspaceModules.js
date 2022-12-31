@@ -22,6 +22,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions", "
     class WorkspaceExtentXmiCreateNavigateAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Workspace.Extent.Xmi.Create.Navigate");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             var _a;
@@ -37,6 +38,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions", "
     class WorkspaceExtentLoadOrCreateNavigateAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Workspace.Extent.LoadOrCreate.Navigate");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             var _a;

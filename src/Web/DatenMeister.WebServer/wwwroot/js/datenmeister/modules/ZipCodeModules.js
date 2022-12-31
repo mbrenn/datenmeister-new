@@ -20,6 +20,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", ".
         constructor() {
             super("Zipcode.Test");
             this.actionVerb = "Test of Zipcode";
+            this.skipSaving = true;
         }
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -39,6 +40,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", ".
         constructor() {
             super("ZipExample.CreateExample");
             this.actionVerb = "Create Example";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

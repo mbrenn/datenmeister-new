@@ -19,6 +19,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         constructor() {
             super("Forms.Create.ByMetaClass");
             this.actionVerb = "Create by MetaClass";
+            this.skipSaving = true;
         }
         loadForm() {
             return __awaiter(this, void 0, void 0, function* () {

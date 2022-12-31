@@ -162,6 +162,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
             super("Extent.Clear");
             this.actionVerb = "Clear Item";
             this.requiresConfirmation = true;
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -180,6 +181,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
             super("Extent.Delete");
             this.actionVerb = "Delete Extent";
             this.requiresConfirmation = true;
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -197,6 +199,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.NavigateTo");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -209,6 +212,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     class ExtentPropertiesAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.Properties");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -228,6 +232,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     class ExtentsListViewItemAction extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("ExtentsList.ViewItem");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -239,6 +244,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         constructor() {
             super("ExtentsList.DeleteItem");
             this.actionVerb = "Delete Item";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -259,6 +265,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         constructor() {
             super("ExtentsList.MoveUpItem");
             this.actionVerb = "Move Up";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -271,6 +278,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         constructor() {
             super("ExtentsList.MoveDownItem");
             this.actionVerb = "Move Down";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -283,6 +291,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         constructor() {
             super("Extent.Store");
             this.actionVerb = "Store Extent";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -300,6 +309,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.ExportXmi.Navigate");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -341,6 +351,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
     class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Extent.ImportXmi.Navigate");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

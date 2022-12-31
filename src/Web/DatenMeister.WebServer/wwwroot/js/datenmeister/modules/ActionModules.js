@@ -20,6 +20,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions"], 
         constructor() {
             super("JSON.Item.Alert");
             this.actionVerb = "Trigger JSON Alert";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

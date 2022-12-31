@@ -64,8 +64,7 @@ define(["require", "exports", "./client/Elements", "Navigator"], function (requi
                     });
                 }
                 else {
-                    linkElement.attr("href", "/Item/" + encodeURIComponent(item.workspace) +
-                        "/" + encodeURIComponent(item.uri));
+                    linkElement.attr("href", Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
                     linkElement.on('click', () => {
                         Navigator.navigateToItemByUrl(item.workspace, item.uri);
                     });

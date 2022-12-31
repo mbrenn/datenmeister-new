@@ -28,6 +28,7 @@ export function loadModules() {
 class ItemMoveOrCopyActionNavigate extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.MoveOrCopy.Navigate");
+        this.skipSaving = true;   
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -85,6 +86,7 @@ class ItemDeleteAction extends FormActions.ItemFormActionModuleBase {
         super("Item.Delete");
         this.requiresConfirmation = true;
         this.actionVerb = "Delete Item";
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -103,6 +105,7 @@ class ItemMoveDownItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.MoveDownItem");
         this.actionVerb = "Move Up";
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -119,6 +122,7 @@ class ItemMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.MoveUpItem");
         this.actionVerb = "Move Down";
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -134,6 +138,7 @@ class ItemMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
 class ItemXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.ExportXmi.Navigate");
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -180,6 +185,7 @@ class ItemXmiExport extends FormActions.ItemFormActionModuleBase {
 class ItemXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.ImportXmi.Navigate");
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

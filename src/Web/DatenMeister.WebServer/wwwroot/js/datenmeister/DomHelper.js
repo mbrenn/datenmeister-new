@@ -74,9 +74,11 @@ define(["require", "exports", "./client/Elements", "Navigator"], function (requi
             }
             // The Edit link
             if (!inhibitEditLink) {
-                const linkElement = $("<span>✒️</span>");
+                const linkElement = $("<a class='dm-item-edit-button'>✒️</a>");
+                linkElement.attr('href', Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri, { editMode: true }));
                 linkElement.on('click', () => {
                     Navigator.navigateToItemByUrl(item.workspace, item.uri, { editMode: true });
+                    return false;
                 });
                 result.append(linkElement);
             }

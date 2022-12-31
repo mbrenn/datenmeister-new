@@ -281,6 +281,11 @@ a {
     opacity: 1;
 }
 
+.dm-item-edit-button
+{
+    cursor: pointer;
+    text-decoration: none;
+}
 
 
 /* Mocha Configuration

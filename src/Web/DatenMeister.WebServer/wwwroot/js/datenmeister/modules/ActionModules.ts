@@ -19,8 +19,6 @@ class JsonItemAlertAction extends FormActions.ItemFormActionModuleBase {
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert(JSON.stringify(createJsonFromObject(element)));
     }
-    
-
 }
 
 class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
@@ -41,6 +39,5 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
         } else {
             alert("Unfortunately, the action failed: \n\n" + result.reason);
         }
-
     }
 }

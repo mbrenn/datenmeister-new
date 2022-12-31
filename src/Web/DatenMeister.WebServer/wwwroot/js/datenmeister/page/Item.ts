@@ -12,7 +12,6 @@ export function init(workspace: string, itemUri: string) {
             viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
             formSelectorContainer: $("#form_selection_container"),
             storeCurrentFormBtn: $("#dm-store-current-form-btn")
-            
         },
         workspace,
         itemUri);

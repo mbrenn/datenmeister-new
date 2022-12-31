@@ -182,6 +182,7 @@ class ExtentClearAction extends FormActions.ItemFormActionModuleBase {
         super("Extent.Clear");
         this.actionVerb = "Clear Item";
         this.requiresConfirmation = true;
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -205,6 +206,7 @@ class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
         super("Extent.Delete");
         this.actionVerb = "Delete Extent";
         this.requiresConfirmation = true;
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -228,6 +230,7 @@ class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
 class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.NavigateTo");
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -241,6 +244,7 @@ class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
 class ExtentPropertiesAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.Properties");
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -263,6 +267,7 @@ class ExtentPropertiesAction extends FormActions.ItemFormActionModuleBase {
 class ExtentsListViewItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ExtentsList.ViewItem");
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -281,6 +286,7 @@ class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ExtentsList.DeleteItem");
         this.actionVerb = "Delete Item";
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -306,6 +312,7 @@ class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ExtentsList.MoveUpItem");
         this.actionVerb = "Move Up";
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -319,6 +326,7 @@ class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase
     constructor() {
         super("ExtentsList.MoveDownItem");
         this.actionVerb = "Move Down";
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -331,6 +339,7 @@ class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
     constructor() {
         super("Extent.Store");
         this.actionVerb = "Store Extent";
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -352,6 +361,7 @@ class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
 class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.ExportXmi.Navigate");
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
@@ -398,6 +408,7 @@ class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
 class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.ImportXmi.Navigate");
+        this.skipSaving = true;
     }
 
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

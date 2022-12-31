@@ -28,6 +28,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     class ItemMoveOrCopyActionNavigate extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Item.MoveOrCopy.Navigate");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -78,6 +79,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
             super("Item.Delete");
             this.requiresConfirmation = true;
             this.actionVerb = "Delete Item";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -96,6 +98,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         constructor() {
             super("Item.MoveDownItem");
             this.actionVerb = "Move Up";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -108,6 +111,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         constructor() {
             super("Item.MoveUpItem");
             this.actionVerb = "Move Down";
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -119,6 +123,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     class ItemXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Item.ExportXmi.Navigate");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -160,6 +165,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
     class ItemXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
         constructor() {
             super("Item.ImportXmi.Navigate");
+            this.skipSaving = true;
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {

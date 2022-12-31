@@ -54,6 +54,13 @@ export interface IItemFormActionModule
      * and a reconfirmation by the user is expected.
      */
     requiresConfirmation: boolean | undefined;
+
+    /**
+     * Gets or sets a flag indicating, whether the action shall trigger a saving of the shown item
+     * This can be set to true, in case the action is just a navigation or does not require the storage
+     * of an item.
+     */
+    skipSaving: boolean | undefined;
 }
 
 /**
@@ -68,6 +75,13 @@ export class ItemFormActionModuleBase implements IItemFormActionModule
     actionName: string;
     actionVerb: string;
     requiresConfirmation: boolean | undefined;
+
+    /**
+     * Gets or sets a flag indicating, whether the action shall trigger a saving of the shown item
+     * This can be set to true, in case the action is just a navigation or does not require the storage
+     * of an item. 
+     */
+    skipSaving: boolean | undefined;
 
     execute(form: IIForms.IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         return Promise.resolve(undefined);

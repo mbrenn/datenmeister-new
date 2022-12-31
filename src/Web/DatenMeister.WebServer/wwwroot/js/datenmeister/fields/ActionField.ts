@@ -18,8 +18,9 @@ export class Field extends BaseField implements IFormField {
         
         const parameter = this.field.get('parameter');
 
+        const module = FormActions.getModule(action);
         this.inConfirmation = false;
-        const requireConfirmation = FormActions.requiresConfirmation(action);
+        const requireConfirmation = module?.requiresConfirmation === true;
 
         this.button = $("<button class='btn btn-secondary' type='button'></button>");
         this.button.text(title);
@@ -34,8 +35,10 @@ export class Field extends BaseField implements IFormField {
                         tthis.form.storeFormValuesIntoDom(true);
                     }
 
-                    // We need to set the properties of the item, so the action handler can directly work on the item
-                    await ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+                    if (module?.skipSaving !== true) {
+                        // We need to set the properties of the item, so the action handler can directly work on the item
+                        await ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+                    }
 
                     await FormActions.execute(action, tthis.form, dmElement, parameter);
                 }             

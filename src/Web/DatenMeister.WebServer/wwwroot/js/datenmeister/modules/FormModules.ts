@@ -15,6 +15,7 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
     constructor() {
         super("Forms.Create.ByMetaClass");
         this.actionVerb = "Create by MetaClass";
+        this.skipSaving = true;
     }
 
     async loadForm(): Promise<DmObject> | undefined {

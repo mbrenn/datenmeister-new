@@ -14,6 +14,7 @@ class JsonItemAlertAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("JSON.Item.Alert");
         this.actionVerb = "Trigger JSON Alert";
+        this.skipSaving = true;
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {

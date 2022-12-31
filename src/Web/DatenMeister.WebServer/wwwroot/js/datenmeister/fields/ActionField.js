@@ -18,8 +18,9 @@ define(["require", "exports", "../FormActions", "./Interfaces", "../client/Items
                 const title = this.field.get('title');
                 const action = this.field.get('actionName');
                 const parameter = this.field.get('parameter');
+                const module = FormActions.getModule(action);
                 this.inConfirmation = false;
-                const requireConfirmation = FormActions.requiresConfirmation(action);
+                const requireConfirmation = (module === null || module === void 0 ? void 0 : module.requiresConfirmation) === true;
                 this.button = $("<button class='btn btn-secondary' type='button'></button>");
                 this.button.text(title);
                 this.button.on('click', () => __awaiter(this, void 0, void 0, function* () {
@@ -30,8 +31,10 @@ define(["require", "exports", "../FormActions", "./Interfaces", "../client/Items
                         if (tthis.form.storeFormValuesIntoDom !== undefined) {
                             tthis.form.storeFormValuesIntoDom(true);
                         }
-                        // We need to set the properties of the item, so the action handler can directly work on the item
-                        yield ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+                        if ((module === null || module === void 0 ? void 0 : module.skipSaving) !== true) {
+                            // We need to set the properties of the item, so the action handler can directly work on the item
+                            yield ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+                        }
                         yield FormActions.execute(action, tthis.form, dmElement, parameter);
                     }
                     if (requireConfirmation && !tthis.inConfirmation) {

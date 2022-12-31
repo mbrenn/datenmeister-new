@@ -45,7 +45,7 @@ export interface INavigateToItemParams
     editMode?: boolean;
 }
 
-export function getLinkForNavigateToItem(workspace: string, extentUri: string, itemId: string, param: INavigateToItemParams) {
+export function getLinkForNavigateToItem(workspace: string, extentUri: string, itemId: string, param?: INavigateToItemParams) {
     return Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +
         encodeURIComponent(extentUri + "#" + itemId) +
@@ -57,7 +57,7 @@ export function navigateToItem(workspace: string, extentUri: string, itemId: str
         getLinkForNavigateToItem(workspace, extentUri, itemId, param);
 }
 
-export function getLinkForNavigateToItemByUrl(workspace: string, itemUrl: string, param: INavigateToItemParams) {
+export function getLinkForNavigateToItemByUrl(workspace: string, itemUrl: string, param?: INavigateToItemParams) {
     return Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +
         encodeURIComponent(itemUrl) +

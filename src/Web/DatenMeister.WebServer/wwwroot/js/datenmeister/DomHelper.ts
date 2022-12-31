@@ -70,10 +70,9 @@ export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: 
                     return false;
                 });
             } else {
-                linkElement.attr(
+                linkElement.attr(                    
                     "href",
-                    "/Item/" + encodeURIComponent(item.workspace) +
-                    "/" + encodeURIComponent(item.uri));
+                    Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
                 linkElement.on('click', () => {
                     Navigator.navigateToItemByUrl(item.workspace, item.uri)
                 });

@@ -128,7 +128,7 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
              * Creates the handler for the automatic creation of forms for extent
              */
             if (htmlElements.storeCurrentFormBtn !== undefined) {
-                htmlElements.storeCurrentFormBtn.click(() => __awaiter(this, void 0, void 0, function* () {
+                htmlElements.storeCurrentFormBtn.on('click', () => __awaiter(this, void 0, void 0, function* () {
                     const result = yield ClientForms.createCollectionFormForExtent(workspace, extentUri, configuration.viewMode);
                     Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
                 }));

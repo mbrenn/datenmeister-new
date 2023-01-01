@@ -1,4 +1,4 @@
-define(["require", "exports", "../forms/CollectionForm", "../modules/DefaultLoader"], function (require, exports, CollectionForm, DefaultLoader_1) {
+define(["require", "exports", "../forms/CollectionForm", "../modules/DefaultLoader", "../controls/ElementBreadcrumb"], function (require, exports, CollectionForm, DefaultLoader_1, ElementBreadcrumb_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.init = void 0;
@@ -13,6 +13,8 @@ define(["require", "exports", "../forms/CollectionForm", "../modules/DefaultLoad
             storeCurrentFormBtn: $("#dm-store-current-form-btn"),
             formSelectorContainer: $("#form_selection_container")
         }, workspace, extentUri, { isReadOnly: true });
+        let breadcrumb = new ElementBreadcrumb_1.ElementBreadcrumb($(".dm-breadcrumb-page"));
+        const _ = breadcrumb.createForExtent(workspace, extentUri);
     }
     exports.init = init;
 });

@@ -208,7 +208,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
          * Creates the handler for the automatic creation of forms for extent
          */
         if (htmlElements.storeCurrentFormBtn !== undefined) {
-            htmlElements.storeCurrentFormBtn.click(async () => {
+            htmlElements.storeCurrentFormBtn.on('click', async () => {
                 const result = await ClientForms.createCollectionFormForExtent(
                     workspace,
                     extentUri,

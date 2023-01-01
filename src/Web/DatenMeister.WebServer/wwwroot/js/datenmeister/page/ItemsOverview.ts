@@ -1,6 +1,7 @@
 ﻿
 import * as CollectionForm from "../forms/CollectionForm"
 import {loadDefaultModules} from "../modules/DefaultLoader";
+import {ElementBreadcrumb} from "../controls/ElementBreadcrumb";
 
 export function init(workspace: string, extentUri: string) {
     loadDefaultModules();
@@ -18,4 +19,7 @@ export function init(workspace: string, extentUri: string) {
         workspace,
         extentUri,
         {isReadOnly: true});
+    
+    let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
+    const _ = breadcrumb.createForExtent(workspace, extentUri);
 }

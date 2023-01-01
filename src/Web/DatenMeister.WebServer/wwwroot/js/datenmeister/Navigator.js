@@ -1,7 +1,7 @@
 define(["require", "exports", "./Settings"], function (require, exports, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.navigateToAction = exports.getLinkForNavigateToAction = exports.navigateToCreateNewItemInExtent = exports.getLinkForNavigateToCreateNewItemInExtent = exports.navigateToItemByUrl = exports.getLinkForNavigateToItemByUrl = exports.navigateToItem = exports.getLinkForNavigateToItem = exports.navigateToExtentProperties = exports.navigateToExtent = exports.getLinkForNavigateToExtent = exports.navigateToWorkspace = exports.getLinkForNavigateToWorkspace = exports.navigateToWorkspaces = exports.getLinkForNavigateToWorkspaces = void 0;
+    exports.navigateToCreateItemInProperty = exports.getLinkForNavigateToCreateItemInProperty = exports.navigateToAction = exports.getLinkForNavigateToAction = exports.navigateToCreateNewItemInExtent = exports.getLinkForNavigateToCreateNewItemInExtent = exports.navigateToItemByUrl = exports.getLinkForNavigateToItemByUrl = exports.navigateToItem = exports.getLinkForNavigateToItem = exports.navigateToExtentProperties = exports.navigateToExtent = exports.getLinkForNavigateToExtent = exports.navigateToWorkspace = exports.getLinkForNavigateToWorkspace = exports.navigateToWorkspaces = exports.getLinkForNavigateToWorkspaces = void 0;
     function getLinkForNavigateToWorkspaces() {
         return Settings.baseUrl + "ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces";
     }
@@ -107,5 +107,21 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
         document.location.href = getLinkForNavigateToAction(parameter, actionName, formUri);
     }
     exports.navigateToAction = navigateToAction;
+    function getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, propertyName) {
+        return Settings.baseUrl +
+            "ItemAction/Extent.CreateItemInProperty?workspace=" +
+            encodeURIComponent(workspace) +
+            "&itemUrl=" +
+            encodeURIComponent(itemUrl) +
+            "&metaclass=" +
+            encodeURIComponent(metaclass) +
+            "&property=" +
+            encodeURIComponent(propertyName);
+    }
+    exports.getLinkForNavigateToCreateItemInProperty = getLinkForNavigateToCreateItemInProperty;
+    function navigateToCreateItemInProperty(workspace, itemUrl, metaclass, propertyName) {
+        document.location.href = getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, propertyName);
+    }
+    exports.navigateToCreateItemInProperty = navigateToCreateItemInProperty;
 });
 //# sourceMappingURL=Navigator.js.map

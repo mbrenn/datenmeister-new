@@ -71,6 +71,11 @@ define(["require", "exports", "./client/Elements", "Navigator"], function (requi
                 }
                 result.append(linkElement);
             }
+            else {
+                const linkElement = $("<span></span>");
+                linkElement.text(item.name);
+                result.append(linkElement);
+            }
             // The Edit link
             if (!inhibitEditLink) {
                 const linkElement = $("<a class='dm-item-edit-button'>✒️</a>");

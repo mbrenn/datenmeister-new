@@ -80,6 +80,11 @@ export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: 
 
             result.append(linkElement);
         }
+        else {
+            const linkElement = $("<span></span>");
+            linkElement.text(item.name);
+            result.append(linkElement);
+        }
 
         // The Edit link
         if (!inhibitEditLink) {

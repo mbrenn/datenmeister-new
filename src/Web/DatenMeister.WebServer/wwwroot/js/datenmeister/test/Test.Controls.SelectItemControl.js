@@ -89,7 +89,7 @@ define(["require", "exports", "../client/Workspace", "../client/Extents", "../cl
                     const children = items.children();
                     const textToLookFor = "NamedElement";
                     let { found, foundItem } = lookForChildWithText(children, textToLookFor);
-                    chai.assert.isTrue(found, "Item was not found was not found");
+                    chai.assert.isTrue(found, "Item was not found");
                     chai.assert.isTrue(foundItem !== undefined, "Item Dom was not found was not found");
                     chai.assert.isTrue(itemCounter === 0, "Item Counter is not 0");
                     if (foundItem === undefined)

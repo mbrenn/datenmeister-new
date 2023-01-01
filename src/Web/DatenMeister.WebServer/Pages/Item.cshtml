@@ -10,11 +10,7 @@
 
 <h1>Item</h1>
 
-<div class="dm-breadcrumb">
-    @{ var w = Model.Workspace ?? "No Workspace"; }
-    <a href="/Item/Management/@Html.Raw(HttpUtility.UrlEncode("dm:///_internal%2Fworkspaces#" + w))">@w</a> &lt;
-    <a href="/ItemsOverview/@(HttpUtility.UrlEncode(w))/@(HttpUtility.UrlEncode(Model.ExtentUrl))">@Model.ExtentUrl</a> &lt;
-    @("Element" ?? "Unknown Element")
+<div class="dm-breadcrumb-page">
 </div>
 
 <div id="dm-viewmode-selection-container">

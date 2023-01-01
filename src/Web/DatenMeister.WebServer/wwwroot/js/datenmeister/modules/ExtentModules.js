@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../Mof", "../Navigator", "../Settings"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ECClient, ClientForms, ItemClient, FormActions, RowForm_1, DatenMeister_class_1, Mof, Mof_1, Navigator, Settings) {
+define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../Mof", "../Navigator", "../Settings", "../controls/ElementBreadcrumb"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ECClient, ClientForms, ItemClient, FormActions, RowForm_1, DatenMeister_class_1, Mof, Mof_1, Navigator, Settings, ElementBreadcrumb_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -105,7 +105,6 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                 if (metaClass === undefined) {
                     metaClass = (_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri;
                 }
-                const json = (0, Mof_1.createJsonFromObject)(element);
                 const newItem = yield ItemClient.createItemInExtent(workspace, extentUri, {
                     metaClass: metaClass === undefined ? "" : metaClass,
                     properties: element
@@ -115,16 +114,13 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     Navigator.navigateToItemByUrl(workspace, newItem.itemId);
                 }
                 if (submitMethod === RowForm_1.SubmitMethod.UserDefined1) {
-                    // Recreate a new item
+                    // Recreate a new item, because user clicked on the userdefined item
                     Navigator.navigateToCreateNewItemInExtent(workspace, extentUri, metaClass);
                 }
                 else {
                     // Else, move to the overall items overview
-                    document.location.href = Settings.baseUrl +
-                        "ItemsOverview/" +
-                        encodeURIComponent(workspace) +
-                        "/" +
-                        encodeURIComponent(extentUri);
+                    document.location.href =
+                        Navigator.getLinkForNavigateToExtent(workspace, extentUri);
                 }
             });
         }
@@ -134,6 +130,31 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
             super("Extent.CreateItemInProperty");
             this.actionVerb = "Create Item";
         }
+        preparePage(element, form) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let p = new URLSearchParams(window.location.search);
+                const workspace = p.get('workspace');
+                const itemUrl = p.get('itemUrl');
+                yield (0, ElementBreadcrumb_1.createBreadcrumbForItem)($(".dm-breadcrumb-page"), workspace, itemUrl);
+            });
+        }
+        loadForm(metaClass) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const form = yield ClientForms.getObjectFormForMetaClass(metaClass);
+                const tabs = form.get(_ObjectForm.tab, Mof_1.ObjectType.Array);
+                const firstTab = tabs[0];
+                const fields = firstTab.get(_RowForm.field, Mof_1.ObjectType.Array);
+                const parameter = new Mof_1.DmObject();
+                parameter.set('name', 'CreateItemAndAnotherOne');
+                // Adds the additional button 
+                const actionButton = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._Forms.__ActionFieldData_Uri);
+                actionButton.set(_ActionFieldData.title, "Create Item and another one");
+                actionButton.set(_ActionFieldData.parameter, parameter);
+                actionButton.set(_ActionFieldData.actionName, this.actionName);
+                fields.push(actionButton);
+                return form;
+            });
+        }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
                 let p = new URLSearchParams(window.location.search);
@@ -141,18 +162,27 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     alert('There is no itemUrl given');
                 }
                 else {
+                    if ((parameter === null || parameter === void 0 ? void 0 : parameter.get('name', Mof_1.ObjectType.String)) === 'CreateItemAndAnotherOne') {
+                        submitMethod = RowForm_1.SubmitMethod.UserDefined1;
+                    }
                     const workspace = p.get('workspace');
                     const itemUrl = p.get('itemUrl');
                     const property = p.get('property');
                     const metaclass = p.get('metaclass');
-                    const json = (0, Mof_1.createJsonFromObject)(element);
-                    yield ApiConnection.post(Settings.baseUrl + "api/items/create_child/" + encodeURIComponent(workspace) + "/" + encodeURIComponent(itemUrl), {
+                    yield ItemClient.createItemAsChild(workspace, itemUrl, {
                         metaClass: (metaclass === undefined || metaclass === null) ? "" : metaclass,
                         property: property,
                         asList: true,
-                        properties: json
+                        properties: element
                     });
-                    Navigator.navigateToItemByUrl(workspace, itemUrl);
+                    if (submitMethod === RowForm_1.SubmitMethod.UserDefined1) {
+                        // Recreate a new item, because user clicked on the userdefined item
+                        Navigator.navigateToCreateItemInProperty(workspace, itemUrl, metaclass, property);
+                    }
+                    else {
+                        // If user has clicked on the save button (without closing), the form shall just be updated            
+                        Navigator.navigateToItemByUrl(workspace, itemUrl);
+                    }
                 }
             });
         }

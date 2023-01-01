@@ -24,6 +24,9 @@ define(["require", "exports"], function (require, exports) {
         loadForm(metaClass) {
             return Promise.resolve(undefined);
         }
+        preparePage(element, form) {
+            return Promise.resolve(undefined);
+        }
         loadObject() {
             return Promise.resolve(undefined);
         }

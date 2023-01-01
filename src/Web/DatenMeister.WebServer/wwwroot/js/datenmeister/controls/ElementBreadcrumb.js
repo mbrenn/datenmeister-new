@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../client/Items", "../ApiModels", "../Navigator"], function (require, exports, ClientItems, ApiModels_1, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ElementBreadcrumb = void 0;
+    exports.createBreadcrumbForItem = exports.createBreadcrumbForExtent = exports.ElementBreadcrumb = void 0;
     class ElementBreadcrumb {
         constructor(container) {
             this._container = container;
@@ -51,5 +51,15 @@ define(["require", "exports", "../client/Items", "../ApiModels", "../Navigator"]
         }
     }
     exports.ElementBreadcrumb = ElementBreadcrumb;
+    function createBreadcrumbForExtent(container, workspace, extentUri) {
+        let breadcrumb = new ElementBreadcrumb(container);
+        const _ = breadcrumb.createForExtent(workspace, extentUri);
+    }
+    exports.createBreadcrumbForExtent = createBreadcrumbForExtent;
+    function createBreadcrumbForItem(container, workspace, itemUri) {
+        let breadcrumb = new ElementBreadcrumb(container);
+        const _ = breadcrumb.createForItem(workspace, itemUri);
+    }
+    exports.createBreadcrumbForItem = createBreadcrumbForItem;
 });
 //# sourceMappingURL=ElementBreadcrumb.js.map

@@ -13,6 +13,7 @@ import * as TypeSelectionControl from "../controls/TypeSelectionControl";
 import {ItemWithNameAndId} from "../ApiModels";
 import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items";
 import * as FormActions from "../FormActions";
+import * as Navigator from '../Navigator'
 
 export class Control {
     configuration: IFormConfiguration;
@@ -233,16 +234,8 @@ export class Control {
                         return;
                     }
 
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                        encodeURIComponent(tthis.form.workspace) +
-                        "&itemUrl=" +
-                        encodeURIComponent(tthis.itemUrl) +
-                        "&metaclass=" +
-                        encodeURIComponent(x.selectedType.uri) +
-                        "&property=" +
-                        encodeURIComponent(tthis.propertyName);
+                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
+                        tthis.form.workspace, tthis.itemUrl, x.selectedType.uri, tthis.propertyName);
                 });
                 
                 await control.createControl();

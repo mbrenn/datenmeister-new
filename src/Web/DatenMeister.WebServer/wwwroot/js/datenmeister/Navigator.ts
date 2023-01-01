@@ -118,5 +118,27 @@ export function getLinkForNavigateToAction(parameter: any, actionName: string, f
 
 export function navigateToAction(actionName: string, formUri?: string, parameter?: any) {
     document.location.href = getLinkForNavigateToAction(parameter, actionName, formUri);
+}
 
+export function getLinkForNavigateToCreateItemInProperty(workspace: string, 
+                                                         itemUrl: string,
+                                                         metaclass: string,
+                                                         propertyName: string) {
+    return Settings.baseUrl +
+        "ItemAction/Extent.CreateItemInProperty?workspace=" +
+        encodeURIComponent(workspace) +
+        "&itemUrl=" +
+        encodeURIComponent(itemUrl) +
+        "&metaclass=" +
+        encodeURIComponent(metaclass) +
+        "&property=" +
+        encodeURIComponent(propertyName);
+}
+
+
+export function navigateToCreateItemInProperty(workspace: string,
+                                                         itemUrl: string,
+                                                         metaclass: string,
+                                                         propertyName: string) {
+    document.location.href = getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, propertyName);
 }

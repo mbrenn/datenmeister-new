@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../client/Types", "../Settings", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl", "../client/Actions.Items", "../FormActions"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, ClientTypes, Settings, DomHelper_1, DatenMeister_class_1, TypeSelectionControl, Actions_Items_1, FormActions) {
+define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/SelectItemControl", "../client/Items", "../client/Types", "../DomHelper", "../models/DatenMeister.class", "../controls/TypeSelectionControl", "../client/Actions.Items", "../FormActions", "../Navigator"], function (require, exports, Mof_1, FieldFactory, SIC, ClientItems, ClientTypes, DomHelper_1, DatenMeister_class_1, TypeSelectionControl, Actions_Items_1, FormActions, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Field = exports.Control = void 0;
@@ -166,16 +166,7 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
                                 alert("Nothing is selected.");
                                 return;
                             }
-                            document.location.href =
-                                Settings.baseUrl +
-                                    "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                                    encodeURIComponent(tthis.form.workspace) +
-                                    "&itemUrl=" +
-                                    encodeURIComponent(tthis.itemUrl) +
-                                    "&metaclass=" +
-                                    encodeURIComponent(x.selectedType.uri) +
-                                    "&property=" +
-                                    encodeURIComponent(tthis.propertyName);
+                            document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, x.selectedType.uri, tthis.propertyName);
                         }));
                         yield control.createControl();
                     }));

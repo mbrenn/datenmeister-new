@@ -121,5 +121,8 @@ export async function createActionFormForEmptyObject(
             itemContainer: parent
         }, configuration);
 
+    // Asks the detail form actions, whether we have a form for the action itself
+    await module.preparePage(creator.element, form);
+
     debugElementToDom(form, "#debug_formelement");
 }

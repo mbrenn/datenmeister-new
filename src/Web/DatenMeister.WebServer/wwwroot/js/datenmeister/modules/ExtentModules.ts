@@ -17,6 +17,7 @@ import _ObjectForm = _DatenMeister._Forms._ObjectForm;
 import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
 import {navigateToCreateItemInProperty, navigateToExtentProperties} from "../Navigator";
+import {createBreadcrumbForItem} from "../controls/ElementBreadcrumb";
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -145,6 +146,14 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
         this.actionVerb = "Create Item";
     }
     
+    override async preparePage(element: DmObject, form: IFormNavigation): Promise<void> | undefined {
+        let p = new URLSearchParams(window.location.search);
+        const workspace = p.get('workspace');
+        const itemUrl = p.get('itemUrl');
+        
+        await createBreadcrumbForItem($(".dm-breadcrumb-page"), workspace, itemUrl);
+    }
+
     override async loadForm(metaClass?: string): Promise<DmObject> | undefined {
         const form = await ClientForms.getObjectFormForMetaClass(metaClass);
 

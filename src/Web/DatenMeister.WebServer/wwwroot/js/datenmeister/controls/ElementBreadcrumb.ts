@@ -48,3 +48,13 @@ export class ElementBreadcrumb {
         }
     }
 }
+
+export function createBreadcrumbForExtent(container: JQuery, workspace: string, extentUri: string) {
+    let breadcrumb = new ElementBreadcrumb(container);
+    const _ = breadcrumb.createForExtent(workspace, extentUri);
+}
+
+export function createBreadcrumbForItem(container: JQuery, workspace: string, itemUri: string) {
+    let breadcrumb = new ElementBreadcrumb(container);
+    const _ = breadcrumb.createForItem(workspace, itemUri);
+}

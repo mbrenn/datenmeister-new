@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../Mof", "../Navigator", "../Settings"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ECClient, ClientForms, ItemClient, FormActions, RowForm_1, DatenMeister_class_1, Mof, Mof_1, Navigator, Settings) {
+define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../Mof", "../Navigator", "../Settings", "../controls/ElementBreadcrumb"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ECClient, ClientForms, ItemClient, FormActions, RowForm_1, DatenMeister_class_1, Mof, Mof_1, Navigator, Settings, ElementBreadcrumb_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -129,6 +129,14 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         constructor() {
             super("Extent.CreateItemInProperty");
             this.actionVerb = "Create Item";
+        }
+        preparePage(element, form) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let p = new URLSearchParams(window.location.search);
+                const workspace = p.get('workspace');
+                const itemUrl = p.get('itemUrl');
+                yield (0, ElementBreadcrumb_1.createBreadcrumbForItem)($(".dm-breadcrumb-page"), workspace, itemUrl);
+            });
         }
         loadForm(metaClass) {
             return __awaiter(this, void 0, void 0, function* () {

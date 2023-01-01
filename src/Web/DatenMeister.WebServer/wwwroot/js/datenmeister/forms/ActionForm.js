@@ -97,6 +97,8 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
             yield creator.createFormByObject({
                 itemContainer: parent
             }, configuration);
+            // Asks the detail form actions, whether we have a form for the action itself
+            yield module.preparePage(creator.element, form);
             (0, DomHelper_1.debugElementToDom)(form, "#debug_formelement");
         });
     }

@@ -49,6 +49,15 @@ export interface IItemFormActionModule
         parameter?: DmObject,
         submitMethod?: SubmitMethod) : Promise<void>;
 
+
+    /**
+     * Will be called when the form has been shown and the item to be shown is loaded. 
+     * This event is only called, when the action represents a full form as by the page 'ItemAction'
+     * @param element Element to be shown
+     * @param form Form that was used. 
+     */
+    preparePage(element: DmObject, form: IIForms.IFormNavigation): Promise<void> | undefined 
+
     /**
      * Contains a flag, whether the action is a 'dangerous' action
      * and a reconfirmation by the user is expected.
@@ -88,6 +97,10 @@ export class ItemFormActionModuleBase implements IItemFormActionModule
     }
 
     loadForm(metaClass?:string): Promise<DmObject> | undefined {
+        return Promise.resolve(undefined);
+    }
+    
+    preparePage(element: DmObject, form: IIForms.IFormNavigation): Promise<void> | undefined {
         return Promise.resolve(undefined);
     }
 

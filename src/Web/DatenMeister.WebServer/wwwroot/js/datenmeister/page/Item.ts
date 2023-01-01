@@ -1,6 +1,7 @@
 ﻿
 import * as Form from "../forms/ObjectForm"
 import {loadDefaultModules} from "../modules/DefaultLoader"
+import {ElementBreadcrumb} from "../controls/ElementBreadcrumb";
 
 export function init(workspace: string, itemUri: string) {
     loadDefaultModules();
@@ -15,4 +16,7 @@ export function init(workspace: string, itemUri: string) {
         },
         workspace,
         itemUri);
+
+    let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
+    const _ = breadcrumb.createForItem(workspace, itemUri);
 }

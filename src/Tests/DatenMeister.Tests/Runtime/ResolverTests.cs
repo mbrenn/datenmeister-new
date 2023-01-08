@@ -174,16 +174,29 @@ namespace DatenMeister.Tests.Runtime
         }
         
         [Test]
-        public void TestGetCompositesAllReferenced()
+        public void TestGetCompositesAllReferencedOfItem()
         {
             var extent = GetCompositeTestExtent();
-            var found = extent.GetUriResolver().Resolve(TestUri + "?composites=allReferenced", ResolveType.Default, false)
+            var found = extent.GetUriResolver().Resolve(TestUri + "?fn=item2&composites=allReferenced", ResolveType.Default, false)
                 as IReflectiveCollection;
             
             Assert.That(found, Is.Not.Null);
             Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "child2child1"), Is.True);
             Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.False);
-            Assert.That(found!.Count(), Is.EqualTo(11));
+            Assert.That(found!.Count(), Is.EqualTo(8));
+        }
+        
+        [Test]
+        public void TestGetCompositesAllReferencedAndSelfOfItem()
+        {
+            var extent = GetCompositeTestExtent();
+            var found = extent.GetUriResolver().Resolve(TestUri + "?fn=item2&composites=allReferencedIncludingSelf", ResolveType.Default, false)
+                as IReflectiveCollection;
+            
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "child2child1"), Is.True);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.True);
+            Assert.That(found!.Count(), Is.EqualTo(9));
         }
         
         [Test]
@@ -199,7 +212,7 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(found, Is.Not.Null);
             Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item1"), Is.True);
             Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.False);
-            Assert.That(found!.Count(), Is.EqualTo(11));
+            Assert.That(found!.Count(), Is.EqualTo(2));
         }
         
         [Test]
@@ -217,7 +230,7 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item1"), Is.True);
             Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "child2"), Is.True);
             Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.False);
-            Assert.That(found!.Count(), Is.EqualTo(11));
+            Assert.That(found!.Count(), Is.EqualTo(3));
         }
 
         [Test]

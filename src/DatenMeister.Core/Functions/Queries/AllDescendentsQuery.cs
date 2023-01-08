@@ -10,6 +10,21 @@ using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Core.Functions.Queries
 {
+    [Flags]
+    public enum DescendentMode
+    {
+        OnlyComposites = 0x01, 
+        IncludingItself = 0x02
+    }
+    
+    public static class DescendentModeExtensions
+    {
+        public static bool HasFlagFast(this DescendentMode value, DescendentMode flag)
+        {
+            return (value & flag) != 0;
+        }
+    }
+
     /// <summary>
     ///     This query returns all objects which are descendents (and sub-descendents)
     ///     of an extent, an object or a reflecive collection
@@ -27,34 +42,58 @@ namespace DatenMeister.Core.Functions.Queries
         ///     return this object itself
         /// </summary>
         /// <param name="element">Element being queried</param>
+        /// <returns>An enumeration of all object and its descendents</returns>
+        public static IEnumerable<IObject> GetDescendents(
+            IObject element,
+            DescendentMode descendentMode = 0)
+        {
+            var inner = new AllDescendentsQuery();
+            return inner.GetDescendentsInternal(element, null, descendentMode);
+        }
+
+        /// <summary>
+        ///     Gets all descendents of an object, but does not
+        ///     return this object itself
+        /// </summary>
+        /// <param name="element">Element being queried</param>
         /// <param name="byFollowingProperties">The properties that shall be followed</param>
         /// <returns>An enumeration of all object and its descendents</returns>
-        public static IEnumerable<IObject> GetDescendents(IObject element,
-            IEnumerable<string>? byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(
+            IObject element,
+            IEnumerable<string>? byFollowingProperties = null,
+            DescendentMode descendentMode = 0)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(element, byFollowingProperties?.ToList());
+            return inner.GetDescendentsInternal(element, byFollowingProperties?.ToList(), descendentMode);
         }
 
-        public static IEnumerable<IObject> GetDescendents(IExtent extent,
-            IEnumerable<string>? byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(
+            IExtent extent,
+            IEnumerable<string>? byFollowingProperties = null,
+            DescendentMode descendentMode = 0)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties?.ToList(), null);
+            return inner.GetDescendentsInternal(extent.elements(),
+             byFollowingProperties?.ToList(),
+             null, 
+             descendentMode | DescendentMode.IncludingItself);
         }
 
-        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration,
-            IEnumerable<string>? byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(
+            IEnumerable enumeration,
+            IEnumerable<string>? byFollowingProperties = null,
+            DescendentMode descendentMode = 0)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null);
+            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null, descendentMode);
         }
 
-        public static IEnumerable<IObject> GetCompositeDescendents(IEnumerable enumeration,
+        public static IEnumerable<IObject> GetCompositeDescendents(
+            IEnumerable enumeration,
             IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null, true);
+            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null, DescendentMode.OnlyComposites);
         }
 
         /// <summary>
@@ -62,17 +101,22 @@ namespace DatenMeister.Core.Functions.Queries
         /// </summary>
         /// <param name="element">The element that shall be evaluated</param>
         /// <param name="byFollowingProperties">The properties that are requested</param>
-        /// <param name="onlyComposites">true, if only composite elements shall be regarded</param>
+        /// <param name="descendentMode">Descendent mode to be evaluated</param>
         /// <returns>An enumeration of all descendent elements</returns>
-        private IEnumerable<IObject> GetDescendentsInternal(IObject element, ICollection<string>? byFollowingProperties,
-            bool onlyComposites = false)
+        private IEnumerable<IObject> GetDescendentsInternal(
+            IObject element,
+            ICollection<string>? byFollowingProperties,
+            DescendentMode descendentMode = 0)
         {
             if (_alreadyVisited.Contains(element))
             {
                 yield break;
             }
 
-            yield return element;
+            if (descendentMode.HasFlagFast(DescendentMode.IncludingItself))
+            {
+                yield return element;
+            }
 
             var asMofObject = (MofObject) element;
 
@@ -87,7 +131,7 @@ namespace DatenMeister.Core.Functions.Queries
 
             // Gets the property list
             IEnumerable<string> propertyList;
-            if (onlyComposites)
+            if (descendentMode.HasFlagFast(DescendentMode.OnlyComposites))
             {
                 var metaClass = (element as IElement)?.getMetaClass();
                 if (metaClass == null)
@@ -142,7 +186,7 @@ namespace DatenMeister.Core.Functions.Queries
 
                     // Value is an object... perfect!
                     foreach (var innerValue in GetDescendentsInternal(valueAsObject, byFollowingProperties,
-                                 onlyComposites))
+                                 descendentMode | DescendentMode.IncludingItself))
                     {
                         yield return innerValue;
                     }
@@ -152,7 +196,7 @@ namespace DatenMeister.Core.Functions.Queries
                     // Value is a real enumeration. 
                     var valueAsEnumerable = (IEnumerable) value;
                     foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties, element,
-                                 onlyComposites))
+                                 descendentMode | DescendentMode.IncludingItself))
                     {
                         if (_alreadyVisited.Contains(innerValue))
                         {
@@ -171,14 +215,14 @@ namespace DatenMeister.Core.Functions.Queries
         /// </summary>
         /// <param name="valueAsEnumerable">Value as enumerable which shall be parsed</param>
         /// <param name="byFollowingProperties">The properties that are requested</param>
-        /// <param name="onlyComposites">true, if only composite elements shall be regarded</param>
-        /// <returns>The descendents of each list item of the enumeration</returns>
+        /// <param name="descendentMode">Mode of how to descend</param>
         /// <param name="parent">Parent to be evaluated</param>
+        /// <returns>The descendents of each list item of the enumeration</returns>
         private IEnumerable<IObject> GetDescendentsInternal(
             IEnumerable? valueAsEnumerable,
             ICollection<string>? byFollowingProperties,
             IObject? parent,
-            bool onlyComposites = false)
+            DescendentMode descendentMode = 0)
         {
             var parentAsMofObject = parent as MofObject;
 
@@ -201,7 +245,7 @@ namespace DatenMeister.Core.Functions.Queries
                     if (element is IObject elementAsIObject)
                     {
                         foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties,
-                                     onlyComposites))
+                                     descendentMode))
                         {
                             yield return value;
                         }
@@ -222,7 +266,7 @@ namespace DatenMeister.Core.Functions.Queries
                     if (element is IObject elementAsIObject)
                     {
                         foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties,
-                                     onlyComposites))
+                                     descendentMode))
                         {
                             yield return value;
                         }

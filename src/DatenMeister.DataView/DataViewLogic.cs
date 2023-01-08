@@ -41,7 +41,7 @@ namespace DatenMeister.DataView
             foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
                          .Where(extent => extent.contextURI() != WorkspaceNames.UriExtentWorkspaces)
                          .SelectMany(extent =>
-                             extent.elements().GetAllDescendants().WhenMetaClassIs(metaClass).Cast<IElement>()))
+                             extent.elements().GetAllDescendantsIncludingThemselves().WhenMetaClassIs(metaClass).Cast<IElement>()))
             {
                 yield return dataView;
             }

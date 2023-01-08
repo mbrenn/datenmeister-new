@@ -33,6 +33,8 @@ namespace DatenMeister.Core.EMOF.Implementation.Hooks
         {
             scopeStorage.Get<ResolveHookContainer>().Add(new FullNameResolveHook());
             scopeStorage.Get<ResolveHookContainer>().Add(new PropertyResolveHook());
+            scopeStorage.Get<ResolveHookContainer>().Add(new CompositeResolveHook());
+            scopeStorage.Get<ResolveHookContainer>().Add(new FilterMetaClassResolveHook());
         }
     }
 }

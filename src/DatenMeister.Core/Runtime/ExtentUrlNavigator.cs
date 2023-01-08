@@ -164,7 +164,6 @@ namespace DatenMeister.Core.Runtime
                     foreach (var hook in resolveHook.ResolveHooks)
                     {
                         parameters.CurrentItem = hook.Resolve(parameters);
-                        
                     }
 
                     foundItem = parameters.CurrentItem;

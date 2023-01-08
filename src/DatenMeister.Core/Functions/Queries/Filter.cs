@@ -144,20 +144,22 @@ namespace DatenMeister.Core.Functions.Queries
         public static IReflectiveSequence GetCompositeDescendents(
             this IReflectiveCollection collection)
             =>
-                new TemporaryReflectiveSequence(AllDescendentsQuery.GetCompositeDescendents(collection).Cast<object>().ToList());
+                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, null, DescendentMode.OnlyComposites).Cast<object>().ToList());
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively.
         /// The elements of the collection themselves will also be returned
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="byFollowingProperties">The attached properties are followed up</param>
         /// <returns>A reflective collection, containing all items</returns>
         public static IReflectiveSequence GetAllDescendantsIncludingThemselves(
-            this IReflectiveCollection collection)
+            this IReflectiveCollection collection,
+            IEnumerable<string>? byFollowingProperties = null)
         {
             return new TemporaryReflectiveSequence(
                 collection.AsEnumerable().Union(
-                    AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList()));
+                    AllDescendentsQuery.GetDescendents(collection, byFollowingProperties, DescendentMode.IncludingItself).Cast<object>().ToList()));
         }
 
         /// <summary>
@@ -170,7 +172,11 @@ namespace DatenMeister.Core.Functions.Queries
             this IReflectiveCollection collection)
         {
             return new TemporaryReflectiveSequence(
-                AllDescendentsQuery.GetCompositeDescendents(collection).Cast<object>().ToList());
+                AllDescendentsQuery.GetDescendents(
+                    collection, 
+                    null, 
+                    DescendentMode.IncludingItself | DescendentMode.OnlyComposites)
+                    .Cast<object>().ToList());
         }
 
         /// <summary>

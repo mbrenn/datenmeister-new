@@ -35,7 +35,6 @@ namespace DatenMeister.Tests.Modules.Actions
         public async Task TestClearCollectionInProperty()
         {
             var actionLogic = ActionSetTests.CreateActionLogic();
-            ResolveHookContainer.AddDefaultHooks(actionLogic.ScopeStorage);
             var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
@@ -55,7 +54,6 @@ namespace DatenMeister.Tests.Modules.Actions
             await actionLogic.ExecuteAction(action);
             Assert.That(source.elements().Count(), Is.GreaterThan(0));
             Assert.That(packages.Count(), Is.EqualTo(0));
-
         }
     }
 }

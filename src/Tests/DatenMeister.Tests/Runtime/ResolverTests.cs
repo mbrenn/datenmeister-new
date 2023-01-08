@@ -283,10 +283,13 @@ namespace DatenMeister.Tests.Runtime
 </item>";
 
             var scopeStorage = new ScopeStorage();
+            ResolveHookContainer.AddDefaultHooks(scopeStorage);
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
             var dataViewPlugin = new DataViewPlugin(
                 workspaceLogic, new DataViewLogic(workspaceLogic, scopeStorage), scopeStorage);
             dataViewPlugin.StartThrough();
+            
+            
 
             var provider = new XmiProvider(XDocument.Parse(document));
             return new MofUriExtent(provider, TestUri, scopeStorage);
@@ -318,7 +321,7 @@ namespace DatenMeister.Tests.Runtime
 </item>";
 
             var scopeStorage = new ScopeStorage();
-
+            ResolveHookContainer.AddDefaultHooks(scopeStorage);
             var provider = new XmiProvider(XDocument.Parse(document));
             return new MofUriExtent(provider, TestUri, scopeStorage);
         }

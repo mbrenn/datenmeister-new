@@ -32,6 +32,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Hooks
         public static void AddDefaultHooks(IScopeStorage scopeStorage)
         {
             scopeStorage.Get<ResolveHookContainer>().Add(new FullNameResolveHook());
+            scopeStorage.Get<ResolveHookContainer>().Add(new PropertyResolveHook());
         }
     }
 }

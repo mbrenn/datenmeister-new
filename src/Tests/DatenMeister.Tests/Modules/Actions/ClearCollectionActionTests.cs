@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -34,6 +35,7 @@ namespace DatenMeister.Tests.Modules.Actions
         public async Task TestClearCollectionInProperty()
         {
             var actionLogic = ActionSetTests.CreateActionLogic();
+            ResolveHookContainer.AddDefaultHooks(actionLogic.ScopeStorage);
             var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)

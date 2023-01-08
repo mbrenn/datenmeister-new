@@ -154,31 +154,20 @@ namespace DatenMeister.Core.Runtime
                 }
             }
 
-            // Querying by query
-            var fullName = queryString.Get("fn");
-            if (fullName != null)
-            {
-                foundItem = NamedElementMethods.GetByFullName(_extent, fullName);
-            }
-
-            // Checks whether we have a property
-            var property = queryString.Get("prop");
-            if (property != null && foundItem is MofElement mofElement)
-            {
-                foundItem = mofElement.get<IReflectiveCollection>(property);
-            }
-
             if (queryString.AllKeys.Length > 0)
             {
                 var resolveHook = GetResolveHooks();
                 if (resolveHook != null)
                 {
-                    var parameters = new ResolveHookParameters(queryString, foundItem, _extent);
+                    var parameters = new ResolveHookParameters(queryString, foundItem ?? _extent, _extent);
 
                     foreach (var hook in resolveHook.ResolveHooks)
                     {
-                        foundItem = hook.Resolve(parameters);
+                        parameters.CurrentItem = hook.Resolve(parameters);
+                        
                     }
+
+                    foundItem = parameters.CurrentItem;
                 }
             }
 

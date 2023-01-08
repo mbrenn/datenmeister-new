@@ -6,6 +6,7 @@ using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Helper;
@@ -48,6 +49,8 @@ namespace DatenMeister.Tests.Modules.Actions
         public static ActionLogic CreateActionLogic()
         {
             var scopeStorage = new ScopeStorage();
+            ResolveHookContainer.AddDefaultHooks(scopeStorage);
+            
             scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
             scopeStorage.Add(WorkspaceLogic.InitDefault());
 

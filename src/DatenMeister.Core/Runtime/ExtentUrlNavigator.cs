@@ -33,9 +33,9 @@ namespace DatenMeister.Core.Runtime
             _extent = extent;
         }
 
-        private IResolveHook? GetResolveHook(string parameter)
+        private ResolveHookContainer? GetResolveHooks()
         {
-            return _extent.ScopeStorage?.Get<ResolveHooks>().Get(parameter);
+            return _extent.ScopeStorage?.Get<ResolveHookContainer>();
         }
         
         /// <summary>
@@ -168,16 +168,17 @@ namespace DatenMeister.Core.Runtime
                 foundItem = mofElement.get<IReflectiveCollection>(property);
             }
 
-
-            foreach (var key in queryString.AllKeys.Where(
-                         x => x != "fn" && x != "prop" && x != null))
+            if (queryString.AllKeys.Length > 0)
             {
-                var resolveHook = GetResolveHook(key!);
+                var resolveHook = GetResolveHooks();
                 if (resolveHook != null)
                 {
                     var parameters = new ResolveHookParameters(queryString, foundItem, _extent);
 
-                    foundItem = resolveHook.Resolve(parameters);
+                    foreach (var hook in resolveHook.ResolveHooks)
+                    {
+                        foundItem = hook.Resolve(parameters);
+                    }
                 }
             }
 

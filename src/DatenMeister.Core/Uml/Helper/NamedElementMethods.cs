@@ -114,7 +114,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="extent">Extent to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement? GetByFullName(IUriExtent extent, string fullName) =>
+        public static IElement? GetByFullName(IExtent extent, string fullName) =>
             GetByFullName(extent.elements(), fullName);
 
         /// <summary>

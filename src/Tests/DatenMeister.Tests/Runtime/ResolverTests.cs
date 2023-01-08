@@ -225,7 +225,7 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var hook = new TestResolveHookClass();
-            extent.ScopeStorage!.Get<ResolveHooks>().Add("count", hook);
+            extent.ScopeStorage!.Get<ResolveHookContainer>().Add(hook);
 
             Assert.That(hook.Counts, Is.EqualTo(0));
             var firstChild = extent.GetUriResolver().Resolve(TestUri + "?count=4#child1", ResolveType.Default);
@@ -239,7 +239,11 @@ namespace DatenMeister.Tests.Runtime
 
             public object? Resolve(ResolveHookParameters hookParameters)
             {
-                Counts += Convert.ToInt32(hookParameters.QueryString["count"]);
+                if (hookParameters.QueryString["count"] != null)
+                {
+                    Counts += Convert.ToInt32(hookParameters.QueryString["count"]);
+                }
+
                 return hookParameters.CurrentItem;
             }
         }

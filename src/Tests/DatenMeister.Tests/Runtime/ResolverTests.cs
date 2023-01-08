@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -158,6 +159,66 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(found is IUriExtent, Is.True);
             Assert.That(found!.Equals(extent));
         }
+        
+        [Test]
+        public void TestGetCompositesAllReferencedIncludingSelf()
+        {
+            var extent = GetCompositeTestExtent();
+            var found = extent.GetUriResolver().Resolve(TestUri + "?composites=allReferencedIncludingSelf", ResolveType.Default, false)
+                as IReflectiveCollection;
+            
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "child2child1"), Is.True);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.True);
+            Assert.That(found!.Count(), Is.EqualTo(11));
+        }
+        
+        [Test]
+        public void TestGetCompositesAllReferenced()
+        {
+            var extent = GetCompositeTestExtent();
+            var found = extent.GetUriResolver().Resolve(TestUri + "?composites=allReferenced", ResolveType.Default, false)
+                as IReflectiveCollection;
+            
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "child2child1"), Is.True);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.False);
+            Assert.That(found!.Count(), Is.EqualTo(11));
+        }
+        
+        [Test]
+        public void TestFilterByMetaClasses()
+        {
+            var extent = GetCompositeTestExtent();
+            var found = extent.GetUriResolver().Resolve(
+                    TestUri + "?metaClass=" + HttpUtility.UrlEncode("dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"), 
+                    ResolveType.Default, 
+                    false)
+                as IReflectiveCollection;
+            
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item1"), Is.True);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.False);
+            Assert.That(found!.Count(), Is.EqualTo(11));
+        }
+        
+        [Test]
+        public void TestFilterByMetaClassesAndReferenced()
+        {
+            var extent = GetCompositeTestExtent();
+            var found = extent.GetUriResolver().Resolve(
+                    TestUri + "?metaClass=" + HttpUtility.UrlEncode("dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package")
+                    + "&composites=allReferencedIncludingSelf", 
+                    ResolveType.Default, 
+                    false)
+                as IReflectiveCollection;
+            
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item1"), Is.True);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "child2"), Is.True);
+            Assert.That(found!.OfType<IElement>().Any(x=>x.getOrDefault<string>("name") == "item2"), Is.False);
+            Assert.That(found!.Count(), Is.EqualTo(11));
+        }
 
         [Test]
         public void TestResolveHook()
@@ -222,6 +283,37 @@ namespace DatenMeister.Tests.Runtime
             var dataViewPlugin = new DataViewPlugin(
                 workspaceLogic, new DataViewLogic(workspaceLogic, scopeStorage), scopeStorage);
             dataViewPlugin.StartThrough();
+
+            var provider = new XmiProvider(XDocument.Parse(document));
+            return new MofUriExtent(provider, TestUri, scopeStorage);
+        }
+        
+
+        /// <summary>
+        /// Gets the test extent
+        /// </summary>
+        /// <returns>The extent being used for test extent</returns>
+        private static MofUriExtent GetCompositeTestExtent()
+        {
+            var document = @"
+<item xmlns:p1=""http://www.omg.org/spec/XMI/20131001"">
+    <item p1:id=""item1"" name=""item1"" p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package""/>
+    <item p1:id=""item2"" name=""item2""  >
+        <packagedElement p1:id=""child1"" name=""child1"" />
+        <packagedElement p1:id=""child2"" name=""child2"" p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"">
+            <packagedElement p1:id=""child2child1"" name=""child2child1"" />
+            <packagedElement p1:id=""child2child2"" name=""child2child2"" />
+            <packagedElement p1:id=""child2child3"" name=""child2child3"" />
+        </packagedElement>
+        <packagedElement p1:id=""child3"" name=""child3"">
+            <packagedElement p1:id=""child3child1"" name=""child3child1"" />
+            <packagedElement p1:id=""child3child2"" name=""child3child2"" />            
+        </packagedElement>
+    </item>
+    <item p1:id=""item3"" name=""item3"" p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"" /> 
+</item>";
+
+            var scopeStorage = new ScopeStorage();
 
             var provider = new XmiProvider(XDocument.Parse(document));
             return new MofUriExtent(provider, TestUri, scopeStorage);

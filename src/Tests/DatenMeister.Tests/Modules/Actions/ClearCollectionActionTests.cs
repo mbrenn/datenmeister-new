@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -53,7 +54,6 @@ namespace DatenMeister.Tests.Modules.Actions
             await actionLogic.ExecuteAction(action);
             Assert.That(source.elements().Count(), Is.GreaterThan(0));
             Assert.That(packages.Count(), Is.EqualTo(0));
-
         }
     }
 }

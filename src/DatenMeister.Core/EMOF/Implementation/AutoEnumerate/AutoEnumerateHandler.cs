@@ -52,7 +52,7 @@ namespace DatenMeister.Core.EMOF.Implementation.AutoEnumerate
                     var lastValue = parentExtent.getOrDefault<int>(AutoEnumerateTypeValue);
                     if (lastValue == 0)
                     {
-                        foreach (var innerElement in parentExtent.elements().GetAllDescendants())
+                        foreach (var innerElement in parentExtent.elements().GetAllDescendantsIncludingThemselves())
                         {
                             if (innerElement is IElement innerElementAsElement 
                                 && innerElementAsElement is IHasId asHasId 

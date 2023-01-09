@@ -2,7 +2,7 @@
 
 namespace DatenMeister.Core.EMOF.Implementation.Hooks
 {
-    public record ResolveHookParameters
+    public class ResolveHookParameters
     {
         public ResolveHookParameters(NameValueCollection queryString, object? currentItem, MofUriExtent extent)
         {

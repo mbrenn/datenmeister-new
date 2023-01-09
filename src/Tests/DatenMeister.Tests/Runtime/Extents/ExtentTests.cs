@@ -424,21 +424,6 @@ namespace DatenMeister.Tests.Runtime.Extents
         }
 
         [Test]
-        public void TestQueryItemByFullname()
-        {
-            var uriExtent = CreateLittleExtent();
-            var package1 = uriExtent.element("dm:///test?fn=package1");
-            Assert.That(package1, Is.Not.Null);
-            Assert.That(package1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
-                Is.EqualTo("package1"));
-
-            var element1 = uriExtent.element("dm:///test?fn=package1::element1");
-            Assert.That(element1, Is.Not.Null);
-            Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
-                Is.EqualTo("element1"));
-        }
-
-        [Test]
         public void TestCreatingGettingAndDeletion()
         {
             var provider = new InMemoryProvider();

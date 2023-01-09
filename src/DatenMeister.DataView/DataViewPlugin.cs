@@ -38,8 +38,7 @@ namespace DatenMeister.DataView
                     _workspaceLogic.AddWorkspace(workspace);
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_dataViewLogic));
 
-                    _scopeStorage.Get<ResolveHooks>().Add(
-                        "dataview", new DataViewResolveHook());
+                    _scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var factories = GetDefaultViewNodeFactories();

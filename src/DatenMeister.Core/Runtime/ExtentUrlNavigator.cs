@@ -33,9 +33,9 @@ namespace DatenMeister.Core.Runtime
             _extent = extent;
         }
 
-        private IResolveHook? GetResolveHook(string parameter)
+        private ResolveHookContainer? GetResolveHooks()
         {
-            return _extent.ScopeStorage?.Get<ResolveHooks>().Get(parameter);
+            return _extent.ScopeStorage?.Get<ResolveHookContainer>();
         }
         
         /// <summary>
@@ -154,30 +154,19 @@ namespace DatenMeister.Core.Runtime
                 }
             }
 
-            // Querying by query
-            var fullName = queryString.Get("fn");
-            if (fullName != null)
+            if (queryString.AllKeys.Length > 0)
             {
-                foundItem = NamedElementMethods.GetByFullName(_extent, fullName);
-            }
-
-            // Checks whether we have a property
-            var property = queryString.Get("prop");
-            if (property != null && foundItem is MofElement mofElement)
-            {
-                foundItem = mofElement.get<IReflectiveCollection>(property);
-            }
-
-
-            foreach (var key in queryString.AllKeys.Where(
-                         x => x != "fn" && x != "prop" && x != null))
-            {
-                var resolveHook = GetResolveHook(key!);
+                var resolveHook = GetResolveHooks();
                 if (resolveHook != null)
                 {
-                    var parameters = new ResolveHookParameters(queryString, foundItem, _extent);
+                    var parameters = new ResolveHookParameters(queryString, foundItem ?? _extent, _extent);
 
-                    foundItem = resolveHook.Resolve(parameters);
+                    foreach (var hook in resolveHook.ResolveHooks)
+                    {
+                        parameters.CurrentItem = hook.Resolve(parameters);
+                    }
+
+                    foundItem = parameters.CurrentItem;
                 }
             }
 

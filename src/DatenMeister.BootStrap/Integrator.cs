@@ -10,6 +10,8 @@ using BurnSystems.Logging;
 using DatenMeister.BootStrap.PublicSettings;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
+using DatenMeister.Core.EMOF.Implementation.Hooks.Library;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.ChangeEvents;
@@ -147,6 +149,9 @@ namespace DatenMeister.BootStrap
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
                 manager => new XmlReferenceLoader());
+            
+            // First resolve hooks
+            ResolveHookContainer.AddDefaultHooks(scopeStorage);
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();

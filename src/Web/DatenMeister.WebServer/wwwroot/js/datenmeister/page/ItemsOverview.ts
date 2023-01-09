@@ -5,6 +5,8 @@ import {ElementBreadcrumb} from "../controls/ElementBreadcrumb";
 
 export function init(workspace: string, extentUri: string) {
     loadDefaultModules();
+
+    $("#items_collection_uri").text(extentUri);
     
     let listForm = new CollectionForm.CollectionFormCreator();
     listForm.createCollectionForRootElements(
@@ -22,4 +24,5 @@ export function init(workspace: string, extentUri: string) {
     
     let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
     const _ = breadcrumb.createForExtent(workspace, extentUri);
+    
 }

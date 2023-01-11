@@ -4,6 +4,7 @@ import * as Mof from "../Mof";
 import {createField} from "./FieldFactory";
 import * as Settings from "../Settings";
 import {IFormConfiguration} from "./IFormConfiguration";
+import * as Navigator from '../Navigator'
 
 export class TableForm implements InterfacesForms.IForm {
     elements: Array<Mof.DmObject>;
@@ -22,16 +23,22 @@ export class TableForm implements InterfacesForms.IForm {
     async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         this.parentHtml = parent;
         this.configuration = configuration;
+
+        let metaClass = (this.formElement.get('metaClass') as Mof.DmObject)?.uri;
         const tthis = this;
 
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
 
-        let headline = $("<h2></h2>");
-        headline.text(
+        let headline = $("<h2><a></a></h2>");
+        const headLineLink = $("a", headline);
+        headLineLink.text(
             this.formElement.get('title')
             ?? this.formElement.get('name'));
+        headLineLink.attr(
+            'href',
+            Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, {metaClass: metaClass}));
         parent.append(headline);
 
         const property = this.formElement.get('property');
@@ -106,7 +113,6 @@ export class TableForm implements InterfacesForms.IForm {
 
             table.append(headerRow);
 
-            let metaClass = (this.formElement.get('metaClass') as Mof.DmObject)?.uri;
             let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
 
             let elements = this.elements;

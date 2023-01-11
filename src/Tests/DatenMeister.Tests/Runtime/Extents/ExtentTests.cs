@@ -2,8 +2,10 @@
 using System.IO;
 using System.Linq;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
+using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -124,6 +126,23 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(zipCodeModel, Is.Not.Null);
 
             Assert.That(setDefaultTypes!.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+        }
+
+        [Test]
+        public void TestFindAlternativeUriByFindExtent()
+        {
+            var scopeStorage = new ScopeStorage();
+            ResolveHookContainer.AddDefaultHooks(scopeStorage);
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+            var dataWorkspace = workspaceLogic.GetOrCreateWorkspace("Data");
+
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", scopeStorage);
+            extent.AddAlternativeUri("dm:///otheruri");
+            dataWorkspace.AddExtent(extent);
+
+            var otherUri = workspaceLogic.FindExtent("dm:///otheruri");
+            Assert.That(otherUri, Is.Not.Null);
+            Assert.That(otherUri!.contextURI(), Is.EqualTo("dm:///test"));
         }
 
         [Test]
@@ -264,6 +283,20 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(mofExtent.AlternativeUris.Contains("dm:///test"), Is.True);
             Assert.That(mofExtent.AlternativeUris.Contains("dm:///test2"), Is.True);
         }
+
+        [Test]
+        public static void TestAlternativeUrisWithXmiProvider()
+        {
+            var xmiProvider = new XmiProvider();
+            var mofExtent = new MofUriExtent(xmiProvider, "dm:///a", null);
+            mofExtent.AlternativeUris.Add("dm:///test");
+            mofExtent.AlternativeUris.Add("dm:///test2");
+
+            Assert.That(mofExtent.AlternativeUris.Count, Is.EqualTo(2));
+            Assert.That(mofExtent.AlternativeUris.Contains("dm:///test"), Is.True);
+            Assert.That(mofExtent.AlternativeUris.Contains("dm:///test2"), Is.True);
+        }
+
 
         [Test]
         public static void TestAutoSettingOfIds()

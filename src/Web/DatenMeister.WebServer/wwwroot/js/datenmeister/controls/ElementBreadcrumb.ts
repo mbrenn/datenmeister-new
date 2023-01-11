@@ -37,7 +37,7 @@ export class ElementBreadcrumb {
             const element = $("<a></a>");
             element.text(item.name);
             if (item.ententType === EntentType.Extent) {
-                element.attr('href', Navigator.getLinkForNavigateToExtent(item.workspace, item.extentUri));
+                element.attr('href', Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri));
             } else {
                 element.attr('href', Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
             }

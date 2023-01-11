@@ -220,44 +220,49 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database
         /// </summary>
-        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="workspaceLogic">Collection to be evaluated</param>
         /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
         public static IUriExtent? FindExtent(
-            this IWorkspaceLogic collection,
+            this IWorkspaceLogic workspaceLogic,
             string extentUri)
         {
-            return collection.Workspaces
+            return workspaceLogic.Workspaces
                 .SelectMany(x => x.extent)
                 .OfType<IUriExtent>()
-                .FirstOrDefault(x => x.contextURI() == extentUri);
+                .Select(x => 
+                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces) as IUriExtent)
+                .FirstOrDefault(x => x != null);
         }
 
         /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database
         /// </summary>
-        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="workspaceLogic">Collection to be evaluated</param>
         /// <param name="workspaceId">Id of the workspace to be added</param>
         /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IExtent? FindExtent(
-            this IWorkspaceLogic collection,
+        public static IUriExtent? FindExtent(
+            this IWorkspaceLogic workspaceLogic,
             string workspaceId,
             string extentUri)
         {
             if (string.IsNullOrEmpty(workspaceId))
             {
                 // If the workspace is empty return it itself
-                var workspace = collection.GetDefaultWorkspace();
+                var workspace = workspaceLogic.GetDefaultWorkspace();
                 if (workspace == null) return null;
 
                 workspaceId = workspace.id;
             }
 
-            return collection.Workspaces
-                .FirstOrDefault(x => x.id == workspaceId)
-                ?.extent
-                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
+            return workspaceLogic.Workspaces
+                .Where(x => x.id == workspaceId)
+                .SelectMany(x => x.extent)
+                .OfType<IUriExtent>()
+                .Select(x =>
+                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces) as IUriExtent)
+                .FirstOrDefault(x => x != null);
         }
 
         /// <summary>

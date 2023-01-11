@@ -56,7 +56,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     const workspace = p.get('workspace');
                     const extentUri = p.get('extent');
                     yield ECClient.setProperties(workspace, extentUri, element);
-                    Navigator.navigateToExtent(workspace, extentUri);
+                    Navigator.navigateToExtentItems(workspace, extentUri);
                 }
             });
         }
@@ -120,7 +120,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                 else {
                     // Else, move to the overall items overview
                     document.location.href =
-                        Navigator.getLinkForNavigateToExtent(workspace, extentUri);
+                        Navigator.getLinkForNavigateToExtentItems(workspace, extentUri);
                 }
             });
         }
@@ -235,7 +235,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
             return __awaiter(this, void 0, void 0, function* () {
                 let extentUri = element.get('uri');
                 let workspaceId = element.get('workspaceId');
-                Navigator.navigateToExtent(workspaceId, extentUri);
+                Navigator.navigateToExtentItems(workspaceId, extentUri);
             });
         }
     }
@@ -411,7 +411,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     // Export the Xmi and stores it into the element
                     const importedXmi = yield ECClient.importXmi(workspace, extentUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof_1.ObjectType.String));
                     if (importedXmi.success) {
-                        Navigator.navigateToExtent(workspace, extentUri);
+                        Navigator.navigateToExtentItems(workspace, extentUri);
                     }
                     else {
                         alert('Something failed');

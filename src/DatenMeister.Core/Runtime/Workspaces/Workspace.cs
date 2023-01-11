@@ -31,7 +31,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <summary>
         ///     Adds plugins which allow additional extents to an extent
         /// </summary>
-        public List<IEnumerable<IExtent>> ExtentPlugins = new();
+        public List<IEnumerable<IExtent>> ExtentFactory = new();
 
         public Workspace(string id, string annotation = "")
         {
@@ -136,7 +136,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
                     }
                 }
 
-                foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
+                foreach (var pluginExtent in ExtentFactory.SelectMany(plugin => plugin))
                 {
                     result.Add(pluginExtent);
                 }

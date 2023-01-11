@@ -9,7 +9,7 @@ define(["require", "exports", "./client/Elements", "./Navigator"], function (req
                     (0, Navigator_1.navigateToItemByUrl)(result.reference.workspace, result.reference.uri);
                     break;
                 case 'referenceExtent':
-                    (0, Navigator_1.navigateToExtent)(result.reference.workspace, result.reference.extentUri);
+                    (0, Navigator_1.navigateToExtentItems)(result.reference.workspace, result.reference.extentUri);
                     break;
                 case 'none':
                     alert('Unfortunately, nothing was found.');

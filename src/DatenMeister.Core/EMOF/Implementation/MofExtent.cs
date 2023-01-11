@@ -322,9 +322,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
-                var nullObject = Provider.Get(null) ??
-                                 throw new InvalidOperationException(
-                                     "Provider does not support setting of extent properties");
+                IProviderObject nullObject;
+                
+                lock (_syncObject)
+                {
+                    nullObject = Provider.Get(null) ??
+                                     throw new InvalidOperationException(
+                                         "Provider does not support setting of extent properties");
+                }
 
                 var result = new MofElement(nullObject, this);
                 result.SetMetaClass(_DatenMeister.TheOne.Management.__ExtentProperties);

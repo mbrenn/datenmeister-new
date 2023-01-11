@@ -1,5 +1,5 @@
 import {findBySearchString} from "./client/Elements";
-import {navigateToExtent, navigateToItemByUrl} from "./Navigator";
+import {navigateToExtentItems, navigateToItemByUrl} from "./Navigator";
 
 export function executeSearchByText(searchText: string) {
     findBySearchString(searchText).then(result => {
@@ -11,7 +11,7 @@ export function executeSearchByText(searchText: string) {
                 );
                 break;
             case 'referenceExtent':
-                navigateToExtent(
+                navigateToExtentItems(
                     result.reference.workspace,
                     result.reference.extentUri
                 );

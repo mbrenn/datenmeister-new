@@ -36,7 +36,7 @@ namespace DatenMeister.DataView
                         "Container of all views which are created dynamically.");
                     workspace.IsDynamicWorkspace = true;
                     _workspaceLogic.AddWorkspace(workspace);
-                    workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_dataViewLogic));
+                    workspace.ExtentFactory.Add(new DataViewExtentFactory(_dataViewLogic, _scopeStorage));
 
                     _scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
                     break;

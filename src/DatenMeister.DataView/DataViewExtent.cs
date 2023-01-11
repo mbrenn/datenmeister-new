@@ -1,25 +1,30 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Proxies.ReadOnly;
 
 namespace DatenMeister.DataView
 {
-    public class DataViewExtent : IUriExtent
+    public class DataViewExtent : IUriExtent, IUriResolver
     {
         private readonly IElement _dataViewElement;
         private readonly DataViewLogic _dataViewLogic;
 
-        public DataViewExtent(IElement dataViewElement, DataViewLogic dataViewLogic)
+        private ExtentUrlNavigator _urlNavigator; 
+
+        public DataViewExtent(IElement dataViewElement, DataViewLogic dataViewLogic, IScopeStorage scopeStorage)
         {
             _dataViewElement = dataViewElement ?? throw new ArgumentNullException(nameof(dataViewElement));
             _dataViewLogic = dataViewLogic ?? throw new ArgumentNullException(nameof(dataViewLogic));
+            _urlNavigator = new ExtentUrlNavigator(this, scopeStorage);
         }
 
         public bool equals(object? other) =>
@@ -65,7 +70,19 @@ namespace DatenMeister.DataView
 
         public IElement? element(string uri)
         {
-            return elements().FirstOrDefault(x => x != null && x.AsIElement()?.GetUri() == uri) as IElement;
+            return _urlNavigator.element(uri) as IElement;
+        }
+
+        
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        {
+            return _urlNavigator.element(uri);
+        }
+
+        
+        public IElement? ResolveById(string id)
+        {
+            return _urlNavigator.element("#" + id) as IElement;
         }
     }
 }

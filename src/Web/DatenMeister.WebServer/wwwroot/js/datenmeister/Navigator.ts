@@ -19,15 +19,30 @@ export function navigateToWorkspace(workspace: string) {
         getLinkForNavigateToWorkspace(workspace);
 }
 
-export function getLinkForNavigateToExtent(workspace: string, extentUri: string) {
-    return Settings.baseUrl + "ItemsOverview/" +
-        encodeURIComponent(workspace) + "/" +
-        encodeURIComponent(extentUri);
+export interface NavigationToExtentItemsParameter{
+    /**
+     * Metaclass to which the shown items will be filtered
+     */
+    metaClass?: string; 
 }
 
-export function navigateToExtent(workspace: string, extentUri: string) {
+export function getLinkForNavigateToExtentItems(workspace: string, extentUri: string, parameter?: NavigationToExtentItemsParameter) {
+    let urlParameter = "";
+    let ampersand = '?';
+
+    if (parameter?.metaClass !== undefined) {
+        urlParameter += ampersand + "metaclass=" + encodeURIComponent(parameter.metaClass);
+        ampersand = '&';
+    }
+
+    return Settings.baseUrl + "ItemsOverview/" +
+        encodeURIComponent(workspace) + "/" +
+        encodeURIComponent(extentUri + urlParameter);
+}
+
+export function navigateToExtentItems(workspace: string, extentUri: string, parameter?: NavigationToExtentItemsParameter) {
     document.location.href =
-        getLinkForNavigateToExtent(workspace, extentUri);
+        getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
 }
 
 export function navigateToExtentProperties(workspace: string, extentUri: string) {

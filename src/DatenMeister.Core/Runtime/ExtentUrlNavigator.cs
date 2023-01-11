@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Hooks;
-using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
-using DatenMeister.Core.Uml.Helper;
 
 // ReSharper disable InconsistentNaming
 
@@ -26,16 +24,19 @@ namespace DatenMeister.Core.Runtime
 
         private readonly ConcurrentDictionary<string, IHasId> _cacheIds = new();
 
-        private readonly MofUriExtent _extent;
+        private readonly IUriExtent _extent;
+        
+        private readonly IScopeStorage? _scopeStorage;
 
-        public ExtentUrlNavigator(MofUriExtent extent)
+        public ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
         {
             _extent = extent;
+            _scopeStorage = scopeStorage;
         }
 
         private ResolveHookContainer? GetResolveHooks()
         {
-            return _extent.ScopeStorage?.Get<ResolveHookContainer>();
+            return _scopeStorage?.Get<ResolveHookContainer>();
         }
         
         /// <summary>
@@ -71,9 +72,13 @@ namespace DatenMeister.Core.Runtime
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
             var extentUri = posExtentEnd == -1 ? uri : uri.Substring(0, posExtentEnd);
 
+            // Check, if the given extent contains the alternative uri
+            var matchesAlternativeUri =
+                _extent is IHasAlternativeUris hasAlternativeUris && hasAlternativeUris.AlternativeUris.Contains(extentUri);
+            
             // Checks, if the extent itself is selected
             if (posQuestion == -1 && posHash == -1
-                                  && (uri == _extent.contextURI() || _extent.AlternativeUris.Contains(uri)))
+                                  && (uri == _extent.contextURI() || matchesAlternativeUri))
             {
                 return _extent;
             }
@@ -93,7 +98,7 @@ namespace DatenMeister.Core.Runtime
             // Verifies whether the context can be found in context uri or alternative Uris if extent uri is set
             if (!string.IsNullOrEmpty(extentUri) &&
                 extentUri != _extent.contextURI() &&
-                !_extent.AlternativeUris.Contains(extentUri))
+                !matchesAlternativeUri)
             {
                 return null;
             }
@@ -159,7 +164,7 @@ namespace DatenMeister.Core.Runtime
                 var resolveHook = GetResolveHooks();
                 if (resolveHook != null)
                 {
-                    var parameters = new ResolveHookParameters(queryString, foundItem ?? _extent, _extent);
+                    var parameters = new ResolveHookParameters(_scopeStorage, queryString, foundItem ?? _extent, _extent);
 
                     foreach (var hook in resolveHook.ResolveHooks)
                     {
@@ -220,9 +225,11 @@ namespace DatenMeister.Core.Runtime
         {
             // Queries the object
             var queryObjectId = HttpUtility.UrlDecode(fragment);
-
+            
             // Check if the extent type already supports the direct querying of objects
-            if (_extent.Provider is IProviderSupportFunctions supportFunctions &&
+            if (
+                _extent is MofUriExtent mofUriExtent && 
+             mofUriExtent.Provider is IProviderSupportFunctions supportFunctions &&
                 supportFunctions.ProviderSupportFunctions.QueryById != null)
             {
                 var resultingObject = supportFunctions.ProviderSupportFunctions.QueryById(queryObjectId);
@@ -231,8 +238,8 @@ namespace DatenMeister.Core.Runtime
 #if DEBUG
                     if (_extent == null) throw new InvalidOperationException("_extent is null");
 #endif
-                    var resultElement = new MofElement(resultingObject, _extent)
-                        { Extent = _extent };
+                    var resultElement = new MofElement(resultingObject, mofUriExtent)
+                        { Extent = mofUriExtent };
                     return resultElement;
                 }
             }

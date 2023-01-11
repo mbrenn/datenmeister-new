@@ -554,7 +554,6 @@ namespace DatenMeister.Forms
                         viewModeId = configuration.ViewModeId ?? "",
                         metaClass = _DatenMeister.TheOne.Management.__Extent
                     });
-            
 
             // 
             if (foundForm != null)

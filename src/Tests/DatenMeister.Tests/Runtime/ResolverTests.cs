@@ -25,7 +25,7 @@ namespace DatenMeister.Tests.Runtime
         public void TestExtentUrlNavigator()
         {
             var extent = GetTestExtent();
-            var uriExtentNavigator = new ExtentUrlNavigator(extent);
+            var uriExtentNavigator = new ExtentUrlNavigator(extent, extent.ScopeStorage);
             var firstChild = uriExtentNavigator.element(TestUri + "#child1") as IElement;
             var firstChildCached = uriExtentNavigator.element(TestUri + "#child1") as IElement;
 

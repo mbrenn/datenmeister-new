@@ -10,6 +10,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Forms;
 using DatenMeister.Forms;
+using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Types;
 using DatenMeister.WebServer.Controller;
@@ -27,6 +28,19 @@ namespace DatenMeister.Tests.Web
             var foundForm = formsController.GetCollectionFormForExtent(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
+                ViewModes.Default);
+            Assert.That(foundForm, Is.Not.Null);
+            Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
+        }
+        
+        [Test]
+        public void TestDefaultForExtentWithMetaClass()
+        {
+            var (zipExtent, formsController, _) = CreateZipExtent();
+            var foundForm = formsController.GetCollectionFormForExtent(
+                WorkspaceNames.WorkspaceData,
+                zipExtent.contextURI() 
+                    + "?metaclass=" + HttpUtility.UrlEncode( "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode"),
                 ViewModes.Default);
             Assert.That(foundForm, Is.Not.Null);
             Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
@@ -247,7 +261,7 @@ namespace DatenMeister.Tests.Web
         /// </summary>
         /// <returns>Tuple of zipExtent and corresponding Forms Controller</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private static (
+        internal static (
             IUriExtent zipExtent,
             FormsController formsController,
             FormsControllerInternal internalFormController) CreateZipExtent()

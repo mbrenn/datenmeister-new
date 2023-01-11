@@ -1,7 +1,7 @@
 define(["require", "exports", "./Settings"], function (require, exports, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.navigateToCreateItemInProperty = exports.getLinkForNavigateToCreateItemInProperty = exports.navigateToAction = exports.getLinkForNavigateToAction = exports.navigateToCreateNewItemInExtent = exports.getLinkForNavigateToCreateNewItemInExtent = exports.navigateToItemByUrl = exports.getLinkForNavigateToItemByUrl = exports.navigateToItem = exports.getLinkForNavigateToItem = exports.navigateToExtentProperties = exports.navigateToExtent = exports.getLinkForNavigateToExtent = exports.navigateToWorkspace = exports.getLinkForNavigateToWorkspace = exports.navigateToWorkspaces = exports.getLinkForNavigateToWorkspaces = void 0;
+    exports.navigateToCreateItemInProperty = exports.getLinkForNavigateToCreateItemInProperty = exports.navigateToAction = exports.getLinkForNavigateToAction = exports.navigateToCreateNewItemInExtent = exports.getLinkForNavigateToCreateNewItemInExtent = exports.navigateToItemByUrl = exports.getLinkForNavigateToItemByUrl = exports.navigateToItem = exports.getLinkForNavigateToItem = exports.navigateToExtentProperties = exports.navigateToExtentItems = exports.getLinkForNavigateToExtentItems = exports.navigateToWorkspace = exports.getLinkForNavigateToWorkspace = exports.navigateToWorkspaces = exports.getLinkForNavigateToWorkspaces = void 0;
     function getLinkForNavigateToWorkspaces() {
         return Settings.baseUrl + "ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces";
     }
@@ -21,17 +21,23 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
             getLinkForNavigateToWorkspace(workspace);
     }
     exports.navigateToWorkspace = navigateToWorkspace;
-    function getLinkForNavigateToExtent(workspace, extentUri) {
+    function getLinkForNavigateToExtentItems(workspace, extentUri, parameter) {
+        let urlParameter = "";
+        let ampersand = '?';
+        if ((parameter === null || parameter === void 0 ? void 0 : parameter.metaClass) !== undefined) {
+            urlParameter += ampersand + "metaclass=" + encodeURIComponent(parameter.metaClass);
+            ampersand = '&';
+        }
         return Settings.baseUrl + "ItemsOverview/" +
             encodeURIComponent(workspace) + "/" +
-            encodeURIComponent(extentUri);
+            encodeURIComponent(extentUri + urlParameter);
     }
-    exports.getLinkForNavigateToExtent = getLinkForNavigateToExtent;
-    function navigateToExtent(workspace, extentUri) {
+    exports.getLinkForNavigateToExtentItems = getLinkForNavigateToExtentItems;
+    function navigateToExtentItems(workspace, extentUri, parameter) {
         document.location.href =
-            getLinkForNavigateToExtent(workspace, extentUri);
+            getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
     }
-    exports.navigateToExtent = navigateToExtent;
+    exports.navigateToExtentItems = navigateToExtentItems;
     function navigateToExtentProperties(workspace, extentUri) {
         document.location.href =
             Settings.baseUrl + "Item/Management/" +

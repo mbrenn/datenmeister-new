@@ -243,7 +243,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 .SelectMany(x => x.extent)
                 .OfType<IUriExtent>()
                 .Select(x => 
-                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces) as IUriExtent)
+                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces, false) as IUriExtent)
                 .FirstOrDefault(x => x != null);
         }
 
@@ -292,7 +292,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 .SelectMany(x => x.extent)
                 .OfType<IUriExtent>()
                 .Select(x =>
-                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace))
+                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace, false))
                 .FirstOrDefault(x => x != null);
 
             switch (foundExtent)

@@ -43,7 +43,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
             ScopeStorage = scopeStorage;
         }
 
-
         public IScopeStorage? ScopeStorage { get; }
 
         public Workspace? GetWorkspaceOfExtent(IExtent? extent)

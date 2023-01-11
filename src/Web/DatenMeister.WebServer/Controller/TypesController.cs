@@ -7,6 +7,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Json;
 using DatenMeister.Types;
+using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -54,9 +55,9 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/types/propertytype/{workspace}/{metaClass}/{propertyName}")]
         public ActionResult<ItemWithNameAndId?> GetPropertyType(string workspace, string metaClass, string propertyName)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            metaClass = HttpUtility.UrlDecode(metaClass);
-            propertyName = HttpUtility.UrlDecode(propertyName);
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            metaClass = MvcUrlEncoder.DecodePathOrEmpty(metaClass);
+            propertyName = MvcUrlEncoder.DecodePathOrEmpty(propertyName);
             
             var foundMetaClass = _workspaceLogic.GetWorkspace(workspace)?.FindObjectByUri(metaClass);
             if (foundMetaClass == null)

@@ -76,16 +76,20 @@ namespace DatenMeister.Forms.FormCreator
         ///     and creating the form out of the max elements
         /// </summary>
         /// <param name="extent">Extent to be parsed</param>
+        /// <param name="collection">Collection to be evaluated</param>
         /// <param name="creationMode">The creation mode being used</param>
         /// <returns>The created element</returns>
-        public IElement CreateCollectionFormForExtent(IExtent extent, FormFactoryConfiguration creationMode)
+        public IElement CreateCollectionFormForExtent(
+            IExtent extent,
+            IReflectiveCollection collection,
+            FormFactoryConfiguration creationMode)
         {
             var extentFormConfiguration = new CollectionFormConfiguration();
             var extentTypes = extent.GetConfiguration().ExtentTypes;
             extentFormConfiguration.ExtentTypes.AddRange(extentTypes);
            
             return CreateCollectionFormForCollection(
-                extent.elements().TakeFirst(100),
+                collection.TakeFirst(100),
                 creationMode,
                 extentFormConfiguration);
         }

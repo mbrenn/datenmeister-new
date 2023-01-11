@@ -84,7 +84,6 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(issue.getOrDefault<string>("state"), Is.EqualTo("Closed"));
         }
         
-        
         [Test]
         public void TestOfItemInPropertyToCollection()
         {    

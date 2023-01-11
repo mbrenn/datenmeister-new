@@ -52,8 +52,11 @@ namespace DatenMeister.WebServer.Controller
 
         public IElement GetCollectionFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
         {
-            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
-                         ?? throw new InvalidOperationException("Extent is not found");
+            var (collection, extent) = _workspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
+            if (collection == null || extent == null)
+            {
+                throw new InvalidOperationException("Extent not found: " + extentUri);
+            }
             
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateCollectionFormForExtent(extent,

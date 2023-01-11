@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -316,6 +314,5 @@ namespace DatenMeister.Forms.FormCreator
             result.set(_DatenMeister._Forms._CollectionForm.tab, new []{rowForm});
             return result;
         }
-        
     }
 }

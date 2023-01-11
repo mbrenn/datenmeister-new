@@ -235,7 +235,7 @@ namespace DatenMeister.Tests.Web
             Assert.That(zipItem, Is.Not.Null);
             var actionResult = formsController.CreateObjectFormForItem(
                 WorkspaceNames.WorkspaceData,
-                HttpUtility.UrlEncode(zipItem.GetUri()!),
+                zipItem.GetUri()!,
                 ViewModes.Default);
 
             var result = actionResult.Value!;

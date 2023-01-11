@@ -1,5 +1,8 @@
 ﻿using System.Web;
+using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
@@ -23,9 +26,9 @@ namespace DatenMeister.WebServer.Pages
 
         public void OnGet(string workspace, string extent, string? item)
         {
-            Workspace = HttpUtility.UrlDecode(workspace);
-            Extent = HttpUtility.UrlDecode(extent);
-            Item = HttpUtility.UrlDecode(item);
+            Workspace = MvcUrlEncoder.DecodePath(workspace);
+            Extent = MvcUrlEncoder.DecodePath(extent);
+            Item = MvcUrlEncoder.DecodePath(item);
         }
     }
 }

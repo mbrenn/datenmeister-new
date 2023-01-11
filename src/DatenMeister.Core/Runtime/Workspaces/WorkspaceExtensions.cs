@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -36,6 +37,17 @@ namespace DatenMeister.Core.Runtime.Workspaces
             }
 
             return element;
+        }
+
+        public static object? FindObjectByUri(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
+        {
+            var workspace = workspaceLogic.GetWorkspace(workspaceId);
+            if (workspace == null)
+            {
+                return null;
+            }
+
+            return workspace.Resolve(uri, ResolveType.NoMetaWorkspaces);
         }
 
         public static IObject? FindObjectByUri(this Workspace workspace, string uri)
@@ -247,22 +259,53 @@ namespace DatenMeister.Core.Runtime.Workspaces
             string workspaceId,
             string extentUri)
         {
+            return FindExtentAndCollection(workspaceLogic, workspaceId, extentUri).uriExtent;
+        }
+
+        /// <summary>
+        /// Finds the extent with the given uri in one of the workspaces in the database.
+        /// The query can reference to a collection (by filtering items or requesting descendents).
+        /// The extent, containing the collection is independently returned to allow queries against
+        /// extent-types or using other extent information.   
+        /// </summary>
+        /// <param name="workspaceLogic">Collection to be evaluated</param>
+        /// <param name="workspaceId">Id of the workspace to be added</param>
+        /// <param name="extentUri">Uri, which needs to be retrieved</param>
+        /// <returns>Found extent or null if not found</returns>
+        public static (IReflectiveCollection? collection, IUriExtent? uriExtent) 
+            FindExtentAndCollection(
+            this IWorkspaceLogic workspaceLogic,
+            string workspaceId,
+            string extentUri)
+        {
             if (string.IsNullOrEmpty(workspaceId))
             {
                 // If the workspace is empty return it itself
                 var workspace = workspaceLogic.GetDefaultWorkspace();
-                if (workspace == null) return null;
+                if (workspace == null) return (null, null);
 
                 workspaceId = workspace.id;
             }
 
-            return workspaceLogic.Workspaces
+            var foundExtent = workspaceLogic.Workspaces
                 .Where(x => x.id == workspaceId)
                 .SelectMany(x => x.extent)
                 .OfType<IUriExtent>()
                 .Select(x =>
-                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces) as IUriExtent)
+                    x.GetUriResolver().Resolve(extentUri, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace))
                 .FirstOrDefault(x => x != null);
+
+            switch (foundExtent)
+            {
+                case IUriExtent asExtent:
+                    return (asExtent.elements(), asExtent);
+                case IReflectiveCollection collection:
+                    return (collection, collection.GetAssociatedExtent() as IUriExtent);
+                case IElement element:
+                    return (new TemporaryReflectiveCollection(new[] { element }), element.GetUriExtentOf());
+            }
+
+            return (null, null);
         }
 
         /// <summary>
@@ -274,17 +317,17 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <param name="workspace">The found workspace</param>
         /// <param name="extent">The found extent</param>
         /// <returns>The tuple containing workspace and extent</returns>
-        public static void FindExtentAndWorkspace(
+        public static (IWorkspace? workspace, IExtent? extent) FindExtentAndWorkspace(
             this IWorkspaceLogic collection,
             string workspaceId,
-            string extentUri,
-            out IWorkspace? workspace,
-            out IExtent? extent)
+            string extentUri)
         {
-            workspace = collection.Workspaces
+            var workspace = collection.Workspaces
                 .FirstOrDefault(x => x.id == workspaceId);
-            extent = workspace?.extent
+            var extent = workspace?.extent
                 .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
+
+            return (workspace, extent);
         }
 
         /// <summary>
@@ -307,26 +350,32 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// Finds the extent with the given uri in one of the workspaces in the database.
         /// Returns the extent, if the uri points to the extent directly
         /// </summary>
-        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="workspaceLogic">Collection to be evaluated</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="uri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
         public static IObject? FindItem(
-            this IWorkspaceLogic collection,
+            this IWorkspaceLogic workspaceLogic,
             string workspaceId,
             string uri)
         {
-            var extent = collection.FindExtent(workspaceId, uri);
-            if (extent != null)
+            if (string.IsNullOrEmpty(workspaceId))
             {
-                return extent;
+                // If the workspace is empty return it itself
+                var workspace = workspaceLogic.GetDefaultWorkspace();
+                if (workspace == null) return null;
+
+                workspaceId = workspace.id;
             }
-            
-            return collection.Workspaces
-                .Where(x=>x.id == workspaceId)
+
+            return workspaceLogic.Workspaces
+                .Where(x => x.id == workspaceId)
                 .SelectMany(x => x.extent)
-                .Select(x => (x as IUriExtent)?.element(uri))
-                .FirstOrDefault(x => x != null);
+                .OfType<IUriExtent>()
+                .Select(x =>
+                    x.GetUriResolver().Resolve(uri, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace))
+                .OfType<IObject>()
+                .FirstOrDefault();
         }
 
         public static IElement? FindItem(

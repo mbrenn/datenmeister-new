@@ -11,18 +11,18 @@ namespace DatenMeister.WebServer.Controller
     public class ItemsControllerInternal
     {
         private readonly IScopeStorage _scopeStorage;
-        private readonly IWorkspaceLogic _workspaceLogic;
+        public IWorkspaceLogic WorkspaceLogic { get; }
 
         public ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
-            _workspaceLogic = workspaceLogic;
+            WorkspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
         }
 
         public IElement? GetItemInternal(string workspaceId, string extentUri, string itemId,
             out MofJsonConverter converter)
         {
-            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri) as IUriExtent;
+            var extent = WorkspaceLogic.FindExtent(workspaceId, extentUri) as IUriExtent;
             if (extent == null) throw new InvalidOperationException("Extent is not found");
 
             var foundElement = extent.element("#" + itemId);
@@ -61,14 +61,14 @@ namespace DatenMeister.WebServer.Controller
         {
             if (string.IsNullOrEmpty(workspaceId) || workspaceId == "_")
             {
-                if (_workspaceLogic.Resolve(itemUri, ResolveType.Default, false) is not IObject foundElement)
+                if (WorkspaceLogic.Resolve(itemUri, ResolveType.Default, false) is not IObject foundElement)
                     throw new InvalidOperationException($"Element '{itemUri}' is not found");
 
                 return foundElement;
             }
             else
             {
-                var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+                var workspace = WorkspaceLogic.GetWorkspace(workspaceId);
                 if (workspace == null) throw new InvalidOperationException($"Workspace '{workspaceId}' is not found");
 
                 if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)

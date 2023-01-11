@@ -9,6 +9,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Controller;
+using DatenMeister.WebServer.Library.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -76,7 +77,8 @@ namespace DatenMeister.Tests.Web
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var rootElements = itemsController
-                                   .GetRootElements(WorkspaceNames.WorkspaceData,
+                                   .GetRootElements(
+                                       WorkspaceNames.WorkspaceData,
                                        ElementControllerTests.UriTemporaryExtent).Value?.ToString()
                                ?? throw new InvalidOperationException("Should not happen");
             Assert.That(rootElements, Is.Not.Null);
@@ -98,7 +100,7 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(found, Is.Not.Null);
         }
-        
+
 
         [Test]
         public void TestGetRootElementsWithMetaClass()
@@ -108,8 +110,11 @@ namespace DatenMeister.Tests.Web
             var itemsController = new ItemsController(x.WorkspaceLogic, x.ScopeStorage);
             var rootElements = itemsController.GetRootElements(
                                        WorkspaceNames.WorkspaceData,
-                                       zipExtent.contextURI() 
-                                        + "?metaclass=" + HttpUtility.UrlEncode( "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode"))
+                                       MvcUrlEncoder.EncodePath(
+                                           zipExtent.contextURI()
+                                           + "?metaclass=" +
+                                           MvcUrlEncoder.EncodePath(
+                                               "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode")))
                                    .Value?.ToString()
                                ?? throw new InvalidOperationException("Should not happen");
             Assert.That(rootElements, Is.Not.Null);

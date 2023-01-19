@@ -36,9 +36,11 @@ export class TableForm implements InterfacesForms.IForm {
         headLineLink.text(
             this.formElement.get('title')
             ?? this.formElement.get('name'));
+        
         headLineLink.attr(
             'href',
             Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, {metaClass: metaClass}));
+        
         parent.append(headline);
 
         const property = this.formElement.get('property');

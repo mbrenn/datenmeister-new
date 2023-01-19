@@ -24,6 +24,10 @@ define(["require", "exports", "./Settings"], function (require, exports, Setting
     function getLinkForNavigateToExtentItems(workspace, extentUri, parameter) {
         let urlParameter = "";
         let ampersand = '?';
+        // Trim extentUri to remove the parameters
+        const asUrl = new URL(extentUri);
+        asUrl.searchParams.delete('metaclass');
+        extentUri = asUrl.href;
         if ((parameter === null || parameter === void 0 ? void 0 : parameter.metaClass) !== undefined) {
             urlParameter += ampersand + "metaclass=" + encodeURIComponent(parameter.metaClass);
             ampersand = '&';

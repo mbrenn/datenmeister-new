@@ -29,6 +29,11 @@ export interface NavigationToExtentItemsParameter{
 export function getLinkForNavigateToExtentItems(workspace: string, extentUri: string, parameter?: NavigationToExtentItemsParameter) {
     let urlParameter = "";
     let ampersand = '?';
+    
+    // Trim extentUri to remove the parameters
+    const asUrl = new URL(extentUri);
+    asUrl.searchParams.delete('metaclass');
+    extentUri = asUrl.href;
 
     if (parameter?.metaClass !== undefined) {
         urlParameter += ampersand + "metaclass=" + encodeURIComponent(parameter.metaClass);

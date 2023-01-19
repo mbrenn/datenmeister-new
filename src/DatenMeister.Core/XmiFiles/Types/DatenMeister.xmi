@@ -1585,6 +1585,25 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36db9d08-802c-4e84-b547-adf297978dc8" name="id" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5f7cc38f-6431-4103-b7d1-fa60720178a6" name="defaultExtentType" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ReferenceFieldFromCollection" name="ReferenceFieldFromCollection">
+      <isAbstract p1:id="e383179b-7331-490b-be93-2746825610b6" />
+      <isActive p1:id="db96657b-5684-407e-9ffb-4c0c9f7fd98b" />
+      <isFinalSpecialization p1:id="9a7c1794-2542-4f47-81d2-351f9712fffd" />
+      <isLeaf p1:id="069fe140-d53d-46a7-b71e-567bd623c0ef" />
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b018d252-4745-4ee3-a615-ea52d4b3bb10" isSubstitutable="True"
+        general-ref="#DatenMeister.Models.Forms.ReferenceFieldData">
+      </generalization>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36d692e2-7adc-46e4-b92b-2c2a6e2747b2" type-ref="dm:///_internal/model/primitivetypes#String" name="collection" isID="True" isComposite="True">
+        <aggregation p1:id="f68c11b1-bc68-449f-9770-daa42e30aa60" />
+        <isDerived p1:id="bdab746f-2186-4ec0-9627-08e1d4ff4680" />
+        <isDerivedUnion p1:id="83cd0af5-3112-4076-ba7e-7883b5aa0777" />
+        <isReadOnly p1:id="9446fc47-cd3c-4e6f-b311-4510f89e0253" />
+        <isOrdered p1:id="d23507b7-6094-40cb-824f-d7a86de5b7c9" />
+        <isUnique p1:id="88e2a05b-33f3-40b9-9cff-dc42781339f5" />
+        <isStatic p1:id="fa2327de-f405-40cf-adb7-27e59c80cd85" />
+        <isLeaf p1:id="759f05e4-e8cd-40f1-a482-8ec097833c45" />
+      </ownedAttribute>
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="AttachedExtent" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="7447d350-9b9d-47d3-85d4-737fb6e886c7">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="AttachedExtentConfiguration" p1:id="DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration">

@@ -1002,6 +1002,24 @@ define(["require", "exports"], function (require, exports) {
             _ViewMode.defaultExtentType = "defaultExtentType";
             _Forms._ViewMode = _ViewMode;
             _Forms.__ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
+            class _ReferenceFieldFromCollection {
+            }
+            _ReferenceFieldFromCollection.collection = "collection";
+            _ReferenceFieldFromCollection.isSelectionInline = "isSelectionInline";
+            _ReferenceFieldFromCollection.defaultWorkspace = "defaultWorkspace";
+            _ReferenceFieldFromCollection.defaultItemUri = "defaultItemUri";
+            _ReferenceFieldFromCollection.showAllChildren = "showAllChildren";
+            _ReferenceFieldFromCollection.showWorkspaceSelection = "showWorkspaceSelection";
+            _ReferenceFieldFromCollection.showExtentSelection = "showExtentSelection";
+            _ReferenceFieldFromCollection.metaClassFilter = "metaClassFilter";
+            _ReferenceFieldFromCollection.isAttached = "isAttached";
+            _ReferenceFieldFromCollection._name_ = "name";
+            _ReferenceFieldFromCollection.title = "title";
+            _ReferenceFieldFromCollection.isEnumeration = "isEnumeration";
+            _ReferenceFieldFromCollection.defaultValue = "defaultValue";
+            _ReferenceFieldFromCollection.isReadOnly = "isReadOnly";
+            _Forms._ReferenceFieldFromCollection = _ReferenceFieldFromCollection;
+            _Forms.__ReferenceFieldFromCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollection";
         })(_Forms = _DatenMeister._Forms || (_DatenMeister._Forms = {}));
         let _AttachedExtent;
         (function (_AttachedExtent) {

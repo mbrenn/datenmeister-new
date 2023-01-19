@@ -7,6 +7,7 @@ namespace DatenMeister.Tests.Runtime
     [TestFixture]
     public class XmiHelperTests
     {
+        [Test]
         public void TestConvertToXmi()
         {
             var value = InMemoryObject.CreateEmpty();

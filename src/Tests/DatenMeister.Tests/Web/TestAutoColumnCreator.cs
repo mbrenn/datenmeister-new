@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -40,7 +41,8 @@ namespace DatenMeister.Tests.Web
 
             // Execute the stuff
             var creator = FormCreator.Create(workspaceLogic, scopeStorage);
-            var result = creator.CreateCollectionFormForExtent(extent, new FormFactoryConfiguration());
+            var result = creator.CreateCollectionFormForExtent(
+                extent,extent.elements(), new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
             var tab = result.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab)
                 .Select(x => x as IElement).FirstOrDefault();
@@ -93,7 +95,8 @@ namespace DatenMeister.Tests.Web
 
             // Execute the stuff
             var creator = FormCreator.Create(workspaceLogic, scopeStorage);
-            var result = creator.CreateCollectionFormForExtent(extent, new FormFactoryConfiguration());
+            var result = creator.CreateCollectionFormForExtent(
+                extent, extent.elements(), new FormFactoryConfiguration());
             Assert.That(result, Is.Not.Null);
 
             var tab = result

@@ -11,6 +11,7 @@ using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Json;
+using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -29,7 +30,7 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/forms/get/{formUri}")]
         public ActionResult<string> Get(string formUri, string? formType)
         {
-            formUri = HttpUtility.UrlDecode(formUri);
+            formUri = MvcUrlEncoder.DecodePathOrEmpty(formUri);
             var form = _internal.GetInternal(formUri);
 
             // Performs a friendly conversion from the actual form type to the requested form type
@@ -49,9 +50,9 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
         public ActionResult<string> GetObjectFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUrl = HttpUtility.UrlDecode(itemUrl);
-            viewMode = HttpUtility.UrlDecode(viewMode);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
+            viewMode = MvcUrlEncoder.DecodePath(viewMode);
 
             var form = _internal.GetObjectFormForItemInternal(workspaceId, itemUrl, viewMode);
 
@@ -61,9 +62,9 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
         public ActionResult<string> GetCollectionFormForExtent(string workspaceId, string extentUri, string? viewMode)
         {
-            viewMode = HttpUtility.UrlDecode(viewMode);
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            extentUri = HttpUtility.UrlDecode(extentUri);
+            viewMode = MvcUrlEncoder.DecodePath(viewMode);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
             var form = _internal.GetCollectionFormForExtentInternal(workspaceId, extentUri, viewMode);
 
@@ -96,14 +97,14 @@ namespace DatenMeister.WebServer.Controller
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
             var formCreator = new FormCreator(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
-            viewMode = HttpUtility.UrlDecode(viewMode);
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            extentUri = HttpUtility.UrlDecode(extentUri);
+            viewMode = MvcUrlEncoder.DecodePath(viewMode);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
             var factory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User));
 
-            var extent = _internal.WorkspaceLogic.FindExtent(workspaceId, extentUri);
-            if (extent == null)
+            var (collection, extent) = _internal.WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
+            if (extent == null || collection == null)
             {
                 throw new InvalidOperationException($"Extent not found: {workspaceId} - {extentUri}");
 
@@ -112,6 +113,7 @@ namespace DatenMeister.WebServer.Controller
             // Creates the form itself
             var form = formCreator.CreateCollectionFormForExtent(
                 extent,
+                collection,
                 new FormFactoryConfiguration
                 {
                     ViewModeId = viewMode ?? string.Empty,
@@ -153,9 +155,9 @@ namespace DatenMeister.WebServer.Controller
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
             var formCreator = new FormCreator(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
-            viewMode = HttpUtility.UrlDecode(viewMode);
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUri = HttpUtility.UrlDecode(itemUri);
+            viewMode = MvcUrlEncoder.DecodePath(viewMode);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
             var factory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User));
 
@@ -186,8 +188,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/forms/default_object_for_metaclass/{metaClass?}/{viewMode?}")]
         public ActionResult<string> GetObjectFormForMetaClass(string? metaClass, string? viewMode) 
         {
-            viewMode = HttpUtility.UrlDecode(viewMode);
-            metaClass = HttpUtility.UrlDecode(metaClass);
+            viewMode = MvcUrlEncoder.DecodePath(viewMode);
+            metaClass = MvcUrlEncoder.DecodePath(metaClass);
 
             var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode);
 

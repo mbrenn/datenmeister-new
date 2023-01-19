@@ -13,6 +13,7 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Json;
 using DatenMeister.Provider.ExtentManagement;
+using DatenMeister.WebServer.Library.Helper;
 
 namespace DatenMeister.WebServer.Controller
 {
@@ -30,8 +31,8 @@ namespace DatenMeister.WebServer.Controller
 
         public ItemWithNameAndId[]? GetComposites(string? workspaceId, string? itemUrl)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUrl = HttpUtility.UrlDecode(itemUrl);
+            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
+            itemUrl = MvcUrlEncoder.DecodePath(itemUrl);
 
             if (workspaceId == null)
             {
@@ -52,14 +53,11 @@ namespace DatenMeister.WebServer.Controller
                         .FirstOrDefault(x =>
                             x.getOrDefault<string>(_DatenMeister._Management._Workspace.id) == workspaceId);
 
-                if (foundExtent == null) return null;
-
                 var foundExtents =
-                    foundExtent.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
+                    foundExtent?.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
 
                 return
-                    foundExtents
-                        .OfType<IObject>()
+                    foundExtents?.OfType<IObject>()
                         .Select(t =>
                         {
                             var x = ItemWithNameAndId.Create(t)!;

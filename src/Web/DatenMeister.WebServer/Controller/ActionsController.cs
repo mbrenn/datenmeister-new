@@ -10,6 +10,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Json;
+using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -82,8 +83,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpPost("api/action/execute/{workspaceId}/{itemUri}")]
         public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(string workspaceId, string itemUri)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUri = HttpUtility.UrlDecode(itemUri);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
             
             var action = GiveMe.Scope.WorkspaceLogic.FindItem(workspaceId, itemUri) as IElement;
             if (action == null)

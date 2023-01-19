@@ -35,7 +35,6 @@ namespace DatenMeister.Tests.Uml
             Assert.That(allPropertyList.Count, Is.GreaterThan(propertyList.Count));
         }
 
-
         [Test]
         public void TestAddGeneralization()
         {
@@ -121,7 +120,6 @@ namespace DatenMeister.Tests.Uml
                 as IElement;
 
             Assert.That(ClassifierMethods.IsOfPrimitiveType(activity!), Is.False);
-
             Assert.That(ClassifierMethods.IsOfPrimitiveType(integer!), Is.True);
         }
 

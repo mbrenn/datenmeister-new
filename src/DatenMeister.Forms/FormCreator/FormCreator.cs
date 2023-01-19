@@ -94,6 +94,7 @@ namespace DatenMeister.Forms.FormCreator
         /// The cached string type
         /// </summary>
         private IElement? _stringType;
+        
         private Workspace? _uriResolver;
 
         /// <summary>

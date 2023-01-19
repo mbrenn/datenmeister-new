@@ -4,6 +4,7 @@ define(["require", "exports", "../forms/CollectionForm", "../modules/DefaultLoad
     exports.init = void 0;
     function init(workspace, extentUri) {
         (0, DefaultLoader_1.loadDefaultModules)();
+        $("#items_collection_uri").text(extentUri);
         let listForm = new CollectionForm.CollectionFormCreator();
         listForm.createCollectionForRootElements({
             itemContainer: $("#dm-items"),

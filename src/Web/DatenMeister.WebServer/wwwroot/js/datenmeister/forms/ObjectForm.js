@@ -131,7 +131,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                                 const parentWorkspace = containers[0].workspace;
                                 if (containers.length === 2) {
                                     // If user has selected would move to an extent, he should move to the items enumeration
-                                    (0, Navigator_1.navigateToExtent)(parentWorkspace, containers[0].uri);
+                                    (0, Navigator_1.navigateToExtentItems)(parentWorkspace, containers[0].uri);
                                 }
                                 else {
                                     (0, Navigator_1.navigateToItemByUrl)(parentWorkspace, containers[0].uri);

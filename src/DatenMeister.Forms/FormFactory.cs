@@ -509,6 +509,26 @@ namespace DatenMeister.Forms
             IExtent extent,
             FormFactoryConfiguration configuration)
         {
+            return CreateCollectionFormForExtent(
+                extent,
+                extent.elements(),
+                configuration);
+        }
+
+
+        /// <summary>
+        /// Takes the given extent and creates a collection form out of it
+        /// </summary>
+        /// <param name="extent">Extent to be evaluated.</param>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="configuration">Configuration which defines the way of how this form
+        /// will be generated</param>
+        /// <returns>The created form</returns>
+        public IElement? CreateCollectionFormForExtent(
+            IExtent extent,
+            IReflectiveCollection collection,
+            FormFactoryConfiguration configuration)
+        {
             var extentType = extent.GetConfiguration().ExtentType;
             IElement? foundForm = null;
             if (configuration.ViaFormFinder)
@@ -538,6 +558,7 @@ namespace DatenMeister.Forms
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateCollectionFormForExtent(
                     extent,
+                    extent.elements(),
                     configuration);
 
                 FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateCollectionFormForExtent] Created Form via FormCreator");
@@ -554,7 +575,6 @@ namespace DatenMeister.Forms
                         viewModeId = configuration.ViewModeId ?? "",
                         metaClass = _DatenMeister.TheOne.Management.__Extent
                     });
-            
 
             // 
             if (foundForm != null)
@@ -567,7 +587,7 @@ namespace DatenMeister.Forms
                     tableForm.unset(_DatenMeister._Forms._TableForm.property);
                 }
 
-                EvaluateTableFormsForAutogenerationByReflectiveCollection(extent.elements(), foundForm);
+                EvaluateTableFormsForAutogenerationByReflectiveCollection(collection, foundForm);
 
                 var formCreationContext = new FormCreationContext
                 {

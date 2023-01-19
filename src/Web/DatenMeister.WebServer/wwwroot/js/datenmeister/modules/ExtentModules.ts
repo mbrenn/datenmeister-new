@@ -64,7 +64,7 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
             const extentUri = p.get('extent');
 
             await ECClient.setProperties(workspace, extentUri, element);
-            Navigator.navigateToExtent(workspace, extentUri);
+            Navigator.navigateToExtentItems(workspace, extentUri);
         }
     }
 }
@@ -135,7 +135,7 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         else {
             // Else, move to the overall items overview
             document.location.href =
-                Navigator.getLinkForNavigateToExtent(workspace, extentUri);
+                Navigator.getLinkForNavigateToExtentItems(workspace, extentUri);
         }
     }
 }
@@ -271,7 +271,7 @@ class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
 
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
-        Navigator.navigateToExtent(workspaceId, extentUri);
+        Navigator.navigateToExtentItems(workspaceId, extentUri);
     }
 }
 
@@ -478,7 +478,7 @@ class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
             const importedXmi = await ECClient.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, ObjectType.String));
 
             if (importedXmi.success) {
-                Navigator.navigateToExtent(workspace, extentUri);
+                Navigator.navigateToExtentItems(workspace, extentUri);
             } else {
                 alert('Something failed');
             }

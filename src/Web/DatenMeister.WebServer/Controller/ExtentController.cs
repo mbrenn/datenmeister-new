@@ -12,6 +12,7 @@ using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Json;
+using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -38,8 +39,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/extent/exists/{workspace}/{extent}")]
         public ActionResult<ExistsResults> Exists(string workspace, string extent)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            extent = HttpUtility.UrlDecode(extent);
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
             var foundExtent = _workspaceLogic.FindExtent(workspace, extent);
             return foundExtent == null 
@@ -51,8 +52,8 @@ namespace DatenMeister.WebServer.Controller
         public ActionResult<object> SetProperties(string workspace, string extent,
             [FromBody] MofObjectAsJson properties)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            extent = HttpUtility.UrlDecode(extent);
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
             var foundExtent = _workspaceLogic.FindExtent(workspace, extent)
                               ?? throw new InvalidOperationException("The extent was not found");
@@ -75,8 +76,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/extent/get_properties/{workspace}/{extent}")]
         public ActionResult<string?> GetProperties(string workspace, string extent)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            extent = HttpUtility.UrlDecode(extent);
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
             var foundExtent = _workspaceLogic.FindExtent(workspace, extent)
                               ?? throw new InvalidOperationException("The extent was not found");
@@ -221,8 +222,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/extent/export_xmi/{workspace}/{extent}")]
         public ActionResult<ExportXmiResult> ExportXmi(string workspace, string extent)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            extent = HttpUtility.UrlDecode(extent);
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
             var foundExtent = _workspaceLogic.FindExtent(workspace, extent);
             if (foundExtent == null)
             {
@@ -255,8 +256,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpPost("api/extent/import_xmi/{workspace}/{extent}")]
         public ActionResult<ImportXmiResult> ImportXmi(string workspace, string extent, [FromBody] ImportXmiParams param)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            extent = HttpUtility.UrlDecode(extent);
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
             // Performs the import via the action handler...
             var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);

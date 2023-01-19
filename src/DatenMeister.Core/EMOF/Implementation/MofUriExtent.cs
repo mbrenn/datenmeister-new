@@ -16,13 +16,15 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the MOF interface for the uriextent
     /// </summary>
-    public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver
+    public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlternativeUris
     {
         /// <summary>
         /// Defines the name for the uri property
         /// </summary>
         public const string UriPropertyName = "__uri";
-        
+
+        private const string AlternativeUrlsProperty = "__alternativeUrls";
+
         /// <summary>
         /// Defines a possible logger
         /// </summary>
@@ -46,7 +48,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             IScopeStorage? scopeStorage) :
             base(provider, scopeStorage)
         {
-            _navigator = new ExtentUrlNavigator(this);
+            _navigator = new ExtentUrlNavigator(this, scopeStorage);
 
             if (provider is IHasUriResolver hasUriResolver)
             {
@@ -74,8 +76,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public IList<string> AlternativeUris
         {
-            get => new ReflectiveList<string>(new MofReflectiveSequence(GetMetaObject(), "__alternativeUrls"));
-            set => set("__alternativeUrls", value);
+            get => new ReflectiveList<string>(new MofReflectiveSequence(GetMetaObject(), AlternativeUrlsProperty));
+            set => set(AlternativeUrlsProperty, value);
         }
 
         /// <summary>
@@ -268,7 +270,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     foreach (var result in
                              workspace.extent
                                  .OfType<IUriExtent>()
-                                 .Select(extent => extent.element(uri))
+                                 .Select(innerExtent => innerExtent.element(uri))
                                  .Where(result => result != null))
                     {
                         return result;

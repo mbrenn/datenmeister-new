@@ -43,7 +43,7 @@ namespace DatenMeister.Forms
         /// <returns></returns>
         IElement? CreateTableFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
 
-        IElement? CreateCollectionFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
+        IElement? CreateCollectionFormForExtent(IExtent extent, IReflectiveCollection collection, FormFactoryConfiguration configuration);
 
         IElement? CreateTableFormForProperty(IObject? element, string propertyName, IElement? propertyType,
             FormFactoryConfiguration configuration);

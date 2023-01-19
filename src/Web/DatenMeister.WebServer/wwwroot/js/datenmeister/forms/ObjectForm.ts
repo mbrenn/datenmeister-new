@@ -7,7 +7,7 @@ import {SubmitMethod} from "./RowForm";
 import {TableForm} from "./TableForm";
 import * as ClientItems from "../client/Items";
 import * as Navigator from "../Navigator";
-import {navigateToExtent, navigateToItemByUrl} from "../Navigator";
+import {navigateToExtentItems, navigateToItemByUrl} from "../Navigator";
 import * as VML from "./ViewModeLogic";
 import * as ClientForms from "../client/Forms";
 import {debugElementToDom} from "../DomHelper";
@@ -195,7 +195,7 @@ export class ObjectFormCreatorForItem {
                             const parentWorkspace = containers[0].workspace;
                             if (containers.length === 2) {
                                 // If user has selected would move to an extent, he should move to the items enumeration
-                                navigateToExtent(parentWorkspace, containers[0].uri);
+                                navigateToExtentItems(parentWorkspace, containers[0].uri);
                             } else {
                                 navigateToItemByUrl(parentWorkspace, containers[0].uri);
                             }

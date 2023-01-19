@@ -7,6 +7,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Json;
 using DatenMeister.TemporaryExtent;
+using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -30,9 +31,9 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_name/{workspace}/{extentUri}/{itemId}")]
         public ActionResult<object> GetName(string workspace, string extentUri, string itemId)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            extentUri = HttpUtility.UrlDecode(extentUri);
-            itemId = HttpUtility.UrlDecode(itemId);
+            workspace = MvcUrlEncoder.DecodePath(workspace);
+            extentUri = MvcUrlEncoder.DecodePath(extentUri);
+            itemId = MvcUrlEncoder.DecodePath(itemId);
 
             var foundItem = _workspaceLogic.FindObject(workspace, extentUri, itemId);
             if (foundItem == null)
@@ -46,8 +47,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_name/{workspace}/{uri}")]
         public ActionResult<ItemWithNameAndId> GetName(string? workspace, string uri)
         {
-            workspace = HttpUtility.UrlDecode(workspace);
-            uri = HttpUtility.UrlDecode(uri);
+            workspace = MvcUrlEncoder.DecodePath(workspace);
+            uri = MvcUrlEncoder.DecodePath(uri);
             
             IObject? foundItem;
             if (string.IsNullOrEmpty(workspace) || workspace == "_")
@@ -72,8 +73,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
         public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId, string? itemUrl)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUrl = HttpUtility.UrlDecode(itemUrl);
+            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
+            itemUrl = MvcUrlEncoder.DecodePath(itemUrl);
             
             var result = Internal.GetComposites(workspaceId, itemUrl);
             if (result == null)

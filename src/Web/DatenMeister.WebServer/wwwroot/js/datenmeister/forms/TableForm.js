@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings"], function (require, exports, Interfaces_1, FieldFactory_1, Settings) {
+define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "../Navigator"], function (require, exports, Interfaces_1, FieldFactory_1, Settings, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TableForm = void 0;
@@ -23,12 +23,15 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings"], 
             return __awaiter(this, void 0, void 0, function* () {
                 this.parentHtml = parent;
                 this.configuration = configuration;
+                let metaClass = (_a = this.formElement.get('metaClass')) === null || _a === void 0 ? void 0 : _a.uri;
                 const tthis = this;
                 if (configuration.isReadOnly === undefined) {
                     configuration.isReadOnly = true;
                 }
-                let headline = $("<h2></h2>");
-                headline.text((_a = this.formElement.get('title')) !== null && _a !== void 0 ? _a : this.formElement.get('name'));
+                let headline = $("<h2><a></a></h2>");
+                const headLineLink = $("a", headline);
+                headLineLink.text((_b = this.formElement.get('title')) !== null && _b !== void 0 ? _b : this.formElement.get('name'));
+                headLineLink.attr('href', Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: metaClass }));
                 parent.append(headline);
                 const property = this.formElement.get('property');
                 // Evaluate the new buttons to create objects
@@ -88,11 +91,10 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings"], 
                             continue;
                         const field = fields[n];
                         let cell = $("<th></th>");
-                        cell.text((_b = field.get("title")) !== null && _b !== void 0 ? _b : field.get("name"));
+                        cell.text((_c = field.get("title")) !== null && _c !== void 0 ? _c : field.get("name"));
                         innerRow.append(cell);
                     }
                     table.append(headerRow);
-                    let metaClass = (_c = this.formElement.get('metaClass')) === null || _c === void 0 ? void 0 : _c.uri;
                     let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
                     let elements = this.elements;
                     for (let n in elements) {

@@ -1590,9 +1590,7 @@
       <isActive p1:id="db96657b-5684-407e-9ffb-4c0c9f7fd98b" />
       <isFinalSpecialization p1:id="9a7c1794-2542-4f47-81d2-351f9712fffd" />
       <isLeaf p1:id="069fe140-d53d-46a7-b71e-567bd623c0ef" />
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b018d252-4745-4ee3-a615-ea52d4b3bb10" isSubstitutable="True"
-        general-ref="#DatenMeister.Models.Forms.ReferenceFieldData">
-      </generalization>
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b018d252-4745-4ee3-a615-ea52d4b3bb10" isSubstitutable="True" general-ref="#DatenMeister.Models.Forms.ReferenceFieldData"></generalization>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36d692e2-7adc-46e4-b92b-2c2a6e2747b2" type-ref="dm:///_internal/model/primitivetypes#String" name="collection" isID="True" isComposite="True">
         <aggregation p1:id="f68c11b1-bc68-449f-9770-daa42e30aa60" />
         <isDerived p1:id="bdab746f-2186-4ec0-9627-08e1d4ff4680" />
@@ -1693,7 +1691,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e8278dd3-eecb-4880-b496-70fcbd49521c" name="Value" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
   </item>
-  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="8d1b9f36-3768-4494-9066-9b0bd64fdc85" name="DynamicRuntimeProvider" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+  <item p2:type="dm:///_internal/model/uml#Package" p2:id="8d1b9f36-3768-4494-9066-9b0bd64fdc85" name="DynamicRuntimeProvider" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DynamicRuntimeProvider.DynamicRuntimeLoaderConfig" name="DynamicRuntimeLoaderConfig">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />

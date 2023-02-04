@@ -24,16 +24,14 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
-        const extentCreationParameter = new DmObject();
-        extentCreationParameter.set('configuration', element);
-        extentCreationParameter.setMetaClassByUri(
+        element.setMetaClassByUri(
             DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri
         );
 
         const result = await ActionClient.executeActionDirectly(
             "Execute",
             {
-                parameter: extentCreationParameter
+                parameter: element
             }
         );
 

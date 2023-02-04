@@ -79,7 +79,6 @@ export async function createActionFormForEmptyObject(
     await ClientItems.setProperties("Data", temporaryElement.uri, element);
 
     /* Now find the right form */
-
     let form;
 
     // After having loaded the object, load the form

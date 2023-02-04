@@ -1112,16 +1112,10 @@ export namespace _DatenMeister
                 }
 
                 export const __ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
-                export class _ReferenceFieldFromCollection
+                export class _ReferenceFieldFromCollectionData
                 {
-                    static collection = "collection";
-                    static isSelectionInline = "isSelectionInline";
                     static defaultWorkspace = "defaultWorkspace";
-                    static defaultItemUri = "defaultItemUri";
-                    static showAllChildren = "showAllChildren";
-                    static showWorkspaceSelection = "showWorkspaceSelection";
-                    static showExtentSelection = "showExtentSelection";
-                    static metaClassFilter = "metaClassFilter";
+                    static collection = "collection";
                     static isAttached = "isAttached";
                     static _name_ = "name";
                     static title = "title";
@@ -1130,7 +1124,7 @@ export namespace _DatenMeister
                     static isReadOnly = "isReadOnly";
                 }
 
-                export const __ReferenceFieldFromCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollection";
+                export const __ReferenceFieldFromCollectionData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData";
         }
 
         export namespace _AttachedExtent

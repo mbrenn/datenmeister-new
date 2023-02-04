@@ -26,8 +26,8 @@ namespace DatenMeister.WebServer.Pages
 
         public void OnGet(string workspace, string extent, string? item)
         {
-            Workspace = MvcUrlEncoder.DecodePath(workspace);
-            Extent = MvcUrlEncoder.DecodePath(extent);
+            Workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            Extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
             Item = MvcUrlEncoder.DecodePath(item);
         }
     }

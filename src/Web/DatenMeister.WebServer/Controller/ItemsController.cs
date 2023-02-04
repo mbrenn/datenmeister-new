@@ -53,8 +53,8 @@ namespace DatenMeister.WebServer.Controller
             string workspaceId, string extentUri,
             [FromBody] CreateItemInExtentParams createParams)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            extentUri = MvcUrlEncoder.DecodePath(extentUri);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
@@ -108,8 +108,8 @@ namespace DatenMeister.WebServer.Controller
             string workspaceId, string itemUri,
             [FromBody] CreateItemAsChildParams createItemAsParams)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            itemUri = MvcUrlEncoder.DecodePath(itemUri);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
             var item = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
@@ -175,8 +175,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpDelete("api/items/delete/{workspaceId}/{itemUrl}")]
         public ActionResult<object> DeleteItem(string workspaceId, string itemUrl)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            itemUrl = MvcUrlEncoder.DecodePath(itemUrl);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
 
             var success = false;
             var foundItem = _workspaceLogic.FindItem(workspaceId, itemUrl);
@@ -194,8 +194,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpDelete("api/items/delete_root_elements/{workspaceId}/{extentUri}")]
         public ActionResult<SuccessResult> DeleteRootElements(string workspaceId, string extentUri)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            extentUri = MvcUrlEncoder.DecodePath(extentUri);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
             var success = true;
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
@@ -218,8 +218,8 @@ namespace DatenMeister.WebServer.Controller
             string workspaceId,
             string itemUri)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            itemUri = MvcUrlEncoder.DecodePath(itemUri);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
             var extent = foundElement.GetExtentOf();
@@ -235,9 +235,9 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/items/get/{workspaceId}/{extentUri}/{itemId}")]
         public ActionResult<object> GetItem(string workspaceId, string extentUri, string itemId)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            extentUri = MvcUrlEncoder.DecodePath(extentUri);
-            itemId = MvcUrlEncoder.DecodePath(itemId);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
+            itemId = MvcUrlEncoder.DecodePathOrEmpty(itemId);
 
             var foundElement = _internal.GetItemInternal(workspaceId, extentUri, itemId, out var converter);
             var convertedElement = converter.ConvertToJson(foundElement);
@@ -248,8 +248,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/items/get/{workspaceId}/{itemUri}")]
         public ActionResult<object> GetItem(string workspaceId, string itemUri)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            itemUri = MvcUrlEncoder.DecodePath(itemUri);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
@@ -262,8 +262,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/items/get_itemwithnameandid/{workspaceId}/{itemUri}")]
         public ActionResult<object> GetItemWithNameAndId(string workspaceId, string itemUri)
         {
-            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
-            itemUri = MvcUrlEncoder.DecodePath(itemUri);
+            workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
+            itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
             var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 

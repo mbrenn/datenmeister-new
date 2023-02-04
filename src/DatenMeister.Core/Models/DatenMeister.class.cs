@@ -2402,31 +2402,13 @@ namespace DatenMeister.Core.Models
             public _ViewMode @ViewMode = new _ViewMode();
             public MofObjectShadow @__ViewMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
-            public class _ReferenceFieldFromCollection
+            public class _ReferenceFieldFromCollectionData
             {
-                public static string @collection = "collection";
-                public IElement? @_collection = null;
-
-                public static string @isSelectionInline = "isSelectionInline";
-                public IElement? @_isSelectionInline = null;
-
                 public static string @defaultWorkspace = "defaultWorkspace";
                 public IElement? @_defaultWorkspace = null;
 
-                public static string @defaultItemUri = "defaultItemUri";
-                public IElement? @_defaultItemUri = null;
-
-                public static string @showAllChildren = "showAllChildren";
-                public IElement? @_showAllChildren = null;
-
-                public static string @showWorkspaceSelection = "showWorkspaceSelection";
-                public IElement? @_showWorkspaceSelection = null;
-
-                public static string @showExtentSelection = "showExtentSelection";
-                public IElement? @_showExtentSelection = null;
-
-                public static string @metaClassFilter = "metaClassFilter";
-                public IElement? @_metaClassFilter = null;
+                public static string @collection = "collection";
+                public IElement? @_collection = null;
 
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
@@ -2448,8 +2430,8 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _ReferenceFieldFromCollection @ReferenceFieldFromCollection = new _ReferenceFieldFromCollection();
-            public MofObjectShadow @__ReferenceFieldFromCollection = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollection");
+            public _ReferenceFieldFromCollectionData @ReferenceFieldFromCollectionData = new _ReferenceFieldFromCollectionData();
+            public MofObjectShadow @__ReferenceFieldFromCollectionData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData");
 
         }
 

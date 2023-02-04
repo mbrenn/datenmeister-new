@@ -12,7 +12,7 @@
             return pathToBeDecoded?
                 .Replace("%2F", "/")
                 .Replace("%2f", "/")
-                .Replace("%25", "#");;
+                .Replace("%25", "#");
         }
 
         /// <summary>

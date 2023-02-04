@@ -75,20 +75,24 @@ export interface IItemFormActionModule
 /**
  * Defines the base implementation which can be overridden
  */
-export class ItemFormActionModuleBase implements IItemFormActionModule
-{
-    constructor(actionName?:string) {
+export class ItemFormActionModuleBase implements IItemFormActionModule {
+    constructor(actionName?: string) {
         this.actionName = actionName;
     }
-    
+
     actionName: string;
     actionVerb: string;
     requiresConfirmation: boolean | undefined;
 
     /**
+     * Defines the default metaclass that will be used to create an empty item in the temporary extent.
+     */
+    defaultMetaClassUri: string | undefined;
+
+    /**
      * Gets or sets a flag indicating, whether the action shall trigger a saving of the shown item
      * This can be set to true, in case the action is just a navigation or does not require the storage
-     * of an item. 
+     * of an item.
      */
     skipSaving: boolean | undefined;
 
@@ -96,17 +100,23 @@ export class ItemFormActionModuleBase implements IItemFormActionModule
         return Promise.resolve(undefined);
     }
 
-    loadForm(metaClass?:string): Promise<DmObject> | undefined {
+    loadForm(metaClass?: string): Promise<DmObject> | undefined {
         return Promise.resolve(undefined);
     }
-    
+
     preparePage(element: DmObject, form: IIForms.IFormNavigation): Promise<void> | undefined {
         return Promise.resolve(undefined);
     }
 
     loadObject(): Promise<DmObject> | undefined {
+        if (this.defaultMetaClassUri !== undefined) {
+            return Promise.resolve(
+                new DmObject(this.defaultMetaClassUri)
+            );
+        }
+
         return Promise.resolve(undefined);
-    }    
+    }
 }
 
 let modules: Array<IItemFormActionModule> = new Array<IItemFormActionModule>();

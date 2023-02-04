@@ -20,6 +20,7 @@ define(["require", "exports", "../FormActions", "../client/Forms", "../models/Da
             super("Forms.Create.ByMetaClass");
             this.actionVerb = "Create by MetaClass";
             this.skipSaving = true;
+            this.defaultMetaClassUri = DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri;
         }
         loadForm() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -28,10 +29,7 @@ define(["require", "exports", "../FormActions", "../client/Forms", "../models/Da
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                element.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri);
-                const result = yield ActionClient.executeActionDirectly("Execute", {
-                    parameter: element
-                });
+                const result = yield ActionClient.executeAction(element.workspace, element.uri);
                 if (result.success !== true) {
                     alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
                 }

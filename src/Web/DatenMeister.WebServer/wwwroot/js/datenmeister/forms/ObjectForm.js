@@ -170,6 +170,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                 objectFormCreator.workspace = this.workspace;
                 objectFormCreator.itemUrl = this.itemUri;
                 objectFormCreator.element = element1;
+                objectFormCreator.extentUri = element1.extentUri;
                 objectFormCreator.formElement = form;
                 if (this.formMode === Forms_1.FormMode.ViewMode) {
                     const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');

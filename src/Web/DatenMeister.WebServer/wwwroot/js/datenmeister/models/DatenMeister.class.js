@@ -191,6 +191,7 @@ define(["require", "exports"], function (require, exports) {
             }
             _CreateFormByMetaClass.metaClass = "metaClass";
             _CreateFormByMetaClass.creationMode = "creationMode";
+            _CreateFormByMetaClass.targetContainer = "targetContainer";
             _CreateFormByMetaClass._name_ = "name";
             _CreateFormByMetaClass.isDisabled = "isDisabled";
             _Actions._CreateFormByMetaClass = _CreateFormByMetaClass;

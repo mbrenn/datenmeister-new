@@ -214,6 +214,7 @@ export namespace _DatenMeister
                 {
                     static metaClass = "metaClass";
                     static creationMode = "creationMode";
+                    static targetContainer = "targetContainer";
                     static _name_ = "name";
                     static isDisabled = "isDisabled";
                 }

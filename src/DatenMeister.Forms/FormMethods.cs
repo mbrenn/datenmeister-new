@@ -290,7 +290,7 @@ namespace DatenMeister.Forms
                 GetAllFormExtents()
                     .SelectMany(x =>
                         x.elements()
-                            .GetAllDescendants(new[]
+                            .GetAllDescendantsIncludingThemselves(new[]
                                 {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
                             .WhenMetaClassIsOneOf(_DatenMeister.TheOne.Forms.__FormAssociation)),
                 true);

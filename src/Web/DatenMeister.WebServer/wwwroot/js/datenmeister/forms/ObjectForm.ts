@@ -240,6 +240,7 @@ export class ObjectFormCreatorForItem {
             objectFormCreator.workspace = this.workspace;
             objectFormCreator.itemUrl = this.itemUri;
             objectFormCreator.element = element1;
+            objectFormCreator.extentUri = element1.extentUri;
             objectFormCreator.formElement = form;
 
             if (this.formMode === FormMode.ViewMode) {

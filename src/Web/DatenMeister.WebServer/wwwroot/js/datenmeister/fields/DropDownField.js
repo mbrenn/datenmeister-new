@@ -39,8 +39,10 @@ define(["require", "exports", "./Interfaces"], function (require, exports, Inter
             });
         }
         evaluateDom(dmElement) {
-            const fieldName = this.field.get('name').toString();
-            dmElement.set(fieldName, this.selectBox.val());
+            return __awaiter(this, void 0, void 0, function* () {
+                const fieldName = this.field.get('name').toString();
+                dmElement.set(fieldName, this.selectBox.val());
+            });
         }
     }
     exports.Field = Field;

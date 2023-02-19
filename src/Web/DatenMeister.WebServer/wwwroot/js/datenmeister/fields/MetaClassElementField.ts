@@ -59,6 +59,6 @@ export class Field extends BaseField implements IFormField {
         return divContainer;
     }
 
-    evaluateDom(dmElement: Mof.DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
     }
 }

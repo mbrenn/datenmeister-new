@@ -18,6 +18,8 @@ define(["require", "exports", "./Interfaces"], function (require, exports, Inter
             });
         }
         evaluateDom(dmElement) {
+            return __awaiter(this, void 0, void 0, function* () {
+            });
         }
         showNameField() {
             return true;

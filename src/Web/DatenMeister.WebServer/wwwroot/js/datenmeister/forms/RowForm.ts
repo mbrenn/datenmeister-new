@@ -209,13 +209,13 @@ export class RowForm implements InterfacesForms.IForm {
             });
 
 
-            $(".dm-detail-form-save", tr).on('click', () => {
-                const result = this.storeFormValuesIntoDom();
+            $(".dm-detail-form-save", tr).on('click', async () => {
+                const result = await this.storeFormValuesIntoDom();
                 tthis.onChange(result, SubmitMethod.Save);
             });
 
-            $(".dm-detail-form-save-and-close", tr).on('click', () => {
-                const result = this.storeFormValuesIntoDom();
+            $(".dm-detail-form-save-and-close", tr).on('click', async () => {
+                const result = await this.storeFormValuesIntoDom();
                 tthis.onChange(result, SubmitMethod.SaveAndClose);
             });
         }
@@ -240,7 +240,7 @@ export class RowForm implements InterfacesForms.IForm {
         parent.append(tableInfo);
     }
 
-    storeFormValuesIntoDom(reuseExistingElement?: boolean): DmObject {
+    async storeFormValuesIntoDom(reuseExistingElement?: boolean) : Promise<DmObject> {
         if (this.onChange !== undefined && this.onCancel !== null) {
             
             // If the caller indicates that the element shall be reused, then the already provided value is taken
@@ -251,12 +251,16 @@ export class RowForm implements InterfacesForms.IForm {
                 if (!this.fieldElements.hasOwnProperty(m)) continue;
 
                 const fieldElement = this.fieldElements[m];
+                
+                // Just take the fields which are not readonly
                 if (fieldElement.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
-                    // Just take the fields which are not readonly
-                    fieldElement.evaluateDom(this.element);
+                    
+                    // Comment out to store the values only in the saveElement
+                    await fieldElement.evaluateDom(this.element);
+                    
                     // Now evaluates the field and put only the properties being shown
                     // into the DmObject to avoid overwriting of protected and non-shown properties
-                    fieldElement.evaluateDom(saveElement);
+                    await fieldElement.evaluateDom(saveElement);
                 }
             }
             

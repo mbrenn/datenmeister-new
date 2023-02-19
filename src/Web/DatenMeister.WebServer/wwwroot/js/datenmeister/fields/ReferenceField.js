@@ -154,6 +154,8 @@ define(["require", "exports", "../Mof", "../DomHelper", "../client/Items", "../c
             });
         }
         evaluateDom(dmElement) {
+            return __awaiter(this, void 0, void 0, function* () {
+            });
         }
         reloadValuesFromServer() {
             return __awaiter(this, void 0, void 0, function* () {

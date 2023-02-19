@@ -195,7 +195,7 @@ export class Field extends Control implements IFormField {
         return this._list;
     }
 
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
 
     }
 

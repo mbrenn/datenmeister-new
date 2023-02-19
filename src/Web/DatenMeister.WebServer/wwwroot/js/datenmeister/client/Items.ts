@@ -152,6 +152,11 @@ export interface IGetRootElementsParameter{
 }
 
 export async function getRootElements(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<Array<Mof.DmObject>> {
+    // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
+    if(workspace === undefined || workspace === "" || workspace === null) {
+        workspace = "Data";
+    }
+    
     let url = Settings.baseUrl +
         "api/items/get_root_elements/" +
         encodeURIComponent(workspace) +
@@ -175,6 +180,28 @@ export async function getRootElements(workspace: string, extentUri: string, para
     }
 
     return result;
+}
+
+export async function getRootElementsAsItem(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<Array<ItemWithNameAndId>> {
+    // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
+    if (workspace === undefined || workspace === "" || workspace === null) {
+        workspace = "Data";
+    }
+
+    let url = Settings.baseUrl +
+        "api/items/get_root_elements_as_item/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri);
+
+    // Checks, if there is a view node being attached
+    if (parameter?.viewNode !== undefined) {
+        url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
+    }
+
+    const resultFromServer = await ApiConnection.get<Array<ItemWithNameAndId>>(url);
+
+    return resultFromServer;
 }
 
 export async function getContainer(workspaceId: string, itemUri: string, self?: boolean): Promise<Array<ItemWithNameAndId>> {

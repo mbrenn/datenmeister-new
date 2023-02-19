@@ -29,7 +29,7 @@ define(["require", "exports", "../FormActions", "./Interfaces", "../client/Items
                     // click. Only then, the DetailForm itself is executed. 
                     if (!requireConfirmation || tthis.inConfirmation) {
                         if (tthis.form.storeFormValuesIntoDom !== undefined) {
-                            tthis.form.storeFormValuesIntoDom(true);
+                            yield tthis.form.storeFormValuesIntoDom(true);
                         }
                         if ((module === null || module === void 0 ? void 0 : module.skipSaving) !== true) {
                             // We need to set the properties of the item, so the action handler can directly work on the item
@@ -46,6 +46,8 @@ define(["require", "exports", "../FormActions", "./Interfaces", "../client/Items
             });
         }
         evaluateDom(dmElement) {
+            return __awaiter(this, void 0, void 0, function* () {
+            });
         }
     }
     exports.Field = Field;

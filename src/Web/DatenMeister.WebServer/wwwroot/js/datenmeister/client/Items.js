@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.importXmi = exports.ImportXmiResult = exports.exportXmi = exports.ExportXmiResult = exports.removeReferenceFromCollection = exports.setPropertyReference = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElements = exports.getItemWithNameAndId = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
+    exports.importXmi = exports.ImportXmiResult = exports.exportXmi = exports.ExportXmiResult = exports.removeReferenceFromCollection = exports.setPropertyReference = exports.addReferenceToCollection = exports.setMetaclass = exports.getProperty = exports.setProperties = exports.setPropertiesByStringValues = exports.unsetProperty = exports.setProperty = exports.getContainer = exports.getRootElementsAsItem = exports.getRootElements = exports.getItemWithNameAndId = exports.getObjectByUri = exports.getObject = exports.deleteItemFromExtent = exports.deleteItem = exports.deleteRootElements = exports.createItemAsChild = exports.createItemInExtent = void 0;
     function createItemInExtent(workspaceId, extentUri, param) {
         return __awaiter(this, void 0, void 0, function* () {
             const evaluatedParameter = {
@@ -115,6 +115,10 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
     exports.getItemWithNameAndId = getItemWithNameAndId;
     function getRootElements(workspace, extentUri, parameter) {
         return __awaiter(this, void 0, void 0, function* () {
+            // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
+            if (workspace === undefined || workspace === "" || workspace === null) {
+                workspace = "Data";
+            }
             let url = Settings.baseUrl +
                 "api/items/get_root_elements/" +
                 encodeURIComponent(workspace) +
@@ -137,6 +141,26 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
         });
     }
     exports.getRootElements = getRootElements;
+    function getRootElementsAsItem(workspace, extentUri, parameter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
+            if (workspace === undefined || workspace === "" || workspace === null) {
+                workspace = "Data";
+            }
+            let url = Settings.baseUrl +
+                "api/items/get_root_elements_as_item/" +
+                encodeURIComponent(workspace) +
+                "/" +
+                encodeURIComponent(extentUri);
+            // Checks, if there is a view node being attached
+            if ((parameter === null || parameter === void 0 ? void 0 : parameter.viewNode) !== undefined) {
+                url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
+            }
+            const resultFromServer = yield ApiConnection.get(url);
+            return resultFromServer;
+        });
+    }
+    exports.getRootElementsAsItem = getRootElementsAsItem;
     function getContainer(workspaceId, itemUri, self) {
         return __awaiter(this, void 0, void 0, function* () {
             let uri = Settings.baseUrl + "api/items/get_container/"

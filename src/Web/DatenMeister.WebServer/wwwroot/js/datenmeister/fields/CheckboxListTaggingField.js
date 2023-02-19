@@ -97,23 +97,25 @@ define(["require", "exports", "./Interfaces", "../Mof", "../models/DatenMeister.
          * @param dmElement Element to which the data shall be added
          */
         evaluateDom(dmElement) {
-            if (this.isReadOnly || this.isFieldReadOnly)
-                return;
-            let result = "";
-            let komma = "";
-            for (let n in this.checkboxes) {
-                const checkbox = this.checkboxes[n];
-                if (checkbox.prop('checked')) {
-                    result += komma;
-                    result += checkbox.attr('data-value');
-                    komma = this.separator;
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.isReadOnly || this.isFieldReadOnly)
+                    return;
+                let result = "";
+                let komma = "";
+                for (let n in this.checkboxes) {
+                    const checkbox = this.checkboxes[n];
+                    if (checkbox.prop('checked')) {
+                        result += komma;
+                        result += checkbox.attr('data-value');
+                        komma = this.separator;
+                    }
                 }
-            }
-            if (this.freeText !== undefined) {
-                result += komma;
-                result += this.freeText.val();
-            }
-            dmElement.set(this.name, result);
+                if (this.freeText !== undefined) {
+                    result += komma;
+                    result += this.freeText.val();
+                }
+                dmElement.set(this.name, result);
+            });
         }
     }
     exports.Field = Field;

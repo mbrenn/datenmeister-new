@@ -79,8 +79,7 @@ export class Field extends BaseField implements IFormField {
 
         return result;
     }
-
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
         if (this._mode === ModeValue.Value) {
             if (this._textBox !== undefined && this._textBox !== null) {
                 const fieldName = this.field.get('name').toString();

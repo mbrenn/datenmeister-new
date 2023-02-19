@@ -79,7 +79,7 @@
           <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Object" name="Object- and Collection w/o Association" p1:id="e610cc6c-42b3-4015-a152-fbd0046fc411" />
           <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Collection_Object_Association" name="Object- and Collection w/ Assocation" p1:id="f76c2802-fa08-4901-a0ed-43dc43dd499f" />
         </field>
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="targetContainer" title="Target Container" defaultWorkspace="Management" isSelectionInline="true" p1:id="2cd08ab1-de63-453e-b5e3-903c30bb8a16" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="targetContainer" title="Target Container" defaultWorkspace="Management" isSelectionInline="true" p1:id="2cd08ac1-de63-453e-b5e3-903c30bb8a16" />
       </tab>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Item - Move or Copy" hideMetaInformation="True" allowNewProperties="False" p1:id="Item.MoveOrCopy" comment="Used by Action 'Item.MoveOrCopy'">

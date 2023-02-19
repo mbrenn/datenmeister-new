@@ -32,7 +32,7 @@ export class Field extends BaseField implements IFormField {
         return this.selectBox;
     }
 
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
         const fieldName = this.field.get('name').toString();
         dmElement.set(fieldName, this.selectBox.val());
     }

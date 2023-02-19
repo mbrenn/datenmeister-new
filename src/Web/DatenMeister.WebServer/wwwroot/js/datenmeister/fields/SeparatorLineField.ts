@@ -7,7 +7,7 @@ export class Field extends BaseField implements IFormField
         return $("<hr class='dm-separatorline'/>");
     }
 
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
     }
     
     showNameField(): boolean {

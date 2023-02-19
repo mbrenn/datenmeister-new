@@ -98,16 +98,18 @@ define(["require", "exports", "../Mof", "../Mof", "./Interfaces", "../models/Dat
             });
         }
         evaluateDom(dmElement) {
-            if (this._textBox !== undefined && this._textBox !== null) {
-                let fieldName;
-                if (this.OverridePropertyValue === undefined) {
-                    fieldName = this.field.get('name').toString();
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this._textBox !== undefined && this._textBox !== null) {
+                    let fieldName;
+                    if (this.OverridePropertyValue === undefined) {
+                        fieldName = this.field.get('name').toString();
+                    }
+                    else {
+                        fieldName = this.OverridePropertyValue();
+                    }
+                    dmElement.set(fieldName, this._textBox.val());
                 }
-                else {
-                    fieldName = this.OverridePropertyValue();
-                }
-                dmElement.set(fieldName, this._textBox.val());
-            }
+            });
         }
     }
     exports.Field = Field;

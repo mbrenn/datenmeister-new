@@ -47,8 +47,15 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         static externalizeKey(key) {
             return key.substring(1);
         }
+        /**
+         * Sets a value and returns whether the value has been changed
+         * @param key Key to be set
+         * @param value Value to be set
+         */
         set(key, value) {
+            const oldValue = this.values[DmObject.internalizeKey(key)];
             this.values[DmObject.internalizeKey(key)] = value;
+            return !(oldValue === value);
         }
         get(key, objectType) {
             let result = this.values[DmObject.internalizeKey(key)];
@@ -172,8 +179,11 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
     }
     exports.DmObject = DmObject;
     class DmObjectWithSync extends DmObject {
-        constructor() {
-            super();
+        constructor(metaClass) {
+            super(metaClass);
+            this.propertiesSet = new Array();
+        }
+        clearSync() {
             this.propertiesSet = new Array();
         }
         unset(key) {
@@ -181,8 +191,11 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
             this.propertiesSet[key] = true;
         }
         set(key, value) {
-            super.set(key, value);
-            this.propertiesSet[key] = true;
+            const result = super.set(key, value);
+            if (result) {
+                this.propertiesSet[key] = true;
+            }
+            return result;
         }
         static createFromReference(workspaceId, itemUri) {
             const result = new DmObjectWithSync();
@@ -281,7 +294,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         if (typeof element === 'string' || element instanceof String) {
             element = JSON.parse(element);
         }
-        const result = new DmObject();
+        const result = new DmObjectWithSync();
         const elementValues = element["v"];
         if (elementValues !== undefined && elementValues !== null) {
             for (let key in elementValues) {
@@ -309,6 +322,8 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
                     result.set(key, value);
                 }
             }
+            // Removes the set properties since they are already synced with the server
+            result.clearSync();
         }
         const elementMetaClass = element["m"];
         if (elementMetaClass !== undefined && elementMetaClass !== null) {

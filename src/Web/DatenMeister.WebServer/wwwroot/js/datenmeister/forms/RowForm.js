@@ -188,14 +188,9 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                 parent.append(tableInfo);
             });
         }
-        storeFormValuesIntoDom(reuseExistingElement) {
-            var _a;
+        storeFormValuesIntoDom() {
             return __awaiter(this, void 0, void 0, function* () {
                 if (this.onChange !== undefined && this.onCancel !== null) {
-                    // If the caller indicates that the element shall be reused, then the already provided value is taken
-                    // This method is not default since for submitting object forms, the only the supported fields should be 
-                    // returned to the server
-                    const saveElement = reuseExistingElement === true ? ((_a = this.element) !== null && _a !== void 0 ? _a : new Mof.DmObject()) : new Mof.DmObject;
                     for (let m in this.fieldElements) {
                         if (!this.fieldElements.hasOwnProperty(m))
                             continue;
@@ -204,12 +199,9 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
                         if (fieldElement.field.get(DatenMeister_class_1._DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
                             // Comment out to store the values only in the saveElement
                             yield fieldElement.evaluateDom(this.element);
-                            // Now evaluates the field and put only the properties being shown
-                            // into the DmObject to avoid overwriting of protected and non-shown properties
-                            yield fieldElement.evaluateDom(saveElement);
                         }
                     }
-                    return saveElement;
+                    return this.element;
                 }
             });
         }

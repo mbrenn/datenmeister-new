@@ -1,22 +1,21 @@
 ﻿import * as ApiConnection from "../ApiConnection";
 import * as Actions from "../client/Actions";
 import {moveItemInExtentDown, moveItemInExtentUp} from "../client/Actions.Items";
-import * as ECClient from "../client/Extents";
+import * as ClientExtents from "../client/Extents";
 import * as ClientForms from "../client/Forms";
-import * as ItemClient from "../client/Items";
+import * as ClientItems from "../client/Items";
 import * as FormActions from "../FormActions";
 import {IFormNavigation} from "../forms/Interfaces";
 import {SubmitMethod} from "../forms/RowForm";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import * as Mof from "../Mof";
-import {createJsonFromObject, DmObject, ObjectType} from "../Mof";
+import * as MofSync from "../MofSync";
 import * as Navigator from "../Navigator";
 import * as Settings from "../Settings";
 import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
 import _ObjectForm = _DatenMeister._Forms._ObjectForm;
 import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
-import {navigateToCreateItemInProperty, navigateToExtentProperties} from "../Navigator";
 import {createBreadcrumbForItem} from "../controls/ElementBreadcrumb";
 
 export function loadModules() {
@@ -43,17 +42,17 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
         super("Extent.Properties.Update");
     }
 
-    async loadObject(): Promise<DmObject> | undefined {
+    async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
 
         let p = new URLSearchParams(window.location.search);
 
         const workspace = p.get('workspace');
         const extentUri = p.get('extent');
 
-        return await ECClient.getProperties(workspace, extentUri);
+        return await ClientExtents.getProperties(workspace, extentUri);
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         let p = new URLSearchParams(window.location.search);
 
@@ -63,7 +62,7 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
             const workspace = p.get('workspace');
             const extentUri = p.get('extent');
 
-            await ECClient.setProperties(workspace, extentUri, element);
+            await ClientExtents.setProperties(workspace, extentUri, element);
             Navigator.navigateToExtentItems(workspace, extentUri);
         }
     }
@@ -75,18 +74,18 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         this.actionVerb = "Create Item";
     }
     
-    override async loadForm(metaClass:string): Promise<DmObject> | undefined {
+    override async loadForm(metaClass:string): Promise<Mof.DmObject> | undefined {
         const form = await ClientForms.getObjectFormForMetaClass(metaClass);
         
-        const tabs = form.get(_ObjectForm.tab, ObjectType.Array);
-        const firstTab = tabs[0] as DmObject;
-        const fields = firstTab.get(_RowForm.field, ObjectType.Array);
+        const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
+        const firstTab = tabs[0] as Mof.DmObject;
+        const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);
         
-        const parameter = new DmObject();
+        const parameter = new Mof.DmObject();
         parameter.set('name', 'CreateItemAndAnotherOne');
         
         // Adds the additional button 
-        const actionButton = new DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
+        const actionButton = new Mof.DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
         actionButton.set(_ActionFieldData.title, "Create Item and another one");
         actionButton.set(_ActionFieldData.parameter, parameter);
         actionButton.set(_ActionFieldData.actionName, this.actionName);
@@ -95,9 +94,9 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         return form;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
-        if(parameter?.get('name', ObjectType.String) === 'CreateItemAndAnotherOne') {
+        if(parameter?.get('name', Mof.ObjectType.String) === 'CreateItemAndAnotherOne') {
             submitMethod = SubmitMethod.UserDefined1;
         }
         
@@ -112,12 +111,12 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
         }
     }
 
-    async extentCreateItem(workspace: string, extentUri: string, element: DmObject, metaClass?: string, submitMethod?: SubmitMethod) {
+    async extentCreateItem(workspace: string, extentUri: string, element: Mof.DmObject, metaClass?: string, submitMethod?: SubmitMethod) {
         if (metaClass === undefined) {
             metaClass = element.metaClass?.uri;
         }
 
-        const newItem = await ItemClient.createItemInExtent(
+        const newItem = await ClientItems.createItemInExtent(
             workspace, extentUri,
             {
                 metaClass: metaClass === undefined ? "" : metaClass,
@@ -146,7 +145,7 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
         this.actionVerb = "Create Item";
     }
     
-    override async preparePage(element: DmObject, form: IFormNavigation): Promise<void> | undefined {
+    override async preparePage(element: Mof.DmObject, form: IFormNavigation): Promise<void> | undefined {
         let p = new URLSearchParams(window.location.search);
         const workspace = p.get('workspace');
         const itemUrl = p.get('itemUrl');
@@ -154,18 +153,18 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
         await createBreadcrumbForItem($(".dm-breadcrumb-page"), workspace, itemUrl);
     }
 
-    override async loadForm(metaClass?: string): Promise<DmObject> | undefined {
+    override async loadForm(metaClass?: string): Promise<Mof.DmObject> | undefined {
         const form = await ClientForms.getObjectFormForMetaClass(metaClass);
 
-        const tabs = form.get(_ObjectForm.tab, ObjectType.Array);
-        const firstTab = tabs[0] as DmObject;
-        const fields = firstTab.get(_RowForm.field, ObjectType.Array);
+        const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
+        const firstTab = tabs[0] as Mof.DmObject;
+        const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);
 
-        const parameter = new DmObject();
+        const parameter = new Mof.DmObject();
         parameter.set('name', 'CreateItemAndAnotherOne');
 
         // Adds the additional button 
-        const actionButton = new DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
+        const actionButton = new Mof.DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
         actionButton.set(_ActionFieldData.title, "Create Item and another one");
         actionButton.set(_ActionFieldData.parameter, parameter);
         actionButton.set(_ActionFieldData.actionName, this.actionName);
@@ -174,14 +173,14 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
         return form;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         let p = new URLSearchParams(window.location.search);
 
         if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
             alert('There is no itemUrl given');
         } else {
 
-            if (parameter?.get('name', ObjectType.String) === 'CreateItemAndAnotherOne') {
+            if (parameter?.get('name', Mof.ObjectType.String) === 'CreateItemAndAnotherOne') {
                 submitMethod = SubmitMethod.UserDefined1;
             }
 
@@ -190,7 +189,7 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
             const property = p.get('property');
             const metaclass = p.get('metaclass');
 
-            await ItemClient.createItemAsChild(workspace, itemUrl,
+            await ClientItems.createItemAsChild(workspace, itemUrl,
                 {
                     metaClass: (metaclass === undefined || metaclass === null) ? "" : metaclass,
                     property: property,
@@ -219,12 +218,12 @@ class ExtentClearAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
         
-        await ECClient.clearExtent(
+        await ClientExtents.clearExtent(
             {
                 workspace: workspaceId, 
                 extentUri: extentUri
@@ -243,7 +242,7 @@ class ExtentDeleteAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
@@ -267,7 +266,7 @@ class ExtentNavigateToAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
@@ -281,7 +280,7 @@ class ExtentPropertiesAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         let extentUri = element.get('uri');
         let workspaceId = element.get('workspaceId');
@@ -304,7 +303,7 @@ class ExtentsListViewItemAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToItemByUrl(
             form.workspace,
             element.uri);
@@ -323,7 +322,7 @@ class ExtentsListDeleteItemAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
         const data = await ApiConnection.deleteRequest<IDeleteCallbackData>(
             Settings.baseUrl + "api/items/delete/"
@@ -349,7 +348,7 @@ class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInExtentUp(form.workspace, element.extentUri, element.uri);
         document.location.reload();
     }
@@ -363,7 +362,7 @@ class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInExtentDown(form.workspace, element.extentUri, element.uri);
         document.location.reload();
     }
@@ -376,7 +375,7 @@ class ExtentsStoreAction extends FormActions.ItemFormActionModuleBase{
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const action = new Mof.DmObject(_DatenMeister._Actions.__StoreExtentAction_Uri);
         action.set(_StoreExtentAction.workspaceId, element.get(_DatenMeister._Management._Extent.workspaceId));
         action.set(_StoreExtentAction.extentUri, element.get(_DatenMeister._Management._Extent.uri));
@@ -398,7 +397,7 @@ class ExtentXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Extent.ExportXmi",
             "dm:///_internal/forms/internal#DatenMeister.Export.Xmi",
@@ -415,7 +414,7 @@ class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
         super("Extent.ExportXmi");
     }
     
-    async loadObject(): Promise<DmObject>
+    async loadObject(): Promise<Mof.DmObjectWithSync>
     {
         let p = new URLSearchParams(window.location.search);
 
@@ -427,14 +426,14 @@ class ExtentXmiExport extends FormActions.ItemFormActionModuleBase {
             const extentUri = p.get('extentUri');
 
             // Export the Xmi and stores it into the element
-            const exportedXmi = await ECClient.exportXmi(workspace, extentUri);
-            const result = new DmObject(_DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);            
+            const exportedXmi = await ClientExtents.exportXmi(workspace, extentUri);
+            const result = await MofSync.createTemporaryDmObject(_DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);            
             result.set(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, exportedXmi.xmi);
             return result;
         }
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert('Nothing to do');
     }
 }
@@ -445,7 +444,7 @@ class ExtentXmiImportNavigate extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         Navigator.navigateToAction(
             "Extent.ImportXmi",
             "dm:///_internal/forms/internal#DatenMeister.Import.Xmi",
@@ -463,7 +462,7 @@ class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
         this.actionVerb = "Perform Import";
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         alert('Now, we do the import');
         let p = new URLSearchParams(window.location.search);
 
@@ -475,7 +474,7 @@ class ExtentXmiImport extends FormActions.ItemFormActionModuleBase {
             const extentUri = p.get('extentUri');
 
             // Export the Xmi and stores it into the element
-            const importedXmi = await ECClient.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, ObjectType.String));
+            const importedXmi = await ClientExtents.importXmi(workspace, extentUri, element.get(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof.ObjectType.String));
 
             if (importedXmi.success) {
                 Navigator.navigateToExtentItems(workspace, extentUri);

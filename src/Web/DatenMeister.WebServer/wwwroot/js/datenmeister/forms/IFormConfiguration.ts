@@ -1,4 +1,4 @@
-﻿import {DmObject} from "../Mof";
+﻿import {DmObject, DmObjectWithSync} from "../Mof";
 import {SubmitMethod} from "./RowForm";
 
 export interface IFormConfiguration {
@@ -12,7 +12,7 @@ export interface IFormConfiguration {
     formUri?: string;
     
     onCancel?: () => void;
-    onSubmit?: (element: DmObject, method: SubmitMethod) => void;
+    onSubmit?: (element: DmObjectWithSync, method: SubmitMethod) => void;
 
     refreshForm?: () => void;
 

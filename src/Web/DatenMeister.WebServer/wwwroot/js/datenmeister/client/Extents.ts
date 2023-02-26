@@ -125,7 +125,7 @@ export function setProperties(workspace: string, extentUri: string, properties: 
 }
 
 export function getProperties(workspace: string, extentUri: string) {
-    return new Promise<Mof.DmObject>(resolve => {
+    return new Promise<Mof.DmObjectWithSync>(resolve => {
 
         ApiConnection.get<object>(
             Settings.baseUrl + "api/extent/get_properties/"

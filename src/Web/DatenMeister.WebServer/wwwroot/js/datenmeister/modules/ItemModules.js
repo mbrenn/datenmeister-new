@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../Navigator", "../client/Actions.Items", "../client/Elements"], function (require, exports, FormActions, Mof_1, FormClient, ActionClient, Settings, DatenMeister_class_1, ItemClient, Navigator, Actions_Items_1, ClientElements) {
+define(["require", "exports", "../FormActions", "../Mof", "../MofSync", "../client/Forms", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../Navigator", "../client/Actions.Items", "../client/Elements"], function (require, exports, FormActions, Mof_1, MofSync, FormClient, ActionClient, Settings, DatenMeister_class_1, ItemClient, Navigator, Actions_Items_1, ClientElements) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -46,8 +46,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
                 let p = new URLSearchParams(window.location.search);
-                const result = new Mof_1.DmObject();
-                result.setMetaClassByUri(DatenMeister_class_1._DatenMeister._Actions.__MoveOrCopyAction_Uri);
+                const result = yield MofSync.createTemporaryDmObject(DatenMeister_class_1._DatenMeister._Actions.__MoveOrCopyAction_Uri);
                 // TODO: Set Result
                 const sourceWorkspace = p.get('workspaceId');
                 const sourceItemUri = p.get('itemUri');
@@ -150,7 +149,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
                     const itemUri = p.get('itemUri');
                     // Export the Xmi and stores it into the element
                     const exportedXmi = yield ItemClient.exportXmi(workspace, itemUri);
-                    const result = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
+                    const result = yield MofSync.createTemporaryDmObject(DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
                     result.set(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, exportedXmi.xmi);
                     return result;
                 }

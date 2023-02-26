@@ -1,5 +1,6 @@
 ﻿import * as FormActions from "../FormActions"
-import {DmObject} from "../Mof";
+import {DmObject, DmObjectWithSync} from "../Mof";
+import * as MofSync from "../MofSync";
 import * as ActionClient from "../client/Actions";
 import {IFormNavigation} from "../forms/Interfaces";
 import {SubmitMethod} from "../forms/RowForm";
@@ -116,11 +117,10 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         this.actionVerb = "Create Xmi Extent";
     }
     
-    async loadObject(): Promise<DmObject> | undefined {
+    async loadObject(): Promise<DmObjectWithSync> | undefined {
         let p = new URLSearchParams(window.location.search);
         
-        const result = new DmObject();
-        result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+        const result = await MofSync.createTemporaryDmObject(_DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri);
         result.set("workspaceId", p.get('workspaceId'));
 
         return Promise.resolve(result);

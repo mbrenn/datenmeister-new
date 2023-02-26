@@ -7,10 +7,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./Mof", "./client/Items"], function (require, exports, Mof, ClientItem) {
+define(["require", "exports", "./Mof", "./client/Items", "./client/Elements", "./Mof"], function (require, exports, Mof, ClientItem, ClientElements, Mof_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.sync = void 0;
+    exports.sync = exports.createTemporaryDmObject = void 0;
+    /**
+     * Creates a temporary DmObjectWithSync which is mirrored on the server
+     * @param metaClass Metaclass of the element to be created
+     */
+    function createTemporaryDmObject(metaClass) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield ClientElements.createTemporaryElement(metaClass);
+            return Mof_1.DmObjectWithSync.createFromReference(result.workspace, result.uri);
+        });
+    }
+    exports.createTemporaryDmObject = createTemporaryDmObject;
     /**
      * Performs a sync of the element to the server.
      * Only changes of the element are synced with the server
@@ -26,6 +37,7 @@ define(["require", "exports", "./Mof", "./client/Items"], function (require, exp
                 if (value === undefined || value === null) {
                     // Element is not set, so unset it
                     yield ClientItem.unsetProperty(element.workspace, element.uri, key);
+                    console.log('MofSync: Unsetting: ' + element.uri + " - " + key);
                 }
                 else if ((typeof value === "object" || value === "function") && (value !== null)) {
                     // Element is a reference, so we need to set the reference directly
@@ -35,13 +47,15 @@ define(["require", "exports", "./Mof", "./client/Items"], function (require, exp
                         workspaceId: referenceValue.workspace,
                         referenceUri: referenceValue.uri
                     });
+                    console.log('MofSync: Setting Reference for: ' + element.uri + " - " + key);
                 }
                 else {
-                    // Element is  a pure property
+                    // Element is a pure property           
                     paras.push({
                         key: key,
                         value: (_a = value === null || value === void 0 ? void 0 : value.toString()) !== null && _a !== void 0 ? _a : ""
                     });
+                    console.log('MofSync: Setting: ' + element.uri + " - " + key);
                 }
             }
             // Checks, if there is any property to be set
@@ -51,7 +65,7 @@ define(["require", "exports", "./Mof", "./client/Items"], function (require, exp
                     properties: paras
                 });
             }
-            element.propertiesSet.length = 0;
+            element.clearSync();
         });
     }
     exports.sync = sync;

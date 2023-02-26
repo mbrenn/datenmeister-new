@@ -14,6 +14,7 @@ import {debugElementToDom} from "../DomHelper";
 import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import {FormSelectionControl} from "../controls/FormSelectionControl"
 import * as Mof from "../Mof";
+import * as MofSync from "../MofSync";
 import {FormMode} from "./Forms";
 import * as IForm from "./Interfaces";
 import {_DatenMeister} from "../models/DatenMeister.class";
@@ -54,7 +55,7 @@ export class ObjectFormHtmlElements
  */
 export class ObjectFormCreator implements IForm.IFormNavigation {
 
-    element: Mof.DmObject;
+    element: Mof.DmObjectWithSync;
     extentUri: string;
     formElement: Mof.DmObject;
     domContainer: JQuery;
@@ -83,7 +84,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
             }
         }
 
-        if (this.element == null) this.element = new Mof.DmObject();
+        if (this.element == null) this.element = await MofSync.createTemporaryDmObject();
 
         const tabs = this.formElement.getAsArray("tab");
         for (let n in tabs) {
@@ -183,7 +184,7 @@ export class ObjectFormCreatorForItem {
                     tthis.switchToMode(FormMode.ViewMode);
                 },
                 onSubmit: async (element, method) => {
-                    await ClientItems.setProperties(tthis.workspace, tthis.itemUri, element);
+                    await MofSync.sync(element);
 
                     if (method === SubmitMethod.Save) {
                         tthis.switchToMode(FormMode.ViewMode);
@@ -312,7 +313,7 @@ export class ObjectFormCreatorForItem {
          * Creates the handler for the automatic creation of forms for extent
          */
         if (this.htmlElements.storeCurrentFormBtn !== undefined) {
-            this.htmlElements.storeCurrentFormBtn.click(async () => {
+            this.htmlElements.storeCurrentFormBtn.on('click',async () => {
                 const result = await ClientForms.createObjectFormForItem(
                     this.workspace,
                     this.itemUri,

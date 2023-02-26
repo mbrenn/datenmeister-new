@@ -108,7 +108,7 @@ export async function getObject(workspace: string, extent: string, id: string) {
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
 
-export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObject | undefined> {
+export async function getObjectByUri(workspace: string, url: string): Promise<Mof.DmObjectWithSync | undefined> {
     try {
         const resultFromServer = await ApiConnection.get<object>(
             Settings.baseUrl +

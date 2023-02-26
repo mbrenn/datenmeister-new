@@ -1,5 +1,6 @@
 ﻿import * as FormActions from "../FormActions"
-import {DmObject, ObjectType} from "../Mof";
+import {DmObject, DmObjectWithSync, ObjectType} from "../Mof";
+import * as MofSync from "../MofSync";
 import * as FormClient from "../client/Forms";
 import * as ActionClient from "../client/Actions";
 import {IFormNavigation} from "../forms/Interfaces";
@@ -44,12 +45,11 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         this.actionVerb = "Move/Copy Item";
     }
     
-    async loadObject(): Promise<DmObject> | undefined {
+    async loadObject(): Promise<DmObjectWithSync> | undefined {
 
         let p = new URLSearchParams(window.location.search);
         
-        const result = new DmObject();
-        result.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
+        const result = await MofSync.createTemporaryDmObject(_DatenMeister._Actions.__MoveOrCopyAction_Uri);
 
         // TODO: Set Result
         const sourceWorkspace = p.get('workspaceId');
@@ -158,8 +158,7 @@ class ItemXmiExport extends FormActions.ItemFormActionModuleBase {
         super("Item.ExportXmi");
     }
 
-    async loadObject(): Promise<DmObject>
-    {
+    async loadObject(): Promise<DmObjectWithSync> {
         let p = new URLSearchParams(window.location.search);
 
         if (!p.has("itemUri") || !p.has("workspace")) {
@@ -171,7 +170,7 @@ class ItemXmiExport extends FormActions.ItemFormActionModuleBase {
 
             // Export the Xmi and stores it into the element
             const exportedXmi = await ItemClient.exportXmi(workspace, itemUri);
-            const result = new DmObject(_DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
+            const result = await MofSync.createTemporaryDmObject(_DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
             result.set(_DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, exportedXmi.xmi);
             return result;
         }

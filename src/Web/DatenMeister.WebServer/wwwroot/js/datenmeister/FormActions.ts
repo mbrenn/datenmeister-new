@@ -1,4 +1,4 @@
-﻿import {createJsonFromObject, DmObject} from "./Mof";
+﻿import {createJsonFromObject, DmObject, DmObjectWithSync} from "./Mof";
 import * as IIForms from "./forms/Interfaces";
 import * as ActionClient from "./client/Actions";
 import {SubmitMethod} from "./forms/RowForm";
@@ -24,7 +24,7 @@ export interface IItemFormActionModule
      * Loads the object for a certain action. 
      * Can be undefined, if a default object can be used
      */
-    loadObject(): Promise<DmObject> | undefined;
+    loadObject(): Promise<DmObjectWithSync> | undefined;
 
     /**
      * Loads a certain form fitting to the action
@@ -108,10 +108,10 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
         return Promise.resolve(undefined);
     }
 
-    loadObject(): Promise<DmObject> | undefined {
+    loadObject(): Promise<DmObjectWithSync> | undefined {
         if (this.defaultMetaClassUri !== undefined) {
             return Promise.resolve(
-                new DmObject(this.defaultMetaClassUri)
+                new DmObjectWithSync(this.defaultMetaClassUri)
             );
         }
 

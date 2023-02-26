@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", "../Settings"], function (require, exports, FormActions, Mof_1, ApiConnection, Settings) {
+define(["require", "exports", "../FormActions", "../MofSync", "../ApiConnection", "../Settings"], function (require, exports, FormActions, MofSync, ApiConnection, Settings) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -24,8 +24,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../ApiConnection", ".
         }
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
-                const result = new Mof_1.DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+                const result = yield MofSync.createTemporaryDmObject("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
                 return Promise.resolve(result);
             });
         }

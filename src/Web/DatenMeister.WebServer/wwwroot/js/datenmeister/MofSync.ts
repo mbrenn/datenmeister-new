@@ -1,6 +1,18 @@
 ﻿import * as Mof from "./Mof"
 import * as ClientItem from "./client/Items"
-import {ISetPropertyParam} from "./client/Items";
+import * as ClientElements from "./client/Elements"
+
+import {DmObjectWithSync} from "./Mof";
+
+/**
+ * Creates a temporary DmObjectWithSync which is mirrored on the server
+ * @param metaClass Metaclass of the element to be created
+ */
+export async function createTemporaryDmObject (metaClass?: string) : Promise<DmObjectWithSync>
+{
+    const result = await ClientElements.createTemporaryElement(metaClass);
+    return DmObjectWithSync.createFromReference(result.workspace, result.uri);
+}
 
 /**
  * Performs a sync of the element to the server. 
@@ -10,13 +22,14 @@ import {ISetPropertyParam} from "./client/Items";
 export async function sync(element : Mof.DmObjectWithSync) : Promise<void> {
     
     // Check first the set elements
-    const paras = new Array<ISetPropertyParam>();
+    const paras = new Array<ClientItem.ISetPropertyParam>();
     for (const key in element.propertiesSet) {
         const value = element.get(key, Mof.ObjectType.Default);
 
         if (value === undefined || value === null) {
             // Element is not set, so unset it
-            await ClientItem.unsetProperty(element.workspace, element.uri, key);
+            await ClientItem.unsetProperty(element.workspace, element.uri, key);            
+            console.log('MofSync: Unsetting: ' + element.uri + " - " + key);
         } else if ((typeof value === "object" || value === "function") && (value !== null)) {
             // Element is a reference, so we need to set the reference directly
             const referenceValue = value as Mof.DmObject;
@@ -26,14 +39,18 @@ export async function sync(element : Mof.DmObjectWithSync) : Promise<void> {
                     workspaceId: referenceValue.workspace,
                     referenceUri: referenceValue.uri
                 });
+            
+            console.log('MofSync: Setting Reference for: ' + element.uri + " - " + key);
         } else {
-            // Element is  a pure property
+            // Element is a pure property           
             paras.push(
                 {
                     key: key,
                     value: value?.toString() ?? ""
                 }
             );
+
+            console.log('MofSync: Setting: ' + element.uri + " - " + key);
         }
     }
     
@@ -50,5 +67,5 @@ export async function sync(element : Mof.DmObjectWithSync) : Promise<void> {
         );
     }
     
-    element.propertiesSet.length = 0;
+    element.clearSync();
 }

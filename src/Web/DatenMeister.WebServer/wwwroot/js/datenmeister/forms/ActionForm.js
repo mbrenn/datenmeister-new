@@ -7,12 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm", "../FormActions", "../client/Forms", "../client/Elements", "../client/Items", "../client/Items"], function (require, exports, Mof_1, DomHelper_1, Forms, ObjectForm, FormActions, ClientForms, ClientElements, ClientItems, DataLoader) {
+define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm", "../FormActions", "../client/Forms", "../client/Elements", "../client/Items", "../MofSync"], function (require, exports, Mof_1, DomHelper_1, Forms, ObjectForm, FormActions, ClientForms, ClientElements, ClientItems, MofSync) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createActionFormForEmptyObject = void 0;
     function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const module = FormActions.getModule(actionName);
             if (module === undefined) {
@@ -32,9 +31,9 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
             }
             const creator = new ObjectForm.ObjectFormCreator();
             configuration.onSubmit = (element, method) => __awaiter(this, void 0, void 0, function* () {
-                // Stores the most recent changes on the server
-                yield DataLoader.setProperties("Data", temporaryElement.uri, element);
-                let loadedElement = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
+                // Stores the most recent changes on the server        
+                yield MofSync.sync(element);
+                let loadedElement = yield ClientItems.getObjectByUri(element.workspace, element.uri);
                 // Executes the detail form
                 yield FormActions.execute(actionName, creator, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
                 method);
@@ -44,7 +43,8 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
             */
             let element = yield module.loadObject();
             if (element === undefined) {
-                element = new Mof_1.DmObject();
+                const temporaryElement = yield ClientElements.createTemporaryElement(metaClass);
+                element = Mof_1.DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
                 // Sets the metaclass and workspace id upon url, if not created by Modules
                 let p = new URLSearchParams(window.location.search);
                 const metaclass = p.get('metaclass');
@@ -56,21 +56,14 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                     element.set('workspaceId', workspaceId);
                 }
             }
-            // If, we have created the element, we will now have to create the temporary object on the server
-            const temporaryElement = yield ClientElements.createTemporaryElement((_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri);
-            yield ClientItems.setProperties("Data", temporaryElement.uri, element);
+            else {
+                // Checks whether the object has a copy on the server and checks the type of the object
+                if (element.uri === undefined || element.workspace === undefined || element.propertiesSet === undefined) {
+                    throw "Element is not linked to the server or is not of Type MofObjectWithSync";
+                }
+            }
             /* Now find the right form */
             let form;
-            // After having loaded the object, load the form
-            if (metaClass === undefined && ((_b = element.metaClass) === null || _b === void 0 ? void 0 : _b.uri) !== undefined) {
-                // If the returned element has a metaclass, then set the metaClass being used to 
-                // find the right form to the one by the element
-                metaClass = element.metaClass.uri;
-            }
-            else if (element.metaClass === undefined) {
-                // Updates the metaclass, if the metaclass is not set by the element itself
-                element.setMetaClassByUri(metaClass);
-            }
             // Asks the detail form actions, whether we have a form for the action itself
             form = yield module.loadForm(metaClass);
             if (form === undefined) {
@@ -88,7 +81,7 @@ define(["require", "exports", "../Mof", "../DomHelper", "./Forms", "./ObjectForm
                 }
             }
             // Creates the object as being provided by the uri
-            creator.element = yield ClientItems.getObjectByUri("Data", temporaryElement.uri);
+            creator.element = element;
             creator.formElement = form;
             creator.workspace = "Data";
             creator.extentUri = creator.element.extentUri;

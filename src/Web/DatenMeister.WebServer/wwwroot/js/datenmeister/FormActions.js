@@ -29,7 +29,7 @@ define(["require", "exports", "./Mof"], function (require, exports, Mof_1) {
         }
         loadObject() {
             if (this.defaultMetaClassUri !== undefined) {
-                return Promise.resolve(new Mof_1.DmObject(this.defaultMetaClassUri));
+                return Promise.resolve(new Mof_1.DmObjectWithSync(this.defaultMetaClassUri));
             }
             return Promise.resolve(undefined);
         }

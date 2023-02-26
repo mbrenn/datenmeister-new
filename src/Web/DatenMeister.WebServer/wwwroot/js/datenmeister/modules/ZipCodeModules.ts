@@ -1,5 +1,6 @@
 ﻿import * as FormActions from "../FormActions"
-import {DmObject} from "../Mof";
+import {DmObject, DmObjectWithSync} from "../Mof";
+import * as MofSync from "../MofSync";
 import {SubmitMethod} from "../forms/RowForm";
 import {IFormNavigation} from "../forms/Interfaces";
 import * as ApiConnection from "../ApiConnection";
@@ -18,9 +19,9 @@ class ZipCodeTestAction extends FormActions.ItemFormActionModuleBase{
         this.skipSaving = true;
     }
     
-    async loadObject(): Promise<DmObject> | undefined {
-        const result = new DmObject();
-        result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
+    async loadObject(): Promise<DmObjectWithSync> | undefined {
+        const result = await MofSync.createTemporaryDmObject(
+            "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
         return Promise.resolve(result);
     }
 

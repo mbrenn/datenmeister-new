@@ -6,7 +6,7 @@ import {createField} from "./FieldFactory";
 import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
 import {_DatenMeister} from "../models/DatenMeister.class";
-import {DmObject} from "../Mof";
+import {DmObject, DmObjectWithSync} from "../Mof";
 
 // Defines the possible submit methods, a user can chose to close the detail form
 export enum SubmitMethod
@@ -26,7 +26,7 @@ export class RowForm implements InterfacesForms.IForm {
     workspace: string;
     extentUri: string;
     itemUrl: string;
-    element: Mof.DmObject;
+    element: Mof.DmObjectWithSync;
     formElement: Mof.DmObject;
 
     formType: FormType = FormType.Row;
@@ -240,13 +240,9 @@ export class RowForm implements InterfacesForms.IForm {
         parent.append(tableInfo);
     }
 
-    async storeFormValuesIntoDom(reuseExistingElement?: boolean) : Promise<DmObject> {
+    async storeFormValuesIntoDom() : Promise<DmObjectWithSync> {
         if (this.onChange !== undefined && this.onCancel !== null) {
             
-            // If the caller indicates that the element shall be reused, then the already provided value is taken
-            // This method is not default since for submitting object forms, the only the supported fields should be 
-            // returned to the server
-            const saveElement = reuseExistingElement === true ? (this.element ?? new Mof.DmObject()) : new Mof.DmObject;
             for (let m in this.fieldElements) {
                 if (!this.fieldElements.hasOwnProperty(m)) continue;
 
@@ -257,14 +253,10 @@ export class RowForm implements InterfacesForms.IForm {
                     
                     // Comment out to store the values only in the saveElement
                     await fieldElement.evaluateDom(this.element);
-                    
-                    // Now evaluates the field and put only the properties being shown
-                    // into the DmObject to avoid overwriting of protected and non-shown properties
-                    await fieldElement.evaluateDom(saveElement);
                 }
             }
             
-            return saveElement;
+            return this.element;
         }
     }
 }

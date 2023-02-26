@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../models/DatenMeister.class", "../client/Forms"], function (require, exports, FormActions, Mof_1, ActionClient, Settings, DatenMeister_class_1, ItemClient, DatenMeisterModel, FormClient) {
+define(["require", "exports", "../FormActions", "../Mof", "../MofSync", "../client/Actions", "../Settings", "../models/DatenMeister.class", "../client/Items", "../models/DatenMeister.class", "../client/Forms"], function (require, exports, FormActions, Mof_1, MofSync, ActionClient, Settings, DatenMeister_class_1, ItemClient, DatenMeisterModel, FormClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -110,8 +110,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Actions", "
         loadObject() {
             return __awaiter(this, void 0, void 0, function* () {
                 let p = new URLSearchParams(window.location.search);
-                const result = new Mof_1.DmObject();
-                result.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+                const result = yield MofSync.createTemporaryDmObject(DatenMeister_class_1._DatenMeister._ExtentLoaderConfigs.__XmiStorageLoaderConfig_Uri);
                 result.set("workspaceId", p.get('workspaceId'));
                 return Promise.resolve(result);
             });

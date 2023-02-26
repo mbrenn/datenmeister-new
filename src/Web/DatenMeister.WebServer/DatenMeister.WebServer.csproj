@@ -29,8 +29,10 @@
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ItemModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\WorkspaceModules.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\modules\ZipCodeModules.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\MofSync.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\page\Actions.ts" />
     <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Actions.Item.ts" />
+    <TypeScriptCompile Include="wwwroot\js\datenmeister\test\Test.Client.Sync.ts" />
   </ItemGroup>
 
   <ItemGroup>

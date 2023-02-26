@@ -218,6 +218,39 @@ export class DmObject {
     }
 }
 
+export class DmObjectWithSync extends DmObject
+{
+    /**
+     * Defines the list of properties that were set since the last sync
+     */
+    propertiesSet: boolean[];
+    
+    constructor() {
+        super();
+        this.propertiesSet = new Array<boolean>(); 
+    }
+    
+    unset(key: string): void {
+        super.unset(key);
+        this.propertiesSet[key] = true;
+    }
+
+    set(key: string, value: any): void {
+        super.set(key, value);
+        this.propertiesSet[key] = true;
+    }
+
+    static createFromReference(workspaceId: string, itemUri: string)
+    {
+        const result = new DmObjectWithSync();
+        result.isReference = true;
+        result.workspace = workspaceId;
+        result.uri = itemUri;
+
+        return result;
+    }
+}
+
 /**
  * Takes the given object and exports it as an ItemWithNameAndId
  * @param element

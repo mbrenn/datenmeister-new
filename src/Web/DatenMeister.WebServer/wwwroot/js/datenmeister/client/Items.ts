@@ -240,7 +240,7 @@ export async function unsetProperty(
 
 export async function setPropertiesByStringValues(workspaceId: string, itemUrl: string, params: ISetPropertiesParams): Promise<ISuccessResult> {
     let url = Settings.baseUrl +
-        "api/items/unset_property/" +
+        "api/items/set_properties/" +
         encodeURIComponent(workspaceId) +
         "/" +
         encodeURIComponent(itemUrl);

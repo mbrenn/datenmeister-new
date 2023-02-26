@@ -1,7 +1,7 @@
 define(["require", "exports", "./ApiModels"], function (require, exports, ApiModels_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.convertToItemWithNameAndId = exports.DmObject = exports.ObjectType = void 0;
+    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.convertToItemWithNameAndId = exports.DmObjectWithSync = exports.DmObject = exports.ObjectType = void 0;
     var ObjectType;
     (function (ObjectType) {
         ObjectType[ObjectType["Default"] = 0] = "Default";
@@ -171,6 +171,28 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         }
     }
     exports.DmObject = DmObject;
+    class DmObjectWithSync extends DmObject {
+        constructor() {
+            super();
+            this.propertiesSet = new Array();
+        }
+        unset(key) {
+            super.unset(key);
+            this.propertiesSet[key] = true;
+        }
+        set(key, value) {
+            super.set(key, value);
+            this.propertiesSet[key] = true;
+        }
+        static createFromReference(workspaceId, itemUri) {
+            const result = new DmObjectWithSync();
+            result.isReference = true;
+            result.workspace = workspaceId;
+            result.uri = itemUri;
+            return result;
+        }
+    }
+    exports.DmObjectWithSync = DmObjectWithSync;
     /**
      * Takes the given object and exports it as an ItemWithNameAndId
      * @param element

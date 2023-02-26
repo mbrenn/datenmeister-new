@@ -198,7 +198,7 @@ define(["require", "exports", "../Mof", "../Settings", "../ApiConnection"], func
     function setPropertiesByStringValues(workspaceId, itemUrl, params) {
         return __awaiter(this, void 0, void 0, function* () {
             let url = Settings.baseUrl +
-                "api/items/unset_property/" +
+                "api/items/set_properties/" +
                 encodeURIComponent(workspaceId) +
                 "/" +
                 encodeURIComponent(itemUrl);

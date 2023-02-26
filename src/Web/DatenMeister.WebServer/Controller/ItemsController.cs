@@ -455,7 +455,6 @@ namespace DatenMeister.WebServer.Controller
             var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
             foundItem.set(propertyParams.Key, propertyParams.Value);
-
             return new {success = true};
         }
 
@@ -526,7 +525,7 @@ namespace DatenMeister.WebServer.Controller
             public string Property { get; set; } = string.Empty;
         }
 
-        [HttpPut("api/items/set_properties/{workspaceId}/{itemUri}")]
+        [HttpPost("api/items/set_properties/{workspaceId}/{itemUri}")]
         public ActionResult<object> SetProperties(string workspaceId, string itemUri,
             [FromBody] SetPropertiesParams propertiesParams)
         {
@@ -564,7 +563,7 @@ namespace DatenMeister.WebServer.Controller
         /// </summary>
         public class SetPropertiesParams
         {
-            public List<SetPropertyParams> Properties = new();
+            public List<SetPropertyParams> Properties { get; set; } = new();
         }
 
         [HttpGet("api/items/get_property/{workspaceId}/{itemUri}")]

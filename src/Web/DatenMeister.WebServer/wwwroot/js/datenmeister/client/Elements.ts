@@ -61,9 +61,8 @@ export interface ICreateTemporaryElementResult {
     success: boolean;
     
     workspace: string;
+    
     uri: string;
-    
-    
 }
 
 export async function createTemporaryElement(metaClassUri?: string) : Promise<ICreateTemporaryElementResult> {

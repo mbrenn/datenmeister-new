@@ -78,6 +78,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
+                    foundForm = CloneForm(foundForm);
                     Logger.Info("CreateObjectFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
                         "[FormFactory.CreateObjectFormForItem] Found Form via FormFinder: " + foundForm.GetUri());
@@ -160,6 +161,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
+                    foundForm = CloneForm(foundForm);
                     Logger.Info("CreateObjectFormForMetaClass: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
                         "[FormFactory.CreateObjectFormForMetaClass] Found Form via FormFinder: " + foundForm.GetUri());
@@ -230,6 +232,7 @@ namespace DatenMeister.Forms
 
                 if (rowForm != null)
                 {
+                    rowForm = CloneForm(rowForm);
                     Logger.Info("CreateRowFormByMetaClass: Found form: " + NamedElementMethods.GetFullName(rowForm));
                     FormMethods.AddToFormCreationProtocol(rowForm,
                         "[FormFactory.CreateRowFormByMetaClass] Found Form via FormFinder: " + rowForm.GetUri());
@@ -248,8 +251,6 @@ namespace DatenMeister.Forms
 
             if (rowForm != null)
             {
-                rowForm = CloneForm(rowForm);
-
                 // Adds the extension forms to the found extent
                 AddExtensionFieldsToRowOrTableForm(
                     rowForm,
@@ -305,6 +306,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
+                    foundForm = CloneForm(foundForm);
                     Logger.Info("CreateRowFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
                         "[FormFactory.CreateRowFormForItem] Found Form via FormFinder: " + foundForm.GetUri());
@@ -321,8 +323,6 @@ namespace DatenMeister.Forms
 
             if (foundForm != null)
             {
-                foundForm = CloneForm(foundForm);
-
                 _formPluginState.CallFormsModificationPlugins(
                     configuration,
                     new FormCreationContext
@@ -408,6 +408,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
+                    foundForm = CloneForm(foundForm);
                     Logger.Info("CreateCollectionFormForMetaClass: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
@@ -437,8 +438,6 @@ namespace DatenMeister.Forms
 
             if (foundForm != null)
             {
-                foundForm = CloneForm(foundForm);
-
                 var formCreationContext = new FormCreationContext
                 {
                     MetaClass = metaClass,
@@ -545,6 +544,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
+                    foundForm = CloneForm(foundForm);
                     Logger.Info("GetExtentForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(
                         foundForm,
@@ -579,8 +579,6 @@ namespace DatenMeister.Forms
             // 
             if (foundForm != null)
             {
-                foundForm = CloneForm(foundForm);
-                
                 // Strip the ParentPropertyNames from the table forms. This is used to avoid that the wrong plugins are called
                 foreach (var tableForm in FormMethods.GetTableForms(foundForm))
                 {
@@ -627,6 +625,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
+                    foundForm = CloneForm(foundForm);
                     Logger.Info("CreateTableFormForMetaClass: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
 
@@ -645,9 +644,7 @@ namespace DatenMeister.Forms
             }
 
             if (foundForm != null)
-            {
-                foundForm = CloneForm(foundForm);
-                
+            {   
                 _formPluginState.CallFormsModificationPlugins(
                     configuration,
                     new FormCreationContext
@@ -699,6 +696,7 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
+                    foundForm = CloneForm(foundForm);
                     Logger.Info("CreateTableFormForProperty: Found form: " +
                                 NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
@@ -718,8 +716,6 @@ namespace DatenMeister.Forms
 
             if (foundForm != null)
             {
-                foundForm = CloneForm(foundForm);
-                
                 SetDefaultTypesByPackages(parentElement as IHasExtent, foundForm);
 
                 _formPluginState.CallFormsModificationPlugins(configuration,

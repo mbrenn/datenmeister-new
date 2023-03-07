@@ -45,6 +45,7 @@ namespace DatenMeister.Forms
 
         public IElement? CreateObjectFormForItem(IObject element, FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateObjectFormForItem: ", LogLevel.Trace);
             var metaClass = (element as IElement)?.getMetaClass();
 
             // Ok, not an extent now do the right things
@@ -57,7 +58,7 @@ namespace DatenMeister.Forms
             var extentType = extent.GetConfiguration().ExtentType;
 
             string? packageViewMode = null;
-            
+
             // Checks if the current item is a package and if the viewmode
             if (DefaultClassifierHints.IsPackageLike(element))
                 packageViewMode =
@@ -79,7 +80,8 @@ namespace DatenMeister.Forms
                 if (foundForm != null)
                 {
                     foundForm = CloneForm(foundForm);
-                    Logger.Info("CreateObjectFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                    Logger.Info(
+                        "CreateObjectFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
                         "[FormFactory.CreateObjectFormForItem] Found Form via FormFinder: " + foundForm.GetUri());
                 }
@@ -90,9 +92,11 @@ namespace DatenMeister.Forms
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateObjectFormForItem(
                     element,
-                    new FormFactoryConfiguration { IncludeOnlyCommonProperties = true, AllowFormModifications = false});
+                    new FormFactoryConfiguration
+                        { IncludeOnlyCommonProperties = true, AllowFormModifications = false });
 
-                FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateObjectFormForItem] Created Form via FormCreator");
+                FormMethods.AddToFormCreationProtocol(foundForm,
+                    "[FormFactory.CreateObjectFormForItem] Created Form via FormCreator");
             }
 
             if (foundForm != null)
@@ -113,12 +117,12 @@ namespace DatenMeister.Forms
                 if (element is IElement asElement)
                 {
                     EvaluateTableFormsForAutogenerationByItem(asElement, foundForm);
-                    
+
                     // This call is required to add the new buttons to the list form 
                     // in case the creator of the form did not have these buttons included
                     FormMethods.AddDefaultTypesInListFormByElementsProperty(foundForm, asElement);
                 }
-                
+
                 var formCreationContext = new FormCreationContext
                 {
                     FormType = _DatenMeister._Forms.___FormType.Object,
@@ -128,7 +132,7 @@ namespace DatenMeister.Forms
                 };
 
                 CallPluginsForCollectionOrObjectForm(configuration, formCreationContext, ref foundForm);
-                
+
                 CleanupObjectForm(foundForm, true);
             }
 
@@ -144,6 +148,7 @@ namespace DatenMeister.Forms
         /// <returns>The found or created form. If none is found, then null will be returned </returns>
         public IElement? CreateObjectFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateObjectFormForMetaClass: ", LogLevel.Trace);
             // Ok, not an extent now do the right things
             IElement? foundForm = null;
 
@@ -216,6 +221,7 @@ namespace DatenMeister.Forms
         /// <returns></returns>
         public IElement? CreateRowFormByMetaClass(IElement metaClass, FormFactoryConfiguration? configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateRowFormByMetaClass: ", LogLevel.Trace);
             // Ok, not an extent now do the right things
             IElement? rowForm = null;
             configuration ??= new FormFactoryConfiguration();
@@ -286,6 +292,7 @@ namespace DatenMeister.Forms
         /// <returns>The created element</returns>
         public IElement? CreateRowFormForItem(IObject element, FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateRowFormForItem: ", LogLevel.Trace);
             IElement? foundForm = null;
             var extent = (element as IHasExtent)?.Extent;
 
@@ -392,6 +399,7 @@ namespace DatenMeister.Forms
         /// <returns>The collection form being created</returns>
         public IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateCollectionFormForMetaClass: ", LogLevel.Trace);
             IElement? foundForm = null;
 
             if (configuration.ViaFormFinder)
@@ -464,6 +472,7 @@ namespace DatenMeister.Forms
             IReflectiveCollection collection,
             FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateTableFormForCollection: ", LogLevel.Trace);
             configuration = configuration with { IsForTableForm = true };
             IElement? foundForm = null;
             if (configuration.ViaFormCreator)
@@ -528,6 +537,8 @@ namespace DatenMeister.Forms
             IReflectiveCollection collection,
             FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateCollectionFormForExtent: ", LogLevel.Trace);
+
             var extentType = extent.GetConfiguration().ExtentType;
             IElement? foundForm = null;
             if (configuration.ViaFormFinder)
@@ -545,7 +556,7 @@ namespace DatenMeister.Forms
                 if (foundForm != null)
                 {
                     foundForm = CloneForm(foundForm);
-                    Logger.Info("GetExtentForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                    Logger.Info("CreateCollectionFormForExtent: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(
                         foundForm,
                         $"[FormFactory.CreateCollectionFormForExtent] Found Form via FormFinder {foundForm.GetUri()}");
@@ -608,6 +619,7 @@ namespace DatenMeister.Forms
             IElement? metaClass,
             FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateTableFormForMetaClass: ", LogLevel.Trace);
             configuration = configuration with { IsForTableForm = true };
             IElement? foundForm = null;
 
@@ -675,6 +687,7 @@ namespace DatenMeister.Forms
             IElement? propertyType,
             FormFactoryConfiguration configuration)
         {
+            using var _ = new StopWatchLogger(Logger, "Timing for CreateTableFormForProperty: ", LogLevel.Trace);
             configuration = configuration with { IsForTableForm = true };
             IElement? foundForm = null;
             propertyType ??=

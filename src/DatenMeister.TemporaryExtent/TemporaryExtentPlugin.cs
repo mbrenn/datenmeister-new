@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Plugins;
 

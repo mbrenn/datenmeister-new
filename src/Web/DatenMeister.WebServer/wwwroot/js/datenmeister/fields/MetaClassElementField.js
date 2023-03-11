@@ -61,6 +61,8 @@ define(["require", "exports", "../DomHelper", "./Interfaces", "../controls/Selec
             });
         }
         evaluateDom(dmElement) {
+            return __awaiter(this, void 0, void 0, function* () {
+            });
         }
     }
     exports.Field = Field;

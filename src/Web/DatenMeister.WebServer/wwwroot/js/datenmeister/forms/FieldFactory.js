@@ -1,4 +1,4 @@
-define(["require", "exports", "../models/DatenMeister.class", "../fields/TextField", "../fields/CheckboxField", "../fields/CheckboxListTaggingField", "../fields/DropDownField", "../fields/MetaClassElementField", "../fields/ActionField", "../fields/AnyDataField", "../fields/SubElementField", "../fields/SeparatorLineField", "../fields/ReferenceField", "../fields/UnknownField"], function (require, exports, DatenMeister_class_1, TextField, CheckboxField, CheckboxListTaggingField, DropDownField, MetaClassElementField, ActionField, AnyDataField, SubElementField, SeparatorLineField, ReferenceField, UnknownField) {
+define(["require", "exports", "../models/DatenMeister.class", "../fields/TextField", "../fields/CheckboxField", "../fields/CheckboxListTaggingField", "../fields/DropDownField", "../fields/MetaClassElementField", "../fields/ActionField", "../fields/AnyDataField", "../fields/SubElementField", "../fields/SeparatorLineField", "../fields/ReferenceField", "../fields/ReferenceFieldFromCollection", "../fields/UnknownField"], function (require, exports, DatenMeister_class_1, TextField, CheckboxField, CheckboxListTaggingField, DropDownField, MetaClassElementField, ActionField, AnyDataField, SubElementField, SeparatorLineField, ReferenceField, ReferenceFieldFromCollection, UnknownField) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createField = void 0;
@@ -13,6 +13,9 @@ define(["require", "exports", "../models/DatenMeister.class", "../fields/TextFie
                 break;
             case DatenMeister_class_1._DatenMeister._Forms.__ReferenceFieldData_Uri:
                 result = new ReferenceField.Field();
+                break;
+            case DatenMeister_class_1._DatenMeister._Forms.__ReferenceFieldFromCollectionData_Uri:
+                result = new ReferenceFieldFromCollection.Field();
                 break;
             case DatenMeister_class_1._DatenMeister._Forms.__CheckboxFieldData_Uri:
                 result = new CheckboxField.Field();

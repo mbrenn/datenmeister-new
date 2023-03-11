@@ -117,7 +117,7 @@ namespace DatenMeister.WebServer
                 TheLog.AddProvider(new FileProvider(logPath, true), LogLevel.Trace);
             }
 
-            TheLog.AddProvider(new ConsoleProvider(), LogLevel.Debug);
+            TheLog.AddProvider(new ConsoleProvider(), LogLevel.Trace);
             return publicSettings!;
         }
 

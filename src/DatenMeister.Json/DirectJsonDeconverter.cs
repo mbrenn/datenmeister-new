@@ -100,7 +100,7 @@ namespace DatenMeister.Json
                 foreach (var pair in jsonObject.v)
                 {
                     result.set(pair.Key, ConvertJsonValue(pair.Value));
-                }
+                }   
 
                 return result;
             }

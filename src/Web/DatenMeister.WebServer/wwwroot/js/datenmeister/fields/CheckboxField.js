@@ -26,10 +26,12 @@ define(["require", "exports", "./Interfaces"], function (require, exports, Inter
             });
         }
         evaluateDom(dmElement) {
-            if (this._checkbox !== undefined && this._checkbox !== null) {
-                const fieldName = this.field.get('name').toString();
-                dmElement.set(fieldName, this._checkbox.prop('checked'));
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this._checkbox !== undefined && this._checkbox !== null) {
+                    const fieldName = this.field.get('name').toString();
+                    dmElement.set(fieldName, this._checkbox.prop('checked'));
+                }
+            });
         }
     }
     exports.Field = Field;

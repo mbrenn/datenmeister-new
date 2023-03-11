@@ -21,7 +21,7 @@ export class Field extends BaseField implements IFormField {
         return this._checkbox;
     }
 
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
         if (this._checkbox !== undefined && this._checkbox !== null) {
             const fieldName = this.field.get('name').toString();
             dmElement.set(fieldName, this._checkbox.prop('checked'));

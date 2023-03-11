@@ -117,7 +117,7 @@ export class Field extends BaseField implements IFormField {
      * Evaluates the user input and checks whether the data can be correctly set
      * @param dmElement Element to which the data shall be added
      */
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
         if (this.isReadOnly || this.isFieldReadOnly) return;
 
         let result = "";

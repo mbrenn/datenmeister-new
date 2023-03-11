@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Extent.Verifier;
 using NUnit.Framework;
 
@@ -15,6 +16,11 @@ namespace DatenMeister.Tests.Verifiers
             Initializer.InitWithDefaultVerifiers(dm.WorkspaceLogic, verifier);
 
             await verifier.VerifyExtents();
+
+            foreach (var verifierEntry in verifier.VerifyEntries)
+            {
+                Console.WriteLine(verifierEntry.ToString());
+            }
 
             Assert.That(verifier.VerifyEntries.Count, Is.EqualTo(0));
         }

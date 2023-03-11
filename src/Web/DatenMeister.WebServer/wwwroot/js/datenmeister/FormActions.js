@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "./Mof"], function (require, exports, Mof_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.execute = exports.requiresConfirmation = exports.loadFormForAction = exports.loadObjectForAction = exports.getModule = exports.addModule = exports.ItemFormActionModuleBase = void 0;
@@ -28,6 +28,9 @@ define(["require", "exports"], function (require, exports) {
             return Promise.resolve(undefined);
         }
         loadObject() {
+            if (this.defaultMetaClassUri !== undefined) {
+                return Promise.resolve(new Mof_1.DmObjectWithSync(this.defaultMetaClassUri));
+            }
             return Promise.resolve(undefined);
         }
     }

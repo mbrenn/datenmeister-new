@@ -225,6 +225,8 @@ define(["require", "exports", "../Mof", "../forms/FieldFactory", "../controls/Se
             });
         }
         evaluateDom(dmElement) {
+            return __awaiter(this, void 0, void 0, function* () {
+            });
         }
     }
     exports.Field = Field;

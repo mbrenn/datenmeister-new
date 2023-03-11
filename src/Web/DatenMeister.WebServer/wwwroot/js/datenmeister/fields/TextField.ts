@@ -107,7 +107,7 @@ export class Field extends BaseField implements IFormField
         }
     }
 
-    evaluateDom(dmElement: Mof.DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
         if (this._textBox !== undefined && this._textBox !== null)
         {
             let fieldName: string;

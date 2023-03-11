@@ -653,15 +653,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, mofObject);
 
-                if (result is IProviderObject)
+                if (result is IProviderObject && childValue is MofObject childValueAsObject)
                 {
-                    if (childValue is MofObject childValueAsObject)
-                    {
-                        // Sets the extent of the newly added object which will be associated to the mofObject
-                        // This value must be set, so the new information is propagated to the MofObjects
-                        childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
-                        childValueAsObject.Extent = mofObject.Extent;
-                    }
+                    // Sets the extent of the newly added object which will be associated to the mofObject
+                    // This value must be set, so the new information is propagated to the MofObjects
+                    childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
+                    childValueAsObject.Extent = mofObject.Extent;
                 }
 
                 return result;
@@ -671,15 +668,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 var result = ConvertForSetting(childValue, extent, null);
 
-                if (result is IProviderObject)
+                if (result is IProviderObject && childValue is MofObject childValueAsObject)
                 {
-                    if (childValue is MofObject childValueAsObject)
-                    {
-                        // Sets the extent of the newly added object which will be associated to the mofObject
-                        // This value must be set, so the new information is propagated to the MofObjects
-                        childValueAsObject.ReferencedExtent = extent;
-                        childValueAsObject.Extent = extent;
-                    }
+                    // Sets the extent of the newly added object which will be associated to the mofObject
+                    // This value must be set, so the new information is propagated to the MofObjects
+                    childValueAsObject.ReferencedExtent = extent;
+                    childValueAsObject.Extent = extent;
                 }
 
                 return result;

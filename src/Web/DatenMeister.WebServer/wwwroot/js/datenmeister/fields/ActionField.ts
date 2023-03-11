@@ -32,7 +32,7 @@ export class Field extends BaseField implements IFormField {
                 // click. Only then, the DetailForm itself is executed. 
                 if (!requireConfirmation || tthis.inConfirmation) {
                     if (tthis.form.storeFormValuesIntoDom !== undefined) {
-                        tthis.form.storeFormValuesIntoDom(true);
+                        await tthis.form.storeFormValuesIntoDom(true);
                     }
 
                     if (module?.skipSaving !== true) {
@@ -52,7 +52,7 @@ export class Field extends BaseField implements IFormField {
         return this.button;
     }
 
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
 
     }
 }

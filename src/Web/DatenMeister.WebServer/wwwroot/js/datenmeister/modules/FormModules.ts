@@ -5,6 +5,7 @@ import {IFormNavigation} from "../forms/Interfaces";
 import * as FormClient from "../client/Forms";
 import * as DatenMeisterModel from "../models/DatenMeister.class";
 import * as ActionClient from "../client/Actions";
+import {executeAction} from "../client/Actions";
 
 export function loadModules() {
     FormActions.addModule(new FormsCreateByMetaClassAction());
@@ -16,6 +17,7 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
         super("Forms.Create.ByMetaClass");
         this.actionVerb = "Create by MetaClass";
         this.skipSaving = true;
+        this.defaultMetaClassUri = DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri;
     }
 
     async loadForm(): Promise<DmObject> | undefined {
@@ -24,17 +26,9 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
 
-        const extentCreationParameter = new DmObject();
-        extentCreationParameter.set('configuration', element);
-        extentCreationParameter.setMetaClassByUri(
-            DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri
-        );
-
-        const result = await ActionClient.executeActionDirectly(
-            "Execute",
-            {
-                parameter: extentCreationParameter
-            }
+        const result = await ActionClient.executeAction(
+            element.workspace,
+            element.uri
         );
 
         if (result.success !== true) {

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../Mof", "../Navigator", "../Settings", "../controls/ElementBreadcrumb"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ECClient, ClientForms, ItemClient, FormActions, RowForm_1, DatenMeister_class_1, Mof, Mof_1, Navigator, Settings, ElementBreadcrumb_1) {
+define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../MofSync", "../Navigator", "../Settings", "../controls/ElementBreadcrumb"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ClientExtents, ClientForms, ClientItems, FormActions, RowForm_1, DatenMeister_class_1, Mof, MofSync, Navigator, Settings, ElementBreadcrumb_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -43,7 +43,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                 let p = new URLSearchParams(window.location.search);
                 const workspace = p.get('workspace');
                 const extentUri = p.get('extent');
-                return yield ECClient.getProperties(workspace, extentUri);
+                return yield ClientExtents.getProperties(workspace, extentUri);
             });
         }
         execute(form, element, parameter, submitMethod) {
@@ -55,7 +55,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                 else {
                     const workspace = p.get('workspace');
                     const extentUri = p.get('extent');
-                    yield ECClient.setProperties(workspace, extentUri, element);
+                    yield ClientExtents.setProperties(workspace, extentUri, element);
                     Navigator.navigateToExtentItems(workspace, extentUri);
                 }
             });
@@ -69,13 +69,13 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         loadForm(metaClass) {
             return __awaiter(this, void 0, void 0, function* () {
                 const form = yield ClientForms.getObjectFormForMetaClass(metaClass);
-                const tabs = form.get(_ObjectForm.tab, Mof_1.ObjectType.Array);
+                const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
                 const firstTab = tabs[0];
-                const fields = firstTab.get(_RowForm.field, Mof_1.ObjectType.Array);
-                const parameter = new Mof_1.DmObject();
+                const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);
+                const parameter = new Mof.DmObject();
                 parameter.set('name', 'CreateItemAndAnotherOne');
                 // Adds the additional button 
-                const actionButton = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._Forms.__ActionFieldData_Uri);
+                const actionButton = new Mof.DmObject(DatenMeister_class_1._DatenMeister._Forms.__ActionFieldData_Uri);
                 actionButton.set(_ActionFieldData.title, "Create Item and another one");
                 actionButton.set(_ActionFieldData.parameter, parameter);
                 actionButton.set(_ActionFieldData.actionName, this.actionName);
@@ -85,7 +85,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                if ((parameter === null || parameter === void 0 ? void 0 : parameter.get('name', Mof_1.ObjectType.String)) === 'CreateItemAndAnotherOne') {
+                if ((parameter === null || parameter === void 0 ? void 0 : parameter.get('name', Mof.ObjectType.String)) === 'CreateItemAndAnotherOne') {
                     submitMethod = RowForm_1.SubmitMethod.UserDefined1;
                 }
                 let p = new URLSearchParams(window.location.search);
@@ -105,7 +105,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                 if (metaClass === undefined) {
                     metaClass = (_a = element.metaClass) === null || _a === void 0 ? void 0 : _a.uri;
                 }
-                const newItem = yield ItemClient.createItemInExtent(workspace, extentUri, {
+                const newItem = yield ClientItems.createItemInExtent(workspace, extentUri, {
                     metaClass: metaClass === undefined ? "" : metaClass,
                     properties: element
                 });
@@ -141,13 +141,13 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         loadForm(metaClass) {
             return __awaiter(this, void 0, void 0, function* () {
                 const form = yield ClientForms.getObjectFormForMetaClass(metaClass);
-                const tabs = form.get(_ObjectForm.tab, Mof_1.ObjectType.Array);
+                const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
                 const firstTab = tabs[0];
-                const fields = firstTab.get(_RowForm.field, Mof_1.ObjectType.Array);
-                const parameter = new Mof_1.DmObject();
+                const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);
+                const parameter = new Mof.DmObject();
                 parameter.set('name', 'CreateItemAndAnotherOne');
                 // Adds the additional button 
-                const actionButton = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._Forms.__ActionFieldData_Uri);
+                const actionButton = new Mof.DmObject(DatenMeister_class_1._DatenMeister._Forms.__ActionFieldData_Uri);
                 actionButton.set(_ActionFieldData.title, "Create Item and another one");
                 actionButton.set(_ActionFieldData.parameter, parameter);
                 actionButton.set(_ActionFieldData.actionName, this.actionName);
@@ -162,14 +162,14 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     alert('There is no itemUrl given');
                 }
                 else {
-                    if ((parameter === null || parameter === void 0 ? void 0 : parameter.get('name', Mof_1.ObjectType.String)) === 'CreateItemAndAnotherOne') {
+                    if ((parameter === null || parameter === void 0 ? void 0 : parameter.get('name', Mof.ObjectType.String)) === 'CreateItemAndAnotherOne') {
                         submitMethod = RowForm_1.SubmitMethod.UserDefined1;
                     }
                     const workspace = p.get('workspace');
                     const itemUrl = p.get('itemUrl');
                     const property = p.get('property');
                     const metaclass = p.get('metaclass');
-                    yield ItemClient.createItemAsChild(workspace, itemUrl, {
+                    yield ClientItems.createItemAsChild(workspace, itemUrl, {
                         metaClass: (metaclass === undefined || metaclass === null) ? "" : metaclass,
                         property: property,
                         asList: true,
@@ -198,7 +198,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
             return __awaiter(this, void 0, void 0, function* () {
                 let extentUri = element.get('uri');
                 let workspaceId = element.get('workspaceId');
-                yield ECClient.clearExtent({
+                yield ClientExtents.clearExtent({
                     workspace: workspaceId,
                     extentUri: extentUri
                 });
@@ -365,8 +365,8 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     const workspace = p.get('workspace');
                     const extentUri = p.get('extentUri');
                     // Export the Xmi and stores it into the element
-                    const exportedXmi = yield ECClient.exportXmi(workspace, extentUri);
-                    const result = new Mof_1.DmObject(DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
+                    const exportedXmi = yield ClientExtents.exportXmi(workspace, extentUri);
+                    const result = yield MofSync.createTemporaryDmObject(DatenMeister_class_1._DatenMeister._CommonTypes._Default.__XmiExportContainer_Uri);
                     result.set(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, exportedXmi.xmi);
                     return result;
                 }
@@ -409,7 +409,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
                     const workspace = p.get('workspace');
                     const extentUri = p.get('extentUri');
                     // Export the Xmi and stores it into the element
-                    const importedXmi = yield ECClient.importXmi(workspace, extentUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof_1.ObjectType.String));
+                    const importedXmi = yield ClientExtents.importXmi(workspace, extentUri, element.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._XmiExportContainer.xmi, Mof.ObjectType.String));
                     if (importedXmi.success) {
                         Navigator.navigateToExtentItems(workspace, extentUri);
                     }

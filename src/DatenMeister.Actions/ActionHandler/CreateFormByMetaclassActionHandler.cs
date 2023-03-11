@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 
@@ -27,11 +28,15 @@ namespace DatenMeister.Actions.ActionHandler
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._CreateFormByMetaClass.metaClass);
-            var creationMode = action.getOrDefault<string>(_DatenMeister._Actions._CreateFormByMetaClass.creationMode);
             
             var formCreator = new FormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             var formMethods = new FormMethods(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+            var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._CreateFormByMetaClass.metaClass);
+            var creationMode = action.getOrDefault<string>(_DatenMeister._Actions._CreateFormByMetaClass.creationMode);
+            var targetContainer = action.getOrDefault<IObject>(_DatenMeister._Actions._CreateFormByMetaClass.targetContainer);
+            var targetReflection = targetContainer == null
+                ? formMethods.GetUserFormExtent().elements()
+                : DefaultClassifierHints.GetDefaultReflectiveCollection(targetContainer);
 
             IElement form;
             switch (creationMode)
@@ -63,24 +68,30 @@ namespace DatenMeister.Actions.ActionHandler
             void CreateObjectForm(bool includeFormAssociation)
             {
                 form = formCreator.CreateObjectFormForMetaClass(metaClass, new FormFactoryConfiguration());
-                formMethods.GetUserFormExtent().elements().add(form);
+                targetReflection.add(form);
 
                 if (includeFormAssociation)
                 {
-                    formMethods.AddFormAssociationForMetaclass(form, metaClass,
+                    var association = formMethods.AddFormAssociationForMetaclass(
+                        form,
+                        metaClass,
                         _DatenMeister._Forms.___FormType.Object);
+                    targetReflection.add(association);
                 }
             }
 
             void CreateCollectionForm(bool includeFormAssociation)
             {
                 form = formCreator.CreateCollectionFormForMetaClass(metaClass);
-                formMethods.GetUserFormExtent().elements().add(form);
+                targetReflection.add(form);
 
                 if (includeFormAssociation)
                 {
-                    formMethods.AddFormAssociationForMetaclass(form, metaClass,
+                    var association = formMethods.AddFormAssociationForMetaclass(
+                        form,
+                        metaClass,
                         _DatenMeister._Forms.___FormType.Collection);
+                    targetReflection.add(association);
                 }
             }
         }

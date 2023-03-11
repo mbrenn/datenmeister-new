@@ -59,12 +59,14 @@ define(["require", "exports", "./Interfaces", "../DomHelper", "../client/Items",
             });
         }
         evaluateDom(dmElement) {
-            if (this._mode === ModeValue.Value) {
-                if (this._textBox !== undefined && this._textBox !== null) {
-                    const fieldName = this.field.get('name').toString();
-                    dmElement.set(fieldName, this._textBox.val());
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this._mode === ModeValue.Value) {
+                    if (this._textBox !== undefined && this._textBox !== null) {
+                        const fieldName = this.field.get('name').toString();
+                        dmElement.set(fieldName, this._textBox.val());
+                    }
                 }
-            }
+            });
         }
         /*
          * These helper methods are to be called when one of the three types were selected and

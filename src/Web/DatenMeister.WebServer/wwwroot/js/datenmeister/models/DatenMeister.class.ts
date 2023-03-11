@@ -214,6 +214,7 @@ export namespace _DatenMeister
                 {
                     static metaClass = "metaClass";
                     static creationMode = "creationMode";
+                    static targetContainer = "targetContainer";
                     static _name_ = "name";
                     static isDisabled = "isDisabled";
                 }
@@ -1112,6 +1113,19 @@ export namespace _DatenMeister
                 }
 
                 export const __ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
+                export class _ReferenceFieldFromCollectionData
+                {
+                    static defaultWorkspace = "defaultWorkspace";
+                    static collection = "collection";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __ReferenceFieldFromCollectionData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData";
         }
 
         export namespace _AttachedExtent

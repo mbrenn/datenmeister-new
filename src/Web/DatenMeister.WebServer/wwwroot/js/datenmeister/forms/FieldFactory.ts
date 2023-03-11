@@ -9,6 +9,7 @@ import * as AnyDataField from "../fields/AnyDataField";
 import * as SubElementField from "../fields/SubElementField";
 import * as SeparatorLineField from "../fields/SeparatorLineField";
 import * as ReferenceField from "../fields/ReferenceField";
+import * as ReferenceFieldFromCollection from "../fields/ReferenceFieldFromCollection";
 import * as UnknownField from "../fields/UnknownField";
 import {IFormField} from "../fields/Interfaces";
 import {DmObject} from "../Mof";
@@ -35,6 +36,9 @@ export function createField(fieldMetaClassUri: string, parameter: ICreateFieldPa
             break;
         case _DatenMeister._Forms.__ReferenceFieldData_Uri:
             result = new ReferenceField.Field();
+            break;
+        case _DatenMeister._Forms.__ReferenceFieldFromCollectionData_Uri:
+            result = new ReferenceFieldFromCollection.Field();
             break;
         case _DatenMeister._Forms.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();

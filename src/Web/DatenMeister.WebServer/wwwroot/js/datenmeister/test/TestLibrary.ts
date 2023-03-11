@@ -5,6 +5,7 @@ import * as ClientItems from "./Test.Client.Items"
 import * as ClientTypes from "./Test.Client.Types"
 import * as ClientElements from "./Test.Client.Elements"
 import * as ClientActions from "./Test.Client.Actions"
+import * as ClientSync from "./Test.Client.Sync"
 import * as ClientActionsItems from "./Test.Client.Actions.Item"
 import * as ControlSelectItemControl from "./Test.Controls.SelectItemControl"
 import * as Forms from "./Test.Forms"
@@ -22,6 +23,7 @@ export function includeTests()
     ClientElements.includeTests();
     ClientActions.includeTests();
     ClientActionsItems.includeTests();
+    ClientSync.includeTests();
     ControlSelectItemControl.includeTests();
     ViewModeLogic.includeTests();
     Forms.includeTests();

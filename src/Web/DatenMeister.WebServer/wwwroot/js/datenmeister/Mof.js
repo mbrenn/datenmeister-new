@@ -1,7 +1,7 @@
 define(["require", "exports", "./ApiModels"], function (require, exports, ApiModels_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.convertToItemWithNameAndId = exports.DmObject = exports.ObjectType = void 0;
+    exports.getName = exports.convertJsonObjectToDmObject = exports.convertJsonObjectToObjects = exports.createJsonFromObject = exports.convertToItemWithNameAndId = exports.DmObjectWithSync = exports.DmObject = exports.ObjectType = void 0;
     var ObjectType;
     (function (ObjectType) {
         ObjectType[ObjectType["Default"] = 0] = "Default";
@@ -47,8 +47,15 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         static externalizeKey(key) {
             return key.substring(1);
         }
+        /**
+         * Sets a value and returns whether the value has been changed
+         * @param key Key to be set
+         * @param value Value to be set
+         */
         set(key, value) {
+            const oldValue = this.values[DmObject.internalizeKey(key)];
             this.values[DmObject.internalizeKey(key)] = value;
+            return !(oldValue === value);
         }
         get(key, objectType) {
             let result = this.values[DmObject.internalizeKey(key)];
@@ -171,6 +178,34 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         }
     }
     exports.DmObject = DmObject;
+    class DmObjectWithSync extends DmObject {
+        constructor(metaClass) {
+            super(metaClass);
+            this.propertiesSet = new Array();
+        }
+        clearSync() {
+            this.propertiesSet = new Array();
+        }
+        unset(key) {
+            super.unset(key);
+            this.propertiesSet[key] = true;
+        }
+        set(key, value) {
+            const result = super.set(key, value);
+            if (result) {
+                this.propertiesSet[key] = true;
+            }
+            return result;
+        }
+        static createFromReference(workspaceId, itemUri) {
+            const result = new DmObjectWithSync();
+            result.isReference = true;
+            result.workspace = workspaceId;
+            result.uri = itemUri;
+            return result;
+        }
+    }
+    exports.DmObjectWithSync = DmObjectWithSync;
     /**
      * Takes the given object and exports it as an ItemWithNameAndId
      * @param element
@@ -259,7 +294,7 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
         if (typeof element === 'string' || element instanceof String) {
             element = JSON.parse(element);
         }
-        const result = new DmObject();
+        const result = new DmObjectWithSync();
         const elementValues = element["v"];
         if (elementValues !== undefined && elementValues !== null) {
             for (let key in elementValues) {
@@ -287,6 +322,8 @@ define(["require", "exports", "./ApiModels"], function (require, exports, ApiMod
                     result.set(key, value);
                 }
             }
+            // Removes the set properties since they are already synced with the server
+            result.clearSync();
         }
         const elementMetaClass = element["m"];
         if (elementMetaClass !== undefined && elementMetaClass !== null) {

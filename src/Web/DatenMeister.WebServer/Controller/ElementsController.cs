@@ -31,9 +31,9 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/elements/get_name/{workspace}/{extentUri}/{itemId}")]
         public ActionResult<object> GetName(string workspace, string extentUri, string itemId)
         {
-            workspace = MvcUrlEncoder.DecodePath(workspace);
-            extentUri = MvcUrlEncoder.DecodePath(extentUri);
-            itemId = MvcUrlEncoder.DecodePath(itemId);
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
+            itemId = MvcUrlEncoder.DecodePathOrEmpty(itemId);
 
             var foundItem = _workspaceLogic.FindObject(workspace, extentUri, itemId);
             if (foundItem == null)
@@ -48,7 +48,7 @@ namespace DatenMeister.WebServer.Controller
         public ActionResult<ItemWithNameAndId> GetName(string? workspace, string uri)
         {
             workspace = MvcUrlEncoder.DecodePath(workspace);
-            uri = MvcUrlEncoder.DecodePath(uri);
+            uri = MvcUrlEncoder.DecodePathOrEmpty(uri);
             
             IObject? foundItem;
             if (string.IsNullOrEmpty(workspace) || workspace == "_")

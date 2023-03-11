@@ -433,6 +433,9 @@ namespace DatenMeister.Core.Models
                 public static string @creationMode = "creationMode";
                 public IElement? @_creationMode = null;
 
+                public static string @targetContainer = "targetContainer";
+                public IElement? @_targetContainer = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -2401,6 +2404,37 @@ namespace DatenMeister.Core.Models
 
             public _ViewMode @ViewMode = new _ViewMode();
             public MofObjectShadow @__ViewMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
+
+            public class _ReferenceFieldFromCollectionData
+            {
+                public static string @defaultWorkspace = "defaultWorkspace";
+                public IElement? @_defaultWorkspace = null;
+
+                public static string @collection = "collection";
+                public IElement? @_collection = null;
+
+                public static string @isAttached = "isAttached";
+                public IElement? @_isAttached = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @title = "title";
+                public IElement? @_title = null;
+
+                public static string @isEnumeration = "isEnumeration";
+                public IElement? @_isEnumeration = null;
+
+                public static string @defaultValue = "defaultValue";
+                public IElement? @_defaultValue = null;
+
+                public static string @isReadOnly = "isReadOnly";
+                public IElement? @_isReadOnly = null;
+
+            }
+
+            public _ReferenceFieldFromCollectionData @ReferenceFieldFromCollectionData = new _ReferenceFieldFromCollectionData();
+            public MofObjectShadow @__ReferenceFieldFromCollectionData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData");
 
         }
 

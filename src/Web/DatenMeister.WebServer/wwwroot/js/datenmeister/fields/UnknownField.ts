@@ -5,7 +5,7 @@ export class Field extends BaseField implements IFormField {
     
     // Defines the name of the field name which is not known
     unknownFieldUri: string;
-    
+
     constructor(unknownFieldUri:string) {
         super();
         this.unknownFieldUri = unknownFieldUri;
@@ -17,6 +17,6 @@ export class Field extends BaseField implements IFormField {
         return result;
     }
 
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
     }
 }

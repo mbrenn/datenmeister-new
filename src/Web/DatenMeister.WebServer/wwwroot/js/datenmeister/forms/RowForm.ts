@@ -6,7 +6,7 @@ import {createField} from "./FieldFactory";
 import * as TextField from "../fields/TextField"
 import {IFormConfiguration} from "./IFormConfiguration";
 import {_DatenMeister} from "../models/DatenMeister.class";
-import {DmObject} from "../Mof";
+import {DmObject, DmObjectWithSync} from "../Mof";
 
 // Defines the possible submit methods, a user can chose to close the detail form
 export enum SubmitMethod
@@ -26,7 +26,7 @@ export class RowForm implements InterfacesForms.IForm {
     workspace: string;
     extentUri: string;
     itemUrl: string;
-    element: Mof.DmObject;
+    element: Mof.DmObjectWithSync;
     formElement: Mof.DmObject;
 
     formType: FormType = FormType.Row;
@@ -209,13 +209,13 @@ export class RowForm implements InterfacesForms.IForm {
             });
 
 
-            $(".dm-detail-form-save", tr).on('click', () => {
-                const result = this.storeFormValuesIntoDom();
+            $(".dm-detail-form-save", tr).on('click', async () => {
+                const result = await this.storeFormValuesIntoDom();
                 tthis.onChange(result, SubmitMethod.Save);
             });
 
-            $(".dm-detail-form-save-and-close", tr).on('click', () => {
-                const result = this.storeFormValuesIntoDom();
+            $(".dm-detail-form-save-and-close", tr).on('click', async () => {
+                const result = await this.storeFormValuesIntoDom();
                 tthis.onChange(result, SubmitMethod.SaveAndClose);
             });
         }
@@ -240,27 +240,23 @@ export class RowForm implements InterfacesForms.IForm {
         parent.append(tableInfo);
     }
 
-    storeFormValuesIntoDom(reuseExistingElement?: boolean): DmObject {
+    async storeFormValuesIntoDom() : Promise<DmObjectWithSync> {
         if (this.onChange !== undefined && this.onCancel !== null) {
             
-            // If the caller indicates that the element shall be reused, then the already provided value is taken
-            // This method is not default since for submitting object forms, the only the supported fields should be 
-            // returned to the server
-            const saveElement = reuseExistingElement === true ? (this.element ?? new Mof.DmObject()) : new Mof.DmObject;
             for (let m in this.fieldElements) {
                 if (!this.fieldElements.hasOwnProperty(m)) continue;
 
                 const fieldElement = this.fieldElements[m];
+                
+                // Just take the fields which are not readonly
                 if (fieldElement.field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean) !== true) {
-                    // Just take the fields which are not readonly
-                    fieldElement.evaluateDom(this.element);
-                    // Now evaluates the field and put only the properties being shown
-                    // into the DmObject to avoid overwriting of protected and non-shown properties
-                    fieldElement.evaluateDom(saveElement);
+                    
+                    // Comment out to store the values only in the saveElement
+                    await fieldElement.evaluateDom(this.element);
                 }
             }
             
-            return saveElement;
+            return this.element;
         }
     }
 }

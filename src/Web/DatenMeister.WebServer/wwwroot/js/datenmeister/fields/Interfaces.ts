@@ -20,8 +20,11 @@ export interface IFormField
     // Creates the dom depending on the given field and the internal object
     createDom(dmElement: Mof.DmObject) : Promise<JQuery<HTMLElement>>;
 
-    // Evaluates the result of the user and injects it into the given element
-    evaluateDom(dmElement: Mof.DmObject);
+    /**
+     * Evaluates the result of the user and injects it into the given element
+     * @param dmElement The element to which the changes will be provided
+     */
+    evaluateDom(dmElement: Mof.DmObject) : Promise<void>;
 
     /**
      * Gets a value whether the name of the corresponding field shall be shown.

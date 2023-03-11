@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../client/Items", "../Navigator", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "./Forms", "./Interfaces", "../models/DatenMeister.class"], function (require, exports, DetailForm, RowForm_1, TableForm_1, ClientItems, Navigator, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, Forms_1, IForm, DatenMeister_class_1) {
+define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../client/Items", "../Navigator", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "../MofSync", "./Forms", "./Interfaces", "../models/DatenMeister.class"], function (require, exports, DetailForm, RowForm_1, TableForm_1, ClientItems, Navigator, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, MofSync, Forms_1, IForm, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
@@ -42,7 +42,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                     };
                 }
                 if (this.element == null)
-                    this.element = new Mof.DmObject();
+                    this.element = yield MofSync.createTemporaryDmObject();
                 const tabs = this.formElement.getAsArray("tab");
                 for (let n in tabs) {
                     if (!tabs.hasOwnProperty(n)) {
@@ -121,7 +121,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                         tthis.switchToMode(Forms_1.FormMode.ViewMode);
                     },
                     onSubmit: (element, method) => __awaiter(this, void 0, void 0, function* () {
-                        yield ClientItems.setProperties(tthis.workspace, tthis.itemUri, element);
+                        yield MofSync.sync(element);
                         if (method === RowForm_1.SubmitMethod.Save) {
                             tthis.switchToMode(Forms_1.FormMode.ViewMode);
                         }
@@ -170,6 +170,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                 objectFormCreator.workspace = this.workspace;
                 objectFormCreator.itemUrl = this.itemUri;
                 objectFormCreator.element = element1;
+                objectFormCreator.extentUri = element1.extentUri;
                 objectFormCreator.formElement = form;
                 if (this.formMode === Forms_1.FormMode.ViewMode) {
                     const domEditButton = $('<a class="btn btn-primary" ">Edit Item</a>');
@@ -229,7 +230,7 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
              * Creates the handler for the automatic creation of forms for extent
              */
             if (this.htmlElements.storeCurrentFormBtn !== undefined) {
-                this.htmlElements.storeCurrentFormBtn.click(() => __awaiter(this, void 0, void 0, function* () {
+                this.htmlElements.storeCurrentFormBtn.on('click', () => __awaiter(this, void 0, void 0, function* () {
                     const result = yield ClientForms.createObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
                     Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
                 }));

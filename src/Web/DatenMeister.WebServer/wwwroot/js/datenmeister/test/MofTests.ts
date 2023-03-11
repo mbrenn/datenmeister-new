@@ -44,8 +44,5 @@ export function includeTests() {
                     "Metaclass needs to be undefined");
             });
         });
-        
-        
     });
-
 }

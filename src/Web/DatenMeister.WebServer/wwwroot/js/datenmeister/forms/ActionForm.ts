@@ -1,5 +1,5 @@
 ﻿import {IFormConfiguration} from "./IFormConfiguration";
-import {DmObject} from "../Mof";
+import {DmObject, DmObjectWithSync} from "../Mof";
 import {debugElementToDom} from "../DomHelper";
 import * as Forms from "./Forms";
 import * as ObjectForm from "./ObjectForm";
@@ -7,7 +7,7 @@ import * as FormActions from "../FormActions";
 import * as ClientForms from '../client/Forms'
 import * as ClientElements from '../client/Elements'
 import * as ClientItems from '../client/Items'
-import * as DataLoader from "../client/Items";
+import * as MofSync from "../MofSync"
 
 export async function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,
@@ -40,9 +40,9 @@ export async function createActionFormForEmptyObject(
 
     configuration.onSubmit = async (element, method) => {
 
-        // Stores the most recent changes on the server
-        await DataLoader.setProperties("Data", temporaryElement.uri, element);
-        let loadedElement = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
+        // Stores the most recent changes on the server        
+        await MofSync.sync(element);
+        let loadedElement = await ClientItems.getObjectByUri(element.workspace, element.uri);
         
         // Executes the detail form
         await FormActions.execute(
@@ -58,9 +58,10 @@ export async function createActionFormForEmptyObject(
     */
     let element = await module.loadObject();
     if (element === undefined) {
-        
-        element = new DmObject();
-        
+
+        const temporaryElement = await ClientElements.createTemporaryElement(metaClass);
+        element = DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
+
         // Sets the metaclass and workspace id upon url, if not created by Modules
         let p = new URLSearchParams(window.location.search);
         const metaclass = p.get('metaclass');
@@ -73,24 +74,15 @@ export async function createActionFormForEmptyObject(
             element.set('workspaceId', workspaceId);
         }
     }
-
-    // If, we have created the element, we will now have to create the temporary object on the server
-    const temporaryElement = await ClientElements.createTemporaryElement(element.metaClass?.uri);
-    await ClientItems.setProperties("Data", temporaryElement.uri, element);
+    else {
+        // Checks whether the object has a copy on the server and checks the type of the object
+        if (element.uri === undefined || element.workspace === undefined || element.propertiesSet === undefined) {
+            throw "Element is not linked to the server or is not of Type MofObjectWithSync";
+        }
+    }
 
     /* Now find the right form */
-
     let form;
-
-    // After having loaded the object, load the form
-    if (metaClass === undefined && element.metaClass?.uri !== undefined) {
-        // If the returned element has a metaclass, then set the metaClass being used to 
-        // find the right form to the one by the element
-        metaClass = element.metaClass.uri;
-    } else if (element.metaClass === undefined) {
-        // Updates the metaclass, if the metaclass is not set by the element itself
-        element.setMetaClassByUri(metaClass);
-    }
 
     // Asks the detail form actions, whether we have a form for the action itself
     form = await module.loadForm(metaClass);
@@ -108,7 +100,7 @@ export async function createActionFormForEmptyObject(
     }
 
     // Creates the object as being provided by the uri
-    creator.element = await ClientItems.getObjectByUri("Data", temporaryElement.uri);
+    creator.element = element;
     creator.formElement = form;
     creator.workspace = "Data";
     creator.extentUri = creator.element.extentUri;

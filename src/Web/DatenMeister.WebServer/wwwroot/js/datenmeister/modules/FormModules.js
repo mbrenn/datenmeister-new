@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "../models/DatenMeister.class", "../client/Actions"], function (require, exports, FormActions, Mof_1, FormClient, DatenMeisterModel, ActionClient) {
+define(["require", "exports", "../FormActions", "../client/Forms", "../models/DatenMeister.class", "../client/Actions"], function (require, exports, FormActions, FormClient, DatenMeisterModel, ActionClient) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -20,6 +20,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
             super("Forms.Create.ByMetaClass");
             this.actionVerb = "Create by MetaClass";
             this.skipSaving = true;
+            this.defaultMetaClassUri = DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri;
         }
         loadForm() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -28,12 +29,7 @@ define(["require", "exports", "../FormActions", "../Mof", "../client/Forms", "..
         }
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
-                const extentCreationParameter = new Mof_1.DmObject();
-                extentCreationParameter.set('configuration', element);
-                extentCreationParameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri);
-                const result = yield ActionClient.executeActionDirectly("Execute", {
-                    parameter: extentCreationParameter
-                });
+                const result = yield ActionClient.executeAction(element.workspace, element.uri);
                 if (result.success !== true) {
                     alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
                 }

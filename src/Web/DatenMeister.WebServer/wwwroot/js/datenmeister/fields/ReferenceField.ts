@@ -100,7 +100,6 @@ export class Control {
         const tthis = this;
         containerChangeCell.empty();
         
-        
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
@@ -196,7 +195,7 @@ export class Field extends Control implements IFormField {
         return this._list;
     }
 
-    evaluateDom(dmElement: DmObject) {
+    async evaluateDom(dmElement: DmObject) : Promise<void> {
 
     }
 

@@ -191,6 +191,7 @@ define(["require", "exports"], function (require, exports) {
             }
             _CreateFormByMetaClass.metaClass = "metaClass";
             _CreateFormByMetaClass.creationMode = "creationMode";
+            _CreateFormByMetaClass.targetContainer = "targetContainer";
             _CreateFormByMetaClass._name_ = "name";
             _CreateFormByMetaClass.isDisabled = "isDisabled";
             _Actions._CreateFormByMetaClass = _CreateFormByMetaClass;
@@ -1002,6 +1003,18 @@ define(["require", "exports"], function (require, exports) {
             _ViewMode.defaultExtentType = "defaultExtentType";
             _Forms._ViewMode = _ViewMode;
             _Forms.__ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
+            class _ReferenceFieldFromCollectionData {
+            }
+            _ReferenceFieldFromCollectionData.defaultWorkspace = "defaultWorkspace";
+            _ReferenceFieldFromCollectionData.collection = "collection";
+            _ReferenceFieldFromCollectionData.isAttached = "isAttached";
+            _ReferenceFieldFromCollectionData._name_ = "name";
+            _ReferenceFieldFromCollectionData.title = "title";
+            _ReferenceFieldFromCollectionData.isEnumeration = "isEnumeration";
+            _ReferenceFieldFromCollectionData.defaultValue = "defaultValue";
+            _ReferenceFieldFromCollectionData.isReadOnly = "isReadOnly";
+            _Forms._ReferenceFieldFromCollectionData = _ReferenceFieldFromCollectionData;
+            _Forms.__ReferenceFieldFromCollectionData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData";
         })(_Forms = _DatenMeister._Forms || (_DatenMeister._Forms = {}));
         let _AttachedExtent;
         (function (_AttachedExtent) {

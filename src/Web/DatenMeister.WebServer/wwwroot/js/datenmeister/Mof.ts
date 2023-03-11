@@ -75,8 +75,15 @@ export class DmObject {
         return key.substring(1);
     }
 
-    set(key: string, value: any): void {
+    /**
+     * Sets a value and returns whether the value has been changed
+     * @param key Key to be set
+     * @param value Value to be set
+     */
+    set(key: string, value: any): boolean {
+        const oldValue = this.values[DmObject.internalizeKey(key)];
         this.values[DmObject.internalizeKey(key)] = value;
+        return !(oldValue === value);
     }
 
     get<T extends ObjectType>(key: string, objectType?: T): DmObjectReturnType<T> {
@@ -218,6 +225,47 @@ export class DmObject {
     }
 }
 
+export class DmObjectWithSync extends DmObject
+{
+    /**
+     * Defines the list of properties that were set since the last sync
+     */
+    propertiesSet: boolean[];
+    
+    constructor(metaClass?: string) {
+        super(metaClass);
+        this.propertiesSet = new Array<boolean>(); 
+    }
+    
+    clearSync() {
+        this.propertiesSet = new Array<boolean>();
+    }
+    
+    unset(key: string): void {
+        super.unset(key);
+        this.propertiesSet[key] = true;
+    }
+
+    set(key: string, value: any): boolean {
+        const result = super.set(key, value);
+        if (result) {
+            this.propertiesSet[key] = true;
+        }
+        
+        return result;
+    }
+
+    static createFromReference(workspaceId: string, itemUri: string)
+    {
+        const result = new DmObjectWithSync();
+        result.isReference = true;
+        result.workspace = workspaceId;
+        result.uri = itemUri;
+
+        return result;
+    }
+}
+
 /**
  * Takes the given object and exports it as an ItemWithNameAndId
  * @param element
@@ -253,19 +301,18 @@ export function createJsonFromObject(element: DmObject) {
         } else if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
             // This is an object, so perform the transformation
             return createJsonFromObject(elementValue);
-            
+
         } else {
             return elementValue;
         }
     }
 
-    if ( !element.isReference) {
+    if (!element.isReference) {
         for (const key in element.getPropertyValues()) {
             let elementValue = element.get(key);
             values[key] = convertValue(elementValue);
         }
-    }
-    else {
+    } else {
         // Object is reference
         result.r = element.uri;
         result.w = element.workspace;
@@ -304,7 +351,7 @@ export function convertJsonObjectToObjects(element: any): any {
 // Creates the given object from the included json
 // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
 */
-export function convertJsonObjectToDmObject(element: object | string | undefined): DmObject | undefined {
+export function convertJsonObjectToDmObject(element: object | string | undefined): DmObjectWithSync | undefined {
     
     if( element === undefined || element === null) {
         return undefined;
@@ -314,7 +361,7 @@ export function convertJsonObjectToDmObject(element: object | string | undefined
         element = JSON.parse(element as string);
     }
 
-    const result = new DmObject();
+    const result = new DmObjectWithSync();
     const elementValues = element["v"];
 
     if (elementValues !== undefined && elementValues !== null) {
@@ -348,6 +395,9 @@ export function convertJsonObjectToDmObject(element: object | string | undefined
                 result.set(key, value);
             }
         }
+        
+        // Removes the set properties since they are already synced with the server
+        result.clearSync();
     }
 
     const elementMetaClass = element["m"];

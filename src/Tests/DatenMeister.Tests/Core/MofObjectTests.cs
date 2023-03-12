@@ -155,6 +155,45 @@ namespace DatenMeister.Tests.Core
             Assert.That(value.getOrDefault<IElement>("mof").get<string>("name"), Is.EqualTo("Martin"));
         }
 
+        /// <summary>
+        /// Returns a test in which the extent needs to resolve a string
+        /// when a string is returned and an IObject or an IElement has been returned
+        /// by the MofObject
+        /// </summary>
+        [Test]
+        public void TestReferenceByStringReturn()
+        {
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
+            var factory = new MofFactory(uriExtent);
+
+            var mofElement = factory.create(null);
+            mofElement.set("name", "Name");
+            var mofElement2 = factory.create(null);
+            uriExtent.elements().add(mofElement);
+            uriExtent.elements().add(mofElement2);
+
+            var uri1 = mofElement2.GetUri()!;
+            Assert.That(uri1, Is.Not.Null);
+            
+            mofElement2.set("ref", uri1);
+            mofElement2.set("direct-ref", mofElement);
+
+            var uri1ReturnedBy2 = mofElement2.getOrDefault<string>("ref");
+            Assert.That(uri1ReturnedBy2, Is.EqualTo(uri1));
+
+            var directReturn = mofElement2.getOrDefault<IElement>("direct-ref");
+            Assert.That(directReturn, Is.Not.Null);
+            Assert.That(directReturn.getOrDefault<string>("name"), Is.EqualTo("Name"));
+            
+            var indirectReturn = mofElement2.getOrDefault<IElement>("ref");
+            Assert.That(indirectReturn, Is.Not.Null);
+            Assert.That(indirectReturn.getOrDefault<string>("name"), Is.EqualTo("Name"));
+            
+            var indirectReturnByObject = mofElement2.getOrDefault<IObject>("ref");
+            Assert.That(indirectReturnByObject, Is.Not.Null);
+            Assert.That(indirectReturnByObject.getOrDefault<string>("name"), Is.EqualTo("Name"));
+        }
+
         [Test]
         public void TestSetDotNet()
         {

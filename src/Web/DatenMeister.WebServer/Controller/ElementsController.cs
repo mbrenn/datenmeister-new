@@ -35,7 +35,7 @@ namespace DatenMeister.WebServer.Controller
             extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
             itemId = MvcUrlEncoder.DecodePathOrEmpty(itemId);
 
-            var foundItem = _workspaceLogic.FindObject(workspace, extentUri, itemId);
+            var foundItem = _workspaceLogic.FindElement(workspace, extentUri, itemId);
             if (foundItem == null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace DatenMeister.WebServer.Controller
             IObject? foundItem;
             if (string.IsNullOrEmpty(workspace) || workspace == "_")
             {
-                foundItem = _workspaceLogic.FindItem(HttpUtility.UrlDecode(uri));
+                foundItem = _workspaceLogic.FindElement(HttpUtility.UrlDecode(uri));
             }
             else
             {

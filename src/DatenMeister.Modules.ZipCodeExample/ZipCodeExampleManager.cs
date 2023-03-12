@@ -166,7 +166,7 @@ namespace DatenMeister.Modules.ZipCodeExample
 
             loadedExtent.Extent.GetConfiguration().ExtentType = ZipCodePlugin.ZipCodeExtentType;
 
-            if (_workspaceLogic.GetTypesWorkspace().FindObjectByUri(
+            if (_workspaceLogic.GetTypesWorkspace().FindObject(
                     "dm:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
             {
                 loadedExtent.Extent.GetConfiguration().SetDefaultTypes(new[] {zipCodeTypePackage});

@@ -556,7 +556,7 @@ namespace DatenMeister.Core.Helper
         /// </summary>
         /// <param name="element">Element to be queried</param>
         /// <returns>The element to be retrieved</returns>
-        public static IElement? getMetaClassWithoutTracing(this IElement element)
+        public static IElement? GetMetaClassWithoutTracing(this IElement element)
         {
             return element is MofElement asObject ? asObject.getMetaClass(false) : element.metaclass;
         }
@@ -694,7 +694,7 @@ namespace DatenMeister.Core.Helper
 
             if (value is IElement element)
             {
-                var metaClass = element.getMetaClassWithoutTracing();
+                var metaClass = element.GetMetaClassWithoutTracing();
                 if (metaClass != null)
                 {
                     list.AddRange(ClassifierMethods.GetPropertyNamesOfClassifier(metaClass));

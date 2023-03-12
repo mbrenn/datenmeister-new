@@ -24,7 +24,7 @@ namespace DatenMeister.WPF.Navigation
             if (dlg.ShowDialog() == true)
             {
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                var element = workspaceLogic.FindItem(dlg.QueryUrl.Text);
+                var element = workspaceLogic.FindElement(dlg.QueryUrl.Text);
 
                 if (element == null)
                 {

@@ -176,7 +176,7 @@ namespace DatenMeister.WebServer.Controller
             itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
 
             var success = false;
-            var foundItem = _workspaceLogic.FindItem(workspaceId, itemUrl);
+            var foundItem = _workspaceLogic.FindObject(workspaceId, itemUrl);
             if (foundItem != null) success = ObjectHelper.DeleteObject(foundItem);
 
             return new {success = success};
@@ -380,7 +380,7 @@ namespace DatenMeister.WebServer.Controller
             IUriExtent? extent;
             
             // Checks, if we have found the item
-            var foundItem = _workspaceLogic.FindObjectByUri(workspaceId, itemUri);
+            var foundItem = _workspaceLogic.FindObject(workspaceId, itemUri);
             
             switch (foundItem)
             {
@@ -418,7 +418,7 @@ namespace DatenMeister.WebServer.Controller
                     extent = asExtent;
                     break;
                 case IReflectiveCollection reflectiveCollection:
-                    extent = reflectiveCollection.GetAssociatedExtent() as IUriExtent
+                    extent = reflectiveCollection.GetUriExtentOf() as IUriExtent
                              ?? throw new NotImplementedException("Is not a Uri Extent");
                     break;
                 default:
@@ -718,7 +718,7 @@ namespace DatenMeister.WebServer.Controller
         {
             workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
             itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
-            var foundItem = _workspaceLogic.FindItem(workspace, itemUri);
+            var foundItem = _workspaceLogic.FindObject(workspace, itemUri);
             if (foundItem == null)
             {
                 throw new InvalidOperationException("Item has not been found");

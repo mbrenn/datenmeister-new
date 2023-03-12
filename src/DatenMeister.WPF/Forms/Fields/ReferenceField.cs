@@ -252,7 +252,7 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
 
-                var (foundWorkspace, foundExtent) = workspaceLogic.TryGetWorkspaceAndExtent(
+                var (foundWorkspace, foundExtent) = workspaceLogic.FindWorkspaceAndExtent(
                     _workspace,
                     _extent);
 

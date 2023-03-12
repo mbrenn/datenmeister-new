@@ -85,7 +85,7 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
             itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
             
-            var action = GiveMe.Scope.WorkspaceLogic.FindItem(workspaceId, itemUri) as IElement;
+            var action = GiveMe.Scope.WorkspaceLogic.FindObject(workspaceId, itemUri) as IElement;
             if (action == null)
             {
                 return NotFound();

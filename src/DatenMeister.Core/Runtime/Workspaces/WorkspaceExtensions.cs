@@ -5,24 +5,12 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 
 namespace DatenMeister.Core.Runtime.Workspaces
 {
-    public enum MetaRecursive
-    {
-        /// <summary>
-        /// Indicates that only one meta extent shall be used to figure out whether a meta extent will be used
-        /// </summary>
-        JustOne,
-
-        /// <summary>
-        /// Indicates that unlimited meta extents will be resolved to find the structure.
-        /// </summary>
-        Recursively
-    }
-
     public static class WorkspaceExtensions
     {
         /// <summary>
@@ -39,31 +27,24 @@ namespace DatenMeister.Core.Runtime.Workspaces
             return element;
         }
 
-        public static object? FindObjectByUri(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
+        public static IObject? FindObject(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
         {
-            var workspace = workspaceLogic.GetWorkspace(workspaceId);
-            if (workspace == null)
-            {
-                return null;
-            }
+            var workspace = string.IsNullOrEmpty(workspaceId) ? 
+                            workspaceLogic.GetDefaultWorkspace() :
+                            workspaceLogic.GetWorkspace(workspaceId);
 
-            return workspace.Resolve(uri, ResolveType.NoMetaWorkspaces);
+            return workspace?.Resolve(uri, ResolveType.NoMetaWorkspaces) as IObject;
         }
 
-        public static IObject? FindObjectByUri(this Workspace workspace, string uri)
+        public static IObject? FindObject(this Workspace workspace, string uri)
         {
-            return FindObjectByUri(
+            return FindObject(
                 workspace.extent.Select(x => x as IUriExtent)
                     .Where(x => x != null)!,
                 uri);
         }
-        
-        public static IElement? FindElement(this IWorkspaceLogic workspaceLogic, string workspace, string uri)
-        {
-            return workspaceLogic.FindItem(workspace, uri) as IElement;
-        }
 
-        public static IObject? FindObjectByUri(this IEnumerable<IUriExtent> extents, string uri)
+        public static IObject? FindObject(this IEnumerable<IUriExtent> extents, string uri)
         {
             foreach (var extent in extents)
             {
@@ -78,6 +59,65 @@ namespace DatenMeister.Core.Runtime.Workspaces
 
             // Not found
             return null;
+        }
+        
+        public static IElement? FindElement(this IWorkspaceLogic workspaceLogic, string workspace, string uri)
+        {
+            return workspaceLogic.FindObject(workspace, uri) as IElement;
+        }
+        
+        /// <summary>
+        /// Finds a certain object 
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic to be queried</param>
+        /// <param name="workspace">Workspace in which it shall be looked into</param>
+        /// <param name="extentUri">Extent to be queried</param>
+        /// <param name="itemId">Id of the item</param>
+        /// <returns>The Found object or null if not found</returns>
+        public static IElement? FindElement(
+            this IWorkspaceLogic workspaceLogic, 
+            string workspace, 
+            string extentUri,
+            string itemId)
+        {
+            var extent = workspaceLogic.FindExtent(workspace, extentUri);
+            return extent?.element(itemId);
+        }
+        
+        public static (IWorkspace workspace, IUriExtent extent, IElement element) FindItem(
+            this IWorkspaceLogic collection,
+            WorkspaceExtentAndItemReference model)
+        {
+            var (foundWorkspace, foundExtent) = FindWorkspaceAndExtent(collection, model);
+            if (foundWorkspace == null || foundExtent == null)
+            {
+                throw new InvalidOperationException($"Element {model.item} has not been found");
+            }
+
+            var foundItem = foundExtent.element(model.item);
+            if (foundItem == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return (foundWorkspace, foundExtent, foundItem);
+        }
+        
+
+        /// <summary>
+        /// Finds the extent with the given uri in one of the workspaces in the database
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="uri">Uri, which needs to be retrieved</param>
+        /// <returns>Found extent or null if not found</returns>
+        public static IElement? FindElement(
+            this IWorkspaceLogic collection,
+            string uri)
+        {
+            return collection.Workspaces
+                .SelectMany(x => x.extent)
+                .Select(x => (x as IUriExtent)?.element(uri))
+                .FirstOrDefault(x => x != null);
         }
 
         public static Workspace? FindWorkspace(this IEnumerable<Workspace> workspaces, IUriExtent extent)
@@ -137,14 +177,15 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <param name="workspaceLogic">Workspace collection to be used</param>
         /// <param name="model">Model to be queried</param>
         /// <returns>The found workspace and the found extent</returns>
-        public static (Workspace foundWorkspace, IUriExtent foundExtent) RetrieveWorkspaceAndExtent(
+        public static (IWorkspace? foundWorkspace, IUriExtent? foundExtent) FindWorkspaceAndExtent(
             this IWorkspaceLogic workspaceLogic,
             WorkspaceExtentAndItemReference model)
         {
-            return RetrieveWorkspaceAndExtent(
+            return FindWorkspaceAndExtent(
                 workspaceLogic,
                 model.ws,
                 model.extent);
+
         }
 
         /// <summary>
@@ -154,7 +195,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <param name="ws">Workspace to be found</param>
         /// <param name="extent">Extent to be found</param>
         /// <returns>Tuple returning the workspace and extent</returns>
-        public static (IWorkspace? workspace, IUriExtent? extent) TryGetWorkspaceAndExtent(
+        public static (IWorkspace? workspace, IUriExtent? extent) FindWorkspaceAndExtent(
             this IWorkspaceLogic workspaceLogic, string? ws, string? extent)
         {
             if (ws == null) return (null, null);
@@ -185,27 +226,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
 
             return workspaceLogic.FindExtent(workspaceId, uri) as IUriExtent
                    ?? throw new InvalidOperationException("The extent is not found");
-        }
-
-        public static (Workspace workspace, IUriExtent extent) RetrieveWorkspaceAndExtent(
-            this IWorkspaceLogic workspaceLogic,
-            string ws,
-            string extent)
-        {
-            var foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
-
-            if (foundWorkspace == null)
-            {
-                throw new InvalidOperationException("Workspace_NotFound");
-            }
-
-            var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
-            if (foundExtent == null)
-            {
-                throw new InvalidOperationException("Extent_NotFound");
-            }
-
-            return (foundWorkspace, foundExtent);
         }
 
         /// <summary>
@@ -300,7 +320,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 case IUriExtent asExtent:
                     return (asExtent.elements(), asExtent);
                 case IReflectiveCollection collection:
-                    return (collection, collection.GetAssociatedExtent() as IUriExtent);
+                    return (collection, collection.GetUriExtentOf() as IUriExtent);
                 case IElement element:
                     return (new TemporaryReflectiveCollection(new[] { element }), element.GetUriExtentOf());
             }
@@ -328,81 +348,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
 
             return (workspace, extent);
-        }
-
-        /// <summary>
-        /// Finds the extent with the given uri in one of the workspaces in the database
-        /// </summary>
-        /// <param name="collection">Collection to be evaluated</param>
-        /// <param name="uri">Uri, which needs to be retrieved</param>
-        /// <returns>Found extent or null if not found</returns>
-        public static IElement? FindItem(
-            this IWorkspaceLogic collection,
-            string uri)
-        {
-            return collection.Workspaces
-                .SelectMany(x => x.extent)
-                .Select(x => (x as IUriExtent)?.element(uri))
-                .FirstOrDefault(x => x != null);
-        }
-
-        /// <summary>
-        /// Finds the extent with the given uri in one of the workspaces in the database.
-        /// Returns the extent, if the uri points to the extent directly
-        /// </summary>
-        /// <param name="workspaceLogic">Collection to be evaluated</param>
-        /// <param name="workspaceId">Id of the workspace</param>
-        /// <param name="uri">Uri, which needs to be retrieved</param>
-        /// <returns>Found extent or null if not found</returns>
-        public static IObject? FindItem(
-            this IWorkspaceLogic workspaceLogic,
-            string workspaceId,
-            string uri)
-        {
-            if (string.IsNullOrEmpty(workspaceId))
-            {
-                // If the workspace is empty return it itself
-                var workspace = workspaceLogic.GetDefaultWorkspace();
-                if (workspace == null) return null;
-
-                workspaceId = workspace.id;
-            }
-
-            return workspaceLogic.Workspaces
-                .Where(x => x.id == workspaceId)
-                .SelectMany(x => x.extent)
-                .OfType<IUriExtent>()
-                .Select(x =>
-                    x.GetUriResolver().Resolve(uri, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace))
-                .OfType<IObject>()
-                .FirstOrDefault();
-        }
-
-        public static IElement? FindItem(
-            this IWorkspaceLogic workspaceLogic,
-            string workspace,
-            string extentUri,
-            string itemId)
-        {
-            var result = FindItem(
-                workspaceLogic,
-                new WorkspaceExtentAndItemReference(workspace, extentUri, itemId));
-            return result.element;
-        }
-
-        public static (Workspace workspace, IUriExtent extent, IElement element) FindItem(
-            this IWorkspaceLogic collection,
-            WorkspaceExtentAndItemReference model)
-        {
-            var (foundWorkspace, foundExtent) = RetrieveWorkspaceAndExtent(collection, model);
-
-            var foundItem = foundExtent.element(model.item);
-            if (foundItem == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return (foundWorkspace, foundExtent, foundItem);
         }
 
         /// <summary>
@@ -465,5 +410,43 @@ namespace DatenMeister.Core.Runtime.Workspaces
         public static Workspace GetMofWorkspace(this IWorkspaceLogic logic) =>
             logic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
             throw new InvalidOperationException("Mof Workspace not found");
+        
+        
+        
+        /// <summary>
+        /// Gets all root elements of all the extents within the workspace
+        /// </summary>
+        /// <param name="workspace">Workspace to be handled</param>
+        /// <returns>Enumeration of all elements</returns>
+        public static IReflectiveCollection GetRootElements(Workspace workspace)
+        {
+            return new TemporaryReflectiveCollection(workspace.extent.SelectMany(
+                extent => extent.elements()).OfType<IElement>())
+            {
+                IsReadOnly = true
+            };
+        }
+
+        public static IReflectiveCollection GetAllDescendents(this Workspace workspace, bool onlyComposite = true)
+        {
+            if (onlyComposite)
+            {
+                return GetRootElements(workspace).GetAllCompositesIncludingThemselves();
+            }
+
+            return GetRootElements(workspace).GetAllDescendantsIncludingThemselves();
+        }
+
+        public static IReflectiveCollection GetAllDescendentsOfType(this Workspace workspace, IElement metaClass, bool onlyComposite = true)
+        {
+            if (onlyComposite)
+            {
+                return GetRootElements(workspace).GetAllCompositesIncludingThemselves()
+                    .WhenMetaClassIs(metaClass);
+            }
+
+            return GetRootElements(workspace).GetAllDescendantsIncludingThemselves()
+                .WhenMetaClassIs(metaClass);
+        }
     }
 }

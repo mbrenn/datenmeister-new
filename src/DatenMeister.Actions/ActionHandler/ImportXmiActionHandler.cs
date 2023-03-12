@@ -28,7 +28,7 @@ namespace DatenMeister.Actions.ActionHandler
             var itemUri = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.itemUri);
             var xmi = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.xmi);
 
-            var targetObject = actionLogic.WorkspaceLogic.FindItem(workspace, itemUri);
+            var targetObject = actionLogic.WorkspaceLogic.FindObject(workspace, itemUri);
 
             var xmlDocument = XDocument.Parse(xmi);
             if (targetObject is IExtent targetExtent)

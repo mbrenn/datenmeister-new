@@ -174,7 +174,7 @@ namespace DatenMeister.Tests.Provider
             var extent = new MofUriExtent(provider, "dm:///test", datenMeister.ScopeStorage);
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace()!, extent);
 
-            var csvLoaderType = workspaceLogic.FindItem(
+            var csvLoaderType = workspaceLogic.FindElement(
                 WorkspaceNames.UriExtentInternalTypes +
                 "#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
 

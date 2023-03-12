@@ -72,7 +72,7 @@ namespace DatenMeister.Html
                     var metaClass = "";
                     if (propertyValue is IElement asElement)
                     {
-                        metaClass = $" [{NamedElementMethods.GetName(asElement.getMetaClassWithoutTracing())}]";
+                        metaClass = $" [{NamedElementMethods.GetName(asElement.GetMetaClassWithoutTracing())}]";
                     }
 
                     parent.Items.Add(

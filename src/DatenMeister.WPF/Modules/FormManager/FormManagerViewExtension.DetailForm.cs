@@ -62,7 +62,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
                     var originalForm = string.IsNullOrEmpty(url)
                         ? null
-                        : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
+                        : GiveMe.Scope.WorkspaceLogic.FindElement(url) as IObject;
 
                     var window = detailWindow.GetWindow();
                     var dlg = new ItemXmlViewWindow
@@ -103,7 +103,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
                     var originalForm = string.IsNullOrEmpty(url)
                         ? null
-                        : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
+                        : GiveMe.Scope.WorkspaceLogic.FindElement(url) as IObject;
                     
                     if (originalForm == null)
                     {

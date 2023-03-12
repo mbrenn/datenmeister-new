@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Uml
             var activityElement = umlExtent!.element("http://www.omg.org/spec/UML/20131001#Activity");
             Assert.That(activityElement, Is.Not.Null);
 
-            var activityElement2 = workspaceLogic.FindItem("http://www.omg.org/spec/UML/20131001#Activity");
+            var activityElement2 = workspaceLogic.FindElement("http://www.omg.org/spec/UML/20131001#Activity");
             Assert.That(activityElement2, Is.Not.Null);
             Assert.That(activityElement2!.Equals(activityElement), Is.True);
 

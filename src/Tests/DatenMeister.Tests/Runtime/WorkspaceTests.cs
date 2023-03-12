@@ -147,14 +147,14 @@ namespace DatenMeister.Tests.Runtime
             (item as ICanSetId)!.Id = "yes"; 
             extent.elements().add(item);
 
-            var found = workSpaceCollection.FindItem(WorkspaceNames.WorkspaceData, "dm:///unittest");
+            var found = workSpaceCollection.FindObject(WorkspaceNames.WorkspaceData, "dm:///unittest");
             Assert.That(found, Is.Not.Null);
             Assert.That(found, Is.InstanceOf<IUriExtent>());
             var extentFound = found as IUriExtent;
             Assert.That(extentFound!.contextURI(), Is.EqualTo("dm:///unittest"));
 
             
-            var found2 = workSpaceCollection.FindItem(WorkspaceNames.WorkspaceData, "dm:///unittest#yes");
+            var found2 = workSpaceCollection.FindObject(WorkspaceNames.WorkspaceData, "dm:///unittest#yes");
             Assert.That(found2, Is.Not.Null);
             Assert.That(found2.getOrDefault<string>("name"), Is.EqualTo("Yes"));
         }

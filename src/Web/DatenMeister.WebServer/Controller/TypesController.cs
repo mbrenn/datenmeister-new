@@ -59,7 +59,7 @@ namespace DatenMeister.WebServer.Controller
             metaClass = MvcUrlEncoder.DecodePathOrEmpty(metaClass);
             propertyName = MvcUrlEncoder.DecodePathOrEmpty(propertyName);
             
-            var foundMetaClass = _workspaceLogic.GetWorkspace(workspace)?.FindObjectByUri(metaClass);
+            var foundMetaClass = _workspaceLogic.GetWorkspace(workspace)?.FindObject(metaClass);
             if (foundMetaClass == null)
             {
                 return NotFound($"MetaClass '{workspace}-{metaClass}' is not found");

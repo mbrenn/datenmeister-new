@@ -139,20 +139,20 @@ namespace DatenMeister.Tests.Provider
             var plugin = new ManagementProviderPlugin(workspaceLogic, scopeStorage);
             plugin.Start(PluginLoadingPosition.AfterInitialization);
 
-            var data = workspaceLogic.FindItem(
+            var data = workspaceLogic.FindElement(
                 ExtentManagementUrlHelper.GetUrlOfWorkspace(
                     workspaceLogic.GetDataWorkspace()));
             Assert.That(data, Is.Not.Null);
             Assert.That(data.getOrDefault<string>(_DatenMeister._Management._Workspace.id), Is.EqualTo("Data"));
 
-            var extentData = workspaceLogic.FindItem(
+            var extentData = workspaceLogic.FindElement(
                 ExtentManagementUrlHelper.GetUrlOfExtent(
                     workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
             Assert.That(extentData, Is.Not.Null);
             Assert.That(extentData.getOrDefault<string>(_DatenMeister._Management._Extent.uri),
                 Is.EqualTo("dm:///test"));
 
-            var extentProperties = workspaceLogic.FindItem(
+            var extentProperties = workspaceLogic.FindElement(
                 ExtentManagementUrlHelper.GetUrlOfExtentsProperties(
                     workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
             Assert.That(extentProperties, Is.Not.Null);

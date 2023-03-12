@@ -569,7 +569,7 @@ namespace DatenMeister.WPF.Navigation
             {
                 var createableTypes = new CreatableTypeNavigator();
 
-                var windowResult = await createableTypes.NavigateToSelectCreateableType(window, collection.GetAssociatedExtent());
+                var windowResult = await createableTypes.NavigateToSelectCreateableType(window, collection.GetUriExtentOf());
                 if (windowResult?.Result == NavigationResult.Saved)
                 {
                     return await CreateElementItself(createableTypes.SelectedType);

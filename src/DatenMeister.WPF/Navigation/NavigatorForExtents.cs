@@ -59,7 +59,7 @@ namespace DatenMeister.WPF.Navigation
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var uri = WorkspaceNames.UriExtentWorkspaces + "#" + HttpUtility.UrlEncode(extentUrl);
-            var foundItem = workspaceLogic.FindItem(uri);
+            var foundItem = workspaceLogic.FindElement(uri);
             if (foundItem == null)
             {
                 MessageBox.Show($"No item found at {extentUrl}");
@@ -124,7 +124,7 @@ namespace DatenMeister.WPF.Navigation
                 var uri =
                     WorkspaceNames.UriExtentWorkspaces + "#" +
                     HttpUtility.UrlEncode(((IUriExtent)mofExtent).contextURI());
-                var foundItem = workspaceLogic.FindItem(uri);
+                var foundItem = workspaceLogic.FindElement(uri);
                 if (foundItem == null)
                 {
                     var message = $"The element '{uri}' was not found";

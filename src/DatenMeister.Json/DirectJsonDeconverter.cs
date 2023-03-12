@@ -72,7 +72,7 @@ namespace DatenMeister.Json
                 if (_workspaceLogic != null)
                 {
                     // We have a reference
-                    return _workspaceLogic.FindItem(
+                    return _workspaceLogic.FindObject(
                         jsonObject.w,
                         jsonObject.r
                     );

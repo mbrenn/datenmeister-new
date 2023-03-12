@@ -29,7 +29,7 @@ namespace DatenMeister.Tests
             var found = extent.element(uri);
             Assert.That(found, Is.EqualTo(element));
 
-            var anotherFound = workspace.FindObjectByUri(uri);
+            var anotherFound = workspace.FindObject(uri);
             Assert.That(anotherFound, Is.EqualTo(element));
         }
 

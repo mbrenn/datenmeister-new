@@ -69,7 +69,7 @@ namespace DatenMeister.Provider.CSV
                 settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri);
             if (!string.IsNullOrEmpty(metaClassUri))
             {
-                metaClass = _workspaceLogic.FindItem(metaClassUri);
+                metaClass = _workspaceLogic.FindElement(metaClassUri);
             }
 
             using var streamReader = new StreamReader(stream, Encoding.GetEncoding(

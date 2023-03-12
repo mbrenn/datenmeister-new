@@ -161,7 +161,7 @@ namespace DatenMeister.WebServer.Controller
 
             var factory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User));
 
-            var element = _internal.WorkspaceLogic.FindItem(workspaceId, itemUri);
+            var element = _internal.WorkspaceLogic.FindObject(workspaceId, itemUri);
             if (element == null)
             {
                 throw new InvalidOperationException($"Extent not found: {workspaceId} - {itemUri}");

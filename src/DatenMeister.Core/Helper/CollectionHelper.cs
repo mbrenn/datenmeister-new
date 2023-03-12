@@ -79,7 +79,7 @@ namespace DatenMeister.Core.Helper
         /// </summary>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public static IExtent? GetAssociatedExtent(this IReflectiveCollection collection)
+        public static IExtent? GetUriExtentOf(this IReflectiveCollection collection)
         {
             var mofReflection = collection as IHasExtent ??
                                 throw new ArgumentException(@"Not of type IHasExtent", nameof(collection));

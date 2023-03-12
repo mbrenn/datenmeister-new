@@ -10,7 +10,7 @@ using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.Core.Helper
 {
-    public class XmiHelper
+    public static class XmiHelper
     {
         public static string ConvertToXmiFromObject(IObject value)
         {

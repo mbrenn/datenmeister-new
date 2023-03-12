@@ -83,7 +83,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
 
             // Checks, if the value is an action field
-            if (field.getMetaClassWithoutTracing()?.equals(_DatenMeister.TheOne.Forms.__ActionFieldData) == true)
+            if (field.GetMetaClassWithoutTracing()?.equals(_DatenMeister.TheOne.Forms.__ActionFieldData) == true)
             {
                 var id = HtmlElement.GetRandomId();
                 var button = new HtmlButtonElement(

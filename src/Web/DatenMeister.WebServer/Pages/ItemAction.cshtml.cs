@@ -30,8 +30,8 @@ namespace DatenMeister.WebServer.Pages
 
             if (ActionName == "Extent.Properties.Navigate")
             {
-                var workspaceId = (string) Request.Query["workspace"];
-                var extentName = (string) Request.Query["extent"];
+                var workspaceId = (string) Request.Query["workspace"]!;
+                var extentName = (string) Request.Query["extent"]!;
                 var workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspace(workspaceId)
                                 ?? throw new InvalidOperationException($"Workspace '{workspaceId}' not found");
 

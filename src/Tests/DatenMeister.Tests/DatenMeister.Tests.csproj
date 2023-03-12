@@ -3,9 +3,9 @@
     <LangVersion>8</LangVersion>
     <Configurations>Debug;Release;WPF</Configurations>
     <Platforms>AnyCPU</Platforms>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>

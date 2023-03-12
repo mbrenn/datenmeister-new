@@ -172,7 +172,7 @@ namespace DatenMeister.Tests.Core
             uriExtent.elements().add(mofElement);
             uriExtent.elements().add(mofElement2);
 
-            var uri1 = mofElement2.GetUri()!;
+            var uri1 = mofElement.GetUri()!;
             Assert.That(uri1, Is.Not.Null);
             
             mofElement2.set("ref", uri1);

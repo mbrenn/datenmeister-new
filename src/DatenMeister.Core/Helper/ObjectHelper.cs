@@ -46,52 +46,53 @@ namespace DatenMeister.Core.Helper
                 propertyValue = value.get(property);
             }
 
-            if (propertyValue is string propertyValueAsString && objectType == ObjectType.DateTime)
+            switch (propertyValue)
             {
-                if (DateTime.TryParse(
-                    propertyValueAsString ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out var result))
+                case string propertyValueAsString when objectType == ObjectType.DateTime:
                 {
-                    return result;
-                }
+                    if (DateTime.TryParse(
+                            propertyValueAsString ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                            CultureInfo.InvariantCulture,
+                            DateTimeStyles.None,
+                            out var result))
+                    {
+                        return result;
+                    }
 
-                // Second try with roundtrip-style
-                if (DateTime.TryParse(
-                    propertyValueAsString ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.RoundtripKind,
-                    out var result2))
+                    // Second try with roundtrip-style
+                    if (DateTime.TryParse(
+                            propertyValueAsString ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                            CultureInfo.InvariantCulture,
+                            DateTimeStyles.RoundtripKind,
+                            out var result2))
+                    {
+                        return result2;
+                    }
+
+                    return DateTime.MinValue;
+                }
+                case DateTime propertyValueAsDateTime when objectType == ObjectType.String:
+                    return propertyValueAsDateTime.ToString("o");
+                case double propertyValueAsDouble when objectType == ObjectType.Double:
+                    return propertyValueAsDouble.ToString(CultureInfo.InvariantCulture);
+                case string propertyValueAsString when objectType == ObjectType.Element:
+                    // If the return value is a string, but an element is request, then
+                    // we have to return a resolve
+                    return value.GetUriResolver()?.Resolve(propertyValueAsString, ResolveType.Default);    
+                
+                case IEnumerable<object> asObjectList:
                 {
-                    return result2;
+                    var list = asObjectList.ToList();
+                    if (list.Count == 1)
+                    {
+                        return list[0];
+                    }
+
+                    return null;
                 }
-
-                return DateTime.MinValue;
+                default:
+                    return propertyValue;
             }
-
-            if (propertyValue is DateTime propertyValueAsDateTime && objectType == ObjectType.String)
-            {
-                return propertyValueAsDateTime.ToString("o");
-            }
-
-            if (propertyValue is double propertyValueAsDouble && objectType == ObjectType.Double)
-            {
-                return propertyValueAsDouble.ToString(CultureInfo.InvariantCulture);
-            }
-
-            if (propertyValue is IEnumerable<object> asObjectList)
-            {
-                var list = asObjectList.ToList();
-                if (list.Count == 1)
-                {
-                    return list[0];
-                }
-
-                return null;
-            }
-
-            return propertyValue;
         }
 
         public static bool IsPropertyOfType<T>(this IObject value, string property)

@@ -66,7 +66,7 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             NavigationTreeView.ShowAllChildren = false;
 
-            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out var extent);
+            var (_, extent) = _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl);
             if (extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");

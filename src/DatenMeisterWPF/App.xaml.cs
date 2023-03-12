@@ -27,7 +27,9 @@ namespace DatenMeisterWPF
             var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
             var publicSettings = 
                 PublicSettingHandler.LoadSettingsFromDirectory(
-                    Path.GetDirectoryName(publicSettingsPath) ?? throw new InvalidOperationException("Path returned null"));
+                    Path.GetDirectoryName(publicSettingsPath)
+                        ?? throw new InvalidOperationException("Path returned null"),
+                    out _);
             if (publicSettings == null || publicSettings.logLocation != LogLocation.None)
             {
                 var location = publicSettings?.logLocation ?? LogLocation.Application;

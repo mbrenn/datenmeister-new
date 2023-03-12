@@ -40,6 +40,7 @@ namespace StundenMeister.Logic
         private readonly ExtentManager _extentManager;
         private readonly PackageMethods _packageMethods;
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IScopeStorage _scopeStorage;
 
         /// <summary>
         /// Gets the change event manager
@@ -57,6 +58,7 @@ namespace StundenMeister.Logic
             _extentManager = extentManager;
             _packageMethods = packageMethods;
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
             EventManager = scopeStorage.Get<ChangeEventManager>();
         }
 
@@ -77,7 +79,10 @@ namespace StundenMeister.Logic
                 nameof(TimeRecording.timeSpanHours),  
                 x=> TimeRecording.GetTimeSpanHours(x));
 
-            var internElements = new MofUriExtent(new InMemoryProvider(), "dm:///_internal/stundenmeister");
+            var internElements = new MofUriExtent(
+                new InMemoryProvider(), 
+                "dm:///_internal/stundenmeister",
+                _scopeStorage);
             _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), internElements);
 
             _packageMethods.ImportByManifest(

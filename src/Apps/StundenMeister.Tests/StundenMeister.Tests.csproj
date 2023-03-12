@@ -25,12 +25,6 @@
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
     </PackageReference>
-    <PackageReference Include="DatenMeister">
-      <Version>1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="DatenMeister.WPF">
-      <Version>1.1.1</Version>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

@@ -58,7 +58,7 @@ namespace DatenMeister.Reports.Html
         /// It is important that the reportDefinition value is not of type ReportInstance.
         /// If a report shall be generated upon a Report Instance, use GenerateByInstance
         /// </summary>
-        /// <param name="reportLogic">The reportlogic to be used</param>
+        /// <param name="reportLogic">The report-logic to be used</param>
         /// <param name="reportElements">The reportElements to be used</param>
         public override void EvaluateElements(
             ReportLogic reportLogic, 
@@ -78,7 +78,12 @@ namespace DatenMeister.Reports.Html
                 }
                 else
                 {
-                    Logger.Warn("No evaluator found" + element);
+                    Logger.Warn(
+                        "No evaluator found for: "
+                        + element
+                        + " ("
+                        + (element.getMetaClass()?.ToString() ?? "No Metaclass")
+                        + ")");
                 }
             }
         }

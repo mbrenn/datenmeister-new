@@ -266,7 +266,6 @@ namespace DatenMeisterWPF
             }
 
             // Asks the user, if he was not already asked before
-
             if (!DoCloseWithoutAcknowledgement)
             {
                 var scope = GiveMe.TryGetScope();

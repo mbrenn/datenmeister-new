@@ -222,7 +222,6 @@ namespace StundenMeister.Logic
 
             var recordingLogic = new TimeRecordingLogic(_stundenMeisterPlugin);
             recordingLogic.StartNewRecording(selectedCostCenter);
-
         }
 
         /// <summary>

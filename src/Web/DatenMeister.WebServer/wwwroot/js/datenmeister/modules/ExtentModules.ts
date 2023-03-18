@@ -350,6 +350,9 @@ class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInExtentUp(form.workspace, element.extentUri, element.uri);
+        
+        // Now reorder the collection and move the selected item up... 
+        
         document.location.reload();
     }
 }

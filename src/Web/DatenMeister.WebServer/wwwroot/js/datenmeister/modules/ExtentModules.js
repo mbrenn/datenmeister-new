@@ -300,6 +300,7 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield (0, Actions_Items_1.moveItemInExtentUp)(form.workspace, element.extentUri, element.uri);
+                // Now reorder the collection and move the selected item up... 
                 document.location.reload();
             });
         }

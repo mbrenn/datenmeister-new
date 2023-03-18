@@ -1,4 +1,4 @@
-define(["require", "exports", "../Mof"], function (require, exports, mof) {
+define(["require", "exports", "../Mof", "../MofArray"], function (require, exports, mof, MofArray_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -36,6 +36,44 @@ define(["require", "exports", "../Mof"], function (require, exports, mof) {
                     const mofObject2 = new mof.DmObject("dm:///test#test");
                     chai.assert.isTrue(mofObject2.metaClass !== undefined, "Metaclass needs to be undefined");
                     chai.assert.isTrue(mofObject2.metaClass.uri === "dm:///test#test", "Metaclass needs to be undefined");
+                });
+            });
+            describe('Element', function () {
+                it('Move Item in Array Up', () => {
+                    const element1 = mof.DmObject.createFromReference("Data", "#1");
+                    const element2 = mof.DmObject.createFromReference("Data", "#2");
+                    const element3 = mof.DmObject.createFromReference("Data", "#3");
+                    const array = [element1, element2, element3];
+                    (0, MofArray_1.moveItemInArrayUpByUri)(array, "Data", "#1");
+                    chai.assert.isTrue(array[0].uri === '#1');
+                    chai.assert.isTrue(array[1].uri === '#2');
+                    chai.assert.isTrue(array[2].uri === '#3');
+                    (0, MofArray_1.moveItemInArrayUpByUri)(array, "Data", "#2");
+                    chai.assert.isTrue(array[0].uri === '#2');
+                    chai.assert.isTrue(array[1].uri === '#1');
+                    chai.assert.isTrue(array[2].uri === '#3');
+                    (0, MofArray_1.moveItemInArrayUpByUri)(array, "Data", "#3");
+                    chai.assert.isTrue(array[0].uri === '#2');
+                    chai.assert.isTrue(array[1].uri === '#3');
+                    chai.assert.isTrue(array[2].uri === '#1');
+                });
+                it('Move Item in Array Down', () => {
+                    const element1 = mof.DmObject.createFromReference("Data", "#1");
+                    const element2 = mof.DmObject.createFromReference("Data", "#2");
+                    const element3 = mof.DmObject.createFromReference("Data", "#3");
+                    const array = [element1, element2, element3];
+                    (0, MofArray_1.moveItemInArrayDownByUri)(array, "Data", "#1");
+                    chai.assert.isTrue(array[0].uri === '#2');
+                    chai.assert.isTrue(array[1].uri === '#1');
+                    chai.assert.isTrue(array[2].uri === '#3');
+                    (0, MofArray_1.moveItemInArrayDownByUri)(array, "Data", "#2");
+                    chai.assert.isTrue(array[0].uri === '#1');
+                    chai.assert.isTrue(array[1].uri === '#2');
+                    chai.assert.isTrue(array[2].uri === '#3');
+                    (0, MofArray_1.moveItemInArrayDownByUri)(array, "Data", "#3");
+                    chai.assert.isTrue(array[0].uri === '#1');
+                    chai.assert.isTrue(array[1].uri === '#2');
+                    chai.assert.isTrue(array[2].uri === '#3');
                 });
             });
         });

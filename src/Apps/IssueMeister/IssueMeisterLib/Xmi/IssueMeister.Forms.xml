@@ -4,15 +4,15 @@
   <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="78a82075-ec3f-4a9d-a739-2c139b9a9557">
     <!-- The filter -->
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="DataView" p1:id="4593ccf1-a127-47e2-bbe5-4d5bd228761e">
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter Open" p1:id="4da4d52a-84cc-498c-978b-68d68e12b448">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="Open Issues" input-ref="#IssueMeister.FilterOpen.Node1" property="state" value="Open" comparisonMode="Equal" p1:id="IssueMeister.OpenIssuesViews" />
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterOpen.Node1" />
-      </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter In Work" p1:id="34fdd75a-49db-4bf2-8305-740ca33c46ba">
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="In Work Issues" input-ref="#IssueMeister.FilterInWork.Node1" property="state" value="InWork" comparisonMode="Equal" p1:id="IssueMeister.InWorkIssuesViews" />
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterInWork.Node1" />
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter In Work" p1:id="34fdd35a-49db-4bf2-8305-740ca33c46ba">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter Open" p1:id="4da4d52a-84cc-498c-978b-68d68e12b448">
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="Open Issues" input-ref="#IssueMeister.FilterOpen.Node1" property="state" value="Open" comparisonMode="Equal" p1:id="IssueMeister.OpenIssuesViews" />
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterOpen.Node1" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter Closed" p1:id="34fdd35a-49db-4bf2-8305-740ca33c46ba">
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="Closed Issues" input-ref="#IssueMeister.FilterClosed.Node1" property="state" value="Closed" comparisonMode="Equal" p1:id="IssueMeister.ClosedIssuesViews" />
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterClosed.Node1" />
       </packagedElement>
@@ -36,14 +36,6 @@
         </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm" p1:id="IssuePackageList" name="Packages - List">
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="Open Issues" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement" viewNode-ref="#IssueMeister.OpenIssuesViews" p1:id="e1ff28e0-cb30-4bf4-9fce-c176f9780f6f">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="15954b91-7656-4bdd-adcb-e60308367bc0" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="90de6550-8c99-4889-a784-4f099d75f597" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" isReadOnly="True" p1:id="3f271cfa-349e-4c17-9497-b2c39ed41830" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" p1:id="979eca1b-d8fb-4e09-b920-905bedcdb063" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="2fc00e81-f9b5-4700-a049-a817220d18b9" />
-          <defaultTypesForNewElements name="Issue" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" parentProperty="packagedElement" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="fab84fb9-83da-4b76-84e0-d2405bae3932" />
-        </tab>
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="In Work Issues" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement" viewNode-ref="#IssueMeister.InWorkIssuesViews" p1:id="bfc908cd-0a11-4312-a321-9fd9b022f76e">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="727f2cc9-fa0f-4252-85e2-f0292ef1feaf" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="fcd7dabe-59ed-4f1a-978c-ae4961aba2c8" />
@@ -51,6 +43,14 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" p1:id="1f34bb08-848f-468b-8afb-94432f2aa024" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="495a07f0-fc9b-447c-97ad-bf1a195e9126" />
           <defaultTypesForNewElements name="Issue" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" parentProperty="packagedElement" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="2711be61-8d54-4840-8419-a9dce086f9ba" />
+        </tab>
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="Open Issues" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement" viewNode-ref="#IssueMeister.OpenIssuesViews" p1:id="e1ff28e0-cb30-4bf4-9fce-c176f9780f6f">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="15954b91-7656-4bdd-adcb-e60308367bc0" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="90de6550-8c99-4889-a784-4f099d75f597" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" isReadOnly="True" p1:id="3f271cfa-349e-4c17-9497-b2c39ed41830" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" p1:id="979eca1b-d8fb-4e09-b920-905bedcdb063" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="2fc00e81-f9b5-4700-a049-a817220d18b9" />
+          <defaultTypesForNewElements name="Issue" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" parentProperty="packagedElement" p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="fab84fb9-83da-4b76-84e0-d2405bae3932" />
         </tab>
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm" name="Closed Issues" property="packagedElement" p1:id="af573d3b-167d-4eb3-931c-3af39b0697a2" viewNode-ref="#IssueMeister.ClosedIssuesViews">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" p1:id="IssuePackageList.ClosedIssues.id" />

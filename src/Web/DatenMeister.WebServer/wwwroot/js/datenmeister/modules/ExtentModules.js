@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../MofSync", "../Navigator", "../Settings", "../controls/ElementBreadcrumb"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ClientExtents, ClientForms, ClientItems, FormActions, RowForm_1, DatenMeister_class_1, Mof, MofSync, Navigator, Settings, ElementBreadcrumb_1) {
+define(["require", "exports", "../ApiConnection", "../client/Actions", "../client/Actions.Items", "../client/Extents", "../client/Forms", "../client/Items", "../FormActions", "../forms/RowForm", "../models/DatenMeister.class", "../Mof", "../MofArray", "../MofSync", "../Navigator", "../Settings", "../controls/ElementBreadcrumb"], function (require, exports, ApiConnection, Actions, Actions_Items_1, ClientExtents, ClientForms, ClientItems, FormActions, RowForm_1, DatenMeister_class_1, Mof, MofArray, MofSync, Navigator, Settings, ElementBreadcrumb_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.loadModules = void 0;
@@ -300,8 +300,15 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield (0, Actions_Items_1.moveItemInExtentUp)(form.workspace, element.extentUri, element.uri);
-                // Now reorder the collection and move the selected item up... 
-                document.location.reload();
+                // Now reorder the collection and move the selected item up...
+                const asCollectionForm = form;
+                if (asCollectionForm.elements !== undefined) {
+                    MofArray.moveItemInArrayUpByUri(asCollectionForm.elements, form.workspace, element.uri);
+                    yield asCollectionForm.refreshForm();
+                }
+                else {
+                    document.location.reload();
+                }
             });
         }
     }
@@ -314,7 +321,15 @@ define(["require", "exports", "../ApiConnection", "../client/Actions", "../clien
         execute(form, element, parameter, submitMethod) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield (0, Actions_Items_1.moveItemInExtentDown)(form.workspace, element.extentUri, element.uri);
-                document.location.reload();
+                // Now reorder the collection and move the selected item up...
+                const asCollectionForm = form;
+                if (asCollectionForm.elements !== undefined) {
+                    MofArray.moveItemInArrayDownByUri(asCollectionForm.elements, form.workspace, element.uri);
+                    yield asCollectionForm.refreshForm();
+                }
+                else {
+                    document.location.reload();
+                }
             });
         }
     }

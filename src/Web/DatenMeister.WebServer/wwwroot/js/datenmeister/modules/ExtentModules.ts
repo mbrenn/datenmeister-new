@@ -9,6 +9,7 @@ import {IFormNavigation} from "../forms/Interfaces";
 import {SubmitMethod} from "../forms/RowForm";
 import {_DatenMeister} from "../models/DatenMeister.class";
 import * as Mof from "../Mof";
+import * as MofArray from "../MofArray";
 import * as MofSync from "../MofSync";
 import * as Navigator from "../Navigator";
 import * as Settings from "../Settings";
@@ -17,6 +18,7 @@ import _ObjectForm = _DatenMeister._Forms._ObjectForm;
 import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
 import {createBreadcrumbForItem} from "../controls/ElementBreadcrumb";
+import {TableForm} from "../forms/TableForm";
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
@@ -350,10 +352,15 @@ class ExtentsListMoveUpItemAction extends FormActions.ItemFormActionModuleBase {
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInExtentUp(form.workspace, element.extentUri, element.uri);
-        
-        // Now reorder the collection and move the selected item up... 
-        
-        document.location.reload();
+
+        // Now reorder the collection and move the selected item up...
+        const asCollectionForm = form as TableForm;
+        if (asCollectionForm.elements !== undefined) {
+            MofArray.moveItemInArrayUpByUri(asCollectionForm.elements, form.workspace, element.uri);
+            await asCollectionForm.refreshForm();
+        } else {
+            document.location.reload();
+        }
     }
 }
 
@@ -367,7 +374,15 @@ class ExtentsListMoveDownItemAction extends FormActions.ItemFormActionModuleBase
 
     async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
         await moveItemInExtentDown(form.workspace, element.extentUri, element.uri);
-        document.location.reload();
+        
+        // Now reorder the collection and move the selected item up...
+        const asCollectionForm = form as TableForm;
+        if (asCollectionForm.elements !== undefined) {
+            MofArray.moveItemInArrayDownByUri(asCollectionForm.elements, form.workspace, element.uri);
+            await asCollectionForm.refreshForm();
+        } else {
+            document.location.reload();
+        }
     }
 }
 

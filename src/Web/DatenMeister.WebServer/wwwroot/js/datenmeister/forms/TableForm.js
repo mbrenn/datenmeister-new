@@ -16,9 +16,11 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "
             this.formType = Interfaces_1.FormType.Table;
         }
         refreshForm() {
-            this.createFormByCollection(this.parentHtml, this.configuration);
+            return __awaiter(this, void 0, void 0, function* () {
+                yield this.createFormByCollection(this.parentHtml, this.configuration, true);
+            });
         }
-        createFormByCollection(parent, configuration) {
+        createFormByCollection(parent, configuration, refresh) {
             var _a, _b, _c, _d;
             return __awaiter(this, void 0, void 0, function* () {
                 this.parentHtml = parent;
@@ -28,12 +30,26 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "
                 if (configuration.isReadOnly === undefined) {
                     configuration.isReadOnly = true;
                 }
-                let headline = $("<h2><a></a></h2>");
-                const headLineLink = $("a", headline);
+                this.cacheHeadline =
+                    refresh === true && this.cacheHeadline !== undefined
+                        ? this.cacheHeadline
+                        : $("<h2><a></a></h2>");
+                this.cacheHeadline.empty();
+                const headLineLink = $("a", this.cacheHeadline);
                 headLineLink.text((_b = this.formElement.get('title')) !== null && _b !== void 0 ? _b : this.formElement.get('name'));
                 headLineLink.attr('href', Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: metaClass }));
-                parent.append(headline);
+                if (refresh !== true) {
+                    parent.append(this.cacheHeadline);
+                }
                 const property = this.formElement.get('property');
+                this.cacheButtons =
+                    refresh === true && this.cacheHeadline !== undefined
+                        ? this.cacheButtons
+                        : $("<div></div>");
+                this.cacheButtons.empty();
+                if (refresh !== true) {
+                    parent.append(this.cacheButtons);
+                }
                 // Evaluate the new buttons to create objects
                 const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
                 if (defaultTypesForNewElements !== undefined) {
@@ -67,7 +83,7 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "
                                             encodeURIComponent(property);
                                 }
                             });
-                            parent.append(btn);
+                            tthis.cacheButtons.append(btn);
                         })(inner);
                     }
                 }
@@ -76,13 +92,23 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "
                 }
                 // Evaluate the elements themselves
                 if (!Array.isArray(this.elements)) {
-                    const div = $("<div></div>");
-                    div.text("Non-Array elements for ListForm: ");
-                    div.append($("<em></em>").text(this.elements.toString()));
-                    parent.append(div);
+                    this.cacheEmptyDiv =
+                        refresh === true && this.cacheTable !== undefined
+                            ? this.cacheTable
+                            : $("<div></div>");
+                    this.cacheEmptyDiv.empty();
+                    this.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
+                    this.cacheEmptyDiv.append($("<em></em>").text(this.elements.toString()));
+                    if (refresh !== true) {
+                        parent.append(this.cacheEmptyDiv);
+                    }
                 }
                 else {
-                    let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
+                    this.cacheTable =
+                        refresh === true && this.cacheTable !== undefined
+                            ? this.cacheTable
+                            : $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
+                    this.cacheTable.empty();
                     const fields = this.formElement.getAsArray("field");
                     const headerRow = $("<tbody><tr></tr></tbody>");
                     const innerRow = $("tr", headerRow);
@@ -94,7 +120,7 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "
                         cell.text((_c = field.get("title")) !== null && _c !== void 0 ? _c : field.get("name"));
                         innerRow.append(cell);
                     }
-                    table.append(headerRow);
+                    this.cacheTable.append(headerRow);
                     let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
                     let elements = this.elements;
                     for (let n in elements) {
@@ -129,10 +155,12 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "
                                 cell.append(dom);
                                 row.append(cell);
                             }
-                            table.append(row);
+                            this.cacheTable.append(row);
                         }
                     }
-                    parent.append(table);
+                    if (refresh !== true) {
+                        parent.append(this.cacheTable);
+                    }
                 }
             });
         }

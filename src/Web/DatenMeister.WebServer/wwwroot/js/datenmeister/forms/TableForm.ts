@@ -16,11 +16,19 @@ export class TableForm implements InterfacesForms.IForm {
     configuration: IFormConfiguration;
     formType: FormType = FormType.Table;
 
-    refreshForm(): void {
-        this.createFormByCollection(this.parentHtml, this.configuration);
+    cacheHeadline: JQuery;
+
+    cacheTable: JQuery;
+
+    cacheEmptyDiv: JQuery;
+
+    cacheButtons: JQuery;
+
+    async refreshForm(): Promise<void> {
+        await this.createFormByCollection(this.parentHtml, this.configuration, true);
     }
 
-    async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
+    async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean) {
         this.parentHtml = parent;
         this.configuration = configuration;
 
@@ -31,20 +39,35 @@ export class TableForm implements InterfacesForms.IForm {
             configuration.isReadOnly = true;
         }
 
-        let headline = $("<h2><a></a></h2>");
-        const headLineLink = $("a", headline);
+        this.cacheHeadline =
+            refresh === true && this.cacheHeadline !== undefined
+                ? this.cacheHeadline
+                : $("<h2><a></a></h2>");
+        this.cacheHeadline.empty();
+
+        const headLineLink = $("a", this.cacheHeadline);
         headLineLink.text(
             this.formElement.get('title')
             ?? this.formElement.get('name'));
-        
+
         headLineLink.attr(
             'href',
             Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, {metaClass: metaClass}));
-        
-        parent.append(headline);
+
+        if (refresh !== true) {
+            parent.append(this.cacheHeadline);
+        }
 
         const property = this.formElement.get('property');
 
+        this.cacheButtons =
+            refresh === true && this.cacheHeadline !== undefined
+                ? this.cacheButtons
+                : $("<div></div>");
+        this.cacheButtons.empty();
+        if (refresh !== true) {
+            parent.append(this.cacheButtons);
+        }
         // Evaluate the new buttons to create objects
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {
@@ -79,25 +102,36 @@ export class TableForm implements InterfacesForms.IForm {
                         }
                     });
 
-                    parent.append(btn);
+                    tthis.cacheButtons.append(btn);
                 })(inner);
 
             }
         }
 
-        if(this.elements === undefined) {
+        if (this.elements === undefined) {
             this.elements = [];
         }
 
         // Evaluate the elements themselves
         if (!Array.isArray(this.elements)) {
-            const div = $("<div></div>");
-            div.text("Non-Array elements for ListForm: ");
-            div.append($("<em></em>").text((this.elements as any).toString()));
-            parent.append(div);
-        } else {
+            this.cacheEmptyDiv =
+                refresh === true && this.cacheTable !== undefined
+                    ? this.cacheTable
+                    : $("<div></div>");
+            this.cacheEmptyDiv.empty();
+            this.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
+            this.cacheEmptyDiv.append($("<em></em>").text((this.elements as any).toString()));
 
-            let table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
+            if (refresh !== true) {
+                parent.append(this.cacheEmptyDiv);
+            }
+        } else {
+            this.cacheTable =
+                refresh === true && this.cacheTable !== undefined
+                    ? this.cacheTable
+                    : $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
+            this.cacheTable.empty();
+
             const fields = this.formElement.getAsArray("field");
 
             const headerRow = $("<tbody><tr></tr></tbody>");
@@ -113,7 +147,7 @@ export class TableForm implements InterfacesForms.IForm {
                 innerRow.append(cell);
             }
 
-            table.append(headerRow);
+            this.cacheTable.append(headerRow);
 
             let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
 
@@ -154,16 +188,18 @@ export class TableForm implements InterfacesForms.IForm {
                             });
 
                         const dom = await fieldElement.createDom(element);
-                        
+
                         cell.append(dom);
                         row.append(cell);
                     }
 
-                    table.append(row);
+                    this.cacheTable.append(row);
                 }
             }
 
-            parent.append(table);
+            if (refresh !== true) {
+                parent.append(this.cacheTable);
+            }
         }
     }
 }

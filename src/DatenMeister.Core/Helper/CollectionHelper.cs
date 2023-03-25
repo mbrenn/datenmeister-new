@@ -129,17 +129,16 @@ namespace DatenMeister.Core.Helper
         public static bool MoveElementUp(this IReflectiveSequence collection, IObject elementToBeMovedUp)
         {
             // Check, if we can directly use the function of the provider
-            if (collection is MofReflectiveSequence reflectiveSequence)
+            if (collection is MofReflectiveSequence reflectiveSequence
+                && reflectiveSequence.MofObject.ProviderObject
+                    is IProviderObjectSupportsListMovements supportsListMovements)
             {
-                if (reflectiveSequence.MofObject.ProviderObject is IProviderObjectSupportsListMovements supportsListMovements)
-                {
-                    var element = MofExtent.ConvertForProviderUsage(elementToBeMovedUp);
-                    var result = supportsListMovements.MoveElementUp(reflectiveSequence.PropertyName, element);
-                    reflectiveSequence.UpdateContent();
-                    return result;
-                }
+                var element = MofExtent.ConvertForProviderUsage(elementToBeMovedUp);
+                var result = supportsListMovements.MoveElementUp(reflectiveSequence.PropertyName, element);
+                reflectiveSequence.UpdateContent();
+                return result;
             }
-            
+
             // Object does not support moving up, so we have to do it manually. 
             var n = 0;
             var position = -1;

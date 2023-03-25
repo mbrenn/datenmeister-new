@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -9,6 +10,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
+using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace DatenMeister.Tests.Provider
 {
@@ -164,6 +166,42 @@ namespace DatenMeister.Tests.Provider
             Assert.That(result.ElementAt(1), Is.EqualTo("DEF"));
             Assert.That(result.ElementAt(2), Is.EqualTo("GHI"));
             Assert.That(result.ElementAt(3), Is.EqualTo("JKL"));
+        }
+
+        /// <summary>
+        /// In Issue #13, the Xml Node is moved before the meta extent, if it was already the first extent
+        /// </summary>
+        [Test]
+        public void AvoidMovingUpBeforeMetaExtent()
+        {
+            var provider = new XmiProvider();
+            var mofExtent = new MofUriExtent(provider, "dm:///test", null);
+            var factory = new MofFactory(mofExtent);
+            
+            mofExtent.GetMetaObject().set("Name", "Martin");
+
+            Assert.That(provider.Document.Root!.Elements().First().Name.LocalName == "meta", Is.True);
+
+            var element1 = factory.create(null);
+            mofExtent.elements().add(element1);
+            var element2 = factory.create(null);
+            element2.set("Name", "Martin2");
+            mofExtent.elements().add(element2);
+            mofExtent.elements().add(factory.create(null));
+            
+            Assert.That(provider.Document.Root!.Elements().First().Name.LocalName == "meta", Is.True);
+
+            CollectionHelper.MoveElementUp(mofExtent.elements(), element1);
+
+            Assert.That(provider.Document.Root!.Elements().First().Name.LocalName == "meta", Is.True);
+            
+            CollectionHelper.MoveElementUp(mofExtent.elements(), element2);
+            CollectionHelper.MoveElementUp(mofExtent.elements(), element2);
+            Assert.That(provider.Document.Root!.Elements().First().Name.LocalName == "meta", Is.True);
+            Assert.That(provider.Document.Root!.Elements().First().Name.LocalName == "meta", Is.True);
+            
+            // Checks, that the element2 has been really moved up
+            Assert.That(mofExtent.elements().OfType<IElement>().First().get("Name"), Is.EqualTo("Martin2"));
         }
     }
 }

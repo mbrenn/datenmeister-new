@@ -23,7 +23,7 @@ namespace DatenMeister.Core.Provider.Xmi
 
         private static readonly XNamespace XDatenMeisterNamespace = "http://datenmeister.net/";
 
-        private static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
+        internal static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
 
         /// <summary>
         ///     Defines the cache
@@ -110,7 +110,17 @@ namespace DatenMeister.Core.Provider.Xmi
                     var count = _rootNode.Elements(ElementName).Count();
                     if (index == 0)
                     {
-                        _rootNode.AddFirst(providerObject.XmlNode);
+                        // First node could be a meta node, so only the nodes with Element Name are interesting
+                        var firstNode = _rootNode.Elements(ElementName).FirstOrDefault();
+                        if (firstNode == null)
+                        {
+                            // If there is absolutely no node, then add the node at the end of the document
+                            _rootNode.Add(providerObject.XmlNode);
+                        }
+                        else
+                        {
+                            firstNode.AddBeforeSelf(providerObject.XmlNode);
+                        }
                     }
                     else if (index < 0 || index >= count)
                     {

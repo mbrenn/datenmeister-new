@@ -503,9 +503,11 @@ namespace DatenMeister.Core.Provider.Xmi
                     return false;
                 }
 
-                // Walk backwards until we find an element - ignore text nodes
+                // Walk backwards until we find an element - ignore text nodes. Also ignore the meta node
                 var previousNode = found.PreviousNode;
-                while (previousNode != null && !(previousNode is XElement))
+                while (previousNode != null
+                       && (previousNode is not XElement element
+                           || element.Name == XmiProvider.XMetaXmlNodeName))
                 {
                     previousNode = previousNode.PreviousNode;
                 }

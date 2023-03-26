@@ -17,8 +17,8 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
     
     public const string ViewModeName = "StundenPlan";
 
-    public const string UriStundenPlanForm = "dm:///datenmeister.stundenmeister/";
-    public const string UriStundenPlanTypes = "dm:///datenmeister.stundenmeister/";
+    public const string UriStundenPlanForm = "dm:///forms.stundenplan.datenmeister/";
+    public const string UriStundenPlanTypes = "dm:///types.stundenplan.datenmeister/";
 
     public StundenPlanPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
@@ -31,13 +31,13 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
         var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
         extentManager.CreateExtentByResource(
             typeof(StundenPlanPlugin),
-            "IssueMeisterLib.Xmi.IssueMeister.Forms.xml",
+            "DatenMeister.StundenPlan.xmi.StundenPlan.Forms.xml",
             UriStundenPlanForm,
             "Management");
         
         extentManager.CreateExtentByResource(
             typeof(StundenPlanPlugin),
-            "IssueMeisterLib.Xmi.IssueMeister.Types.xml",
+            "DatenMeister.StundenPlan.xmi.StundenPlan.Types.xml",
             UriStundenPlanTypes,
             "Types");
 

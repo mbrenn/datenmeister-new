@@ -38,7 +38,6 @@ namespace StundenMeister.Logic
         private readonly LocalTypeSupport _localTypeSupport;
 
         private readonly ExtentManager _extentManager;
-        private readonly PackageMethods _packageMethods;
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
 
@@ -50,13 +49,11 @@ namespace StundenMeister.Logic
         public StundenMeisterPlugin(
             LocalTypeSupport localTypeSupport,
             ExtentManager extentManager,
-            PackageMethods packageMethods,
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage)
         {
             _localTypeSupport = localTypeSupport;
             _extentManager = extentManager;
-            _packageMethods = packageMethods;
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
             EventManager = scopeStorage.Get<ChangeEventManager>();
@@ -85,7 +82,7 @@ namespace StundenMeister.Logic
                 _scopeStorage);
             _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), internElements);
 
-            _packageMethods.ImportByManifest(
+            PackageMethods.ImportByManifest(
                 typeof(StundenMeisterPlugin),
                 "StundenMeister.Xmi.Elements.xml",
                 "StundenMeister",

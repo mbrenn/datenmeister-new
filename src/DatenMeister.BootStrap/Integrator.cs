@@ -235,17 +235,16 @@ namespace DatenMeister.BootStrap
 
             // Creates the workspace and extent for the types layer which are belonging to the types
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-            var packageMethods = scope.Resolve<PackageMethods>();
             var internalUserExtent = localTypeSupport.InternalTypes;
 
-            packageMethods.ImportByStream(
+            PackageMethods.ImportByStream(
                 XmiResources.GetDatenMeisterTypesStream(),
                 null,
                 internalUserExtent,
                 "DatenMeister");
 
             var formMethods = scope.Resolve<FormMethods>();
-            packageMethods.ImportByStream(
+            PackageMethods.ImportByStream(
                 XmiResources.GetDatenMeisterFormsStream(),
                 null,
                 formMethods.GetInternalFormExtent(),

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item>
+  <meta p2:id="fdebd604-a4f7-4c4f-8fd4-cdba0ee79bda" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///stundenmeister.types/" />
+  <package name="StundenMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="350b6fa5-e449-4bbe-bb10-361288543fd0" p1:type="dm:///_internal/model/uml#Package">
+
+  </package>
+</item>

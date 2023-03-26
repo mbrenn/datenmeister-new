@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage
@@ -31,6 +34,53 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
             return extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
         }
+        
+        /// <summary>
+        /// Creates an xmi extent by using the text of the xml document.
+        /// The xmi extent is just temporarily and will not be added to the extent manager
+        /// </summary>
+        /// <param name="extentManager">Extent Manager to be used</param>
+        /// <param name="uri">Uri of the extent</param>
+        /// <param name="xmlDocument">Xml Document being used</param>
+        /// <param name="workspaceName">Workspace to which the extent is added</param>
+        /// <returns>The created workspace</returns>
+        public static IUriExtent CreateXmiExtentByDocument(
+            this ExtentManager extentManager, string uri, string xmlDocument,
+            string workspaceName = WorkspaceNames.WorkspaceData)
+        {
+            var workspace = extentManager.WorkspaceLogic.GetWorkspace(workspaceName)
+                            ?? throw new InvalidOperationException("The workspace is not found");
+
+            var document = XDocument.Parse(xmlDocument);
+            var provider = new XmiProvider(document);
+            var extent = new MofUriExtent(provider, uri, extentManager.ScopeStorage);
+            workspace.AddExtent(extent);
+            return extent;
+        }
+        
+        /// <summary>
+        /// Creates an xmi extent by using the text of the xml document.
+        /// The xmi extent is just temporarily and will not be added to the extent manager
+        /// </summary>
+        /// <param name="extentManager">Extent Manager to be used</param>
+        /// <param name="uri">Uri of the extent</param>
+        /// <param name="xmlDocument">Xml Document being used</param>
+        /// <param name="workspaceName">Workspace to which the extent is added</param>
+        /// <returns>The created workspace</returns>
+        public static IUriExtent CreateXmiExtentByDocument(
+            this ExtentManager extentManager, string uri, XDocument xmlDocument,
+            string workspaceName = WorkspaceNames.WorkspaceData)
+        {
+            var workspace = extentManager.WorkspaceLogic.GetWorkspace(workspaceName)
+                            ?? throw new InvalidOperationException("The workspace is not found");
+
+            var provider = new XmiProvider(xmlDocument);
+            var extent = new MofUriExtent(provider, uri, extentManager.ScopeStorage);
+            workspace.AddExtent(extent);
+            return extent;
+        }
+        
+        
 
         /// <summary>
         /// Loads the extent, if the extent is not already loaded.

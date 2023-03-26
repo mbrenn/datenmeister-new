@@ -15,7 +15,6 @@ namespace IssueMeisterLib
         public const string PackageName = "IssueMeister";
         public const string TargetPackageName = "Apps::IssueMeister";
         public const string ExtentTypeName = "IssueMeister";
-        private readonly PackageMethods _packageMethods;
         private readonly FormMethods _formsPlugin;
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly ExtentSettings _extentSettings;
@@ -23,14 +22,14 @@ namespace IssueMeisterLib
         /// <summary>
         /// Initializes a new instance of the IssueMeisterPlugin
         /// </summary>
-        /// <param name="packageMethods"></param>
         /// <param name="formsPlugin">Sets the form logic</param>
         /// <param name="localTypeSupport">Sets the local type support</param>
         /// <param name="scopeStorage">The settings for the extent</param>
-        public IssueMeisterPlugin(PackageMethods packageMethods, FormMethods formsPlugin,
-            LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
+        public IssueMeisterPlugin(
+            FormMethods formsPlugin,
+            LocalTypeSupport localTypeSupport, 
+            IScopeStorage scopeStorage)
         {
-            _packageMethods = packageMethods;
             _formsPlugin = formsPlugin;
             _localTypeSupport = localTypeSupport;
             _extentSettings = scopeStorage.Get<ExtentSettings>();
@@ -39,7 +38,7 @@ namespace IssueMeisterLib
         public void Start(PluginLoadingPosition position)
         {
             // Import 
-            _packageMethods.ImportByManifest(
+            PackageMethods.ImportByManifest(
                 typeof(IssueMeisterPlugin),
                 "IssueMeisterLib.Xmi.IssueMeister.Forms.xml",
                 PackageName,
@@ -47,7 +46,7 @@ namespace IssueMeisterLib
                 TargetPackageName);
             
             // Import 
-            _packageMethods.ImportByManifest(
+            PackageMethods.ImportByManifest(
                 typeof(IssueMeisterPlugin),
                 "IssueMeisterLib.Xmi.IssueMeister.Types.xml",
                 PackageName,

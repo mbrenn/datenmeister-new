@@ -20,7 +20,6 @@ namespace DatenMeister.Types
     public class DefaultTypeIntegrator
     {
         private readonly IntegrationSettings _integrationSettings;
-        private readonly PackageMethods _packageMethods;
         private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
 
@@ -29,7 +28,6 @@ namespace DatenMeister.Types
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
-            _packageMethods = new PackageMethods();
         }
 
         /// <summary>
@@ -51,7 +49,7 @@ namespace DatenMeister.Types
             {
                 // Looks for the primitive type in the UML Workspace
                 var foundPackage =
-                    _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
+                    PackageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
 
                 _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
 
@@ -69,7 +67,7 @@ namespace DatenMeister.Types
                 var internalUserExtent = LocalTypeSupport.GetInternalTypeExtent(_workspaceLogic);
                 var factory = new MofFactory(internalUserExtent);
                 var package =
-                    _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
+                    PackageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
                 if (package == null)
                     throw new InvalidOperationException("PrimitiveTypes could not be created");
 

@@ -16,20 +16,18 @@ namespace DatenMeister.Modules.FastViewFilter
         public const string PackagePathTypesFastViewFilters = "DatenMeister::FastViewFilters";
 
         private readonly LocalTypeSupport _localTypeSupport;
-        private readonly PackageMethods _packageMethods;
 
-        public FastViewFilterLogic(LocalTypeSupport localTypeSupport, PackageMethods packageMethods,
+        public FastViewFilterLogic(LocalTypeSupport localTypeSupport,
             IWorkspaceLogic workspaceLogic)
         {
             _localTypeSupport = localTypeSupport;
-            _packageMethods = packageMethods;
         }
 
         /// <summary>
         /// Enumeration of the fast view filters
         /// </summary>
         public IReflectiveCollection FastViewFilters =>
-            (_packageMethods.GetPackagedObjects(
+            (PackageMethods.GetPackagedObjects(
                  _localTypeSupport.InternalTypes.elements(), PackagePathTypesFastViewFilters)
              ?? throw new InvalidOperationException("Fast View Filters not found"))
             .WhenMetaClassIs(_UML.TheOne.StructuredClassifiers.__Class);

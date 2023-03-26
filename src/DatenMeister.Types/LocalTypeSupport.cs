@@ -34,7 +34,6 @@ namespace DatenMeister.Types
 
         private readonly ExtentCreator _extentCreator;
         private readonly IntegrationSettings _integrationSettings;
-        private readonly PackageMethods _packageMethods;
         private readonly IScopeStorage _scopeStorage;
 
         /// <summary>
@@ -49,7 +48,6 @@ namespace DatenMeister.Types
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
 
-            _packageMethods = new PackageMethods();
             _extentCreator = new ExtentCreator(workspaceLogic, scopeStorage);
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
@@ -64,13 +62,11 @@ namespace DatenMeister.Types
         public LocalTypeSupport(
             IWorkspaceLogic workspaceLogic,
             ExtentCreator extentCreator,
-            PackageMethods packageMethods,
             IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
 
-            _packageMethods = packageMethods;
             _extentCreator = extentCreator;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
@@ -188,7 +184,7 @@ namespace DatenMeister.Types
             IReflectiveCollection? rootElements = internalTypeExtent.elements();
             if (packageName != null)
             {
-                rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
+                rootElements = PackageMethods.GetPackagedObjects(rootElements, packageName);
             }
 
             if (rootElements == null)

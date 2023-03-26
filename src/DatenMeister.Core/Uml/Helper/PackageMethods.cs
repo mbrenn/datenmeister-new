@@ -16,7 +16,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.Uml.Helper
 {
-    public class PackageMethods
+    public static class PackageMethods
     {
         /// <summary>
         /// Gets a package by following the path.
@@ -24,7 +24,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IElement? GetPackageStructure(
+        public static IElement? GetPackageStructure(
             IReflectiveCollection rootElements,
             string packagePath)
         {
@@ -47,7 +47,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IElement GetOrCreatePackageStructure(
+        public static IElement GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             string packagePath)
         {
@@ -63,7 +63,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="createIfNotFound">Gets or sets the flag that the package will be automatically created
         /// in case it is not found</param>
         /// <returns>Found element</returns>
-        public IElement? GetOrCreatePackageStructure(
+        public static IElement? GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             string packagePath,
             bool createIfNotFound)
@@ -87,7 +87,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IReflectiveCollection? GetPackagedObjects(
+        public static IReflectiveCollection? GetPackagedObjects(
             IReflectiveCollection rootElements,
             string packagePath)
         {
@@ -227,7 +227,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="target">Target of the reflective sequence in which the sub packages will be
         /// added. </param>
         /// <param name="packagePath">Path of the package that is relevant to the intended target.</param>
-        public void ImportPackage(IObject sourcePackage, IReflectiveSequence target, string packagePath)
+        public static void ImportPackage(IObject sourcePackage, IReflectiveSequence target, string packagePath)
         {
             var targetPackage = GetOrCreatePackageStructure(target, packagePath);
 
@@ -268,7 +268,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// the package</param>
         /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
         /// in case the loading failed. </param>
-        public IObject? ImportByManifest(
+        public static IObject? ImportByManifest(
             Type manifestType,
             string manifestName,
             string? sourcePackageName,
@@ -297,7 +297,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// the package</param>
         /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
         /// in case the loading failed. </param>
-        public IObject? ImportByStream(
+        public static IObject? ImportByStream(
             Stream stream,
             string? sourcePackageName,
             IExtent targetExtent,

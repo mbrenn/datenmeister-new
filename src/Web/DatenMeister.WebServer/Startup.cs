@@ -1,13 +1,16 @@
 using DatenMeister.Integration.DotNet;
 using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Library;
+using DatenMeister.WebServer.Library.PageRegistration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Org.BouncyCastle.Math.EC.Endo;
 
 namespace DatenMeister.WebServer
 {
@@ -71,12 +74,23 @@ namespace DatenMeister.WebServer
             extensionProvider.Mappings.Add(".dll", "application/octet-stream");
             config.ContentTypeProvider = extensionProvider;
 
+            
             app.UseStaticFiles(config); // Twice to get rid of issue for blazor client*/
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+                var data = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
+                foreach (var entry in data.PageFactories)
+                {
+                    endpoints.MapGet(
+                        entry.Url, async context =>
+                        {
+                            context.Response.ContentType = entry.ContentType;
+                            await entry.PageStreamFunction().CopyToAsync(context.Response.Body);
+                        });
+                }
             });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions

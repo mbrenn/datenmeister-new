@@ -1,10 +1,12 @@
-﻿using DatenMeister.Core;
+﻿using System.Text;
+using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
+using DatenMeister.WebServer.Library.PageRegistration;
 
 namespace DatenMeister.StundenPlan;
 
@@ -46,5 +48,13 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
             new ExtentType(ExtentTypeName);
         
         extentSettings.extentTypeSettings.Add(extentSetting);
+
+
+        var pluginLogic = new PageRegistrationLogic(_scopeStorage.Get<PageRegistrationData>());
+        pluginLogic.AddUrl(
+            "/love_you", 
+            "text/plain",
+            () => new MemoryStream(
+                Encoding.UTF8.GetBytes("I love me")));
     }
 }

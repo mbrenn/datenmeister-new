@@ -51,10 +51,9 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
 
 
         var pluginLogic = new PageRegistrationLogic(_scopeStorage.Get<PageRegistrationData>());
-        pluginLogic.AddUrl(
-            "/love_you", 
-            "text/plain",
-            () => new MemoryStream(
-                Encoding.UTF8.GetBytes("I love me")));
+        pluginLogic.AddJavaScriptFromResource(
+            typeof(StundenPlanPlugin),
+            "DatenMeister.StundenPlan.resources.stundenplan.js",
+            "datenmeister.stundenplan.js");
     }
 }

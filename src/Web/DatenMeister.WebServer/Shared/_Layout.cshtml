@@ -1,4 +1,6 @@
-﻿@using DatenMeister.WebServer.Library
+﻿@using DatenMeister.Integration.DotNet
+@using DatenMeister.WebServer.Library
+@using DatenMeister.WebServer.Library.PageRegistration
 @using DatenMeister.WebServer.Library.ServerConfiguration
 @namespace DatenMeister.WebServer.Shared
 @inject AppNavigationDefinition AppNavigationDefinition
@@ -76,5 +78,18 @@
 
 <script src="~/js/bootstrap.bundle.min.js"></script>
 <script data-main="js/datenmeister/init" src="~/js/require.js"></script>
+@{
+    var data = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
+    foreach (var item in data.JavaScriptFiles)
+    {
+<script>
+    requirejs(['js/@item'], (module) => {
+        if (module.init !== undefined) {
+            module.init();
+        }
+    });
+</script>
+    }
+}
 </body>
 </html>

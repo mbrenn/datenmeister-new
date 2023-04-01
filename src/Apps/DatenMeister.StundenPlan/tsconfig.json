@@ -6,9 +6,9 @@
     "sourceMap": true,
     "target": "ES6",
     "module": "AMD",
-    "baseUrl": ".",
+    "baseUrl": "../",
     "paths": {
-      "*": [".", "../../Web/DatenMeister.WebServer/wwwroot/js"]
+      "datenmeister/../*": ["../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/*"]
     }
   },
   "compileOnSave": true,

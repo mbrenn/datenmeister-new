@@ -1,14 +1,8 @@
-define(["require", "exports", "datenmeister/../Mof"], function (require, exports, Mof) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.init = exports.createYes = void 0;
-    function createYes() {
-    }
-    exports.createYes = createYes;
+    exports.init = void 0;
     function init() {
-        alert(Mof);
-        alert(Mof.DmObject);
-        alert('Yes');
     }
     exports.init = init;
 });

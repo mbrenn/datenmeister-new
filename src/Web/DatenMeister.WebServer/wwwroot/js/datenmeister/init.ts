@@ -1,12 +1,15 @@
 ﻿import {executeSearchByText} from "./Search";
-import {loadDefaultModules} from "./modules/DefaultLoader";
+import * as ModuleLoader from "./modules/DefaultLoader";
+
+import * as FormLoader from "./forms/DefaultLoader";
 
 $(() => {
-    loadDefaultModules();
+    ModuleLoader.loadDefaultModules();
+    FormLoader.loadDefaultForms();
     $("#dm-search-btn").on(
         'click',
         () => {
             executeSearchByText($("#dm-search-textbox").val().toString());
         }
-    )
+    );
 });

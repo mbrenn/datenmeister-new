@@ -2,6 +2,7 @@
     Defines the html fields which will be used for layouting.
  */
 import {IFormConfiguration} from "./IFormConfiguration";
+import * as FormFactory from "./FormFactory";
 import * as VML from "./ViewModeLogic";
 import * as ClientItems from "../client/Items";
 import * as ClientForms from "../client/Forms";
@@ -10,7 +11,6 @@ import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
 import * as IForm from "./Interfaces";
 import * as Mof from "../Mof";
 import {DmObject, ObjectType} from "../Mof";
-import {TableForm} from "./TableForm";
 import * as SIC from "../controls/SelectItemControl";
 import * as Navigator from "../Navigator";
 import * as Settings from "../Settings";
@@ -261,8 +261,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
             // The function which is capable to create the content of the tab
             // This function must be indirectly created since it works in the enumeration value
-            const tabCreationFunction = function(tab:DmObject, form: JQuery)
-            {
+            const tabCreationFunction = function(tab:DmObject, form: JQuery) {
                 return async () => {
 
                     const parameter = {} as ClientItems.IGetRootElementsParameter;
@@ -275,8 +274,10 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                     const elements = await ClientItems.getRootElements(
                         tthis.workspace, tthis.extentUri, parameter);
 
-                    if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
-                        const tableForm = new TableForm();
+                    const formFactory = FormFactory.getCollectionFormFactory(
+                        tab.metaClass.uri);
+                    if (formFactory !== undefined) {
+                        const tableForm = formFactory();
                         tableForm.elements = elements;
                         tableForm.formElement = tab;
                         tableForm.workspace = tthis.workspace;

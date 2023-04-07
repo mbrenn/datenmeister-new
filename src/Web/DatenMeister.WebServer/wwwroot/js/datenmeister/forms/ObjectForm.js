@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../client/Items", "../Navigator", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "../MofSync", "./Forms", "./Interfaces", "../models/DatenMeister.class"], function (require, exports, DetailForm, RowForm_1, TableForm_1, ClientItems, Navigator, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, MofSync, Forms_1, IForm, DatenMeister_class_1) {
+define(["require", "exports", "./FormFactory", "./RowForm", "../client/Items", "../Navigator", "../Navigator", "./ViewModeLogic", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../controls/FormSelectionControl", "../Mof", "../MofSync", "./Forms", "./Interfaces", "../models/DatenMeister.class"], function (require, exports, FormFactory, RowForm_1, ClientItems, Navigator, Navigator_1, VML, ClientForms, DomHelper_1, ViewModeSelectionControl_1, FormSelectionControl_1, Mof, MofSync, Forms_1, IForm, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectFormCreatorForItem = exports.ObjectFormCreator = exports.ObjectFormHtmlElements = void 0;
@@ -50,23 +50,15 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                     }
                     let form = $("<div />");
                     const tab = tabs[n];
-                    if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__RowForm_Uri) {
-                        const detailForm = new DetailForm.RowForm();
+                    const factoryFunction = FormFactory.getObjectFormFactory(tab.metaClass.uri);
+                    if (factoryFunction !== undefined) {
+                        const detailForm = factoryFunction();
                         detailForm.workspace = this.workspace;
                         detailForm.extentUri = this.extentUri;
                         detailForm.itemUrl = this.itemUrl;
                         detailForm.formElement = tab;
                         detailForm.element = this.element;
                         yield detailForm.createFormByObject(form, configuration);
-                    }
-                    else if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
-                        const listForm = new TableForm_1.TableForm();
-                        listForm.workspace = this.workspace;
-                        listForm.extentUri = this.extentUri;
-                        listForm.itemUrl = this.itemUrl;
-                        listForm.formElement = tab;
-                        listForm.element = this.element;
-                        yield listForm.createFormByObject(form, { isReadOnly: true });
                     }
                     else {
                         form.addClass('alert alert-warning');

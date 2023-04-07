@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "./TableForm", "../controls/SelectItemControl", "../Navigator", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl", "./Interfaces"], function (require, exports, VML, ClientItems, ClientForms, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, TableForm_1, SIC, Navigator, Settings, DatenMeister_class_1, FormSelectionControl_1, Interfaces_1) {
+define(["require", "exports", "./FormFactory", "./ViewModeLogic", "../client/Items", "../client/Forms", "../DomHelper", "../controls/ViewModeSelectionControl", "../Mof", "../Mof", "../controls/SelectItemControl", "../Navigator", "../Settings", "../models/DatenMeister.class", "../controls/FormSelectionControl", "./Interfaces"], function (require, exports, FormFactory, VML, ClientItems, ClientForms, DomHelper_1, ViewModeSelectionControl_1, Mof, Mof_1, SIC, Navigator, Settings, DatenMeister_class_1, FormSelectionControl_1, Interfaces_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMetaClassSelectionButtonForNewItem = exports.CollectionFormCreator = exports.CollectionFormHtmlElements = void 0;
@@ -171,8 +171,9 @@ define(["require", "exports", "./ViewModeLogic", "../client/Items", "../client/F
                         }
                         // Load the object for the specific form
                         const elements = yield ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
-                        if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
-                            const tableForm = new TableForm_1.TableForm();
+                        const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
+                        if (formFactory !== undefined) {
+                            const tableForm = formFactory();
                             tableForm.elements = elements;
                             tableForm.formElement = tab;
                             tableForm.workspace = tthis.workspace;

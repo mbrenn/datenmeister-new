@@ -5,6 +5,8 @@ define(["require", "exports"], function (require, exports) {
     const registerDataCollectionForm = new Array();
     const registerDataObjectForm = new Array();
     function registerCollectionForm(uri, factoryFunction) {
+        if (getCollectionFormFactory(uri) !== undefined)
+            return;
         registerDataCollectionForm.push({
             uri: uri,
             factoryFunction: factoryFunction
@@ -12,6 +14,8 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.registerCollectionForm = registerCollectionForm;
     function registerObjectForm(uri, factoryFunction) {
+        if (getObjectFormFactory(uri) !== undefined)
+            return;
         registerDataObjectForm.push({
             uri: uri,
             factoryFunction: factoryFunction

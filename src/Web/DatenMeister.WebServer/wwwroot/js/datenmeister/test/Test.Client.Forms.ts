@@ -1,7 +1,9 @@
 ﻿import * as FormFactory from '../forms/FormFactory'
 import * as IForm from '../forms/Interfaces'
 import * as FormConfiguration from '../forms/IFormConfiguration'
+import * as ModuleFormLoader from '../forms/DefaultLoader'
 import * as Mof from '../Mof'
+import {_DatenMeister} from "../models/DatenMeister.class";
 
 class X implements IForm.IObjectFormElement {
     element: Mof.DmObject;
@@ -59,6 +61,13 @@ export function includeTests() {
             chai.assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
             chai.assert.isTrue((FormFactory.getObjectFormFactory("objectForm")() as X).type === "X");
             chai.assert.isTrue((FormFactory.getCollectionFormFactory("collectionForm")() as Y).type === "Y");
+        });
+
+        it('Test Default Database', () => {
+            ModuleFormLoader.loadDefaultForms();
+            chai.assert.isTrue(
+                FormFactory.getCollectionFormFactory(_DatenMeister._Forms.__TableForm_Uri)
+                !== undefined);
         });
     });
 }

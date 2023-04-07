@@ -19,6 +19,8 @@ const registerDataObjectForm: Array<EntryObjectForm>
     = new Array<EntryObjectForm>();
 
 export function registerCollectionForm(uri: string, factoryFunction: () => IForm.ICollectionFormElement) {
+    if(getCollectionFormFactory(uri) !== undefined) return;
+
     registerDataCollectionForm.push(
         {
             uri: uri,
@@ -28,6 +30,8 @@ export function registerCollectionForm(uri: string, factoryFunction: () => IForm
 }
 
 export function registerObjectForm(uri: string, factoryFunction: () => IForm.IObjectFormElement) {
+    if(getObjectFormFactory(uri) !== undefined) return;
+    
     registerDataObjectForm.push(
         {
             uri: uri,

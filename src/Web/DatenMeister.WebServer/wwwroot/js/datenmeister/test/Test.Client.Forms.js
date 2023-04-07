@@ -1,4 +1,4 @@
-define(["require", "exports", "../forms/FormFactory"], function (require, exports, FormFactory) {
+define(["require", "exports", "../forms/FormFactory", "../forms/DefaultLoader", "../models/DatenMeister.class"], function (require, exports, FormFactory, ModuleFormLoader, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.includeTests = void 0;
@@ -39,6 +39,11 @@ define(["require", "exports", "../forms/FormFactory"], function (require, export
                 chai.assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm") !== undefined);
                 chai.assert.isTrue(FormFactory.getObjectFormFactory("objectForm")().type === "X");
                 chai.assert.isTrue(FormFactory.getCollectionFormFactory("collectionForm")().type === "Y");
+            });
+            it('Test Default Database', () => {
+                ModuleFormLoader.loadDefaultForms();
+                chai.assert.isTrue(FormFactory.getCollectionFormFactory(DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri)
+                    !== undefined);
             });
         });
     }

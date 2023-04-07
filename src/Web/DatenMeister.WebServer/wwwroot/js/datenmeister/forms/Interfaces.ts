@@ -49,7 +49,7 @@ export interface IForm extends IFormNavigation
 
 export interface IObjectFormElement extends IForm {
     /**
-     * The element which is requried to be shown
+     * The element which is required to be shown
      */
     element: Mof.DmObject;
 

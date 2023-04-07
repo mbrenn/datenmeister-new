@@ -58,12 +58,6 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                         detailForm.formElement = tab;
                         detailForm.element = this.element;
                         yield detailForm.createFormByObject(form, configuration);
-                        if (configuration.onCancel !== undefined) {
-                            detailForm.onCancel = configuration.onCancel;
-                        }
-                        if (configuration.onSubmit !== undefined) {
-                            detailForm.onChange = configuration.onSubmit;
-                        }
                     }
                     else if (tab.metaClass.uri === DatenMeister_class_1._DatenMeister._Forms.__TableForm_Uri) {
                         const listForm = new TableForm_1.TableForm();
@@ -71,8 +65,8 @@ define(["require", "exports", "./RowForm", "./RowForm", "./TableForm", "../clien
                         listForm.extentUri = this.extentUri;
                         listForm.itemUrl = this.itemUrl;
                         listForm.formElement = tab;
-                        listForm.elements = this.element.get(tab.get("property"));
-                        yield listForm.createFormByCollection(form, { isReadOnly: true });
+                        listForm.element = this.element;
+                        yield listForm.createFormByObject(form, { isReadOnly: true });
                     }
                     else {
                         form.addClass('alert alert-warning');

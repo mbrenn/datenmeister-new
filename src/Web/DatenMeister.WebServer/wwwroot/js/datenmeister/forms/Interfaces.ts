@@ -1,4 +1,6 @@
 ﻿import * as Mof from "../Mof";
+import {SubmitMethod} from "./RowForm";
+import {IFormConfiguration} from "./IFormConfiguration";
 
 
 /**
@@ -45,6 +47,25 @@ export interface IForm extends IFormNavigation
     refreshForm(): void;
 }
 
-export interface IDetailForm extends IForm {
-    itemId: string;
+export interface IObjectFormElement extends IForm {
+    /**
+     * The element which is requried to be shown
+     */
+    element: Mof.DmObject;
+
+    createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) : Promise<void>;
+}
+
+/**
+ * Defines the instance which will be added to an overall CollectionForm
+ * The elements will receive a set of elements and a reference to its parent item ('itemUrl'). 
+ * Usually, the task of the implementation is to show the collections
+ */
+export interface ICollectionFormElement extends IForm {
+    /**
+     * Elements which are required to shown
+     */
+    elements: Array<Mof.DmObject>;
+
+    createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean): Promise<void>
 }

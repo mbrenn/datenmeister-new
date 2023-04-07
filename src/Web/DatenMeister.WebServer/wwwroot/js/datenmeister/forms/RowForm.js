@@ -35,12 +35,21 @@ define(["require", "exports", "../forms/Interfaces", "../Mof", "./FieldFactory",
             return __awaiter(this, void 0, void 0, function* () {
                 this.parentHtml = parent;
                 this.configuration = configuration;
+                // Connect the events
+                if (configuration.onCancel !== undefined) {
+                    this.onCancel = configuration.onCancel;
+                }
+                if (configuration.onSubmit !== undefined) {
+                    this.onChange = configuration.onSubmit;
+                }
+                // Sets pre-defined configuration
                 if (configuration.isReadOnly === undefined) {
                     configuration.isReadOnly = true;
                 }
                 if (configuration.allowAddingNewProperties === undefined) {
                     configuration.allowAddingNewProperties = false;
                 }
+                // Creates the table itself
                 let tr;
                 let table;
                 const tthis = this;

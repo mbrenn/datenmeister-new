@@ -5,9 +5,19 @@ import {createField} from "./FieldFactory";
 import * as Settings from "../Settings";
 import {IFormConfiguration} from "./IFormConfiguration";
 import * as Navigator from '../Navigator'
+import {SubmitMethod} from "./RowForm";
 
-export class TableForm implements InterfacesForms.IForm {
+export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
+    /**
+     * To be set, when a set of elements shall be shown
+     */
     elements: Array<Mof.DmObject>;
+
+    /**
+     * To be set, if only the element's of a property shall be shown
+     * the type of the element is retrieved by the tab form
+     */
+    element: Mof.DmObject;
     extentUri: string;
     formElement: Mof.DmObject;
     itemUrl: string;
@@ -23,11 +33,26 @@ export class TableForm implements InterfacesForms.IForm {
     cacheEmptyDiv: JQuery;
 
     cacheButtons: JQuery;
-
     async refreshForm(): Promise<void> {
+
         await this.createFormByCollection(this.parentHtml, this.configuration, true);
     }
 
+    /**
+     * This method just calls the createFormByCollection since a TableForm can 
+     * show the extent's elements directly or just the properties of an elemnet
+     * @param parent The Html to which the table shall be added
+     * @param configuration The Configuration for the table
+     * @param refresh true, if we just would like to refresh the table and not create new elements
+     */
+    async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean)
+    {
+        if (this.elements === undefined && this.element !== undefined) {
+            this.elements = this.element.get(this.formElement.get("property"));
+        }
+        
+        return this.createFormByCollection(parent, configuration, refresh);
+    }
     async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean) {
         this.parentHtml = parent;
         this.configuration = configuration;

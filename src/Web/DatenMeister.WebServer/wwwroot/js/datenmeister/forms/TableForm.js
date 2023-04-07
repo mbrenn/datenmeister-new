@@ -20,6 +20,21 @@ define(["require", "exports", "./Interfaces", "./FieldFactory", "../Settings", "
                 yield this.createFormByCollection(this.parentHtml, this.configuration, true);
             });
         }
+        /**
+         * This method just calls the createFormByCollection since a TableForm can
+         * show the extent's elements directly or just the properties of an elemnet
+         * @param parent The Html to which the table shall be added
+         * @param configuration The Configuration for the table
+         * @param refresh true, if we just would like to refresh the table and not create new elements
+         */
+        createFormByObject(parent, configuration, refresh) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.elements === undefined && this.element !== undefined) {
+                    this.elements = this.element.get(this.formElement.get("property"));
+                }
+                return this.createFormByCollection(parent, configuration, refresh);
+            });
+        }
         createFormByCollection(parent, configuration, refresh) {
             var _a, _b, _c, _d;
             return __awaiter(this, void 0, void 0, function* () {

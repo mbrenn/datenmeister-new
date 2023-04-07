@@ -1,5 +1,5 @@
 ﻿import * as InterfacesForms from "../forms/Interfaces";
-import {FormType} from "../forms/Interfaces";
+import {FormType, IObjectFormElement} from "../forms/Interfaces";
 import * as InterfacesFields from "../fields/Interfaces";
 import * as Mof from "../Mof";
 import {createField} from "./FieldFactory";
@@ -22,7 +22,7 @@ export enum SubmitMethod
     UserDefined3
 }
     
-export class RowForm implements InterfacesForms.IForm {
+export class RowForm implements InterfacesForms.IObjectFormElement {
     workspace: string;
     extentUri: string;
     itemUrl: string;
@@ -44,6 +44,17 @@ export class RowForm implements InterfacesForms.IForm {
     async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         this.parentHtml = parent;
         this.configuration = configuration;
+        
+        // Connect the events
+        if (configuration.onCancel !== undefined) {
+            this.onCancel = configuration.onCancel;
+        }
+
+        if (configuration.onSubmit !== undefined) {
+            this.onChange = configuration.onSubmit;
+        }
+        
+        // Sets pre-defined configuration
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -51,6 +62,7 @@ export class RowForm implements InterfacesForms.IForm {
             configuration.allowAddingNewProperties = false;
         }
 
+        // Creates the table itself
         let tr;
         let table;
         const tthis = this;

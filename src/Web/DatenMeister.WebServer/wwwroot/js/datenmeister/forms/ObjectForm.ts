@@ -103,22 +103,15 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 detailForm.element = this.element;
 
                 await detailForm.createFormByObject(form, configuration);
-                if (configuration.onCancel !== undefined) {
-                    detailForm.onCancel = configuration.onCancel;
-                }
-
-                if (configuration.onSubmit !== undefined) {
-                    detailForm.onChange = configuration.onSubmit;
-                }
             } else if (tab.metaClass.uri === _DatenMeister._Forms.__TableForm_Uri) {
                 const listForm = new TableForm();
                 listForm.workspace = this.workspace;
                 listForm.extentUri = this.extentUri;
                 listForm.itemUrl = this.itemUrl;
                 listForm.formElement = tab;
-                listForm.elements = this.element.get(tab.get("property"));
+                listForm.element = this.element;
 
-                await listForm.createFormByCollection(form, {isReadOnly: true});
+                await listForm.createFormByObject(form, {isReadOnly: true});
             } else {
                 form.addClass('alert alert-warning');
                 const nameValue = tab.get('name', Mof.ObjectType.String);

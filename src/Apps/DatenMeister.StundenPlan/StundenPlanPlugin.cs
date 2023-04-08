@@ -1,7 +1,5 @@
-﻿using System.Text;
-using DatenMeister.Core;
+﻿using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;

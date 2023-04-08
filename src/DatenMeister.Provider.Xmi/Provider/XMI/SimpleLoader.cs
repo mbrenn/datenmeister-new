@@ -65,7 +65,7 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI
         /// </summary>
         /// <param name="factory"></param>
         /// <param name="extent">Extent to which the data is loaded</param>
-        /// <param name="stream">Stream to be used for loading</param>
+        /// <param name="stream">Stream to be used for loading</param>^
         public void LoadFromStream(IFactory factory, IUriExtent extent, Stream stream)
         {
             var document = XDocument.Load(stream);

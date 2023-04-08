@@ -32,6 +32,8 @@ namespace DatenMeister.SourceGeneration.Console
 
             CreateTypescriptForDatenMeisterAllTypes();
 
+            CreateCodeForStundenPlan();
+
             System.Console.WriteLine("Closing Source Code Generator");
 
 #if !DEBUG
@@ -48,7 +50,7 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy($"./ExcelModels.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.ts", true);
 #endif
         }
-        
+
         private static void CreateTypescriptForDatenMeisterAllTypes()
         {
             var dm = GiveMe.DatenMeister();
@@ -174,14 +176,14 @@ namespace DatenMeister.SourceGeneration.Console
             generator.Walk(umlExtent);
 
             File.WriteAllText($"{R}/uml.ts", generator.Result.ToString());
-            System.Console.WriteLine("C# Code for UML written");
+            System.Console.WriteLine("TypeScript Code for UML written");
 
             // Generates tree for MOF
             generator = new TypeScriptInterfaceGenerator();
             generator.Walk(mofExtent);
 
             File.WriteAllText($"{R}/mof.ts", generator.Result.ToString());
-            System.Console.WriteLine("C# Code for MOF written");
+            System.Console.WriteLine("TypeScript Code for MOF written");
 
             // Generates tree for PrimitiveTypes
             generator = new TypeScriptInterfaceGenerator();
@@ -189,6 +191,42 @@ namespace DatenMeister.SourceGeneration.Console
 
             File.WriteAllText($"{R}/primitivetypes.ts", generator.Result.ToString());
             System.Console.WriteLine("C# Code for PrimitiveTypes written");
+        }
+
+        private static void CreateCodeForStundenPlan()
+        {
+            var formExtent = new MofUriExtent(new InMemoryProvider(), "dm:///forms.stundenplan.datenmeister/", null);
+            var typeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types.stundenplan.datenmeister/", null);
+
+            var loader = new SimpleLoader();
+            loader.LoadFromFile(new MofFactory(formExtent), formExtent, "../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Forms.xml");
+            loader.LoadFromFile(new MofFactory(typeExtent), typeExtent, "../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Types.xml");
+            
+            // Generates tree for Type Script
+            var generator = new TypeScriptInterfaceGenerator();
+            generator.Walk(typeExtent);
+            
+            File.WriteAllText($"{R}/StundenPlan.Types.ts", generator.Result.ToString());
+            System.Console.WriteLine("TypeScript Code for StundenPlan written");
+            
+            // Generates tree for StundenPlan
+            var classGenerator = new ClassTreeGenerator
+            {
+                Namespace = "DatenMeister.StundenPlan.Model"
+            };
+
+            classGenerator.Walk(typeExtent);
+            
+            var pathOfClassTree = $"{R}/StundenPlan.Types.cs";
+            var fileContent = classGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
+            
+            System.Console.WriteLine("C#-Code for StundenPlan written");
+            
+#if !DEBUG
+            File.Copy($"{R}/StundenPlan.Types.ts", $"{R}/../Apps/DatenMeister.StundenPlan/resources/DatenMeister.StundenPlan.ts", true);
+            File.Copy($"{R}/StundenPlan.Types.cs", $"{R}/../Apps/DatenMeister.StundenPlan/Model/DatenMeister.StundenPlan.cs", true);
+#endif
         }
     }
 }

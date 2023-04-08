@@ -1,5 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.Xmi;
 
 namespace DatenMeister.SourcecodeGenerator.SourceParser
@@ -11,6 +13,13 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
     {
         public bool IsPackage(IObject element)
         {
+            // Checks, if we are having an IElement
+            if (element is IElement asElement && asElement.metaclass?.equals(
+                    _UML.TheOne.Packages.__Package) == true)
+            {
+                return true;
+            }
+            
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
@@ -19,6 +28,13 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
 
         public bool IsClass(IObject element)
         {
+            // Checks, if we are having an IElement
+            if (element is IElement asElement && asElement.metaclass?.equals(
+                    _UML.TheOne.StructuredClassifiers.__Class) == true)
+            {
+                return true;
+            }
+            
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
@@ -27,6 +43,13 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
 
         public bool IsEnum(IObject element)
         {
+            // Checks, if we are having an IElement
+            if (element is IElement asElement && asElement.metaclass?.equals(
+                    _UML.TheOne.SimpleClassifiers.__Enumeration) == true)
+            {
+                return true;
+            }
+            
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
@@ -35,6 +58,13 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
 
         public bool IsEnumLiteral(IObject element)
         {
+            // Checks, if we are having an IElement
+            if (element is IElement asElement && asElement.metaclass?.equals(
+                    _UML.TheOne.SimpleClassifiers.__EnumerationLiteral) == true)
+            {
+                return true;
+            }
+            
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
@@ -43,6 +73,13 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
 
         public bool IsProperty(IObject element)
         {
+            // Checks, if we are having an IElement
+            if (element is IElement asElement && asElement.metaclass?.equals(
+                    _UML.TheOne.Classification.__Property) == true)
+            {
+                return true;
+            }
+            
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
@@ -51,6 +88,13 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
 
         public bool IsPrimitiveType(IObject element)
         {
+            // Checks, if we are having an IElement
+            if (element is IElement asElement && asElement.metaclass?.equals(
+                    _UML.TheOne.SimpleClassifiers.__PrimitiveType) == true)
+            {
+                return true;
+            }
+            
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&

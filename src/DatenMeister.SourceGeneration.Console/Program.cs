@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Models;
 using DatenMeister.Integration.DotNet;
@@ -195,13 +197,13 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateCodeForStundenPlan()
         {
-            var formExtent = new MofUriExtent(new InMemoryProvider(), "dm:///forms.stundenplan.datenmeister/", null);
-            var typeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types.stundenplan.datenmeister/", null);
+            var formExtent = new MofUriExtent(
+                XmiProvider.CreateByFile("../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Forms.xml"),
+                "dm:///forms.stundenplan.datenmeister/", null);
+            var typeExtent = new MofUriExtent(
+                XmiProvider.CreateByFile("../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Types.xml"),
+                "dm:///types.stundenplan.datenmeister/", null);
 
-            var loader = new SimpleLoader();
-            loader.LoadFromFile(new MofFactory(formExtent), formExtent, "../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Forms.xml");
-            loader.LoadFromFile(new MofFactory(typeExtent), typeExtent, "../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Types.xml");
-            
             // Generates tree for Type Script
             var generator = new TypeScriptInterfaceGenerator();
             generator.Walk(typeExtent);
@@ -226,6 +228,9 @@ namespace DatenMeister.SourceGeneration.Console
 #if !DEBUG
             File.Copy($"{R}/StundenPlan.Types.ts", $"{R}/../Apps/DatenMeister.StundenPlan/resources/DatenMeister.StundenPlan.ts", true);
             File.Copy($"{R}/StundenPlan.Types.cs", $"{R}/../Apps/DatenMeister.StundenPlan/Model/DatenMeister.StundenPlan.cs", true);
+
+            File.Delete($"{R}/StundenPlan.Types.ts");
+            File.Delete($"{R}/StundenPlan.Types.cs");
 #endif
         }
     }

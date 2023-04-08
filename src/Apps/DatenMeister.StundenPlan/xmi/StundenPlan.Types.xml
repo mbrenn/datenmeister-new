@@ -1,5 +1,140 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-  <meta p2:id="fdebd604-a4f7-4c4f-8fd4-cdba0ee79bda" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///stundenplan.types.work" __ExtentType="Uml.Classes " />
-  <package name="StundenMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="350b6fa5-e449-4bbe-bb10-361288543fd0" p1:type="dm:///_internal/model/uml#Package"></package>
+  <meta p2:id="fdebd604-a4f7-4c4f-8fd4-cdba0ee79bda" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///stundenplan.types.work" />
+  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_StundenPlan" name="StundenPlan" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <item p2:type="dm:///_internal/model/uml#Class" p2:id="954ad359-1a92-4661-bc58-83ea4517d493" name="WeeklyPeriodicEvent" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+      <isAbstract p2:id="e24cf76e-1d25-49bb-be9e-4cafc8ce7b6f" />
+      <isActive p2:id="fc241dcf-1312-44ff-853b-206fc4139f2a" />
+      <isFinalSpecialization p2:id="f45f2eeb-3ccb-4567-997b-7fce21cee9df" />
+      <isLeaf p2:id="01e61ca9-5e10-4b3c-83a8-54ba36b8f76a" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="96bda39b-91ec-4436-ac09-e00b6f7800d1" isComposite="false" isID="false" name="name">
+        <aggregation p2:id="edf50b4e-f313-4c04-b302-90f2b9a296fd" />
+        <isDerived p2:id="5d3eb81f-c299-4174-95a0-60e60c3d977b" />
+        <isDerivedUnion p2:id="de94c6c6-e90f-4dac-8f70-7d10f972a57a" />
+        <isReadOnly p2:id="2d8238ac-c39c-42ed-907b-03abfcc1bdab" />
+        <isOrdered p2:id="0701986b-4073-490e-bcb3-be51e0f97a08" />
+        <isUnique p2:id="0a9a4c7f-c98c-49f6-91c5-0066fce4fd6b" />
+        <isStatic p2:id="9bf51c26-9fc2-4100-918c-b05b8591644a" />
+        <isLeaf p2:id="ab4e51df-7f88-423a-812d-2d10d31bb7d7" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="b4f0b2bf-ec59-4eab-aede-132b5b45779c" name="timeStart" type-ref="dm:///_internal/model/primitivetypes#String" isID="true" isComposite="true">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dbcc8e61-e484-4342-a80f-f7b56fa64973" name="hoursDuration" type-ref="dm:///_internal/model/primitivetypes#Real" isID="true" isComposite="true">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="cec16bd7-1f7c-4518-98b7-64ecadb79b2f" name="weekInterval" type-ref="dm:///_internal/model/primitivetypes#Integer" isID="true" isComposite="true">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="29a6094b-b344-474f-a39f-2e319b9f7134" name="weekOffset" type-ref="dm:///_internal/model/primitivetypes#Integer" isID="true" isComposite="true">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0e603b66-f973-4d4a-9df7-e03e3306cd54" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="onMonday">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c6ccad2c-4d8e-43a9-bf64-938a6f817bd6" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="onTuesday">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="ec95bc97-259e-4d9a-895a-a8c3d8a32040" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="onWednesday">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7101810b-7218-41d6-925e-568abba7a876" name="onThursday" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="true" isComposite="true">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d2cb8854-8712-43f0-8982-e686a2c87405" name="onFriday" type-ref="dm:///_internal/model/primitivetypes#Boolean">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="9f925c9c-37af-4b50-9960-1b88f6429ffc" name="onSaturday" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="true" isComposite="true">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="960f2937-1414-4ee4-8906-6850d54673c7" type-ref="dm:///_internal/model/primitivetypes#Boolean" isComposite="false" isID="false" name="onSunday">
+        <aggregation p2:id="45ba66fa-2741-4335-b43f-40bd20498d3a" />
+        <isDerived p2:id="a4a0e9ca-28ca-45dc-99a9-07ff769c1a51" />
+        <isDerivedUnion p2:id="5a40b075-e98a-435f-b33e-5daa2aaa9f57" />
+        <isReadOnly p2:id="e378d3dc-2a06-4f90-b5c4-2f53dd419026" />
+        <isOrdered p2:id="0d0ac0ee-fcdc-43cc-b59e-2d2ced34fb79" />
+        <isUnique p2:id="ac6421f2-ff04-4784-bb13-9a0523645a25" />
+        <isStatic p2:id="90df9648-3464-4e3c-834f-f0a528ecd027" />
+        <isLeaf p2:id="95ab70f7-bb28-456f-8d24-402c7d393faa" />
+      </ownedAttribute>
+    </item>
+  </item>
 </item>

@@ -330,5 +330,16 @@ namespace DatenMeister.Core.Provider.Xmi
             var provider = new XmiProvider(document);
             return provider.GetMetaNode();
         }
+
+        /// <summary>
+        /// Creates an Xmi Provider by using a certain file pat
+        /// </summary>
+        /// <param name="xmiFilePath">File path to be used</param>
+        /// <returns>The created xmi</returns>
+        public static XmiProvider CreateByFile(string xmiFilePath)
+        {
+            var document = XDocument.Load(xmiFilePath);
+            return new XmiProvider(document);
+        }
     }
 }

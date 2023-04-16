@@ -83,7 +83,7 @@
     foreach (var item in data.JavaScriptFiles)
     {
 <script>
-    requirejs(['js/@item'], (module) => {
+    requirejs(['js/datenmeister/@item'], (module) => {
         if (module.init !== undefined) {
             module.init();
         }

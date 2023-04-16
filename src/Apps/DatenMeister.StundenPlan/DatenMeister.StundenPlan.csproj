@@ -22,9 +22,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="resources\DatenMeister.StundenPlan.js" />
       <EmbeddedResource Include="xmi\StundenPlan.Forms.xml" />
       <EmbeddedResource Include="xmi\StundenPlan.Types.xml" />
-      <None Remove="resources\stundenplan.js" />
       <EmbeddedResource Include="resources\stundenplan.js" />
     </ItemGroup>
 

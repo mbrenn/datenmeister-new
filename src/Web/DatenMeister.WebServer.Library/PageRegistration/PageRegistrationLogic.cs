@@ -5,6 +5,18 @@ using System.Reflection;
 
 namespace DatenMeister.WebServer.Library.PageRegistration
 {
+    public enum RegistrationType
+    {
+        /// <summary>
+        /// The Javascript file will just be embedded and not loaded during the
+        /// initialization of the page
+        /// </summary>
+        OnlyEmbedding, 
+        /// <summary>
+        /// The javascript file will be embedded and loaded by each page
+        /// </summary>
+        EmbedAndLoad
+    }
     public class PageRegistrationLogic
     {
         private readonly PageRegistrationData _data;
@@ -30,6 +42,8 @@ namespace DatenMeister.WebServer.Library.PageRegistration
                 new PageFactory(url, contentType, pageStreamFactory));
         }
 
+
+
         /// <summary>
         /// Adds a new Javascript file for the webserver
         /// The JavaScript file is taken from a resource and will be available under js/{fileName}
@@ -40,10 +54,11 @@ namespace DatenMeister.WebServer.Library.PageRegistration
         public void AddJavaScriptFromResource(
             Type manifestType,
             string manifestName,
-            string fileName)
+            string fileName,
+            RegistrationType registrationType = RegistrationType.EmbedAndLoad)
         {
             AddUrl(
-                $"js/{fileName}",
+                $"js/datenmeister/{fileName}",
                 "application/javascript",
                 () =>
                 {
@@ -51,8 +66,11 @@ namespace DatenMeister.WebServer.Library.PageRegistration
                         .Assembly.GetManifestResourceStream(manifestName);
                     return result ?? throw new InvalidOperationException($"The manifest {manifestName} was not found");
                 });
-            
-            _data.JavaScriptFiles.Add(fileName);
+
+            if (registrationType == RegistrationType.EmbedAndLoad)
+            {
+                _data.JavaScriptFiles.Add(fileName);
+            }
         }
 
         /// <summary>

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <meta p2:id="fdebd604-a4f7-4c4f-8fd4-cdba0ee79bda" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///stundenplan.types.work" />
-  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_StundenPlan" name="StundenPlan" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-    <item p2:type="dm:///_internal/model/uml#Class" p2:id="954ad359-1a92-4661-bc58-83ea4517d493" name="WeeklyPeriodicEvent" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_StundenPlan" xmlns:p1="http://www.omg.org/spec/XMI/20131001" name="Types">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="954ad359-1a92-4661-bc58-83ea4517d493" name="WeeklyPeriodicEvent" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
       <isAbstract p2:id="e24cf76e-1d25-49bb-be9e-4cafc8ce7b6f" />
       <isActive p2:id="fc241dcf-1312-44ff-853b-206fc4139f2a" />
       <isFinalSpecialization p2:id="f45f2eeb-3ccb-4567-997b-7fce21cee9df" />
@@ -135,6 +135,16 @@
         <isStatic p2:id="90df9648-3464-4e3c-834f-f0a528ecd027" />
         <isLeaf p2:id="95ab70f7-bb28-456f-8d24-402c7d393faa" />
       </ownedAttribute>
-    </item>
+    </packagedElement>
+  </item>
+  <item p2:type="dm:///_internal/model/uml#Package" p2:id="1dc1c3c9-13ac-4bdf-8047-5661d0fc3739" name="Forms" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <visibility p2:id="778168c2-b84c-4e41-8fd3-18630131e7a9" />
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="9b107f7e-59c0-4164-b761-78764223afa2" name="SchedulerForm">
+      <isAbstract p2:id="20076c82-b363-4d15-9089-43a81f33c0f6" />
+      <isActive p2:id="23733735-5f01-404b-81bc-9b2056794079" />
+      <isFinalSpecialization p2:id="1aed7a22-d674-4554-99d2-e74dfe25dcd0" />
+      <isLeaf p2:id="58351761-a20d-4a3e-91c3-745205c11988" />
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a0e972a4-042e-4817-9a67-f0470991a926" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" isSubstitutable="true" />
+    </packagedElement>
   </item>
 </item>

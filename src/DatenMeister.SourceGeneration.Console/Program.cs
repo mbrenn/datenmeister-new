@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Models;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.Xmi.Provider.XMI;
 using DatenMeister.SourcecodeGenerator;
@@ -55,7 +55,7 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateTypescriptForDatenMeisterAllTypes()
         {
-            var dm = GiveMe.DatenMeister();
+            using var dm = GiveMe.DatenMeister();
 
             System.Console.Write("Create TypeScript for DatenMeister...");
 
@@ -78,7 +78,7 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateSourceCodeForDatenMeisterAllTypes()
         {
-            var dm = GiveMe.DatenMeister();
+            using var dm = GiveMe.DatenMeister();
 
             System.Console.Write("Create Sourcecode for DatenMeister...");
 
@@ -197,12 +197,17 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateCodeForStundenPlan()
         {
+            using var dm = GiveMe.DatenMeister();
+
             var formExtent = new MofUriExtent(
                 XmiProvider.CreateByFile("../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Forms.xml"),
                 "dm:///forms.stundenplan.datenmeister/", null);
             var typeExtent = new MofUriExtent(
                 XmiProvider.CreateByFile("../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Types.xml"),
                 "dm:///types.stundenplan.datenmeister/", null);
+
+            dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), formExtent);
+            dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
 
             // Generates tree for Type Script
             var generator = new TypeScriptInterfaceGenerator();

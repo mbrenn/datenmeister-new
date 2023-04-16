@@ -50,6 +50,16 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister.Core/Models/DatenMeister.class.cs", true);
             File.Copy($"./DatenMeister.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts", true);
             File.Copy($"./ExcelModels.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.ts", true);
+
+            File.Delete($"{R}/primitivetypes.cs");
+            File.Delete($"{R}/primitivetypes.ts");
+            File.Delete($"{R}/primitivetypes.js");
+            File.Delete($"{R}/mof.cs");
+            File.Delete($"{R}/mof.ts");
+            File.Delete($"{R}/mof.js");
+            File.Delete($"{R}/uml.cs");
+            File.Delete($"{R}/uml.ts");
+            File.Delete($"{R}/uml.js");
 #endif
         }
 
@@ -235,6 +245,7 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy($"{R}/StundenPlan.Types.cs", $"{R}/../Apps/DatenMeister.StundenPlan/Model/DatenMeister.StundenPlan.cs", true);
 
             File.Delete($"{R}/StundenPlan.Types.ts");
+            File.Delete($"{R}/StundenPlan.Types.js");
             File.Delete($"{R}/StundenPlan.Types.cs");
 #endif
         }

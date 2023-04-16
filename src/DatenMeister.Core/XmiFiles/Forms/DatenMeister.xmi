@@ -106,7 +106,7 @@
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" p1:id="401b8734-ff80-4c40-bb5e-c88d2a9aebed" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" title="Export Data">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="c613bc08-216f-45bd-b518-c2d7a463661d" title="Xmi" name="xmi" lineHeight="20" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="property" title="Property" p1:id="69ed837a-a55f-488b-843c-62c584570108" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="addToCollection" title="Add To Colleciton" p1:id="57a8a4db-45ec-406a-af4a-527fa58e956b" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="addToCollection" title="Add To Collection" p1:id="57a8a4db-45ec-406a-af4a-527fa58e956b" />
       </tab>
     </packagedElement>
   </item>

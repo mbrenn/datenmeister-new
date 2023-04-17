@@ -75,7 +75,9 @@ namespace DatenMeister.Forms.FormCreator
             {
                 var metaClassProperties = ClassifierMethods.GetPropertiesOfClassifier(objectMetaClass);
                 foreach (var property in metaClassProperties)
+                {
                     if (PropertyMethods.IsCollection(property))
+                    {
                         propertyNamesWithCollection.Add(
                             new P
                             {
@@ -83,14 +85,17 @@ namespace DatenMeister.Forms.FormCreator
                                 PropertyType = PropertyMethods.GetPropertyType(property),
                                 Property = property
                             });
-                    else
-                        propertyNamesWithoutCollection.Add(
-                            new P
-                            {
-                                PropertyName = NamedElementMethods.GetName(property),
-                                PropertyType = property,
-                                Property = property
-                            });
+                    }
+                    
+                    // As temporary workaround, we do also add the collections tothe detail view
+                    propertyNamesWithoutCollection.Add(
+                        new P
+                        {
+                            PropertyName = NamedElementMethods.GetName(property),
+                            PropertyType = property,
+                            Property = property
+                        });
+                }
             }
 
             // Now collect the property Values

@@ -24,16 +24,16 @@ class StundenPlanForm implements IObjectFormElement {
     formElement: Mof.DmObject;
     formType: FormType;
 
-    createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration): Promise<void> {
-        throw new Error('Method not implemented.');
+    async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration): Promise<void> {
+        parent.append($("<span>Scheduler</span>"));
     }
 
     refreshForm(): void {
-        throw new Error('Method not implemented.');
+        return ;
     }
 
-    storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
-        throw new Error('Method not implemented.');
+    async storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
+        return new Mof.DmObject();
     }
 
 

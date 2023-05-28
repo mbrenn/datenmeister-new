@@ -1,9 +1,12 @@
 ﻿import * as Mof from 'datenmeister/../Mof'
-import {ObjectType} from 'datenmeister/../Mof'
+import { ObjectType } from 'datenmeister/../Mof';
 import * as FormFactory from 'datenmeister/../forms/FormFactory'
-import * as StundenPlanTypes from 'DatenMeister.StundenPlan'
-import {FormType, IObjectFormElement} from 'datenmeister/../forms/Interfaces';
-import {IFormConfiguration} from 'datenmeister/../forms/IFormConfiguration';
+import * as StundenPlanTypes from 'DatenMeister.StundenPlan';
+import { FormType, IObjectFormElement } from 'datenmeister/../forms/Interfaces';
+import { IFormConfiguration } from 'datenmeister/../forms/IFormConfiguration';
+import * as ClientItems from 'datenmeister/../client/Items';
+import * as _UML from 'datenmeister/../models/uml'
+import * as _DatenMeister from 'datenmeister/../models/DatenMeister.class'
 
 export function init() {
     FormFactory.registerObjectForm(
@@ -17,7 +20,7 @@ export function init() {
      * Add the tests, only if the test framework is loaded
      */
 
-    if (describe === undefined) return;
+    if (typeof describe !== 'function') return;
 
     describe('StundenPlanMeister Tests', function () {
         it('Create Empty Table', function () {
@@ -113,7 +116,6 @@ export function init() {
     });
 }
 
-
 class StundenPlanForm implements IObjectFormElement {
 
     element: Mof.DmObject;
@@ -125,7 +127,36 @@ class StundenPlanForm implements IObjectFormElement {
     formType: FormType;
 
     async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration): Promise<void> {
-        parent.append($("<span>Scheduler</span>"));
+        const domContainer = $("<span>Scheduler</span>");
+        parent.append(domContainer);
+
+        const foundItems = await ClientItems.getObjectByUri(
+            this.workspace,
+            this.itemUrl);
+
+        // Gets the elements
+        const packagedElements = foundItems.get(_DatenMeister._DatenMeister._CommonTypes._Default._Package.packagedElement, ObjectType.Array);
+        if (packagedElements === undefined || packagedElements === null) {
+            parent.append($("<span>The element did not include the packagedElements"));
+        }
+
+        const calendarControl = new WeeklyCalenderControl(domContainer);
+        
+        // Go through the elements and skip the ones which are not periodic dates
+        for (const n in packagedElements) {
+            const item = packagedElements[n] as Mof.DmObject;
+            if (item.metaClass.uri !== StundenPlanTypes._Types.__WeeklyPeriodicEvent_Uri) {
+                continue;
+            }
+
+            calendarControl.addPeriodicEvent(item);
+        }
+
+        // Create teh calendarControl
+
+        calendarControl.createTable(
+            { weeks: 4 }
+        );
     }
 
     refreshForm(): void {
@@ -186,6 +217,9 @@ export class WeeklyCalenderControl {
             this.table.remove();
             this.cells.length = 0;
         }
+
+        // Creates the manager
+        const manager = new PeriodicEventManager(this.events);
         
         // Now, we are live.. The table is created
         const table = $("<table></table>");
@@ -194,14 +228,28 @@ export class WeeklyCalenderControl {
             const row = $("<tr></tr>");
             for (let day = 1; day <= 7; day++) {
                 const cell = $("<td></td>");
-                const weekDay = $("<span class='stundenplan-weekday'></span>");
+                const weekDay = $("<div class='stundenplan-weekday'></div>");
                 weekDay.text(getWeekDay(day));
                 cell.append(weekDay);
+
+                // Gets the events at that date
+                const events = manager.getEventsOnWeekday(n, day);
+                for (const m in events) {
+                    const eventItem = events[m];
+
+                    const weekEvent = $("<div class='stundenplan-event'></div>");
+                    const timeStart = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, ObjectType.String);
+                    const title = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String);
+                    weekEvent.text(timeStart + " " + title);
+                    cell.append(weekEvent);
+                }
+
                 this.cells.push(cell);
                                 
                 // Adds cell to the row
                 row.append(cell);
             }
+
             table.append(row);
         }
 
@@ -237,7 +285,7 @@ class PeriodicEventManager {
      */
     getEventsOnWeekday(week: number, day: number) {
         const foundEvents = new Array<Mof.DmObject>();
-        for (let n in this.events) {
+        for (const n in this.events) {
             const event = this.events[n];
             if (!isPeriodicEventApplicableOnWeekday(event, day)) {
                 continue;
@@ -299,6 +347,11 @@ function isPeriodicEventApplicableOnWeekday(event: Mof.DmObject, dayNumber: numb
     }
 }
 
+/**
+ * Gets the name of the weekday
+ * @param dayNumber # of the day. 1 is Monday, 7 is Sunday
+ * @returns The name
+ */
 function getWeekDay(dayNumber: number) {
     if (dayNumber < 1 || dayNumber > 7) {
         throw "Invalid argument, must be between 1 and 7";

@@ -28,6 +28,7 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
     
     public void Start(PluginLoadingPosition position)
     {
+        // Adds the types and the forms
         var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
         extentManager.CreateExtentByResource(
             typeof(StundenPlanPlugin),
@@ -41,13 +42,14 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
             UriStundenPlanTypes,
             "Types");
 
+        // Adds the extent type
         var extentSettings = _scopeStorage.Get<ExtentSettings>();
         var extentSetting =
             new ExtentType(ExtentTypeName);
         
         extentSettings.extentTypeSettings.Add(extentSetting);
 
-
+        // Adds the javascript
         var pluginLogic = new PageRegistrationLogic(_scopeStorage.Get<PageRegistrationData>());
         pluginLogic.AddJavaScriptFromResource(
             typeof(StundenPlanPlugin),

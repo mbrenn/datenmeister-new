@@ -1,0 +1,14 @@
+﻿.stundenplan {
+    vertical-align: top;
+    border-collapse: collapse;
+}
+
+.stundenplan td{
+    vertical-align: top;
+    padding: 2px 5px 2px 5px;
+    border: 1px solid black;
+}
+
+.stundenplan .stundenplan-weekday{
+    font-weight: bold;
+}

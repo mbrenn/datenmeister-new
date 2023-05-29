@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "datenmeister/../Mof", "datenmeister/../Mof", "datenmeister/../forms/FormFactory", "DatenMeister.StundenPlan", "datenmeister/../client/Items", "datenmeister/../models/DatenMeister.class"], function (require, exports, Mof, Mof_1, FormFactory, StundenPlanTypes, ClientItems, _DatenMeister) {
+define(["require", "exports", "datenmeister/../Mof", "datenmeister/../Mof", "datenmeister/../forms/FormFactory", "module/DatenMeister.StundenPlan", "datenmeister/../client/Items", "datenmeister/../models/DatenMeister.class"], function (require, exports, Mof, Mof_1, FormFactory, StundenPlanTypes, ClientItems, DatenMeister_class_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WeeklyCalenderControl = exports.init = void 0;
@@ -90,7 +90,7 @@ define(["require", "exports", "datenmeister/../Mof", "datenmeister/../Mof", "dat
                 parent.append(domContainer);
                 const foundItems = yield ClientItems.getObjectByUri(this.workspace, this.itemUrl);
                 // Gets the elements
-                const packagedElements = foundItems.get(_DatenMeister._DatenMeister._CommonTypes._Default._Package.packagedElement, Mof_1.ObjectType.Array);
+                const packagedElements = foundItems.get(DatenMeister_class_1._DatenMeister._CommonTypes._Default._Package.packagedElement, Mof_1.ObjectType.Array);
                 if (packagedElements === undefined || packagedElements === null) {
                     parent.append($("<span>The element did not include the packagedElements"));
                 }
@@ -143,7 +143,7 @@ define(["require", "exports", "datenmeister/../Mof", "datenmeister/../Mof", "dat
             // Creates the manager
             const manager = new PeriodicEventManager(this.events);
             // Now, we are live.. The table is created
-            const table = $("<table></table>");
+            const table = $("<table class='stundenplan'></table>");
             for (let n = 0; n < configuration.weeks; n++) {
                 const row = $("<tr></tr>");
                 for (let day = 1; day <= 7; day++) {

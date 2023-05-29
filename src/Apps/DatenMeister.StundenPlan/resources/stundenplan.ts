@@ -1,12 +1,12 @@
 ﻿import * as Mof from 'datenmeister/../Mof'
 import { ObjectType } from 'datenmeister/../Mof';
 import * as FormFactory from 'datenmeister/../forms/FormFactory'
-import * as StundenPlanTypes from 'DatenMeister.StundenPlan';
+import * as StundenPlanTypes from 'module/DatenMeister.StundenPlan';   
 import { FormType, IObjectFormElement } from 'datenmeister/../forms/Interfaces';
 import { IFormConfiguration } from 'datenmeister/../forms/IFormConfiguration';
 import * as ClientItems from 'datenmeister/../client/Items';
 import * as _UML from 'datenmeister/../models/uml'
-import * as _DatenMeister from 'datenmeister/../models/DatenMeister.class'
+import { _DatenMeister } from 'datenmeister/../models/DatenMeister.class'
 
 export function init() {
     FormFactory.registerObjectForm(
@@ -135,7 +135,7 @@ class StundenPlanForm implements IObjectFormElement {
             this.itemUrl);
 
         // Gets the elements
-        const packagedElements = foundItems.get(_DatenMeister._DatenMeister._CommonTypes._Default._Package.packagedElement, ObjectType.Array);
+        const packagedElements = foundItems.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, ObjectType.Array);
         if (packagedElements === undefined || packagedElements === null) {
             parent.append($("<span>The element did not include the packagedElements"));
         }
@@ -222,7 +222,7 @@ export class WeeklyCalenderControl {
         const manager = new PeriodicEventManager(this.events);
         
         // Now, we are live.. The table is created
-        const table = $("<table></table>");
+        const table = $("<table class='stundenplan'></table>");
 
         for (let n = 0; n < configuration.weeks; n++) {
             const row = $("<tr></tr>");

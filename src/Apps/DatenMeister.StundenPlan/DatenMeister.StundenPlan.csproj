@@ -15,6 +15,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="resources\stundenplan.css" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
@@ -23,6 +27,7 @@
 
     <ItemGroup>
       <EmbeddedResource Include="resources\DatenMeister.StundenPlan.js" />
+      <EmbeddedResource Include="resources\stundenplan.css" />
       <EmbeddedResource Include="xmi\StundenPlan.Forms.xml" />
       <EmbeddedResource Include="xmi\StundenPlan.Types.xml" />
       <EmbeddedResource Include="resources\stundenplan.js" />

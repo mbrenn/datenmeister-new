@@ -15,6 +15,13 @@
     <link href="~/css/bootstrap.css" rel="stylesheet"/>
     <link href="~/css/bootstrap-reboot.min.css" rel="stylesheet"/>
     <link href="~/css/datenmeister.css" rel="stylesheet"/>
+@{
+    var data = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
+    foreach (var item in data.CssFiles)
+    {
+        <link href="~/css/module/@item" rel="stylesheet"/>
+    }
+}
     <script src="~/js/jquery.min.js"></script>
 </head>
 <body style="@WebServerSettingHandler.TheOne.BodyCssStyle">
@@ -79,11 +86,13 @@
 <script src="~/js/bootstrap.bundle.min.js"></script>
 <script data-main="js/datenmeister/init" src="~/js/require.js"></script>
 @{
-    var data = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
-    foreach (var item in data.JavaScriptFiles)
+
+        var dataForJs = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
+
+        foreach (var item in dataForJs.JavaScriptFiles)
     {
 <script>
-    requirejs(['js/datenmeister/@item'], (module) => {
+    requirejs(['js/datenmeister/module/@item'], (module) => {
         if (module.init !== undefined) {
             module.init();
         }

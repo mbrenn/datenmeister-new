@@ -60,5 +60,10 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
             "DatenMeister.StundenPlan.resources.DatenMeister.StundenPlan.js",
             "DatenMeister.StundenPlan.js",
             RegistrationType.OnlyEmbedding);
+
+        pluginLogic.AddCssFileFromResource(
+            typeof(StundenPlanPlugin),
+            "DatenMeister.StundenPlan.resources.stundenplan.css",
+            "stundenplan.css");
     }
 }

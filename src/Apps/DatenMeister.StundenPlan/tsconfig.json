@@ -8,7 +8,8 @@
     "module": "AMD",
     "baseUrl": "../",
     "paths": {
-      "datenmeister/../*": ["../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/*"]
+      "datenmeister/../*": [ "../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/*" ],
+      "module/*": ["./DatenMeister.StundenPlan/resources/*"]
     }
   },
   "compileOnSave": true,

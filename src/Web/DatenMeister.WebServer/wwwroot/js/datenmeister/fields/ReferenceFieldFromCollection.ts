@@ -1,9 +1,8 @@
-﻿import {BaseField, IFormField} from "./Interfaces";
-import {DmObject, ObjectType} from "../Mof";
-import {ItemWithNameAndId} from "../ApiModels";
-import * as ClientItems from "../client/Items"
-import {_DatenMeister} from "../models/DatenMeister.class";
-import * as Mof from "../Mof";
+﻿import {BaseField, IFormField} from "./Interfaces.js";
+import {DmObject, ObjectType} from "../Mof.js";
+import {ItemWithNameAndId} from "../ApiModels.js";
+import * as ClientItems from "../client/Items.js"
+import {_DatenMeister} from "../models/DatenMeister.class.js";
 
 export class Field extends BaseField implements IFormField {
 

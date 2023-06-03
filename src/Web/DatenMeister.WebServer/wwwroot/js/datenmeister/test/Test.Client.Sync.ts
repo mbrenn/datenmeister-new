@@ -1,7 +1,7 @@
-﻿import * as ClientElements from "../client/Elements";
-import * as ClientItems from "../client/Items";
-import * as Mof from "../Mof"
-import {sync} from "../MofSync";
+﻿import * as ClientElements from "../client/Elements.js";
+import * as ClientItems from "../client/Items.js";
+import * as Mof from "../Mof.js"
+import {sync} from "../MofSync.js";
 
 export function includeTests() {
     

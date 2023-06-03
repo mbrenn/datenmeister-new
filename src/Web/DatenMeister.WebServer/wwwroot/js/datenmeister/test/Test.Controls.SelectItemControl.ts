@@ -1,7 +1,7 @@
-import * as ClientWorkspace from "../client/Workspace";
-import * as ClientExtent from "../client/Extents";
-import * as ClientItems from "../client/Items";
-import {SelectItemControl} from "../controls/SelectItemControl";
+import * as ClientWorkspace from "../client/Workspace.js";
+import * as ClientExtent from "../client/Extents.js";
+import * as ClientItems from "../client/Items.js";
+import {SelectItemControl} from "../controls/SelectItemControl.js";
 
 
 function lookForChildWithText(children: JQuery<HTMLElement>, textToLookFor: string) {

@@ -1,6 +1,6 @@
-﻿import * as Actions from './Actions';
-import * as _DatenMeister from '../models/DatenMeister.class';
-import * as Mof from '../Mof';
+﻿import * as Actions from './Actions.js';
+import * as _DatenMeister from '../models/DatenMeister.class.js';
+import * as Mof from '../Mof.js';
 import _MoveUpDownAction = _DatenMeister._DatenMeister._Actions._MoveUpDownAction;
 import _MoveDirectionType = _DatenMeister._DatenMeister._Actions._MoveDirectionType;
 

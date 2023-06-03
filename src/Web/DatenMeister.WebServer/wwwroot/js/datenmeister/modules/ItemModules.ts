@@ -1,17 +1,17 @@
-﻿import * as FormActions from "../FormActions"
-import {DmObject, DmObjectWithSync, ObjectType} from "../Mof";
-import * as MofSync from "../MofSync";
-import * as FormClient from "../client/Forms";
-import * as ActionClient from "../client/Actions";
-import {IFormNavigation} from "../forms/Interfaces";
-import {SubmitMethod} from "../forms/RowForm";
-import * as Settings from "../Settings";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import * as ItemClient from "../client/Items";
-import * as Navigator from "../Navigator";
-import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items";
+﻿import * as FormActions from "../FormActions.js"
+import {DmObject, DmObjectWithSync, ObjectType} from "../Mof.js";
+import * as MofSync from "../MofSync.js";
+import * as FormClient from "../client/Forms.js";
+import * as ActionClient from "../client/Actions.js";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import {SubmitMethod} from "../forms/RowForm.js";
+import * as Settings from "../Settings.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as ItemClient from "../client/Items.js";
+import * as Navigator from "../Navigator.js";
+import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items.js";
 import _MoveOrCopyAction = _DatenMeister._Actions._MoveOrCopyAction;
-import * as ClientElements from "../client/Elements";
+import * as ClientElements from "../client/Elements.js";
 
 export function loadModules() {   
     FormActions.addModule(new ItemMoveOrCopyActionNavigate());

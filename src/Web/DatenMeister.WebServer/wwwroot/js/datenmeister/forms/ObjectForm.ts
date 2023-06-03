@@ -1,25 +1,23 @@
 ﻿/* 
     Defines the html fields which will be used for layouting.
  */
-import {IFormConfiguration} from "./IFormConfiguration";
-import * as FormFactory from "./FormFactory";
-import * as DetailForm from "./RowForm";
-import {SubmitMethod} from "./RowForm";
-import {TableForm} from "./TableForm";
-import * as ClientItems from "../client/Items";
-import * as Navigator from "../Navigator";
-import {navigateToExtentItems, navigateToItemByUrl} from "../Navigator";
-import * as VML from "./ViewModeLogic";
-import * as ClientForms from "../client/Forms";
-import {debugElementToDom} from "../DomHelper";
-import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
-import {FormSelectionControl} from "../controls/FormSelectionControl"
-import * as Mof from "../Mof";
-import * as MofSync from "../MofSync";
-import {FormMode} from "./Forms";
-import * as IForm from "./Interfaces";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import {ItemLink} from "../ApiModels";
+import {IFormConfiguration} from "./IFormConfiguration.js";
+import * as FormFactory from "./FormFactory.js";
+import {SubmitMethod} from "./RowForm.js";
+import * as ClientItems from "../client/Items.js";
+import * as Navigator from "../Navigator.js";
+import {navigateToExtentItems, navigateToItemByUrl} from "../Navigator.js";
+import * as VML from "./ViewModeLogic.js";
+import * as ClientForms from "../client/Forms.js";
+import {debugElementToDom} from "../DomHelper.js";
+import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl.js";
+import {FormSelectionControl} from "../controls/FormSelectionControl.js"
+import * as Mof from "../Mof.js";
+import * as MofSync from "../MofSync.js";
+import {FormMode} from "./Forms.js";
+import * as IForm from "./Interfaces.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import {ItemLink} from "../ApiModels.js";
 
 export class ObjectFormHtmlElements
 {

@@ -1,19 +1,18 @@
-﻿import {IFormField} from "./Interfaces";
-import {DmObject, ObjectType} from "../Mof";
-import * as FieldFactory from "../forms/FieldFactory";
-import * as SIC from "../controls/SelectItemControl";
-import * as ClientItems from "../client/Items";
-import * as ClientTypes from "../client/Types";
-import {IFormConfiguration} from "../forms/IFormConfiguration";
-import {IFormNavigation} from "../forms/Interfaces";
-import * as Settings from "../Settings";
-import {IInjectNameByUriParams, injectNameByUri} from "../DomHelper";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import * as TypeSelectionControl from "../controls/TypeSelectionControl";
-import {ItemWithNameAndId} from "../ApiModels";
-import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items";
-import * as FormActions from "../FormActions";
-import * as Navigator from '../Navigator'
+﻿import {IFormField} from "./Interfaces.js";
+import {DmObject, ObjectType} from "../Mof.js";
+import * as FieldFactory from "../forms/FieldFactory.js";
+import * as SIC from "../controls/SelectItemControl.js";
+import * as ClientItems from "../client/Items.js";
+import * as ClientTypes from "../client/Types.js";
+import {IFormConfiguration} from "../forms/IFormConfiguration.js";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import {IInjectNameByUriParams, injectNameByUri} from "../DomHelper.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as TypeSelectionControl from "../controls/TypeSelectionControl.js";
+import {ItemWithNameAndId} from "../ApiModels.js";
+import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items.js";
+import * as FormActions from "../FormActions.js";
+import * as Navigator from '../Navigator.js'
 
 export class Control {
     configuration: IFormConfiguration;

@@ -1,10 +1,10 @@
-﻿import * as FormActions from "../FormActions"
-import {DmObject, DmObjectWithSync} from "../Mof";
-import * as MofSync from "../MofSync";
-import {SubmitMethod} from "../forms/RowForm";
-import {IFormNavigation} from "../forms/Interfaces";
-import * as ApiConnection from "../ApiConnection";
-import * as Settings from "../Settings";
+﻿import * as FormActions from "../FormActions.js"
+import {DmObject, DmObjectWithSync} from "../Mof.js";
+import * as MofSync from "../MofSync.js";
+import {SubmitMethod} from "../forms/RowForm.js";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import * as ApiConnection from "../ApiConnection.js";
+import * as Settings from "../Settings.js";
 
 export function loadModules() {
     FormActions.addModule(new ZipCodeTestAction());

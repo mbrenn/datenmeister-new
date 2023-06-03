@@ -1,10 +1,10 @@
-﻿import {BaseField, IFormField} from "./Interfaces";
-import {DmObject} from "../Mof";
-import {injectNameByUri} from "../DomHelper";
-import * as ClientItem from "../client/Items"
-import * as SIC from "../controls/SelectItemControl";
-import * as SubElementField from "./SubElementField"
-import * as ReferenceField from "./ReferenceField"
+﻿import {BaseField, IFormField} from "./Interfaces.js";
+import {DmObject} from "../Mof.js";
+import {injectNameByUri} from "../DomHelper.js";
+import * as ClientItem from "../client/Items.js"
+import * as SIC from "../controls/SelectItemControl.js";
+import * as SubElementField from "./SubElementField.js";
+import * as ReferenceField from "./ReferenceField.js";
 
 
 enum ModeValue {

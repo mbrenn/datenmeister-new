@@ -1,8 +1,8 @@
-﻿import * as Mof from "../Mof"
-import * as Settings from "../Settings"
-import * as ApiConnection from "../ApiConnection"
-import {FormType} from "../forms/Interfaces";
-import { ItemWithNameAndId } from "../ApiModels";
+﻿import * as Mof from "../Mof.js"
+import * as Settings from "../Settings.js"
+import * as ApiConnection from "../ApiConnection.js"
+import {FormType} from "../forms/Interfaces.js";
+import { ItemWithNameAndId } from "../ApiModels.js";
 
 /*
     Gets the default form for an extent uri by the webserver

@@ -1,8 +1,8 @@
-﻿import * as ClientExtent from "../client/Extents"
-import * as ClientWorkspace from "../client/Workspace"
-import * as ClientItems from "../client/Items"
-import {DmObject, ObjectType} from "../Mof";
-import {EntentType} from "../ApiModels";
+﻿import * as ClientExtent from "../client/Extents.js"
+import * as ClientWorkspace from "../client/Workspace.js"
+import * as ClientItems from "../client/Items.js"
+import {DmObject, ObjectType} from "../Mof.js";
+import {EntentType} from "../ApiModels.js";
 
 export function includeTests() {
     describe('Client', function () {

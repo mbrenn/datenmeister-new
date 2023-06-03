@@ -1,6 +1,6 @@
-﻿import * as Settings from "../Settings"
-import * as ApiConnection from "../ApiConnection"
-import * as Mof from "../Mof";
+﻿import * as Settings from "../Settings.js"
+import * as ApiConnection from "../ApiConnection.js"
+import * as Mof from "../Mof.js";
 
 export interface IExistsResult
 {

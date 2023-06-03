@@ -1,19 +1,19 @@
-define(["require", "exports", "./ZipCodeModules", "./ExtentModules", "./ItemModules", "./WorkspaceModules", "./FormModules", "./ActionModules"], function (require, exports, ZipCodeModules, ExtentModules, ItemModules, WorkspaceModules, FormModules, ActionModules) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.loadDefaultModules = void 0;
-    let loaded = false;
-    function loadDefaultModules() {
-        if (!loaded) {
-            ZipCodeModules.loadModules();
-            ExtentModules.loadModules();
-            ItemModules.loadModules();
-            WorkspaceModules.loadModules();
-            FormModules.loadModules();
-            ActionModules.loadModules();
-        }
-        loaded = true;
+import * as ZipCodeModules from "./ZipCodeModules.js";
+import * as ExtentModules from "./ExtentModules.js";
+import * as ItemModules from "./ItemModules.js";
+import * as WorkspaceModules from "./WorkspaceModules.js";
+import * as FormModules from "./FormModules.js";
+import * as ActionModules from "./ActionModules.js";
+let loaded = false;
+export function loadDefaultModules() {
+    if (!loaded) {
+        ZipCodeModules.loadModules();
+        ExtentModules.loadModules();
+        ItemModules.loadModules();
+        WorkspaceModules.loadModules();
+        FormModules.loadModules();
+        ActionModules.loadModules();
     }
-    exports.loadDefaultModules = loadDefaultModules;
-});
+    loaded = true;
+}
 //# sourceMappingURL=DefaultLoader.js.map

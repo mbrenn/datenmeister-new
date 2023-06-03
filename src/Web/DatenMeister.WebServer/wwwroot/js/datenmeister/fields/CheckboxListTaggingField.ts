@@ -1,6 +1,6 @@
-﻿import {BaseField, IFormField} from "./Interfaces";
-import {DmObject, ObjectType} from "../Mof";
-import {_DatenMeister} from "../models/DatenMeister.class";
+﻿import {BaseField, IFormField} from "./Interfaces.js";
+import {DmObject, ObjectType} from "../Mof.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
 
 export class Field extends BaseField implements IFormField {
 

@@ -1,4 +1,4 @@
-﻿import * as SIC from '../controls/SelectItemControl'
+﻿import * as SIC from '../controls/SelectItemControl.js'
 
 export async function pageOpenSelectItemControl()
 {

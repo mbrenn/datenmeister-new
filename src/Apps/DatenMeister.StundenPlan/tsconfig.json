@@ -4,12 +4,12 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "target": "ES6",
-    "module": "AMD",
-    "baseUrl": "../",
+    "target": "ES2020",
+    "module": "ES2020",
+    "baseUrl": "./",
     "paths": {
-      "datenmeister/../*": [ "../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/*" ],
-      "module/*": ["./DatenMeister.StundenPlan/resources/*"]
+      "/js/datenmeister/*": [ "../../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/*" ],
+      "module/*": [ "./DatenMeister.StundenPlan/resources/*" ]
     }
   },
   "compileOnSave": true,

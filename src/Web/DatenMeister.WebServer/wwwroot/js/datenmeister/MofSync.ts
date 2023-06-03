@@ -1,17 +1,16 @@
-﻿import * as Mof from "./Mof"
-import * as ClientItem from "./client/Items"
-import * as ClientElements from "./client/Elements"
+﻿import * as Mof from "./Mof.js"
+import * as ClientItem from "./client/Items.js"
+import * as ClientElements from "./client/Elements.js"
 
-import {DmObjectWithSync} from "./Mof";
 
 /**
  * Creates a temporary DmObjectWithSync which is mirrored on the server
  * @param metaClass Metaclass of the element to be created
  */
-export async function createTemporaryDmObject (metaClass?: string) : Promise<DmObjectWithSync>
+export async function createTemporaryDmObject (metaClass?: string) : Promise<Mof.DmObjectWithSync>
 {
     const result = await ClientElements.createTemporaryElement(metaClass);
-    return DmObjectWithSync.createFromReference(result.workspace, result.uri);
+    return Mof.DmObjectWithSync.createFromReference(result.workspace, result.uri);
 }
 
 /**

@@ -1,6 +1,6 @@
-﻿import * as ClientItems from '../client/Items'
-import {EntentType, ItemWithNameAndId} from "../ApiModels";
-import * as Navigator from '../Navigator'
+﻿import * as ClientItems from '../client/Items.js'
+import {EntentType, ItemWithNameAndId} from "../ApiModels.js";
+import * as Navigator from '../Navigator.js'
 
 export class ElementBreadcrumb {
 

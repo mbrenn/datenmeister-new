@@ -1,4 +1,4 @@
-﻿import * as IForm from "./Interfaces";
+﻿import * as IForm from "./Interfaces.js";
 
 interface EntryCollectionForm
 {

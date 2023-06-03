@@ -3,8 +3,8 @@
 // The user can select a view mode and this will be applied throughout the session
 // When the user changes the viewmode, it will be kept during the session
 
-import {DmObject} from "../Mof";
-import * as FormsClient from "../client/Forms";
+import {DmObject} from "../Mof.js";
+import * as FormsClient from "../client/Forms.js";
 
 const sessionPropertyName = "dm_current_viewmode";
 

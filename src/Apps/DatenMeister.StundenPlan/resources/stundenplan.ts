@@ -1,12 +1,10 @@
-﻿import * as Mof from 'datenmeister/../Mof'
-import { ObjectType } from 'datenmeister/../Mof';
-import * as FormFactory from 'datenmeister/../forms/FormFactory'
-import * as StundenPlanTypes from 'module/DatenMeister.StundenPlan';   
-import { FormType, IObjectFormElement } from 'datenmeister/../forms/Interfaces';
-import { IFormConfiguration } from 'datenmeister/../forms/IFormConfiguration';
-import * as ClientItems from 'datenmeister/../client/Items';
-import * as _UML from 'datenmeister/../models/uml'
-import { _DatenMeister } from 'datenmeister/../models/DatenMeister.class'
+﻿import * as Mof from '/js/datenmeister/Mof.js'
+import * as FormFactory from '/js/datenmeister/forms/FormFactory.js'
+import * as StundenPlanTypes from './DatenMeister.StundenPlan.js';   
+import { FormType, IObjectFormElement } from '/js/datenmeister/forms/Interfaces.js';
+import { IFormConfiguration } from '/js/datenmeister/forms/IFormConfiguration.js';
+import * as ClientItems from '/js/datenmeister/client/Items.js';
+import { _DatenMeister } from '/js/datenmeister/models/DatenMeister.class.js';
 
 export function init() {
     FormFactory.registerObjectForm(
@@ -78,13 +76,13 @@ export function init() {
             const tuesdayFirstWeek = manager.getEventsOnWeekday(0, 2);
             chai.assert(tuesdayFirstWeek.length === 1, "Tuesday first length");
             chai.assert(
-                tuesdayFirstWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String) === "Event1",
+                tuesdayFirstWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String) === "Event1",
                 "Event1 not on first Tuesday");
 
             const tuesdaySecondWeek = manager.getEventsOnWeekday(1, 2);
             chai.assert(tuesdaySecondWeek.length === 1, "Tuesday second week");
             chai.assert(
-                tuesdaySecondWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String) === "Event1",
+                tuesdaySecondWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String) === "Event1",
                 "Event1 not on second tuesday");
 
             // Check odd and even weeks
@@ -92,14 +90,14 @@ export function init() {
             chai.assert(wednesdayFirstWeek.length === 1,
                 "Wednesday first week length");
             chai.assert(
-                wednesdayFirstWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String) === "Event2",
+                wednesdayFirstWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String) === "Event2",
                 "Event2 not on first Wednesday");
 
             const wednesdaySecondWeek = manager.getEventsOnWeekday(1, 3);
             chai.assert(wednesdaySecondWeek.length === 1,
                 "Wednesday second week length");
             chai.assert(
-                wednesdaySecondWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String) === "Event3",
+                wednesdaySecondWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String) === "Event3",
                 "Event3 not on second Wednesday");
 
             // Check Ordering
@@ -107,10 +105,10 @@ export function init() {
             chai.assert(thursdayFirstWeek.length === 2,
                 "Thursday first week");
             chai.assert(
-                thursdayFirstWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String) === "Event5",
+                thursdayFirstWeek[0].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String) === "Event5",
                 "Event5 as first Thursday event");
             chai.assert(
-                thursdayFirstWeek[1].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String) === "Event4",
+                thursdayFirstWeek[1].get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String) === "Event4",
                 "Event4 as second Thursday event");
         });
     });
@@ -135,7 +133,7 @@ class StundenPlanForm implements IObjectFormElement {
             this.itemUrl);
 
         // Gets the elements
-        const packagedElements = foundItems.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, ObjectType.Array);
+        const packagedElements = foundItems.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, Mof.ObjectType.Array);
         if (packagedElements === undefined || packagedElements === null) {
             parent.append($("<span>The element did not include the packagedElements"));
         }
@@ -160,7 +158,7 @@ class StundenPlanForm implements IObjectFormElement {
     }
 
     refreshForm(): void {
-        return ;
+        return;
     }
 
     async storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
@@ -238,8 +236,8 @@ export class WeeklyCalenderControl {
                     const eventItem = events[m];
 
                     const weekEvent = $("<div class='stundenplan-event'></div>");
-                    const timeStart = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, ObjectType.String);
-                    const title = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, ObjectType.String);
+                    const timeStart = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, Mof.ObjectType.String);
+                    const title = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String);
                     weekEvent.text(timeStart + " " + title);
                     cell.append(weekEvent);
                 }
@@ -293,11 +291,11 @@ class PeriodicEventManager {
 
             const weekOffset = event.get(
                     StundenPlanTypes._Types._WeeklyPeriodicEvent.weekOffset,
-                    ObjectType.Number)
+                    Mof.ObjectType.Number)
                 ?? 0;
             let weekInterval = event.get(
                 StundenPlanTypes._Types._WeeklyPeriodicEvent.weekInterval,
-                ObjectType.Number);
+                Mof.ObjectType.Number);
             if (weekInterval === undefined || weekInterval < 1) {
                 weekInterval = 1;
             }
@@ -313,8 +311,8 @@ class PeriodicEventManager {
 
         // Now sort the entries according starting date
         foundEvents.sort((x, y) => {
-            const startX = x.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, ObjectType.String);
-            const startY = y.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, ObjectType.String);
+            const startX = x.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, Mof.ObjectType.String);
+            const startY = y.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, Mof.ObjectType.String);
 
             return startX === startY ? 0 : startX < startY ? -1 : 1;
         });
@@ -331,19 +329,19 @@ class PeriodicEventManager {
 function isPeriodicEventApplicableOnWeekday(event: Mof.DmObject, dayNumber: number){
     switch(dayNumber) {
         case 1:
-            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onMonday, ObjectType.Boolean);
+            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onMonday, Mof.ObjectType.Boolean);
         case 2:
-            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onTuesday, ObjectType.Boolean);
+            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onTuesday, Mof.ObjectType.Boolean);
         case 3:
-            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onWednesday, ObjectType.Boolean);
+            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onWednesday, Mof.ObjectType.Boolean);
         case 4:
-            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onThursday, ObjectType.Boolean);
+            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onThursday, Mof.ObjectType.Boolean);
         case 5:
-            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onFriday, ObjectType.Boolean);
+            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onFriday, Mof.ObjectType.Boolean);
         case 6:
-            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onSaturday, ObjectType.Boolean);
+            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onSaturday, Mof.ObjectType.Boolean);
         case 7:
-            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onSunday, ObjectType.Boolean);
+            return event.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.onSunday, Mof.ObjectType.Boolean);
     }
 }
 

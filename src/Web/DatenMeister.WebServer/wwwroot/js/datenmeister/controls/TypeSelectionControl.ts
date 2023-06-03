@@ -1,8 +1,8 @@
-﻿import * as Mof from "../Mof"
-import * as SIC from "./SelectItemControl";
-import * as Events from "../../burnsystems/Events";
-import {ItemLink} from "../ApiModels";
-import * as ClientItems from "../client/Items";
+﻿import * as Mof from "../Mof.js"
+import * as SIC from "./SelectItemControl.js";
+import * as Events from "../../burnsystems/Events.js";
+import {ItemLink} from "../ApiModels.js";
+import * as ClientItems from "../client/Items.js";
 
 /**
  * This parameter is given when the user has selected a certain type

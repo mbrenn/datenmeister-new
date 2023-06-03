@@ -1,8 +1,8 @@
-﻿import * as FormActions from "../FormActions"
-import {createJsonFromObject, DmObject} from "../Mof";
-import {SubmitMethod} from "../forms/RowForm";
-import {IFormNavigation} from "../forms/Interfaces";
-import * as ActionClient from "../client/Actions";
+﻿import * as FormActions from "../FormActions.js"
+import {createJsonFromObject, DmObject} from "../Mof.js";
+import {SubmitMethod} from "../forms/RowForm.js";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import * as ActionClient from "../client/Actions.js";
 
 
 export function loadModules() {

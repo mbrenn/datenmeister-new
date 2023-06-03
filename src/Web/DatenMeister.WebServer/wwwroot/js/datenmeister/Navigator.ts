@@ -1,4 +1,4 @@
-﻿import * as Settings from "./Settings";
+﻿import * as Settings from "./Settings.js";
 
 export function getLinkForNavigateToWorkspaces() {
     return Settings.baseUrl + "ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces";

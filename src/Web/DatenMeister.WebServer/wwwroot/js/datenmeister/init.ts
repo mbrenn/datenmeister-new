@@ -1,7 +1,7 @@
-﻿import {executeSearchByText} from "./Search";
-import * as ModuleLoader from "./modules/DefaultLoader";
+﻿import {executeSearchByText} from "./Search.js";
+import * as ModuleLoader from "./modules/DefaultLoader.js";
 
-import * as FormLoader from "./forms/DefaultLoader";
+import * as FormLoader from "./forms/DefaultLoader.js";
 
 $(() => {
     ModuleLoader.loadDefaultModules();

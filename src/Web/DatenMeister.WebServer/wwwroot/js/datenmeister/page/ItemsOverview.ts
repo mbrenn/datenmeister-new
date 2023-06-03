@@ -1,7 +1,7 @@
 ﻿
-import * as CollectionForm from "../forms/CollectionForm"
-import {loadDefaultModules} from "../modules/DefaultLoader";
-import {ElementBreadcrumb} from "../controls/ElementBreadcrumb";
+import * as CollectionForm from "../forms/CollectionForm.js"
+import {loadDefaultModules} from "../modules/DefaultLoader.js";
+import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 
 export function init(workspace: string, extentUri: string) {
     loadDefaultModules();

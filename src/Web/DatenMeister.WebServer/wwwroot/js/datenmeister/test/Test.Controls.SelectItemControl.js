@@ -1,114 +1,101 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
+import * as ClientWorkspace from "../client/Workspace.js";
+import * as ClientExtent from "../client/Extents.js";
+import * as ClientItems from "../client/Items.js";
+import { SelectItemControl } from "../controls/SelectItemControl.js";
+function lookForChildWithText(children, textToLookFor) {
+    let found = false;
+    let foundItem = undefined;
+    children.each((index, child) => {
+        if ($(child).text().indexOf(textToLookFor) !== -1) {
+            found = true;
+            foundItem = child;
+        }
     });
-};
-define(["require", "exports", "../client/Workspace", "../client/Extents", "../client/Items", "../controls/SelectItemControl"], function (require, exports, ClientWorkspace, ClientExtent, ClientItems, SelectItemControl_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.includeTests = void 0;
-    function lookForChildWithText(children, textToLookFor) {
-        let found = false;
-        let foundItem = undefined;
-        children.each((index, child) => {
-            if ($(child).text().indexOf(textToLookFor) !== -1) {
-                found = true;
-                foundItem = child;
-            }
+    return { found, foundItem };
+}
+export function includeTests() {
+    describe('Controls', () => {
+        before(async function () {
+            await ClientWorkspace.createWorkspace("Test", "Annotation", { skipIfExisting: true });
+            await ClientExtent.createXmi({
+                extentUri: "dm:///unittest",
+                filePath: "./unittest.xmi",
+                workspace: "Test",
+                skipIfExisting: true
+            });
+            await ClientItems.deleteRootElements("Test", "dm:///unittest");
+            const createdItem = await ClientItems.createItemInExtent('Test', 'dm:///unittest', {});
+            const itemUri = 'dm:///unittest#' + createdItem.itemId;
+            await ClientItems.setProperty('Test', itemUri, 'name', 'NamedElement');
+            const createdChild = await ClientItems.createItemAsChild('Test', itemUri, { property: 'packagedElement' });
+            const childItem = 'dm:///unittest#' + createdChild.itemId;
+            await ClientItems.setProperty('Test', childItem, 'name', 'ChildElement');
         });
-        return { found, foundItem };
-    }
-    function includeTests() {
-        describe('Controls', () => {
-            before(function () {
-                return __awaiter(this, void 0, void 0, function* () {
-                    yield ClientWorkspace.createWorkspace("Test", "Annotation", { skipIfExisting: true });
-                    yield ClientExtent.createXmi({
-                        extentUri: "dm:///unittest",
-                        filePath: "./unittest.xmi",
-                        workspace: "Test",
-                        skipIfExisting: true
-                    });
-                    yield ClientItems.deleteRootElements("Test", "dm:///unittest");
-                    const createdItem = yield ClientItems.createItemInExtent('Test', 'dm:///unittest', {});
-                    const itemUri = 'dm:///unittest#' + createdItem.itemId;
-                    yield ClientItems.setProperty('Test', itemUri, 'name', 'NamedElement');
-                    const createdChild = yield ClientItems.createItemAsChild('Test', itemUri, { property: 'packagedElement' });
-                    const childItem = 'dm:///unittest#' + createdChild.itemId;
-                    yield ClientItems.setProperty('Test', childItem, 'name', 'ChildElement');
+        describe('SelectItemControl', () => {
+            it('Create Controls and Load Workspaces', async () => {
+                let div = $("#dom_test");
+                if (div === undefined) {
+                    div = $("<div></div>");
+                }
+                const sic = new SelectItemControl();
+                const query = await sic.initAsync(div);
+                const workspace = $(".dm-sic-workspace select", query);
+                chai.assert.isTrue(workspace !== undefined, "No select given");
+                const children = workspace.children();
+                let { found, foundItem } = lookForChildWithText(children, 'Test');
+                chai.assert.isTrue(found, "Workspace was not found");
+                div.remove();
+            });
+            it('Create Controls and Load Extents', async () => {
+                let div = $("#dom_test");
+                if (div === undefined) {
+                    div = $("<div></div>");
+                }
+                const sic = new SelectItemControl();
+                const query = await sic.initAsync(div);
+                await sic.setWorkspaceById('Test');
+                const extent = $(".dm-sic-extent select", query);
+                chai.assert.isTrue(extent !== undefined, "No select given");
+                const children = extent.children();
+                let { found, foundItem } = lookForChildWithText(children, 'dm:///unittest');
+                chai.assert.isTrue(found, "Extent was not found");
+                div.remove();
+            });
+            it('Create Controls and Load Items', async () => {
+                let div = $("#dom_test");
+                if (div === undefined) {
+                    div = $("<div></div>");
+                }
+                let itemCounter = 0;
+                const sic = new SelectItemControl();
+                sic.itemClicked.addListener(() => {
+                    itemCounter++;
                 });
-            });
-            describe('SelectItemControl', () => {
-                it('Create Controls and Load Workspaces', () => __awaiter(this, void 0, void 0, function* () {
-                    let div = $("#dom_test");
-                    if (div === undefined) {
-                        div = $("<div></div>");
-                    }
-                    const sic = new SelectItemControl_1.SelectItemControl();
-                    const query = yield sic.initAsync(div);
-                    const workspace = $(".dm-sic-workspace select", query);
-                    chai.assert.isTrue(workspace !== undefined, "No select given");
-                    const children = workspace.children();
-                    let { found, foundItem } = lookForChildWithText(children, 'Test');
-                    chai.assert.isTrue(found, "Workspace was not found");
-                    div.remove();
-                }));
-                it('Create Controls and Load Extents', () => __awaiter(this, void 0, void 0, function* () {
-                    let div = $("#dom_test");
-                    if (div === undefined) {
-                        div = $("<div></div>");
-                    }
-                    const sic = new SelectItemControl_1.SelectItemControl();
-                    const query = yield sic.initAsync(div);
-                    yield sic.setWorkspaceById('Test');
-                    const extent = $(".dm-sic-extent select", query);
-                    chai.assert.isTrue(extent !== undefined, "No select given");
-                    const children = extent.children();
-                    let { found, foundItem } = lookForChildWithText(children, 'dm:///unittest');
-                    chai.assert.isTrue(found, "Extent was not found");
-                    div.remove();
-                }));
-                it('Create Controls and Load Items', () => __awaiter(this, void 0, void 0, function* () {
-                    let div = $("#dom_test");
-                    if (div === undefined) {
-                        div = $("<div></div>");
-                    }
-                    let itemCounter = 0;
-                    const sic = new SelectItemControl_1.SelectItemControl();
-                    sic.itemClicked.addListener(() => {
-                        itemCounter++;
-                    });
-                    const query = yield sic.initAsync(div);
-                    yield sic.setExtentByUri("Test", 'dm:///unittest');
-                    const items = $(".dm-sic-items ul", query);
-                    chai.assert.isTrue(items !== undefined, "No select given");
-                    const children = items.children();
-                    const textToLookFor = "NamedElement";
-                    let { found, foundItem } = lookForChildWithText(children, textToLookFor);
-                    chai.assert.isTrue(found, "Item was not found");
-                    chai.assert.isTrue(foundItem !== undefined, "Item Dom was not found was not found");
-                    chai.assert.isTrue(itemCounter === 0, "Item Counter is not 0");
-                    if (foundItem === undefined)
-                        throw 'Should not happen';
-                    foundItem.click();
-                    yield sic.loadItems();
-                    // The click should have happened synchronously.
-                    chai.assert.isTrue(itemCounter === 1, "Item Counter is not 1");
-                    // Check, if the enumerated list is given
-                    const itemsUl = $(".dm-sic-items ul", query);
-                    chai.assert.isTrue(itemsUl !== undefined, "No select given");
-                    const childrenUl = itemsUl.children();
-                    let result = lookForChildWithText(childrenUl, 'ChildElement');
-                    chai.assert.isTrue(result.found, "Child was not found");
-                    div.remove();
-                }));
+                const query = await sic.initAsync(div);
+                await sic.setExtentByUri("Test", 'dm:///unittest');
+                const items = $(".dm-sic-items ul", query);
+                chai.assert.isTrue(items !== undefined, "No select given");
+                const children = items.children();
+                const textToLookFor = "NamedElement";
+                let { found, foundItem } = lookForChildWithText(children, textToLookFor);
+                chai.assert.isTrue(found, "Item was not found");
+                chai.assert.isTrue(foundItem !== undefined, "Item Dom was not found was not found");
+                chai.assert.isTrue(itemCounter === 0, "Item Counter is not 0");
+                if (foundItem === undefined)
+                    throw 'Should not happen';
+                foundItem.click();
+                await sic.loadItems();
+                // The click should have happened synchronously.
+                chai.assert.isTrue(itemCounter === 1, "Item Counter is not 1");
+                // Check, if the enumerated list is given
+                const itemsUl = $(".dm-sic-items ul", query);
+                chai.assert.isTrue(itemsUl !== undefined, "No select given");
+                const childrenUl = itemsUl.children();
+                let result = lookForChildWithText(childrenUl, 'ChildElement');
+                chai.assert.isTrue(result.found, "Child was not found");
+                div.remove();
             });
         });
-    }
-    exports.includeTests = includeTests;
-});
+    });
+}
 //# sourceMappingURL=Test.Controls.SelectItemControl.js.map

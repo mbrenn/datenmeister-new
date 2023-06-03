@@ -1,8 +1,7 @@
-﻿import * as ClientActions from "../client/Actions"
-import * as ClientExtent from "../client/Extents"
-import * as Mof from "../Mof";
-import * as DatenMeisterModel from "../models/DatenMeister.class"
-import {_DatenMeister} from "../models/DatenMeister.class";
+﻿import * as ClientActions from "../client/Actions.js"
+import * as ClientExtent from "../client/Extents.js"
+import * as Mof from "../Mof.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
 import _InMemoryLoaderConfig = _DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig;
 import _LoadExtentAction = _DatenMeister._Actions._LoadExtentAction;
 import _DropExtentAction = _DatenMeister._Actions._DropExtentAction;
@@ -42,10 +41,10 @@ export function includeTests() {
                 chai.assert.isTrue(success.exists === false);
                 
                 const parameter = new Mof.DmObject();                
-                parameter.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri);
+                parameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri);
 
                 const configuration = new Mof.DmObject();
-                configuration.setMetaClassByUri(DatenMeisterModel._DatenMeister._ExtentLoaderConfigs.__InMemoryLoaderConfig_Uri);
+                configuration.setMetaClassByUri(_DatenMeister._ExtentLoaderConfigs.__InMemoryLoaderConfig_Uri);
                 configuration.set(_InMemoryLoaderConfig.extentUri, "dm:///unittestaction");
                 configuration.set(_InMemoryLoaderConfig._name_, "UnitTest");
                 parameter.set(_LoadExtentAction.configuration, configuration);
@@ -57,7 +56,7 @@ export function includeTests() {
 
 
                 const drop = new Mof.DmObject();
-                drop.setMetaClassByUri(DatenMeisterModel._DatenMeister._Actions.__DropExtentAction_Uri);
+                drop.setMetaClassByUri(_DatenMeister._Actions.__DropExtentAction_Uri);
                 drop.set(_DropExtentAction.workspace, "Data");
                 drop.set(_DropExtentAction.extentUri, "dm:///unittestaction");
 

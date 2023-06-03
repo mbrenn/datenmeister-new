@@ -1,5 +1,5 @@
-﻿import * as Mof from "../Mof";
-import * as _DatenMeister from "../models/DatenMeister.class"
+﻿import * as Mof from "../Mof.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js"
 
 export namespace FormModel {
     export function createEmptyFormObject() {

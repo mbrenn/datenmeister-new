@@ -1,8 +1,8 @@
-﻿import * as ClientWorkspace from "../client/Workspace";
-import * as ClientExtent from "../client/Extents";
-import * as ClientItems from "../client/Items";
-import * as ClientActionsItem from "../client/Actions.Items";
-import {DmObject, ObjectType} from "../Mof";
+﻿import * as ClientWorkspace from "../client/Workspace.js";
+import * as ClientExtent from "../client/Extents.js";
+import * as ClientItems from "../client/Items.js";
+import * as ClientActionsItem from "../client/Actions.Items.js";
+import {DmObject, ObjectType} from "../Mof.js";
 
 export function includeTests() {
     describe('Client', () => {

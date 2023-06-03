@@ -1,5 +1,5 @@
-import {findBySearchString} from "./client/Elements";
-import {navigateToExtentItems, navigateToItemByUrl} from "./Navigator";
+import {findBySearchString} from "./client/Elements.js";
+import {navigateToExtentItems, navigateToItemByUrl} from "./Navigator.js";
 
 export function executeSearchByText(searchText: string) {
     findBySearchString(searchText).then(result => {

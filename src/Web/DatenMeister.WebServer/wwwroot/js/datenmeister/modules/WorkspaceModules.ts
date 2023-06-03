@@ -1,14 +1,13 @@
-﻿import * as FormActions from "../FormActions"
-import {DmObject, DmObjectWithSync} from "../Mof";
-import * as MofSync from "../MofSync";
-import * as ActionClient from "../client/Actions";
-import {IFormNavigation} from "../forms/Interfaces";
-import {SubmitMethod} from "../forms/RowForm";
-import * as Settings from "../Settings";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import * as ItemClient from "../client/Items";
-import * as DatenMeisterModel from "../models/DatenMeister.class";
-import * as FormClient from "../client/Forms";
+﻿import * as FormActions from "../FormActions.js"
+import {DmObject, DmObjectWithSync} from "../Mof.js";
+import * as MofSync from "../MofSync.js";
+import * as ActionClient from "../client/Actions.js";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import {SubmitMethod} from "../forms/RowForm.js";
+import * as Settings from "../Settings.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as ItemClient from "../client/Items.js";
+import * as FormClient from "../client/Forms.js";
 
 export function loadModules() {
     FormActions.addModule(new WorkspaceExtentXmiCreateNavigateAction());
@@ -92,7 +91,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         const extentCreationParameter = new DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
-            DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
+            _DatenMeister._Actions.__LoadExtentAction_Uri
         )
 
         const result = await ActionClient.executeActionDirectly(
@@ -131,7 +130,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         const extentCreationParameter = new DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
-            DatenMeisterModel._DatenMeister._Actions.__LoadExtentAction_Uri
+            _DatenMeister._Actions.__LoadExtentAction_Uri
         );
 
         const result = await ActionClient.executeActionDirectly(

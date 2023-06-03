@@ -1,10 +1,10 @@
-﻿import {IFormField} from "./Interfaces";
-import {DmObject, ObjectType} from "../Mof";
-import {IFormConfiguration} from "../forms/IFormConfiguration";
-import {IFormNavigation} from "../forms/Interfaces";
-import {injectNameByUri} from "../DomHelper";
-import * as ClientItem from "../client/Items";
-import * as SIC from "../controls/SelectItemControl";
+﻿import {IFormField} from "./Interfaces.js";
+import {DmObject, ObjectType} from "../Mof.js";
+import {IFormConfiguration} from "../forms/IFormConfiguration.js";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import {injectNameByUri} from "../DomHelper.js";
+import * as ClientItem from "../client/Items.js";
+import * as SIC from "../controls/SelectItemControl.js";
 
 export class Control {
     configuration: IFormConfiguration;

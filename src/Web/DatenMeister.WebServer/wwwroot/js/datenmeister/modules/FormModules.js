@@ -1,43 +1,28 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-define(["require", "exports", "../FormActions", "../client/Forms", "../models/DatenMeister.class", "../client/Actions"], function (require, exports, FormActions, FormClient, DatenMeisterModel, ActionClient) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.loadModules = void 0;
-    function loadModules() {
-        FormActions.addModule(new FormsCreateByMetaClassAction());
+import * as FormActions from "../FormActions.js";
+import * as FormClient from "../client/Forms.js";
+import * as DatenMeisterModel from "../models/DatenMeister.class.js";
+import * as ActionClient from "../client/Actions.js";
+export function loadModules() {
+    FormActions.addModule(new FormsCreateByMetaClassAction());
+}
+class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Forms.Create.ByMetaClass");
+        this.actionVerb = "Create by MetaClass";
+        this.skipSaving = true;
+        this.defaultMetaClassUri = DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri;
     }
-    exports.loadModules = loadModules;
-    class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase {
-        constructor() {
-            super("Forms.Create.ByMetaClass");
-            this.actionVerb = "Create by MetaClass";
-            this.skipSaving = true;
-            this.defaultMetaClassUri = DatenMeisterModel._DatenMeister._Actions.__CreateFormByMetaClass_Uri;
+    async loadForm() {
+        return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
+    }
+    async execute(form, element, parameter, submitMethod) {
+        const result = await ActionClient.executeAction(element.workspace, element.uri);
+        if (result.success !== true) {
+            alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
         }
-        loadForm() {
-            return __awaiter(this, void 0, void 0, function* () {
-                return yield FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
-            });
-        }
-        execute(form, element, parameter, submitMethod) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const result = yield ActionClient.executeAction(element.workspace, element.uri);
-                if (result.success !== true) {
-                    alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
-                }
-                else {
-                    alert('Form was created successfully');
-                }
-            });
+        else {
+            alert('Form was created successfully');
         }
     }
-});
+}
 //# sourceMappingURL=FormModules.js.map

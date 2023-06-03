@@ -1,5 +1,5 @@
-﻿import * as ClientElements from "../client/Elements"
-import * as ClientItems from "../client/Items"
+﻿import * as ClientElements from "../client/Elements.js"
+import * as ClientItems from "../client/Items.js"
 
 export function includeTests() {
     describe('Client', function () {

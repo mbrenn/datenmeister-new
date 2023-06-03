@@ -1,9 +1,9 @@
-﻿import * as ZipCodeModules from "./ZipCodeModules"
-import * as ExtentModules from "./ExtentModules"
-import * as ItemModules from "./ItemModules"
-import * as WorkspaceModules from "./WorkspaceModules"
-import * as FormModules from "./FormModules"
-import * as ActionModules from "./ActionModules"
+﻿import * as ZipCodeModules from "./ZipCodeModules.js"
+import * as ExtentModules from "./ExtentModules.js"
+import * as ItemModules from "./ItemModules.js"
+import * as WorkspaceModules from "./WorkspaceModules.js"
+import * as FormModules from "./FormModules.js"
+import * as ActionModules from "./ActionModules.js"
 
 let loaded = false;
 export function loadDefaultModules() {

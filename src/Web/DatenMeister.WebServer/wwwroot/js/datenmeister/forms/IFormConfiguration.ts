@@ -1,5 +1,5 @@
-﻿import {DmObject, DmObjectWithSync} from "../Mof";
-import {SubmitMethod} from "./RowForm";
+﻿import {DmObject, DmObjectWithSync} from "../Mof.js";
+import {SubmitMethod} from "./RowForm.js";
 
 export interface IFormConfiguration {
     allowAddingNewProperties?: boolean;

@@ -1,8 +1,8 @@
 ﻿
-import * as FormFactory from  "./FormFactory"
-import {_DatenMeister} from "../models/DatenMeister.class";
-import {RowForm} from "./RowForm";
-import {TableForm} from "./TableForm";
+import * as FormFactory from  "./FormFactory.js"
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import {RowForm} from "./RowForm.js";
+import {TableForm} from "./TableForm.js";
 
 export function loadDefaultForms()
 {

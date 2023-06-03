@@ -1,10 +1,10 @@
-﻿import * as ClientExtent from "../client/Extents";
-import * as ClientWorkspace from "../client/Workspace";
-import * as ClientItems from "../client/Items";
-import * as ClientForms from "../client/Forms";
-import {DmObject, ObjectType} from "../Mof";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import {FormType} from "../forms/Interfaces";
+﻿import * as ClientExtent from "../client/Extents.js";
+import * as ClientWorkspace from "../client/Workspace.js";
+import * as ClientItems from "../client/Items.js";
+import * as ClientForms from "../client/Forms.js";
+import {DmObject, ObjectType} from "../Mof.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import {FormType} from "../forms/Interfaces.js";
 
 export function includeTests() {
     describe('Forms', () => {

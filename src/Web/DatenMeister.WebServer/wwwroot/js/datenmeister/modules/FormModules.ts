@@ -1,11 +1,10 @@
-﻿import * as FormActions from "../FormActions"
-import {DmObject} from "../Mof";
-import {SubmitMethod} from "../forms/RowForm";
-import {IFormNavigation} from "../forms/Interfaces";
-import * as FormClient from "../client/Forms";
-import * as DatenMeisterModel from "../models/DatenMeister.class";
-import * as ActionClient from "../client/Actions";
-import {executeAction} from "../client/Actions";
+﻿import * as FormActions from "../FormActions.js"
+import {DmObject} from "../Mof.js";
+import {SubmitMethod} from "../forms/RowForm.js";
+import {IFormNavigation} from "../forms/Interfaces.js";
+import * as FormClient from "../client/Forms.js";
+import * as DatenMeisterModel from "../models/DatenMeister.class.js";
+import * as ActionClient from "../client/Actions.js";
 
 export function loadModules() {
     FormActions.addModule(new FormsCreateByMetaClassAction());

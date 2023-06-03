@@ -1,13 +1,13 @@
-﻿import {IFormConfiguration} from "./IFormConfiguration";
-import {DmObject, DmObjectWithSync} from "../Mof";
-import {debugElementToDom} from "../DomHelper";
-import * as Forms from "./Forms";
-import * as ObjectForm from "./ObjectForm";
-import * as FormActions from "../FormActions";
-import * as ClientForms from '../client/Forms'
-import * as ClientElements from '../client/Elements'
-import * as ClientItems from '../client/Items'
-import * as MofSync from "../MofSync"
+﻿import {IFormConfiguration} from "./IFormConfiguration.js";
+import {DmObject, DmObjectWithSync} from "../Mof.js";
+import {debugElementToDom} from "../DomHelper.js";
+import * as Forms from "./Forms.js";
+import * as ObjectForm from "./ObjectForm.js";
+import * as FormActions from "../FormActions.js";
+import * as ClientForms from '../client/Forms.js'
+import * as ClientElements from '../client/Elements.js'
+import * as ClientItems from '../client/Items.js'
+import * as MofSync from "../MofSync.js"
 
 export async function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,

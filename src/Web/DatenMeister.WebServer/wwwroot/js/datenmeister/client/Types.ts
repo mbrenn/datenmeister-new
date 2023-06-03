@@ -1,7 +1,6 @@
-﻿import * as Mof from "../Mof"
-import * as Settings from "../Settings"
-import * as ApiConnection from "../ApiConnection"
-import {ISuccessResult, ItemWithNameAndId} from "../ApiModels";
+﻿import * as Settings from "../Settings.js"
+import * as ApiConnection from "../ApiConnection.js"
+import {ISuccessResult, ItemWithNameAndId} from "../ApiModels.js";
 
 export async function getAllTypes() {
     return await ApiConnection.get<Array<ItemWithNameAndId>>(

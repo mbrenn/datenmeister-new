@@ -1,9 +1,8 @@
-import * as Mof from "../Mof";
-import {injectNameByUri} from "../DomHelper";
-import {BaseField, IFormField} from "./Interfaces";
-import {SelectItemControl} from "../controls/SelectItemControl";
-import {setMetaclass} from "../client/Items";
-import {DmObject} from "../Mof";
+import {injectNameByUri} from "../DomHelper.js";
+import {BaseField, IFormField} from "./Interfaces.js";
+import {SelectItemControl} from "../controls/SelectItemControl.js";
+import {setMetaclass} from "../client/Items.js";
+import {DmObject} from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
 

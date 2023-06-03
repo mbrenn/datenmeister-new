@@ -1,5 +1,5 @@
-﻿import * as mof from "../Mof"
-import {moveItemInArrayDownByUri, moveItemInArrayUpByUri} from "../MofArray";
+﻿import * as mof from "../Mof.js"
+import {moveItemInArrayDownByUri, moveItemInArrayUpByUri} from "../MofArray.js";
 
 export function includeTests() {
     describe('Mof', function () {

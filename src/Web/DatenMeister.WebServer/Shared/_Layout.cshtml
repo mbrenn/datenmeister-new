@@ -84,19 +84,23 @@
 
 
 <script src="~/js/bootstrap.bundle.min.js"></script>
-<script data-main="js/datenmeister/init" src="~/js/require.js"></script>
+<script src="~/js/datenmeister/init.js" type="module"></script>
 @{
 
         var dataForJs = GiveMe.Scope.ScopeStorage.Get<PageRegistrationData>();
 
-        foreach (var item in dataForJs.JavaScriptFiles)
+    var n = 0;
+    foreach (var item in dataForJs.JavaScriptFiles)
     {
-<script>
-    requirejs(['js/datenmeister/module/@item'], (module) => {
-        if (module.init !== undefined) {
-            module.init();
+        n++;
+        var moduleName = "module" + n;
+        <script type="module">
+
+        import * as @moduleName from './js/datenmeister/module/@item';
+    
+        if (@(moduleName).init !== undefined) {
+            @(moduleName).init();
         }
-    });
 </script>
     }
 }

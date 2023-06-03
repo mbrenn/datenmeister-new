@@ -1,8 +1,8 @@
-﻿import * as EL from "../client/Elements";
-import * as ItemsClient from "../client/Items";
-import {EntentType, ItemWithNameAndId} from "../ApiModels";
-import {UserEvent} from "../../burnsystems/Events";
-import {convertItemWithNameAndIdToDom} from "../DomHelper";
+﻿import * as EL from "../client/Elements.js";
+import * as ItemsClient from "../client/Items.js";
+import {EntentType, ItemWithNameAndId} from "../ApiModels.js";
+import {UserEvent} from "../../burnsystems/Events.js";
+import {convertItemWithNameAndIdToDom} from "../DomHelper.js";
 
 export class Settings {
     showBreadcrumb = true;

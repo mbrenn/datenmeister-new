@@ -1,7 +1,7 @@
-﻿import * as ElementClient from "./client/Elements"
-import {DmObject} from "./Mof";
-import {ItemWithNameAndId} from "./ApiModels";
-import * as Navigator from "Navigator";
+﻿import * as ElementClient from "./client/Elements.js"
+import {DmObject} from "./Mof.js";
+import {ItemWithNameAndId} from "./ApiModels.js";
+import * as Navigator from "./Navigator.js";
 
 export interface IInjectNameByUriParams {
     onClick?: (item: ItemWithNameAndId) => (void);

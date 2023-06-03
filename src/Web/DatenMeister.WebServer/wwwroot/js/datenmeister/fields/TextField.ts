@@ -1,10 +1,10 @@
-import * as Mof from "../Mof";
-import {DmObject, ObjectType} from "../Mof";
-import {BaseField, IFormField} from "./Interfaces";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import {FormType} from "../forms/Interfaces";
+import * as Mof from "../Mof.js";
+import {DmObject, ObjectType} from "../Mof.js";
+import {BaseField, IFormField} from "./Interfaces.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import {FormType} from "../forms/Interfaces.js";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
-import {truncateText} from "../../burnsystems/StringManipulation";
+import {truncateText} from "../../burnsystems/StringManipulation.js";
 
 export class Field extends BaseField implements IFormField
 {

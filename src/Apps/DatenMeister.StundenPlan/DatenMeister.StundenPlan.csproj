@@ -16,6 +16,11 @@
 
     <ItemGroup>
       <None Remove="resources\stundenplan.css" />
+      <None Remove="resources\stundenplan.min.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="resources\stundenplan.min.js" />
     </ItemGroup>
 
     <ItemGroup>

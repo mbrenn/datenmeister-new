@@ -18,16 +18,17 @@
     
 </div>
 
-<script type="application/javascript">
+<script type="module">
+
+import * as Page from './js/datenmeister/page/ItemsOverview.js';
 
 $(function()
 {
-    requirejs(['page/ItemsOverview'], function (Page)
-    {
-        Page.init(
-            "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
-            "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
-    });
+    
+    Page.init(
+        "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
+        "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
+
 });
 
 </script>

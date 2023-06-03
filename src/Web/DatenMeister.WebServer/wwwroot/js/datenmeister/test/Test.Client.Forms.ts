@@ -1,9 +1,9 @@
-﻿import * as FormFactory from '../forms/FormFactory'
-import * as IForm from '../forms/Interfaces'
-import * as FormConfiguration from '../forms/IFormConfiguration'
-import * as ModuleFormLoader from '../forms/DefaultLoader'
-import * as Mof from '../Mof'
-import {_DatenMeister} from "../models/DatenMeister.class";
+﻿import * as FormFactory from '../forms/FormFactory.js'
+import * as IForm from '../forms/Interfaces.js'
+import * as FormConfiguration from '../forms/IFormConfiguration.js'
+import * as ModuleFormLoader from '../forms/DefaultLoader.js'
+import * as Mof from '../Mof.js'
+import {_DatenMeister} from "../models/DatenMeister.class.js";
 
 class X implements IForm.IObjectFormElement {
     element: Mof.DmObject;

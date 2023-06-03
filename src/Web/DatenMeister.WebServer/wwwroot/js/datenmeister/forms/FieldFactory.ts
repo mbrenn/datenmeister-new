@@ -1,20 +1,20 @@
-﻿import {_DatenMeister} from "../models/DatenMeister.class"
-import * as TextField from "../fields/TextField";
-import * as CheckboxField from "../fields/CheckboxField";
-import * as CheckboxListTaggingField from "../fields/CheckboxListTaggingField";
-import * as DropDownField from "../fields/DropDownField";
-import * as MetaClassElementField from "../fields/MetaClassElementField";
-import * as ActionField from "../fields/ActionField";
-import * as AnyDataField from "../fields/AnyDataField";
-import * as SubElementField from "../fields/SubElementField";
-import * as SeparatorLineField from "../fields/SeparatorLineField";
-import * as ReferenceField from "../fields/ReferenceField";
-import * as ReferenceFieldFromCollection from "../fields/ReferenceFieldFromCollection";
-import * as UnknownField from "../fields/UnknownField";
-import {IFormField} from "../fields/Interfaces";
-import {DmObject} from "../Mof";
-import {IFormConfiguration} from "./IFormConfiguration";
-import {IFormNavigation} from "./Interfaces";
+﻿import {_DatenMeister} from "../models/DatenMeister.class.js"
+import * as TextField from "../fields/TextField.js";
+import * as CheckboxField from "../fields/CheckboxField.js";
+import * as CheckboxListTaggingField from "../fields/CheckboxListTaggingField.js";
+import * as DropDownField from "../fields/DropDownField.js";
+import * as MetaClassElementField from "../fields/MetaClassElementField.js";
+import * as ActionField from "../fields/ActionField.js";
+import * as AnyDataField from "../fields/AnyDataField.js";
+import * as SubElementField from "../fields/SubElementField.js";
+import * as SeparatorLineField from "../fields/SeparatorLineField.js";
+import * as ReferenceField from "../fields/ReferenceField.js";
+import * as ReferenceFieldFromCollection from "../fields/ReferenceFieldFromCollection.js";
+import * as UnknownField from "../fields/UnknownField.js";
+import {IFormField} from "../fields/Interfaces.js";
+import {DmObject} from "../Mof.js";
+import {IFormConfiguration} from "./IFormConfiguration.js";
+import {IFormNavigation} from "./Interfaces.js";
 
 interface ICreateFieldParameter {
     configuration: IFormConfiguration,

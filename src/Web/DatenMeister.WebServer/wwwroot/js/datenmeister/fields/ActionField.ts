@@ -1,8 +1,8 @@
 
-import * as FormActions from "../FormActions";
-import {BaseField, IFormField} from "./Interfaces";
-import {DmObject} from "../Mof";
-import * as ClientItems from "../client/Items";
+import * as FormActions from "../FormActions.js";
+import {BaseField, IFormField} from "./Interfaces.js";
+import {DmObject} from "../Mof.js";
+import * as ClientItems from "../client/Items.js";
 
 export class Field extends BaseField implements IFormField {
 

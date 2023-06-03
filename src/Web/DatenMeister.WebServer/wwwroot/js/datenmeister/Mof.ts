@@ -1,4 +1,4 @@
-﻿import {EntentType, ItemWithNameAndId} from "./ApiModels";
+﻿import {EntentType, ItemWithNameAndId} from "./ApiModels.js";
 
 export enum ObjectType{
     Default, 

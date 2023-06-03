@@ -1,24 +1,24 @@
 ﻿/* 
     Defines the html fields which will be used for layouting.
  */
-import {IFormConfiguration} from "./IFormConfiguration";
-import * as FormFactory from "./FormFactory";
-import * as VML from "./ViewModeLogic";
-import * as ClientItems from "../client/Items";
-import * as ClientForms from "../client/Forms";
-import {debugElementToDom} from "../DomHelper";
-import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl";
-import * as IForm from "./Interfaces";
-import * as Mof from "../Mof";
-import {DmObject, ObjectType} from "../Mof";
-import * as SIC from "../controls/SelectItemControl";
-import * as Navigator from "../Navigator";
-import * as Settings from "../Settings";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import {FormSelectionControl} from "../controls/FormSelectionControl";
-import {ItemLink} from "../ApiModels";
+import {IFormConfiguration} from "./IFormConfiguration.js";
+import * as FormFactory from "./FormFactory.js";
+import * as VML from "./ViewModeLogic.js";
+import * as ClientItems from "../client/Items.js";
+import * as ClientForms from "../client/Forms.js";
+import {debugElementToDom} from "../DomHelper.js";
+import {ViewModeSelectionControl} from "../controls/ViewModeSelectionControl.js";
+import * as IForm from "./Interfaces.js";
+import * as Mof from "../Mof.js";
+import {DmObject, ObjectType} from "../Mof.js";
+import * as SIC from "../controls/SelectItemControl.js";
+import * as Navigator from "../Navigator.js";
+import * as Settings from "../Settings.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import {FormSelectionControl} from "../controls/FormSelectionControl.js";
+import {ItemLink} from "../ApiModels.js";
 import _TableForm = _DatenMeister._Forms._TableForm;
-import {FormType} from "./Interfaces";
+import {FormType} from "./Interfaces.js";
 
 export class CollectionFormHtmlElements
 {

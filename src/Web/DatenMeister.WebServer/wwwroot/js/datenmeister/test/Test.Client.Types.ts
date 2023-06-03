@@ -1,5 +1,5 @@
-﻿import * as ClientTypes from "../client/Types"
-import {_DatenMeister} from "../models/DatenMeister.class"
+﻿import * as ClientTypes from "../client/Types.js"
+import {_DatenMeister} from "../models/DatenMeister.class.js"
 
 export function includeTests() {
     describe('Client', function () {

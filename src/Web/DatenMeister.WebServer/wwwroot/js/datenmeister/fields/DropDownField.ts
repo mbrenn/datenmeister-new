@@ -1,5 +1,5 @@
-import {BaseField, IFormField} from "./Interfaces";
-import {DmObject} from "../Mof";
+import {BaseField, IFormField} from "./Interfaces.js";
+import {DmObject} from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
     private selectBox: JQuery<HTMLElement>;

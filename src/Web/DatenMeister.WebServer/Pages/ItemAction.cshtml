@@ -13,15 +13,16 @@
 </div>
 
 
-<script type="application/javascript">
+<script type="module">
+
+import * as Page from './js/datenmeister/page/ItemAction.js';
+
 $(function()
 {
-    requirejs(['page/ItemAction'], function(page) {
-        page.init(
-            "@HttpUtility.JavaScriptStringEncode(Model.ActionName)",
-            "@HttpUtility.JavaScriptStringEncode(Model.MetaClass)",
-            "@HttpUtility.JavaScriptStringEncode(Model.FormUri)");
-    });
+    Page.init(
+        "@HttpUtility.JavaScriptStringEncode(Model.ActionName)",
+        "@HttpUtility.JavaScriptStringEncode(Model.MetaClass)",
+        "@HttpUtility.JavaScriptStringEncode(Model.FormUri)");
 });
 
 </script>

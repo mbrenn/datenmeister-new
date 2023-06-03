@@ -1,23 +1,31 @@
-define(["require", "exports", "./MofTests", "./Test.Client.Workspace", "./Test.Client.Extents", "./Test.Client.Items", "./Test.Client.Types", "./Test.Client.Elements", "./Test.Client.Actions", "./Test.Client.Sync", "./Test.Client.Forms", "./Test.Client.Actions.Item", "./Test.Controls.SelectItemControl", "./Test.Forms", "./Test.Forms.ViewModeLogic", "../../burnsystems/tests/events.test"], function (require, exports, MofTests, ClientWorkspace, ClientExtent, ClientItems, ClientTypes, ClientElements, ClientActions, ClientSync, ClientForms, ClientActionsItems, ControlSelectItemControl, Forms, ViewModeLogic, UserEvents) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.includeTests = void 0;
-    function includeTests() {
-        UserEvents.includeTests();
-        MofTests.includeTests();
-        ClientWorkspace.includeTests();
-        ClientExtent.includeTests();
-        ClientItems.includeTests();
-        ClientTypes.includeTests();
-        ClientElements.includeTests();
-        ClientForms.includeTests();
-        ClientActions.includeTests();
-        ClientActionsItems.includeTests();
-        ClientSync.includeTests();
-        ControlSelectItemControl.includeTests();
-        ViewModeLogic.includeTests();
-        Forms.includeTests();
-    }
-    exports.includeTests = includeTests;
-});
+import * as MofTests from "./MofTests.js";
+import * as ClientWorkspace from "./Test.Client.Workspace.js";
+import * as ClientExtent from "./Test.Client.Extents.js";
+import * as ClientItems from "./Test.Client.Items.js";
+import * as ClientTypes from "./Test.Client.Types.js";
+import * as ClientElements from "./Test.Client.Elements.js";
+import * as ClientActions from "./Test.Client.Actions.js";
+import * as ClientSync from "./Test.Client.Sync.js";
+import * as ClientForms from "./Test.Client.Forms.js";
+import * as ClientActionsItems from "./Test.Client.Actions.Item.js";
+import * as ControlSelectItemControl from "./Test.Controls.SelectItemControl.js";
+import * as Forms from "./Test.Forms.js";
+import * as ViewModeLogic from "./Test.Forms.ViewModeLogic.js";
+import * as UserEvents from "../../burnsystems/tests/events.test.js";
+export function includeTests() {
+    UserEvents.includeTests();
+    MofTests.includeTests();
+    ClientWorkspace.includeTests();
+    ClientExtent.includeTests();
+    ClientItems.includeTests();
+    ClientTypes.includeTests();
+    ClientElements.includeTests();
+    ClientForms.includeTests();
+    ClientActions.includeTests();
+    ClientActionsItems.includeTests();
+    ClientSync.includeTests();
+    ControlSelectItemControl.includeTests();
+    ViewModeLogic.includeTests();
+    Forms.includeTests();
+}
 //# sourceMappingURL=TestLibrary.js.map

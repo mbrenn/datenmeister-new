@@ -1,4 +1,4 @@
-﻿import * as Mof from './Mof'
+﻿import * as Mof from './Mof.js'
 
 /**
  * Takes the elements and moves the element with the given uri up by one position 

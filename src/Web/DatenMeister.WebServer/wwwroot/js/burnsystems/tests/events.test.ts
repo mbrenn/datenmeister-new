@@ -1,4 +1,4 @@
-﻿import {UserEvent} from "../Events";
+﻿import {UserEvent} from "../Events.js";
 
 interface TestData
 {

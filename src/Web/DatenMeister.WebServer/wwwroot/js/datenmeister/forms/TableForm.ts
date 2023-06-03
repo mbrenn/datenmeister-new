@@ -1,11 +1,10 @@
-import * as InterfacesForms from "./Interfaces";
-import {FormType} from "./Interfaces";
-import * as Mof from "../Mof";
-import {createField} from "./FieldFactory";
-import * as Settings from "../Settings";
-import {IFormConfiguration} from "./IFormConfiguration";
-import * as Navigator from '../Navigator'
-import {SubmitMethod} from "./RowForm";
+import * as InterfacesForms from "./Interfaces.js";
+import {FormType} from "./Interfaces.js";
+import * as Mof from "../Mof.js";
+import {createField} from "./FieldFactory.js";
+import * as Settings from "../Settings.js";
+import {IFormConfiguration} from "./IFormConfiguration.js";
+import * as Navigator from '../Navigator.js'
 
 export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
     /**

@@ -1,2 +1,2 @@
-﻿import {DmObject} from "./Mof";
-import * as Settings from "./Settings";
+﻿import {DmObject} from "./Mof.js";
+import * as Settings from "./Settings.js";

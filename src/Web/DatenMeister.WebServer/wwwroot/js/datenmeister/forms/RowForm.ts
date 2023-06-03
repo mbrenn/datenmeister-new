@@ -1,12 +1,12 @@
-﻿import * as InterfacesForms from "../forms/Interfaces";
-import {FormType, IObjectFormElement} from "../forms/Interfaces";
-import * as InterfacesFields from "../fields/Interfaces";
-import * as Mof from "../Mof";
-import {createField} from "./FieldFactory";
-import * as TextField from "../fields/TextField"
-import {IFormConfiguration} from "./IFormConfiguration";
-import {_DatenMeister} from "../models/DatenMeister.class";
-import {DmObject, DmObjectWithSync} from "../Mof";
+﻿import * as InterfacesForms from "../forms/Interfaces.js";
+import {FormType, IObjectFormElement} from "./Interfaces.js";
+import * as InterfacesFields from "../fields/Interfaces.js";
+import * as Mof from "../Mof.js";
+import {createField} from "./FieldFactory.js";
+import * as TextField from "../fields/TextField.js"
+import {IFormConfiguration} from "./IFormConfiguration.js";
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import {DmObject, DmObjectWithSync} from "../Mof.js";
 
 // Defines the possible submit methods, a user can chose to close the detail form
 export enum SubmitMethod

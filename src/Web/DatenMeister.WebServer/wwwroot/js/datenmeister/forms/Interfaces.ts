@@ -1,6 +1,5 @@
-﻿import * as Mof from "../Mof";
-import {SubmitMethod} from "./RowForm";
-import {IFormConfiguration} from "./IFormConfiguration";
+﻿import * as Mof from "../Mof.js";
+import {IFormConfiguration} from "./IFormConfiguration.js";
 
 
 /**

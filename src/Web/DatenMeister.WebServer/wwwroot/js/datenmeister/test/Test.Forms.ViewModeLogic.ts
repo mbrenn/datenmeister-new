@@ -1,4 +1,4 @@
-﻿import * as VML from "../forms/ViewModeLogic";
+﻿import * as VML from "../forms/ViewModeLogic.js";
 
 
 export function includeTests() {

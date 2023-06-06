@@ -122,6 +122,12 @@ export class WeeklyCalenderControl {
         if (configuration.weeks === undefined) {
             configuration.weeks = 4;
         }
+        if (configuration.showWeeks === undefined) {
+            configuration.showWeeks = true;
+        }
+        if (configuration.skipWeekend === undefined) {
+            configuration.skipWeekend = false;
+        }
         // Deletes the existing content, if a table already has been created
         if (this.isTableCreated && this.table !== undefined) {
             this.table.remove();
@@ -133,7 +139,15 @@ export class WeeklyCalenderControl {
         const table = $("<table class='stundenplan'></table>");
         for (let n = 0; n < configuration.weeks; n++) {
             const row = $("<tr></tr>");
-            for (let day = 1; day <= 7; day++) {
+            // Creates the first column containing the weekdays
+            if (configuration.showWeeks) {
+                const cellWeek = $("<td></td>");
+                cellWeek.text("Week " + (n + 1).toString());
+                row.append(cellWeek);
+            }
+            // Now, create the cells for each workday. One Cell per workday
+            const numberOfDays = configuration.skipWeekend ? 5 : 7;
+            for (let day = 1; day <= numberOfDays; day++) {
                 const cell = $("<td></td>");
                 const weekDay = $("<div class='stundenplan-weekday'></div>");
                 weekDay.text(getWeekDay(day));

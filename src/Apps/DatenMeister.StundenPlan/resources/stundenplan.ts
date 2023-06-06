@@ -5,6 +5,7 @@ import { FormType, IObjectFormElement } from '/js/datenmeister/forms/Interfaces.
 import { IFormConfiguration } from '/js/datenmeister/forms/IFormConfiguration.js';
 import * as ClientItems from '/js/datenmeister/client/Items.js';
 import { _DatenMeister } from '/js/datenmeister/models/DatenMeister.class.js';
+import { config } from 'chai';
 
 export function init() {
     FormFactory.registerObjectForm(
@@ -172,6 +173,16 @@ export interface IWeeklyCalenderConfiguration
      * Number of weeks to be shown
      */
     weeks?: number; 
+
+    /**
+     * Gives information, whether the weeks shall be shown as the first column
+     */
+    showWeeks?: boolean; 
+
+    /**
+     * Gives information whether the weekend days shall be skipped and not to be shown
+     */
+    skipWeekend?: boolean;
 }
 
 export class WeeklyCalenderControl {
@@ -206,9 +217,9 @@ export class WeeklyCalenderControl {
 
     createTable(configuration: IWeeklyCalenderConfiguration) {
         // Performs the default configuration, if not already set
-        if (configuration.weeks === undefined) {
-            configuration.weeks = 4;
-        }
+        if (configuration.weeks === undefined) { configuration.weeks = 4; }
+        if (configuration.showWeeks === undefined) { configuration.showWeeks = true; }
+        if (configuration.skipWeekend === undefined) { configuration.skipWeekend = false; }
 
         // Deletes the existing content, if a table already has been created
         if (this.isTableCreated && this.table !== undefined) {
@@ -224,7 +235,17 @@ export class WeeklyCalenderControl {
 
         for (let n = 0; n < configuration.weeks; n++) {
             const row = $("<tr></tr>");
-            for (let day = 1; day <= 7; day++) {
+
+            // Creates the first column containing the weekdays
+            if (configuration.showWeeks) {
+                const cellWeek = $("<td></td>");
+                cellWeek.text("Week " + (n + 1).toString());
+                row.append(cellWeek);
+            }
+
+            // Now, create the cells for each workday. One Cell per workday
+            const numberOfDays = configuration.skipWeekend ? 5 : 7;
+            for (let day = 1; day <= numberOfDays; day++) {
                 const cell = $("<td></td>");
                 const weekDay = $("<div class='stundenplan-weekday'></div>");
                 weekDay.text(getWeekDay(day));

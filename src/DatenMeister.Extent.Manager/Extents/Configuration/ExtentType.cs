@@ -21,7 +21,7 @@ namespace DatenMeister.Extent.Manager.Extents.Configuration
         /// <summary>
         /// Stores the metaclasses of the root elements which are preferred to get added
         /// to the extent. Other metaclasses are also possible, but these one are actively offered
-        /// by the tool
+        /// by the tool.
         /// </summary>
         public List<IElement> rootElementMetaClasses { get; } = new();
 

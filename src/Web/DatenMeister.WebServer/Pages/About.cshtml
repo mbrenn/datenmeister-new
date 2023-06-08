@@ -45,6 +45,17 @@ Welcome to the About-Page
             </ul>
         </td>
     </tr>
+    <tr>
+        <td>Register Form-Modification-Plugins</td>
+        <td>
+            <ul>
+                @foreach (var formModificationTypes in AboutModel.FormModificationTypes)
+                {
+                    <li>@formModificationTypes</li>
+                }
+            </ul>
+        </td>
+    </tr>
 </table>
 
 <script type="text/ecmascript">

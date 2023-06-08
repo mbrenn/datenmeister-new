@@ -3,6 +3,7 @@ using System.Linq;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -29,6 +30,20 @@ namespace DatenMeister.WebServer.Pages
             {
                 var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
                 return extentSettings.extentTypeSettings.Select(x => x.name).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of strings containing the names of the types of the Form Modification Plugins
+        /// </summary>
+        public static List<string> FormModificationTypes
+        {
+            get
+            {
+                var formPlugin = GiveMe.Scope.ScopeStorage.Get<FormsPluginState>();
+                return formPlugin.FormModificationPlugins
+                    .Select(x => $"{x} ({x.GetType().FullName})")
+                    .ToList();
             }
         }
     }

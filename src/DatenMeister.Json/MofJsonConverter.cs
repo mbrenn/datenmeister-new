@@ -175,6 +175,13 @@ namespace DatenMeister.Json
 
             if (propertyValue is IObject asObject && (recursionDepth >= MaxRecursionDepth || forceReference))
             {
+                // Try to resolve the item to find the workspace, unfortunately, MofObjectShadow does not include the workspace
+                if (asObject is MofObjectShadow mofObjectShadow)
+                {
+                    asObject = rootExtent?.Resolve(mofObjectShadow) ?? mofObjectShadow;
+                }
+
+                // Create the element
                 builder.Append("{");
 
                 builder.Append($"\"r\": \"{HttpUtility.JavaScriptStringEncode(asObject.GetUri() ?? "None")}\"");

@@ -137,6 +137,9 @@ namespace DatenMeister.BootStrap
             scopeStorage.Add(workspaceData);
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
 
+            // Assigns the workspacelogic to the temporary extent
+            InMemoryProvider.TemporaryExtent.AssociateWorkspaceLogic(new WorkspaceLogic(scopeStorage));
+
             var extentSettings = new ExtentSettings();
             scopeStorage.Add(extentSettings);
 

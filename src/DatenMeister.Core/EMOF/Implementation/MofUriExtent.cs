@@ -30,7 +30,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private static readonly ClassLogger Logger = new(typeof(MofUriExtent));
 
-        private readonly IWorkspaceLogic? _cachedWorkspaceLogic;
+        private IWorkspaceLogic? _cachedWorkspaceLogic;
 
         /// <summary>
         /// Stores the navigator
@@ -61,6 +61,17 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 _cachedWorkspaceLogic = new WorkspaceLogic(scopeStorage);
             }
+        }
+
+        /// <summary>
+        /// Associates a certain workspace logic to the extent.
+        /// This method can be used to allow that references are resolved through the workspace logic
+        /// It is especially required for temporary extents
+        /// </summary>
+        /// <param name="workspaceLogic"></param>
+        public void AssociateWorkspaceLogic(IWorkspaceLogic workspaceLogic)
+        {
+            _cachedWorkspaceLogic = workspaceLogic;
         }
 
 

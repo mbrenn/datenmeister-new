@@ -1,4 +1,5 @@
-﻿import {IFormField} from "./Interfaces.js";
+﻿import { IFormField } from "./Interfaces.js";
+import * as MofResolver from "../MofResolver.js";
 import {DmObject, ObjectType} from "../Mof.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
 import * as SIC from "../controls/SelectItemControl.js";
@@ -13,6 +14,7 @@ import {ItemWithNameAndId} from "../ApiModels.js";
 import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items.js";
 import * as FormActions from "../FormActions.js";
 import * as Navigator from '../Navigator.js'
+import { _UML } from "../models/uml.js";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -21,7 +23,12 @@ export class Control {
     // Is connected to the item url of the element being connected to that element
     itemUrl: string;
     form: IFormNavigation;
+
+    /**
+     * Name of the property which contains the subelements
+     */
     propertyName: string;
+
     /**
      * The name of the action that shall be executed when the user clicks on the item
      */
@@ -32,6 +39,13 @@ export class Control {
      * SubElementField in which the user can define the metaclass for a element to be created
      */
     propertyType: ItemWithNameAndId;
+
+    /** 
+     * Additional Types to be directly created. 
+     * Each of these types will receive a button on which the user can directly
+     * create an object
+     */
+    additionalTypes?: DmObject[];
 
     _list: JQuery;
 
@@ -181,10 +195,13 @@ export class Control {
                 "<div>" +
                 "<btn class='btn btn-secondary dm-subelements-attachitem-btn'>Attach Item</btn>" +
                 "<btn class='btn btn-secondary dm-subelements-createitem-btn'>Create Item</btn>" +
+                "<span class='dm-subelements-createadditional'></span>" +
                 "</div>" +
                 "<div class='dm-subelements-attachitem-box'></div>" +
                 "<div class='dm-subelements-createitem-box'></div>" +
                 "</div>");
+
+            // Adds the button which allows the user to attach an existing item
             $(".dm-subelements-attachitem-btn", attachItem).on("click", () => {
                 const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
                 containerDiv.empty();
@@ -212,6 +229,7 @@ export class Control {
                 return false;
             });
 
+            // Adds the button which allows the user to create a new item
             $(".dm-subelements-createitem-btn", attachItem).on("click", async () => {
                 const container = $(".dm-subelements-createitem-box", attachItem);
                 container.empty();
@@ -239,6 +257,32 @@ export class Control {
                 
                 await control.createControl();
             });
+
+            // Adds additional types which are allocated to that subelement field
+            const containerAdditional = $(".dm-subelements-createadditional", attachItem);
+            if (this.additionalTypes !== undefined) {
+                for (var m in this.additionalTypes) {
+                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
+
+                    const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
+                    buttonAdditionalType.text(additionalType.get(
+                        _UML._CommonStructure._NamedElement._name_,
+                        ObjectType.String
+                    ));
+
+                    buttonAdditionalType.on(
+                        'click',
+                        () => {
+                            document.location.href =
+                                Navigator.getLinkForNavigateToCreateItemInProperty(
+                                    tthis.form.workspace, tthis.itemUrl, additionalType.uri, tthis.propertyName);
+                        });
+
+
+                    containerAdditional.append(buttonAdditionalType);
+                }
+
+            }
 
             this._list.append(attachItem);
         }
@@ -285,8 +329,9 @@ export class Field extends Control implements IFormField {
     }
 
     async createDom(dmElement: DmObject) {
-        this.propertyName = this.field.get(_DatenMeister._Forms._ActionFieldData._name_);
-        this.itemActionName = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName);        
+        this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, ObjectType.String);
+        this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, ObjectType.String);
+        this.additionalTypes = this.field.get(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements, ObjectType.Array);
 
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");

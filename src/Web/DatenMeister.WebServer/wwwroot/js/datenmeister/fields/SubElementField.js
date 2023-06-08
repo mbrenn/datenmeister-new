@@ -1,3 +1,4 @@
+import * as MofResolver from "../MofResolver.js";
 import { DmObject, ObjectType } from "../Mof.js";
 import * as FieldFactory from "../forms/FieldFactory.js";
 import * as SIC from "../controls/SelectItemControl.js";
@@ -9,6 +10,7 @@ import * as TypeSelectionControl from "../controls/TypeSelectionControl.js";
 import { moveItemInCollectionDown, moveItemInCollectionUp } from "../client/Actions.Items.js";
 import * as FormActions from "../FormActions.js";
 import * as Navigator from '../Navigator.js';
+import { _UML } from "../models/uml.js";
 export class Control {
     constructor() {
         this._list = $("<div></div>");
@@ -124,10 +126,12 @@ export class Control {
                 "<div>" +
                 "<btn class='btn btn-secondary dm-subelements-attachitem-btn'>Attach Item</btn>" +
                 "<btn class='btn btn-secondary dm-subelements-createitem-btn'>Create Item</btn>" +
+                "<span class='dm-subelements-createadditional'></span>" +
                 "</div>" +
                 "<div class='dm-subelements-attachitem-box'></div>" +
                 "<div class='dm-subelements-createitem-box'></div>" +
                 "</div>");
+            // Adds the button which allows the user to attach an existing item
             $(".dm-subelements-attachitem-btn", attachItem).on("click", () => {
                 const containerDiv = $(".dm-subelements-attachitem-box", attachItem);
                 containerDiv.empty();
@@ -147,6 +151,7 @@ export class Control {
                 selectItem.init(containerDiv, settings);
                 return false;
             });
+            // Adds the button which allows the user to create a new item
             $(".dm-subelements-createitem-btn", attachItem).on("click", async () => {
                 const container = $(".dm-subelements-createitem-box", attachItem);
                 container.empty();
@@ -167,6 +172,20 @@ export class Control {
                 });
                 await control.createControl();
             });
+            // Adds additional types which are allocated to that subelement field
+            const containerAdditional = $(".dm-subelements-createadditional", attachItem);
+            if (this.additionalTypes !== undefined) {
+                for (var m in this.additionalTypes) {
+                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
+                    const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
+                    buttonAdditionalType.text(additionalType.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String));
+                    buttonAdditionalType.on('click', () => {
+                        document.location.href =
+                            Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, additionalType.uri, tthis.propertyName);
+                    });
+                    containerAdditional.append(buttonAdditionalType);
+                }
+            }
             this._list.append(attachItem);
         }
         const refreshBtn = $("<div><btn class='dm-subelements-refresh-btn'><img src='/img/refresh-16.png' alt='Refresh' /></btn></div>");
@@ -197,8 +216,9 @@ export class Field extends Control {
         return this.field.get("form", ObjectType.Single)?.get("field", ObjectType.Array);
     }
     async createDom(dmElement) {
-        this.propertyName = this.field.get(_DatenMeister._Forms._ActionFieldData._name_);
-        this.itemActionName = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName);
+        this.propertyName = this.field.get(_DatenMeister._Forms._SubElementFieldData._name_, ObjectType.String);
+        this.itemActionName = this.field.get(_DatenMeister._Forms._SubElementFieldData.actionName, ObjectType.String);
+        this.additionalTypes = this.field.get(_DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements, ObjectType.Array);
         if (this.configuration.isNewItem) {
             return $("<em>Element needs to be saved first</em>");
         }

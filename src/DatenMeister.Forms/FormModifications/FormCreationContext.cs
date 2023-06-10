@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 
@@ -35,7 +37,7 @@ namespace DatenMeister.Forms.FormModifications
         /// <summary>
         /// Gets or sets the name of the extent
         /// </summary>
-        public string? ExtentType { get; set; } = string.Empty;
+        public IEnumerable<string> ExtentTypes { get; set; } = new List<string>();
 
         public string? ParentPropertyName { get; set; } = string.Empty;
 
@@ -64,8 +66,8 @@ namespace DatenMeister.Forms.FormModifications
          return (template.FormType == null ||
                  template.FormType == instance.FormType) &&
 
-                (string.IsNullOrEmpty(template.ExtentType) ||
-                 template.ExtentType == instance.ExtentType) &&
+                (template.ExtentTypes.Any() ||
+                 template.ExtentTypes.All(x=> instance.ExtentTypes.Contains(x))) &&
 
                 (template.DetailElement == null ||
                  template.DetailElement?.equals(instance.DetailElement) == true) &&
@@ -92,7 +94,7 @@ namespace DatenMeister.Forms.FormModifications
           $"{nameof(FormType)}: {FormType}, " +
           $"{nameof(DetailElement)}: {DetailElement}, " +
           $"{nameof(MetaClass)}: {MetaClass}, " +
-          $"{nameof(ExtentType)}: {ExtentType}, " +
+          $"{nameof(ExtentTypes)}: {string.Join(", ", ExtentTypes)}, " +
           $"{nameof(ParentPropertyName)}: {ParentPropertyName}, " +
           $"{nameof(ParentMetaClass)}: {ParentMetaClass}, " +
           $"{nameof(ViewMode)}: {ViewMode}";

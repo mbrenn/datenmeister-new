@@ -1,5 +1,7 @@
 ﻿#nullable enable
 
+using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
@@ -14,7 +16,7 @@ namespace DatenMeister.Forms.FormFinder
 
         public IElement? metaClass { get; set; }
 
-        public string extentType { get; set; } = string.Empty;
+        public IEnumerable<string> extentTypes { get; set; } = new List<string>();
 
         public IObject? parentMetaClass { get; set; }
 
@@ -33,9 +35,9 @@ namespace DatenMeister.Forms.FormFinder
                 result += $", metaClass: {NamedElementMethods.GetName(metaClass)}";
             }
 
-            if (!string.IsNullOrEmpty(extentType))
+            if (extentTypes.Any())
             {
-                result += $", extentType: {extentType}";
+                result += $", extentTypes: {string.Join(", ", extentTypes)}";
             }
             
             if (parentMetaClass != null)

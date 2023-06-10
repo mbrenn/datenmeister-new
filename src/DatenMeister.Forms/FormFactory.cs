@@ -55,7 +55,7 @@ namespace DatenMeister.Forms
             if (extent == null)
                 throw new InvalidOperationException("Item Tree for extent-less object can't be created");
 
-            var extentType = extent.GetConfiguration().ExtentType;
+            var extentTypes = extent.GetConfiguration().ExtentTypes.ToList();
 
             string? packageViewMode = null;
 
@@ -71,7 +71,7 @@ namespace DatenMeister.Forms
                 var viewFinder = CreateFormFinder();
                 foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
-                    extentType = extentType,
+                    extentTypes = extentTypes.ToList(),
                     metaClass = metaClass,
                     FormType = _DatenMeister._Forms.___FormType.Object,
                     viewModeId = configuration.ViewModeId ?? packageViewMode
@@ -108,7 +108,7 @@ namespace DatenMeister.Forms
                     foundForm,
                     new FindFormQuery
                     {
-                        extentType = extent.GetConfiguration().ExtentType,
+                        extentTypes = extent.GetConfiguration().ExtentTypes,
                         metaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.ObjectExtension,
                         viewModeId = configuration.ViewModeId ?? ViewModes.Default
@@ -128,7 +128,8 @@ namespace DatenMeister.Forms
                     FormType = _DatenMeister._Forms.___FormType.Object,
                     MetaClass = (element as IElement)?.metaclass,
                     DetailElement = element,
-                    IsReadOnly = configuration.IsReadOnly
+                    IsReadOnly = configuration.IsReadOnly,
+                    ExtentTypes = extentTypes
                 };
 
                 CallPluginsForCollectionOrObjectForm(configuration, formCreationContext, ref foundForm);
@@ -307,7 +308,7 @@ namespace DatenMeister.Forms
                     {
                         metaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.Row,
-                        extentType = extent == null ? string.Empty : extent.GetConfiguration().ExtentType,
+                        extentTypes = extent == null ? Array.Empty<string>() : extent.GetConfiguration().ExtentTypes,
                         viewModeId = configuration.ViewModeId
                     }).FirstOrDefault();
 
@@ -336,7 +337,7 @@ namespace DatenMeister.Forms
                     {
                         MetaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.Row,
-                        ExtentType = extent?.GetConfiguration().ExtentType ?? string.Empty,
+                        ExtentTypes = extent?.GetConfiguration().ExtentTypes ?? Array.Empty<string>(),
                         DetailElement = element,
                         IsReadOnly = configuration.IsReadOnly
                     },
@@ -539,7 +540,7 @@ namespace DatenMeister.Forms
         {
             using var _ = new StopWatchLogger(Logger, "Timing for CreateCollectionFormForExtent: ", LogLevel.Trace);
 
-            var extentType = extent.GetConfiguration().ExtentType;
+            var extentTypes = extent.GetConfiguration().ExtentTypes.ToList();
             IElement? foundForm = null;
             if (configuration.ViaFormFinder)
             {
@@ -547,7 +548,7 @@ namespace DatenMeister.Forms
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
-                        extentType = extentType,
+                        extentTypes = extentTypes,
                         FormType = _DatenMeister._Forms.___FormType.Collection,
                         viewModeId = configuration.ViewModeId ?? "",
                         metaClass = _DatenMeister.TheOne.Management.__Extent
@@ -581,7 +582,7 @@ namespace DatenMeister.Forms
                     foundForm,
                     new FindFormQuery
                     {
-                        extentType = extentType,
+                        extentTypes = extentTypes,
                         FormType = _DatenMeister._Forms.___FormType.CollectionExtension,
                         viewModeId = configuration.ViewModeId ?? "",
                         metaClass = _DatenMeister.TheOne.Management.__Extent
@@ -602,7 +603,7 @@ namespace DatenMeister.Forms
                 {
                     DetailElement = extent,
                     FormType = _DatenMeister._Forms.___FormType.Collection,
-                    ExtentType = extentType,
+                    ExtentTypes = extentTypes,
                     MetaClass = _DatenMeister.TheOne.Management.__Extent,
                     IsReadOnly = configuration.IsReadOnly
                 };
@@ -699,8 +700,8 @@ namespace DatenMeister.Forms
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
-                        extentType = (parentElement as IHasExtent)?.Extent?.GetConfiguration().ExtentType ??
-                                     string.Empty,
+                        extentTypes = (parentElement as IHasExtent)?.Extent?.GetConfiguration().ExtentTypes ??
+                                     Array.Empty<string>(),
                         parentMetaClass = (parentElement as IElement)?.metaclass,
                         metaClass = propertyType,
                         FormType = _DatenMeister._Forms.___FormType.Table,

@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
@@ -37,8 +38,9 @@ namespace DatenMeister.Extent.Forms
         public bool ModifyForm(FormCreationContext context, IElement form)
         {
             var result = false;
-            result |= IncludeCreationButtonsForClassifierOfExtentType(context, form);
+            result |= IncludeCreationButtonsInTableFormForClassifierOfExtentType(context, form);
             result |= IncludeExtentTypesForTableFormOfExtent(context, form);
+            result |= IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(context, form);
 
             return result;
         }
@@ -105,13 +107,13 @@ namespace DatenMeister.Extent.Forms
         /// <param name="context">Form Creation Context to be used</param>
         /// <param name="form">Form to be used</param>
         /// <returns>true, if the form has been modified. </returns>
-        private bool IncludeCreationButtonsForClassifierOfExtentType(FormCreationContext context, IElement form)
+        private bool IncludeCreationButtonsInTableFormForClassifierOfExtentType(FormCreationContext context, IElement form)
         {
             // Finds the extent type fitting to the extent to be shown
-            var foundExtentType =
-                _extentSettings.extentTypeSettings.FirstOrDefault(x => x.name == context.ExtentType);
+            var foundExtentTypes =
+                _extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
 
-            if (foundExtentType == null || context.FormType != _DatenMeister._Forms.___FormType.Collection)
+            if (!foundExtentTypes.Any() || context.FormType != _DatenMeister._Forms.___FormType.Collection)
             {
                 return false;
             }
@@ -135,33 +137,100 @@ namespace DatenMeister.Extent.Forms
                     continue;
                 }
 
-                foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
+                foreach (var foundExtentType in foundExtentTypes)
                 {
-                    var resolvedMetaClass =
-                        _workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
-
-                    if (resolvedMetaClass == null)
+                    foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                     {
-                        continue;
-                    }
+                        var resolvedMetaClass =
+                            _workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
 
-                    // The found metaclass already has a list form
-                    if (foundListMetaClasses.Contains(resolvedMetaClass))
-                    {
+                        if (resolvedMetaClass == null)
+                        {
+                            continue;
+                        }
+
+                        // The found metaclass already has a list form
+                        if (foundListMetaClasses.Contains(resolvedMetaClass))
+                        {
+                            FormMethods.AddToFormCreationProtocol(listForm,
+                                $"ExtentTypeFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
+                            continue;
+                        }
+
+                        FormMethods.AddDefaultTypeForNewElement(form, resolvedMetaClass);
+
                         FormMethods.AddToFormCreationProtocol(listForm,
-                            $"ExtentTypeFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
-                        continue;
+                            $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
                     }
-
-                    FormMethods.AddDefaultTypeForNewElement(form, resolvedMetaClass);
-
-                    FormMethods.AddToFormCreationProtocol(listForm,
-                        $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
                 }
             }
 
             return true;
+        }
 
+        /**
+         * Includes the creation buttons for all Properties in SubElementFields for packagedItems for the
+         * default root classes of a certain extent type
+         */
+        private bool IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
+            FormCreationContext context,
+            IElement form)
+        {
+            var changed = false;
+
+            // Finds the extent type fitting to the extent to be shown
+            var foundExtentTypes =
+                _extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
+
+            if (!foundExtentTypes.Any() || context.FormType != _DatenMeister._Forms.___FormType.Object)
+            {
+                return false;
+            }
+
+            // Check, if the detail element is from type package
+            if ((context.DetailElement as IElement)?.metaclass?.equals(_UML.TheOne.Packages.__Package) != true
+                && (context.DetailElement as IElement)?.metaclass?.equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) != true)
+            {
+                return false;
+            }
+
+            // Now, go through the forms and look for the subelements of packagedElements
+            var rowForms = FormMethods.GetRowForms(form).ToList();
+            foreach (var rowForm in rowForms)
+            {
+                var foundFieldForPackagedElement = FormMethods.GetFieldForProperty(rowForm,
+                    _DatenMeister._CommonTypes._Default._Package.packagedElement);
+                if (
+                    foundFieldForPackagedElement?.metaclass?.equals(_DatenMeister.TheOne.Forms.__SubElementFieldData) ==
+                    true)
+                {
+                    var defaultTypesForNewElements = foundFieldForPackagedElement.get<IReflectiveCollection>(
+                        _DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements);
+                    // We found it, so add the stuff
+
+                    foreach (var foundExtentType in foundExtentTypes)
+                    {
+                        foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
+                        {
+                            var resolvedMetaClass =
+                                _workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+
+                            if (resolvedMetaClass == null)
+                            {
+                                continue;
+                            }
+
+                            changed = true;
+                            defaultTypesForNewElements.add(resolvedMetaClass);
+
+                            FormMethods.AddToFormCreationProtocol(rowForm,
+                                $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}' to PackagedElement");
+                        }
+                    }
+                }
+            }
+
+            return changed;
         }
     }
 }

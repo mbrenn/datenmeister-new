@@ -455,6 +455,35 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
+        /// Gets the fields for a certain propertyname
+        /// </summary>
+        /// <param name="form">The form, whose fields will be traversed. It must be a rowform or a tableform.
+        /// If an object or collection Form is submitted, an exception will be thrown</param>
+        /// <param name="propertyName">Name of the property to be evaluated</param>
+        /// <returns>The found element or null, if not found</returns>
+        public static IElement? GetFieldForProperty(IElement form, string propertyName)
+        {
+            if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true
+                || form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true)
+            {
+                throw new InvalidOperationException(
+                    "The form is of instance Object or Collection Form. It must be Table or RowForm");
+            }
+
+            foreach (var field 
+                     in form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field))
+            {
+                if (field is IElement asFieldElement
+                    && asFieldElement.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == propertyName)
+                {
+                    return asFieldElement;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         ///     Gets the list tab listing the items of the properties
         /// </summary>
         /// <param name="form">Form to be evaluated</param>

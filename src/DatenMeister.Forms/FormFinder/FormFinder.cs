@@ -127,16 +127,16 @@ namespace DatenMeister.Forms.FormFinder
                 // ExtentType
                 if (!string.IsNullOrEmpty(associationExtentType) && associationExtentType != null)
                 {
-                    if (!string.IsNullOrEmpty(query.extentType)
-                        && query.extentType.Contains(associationExtentType))
+                    if (query.extentTypes.Any()
+                        && query.extentTypes.All(x=> x.Contains(associationExtentType)))
                     {
-                        InternalDebug("-- MATCH: Requested ExtentType: " + query.extentType + ", FormAssociation ExtentType: " +
+                        InternalDebug("-- MATCH: Requested ExtentType: " + string.Join(", ", query.extentTypes) + ", FormAssociation ExtentType: " +
                                       associationExtentType);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: Requested ExtentType: " + query.extentType +
+                        InternalDebug("-- NO MATCH: Requested ExtentType: " + string.Join(", ", query.extentTypes) +
                                       ", FormAssociation ExtentType: " +
                                       associationExtentType);
                         isMatching = false;

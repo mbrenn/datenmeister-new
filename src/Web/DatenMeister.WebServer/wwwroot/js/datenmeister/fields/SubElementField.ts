@@ -104,7 +104,7 @@ export class Control {
             let fieldsData = new Array<DmObject>();
             if (fields === undefined) {
                 const nameField = new DmObject();
-                nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri);
+                nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri, 'Types');
                 nameField.set("name", "name");
                 nameField.set("title", "Name");
                 nameField.set("isReadOnly", true);
@@ -252,7 +252,11 @@ export class Control {
                     }
 
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                        tthis.form.workspace, tthis.itemUrl, x.selectedType.uri, tthis.propertyName);
+                        tthis.form.workspace, 
+                        tthis.itemUrl,
+                        x.selectedType.uri,
+                        x.selectedType.workspace,
+                        tthis.propertyName);
                 });
                 
                 await control.createControl();
@@ -261,8 +265,8 @@ export class Control {
             // Adds additional types which are allocated to that subelement field
             const containerAdditional = $(".dm-subelements-createadditional", attachItem);
             if (this.additionalTypes !== undefined) {
-                for (var m in this.additionalTypes) {
-                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
+                for (const m in this.additionalTypes) {
+                    let additionalType = await MofResolver.resolve(this.additionalTypes[m]) as DmObject;
 
                     const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
                     buttonAdditionalType.text(additionalType.get(
@@ -275,7 +279,11 @@ export class Control {
                         () => {
                             document.location.href =
                                 Navigator.getLinkForNavigateToCreateItemInProperty(
-                                    tthis.form.workspace, tthis.itemUrl, additionalType.uri, tthis.propertyName);
+                                    tthis.form.workspace, 
+                                    tthis.itemUrl,
+                                    additionalType.uri, 
+                                    additionalType.workspace, 
+                                    tthis.propertyName);
                         });
 
 

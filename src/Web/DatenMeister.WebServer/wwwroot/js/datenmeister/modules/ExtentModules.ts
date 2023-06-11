@@ -190,6 +190,7 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
             const itemUrl = p.get('itemUrl');
             const property = p.get('property');
             const metaclass = p.get('metaclass');
+            const metaclassWorkspace = p.get('metaclassworkspace');
 
             await ClientItems.createItemAsChild(workspace, itemUrl,
                 {
@@ -202,7 +203,8 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
 
             if (submitMethod === SubmitMethod.UserDefined1) {
                 // Recreate a new item, because user clicked on the userdefined item
-                Navigator.navigateToCreateItemInProperty(workspace, itemUrl, metaclass, property);
+                Navigator.navigateToCreateItemInProperty(
+                    workspace, itemUrl, metaclass, metaclassWorkspace, property);
             }
             else {
                 // If user has clicked on the save button (without closing), the form shall just be updated            

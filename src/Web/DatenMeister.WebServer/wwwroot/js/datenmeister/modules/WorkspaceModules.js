@@ -71,7 +71,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
     async execute(form, element, parameter, submitMethod) {
         const extentCreationParameter = new DmObject();
         extentCreationParameter.set('configuration', element);
-        extentCreationParameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri);
+        extentCreationParameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
         const result = await ActionClient.executeActionDirectly("Execute", {
             parameter: extentCreationParameter
         });
@@ -97,7 +97,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
     async execute(form, element, parameter, submitMethod) {
         const extentCreationParameter = new DmObject();
         extentCreationParameter.set('configuration', element);
-        extentCreationParameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri);
+        extentCreationParameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
         const result = await ActionClient.executeActionDirectly("Execute", {
             parameter: extentCreationParameter
         });

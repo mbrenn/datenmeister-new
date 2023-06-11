@@ -11,7 +11,7 @@ export function includeTests() {
         describe('Actions', async function () {
             it('Success Echo', async () => {
                 const parameter = new Mof.DmObject();
-                parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction")
+                parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction", 'Types')
                 parameter.set('shallSuccess', 'OK');
 
                 const result = await ClientActions.executeActionDirectly(
@@ -24,7 +24,7 @@ export function includeTests() {
 
             it('No success Echo', async () => {
                 const parameter = new Mof.DmObject();
-                parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction")
+                parameter.setMetaClassByUri("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction", 'Types')
                 parameter.set('shallSuccess', 'NO');
 
                 const result = await ClientActions.executeActionDirectly(
@@ -41,10 +41,10 @@ export function includeTests() {
                 chai.assert.isTrue(success.exists === false);
                 
                 const parameter = new Mof.DmObject();                
-                parameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri);
+                parameter.setMetaClassByUri(_DatenMeister._Actions.__LoadExtentAction_Uri, 'Types');
 
                 const configuration = new Mof.DmObject();
-                configuration.setMetaClassByUri(_DatenMeister._ExtentLoaderConfigs.__InMemoryLoaderConfig_Uri);
+                configuration.setMetaClassByUri(_DatenMeister._ExtentLoaderConfigs.__InMemoryLoaderConfig_Uri, 'Types');
                 configuration.set(_InMemoryLoaderConfig.extentUri, "dm:///unittestaction");
                 configuration.set(_InMemoryLoaderConfig._name_, "UnitTest");
                 parameter.set(_LoadExtentAction.configuration, configuration);
@@ -56,7 +56,7 @@ export function includeTests() {
 
 
                 const drop = new Mof.DmObject();
-                drop.setMetaClassByUri(_DatenMeister._Actions.__DropExtentAction_Uri);
+                drop.setMetaClassByUri(_DatenMeister._Actions.__DropExtentAction_Uri, 'Types');
                 drop.set(_DropExtentAction.workspace, "Data");
                 drop.set(_DropExtentAction.extentUri, "dm:///unittestaction");
 

@@ -91,7 +91,8 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         const extentCreationParameter = new DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
-            _DatenMeister._Actions.__LoadExtentAction_Uri
+            _DatenMeister._Actions.__LoadExtentAction_Uri, 
+            'Types'
         )
 
         const result = await ActionClient.executeActionDirectly(
@@ -130,7 +131,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         const extentCreationParameter = new DmObject();
         extentCreationParameter.set('configuration', element);
         extentCreationParameter.setMetaClassByUri(
-            _DatenMeister._Actions.__LoadExtentAction_Uri
+            _DatenMeister._Actions.__LoadExtentAction_Uri,'Types'
         );
 
         const result = await ActionClient.executeActionDirectly(

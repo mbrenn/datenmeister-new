@@ -56,7 +56,7 @@ export class Control {
             let fieldsData = new Array();
             if (fields === undefined) {
                 const nameField = new DmObject();
-                nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri);
+                nameField.setMetaClassByUri(_DatenMeister._Forms.__TextFieldData_Uri, 'Types');
                 nameField.set("name", "name");
                 nameField.set("title", "Name");
                 nameField.set("isReadOnly", true);
@@ -168,20 +168,20 @@ export class Control {
                         alert("Nothing is selected.");
                         return;
                     }
-                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, x.selectedType.uri, tthis.propertyName);
+                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, x.selectedType.uri, x.selectedType.workspace, tthis.propertyName);
                 });
                 await control.createControl();
             });
             // Adds additional types which are allocated to that subelement field
             const containerAdditional = $(".dm-subelements-createadditional", attachItem);
             if (this.additionalTypes !== undefined) {
-                for (var m in this.additionalTypes) {
+                for (const m in this.additionalTypes) {
                     let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
                     const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
                     buttonAdditionalType.text(additionalType.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String));
                     buttonAdditionalType.on('click', () => {
                         document.location.href =
-                            Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, additionalType.uri, tthis.propertyName);
+                            Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, additionalType.uri, additionalType.workspace, tthis.propertyName);
                     });
                     containerAdditional.append(buttonAdditionalType);
                 }

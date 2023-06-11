@@ -13,12 +13,13 @@ export class DmObject {
     /**
      * Creates a new instance of the MofObject
       * @param metaClassUri A possible metaclass Uri
+     * @param metaclassWorkspace the workspace in which the metaclass is residing
      */
-    constructor(metaClassUri) {
+    constructor(metaClassUri, metaclassWorkspace) {
         this.isReference = false;
         this.values = new Array();
         if (metaClassUri !== undefined) {
-            this.setMetaClassByUri(metaClassUri);
+            this.setMetaClassByUri(metaClassUri, metaclassWorkspace);
         }
     }
     static createFromReference(workspaceId, itemUri) {
@@ -132,8 +133,8 @@ export class DmObject {
         let values = this.getPropertyValues();
         return DmObject.valueToString(values);
     }
-    setMetaClassByUri(metaClassUri) {
-        this.metaClass = { uri: metaClassUri };
+    setMetaClassByUri(metaClassUri, workspace) {
+        this.metaClass = { uri: metaClassUri, workspace: workspace };
     }
     static valueToString(item, indent = "") {
         let result = "";

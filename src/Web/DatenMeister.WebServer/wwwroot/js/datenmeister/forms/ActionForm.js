@@ -43,7 +43,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
         // Sets the metaclass and workspace id upon url, if not created by Modules
         let p = new URLSearchParams(window.location.search);
         const metaclass = p.get('metaclass');
-        const metaclassWorkspace = p.get('metaclassworkspace');
+        const metaclassWorkspace = p.get('metaclassworkspace') ?? 'Types';
         if (metaclass !== undefined && metaclass !== null) {
             element.setMetaClassByUri(metaClass, metaclassWorkspace);
         }

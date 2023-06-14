@@ -106,15 +106,22 @@ export class Control {
                     });
                     /* Creates the delete button */
                     let deleteCell = $("<td><btn class='btn btn-secondary'>Delete</btn></td>");
-                    $("btn", deleteCell).on("click", () => {
-                        ClientItems.removeReferenceFromCollection(tthis.form.workspace, tthis.itemUrl, {
-                            property: tthis.propertyName,
-                            referenceUri: innerValue.uri,
-                            referenceWorkspaceId: innerValue.workspace
-                        })
-                            .then(() => {
-                            tthis.reloadValuesFromServer();
-                        });
+                    const deleteButton = $("btn", deleteCell);
+                    deleteButton.on("click", () => {
+                        if (deleteButton.attr('data-confirmdelete') !== '1') {
+                            deleteButton.text('Sure?');
+                            deleteButton.attr('data-confirmdelete', '1');
+                        }
+                        else {
+                            ClientItems.removeReferenceFromCollection(tthis.form.workspace, tthis.itemUrl, {
+                                property: tthis.propertyName,
+                                referenceUri: innerValue.uri,
+                                referenceWorkspaceId: innerValue.workspace
+                            })
+                                .then(() => {
+                                tthis.reloadValuesFromServer();
+                            });
+                        }
                     });
                     tr.append(deleteCell);
                     deleteCell.append(moveUp);
@@ -178,7 +185,7 @@ export class Control {
                 for (const m in this.additionalTypes) {
                     let additionalType = await MofResolver.resolve(this.additionalTypes[m]);
                     const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
-                    buttonAdditionalType.text(additionalType.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String));
+                    buttonAdditionalType.text('Create ' + additionalType.get(_UML._CommonStructure._NamedElement._name_, ObjectType.String));
                     buttonAdditionalType.on('click', () => {
                         document.location.href =
                             Navigator.getLinkForNavigateToCreateItemInProperty(tthis.form.workspace, tthis.itemUrl, additionalType.uri, additionalType.workspace, tthis.propertyName);

@@ -76,7 +76,7 @@ export function init() {
 }
 class StundenPlanForm {
     async createFormByObject(parent, configuration) {
-        const domContainer = $("<span>Scheduler</span>");
+        const domContainer = $("<span>Loading Schedule</span>");
         parent.append(domContainer);
         const foundItems = await ClientItems.getObjectByUri(this.workspace, this.itemUrl);
         // Gets the elements
@@ -94,6 +94,7 @@ class StundenPlanForm {
             calendarControl.addPeriodicEvent(item);
         }
         // Create teh calendarControl
+        domContainer.empty();
         calendarControl.createTable({ weeks: 4 });
     }
     refreshForm() {
@@ -141,7 +142,7 @@ export class WeeklyCalenderControl {
             const row = $("<tr></tr>");
             // Creates the first column containing the weekdays
             if (configuration.showWeeks) {
-                const cellWeek = $("<td></td>");
+                const cellWeek = $("<td class='stundenplan-week'></td>");
                 cellWeek.text("Week " + (n + 1).toString());
                 row.append(cellWeek);
             }

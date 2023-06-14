@@ -3,10 +3,14 @@
     border-collapse: collapse;
 }
 
-.stundenplan td{
+.stundenplan td {
     vertical-align: top;
     padding: 2px 5px 2px 5px;
     border: 1px solid black;
+}
+
+.stundenplan .stundenplan-week {
+    font-weight: bold;
 }
 
 .stundenplan .stundenplan-weekday{

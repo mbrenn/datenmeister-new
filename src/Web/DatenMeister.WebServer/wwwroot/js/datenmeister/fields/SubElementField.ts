@@ -168,19 +168,26 @@ export class Control {
 
                     /* Creates the delete button */
                     let deleteCell = $("<td><btn class='btn btn-secondary'>Delete</btn></td>");
-                    $("btn", deleteCell).on("click",
+                    const deleteButton = $("btn", deleteCell);                    
+                    deleteButton.on("click",
                         () => {
-                            ClientItems.removeReferenceFromCollection(
-                                tthis.form.workspace,
-                                tthis.itemUrl,
-                                {
-                                    property: tthis.propertyName,
-                                    referenceUri: innerValue.uri,
-                                    referenceWorkspaceId: innerValue.workspace
-                                })
-                                .then(() => {
-                                    tthis.reloadValuesFromServer()
-                                });
+                            if (deleteButton.attr('data-confirmdelete') !== '1') {
+                                deleteButton.text('Sure?');
+                                deleteButton.attr('data-confirmdelete', '1');
+                            }
+                            else {
+                                ClientItems.removeReferenceFromCollection(
+                                    tthis.form.workspace,
+                                    tthis.itemUrl,
+                                    {
+                                        property: tthis.propertyName,
+                                        referenceUri: innerValue.uri,
+                                        referenceWorkspaceId: innerValue.workspace
+                                    })
+                                    .then(() => {
+                                        tthis.reloadValuesFromServer()
+                                    });
+                            }
                         });
 
                     tr.append(deleteCell);
@@ -269,7 +276,7 @@ export class Control {
                     let additionalType = await MofResolver.resolve(this.additionalTypes[m]) as DmObject;
 
                     const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
-                    buttonAdditionalType.text(additionalType.get(
+                    buttonAdditionalType.text('Create ' + additionalType.get(
                         _UML._CommonStructure._NamedElement._name_,
                         ObjectType.String
                     ));

@@ -1,6 +1,5 @@
 ﻿import {IFormConfiguration} from "./IFormConfiguration.js";
 import {DmObjectWithSync} from "../Mof.js";
-import * as ApiModels from "../ApiModels.js";
 import {debugElementToDom} from "../DomHelper.js";
 import * as Forms from "./Forms.js";
 import * as ObjectForm from "./ObjectForm.js";

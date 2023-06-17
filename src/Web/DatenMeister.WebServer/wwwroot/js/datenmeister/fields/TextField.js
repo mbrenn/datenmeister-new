@@ -5,6 +5,7 @@ import { _DatenMeister } from "../models/DatenMeister.class.js";
 import { FormType } from "../forms/Interfaces.js";
 var _TextFieldData = _DatenMeister._Forms._TextFieldData;
 import { truncateText } from "../../burnsystems/StringManipulation.js";
+import { injectNameByUri } from "../DomHelper.js";
 export class Field extends BaseField {
     async createDom(dmElement) {
         const fieldName = this.field.get('name')?.toString() ?? "";
@@ -57,6 +58,10 @@ export class Field extends BaseField {
             }
             else {
                 div.text(value ?? "undefined");
+            }
+            if (fieldName === 'name') {
+                // If the text field is of a certain typename, then tranform is to an injected property            
+                let _ = injectNameByUri(div, dmElement.workspace, dmElement.uri, {});
             }
             divContainer.append(div);
             return divContainer;

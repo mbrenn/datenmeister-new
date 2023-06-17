@@ -5,6 +5,7 @@ import {_DatenMeister} from "../models/DatenMeister.class.js";
 import {FormType} from "../forms/Interfaces.js";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
 import {truncateText} from "../../burnsystems/StringManipulation.js";
+import { injectNameByUri } from "../DomHelper.js";
 
 export class Field extends BaseField implements IFormField
 {
@@ -72,10 +73,16 @@ export class Field extends BaseField implements IFormField
             const div = $("<div class='dm-textfield'/>");
             if (value === undefined) {
                 div.append($("<em class='dm-undefined'>undefined</em>"));
+
             } else {
                 div.text(value ?? "undefined");
             }
-            
+
+            if (fieldName === 'name') {
+                // If the text field is of a certain typename, then tranform is to an injected property            
+                let _ = injectNameByUri(div, dmElement.workspace, dmElement.uri, {});
+            }
+
             divContainer.append(div);
             return divContainer;
         } else {

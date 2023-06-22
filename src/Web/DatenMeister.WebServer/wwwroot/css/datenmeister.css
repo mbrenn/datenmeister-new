@@ -298,6 +298,37 @@ a {
     text-decoration: none;
 }
 
+/* 
+    The Drop Down menues
+*/
+.dm-contextmenu .dm-contextmenu-dots{
+    border: 1px solid black;
+    background-color: white;
+    display: inline;
+    padding: 1px 10px 1px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dm-contextmenu .dm-contextmenu-dots:hover {  
+    background-color: lightgray;
+}
+
+.dm-contextmenu .dm-contextmenu-item-container {
+    position: absolute;
+    border: 1px solid black;
+    display: none;
+    background-color: lightgray;
+}
+
+.dm-contextmenu .dm-contextmenu-item {
+    padding: 1px 10px 1px 10px;
+    cursor: pointer;
+}
+
+.dm-contextmenu .dm-contextmenu-item:hover {
+    background-color: darkgray;
+}
 
 /* Mocha Configuration
 -------------------------------------------------- */
@@ -317,3 +348,4 @@ a {
     font-family: monospace;
     
 }
+

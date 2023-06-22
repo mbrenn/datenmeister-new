@@ -113,12 +113,39 @@ export class TableForm {
             const fields = this.formElement.getAsArray("field");
             const headerRow = $("<tbody><tr></tr></tbody>");
             const innerRow = $("tr", headerRow);
+            // Create the column headlines
             for (let n in fields) {
                 if (!fields.hasOwnProperty(n))
                     continue;
                 const field = fields[n];
+                // Create the column
                 let cell = $("<th></th>");
+                // Create the text of the headline
                 cell.text(field.get("title") ?? field.get("name"));
+                // Create the column menu
+                var column = await this.createPropertyMenuItems();
+                let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
+                const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
+                for (var m in column) {
+                    const menuProperty = column[m];
+                    const htmlItem = $("<div class='dm-contextmenu-item'></div>");
+                    htmlItem.text(menuProperty.title);
+                    if (menuProperty.onClick !== undefined) {
+                        htmlItem.on('click', () => menuProperty.onClick());
+                    }
+                    htmlContainer.append(htmlItem);
+                }
+                $(".dm-contextmenu-dots", contextItem).on('click', () => {
+                    if (htmlContainer.attr('data-display') === 'visible') {
+                        htmlContainer.hide();
+                        htmlContainer.attr('data-display', '');
+                    }
+                    else {
+                        htmlContainer.show();
+                        htmlContainer.attr('data-display', 'visible');
+                    }
+                });
+                cell.append(contextItem);
                 innerRow.append(cell);
             }
             this.cacheTable.append(headerRow);
@@ -163,6 +190,13 @@ export class TableForm {
                 parent.append(this.cacheTable);
             }
         }
+    }
+    async createPropertyMenuItems() {
+        const menu1 = {
+            title: "Test", onClick: () => { alert('x'); }
+        };
+        const menu2 = { title: "Test 2" };
+        return [menu1, menu2];
     }
 }
 //# sourceMappingURL=TableForm.js.map

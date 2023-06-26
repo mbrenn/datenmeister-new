@@ -274,12 +274,31 @@ export class Control {
             if (this.additionalTypes !== undefined) {
                 for (const m in this.additionalTypes) {
                     let additionalType = await MofResolver.resolve(this.additionalTypes[m]) as DmObject;
+                    let name; 
+                    let metaClassUri;
+                    let metaClassWorkspace;
+
+                    // There are two options to reference a metaclass in DefaultTypeForNewElements
+                    if (additionalType.metaClass.uri === _DatenMeister._Forms.__DefaultTypeForNewElement_Uri) {
+                        // One is by using an instance of DefaultTypeForNewElement
+                        name = additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement._name_, ObjectType.String);
+                        const metaClass = await MofResolver.resolve(
+                            additionalType.get(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, ObjectType.Object)) as DmObject;
+                        metaClassUri = metaClass.uri;
+                        metaClassWorkspace = metaClass.workspace;
+                    }
+                    else {
+                        // The other one is to directly reference
+                        name = additionalType.get(
+                            _UML._CommonStructure._NamedElement._name_,
+                            ObjectType.String
+                        );
+                        metaClassUri = additionalType.uri;
+                        metaClassWorkspace = additionalType.workspace;
+                    }
 
                     const buttonAdditionalType = $("<button type='button' class='btn btn-secondary'></button>");
-                    buttonAdditionalType.text('Create ' + additionalType.get(
-                        _UML._CommonStructure._NamedElement._name_,
-                        ObjectType.String
-                    ));
+                    buttonAdditionalType.text('Create ' + name);
 
                     buttonAdditionalType.on(
                         'click',
@@ -288,8 +307,8 @@ export class Control {
                                 Navigator.getLinkForNavigateToCreateItemInProperty(
                                     tthis.form.workspace, 
                                     tthis.itemUrl,
-                                    additionalType.uri, 
-                                    additionalType.workspace, 
+                                    metaClassUri,
+                                    metaClassWorkspace, 
                                     tthis.propertyName);
                         });
 

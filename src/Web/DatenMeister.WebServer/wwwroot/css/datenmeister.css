@@ -301,6 +301,12 @@ a {
 /* 
     The Drop Down menues
 */
+
+.dm-contextmenu{
+    display: inline;
+    margin: 0px 5px 0px 5px;
+}
+
 .dm-contextmenu .dm-contextmenu-dots{
     border: 1px solid black;
     background-color: white;

@@ -320,6 +320,14 @@ export namespace _DatenMeister
                 }
 
                 export const __ImportXmiAction_Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d";
+                export class _DeletePropertyFromCollectionAction
+                {
+                    static propertyName = "propertyName";
+                    static metaclass = "metaclass";
+                    static collectionUrl = "collectionUrl";
+                }
+
+                export const __DeletePropertyFromCollectionAction_Uri = "dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503";
         }
 
         export namespace _DataViews

@@ -978,6 +978,42 @@
         <isLeaf p2:id="580c4b8a-3ffa-499e-9920-5d12994fcb7c" />
       </ownedAttribute>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b631bb00-ab11-4a8a-a148-e28abc398503" name="DeletePropertyFromCollectionAction">
+      <isAbstract p2:id="3bc77965-0bd0-43d1-a3c3-b6617ec63716" />
+      <isActive p2:id="2e5998ea-9826-4c13-9ca6-e03d0320f8fd" />
+      <isFinalSpecialization p2:id="05382d4d-96a8-400a-bb49-6badee474565" />
+      <isLeaf p2:id="78112191-e7b6-4697-afaa-95928fcc6b57" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1db8339a-8167-40b5-a010-6e235e9ad9bc" isComposite="false" isID="false" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation p2:id="138db012-0755-4400-938a-18390673ce47" />
+        <isDerived p2:id="a59da23c-4cba-4146-9360-8b653745d390" />
+        <isDerivedUnion p2:id="784b318c-688e-47d8-895f-3db71214ff2b" />
+        <isReadOnly p2:id="9dc62691-3b95-4087-a73e-318d430bdb70" />
+        <isOrdered p2:id="0fa1a8f6-e499-4431-9a40-627266fd6813" />
+        <isUnique p2:id="14ac0adb-387a-426b-8009-515af86f3ca8" />
+        <isStatic p2:id="367e937f-e823-4634-b376-49c66999551b" />
+        <isLeaf p2:id="65928a7e-2673-4c8d-af72-b08f69075766" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="84dd1f97-b90e-43e2-8914-a933f15e359f" name="metaclass" type-ref="dm:///_internal/model/uml#Class" isID="true" isComposite="true">
+        <aggregation p2:id="abe14f73-47f9-481f-bea4-0005aa5bdd87" />
+        <isDerived p2:id="6ac1fde6-934f-46fc-9136-99a5df03c839" />
+        <isDerivedUnion p2:id="2bd17e94-4afb-4211-87c2-45b86f9aa0bd" />
+        <isReadOnly p2:id="ffbae31a-e0ab-4d51-a264-841ac4d0c1d2" />
+        <isOrdered p2:id="566ac318-8831-407d-bf79-9a2e4006ec4d" />
+        <isUnique p2:id="b4293592-6482-46b0-a9d9-6b4270f2ec12" />
+        <isStatic p2:id="5f92bb3a-49c3-4518-9db0-2884a1d66a2a" />
+        <isLeaf p2:id="731978ee-8ad1-4a23-b56a-786d2139c908" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09c1a91e-096b-4636-9c0a-fa1d5afdb43e" type-ref="dm:///_internal/model/primitivetypes#String" name="collectionUrl" isID="true" isComposite="true">
+        <aggregation p2:id="a18a2e0a-b3ef-4126-bbec-8b36ffc92691" />
+        <isDerived p2:id="074e9a20-a9be-475a-99d7-66b9e04bd497" />
+        <isDerivedUnion p2:id="6daf45ad-bad2-4a34-9a7b-bd4d26b8adbe" />
+        <isReadOnly p2:id="48e6e3f3-f00a-4db5-b0a5-4f2182235572" />
+        <isOrdered p2:id="33980c3b-011b-4ce0-93a3-847dd4b85138" />
+        <isUnique p2:id="b82865a1-ebb4-4bd8-a30d-eacaaf14e017" />
+        <isStatic p2:id="31d7f89e-da40-4083-b758-1c1c530e2d72" />
+        <isLeaf p2:id="ae4dbbd2-2199-45e4-9a8f-6fa9e459677a" />
+      </ownedAttribute>
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

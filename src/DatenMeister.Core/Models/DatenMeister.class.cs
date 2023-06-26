@@ -643,6 +643,22 @@ namespace DatenMeister.Core.Models
             public _ImportXmiAction @ImportXmiAction = new _ImportXmiAction();
             public MofObjectShadow @__ImportXmiAction = new MofObjectShadow("dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d");
 
+            public class _DeletePropertyFromCollectionAction
+            {
+                public static string @propertyName = "propertyName";
+                public IElement? @_propertyName = null;
+
+                public static string @metaclass = "metaclass";
+                public IElement? @_metaclass = null;
+
+                public static string @collectionUrl = "collectionUrl";
+                public IElement? @_collectionUrl = null;
+
+            }
+
+            public _DeletePropertyFromCollectionAction @DeletePropertyFromCollectionAction = new _DeletePropertyFromCollectionAction();
+            public MofObjectShadow @__DeletePropertyFromCollectionAction = new MofObjectShadow("dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503");
+
         }
 
         public _Actions Actions = new _Actions();

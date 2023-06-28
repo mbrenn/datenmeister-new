@@ -181,8 +181,8 @@ namespace DatenMeister.Tests.Modules.Actions
                 new[] {sourceElement1_1, sourceElement1_2, sourceElement1_3, sourceElement1_4});
 
             var sourceElement2 = sourceFactory.create(null)
-                .SetProperties(new Dictionary<string, object> {["name"] = "source2"})
-                .SetId("source2");;
+                .SetProperties(new Dictionary<string, object> { ["name"] = "source2" })
+                .SetId("source2");
 
             sourceExtent.elements().add(sourceElement1);
             sourceExtent.elements().add(sourceElement2);

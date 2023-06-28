@@ -1013,6 +1013,15 @@
         <isStatic p2:id="31d7f89e-da40-4083-b758-1c1c530e2d72" />
         <isLeaf p2:id="ae4dbbd2-2199-45e4-9a8f-6fa9e459677a" />
       </ownedAttribute>
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="546dbfc7-18e4-4839-a74b-fab73ff6b3ec" isSubstitutable="false">
+        <general p2:type="dm:///_internal/model/uml#Class" p2:id="956d37e5-37e0-41ea-b7e2-1a3769145d67" name="Action">
+          <isAbstract p2:id="edf478cd-919c-48e5-a8d2-b665ce02f914" />
+          <isActive p2:id="c2319ade-bc71-4550-8969-56d48cb1478d" />
+          <isFinalSpecialization p2:id="ef9c7c27-91b2-4e90-86eb-8a13d17c168d" />
+          <isLeaf p2:id="b15c9b50-6483-4bea-8c63-85fccab3f08f" />
+          <ownedAttribute p2:id="e2487ff4-fe72-4295-ab73-797c5a567426" />
+        </general>
+      </generalization>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

@@ -52,7 +52,7 @@ namespace DatenMeister.Actions
             logicState.AddActionHandler(new MoveOrCopyActionHandler());
             logicState.AddActionHandler(new MoveUpDownActionHandler());
             logicState.AddActionHandler(new ImportXmiActionHandler());
-            
+            logicState.AddActionHandler(new DeletePropertyFromCollectionActionHandler());
             return logicState;
         }
     }

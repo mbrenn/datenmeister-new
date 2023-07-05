@@ -964,6 +964,7 @@ export var _DatenMeister;
         _TableForm.viewNode = "viewNode";
         _TableForm.autoGenerateFields = "autoGenerateFields";
         _TableForm.duplicatePerType = "duplicatePerType";
+        _TableForm.dataUrl = "dataUrl";
         _TableForm._name_ = "name";
         _TableForm.title = "title";
         _TableForm.isReadOnly = "isReadOnly";

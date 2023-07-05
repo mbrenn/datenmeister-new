@@ -38,6 +38,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     cacheEmptyDiv: JQuery;
 
     cacheButtons: JQuery;
+
     async refreshForm(): Promise<void> {
 
         await this.createFormByCollection(this.parentHtml, this.configuration, true);
@@ -99,6 +100,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         if (refresh !== true) {
             parent.append(this.cacheButtons);
         }
+        
         // Evaluate the new buttons to create objects
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {

@@ -1606,6 +1606,16 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eef7da35-1bb3-4885-b3c5-1841ce9aa386" name="viewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="bea99781-dfa4-4fd3-8624-c03219595458" name="autoGenerateFields" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ef226cba-5a4c-4be9-ab1d-ec38d2cc1de1" name="duplicatePerType" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="79a95bdd-852c-4018-854d-930b24b2717e" name="dataUrl" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+        <aggregation p1:id="e0147d6a-9e11-4f12-954a-261937becc2c" />
+        <isDerived p1:id="32912487-c490-4e29-b4bf-cc03822e1f28" />
+        <isDerivedUnion p1:id="5baa3f37-2236-4212-acd1-b67bca1e57c0" />
+        <isReadOnly p1:id="573e0d8d-ac68-4e48-8289-440cfcc6aaca" />
+        <isOrdered p1:id="255b0d7e-739c-4e6b-8b84-d3ef67e305f4" />
+        <isUnique p1:id="a5dfb9aa-0463-43cd-941f-8365c89d1373" />
+        <isStatic p1:id="8e489ed3-596e-4663-b12c-196f0036baf4" />
+        <isLeaf p1:id="271ec96a-ec53-425f-93df-be34143514f1" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.CollectionForm" name="CollectionForm">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="8cae918e-73c1-498c-8479-19d1aaa39caa" general-ref="#DatenMeister.Models.Forms.Form" />

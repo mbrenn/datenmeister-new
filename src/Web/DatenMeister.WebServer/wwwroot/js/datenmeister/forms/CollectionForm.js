@@ -138,6 +138,11 @@ export class CollectionFormCreator {
         htmlElements.itemContainer.empty()
             .text("Loading content and form...");
     }
+    /**
+     * Creates the actual html for a specific form
+     * @param htmlElements
+     * @param configuration
+     */
     createFormByCollection(htmlElements, configuration) {
         const itemContainer = htmlElements.itemContainer;
         if (configuration.isReadOnly === undefined) {

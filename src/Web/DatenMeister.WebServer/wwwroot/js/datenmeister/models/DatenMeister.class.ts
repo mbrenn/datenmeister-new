@@ -1075,6 +1075,7 @@ export namespace _DatenMeister
                     static viewNode = "viewNode";
                     static autoGenerateFields = "autoGenerateFields";
                     static duplicatePerType = "duplicatePerType";
+                    static dataUrl = "dataUrl";
                     static _name_ = "name";
                     static title = "title";
                     static isReadOnly = "isReadOnly";

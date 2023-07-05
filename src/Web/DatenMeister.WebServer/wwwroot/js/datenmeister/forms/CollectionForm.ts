@@ -79,7 +79,11 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
      */
     private _overrideFormUrl?: string;
 
-    createCollectionForRootElements(htmlElements: CollectionFormHtmlElements, workspace: string, extentUri: string, configuration: IFormConfiguration) {
+    createCollectionForRootElements(
+        htmlElements: CollectionFormHtmlElements, 
+        workspace: string, 
+        extentUri: string,
+        configuration: IFormConfiguration) {
         if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
@@ -182,7 +186,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                  */
                 if (htmlElements.storeCurrentFormBtn !== undefined) {
                     htmlElements.storeCurrentFormBtn.on('click',() => {
-                            
                         })
                 }
 
@@ -226,6 +229,11 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             .text("Loading content and form...");
     }
 
+    /**
+     * Creates the actual html for a specific form
+     * @param htmlElements 
+     * @param configuration
+     */
     createFormByCollection(
         htmlElements: CollectionFormHtmlElements,
         configuration: IFormConfiguration) {
@@ -271,8 +279,9 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                     }
 
                     // Load the object for the specific form
-                    const elements = await ClientItems.getRootElements(
-                        tthis.workspace, tthis.extentUri, parameter);
+                    const elements =
+                        await ClientItems.getRootElements(
+                            tthis.workspace, tthis.extentUri, parameter);
 
                     const formFactory = FormFactory.getCollectionFormFactory(
                         tab.metaClass.uri);
@@ -281,7 +290,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                         tableForm.elements = elements;
                         tableForm.formElement = tab;
                         tableForm.workspace = tthis.workspace;
-                        tableForm.extentUri = tthis.extentUri;
+                        tableForm.extentUri = tthis.extentUri;                        
                         await tableForm.createFormByCollection(form, configuration);
                     } else {
                         form.addClass('alert alert-warning');

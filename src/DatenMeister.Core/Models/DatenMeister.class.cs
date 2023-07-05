@@ -2311,6 +2311,9 @@ namespace DatenMeister.Core.Models
                 public static string @duplicatePerType = "duplicatePerType";
                 public IElement? @_duplicatePerType = null;
 
+                public static string @dataUrl = "dataUrl";
+                public IElement? @_dataUrl = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

@@ -128,31 +128,7 @@ export class TableForm {
                 // Create the text of the headline
                 cell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
                 // Create the column menu
-                const column = await this.createPropertyMenuItems(field);
-                let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
-                const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
-                for (const m in column) {
-                    const menuProperty = column[m];
-                    const htmlItem = $("<div class='dm-contextmenu-item'></div>");
-                    htmlItem.text(menuProperty.title);
-                    if (menuProperty.onClick !== undefined) {
-                        htmlItem.on('click', () => {
-                            menuProperty.onClick();
-                        });
-                    }
-                    htmlContainer.append(htmlItem);
-                }
-                $(".dm-contextmenu-dots", contextItem).on('click', () => {
-                    if (htmlContainer.attr('data-display') === 'visible') {
-                        htmlContainer.hide();
-                        htmlContainer.attr('data-display', '');
-                    }
-                    else {
-                        htmlContainer.show();
-                        htmlContainer.attr('data-display', 'visible');
-                    }
-                });
-                cell.append(contextItem);
+                await this.appendColumnMenus(field, cell);
                 innerRow.append(cell);
             }
             this.cacheTable.append(headerRow);
@@ -198,6 +174,40 @@ export class TableForm {
             }
         }
     }
+    async appendColumnMenus(field, cell) {
+        const column = await this.createPropertyMenuItems(field);
+        let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
+        const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
+        for (const m in column) {
+            const menuProperty = column[m];
+            const htmlItem = $("<div class='dm-contextmenu-item'></div>");
+            htmlItem.text(menuProperty.title);
+            if (menuProperty.onClick !== undefined) {
+                htmlItem.on('click', () => {
+                    if (menuProperty.requireConfirmation !== true
+                        || htmlItem.attr('data-require') === '1') {
+                        menuProperty.onClick();
+                    }
+                    else {
+                        htmlItem.attr('data-require', '1');
+                        htmlItem.text('Confirm?');
+                    }
+                });
+            }
+            htmlContainer.append(htmlItem);
+        }
+        $(".dm-contextmenu-dots", contextItem).on('click', () => {
+            if (htmlContainer.attr('data-display') === 'visible') {
+                htmlContainer.hide();
+                htmlContainer.attr('data-display', '');
+            }
+            else {
+                htmlContainer.show();
+                htmlContainer.attr('data-display', 'visible');
+            }
+        });
+        cell.append(contextItem);
+    }
     async createPropertyMenuItems(field) {
         let result = [];
         const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
@@ -205,6 +215,7 @@ export class TableForm {
             && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
             const menuRemoveProperty = {
                 title: "Clear Property",
+                requireConfirmation: true,
                 onClick: async () => {
                     // Gets the data
                     const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);

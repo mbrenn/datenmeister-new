@@ -31,6 +31,11 @@ namespace DatenMeister.Actions.ActionHandler
             {
                 throw new InvalidOperationException("Property is not set");
             }
+            
+            if (string.IsNullOrEmpty(collectionUrl))
+            {
+                throw new InvalidOperationException("Collection Url is not set");
+            }
 
             var resolvedElement = actionLogic.WorkspaceLogic.Resolve(
                 collectionUrl, ResolveType.Default, true);

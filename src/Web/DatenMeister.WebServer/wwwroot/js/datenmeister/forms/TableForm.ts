@@ -7,6 +7,8 @@ import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
 import {_DatenMeister} from "../models/DatenMeister.class.js";
 import _TableForm = _DatenMeister._Forms._TableForm;
+import * as Actions from "../client/Actions.js";
+import _FieldData = _DatenMeister._Forms._FieldData;
 
 interface PropertyMenuItem
 {
@@ -181,10 +183,10 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 let cell = $("<th></th>");
 
                 // Create the text of the headline
-                cell.text(field.get("title") ?? field.get("name"));
+                cell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
 
                 // Create the column menu
-                const column = await this.createPropertyMenuItems();
+                const column = await this.createPropertyMenuItems(field);
                 let contextItem =
                     $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
                 const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
@@ -194,9 +196,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     htmlItem.text(menuProperty.title);
                     if (menuProperty.onClick !== undefined) {
                         htmlItem.on('click',
-                            () => {
-                                alert(this.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String));
-                                menuProperty.onClick()
+                            () => {                            
+                                menuProperty.onClick();
                             });
                     }
 
@@ -276,12 +277,46 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
     }
 
-    async createPropertyMenuItems(): Promise<PropertyMenuItem[]> {
-        const menu1 = {
-            title: "Test", onClick: () => { alert('x'); }
-        };
-        const menu2 = { title: "Test 2" };
+    async createPropertyMenuItems(field: Mof.DmObject): Promise<PropertyMenuItem[]> {
 
-        return [menu1, menu2];
+        let result = [];
+        const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
+
+        if (field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
+            && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
+            const menuRemoveProperty =
+                {
+                    title: "Clear Property",
+                    onClick: async () => {
+
+                        // Gets the data
+                        const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
+                        const dataUrl = this.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
+
+                        // Creates the action
+                        const action =
+                            new Mof.DmObject(_DatenMeister._Actions.__DeletePropertyFromCollectionAction_Uri);
+                        action.set(_DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl, dataUrl);
+                        action.set(_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName, propertyName);
+
+                        const parameter: Actions.ExecuteActionParams =
+                            {
+                                parameter: action
+                            };
+
+                        await Actions.executeActionDirectly("Execute", parameter);
+                        await this.refreshForm();
+                    }
+                };
+
+            result.push(menuRemoveProperty);
+        }
+
+        // If no entry is added, add at least some comment
+        if (result.length === 0) {
+            result.push({title: "No Action"});
+        }
+        
+        return result;
     }
 }

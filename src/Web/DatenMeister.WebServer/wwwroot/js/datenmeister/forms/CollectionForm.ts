@@ -95,7 +95,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
             configuration.viewMode = VML.getCurrentViewMode();
         }
-
+        
         const tthis = this;
 
         if (configuration.refreshForm === undefined) {

@@ -46,7 +46,11 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
     async refreshForm(): Promise<void> {
 
-        await this.createFormByCollection(this.parentHtml, this.configuration, true);
+        if (this.configuration.refreshForm !== undefined) {
+            this.configuration.refreshForm();
+        } else {
+            await this.createFormByCollection(this.parentHtml, this.configuration, true);
+        }
     }
 
     /**

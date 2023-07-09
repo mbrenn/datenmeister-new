@@ -12,7 +12,12 @@ export class TableForm {
         this.formType = FormType.Table;
     }
     async refreshForm() {
-        await this.createFormByCollection(this.parentHtml, this.configuration, true);
+        if (this.configuration.refreshForm !== undefined) {
+            this.configuration.refreshForm();
+        }
+        else {
+            await this.createFormByCollection(this.parentHtml, this.configuration, true);
+        }
     }
     /**
      * This method just calls the createFormByCollection since a TableForm can

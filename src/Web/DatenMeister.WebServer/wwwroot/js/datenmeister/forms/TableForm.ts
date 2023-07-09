@@ -5,6 +5,8 @@ import {createField} from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
+import {_DatenMeister} from "../models/DatenMeister.class.js";
+import _TableForm = _DatenMeister._Forms._TableForm;
 
 interface PropertyMenuItem
 {
@@ -182,15 +184,20 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 cell.text(field.get("title") ?? field.get("name"));
 
                 // Create the column menu
-                var column = await this.createPropertyMenuItems();
-                let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
+                const column = await this.createPropertyMenuItems();
+                let contextItem =
+                    $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
                 const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
-                for (var m in column) {
+                for (const m in column) {
                     const menuProperty = column[m];
                     const htmlItem = $("<div class='dm-contextmenu-item'></div>");
                     htmlItem.text(menuProperty.title);
                     if (menuProperty.onClick !== undefined) {
-                        htmlItem.on('click', () => menuProperty.onClick());
+                        htmlItem.on('click',
+                            () => {
+                                alert(this.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String));
+                                menuProperty.onClick()
+                            });
                     }
 
                     htmlContainer.append(htmlItem);

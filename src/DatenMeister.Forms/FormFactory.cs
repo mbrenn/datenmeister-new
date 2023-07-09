@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -20,6 +21,10 @@ using DatenMeister.Forms.FormModifications;
 
 namespace DatenMeister.Forms
 {
+    /// <summary>
+    /// This formfactory can be used to get the forms for specific elements, collections or extents
+    /// It will call the automatic form finder or the form creator, dependent on the configuration.
+    /// </summary>
     public class FormFactory : IFormFactory
     {
         /// <summary>
@@ -591,10 +596,16 @@ namespace DatenMeister.Forms
             // 
             if (foundForm != null)
             {
-                // Strip the ParentPropertyNames from the table forms. This is used to avoid that the wrong plugins are called
+                // Go through each table form to do the latest updates
                 foreach (var tableForm in FormMethods.GetTableForms(foundForm))
                 {
+                    // Strip the ParentPropertyNames from the table forms.
+                    // This is used to avoid that the wrong plugins are called
                     tableForm.unset(_DatenMeister._Forms._TableForm.property);
+                    
+                    // Sets the data url
+                    var dataUrl = GetUrlOfTableForm(extent, tableForm);
+                    tableForm.set(_DatenMeister._Forms._TableForm.dataUrl, dataUrl);
                 }
 
                 EvaluateTableFormsForAutogenerationByReflectiveCollection(collection, foundForm);
@@ -614,6 +625,26 @@ namespace DatenMeister.Forms
             }
 
             return foundForm;
+        }
+
+        private static string GetUrlOfTableForm(IExtent extent, IElement tableForm)
+        {
+            // Set the data url of the table form
+            var dataUrl = (extent as IUriExtent)?.contextURI() ?? string.Empty;
+
+            // If form also contains a metaclass, then the metaclass needs to be added
+            var tableFormMetaClass =
+                tableForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass);
+            var metaClassUri = tableFormMetaClass != null
+                ? tableFormMetaClass.GetUri()
+                : null;
+
+            if (!string.IsNullOrEmpty(metaClassUri))
+            {
+                dataUrl += "?metaclass=" + HttpUtility.UrlEncode(metaClassUri);
+            }
+
+            return dataUrl;
         }
 
         public IElement? CreateTableFormForMetaClass(

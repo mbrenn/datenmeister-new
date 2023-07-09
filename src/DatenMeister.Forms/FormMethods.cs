@@ -437,7 +437,8 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
-        ///     Gets the enumeration of the detail forms which are in embedded into the tabs
+        /// Gets the enumeration of the table forms which are in embedded into the tabs
+        /// If the given form is itself a tableform, it will also be returned
         /// </summary>
         /// <param name="form">Form to be checked</param>
         /// <returns>Enumeration of the detail forms</returns>

@@ -1,7 +1,10 @@
 import { FormType } from "./Interfaces.js";
+import * as Mof from "../Mof.js";
 import { createField } from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
 import * as Navigator from '../Navigator.js';
+import { _DatenMeister } from "../models/DatenMeister.class.js";
+var _TableForm = _DatenMeister._Forms._TableForm;
 export class TableForm {
     constructor() {
         this.formType = FormType.Table;
@@ -123,15 +126,18 @@ export class TableForm {
                 // Create the text of the headline
                 cell.text(field.get("title") ?? field.get("name"));
                 // Create the column menu
-                var column = await this.createPropertyMenuItems();
+                const column = await this.createPropertyMenuItems();
                 let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
                 const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
-                for (var m in column) {
+                for (const m in column) {
                     const menuProperty = column[m];
                     const htmlItem = $("<div class='dm-contextmenu-item'></div>");
                     htmlItem.text(menuProperty.title);
                     if (menuProperty.onClick !== undefined) {
-                        htmlItem.on('click', () => menuProperty.onClick());
+                        htmlItem.on('click', () => {
+                            alert(this.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String));
+                            menuProperty.onClick();
+                        });
                     }
                     htmlContainer.append(htmlItem);
                 }

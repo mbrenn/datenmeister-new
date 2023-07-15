@@ -35,6 +35,5 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
         } else {
             alert('Form was created successfully');
         }
-
     }
 }

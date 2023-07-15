@@ -102,11 +102,11 @@ export interface GetViewModesResultServer{
     viewModes: Array<string>;
 }
 
-export interface GetViewModesResult{
+export interface IGetViewModesResult {
     viewModes: Array<Mof.DmObject>;
 }
 
-export async function getViewModes() : Promise<GetViewModesResult> {
+export async function getViewModes() : Promise<IGetViewModesResult> {
     const resultFromServer = await ApiConnection.get<GetViewModesResultServer>(
         Settings.baseUrl +
         "api/forms/get_viewmodes");
@@ -123,4 +123,22 @@ export async function getViewModes() : Promise<GetViewModesResult> {
     }
 
     return result;
+}
+
+
+export interface IGetDefaultViewModesResult {
+    viewMode: Mof.DmObject;
+}
+
+export async function getDefaultViewMode(workspace: string, extentUri: string){
+    const apiResult = await ApiConnection.get<IGetDefaultViewModesResult>(
+        Settings.baseUrl +
+        "api/forms/get_default_viewmode/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri));
+        
+    return {
+        viewMode: Mof.convertJsonObjectToDmObject(apiResult.viewMode)
+    }
 }

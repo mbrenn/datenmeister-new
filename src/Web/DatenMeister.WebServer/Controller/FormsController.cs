@@ -215,5 +215,36 @@ namespace DatenMeister.WebServer.Controller
             /// </summary>
             public List<string> ViewModes { get; set; } = new();
         }
+
+        [HttpGet("api/forms/get_default_viewmode/{workspaceId}/{extentUri}")]
+        public ActionResult<GetDefaultViewModeResult> GetDefaultViewMode(string? workspaceId, string? extentUri)
+        {
+            workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
+            extentUri = MvcUrlEncoder.DecodePath(extentUri);
+            if (workspaceId == null) throw new ArgumentNullException(nameof(workspaceId));
+            if (extentUri == null) throw new ArgumentNullException(nameof(extentUri));
+
+            var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
+            var extent = _internal.WorkspaceLogic.FindExtent(workspaceId, extentUri);
+
+            var viewMode = formMethods.GetDefaultViewMode(extent);
+            if (viewMode == null)
+            {
+                throw new InvalidOperationException("No viewmode was found");
+            }
+
+            return new GetDefaultViewModeResult()
+            {
+                ViewMode = MofJsonConverter.ConvertToJsonWithDefaultParameter(viewMode)
+            };
+        }
+
+        public record GetDefaultViewModeResult
+        {
+            /// <summary>
+            /// A list of view modes
+            /// </summary>
+            public string ViewMode { get; set; }
+        }
     }
 }

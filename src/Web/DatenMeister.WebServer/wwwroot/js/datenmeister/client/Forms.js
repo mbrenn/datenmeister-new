@@ -73,4 +73,14 @@ export async function getViewModes() {
     }
     return result;
 }
+export async function getDefaultViewMode(workspace, extentUri) {
+    const apiResult = await ApiConnection.get(Settings.baseUrl +
+        "api/forms/get_default_viewmode/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri));
+    return {
+        viewMode: Mof.convertJsonObjectToDmObject(apiResult.viewMode)
+    };
+}
 //# sourceMappingURL=Forms.js.map

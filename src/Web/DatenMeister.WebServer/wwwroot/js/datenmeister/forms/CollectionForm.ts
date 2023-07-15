@@ -79,7 +79,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
      */
     private _overrideFormUrl?: string;
 
-    createCollectionForRootElements(
+    async createCollectionForRootElements(
         htmlElements: CollectionFormHtmlElements, 
         workspace: string, 
         extentUri: string,
@@ -93,7 +93,11 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         }
 
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
-            configuration.viewMode = VML.getCurrentViewMode();
+
+            /*
+            Gets the default viewmode for the extent to be shown            
+             */            
+            configuration.viewMode = await VML.getDefaultViewModeIfNotSet(workspace, extentUri);
         }
         
         const tthis = this;
@@ -103,7 +107,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 tthis.createCollectionForRootElements(htmlElements, workspace, extentUri, configuration);
             }
         }
-
+        
         // Load the form
         const defer2 =
             this._overrideFormUrl === undefined ?
@@ -121,14 +125,14 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             debugElementToDom(form, "#debug_formelement");
 
             tthis.createFormByCollection(htmlElements, configuration);
-
+            
             /* 
              Creates the form for the View Mode Selection
              */
             htmlElements.viewModeSelectorContainer?.empty();
             if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
                 const viewModeForm = new ViewModeSelectionControl();
-                const htmlViewModeForm = viewModeForm.createForm();
+                const htmlViewModeForm = await viewModeForm.createForm();
                 viewModeForm.viewModeSelected.addListener(
                     _ => {
                         configuration.viewMode = VML.getCurrentViewMode();
@@ -283,8 +287,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                         await ClientItems.getRootElements(
                             tthis.workspace, tthis.extentUri, parameter);
 
-                    const formFactory = FormFactory.getCollectionFormFactory(
-                        tab.metaClass.uri);
+                    const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                     if (formFactory !== undefined) {
                         const tableForm = formFactory();
                         tableForm.elements = elements;

@@ -30,7 +30,7 @@ export class TableForm {
         if (this.elements === undefined && this.element !== undefined) {
             this.elements = this.element.get(this.formElement.get("property"));
         }
-        return this.createFormByCollection(parent, configuration, refresh);
+        return await this.createFormByCollection(parent, configuration, refresh);
     }
     async createFormByCollection(parent, configuration, refresh) {
         this.parentHtml = parent;
@@ -44,7 +44,6 @@ export class TableForm {
             refresh === true && this.cacheHeadline !== undefined
                 ? this.cacheHeadline
                 : $("<h2><a></a></h2>");
-        this.cacheHeadline.empty();
         const headLineLink = $("a", this.cacheHeadline);
         headLineLink.text(this.formElement.get('title')
             ?? this.formElement.get('name'));

@@ -159,7 +159,6 @@ namespace DatenMeister.Forms
             IElement? foundForm = null;
 
             // Checks if the current item is a package and if the viewmode
-
             if (configuration.ViaFormFinder)
             {
                 var viewFinder = CreateFormFinder();

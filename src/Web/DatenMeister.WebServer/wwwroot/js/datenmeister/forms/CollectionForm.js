@@ -23,7 +23,7 @@ export class CollectionFormCreator {
     constructor() {
         this.formType = FormType.Collection;
     }
-    createCollectionForRootElements(htmlElements, workspace, extentUri, configuration) {
+    async createCollectionForRootElements(htmlElements, workspace, extentUri, configuration) {
         if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
@@ -31,7 +31,10 @@ export class CollectionFormCreator {
             configuration.isReadOnly = true;
         }
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
-            configuration.viewMode = VML.getCurrentViewMode();
+            /*
+            Gets the default viewmode for the extent to be shown
+             */
+            configuration.viewMode = await VML.getDefaultViewModeIfNotSet(workspace, extentUri);
         }
         const tthis = this;
         if (configuration.refreshForm === undefined) {
@@ -58,7 +61,7 @@ export class CollectionFormCreator {
             htmlElements.viewModeSelectorContainer?.empty();
             if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
                 const viewModeForm = new ViewModeSelectionControl();
-                const htmlViewModeForm = viewModeForm.createForm();
+                const htmlViewModeForm = await viewModeForm.createForm();
                 viewModeForm.viewModeSelected.addListener(_ => {
                     configuration.viewMode = VML.getCurrentViewMode();
                     configuration.refreshForm();

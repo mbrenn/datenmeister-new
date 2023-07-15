@@ -54,8 +54,7 @@ namespace DatenMeister.Forms.FormFinder
             {
                 result += $", viewModeId: {viewModeId}";
             }
-
-
+            
             return result;
         }
     }

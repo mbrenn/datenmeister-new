@@ -9,28 +9,42 @@ export class ViewModeSelectionControl {
          */
         this.viewModeSelected = new UserEvent();
     }
-    createForm() {
+    async createForm() {
         const selectField = $("<select></select>");
-        const viewModes = VML.getViewModesFromServer();
+        const viewModes = await VML.getViewModesFromServer();
         const currentViewMode = VML.getCurrentViewMode();
-        viewModes.then((result) => {
-            for (let n in result) {
-                const v = result[n];
-                const option = $("<option></option>");
-                const id = v.get(_DatenMeister._Forms._ViewMode.id, ObjectType.Single);
-                option.attr("value", id);
-                option.text(v.get(_DatenMeister._Forms._ViewMode._name_, ObjectType.Single));
-                if (id === currentViewMode) {
-                    option.attr("selected", "selected");
-                }
-                selectField.append(option);
+        for (let n in viewModes) {
+            const v = viewModes[n];
+            const option = $("<option></option>");
+            const id = v.get(_DatenMeister._Forms._ViewMode.id, ObjectType.Single);
+            option.attr("value", id);
+            option.text(v.get(_DatenMeister._Forms._ViewMode._name_, ObjectType.Single));
+            if (id === currentViewMode) {
+                option.attr("selected", "selected");
             }
-            selectField.on("change", () => {
-                const selectedElement = $("option:selected", selectField);
-                const viewModeId = selectedElement.attr("value");
+            selectField.append(option);
+        }
+        // Adds the clearing option
+        const clearOption = $("<option></option>");
+        clearOption.attr('data-clear', '1');
+        clearOption.text('Switch to automatic');
+        selectField.append(clearOption);
+        // Now performs the action
+        selectField.on("change", () => {
+            const selectedElement = $("option:selected", selectField);
+            // Checks, if the user has clicked on dataclear
+            let viewModeId;
+            const isDataClear = selectedElement.attr('data-clear') === '1';
+            if (isDataClear) {
+                VML.clearCurrentViewMode();
+                viewModeId = VML.getCurrentViewMode();
+            }
+            else {
+                viewModeId = selectedElement.attr("value");
                 VML.setCurrentViewMode(viewModeId);
-                this.viewModeSelected.invoke(viewModeId);
-            });
+            }
+            // Callback
+            this.viewModeSelected.invoke(viewModeId);
         });
         return selectField;
     }

@@ -75,11 +75,11 @@ export class ObjectFormCreatorForItem {
     constructor() {
         this.formMode = FormMode.ViewMode;
     }
-    switchToMode(formMode) {
+    async switchToMode(formMode) {
         this.formMode = formMode;
-        this.rebuildForm();
+        await this.rebuildForm();
     }
-    createForm(htmlElements, workspace, itemUri) {
+    async createForm(htmlElements, workspace, itemUri) {
         this.htmlElements = htmlElements;
         this.workspace = workspace;
         this.itemUri = itemUri;
@@ -88,9 +88,9 @@ export class ObjectFormCreatorForItem {
         if (p.get('edit') === 'true') {
             this.formMode = FormMode.EditMode;
         }
-        this.rebuildForm();
+        await this.rebuildForm();
     }
-    rebuildForm() {
+    async rebuildForm() {
         const tthis = this;
         let configuration;
         if (this.formMode === FormMode.ViewMode) {
@@ -105,7 +105,7 @@ export class ObjectFormCreatorForItem {
                 onSubmit: async (element, method) => {
                     await MofSync.sync(element);
                     if (method === SubmitMethod.Save) {
-                        tthis.switchToMode(FormMode.ViewMode);
+                        await tthis.switchToMode(FormMode.ViewMode);
                     }
                     if (method === SubmitMethod.SaveAndClose) {
                         const containers = await ClientItems.getContainer(tthis.workspace, tthis.itemUri);
@@ -127,13 +127,13 @@ export class ObjectFormCreatorForItem {
             };
         }
         if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.rebuildForm();
+            configuration.refreshForm = async () => {
+                await tthis.rebuildForm();
             };
         }
         // Defines the viewmode, if not already defined by the caller
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
-            configuration.viewMode = VML.getCurrentViewMode();
+            configuration.viewMode = await VML.getDefaultViewModeIfNotSet(this.workspace, this.itemUri);
         }
         // Load the object
         const defer1 = ClientItems.getObjectByUri(this.workspace, this.itemUri);
@@ -165,13 +165,13 @@ export class ObjectFormCreatorForItem {
                 && this.htmlElements.formSelectorContainer !== null) {
                 this.htmlElements.formSelectorContainer.empty();
                 const formControl = new FormSelectionControl();
-                formControl.formSelected.addListener(selectedItem => {
+                formControl.formSelected.addListener(async (selectedItem) => {
                     this._overrideFormUrl = selectedItem.selectedForm.uri;
-                    this.rebuildForm();
+                    await this.rebuildForm();
                 });
-                formControl.formResetted.addListener(() => {
+                formControl.formResetted.addListener(async () => {
                     this._overrideFormUrl = undefined;
-                    this.rebuildForm();
+                    await this.rebuildForm();
                 });
                 let formUrl;
                 if (this._overrideFormUrl !== undefined) {
@@ -204,7 +204,7 @@ export class ObjectFormCreatorForItem {
             && this.htmlElements.viewModeSelectorContainer !== null) {
             this.htmlElements.viewModeSelectorContainer.empty();
             const viewModeForm = new ViewModeSelectionControl();
-            const htmlViewModeForm = viewModeForm.createForm();
+            const htmlViewModeForm = await viewModeForm.createForm();
             viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
             this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
         }

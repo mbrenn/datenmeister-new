@@ -66,7 +66,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             this.elements = this.element.get(this.formElement.get("property"));
         }
         
-        return this.createFormByCollection(parent, configuration, refresh);
+        return await this.createFormByCollection(parent, configuration, refresh);
     }
 
     async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean) {
@@ -84,7 +84,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             refresh === true && this.cacheHeadline !== undefined
                 ? this.cacheHeadline
                 : $("<h2><a></a></h2>");
-        this.cacheHeadline.empty();
 
         const headLineLink = $("a", this.cacheHeadline);
         headLineLink.text(

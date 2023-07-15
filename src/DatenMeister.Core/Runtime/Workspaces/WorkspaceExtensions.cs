@@ -27,13 +27,18 @@ namespace DatenMeister.Core.Runtime.Workspaces
             return element;
         }
 
-        public static IObject? FindObject(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
+        public static object? FindObjectOrCollection(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
         {
             var workspace = string.IsNullOrEmpty(workspaceId) ? 
                             workspaceLogic.GetDefaultWorkspace() :
                             workspaceLogic.GetWorkspace(workspaceId);
 
-            return workspace?.Resolve(uri, ResolveType.NoMetaWorkspaces) as IObject;
+            return workspace?.Resolve(uri, ResolveType.NoMetaWorkspaces);
+        }
+
+        public static IObject? FindObject(this IWorkspaceLogic workspaceLogic, string workspaceId, string uri)
+        {
+            return FindObjectOrCollection(workspaceLogic, workspaceId, uri) as IObject;
         }
 
         public static IObject? FindObject(this Workspace workspace, string uri)

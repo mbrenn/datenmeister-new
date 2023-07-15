@@ -347,8 +347,10 @@ namespace DatenMeister.WebServer.Controller
                     new DataViewEvaluation(_workspaceLogic, _scopeStorage);
                 dataviewHandler.AddDynamicSource("input", collection);
 
-                var viewNodeElement = _workspaceLogic.FindElement(
-                    WorkspaceNames.WorkspaceManagement, viewNode);
+                var viewNodeElement =
+                    _workspaceLogic.FindElement(WorkspaceNames.WorkspaceManagement, viewNode)
+                    ?? _workspaceLogic.FindElement(WorkspaceNames.WorkspaceData, viewNode);
+
                 if (viewNodeElement != null)
                 {
                     collection = dataviewHandler.GetElementsForViewNode(viewNodeElement);
@@ -380,7 +382,7 @@ namespace DatenMeister.WebServer.Controller
             IUriExtent? extent;
             
             // Checks, if we have found the item
-            var foundItem = _workspaceLogic.FindObject(workspaceId, itemUri);
+            var foundItem = _workspaceLogic.FindObjectOrCollection(workspaceId, itemUri);
             
             switch (foundItem)
             {

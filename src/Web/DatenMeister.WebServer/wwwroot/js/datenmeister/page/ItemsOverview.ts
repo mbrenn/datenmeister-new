@@ -3,13 +3,13 @@ import * as CollectionForm from "../forms/CollectionForm.js"
 import {loadDefaultModules} from "../modules/DefaultLoader.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 
-export function init(workspace: string, extentUri: string) {
+export async function init(workspace: string, extentUri: string) : Promise<void> {
     loadDefaultModules();
 
     $("#items_collection_uri").text(extentUri);
     
     let listForm = new CollectionForm.CollectionFormCreator();
-    listForm.createCollectionForRootElements(
+    await listForm.createCollectionForRootElements(
         {
             itemContainer: $("#dm-items"),
             viewModeSelectorContainer: $("#dm-viewmode-selection-container"),

@@ -244,7 +244,7 @@ namespace DatenMeister.WebServer.Controller
             /// <summary>
             /// A list of view modes
             /// </summary>
-            public string ViewMode { get; set; }
+            public string ViewMode { get; set; } = ViewModes.Default;
         }
     }
 }

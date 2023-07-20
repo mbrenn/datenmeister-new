@@ -5,6 +5,8 @@ import {SubmitMethod} from "../forms/RowForm.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import * as ApiConnection from "../ApiConnection.js";
 import * as Settings from "../Settings.js";
+import * as Navigator from "../Navigator.js"
+import {navigateToExtentItems} from "../Navigator.js";
 
 export function loadModules() {
     FormActions.addModule(new ZipCodeTestAction());
@@ -30,6 +32,13 @@ class ZipCodeTestAction extends FormActions.ItemFormActionModuleBase{
     }
 }
 
+export interface ICreateZipExampleActionResult
+{
+    success: boolean;
+    extentUri: string;
+    workspaceId: string;
+}
+
 class CreateZipExampleAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("ZipExample.CreateExample");
@@ -39,12 +48,15 @@ class CreateZipExampleAction extends FormActions.ItemFormActionModuleBase {
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const id = element.get('id');
-        await ApiConnection.post(
+        await ApiConnection.post<ICreateZipExampleActionResult>(
             Settings.baseUrl + "api/zip/create",
             {workspace: id})
             .then(
                 data => {
-                    document.location.reload();
+                    Navigator.navigateToExtentItems(
+                        data.workspaceId,
+                        data.extentUri
+                    );                    
                 });
     }
 }

@@ -2,6 +2,7 @@ import * as FormActions from "../FormActions.js";
 import * as MofSync from "../MofSync.js";
 import * as ApiConnection from "../ApiConnection.js";
 import * as Settings from "../Settings.js";
+import * as Navigator from "../Navigator.js";
 export function loadModules() {
     FormActions.addModule(new ZipCodeTestAction());
     FormActions.addModule(new CreateZipExampleAction());
@@ -30,7 +31,7 @@ class CreateZipExampleAction extends FormActions.ItemFormActionModuleBase {
         const id = element.get('id');
         await ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
             .then(data => {
-            document.location.reload();
+            Navigator.navigateToExtentItems(data.workspaceId, data.extentUri);
         });
     }
 }

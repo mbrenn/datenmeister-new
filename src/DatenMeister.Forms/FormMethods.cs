@@ -309,6 +309,7 @@ namespace DatenMeister.Forms
         /// </summary>
         /// <param name="selectedExtentType">Extent type which is currently selected</param>
         /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
+        /// <returns>true, if the association is removed</returns>
         public bool RemoveFormAssociationForExtentType(string selectedExtentType, IExtent? viewExtent = null)
         {
             var result = false;
@@ -332,7 +333,7 @@ namespace DatenMeister.Forms
         /// <summary>
         /// Removes the view association from the database
         /// </summary>
-        /// <param name="metaClass">The metaclass which shall be used for the detailled form</param>
+        /// <param name="metaClass">The metaclass which shall be used for the detailed form</param>
         /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
         public bool RemoveFormAssociationForObjectMetaClass(IElement metaClass, IExtent? viewExtent = null)
         {

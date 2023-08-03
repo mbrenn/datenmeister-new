@@ -110,7 +110,9 @@ namespace DatenMeister.Forms
         /// <returns></returns>
         public IUriExtent GetInternalFormExtent()
         {
-            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
+            if (_workspaceLogic.FindExtent(
+                    WorkspaceNames.WorkspaceManagement,
+                    WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
             {
                 throw new InvalidOperationException(
                     $"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
@@ -125,7 +127,9 @@ namespace DatenMeister.Forms
         /// <returns></returns>
         public IUriExtent? GetInternalFormExtent(bool mayFail)
         {
-            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
+            if (_workspaceLogic.FindExtent(
+                    WorkspaceNames.WorkspaceManagement,
+                    WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
             {
                 if (mayFail)
                 {
@@ -145,7 +149,9 @@ namespace DatenMeister.Forms
         /// <returns></returns>
         public IUriExtent GetUserFormExtent()
         {
-            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
+            if (_workspaceLogic.FindExtent(
+                    WorkspaceNames.WorkspaceManagement,
+                    WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
             {
                 throw new InvalidOperationException(
                     $"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
@@ -160,7 +166,9 @@ namespace DatenMeister.Forms
         /// <returns></returns>
         public IUriExtent? GetUserFormExtent(bool mayFail)
         {
-            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
+            if (_workspaceLogic.FindExtent(
+                    WorkspaceNames.WorkspaceManagement,
+                    WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
             {
                 if (mayFail)
                 {

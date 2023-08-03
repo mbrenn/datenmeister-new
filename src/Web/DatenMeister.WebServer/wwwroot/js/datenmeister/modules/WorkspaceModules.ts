@@ -8,6 +8,7 @@ import * as Settings from "../Settings.js";
 import {_DatenMeister} from "../models/DatenMeister.class.js";
 import * as ItemClient from "../client/Items.js";
 import * as FormClient from "../client/Forms.js";
+import * as Navigator from "../Navigator.js";
 
 export function loadModules() {
     FormActions.addModule(new WorkspaceExtentXmiCreateNavigateAction());
@@ -34,18 +35,14 @@ class WorkspaceExtentXmiCreateNavigateAction extends FormActions.ItemFormActionM
     }
 }
 
-class WorkspaceExtentLoadOrCreateNavigateAction extends FormActions.ItemFormActionModuleBase
-{
+class WorkspaceExtentLoadOrCreateNavigateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Workspace.Extent.LoadOrCreate.Navigate");
         this.skipSaving = true;
     }
-    
+
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-
-        let p = new URLSearchParams(window.location.search);
-        const workspaceId = p?.get('workspaceId') ?? "";
-
+        const workspaceId = parameter?.get('workspaceId') ?? "";
         document.location.href =
             Settings.baseUrl + "ItemAction/Workspace.Extent.LoadOrCreate?workspaceId=" + encodeURIComponent(workspaceId);
     }
@@ -86,6 +83,18 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         super("Workspace.Extent.LoadOrCreate.Step2");
         this.actionVerb = "Create/Load Extent";
     }
+
+    async loadObject(): Promise<DmObjectWithSync> | undefined {
+        let p = new URLSearchParams(window.location.search);
+        const workspaceId= p.get("workspaceId");
+        const metaClassUri = p.get("metaclass");
+
+        const result =
+            await MofSync.createTemporaryDmObject(metaClassUri);
+        result.set("workspaceId", workspaceId);
+
+        return Promise.resolve(result);
+    }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const extentCreationParameter = new DmObject();
@@ -105,7 +114,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         if (result.success !== true) {
             alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
         } else {
-            alert('Extent was created successfully');
+            Navigator.navigateToExtentItems(element.get("workspaceId"), element.get("extentUri"));
         }
     }
 }
@@ -142,9 +151,7 @@ class WorkspaceExtentXmiCreateAction extends FormActions.ItemFormActionModuleBas
         );
 
         if (result.success) {
-            document.location.href = Settings.baseUrl
-                + "ItemsOverview/" + encodeURIComponent(element.get("workspaceId")) +
-                "/" + encodeURIComponent(element.get("extentUri"))
+            Navigator.navigateToExtentItems(element.get("workspaceId"), element.get("extentUri"));
         } else {
             alert(result.reason);
         }

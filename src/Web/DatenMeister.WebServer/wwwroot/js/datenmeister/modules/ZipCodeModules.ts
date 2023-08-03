@@ -6,7 +6,6 @@ import {IFormNavigation} from "../forms/Interfaces.js";
 import * as ApiConnection from "../ApiConnection.js";
 import * as Settings from "../Settings.js";
 import * as Navigator from "../Navigator.js"
-import {navigateToExtentItems} from "../Navigator.js";
 
 export function loadModules() {
     FormActions.addModule(new ZipCodeTestAction());

@@ -49,6 +49,15 @@ export function navigateToItem(workspace, extentUri, itemId, param) {
     document.location.href =
         getLinkForNavigateToItem(workspace, extentUri, itemId, param);
 }
+export function getLinkForNavigateToExtent(workspace, extentUri) {
+    return Settings.baseUrl + "Item/Management/" +
+        encodeURIComponent("dm:///_internal/workspaces#" + workspace +
+            "_" + extentUri);
+}
+export function navigateToExtent(workspace, extentUri) {
+    document.location.href =
+        getLinkForNavigateToExtent(workspace, extentUri);
+}
 export function getLinkForNavigateToItemByUrl(workspace, itemUrl, param) {
     return Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +

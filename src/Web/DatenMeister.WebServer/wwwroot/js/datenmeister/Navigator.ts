@@ -77,6 +77,17 @@ export function navigateToItem(workspace: string, extentUri: string, itemId: str
         getLinkForNavigateToItem(workspace, extentUri, itemId, param);
 }
 
+export function getLinkForNavigateToExtent(workspace: string, extentUri: string) {
+    return Settings.baseUrl + "Item/Management/" +
+        encodeURIComponent("dm:///_internal/workspaces#" + workspace + 
+        "_" + extentUri);
+}
+
+export function navigateToExtent(workspace: string, extentUri: string) {
+    document.location.href =
+        getLinkForNavigateToExtent(workspace, extentUri);
+}
+
 export function getLinkForNavigateToItemByUrl(workspace: string, itemUrl: string, param?: INavigateToItemParams) {
     return Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +

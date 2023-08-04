@@ -41,10 +41,37 @@ namespace DatenMeister.Extent.Forms
             result |= IncludeCreationButtonsInTableFormForClassifierOfExtentType(context, form);
             result |= IncludeExtentTypesForTableFormOfExtent(context, form);
             result |= IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(context, form);
-
+            result |= IncludeJumpToExtentButton(context, form);
+            
             return result;
         }
-        
+
+        /// <summary>
+        /// If the user shows all items of an extent in the extent overview, the
+        /// user can click on the button to get to the extent itself
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="form"></param>
+        /// <returns>true, if matching has occured</returns>
+        private bool IncludeJumpToExtentButton(FormCreationContext context, IElement form)
+        {
+            if (context.FormType == _DatenMeister._Forms.___FormType.Collection)
+            {
+                var fields = form.get<IReflectiveCollection>(
+                    _DatenMeister._Forms._CollectionForm.field);
+                var factory = new MofFactory(form);
+                var field = factory.create(_DatenMeister.TheOne.Forms.__ActionFieldData);
+                field.set(_DatenMeister._Forms._ActionFieldData.name, "Go to Extent");
+                field.set(_DatenMeister._Forms._ActionFieldData.title, "Go to Extent");
+                field.set(_DatenMeister._Forms._ActionFieldData.actionName, "Extent.NavigateTo.Extent");
+
+                fields.add(field);
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// If the user shows the extent, the checkbox tagging field for the extent will receive
         /// additional values for the known extent types 

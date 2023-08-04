@@ -5,7 +5,7 @@ import * as ClientForms from "../client/Forms.js";
 import { debugElementToDom } from "../DomHelper.js";
 import { ViewModeSelectionControl } from "../controls/ViewModeSelectionControl.js";
 import * as Mof from "../Mof.js";
-import { ObjectType } from "../Mof.js";
+import { DmObject, ObjectType } from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
 import * as Settings from "../Settings.js";
@@ -13,6 +13,7 @@ import { _DatenMeister } from "../models/DatenMeister.class.js";
 import { FormSelectionControl } from "../controls/FormSelectionControl.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
 import { FormType } from "./Interfaces.js";
+import * as ActionField from "../fields/ActionField.js";
 export class CollectionFormHtmlElements {
 }
 /*
@@ -53,7 +54,7 @@ export class CollectionFormCreator {
             tthis.extentUri = extentUri;
             tthis.itemUrl = extentUri;
             debugElementToDom(form, "#debug_formelement");
-            tthis.createFormByCollection(htmlElements, configuration);
+            await tthis.createFormByCollection(htmlElements, configuration);
             /*
              Creates the form for the View Mode Selection
              */
@@ -145,21 +146,39 @@ export class CollectionFormCreator {
      * @param htmlElements
      * @param configuration
      */
-    createFormByCollection(htmlElements, configuration) {
+    async createFormByCollection(htmlElements, configuration) {
         const itemContainer = htmlElements.itemContainer;
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
         const tthis = this;
         if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createFormByCollection(htmlElements, configuration);
+            configuration.refreshForm = async () => {
+                await tthis.createFormByCollection(htmlElements, configuration);
             };
         }
         itemContainer.empty();
         const creatingElements = $("<div>Creating elements...</div>");
         itemContainer.append(creatingElements);
-        const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab);
+        // Create the action fields
+        const fields = this.formElement.get(_DatenMeister._Forms._CollectionForm.field, Mof.ObjectType.Array);
+        if (fields !== undefined) {
+            const actionFields = $("<div></div>");
+            for (const n in fields) {
+                const field = fields[n];
+                if (field.metaClass.uri === _DatenMeister._Forms.__ActionFieldData_Uri) {
+                    const actionField = new ActionField.Field();
+                    actionField.field = field;
+                    actionFields.append(await actionField.createDom(DmObject.createFromReference(this.workspace, this.extentUri)));
+                }
+                else {
+                    actionFields.append($("<div>Unsupported Field Type: " + field.metaClass.uri + "</div>"));
+                }
+            }
+            itemContainer.append(actionFields);
+        }
+        // Create the tabs
+        const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
         let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {
             const tab = tabs[n];

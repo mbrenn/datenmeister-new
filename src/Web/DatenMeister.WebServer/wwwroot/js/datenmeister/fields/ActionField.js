@@ -17,7 +17,7 @@ export class Field extends BaseField {
             // If this is the case, then the button itself is asking for confirmation upon the first 
             // click. Only then, the DetailForm itself is executed. 
             if (!requireConfirmation || tthis.inConfirmation) {
-                if (tthis.form.storeFormValuesIntoDom !== undefined) {
+                if (tthis?.form?.storeFormValuesIntoDom !== undefined) {
                     await tthis.form.storeFormValuesIntoDom(true);
                 }
                 if (module?.skipSaving !== true) {

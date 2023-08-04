@@ -19,6 +19,7 @@ import {FormSelectionControl} from "../controls/FormSelectionControl.js";
 import {ItemLink} from "../ApiModels.js";
 import _TableForm = _DatenMeister._Forms._TableForm;
 import {FormType} from "./Interfaces.js";
+import * as ActionField from "../fields/ActionField.js";
 
 export class CollectionFormHtmlElements
 {
@@ -123,7 +124,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
             debugElementToDom(form, "#debug_formelement");
 
-            tthis.createFormByCollection(htmlElements, configuration);
+            await tthis.createFormByCollection(htmlElements, configuration);
             
             /* 
              Creates the form for the View Mode Selection
@@ -237,7 +238,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
      * @param htmlElements 
      * @param configuration
      */
-    createFormByCollection(
+    async createFormByCollection(
         htmlElements: CollectionFormHtmlElements,
         configuration: IFormConfiguration) {
 
@@ -250,8 +251,8 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const tthis = this;
 
         if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createFormByCollection(htmlElements, configuration);
+            configuration.refreshForm = async () => {
+                await tthis.createFormByCollection(htmlElements, configuration);
             }
         }
 
@@ -259,8 +260,36 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const creatingElements = $("<div>Creating elements...</div>");
         itemContainer.append(creatingElements);
 
+        // Create the action fields
+        const fields = 
+            this.formElement.get(_DatenMeister._Forms._CollectionForm.field, Mof.ObjectType.Array) as Array<Mof.DmObject>
+        if ( fields!== undefined) {
+            const actionFields = $("<div></div>");
+
+            for (const n in fields) {
+                const field = fields[n];
+                if (field.metaClass.uri === _DatenMeister._Forms.__ActionFieldData_Uri) {
+                    const actionField = new ActionField.Field();
+                    actionField.field = field;
+                    actionFields.append(await actionField.createDom(
+                        DmObject.createFromReference(
+                            this.workspace,
+                            this.extentUri
+                        )
+                    ));
+                } else {
+                    actionFields.append(
+                        $("<div>Unsupported Field Type: " + field.metaClass.uri + "</div>")
+                    );
+                }
+            }
+            
+            itemContainer.append(actionFields);
+        }       
+        
+        // Create the tabs
         const tabs = 
-            this.formElement.get(_DatenMeister._Forms._CollectionForm.tab) as Array<Mof.DmObject>;
+            this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array) as Array<Mof.DmObject>;
 
         let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {

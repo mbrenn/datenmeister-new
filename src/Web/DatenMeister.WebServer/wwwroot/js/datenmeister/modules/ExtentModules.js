@@ -18,6 +18,7 @@ var _RowForm = _DatenMeister._Forms._RowForm;
 var _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
 import { createBreadcrumbForItem } from "../controls/ElementBreadcrumb.js";
 export function loadModules() {
+    FormActions.addModule(new ExtentNavigateToExtent());
     FormActions.addModule(new ExtentPropertiesUpdateAction());
     FormActions.addModule(new ExtentCreateItemAction());
     FormActions.addModule(new ExtentClearAction());
@@ -34,6 +35,14 @@ export function loadModules() {
     FormActions.addModule(new ExtentXmiExport());
     FormActions.addModule(new ExtentXmiImportNavigate());
     FormActions.addModule(new ExtentXmiImport());
+}
+class ExtentNavigateToExtent extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Extent.NavigateTo.Extent");
+    }
+    async execute(form, element, parameter, submitMethod) {
+        Navigator.navigateToExtent(element.workspace, element.uri);
+    }
 }
 class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {

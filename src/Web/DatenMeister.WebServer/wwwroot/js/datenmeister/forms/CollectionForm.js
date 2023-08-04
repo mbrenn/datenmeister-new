@@ -52,7 +52,6 @@ export class CollectionFormCreator {
             tthis.workspace = workspace;
             tthis.extentUri = extentUri;
             tthis.itemUrl = extentUri;
-            /*            debugElementToDom(elements, "#debug_mofelement");*/
             debugElementToDom(form, "#debug_formelement");
             tthis.createFormByCollection(htmlElements, configuration);
             /*
@@ -160,7 +159,7 @@ export class CollectionFormCreator {
         itemContainer.empty();
         const creatingElements = $("<div>Creating elements...</div>");
         itemContainer.append(creatingElements);
-        const tabs = this.formElement.get("tab");
+        const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab);
         let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {
             const tab = tabs[n];

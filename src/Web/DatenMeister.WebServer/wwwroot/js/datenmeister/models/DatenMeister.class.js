@@ -978,6 +978,7 @@ export var _DatenMeister;
         }
         _CollectionForm.tab = "tab";
         _CollectionForm.autoTabs = "autoTabs";
+        _CollectionForm.field = "field";
         _CollectionForm._name_ = "name";
         _CollectionForm.title = "title";
         _CollectionForm.isReadOnly = "isReadOnly";

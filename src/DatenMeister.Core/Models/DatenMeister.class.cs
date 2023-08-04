@@ -2348,6 +2348,9 @@ namespace DatenMeister.Core.Models
                 public static string @autoTabs = "autoTabs";
                 public IElement? @_autoTabs = null;
 
+                public static string @field = "field";
+                public IElement? @_field = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

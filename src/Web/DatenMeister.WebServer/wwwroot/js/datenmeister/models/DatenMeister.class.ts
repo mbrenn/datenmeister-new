@@ -1090,6 +1090,7 @@ export namespace _DatenMeister
                 {
                     static tab = "tab";
                     static autoTabs = "autoTabs";
+                    static field = "field";
                     static _name_ = "name";
                     static title = "title";
                     static isReadOnly = "isReadOnly";

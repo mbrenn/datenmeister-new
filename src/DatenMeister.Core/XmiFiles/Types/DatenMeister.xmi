@@ -1621,6 +1621,16 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="8cae918e-73c1-498c-8479-19d1aaa39caa" general-ref="#DatenMeister.Models.Forms.Form" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="c19bbfec-6afb-4017-94c2-d2992853a25c" name="tab" upper="2" type-ref=".dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" isComposite="True" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b09268a2-2412-42cd-816c-cf0c4a913a63" name="autoTabs" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a3cc7ca4-b48f-450e-91c5-e1df3a8e13e7" type-ref="dm:///datenmeister.types/#DatenMeister.Models.Forms.FieldData" lower="0" upper="*" name="field" isID="true" isComposite="true">
+        <aggregation p1:id="6504759a-93da-4893-8857-3268ead5c4c2" />
+        <isDerived p1:id="8ba9142f-0c27-4ae3-bc89-ffb640ac9337" />
+        <isDerivedUnion p1:id="5a10683a-6db6-4af9-95f2-4d76fa900276" />
+        <isReadOnly p1:id="1a38ddd8-0703-4f89-8539-885a5c75ec4c" />
+        <isOrdered p1:id="1918c439-83de-400a-9374-b552d1526160" />
+        <isUnique p1:id="20ec53e6-7fe7-47fe-a438-d6825ab23da0" />
+        <isStatic p1:id="691497c6-8c54-4ee3-b518-444b8face390" />
+        <isLeaf p1:id="3f613a5f-c9a6-4039-bef0-db9790bc8a0e" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ObjectForm" name="ObjectForm">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="8cae918e-73c1-498c-8479-19d1aea39caa" general-ref="#DatenMeister.Models.Forms.Form" />

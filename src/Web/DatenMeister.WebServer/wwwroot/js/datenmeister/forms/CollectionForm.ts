@@ -121,7 +121,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             tthis.extentUri = extentUri;
             tthis.itemUrl = extentUri;
 
-/*            debugElementToDom(elements, "#debug_mofelement");*/
             debugElementToDom(form, "#debug_formelement");
 
             tthis.createFormByCollection(htmlElements, configuration);
@@ -260,7 +259,8 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const creatingElements = $("<div>Creating elements...</div>");
         itemContainer.append(creatingElements);
 
-        const tabs = this.formElement.get("tab") as Array<Mof.DmObject>;
+        const tabs = 
+            this.formElement.get(_DatenMeister._Forms._CollectionForm.tab) as Array<Mof.DmObject>;
 
         let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {
@@ -317,6 +317,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
 
             let tabFormContainer = $("<div />");
             itemContainer.append(tabFormContainer);
+            
             // Do it asynchronously. 
             window.setTimeout(tabCreationFunction(tab, tabFormContainer));
         }

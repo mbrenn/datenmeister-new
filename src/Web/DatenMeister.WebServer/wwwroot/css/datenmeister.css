@@ -336,6 +336,11 @@ a {
     background-color: darkgray;
 }
 
+.dm-viewmode-current
+{
+    font-size: 70%;
+    padding: 0px 10px 0px 10px;
+}
 /* Mocha Configuration
 -------------------------------------------------- */
 #mocha

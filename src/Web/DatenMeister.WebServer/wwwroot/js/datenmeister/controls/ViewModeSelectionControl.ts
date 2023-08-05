@@ -12,6 +12,7 @@ export class ViewModeSelectionControl {
     
     async createForm(): Promise<JQuery> {
 
+        const container = $("<div></div>");
         const selectField = $("<select></select>");
 
         const viewModes = await VML.getViewModesFromServer();
@@ -56,6 +57,13 @@ export class ViewModeSelectionControl {
             this.viewModeSelected.invoke(viewModeId);
         });
 
-        return selectField;
+        container.append(selectField);
+        
+        // Sets the current view mode
+        const current = 
+            $("<span class='dm-viewmode-current'>Current: <span class='dm-viewmode-current-text'></span></span>");
+        $(".dm-viewmode-current-text", current).text(currentViewMode);
+        container.append(current);
+        return container;
     }
 }

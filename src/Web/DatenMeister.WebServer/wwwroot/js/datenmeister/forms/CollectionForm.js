@@ -14,6 +14,8 @@ import { FormSelectionControl } from "../controls/FormSelectionControl.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
 import { FormType } from "./Interfaces.js";
 import * as ActionField from "../fields/ActionField.js";
+import { StatusFieldControl } from "../controls/StatusFieldControl.js";
+import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
 export class CollectionFormHtmlElements {
 }
 /*
@@ -21,146 +23,158 @@ export class CollectionFormHtmlElements {
     The input for this type is a collection of elements
 */
 export class CollectionFormCreator {
-    constructor() {
+    constructor(htmlElements) {
         this.formType = FormType.Collection;
+        this.htmlElements = htmlElements;
+        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
     }
-    async createCollectionForRootElements(htmlElements, workspace, extentUri, configuration) {
-        if (htmlElements.itemContainer === undefined || htmlElements.itemContainer === null) {
+    async createCollectionForRootElements(workspace, extentUri, configuration) {
+        if (this.htmlElements.itemContainer === undefined || this.htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
+        // Load default viewmode
+        this.statusTextControl.setListStatus("Loading Default Viewmode", false);
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
             /*
             Gets the default viewmode for the extent to be shown
              */
             configuration.viewMode = await VML.getDefaultViewModeIfNotSet(workspace, extentUri);
         }
+        this.statusTextControl.setListStatus("Loading Default Viewmode", true);
+        // Load Breadcrumb
+        this.statusTextControl.setListStatus("Loading Breadcrumb", false);
+        let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
+        await breadcrumb.createForExtent(workspace, extentUri);
+        this.statusTextControl.setListStatus("Loading Breadcrumb", true);
         const tthis = this;
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = () => {
-                tthis.createCollectionForRootElements(htmlElements, workspace, extentUri, configuration);
+                tthis.createCollectionForRootElements(workspace, extentUri, configuration);
             };
         }
+        // Loads the form
+        this.statusTextControl.setListStatus("Loading Form", false);
         // Load the form
-        const defer2 = this._overrideFormUrl === undefined ?
-            ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
-            ClientForms.getForm(this._overrideFormUrl, FormType.Collection);
+        const form = this._overrideFormUrl === undefined ?
+            await ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
+            await ClientForms.getForm(this._overrideFormUrl, FormType.Collection);
+        this.statusTextControl.setListStatus("Loading Form", true);
         // Wait for both
-        Promise.all([defer2]).then(async ([form]) => {
-            tthis.formElement = form;
-            tthis.workspace = workspace;
-            tthis.extentUri = extentUri;
-            tthis.itemUrl = extentUri;
-            debugElementToDom(form, "#debug_formelement");
-            await tthis.createFormByCollection(htmlElements, configuration);
-            /*
-             Creates the form for the View Mode Selection
-             */
-            htmlElements.viewModeSelectorContainer?.empty();
-            if (htmlElements.viewModeSelectorContainer !== undefined && htmlElements.viewModeSelectorContainer !== null) {
-                const viewModeForm = new ViewModeSelectionControl();
-                const htmlViewModeForm = await viewModeForm.createForm();
-                viewModeForm.viewModeSelected.addListener(_ => {
-                    configuration.viewMode = VML.getCurrentViewMode();
-                    configuration.refreshForm();
-                });
-                htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+        tthis.formElement = form;
+        tthis.workspace = workspace;
+        tthis.extentUri = extentUri;
+        tthis.itemUrl = extentUri;
+        debugElementToDom(form, "#debug_formelement");
+        this.statusTextControl.setListStatus("Create Form", false);
+        await tthis.createFormByCollection(configuration);
+        this.statusTextControl.setListStatus("Create Form", true);
+        /*
+         Creates the form for the View Mode Selection
+         */
+        this.htmlElements.viewModeSelectorContainer?.empty();
+        if (this.htmlElements.viewModeSelectorContainer !== undefined
+            && this.htmlElements.viewModeSelectorContainer !== null) {
+            this.statusTextControl.setListStatus("Create Viewmode Selection", false);
+            const viewModeForm = new ViewModeSelectionControl();
+            const htmlViewModeForm = await viewModeForm.createForm();
+            viewModeForm.viewModeSelected.addListener(_ => {
+                configuration.viewMode = VML.getCurrentViewMode();
+                configuration.refreshForm();
+            });
+            this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+            this.statusTextControl.setListStatus("Create Viewmode Selection", true);
+        }
+        /*
+         *  Creates the form selection in which the user can manually select a form
+         */
+        if (this.htmlElements.formSelectorContainer !== undefined
+            && this.htmlElements.formSelectorContainer !== null) {
+            this.statusTextControl.setListStatus("Create Form Selection", false);
+            // Empty the container for the formselector
+            this.htmlElements.formSelectorContainer.empty();
+            const formControl = new FormSelectionControl();
+            formControl.formSelected.addListener(selectedItem => {
+                this._overrideFormUrl = selectedItem.selectedForm.uri;
+                configuration.refreshForm();
+            });
+            formControl.formResetted.addListener(() => {
+                this._overrideFormUrl = undefined;
+                configuration.refreshForm();
+            });
+            let formUrl;
+            // Tries to retrieve the current form uri
+            if (this._overrideFormUrl !== undefined) {
+                formUrl = {
+                    workspace: "Management",
+                    uri: this._overrideFormUrl
+                };
             }
-            /*
-             *  Creates the form selection in which the user can manually select a form
-             */
-            if (htmlElements.formSelectorContainer !== undefined
-                && htmlElements.formSelectorContainer !== null) {
-                // Empty the container for the formselector
-                htmlElements.formSelectorContainer.empty();
-                const formControl = new FormSelectionControl();
-                formControl.formSelected.addListener(selectedItem => {
-                    this._overrideFormUrl = selectedItem.selectedForm.uri;
-                    configuration.refreshForm();
-                });
-                formControl.formResetted.addListener(() => {
-                    this._overrideFormUrl = undefined;
-                    configuration.refreshForm();
-                });
-                let formUrl;
-                // Tries to retrieve the current form uri
-                if (this._overrideFormUrl !== undefined) {
+            else {
+                const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                if (form.uri !== undefined && byForm === undefined) {
                     formUrl = {
-                        workspace: "Management",
-                        uri: this._overrideFormUrl
+                        workspace: form.workspace,
+                        uri: form.uri
                     };
                 }
-                else {
-                    const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                    if (form.uri !== undefined && byForm === undefined) {
-                        formUrl = {
-                            workspace: form.workspace,
-                            uri: form.uri
-                        };
-                    }
-                    else if (byForm !== undefined) {
-                        formUrl = {
-                            workspace: "Management",
-                            uri: byForm
-                        };
-                    }
+                else if (byForm !== undefined) {
+                    formUrl = {
+                        workspace: "Management",
+                        uri: byForm
+                    };
                 }
-                /*
-                 * Handles the store auto-generated form button
-                 */
-                if (htmlElements.storeCurrentFormBtn !== undefined) {
-                    htmlElements.storeCurrentFormBtn.on('click', () => {
-                    });
-                }
-                // Sets the current formurl and creates the control
-                formControl.setCurrentFormUrl(formUrl);
-                await formControl.createControl(htmlElements.formSelectorContainer);
             }
-        });
+            /*
+             * Handles the store auto-generated form button
+             */
+            if (this.htmlElements.storeCurrentFormBtn !== undefined) {
+                this.htmlElements.storeCurrentFormBtn.on('click', () => {
+                });
+            }
+            // Sets the current formurl and creates the control
+            formControl.setCurrentFormUrl(formUrl);
+            await formControl.createControl(this.htmlElements.formSelectorContainer);
+            this.statusTextControl.setListStatus("Create Form Selection", true);
+        }
         /*
          Creates the form for the creation of Metaclasses
          */
-        if (htmlElements.createNewItemWithMetaClassBtn !== undefined &&
-            htmlElements.createNewItemWithMetaClassContainer !== undefined) {
+        if (this.htmlElements.createNewItemWithMetaClassBtn !== undefined &&
+            this.htmlElements.createNewItemWithMetaClassContainer !== undefined) {
             createMetaClassSelectionButtonForNewItem($("#dm-btn-create-item-with-metaclass"), $("#dm-btn-create-item-metaclass"), workspace, extentUri);
         }
         /*
          * Creates the handler for the automatic creation of forms for extent
          */
-        if (htmlElements.storeCurrentFormBtn !== undefined) {
-            htmlElements.storeCurrentFormBtn.on('click', async () => {
+        if (this.htmlElements.storeCurrentFormBtn !== undefined) {
+            this.htmlElements.storeCurrentFormBtn.on('click', async () => {
                 const result = await ClientForms.createCollectionFormForExtent(workspace, extentUri, configuration.viewMode);
                 Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
             });
         }
-        /*
-         * Introduces the loading text
-         */
-        htmlElements.itemContainer.empty()
-            .text("Loading content and form...");
+        this.statusTextControl.setStatusText("");
     }
     /**
      * Creates the actual html for a specific form
-     * @param htmlElements
      * @param configuration
      */
-    async createFormByCollection(htmlElements, configuration) {
-        const itemContainer = htmlElements.itemContainer;
+    async createFormByCollection(configuration) {
+        const itemContainer = this.htmlElements.itemContainer;
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
         const tthis = this;
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = async () => {
-                await tthis.createFormByCollection(htmlElements, configuration);
+                await tthis.createFormByCollection(configuration);
             };
         }
         itemContainer.empty();
-        const creatingElements = $("<div>Creating elements...</div>");
-        itemContainer.append(creatingElements);
-        // Create the action fields
+        // Create the action fields for the collection field
+        this.statusTextControl.setListStatus("Actionfields", false);
         const fields = this.formElement.get(_DatenMeister._Forms._CollectionForm.field, Mof.ObjectType.Array);
         if (fields !== undefined) {
             const actionFields = $("<div></div>");
@@ -176,10 +190,11 @@ export class CollectionFormCreator {
                 }
             }
             itemContainer.append(actionFields);
+            this.statusTextControl.setListStatus("Actionfields", true);
         }
+        this.statusTextControl.setListStatus("Create Tabs", false);
         // Create the tabs
         const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
-        let tabCount = Array.isArray(tabs) ? tabs.length : 0;
         for (let n in tabs) {
             const tab = tabs[n];
             if (!tabs.hasOwnProperty(n)) {
@@ -187,49 +202,44 @@ export class CollectionFormCreator {
             }
             // The function which is capable to create the content of the tab
             // This function must be indirectly created since it works in the enumeration value
-            const tabCreationFunction = function (tab, form) {
-                return async () => {
-                    const parameter = {};
-                    const viewNodeUrl = tab.get(_TableForm.viewNode, ObjectType.Single);
-                    if (viewNodeUrl !== undefined) {
-                        parameter.viewNode = viewNodeUrl.uri;
+            const tabCreationFunction = async function (tab, form) {
+                const parameter = {};
+                const viewNodeUrl = tab.get(_TableForm.viewNode, ObjectType.Single);
+                if (viewNodeUrl !== undefined) {
+                    parameter.viewNode = viewNodeUrl.uri;
+                }
+                // Load the object for the specific form
+                const elements = await ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
+                const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
+                if (formFactory !== undefined) {
+                    const tableForm = formFactory();
+                    tableForm.elements = elements;
+                    tableForm.formElement = tab;
+                    tableForm.workspace = tthis.workspace;
+                    tableForm.extentUri = tthis.extentUri;
+                    await tableForm.createFormByCollection(form, configuration);
+                }
+                else {
+                    form.addClass('alert alert-warning');
+                    const nameValue = tab.get('name', Mof.ObjectType.String);
+                    let name = tab.metaClass.uri;
+                    if (nameValue !== undefined) {
+                        name = `${nameValue} (${tab.metaClass.uri})`;
                     }
-                    // Load the object for the specific form
-                    const elements = await ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
-                    const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
-                    if (formFactory !== undefined) {
-                        const tableForm = formFactory();
-                        tableForm.elements = elements;
-                        tableForm.formElement = tab;
-                        tableForm.workspace = tthis.workspace;
-                        tableForm.extentUri = tthis.extentUri;
-                        await tableForm.createFormByCollection(form, configuration);
-                    }
-                    else {
-                        form.addClass('alert alert-warning');
-                        const nameValue = tab.get('name', Mof.ObjectType.String);
-                        let name = tab.metaClass.uri;
-                        if (nameValue !== undefined) {
-                            name = `${nameValue} (${tab.metaClass.uri})`;
-                        }
-                        form.text('Unknown form type for tab: ' + name);
-                    }
-                    tabCount--;
-                    if (tabCount === 0) {
-                        // Removes the loading information
-                        creatingElements.remove();
-                    }
-                };
+                    form.text('Unknown form type for tab: ' + name);
+                }
             };
-            let tabFormContainer = $("<div />");
-            itemContainer.append(tabFormContainer);
+            let tabFormContainer = $("<div></div>");
+            this.statusTextControl.setListStatus("Create tab " + n, false);
             // Do it asynchronously. 
-            window.setTimeout(tabCreationFunction(tab, tabFormContainer));
+            await tabCreationFunction(tab, tabFormContainer);
+            itemContainer.append(tabFormContainer);
+            this.statusTextControl.setListStatus("Create tab " + n, true);
         }
+        this.statusTextControl.setListStatus("Create Tabs", true);
     }
 }
 export function createMetaClassSelectionButtonForNewItem(buttonDiv, containerDiv, workspace, extentUri) {
-    const tthis = this;
     buttonDiv.on('click', async () => {
         containerDiv.empty();
         const selectItem = new SIC.SelectItemControl();

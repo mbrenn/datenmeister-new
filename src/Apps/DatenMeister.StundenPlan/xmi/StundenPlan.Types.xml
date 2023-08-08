@@ -136,6 +136,42 @@
         <isLeaf p2:id="95ab70f7-bb28-456f-8d24-402c7d393faa" />
       </ownedAttribute>
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="e722b04b-4392-4695-ada4-168397d7edc0" name="WeeklyScheduleView">
+      <isAbstract p1:id="d9479311-1191-4239-be86-b2d7ca3b6efe" />
+      <isActive p1:id="abfe9dbe-4a91-4f54-ab8e-80d57047916c" />
+      <isFinalSpecialization p1:id="0150c2d9-a5d5-4451-bbe2-fe1a2d256b7a" />
+      <isLeaf p1:id="dbac29e7-0841-463d-ab2c-31315637a491" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9a37e695-c36a-43e0-a395-b6d7438985c7" name="collectionUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="true" isComposite="true">
+        <aggregation p1:id="2f4bee5d-265f-4965-8232-28195f21741c" />
+        <isDerived p1:id="d994c863-bcbc-4d4b-8167-106981e0129a" />
+        <isDerivedUnion p1:id="82579611-3989-4c04-b9c4-3df39e215f52" />
+        <isReadOnly p1:id="50efce2b-6f2c-4f43-92d6-a738f88ef090" />
+        <isOrdered p1:id="3d7676fd-769c-4093-ae83-0b2c547958f6" />
+        <isUnique p1:id="1c996fe7-46b2-44ad-a9af-7c7ccc79c029" />
+        <isStatic p1:id="6b3452bd-bd1f-4f20-a4b4-3be8f5794428" />
+        <isLeaf p1:id="49264073-a84a-43f6-8bf1-9b1fa1ff1473" />
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f8925866-698c-4660-a9c6-0a5cd364ee71" name="showWeeks" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="true" isComposite="true">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a1562126-f53e-4405-9566-c8b92e6bf42f" name="skipWeekend" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="true" isComposite="true">
+        <aggregation p1:id="b03a4c7f-a611-4c06-a264-21e4abc61dd7" />
+        <isDerived p1:id="fdd31fd6-1169-4ba5-992b-313468f0de81" />
+        <isDerivedUnion p1:id="a550a603-6983-4e92-819c-13879e660eb0" />
+        <isReadOnly p1:id="5b9f7aa8-877c-4629-89e4-486a4dd8783e" />
+        <isOrdered p1:id="2e199739-a0d4-4641-8c78-778ed2d2ce85" />
+        <isUnique p1:id="1bc8a71a-829c-4116-95c8-8aa7ce4cca88" />
+        <isStatic p1:id="df309728-a121-4d08-916e-0e29d1aed54f" />
+        <isLeaf p1:id="16a023bd-8c19-43c7-8bf3-c9f2a789fff9" />
+      </ownedAttribute>
+    </packagedElement>
   </item>
   <item p2:type="dm:///_internal/model/uml#Package" p2:id="1dc1c3c9-13ac-4bdf-8047-5661d0fc3739" name="Forms" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <visibility p2:id="778168c2-b84c-4e41-8fd3-18630131e7a9" />

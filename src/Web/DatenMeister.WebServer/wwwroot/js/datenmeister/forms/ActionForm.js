@@ -24,7 +24,9 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
             createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         };
     }
-    const creator = new ObjectForm.ObjectFormCreator();
+    const creator = new ObjectForm.ObjectFormCreator({
+        itemContainer: parent
+    });
     configuration.onSubmit = async (element, method) => {
         // Stores the most recent changes on the server        
         await MofSync.sync(element);
@@ -83,9 +85,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
     creator.extentUri = creator.element.extentUri;
     configuration.submitName = module.actionVerb;
     // Finally, we have everything together, create the form
-    await creator.createFormByObject({
-        itemContainer: parent
-    }, configuration);
+    await creator.createFormByObject(configuration);
     // Asks the detail form actions, whether we have a form for the action itself
     await module.preparePage(creator.element, form);
     debugElementToDom(form, "#debug_formelement");

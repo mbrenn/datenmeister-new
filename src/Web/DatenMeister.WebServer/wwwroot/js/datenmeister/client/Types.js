@@ -5,13 +5,20 @@ export async function getAllTypes() {
 }
 /**
  * Gets the type of the property by referring to one metaClass and the propertyName
+ * @param workspace Workspace in which the element was queried.
  * @param metaClass Uri of the metaClass to be queried
- * @param propertyName
+ * @param propertyName Name of the metaclass' property to which the type of the property is queried
  */
 export async function getPropertyType(workspace, metaClass, propertyName) {
-    return await ApiConnection.get(Settings.baseUrl + "api/types/propertytype/"
-        + encodeURIComponent(workspace) + "/"
-        + encodeURIComponent(metaClass) + "/"
-        + encodeURIComponent(propertyName));
+    try {
+        return await ApiConnection.get(Settings.baseUrl + "api/types/propertytype/"
+            + encodeURIComponent(workspace) + "/"
+            + encodeURIComponent(metaClass) + "/"
+            + encodeURIComponent(propertyName));
+    }
+    catch (error) {
+        console.log(error);
+        return undefined;
+    }
 }
 //# sourceMappingURL=Types.js.map

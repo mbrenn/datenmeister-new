@@ -13,6 +13,8 @@ import * as MofSync from "../MofSync.js";
 import { FormMode } from "./Forms.js";
 import * as IForm from "./Interfaces.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
+import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
+import { StatusFieldControl } from "../controls/StatusFieldControl.js";
 export class ObjectFormHtmlElements {
 }
 /**
@@ -22,12 +24,13 @@ export class ObjectFormHtmlElements {
  * This method handles all allowed form types.
  */
 export class ObjectFormCreator {
-    constructor() {
+    constructor(htmlElements) {
         this.formType = IForm.FormType.Object;
+        this.htmlElements = htmlElements;
+        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
     }
-    async createFormByObject(htmlElements, configuration) {
+    async createFormByObject(configuration) {
         // First, store the parent and the configuration
-        this.domContainer = htmlElements.itemContainer;
         this.htmlItemContainer = configuration;
         await this.createFormForItem();
     }
@@ -39,48 +42,60 @@ export class ObjectFormCreator {
                 tthis.createFormForItem();
             };
         }
+        this.statusTextControl.setListStatus("Temporary Object", false);
         if (this.element == null)
             this.element = await MofSync.createTemporaryDmObject();
+        this.statusTextControl.setListStatus("Temporary Object", true);
         const tabs = this.formElement.getAsArray("tab");
         for (let n in tabs) {
-            if (!tabs.hasOwnProperty(n)) {
-                continue;
-            }
-            let form = $("<div />");
-            const tab = tabs[n];
-            const factoryFunction = FormFactory.getObjectFormFactory(tab.metaClass.uri);
-            if (factoryFunction !== undefined) {
-                const detailForm = factoryFunction();
-                detailForm.workspace = this.workspace;
-                detailForm.extentUri = this.extentUri;
-                detailForm.itemUrl = this.itemUrl;
-                detailForm.formElement = tab;
-                detailForm.element = this.element;
-                await detailForm.createFormByObject(form, configuration);
-            }
-            else {
-                form.addClass('alert alert-warning');
-                const nameValue = tab.get('name', Mof.ObjectType.String);
-                let name = tab.metaClass.uri;
-                if (nameValue !== undefined) {
-                    name = `${nameValue} (${tab.metaClass.uri})`;
+            try {
+                if (!tabs.hasOwnProperty(n)) {
+                    continue;
                 }
-                form.text('Unknown tab: ' + name);
+                this.statusTextControl.setListStatus("Create Tab " + n, false);
+                let form = $("<div />");
+                const tab = tabs[n];
+                const factoryFunction = FormFactory.getObjectFormFactory(tab.metaClass.uri);
+                if (factoryFunction !== undefined) {
+                    const detailForm = factoryFunction();
+                    detailForm.workspace = this.workspace;
+                    detailForm.extentUri = this.extentUri;
+                    detailForm.itemUrl = this.itemUrl;
+                    detailForm.formElement = tab;
+                    detailForm.element = this.element;
+                    await detailForm.createFormByObject(form, configuration);
+                }
+                else {
+                    form.addClass('alert alert-warning');
+                    const nameValue = tab.get('name', Mof.ObjectType.String);
+                    let name = tab.metaClass.uri;
+                    if (nameValue !== undefined) {
+                        name = `${nameValue} (${tab.metaClass.uri})`;
+                    }
+                    form.text('Unknown tab: ' + name);
+                }
+                this.htmlElements.itemContainer.append(form);
+                this.statusTextControl.setListStatus("Create Tab " + n, true);
             }
-            this.domContainer.append(form);
+            catch (error) {
+                const errorMessage = $("<div>An Exception has occured during the creation: <span></span></div>");
+                $("span", errorMessage).text(error);
+                this.htmlElements.itemContainer.append(errorMessage);
+            }
         }
     }
 }
 export class ObjectFormCreatorForItem {
-    constructor() {
+    constructor(htmlElements) {
         this.formMode = FormMode.ViewMode;
+        this.htmlElements = htmlElements;
+        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
     }
     async switchToMode(formMode) {
         this.formMode = formMode;
         await this.rebuildForm();
     }
-    async createForm(htmlElements, workspace, itemUri) {
-        this.htmlElements = htmlElements;
+    async createForm(workspace, itemUri) {
         this.workspace = workspace;
         this.itemUri = itemUri;
         // Check the edit parameter
@@ -88,9 +103,18 @@ export class ObjectFormCreatorForItem {
         if (p.get('edit') === 'true') {
             this.formMode = FormMode.EditMode;
         }
-        await this.rebuildForm();
+        try {
+            await this.rebuildForm();
+        }
+        catch (error) {
+            this.htmlElements.itemContainer.text("An error occured during 'createForm': " + error);
+        }
     }
     async rebuildForm() {
+        this.statusTextControl.setListStatus("Create Breadcrumb ", false);
+        let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
+        await breadcrumb.createForItem(this.workspace, this.itemUri);
+        this.statusTextControl.setListStatus("Create Breadcrumb ", true);
         const tthis = this;
         let configuration;
         if (this.formMode === FormMode.ViewMode) {
@@ -131,24 +155,30 @@ export class ObjectFormCreatorForItem {
                 await tthis.rebuildForm();
             };
         }
+        this.statusTextControl.setListStatus("Get Current Viewmode", false);
         // Defines the viewmode, if not already defined by the caller
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
             configuration.viewMode = await VML.getDefaultViewModeIfNotSet(this.workspace, this.itemUri);
         }
+        this.statusTextControl.setListStatus("Get Current Viewmode", true);
+        this.statusTextControl.setListStatus("Load Object", false);
         // Load the object
         const defer1 = ClientItems.getObjectByUri(this.workspace, this.itemUri);
+        this.statusTextControl.setListStatus("Load Form", false);
         // Load the form
         const defer2 = this._overrideFormUrl === undefined ?
             ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
             ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Object);
         // Wait for both
         Promise.all([defer1, defer2]).then(async ([element1, form]) => {
+            this.statusTextControl.setListStatus("Load Object", true);
+            this.statusTextControl.setListStatus("Load Form", true);
             // First the debug information
             debugElementToDom(element1, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
             // Now created the object form
             this.htmlElements.itemContainer.empty();
-            const objectFormCreator = new ObjectFormCreator();
+            const objectFormCreator = new ObjectFormCreator(this.htmlElements);
             objectFormCreator.workspace = this.workspace;
             objectFormCreator.itemUrl = this.itemUri;
             objectFormCreator.element = element1;
@@ -159,10 +189,13 @@ export class ObjectFormCreatorForItem {
                 domEditButton.on('click', () => tthis.switchToMode(FormMode.EditMode));
                 this.htmlElements.itemContainer.append(domEditButton);
             }
-            await objectFormCreator.createFormByObject(tthis.htmlElements, configuration);
+            this.statusTextControl.setListStatus("Create Form", false);
+            await objectFormCreator.createFormByObject(configuration);
+            this.statusTextControl.setListStatus("Create Form", true);
             // Creates the form selection
             if (this.htmlElements.formSelectorContainer !== undefined
                 && this.htmlElements.formSelectorContainer !== null) {
+                this.statusTextControl.setListStatus("Create Form Selection", false);
                 this.htmlElements.formSelectorContainer.empty();
                 const formControl = new FormSelectionControl();
                 formControl.formSelected.addListener(async (selectedItem) => {
@@ -196,17 +229,20 @@ export class ObjectFormCreatorForItem {
                     }
                 }
                 formControl.setCurrentFormUrl(formUrl);
-                const _ = formControl.createControl(this.htmlElements.formSelectorContainer);
+                await formControl.createControl(this.htmlElements.formSelectorContainer);
+                this.statusTextControl.setListStatus("Create Form Selection", true);
             }
         });
         // Creates the viewmode Selection field
         if (this.htmlElements.viewModeSelectorContainer !== undefined
             && this.htmlElements.viewModeSelectorContainer !== null) {
             this.htmlElements.viewModeSelectorContainer.empty();
+            this.statusTextControl.setListStatus("Create Viewmode Selection", false);
             const viewModeForm = new ViewModeSelectionControl();
             const htmlViewModeForm = await viewModeForm.createForm();
             viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
             this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+            this.statusTextControl.setListStatus("Create Viewmode Selection", true);
         }
         /*
          * Creates the handler for the automatic creation of forms for extent
@@ -221,7 +257,6 @@ export class ObjectFormCreatorForItem {
          * Introduces the loading text
          */
         this.htmlElements.itemContainer.empty();
-        this.htmlElements.itemContainer.text("Loading content and form...");
     }
 }
 //# sourceMappingURL=ObjectForm.js.map

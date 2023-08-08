@@ -12,7 +12,7 @@ export function post(uri, data) {
             method: "POST"
         }).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }
@@ -26,7 +26,7 @@ export function deleteRequest(uri, data) {
             method: "DELETE"
         }).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }
@@ -40,7 +40,7 @@ export function put(uri, data) {
             method: "PUT"
         }).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }
@@ -51,7 +51,7 @@ export function get(uri) {
             method: "GET"
         }).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }

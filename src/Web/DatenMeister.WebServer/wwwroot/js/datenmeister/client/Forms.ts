@@ -35,7 +35,7 @@ export async function getObjectFormForMetaClass(metaClassUri: string) {
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
     
-export async function getForm(formUri: string, formType?: FormType): Promise<Mof.DmObject> {
+export async function getForm(formUri: string, formType?: FormType): Promise<Mof.DmObjectWithSync> {
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +
         "api/forms/get/" +

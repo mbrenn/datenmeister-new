@@ -15,7 +15,7 @@ export function post<T>(uri: string, data: object): Promise<T> {
             }
         ).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }
@@ -32,7 +32,7 @@ export function deleteRequest<T>(uri: string, data: object): Promise<T> {
             }
         ).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }
@@ -49,7 +49,7 @@ export function put<T>(uri: string, data: object): Promise<T> {
             }
         ).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }
@@ -63,7 +63,7 @@ export function get<T>(uri: string): Promise<T> {
             }
         ).fail(x => {
             serverError(x.responseText);
-            reject();
+            reject(x.responseText);
         }).done(x => resolve(x));
     });
 }

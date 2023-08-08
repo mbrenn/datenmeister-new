@@ -8,8 +8,7 @@ export async function init(workspace: string, extentUri: string) : Promise<void>
 
     $("#items_collection_uri").text(extentUri);
     
-    let listForm = new CollectionForm.CollectionFormCreator();
-    await listForm.createCollectionForRootElements(
+    let listForm = new CollectionForm.CollectionFormCreator(
         {
             itemContainer: $("#dm-items"),
             viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
@@ -17,12 +16,12 @@ export async function init(workspace: string, extentUri: string) : Promise<void>
             createNewItemWithMetaClassContainer: $("#dm-btn-create-item-metaclass"),
             storeCurrentFormBtn: $("#dm-store-current-form-btn"),
             formSelectorContainer: $("#form_selection_container")
-        },
+        }
+    );
+    await listForm.createCollectionForRootElements(        
         workspace,
         extentUri,
         {isReadOnly: true});
     
-    let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
-    const _ = breadcrumb.createForExtent(workspace, extentUri);
     
 }

@@ -103,7 +103,8 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     form: this
                 });
 
-            const singleColumn = fieldElement?.showNameField === undefined ? false : fieldElement.showNameField();
+            const singleColumn = 
+                fieldElement?.showNameField === undefined ? false : fieldElement.showNameField();
 
             // Creates the row
             if (singleColumn) {

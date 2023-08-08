@@ -36,7 +36,10 @@ export async function createActionFormForEmptyObject(
         }
     }
 
-    const creator = new ObjectForm.ObjectFormCreator();
+    const creator = new ObjectForm.ObjectFormCreator(
+        {
+            itemContainer: parent
+        });
 
     configuration.onSubmit = async (element, method) => {
 
@@ -109,10 +112,7 @@ export async function createActionFormForEmptyObject(
     configuration.submitName = module.actionVerb;
 
     // Finally, we have everything together, create the form
-    await creator.createFormByObject(
-        {
-            itemContainer: parent
-        }, configuration);
+    await creator.createFormByObject(configuration);
 
     // Asks the detail form actions, whether we have a form for the action itself
     await module.preparePage(creator.element, form);

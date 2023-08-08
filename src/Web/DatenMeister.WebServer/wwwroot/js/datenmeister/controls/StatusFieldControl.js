@@ -12,11 +12,17 @@ export class StatusFieldControl {
     /**
      * Initializes the status field container.
      * @param htmlElement The element to be used
+     * @param configuration Configuration to be used
      */
-    constructor(htmlElement) {
+    constructor(htmlElement, configuration) {
+        var _a;
         htmlElement ?? (htmlElement = $(".dm-status-text-container"));
         this.htmlElement = htmlElement;
         StatusFieldControl.listStatusCollection ?? (StatusFieldControl.listStatusCollection = new Array());
+        this.configuration ?? (this.configuration = {
+            hideOnComplete: false
+        });
+        (_a = this.configuration).hideOnComplete ?? (_a.hideOnComplete = false);
         this.initIfNotInitialized();
     }
     initIfNotInitialized() {
@@ -33,8 +39,10 @@ export class StatusFieldControl {
         }
     }
     setHideFlag() {
-        if ((this.statusText !== undefined && this.statusText !== "")
-            || (StatusFieldControl.listStatusCollection.length > 0)) {
+        if (this.statusText !== undefined && this.statusText !== ""
+            ||
+                StatusFieldControl.listStatusCollection.length > 0
+                    && (!this.everythingCompleted() || !this.configuration.hideOnComplete)) {
             StatusFieldControl.hostElement.show();
         }
         else {
@@ -65,6 +73,10 @@ export class StatusFieldControl {
         }
         this.reupdateListStatus();
     }
+    /**
+     * Performs a reupdate of the lists for the Statusfield
+     * @private
+     */
     reupdateListStatus() {
         StatusFieldControl.listElement.empty();
         for (const n in StatusFieldControl.listStatusCollection) {
@@ -75,6 +87,19 @@ export class StatusFieldControl {
             StatusFieldControl.listElement.append(listItemElement);
         }
         this.setHideFlag();
+    }
+    /**
+     * Gets a value whether everything is closed in the status list items
+     * @private
+     */
+    everythingCompleted() {
+        for (const n in StatusFieldControl.listStatusCollection) {
+            const complete = StatusFieldControl.listStatusCollection[n].success;
+            if (!complete) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 //# sourceMappingURL=StatusFieldControl.js.map

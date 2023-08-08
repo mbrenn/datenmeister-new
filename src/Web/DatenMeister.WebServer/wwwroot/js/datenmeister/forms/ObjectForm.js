@@ -253,10 +253,6 @@ export class ObjectFormCreatorForItem {
                 Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
             });
         }
-        /*
-         * Introduces the loading text
-         */
-        this.htmlElements.itemContainer.empty();
     }
 }
 //# sourceMappingURL=ObjectForm.js.map

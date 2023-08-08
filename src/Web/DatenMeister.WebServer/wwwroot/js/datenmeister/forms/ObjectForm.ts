@@ -271,7 +271,6 @@ export class ObjectFormCreatorForItem {
 
             // Now created the object form
             this.htmlElements.itemContainer.empty();
-
             const objectFormCreator = new ObjectFormCreator(this.htmlElements);
             objectFormCreator.workspace = this.workspace;
             objectFormCreator.itemUrl = this.itemUri;
@@ -367,10 +366,5 @@ export class ObjectFormCreatorForItem {
                 Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
             });
         }
-        
-        /*
-         * Introduces the loading text
-         */
-        this.htmlElements.itemContainer.empty();
     }
 }

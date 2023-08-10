@@ -8,6 +8,7 @@ import * as ClientForms from '../client/Forms.js'
 import * as ClientElements from '../client/Elements.js'
 import * as ClientItems from '../client/Items.js'
 import * as MofSync from "../MofSync.js"
+import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 
 export async function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,
@@ -15,6 +16,7 @@ export async function createActionFormForEmptyObject(
     configuration: IFormConfiguration,
     actionName: string) {
     
+    const statusOverview = new StatusFieldControl();
     const module = FormActions.getModule(actionName);
     if (module === undefined)
     {
@@ -43,10 +45,14 @@ export async function createActionFormForEmptyObject(
 
     configuration.onSubmit = async (element, method) => {
 
+        statusOverview.setListStatus("Sync Object with Server", false);
         // Stores the most recent changes on the server        
         await MofSync.sync(element);
-        let loadedElement = await ClientItems.getObjectByUri(element.workspace, element.uri);
+        statusOverview.setListStatus("Sync Object with Server", true);
         
+        let loadedElement = await ClientItems.getObjectByUri(element.workspace, element.uri);
+
+        statusOverview.setListStatus("Execute Action", false);
         // Executes the detail form
         await FormActions.execute(
             actionName,
@@ -54,15 +60,21 @@ export async function createActionFormForEmptyObject(
             loadedElement,
             undefined, // The action form cannot provide additional parameters as the ActionButton
             method);
+        statusOverview.setListStatus("Execute Action", true);
     };
 
     /* Loads the object being used as a base for the new action.
     * Usually context information from GET-Query are retrieved. Or some default fields are filled out
     */
+    statusOverview.setListStatus("Load Object", false);
     let element = await module.loadObject();
+    statusOverview.setListStatus("Load Object", true);
+    
     if (element === undefined) {
-
-        const temporaryElement = await ClientElements.createTemporaryElement(metaClass);
+        statusOverview.setListStatus("Create Temporary Object", false);
+        const temporaryElement = 
+            await ClientElements.createTemporaryElement(metaClass);
+        statusOverview.setListStatus("Create Temporary Object", true);
         element = DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
 
         // Sets the metaclass and workspace id upon url, if not created by Modules
@@ -89,6 +101,7 @@ export async function createActionFormForEmptyObject(
     let form;
 
     // Asks the detail form actions, whether we have a form for the action itself
+    statusOverview.setListStatus("Load Form", false);
     form = await module.loadForm(metaClass);
     if (form === undefined) {
         // Defines the form
@@ -102,6 +115,8 @@ export async function createActionFormForEmptyObject(
             form = await ClientForms.getObjectFormForMetaClass(metaClass);
         }
     }
+    
+    statusOverview.setListStatus("Load Form", true);
 
     // Creates the object as being provided by the uri
     creator.element = element;
@@ -112,10 +127,14 @@ export async function createActionFormForEmptyObject(
     configuration.submitName = module.actionVerb;
 
     // Finally, we have everything together, create the form
+    statusOverview.setListStatus("Create Form By Object", false);
     await creator.createFormByObject(configuration);
+    statusOverview.setListStatus("Create Form By Object", true);
 
     // Asks the detail form actions, whether we have a form for the action itself
+    statusOverview.setListStatus("Prepare Page", false);
     await module.preparePage(creator.element, form);
+    statusOverview.setListStatus("Prepare Page", true);
 
     debugElementToDom(form, "#debug_formelement");
 }

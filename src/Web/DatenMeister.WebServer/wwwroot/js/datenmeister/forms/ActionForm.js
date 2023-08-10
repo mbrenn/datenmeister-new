@@ -93,7 +93,8 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
     // Creates the object as being provided by the uri
     creator.element = element;
     creator.formElement = form;
-    creator.workspace = "Data";
+    creator.workspace = element.workspace;
+    creator.itemUrl = element.uri;
     creator.extentUri = creator.element.extentUri;
     configuration.submitName = module.actionVerb;
     // Finally, we have everything together, create the form

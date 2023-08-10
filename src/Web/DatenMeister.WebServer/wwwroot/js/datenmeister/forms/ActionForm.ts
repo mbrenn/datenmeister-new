@@ -76,6 +76,7 @@ export async function createActionFormForEmptyObject(
             await ClientElements.createTemporaryElement(metaClass);
         statusOverview.setListStatus("Create Temporary Object", true);
         element = DmObjectWithSync.createFromReference(temporaryElement.workspace, temporaryElement.uri);
+        
 
         // Sets the metaclass and workspace id upon url, if not created by Modules
         let p = new URLSearchParams(window.location.search);
@@ -121,7 +122,8 @@ export async function createActionFormForEmptyObject(
     // Creates the object as being provided by the uri
     creator.element = element;
     creator.formElement = form;
-    creator.workspace = "Data";
+    creator.workspace = element.workspace;
+    creator.itemUrl = element.uri;
     creator.extentUri = creator.element.extentUri;
     
     configuration.submitName = module.actionVerb;

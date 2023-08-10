@@ -19,10 +19,11 @@ export class StatusFieldControl {
         htmlElement ?? (htmlElement = $(".dm-status-text-container"));
         this.htmlElement = htmlElement;
         StatusFieldControl.listStatusCollection ?? (StatusFieldControl.listStatusCollection = new Array());
+        this.configuration = configuration;
         this.configuration ?? (this.configuration = {
-            hideOnComplete: false
+            hideOnComplete: true
         });
-        (_a = this.configuration).hideOnComplete ?? (_a.hideOnComplete = false);
+        (_a = this.configuration).hideOnComplete ?? (_a.hideOnComplete = true);
         this.initIfNotInitialized();
     }
     initIfNotInitialized() {

@@ -29,15 +29,16 @@ export class StatusFieldControl {
      * @param htmlElement The element to be used
      * @param configuration Configuration to be used
      */
-    constructor(htmlElement: JQuery, configuration?: IStatusFieldControlConfiguration) {
+    constructor(htmlElement?: JQuery, configuration?: IStatusFieldControlConfiguration) {
         htmlElement ??= $(".dm-status-text-container");
         this.htmlElement = htmlElement;
         StatusFieldControl.listStatusCollection ??= new Array<ListStatusItem>();
 
+        this.configuration = configuration;
         this.configuration ??= {
-            hideOnComplete: false
+            hideOnComplete: true
         };
-        this.configuration.hideOnComplete ??= false;
+        this.configuration.hideOnComplete ??= true;
 
         this.initIfNotInitialized();
     }

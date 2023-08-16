@@ -124,6 +124,9 @@ export class Field extends Control {
             if (value === undefined || value === null) {
                 this._list.html("<em class='dm-undefined'>undefined</em>");
             }
+            else if (value.get === undefined) {
+                this._list.text(value.toString());
+            }
             else {
                 this._list.text(value.get('name'));
             }

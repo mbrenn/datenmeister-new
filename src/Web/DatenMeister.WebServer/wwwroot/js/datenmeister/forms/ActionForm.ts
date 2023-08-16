@@ -125,6 +125,7 @@ export async function createActionFormForEmptyObject(
     creator.workspace = element.workspace;
     creator.itemUrl = element.uri;
     creator.extentUri = creator.element.extentUri;
+    configuration.viewMode = "ViewMode.DataManipulation";
     
     configuration.submitName = module.actionVerb;
 

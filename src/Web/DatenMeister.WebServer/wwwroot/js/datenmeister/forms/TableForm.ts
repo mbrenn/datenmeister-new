@@ -235,7 +235,13 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                                 form: this
                             });
 
-                        const dom = await fieldElement.createDom(element);
+                        let dom;
+                        if (fieldElement === undefined) {
+                            dom = $("<span></span>");
+                            dom.text ("Field for " + field.get("name", Mof.ObjectType.String) + " not found");
+                        } else {
+                            dom = await fieldElement.createDom(element);
+                        }
 
                         cell.append(dom);
                         row.append(cell);

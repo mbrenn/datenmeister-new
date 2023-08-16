@@ -77,9 +77,7 @@ namespace DatenMeister.WebServer.Controller
             }
 
             var workspace = _workspaceLogic.GetWorkspace(workspaceId);
-            if (workspace == null) return null;
-
-            if (workspace.Resolve(itemUrl, ResolveType.NoMetaWorkspaces) is not IObject foundItem) return null;
+            if (workspace?.Resolve(itemUrl, ResolveType.NoMetaWorkspaces) is not IObject foundItem) return null;
 
             var packagedItems = DefaultClassifierHints.GetPackagedElements(foundItem);
             return packagedItems

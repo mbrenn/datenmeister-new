@@ -275,7 +275,7 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="viewNode">The view node being used to filter the items</param>
         /// <returns></returns>
         [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
-        public ActionResult<object> GetRootElements(string workspaceId, string extentUri, string? viewNode = null)
+        public ActionResult<string> GetRootElements(string workspaceId, string extentUri, string? viewNode = null)
         {
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
             extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -287,6 +287,16 @@ namespace DatenMeister.WebServer.Controller
                 return NotFound();
             }
 
+            return ConvertToJson(finalElements);
+        }
+
+        /// <summary>
+        /// Converts the given list of elements to a json array
+        /// </summary>
+        /// <param name="finalElements">Final elements to be converted</param>
+        /// <returns>The json as string</returns>
+        private static ActionResult<string> ConvertToJson(IEnumerable<object?> finalElements)
+        {
             var converter = new MofJsonConverter { MaxRecursionDepth = 2 };
 
             var result = new StringBuilder();
@@ -304,6 +314,29 @@ namespace DatenMeister.WebServer.Controller
             result.Append(']');
 
             return result.ToString();
+        }
+
+        /// <summary>
+        /// Gets the elements as items as returned by the query
+        /// </summary>
+        /// <param name="queryUri">Uri to be queried</param>
+        /// <returns>Enumeration of items being queried</returns>
+        [HttpGet("api/items/get_elements/{queryUri}")]
+        public ActionResult<string> GetElements(string queryUri)
+        {
+            queryUri = MvcUrlEncoder.DecodePathOrEmpty(queryUri);
+            var result = _workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
+            if (result is IUriExtent asUriExtent)
+            {
+                result = asUriExtent.elements();
+            }
+
+            if (result is IReflectiveCollection reflectiveCollection)
+            {
+                return ConvertToJson(reflectiveCollection);
+            }
+
+            return NotFound($"{queryUri} did not return a reflective collection");
         }
 
         /// <summary>
@@ -327,6 +360,29 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return finalElements.OfType<IObject>().Select(x => ItemWithNameAndId.Create(x)!).ToList();
+        }
+
+        /// <summary>
+        /// Gets the elements as items as returned by the query
+        /// </summary>
+        /// <param name="queryUri">Uri to be queried</param>
+        /// <returns>Enumeration of items being queried</returns>
+        [HttpGet("api/items/get_elements_as_item/{queryUri}")]
+        public ActionResult<IEnumerable<ItemWithNameAndId>> GetElementsAsItem(string queryUri)
+        {
+            queryUri = MvcUrlEncoder.DecodePathOrEmpty(queryUri);
+            var result = _workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
+            if (result is IUriExtent asUriExtent)
+            {
+                result = asUriExtent.elements();
+            }
+
+            if (result is IReflectiveCollection reflectiveCollection)
+            {
+                return reflectiveCollection.OfType<IObject>().Select(x => ItemWithNameAndId.Create(x)!).ToList();
+            }
+
+            return NotFound($"{queryUri} did not return a reflective collection");
         }
 
         private List<object?>? GetRootElementsInternal(string workspaceId, string extentUri, string? viewNode = null)

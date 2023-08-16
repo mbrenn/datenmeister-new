@@ -17,10 +17,14 @@ export async function getCollectionFormForExtent(workspace, extentUri, viewMode)
 /*
     Gets the default form for an extent uri by the webserver
  */
-export async function getObjectFormForMetaClass(metaClassUri) {
+export async function getObjectFormForMetaClass(metaClassUri, viewMode) {
+    const viewModeUri = viewMode === undefined || viewMode === "" ?
+        "" :
+        "/" + encodeURI(viewMode);
     const resultFromServer = await ApiConnection.get(Settings.baseUrl +
         "api/forms/default_object_for_metaclass/" +
-        encodeURIComponent(metaClassUri));
+        encodeURIComponent(metaClassUri) +
+        viewModeUri);
     return Mof.convertJsonObjectToDmObject(resultFromServer);
 }
 export async function getForm(formUri, formType) {

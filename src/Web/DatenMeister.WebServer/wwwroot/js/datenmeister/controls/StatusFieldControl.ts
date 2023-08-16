@@ -36,9 +36,9 @@ export class StatusFieldControl {
 
         this.configuration = configuration;
         this.configuration ??= {
-            hideOnComplete: true
+            hideOnComplete: false
         };
-        this.configuration.hideOnComplete ??= true;
+        this.configuration.hideOnComplete ??= false;
 
         this.initIfNotInitialized();
     }

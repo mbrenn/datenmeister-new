@@ -51,6 +51,22 @@ namespace DatenMeister.StundenPlan.Model
         public _WeeklyPeriodicEvent @WeeklyPeriodicEvent = new _WeeklyPeriodicEvent();
         public MofObjectShadow @__WeeklyPeriodicEvent = new MofObjectShadow("dm:///types.stundenplan.datenmeister/#954ad359-1a92-4661-bc58-83ea4517d493");
 
+        public class _WeeklyScheduleView
+        {
+            public static string @collectionUri = "collectionUri";
+            public IElement? @_collectionUri = null;
+
+            public static string @showWeeks = "showWeeks";
+            public IElement? @_showWeeks = null;
+
+            public static string @skipWeekend = "skipWeekend";
+            public IElement? @_skipWeekend = null;
+
+        }
+
+        public _WeeklyScheduleView @WeeklyScheduleView = new _WeeklyScheduleView();
+        public MofObjectShadow @__WeeklyScheduleView = new MofObjectShadow("dm:///types.stundenplan.datenmeister/#e722b04b-4392-4695-ada4-168397d7edc0");
+
         public static readonly _Types TheOne = new _Types();
 
     }

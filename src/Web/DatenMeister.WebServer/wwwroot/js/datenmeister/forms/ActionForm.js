@@ -96,6 +96,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
     creator.workspace = element.workspace;
     creator.itemUrl = element.uri;
     creator.extentUri = creator.element.extentUri;
+    configuration.viewMode = "ViewMode.DataManipulation";
     configuration.submitName = module.actionVerb;
     // Finally, we have everything together, create the form
     statusOverview.setListStatus("Create Form By Object", false);

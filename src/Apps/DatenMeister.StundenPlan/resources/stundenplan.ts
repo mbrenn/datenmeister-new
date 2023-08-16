@@ -5,7 +5,6 @@ import { FormType, IObjectFormElement } from '/js/datenmeister/forms/Interfaces.
 import { IFormConfiguration } from '/js/datenmeister/forms/IFormConfiguration.js';
 import * as ClientItems from '/js/datenmeister/client/Items.js';
 import { _DatenMeister } from '/js/datenmeister/models/DatenMeister.class.js';
-import { config } from 'chai';
 
 export function init() {
     FormFactory.registerObjectForm(
@@ -129,18 +128,27 @@ class StundenPlanForm implements IObjectFormElement {
         const domContainer = $("<span>Loading Schedule</span>");
         parent.append(domContainer);
 
-        const foundItems = await ClientItems.getObjectByUri(
+        const foundItem = await ClientItems.getObjectByUri(
             this.workspace,
             this.itemUrl);
+        let packagedElements;
+        if (foundItem.metaClass.uri === StundenPlanTypes._Types.__WeeklyScheduleView_Uri) {
+            parent.append($("<span>TEST</span>"));
+            
+            
+            return;
+        } else {
+            // Gets the elements from the package
+            packagedElements = foundItem.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, Mof.ObjectType.Array);
 
-        // Gets the elements
-        const packagedElements = foundItems.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, Mof.ObjectType.Array);
+        }
+
         if (packagedElements === undefined || packagedElements === null) {
             parent.append($("<span>The element did not include the packagedElements"));
         }
 
         const calendarControl = new WeeklyCalenderControl(domContainer);
-        
+
         // Go through the elements and skip the ones which are not periodic dates
         for (const n in packagedElements) {
             const item = packagedElements[n] as Mof.DmObject;
@@ -155,7 +163,7 @@ class StundenPlanForm implements IObjectFormElement {
         domContainer.empty();
 
         calendarControl.createTable(
-            { weeks: 4 }
+            {weeks: 4}
         );
     }
 

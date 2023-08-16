@@ -151,7 +151,7 @@
         <isStatic p1:id="6b3452bd-bd1f-4f20-a4b4-3be8f5794428" />
         <isLeaf p1:id="49264073-a84a-43f6-8bf1-9b1fa1ff1473" />
       </ownedAttribute>
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f8925866-698c-4660-a9c6-0a5cd364ee71" name="showWeeks" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="true" isComposite="true">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f8925866-698c-4660-a9c6-0a5cd364ee71" name="showWeeks" type-ref="dm:///_internal/model/primitivetypes#UnlimitedNatural" isID="true" isComposite="true">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
         <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
         <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />

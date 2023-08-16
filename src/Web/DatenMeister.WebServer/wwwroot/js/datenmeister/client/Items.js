@@ -93,6 +93,9 @@ export async function getRootElements(workspace, extentUri, parameter) {
         url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
     }
     const resultFromServer = await ApiConnection.get(url);
+    return convertToMofObjects(resultFromServer);
+}
+function convertToMofObjects(resultFromServer) {
     const x = JSON.parse(resultFromServer);
     let result = new Array();
     for (let n in x) {
@@ -102,6 +105,13 @@ export async function getRootElements(workspace, extentUri, parameter) {
         }
     }
     return result;
+}
+export async function getElements(queryUri) {
+    let url = Settings.baseUrl +
+        "api/items/get_elements/" +
+        encodeURIComponent(queryUri);
+    const resultFromServer = await ApiConnection.get(url);
+    return convertToMofObjects(resultFromServer);
 }
 export async function getRootElementsAsItem(workspace, extentUri, parameter) {
     // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
@@ -117,8 +127,14 @@ export async function getRootElementsAsItem(workspace, extentUri, parameter) {
     if (parameter?.viewNode !== undefined) {
         url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
     }
-    const resultFromServer = await ApiConnection.get(url);
-    return resultFromServer;
+    return await ApiConnection.get(url);
+}
+export async function getElementsAsItem(queryUri) {
+    // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name    
+    let url = Settings.baseUrl +
+        "api/items/get_elements_as_item/" +
+        encodeURIComponent(queryUri);
+    return await ApiConnection.get(url);
 }
 export async function getContainer(workspaceId, itemUri, self) {
     let uri = Settings.baseUrl + "api/items/get_container/"

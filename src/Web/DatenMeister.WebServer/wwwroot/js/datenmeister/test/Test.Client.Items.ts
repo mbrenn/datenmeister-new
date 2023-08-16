@@ -114,6 +114,62 @@ export function includeTests() {
                 const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
             });
+
+            it('Get Elements', async function () {
+                const result = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+
+                const result2 = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+
+                chai.assert.isTrue(result.success, 'Item was not created');
+                chai.assert.isTrue(result2.success, 'Item was not created');
+
+                const allItems = await ClientItems.getElements('dm:///unittest');
+                chai.assert.equal(allItems.length, 2, "There are less or more items in the root elements");
+                for (let n in allItems) {
+                    const item = allItems[n];
+                    chai.assert.isTrue(item.uri === "dm:///unittest#" + result.itemId
+                        || item.uri === "dm:///unittest#" + result2.itemId);
+                }
+
+                const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
+                chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
+            });
+
+            it('Get Elements as Item', async function () {
+                const result = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+
+                const result2 = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+
+                chai.assert.isTrue(result.success, 'Item was not created');
+                chai.assert.isTrue(result2.success, 'Item was not created');
+
+                const allItems = await ClientItems.getElementsAsItem('dm:///unittest');
+                chai.assert.equal(allItems.length, 2, "There are less or more items in the root elements");
+                for (let n in allItems) {
+                    const item = allItems[n];
+                    chai.assert.isTrue(item.uri === "dm:///unittest#" + result.itemId
+                        || item.uri === "dm:///unittest#" + result2.itemId);
+                }
+
+                const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
+                chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
+            });
             
             it('Get Container', async () => {
                 const result = await ClientItems.createItemInExtent(

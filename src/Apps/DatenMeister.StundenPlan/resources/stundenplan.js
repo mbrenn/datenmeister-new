@@ -78,9 +78,16 @@ class StundenPlanForm {
     async createFormByObject(parent, configuration) {
         const domContainer = $("<span>Loading Schedule</span>");
         parent.append(domContainer);
-        const foundItems = await ClientItems.getObjectByUri(this.workspace, this.itemUrl);
-        // Gets the elements
-        const packagedElements = foundItems.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, Mof.ObjectType.Array);
+        const foundItem = await ClientItems.getObjectByUri(this.workspace, this.itemUrl);
+        let packagedElements;
+        if (foundItem.metaClass.uri === StundenPlanTypes._Types.__WeeklyScheduleView_Uri) {
+            parent.append($("<span>TEST</span>"));
+            return;
+        }
+        else {
+            // Gets the elements from the package
+            packagedElements = foundItem.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, Mof.ObjectType.Array);
+        }
         if (packagedElements === undefined || packagedElements === null) {
             parent.append($("<span>The element did not include the packagedElements"));
         }

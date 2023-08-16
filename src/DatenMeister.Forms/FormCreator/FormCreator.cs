@@ -95,6 +95,11 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         private IElement? _stringType;
         
+        /// <summary>
+        /// The cached unlimited natural type
+        /// </summary>
+        private IElement? _unlimitedNaturalType;
+        
         private Workspace? _uriResolver;
 
         /// <summary>
@@ -628,6 +633,7 @@ namespace DatenMeister.Forms.FormCreator
             _integerType ??= _PrimitiveTypes.TheOne.__Integer;
             _booleanType ??= _PrimitiveTypes.TheOne.__Boolean;
             _realType ??= _PrimitiveTypes.TheOne.__Real;
+            _unlimitedNaturalType ??= _PrimitiveTypes.TheOne.__UnlimitedNatural;
             _dateTimeType ??= _uriResolver?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
@@ -660,6 +666,7 @@ namespace DatenMeister.Forms.FormCreator
                     !propertyType.equals(_stringType) &&
                     !propertyType.equals(_integerType) &&
                     !propertyType.equals(_realType) &&
+                    !propertyType.equals(_unlimitedNaturalType) && 
                     !propertyType.equals(_dateTimeType))
                 {
                     // If we have something else than a primitive type and it is not for a list form
@@ -747,7 +754,11 @@ namespace DatenMeister.Forms.FormCreator
             column.set(_DatenMeister._Forms._TextFieldData.isReadOnly, isReadOnly);
 
             // If propertyType is an integer, the field can be smaller
-            if (propertyType.equals(_integerType)) column.set(_DatenMeister._Forms._TextFieldData.width, 10);
+            if (propertyType.equals(_integerType)
+                || propertyType.equals(_unlimitedNaturalType))
+            {
+                column.set(_DatenMeister._Forms._TextFieldData.width, 10);
+            }
 
             return column;
         }

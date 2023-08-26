@@ -39,6 +39,9 @@ export function navigateToExtentProperties(workspace, extentUri) {
             encodeURIComponent(workspace) + "_" +
             encodeURIComponent(extentUri);
 }
+export function getLinkForNavigateToMofItem(item, param) {
+    return getLinkForNavigateToItemByUrl(item.workspace, item.uri, param);
+}
 export function getLinkForNavigateToItem(workspace, extentUri, itemId, param) {
     return Settings.baseUrl + "Item/" +
         encodeURIComponent(workspace) + "/" +

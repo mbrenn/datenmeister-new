@@ -20,8 +20,9 @@ export namespace _Types
         export const __WeeklyPeriodicEvent_Uri = "dm:///types.stundenplan.datenmeister/#954ad359-1a92-4661-bc58-83ea4517d493";
         export class _WeeklyScheduleView
         {
+            static _name_ = "name";
             static collectionUri = "collectionUri";
-            static showWeeks = "showWeeks";
+            static weeks = "weeks";
             static skipWeekend = "skipWeekend";
         }
 

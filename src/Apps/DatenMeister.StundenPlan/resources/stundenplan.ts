@@ -1,10 +1,12 @@
 ﻿import * as Mof from '/js/datenmeister/Mof.js'
+import {ObjectType} from '/js/datenmeister/Mof.js'
 import * as FormFactory from '/js/datenmeister/forms/FormFactory.js'
-import * as StundenPlanTypes from './DatenMeister.StundenPlan.js';   
-import { FormType, IObjectFormElement } from '/js/datenmeister/forms/Interfaces.js';
-import { IFormConfiguration } from '/js/datenmeister/forms/IFormConfiguration.js';
+import * as StundenPlanTypes from './DatenMeister.StundenPlan.js';
+import {FormType, IObjectFormElement} from '/js/datenmeister/forms/Interfaces.js';
+import {IFormConfiguration} from '/js/datenmeister/forms/IFormConfiguration.js';
 import * as ClientItems from '/js/datenmeister/client/Items.js';
-import { _DatenMeister } from '/js/datenmeister/models/DatenMeister.class.js';
+import * as Navigator from '/js/datenmeister/Navigator.js';
+import {_DatenMeister} from '/js/datenmeister/models/DatenMeister.class.js';
 
 export function init() {
     FormFactory.registerObjectForm(
@@ -128,19 +130,23 @@ class StundenPlanForm implements IObjectFormElement {
         const domContainer = $("<span>Loading Schedule</span>");
         parent.append(domContainer);
 
+        const calenderConfiguration: IWeeklyCalenderConfiguration = {};
+
         const foundItem = await ClientItems.getObjectByUri(
             this.workspace,
             this.itemUrl);
-        let packagedElements;
+        let packagedElements: any[];
         if (foundItem.metaClass.uri === StundenPlanTypes._Types.__WeeklyScheduleView_Uri) {
-            parent.append($("<span>TEST</span>"));
+            const queryUrl = foundItem.get(StundenPlanTypes._Types._WeeklyScheduleView.collectionUri);
+            packagedElements = await ClientItems.getElements(queryUrl);
+            calenderConfiguration.weeks = 
+                foundItem.get(StundenPlanTypes._Types._WeeklyScheduleView.weeks, ObjectType.Number);
+            calenderConfiguration.skipWeekend = 
+                foundItem.get(StundenPlanTypes._Types._WeeklyScheduleView.skipWeekend, ObjectType.Boolean);
             
-            
-            return;
         } else {
             // Gets the elements from the package
             packagedElements = foundItem.get(_DatenMeister._CommonTypes._Default._Package.packagedElement, Mof.ObjectType.Array);
-
         }
 
         if (packagedElements === undefined || packagedElements === null) {
@@ -159,11 +165,10 @@ class StundenPlanForm implements IObjectFormElement {
             calendarControl.addPeriodicEvent(item);
         }
 
-        // Create teh calendarControl
+        // Create the calendarControl
         domContainer.empty();
 
-        calendarControl.createTable(
-            {weeks: 4}
+        calendarControl.createTable(calenderConfiguration
         );
     }
 
@@ -226,7 +231,7 @@ export class WeeklyCalenderControl {
 
     createTable(configuration: IWeeklyCalenderConfiguration) {
         // Performs the default configuration, if not already set
-        if (configuration.weeks === undefined) { configuration.weeks = 4; }
+        if (configuration.weeks === undefined || configuration.weeks === 0) { configuration.weeks = 4; }
         if (configuration.showWeeks === undefined) { configuration.showWeeks = true; }
         if (configuration.skipWeekend === undefined) { configuration.skipWeekend = false; }
 
@@ -266,9 +271,12 @@ export class WeeklyCalenderControl {
                     const eventItem = events[m];
 
                     const weekEvent = $("<div class='stundenplan-event'></div>");
+                    const theEvent = $("<a></a>");
                     const timeStart = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, Mof.ObjectType.String);
                     const title = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String);
-                    weekEvent.text(timeStart + " " + title);
+                    theEvent.text(timeStart + " " + title);
+                    theEvent.attr('href', Navigator.getLinkForNavigateToMofItem(eventItem));
+                    weekEvent.append(theEvent);
                     cell.append(weekEvent);
                 }
 

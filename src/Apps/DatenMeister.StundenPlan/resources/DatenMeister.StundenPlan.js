@@ -19,8 +19,9 @@ export var _Types;
     _Types.__WeeklyPeriodicEvent_Uri = "dm:///types.stundenplan.datenmeister/#954ad359-1a92-4661-bc58-83ea4517d493";
     class _WeeklyScheduleView {
     }
+    _WeeklyScheduleView._name_ = "name";
     _WeeklyScheduleView.collectionUri = "collectionUri";
-    _WeeklyScheduleView.showWeeks = "showWeeks";
+    _WeeklyScheduleView.weeks = "weeks";
     _WeeklyScheduleView.skipWeekend = "skipWeekend";
     _Types._WeeklyScheduleView = _WeeklyScheduleView;
     _Types.__WeeklyScheduleView_Uri = "dm:///types.stundenplan.datenmeister/#e722b04b-4392-4695-ada4-168397d7edc0";

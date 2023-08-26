@@ -53,11 +53,14 @@ namespace DatenMeister.StundenPlan.Model
 
         public class _WeeklyScheduleView
         {
+            public static string @name = "name";
+            public IElement? @_name = null;
+
             public static string @collectionUri = "collectionUri";
             public IElement? @_collectionUri = null;
 
-            public static string @showWeeks = "showWeeks";
-            public IElement? @_showWeeks = null;
+            public static string @weeks = "weeks";
+            public IElement? @_weeks = null;
 
             public static string @skipWeekend = "skipWeekend";
             public IElement? @_skipWeekend = null;

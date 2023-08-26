@@ -1,7 +1,9 @@
 import * as Mof from '/js/datenmeister/Mof.js';
+import { ObjectType } from '/js/datenmeister/Mof.js';
 import * as FormFactory from '/js/datenmeister/forms/FormFactory.js';
 import * as StundenPlanTypes from './DatenMeister.StundenPlan.js';
 import * as ClientItems from '/js/datenmeister/client/Items.js';
+import * as Navigator from '/js/datenmeister/Navigator.js';
 import { _DatenMeister } from '/js/datenmeister/models/DatenMeister.class.js';
 export function init() {
     FormFactory.registerObjectForm(StundenPlanTypes._Forms.__SchedulerForm_Uri, () => {
@@ -78,11 +80,16 @@ class StundenPlanForm {
     async createFormByObject(parent, configuration) {
         const domContainer = $("<span>Loading Schedule</span>");
         parent.append(domContainer);
+        const calenderConfiguration = {};
         const foundItem = await ClientItems.getObjectByUri(this.workspace, this.itemUrl);
         let packagedElements;
         if (foundItem.metaClass.uri === StundenPlanTypes._Types.__WeeklyScheduleView_Uri) {
-            parent.append($("<span>TEST</span>"));
-            return;
+            const queryUrl = foundItem.get(StundenPlanTypes._Types._WeeklyScheduleView.collectionUri);
+            packagedElements = await ClientItems.getElements(queryUrl);
+            calenderConfiguration.weeks =
+                foundItem.get(StundenPlanTypes._Types._WeeklyScheduleView.weeks, ObjectType.Number);
+            calenderConfiguration.skipWeekend =
+                foundItem.get(StundenPlanTypes._Types._WeeklyScheduleView.skipWeekend, ObjectType.Boolean);
         }
         else {
             // Gets the elements from the package
@@ -100,9 +107,9 @@ class StundenPlanForm {
             }
             calendarControl.addPeriodicEvent(item);
         }
-        // Create teh calendarControl
+        // Create the calendarControl
         domContainer.empty();
-        calendarControl.createTable({ weeks: 4 });
+        calendarControl.createTable(calenderConfiguration);
     }
     refreshForm() {
         return;
@@ -127,7 +134,7 @@ export class WeeklyCalenderControl {
     }
     createTable(configuration) {
         // Performs the default configuration, if not already set
-        if (configuration.weeks === undefined) {
+        if (configuration.weeks === undefined || configuration.weeks === 0) {
             configuration.weeks = 4;
         }
         if (configuration.showWeeks === undefined) {
@@ -165,9 +172,12 @@ export class WeeklyCalenderControl {
                 for (const m in events) {
                     const eventItem = events[m];
                     const weekEvent = $("<div class='stundenplan-event'></div>");
+                    const theEvent = $("<a></a>");
                     const timeStart = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, Mof.ObjectType.String);
                     const title = eventItem.get(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, Mof.ObjectType.String);
-                    weekEvent.text(timeStart + " " + title);
+                    theEvent.text(timeStart + " " + title);
+                    theEvent.attr('href', Navigator.getLinkForNavigateToMofItem(eventItem));
+                    weekEvent.append(theEvent);
                     cell.append(weekEvent);
                 }
                 this.cells.push(cell);

@@ -239,7 +239,7 @@ export class ObjectFormCreatorForItem {
             this.htmlElements.viewModeSelectorContainer.empty();
             this.statusTextControl.setListStatus("Create Viewmode Selection", false);
             const viewModeForm = new ViewModeSelectionControl();
-            const htmlViewModeForm = await viewModeForm.createForm();
+            const htmlViewModeForm = await viewModeForm.createForm(configuration.viewMode);
             viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
             this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
             this.statusTextControl.setListStatus("Create Viewmode Selection", true);

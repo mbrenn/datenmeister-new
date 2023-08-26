@@ -9,11 +9,17 @@ export class ViewModeSelectionControl {
          */
         this.viewModeSelected = new UserEvent();
     }
-    async createForm() {
+    /**
+     * Creates the form itself
+     * @param overridedViewMode Can be set, if the view mode is overridden by the caller of the method.
+     * Usually, the viewmode is retrieved by reading the one from the browser property. But if, the caller
+     * requests another viewmode independent of the selected one, it can be injected here.
+     */
+    async createForm(overridedViewMode) {
         const container = $("<div></div>");
         const selectField = $("<select></select>");
         const viewModes = await VML.getViewModesFromServer();
-        const currentViewMode = VML.getCurrentViewMode();
+        const currentViewMode = overridedViewMode ?? VML.getCurrentViewMode();
         for (let n in viewModes) {
             const v = viewModes[n];
             const option = $("<option></option>");

@@ -1,4 +1,5 @@
 ﻿import * as Settings from "./Settings.js";
+import * as Mof from "./Mof";
 
 export function getLinkForNavigateToWorkspaces() {
     return Settings.baseUrl + "ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces";
@@ -63,6 +64,10 @@ export interface INavigateToItemParams
      * Defines whether the user shall move to the edit mode
      */
     editMode?: boolean;
+}
+
+export function getLinkForNavigateToMofItem(item: Mof.DmObject, param?: INavigateToItemParams) {
+    return getLinkForNavigateToItemByUrl(item.workspace, item.uri, param);
 }
 
 export function getLinkForNavigateToItem(workspace: string, extentUri: string, itemId: string, param?: INavigateToItemParams) {

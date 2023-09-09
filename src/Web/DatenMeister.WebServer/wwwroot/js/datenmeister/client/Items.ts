@@ -228,8 +228,7 @@ export async function getContainer(workspaceId: string, itemUri: string, self?: 
         + encodeURIComponent(workspaceId) + "/"
         + encodeURIComponent(itemUri);
     
-    if ( self === true )
-    {
+    if (self === true) {
         uri += "?self=true";
     }
     

@@ -48,7 +48,6 @@ export function init() {
             event2.set(StundenPlanTypes._Types._WeeklyPeriodicEvent.weekOffset, 0);
             event2.set(StundenPlanTypes._Types._WeeklyPeriodicEvent._name_, "Event2");
 
-
             const event3 = new Mof.DmObject();
             event3.set(StundenPlanTypes._Types._WeeklyPeriodicEvent.onWednesday, true);
             event3.set(StundenPlanTypes._Types._WeeklyPeriodicEvent.timeStart, "09:00");

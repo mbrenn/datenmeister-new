@@ -57,6 +57,12 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
 
         const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);
         result.set(_MoveOrCopyAction.source, source);
+        
+        const container = await ItemClient.getContainer(sourceWorkspace, sourceItemUri);
+        if (container.length > 0) {
+            const target = DmObject.createFromReference(container[0].workspace, container[0].uri);
+            result.set(_MoveOrCopyAction.target, target);
+        }
 
         return Promise.resolve(result);
     }

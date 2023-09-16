@@ -19,7 +19,6 @@ export function init() {
     /**
      * Add the tests, only if the test framework is loaded
      */
-
     if (typeof describe !== 'function') return;
 
     describe('StundenPlanMeister Tests', function () {

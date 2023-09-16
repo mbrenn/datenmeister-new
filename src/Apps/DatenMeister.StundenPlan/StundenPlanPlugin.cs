@@ -56,16 +56,19 @@ public class StundenPlanPlugin : IDatenMeisterPlugin
         pluginLogic.AddJavaScriptFromResource(
             typeof(StundenPlanPlugin),
             "DatenMeister.StundenPlan.resources.stundenplan.js",
-            "stundenplan.js");
+            "stundenplan.js",
+            "../../Apps/Datenmeister.StundenPlan/resources/stundenPlan.js");
         pluginLogic.AddJavaScriptFromResource(
             typeof(StundenPlanPlugin),
             "DatenMeister.StundenPlan.resources.DatenMeister.StundenPlan.js",
             "DatenMeister.StundenPlan.js",
+            "../../Apps/Datenmeister.StundenPlan/resources/DatenMeister.StundenPlan.js",
             RegistrationType.OnlyEmbedding);
 
         pluginLogic.AddCssFileFromResource(
             typeof(StundenPlanPlugin),
             "DatenMeister.StundenPlan.resources.stundenplan.css",
-            "stundenplan.css");
+            "stundenplan.css",
+            "../../Apps/Datenmeister.StundenPlan/resources/stundenplan.css");
     }
 }

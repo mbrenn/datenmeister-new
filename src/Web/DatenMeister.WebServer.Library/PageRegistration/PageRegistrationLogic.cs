@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using BurnSystems.Logging;
-using DatenMeister.Extent.Forms;
 
 namespace DatenMeister.WebServer.Library.PageRegistration
 {   
@@ -122,7 +121,6 @@ namespace DatenMeister.WebServer.Library.PageRegistration
                 null, 
                 registrationType);
         }
-
 
         /// <summary>
         /// Adds a certain CSS File to the Webserver. This CSS File will be included in every

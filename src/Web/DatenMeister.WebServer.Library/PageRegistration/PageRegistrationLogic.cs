@@ -2,9 +2,11 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using BurnSystems.Logging;
+using DatenMeister.Extent.Forms;
 
 namespace DatenMeister.WebServer.Library.PageRegistration
-{
+{   
     /// <summary>
     /// Defines the different registration types.
     /// OnlyEmbedding just allows the access by the url.
@@ -15,7 +17,8 @@ namespace DatenMeister.WebServer.Library.PageRegistration
     {
         /// <summary>
         /// The Javascript file will just be embedded and not loaded during the
-        /// initialization of the page
+        /// initialization of the page.
+        /// This means that the pages are not automatically importing these files
         /// </summary>
         OnlyEmbedding,
         
@@ -26,6 +29,11 @@ namespace DatenMeister.WebServer.Library.PageRegistration
     }
     public class PageRegistrationLogic
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static readonly ILogger _logger = new ClassLogger(typeof(PageRegistrationLogic));
+            
         private readonly PageRegistrationData _data;
 
         /// <summary>
@@ -49,27 +57,40 @@ namespace DatenMeister.WebServer.Library.PageRegistration
                 new PageFactory(url, contentType, pageStreamFactory));
         }
 
-
-
         /// <summary>
         /// Adds a new Javascript file for the webserver
         /// The JavaScript file is taken from a resource and will be available under js/{fileName}
         /// </summary>
         /// <param name="manifestType">Type in which the manifest is stored</param>
         /// <param name="manifestName">Name of the manifest</param>
-        /// <param name="fileName">Name of the file</param>
+        /// <param name="uriFileName">Name of the file</param>
+        /// <param name="originalFilePath">Path to the file which will be used instead of using
+        /// the embedded file. This supports the fast change of files without a recompile
+        /// of the full application. </param>
         /// <param name="registrationType">Type of the registration</param>
         public void AddJavaScriptFromResource(
             Type manifestType,
             string manifestName,
-            string fileName,
+            string uriFileName,
+            string? originalFilePath,
             RegistrationType registrationType = RegistrationType.EmbedAndLoad)
         {
+            if (originalFilePath != null && File.Exists(originalFilePath))
+            {
+                _logger.Info($"Local file used instead of resource: {originalFilePath}");
+            }
+            
             AddUrl(
-                $"js/datenmeister/module/{fileName}",
+                $"js/datenmeister/module/{uriFileName}",
                 "application/javascript",
                 () =>
                 {
+                    // If local file exists, take the local file to allow edit during running
+                    if (originalFilePath != null && File.Exists(originalFilePath))
+                    {
+                        return new FileStream(originalFilePath, FileMode.Open, FileAccess.Read);
+                    }
+                    
                     var result = manifestType.GetTypeInfo()
                         .Assembly.GetManifestResourceStream(manifestName);
                     return result ?? throw new InvalidOperationException($"The manifest {manifestName} was not found");
@@ -77,8 +98,53 @@ namespace DatenMeister.WebServer.Library.PageRegistration
 
             if (registrationType == RegistrationType.EmbedAndLoad)
             {
-                _data.JavaScriptFiles.Add(fileName);
+                _data.JavaScriptFiles.Add(uriFileName);
             }
+        }
+                
+        /// <summary>
+        /// Adds a new Javascript file for the webserver
+        /// The JavaScript file is taken from a resource and will be available under js/{fileName}
+        /// </summary>
+        /// <param name="manifestType">Type in which the manifest is stored</param>
+        /// <param name="manifestName">Name of the manifest</param>
+        /// <param name="uriFileName">Name of the file</param>
+        /// <param name="registrationType">Type of the registration</param>
+        public void AddJavaScriptFromResource(
+            Type manifestType,
+            string manifestName,
+            string uriFileName,
+            RegistrationType registrationType = RegistrationType.EmbedAndLoad)
+        {
+            AddJavaScriptFromResource(manifestType, 
+                manifestName,
+                uriFileName, 
+                null, 
+                registrationType);
+        }
+
+
+        /// <summary>
+        /// Adds a certain CSS File to the Webserver. This CSS File will be included in every
+        /// page being delivered by the webpage
+        /// </summary>
+        /// <param name="manifestType">One type in which the assembly is hosted containing the CSS File</param>
+        /// <param name="manifestName">Name of the Manifest</param>
+        /// <param name="uriFilePath">Filename under which the CSS File can be retrieved. The prefix 'css/' will
+        /// be added by the logic</param>
+        /// <param name="registrationType">Type of the registration</param>
+        public void AddCssFileFromResource(
+            Type manifestType,
+            string manifestName,
+            string uriFilePath,
+            RegistrationType registrationType = RegistrationType.EmbedAndLoad)
+        {
+            AddCssFileFromResource(
+                manifestType,
+                manifestName,
+                uriFilePath,
+                null,
+                registrationType);
         }
 
         /// <summary>
@@ -87,20 +153,35 @@ namespace DatenMeister.WebServer.Library.PageRegistration
         /// </summary>
         /// <param name="manifestType">One type in which the assembly is hosted containing the CSS File</param>
         /// <param name="manifestName">Name of the Manifest</param>
-        /// <param name="fileName">Filename under which the CSS File can be retrieved. The prefix 'css/' will
-        /// be added by the logic</param>
+        /// <param name="uriFilePath">Filename under which the CSS File can be retrieved. The prefix 'css/' will
+        /// be added by the logic</param> 
+        /// <param name="originalFilePath">Path to the file which will be used instead of using
+        /// the embedded file. This supports the fast change of files without a recompile
+        /// of the full application. </param>
         /// <param name="registrationType">Type of the registration</param>
         public void AddCssFileFromResource(
             Type manifestType,
             string manifestName,
-            string fileName,
+            string uriFilePath,
+            string? originalFilePath,
             RegistrationType registrationType = RegistrationType.EmbedAndLoad)
         {
+            if (originalFilePath != null && File.Exists(originalFilePath))
+            {
+                _logger.Info($"Local file used instead of resource: {originalFilePath}");
+            }
+            
             AddUrl(
-                $"css/module/{fileName}",
+                $"css/module/{uriFilePath}",
                 "text/css",
                 () =>
                 {
+                    // If local file exists, take the local file to allow edit during running
+                    if (originalFilePath != null && File.Exists(originalFilePath))
+                    {
+                        return new FileStream(originalFilePath, FileMode.Open, FileAccess.Read);
+                    }
+                    
                     var result = manifestType.GetTypeInfo()
                         .Assembly.GetManifestResourceStream(manifestName);
                     return result ?? throw new InvalidOperationException($"The manifest {manifestName} was not found");
@@ -108,9 +189,8 @@ namespace DatenMeister.WebServer.Library.PageRegistration
 
             if (registrationType == RegistrationType.EmbedAndLoad)
             {
-                _data.CssFiles.Add(fileName);
+                _data.CssFiles.Add(uriFilePath);
             }
-
         }
 
         /// <summary>

@@ -88,7 +88,8 @@ namespace DatenMeister.WebServer
                         entry.Url, async context =>
                         {
                             context.Response.ContentType = entry.ContentType;
-                            await entry.PageStreamFunction().CopyToAsync(context.Response.Body);
+                            await using var pageStream = entry.PageStreamFunction();
+                            await pageStream.CopyToAsync(context.Response.Body);
                         });
                 }
             });

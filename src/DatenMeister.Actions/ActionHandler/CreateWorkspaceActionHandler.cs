@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -14,20 +15,25 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__CreateWorkspaceAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var workspace = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.workspace);
-            var annotation = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.annotation);
-            if (string.IsNullOrEmpty(workspace))
+            await Task.Run(() =>
             {
-                throw new InvalidOperationException("workspace is not set");
-            }
-            
-            actionLogic.WorkspaceLogic.AddWorkspace(
-                new Workspace(workspace)
+                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.workspace);
+                var annotation = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.annotation);
+                if (string.IsNullOrEmpty(workspace))
                 {
-                    annotation = annotation
-                });
+                    throw new InvalidOperationException("workspace is not set");
+                }
+
+                actionLogic.WorkspaceLogic.AddWorkspace(
+                    new Workspace(workspace)
+                    {
+                        annotation = annotation
+                    });
+            });
+
+            return null;
         }
     }
 }

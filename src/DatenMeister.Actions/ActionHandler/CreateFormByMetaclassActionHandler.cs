@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -26,74 +27,80 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__CreateFormByMetaClass) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            
-            var formCreator = new FormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-            var formMethods = new FormMethods(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-            var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._CreateFormByMetaClass.metaClass);
-            var creationMode = action.getOrDefault<string>(_DatenMeister._Actions._CreateFormByMetaClass.creationMode);
-            var targetContainer = action.getOrDefault<IObject>(_DatenMeister._Actions._CreateFormByMetaClass.targetContainer);
-            var targetReflection = targetContainer == null
-                ? formMethods.GetUserFormExtent().elements()
-                : DefaultClassifierHints.GetDefaultReflectiveCollection(targetContainer);
-
-            IElement form;
-            switch (creationMode)
+            await Task.Run(() =>
             {
-                case CreateFormByMetaclassCreationMode.Object:
-                    CreateObjectForm(false);
-                    break;
-                case CreateFormByMetaclassCreationMode.Collection:
-                    CreateCollectionForm(false);
-                    break;
-                case CreateFormByMetaclassCreationMode.ObjectCollection:
-                    CreateObjectForm(false);
-                    CreateCollectionForm(false);
-                    break;
-                case CreateFormByMetaclassCreationMode.ObjectAssociation:
-                    CreateObjectForm(true);
-                    break;
-                case CreateFormByMetaclassCreationMode.CollectionAssociation:
-                    CreateCollectionForm(true);
-                    break;
-                case  CreateFormByMetaclassCreationMode.ObjectCollectionAssociation:
-                    CreateObjectForm(true);
-                    CreateCollectionForm(true);
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown creationMode");
-            }
-            
-            void CreateObjectForm(bool includeFormAssociation)
-            {
-                form = formCreator.CreateObjectFormForMetaClass(metaClass, new FormFactoryConfiguration());
-                targetReflection.add(form);
+                var formCreator = new FormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+                var formMethods = new FormMethods(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+                var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._CreateFormByMetaClass.metaClass);
+                var creationMode =
+                    action.getOrDefault<string>(_DatenMeister._Actions._CreateFormByMetaClass.creationMode);
+                var targetContainer =
+                    action.getOrDefault<IObject>(_DatenMeister._Actions._CreateFormByMetaClass.targetContainer);
+                var targetReflection = targetContainer == null
+                    ? formMethods.GetUserFormExtent().elements()
+                    : DefaultClassifierHints.GetDefaultReflectiveCollection(targetContainer);
 
-                if (includeFormAssociation)
+                IElement form;
+                switch (creationMode)
                 {
-                    var association = formMethods.AddFormAssociationForMetaclass(
-                        form,
-                        metaClass,
-                        _DatenMeister._Forms.___FormType.Object);
-                    targetReflection.add(association);
+                    case CreateFormByMetaclassCreationMode.Object:
+                        CreateObjectForm(false);
+                        break;
+                    case CreateFormByMetaclassCreationMode.Collection:
+                        CreateCollectionForm(false);
+                        break;
+                    case CreateFormByMetaclassCreationMode.ObjectCollection:
+                        CreateObjectForm(false);
+                        CreateCollectionForm(false);
+                        break;
+                    case CreateFormByMetaclassCreationMode.ObjectAssociation:
+                        CreateObjectForm(true);
+                        break;
+                    case CreateFormByMetaclassCreationMode.CollectionAssociation:
+                        CreateCollectionForm(true);
+                        break;
+                    case CreateFormByMetaclassCreationMode.ObjectCollectionAssociation:
+                        CreateObjectForm(true);
+                        CreateCollectionForm(true);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Unknown creationMode");
                 }
-            }
 
-            void CreateCollectionForm(bool includeFormAssociation)
-            {
-                form = formCreator.CreateCollectionFormForMetaClass(metaClass);
-                targetReflection.add(form);
-
-                if (includeFormAssociation)
+                void CreateObjectForm(bool includeFormAssociation)
                 {
-                    var association = formMethods.AddFormAssociationForMetaclass(
-                        form,
-                        metaClass,
-                        _DatenMeister._Forms.___FormType.Collection);
-                    targetReflection.add(association);
+                    form = formCreator.CreateObjectFormForMetaClass(metaClass, new FormFactoryConfiguration());
+                    targetReflection.add(form);
+
+                    if (includeFormAssociation)
+                    {
+                        var association = formMethods.AddFormAssociationForMetaclass(
+                            form,
+                            metaClass,
+                            _DatenMeister._Forms.___FormType.Object);
+                        targetReflection.add(association);
+                    }
                 }
-            }
+
+                void CreateCollectionForm(bool includeFormAssociation)
+                {
+                    form = formCreator.CreateCollectionFormForMetaClass(metaClass);
+                    targetReflection.add(form);
+
+                    if (includeFormAssociation)
+                    {
+                        var association = formMethods.AddFormAssociationForMetaclass(
+                            form,
+                            metaClass,
+                            _DatenMeister._Forms.___FormType.Collection);
+                        targetReflection.add(association);
+                    }
+                }
+            });
+
+            return null;
         }
     }
 }

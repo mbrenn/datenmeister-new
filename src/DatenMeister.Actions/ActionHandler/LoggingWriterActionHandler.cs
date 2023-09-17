@@ -1,4 +1,5 @@
-﻿using BurnSystems.Logging;
+﻿using System.Threading.Tasks;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -32,14 +33,19 @@ namespace DatenMeister.Actions.ActionHandler
         /// </summary>
         /// <param name="actionLogic">Action plugin to be added</param>
         /// <param name="action">Action to be executed</param>
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var message = action.getOrDefault<string>(_DatenMeister._Actions._LoggingWriterAction.message);
-            if (message != null)
+            await Task.Run(() =>
             {
-                LastMessage = message;
-                ClassLogger.Info(message);
-            }
+                var message = action.getOrDefault<string>(_DatenMeister._Actions._LoggingWriterAction.message);
+                if (message != null)
+                {
+                    LastMessage = message;
+                    ClassLogger.Info(message);
+                }
+            });
+
+            return null;
         }
     }
 }

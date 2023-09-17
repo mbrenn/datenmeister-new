@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -20,41 +21,48 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__DeletePropertyFromCollectionAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var collectionUrl =
-                action.getOrDefault<string>(_DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl);
-            var propertyName =
-                action.getOrDefault<string>(_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName);
-
-            if (string.IsNullOrEmpty(propertyName))
+            await Task.Run(() =>
             {
-                throw new InvalidOperationException("Property is not set");
-            }
-            
-            if (string.IsNullOrEmpty(collectionUrl))
-            {
-                throw new InvalidOperationException("Collection Url is not set");
-            }
+                var collectionUrl =
+                    action.getOrDefault<string>(
+                        _DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl);
+                var propertyName =
+                    action.getOrDefault<string>(_DatenMeister._Actions._DeletePropertyFromCollectionAction
+                        .propertyName);
 
-            var resolvedElement = actionLogic.WorkspaceLogic.Resolve(
-                collectionUrl, ResolveType.Default, true);
+                if (string.IsNullOrEmpty(propertyName))
+                {
+                    throw new InvalidOperationException("Property is not set");
+                }
 
-            var collection =
-                resolvedElement as IReflectiveCollection 
-                ?? (resolvedElement is IUriExtent extent ? extent.elements() : null);
-            
-            if (collection == null)
-            {
-                throw new InvalidOperationException(
-                    "The collection with uri '" + collectionUrl + "' was not found.");
-            }
+                if (string.IsNullOrEmpty(collectionUrl))
+                {
+                    throw new InvalidOperationException("Collection Url is not set");
+                }
 
-            // Remove the properties
-            foreach (var element in collection.OfType<IObject>())
-            {
-                element.unset(propertyName);
-            }
+                var resolvedElement = actionLogic.WorkspaceLogic.Resolve(
+                    collectionUrl, ResolveType.Default, true);
+
+                var collection =
+                    resolvedElement as IReflectiveCollection
+                    ?? (resolvedElement is IUriExtent extent ? extent.elements() : null);
+
+                if (collection == null)
+                {
+                    throw new InvalidOperationException(
+                        "The collection with uri '" + collectionUrl + "' was not found.");
+                }
+
+                // Remove the properties
+                foreach (var element in collection.OfType<IObject>())
+                {
+                    element.unset(propertyName);
+                }
+            });
+
+            return null;
         }
     }
 }

@@ -4,10 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 
@@ -15,6 +17,13 @@ namespace DatenMeister.Actions
 {
     public class ActionSetExecutionState
     {
+        private readonly IElement _element;
+
+        public ActionSetExecutionState(IElement element)
+        {
+            _element = element;
+        }
+        
         /// <summary>
         /// Stores the number of actions
         /// </summary>
@@ -28,6 +37,7 @@ namespace DatenMeister.Actions
         public void IncrementNumberOfActions()
         {
             Interlocked.Increment(ref _numberOfActions);
+            _element.set("numberOfActions", _numberOfActions);
         }
     }
 
@@ -54,15 +64,17 @@ namespace DatenMeister.Actions
         /// Executes the given action
         /// </summary>
         /// <param name="actionSet">Actions-Set to be executed</param>
-        public async Task<ActionSetExecutionState> ExecuteActionSet(IElement actionSet)
+        public async Task<IElement?> ExecuteActionSet(IElement actionSet)
         {
-            var actionSetExecutionState = new ActionSetExecutionState();
+            var result = InMemoryObject.CreateEmpty();
+            
+            var actionSetExecutionState = new ActionSetExecutionState(result);
             var actions = actionSet.getOrDefault<IReflectiveCollection>(
                 _DatenMeister._Actions._ActionSet.action);
             if (actions == null)
             {
                 // Nothing to be executed
-                return actionSetExecutionState;
+                return result;
             }
             
             foreach (var action in actions.OfType<IElement>())
@@ -77,15 +89,18 @@ namespace DatenMeister.Actions
                 actionSetExecutionState.IncrementNumberOfActions();
             }
 
-            return actionSetExecutionState;
+            return result;
         }
 
         /// <summary>
         /// Executes a certain action 
         /// </summary>
         /// <param name="action">Action to be executed</param>
-        public async Task ExecuteAction(IElement action)
+        /// <returns>The element which indicates the result of an action. It may be null, if there
+        /// is no result</returns>
+        public async Task<IElement?> ExecuteAction(IElement action)
         {
+            IElement? result = null;
             var found = false;
             foreach (var actionHandler in ScopeStorage.Get<ActionLogicState>().ActionHandlers)
             {
@@ -95,11 +110,11 @@ namespace DatenMeister.Actions
                 }
                 
                 // Defines the action to be executed
-                var fct = new Action(() =>
+                var fct = new Func<Task<IElement?>>(async () =>
                 {
                     try
                     {
-                        actionHandler.Evaluate(this, action);
+                        return await actionHandler.Evaluate(this, action);
                     }
                     catch (Exception exc)
                     {
@@ -113,11 +128,11 @@ namespace DatenMeister.Actions
 #pragma warning disable CS0162
                 if (asyncExecution)
                 {
-                    await Task.Run(() => { fct(); });
+                    result = await Task.Run(() => fct());
                 }
                 else
                 {
-                    fct();
+                    result = await fct();
                 }
 #pragma warning restore CS0162
 
@@ -133,6 +148,8 @@ namespace DatenMeister.Actions
                 ClassLogger.Warn(message);
                 throw new InvalidOperationException(message);
             }
+
+            return result;
         }
     }
 }

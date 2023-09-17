@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
@@ -254,7 +255,7 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpPost("api/extent/import_xmi/{workspace}/{extent}")]
-        public ActionResult<ImportXmiResult> ImportXmi(string workspace, string extent, [FromBody] ImportXmiParams param)
+        public async Task<ActionResult<ImportXmiResult>> ImportXmi(string workspace, string extent, [FromBody] ImportXmiParams param)
         {
             workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
             extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
@@ -267,7 +268,7 @@ namespace DatenMeister.WebServer.Controller
             action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, extent);
             action.set(_DatenMeister._Actions._ImportXmiAction.xmi, param.Xmi);
             
-            importXmi.Evaluate(actionLogic, action);
+            await importXmi.Evaluate(actionLogic, action);
 
             return new ImportXmiResult { Success = true };
         }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
@@ -809,7 +810,7 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpPost("api/item/import_xmi/{workspace}/{itemUri}")]
-        public ActionResult<ImportXmiResult> ImportXmi(
+        public async Task<ActionResult<ImportXmiResult>> ImportXmi(
             string workspace, string itemUri,
             [FromQuery(Name = "property")] string property, 
             [FromQuery(Name = "addToCollection")] bool addToCollection,
@@ -828,7 +829,7 @@ namespace DatenMeister.WebServer.Controller
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, addToCollection);
             action.set(_DatenMeister._Actions._ImportXmiAction.xmi, parameter.Xmi);
             
-            importXmi.Evaluate(actionLogic, action);
+            await importXmi.Evaluate(actionLogic, action);
 
             return new ImportXmiResult { Success = true };
         }

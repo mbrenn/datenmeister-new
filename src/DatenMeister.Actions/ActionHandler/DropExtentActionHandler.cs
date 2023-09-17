@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -14,24 +15,30 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__DropExtentAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspace) ?? "Data";
-            var extentUri = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.extentUri);
+            await Task.Run(() =>
+            {
+                var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspace) ??
+                                    "Data";
+                var extentUri = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.extentUri);
 
-            if (string.IsNullOrEmpty(extentUri))
-            {
-                throw new InvalidOperationException("extentUri is null or empty");
-            }
-            
-            var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceName);
-            if (workspace == null)
-            {
-                throw new InvalidOperationException($"Workspace is not found {workspaceName}");
-            }
-            
-            var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-            extentManager.RemoveExtent(workspaceName, extentUri);
+                if (string.IsNullOrEmpty(extentUri))
+                {
+                    throw new InvalidOperationException("extentUri is null or empty");
+                }
+
+                var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceName);
+                if (workspace == null)
+                {
+                    throw new InvalidOperationException($"Workspace is not found {workspaceName}");
+                }
+
+                var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+                extentManager.RemoveExtent(workspaceName, extentUri);
+            });
+
+            return null;
         }
     }
 }

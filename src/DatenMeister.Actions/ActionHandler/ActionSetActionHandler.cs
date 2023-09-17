@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System.Threading.Tasks;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 
 namespace DatenMeister.Actions.ActionHandler
@@ -19,9 +20,9 @@ namespace DatenMeister.Actions.ActionHandler
         /// </summary>
         /// <param name="actionLogic">Action plugin to be added</param>
         /// <param name="action">Action to be executed</param>
-        public async void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            await actionLogic.ExecuteActionSet(action);
+            return await actionLogic.ExecuteActionSet(action);
         }
     }
 }

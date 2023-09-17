@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.EMOF.Implementation;
@@ -16,7 +17,7 @@ namespace DatenMeister.Tests.Modules.Actions
     public class ImportXmiTests
     {
         [Test]
-        public void TestOfExtent()
+        public async Task TestOfExtent()
         {    
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
 
@@ -37,7 +38,7 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test");
             action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi);
             
-            importXmi.Evaluate(actionLogic, action);
+            await importXmi.Evaluate(actionLogic, action);
 
             Assert.That(newExtent.elements().Count(), Is.EqualTo(2));
             Assert.That(newExtent.elements().OfType<IElement>().First().getOrDefault<string>("state"),
@@ -47,7 +48,7 @@ namespace DatenMeister.Tests.Modules.Actions
         }
         
         [Test]
-        public void TestOfItemInProperty()
+        public async Task TestOfItemInProperty()
         {    
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
 
@@ -72,7 +73,7 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, false);
             action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi);
             
-            importXmi.Evaluate(actionLogic, action);
+            await importXmi.Evaluate(actionLogic, action);
 
             Assert.That(newExtent.elements().Count(), Is.EqualTo(1));
 
@@ -85,7 +86,7 @@ namespace DatenMeister.Tests.Modules.Actions
         }
         
         [Test]
-        public void TestOfItemInPropertyToCollection()
+        public async Task TestOfItemInPropertyToCollection()
         {    
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
 
@@ -111,7 +112,7 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, true);
             action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi);
             
-            importXmi.Evaluate(actionLogic, action);
+            await importXmi.Evaluate(actionLogic, action);
 
             Assert.That(newExtent.elements().Count(), Is.EqualTo(1));
 
@@ -134,7 +135,8 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, true);
             action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi2);
             
-            importXmi.Evaluate(actionLogic, action);
+            await importXmi.Evaluate(actionLogic, action);
+            
             issueCollection = newItem.getOrDefault<IReflectiveCollection>("issue");
             Assert.That(issueCollection, Is.Not.Null);
             Assert.That(issueCollection.Count(), Is.EqualTo(2));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
@@ -23,53 +24,60 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__CommandExecutionAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var command = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.command);
-            var arguments = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.arguments);
-            var workingDirectory = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.workingDirectory);
-            
-            /* Translates the command if required */
-            var foundCommand = actionLogic.WorkspaceLogic.GetManagementWorkspace()
-                .GetAllDescendents()
-                .WhenMetaClassIs(_DatenMeister.TheOne.CommonTypes.OSIntegration.__CommandLineApplication)
-                .WhenPropertyHasValue(_DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.name, command)
-                .OfType<IElement>()
-                .FirstOrDefault();
-            if (foundCommand != null)
+            await Task.Run(() =>
             {
-                var oldCommand = command;
-                command = 
-                    foundCommand.getOrDefault<string>(
-                        _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.applicationPath);
-                Logger.Info($"Translated process: {oldCommand} {command}");
-            }
+                var command = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.command);
+                var arguments = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.arguments);
+                var workingDirectory =
+                    action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.workingDirectory);
 
-            // Expands the environment variables
-            command = Environment.ExpandEnvironmentVariables(command);
+                /* Translates the command if required */
+                var foundCommand = actionLogic.WorkspaceLogic.GetManagementWorkspace()
+                    .GetAllDescendents()
+                    .WhenMetaClassIs(_DatenMeister.TheOne.CommonTypes.OSIntegration.__CommandLineApplication)
+                    .WhenPropertyHasValue(_DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.name,
+                        command)
+                    .OfType<IElement>()
+                    .FirstOrDefault();
+                if (foundCommand != null)
+                {
+                    var oldCommand = command;
+                    command =
+                        foundCommand.getOrDefault<string>(
+                            _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.applicationPath);
+                    Logger.Info($"Translated process: {oldCommand} {command}");
+                }
 
-            Logger.Info($"Process started: {command} {arguments}");
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = command,
-                UseShellExecute = true
-            };
+                // Expands the environment variables
+                command = Environment.ExpandEnvironmentVariables(command);
 
-            if (!string.IsNullOrEmpty(arguments))
-            {
-                startInfo.Arguments = arguments;
-            }
+                Logger.Info($"Process started: {command} {arguments}");
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = command,
+                    UseShellExecute = true
+                };
 
-            if (!string.IsNullOrEmpty(workingDirectory))
-            {
-                startInfo.WorkingDirectory = workingDirectory;
-            }
+                if (!string.IsNullOrEmpty(arguments))
+                {
+                    startInfo.Arguments = arguments;
+                }
 
-            var process = Process.Start(startInfo)
-                          ?? throw new InvalidOperationException("Process was not created");
-            process.WaitForExit();
+                if (!string.IsNullOrEmpty(workingDirectory))
+                {
+                    startInfo.WorkingDirectory = workingDirectory;
+                }
 
-            Logger.Info($"Process exited: {command} {arguments}");
+                var process = Process.Start(startInfo)
+                              ?? throw new InvalidOperationException("Process was not created");
+                process.WaitForExit();
+
+                Logger.Info($"Process exited: {command} {arguments}");
+            });
+
+            return null;
         }
     }
 }

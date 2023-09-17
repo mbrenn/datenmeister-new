@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.EMOF.Implementation;
@@ -23,55 +24,61 @@ namespace DatenMeister.Actions.Transformations
                 _DatenMeister.TheOne.Actions.__TransformItemsAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._TransformItemsAction.metaClass);
-            var runtimeClass = action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.runtimeClass);
-            var workspace =
-                action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.workspace);
-            var path = action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.path);
-            
-            var sourceWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(workspace);
-            if (sourceWorkspace == null)
+            await Task.Run(() =>
             {
-                var message = $"sourceWorkspace is not found {workspace}";
-                logger.Error(message);
+                var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._TransformItemsAction.metaClass);
+                var runtimeClass =
+                    action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.runtimeClass);
+                var workspace =
+                    action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.workspace);
+                var path = action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.path);
 
-                throw new InvalidOperationException(message);
-            }
-            
-            var sourceElement = sourceWorkspace.Resolve(path, ResolveType.NoMetaWorkspaces);
-
-            if (sourceElement == null)
-            {
-                var message = $"sourcePath is not found ${path}";
-                logger.Error(message);
-
-                throw new InvalidOperationException(message);
-            }
-
-            // Depending on type, get the reflective instance
-            var targetCollection = CopyElementsActionHandler.GetCollectionFromResolvedElement(sourceElement)
-                                   ?? throw new InvalidOperationException(
-                                       "targetElement is null");
-
-            var transformer =
-                DynamicRuntimeProviderLoader.CreateInstanceByRuntimeClass<IItemTransformation>(runtimeClass);
-
-            foreach (var item in targetCollection.GetAllCompositesIncludingThemselves())
-            {
-                if (!(item is IElement asElement)) continue;
-                if (metaClass != null)
+                var sourceWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(workspace);
+                if (sourceWorkspace == null)
                 {
-                    if (asElement.metaclass?.Equals(metaClass) != true)
-                    {
-                        continue;
-                    }
+                    var message = $"sourceWorkspace is not found {workspace}";
+                    logger.Error(message);
+
+                    throw new InvalidOperationException(message);
                 }
-                
-                // Transform item
-                transformer.TransformItem(asElement, action);
-            }
+
+                var sourceElement = sourceWorkspace.Resolve(path, ResolveType.NoMetaWorkspaces);
+
+                if (sourceElement == null)
+                {
+                    var message = $"sourcePath is not found ${path}";
+                    logger.Error(message);
+
+                    throw new InvalidOperationException(message);
+                }
+
+                // Depending on type, get the reflective instance
+                var targetCollection = CopyElementsActionHandler.GetCollectionFromResolvedElement(sourceElement)
+                                       ?? throw new InvalidOperationException(
+                                           "targetElement is null");
+
+                var transformer =
+                    DynamicRuntimeProviderLoader.CreateInstanceByRuntimeClass<IItemTransformation>(runtimeClass);
+
+                foreach (var item in targetCollection.GetAllCompositesIncludingThemselves())
+                {
+                    if (!(item is IElement asElement)) continue;
+                    if (metaClass != null)
+                    {
+                        if (asElement.metaclass?.Equals(metaClass) != true)
+                        {
+                            continue;
+                        }
+                    }
+
+                    // Transform item
+                    transformer.TransformItem(asElement, action);
+                }
+            });
+
+            return null;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -17,39 +18,44 @@ namespace DatenMeister.Actions.ActionHandler.Reports
                 _DatenMeister.TheOne.Actions.Reports.__HtmlReportAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var reportInstance =
-                action.getOrDefault<IElement>(_DatenMeister._Actions._Reports._HtmlReportAction.reportInstance);
-            var filePath =
-                action.getOrDefault<string>(_DatenMeister._Actions._Reports._HtmlReportAction.filePath);
-
-            if (string.IsNullOrEmpty(filePath))
+            await Task.Run(() =>
             {
-                throw new InvalidOperationException("filePath is empty");
-            }
-            
-            var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
-            filePath = integrationSettings.NormalizeDirectoryPath(filePath);
+                var reportInstance =
+                    action.getOrDefault<IElement>(_DatenMeister._Actions._Reports._HtmlReportAction.reportInstance);
+                var filePath =
+                    action.getOrDefault<string>(_DatenMeister._Actions._Reports._HtmlReportAction.filePath);
 
-            if (reportInstance == null)
-            {
-                throw new InvalidOperationException("reportInstance");
-            }
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    throw new InvalidOperationException("filePath is empty");
+                }
 
-            var directoryPath = Path.GetDirectoryName(filePath);
-            if (directoryPath != null && !Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
+                var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
+                filePath = integrationSettings.NormalizeDirectoryPath(filePath);
 
-            using var fileStream = new StreamWriter(filePath);
+                if (reportInstance == null)
+                {
+                    throw new InvalidOperationException("reportInstance");
+                }
 
-            var htmlReport = new ReportLogic(
-                actionLogic.WorkspaceLogic,
-                actionLogic.ScopeStorage,
-                new HtmlReportCreator(fileStream));
-            htmlReport.GenerateReportByInstance(reportInstance);
+                var directoryPath = Path.GetDirectoryName(filePath);
+                if (directoryPath != null && !Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                using var fileStream = new StreamWriter(filePath);
+
+                var htmlReport = new ReportLogic(
+                    actionLogic.WorkspaceLogic,
+                    actionLogic.ScopeStorage,
+                    new HtmlReportCreator(fileStream));
+                htmlReport.GenerateReportByInstance(reportInstance);
+            });
+
+            return null;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -18,14 +19,19 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__EchoAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            if (action.getOrDefault<string>(_DatenMeister._Actions._EchoAction.shallSuccess) == "OK")
+            await Task.Run(() =>
             {
-                return;
-            }
+                if (action.getOrDefault<string>(_DatenMeister._Actions._EchoAction.shallSuccess) == "OK")
+                {
+                    return;
+                }
 
-            throw new InvalidOperationException("The property 'shallSuccess' is not OK");
+                throw new InvalidOperationException("The property 'shallSuccess' is not OK");
+            });
+            
+            return null;
         }
     }
 }

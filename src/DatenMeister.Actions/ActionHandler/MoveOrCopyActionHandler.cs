@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -14,28 +15,33 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__MoveOrCopyAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var source = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.source)
-                         ?? throw new InvalidOperationException("'Source' is not set.");
-            var value = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.target)
-                        ?? throw new InvalidOperationException("'target' is not set");
-            var actionType = action.getOrDefault<_DatenMeister._Actions.___MoveOrCopyType>(
-                _DatenMeister._Actions._MoveOrCopyAction.actionType);
-
-            if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Copy)
+            await Task.Run(() =>
             {
-                ObjectOperations.CopyObject(
-                    source,
-                    value);
-            }
+                var source = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.source)
+                             ?? throw new InvalidOperationException("'Source' is not set.");
+                var value = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.target)
+                            ?? throw new InvalidOperationException("'target' is not set");
+                var actionType = action.getOrDefault<_DatenMeister._Actions.___MoveOrCopyType>(
+                    _DatenMeister._Actions._MoveOrCopyAction.actionType);
 
-            if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Move)
-            {
-                ObjectOperations.MoveObject(
-                    source,
-                    value);
-            }
+                if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Copy)
+                {
+                    ObjectOperations.CopyObject(
+                        source,
+                        value);
+                }
+
+                if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Move)
+                {
+                    ObjectOperations.MoveObject(
+                        source,
+                        value);
+                }
+            });
+
+            return null;
         }
     }
 }

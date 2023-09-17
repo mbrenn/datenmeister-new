@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -13,13 +14,18 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__DocumentOpenAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var filePath = action.getOrDefault<string>(_DatenMeister._Actions._DocumentOpenAction.filePath);
-            
-            filePath = Environment.ExpandEnvironmentVariables(filePath);
+            await Task.Run(() =>
+            {
+                var filePath = action.getOrDefault<string>(_DatenMeister._Actions._DocumentOpenAction.filePath);
 
-            DotNetHelper.CreateProcess(filePath);
+                filePath = Environment.ExpandEnvironmentVariables(filePath);
+
+                DotNetHelper.CreateProcess(filePath);
+            });
+
+            return null;
         }
     }
 }

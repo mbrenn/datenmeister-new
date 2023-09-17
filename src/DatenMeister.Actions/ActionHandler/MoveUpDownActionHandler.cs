@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -15,47 +16,53 @@ namespace DatenMeister.Actions.ActionHandler
                 _DatenMeister.TheOne.Actions.__MoveUpDownAction) == true;
         }
 
-        public void Evaluate(ActionLogic actionLogic, IElement action)
+        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var direction = action.getOrDefault<_DatenMeister._Actions.___MoveDirectionType>(
-                _DatenMeister._Actions._MoveUpDownAction.direction);
-            var element = action.getOrDefault<IElement>(
-                _DatenMeister._Actions._MoveUpDownAction.element)
-                          ?? throw new InvalidOperationException("element is null");
-            var property = action.getOrDefault<string>(
-                _DatenMeister._Actions._MoveUpDownAction.property);
-            var container = action.getOrDefault<IObject>(
-                _DatenMeister._Actions._MoveUpDownAction.container)
-                ?? throw new InvalidOperationException("container is null");
-
-            IReflectiveSequence collection;
-            if (container is IExtent extent)
+            await Task.Run(() =>
             {
-                collection = extent.elements();
-            }
-            else
-            {
-                collection = container.get<IReflectiveSequence>(property);
-            }
+                var direction = action.getOrDefault<_DatenMeister._Actions.___MoveDirectionType>(
+                    _DatenMeister._Actions._MoveUpDownAction.direction);
+                var element = action.getOrDefault<IElement>(
+                                  _DatenMeister._Actions._MoveUpDownAction.element)
+                              ?? throw new InvalidOperationException("element is null");
+                var property = action.getOrDefault<string>(
+                    _DatenMeister._Actions._MoveUpDownAction.property);
+                var container = action.getOrDefault<IObject>(
+                                    _DatenMeister._Actions._MoveUpDownAction.container)
+                                ?? throw new InvalidOperationException("container is null");
 
-            switch (direction)
-            {
-                case _DatenMeister._Actions.___MoveDirectionType.Up:
-                    if (!CollectionHelper.MoveElementUp(collection, element))
-                    {
-                        throw new InvalidOperationException("Element was not found");
-                    }
-                    break;
-                case _DatenMeister._Actions.___MoveDirectionType.Down:
-                    if (!CollectionHelper.MoveElementDown(collection, element))
-                    {
-                        throw new InvalidOperationException("Element was not found");
-                    }
+                IReflectiveSequence collection;
+                if (container is IExtent extent)
+                {
+                    collection = extent.elements();
+                }
+                else
+                {
+                    collection = container.get<IReflectiveSequence>(property);
+                }
 
-                    break;
-                default:
-                    throw new InvalidOperationException("direction is not known: " + direction);
-            }
+                switch (direction)
+                {
+                    case _DatenMeister._Actions.___MoveDirectionType.Up:
+                        if (!CollectionHelper.MoveElementUp(collection, element))
+                        {
+                            throw new InvalidOperationException("Element was not found");
+                        }
+
+                        break;
+                    case _DatenMeister._Actions.___MoveDirectionType.Down:
+                        if (!CollectionHelper.MoveElementDown(collection, element))
+                        {
+                            throw new InvalidOperationException("Element was not found");
+                        }
+
+                        break;
+                    default:
+                        throw new InvalidOperationException("direction is not known: " + direction);
+                }
+            });
+
+            return null;
         }
     }
 }

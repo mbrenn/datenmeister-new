@@ -1,5 +1,5 @@
 ﻿import * as FormActions from "../FormActions.js"
-import {createJsonFromObject, DmObject} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import {SubmitMethod} from "../forms/RowForm.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import * as ActionClient from "../client/Actions.js";
@@ -17,8 +17,8 @@ class JsonItemAlertAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        alert(JSON.stringify(createJsonFromObject(element)));
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        alert(JSON.stringify(Mof.createJsonFromObject(element)));
     }
 }
 
@@ -27,7 +27,11 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
         super("Action.Execute");
     }
 
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    async execute(
+        form: IFormNavigation, 
+        element: Mof.DmObject, 
+        parameter?: Mof.DmObject, 
+        submitMethod?: SubmitMethod): Promise<void> {
 
         // Executes the action directly
         const result = await ActionClient.executeAction(
@@ -36,7 +40,7 @@ class ActionExecuteAction extends FormActions.ItemFormActionModuleBase {
         );
 
         if (result.success) {
-            alert('Success');
+            alert('Success: ' + result.result);
         } else {
             alert("Unfortunately, the action failed: \n\n" + result.reason);
         }

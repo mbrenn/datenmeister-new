@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 
 namespace DatenMeister.Actions.ActionHandler
 {
@@ -21,17 +22,17 @@ namespace DatenMeister.Actions.ActionHandler
 
         public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 if (action.getOrDefault<string>(_DatenMeister._Actions._EchoAction.shallSuccess) == "OK")
                 {
-                    return;
+                    var result = InMemoryObject.CreateEmpty();
+                    result.set("returnText", "Returned");
+                    return result;
                 }
 
                 throw new InvalidOperationException("The property 'shallSuccess' is not OK");
             });
-            
-            return null;
         }
     }
 }

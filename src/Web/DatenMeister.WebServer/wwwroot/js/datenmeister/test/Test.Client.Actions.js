@@ -1,6 +1,7 @@
 import * as ClientActions from "../client/Actions.js";
 import * as ClientExtent from "../client/Extents.js";
 import * as Mof from "../Mof.js";
+import { ObjectType } from "../Mof.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 var _InMemoryLoaderConfig = _DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig;
 var _LoadExtentAction = _DatenMeister._Actions._LoadExtentAction;
@@ -14,6 +15,8 @@ export function includeTests() {
                 parameter.set('shallSuccess', 'OK');
                 const result = await ClientActions.executeActionDirectly("Execute", { parameter: parameter });
                 chai.assert.isTrue(result.success === true);
+                chai.assert.isTrue(result.resultAsDmObject !== undefined);
+                chai.assert.isTrue(result.resultAsDmObject.get("returnText", ObjectType.String) === "Returned");
             });
             it('No success Echo', async () => {
                 const parameter = new Mof.DmObject();

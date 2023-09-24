@@ -12,6 +12,16 @@ export interface ExecuteActionResult
     success: boolean;
     reason: string;
     stackTrace: string;
+    
+    /**
+     * Defines the result text which can be returned
+     */
+    result: string;
+}
+
+export interface ExecuteActionWithDmObjectResult
+extends ExecuteActionResult{
+    resultAsDmObject: Mof.DmObject;
 }
 
 export async function executeActionDirectly(actionName: string, parameter: ExecuteActionParams)
@@ -20,9 +30,20 @@ export async function executeActionDirectly(actionName: string, parameter: Execu
         "api/action/execute_directly/" +
         encodeURIComponent(actionName);
 
-    return await ApiConnection.post<ExecuteActionResult>(
+    const result =  await ApiConnection.post<ExecuteActionResult>(
         url,
         {parameter: Mof.createJsonFromObject(parameter.parameter)});
+    
+    const resultAsDmObject: ExecuteActionWithDmObjectResult =
+        {
+            success: result.success,
+            result: result.result,
+            reason: result.reason,
+            stackTrace: result.stackTrace,
+            resultAsDmObject: Mof.convertJsonObjectToDmObject(result.result)
+        };
+
+    return resultAsDmObject;
 }
 
 export async function executeAction(workspaceId: string, itemUri: string) {
@@ -31,7 +52,17 @@ export async function executeAction(workspaceId: string, itemUri: string) {
         encodeURIComponent(workspaceId) + "/" +
         encodeURIComponent(itemUri);
 
-    return await ApiConnection.post<ExecuteActionResult>(
-        url,
-        {});
+    const result =
+        await ApiConnection.post<ExecuteActionResult>(
+            url, {});
+    const resultAsDmObject: ExecuteActionWithDmObjectResult =
+        {
+            success: result.success,
+            result: result.result,
+            reason: result.reason,
+            stackTrace: result.stackTrace,
+            resultAsDmObject: Mof.convertJsonObjectToDmObject(result.result)
+        };
+
+    return resultAsDmObject;
 }

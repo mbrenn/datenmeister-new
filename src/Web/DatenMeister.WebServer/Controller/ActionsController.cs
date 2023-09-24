@@ -63,9 +63,18 @@ namespace DatenMeister.WebServer.Controller
                     var actionLogic = new ActionLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
                     try
                     {
-                        await actionLogic.ExecuteAction(
+                        var resultOfAction = await actionLogic.ExecuteAction(
                             mofParameter
                         );
+                        
+                        var resultText = string.Empty;
+                        if (resultOfAction != null)
+                        {
+                            resultText = MofJsonConverter.ConvertToJsonWithDefaultParameter(resultOfAction);
+                        }
+
+                        return new ExecuteActionResult(true, string.Empty, string.Empty, resultText);
+
 
                     }
                     catch (Exception exc)
@@ -94,11 +103,17 @@ namespace DatenMeister.WebServer.Controller
             var actionLogic = new ActionLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
             try
             {
-                await actionLogic.ExecuteAction(
+                var result = await actionLogic.ExecuteAction(
                     action
                 );
-                
-                return new ExecuteActionResult(true, string.Empty, string.Empty);
+
+                var resultText = string.Empty;
+                if (result != null)
+                {
+                    resultText = MofJsonConverter.ConvertToJsonWithDefaultParameter(result);
+                }
+
+                return new ExecuteActionResult(true, string.Empty, string.Empty, resultText);
 
             }
             catch (Exception exc)
@@ -121,7 +136,8 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="Success">true, if the action has been executed successfully</param>
         /// <param name="Reason">Reason why it was not created successfully</param>
         /// <param name="StackTrace">The corresponding stacktrace</param>
-        public record ExecuteActionResult(bool Success, string Reason, string StackTrace)
+        /// <param name="Result">The resulting Json Text</param>
+        public record ExecuteActionResult(bool Success, string Reason, string StackTrace, string? Result = null)
         {
             public override string ToString()
             {

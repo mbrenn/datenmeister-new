@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -166,7 +167,7 @@ namespace DatenMeister.Tests.Web
         
 
         [Test]
-        public void TestImportXmi()
+        public async Task TestImportXmi()
         {
             var (workspaceLogic, scopeStorage) = DatenMeisterTests.GetDmInfrastructure();
 
@@ -180,7 +181,7 @@ namespace DatenMeister.Tests.Web
     <item p2:type=""dm:///_internal/types/internal#IssueMeister.Issue"" p2:id=""1"" _toBeCleanedUp=""09/18/2022 12:22:02"" id=""1"" name=""Moving up and Down"" state=""Closed"" description=""List Tables shall support the move up and move down of items&#xA;&#xA;fdsa"" xmlns:p2=""http://www.omg.org/spec/XMI/20131001"" />
 </xmi>";
 
-            extentController.ImportXmi(
+            await extentController.ImportXmi(
                 WorkspaceNames.WorkspaceData,
                 "dm:///test",
                 new ExtentController.ImportXmiParams

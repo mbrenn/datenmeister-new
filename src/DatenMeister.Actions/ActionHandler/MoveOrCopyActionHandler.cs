@@ -26,7 +26,7 @@ namespace DatenMeister.Actions.ActionHandler
                 var value = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.target)
                             ?? throw new InvalidOperationException("'target' is not set");
                 var actionType = action.getOrDefault<_DatenMeister._Actions.___MoveOrCopyType>(
-                    _DatenMeister._Actions._MoveOrCopyAction.actionType);
+                    _DatenMeister._Actions._MoveOrCopyAction.copyMode);
                 
                 // Copies the item
                 if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Copy)
@@ -48,7 +48,7 @@ namespace DatenMeister.Actions.ActionHandler
                 }
 
                 // Moves the item
-                if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Move)
+                else if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Move)
                 {
                     var resultItem = ObjectOperations.MoveObject(
                         source,
@@ -63,6 +63,10 @@ namespace DatenMeister.Actions.ActionHandler
                     
                     result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
                         resultItem.GetUri());
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unknown Action Type" + actionType);
                 }
 
                 return result;

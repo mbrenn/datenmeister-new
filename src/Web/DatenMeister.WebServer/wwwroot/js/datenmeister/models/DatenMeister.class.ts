@@ -262,7 +262,7 @@ export namespace _DatenMeister
                 export const __Action_Uri = "dm:///_internal/types/internal#Actions.Action";
                 export class _MoveOrCopyAction
                 {
-                    static actionType = "actionType";
+                    static copyMode = "copyMode";
                     static target = "target";
                     static source = "source";
                 }

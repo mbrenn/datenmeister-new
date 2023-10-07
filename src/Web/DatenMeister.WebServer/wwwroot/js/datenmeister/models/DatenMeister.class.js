@@ -229,7 +229,7 @@ export var _DatenMeister;
         _Actions.__Action_Uri = "dm:///_internal/types/internal#Actions.Action";
         class _MoveOrCopyAction {
         }
-        _MoveOrCopyAction.actionType = "actionType";
+        _MoveOrCopyAction.copyMode = "copyMode";
         _MoveOrCopyAction.target = "target";
         _MoveOrCopyAction.source = "source";
         _Actions._MoveOrCopyAction = _MoveOrCopyAction;

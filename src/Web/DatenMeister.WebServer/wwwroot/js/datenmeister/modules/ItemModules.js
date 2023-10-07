@@ -8,7 +8,6 @@ import { _DatenMeister } from "../models/DatenMeister.class.js";
 import * as ItemClient from "../client/Items.js";
 import * as Navigator from "../Navigator.js";
 import { moveItemInCollectionDown, moveItemInCollectionUp } from "../client/Actions.Items.js";
-var _MoveOrCopyAction = _DatenMeister._Actions._MoveOrCopyAction;
 import * as ClientElements from "../client/Elements.js";
 export function loadModules() {
     FormActions.addModule(new ItemMoveOrCopyActionNavigate());
@@ -45,11 +44,11 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         const sourceWorkspace = p.get('workspaceId');
         const sourceItemUri = p.get('itemUri');
         const source = DmObject.createFromReference(sourceWorkspace, sourceItemUri);
-        result.set(_MoveOrCopyAction.source, source);
+        result.set(_DatenMeister._Actions._MoveOrCopyAction.source, source);
         const container = await ItemClient.getContainer(sourceWorkspace, sourceItemUri);
         if (container.length > 0) {
             const target = DmObject.createFromReference(container[0].workspace, container[0].uri);
-            result.set(_MoveOrCopyAction.target, target);
+            result.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
         }
         return Promise.resolve(result);
     }
@@ -60,7 +59,9 @@ class ItemMoveOrCopyAction extends FormActions.ItemFormActionModuleBase {
         // Executes the action directly
         const result = await ActionClient.executeAction(element.workspace, element.uri);
         if (result.success) {
-            alert('Success');
+            const itemUrl = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl, ObjectType.String);
+            const workspace = result.resultAsDmObject.get(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace, ObjectType.String);
+            Navigator.navigateToItemByUrl(workspace, itemUrl);
         }
         else {
             alert('Failure: \r\n' + result.reason + "\r\n\r\n" + result.stackTrace);

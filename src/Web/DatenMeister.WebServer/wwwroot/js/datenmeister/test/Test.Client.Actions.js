@@ -74,7 +74,7 @@ export function includeTests() {
                 action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.source, Mof.DmObject.createFromReference("Test", child1.itemUrl));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.target, Mof.DmObject.createFromReference("Test", parent2.itemUrl));
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.actionType, _DatenMeister._Actions._MoveOrCopyType.Copy);
+                action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Copy);
                 const copyResult = await ClientActions.executeActionDirectly("Execute", { parameter: action });
                 chai.assert.isTrue(copyResult !== undefined, "Copy Result should have a return");
                 chai.assert.isTrue(copyResult.resultAsDmObject !== undefined, "Copy Result should have a result");
@@ -107,7 +107,7 @@ export function includeTests() {
                 action.setMetaClassByUri(_DatenMeister._Actions.__MoveOrCopyAction_Uri, 'Types');
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.source, Mof.DmObject.createFromReference("Test", child1.itemUrl));
                 action.set(_DatenMeister._Actions._MoveOrCopyAction.target, Mof.DmObject.createFromReference("Test", parent2.itemUrl));
-                action.set(_DatenMeister._Actions._MoveOrCopyAction.actionType, _DatenMeister._Actions._MoveOrCopyType.Move);
+                action.set(_DatenMeister._Actions._MoveOrCopyAction.copyMode, _DatenMeister._Actions._MoveOrCopyType.Move);
                 const copyResult = await ClientActions.executeActionDirectly("Execute", { parameter: action });
                 chai.assert.isTrue(copyResult !== undefined);
                 chai.assert.isTrue(copyResult.resultAsDmObject !== undefined);

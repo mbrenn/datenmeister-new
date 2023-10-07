@@ -531,8 +531,8 @@ namespace DatenMeister.Core.Models
 
             public class _MoveOrCopyAction
             {
-                public static string @actionType = "actionType";
-                public IElement? @_actionType = null;
+                public static string @copyMode = "copyMode";
+                public IElement? @_copyMode = null;
 
                 public static string @target = "target";
                 public IElement? @_target = null;

@@ -800,7 +800,7 @@
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
       <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
       <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d47afd87-c6f3-4921-9596-8d7f992e3674" type-ref="dm:///_internal/model/primitivetypes#String" name="actionType">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d47afd87-c6f3-4921-9596-8d7f992e3674" type-ref="dm:///_internal/model/primitivetypes#String" name="copyMode" isID="false" isComposite="false">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
         <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
         <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />

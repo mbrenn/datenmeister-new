@@ -62,7 +62,7 @@ namespace DatenMeister.WebServer.Controller
             if (string.IsNullOrEmpty(workspaceId) || workspaceId == "_")
             {
                 if (WorkspaceLogic.Resolve(itemUri, ResolveType.Default, false) is not IObject foundElement)
-                    throw new InvalidOperationException($"Element '{itemUri}' is not found");
+                    throw new InvalidOperationException($"Element '{itemUri}' w/o Workspace is not found");
 
                 return foundElement;
             }
@@ -72,7 +72,7 @@ namespace DatenMeister.WebServer.Controller
                 if (workspace == null) throw new InvalidOperationException($"Workspace '{workspaceId}' is not found");
 
                 if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
-                    throw new InvalidOperationException($"Element '{itemUri}' is not found");
+                    throw new InvalidOperationException($"Element '{itemUri}' in Workspace {workspaceId} is not found");
 
                 return foundElement;
             }

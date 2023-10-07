@@ -82,8 +82,6 @@ namespace DatenMeister.WebServer.Controller
                     {
                         return new ExecuteActionResult(false, exc.Message, exc.ToString());
                     }
-
-                    break;
             }
 
             return new ExecuteActionResult(success, "ActionNotFound", "");

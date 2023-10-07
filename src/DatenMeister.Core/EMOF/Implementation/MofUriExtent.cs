@@ -201,15 +201,15 @@ namespace DatenMeister.Core.EMOF.Implementation
             return uri.Substring(pos + 1);
         }
 
-        private object? ResolveInternal(string workspace, string uri, ResolveType resolveType)
+        private object? ResolveInternal(string? workspace, string uri, ResolveType resolveType)
         {
             var currentWorkspace = Workspace;
             if (!string.IsNullOrEmpty(currentWorkspace?.id) && !string.IsNullOrEmpty(workspace) && currentWorkspace.id != workspace)
             {
                 // Wrong workspace, we need to jump directly into the workspace
 
-                return _cachedWorkspaceLogic?.GetWorkspace(currentWorkspace!.id)
-                    ?.Resolve(workspace, resolveType, false, workspace);
+                return _cachedWorkspaceLogic?.GetWorkspace(workspace)
+                    ?.Resolve(uri, resolveType, false, workspace);
             }
 
             if (!resolveType.HasFlagFast(ResolveType.OnlyMetaClasses))

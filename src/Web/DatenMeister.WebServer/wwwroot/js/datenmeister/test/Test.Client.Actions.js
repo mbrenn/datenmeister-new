@@ -90,7 +90,7 @@ export function includeTests() {
                 const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
                 chai.assert.isTrue(checkedProperty.length === 1, "New List does not contain copied item");
                 // Check, that Parent 1 has one child
-                const checkList2 = await ClientItems.getObjectByUri("Test", parent2.itemId);
+                const checkList2 = await ClientItems.getObjectByUri("Test", parent1.itemId);
                 const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
                 chai.assert.isTrue(checkedProperty2.length === 1, "Old List does not contain anymore");
             });
@@ -123,7 +123,7 @@ export function includeTests() {
                 const checkedProperty = checkList.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
                 chai.assert.isTrue(checkedProperty.length === 1);
                 // Check, that Parent 1 has no child
-                const checkList2 = await ClientItems.getObjectByUri("Test", parent2.itemId);
+                const checkList2 = await ClientItems.getObjectByUri("Test", parent1.itemId);
                 const checkedProperty2 = checkList2.get(_UML._Packages._Package.packagedElement, ObjectType.Array);
                 chai.assert.isTrue(checkedProperty2.length === 0, "Old List still contains the item");
             });

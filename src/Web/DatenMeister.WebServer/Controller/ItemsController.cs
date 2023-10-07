@@ -28,6 +28,7 @@ using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Library.Helper;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.Formula.Functions;
 
 namespace DatenMeister.WebServer.Controller
 {
@@ -228,8 +229,11 @@ namespace DatenMeister.WebServer.Controller
             extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
             var success = true;
-            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
-                         ?? throw new InvalidOperationException("Extent is not found");
+            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri);
+            if (extent == null)
+            {
+                return NotFound("Extent is not found");
+            }
             
             extent.elements().RemoveAll();
 
@@ -255,7 +259,7 @@ namespace DatenMeister.WebServer.Controller
             var extent = foundElement.GetExtentOf();
             if (extent == null)
             {
-                throw new InvalidOperationException($"Extent of item {itemUri} was not found");
+                return NotFound($"Extent of item {itemUri} was not found");
             }
 
             extent.elements().remove(foundElement);
@@ -389,7 +393,7 @@ namespace DatenMeister.WebServer.Controller
             var finalElements = GetRootElementsInternal(workspaceId, extentUri, viewNode);
             if (finalElements == null)
             {
-                return NotFound();
+                return NotFound($"{extentUri} did not return a reflective collection");
             }
 
             return finalElements.OfType<IObject>().Select(x => ItemWithNameAndId.Create(x)!).ToList();
@@ -513,7 +517,7 @@ namespace DatenMeister.WebServer.Controller
                              ?? throw new NotImplementedException("Is not a Uri Extent");
                     break;
                 default:
-                    throw new InvalidOperationException("Found element is neither Element nor ReflectiveCollection nor Extent: " + itemUri);
+                    return NotFound("Found element is neither Element nor ReflectiveCollection nor Extent: " + itemUri);
             }
 
             // After we are at the root element, now return the management items for extent and workspace
@@ -557,13 +561,20 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
             itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
-            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
-                            ?? throw new InvalidOperationException("Item was not found");
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri);
+            if (foundItem == null)
+            {
+                return NotFound("Item was not found");
+            }
+
 
             var reference = _internal.GetItemByUriParameter(
                                 parameters.WorkspaceId,
-                                parameters.ReferenceUri)
-                            ?? throw new InvalidOperationException("Reference was not found");
+                                parameters.ReferenceUri);
+            if (reference == null)
+            {
+                return NotFound("Reference was not found");
+            }
 
             foundItem.set(parameters.Property, reference);
 
@@ -677,13 +688,18 @@ namespace DatenMeister.WebServer.Controller
             itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
             var converter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
-            var objectToBeSet = converter.ConvertToObject(jsonObject) ??
-                                throw new InvalidOperationException("Should not be null");
-            
+            var objectToBeSet = converter.ConvertToObject(jsonObject);
+            if (objectToBeSet == null)
+            {
+                return NotFound("Should not be null");
+            }
 
-            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
-                            ?? throw new InvalidOperationException("Item was not found");
-            
+            var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri);
+            if (foundItem == null)
+            {
+                return NotFound("Item was not found");
+            }
+
             ObjectCopier.CopyPropertiesStatic(objectToBeSet, foundItem);
 
             return new SuccessResult{Success = true};

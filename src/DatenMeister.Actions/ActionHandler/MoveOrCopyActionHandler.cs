@@ -18,7 +18,7 @@ namespace DatenMeister.Actions.ActionHandler
 
         public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 var result = InMemoryObject.CreateEmpty();
                 var source = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.source)
@@ -38,8 +38,9 @@ namespace DatenMeister.Actions.ActionHandler
                     var copyWorkspace = resultItem.GetExtentOf()?.GetWorkspace();
                     if (copyWorkspace != null)
                     {   
-                        result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace,
-                            resultItem.GetUri());
+                        result.set(
+                            _DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace,
+                            copyWorkspace.id);
                     }
                     
                     result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
@@ -57,15 +58,15 @@ namespace DatenMeister.Actions.ActionHandler
                     if (moveWorkspace != null)
                     {   
                         result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace,
-                            resultItem.GetUri());
+                            moveWorkspace.id);
                     }
                     
                     result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
                         resultItem.GetUri());
                 }
-            });
 
-            return null;
+                return result;
+            });
         }
     }
 }

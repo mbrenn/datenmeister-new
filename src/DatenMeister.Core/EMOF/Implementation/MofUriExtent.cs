@@ -123,12 +123,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             => _navigator.element(uri) as IElement;
 
         /// <inheritdoc />
-        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
         {
             uri = Migration.MigrateUriForResolver(uri);
 
             // Check, if we have a cache...
-            var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
+            /*var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
             if (cachedResult != null && false)
             {
                 // TODO: Find here a better solution than just blocking the resolver
@@ -136,10 +136,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                 // duplicate items will be just being able to resolved once, even though
                 // a new extent is being created. This effects especially dm://temp
                 return cachedResult;
-            }
+            }*/
 
             // We have to find it
-            var result = ResolveInternal(uri, resolveType);
+            var result = ResolveInternal(workspace, uri, resolveType);
             if (result == null && traceFailing)
             {
                 Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");
@@ -201,8 +201,17 @@ namespace DatenMeister.Core.EMOF.Implementation
             return uri.Substring(pos + 1);
         }
 
-        private object? ResolveInternal(string uri, ResolveType resolveType)
+        private object? ResolveInternal(string workspace, string uri, ResolveType resolveType)
         {
+            var currentWorkspace = Workspace;
+            if (!string.IsNullOrEmpty(currentWorkspace?.id) && !string.IsNullOrEmpty(workspace) && currentWorkspace.id != workspace)
+            {
+                // Wrong workspace, we need to jump directly into the workspace
+
+                return _cachedWorkspaceLogic?.GetWorkspace(currentWorkspace!.id)
+                    ?.Resolve(workspace, resolveType, false, workspace);
+            }
+
             if (!resolveType.HasFlagFast(ResolveType.OnlyMetaClasses))
             {
                 var result = _navigator.element(uri);
@@ -262,16 +271,16 @@ namespace DatenMeister.Core.EMOF.Implementation
             // If still not found, do a full search in every extent in every workspace
             if (resolveType.HasFlagFast(ResolveType.Default) && _cachedWorkspaceLogic != null)
             {
-                foreach (var workspace in _cachedWorkspaceLogic.Workspaces)
+                foreach (var innerWorkspace in _cachedWorkspaceLogic.Workspaces)
                 {
-                    if (workspace.IsDynamicWorkspace) continue;
-                    if (alreadyVisited.Contains(workspace))
+                    if (innerWorkspace.IsDynamicWorkspace) continue;
+                    if (alreadyVisited.Contains(innerWorkspace))
                     {
                         continue;
                     }
 
                     // Check, if there is an extent with the name
-                    var extent = workspace.FindExtent(uri);
+                    var extent = innerWorkspace.FindExtent(uri);
                     if (extent != null)
                     {
                         return extent;
@@ -279,7 +288,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                     // If there is not an extent, then check, if there is an item
                     foreach (var result in
-                             workspace.extent
+                             innerWorkspace.extent
                                  .OfType<IUriExtent>()
                                  .Select(innerExtent => innerExtent.element(uri))
                                  .Where(result => result != null))

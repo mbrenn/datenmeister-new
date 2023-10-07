@@ -354,7 +354,7 @@ export function convertJsonObjectToObjects(element: any): any {
 */
 export function convertJsonObjectToDmObject(element: object | string | undefined): DmObjectWithSync | undefined {
     
-    if( element === undefined || element === null) {
+    if( element === undefined || element === null || element === "") {
         return undefined;
     }
     

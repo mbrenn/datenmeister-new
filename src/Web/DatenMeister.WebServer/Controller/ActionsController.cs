@@ -39,6 +39,7 @@ namespace DatenMeister.WebServer.Controller
                 new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
                     .ConvertToObject(actionParams.Parameter) as IElement
                 ?? throw new InvalidOperationException("Conversion was not successful");
+
             switch (actionName)
             {
                 case "Workspace.Extent.Xmi.Create":

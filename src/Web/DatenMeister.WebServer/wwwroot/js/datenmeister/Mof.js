@@ -281,7 +281,7 @@ export function convertJsonObjectToObjects(element) {
 // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
 */
 export function convertJsonObjectToDmObject(element) {
-    if (element === undefined || element === null) {
+    if (element === undefined || element === null || element === "") {
         return undefined;
     }
     if (typeof element === 'string' || element instanceof String) {

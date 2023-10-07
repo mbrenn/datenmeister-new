@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Modules.DefaultTypes;
 
 namespace DatenMeister.Actions.ActionHandler
@@ -19,25 +20,48 @@ namespace DatenMeister.Actions.ActionHandler
         {
             await Task.Run(() =>
             {
+                var result = InMemoryObject.CreateEmpty();
                 var source = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.source)
                              ?? throw new InvalidOperationException("'Source' is not set.");
                 var value = action.getOrDefault<IObject>(_DatenMeister._Actions._MoveOrCopyAction.target)
                             ?? throw new InvalidOperationException("'target' is not set");
                 var actionType = action.getOrDefault<_DatenMeister._Actions.___MoveOrCopyType>(
                     _DatenMeister._Actions._MoveOrCopyAction.actionType);
-
+                
+                // Copies the item
                 if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Copy)
                 {
-                    ObjectOperations.CopyObject(
+                    var resultItem = ObjectOperations.CopyObject(
                         source,
                         value);
+
+                    var copyWorkspace = resultItem.GetExtentOf()?.GetWorkspace();
+                    if (copyWorkspace != null)
+                    {   
+                        result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace,
+                            resultItem.GetUri());
+                    }
+                    
+                    result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
+                        resultItem.GetUri());
                 }
 
+                // Moves the item
                 if (actionType == _DatenMeister._Actions.___MoveOrCopyType.Move)
                 {
-                    ObjectOperations.MoveObject(
+                    var resultItem = ObjectOperations.MoveObject(
                         source,
                         value);
+                    
+                    var moveWorkspace = resultItem.GetExtentOf()?.GetWorkspace();
+                    if (moveWorkspace != null)
+                    {   
+                        result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetWorkspace,
+                            resultItem.GetUri());
+                    }
+                    
+                    result.set(_DatenMeister._Actions._MoveOrCopyActionResult.targetUrl,
+                        resultItem.GetUri());
                 }
             });
 

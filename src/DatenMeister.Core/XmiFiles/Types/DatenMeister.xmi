@@ -1023,6 +1023,14 @@
         </general>
       </generalization>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="3223e13a-bbb7-4785-8b81-7275be23b0a1" name="MoveOrCopyActionResult">
+      <isAbstract p2:id="84037910-7a70-420b-8657-7f3400001281" />
+      <isActive p2:id="4f3cea8e-1889-4c6a-b9b4-50ba2ed7e2c4" />
+      <isFinalSpecialization p2:id="f39e39d8-9413-4adf-8261-e04739a02054" />
+      <isLeaf p2:id="6172caae-1291-46a2-9e18-e858b44425f8" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0b4f9964-045a-426e-8c83-71fdab09ebbf" name="targetUrl" type-ref="dm:///_internal/model/primitivetypes#String" isComposite="true"></ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0b4f9964-045a-426e-8c83-71fdab09eabf" name="targetWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" isComposite="true"></ownedAttribute>
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

@@ -17,8 +17,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="resolveType">The type of resolve strategy</param>
         /// <param name="traceFailing">True, if a trace event shall be thrown, if
         /// the resolving did not succeed</param>
+        /// <param name="workspace">Describes the workspace that can be used</param>
         /// <returns>The found element or null, if no element was found</returns>
-        object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true);
+        object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null);
 
         /// <summary>
         /// Resolves a certain element by id

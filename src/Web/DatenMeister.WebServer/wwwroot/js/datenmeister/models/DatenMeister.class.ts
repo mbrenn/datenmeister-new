@@ -328,6 +328,13 @@ export namespace _DatenMeister
                 }
 
                 export const __DeletePropertyFromCollectionAction_Uri = "dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503";
+                export class _MoveOrCopyActionResult
+                {
+                    static targetUrl = "targetUrl";
+                    static targetWorkspace = "targetWorkspace";
+                }
+
+                export const __MoveOrCopyActionResult_Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1";
         }
 
         export namespace _DataViews

@@ -74,7 +74,7 @@ namespace DatenMeister.DataView
         }
 
         
-        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
         {
             return _urlNavigator.element(uri);
         }

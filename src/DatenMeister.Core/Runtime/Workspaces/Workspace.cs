@@ -86,11 +86,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
             yield return "id";
         }
 
-        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
         {
             var result = extent
                 .Select(theExtent =>
-                    (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
+                    (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false, workspace))
                 .FirstOrDefault(found => found != null);
             if (result == null && traceFailing) Logger.Trace($"URI not resolved: {uri}");
 

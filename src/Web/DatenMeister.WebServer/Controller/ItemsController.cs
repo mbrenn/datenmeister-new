@@ -78,7 +78,13 @@ namespace DatenMeister.WebServer.Controller
 
             extent.elements().add(item);
 
-            return new CreateItemInExtentResult {success = true, itemId = (item as IHasId)?.Id ?? string.Empty};
+            return new CreateItemInExtentResult
+            {
+                success = true,
+                itemId = (item as IHasId)?.Id ?? string.Empty,
+                workspace = workspaceId,
+                itemUrl = item.GetUri() ?? string.Empty
+            };
         }
         
 
@@ -99,6 +105,16 @@ namespace DatenMeister.WebServer.Controller
         {
             public bool success { get; set; }
             public string itemId { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the item url
+            /// </summary>
+            public string itemUrl { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the workspace
+            /// </summary>
+            public string workspace { get; set; } = string.Empty;
         }
 
         [HttpPost("api/items/create_child/{workspaceId}/{itemUri}")]
@@ -136,7 +152,13 @@ namespace DatenMeister.WebServer.Controller
                     if (propertyValue != null) child.set(propertyParam.Key, propertyValue);
                 }
 
-            return new CreateItemAsChildResult {success = true, itemId = (child as IHasId)?.Id ?? string.Empty};
+            return new CreateItemAsChildResult
+            {
+                success = true,
+                itemId = (child as IHasId)?.Id ?? string.Empty,
+                workspace = workspaceId,
+                itemUrl = child.GetUri() ?? string.Empty
+            };
         }
 
         /// <summary>
@@ -168,6 +190,16 @@ namespace DatenMeister.WebServer.Controller
         {
             public bool success { get; set; }
             public string itemId { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the item url
+            /// </summary>
+            public string itemUrl { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the workspace
+            /// </summary>
+            public string workspace { get; set; } = string.Empty;
         }
 
         [HttpDelete("api/items/delete/{workspaceId}/{itemUrl}")]

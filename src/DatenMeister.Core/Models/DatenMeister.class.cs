@@ -659,6 +659,19 @@ namespace DatenMeister.Core.Models
             public _DeletePropertyFromCollectionAction @DeletePropertyFromCollectionAction = new _DeletePropertyFromCollectionAction();
             public MofObjectShadow @__DeletePropertyFromCollectionAction = new MofObjectShadow("dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503");
 
+            public class _MoveOrCopyActionResult
+            {
+                public static string @targetUrl = "targetUrl";
+                public IElement? @_targetUrl = null;
+
+                public static string @targetWorkspace = "targetWorkspace";
+                public IElement? @_targetWorkspace = null;
+
+            }
+
+            public _MoveOrCopyActionResult @MoveOrCopyActionResult = new _MoveOrCopyActionResult();
+            public MofObjectShadow @__MoveOrCopyActionResult = new MofObjectShadow("dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1");
+
         }
 
         public _Actions Actions = new _Actions();

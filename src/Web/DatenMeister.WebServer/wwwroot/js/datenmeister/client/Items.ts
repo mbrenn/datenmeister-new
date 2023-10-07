@@ -30,6 +30,8 @@ export interface ICreateItemInExtentParams {
 export interface ICreateItemInExtentResult{
     success: boolean;
     itemId: string;
+    itemUrl: string;
+    workspace: string;
 }
 
 export async function createItemAsChild(workspaceId: string, itemUri: string, param: ICreateItemAsChildParams)
@@ -65,6 +67,8 @@ export interface ICreateItemAsChildResult
 {
     success: boolean;
     itemId: string;
+    itemUrl: string;
+    workspace: string;
 }
 
 export async function deleteRootElements(workspaceId: string, extentUri: string)

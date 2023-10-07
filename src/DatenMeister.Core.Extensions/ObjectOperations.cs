@@ -15,7 +15,8 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetContainer">Defines the target container receiving the object</param>
-        public static void MoveObject(IObject value, IObject targetContainer)
+        /// <returns>The moved object</returns>
+        public static IObject MoveObject(IObject value, IObject targetContainer)
         {
             var extent = value.GetExtentOf();
             var container = (value as IElement)?.container();
@@ -31,6 +32,8 @@ namespace DatenMeister.Modules.DefaultTypes
             }
 
             DefaultClassifierHints.AddToExtentOrElement(targetContainer, value);
+
+            return value;
         }
 
         /// <summary>
@@ -38,11 +41,13 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         /// <param name="value">The value to be copied</param>
         /// <param name="targetContainer">Defines the target container receiving the object</param>
-        public static void CopyObject(IObject value, IObject targetContainer)
+        /// <returns>The copied element</returns>
+        public static IElement CopyObject(IObject value, IObject targetContainer)
         {
             var options = new CopyOption { CloneAllReferences = false };
             var copied = ObjectCopier.Copy(new MofFactory(targetContainer), value, options);
             DefaultClassifierHints.AddToExtentOrElement(targetContainer, copied);
+            return copied;
         }
 
         /// <summary>

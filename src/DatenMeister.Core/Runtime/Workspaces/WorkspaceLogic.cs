@@ -265,11 +265,20 @@ namespace DatenMeister.Core.Runtime.Workspaces
         }
 
         /// <inheritdoc />
-        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
         {
+            if (!string.IsNullOrEmpty(workspace))
+            {
+                return GetWorkspace(workspace)?.Resolve(
+                    uri,
+                    resolveType | ResolveType.NoMetaWorkspaces,
+                    traceFailing,
+                    workspace);
+            }
+
             return GetWorkspacesOrderedByDependability(resolveType)
                 .Select(
-                    workspace => workspace.Resolve(
+                    innerWorkspace => innerWorkspace.Resolve(
                         uri,
                         resolveType | ResolveType.NoMetaWorkspaces,
                         traceFailing))

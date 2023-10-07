@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Core.Provider
+﻿using DatenMeister.Core.Runtime.Workspaces;
+
+namespace DatenMeister.Core.Provider
 {
     /// <summary>
     /// If the object reference is returned, an indirect reference to the object
@@ -7,6 +9,11 @@
     /// </summary>
     public class UriReference
     {
+        /// <summary>
+        /// Gets or sets the workspace
+        /// </summary>
+        public string Workspace { get; set; } = string.Empty;
+
         /// <summary>
         /// Stores the Uri to which the element is a reference
         /// </summary>

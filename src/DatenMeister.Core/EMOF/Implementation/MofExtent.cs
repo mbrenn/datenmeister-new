@@ -613,7 +613,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                 // It is a reference
                 var asElement = asMofObject as IElement ??
                                 throw new InvalidOperationException("Given element is not of type IElement");
-                return new UriReference(((MofUriExtent) asMofObject.Extent).uri(asElement));
+                var uriExtentOfItem = (MofUriExtent)asMofObject.Extent;
+                var workspace = uriExtentOfItem.GetWorkspace()?.id ?? string.Empty;
+
+                return new UriReference(((MofUriExtent)asMofObject.Extent).uri(asElement))
+                {
+                    Workspace = workspace
+                };
             }
 
             if (DotNetHelper.IsOfEnumeration(value))

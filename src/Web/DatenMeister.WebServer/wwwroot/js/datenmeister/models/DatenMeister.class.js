@@ -286,6 +286,12 @@ export var _DatenMeister;
         _DeletePropertyFromCollectionAction.collectionUrl = "collectionUrl";
         _Actions._DeletePropertyFromCollectionAction = _DeletePropertyFromCollectionAction;
         _Actions.__DeletePropertyFromCollectionAction_Uri = "dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503";
+        class _MoveOrCopyActionResult {
+        }
+        _MoveOrCopyActionResult.targetUrl = "targetUrl";
+        _MoveOrCopyActionResult.targetWorkspace = "targetWorkspace";
+        _Actions._MoveOrCopyActionResult = _MoveOrCopyActionResult;
+        _Actions.__MoveOrCopyActionResult_Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1";
     })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
     let _DataViews;
     (function (_DataViews) {

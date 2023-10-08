@@ -96,7 +96,7 @@ namespace DatenMeister.WebServer.Controller
             var action = GiveMe.Scope.WorkspaceLogic.FindObject(workspaceId, itemUri) as IElement;
             if (action == null)
             {
-                return NotFound();
+                return NotFound($"Action was not found: {itemUri} in Workspace {workspaceId}");
             }
             
             var actionLogic = new ActionLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);

@@ -34,7 +34,7 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
             action.set(_DatenMeister._Actions._MoveOrCopyAction.target, elementTarget);
             action.set(
-                _DatenMeister._Actions._MoveOrCopyAction.actionType,
+                _DatenMeister._Actions._MoveOrCopyAction.copyMode,
                 _DatenMeister._Actions.___MoveOrCopyType.Copy);
 
             await actionLogic.ExecuteAction(action);
@@ -70,7 +70,7 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
             action.set(_DatenMeister._Actions._MoveOrCopyAction.target, elementTarget);
             action.set(
-                _DatenMeister._Actions._MoveOrCopyAction.actionType,
+                _DatenMeister._Actions._MoveOrCopyAction.copyMode,
                 _DatenMeister._Actions.___MoveOrCopyType.Move);
 
             await actionLogic.ExecuteAction(action);
@@ -113,7 +113,7 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
             action.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
             action.set(
-                _DatenMeister._Actions._MoveOrCopyAction.actionType,
+                _DatenMeister._Actions._MoveOrCopyAction.copyMode,
                 _DatenMeister._Actions.___MoveOrCopyType.Move);
 
             await actionLogic.ExecuteAction(action);
@@ -142,7 +142,7 @@ namespace DatenMeister.Tests.Modules.Actions
             action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
             action.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
             action.set(
-                _DatenMeister._Actions._MoveOrCopyAction.actionType,
+                _DatenMeister._Actions._MoveOrCopyAction.copyMode,
                 _DatenMeister._Actions.___MoveOrCopyType.Copy);
 
             await actionLogic.ExecuteAction(action);

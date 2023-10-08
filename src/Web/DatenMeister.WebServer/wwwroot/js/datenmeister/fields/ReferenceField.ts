@@ -107,6 +107,7 @@ export class Control {
         
         selectItem.itemSelected.addListener(
             async selectedItem => {
+
                 await ClientItem.setPropertyReference(
                     tthis.form.workspace,
                     tthis.itemUrl,
@@ -212,6 +213,9 @@ export class Field extends Control implements IFormField {
                 return;
             }
         }
+
+        // After the reload, set the element with the value
+        this.element.set(this.fieldName, value);
 
         await this.createDomByValue(value);
     }

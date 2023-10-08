@@ -150,6 +150,8 @@ export class Field extends Control {
                 return;
             }
         }
+        // After the reload, set the element with the value
+        this.element.set(this.fieldName, value);
         await this.createDomByValue(value);
     }
 }

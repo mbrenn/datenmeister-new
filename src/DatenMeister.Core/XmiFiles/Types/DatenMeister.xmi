@@ -1655,6 +1655,52 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d5caf8d-b3e7-4df9-8f64-b06d77279cad" name="defaultWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36d692e2-73dc-46e4-b92b-2c2a6e2747b2" type-ref="dm:///_internal/model/primitivetypes#String" name="collection" isID="True" isComposite="True" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="26a9c433-ead8-414b-9a8e-bb5a1a8cca00" name="UriReferenceFieldData">
+      <isAbstract p1:id="1819fea4-9110-47e8-b603-376e849b74cc" />
+      <isActive p1:id="1b3951ce-530c-486c-bea5-78b8ad8869a2" />
+      <isFinalSpecialization p1:id="394c0d80-2aff-4d60-ad20-6617935d7b60" />
+      <isLeaf p1:id="cfc2c79a-f19a-4c01-9a14-b829d2c7052e" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8e1114d6-d5e5-49a4-8f07-3d2c3a9c3b48" isComposite="false" isID="false" name="defaultWorkspace">
+        <aggregation p1:id="ea43cf82-2ec4-4fd5-b391-68bf70172833" />
+        <isDerived p1:id="640991f6-ab79-49f4-bf92-923a86e50b61" />
+        <isDerivedUnion p1:id="ad9c95ab-5a5c-4438-83b2-ede71a9497a6" />
+        <isReadOnly p1:id="0949be50-c638-4f39-97c7-34f49136add4" />
+        <isOrdered p1:id="d6339f33-aea9-479b-b289-325808fd3458" />
+        <isUnique p1:id="8d024819-b337-4131-a6fb-b0373fb50abd" />
+        <isStatic p1:id="88d63f3c-1779-4dbb-94f7-1945eb45f240" />
+        <isLeaf p1:id="419a2489-7613-4003-9a5c-ba72b6d00391" />
+        <type p1:type="dm:///_internal/model/uml#PrimitiveType" p1:id="e054f04e-bd38-469f-ac15-f69dd4395d14" name="String">
+          <isAbstract href="dm:///_internal/model/uml#Classifier-isAbstract-_defaultValue" />
+          <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+          <ownedComment p1:id="16d07317-3b53-41c1-bc36-91aa5c74159b" />
+        </type>
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="49f29061-e4d8-436e-a8b8-519ce91a8130" isComposite="false" isID="false" name="defaultExtent">
+        <aggregation p1:id="b9d3f6bb-b492-47da-b3c6-73c99fb74ff4" />
+        <isDerived p1:id="c6267e2a-4a27-470d-a766-a314a5ccae4f" />
+        <isDerivedUnion p1:id="51ddab02-ebea-4693-91b6-604d34ee5592" />
+        <isReadOnly p1:id="29d2952e-731d-478b-9304-28c6d8f607b4" />
+        <isOrdered p1:id="dde0839c-4821-477b-9f55-9b0a145f1e44" />
+        <isUnique p1:id="8dc29b50-55c9-44f5-979a-d16e145fa705" />
+        <isStatic p1:id="bce4dbce-6a80-4ef4-8af7-833e3257fa01" />
+        <isLeaf p1:id="f6f2fb3b-9ab1-4106-9a67-ff415c3bbbab" />
+        <type p1:type="dm:///_internal/model/uml#PrimitiveType" p1:id="0fe83be7-7008-4396-8242-12a37231e8ca" name="String">
+          <isAbstract href="dm:///_internal/model/uml#Classifier-isAbstract-_defaultValue" />
+          <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+          <ownedComment p1:id="66556a24-33be-4289-8a37-92a18333a53f" />
+        </type>
+      </ownedAttribute>
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="92eacc46-f514-49b9-83ac-42119076ced0" isSubstitutable="false">
+        <general p1:type="dm:///_internal/model/uml#Class" p1:id="0ac84353-17c7-430e-a383-12b52fb2dff2" name="FieldData">
+          <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+          <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+          <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+        </general>
+      </generalization>
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="AttachedExtent" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="7447d350-9b9d-47d3-85d4-737fb6e886c7">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="AttachedExtentConfiguration" p1:id="DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration">

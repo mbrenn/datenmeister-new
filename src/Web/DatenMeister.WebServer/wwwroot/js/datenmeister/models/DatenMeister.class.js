@@ -1026,6 +1026,12 @@ export var _DatenMeister;
         _ReferenceFieldFromCollectionData.isReadOnly = "isReadOnly";
         _Forms._ReferenceFieldFromCollectionData = _ReferenceFieldFromCollectionData;
         _Forms.__ReferenceFieldFromCollectionData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData";
+        class _UriReferenceFieldData {
+        }
+        _UriReferenceFieldData.defaultWorkspace = "defaultWorkspace";
+        _UriReferenceFieldData.defaultExtent = "defaultExtent";
+        _Forms._UriReferenceFieldData = _UriReferenceFieldData;
+        _Forms.__UriReferenceFieldData_Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00";
     })(_Forms = _DatenMeister._Forms || (_DatenMeister._Forms = {}));
     let _AttachedExtent;
     (function (_AttachedExtent) {

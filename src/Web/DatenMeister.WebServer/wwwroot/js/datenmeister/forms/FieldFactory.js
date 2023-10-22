@@ -10,6 +10,7 @@ import * as SubElementField from "../fields/SubElementField.js";
 import * as SeparatorLineField from "../fields/SeparatorLineField.js";
 import * as ReferenceField from "../fields/ReferenceField.js";
 import * as ReferenceFieldFromCollection from "../fields/ReferenceFieldFromCollection.js";
+import * as UriReferenceFieldData from "../fields/UriReferenceFieldData.js";
 import * as UnknownField from "../fields/UnknownField.js";
 export function createField(fieldMetaClassUri, parameter) {
     let result;
@@ -46,6 +47,9 @@ export function createField(fieldMetaClassUri, parameter) {
             break;
         case _DatenMeister._Forms.__SeparatorLineFieldData_Uri:
             result = new SeparatorLineField.Field();
+            break;
+        case _DatenMeister._Forms.__UriReferenceFieldData_Uri:
+            result = new UriReferenceFieldData.Field();
             break;
         default:
             result = new UnknownField.Field(fieldMetaClassUri);

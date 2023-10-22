@@ -2471,6 +2471,19 @@ namespace DatenMeister.Core.Models
             public _ReferenceFieldFromCollectionData @ReferenceFieldFromCollectionData = new _ReferenceFieldFromCollectionData();
             public MofObjectShadow @__ReferenceFieldFromCollectionData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData");
 
+            public class _UriReferenceFieldData
+            {
+                public static string @defaultWorkspace = "defaultWorkspace";
+                public IElement? @_defaultWorkspace = null;
+
+                public static string @defaultExtent = "defaultExtent";
+                public IElement? @_defaultExtent = null;
+
+            }
+
+            public _UriReferenceFieldData @UriReferenceFieldData = new _UriReferenceFieldData();
+            public MofObjectShadow @__UriReferenceFieldData = new MofObjectShadow("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
+
         }
 
         public _Forms Forms = new _Forms();

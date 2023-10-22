@@ -74,7 +74,7 @@ namespace DatenMeister.Core.Uml.Helper
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
             var properties = GetPropertiesOfClassifier(classifier);
-            return properties.FirstOrDefault(x => x.get<string>(_UML._CommonStructure._NamedElement.name) == propertyName);
+            return properties.FirstOrDefault(x => x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) == propertyName);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace DatenMeister.Core.Uml.Helper
         public static IEnumerable<string> GetPropertyNamesOfClassifier(IElement classifier)
         {
             return GetPropertiesOfClassifier(classifier)
-                .Select(x => x.get(_UML._CommonStructure._NamedElement.name))
+                .Select(x => x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name))
                 .Where(x => x != null)
                 .Select(x => x?.ToString() ?? string.Empty);
         }

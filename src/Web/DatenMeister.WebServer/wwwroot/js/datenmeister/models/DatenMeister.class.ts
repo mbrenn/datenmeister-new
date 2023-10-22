@@ -1143,6 +1143,13 @@ export namespace _DatenMeister
                 }
 
                 export const __ReferenceFieldFromCollectionData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData";
+                export class _UriReferenceFieldData
+                {
+                    static defaultWorkspace = "defaultWorkspace";
+                    static defaultExtent = "defaultExtent";
+                }
+
+                export const __UriReferenceFieldData_Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00";
         }
 
         export namespace _AttachedExtent

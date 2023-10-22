@@ -141,7 +141,7 @@
       <isActive p1:id="abfe9dbe-4a91-4f54-ab8e-80d57047916c" />
       <isFinalSpecialization p1:id="0150c2d9-a5d5-4451-bbe2-fe1a2d256b7a" />
       <isLeaf p1:id="dbac29e7-0841-463d-ab2c-31315637a491" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="96497e14-25ad-4170-9d1a-f6a7277f9b36" name="name" isID="false" isComposite="false" lower="1" upper="1">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="96497e14-25ad-4170-9d1a-f6a7277f9b36" name="name" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" isID="true" isComposite="true">
         <aggregation p1:id="26c6d855-264f-4638-93fc-524e0071f7e6" />
         <isDerived p1:id="ef420744-041d-49d9-8fe9-f6c9413d4f6b" />
         <isDerivedUnion p1:id="55d2a1e6-93a2-4e5c-bf34-1ff1745ac512" />
@@ -150,12 +150,6 @@
         <isUnique p1:id="270e02d0-8129-41eb-9d9a-8e7abef07ae9" />
         <isStatic p1:id="ba06d109-78cb-4e4a-8671-bec9cb31bbf7" />
         <isLeaf p1:id="20d5de94-af60-4a85-82ac-5d15d493296e" />
-        <type p1:type="dm:///_internal/model/uml#PrimitiveType" p1:id="9e2dd14a-eaa9-448f-9fee-3b546d2bdcca" name="String">
-          <isAbstract href="dm:///_internal/model/uml#Classifier-isAbstract-_defaultValue" />
-          <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
-          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
-          <ownedComment p1:id="a246fa5e-72fd-4ede-803d-12c443469000" />
-        </type>
       </ownedAttribute>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9a37e695-c36a-43e0-a395-b6d7438985c7" name="collectionUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="true" isComposite="true">
         <aggregation p1:id="2f4bee5d-265f-4965-8232-28195f21741c" />

@@ -181,6 +181,12 @@ export class SelectItemControl {
         return undefined;
     }
     /**
+     * Gets the selected item
+     */
+    getSelectedItem() {
+        return this.selectedItem;
+    }
+    /**
      * Loads the workspaces and adds them into the control element containing the parameter
      * @private
      */

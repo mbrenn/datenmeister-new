@@ -1,19 +1,15 @@
 {
   "devDependencies": {
-    "@popperjs/core": "^2.11.6",
-    "@types/jquery": "^3.5.5",
-    "@types/mocha": "^10.0.1",
-    "@types/chai": "^4.3.4",
-    "bootstrap": "^5.2.3",
-    "typescript": "^4.9.4",
-    "jquery": "^3.6.3",
-    "chai": "^4.3.7" 
+    "@types/jquery": "3.5.25",
+    "@types/mocha": "10.0.3",
+    "@types/chai": "4.3.9",
+    "bootstrap": "5.3.2",
+    "typescript": "5.2.2",
+    "jquery": "3.7.1",
+    "chai": "4.3.10" 
   },
   "dependencies": {
-    "amd-loader": "^0.0.8",
-    "gulp": "^4.0.2",
-    "mocha": "^10.2.0",
-    "node": "^19.3.0",
-    "nyc": "^15.1.0"
+    "amd-loader": "0.0.8",
+    "mocha": "10.2.0"
   }
 }

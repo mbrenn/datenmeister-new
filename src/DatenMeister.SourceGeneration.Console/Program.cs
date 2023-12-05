@@ -21,7 +21,7 @@ namespace DatenMeister.SourceGeneration.Console
             else
             {
                 var value = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-                value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget));
+                value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace));
                 value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
             }
         }
@@ -80,7 +80,7 @@ namespace DatenMeister.SourceGeneration.Console
         }
         
 
-        public static void CreateCodeForTypes(string pathXml, string pathTarget)
+        public static void CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
         {
             System.Console.WriteLine("Reading from: " + pathXml);
             System.Console.WriteLine("Writing to  : " + pathTarget);
@@ -105,7 +105,7 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for StundenPlan
             var classGenerator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.StundenPlan.Model"
+                Namespace = theNamespace
             };
 
             classGenerator.Walk(typeExtent);

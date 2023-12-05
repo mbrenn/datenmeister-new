@@ -10,4 +10,7 @@ public class CommandOptions
 
     [Value(1, MetaName = "Path to which the value shall be targeted")]
     public string PathTarget { get; set; }
+
+    [Value(2, MetaName = "Namespace of the target class")]
+    public string Namespace { get; set; }
 }

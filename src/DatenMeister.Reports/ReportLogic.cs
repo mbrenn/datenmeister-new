@@ -103,7 +103,7 @@ namespace DatenMeister.Reports
         public IEnumerable<ReportSource> EvaluateSources(IObject reportInstance)
         {
             var sources =
-                reportInstance.getOrDefault<IReflectiveCollection>(_DatenMeister._Reports._HtmlReportInstance.sources);
+                reportInstance.get<IReflectiveCollection>(_DatenMeister._Reports._HtmlReportInstance.sources);
             foreach (var source in sources.OfType<IObject>())
             {
                 var name = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.name);

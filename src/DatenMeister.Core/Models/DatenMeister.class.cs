@@ -915,6 +915,9 @@ namespace DatenMeister.Core.Models
 
             public class _HtmlReportInstance
             {
+                public static string @cssClass = "cssClass";
+                public IElement? @_cssClass = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

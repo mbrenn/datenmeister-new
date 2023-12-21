@@ -120,8 +120,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.TemporaryExten
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Extent.Verifier", "DatenMeister.Extent.Verifier\DatenMeister.Extent.Verifier.csproj", "{C985EC50-B46D-4D07-9947-5A858EB468B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.StundenPlan", "Apps\DatenMeister.StundenPlan\DatenMeister.StundenPlan.csproj", "{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1254,30 +1252,6 @@ Global
 		{C985EC50-B46D-4D07-9947-5A858EB468B1}.WPF|x64.Build.0 = Debug|Any CPU
 		{C985EC50-B46D-4D07-9947-5A858EB468B1}.WPF|x86.ActiveCfg = Debug|Any CPU
 		{C985EC50-B46D-4D07-9947-5A858EB468B1}.WPF|x86.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Debug|x64.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Debug|x86.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Release|x64.ActiveCfg = Release|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Release|x64.Build.0 = Release|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Release|x86.ActiveCfg = Release|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.Release|x86.Build.0 = Release|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.ViewLogicAdditionalInfo|x64.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.WPF|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.WPF|Any CPU.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.WPF|x64.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.WPF|x64.Build.0 = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.WPF|x86.ActiveCfg = Debug|Any CPU
-		{D1461A0F-12C6-4F24-B1A7-02131E1DF8B7}.WPF|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

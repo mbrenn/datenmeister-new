@@ -43,5 +43,24 @@ Copy-Item .\src\Web\DatenMeister.WebServer\bin\Debug\net7.0\*.pdb "$($pathToDeli
 Copy-Item .\src\Web\DatenMeister.WebServer\bin\Release\net7.0\*.dll "$($pathToDeliverables)\Release\net7.0"
 Copy-Item .\src\Web\DatenMeister.WebServer\bin\Release\net7.0\*.pdb "$($pathToDeliverables)\Release\net7.0"
 
+
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net6.0\*.pdb "$($pathToDeliverables)\Release\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net7.0\*.pdb "$($pathToDeliverables)\Release\net7.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net6.0\*.pdb "$($pathToDeliverables)\Debug\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net7.0\*.pdb "$($pathToDeliverables)\Debug\net7.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net6.0\*.dll "$($pathToDeliverables)\Release\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net7.0\*.dll "$($pathToDeliverables)\Release\net7.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net6.0\*.dll "$($pathToDeliverables)\Debug\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net7.0\*.dll "$($pathToDeliverables)\Debug\net7.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net6.0\*.exe "$($pathToDeliverables)\Release\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net7.0\*.exe "$($pathToDeliverables)\Release\net7.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net6.0\*.exe "$($pathToDeliverables)\Debug\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net7.0\*.exe "$($pathToDeliverables)\Debug\net7.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net6.0\*.json "$($pathToDeliverables)\Release\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Release\net7.0\*.json "$($pathToDeliverables)\Release\net7.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net6.0\*.json "$($pathToDeliverables)\Debug\net6.0"
+Copy-Item .\src\DatenMeister.SourceGeneration.Console\bin\Debug\net7.0\*.json "$($pathToDeliverables)\Debug\net7.0"
+
+
 # And now back to scripts
 Set-Location scripts

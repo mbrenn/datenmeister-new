@@ -246,6 +246,7 @@ namespace DatenMeister.Core.Helper
             (
                 value.Equals(true) ||
                 value.Equals(1) ||
+                value.Equals("1") ||
                 value.Equals("True") ||
                 value.Equals("true") ||
                 value.Equals("TRUE") ||

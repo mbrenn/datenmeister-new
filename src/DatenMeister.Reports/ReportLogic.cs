@@ -69,7 +69,6 @@ namespace DatenMeister.Reports
             _sources = new Dictionary<string, IReflectiveCollection>(_sources);
 
             return old;
-
         }
 
         public void PopSources(Dictionary<string, IReflectiveCollection> sources)
@@ -142,7 +141,7 @@ namespace DatenMeister.Reports
         }
 
         /// <summary>
-        /// Gets the object view the dataevaluation
+        /// Gets the object view the data-evaluation
         /// </summary>
         /// <param name="reportNodeOrigin"></param>
         /// <param name="element"></param>

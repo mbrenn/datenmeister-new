@@ -33,7 +33,6 @@ namespace DatenMeister.Reports.Html
             TextWriter = textWriter;
         }
 
-
         public HtmlReport HtmlReporter =>
             _htmlReporter ?? throw new InvalidOperationException("_htmlReporter is null");
 
@@ -46,8 +45,7 @@ namespace DatenMeister.Reports.Html
             _htmlReporter.SetDefaultCssStyle();
             _htmlReporter.StartReport(title);
         }
-
-
+        
         public override void EndReport(ReportLogic logic, IObject definition)
         {
             _htmlReporter?.EndReport();
@@ -72,6 +70,7 @@ namespace DatenMeister.Reports.Html
                         where x.IsRelevant(element)
                         select x)
                     .FirstOrDefault();
+
                 if (foundItem != null)
                 {
                     foundItem.Evaluate(reportLogic, this, element);

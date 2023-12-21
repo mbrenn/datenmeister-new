@@ -46,10 +46,11 @@ namespace DatenMeister.SourceGeneration.Console
             
             System.Console.WriteLine("Closing Source Code Generator");
 
+#if !DEBUG
+
             var R = StandardProcedure.R;
             var T = StandardProcedure.T;
 
-#if !DEBUG
             File.Copy($"{T}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
                 File.Copy($"{T}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
                 File.Copy($"{T}/uml.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.cs", true);
@@ -73,7 +74,7 @@ namespace DatenMeister.SourceGeneration.Console
                 File.Delete($"{T}/uml.js");
 #endif
         }
-        
+
 
         public static void CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
         {

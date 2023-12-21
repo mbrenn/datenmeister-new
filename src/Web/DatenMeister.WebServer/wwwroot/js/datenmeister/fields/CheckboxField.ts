@@ -1,6 +1,6 @@
 
 import { BaseField, IFormField } from "./Interfaces.js";
-import { DmObject } from "../Mof.js";
+import { DmObject, ObjectType } from "../Mof.js";
 
 export class Field extends BaseField implements IFormField {
     _checkbox: JQuery<HTMLElement>;
@@ -10,7 +10,7 @@ export class Field extends BaseField implements IFormField {
         this._checkbox = $("<input type='checkbox'/>");
 
         const fieldName = this.field.get('name').toString();
-        if (dmElement.get(fieldName)) {
+        if (dmElement.get(fieldName, ObjectType.Boolean)) {
             this._checkbox.prop('checked', true);
         }
 

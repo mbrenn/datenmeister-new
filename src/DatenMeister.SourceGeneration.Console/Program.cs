@@ -40,42 +40,37 @@ namespace DatenMeister.SourceGeneration.Console
 
             StandardProcedure.CreateSourceForExcel();
 
-            // CreateSourceForDataViews();
-
-            //CreateSourceCodeForDatenMeister();
-
             StandardProcedure.CreateSourceCodeForDatenMeisterAllTypes();
 
             StandardProcedure.CreateTypescriptForDatenMeisterAllTypes();
-
-            StandardProcedure.CreateCodeForStundenPlan();
-
+            
             System.Console.WriteLine("Closing Source Code Generator");
 
             var R = StandardProcedure.R;
+            var T = StandardProcedure.T;
 
 #if !DEBUG
-                File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
-                File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
-                File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.cs", true);
-                File.Copy($"{R}/primitivetypes.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts", true);
-                File.Copy($"{R}/mof.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts", true);
-                File.Copy($"{R}/uml.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/uml.ts", true);
+            File.Copy($"{T}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
+                File.Copy($"{T}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
+                File.Copy($"{T}/uml.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.cs", true);
+                File.Copy($"{T}/primitivetypes.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts", true);
+                File.Copy($"{T}/mof.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts", true);
+                File.Copy($"{T}/uml.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/uml.ts", true);
                 
                 File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
                 File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister.Core/Models/DatenMeister.class.cs", true);
                 File.Copy($"./DatenMeister.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts", true);
                 File.Copy($"./ExcelModels.class.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.ts", true);
 
-                File.Delete($"{R}/primitivetypes.cs");
-                File.Delete($"{R}/primitivetypes.ts");
-                File.Delete($"{R}/primitivetypes.js");
-                File.Delete($"{R}/mof.cs");
-                File.Delete($"{R}/mof.ts");
-                File.Delete($"{R}/mof.js");
-                File.Delete($"{R}/uml.cs");
-                File.Delete($"{R}/uml.ts");
-                File.Delete($"{R}/uml.js");
+                File.Delete($"{T}/primitivetypes.cs");
+                File.Delete($"{T}/primitivetypes.ts");
+                File.Delete($"{T}/primitivetypes.js");
+                File.Delete($"{T}/mof.cs");
+                File.Delete($"{T}/mof.ts");
+                File.Delete($"{T}/mof.js");
+                File.Delete($"{T}/uml.cs");
+                File.Delete($"{T}/uml.ts");
+                File.Delete($"{T}/uml.js");
 #endif
         }
         

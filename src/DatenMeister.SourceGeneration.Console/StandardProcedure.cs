@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Models;
 using DatenMeister.Integration.DotNet;
@@ -14,8 +13,17 @@ namespace DatenMeister.SourceGeneration.Console;
 
 public class StandardProcedure
 {
-
+    /// <summary>
+    /// Defines the target path into which the files shall be stored in case
+    /// of a Release Build. This is done by copying the files from t
+    /// </summary>
     public const string R = "../../..";
+
+    /// <summary>
+    /// Defines the target path into which the files will be stored temporarily.
+    /// </summary>
+    public const string T = "./";
+
     public static void CreateTypescriptForDatenMeisterAllTypes()
     {
         using var dm = GiveMe.DatenMeister();
@@ -100,7 +108,7 @@ public class StandardProcedure
 
         generator.Walk(umlExtent);
 
-        File.WriteAllText($"{R}/uml.cs", generator.Result.ToString());
+        File.WriteAllText($"{T}/uml.cs", generator.Result.ToString());
         System.Console.WriteLine("TS-Code for UML written");
 
         // Generates tree for MOF
@@ -110,7 +118,7 @@ public class StandardProcedure
         };
         generator.Walk(mofExtent);
 
-        File.WriteAllText($"{R}/mof.cs", generator.Result.ToString());
+        File.WriteAllText($"{T}/mof.cs", generator.Result.ToString());
         System.Console.WriteLine("TS-Code for MOF written");
 
         // Generates tree for PrimitiveTypes
@@ -120,7 +128,7 @@ public class StandardProcedure
         };
         generator.Walk(primitiveTypeExtent);
 
-        File.WriteAllText($"{R}/primitivetypes.cs", generator.Result.ToString());
+        File.WriteAllText($"{T}/primitivetypes.cs", generator.Result.ToString());
         System.Console.WriteLine("TS-Code for PrimitiveTypes written");
     }
 
@@ -140,66 +148,21 @@ public class StandardProcedure
         var generator = new TypeScriptInterfaceGenerator();
         generator.Walk(umlExtent);
 
-        File.WriteAllText($"{R}/uml.ts", generator.Result.ToString());
+        File.WriteAllText($"{T}/uml.ts", generator.Result.ToString());
         System.Console.WriteLine("TypeScript Code for UML written");
 
         // Generates tree for MOF
         generator = new TypeScriptInterfaceGenerator();
         generator.Walk(mofExtent);
 
-        File.WriteAllText($"{R}/mof.ts", generator.Result.ToString());
+        File.WriteAllText($"{T}/mof.ts", generator.Result.ToString());
         System.Console.WriteLine("TypeScript Code for MOF written");
 
         // Generates tree for PrimitiveTypes
         generator = new TypeScriptInterfaceGenerator();
         generator.Walk(primitiveTypeExtent);
 
-        File.WriteAllText($"{R}/primitivetypes.ts", generator.Result.ToString());
+        File.WriteAllText($"{T}/primitivetypes.ts", generator.Result.ToString());
         System.Console.WriteLine("C# Code for PrimitiveTypes written");
-    }
-
-    public static void CreateCodeForStundenPlan()
-    {
-        using var dm = GiveMe.DatenMeister();
-
-        var formExtent = new MofUriExtent(
-            XmiProvider.CreateByFile("../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Forms.xml"),
-            "dm:///forms.stundenplan.datenmeister/", null);
-        var typeExtent = new MofUriExtent(
-            XmiProvider.CreateByFile("../../../../Apps/DatenMeister.StundenPlan/xmi/StundenPlan.Types.xml"),
-            "dm:///types.stundenplan.datenmeister/", null);
-
-        dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), formExtent);
-        dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
-
-        // Generates tree for Type Script
-        var generator = new TypeScriptInterfaceGenerator();
-        generator.Walk(typeExtent);
-
-        File.WriteAllText($"{R}/StundenPlan.Types.ts", generator.Result.ToString());
-        System.Console.WriteLine("TypeScript Code for StundenPlan written");
-
-        // Generates tree for StundenPlan
-        var classGenerator = new ClassTreeGenerator
-        {
-            Namespace = "DatenMeister.StundenPlan.Model"
-        };
-
-        classGenerator.Walk(typeExtent);
-
-        var pathOfClassTree = $"{R}/StundenPlan.Types.cs";
-        var fileContent = classGenerator.Result.ToString();
-        File.WriteAllText(pathOfClassTree, fileContent);
-
-        System.Console.WriteLine("C#-Code for StundenPlan written");
-
-#if !DEBUG
-            File.Copy($"{R}/StundenPlan.Types.ts", $"{R}/../Apps/DatenMeister.StundenPlan/resources/DatenMeister.StundenPlan.ts", true);
-            File.Copy($"{R}/StundenPlan.Types.cs", $"{R}/../Apps/DatenMeister.StundenPlan/Model/DatenMeister.StundenPlan.cs", true);
-
-            File.Delete($"{R}/StundenPlan.Types.ts");
-            File.Delete($"{R}/StundenPlan.Types.js");
-            File.Delete($"{R}/StundenPlan.Types.cs");
-#endif
     }
 }

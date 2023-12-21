@@ -329,7 +329,6 @@ namespace DatenMeister.Core.Provider.Xmi
                 else
                 {
                     // Sets the property of the node...
-                    DeleteProperty(property);
                     var xmlTextValue = ReturnObjectAsString(value);
                     if (!string.IsNullOrEmpty(xmlTextValue))
                     {

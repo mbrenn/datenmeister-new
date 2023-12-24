@@ -1116,16 +1116,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.Html.HtmlReportInstance" name="HtmlReportInstance">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b026c0a6-2cb8-4a5f-88cc-144481aeddaa" general-ref="#DatenMeister.Models.Reports.ReportInstance" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="401c648f-b0cb-4a2c-8ba4-ad9705d15a87" name="cssClass" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
-        <aggregation p1:id="1c7c5b61-6399-4f20-9dde-9eed2dc114a9" />
-        <isDerived p1:id="2a6f4099-b13a-4c28-9ca4-870f79568ee8" />
-        <isDerivedUnion p1:id="164ab72d-7566-453f-b134-9cd0be4f4d2d" />
-        <isReadOnly p1:id="c01047bb-c339-45b4-b7c0-e5227296416e" />
-        <isOrdered p1:id="0f6fb937-40ff-455a-90be-e308a024e99e" />
-        <isUnique p1:id="9d66b33b-c0bf-4ba0-b468-4f0857cebcd5" />
-        <isStatic p1:id="583b6c99-f235-453a-894a-e92d27c265f7" />
-        <isLeaf p1:id="dbce7779-38b4-40f3-bfd5-42d4064aff83" />
-      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="401c648f-b0cb-4a2c-8ba4-ad9705d15a87" name="cssFile" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false"></ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode" name="DescendentMode">
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode-None" name="None" />

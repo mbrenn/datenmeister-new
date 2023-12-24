@@ -219,12 +219,12 @@ namespace DatenMeister.Reports
                 throw new InvalidOperationException("There is no report definition set.");
             }
 
-            GenerateReportByDefinition(definition);
+            GenerateReportByDefinition(reportInstance, definition);
         }
 
-        public void GenerateReportByDefinition(IObject reportDefinition)
+        public void GenerateReportByDefinition(IElement reportInstance, IObject reportDefinition)
         {
-            ReportCreator.StartReport(this, reportDefinition);
+            ReportCreator.StartReport(this, reportInstance, reportDefinition);
 
             var elements = reportDefinition.getOrDefault<IReflectiveCollection>(
                 _DatenMeister._Reports._ReportDefinition.elements);

@@ -34,8 +34,9 @@ namespace DatenMeister.Reports.Adoc
         /// If a report shall be generated upon a Report Instance, use GenerateByInstance
         /// </summary>
         /// <param name="reportLogic">The report logic</param>
+        /// <param name="reportInstance">The instance of the reporting</param>
         /// <param name="reportDefinition">The report definition to be used</param>
-        public override void StartReport(ReportLogic reportLogic, IObject reportDefinition)
+        public override void StartReport(ReportLogic reportLogic, IElement reportInstance, IObject reportDefinition)
         {
             var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
             if (!string.IsNullOrEmpty(title))

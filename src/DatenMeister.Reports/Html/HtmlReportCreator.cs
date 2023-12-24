@@ -37,12 +37,20 @@ namespace DatenMeister.Reports.Html
             _htmlReporter ?? throw new InvalidOperationException("_htmlReporter is null");
 
 
-        public override void StartReport(ReportLogic logic, IObject reportDefinition)
+        public override void StartReport(ReportLogic logic, IElement reportInstance, IObject reportDefinition)
         {
             _htmlReporter = new HtmlReport(TextWriter);
 
             var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
+
             _htmlReporter.SetDefaultCssStyle();
+
+            var cssFile = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssFile);
+            if (!string.IsNullOrEmpty(cssFile))
+            {
+                _htmlReporter.AddCssFile(cssFile);
+            }
+
             _htmlReporter.StartReport(title);
         }
         

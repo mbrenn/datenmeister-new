@@ -465,7 +465,7 @@ export namespace _DatenMeister
                 export const __AdocReportInstance_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance";
                 export class _HtmlReportInstance
                 {
-                    static cssClass = "cssClass";
+                    static cssFile = "cssFile";
                     static _name_ = "name";
                     static reportDefinition = "reportDefinition";
                     static sources = "sources";

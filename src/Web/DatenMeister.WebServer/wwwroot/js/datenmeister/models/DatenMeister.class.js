@@ -406,6 +406,7 @@ export var _DatenMeister;
         _Reports.__AdocReportInstance_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance";
         class _HtmlReportInstance {
         }
+        _HtmlReportInstance.cssFile = "cssFile";
         _HtmlReportInstance._name_ = "name";
         _HtmlReportInstance.reportDefinition = "reportDefinition";
         _HtmlReportInstance.sources = "sources";

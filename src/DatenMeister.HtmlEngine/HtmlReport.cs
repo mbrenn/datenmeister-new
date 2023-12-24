@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Web;
@@ -21,6 +22,11 @@ namespace DatenMeister.HtmlEngine
         /// Flag whether the stream writer is disposed
         /// </summary>
         private bool _isDisposed;
+
+        /// <summary>
+        /// Gets a list of possible CSS Files
+        /// </summary>
+        public List<string> CssFiles { get; }= new List<string>();
 
         /// <summary>
         /// Initializes a new instance of the HtmlReport class
@@ -46,6 +52,15 @@ namespace DatenMeister.HtmlEngine
         /// Gets or sets the css style sheet being used for that report
         /// </summary>
         public string? CssStyleSheet { get; set; }
+
+        /// <summary>
+        /// Adds the reference to a css 
+        /// </summary>
+        /// <param name="cssFile"></param>
+        public void AddCssFile(string cssFile)
+        {
+            CssFiles.Add(cssFile);
+        }
 
         /// <summary>
         /// Creates a new HtmlReport and stores the content of the
@@ -94,6 +109,12 @@ namespace DatenMeister.HtmlEngine
                 _streamWriter.WriteLine("  <style>");
                 _streamWriter.WriteLine(CssStyleSheet);
                 _streamWriter.WriteLine("  </style>");
+            }
+
+            // Include CSS files
+            foreach (var cssFile in CssFiles)
+            {
+                _streamWriter.WriteLine($"    <link rel=\"stylesheet\" href=\"{cssFile}\" />");
             }
 
             _streamWriter.WriteLine("  <body>");

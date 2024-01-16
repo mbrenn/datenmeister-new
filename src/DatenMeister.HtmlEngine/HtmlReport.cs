@@ -49,9 +49,9 @@ namespace DatenMeister.HtmlEngine
         }
 
         /// <summary>
-        /// Gets or sets the css style sheet being used for that report
+        /// Gets a list of CSS Stylesheets to be used
         /// </summary>
-        public string? CssStyleSheet { get; set; }
+        public IList<string> CssStyleSheets { get; set; } = new List<string>();
 
         /// <summary>
         /// Adds the reference to a css 
@@ -60,6 +60,15 @@ namespace DatenMeister.HtmlEngine
         public void AddCssFile(string cssFile)
         {
             CssFiles.Add(cssFile);
+        }
+
+        /// <summary>
+        /// Adds the reference to a css 
+        /// </summary>
+        /// <param name="cssStyleSheet">Stylesheet to be added</param>
+        public void AddCssStyleSheet(string cssStyleSheet)
+        {
+            CssStyleSheets.Add(cssStyleSheet);
         }
 
         /// <summary>
@@ -86,9 +95,9 @@ namespace DatenMeister.HtmlEngine
         /// </summary>
         public void SetDefaultCssStyle()
         {
-            CssStyleSheet = ResourceHelper.LoadStringFromAssembly(
-                typeof(HtmlReport), 
-                "DatenMeister.HtmlEngine.Css.default_report.css");
+            CssStyleSheets.Add(ResourceHelper.LoadStringFromAssembly(
+                typeof(HtmlReport),
+                "DatenMeister.HtmlEngine.Css.default_report.css"));
         }
 
         /// <summary>
@@ -104,10 +113,10 @@ namespace DatenMeister.HtmlEngine
             _streamWriter.WriteLine("  <head>");
             _streamWriter.WriteLine("    <title>" + HttpUtility.HtmlEncode(pageTitle) + "</title>");
             _streamWriter.WriteLine("  </head>");
-            if (!string.IsNullOrEmpty(CssStyleSheet))
+            foreach (var styleSheet in CssStyleSheets)
             {
                 _streamWriter.WriteLine("  <style>");
-                _streamWriter.WriteLine(CssStyleSheet);
+                _streamWriter.WriteLine(styleSheet);
                 _streamWriter.WriteLine("  </style>");
             }
 

@@ -51,6 +51,12 @@ namespace DatenMeister.Reports.Html
                 _htmlReporter.AddCssFile(cssFile);
             }
 
+            var cssStyleSheet = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssStyleSheet);
+            if (!string.IsNullOrEmpty(cssStyleSheet))
+            {
+                _htmlReporter.AddCssStyleSheet(cssStyleSheet);
+            }
+
             _htmlReporter.StartReport(title);
         }
         

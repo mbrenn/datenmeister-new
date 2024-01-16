@@ -25,8 +25,7 @@ namespace DatenMeister.Tests.Modules.Reports
             var reporter = new HtmlReport(memory);
 
             reporter.SetDefaultCssStyle();
-            Assert.That(reporter.CssStyleSheet, Is.Not.Empty);
-            Assert.That(reporter.CssStyleSheet, Is.Not.Null);
+            Assert.That(reporter.CssStyleSheets.Count, Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]
@@ -129,6 +128,42 @@ namespace DatenMeister.Tests.Modules.Reports
             htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             Assert.That(writer.ToString().Contains("myCssFile.css"), Is.True, writer.ToString());
+        }
+
+        [Test]
+        public void TestHtmlWithCssStyleSheet()
+        {
+            var (scopeStorage, workspaceLogic) = PrepareWorkspaceLogic();
+
+            var inMemoryProvider = new InMemoryProvider();
+            var extent = new MofUriExtent(inMemoryProvider, "dm:///test", scopeStorage);
+            workspaceLogic.GetDataWorkspace().AddExtent(extent);
+
+            /* Creates the working object */
+            var factory = new MofFactory(extent);
+
+            /* Creates the report definition */
+            var reportDefinition = factory.create(_DatenMeister.TheOne.Reports.__ReportDefinition);
+            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.name, "Report Definition");
+            extent.elements().add(reportDefinition);
+
+            /* Attached it to the report definition */
+            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements, new IElement[] { });
+
+            /* Creates the report instance */
+            var reportInstance = factory.create(_DatenMeister.TheOne.Reports.__HtmlReportInstance);
+            extent.elements().add(reportInstance);
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.name, "Report");
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.cssStyleSheet, "p {\r\n  color: #555;\r\n  line-height: 1.5;\r\n}"); /* TODO, add Stylesheet*/
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.reportDefinition, reportDefinition);
+
+            /* Now create the report */
+            var writer = new StringWriter();
+            var htmlReport = new HtmlReportCreator(writer);
+            var htmlReportLogic = new ReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            htmlReportLogic.GenerateReportByInstance(reportInstance);
+
+            Assert.That(writer.ToString().Contains("color: #555"), Is.True, writer.ToString());
         }
 
 

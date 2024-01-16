@@ -918,6 +918,9 @@ namespace DatenMeister.Core.Models
                 public static string @cssFile = "cssFile";
                 public IElement? @_cssFile = null;
 
+                public static string @cssStyleSheet = "cssStyleSheet";
+                public IElement? @_cssStyleSheet = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

@@ -466,6 +466,7 @@ export namespace _DatenMeister
                 export class _HtmlReportInstance
                 {
                     static cssFile = "cssFile";
+                    static cssStyleSheet = "cssStyleSheet";
                     static _name_ = "name";
                     static reportDefinition = "reportDefinition";
                     static sources = "sources";

@@ -407,6 +407,7 @@ export var _DatenMeister;
         class _HtmlReportInstance {
         }
         _HtmlReportInstance.cssFile = "cssFile";
+        _HtmlReportInstance.cssStyleSheet = "cssStyleSheet";
         _HtmlReportInstance._name_ = "name";
         _HtmlReportInstance.reportDefinition = "reportDefinition";
         _HtmlReportInstance.sources = "sources";

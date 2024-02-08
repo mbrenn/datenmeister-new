@@ -12,6 +12,25 @@ namespace DatenMeister.Core.Runtime.Proxies
     public class PureReflectiveSequence : IReflectiveSequence
     {
         /// <summary>
+        /// Initializes a new instance of the PureReflectiveSequence
+        /// </summary>
+        public PureReflectiveSequence()
+        {
+            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the elements
+        /// </summary>
+        /// <param name="elements">Elements to be added</param>
+        public PureReflectiveSequence(IEnumerable<object> elements)
+        {
+            foreach (var element in elements)
+            {
+                add(element);
+            }            
+        }
+        /// <summary>
         /// Stores the elements
         /// </summary>
         private readonly List<object> _elements = new();

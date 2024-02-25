@@ -1,6 +1,7 @@
 import { FormType } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import { createField } from "./FieldFactory.js";
+import * as Navigation from "../Navigator.js";
 import * as TextField from "../fields/TextField.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 // Defines the possible submit methods, a user can chose to close the detail form
@@ -177,13 +178,16 @@ export class RowForm {
         parent.append(table);
         const tableInfo = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
         tableInfo.append($("<tr><th>URL</th><td class='dm-detail-info-uri'>U</td></tr>"));
-        tableInfo.append($("<tr><th>Workspace</th><td class='dm-detail-info-workspace'>W</td></tr>"));
-        tableInfo.append($("<tr><th>Extent-Uri</th><td class='dm-detail-info-extenturi'>E</td></tr>"));
-        tableInfo.append($("<tr><th>Metaclass</th><td class='dm-detail-info-metaclass'>m</td></tr>"));
+        tableInfo.append($("<tr><th>Workspace</th><td><a class='dm-detail-info-workspace'>W</a></td></tr>"));
+        tableInfo.append($("<tr><th>Extent-Uri</th><td><a class='dm-detail-info-extenturi'>E</a></td></tr>"));
+        tableInfo.append($("<tr><th>Metaclass</th><td><a class='dm-detail-info-metaclass'>m</a></td></tr>"));
         $(".dm-detail-info-uri", tableInfo).text(this.element.uri ?? "none");
         $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace ?? "none");
+        $(".dm-detail-info-workspace", tableInfo).attr('href', Navigation.getLinkForNavigateToWorkspace(this.element.workspace));
         $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri ?? "none");
+        $(".dm-detail-info-extenturi", tableInfo).attr('href', Navigation.getLinkForNavigateToExtent(this.element.workspace, this.element.extentUri));
         $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName ?? "none");
+        $(".dm-detail-info-metaclass", tableInfo).attr('href', Navigation.getLinkForNavigateToItem(this.element.metaClass.workspace, this.element.metaClass.extentUri, this.element.metaClass.id));
         parent.append(tableInfo);
     }
     async storeFormValuesIntoDom() {

@@ -352,7 +352,6 @@ export class ObjectFormCreatorForItem {
             this.statusTextControl.setListStatus("Create Viewmode Selection", true);
         }
 
-
         /*
          * Creates the handler for the automatic creation of forms for extent
          */

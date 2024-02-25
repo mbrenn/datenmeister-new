@@ -42,7 +42,7 @@ namespace DatenMeister.BootStrap.PublicSettings
         
                 if (result == null)
                 {
-                    Logger.Info($"No Configuration file found in {directoryPath}");
+                    Logger.Info($"No Configuration file found in {path}");
                     return null;
                 }
                 
@@ -50,7 +50,7 @@ namespace DatenMeister.BootStrap.PublicSettings
                 return result;
             }
 
-            Logger.Info($"No Configuration file found in {directoryPath}");
+            Logger.Info($"No Configuration file found in {path}");
 
             return null;
         }

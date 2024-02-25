@@ -34,17 +34,16 @@ namespace DatenMeister.WebServer
 
         public static void Main(string[] args)
         {
+            // Loads the Public Settings
             var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
             var configuration = PublicSettingHandler.LoadExtentFromDirectory(
                 Path.GetDirectoryName(publicSettingsPath) 
                     ?? throw new InvalidOperationException("Something obscure happened"), 
                 out var path);
 
-            if (configuration != null)
-            {
-                var settings = InitializeLogging(configuration);
-                settings.settingsFilePath = path;
-            }
+            // Initializes the Logging
+            var settings = InitializeLogging(configuration);
+            settings.settingsFilePath = path;
 
             TheLog.Info("Welcome to DatenMeister");
 
@@ -81,7 +80,7 @@ namespace DatenMeister.WebServer
             TheLog.Info("Good bye - Your DatenMeister");
         }
 
-        private static PublicIntegrationSettings InitializeLogging(IExtent configurationExtent)
+        private static PublicIntegrationSettings InitializeLogging(IExtent? configurationExtent)
         {
 #if DEBUG
             TheLog.FilterThreshold = LogLevel.Trace;

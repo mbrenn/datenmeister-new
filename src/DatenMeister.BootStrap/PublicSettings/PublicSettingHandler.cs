@@ -91,8 +91,14 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// <returns>The integration settings</returns>
         /// <exception cref="InvalidOperationException"></exception>
         public static PublicIntegrationSettings? ParseSettingsFromFile(
-            IExtent extentConfiguration)
+            IExtent? extentConfiguration)
         {
+            if (extentConfiguration == null)
+            {
+                return null;
+            }
+
+            // We got a configuration, so we can try to parse it. 
             var settings = ParsePublicIntegrationSettings(extentConfiguration);
 
             // Now starts to set the set the environment according the public settings

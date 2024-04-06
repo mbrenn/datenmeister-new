@@ -103,6 +103,18 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             throw "htmlElements.itemContainer is not set";
         }
 
+        // Sets the refresh callback
+        if (configuration.refreshForm === undefined) {
+            configuration.refreshForm = () => {
+                tthis.createCollectionForRootElements(workspace, extentUri, configuration);
+            }
+        }
+
+        // Empties the overview
+        this.htmlElements.itemContainer.empty();
+        this.htmlElements.itemContainer.append("Load Collection Form")
+
+        // Set Read-Only as default
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -125,12 +137,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         this.statusTextControl.setListStatus("Loading Breadcrumb", true);
 
         const tthis = this;
-
-        if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createCollectionForRootElements(workspace, extentUri, configuration);
-            }
-        }
 
         // Loads the form
         this.statusTextControl.setListStatus("Loading Form", false);
@@ -165,8 +171,8 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             const viewModeForm = new ViewModeSelectionControl();
             const htmlViewModeForm = await viewModeForm.createForm();
             viewModeForm.viewModeSelected.addListener(
-                _ => {
-                    configuration.viewMode = VML.getCurrentViewMode();
+                viewMode => {
+                    configuration.viewMode = viewMode;
                     configuration.refreshForm();
                 });
 
@@ -286,7 +292,6 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             }
         }
 
-        itemContainer.empty();
 
         // Create the action fields for the collection field
         this.statusTextControl.setListStatus("Actionfields", false);
@@ -371,6 +376,8 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             this.statusTextControl.setListStatus("Create tab " + n, false);
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
+
+            itemContainer.empty();
             itemContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }

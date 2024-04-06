@@ -20,7 +20,6 @@ import {_DatenMeister} from "../models/DatenMeister.class.js";
 import {ItemLink} from "../ApiModels.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
-import {setCurrentViewMode} from "./ViewModeLogic.js";
 
 export class ObjectFormHtmlElements
 {
@@ -196,6 +195,11 @@ export class ObjectFormCreatorForItem {
 
     async rebuildForm() {
 
+        // First, clear the page to have a fast reaction, otherwise the user will be confused
+        this.htmlElements.itemContainer.empty();
+        this.htmlElements.itemContainer.append($("<div>Loading Data and Form</div>"));
+
+        // Creates the breadcrumb
         this.statusTextControl.setListStatus("Create Breadcrumb ", false);
         let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
         await breadcrumb.createForItem(this.workspace, this.itemUri);

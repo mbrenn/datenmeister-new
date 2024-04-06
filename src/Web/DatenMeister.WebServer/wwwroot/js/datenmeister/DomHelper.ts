@@ -43,7 +43,9 @@ export interface IConvertItemWithNameAndIdParameters{
 /*
  * Converts an ItemWithNameAndId to a Dom Element which reflects the content
  */
-export function convertItemWithNameAndIdToDom(item: ItemWithNameAndId, params?: IConvertItemWithNameAndIdParameters): JQuery {
+export function convertItemWithNameAndIdToDom(
+    item: ItemWithNameAndId,
+    params?: IConvertItemWithNameAndIdParameters): JQuery {
     let result = $("<span></span>");
     
     // Checks, if we have valid link information, so the user can click on the item to move to it

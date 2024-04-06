@@ -32,6 +32,16 @@ export class CollectionFormCreator {
         if (this.htmlElements.itemContainer === undefined || this.htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
+        // Sets the refresh callback
+        if (configuration.refreshForm === undefined) {
+            configuration.refreshForm = () => {
+                tthis.createCollectionForRootElements(workspace, extentUri, configuration);
+            };
+        }
+        // Empties the overview
+        this.htmlElements.itemContainer.empty();
+        this.htmlElements.itemContainer.append("Load Collection Form");
+        // Set Read-Only as default
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -50,11 +60,6 @@ export class CollectionFormCreator {
         await breadcrumb.createForExtent(workspace, extentUri);
         this.statusTextControl.setListStatus("Loading Breadcrumb", true);
         const tthis = this;
-        if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createCollectionForRootElements(workspace, extentUri, configuration);
-            };
-        }
         // Loads the form
         this.statusTextControl.setListStatus("Loading Form", false);
         // Load the form
@@ -80,8 +85,8 @@ export class CollectionFormCreator {
             this.statusTextControl.setListStatus("Create Viewmode Selection", false);
             const viewModeForm = new ViewModeSelectionControl();
             const htmlViewModeForm = await viewModeForm.createForm();
-            viewModeForm.viewModeSelected.addListener(_ => {
-                configuration.viewMode = VML.getCurrentViewMode();
+            viewModeForm.viewModeSelected.addListener(viewMode => {
+                configuration.viewMode = viewMode;
                 configuration.refreshForm();
             });
             this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
@@ -172,7 +177,6 @@ export class CollectionFormCreator {
                 await tthis.createFormByCollection(configuration);
             };
         }
-        itemContainer.empty();
         // Create the action fields for the collection field
         this.statusTextControl.setListStatus("Actionfields", false);
         const fields = this.formElement.get(_DatenMeister._Forms._CollectionForm.field, Mof.ObjectType.Array);
@@ -233,6 +237,7 @@ export class CollectionFormCreator {
             this.statusTextControl.setListStatus("Create tab " + n, false);
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
+            itemContainer.empty();
             itemContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }

@@ -4,7 +4,7 @@
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release;WPF</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <TypeScriptToolsVersion>4.7.4</TypeScriptToolsVersion>

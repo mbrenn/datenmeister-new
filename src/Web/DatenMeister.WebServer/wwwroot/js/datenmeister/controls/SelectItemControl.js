@@ -346,7 +346,7 @@ export class SelectItemControl {
                         continue;
                     const item = items[n];
                     const option = $("<li class='dm-sic-item'></li>");
-                    option.append(convertItemWithNameAndIdToDom(item, { inhibitItemLink: true }));
+                    option.append(convertItemWithNameAndIdToDom(item, { inhibitItemLink: true, inhibitEditItemLink: true }));
                     // Creates the clickability of the list of items
                     ((innerItem) => option.on("click", async () => {
                         tthis.selectedItem = innerItem;

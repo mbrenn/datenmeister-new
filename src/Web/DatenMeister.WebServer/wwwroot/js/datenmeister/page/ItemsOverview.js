@@ -2,7 +2,6 @@ import * as CollectionForm from "../forms/CollectionForm.js";
 import { loadDefaultModules } from "../modules/DefaultLoader.js";
 export async function init(workspace, extentUri) {
     loadDefaultModules();
-    $("#items_collection_uri").text(extentUri);
     let listForm = new CollectionForm.CollectionFormCreator({
         itemContainer: $("#dm-items"),
         viewModeSelectorContainer: $("#dm-viewmode-selection-container"),

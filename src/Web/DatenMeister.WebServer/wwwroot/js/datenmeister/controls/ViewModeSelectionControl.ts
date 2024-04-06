@@ -41,14 +41,14 @@ export class ViewModeSelectionControl {
         // Adds the clearing option
         const clearOption = $("<option></option>");
         clearOption.attr('data-clear', '1');
-        clearOption.text('Switch to automatic');
+        clearOption.text('<< Default View >>');
         selectField.append(clearOption);
 
         // Now performs the action
         selectField.on("change", () => {
             const selectedElement = $("option:selected", selectField);
 
-            // Checks, if the user has clicked on dataclear
+            // Checks, if the user has clicked on the field which clears the current viewmode
             let viewModeId;
             const isDataClear = selectedElement.attr('data-clear') === '1';
             if (isDataClear) {
@@ -60,7 +60,9 @@ export class ViewModeSelectionControl {
             }
             
             // Callback
-            this.viewModeSelected.invoke(viewModeId);
+            if (this.viewModeSelected !== undefined) {
+                this.viewModeSelected.invoke(viewModeId);
+            }
         });
 
         container.append(selectField);

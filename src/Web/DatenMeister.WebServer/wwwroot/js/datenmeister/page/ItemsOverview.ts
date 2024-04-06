@@ -5,8 +5,6 @@ import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 
 export async function init(workspace: string, extentUri: string) : Promise<void> {
     loadDefaultModules();
-
-    $("#items_collection_uri").text(extentUri);
     
     let listForm = new CollectionForm.CollectionFormCreator(
         {

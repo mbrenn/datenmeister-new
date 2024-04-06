@@ -6,7 +6,7 @@ import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 export function init(workspace: string, itemUri: string) {
     loadDefaultModules();
 
-    const detailForm = new Form.ObjectFormCreatorForItem({
+    const objectForm = new Form.ObjectFormCreatorForItem({
         itemContainer: $("#form_view"),
         viewModeSelectorContainer: $("#dm-viewmode-selection-container"),
         formSelectorContainer: $("#form_selection_container"),
@@ -14,7 +14,7 @@ export function init(workspace: string, itemUri: string) {
         statusContainer: $(".dm-status-text-container")
     });
     
-    const _ = detailForm.createForm(
+    const _ = objectForm.createForm(
         workspace,
         itemUri);
 

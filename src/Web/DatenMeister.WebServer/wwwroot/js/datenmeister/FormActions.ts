@@ -1,6 +1,6 @@
 ﻿import {createJsonFromObject, DmObject, DmObjectWithSync} from "./Mof.js";
 import * as IIForms from "./forms/Interfaces.js";
-import {SubmitMethod} from "./forms/RowForm.js";
+import { SubmitMethod } from "./forms/Forms.js";
 
 /**
  * This interface describes one module being used for the action form

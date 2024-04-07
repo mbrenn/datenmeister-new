@@ -3,7 +3,7 @@
  */
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as FormFactory from "./FormFactory.js";
-import {SubmitMethod} from "./RowForm.js";
+import {SubmitMethod} from "./Forms.js";
 import * as ClientItems from "../client/Items.js";
 import * as Navigator from "../Navigator.js";
 import {navigateToExtentItems, navigateToItemByUrl} from "../Navigator.js";

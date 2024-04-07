@@ -1,6 +1,6 @@
 ﻿import * as FormActions from "../FormActions.js"
 import * as Mof from "../Mof.js";
-import {SubmitMethod} from "../forms/RowForm.js";
+import {SubmitMethod} from "../forms/Forms.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import * as ActionClient from "../client/Actions.js";
 

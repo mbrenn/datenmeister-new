@@ -8,20 +8,9 @@ import * as TextField from "../fields/TextField.js"
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import {_DatenMeister} from "../models/DatenMeister.class.js";
 import {DmObject, DmObjectWithSync} from "../Mof.js";
+import { SubmitMethod } from "./Forms.js";
 
-// Defines the possible submit methods, a user can chose to close the detail form
-export enum SubmitMethod
-{
-    // The user clicked on the save button
-    Save,
-    // The user clicked on the save and close button
-    SaveAndClose,
-    
-    // Some user defined actions are supported here
-    UserDefined1,
-    UserDefined2,
-    UserDefined3
-}
+
     
 export class RowForm implements InterfacesForms.IObjectFormElement {
     workspace: string;
@@ -59,6 +48,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
+
         if (configuration.allowAddingNewProperties === undefined) {
             configuration.allowAddingNewProperties = false;
         }

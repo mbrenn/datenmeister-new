@@ -4,18 +4,7 @@ import { createField } from "./FieldFactory.js";
 import * as Navigation from "../Navigator.js";
 import * as TextField from "../fields/TextField.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
-// Defines the possible submit methods, a user can chose to close the detail form
-export var SubmitMethod;
-(function (SubmitMethod) {
-    // The user clicked on the save button
-    SubmitMethod[SubmitMethod["Save"] = 0] = "Save";
-    // The user clicked on the save and close button
-    SubmitMethod[SubmitMethod["SaveAndClose"] = 1] = "SaveAndClose";
-    // Some user defined actions are supported here
-    SubmitMethod[SubmitMethod["UserDefined1"] = 2] = "UserDefined1";
-    SubmitMethod[SubmitMethod["UserDefined2"] = 3] = "UserDefined2";
-    SubmitMethod[SubmitMethod["UserDefined3"] = 4] = "UserDefined3";
-})(SubmitMethod || (SubmitMethod = {}));
+import { SubmitMethod } from "./Forms.js";
 export class RowForm {
     constructor() {
         this.formType = FormType.Row;

@@ -4,7 +4,7 @@ import * as MofSync from "../MofSync.js";
 import * as FormClient from "../client/Forms.js";
 import * as ActionClient from "../client/Actions.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
-import {SubmitMethod} from "../forms/RowForm.js";
+import { SubmitMethod } from "../forms/Forms.js";
 import * as Settings from "../Settings.js";
 import {_DatenMeister} from "../models/DatenMeister.class.js";
 import * as ItemClient from "../client/Items.js";

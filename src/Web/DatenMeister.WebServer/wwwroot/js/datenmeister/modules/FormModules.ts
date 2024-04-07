@@ -1,6 +1,6 @@
 ﻿import * as FormActions from "../FormActions.js"
 import {DmObject} from "../Mof.js";
-import {SubmitMethod} from "../forms/RowForm.js";
+import { SubmitMethod } from "../forms/Forms.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import * as FormClient from "../client/Forms.js";
 import * as DatenMeisterModel from "../models/DatenMeister.class.js";

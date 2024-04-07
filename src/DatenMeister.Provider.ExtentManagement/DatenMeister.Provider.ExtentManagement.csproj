@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj"/>
-        <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj"/>
-        <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj"/>
-        <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj"/>
+        <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
+        <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
+        <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
+        <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     </ItemGroup>
 
 </Project>

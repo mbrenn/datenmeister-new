@@ -25,9 +25,5 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         {
             FailedExtents = failedExtents;
         }
-
-        protected LoadingExtentsFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

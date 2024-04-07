@@ -1,7 +1,7 @@
 ﻿import * as FormActions from "../FormActions.js"
 import {DmObject, DmObjectWithSync} from "../Mof.js";
 import * as MofSync from "../MofSync.js";
-import {SubmitMethod} from "../forms/RowForm.js";
+import { SubmitMethod } from "../forms/Forms.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import * as ApiConnection from "../ApiConnection.js";
 import * as Settings from "../Settings.js";

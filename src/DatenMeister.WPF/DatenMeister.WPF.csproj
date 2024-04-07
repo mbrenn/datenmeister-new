@@ -11,7 +11,7 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Navigation\Validators\**" />

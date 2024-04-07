@@ -187,37 +187,39 @@ export class TableForm {
     }
     async appendColumnMenus(field, cell) {
         const column = await this.createPropertyMenuItems(field);
-        let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
-        const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
-        for (const m in column) {
-            const menuProperty = column[m];
-            const htmlItem = $("<div class='dm-contextmenu-item'></div>");
-            htmlItem.text(menuProperty.title);
-            if (menuProperty.onClick !== undefined) {
-                htmlItem.on('click', () => {
-                    if (menuProperty.requireConfirmation !== true
-                        || htmlItem.attr('data-require') === '1') {
-                        menuProperty.onClick();
-                    }
-                    else {
-                        htmlItem.attr('data-require', '1');
-                        htmlItem.text('Confirm?');
-                    }
-                });
+        if (column.length > 0) {
+            let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
+            const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
+            for (const m in column) {
+                const menuProperty = column[m];
+                const htmlItem = $("<div class='dm-contextmenu-item'></div>");
+                htmlItem.text(menuProperty.title);
+                if (menuProperty.onClick !== undefined) {
+                    htmlItem.on('click', () => {
+                        if (menuProperty.requireConfirmation !== true
+                            || htmlItem.attr('data-require') === '1') {
+                            menuProperty.onClick();
+                        }
+                        else {
+                            htmlItem.attr('data-require', '1');
+                            htmlItem.text('Confirm?');
+                        }
+                    });
+                }
+                htmlContainer.append(htmlItem);
             }
-            htmlContainer.append(htmlItem);
+            $(".dm-contextmenu-dots", contextItem).on('click', () => {
+                if (htmlContainer.attr('data-display') === 'visible') {
+                    htmlContainer.hide();
+                    htmlContainer.attr('data-display', '');
+                }
+                else {
+                    htmlContainer.show();
+                    htmlContainer.attr('data-display', 'visible');
+                }
+            });
+            cell.append(contextItem);
         }
-        $(".dm-contextmenu-dots", contextItem).on('click', () => {
-            if (htmlContainer.attr('data-display') === 'visible') {
-                htmlContainer.hide();
-                htmlContainer.attr('data-display', '');
-            }
-            else {
-                htmlContainer.show();
-                htmlContainer.attr('data-display', 'visible');
-            }
-        });
-        cell.append(contextItem);
     }
     async createPropertyMenuItems(field) {
         let result = [];
@@ -243,10 +245,6 @@ export class TableForm {
                 }
             };
             result.push(menuRemoveProperty);
-        }
-        // If no entry is added, add at least some comment
-        if (result.length === 0) {
-            result.push({ title: "No Action" });
         }
         return result;
     }

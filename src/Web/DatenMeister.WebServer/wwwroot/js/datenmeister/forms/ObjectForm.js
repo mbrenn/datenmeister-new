@@ -79,7 +79,7 @@ export class ObjectFormCreator {
             }
             catch (error) {
                 const errorMessage = $("<div>An Exception has occured during the creation: <span></span></div>");
-                $("span", errorMessage).text(error);
+                $("span", errorMessage).text(error.stack === undefined ? error : error.stack);
                 this.htmlElements.itemContainer.append(errorMessage);
             }
         }

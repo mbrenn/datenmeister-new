@@ -172,11 +172,17 @@ export class RowForm {
         tableInfo.append($("<tr><th>Metaclass</th><td><a class='dm-detail-info-metaclass'>m</a></td></tr>"));
         $(".dm-detail-info-uri", tableInfo).text(this.element.uri ?? "none");
         $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace ?? "none");
-        $(".dm-detail-info-workspace", tableInfo).attr('href', Navigation.getLinkForNavigateToWorkspace(this.element.workspace));
+        if (this.element.workspace !== undefined) {
+            $(".dm-detail-info-workspace", tableInfo).attr('href', Navigation.getLinkForNavigateToWorkspace(this.element.workspace));
+        }
         $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri ?? "none");
-        $(".dm-detail-info-extenturi", tableInfo).attr('href', Navigation.getLinkForNavigateToExtent(this.element.workspace, this.element.extentUri));
+        if (this.element.extentUri !== undefined) {
+            $(".dm-detail-info-extenturi", tableInfo).attr('href', Navigation.getLinkForNavigateToExtent(this.element.workspace, this.element.extentUri));
+        }
         $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName ?? "none");
-        $(".dm-detail-info-metaclass", tableInfo).attr('href', Navigation.getLinkForNavigateToItem(this.element.metaClass.workspace, this.element.metaClass.extentUri, this.element.metaClass.id));
+        if (this.element.metaClass !== undefined) {
+            $(".dm-detail-info-metaclass", tableInfo).attr('href', Navigation.getLinkForNavigateToItem(this.element.metaClass.workspace, this.element.metaClass.extentUri, this.element.metaClass.id));
+        }
         parent.append(tableInfo);
     }
     async storeFormValuesIntoDom() {

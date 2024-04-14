@@ -51,6 +51,7 @@
     <ProjectReference Include="..\..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Html\DatenMeister.Html.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Reports.Forms\DatenMeister.Reports.Forms.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />

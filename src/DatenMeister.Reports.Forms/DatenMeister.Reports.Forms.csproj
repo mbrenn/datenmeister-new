@@ -7,16 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Xmi\DatenMeister.Reports.Forms.xmi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Xmi\DatenMeister.Reports.Forms.xmi" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj" />
     <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
     <ProjectReference Include="..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
     <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
     <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     <ProjectReference Include="..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Xmi\" />
   </ItemGroup>
 
 </Project>

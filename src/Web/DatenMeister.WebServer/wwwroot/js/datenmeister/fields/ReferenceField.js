@@ -96,6 +96,11 @@ export class Control {
                     await selectItem.setItemByUri(workspaceId, itemUri);
                 }
             }
+            else {
+                // If there is no default selection and item has not been pre-selected by the field
+                // configuration itself, choose the extent in which the containing element is residing
+                await selectItem.setExtentByUri(this.form.workspace, this.form.extentUri);
+            }
         }
     }
     async reloadValuesFromServer() {

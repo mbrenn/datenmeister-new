@@ -103,8 +103,7 @@ export class Control {
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
-        settings.showExtentInBreadcrumb = true;
-        
+        settings.showExtentInBreadcrumb = true;        
         selectItem.itemSelected.addListener(
             async selectedItem => {
 
@@ -141,6 +140,10 @@ export class Control {
                 } else {
                     await selectItem.setItemByUri(workspaceId, itemUri);
                 }
+            } else {
+                // If there is no default selection and item has not been pre-selected by the field
+                // configuration itself, choose the extent in which the containing element is residing
+                await selectItem.setExtentByUri(this.form.workspace, this.form.extentUri);
             }
         }
     }

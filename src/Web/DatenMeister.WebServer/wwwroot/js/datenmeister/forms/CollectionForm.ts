@@ -329,6 +329,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         const tabs = 
             this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array) as Array<Mof.DmObject>;
 
+        var firstTab = true;
         for (let n in tabs) {
 
             const tab = tabs[n] as Mof.DmObject;
@@ -377,7 +378,11 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
 
-            itemContainer.empty();
+            if (firstTab) {
+                // Empties the loading information on first tab
+                itemContainer.empty();
+                firstTab = false;
+            }
             itemContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }

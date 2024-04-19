@@ -199,6 +199,7 @@ export class CollectionFormCreator {
         this.statusTextControl.setListStatus("Create Tabs", false);
         // Create the tabs
         const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
+        var firstTab = true;
         for (let n in tabs) {
             const tab = tabs[n];
             if (!tabs.hasOwnProperty(n)) {
@@ -237,7 +238,11 @@ export class CollectionFormCreator {
             this.statusTextControl.setListStatus("Create tab " + n, false);
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
-            itemContainer.empty();
+            if (firstTab) {
+                // Empties the loading information on first tab
+                itemContainer.empty();
+                firstTab = false;
+            }
             itemContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }

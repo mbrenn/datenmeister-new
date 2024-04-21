@@ -84,7 +84,6 @@ namespace DatenMeister.Forms
 
                 if (foundForm != null)
                 {
-                    foundForm = CloneForm(foundForm);
                     Logger.Info(
                         "CreateObjectFormForItem: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     FormMethods.AddToFormCreationProtocol(foundForm,
@@ -92,6 +91,7 @@ namespace DatenMeister.Forms
                 }
             }
 
+            var callExtensionsForSubForms = false;
             if (foundForm == null && configuration.ViaFormCreator)
             {
                 var formCreator = CreateFormCreator();
@@ -102,6 +102,8 @@ namespace DatenMeister.Forms
 
                 FormMethods.AddToFormCreationProtocol(foundForm,
                     "[FormFactory.CreateObjectFormForItem] Created Form via FormCreator");
+
+                callExtensionsForSubForms = true;
             }
 
             if (foundForm != null)
@@ -116,8 +118,9 @@ namespace DatenMeister.Forms
                         extentTypes = extent.GetConfiguration().ExtentTypes,
                         metaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.ObjectExtension,
-                        viewModeId = configuration.ViewModeId ?? ViewModes.Default
-                    });
+                        viewModeId = configuration.ViewModeId ?? packageViewMode
+                    }, 
+                    callExtensionsForSubForms);
 
                 if (element is IElement asElement)
                 {
@@ -814,6 +817,12 @@ namespace DatenMeister.Forms
             ref IElement foundForm,
             IElement? overrideParentMetaClassForTabs = null)
         {
+            if (configuration?.AllowFormModifications != true)
+            {
+                // Nothing to do
+                return;
+            }
+
             _formPluginState.CallFormsModificationPlugins(
                 configuration,
                 formCreationContext,
@@ -883,8 +892,9 @@ namespace DatenMeister.Forms
         /// </param>
         /// <param name="query">Defines the query to be evaluated</param>
         private void AddExtensionFormsToObjectOrCollectionForm(
-            IObject form,
-            FindFormQuery query)
+            IElement form,
+            FindFormQuery query,
+            bool callAlsoForSubforms = false)
         {
             if (query.FormType != _DatenMeister._Forms.___FormType.Collection &&
                 query.FormType != _DatenMeister._Forms.___FormType.Object &&
@@ -898,7 +908,30 @@ namespace DatenMeister.Forms
             var foundForms = viewFinder.FindFormsFor(query);
 
             var tabs = form.get<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab);
-            foreach (var listForm in foundForms) tabs.add(listForm);
+
+            // Adds the extension tab
+            foreach (var extensionForm in foundForms)
+            {
+                foreach (var extensionTab in extensionForm.get<IReflectiveSequence>(_DatenMeister._Forms._CollectionForm.tab).OfType<IElement>())
+                {
+                    tabs.add(ObjectCopier.CopyForTemporary(extensionTab));
+                }
+            }                
+
+            if (callAlsoForSubforms)
+            {
+                foreach (var tableForm in FormMethods.GetTableForms(form))
+                {
+                    AddExtensionFieldsToRowOrTableForm(tableForm,
+                        query with { FormType = _DatenMeister._Forms.___FormType.TableExtension });
+                }
+
+                foreach (var rowForm in FormMethods.GetRowForms(form))
+                {
+                    AddExtensionFieldsToRowOrTableForm(rowForm,
+                        query with { FormType = _DatenMeister._Forms.___FormType.RowExtension });
+                }
+            }
         }
 
         /// <summary>
@@ -933,7 +966,7 @@ namespace DatenMeister.Forms
                     _DatenMeister._Forms._RowForm.field);
                 foreach (var field in extensionFields.OfType<IElement>())
                 {
-                    fields.add(field);
+                    fields.add(ObjectCopier.CopyForTemporary(field));
                 }
             }
         }

@@ -10,7 +10,7 @@ using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Forms.FormFinder
 {
-    public class FindFormQuery
+    public record FindFormQuery
     {
         public _DatenMeister._Forms.___FormType FormType { get; set; }
 
@@ -23,9 +23,24 @@ namespace DatenMeister.Forms.FormFinder
         public string parentProperty { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or sets the information whether the Form Finding shall be with active debugger break,
+        /// in case the FormAssociation also requests a debugging. 
+        /// </summary>
+        public bool debugActive { get; set; }
+
+        /// <summary>
         /// Gets or sets the id of the view mode being used for the query
         /// </summary>
         public string viewModeId { get; set; } = string.Empty;
+
+        public FindFormQuery()
+        {
+#if DEBUG
+            debugActive = true;
+#else
+            debugActive = false;
+#endif
+        }
 
         public override string ToString()
         {

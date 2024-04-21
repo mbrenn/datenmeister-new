@@ -1481,6 +1481,16 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f80de5f4-ec93-43d8-a57f-a0f67b01dcf2" name="parentMetaClass" type-ref="dm:///_internal/model/uml#Classifier" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="59863465-8110-43b5-bcd1-13131818f742" name="parentProperty" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="44a47962-26c5-440f-a2c9-486c6f8da64c" name="form" type-ref="#DatenMeister.Models.Forms.Form" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="34eb3326-c3d2-4330-b916-5067235a5533" name="debugActive" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false">
+        <aggregation p1:id="71e15ffc-62a1-4bd4-a9c4-78cb33d21cec" />
+        <isDerived p1:id="a60d974a-f768-4b1c-8f63-a176c4ab077f" />
+        <isDerivedUnion p1:id="038f3f48-7c62-42b1-a9aa-17564a5f12d2" />
+        <isReadOnly p1:id="7e6e48c6-1e50-436c-bcb3-8eeeb66c3391" />
+        <isOrdered p1:id="3ae2a332-9bd0-49e5-a115-544a72a1721e" />
+        <isUnique p1:id="674bddbe-f18c-429d-a90f-fb8c9351a643" />
+        <isStatic p1:id="25fb8c65-884a-437e-b896-374990fac0c0" />
+        <isLeaf p1:id="52840f67-389d-459b-bdaa-5061726d7788" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DropDownFieldData" name="DropDownFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="e01dba4b-06a8-4850-b5b3-4d6acbed97a7" general-ref="#DatenMeister.Models.Forms.FieldData" />

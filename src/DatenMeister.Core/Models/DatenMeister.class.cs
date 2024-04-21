@@ -1779,6 +1779,9 @@ namespace DatenMeister.Core.Models
                 public static string @form = "form";
                 public IElement? @_form = null;
 
+                public static string @debugActive = "debugActive";
+                public IElement? @_debugActive = null;
+
             }
 
             public _FormAssociation @FormAssociation = new _FormAssociation();

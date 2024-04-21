@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -84,6 +85,12 @@ namespace DatenMeister.Forms.FormFinder
                 {
                     InternalDebug(
                         $"- Handling: ID = {hasId.Id ?? "none"}, Name = {NamedElementMethods.GetFullName(element)}");
+                }
+
+                // Checks, if we want to perform a break
+                if (query.debugActive && element.getOrDefault<bool>(_DatenMeister._Forms._FormAssociation.debugActive))
+                {
+                    Debugger.Break();
                 }
 
                 var points = 0;

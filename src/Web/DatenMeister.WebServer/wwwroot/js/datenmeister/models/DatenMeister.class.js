@@ -752,6 +752,7 @@ export var _DatenMeister;
         _FormAssociation.parentMetaClass = "parentMetaClass";
         _FormAssociation.parentProperty = "parentProperty";
         _FormAssociation.form = "form";
+        _FormAssociation.debugActive = "debugActive";
         _Forms._FormAssociation = _FormAssociation;
         _Forms.__FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
         class _DropDownFieldData {

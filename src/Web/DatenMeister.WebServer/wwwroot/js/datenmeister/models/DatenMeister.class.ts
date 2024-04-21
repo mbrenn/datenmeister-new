@@ -846,6 +846,7 @@ export namespace _DatenMeister
                     static parentMetaClass = "parentMetaClass";
                     static parentProperty = "parentProperty";
                     static form = "form";
+                    static debugActive = "debugActive";
                 }
 
                 export const __FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";

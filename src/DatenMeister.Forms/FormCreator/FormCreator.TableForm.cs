@@ -177,7 +177,7 @@ namespace DatenMeister.Forms.FormCreator
 
             if (propertyNames != null)
             {
-                DefinePropertyNames(elements, propertyNames, creationMode);
+                SelectOnlyCommonPropertyNames(elements, propertyNames, creationMode);
 
                 foreach (var propertyName in propertyNames) cache.FocusOnPropertyNames.Add(propertyName);
             }
@@ -234,9 +234,9 @@ namespace DatenMeister.Forms.FormCreator
         ///     Defines the property names to be used when the creation flag contains 'OnlyCommon' Properties
         /// </summary>
         /// <param name="elements">The enumeration of elements which are parsed</param>
-        /// <param name="propertyNames">A set of property names which are evaluated </param>
+        /// <param name="propertyNames">A set of property names which are evaluated. The set is also modified</param>
         /// <param name="creationMode">The creation mode to be used</param>
-        private void DefinePropertyNames(
+        private void SelectOnlyCommonPropertyNames(
             IReflectiveCollection elements,
             ISet<string> propertyNames,
             FormFactoryConfiguration creationMode)
@@ -258,7 +258,8 @@ namespace DatenMeister.Forms.FormCreator
                         ClassifierMethods.GetPropertyNamesOfClassifier(metaClass)
                             .ToList();
 
-                    firstRun = EvaluateProperties(propertiesOfElement, element);
+                    ThinOutPropertyNames(propertiesOfElement, element);
+                    firstRun = false;
                 }
 
             // Parses the property values
@@ -270,10 +271,11 @@ namespace DatenMeister.Forms.FormCreator
 
                     var propertiesOfElement = hasProperties.getPropertiesBeingSet().ToList();
 
-                    firstRun = EvaluateProperties(propertiesOfElement, element);
+                    ThinOutPropertyNames(propertiesOfElement, element);
+                    firstRun = false;
                 }
 
-            bool EvaluateProperties(ICollection<string> propertiesOfElement, IElement element)
+            void ThinOutPropertyNames(ICollection<string> propertiesOfElement, IElement element)
             {
                 // Add the properties into the list, if first run or safe property
                 foreach (var propertyName in propertiesOfElement)
@@ -287,8 +289,6 @@ namespace DatenMeister.Forms.FormCreator
                         var isSafeProperty = DefaultClassifierHints.IsGenericProperty(element, propertyName);
                         if (isSafeProperty) propertyNames.Add(propertyName);
                     }
-
-                    firstRun = false;
                 }
 
                 // Check which properties are in the list but not in the object
@@ -301,8 +301,6 @@ namespace DatenMeister.Forms.FormCreator
 
                 // Now perform the deletion
                 foreach (var propertyName in toBeDeleted) propertyNames.Remove(propertyName);
-
-                return firstRun;
             }
         }
 

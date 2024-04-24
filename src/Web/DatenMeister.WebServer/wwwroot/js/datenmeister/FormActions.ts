@@ -1,4 +1,4 @@
-﻿import {createJsonFromObject, DmObject, DmObjectWithSync} from "./Mof.js";
+﻿import {DmObject, DmObjectWithSync} from "./Mof.js";
 import * as IIForms from "./forms/Interfaces.js";
 import { SubmitMethod } from "./forms/Forms.js";
 

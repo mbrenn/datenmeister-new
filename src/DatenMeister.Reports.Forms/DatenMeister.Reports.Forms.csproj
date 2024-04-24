@@ -1,16 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <TypeScriptToolsVersion>4.7.4</TypeScriptToolsVersion>
+    <TypeScriptNuGetToolsVersion>4.7.4</TypeScriptNuGetToolsVersion>
+    <TypeScriptTarget>ES6</TypeScriptTarget>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptESModuleInterop>True</TypeScriptESModuleInterop>
+  </PropertyGroup>
+
   <ItemGroup>
+    <TypeScriptConfigFile Include="tsconfig.json" />
+    <Content Update="tsconfig.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="Js\DatenMeister.Reports.Forms.js" />
     <None Remove="Xmi\DatenMeister.Reports.Forms.xmi" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Forms.xmi" />
   </ItemGroup>
 
@@ -21,6 +40,8 @@
     <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
     <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     <ProjectReference Include="..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
+    <ProjectReference Include="..\Web\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
   </ItemGroup>
 
 </Project>
+

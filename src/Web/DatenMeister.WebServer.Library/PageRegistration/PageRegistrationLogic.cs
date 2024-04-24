@@ -74,6 +74,11 @@ namespace DatenMeister.WebServer.Library.PageRegistration
             string? originalFilePath,
             RegistrationType registrationType = RegistrationType.EmbedAndLoad)
         {
+            // Check first, whether Manifest loading is working to avoid a running debug version and a non-running release version
+
+            var result = manifestType.GetTypeInfo().Assembly.GetManifestResourceStream(manifestName)
+                ?? throw new InvalidOperationException($"The manifest {manifestName} was not found");
+
             if (originalFilePath != null && File.Exists(originalFilePath))
             {
                 _logger.Info($"Local file used instead of resource: {originalFilePath}");
@@ -89,10 +94,8 @@ namespace DatenMeister.WebServer.Library.PageRegistration
                     {
                         return new FileStream(originalFilePath, FileMode.Open, FileAccess.Read);
                     }
-                    
-                    var result = manifestType.GetTypeInfo()
-                        .Assembly.GetManifestResourceStream(manifestName);
-                    return result ?? throw new InvalidOperationException($"The manifest {manifestName} was not found");
+
+                    return result;
                 });
 
             if (registrationType == RegistrationType.EmbedAndLoad)

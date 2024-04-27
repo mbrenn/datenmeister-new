@@ -94,7 +94,8 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="stack">Stack being used to walk through</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
-            if (!(classInstance is IElement asElement)) return;
+            if (classInstance is not IElement asElement) return;
+
             var name = GetNameOfElement(classInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -114,7 +115,7 @@ namespace DatenMeister.SourcecodeGenerator
         {
             base.WalkProperty(propertyObject, stack);
 
-            if (!(propertyObject is IElement asElement)) return;
+            if (propertyObject is not IElement asElement) return;
 
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject?.ToString() ?? string.Empty;

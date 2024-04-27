@@ -25,6 +25,22 @@ interface ICreateFieldParameter {
     form: IFormNavigation;
 }
 
+interface IFieldContainer {
+    metaClassFieldData: string;
+    factoryMethod: () => IFormField;
+}
+
+var registeredFieldContainers: IFieldContainer[] = new Array<IFieldContainer>();
+
+export function registerField(metaClassFieldData: string, factoryMethod: () => IFormField): void {
+    registeredFieldContainers.push(
+        {
+            metaClassFieldData: metaClassFieldData,
+            factoryMethod: factoryMethod
+        }
+    );
+}
+
 export function createField(fieldMetaClassUri: string, parameter: ICreateFieldParameter): IFormField {
 
     let result: IFormField;
@@ -66,6 +82,12 @@ export function createField(fieldMetaClassUri: string, parameter: ICreateFieldPa
             result = new UriReferenceFieldData.Field();
             break;
         default:
+            for (var n in registeredFieldContainers) {
+                var registeredField = registeredFieldContainers[n];
+                if (registeredField.metaClassFieldData === fieldMetaClassUri) {
+                    result = registeredField.factoryMethod();
+                }
+            }
             result = new UnknownField.Field(fieldMetaClassUri);
             break;
     }

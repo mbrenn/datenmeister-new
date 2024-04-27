@@ -12,6 +12,13 @@ import * as ReferenceField from "../fields/ReferenceField.js";
 import * as ReferenceFieldFromCollection from "../fields/ReferenceFieldFromCollection.js";
 import * as UriReferenceFieldData from "../fields/UriReferenceFieldData.js";
 import * as UnknownField from "../fields/UnknownField.js";
+var registeredFieldContainers = new Array();
+export function registerField(metaClassFieldData, factoryMethod) {
+    registeredFieldContainers.push({
+        metaClassFieldData: metaClassFieldData,
+        factoryMethod: factoryMethod
+    });
+}
 export function createField(fieldMetaClassUri, parameter) {
     let result;
     switch (fieldMetaClassUri) {
@@ -52,6 +59,12 @@ export function createField(fieldMetaClassUri, parameter) {
             result = new UriReferenceFieldData.Field();
             break;
         default:
+            for (var n in registeredFieldContainers) {
+                var registeredField = registeredFieldContainers[n];
+                if (registeredField.metaClassFieldData === fieldMetaClassUri) {
+                    result = registeredField.factoryMethod();
+                }
+            }
             result = new UnknownField.Field(fieldMetaClassUri);
             break;
     }

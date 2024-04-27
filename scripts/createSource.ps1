@@ -1,22 +1,28 @@
 Set-Location ..
 Set-Location src
 
-$pathToDeliverables = "..\datenmeister-deliverables\assemblies"
-
 # Builds the Release Folder
 $project = "datenmeister-new.sln"
 $parameter = "/p:Configuration=Release"
 $switches = "-nologo"
 
-& dotnet build $switches -v:m $parameter $project
+# & dotnet build $switches -v:m $parameter $project
 
-Set-Location DatenMeister.SourceGeneration.Console/bin/Release/net8.0
+# ./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/DatenMeister.SourceGeneration.Console.exe
 
-./DatenMeister.SourceGeneration.Console.exe
+./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/DatenMeister.SourceGeneration.Console.exe "DatenMeister.Reports.Forms\xmi\DatenMeister.Reports.Types.xmi" ".\DatenMeister.Reports.Forms\Model" "DatenMeister.Reports.Forms.Model"
 
-Set-Location ../../../..
+# Create .js files
+Write-Output ""
+Write-Output "Creating Java-Script Files"
 
-
-# And now back to scripts
 Set-Location ..
+Set-Location src/DatenMeister.Reports.Forms
+
+tsc -p .
+
+Set-Location ../..
 Set-Location scripts
+
+
+

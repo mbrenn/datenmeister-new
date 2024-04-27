@@ -2,7 +2,6 @@ import {IForm, IFormNavigation} from "../forms/Interfaces.js";
 import * as Mof from "Mof.js";
 import { IFormConfiguration } from "../forms/IFormConfiguration.js";
 
-
 export interface IFormField
 {
     configuration: IFormConfiguration;

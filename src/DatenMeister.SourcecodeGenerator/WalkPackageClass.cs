@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -53,12 +55,24 @@ namespace DatenMeister.SourcecodeGenerator
             var stack = new CallStack(null);
 
             StartNamespace(ref stack);
-            foreach (var element in extent.elements())
+
+            // First, get all the packages of the extent
+            foreach (var element in extent.elements().OfType<IObject>().Where(x => _parser.IsPackage(x)))
             {
-                if (element is IObject elementAsObject)
-                {
-                    Walk(elementAsObject, stack);
-                }
+                Walk(element, stack);
+            }
+
+
+            // For all the other elements, we will need to create a helper class because a method cannot be contained
+            // directly within a namespace
+            var nonPackageElements = extent.elements().OfType<IObject>().Where(x => !_parser.IsPackage(x)).ToList();
+            if (nonPackageElements.Count != 0)
+            {
+                var packageInstance= MofFactory.CreateByExtent(extent).create(_UML.TheOne.Packages.__Package);
+                packageInstance.set(_UML._Packages._Package.name, "Root");
+                packageInstance.set(_UML._Packages._Package.packagedElement, nonPackageElements);
+
+                Walk(packageInstance, stack);
             }
 
             EndNamespace(ref stack);

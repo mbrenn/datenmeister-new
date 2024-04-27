@@ -96,7 +96,7 @@ namespace DatenMeister.SourceGeneration.Console
             generator.Walk(typeExtent);
 
             File.WriteAllText(Path.Combine(pathTarget, $"{filename}.ts"), generator.Result.ToString());
-            System.Console.WriteLine("TypeScript Code for StundenPlan written");
+            System.Console.WriteLine($"TypeScript Code for {theNamespace} written");
 
             // Generates tree for StundenPlan
             var classGenerator = new ClassTreeGenerator
@@ -110,7 +110,7 @@ namespace DatenMeister.SourceGeneration.Console
             var fileContent = classGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
 
-            System.Console.WriteLine("C#-Code for StundenPlan written");
+            System.Console.WriteLine($"C#-Code for {theNamespace} written");
         }
     }
 }

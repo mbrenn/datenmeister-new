@@ -7,10 +7,10 @@ import { SubmitMethod } from "/js/datenmeister/forms/Forms.js";
 export function init() {
     FormActions.addModule(new SwitchToReport());
 
+
 }
 
-export class SwitchToReport extends FormActions.ItemFormActionModuleBase
-{
+export class SwitchToReport extends FormActions.ItemFormActionModuleBase implements FormActions.IItemFormActionModule {
     constructor() {
         super();
         this.actionName = 'datenmeister.reports.forms.show';

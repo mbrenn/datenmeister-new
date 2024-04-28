@@ -21,6 +21,10 @@ Set-Location src/DatenMeister.Reports.Forms
 
 tsc -p .
 
+Move-Item Model\*.js Js\ -Force
+Move-Item Model\*.ts Js\ -Force
+Move-Item Model\*.map Js\ -Force
+
 Set-Location ../..
 Set-Location scripts
 

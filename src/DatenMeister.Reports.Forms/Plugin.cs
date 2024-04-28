@@ -3,6 +3,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
+using DatenMeister.Types;
 using DatenMeister.WebServer.Library.PageRegistration;
 using System.Reflection;
 
@@ -15,10 +16,14 @@ namespace DatenMeister.Reports.Forms
         {
             if (position == PluginLoadingPosition.AfterLoadingOfExtents)
             {
+                var localTypeSupport = new LocalTypeSupport(workspaceLogic, scopeStorage);
                 var formMethods = new FormMethods(workspaceLogic, scopeStorage);
                 var targetExtent = formMethods.GetInternalFormExtent();
+                var localTypeExtent = localTypeSupport.GetInternalTypeExtent();
                 PackageMethods.ImportByStream(
-                    GetXmiStream(), null, targetExtent, "DatenMeister.Reports.Forms");
+                    GetXmiStreamForForms(), null, targetExtent, "DatenMeister.Reports.Forms");
+                PackageMethods.ImportByStream(
+                    GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Reports.Forms");
 
                 // Adds the javascript
                 var pluginLogic = new PageRegistrationLogic(scopeStorage.Get<PageRegistrationData>());
@@ -30,10 +35,19 @@ namespace DatenMeister.Reports.Forms
             }
         }
 
-        public static Stream GetXmiStream()
+        public static Stream GetXmiStreamForForms()
         {
             var stream = typeof(Plugin).GetTypeInfo()
                 .Assembly.GetManifestResourceStream("DatenMeister.Reports.Forms.Xmi.DatenMeister.Reports.Forms.xmi");
+            if (stream == null)
+                throw new InvalidOperationException("Stream is not found");
+            return stream;
+        }
+
+        public static Stream GetXmiStreamForTypes()
+        {
+            var stream = typeof(Plugin).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.Reports.Forms.Xmi.DatenMeister.Reports.Types.xmi");
             if (stream == null)
                 throw new InvalidOperationException("Stream is not found");
             return stream;

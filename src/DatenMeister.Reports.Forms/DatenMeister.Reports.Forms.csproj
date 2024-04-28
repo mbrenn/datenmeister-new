@@ -25,12 +25,14 @@
   
   <ItemGroup>
     <None Remove="Js\DatenMeister.Reports.Forms.js" />
+    <None Remove="Js\DatenMeister.Reports.Types.js" />
     <None Remove="Xmi\DatenMeister.Reports.Forms.xmi" />
     <None Remove="Xmi\DatenMeister.Reports.Types.xmi" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js" />
+    <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Types.xmi" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Forms.xmi" />
   </ItemGroup>

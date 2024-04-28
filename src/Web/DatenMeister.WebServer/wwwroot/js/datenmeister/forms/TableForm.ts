@@ -1,5 +1,4 @@
 import * as InterfacesForms from "./Interfaces.js";
-import {FormType} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import {createField} from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
@@ -34,7 +33,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     workspace: string;
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
-    formType: FormType = FormType.Table;
+    shortenFullText: boolean = true; 
+    pageNavigation: InterfacesForms.IPageNavigation;
 
     cacheHeadline: JQuery;
 

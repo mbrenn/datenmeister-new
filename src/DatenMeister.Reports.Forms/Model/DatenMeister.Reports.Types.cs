@@ -8,7 +8,7 @@ namespace DatenMeister.Reports.Forms.Model
 {
     public class _Root
     {
-        public class _ReportFieldData
+        public class _ReportForm
         {
             public static string @name = "name";
             public IElement? @_name = null;
@@ -33,8 +33,8 @@ namespace DatenMeister.Reports.Forms.Model
 
         }
 
-        public _ReportFieldData @ReportFieldData = new _ReportFieldData();
-        public MofObjectShadow @__ReportFieldData = new MofObjectShadow("dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695");
+        public _ReportForm @ReportForm = new _ReportForm();
+        public MofObjectShadow @__ReportForm = new MofObjectShadow("dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695");
 
         public static readonly _Root TheOne = new _Root();
 

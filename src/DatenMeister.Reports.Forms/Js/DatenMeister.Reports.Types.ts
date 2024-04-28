@@ -1,7 +1,7 @@
 // Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.0.0.0
 export namespace _Root
 {
-        export class _ReportFieldData
+        export class _ReportForm
         {
             static _name_ = "name";
             static title = "title";
@@ -12,6 +12,6 @@ export namespace _Root
             static creationProtocol = "creationProtocol";
         }
 
-        export const __ReportFieldData_Uri = "dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695";
+        export const __ReportForm_Uri = "dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695";
 }
 

@@ -41,8 +41,20 @@ export function registerObjectForm(uri: string, factoryFunction: () => IForm.IOb
 }
 
 export function getCollectionFormFactory(uri: string): () => IForm.ICollectionFormElement | undefined {
+
+    var indexUri = uri.indexOf('#');
+    if (indexUri !== -1) {
+        uri = uri.substring(indexUri + 1);
+    }
+
     for (let n in registerDataCollectionForm) {
         const item = registerDataCollectionForm[n];
+
+        var indexItemUri = item.uri.indexOf('#');
+        if (indexItemUri !== -1) {
+            item.uri = item.uri.substring(indexItemUri + 1);
+        }
+
         if (item.uri === uri) {
             return item.factoryFunction;
         }
@@ -52,8 +64,20 @@ export function getCollectionFormFactory(uri: string): () => IForm.ICollectionFo
 }
 
 export function getObjectFormFactory(uri: string): () => IForm.IObjectFormElement | undefined {
+    var indexUri = uri.indexOf('#');
+    if (indexUri !== -1) {
+        uri = uri.substring(indexUri + 1);
+    }
+
     for (let n in registerDataObjectForm) {
+        
         const item = registerDataObjectForm[n];
+        
+        var indexItemUri = item.uri.indexOf('#');
+        if (indexItemUri !== -1) {
+            item.uri = item.uri.substring(indexItemUri + 1);
+        }
+
         if (item.uri === uri) {
             return item.factoryFunction;
         }

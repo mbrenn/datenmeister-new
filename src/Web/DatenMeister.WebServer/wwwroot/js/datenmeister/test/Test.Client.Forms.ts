@@ -10,10 +10,10 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import _ViewMode = _DatenMeister._Forms._ViewMode;
 
 class X implements IForm.IObjectFormElement {
+    pageNavigation: IForm.IPageNavigation;
     element: Mof.DmObject;
     extentUri: string;
     formElement: Mof.DmObject;
-    formType: IForm.FormType;
     itemUrl: string;
     workspace: string;
     type: string = "X";
@@ -22,7 +22,7 @@ class X implements IForm.IObjectFormElement {
         return Promise.resolve(undefined);
     }
 
-    refreshForm(): void {
+    async refreshForm(): Promise<void> {
     }
 
     storeFormValuesIntoDom(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
@@ -31,15 +31,15 @@ class X implements IForm.IObjectFormElement {
 }
 
 class Y implements IForm.ICollectionFormElement {
+    pageNavigation: IForm.IPageNavigation;
     element: Mof.DmObject;
     extentUri: string;
     formElement: Mof.DmObject;
-    formType: IForm.FormType;
     itemUrl: string;
     workspace: string;
 
     type: string = "Y";
-    refreshForm(): void {
+    async refreshForm(): Promise<void> {
     }
 
     storeFormValuesIntoDom(reuseExistingElement?: boolean): Promise<Mof.DmObject> {

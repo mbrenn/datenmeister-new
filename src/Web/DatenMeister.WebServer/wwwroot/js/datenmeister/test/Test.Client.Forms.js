@@ -13,7 +13,7 @@ class X {
     createFormByObject(parent, configuration) {
         return Promise.resolve(undefined);
     }
-    refreshForm() {
+    async refreshForm() {
     }
     storeFormValuesIntoDom(reuseExistingElement) {
         return Promise.resolve(undefined);
@@ -23,7 +23,7 @@ class Y {
     constructor() {
         this.type = "Y";
     }
-    refreshForm() {
+    async refreshForm() {
     }
     storeFormValuesIntoDom(reuseExistingElement) {
         return Promise.resolve(undefined);

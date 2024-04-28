@@ -61,7 +61,10 @@ export class ObjectFormHtmlElements
  * 
  * This method handles all allowed form types.  
  */
-export class ObjectFormCreator implements IForm.IFormNavigation {
+export class ObjectFormCreator implements IForm.IPageForm {
+
+    /** Stores instance to the page to allow navigation */
+    pageNavigation: IForm.IPageNavigation;
 
     element: Mof.DmObjectWithSync;
     extentUri: string;
@@ -69,7 +72,6 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     htmlItemContainer: IFormConfiguration;
     itemUrl: string;    
     workspace: string;
-    formType: IForm.FormType = IForm.FormType.Object;
     private statusTextControl: StatusFieldControl;
     private htmlElements: ObjectFormHtmlElements;
     
@@ -86,13 +88,18 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
         await this.createFormForItem();
     }
 
+    async refreshForm() {
+
+    }
+
+
     private async createFormForItem() {
         const configuration = this.htmlItemContainer;
         const tthis = this;
 
         if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createFormForItem();
+            configuration.refreshForm = async () => {
+                await tthis.createFormForItem();
             }
         }
 
@@ -115,6 +122,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
                 const factoryFunction = FormFactory.getObjectFormFactory(tab.metaClass.uri);
                 if (factoryFunction !== undefined) {
                     const detailForm = factoryFunction();
+                    detailForm.pageNavigation = tthis.pageNavigation;
                     detailForm.workspace = this.workspace;
                     detailForm.extentUri = this.extentUri;
                     detailForm.itemUrl = this.itemUrl;
@@ -146,7 +154,7 @@ export class ObjectFormCreator implements IForm.IFormNavigation {
     }
 }
 
-export class ObjectFormCreatorForItem {
+export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
     formMode: FormMode = FormMode.ViewMode;
     itemUri: string;
     workspace: string;
@@ -193,6 +201,11 @@ export class ObjectFormCreatorForItem {
         }
     }
 
+    async switchFormUrl(newFormUrl: string): Promise<void> {
+        this._overrideFormUrl = newFormUrl;
+        await this.rebuildForm();
+    }
+
     async rebuildForm() {
 
         // First, clear the page to have a fast reaction, otherwise the user will be confused
@@ -207,6 +220,7 @@ export class ObjectFormCreatorForItem {
         
         const tthis = this;
 
+        // Sets activities for the storing of elements
         let configuration;
         if (this.formMode === FormMode.ViewMode) {
             configuration = {isReadOnly: true};
@@ -216,7 +230,7 @@ export class ObjectFormCreatorForItem {
                 onCancel: () => {
                     tthis.switchToMode(FormMode.ViewMode);
                 },
-                onSubmit: async (element, method) => {
+                onSubmit: async (element, method) => {                    
                     await MofSync.sync(element);
 
                     if (method === SubmitMethod.Save) {
@@ -277,6 +291,7 @@ export class ObjectFormCreatorForItem {
             // Now created the object form
             this.htmlElements.itemContainer.empty();
             const objectFormCreator = new ObjectFormCreator(this.htmlElements);
+            objectFormCreator.pageNavigation = this;
             objectFormCreator.workspace = this.workspace;
             objectFormCreator.itemUrl = this.itemUri;
             objectFormCreator.element = element1;

@@ -18,7 +18,6 @@ import {_DatenMeister} from "../models/DatenMeister.class.js";
 import {FormSelectionControl} from "../controls/FormSelectionControl.js";
 import {ItemLink} from "../ApiModels.js";
 import _TableForm = _DatenMeister._Forms._TableForm;
-import {FormType} from "./Interfaces.js";
 import * as ActionField from "../fields/ActionField.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
@@ -71,14 +70,16 @@ export class CollectionFormHtmlElements
     Creates a form containing a collection of root items of an extent 
     The input for this type is a collection of elements
 */
-export class CollectionFormCreator implements IForm.IFormNavigation {
+export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNavigation {
+    pageNavigation: IForm.IPageNavigation;
+
     extentUri: string;
     formElement: Mof.DmObject;
     workspace: string;
     itemUrl: string;
-    formType: FormType = FormType.Collection;
     private readonly htmlElements: CollectionFormHtmlElements;
     statusTextControl: StatusFieldControl;
+    configuration: IFormConfiguration;
 
     /**
      * Defines the form url being used to select the form for the object form.
@@ -93,20 +94,37 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
     constructor(htmlElements: CollectionFormHtmlElements) {
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.pageNavigation = this;
+    }
+
+    async refreshForm() {
+        await this.createCollectionForRootElements(this.workspace, this.extentUri, this.configuration);
+    }
+
+    async switchFormUrl(newFormUrl: string): Promise<void> {
+        this._overrideFormUrl = newFormUrl;
+        await this.refreshForm();
     }
     
     async createCollectionForRootElements(
         workspace: string, 
         extentUri: string,
         configuration: IFormConfiguration) {
+
+        const tthis = this;
+        tthis.workspace = workspace;
+        tthis.extentUri = extentUri;
+        tthis.itemUrl = extentUri;
+        this.configuration = configuration;
+
         if (this.htmlElements.itemContainer === undefined || this.htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
 
         // Sets the refresh callback
         if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createCollectionForRootElements(workspace, extentUri, configuration);
+            configuration.refreshForm = async () => {
+                await this.refreshForm();
             }
         }
 
@@ -136,22 +154,17 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
         await breadcrumb.createForExtent(workspace, extentUri);
         this.statusTextControl.setListStatus("Loading Breadcrumb", true);
 
-        const tthis = this;
-
         // Loads the form
         this.statusTextControl.setListStatus("Loading Form", false);
         // Load the form
         const form =
             this._overrideFormUrl === undefined ?
                 await ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
-                await ClientForms.getForm(this._overrideFormUrl, FormType.Collection);
+                await ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Collection);
         this.statusTextControl.setListStatus("Loading Form", true);
         
         // Wait for both
         tthis.formElement = form;
-        tthis.workspace = workspace;
-        tthis.extentUri = extentUri;
-        tthis.itemUrl = extentUri;
 
         debugElementToDom(form, "#debug_formelement");
 
@@ -355,6 +368,7 @@ export class CollectionFormCreator implements IForm.IFormNavigation {
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
                     const tableForm = formFactory();
+                    tableForm.pageNavigation = this;
                     tableForm.elements = elements;
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;

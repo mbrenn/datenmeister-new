@@ -4,6 +4,7 @@ import * as ClientItems from "../client/Items.js";
 import * as ClientForms from "../client/Forms.js";
 import { debugElementToDom } from "../DomHelper.js";
 import { ViewModeSelectionControl } from "../controls/ViewModeSelectionControl.js";
+import * as IForm from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import { DmObject, ObjectType } from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
@@ -12,7 +13,6 @@ import * as Settings from "../Settings.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 import { FormSelectionControl } from "../controls/FormSelectionControl.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
-import { FormType } from "./Interfaces.js";
 import * as ActionField from "../fields/ActionField.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
 import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
@@ -24,18 +24,30 @@ export class CollectionFormHtmlElements {
 */
 export class CollectionFormCreator {
     constructor(htmlElements) {
-        this.formType = FormType.Collection;
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.pageNavigation = this;
+    }
+    async refreshForm() {
+        await this.createCollectionForRootElements(this.workspace, this.extentUri, this.configuration);
+    }
+    async switchFormUrl(newFormUrl) {
+        this._overrideFormUrl = newFormUrl;
+        await this.refreshForm();
     }
     async createCollectionForRootElements(workspace, extentUri, configuration) {
+        const tthis = this;
+        tthis.workspace = workspace;
+        tthis.extentUri = extentUri;
+        tthis.itemUrl = extentUri;
+        this.configuration = configuration;
         if (this.htmlElements.itemContainer === undefined || this.htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
         // Sets the refresh callback
         if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createCollectionForRootElements(workspace, extentUri, configuration);
+            configuration.refreshForm = async () => {
+                await this.refreshForm();
             };
         }
         // Empties the overview
@@ -59,19 +71,15 @@ export class CollectionFormCreator {
         let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
         await breadcrumb.createForExtent(workspace, extentUri);
         this.statusTextControl.setListStatus("Loading Breadcrumb", true);
-        const tthis = this;
         // Loads the form
         this.statusTextControl.setListStatus("Loading Form", false);
         // Load the form
         const form = this._overrideFormUrl === undefined ?
             await ClientForms.getCollectionFormForExtent(workspace, extentUri, configuration.viewMode) :
-            await ClientForms.getForm(this._overrideFormUrl, FormType.Collection);
+            await ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Collection);
         this.statusTextControl.setListStatus("Loading Form", true);
         // Wait for both
         tthis.formElement = form;
-        tthis.workspace = workspace;
-        tthis.extentUri = extentUri;
-        tthis.itemUrl = extentUri;
         debugElementToDom(form, "#debug_formelement");
         this.statusTextControl.setListStatus("Create Form", false);
         await tthis.createFormByCollection(configuration);
@@ -218,6 +226,7 @@ export class CollectionFormCreator {
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
                     const tableForm = formFactory();
+                    tableForm.pageNavigation = this;
                     tableForm.elements = elements;
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;

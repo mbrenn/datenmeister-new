@@ -1,4 +1,3 @@
-import { FormType } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import { createField } from "./FieldFactory.js";
 import * as Navigation from "../Navigator.js";
@@ -6,10 +5,7 @@ import * as TextField from "../fields/TextField.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 import { SubmitMethod } from "./Forms.js";
 export class RowForm {
-    constructor() {
-        this.formType = FormType.Row;
-    }
-    refreshForm() {
+    async refreshForm() {
         this.createFormByObject(this.parentHtml, this.configuration);
     }
     async createFormByObject(parent, configuration) {

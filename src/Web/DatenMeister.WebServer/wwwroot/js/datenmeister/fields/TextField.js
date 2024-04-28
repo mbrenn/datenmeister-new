@@ -2,7 +2,6 @@ import * as Mof from "../Mof.js";
 import { ObjectType } from "../Mof.js";
 import { BaseField } from "./Interfaces.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
-import { FormType } from "../forms/Interfaces.js";
 var _TextFieldData = _DatenMeister._Forms._TextFieldData;
 import { truncateText } from "../../burnsystems/StringManipulation.js";
 import { injectNameByUri } from "../DomHelper.js";
@@ -14,7 +13,7 @@ export class Field extends BaseField {
         const originalValue = value;
         // If we are in a table view, then reduce the length of the text to 100 
         // characters. 
-        if (this.form.formType === FormType.Table) {
+        if (this.form.shortenFullText === true) {
             value = truncateText(value, {
                 useWordBoundary: true,
                 maxLines: 3,

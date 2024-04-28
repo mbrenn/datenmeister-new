@@ -1,4 +1,3 @@
-import { FormType } from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import { createField } from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
@@ -9,7 +8,7 @@ import * as Actions from "../client/Actions.js";
 var _FieldData = _DatenMeister._Forms._FieldData;
 export class TableForm {
     constructor() {
-        this.formType = FormType.Table;
+        this.shortenFullText = true;
     }
     async refreshForm() {
         if (this.configuration.refreshForm !== undefined) {

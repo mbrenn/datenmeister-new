@@ -1,5 +1,4 @@
 ﻿import * as InterfacesForms from "../forms/Interfaces.js";
-import {FormType, IObjectFormElement} from "./Interfaces.js";
 import * as InterfacesFields from "../fields/Interfaces.js";
 import * as Mof from "../Mof.js";
 import { createField } from "./FieldFactory.js";
@@ -11,13 +10,13 @@ import {DmObject, DmObjectWithSync} from "../Mof.js";
 import { SubmitMethod } from "./Forms.js";
     
 export class RowForm implements InterfacesForms.IObjectFormElement {
+    pageNavigation: InterfacesForms.IPageNavigation;
     workspace: string;
     extentUri: string;
     itemUrl: string;
     element: Mof.DmObjectWithSync;
     formElement: Mof.DmObject;
 
-    formType: FormType = FormType.Row;
     fieldElements: Array<InterfacesFields.IFormField>;
 
     onCancel: () => void;
@@ -25,7 +24,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
     parentHtml: JQuery<HTMLElement>;
     configuration: IFormConfiguration;
 
-    refreshForm(): void {
+    async refreshForm(): Promise<void> {
         this.createFormByObject(this.parentHtml, this.configuration);
     }
 

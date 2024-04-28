@@ -22,8 +22,8 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
         configuration.formUri = undefined;
     }
     if (configuration.refreshForm === undefined) {
-        configuration.refreshForm = () => {
-            createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
+        configuration.refreshForm = async () => {
+            await createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         };
     }
     const creator = new ObjectForm.ObjectFormCreator({

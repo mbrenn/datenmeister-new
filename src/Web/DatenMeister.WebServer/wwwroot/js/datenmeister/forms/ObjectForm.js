@@ -25,7 +25,6 @@ export class ObjectFormHtmlElements {
  */
 export class ObjectFormCreator {
     constructor(htmlElements) {
-        this.formType = IForm.FormType.Object;
         this.htmlElements = htmlElements;
         this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
     }
@@ -34,12 +33,14 @@ export class ObjectFormCreator {
         this.htmlItemContainer = configuration;
         await this.createFormForItem();
     }
+    async refreshForm() {
+    }
     async createFormForItem() {
         const configuration = this.htmlItemContainer;
         const tthis = this;
         if (configuration.refreshForm === undefined) {
-            configuration.refreshForm = () => {
-                tthis.createFormForItem();
+            configuration.refreshForm = async () => {
+                await tthis.createFormForItem();
             };
         }
         this.statusTextControl.setListStatus("Temporary Object", false);
@@ -58,6 +59,7 @@ export class ObjectFormCreator {
                 const factoryFunction = FormFactory.getObjectFormFactory(tab.metaClass.uri);
                 if (factoryFunction !== undefined) {
                     const detailForm = factoryFunction();
+                    detailForm.pageNavigation = tthis.pageNavigation;
                     detailForm.workspace = this.workspace;
                     detailForm.extentUri = this.extentUri;
                     detailForm.itemUrl = this.itemUrl;
@@ -110,6 +112,10 @@ export class ObjectFormCreatorForItem {
             this.htmlElements.itemContainer.text("An error occured during 'createForm': " + error);
         }
     }
+    async switchFormUrl(newFormUrl) {
+        this._overrideFormUrl = newFormUrl;
+        await this.rebuildForm();
+    }
     async rebuildForm() {
         // First, clear the page to have a fast reaction, otherwise the user will be confused
         this.htmlElements.itemContainer.empty();
@@ -120,6 +126,7 @@ export class ObjectFormCreatorForItem {
         await breadcrumb.createForItem(this.workspace, this.itemUri);
         this.statusTextControl.setListStatus("Create Breadcrumb ", true);
         const tthis = this;
+        // Sets activities for the storing of elements
         let configuration;
         if (this.formMode === FormMode.ViewMode) {
             configuration = { isReadOnly: true };
@@ -183,6 +190,7 @@ export class ObjectFormCreatorForItem {
             // Now created the object form
             this.htmlElements.itemContainer.empty();
             const objectFormCreator = new ObjectFormCreator(this.htmlElements);
+            objectFormCreator.pageNavigation = this;
             objectFormCreator.workspace = this.workspace;
             objectFormCreator.itemUrl = this.itemUri;
             objectFormCreator.element = element1;

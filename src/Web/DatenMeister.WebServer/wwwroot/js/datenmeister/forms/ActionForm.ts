@@ -33,8 +33,8 @@ export async function createActionFormForEmptyObject(
     }
 
     if (configuration.refreshForm === undefined) {
-        configuration.refreshForm = () => {
-            createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
+        configuration.refreshForm = async () => {
+            await createActionFormForEmptyObject(parent, metaClass, configuration, actionName);
         }
     }
 

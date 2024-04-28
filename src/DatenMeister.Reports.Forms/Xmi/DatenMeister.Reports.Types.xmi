@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xmi>
   <meta p2:id="fe20ea7b-2310-4125-915b-f22d066cbadf" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///datenmeister.reports.forms.types" />
-  <item p2:type="dm:///_internal/model/uml#Class" p2:id="89dea433-d199-4889-95eb-7ef30c0b5695" name="ReportFieldData" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="89dea433-d199-4889-95eb-7ef30c0b5695" name="ReportForm" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <isAbstract p2:id="9c045e77-2d98-4015-ac74-0887cd0e574e" />
     <isActive p2:id="7f0af77f-0282-4174-a6f2-4aee7d200e49" />
     <isFinalSpecialization p2:id="aef2691a-8fbb-45bf-94a3-f8d2001a688c" />

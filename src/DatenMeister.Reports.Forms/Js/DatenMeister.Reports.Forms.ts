@@ -1,12 +1,17 @@
 import * as Mof from '/js/datenmeister/Mof.js'
 import * as FormActions from '/js/datenmeister/FormActions.js'
 import * as IIForms from "/js/datenmeister/forms/Interfaces.js";
-import * as IIFields from "/js/datenmeister/fields/Interfaces.js";
 import { SubmitMethod } from "/js/datenmeister/forms/Forms.js";
+import { IFormConfiguration } from '../../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/forms/IFormConfiguration';
+import * as FormFactory from "/js/datenmeister/forms/FormFactory.js"
+import * as Model from "./DatenMeister.Reports.Types.js"
 
 export function init() {
     FormActions.addModule(new SwitchToReport());
 
+    FormFactory.registerObjectForm(
+        Model._Root.__ReportForm_Uri,
+        () => new ReportForm());
 
 }
 
@@ -18,16 +23,40 @@ export class SwitchToReport extends FormActions.ItemFormActionModuleBase impleme
     }
 
     execute(form: IIForms.IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        alert('Click');
+
+        var asFormPage = form as IIForms.IPageForm;
+
+        if (asFormPage?.pageNavigation?.switchFormUrl === undefined) {
+            alert('switchFormUrl is not implemented');
+        }
+        else {
+            // switches to the formurl
+            asFormPage.pageNavigation.switchFormUrl("dm:///_internal/forms/internal#12541f2c-4e9a-4860-8bf3-e1b52330ec1f");
+        }
+
         return Promise.resolve(undefined);
     }
 }
 
-export class ReportField extends IIFields.BaseField implements IIFields.IFormField {
-    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
-        return $("<div>We have a report</div>");
+export class ReportForm implements IIForms.IObjectFormElement {
+
+    pageNavigation: IIForms.IPageNavigation;
+    workspace: string;
+    extentUri: string;
+    itemUrl: string;
+    formElement: Mof.DmObject;
+
+    element: Mof.DmObject;
+    async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration): Promise<void> {
+        parent.append($("<div>We are having a report... At least, I hope so</div>"));
     }
 
-    async evaluateDom(dmElement: Mof.DmObject): Promise<void> {
+    async refreshForm(): Promise<void> {
+        
     }
+
+    async storeFormValuesIntoDom?(reuseExistingElement?: boolean): Promise<Mof.DmObject> {
+        return Promise.resolve(undefined);
+    }
+    
 }

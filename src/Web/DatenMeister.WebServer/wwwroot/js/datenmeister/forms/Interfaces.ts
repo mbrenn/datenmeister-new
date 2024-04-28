@@ -1,19 +1,24 @@
 ﻿import * as Mof from "../Mof.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 
+export enum FormType {
+    Object = "object",
+    Collection = "collection"
+}
 
 /**
- * Defines the form types
+ * Contains the information which is used to navigate on the page.
  */
-export enum FormType
-{
-    Object= "object",
-    Collection = "collection",
-    Row = "row",
-    Table = "table"
+export interface IPageNavigation {
+    /**
+     * Switches the active form to a new url
+     * @param newFormUrl The url to be handled
+     */
+    switchFormUrl(newFormUrl: string) : Promise<void>;
 }
 
 export interface IFormNavigation {
+
     workspace: string;
     extentUri: string;
 
@@ -28,9 +33,10 @@ export interface IFormNavigation {
     formElement: Mof.DmObject;
 
     /**
-     * Defines the form type of the current form in which the field will be embedded.
+     * Gets or sets a value indication whether long texts shall be shortened by the fields. 
+     * This is needed for overview tables in which very long texts would be cumbersome. 
      */
-    formType: FormType;
+    shortenFullText?: boolean;
 
     /**
      * Stores the values of the form into the DOM, this is an optional method
@@ -43,10 +49,15 @@ export interface IFormNavigation {
 export interface IForm extends IFormNavigation
 {
     // Just performs a refresh of the form
-    refreshForm(): void;
+    refreshForm(): Promise<void>;
 }
 
-export interface IObjectFormElement extends IForm {
+export interface IPageForm extends IForm {
+
+    /** Stores instance to the page to allow navigation */
+    pageNavigation: IPageNavigation;
+}
+export interface IObjectFormElement extends IPageForm {
     /**
      * The element which is required to be shown
      */
@@ -60,7 +71,7 @@ export interface IObjectFormElement extends IForm {
  * The elements will receive a set of elements and a reference to its parent item ('itemUrl'). 
  * Usually, the task of the implementation is to show the collections
  */
-export interface ICollectionFormElement extends IForm {
+export interface ICollectionFormElement extends IPageForm {
     /**
      * Elements which are required to shown
      */

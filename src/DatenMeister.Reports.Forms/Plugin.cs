@@ -10,8 +10,17 @@ using System.Reflection;
 namespace DatenMeister.Reports.Forms
 {
     [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
-    internal class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
+    internal class Plugin : IDatenMeisterPlugin
     {
+        private readonly IWorkspaceLogic workspaceLogic;
+        private readonly IScopeStorage scopeStorage;
+
+        public Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        {
+            this.workspaceLogic = workspaceLogic;
+            this.scopeStorage = scopeStorage;
+        }
+
         public void Start(PluginLoadingPosition position)
         {
             if (position == PluginLoadingPosition.AfterLoadingOfExtents)
@@ -32,6 +41,11 @@ namespace DatenMeister.Reports.Forms
                     "DatenMeister.Reports.Forms.Js.DatenMeister.Reports.Forms.js",
                     "DatenMeister.Reports.Forms.js",
                     "../../Datenmeister.Reports.Forms/js/DatenMeister.Reports.Forms.js");
+                pluginLogic.AddJavaScriptFromResource(
+                    typeof(Plugin),
+                    "DatenMeister.Reports.Forms.Js.DatenMeister.Reports.Types.js",
+                    "DatenMeister.Reports.Types.js",
+                    "../../Datenmeister.Reports.Forms/js/DatenMeister.Reports.Types.js");
             }
         }
 

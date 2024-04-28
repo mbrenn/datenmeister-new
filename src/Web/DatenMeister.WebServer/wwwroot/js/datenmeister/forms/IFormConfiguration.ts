@@ -14,7 +14,7 @@ export interface IFormConfiguration {
     onCancel?: () => void;
     onSubmit?: (element: DmObjectWithSync, method: SubmitMethod) => void;
 
-    refreshForm?: () => void;
+    refreshForm?: () => Promise<void>;
 
     /**
      * Defines the view mode for the configuration

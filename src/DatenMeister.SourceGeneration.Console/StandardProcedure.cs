@@ -8,6 +8,8 @@ using DatenMeister.Provider.Xmi.Provider.XMI;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.Types;
+using System.Reflection;
+using System;
 
 namespace DatenMeister.SourceGeneration.Console;
 
@@ -96,9 +98,9 @@ public class StandardProcedure
             new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes, null);
 
         var loader = new SimpleLoader();
-        loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");
-        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, "data/MOF.xmi");
-        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent, "data/PrimitiveTypes.xmi");
+        loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, Path.Combine(AssemblyDirectory, "data/UML.xmi"));
+        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, Path.Combine(AssemblyDirectory, "data/MOF.xmi"));
+        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent, Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
 
         // Generates tree for UML
         var generator = new ClassTreeGenerator
@@ -140,9 +142,9 @@ public class StandardProcedure
             new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes, null);
 
         var loader = new SimpleLoader();
-        loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");
-        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, "data/MOF.xmi");
-        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent, "data/PrimitiveTypes.xmi");
+        loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, Path.Combine(AssemblyDirectory, "data/UML.xmi"));
+        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, Path.Combine(AssemblyDirectory, "data/MOF.xmi"));
+        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent, Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
 
         // Generates tree for UML
         var generator = new TypeScriptInterfaceGenerator();
@@ -165,4 +167,15 @@ public class StandardProcedure
         File.WriteAllText($"{T}/primitivetypes.ts", generator.Result.ToString());
         System.Console.WriteLine("C# Code for PrimitiveTypes written");
     }
+    public static string AssemblyDirectory
+    {
+        get
+        {
+            string codeBase = Assembly.GetExecutingAssembly().Location ?? throw new InvalidOperationException("Unknown CodeBase");
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            return Path.GetDirectoryName(path);
+        }
+    }
 }
+

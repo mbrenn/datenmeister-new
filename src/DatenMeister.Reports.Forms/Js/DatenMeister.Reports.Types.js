@@ -12,5 +12,18 @@ export var _Root;
     _ReportForm.creationProtocol = "creationProtocol";
     _Root._ReportForm = _ReportForm;
     _Root.__ReportForm_Uri = "dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695";
+    class _RequestReportAction {
+    }
+    _RequestReportAction.workspace = "workspace";
+    _RequestReportAction.itemUri = "itemUri";
+    _RequestReportAction._name_ = "name";
+    _RequestReportAction.isDisabled = "isDisabled";
+    _Root._RequestReportAction = _RequestReportAction;
+    _Root.__RequestReportAction_Uri = "dm:///types/#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c";
+    class _RequestReportResult {
+    }
+    _RequestReportResult.report = "report";
+    _Root._RequestReportResult = _RequestReportResult;
+    _Root.__RequestReportResult_Uri = "dm:///types/#75aaa247-9e5d-4f8c-ad11-8ba43d996684";
 })(_Root || (_Root = {}));
 //# sourceMappingURL=DatenMeister.Reports.Types.js.map

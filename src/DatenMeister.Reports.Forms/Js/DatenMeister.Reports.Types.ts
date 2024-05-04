@@ -13,5 +13,20 @@ export namespace _Root
         }
 
         export const __ReportForm_Uri = "dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695";
+        export class _RequestReportAction
+        {
+            static workspace = "workspace";
+            static itemUri = "itemUri";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
+        }
+
+        export const __RequestReportAction_Uri = "dm:///types/#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c";
+        export class _RequestReportResult
+        {
+            static report = "report";
+        }
+
+        export const __RequestReportResult_Uri = "dm:///types/#75aaa247-9e5d-4f8c-ad11-8ba43d996684";
 }
 

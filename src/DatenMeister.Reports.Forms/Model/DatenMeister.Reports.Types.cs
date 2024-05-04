@@ -36,6 +36,35 @@ namespace DatenMeister.Reports.Forms.Model
         public _ReportForm @ReportForm = new _ReportForm();
         public MofObjectShadow @__ReportForm = new MofObjectShadow("dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695");
 
+        public class _RequestReportAction
+        {
+            public static string @workspace = "workspace";
+            public IElement? @_workspace = null;
+
+            public static string @itemUri = "itemUri";
+            public IElement? @_itemUri = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+            public static string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
+        }
+
+        public _RequestReportAction @RequestReportAction = new _RequestReportAction();
+        public MofObjectShadow @__RequestReportAction = new MofObjectShadow("dm:///types/#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c");
+
+        public class _RequestReportResult
+        {
+            public static string @report = "report";
+            public IElement? @_report = null;
+
+        }
+
+        public _RequestReportResult @RequestReportResult = new _RequestReportResult();
+        public MofObjectShadow @__RequestReportResult = new MofObjectShadow("dm:///types/#75aaa247-9e5d-4f8c-ad11-8ba43d996684");
+
         public static readonly _Root TheOne = new _Root();
 
     }

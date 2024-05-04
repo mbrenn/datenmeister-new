@@ -5,6 +5,7 @@ export function init() {
     FormActions.addModule(new SwitchToReport());
     FormFactory.registerObjectForm(Model._Root.__ReportForm_Uri, () => new ReportForm());
 }
+// Adds the action on which the user can switch to the report view
 export class SwitchToReport extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super();
@@ -23,6 +24,7 @@ export class SwitchToReport extends FormActions.ItemFormActionModuleBase {
         return Promise.resolve(undefined);
     }
 }
+// Shows the report within the form
 export class ReportForm {
     async createFormByObject(parent, configuration) {
         parent.append($("<div>We are having a report... At least, I hope so</div>"));

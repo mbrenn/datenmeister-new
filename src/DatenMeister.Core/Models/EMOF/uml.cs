@@ -19557,4 +19557,10 @@ namespace DatenMeister.Core.Models.EMOF
 
     }
 
+    public class _Root
+    {
+        public static readonly _Root TheOne = new _Root();
+
+    }
+
 }

@@ -15,6 +15,7 @@ export function init() {
 
 }
 
+// Adds the action on which the user can switch to the report view
 export class SwitchToReport extends FormActions.ItemFormActionModuleBase implements FormActions.IItemFormActionModule {
     constructor() {
         super();
@@ -38,6 +39,7 @@ export class SwitchToReport extends FormActions.ItemFormActionModuleBase impleme
     }
 }
 
+// Shows the report within the form
 export class ReportForm implements IIForms.IObjectFormElement {
 
     pageNavigation: IIForms.IPageNavigation;
@@ -60,3 +62,14 @@ export class ReportForm implements IIForms.IObjectFormElement {
     }
     
 }
+
+// The action request which allows to retrieve the report itself
+export interface IRequestReportParams {
+    workspaceId: string;
+    itemUri: string;
+}
+export interface IRequestReportResult {
+    reportHtml: string;
+}
+
+    

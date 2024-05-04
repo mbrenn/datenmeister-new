@@ -28,3 +28,7 @@ export namespace _PrimitiveTypes
         export const __UnlimitedNatural_Uri = "dm:///_internal/model/primitivetypes#UnlimitedNatural";
 }
 
+export namespace _Root
+{
+}
+

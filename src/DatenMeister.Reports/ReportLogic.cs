@@ -226,7 +226,7 @@ namespace DatenMeister.Reports
         {
             ReportCreator.StartReport(this, reportInstance, reportDefinition);
 
-            var elements = reportDefinition.getOrDefault<IReflectiveCollection>(
+            var elements = reportDefinition.get<IReflectiveCollection>(
                 _DatenMeister._Reports._ReportDefinition.elements);
             ReportCreator.EvaluateElements(this, elements);
 

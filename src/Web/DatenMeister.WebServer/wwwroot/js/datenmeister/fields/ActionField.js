@@ -1,6 +1,6 @@
 import * as FormActions from "../FormActions.js";
 import { BaseField } from "./Interfaces.js";
-import * as ClientItems from "../client/Items.js";
+import * as MofSync from "../MofSync.js";
 export class Field extends BaseField {
     async createDom(dmElement) {
         const tthis = this;
@@ -20,9 +20,10 @@ export class Field extends BaseField {
                 if (tthis?.form?.storeFormValuesIntoDom !== undefined) {
                     await tthis.form.storeFormValuesIntoDom(true);
                 }
-                if (module?.skipSaving !== true) {
+                const mofWithSync = dmElement;
+                if (module?.skipSaving !== true && mofWithSync.propertiesSet !== undefined) {
                     // We need to set the properties of the item, so the action handler can directly work on the item
-                    await ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+                    await MofSync.sync(mofWithSync);
                 }
                 await FormActions.execute(action, tthis.form, dmElement, parameter);
             }

@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core;
+﻿using DatenMeister.Actions;
+using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
@@ -46,6 +47,10 @@ namespace DatenMeister.Reports.Forms
                     "DatenMeister.Reports.Forms.Js.DatenMeister.Reports.Types.js",
                     "DatenMeister.Reports.Types.js",
                     "../../Datenmeister.Reports.Forms/js/DatenMeister.Reports.Types.js");
+
+                // Adds the action handler
+                scopeStorage.Get<ActionLogicState>().AddActionHandler(
+                    new RequestReportAction(workspaceLogic, scopeStorage));
             }
         }
 
@@ -53,18 +58,14 @@ namespace DatenMeister.Reports.Forms
         {
             var stream = typeof(Plugin).GetTypeInfo()
                 .Assembly.GetManifestResourceStream("DatenMeister.Reports.Forms.Xmi.DatenMeister.Reports.Forms.xmi");
-            if (stream == null)
-                throw new InvalidOperationException("Stream is not found");
-            return stream;
+            return stream ?? throw new InvalidOperationException("Stream is not found");
         }
 
         public static Stream GetXmiStreamForTypes()
         {
             var stream = typeof(Plugin).GetTypeInfo()
                 .Assembly.GetManifestResourceStream("DatenMeister.Reports.Forms.Xmi.DatenMeister.Reports.Types.xmi");
-            if (stream == null)
-                throw new InvalidOperationException("Stream is not found");
-            return stream;
+            return stream ?? throw new InvalidOperationException("Stream is not found");
         }
     }
 }

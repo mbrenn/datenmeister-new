@@ -1,6 +1,8 @@
+import * as Mof from '/js/datenmeister/Mof.js';
 import * as FormActions from '/js/datenmeister/FormActions.js';
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js";
 import * as Model from "./DatenMeister.Reports.Types.js";
+import * as ActionClient from '/js/datenmeister/client/Actions.js';
 export function init() {
     FormActions.addModule(new SwitchToReport());
     FormFactory.registerObjectForm(Model._Root.__ReportForm_Uri, () => new ReportForm());
@@ -28,11 +30,27 @@ export class SwitchToReport extends FormActions.ItemFormActionModuleBase {
 export class ReportForm {
     async createFormByObject(parent, configuration) {
         parent.append($("<div>We are having a report... At least, I hope so</div>"));
+        // Loading the report
+        const htmlReult = await loadReport(this.workspace, this.itemUrl);
+        const container = $("<div></div>");
+        container.html(htmlReult);
+        parent.append(container);
+        parent.append($("<div>Loading is done</div>"));
     }
     async refreshForm() {
     }
     async storeFormValuesIntoDom(reuseExistingElement) {
         return Promise.resolve(undefined);
     }
+}
+async function loadReport(workspace, itemUri) {
+    const action = new Mof.DmObject(Model._Root.__RequestReportAction_Uri);
+    action.set(Model._Root._RequestReportAction.workspace, workspace);
+    action.set(Model._Root._RequestReportAction.itemUri, itemUri);
+    const parameter = {
+        parameter: action
+    };
+    const result = await ActionClient.executeActionDirectly("Execute", parameter);
+    return result.resultAsDmObject.get(Model._Root._RequestReportResult.report);
 }
 //# sourceMappingURL=DatenMeister.Reports.Forms.js.map

@@ -7301,7 +7301,3 @@ export namespace _UML
 
 }
 
-export namespace _Root
-{
-}
-

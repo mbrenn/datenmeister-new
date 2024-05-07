@@ -5,6 +5,7 @@ import { SubmitMethod } from "/js/datenmeister/forms/Forms.js";
 import { IFormConfiguration } from '../../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/forms/IFormConfiguration';
 import * as FormFactory from "/js/datenmeister/forms/FormFactory.js"
 import * as Model from "./DatenMeister.Reports.Types.js"
+import * as ActionClient from '/js/datenmeister/client/Actions.js'
 
 export function init() {
     FormActions.addModule(new SwitchToReport());
@@ -51,6 +52,15 @@ export class ReportForm implements IIForms.IObjectFormElement {
     element: Mof.DmObject;
     async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration): Promise<void> {
         parent.append($("<div>We are having a report... At least, I hope so</div>"));
+
+        // Loading the report
+        const htmlReult = await loadReport(this.workspace, this.itemUrl);
+        const container = $("<div></div>");
+        container.html(htmlReult);
+
+        parent.append(container);
+
+        parent.append($("<div>Loading is done</div>"));
     }
 
     async refreshForm(): Promise<void> {
@@ -72,4 +82,16 @@ export interface IRequestReportResult {
     reportHtml: string;
 }
 
-    
+async function loadReport(workspace: string, itemUri: string) : Promise<string> {
+    const action = new Mof.DmObject(Model._Root.__RequestReportAction_Uri);
+    action.set(Model._Root._RequestReportAction.workspace, workspace);
+    action.set(Model._Root._RequestReportAction.itemUri, itemUri);
+
+    const parameter: ActionClient.ExecuteActionParams =
+    {
+        parameter: action
+    };
+
+    const result = await ActionClient.executeActionDirectly("Execute", parameter);
+    return result.resultAsDmObject.get(Model._Root._RequestReportResult.report);
+}

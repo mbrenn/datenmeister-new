@@ -1,8 +1,9 @@
 
 import * as FormActions from "../FormActions.js";
 import {BaseField, IFormField} from "./Interfaces.js";
-import {DmObject} from "../Mof.js";
+import {DmObject, DmObjectWithSync} from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
+import * as MofSync from "../MofSync.js";
 
 export class Field extends BaseField implements IFormField {
 
@@ -35,9 +36,10 @@ export class Field extends BaseField implements IFormField {
                         await tthis.form.storeFormValuesIntoDom(true);
                     }
 
-                    if (module?.skipSaving !== true) {
+                    const mofWithSync = dmElement as DmObjectWithSync;
+                    if (module?.skipSaving !== true && mofWithSync.propertiesSet !== undefined) {
                         // We need to set the properties of the item, so the action handler can directly work on the item
-                        await ClientItems.setProperties(dmElement.workspace, dmElement.uri, dmElement);
+                        await MofSync.sync(mofWithSync);
                     }
 
                     await FormActions.execute(action, tthis.form, dmElement, parameter);

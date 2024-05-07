@@ -131,7 +131,3 @@ export namespace _MOF
 
 }
 
-export namespace _Root
-{
-}
-

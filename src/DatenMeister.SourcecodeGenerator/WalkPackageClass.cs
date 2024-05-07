@@ -62,13 +62,13 @@ namespace DatenMeister.SourcecodeGenerator
                 Walk(element, stack);
             }
 
-
             // For all the other elements, we will need to create a helper class because a method cannot be contained
             // directly within a namespace
-            var nonPackageElements = extent.elements().OfType<IObject>().Where(x => !_parser.IsPackage(x)).ToList();
+            var nonPackageElements = extent.elements().OfType<IObject>().Where(
+                x => !_parser.IsPackage(x) && _parser.IsClass(x)).ToList();
             if (nonPackageElements.Count != 0)
             {
-                var packageInstance= MofFactory.CreateByExtent(extent).create(_UML.TheOne.Packages.__Package);
+                var packageInstance = MofFactory.CreateByExtent(extent).create(_UML.TheOne.Packages.__Package);
                 packageInstance.set(_UML._Packages._Package.name, "Root");
                 packageInstance.set(_UML._Packages._Package.packagedElement, nonPackageElements);
 

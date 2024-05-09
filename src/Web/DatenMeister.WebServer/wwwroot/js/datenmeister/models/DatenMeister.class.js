@@ -753,6 +753,8 @@ export var _DatenMeister;
         _FormAssociation.parentProperty = "parentProperty";
         _FormAssociation.form = "form";
         _FormAssociation.debugActive = "debugActive";
+        _FormAssociation.workspaceId = "workspaceId";
+        _FormAssociation.extentUri = "extentUri";
         _Forms._FormAssociation = _FormAssociation;
         _Forms.__FormAssociation_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation";
         class _DropDownFieldData {

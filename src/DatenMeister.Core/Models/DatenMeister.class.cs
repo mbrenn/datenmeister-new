@@ -1782,6 +1782,12 @@ namespace DatenMeister.Core.Models
                 public static string @debugActive = "debugActive";
                 public IElement? @_debugActive = null;
 
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
             }
 
             public _FormAssociation @FormAssociation = new _FormAssociation();

@@ -107,13 +107,17 @@ namespace DatenMeister.Forms.FormFinder
                 var associationParentProperty =
                     element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.parentProperty);
                 var associationForm = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.form);
+                var associationWorkspaceId = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.workspaceId);
+                var associationExtentUri = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentUri);
                 var associationViewModeId =
                     element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.viewModeId);
-                if (associationExtentType == null && associationMetaClass == null
+                if (string.IsNullOrEmpty(associationExtentType) && associationMetaClass == null
                                                   && associationParentMetaclass == null
                                                   && associationParentProperty == null
                                                   && associationViewModeId == null
-                                                  && associationViewType == null)
+                                                  && associationViewType == null
+                                                  && string.IsNullOrEmpty(associationWorkspaceId)
+                                                  && string.IsNullOrEmpty(associationExtentUri))
                 {
                     InternalDebug("- - This item is too unspecific");
                     // Skip item because it is too unspecific
@@ -239,6 +243,46 @@ namespace DatenMeister.Forms.FormFinder
                         InternalDebug("-- NO MATCH: Requested ParentProperty: " + query.parentProperty +
                                       ", FormAssociation ParentProperty: " +
                                       associationParentProperty);
+                        isMatching = false;
+                    }
+                }
+
+                // WorkspaceId
+                if (!string.IsNullOrEmpty(associationWorkspaceId))
+                {
+                    if (!string.IsNullOrEmpty(query.workspaceId) &&
+                        query.workspaceId?.Equals(associationWorkspaceId) == true)
+                    {
+                        InternalDebug("-- MATCH: Requested WorkspaceId: " + query.workspaceId +
+                                      ", FormAssociation WorkspaceId: " +
+                                      associationWorkspaceId);
+                        points++;
+                    }
+                    else
+                    {
+                        InternalDebug("-- NO MATCH: Requested WorkspaceId: " + query.workspaceId +
+                                      ", FormAssociation WorkspaceId: " +
+                                      associationWorkspaceId);
+                        isMatching = false;
+                    }
+                }
+
+                // WorkspaceId
+                if (!string.IsNullOrEmpty(associationExtentUri))
+                {
+                    if (!string.IsNullOrEmpty(query.extentUri) &&
+                        query.extentUri?.Equals(associationExtentUri) == true)
+                    {
+                        InternalDebug("-- MATCH: Requested extentUri: " + query.extentUri +
+                                      ", FormAssociation extentUri: " +
+                                      associationExtentUri);
+                        points++;
+                    }
+                    else
+                    {
+                        InternalDebug("-- NO MATCH: Requested extentUri: " + query.extentUri +
+                                      ", FormAssociation extentUri: " +
+                                      associationExtentUri);
                         isMatching = false;
                     }
                 }

@@ -76,6 +76,8 @@ namespace DatenMeister.Forms
                 var viewFinder = CreateFormFinder();
                 foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
+                    extentUri = extent.GetUri() ?? string.Empty,
+                    workspaceId = extent.GetWorkspace()?.id ?? string.Empty,
                     extentTypes = extentTypes.ToList(),
                     metaClass = metaClass,
                     FormType = _DatenMeister._Forms.___FormType.Object,
@@ -115,6 +117,8 @@ namespace DatenMeister.Forms
                     foundForm,
                     new FindFormQuery
                     {
+                        extentUri = extent.GetUri() ?? string.Empty,
+                        workspaceId = extent.GetWorkspace()?.id ?? string.Empty,
                         extentTypes = extent.GetConfiguration().ExtentTypes,
                         metaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.ObjectExtension,
@@ -313,6 +317,8 @@ namespace DatenMeister.Forms
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
+                        extentUri = extent?.GetUri() ?? string.Empty,
+                        workspaceId = extent?.GetWorkspace()?.id ?? string.Empty,
                         metaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.Row,
                         extentTypes = extent == null ? Array.Empty<string>() : extent.GetConfiguration().ExtentTypes,
@@ -555,6 +561,8 @@ namespace DatenMeister.Forms
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
+                        extentUri = extent.GetUri() ?? string.Empty,
+                        workspaceId = extent.GetWorkspace()?.id ?? string.Empty,
                         extentTypes = extentTypes,
                         FormType = _DatenMeister._Forms.___FormType.Collection,
                         viewModeId = configuration.ViewModeId ?? "",
@@ -589,6 +597,8 @@ namespace DatenMeister.Forms
                     foundForm,
                     new FindFormQuery
                     {
+                        extentUri = extent.GetUri() ?? string.Empty,
+                        workspaceId = extent.GetWorkspace()?.id ?? string.Empty,
                         extentTypes = extentTypes,
                         FormType = _DatenMeister._Forms.___FormType.CollectionExtension,
                         viewModeId = configuration.ViewModeId ?? "",

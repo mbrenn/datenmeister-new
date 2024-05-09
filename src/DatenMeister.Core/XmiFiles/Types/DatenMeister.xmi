@@ -1491,6 +1491,26 @@
         <isStatic p1:id="25fb8c65-884a-437e-b896-374990fac0c0" />
         <isLeaf p1:id="52840f67-389d-459b-bdaa-5061726d7788" />
       </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="71d98bef-e8db-4574-b256-b878800d4adf" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" lower="0" upper="1">
+        <aggregation p1:id="3ce9a423-a907-4b03-a9a4-77552509e5b1" />
+        <isDerived p1:id="99aa1121-2920-44ac-913e-9bd2fd04f340" />
+        <isDerivedUnion p1:id="ea87b4e5-bd5a-4b90-ae15-5fba58c5da49" />
+        <isReadOnly p1:id="a60d591d-ca56-40bd-86db-641a3d883aa2" />
+        <isOrdered p1:id="35e4dff8-8629-4e3d-bc32-5862c8407cbb" />
+        <isUnique p1:id="d658feba-a41e-4155-a86b-074bd5ea9042" />
+        <isStatic p1:id="15bcc7a8-110c-4cef-8459-3ef9749967bb" />
+        <isLeaf p1:id="947bdd4a-4cce-4936-b924-cac796241736" />
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0387e43e-215c-4e6c-9b2c-df5f03178b57" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" lower="0" upper="1">
+        <aggregation p1:id="48a76185-090e-418e-88f7-0e9a6218344e" />
+        <isDerived p1:id="8667aa8f-3c8c-489d-8e09-41bc502003ce" />
+        <isDerivedUnion p1:id="24b3443f-a18c-41da-adb6-10a1f06e74e6" />
+        <isReadOnly p1:id="aa0131de-a926-4220-8099-4ad19e43613f" />
+        <isOrdered p1:id="c4e8e03a-5d03-48de-b374-649df87875e7" />
+        <isUnique p1:id="44fadc92-0ce7-4776-828b-c28e62bbe831" />
+        <isStatic p1:id="ace9f099-5908-405d-b53c-da55e7403da4" />
+        <isLeaf p1:id="fbe12560-95fd-416d-9825-cbd64f92610d" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DropDownFieldData" name="DropDownFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="e01dba4b-06a8-4850-b5b3-4d6acbed97a7" general-ref="#DatenMeister.Models.Forms.FieldData" />

@@ -22,6 +22,10 @@ namespace DatenMeister.Forms.FormFinder
 
         public string parentProperty { get; set; } = string.Empty;
 
+        public string workspaceId { get; set; }
+
+        public string extentUri { get; set; }
+
         /// <summary>
         /// Gets or sets the information whether the Form Finding shall be with active debugger break,
         /// in case the FormAssociation also requests a debugging. 
@@ -69,7 +73,19 @@ namespace DatenMeister.Forms.FormFinder
             {
                 result += $", viewModeId: {viewModeId}";
             }
-            
+
+
+            if (!string.IsNullOrEmpty(workspaceId))
+            {
+                result += $", workspaceId: {workspaceId}";
+            }
+
+
+            if (!string.IsNullOrEmpty(extentUri))
+            {
+                result += $", extentUri: {extentUri}";
+            }
+
             return result;
         }
     }

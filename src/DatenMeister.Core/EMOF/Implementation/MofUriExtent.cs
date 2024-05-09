@@ -143,6 +143,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (result == null && traceFailing)
             {
                 Logger.Debug($"URI not resolved: {uri} from Extent: {contextURI()}");
+                result = new MofObjectShadow(uri);
             }
 
             if (result != null)

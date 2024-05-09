@@ -29,13 +29,16 @@ export class SwitchToReport extends FormActions.ItemFormActionModuleBase {
 // Shows the report within the form
 export class ReportForm {
     async createFormByObject(parent, configuration) {
-        parent.append($("<div>We are having a report... At least, I hope so</div>"));
+        // Add the loading information
+        const loadingDiv = $("<div class='loading'>Loading...</div>");
+        parent.append(loadingDiv);
         // Loading the report
         const htmlReult = await loadReport(this.workspace, this.itemUrl);
-        const container = $("<div></div>");
+        const container = $("<div class='dm-report'></div>");
         container.html(htmlReult);
+        // Remove loading...
         parent.append(container);
-        parent.append($("<div>Loading is done</div>"));
+        loadingDiv.remove();
     }
     async refreshForm() {
     }

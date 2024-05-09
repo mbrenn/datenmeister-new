@@ -28,6 +28,14 @@ namespace DatenMeister.Reports.Html
 
         public TextWriter TextWriter { get; set; }
 
+        /// <summary>
+        /// Inhibits the creation for CSS Style sheets
+        /// </summary>
+        public bool EmbedInExistingPage
+        {
+            get;set;
+        }
+
         public HtmlReportCreator(TextWriter textWriter)
         {
             TextWriter = textWriter;
@@ -43,26 +51,32 @@ namespace DatenMeister.Reports.Html
 
             var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
 
-            _htmlReporter.SetDefaultCssStyle();
-
-            var cssFile = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssFile);
-            if (!string.IsNullOrEmpty(cssFile))
+            if (!EmbedInExistingPage)
             {
-                _htmlReporter.AddCssFile(cssFile);
-            }
+                _htmlReporter.SetDefaultCssStyle();
 
-            var cssStyleSheet = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssStyleSheet);
-            if (!string.IsNullOrEmpty(cssStyleSheet))
-            {
-                _htmlReporter.AddCssStyleSheet(cssStyleSheet);
-            }
+                var cssFile = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssFile);
+                if (!string.IsNullOrEmpty(cssFile))
+                {
+                    _htmlReporter.AddCssFile(cssFile);
+                }
 
-            _htmlReporter.StartReport(title);
+                var cssStyleSheet = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssStyleSheet);
+                if (!string.IsNullOrEmpty(cssStyleSheet))
+                {
+                    _htmlReporter.AddCssStyleSheet(cssStyleSheet);
+                }
+
+                _htmlReporter.StartReport(title);
+            }
         }
-        
+
         public override void EndReport(ReportLogic logic, IObject definition)
         {
-            _htmlReporter?.EndReport();
+            if (!EmbedInExistingPage)
+            {
+                _htmlReporter?.EndReport();
+            }
         }
 
         /// <summary>

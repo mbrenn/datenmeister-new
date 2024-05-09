@@ -34,7 +34,10 @@ namespace DatenMeister.Reports.Forms
             var itemUri = action.getOrDefault<string>(_Root._RequestReportAction.itemUri);
 
             var textWriter = new StringWriter();
-            var reportLogic = new ReportLogic(workspaceLogic, scopeStorage, new HtmlReportCreator(textWriter));
+            var reportLogic = new ReportLogic(workspaceLogic, scopeStorage, new HtmlReportCreator(textWriter)
+            {
+                EmbedInExistingPage = true
+            });
 
             // Generates the report
             var foundReportInstance = workspaceLogic.FindElement(workspace, itemUri)

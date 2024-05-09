@@ -48,6 +48,12 @@ namespace DatenMeister.Reports.Forms
                     "DatenMeister.Reports.Types.js",
                     "../../Datenmeister.Reports.Forms/js/DatenMeister.Reports.Types.js");
 
+                pluginLogic.AddCssFileFromResource(
+                    typeof(Plugin),
+                    "DatenMeister.Reports.Forms.Css.DatenMeister.Reports.Forms.css",
+                    "DatenMeister.Reports.Types.css",
+                    "../../Datenmeister.Reports.Forms/js/DatenMeister.Reports.Types.css");
+
                 // Adds the action handler
                 scopeStorage.Get<ActionLogicState>().AddActionHandler(
                     new RequestReportAction(workspaceLogic, scopeStorage));

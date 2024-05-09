@@ -24,15 +24,25 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Remove="Css\DatenMeister.Reports.Forms.css" />
     <None Remove="Js\DatenMeister.Reports.Forms.js" />
+    <None Remove="Js\DatenMeister.Reports.Forms.js.map" />
+    <None Remove="Js\DatenMeister.Reports.Forms.ts" />
     <None Remove="Js\DatenMeister.Reports.Types.js" />
+    <None Remove="Js\DatenMeister.Reports.Types.js.map" />
+    <None Remove="Js\DatenMeister.Reports.Types.ts" />
     <None Remove="Xmi\DatenMeister.Reports.Forms.xmi" />
     <None Remove="Xmi\DatenMeister.Reports.Types.xmi" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Css\DatenMeister.Reports.Forms.css" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js" />
+    <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js.map" />
+    <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.ts" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js" />
+    <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js.map" />
+    <EmbeddedResource Include="Js\DatenMeister.Reports.Types.ts" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Types.xmi" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Forms.xmi" />
   </ItemGroup>

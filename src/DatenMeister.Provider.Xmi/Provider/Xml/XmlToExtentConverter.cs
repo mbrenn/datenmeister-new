@@ -47,11 +47,14 @@ namespace DatenMeister.Provider.Xmi.Provider.Xml
         public void Convert(XDocument document, IReflectiveCollection collection)
         {
             var factory = new MofFactory(collection);
-            foreach (var element in document.Elements())
+            if (document.Root != null)
             {
-                var mofElement = factory.create(null);
-                Convert(element, mofElement, string.Empty, factory);
-                collection.add(mofElement);
+                foreach (var element in document.Root.Elements())
+                {
+                    var mofElement = factory.create(null);
+                    Convert(element, mofElement, string.Empty, factory);
+                    collection.add(mofElement);
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -29,43 +30,46 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage
         /// <param name="extentCreationFlags"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public LoadedProviderInfo LoadProvider(
+        public async Task<LoadedProviderInfo> LoadProvider(
             IElement configuration,
             ExtentCreationFlags extentCreationFlags)
         {
-            var filePath =
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
-
-            XDocument xmlDocument;
-            if (!File.Exists(filePath) || extentCreationFlags == ExtentCreationFlags.CreateOnly)
+            return await Task.Run(() =>
             {
-                if (extentCreationFlags != ExtentCreationFlags.LoadOnly)
+                var filePath =
+                    configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+
+                XDocument xmlDocument;
+                if (!File.Exists(filePath) || extentCreationFlags == ExtentCreationFlags.CreateOnly)
                 {
-                    xmlDocument = CreateEmptyXmiDocument(configuration);
+                    if (extentCreationFlags != ExtentCreationFlags.LoadOnly)
+                    {
+                        xmlDocument = CreateEmptyXmiDocument(configuration);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(
+                            $"File not found: {filePath}");
+                    }
                 }
                 else
                 {
-                    throw new InvalidOperationException(
-                        $"File not found: {filePath}");
+                    try
+                    {
+                        xmlDocument = XDocument.Load(filePath);
+                    }
+                    catch (Exception exc)
+                    {
+                        Logger.Warn(exc.ToString());
+                        xmlDocument = CreateEmptyXmiDocument(configuration);
+                    }
                 }
-            }
-            else
-            {
-                try
-                {
-                    xmlDocument = XDocument.Load(filePath);
-                }
-                catch (Exception exc)
-                {
-                    Logger.Warn(exc.ToString());
-                    xmlDocument = CreateEmptyXmiDocument(configuration);
-                }
-            }
 
-            return new LoadedProviderInfo(new XmiProvider(xmlDocument));
+                return new LoadedProviderInfo(new XmiProvider(xmlDocument));
+            });
         }
 
-        public void StoreProvider(IProvider extent, IElement configuration)
+        public Task StoreProvider(IProvider extent, IElement configuration)
         {
             var filePath =
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
@@ -80,6 +84,7 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage
             // Loads existing file
             using var fileStream = File.OpenWrite(filePath);
             xmlExtent.Document.Save(fileStream);
+            return Task.CompletedTask;
         }
 
         public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } =

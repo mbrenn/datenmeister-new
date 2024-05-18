@@ -69,14 +69,14 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestAddAndDeleteExtent()
+        public async Task TestAddAndDeleteExtent()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
 
             var n = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)!.extent.Count();
-            extentController.CreateXmi(
+            await extentController.CreateXmi(
                 new ExtentController.CreateXmiExtentParams
                 {
                     Workspace = WorkspaceNames.WorkspaceData,
@@ -91,7 +91,7 @@ namespace DatenMeister.Tests.Web
                     .Any(x => x.contextURI() == "dm:///test"),
                 Is.True);
 
-            extentController.DeleteExtent(new ExtentController.DeleteExtentParams
+            await extentController.DeleteExtent(new ExtentController.DeleteExtentParams
             {
                 Workspace = WorkspaceNames.WorkspaceData,
                 ExtentUri = "dm:///test"
@@ -155,9 +155,9 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestExportXmiOfManagement()
+        public async Task TestExportXmiOfManagement()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
             
             var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
             var result = extentController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces");

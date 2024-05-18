@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -62,10 +63,10 @@ namespace DatenMeister.Modules.ZipCodeExample
         /// </summary>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
         /// <param name="exampleFilePath">Defines the path to the example file</param>
-        public IUriExtent AddZipCodeExample(Workspace workspace, string? exampleFilePath = null)
-            => AddZipCodeExample(workspace.id, exampleFilePath);
+        public async Task<IUriExtent> AddZipCodeExample(Workspace workspace, string? exampleFilePath = null)
+            => await AddZipCodeExample(workspace.id, exampleFilePath);
 
-        public IUriExtent AddZipCodeExample(string workspaceId, string? exampleFilePath = null)
+        public async Task<IUriExtent> AddZipCodeExample(string workspaceId, string? exampleFilePath = null)
         {
             var random = new Random();
 
@@ -95,7 +96,7 @@ namespace DatenMeister.Modules.ZipCodeExample
 
             var extentName = $"dm:///zipcodes/{randomNumber}";
 
-            return AddZipCodeExample(workspaceId, extentName, exampleFilePath, filename);
+            return await AddZipCodeExample(workspaceId, extentName, exampleFilePath, filename);
         }
 
         public string GetDefaultPathForExampleZipCodes()
@@ -104,7 +105,7 @@ namespace DatenMeister.Modules.ZipCodeExample
             return Path.Combine(appBase, "Examples", "plz.csv");
         }
 
-        public IUriExtent AddZipCodeExample(
+        public async Task<IUriExtent> AddZipCodeExample(
             string workspaceId,
             string extentName,
             string? sourceFilename,
@@ -157,7 +158,7 @@ namespace DatenMeister.Modules.ZipCodeExample
                 _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings,
                 csvSettings);
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
+            var loadedExtent = await _extentManager.LoadExtent(defaultConfiguration)
                                ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");
             if (loadedExtent.LoadingState == ExtentLoadingState.Failed || loadedExtent.Extent == null)
             {

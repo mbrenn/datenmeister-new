@@ -3,6 +3,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Provider.CSV.Runtime;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Provider.CSV
 {
@@ -21,7 +22,7 @@ namespace DatenMeister.Provider.CSV
             _providerToProviderLoaderMapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -31,6 +32,8 @@ namespace DatenMeister.Provider.CSV
                         manager => new CsvProviderLoader());
                     break;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

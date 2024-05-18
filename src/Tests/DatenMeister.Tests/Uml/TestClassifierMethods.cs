@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -16,9 +17,9 @@ namespace DatenMeister.Tests.Uml
     public class TestClassifierMethods
     {
         [Test]
-        public void TestCompositeProperties()
+        public async Task TestCompositeProperties()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
@@ -36,9 +37,9 @@ namespace DatenMeister.Tests.Uml
         }
 
         [Test]
-        public void TestAddGeneralization()
+        public async Task TestAddGeneralization()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
@@ -63,9 +64,9 @@ namespace DatenMeister.Tests.Uml
         }
 
         [Test]
-        public void TestGeneralizedProperties()
+        public async Task TestGeneralizedProperties()
         {
-            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
             // Gets the logic
             var feature = builder.WorkspaceLogic.GetUmlWorkspace()
@@ -82,9 +83,9 @@ namespace DatenMeister.Tests.Uml
         }
 
         [Test]
-        public void TestGeneralizationEvaluation()
+        public async Task TestGeneralizationEvaluation()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
@@ -108,9 +109,9 @@ namespace DatenMeister.Tests.Uml
         }
 
         [Test]
-        public void TestIsOfPrimitiveType()
+        public async Task TestIsOfPrimitiveType()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var activity = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Activities.__Activity.GetUri()!, ResolveType.Default)
@@ -124,9 +125,9 @@ namespace DatenMeister.Tests.Uml
         }
 
         [Test]
-        public void TestGetPropertyTypeOfMetaClass()
+        public async Task TestGetPropertyTypeOfMetaClass()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var commandLineMetaClass = dm.WorkspaceLogic.GetTypesWorkspace()
                     .Resolve(_DatenMeister.TheOne.CommonTypes.OSIntegration.__CommandLineApplication.GetUri()!,
                         ResolveType.Default)

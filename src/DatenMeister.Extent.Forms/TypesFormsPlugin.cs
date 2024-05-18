@@ -3,6 +3,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Extent.Forms
 {
@@ -24,7 +25,7 @@ namespace DatenMeister.Extent.Forms
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -36,6 +37,8 @@ namespace DatenMeister.Extent.Forms
 
                     break;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

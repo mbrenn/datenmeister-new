@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
@@ -14,7 +15,7 @@ namespace DatenMeister.Tests.Runtime.Extents
     public class ExtentLockingTests
     {
         [Test]
-        public void TestSuccessfulLocking()
+        public async Task TestSuccessfulLocking()
         {
             var settings = DatenMeisterTests.GetIntegrationSettings();
             settings.IsLockingActivated = true;
@@ -25,9 +26,9 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
                 "testing/datenmeister/data2");
 
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope(true, settings))
+            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(true, settings))
             {
-                using (var dm2 = DatenMeisterTests.GetDatenMeisterScope(true, settings2))
+                using (var dm2 = await DatenMeisterTests.GetDatenMeisterScope(true, settings2))
                 {
                     try
                     {
@@ -46,24 +47,24 @@ namespace DatenMeister.Tests.Runtime.Extents
                         var extentManager = dm.Resolve<ExtentManager>();
                         extentManager.UnlockProvider(extentSettings);
 
-                        var provider1 = extentManager.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
+                        var provider1 = await extentManager.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
                         Assert.That(provider1, Is.Not.Null);
                         Assert.That(provider1.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
                         Assert.That(provider1.Extent, Is.Not.Null);
 
                         var extentManager2 = dm2.Resolve<ExtentManager>();
-                        var information = extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
+                        var information = await extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
                         Assert.That(information.LoadingState, Is.EqualTo(ExtentLoadingState.Failed));
-                        extentManager2.RemoveExtent(information);
+                        await extentManager2.RemoveExtent(information);
 
-                        extentManager.UnloadManager(true);
+                        await extentManager.UnloadManager(true);
 
-                        var provider2 = extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
+                        var provider2 = await extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
                         Assert.That(provider2, Is.Not.Null);
                         Assert.That(provider2.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
                         Assert.That(provider2.Extent, Is.Not.Null);
 
-                        extentManager2.UnloadManager(true);
+                        await extentManager2.UnloadManager(true);
                     }
                     catch (Exception exc)
                     {

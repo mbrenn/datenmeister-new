@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Core;
@@ -34,7 +35,7 @@ namespace DatenMeister.Tests
         /// Gets the DatenMeister Scope for the testing
         /// </summary>
         /// <returns></returns>
-        public static IDatenMeisterScope GetDatenMeisterScope(
+        public static async Task<IDatenMeisterScope> GetDatenMeisterScope(
             bool dropDatabase = true,
             IntegrationSettings? integrationSettings = null)
         {
@@ -49,7 +50,7 @@ namespace DatenMeister.Tests
                 GiveMe.DropDatenMeisterStorage(integrationSettings);
             }
 
-            return GiveMe.DatenMeister(integrationSettings);
+            return await GiveMe.DatenMeister(integrationSettings);
         }
 
         public static (IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) GetDmInfrastructure()
@@ -86,20 +87,20 @@ namespace DatenMeister.Tests
         }
 
         [Test]
-        public void CheckFailureFreeLoadingOfDatenMeister()
+        public async Task CheckFailureFreeLoadingOfDatenMeister()
         {
-            using var datenMeister = GetDatenMeisterScope();
+            using var datenMeister = await GetDatenMeisterScope();
             var pluginManager = datenMeister.ScopeStorage.Get<PluginManager>();
             Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }
 
         [Test]
-        public void TestSlimLoading()
+        public async Task TestSlimLoading()
         {
             var integrationSettings = GetIntegrationSettings();
             integrationSettings.PerformSlimIntegration = true;
 
-            using var datenMeister = GetDatenMeisterScope(integrationSettings: integrationSettings);
+            using var datenMeister = await GetDatenMeisterScope(integrationSettings: integrationSettings);
             var pluginManager = datenMeister.ScopeStorage.Get<PluginManager>();
             Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -15,6 +16,7 @@ using DatenMeister.Excel.Integration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
+using Org.BouncyCastle.Crypto;
 
 namespace DatenMeister.Tests.Excel
 {
@@ -22,9 +24,9 @@ namespace DatenMeister.Tests.Excel
     public class ExcelTests
     {
         [Test]
-        public void LoadExcel()
+        public async Task LoadExcel()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
 
@@ -51,9 +53,9 @@ namespace DatenMeister.Tests.Excel
         }
 
         [Test]
-        public void PerformExcelReference()
+        public async Task PerformExcelReference()
         {
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var excelReferenceSettings =
@@ -68,7 +70,7 @@ namespace DatenMeister.Tests.Excel
                     "Tabelle1");
 
                 var extentManager = dm.Resolve<ExtentManager>();
-                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
+                var loadedExtent = await extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
                 Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));
 
@@ -80,10 +82,10 @@ namespace DatenMeister.Tests.Excel
                 Assert.That(value1, Is.EqualTo(2));
                 Assert.That(value2, Is.EqualTo(4));
 
-                dm.UnuseDatenMeister();
+                await dm.UnuseDatenMeister();
             }
 
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
+            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
 
@@ -102,9 +104,9 @@ namespace DatenMeister.Tests.Excel
         }
 
         [Test]
-        public void PerformExcelTestSkipRows()
+        public async Task PerformExcelTestSkipRows()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelReferenceSettings =
@@ -122,7 +124,7 @@ namespace DatenMeister.Tests.Excel
                 0);
 
             var extentManager = dm.Resolve<ExtentManager>();
-            var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
+            var loadedExtent = await extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
             Assert.That(loadedExtent.Extent, Is.Not.Null);
             Assert.That(loadedExtent.Extent!.elements().Count(), Is.LessThan(40));
 
@@ -146,16 +148,16 @@ namespace DatenMeister.Tests.Excel
                 _DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
                 5);
 
-            var loadedExtent2 = extentManager.LoadExtent(excelReferenceSettings2, ExtentCreationFlags.LoadOrCreate);
+            var loadedExtent2 = await extentManager.LoadExtent(excelReferenceSettings2, ExtentCreationFlags.LoadOrCreate);
             Assert.That(loadedExtent2.Extent, Is.Not.Null);
             Assert.That(loadedExtent2.Extent!.elements().Count(), Is.GreaterThan(40));
-            dm.UnuseDatenMeister();
+            await dm.UnuseDatenMeister();
         }
 
         [Test]
-        public void PerformExcelImport()
+        public async Task PerformExcelImport()
         {
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -174,7 +176,7 @@ namespace DatenMeister.Tests.Excel
                     "Tabelle1");
 
                 var extentManager = dm.Resolve<ExtentManager>();
-                var loadedExtent = extentManager.LoadExtent(excelImportLoaderConfig, ExtentCreationFlags.LoadOrCreate);
+                var loadedExtent = await extentManager.LoadExtent(excelImportLoaderConfig, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
                 Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));
 
@@ -186,10 +188,10 @@ namespace DatenMeister.Tests.Excel
                 Assert.That(value1, Is.EqualTo(2));
                 Assert.That(value2, Is.EqualTo(4));
 
-                dm.UnuseDatenMeister();
+                await dm.UnuseDatenMeister();
             }
 
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
+            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
 

@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Core.Provider.Interfaces
 {
@@ -52,14 +53,14 @@ namespace DatenMeister.Core.Provider.Interfaces
         /// <param name="extentCreationFlags">true, if the extent shall also be created, if it is empty.
         /// Can be used to create an empty extent. </param>
         /// <returns>Loaded extent</returns>
-        LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags);
+        Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags);
 
         /// <summary>
         /// Sores the extent according to the given configuration
         /// </summary>
-        /// <param name="extent">Extent to be stored</param>
+        /// <param name="provider">Provider to be stored</param>
         /// <param name="configuration">Configuration to be added</param>
-        void StoreProvider(IProvider extent, IElement configuration);
+        Task StoreProvider(IProvider provider, IElement configuration);
 
         /// <summary>
         /// Gets the provider loader capabilities

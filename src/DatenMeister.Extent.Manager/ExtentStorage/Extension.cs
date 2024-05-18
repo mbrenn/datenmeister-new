@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -23,7 +24,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// <param name="filename"></param>
         /// <param name="workspace">Name of the workspace</param>
         /// <returns></returns>
-        public static ExtentStorageData.LoadedExtentInformation CreateAndAddXmiExtent(
+        public static async Task<ExtentStorageData.LoadedExtentInformation> CreateAndAddXmiExtent(
             this ExtentManager extentManager, string uri, string filename, string workspace = WorkspaceNames.WorkspaceData)
         {
             var configuration = InMemoryObject.CreateEmpty(
@@ -32,7 +33,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspace);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filename);
 
-            return extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
+            return await extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
         }
         
         /// <summary>
@@ -92,7 +93,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// Of Type ExtentLoaderConfig</param>
         /// <param name="flags">The extent creation flags being used to load the extent</param>
         /// <returns>The found or loaded extent</returns>
-        public static IUriExtent? LoadExtentIfNotAlreadyLoaded(
+        public static async Task<IUriExtent?> LoadExtentIfNotAlreadyLoaded(
             this ExtentManager extentManager,
             IElement loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)
@@ -109,7 +110,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                      loaderConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
                          .extentUri));
 
-            return foundExtent ?? extentManager.LoadExtent(loaderConfiguration, flags).Extent;
+            return foundExtent ?? (await extentManager.LoadExtent(loaderConfiguration, flags)).Extent;
         }
 
         /// <summary>
@@ -119,12 +120,12 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUri">Uri of the extent</param>
         /// <returns>true, if successfully deleted</returns>
-        public static bool DeleteExtent(this ExtentManager manager, string workspaceId, string extentUri)
+        public static async Task<bool> DeleteExtent(this ExtentManager manager, string workspaceId, string extentUri)
         {
             var found = manager.WorkspaceLogic.FindExtent(workspaceId, extentUri);
             if (found != null)
             {
-                manager.RemoveExtent(found);
+                await manager.RemoveExtent(found);
                 return true;
             }
 

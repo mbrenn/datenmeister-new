@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Exceptions;
@@ -25,7 +26,7 @@ namespace DatenMeister.Extent.Manager.Extents
         /// </summary>
         /// <param name="mofImportSettings">Import settings being used</param>
         /// <returns>The created uri extent</returns>
-        public IUriExtent ImportExtent(IObject mofImportSettings)
+        public async Task<IUriExtent> ImportExtent(IObject mofImportSettings)
         {
             var extentUri = mofImportSettings.getOrDefault<string>("extentUri");
             var workspaceId = mofImportSettings.getOrDefault<string>("workspace");
@@ -39,7 +40,7 @@ namespace DatenMeister.Extent.Manager.Extents
                 configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filePath);
                 configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspaceId);
                 
-                var resultingExtent = _extentManager.LoadExtent(configuration);
+                var resultingExtent = await _extentManager.LoadExtent(configuration);
 
                 if (resultingExtent.LoadingState == ExtentLoadingState.Failed)
                 {

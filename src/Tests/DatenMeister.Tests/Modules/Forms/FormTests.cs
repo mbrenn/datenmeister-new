@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -36,9 +37,9 @@ namespace DatenMeister.Tests.Modules.Forms
         }
         
         [Test]
-        public void TestValidator()
+        public async Task TestValidator()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var extent = XmiExtensions.CreateXmiExtent("dm:///test");
 
@@ -73,9 +74,9 @@ namespace DatenMeister.Tests.Modules.Forms
         }
 
         [Test]
-        public void TestAutoExtensionOfDropDownValueReferences()
+        public async Task TestAutoExtensionOfDropDownValueReferences()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var localTypeSupport = new LocalTypeSupport(scope.WorkspaceLogic, scope.ScopeStorage);
 
@@ -147,9 +148,9 @@ namespace DatenMeister.Tests.Modules.Forms
         }
 
         [Test]
-        public void TestGetViewModes()
+        public async Task TestGetViewModes()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var formMethods = new FormMethods(scope.WorkspaceLogic, scope.ScopeStorage);
 
             // Check, if default view mode is in

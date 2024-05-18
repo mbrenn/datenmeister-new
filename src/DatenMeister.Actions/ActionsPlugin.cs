@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Actions
 {
@@ -17,9 +18,11 @@ namespace DatenMeister.Actions
             _scopeStorage = scopeStorage;
         }
         
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             _scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
+
+            return Task.CompletedTask;
         }
     }
 }

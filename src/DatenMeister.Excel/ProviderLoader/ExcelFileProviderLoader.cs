@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -37,16 +38,18 @@ namespace DatenMeister.Excel.ProviderLoader
             return new ExcelProvider(workbook, settings);
         }
 
-        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        public Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             var excelProvider = LoadProvider(configuration);
 
-            return new LoadedProviderInfo(excelProvider);
+            return Task.FromResult(new LoadedProviderInfo(excelProvider));
         }
 
-        public void StoreProvider(IProvider extent, IElement configuration)
+        public Task StoreProvider(IProvider extent, IElement configuration)
         {
             Debug.Write("Not implemented up to now");
+
+            return Task.CompletedTask;
         }
 
         public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } =

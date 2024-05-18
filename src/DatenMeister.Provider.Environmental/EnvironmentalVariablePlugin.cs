@@ -4,6 +4,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Provider.Environmental
 {
@@ -23,7 +24,7 @@ namespace DatenMeister.Provider.Environmental
 
         public IScopeStorage ScopeStorage { get; }
 
-        public void Start(PluginLoadingPosition position)
+        public async Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -48,7 +49,7 @@ namespace DatenMeister.Provider.Environmental
                         loaderConfig.set(
                             _DatenMeister._ExtentLoaderConfigs._EnvironmentalVariableLoaderConfig.workspaceId,
                             WorkspaceNames.WorkspaceManagement);
-                        extentLoader.LoadExtent(loaderConfig);
+                        await extentLoader.LoadExtent(loaderConfig);
                     }
 
                     break;

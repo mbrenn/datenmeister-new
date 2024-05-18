@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
@@ -16,7 +17,7 @@ namespace DatenMeister.Benchmark.Integration
         /// Gets the DatenMeister Scope for the testing
         /// </summary>
         /// <returns></returns>
-        public static IDatenMeisterScope GetDatenMeisterScope(bool dropDatabase = true,
+        public static async Task<IDatenMeisterScope> GetDatenMeisterScope(bool dropDatabase = true,
             IntegrationSettings? integrationSettings = null)
         {
             TheLog.ClearProviders();
@@ -29,7 +30,7 @@ namespace DatenMeister.Benchmark.Integration
                 GiveMe.DropDatenMeisterStorage(integrationSettings);
             }
 
-            return GiveMe.DatenMeister(integrationSettings);
+            return await GiveMe.DatenMeister(integrationSettings);
         }
 
         /// <summary>

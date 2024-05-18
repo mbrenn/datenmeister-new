@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Modules.Actions
         [Test]
         public async Task TestMovingUpDownInExtent()
         {
-            await using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var actionLogic = dm.Resolve<ActionLogic>();
 
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", dm.ScopeStorage);
@@ -98,7 +98,7 @@ namespace DatenMeister.Tests.Modules.Actions
         [Test]
         public async Task TestMovingUpDownInCollection()
         {
-            await using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var actionLogic = dm.Resolve<ActionLogic>();
 
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", dm.ScopeStorage);

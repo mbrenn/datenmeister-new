@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -79,7 +81,7 @@ namespace DatenMeister.Types
         /// Creates the extent being used to store the internal types
         /// </summary>
         /// <returns>The created uri containing the internal types</returns>
-        public void Start(PluginLoadingPosition position)
+        public async Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -91,7 +93,7 @@ namespace DatenMeister.Types
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     // Creates the extent for the user types which is permanently stored on disk. The user is capable to create his own types
-                    CreatesUserTypeExtent();
+                    await CreatesUserTypeExtent();
                     break;
             }
         }
@@ -116,10 +118,10 @@ namespace DatenMeister.Types
         /// Creates the user type extent storing the types for the user.
         /// If the extent is already existing, debugs the number of found extents
         /// </summary>
-        private void CreatesUserTypeExtent()
+        private async Task CreatesUserTypeExtent()
         {
             var foundExtent =
-                _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                await _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                     WorkspaceNames.WorkspaceTypes,
                     WorkspaceNames.UriExtentUserTypes,
                     "DatenMeister.Types_User",
@@ -127,10 +129,7 @@ namespace DatenMeister.Types
                     _integrationSettings.InitializeDefaultExtents
                         ? ExtentCreationFlags.CreateOnly
                         : ExtentCreationFlags.LoadOrCreate
-                );
-
-            if (foundExtent == null)
-                throw new InvalidOperationException("Extent for users is not found");
+                ) ?? throw new InvalidOperationException("Extent for users is not found");
 
             // Creates the user types, if not existing
             var numberOfTypes = foundExtent.elements().Count();

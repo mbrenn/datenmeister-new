@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -13,9 +14,9 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
     public class TemporaryExtentTests
     {
         [Test]
-        public void TestCreationAndResolving()
+        public async Task TestCreationAndResolving()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             var element = temporaryLogic.CreateTemporaryElement(null);
@@ -33,12 +34,12 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
         }
 
         [Test]
-        public void TestCreationAndDeletion()
+        public async Task TestCreationAndDeletion()
         {
             var oldValue = TemporaryExtentLogic.DefaultCleanupTime;
             TemporaryExtentLogic.DefaultCleanupTime = TimeSpan.FromMilliseconds(150);
             
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             var element = temporaryLogic.CreateTemporaryElement(null);
@@ -74,9 +75,9 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
         }
 
         [Test]
-        public void TestAutomaticRecreationOfTemporaryExtent()
+        public async Task TestAutomaticRecreationOfTemporaryExtent()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             
             Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);

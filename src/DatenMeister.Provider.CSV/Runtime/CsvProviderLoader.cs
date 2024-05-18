@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -28,54 +29,60 @@ namespace DatenMeister.Provider.CSV.Runtime
         /// <param name="extentCreationFlags"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        public async Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
-            var dataProvider =
-                new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
-
-            var provider = new InMemoryProvider();
-
-            var filePath =
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath);
-            if (filePath == null || string.IsNullOrEmpty(filePath))
+            return await Task.Run(() =>
             {
-                throw new InvalidOperationException("FilePath is empty");
-            }
+                var dataProvider =
+                    new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
 
-            var doesFileExist = File.Exists(filePath);
-            if (doesFileExist)
-            {
-                var settings =
-                    configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig
-                        .settings) ?? throw new InvalidOperationException("Settings are not set");
-                
-                dataProvider.Load(
-                    provider,
-                    filePath,
-                    settings);
-            }
-            else if (extentCreationFlags == ExtentCreationFlags.LoadOnly)
-            {
-                throw new InvalidOperationException(
-                    $"File '{filePath}' does not exist and creation of extents is not granted via extentCreationFlags. Real Path: " +
-                    $"{Path.Combine(Environment.CurrentDirectory, configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath))}");
-            }
+                var provider = new InMemoryProvider();
 
-            return new LoadedProviderInfo(provider);
+                var filePath =
+                    configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath);
+                if (filePath == null || string.IsNullOrEmpty(filePath))
+                {
+                    throw new InvalidOperationException("FilePath is empty");
+                }
+
+                var doesFileExist = File.Exists(filePath);
+                if (doesFileExist)
+                {
+                    var settings =
+                        configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig
+                            .settings) ?? throw new InvalidOperationException("Settings are not set");
+
+                    dataProvider.Load(
+                        provider,
+                        filePath,
+                        settings);
+                }
+                else if (extentCreationFlags == ExtentCreationFlags.LoadOnly)
+                {
+                    throw new InvalidOperationException(
+                        $"File '{filePath}' does not exist and creation of extents is not granted via extentCreationFlags. Real Path: " +
+                        $"{Path.Combine(Environment.CurrentDirectory, configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath))}");
+                }
+
+                return new LoadedProviderInfo(provider);
+            });
         }
 
-        public void StoreProvider(IProvider extent, IElement configuration)
+        public async Task StoreProvider(IProvider extent, IElement configuration)
         {
-            var filePath = configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath);
+            await Task.Run(() =>
+            {
+                var filePath = configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath);
 
-            if (filePath == null)
-                throw new InvalidOperationException("csvConfiguration.filePath == null");
-            
-            var provider = new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
+                if (filePath == null)
+                    throw new InvalidOperationException("csvConfiguration.filePath == null");
 
-            var settings = configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings);
-            
-            provider.Save(extent, filePath, settings);
+                var provider = new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
+
+                var settings = configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings);
+
+                provider.Save(extent, filePath, settings);
+            });
         }
 
         public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new()

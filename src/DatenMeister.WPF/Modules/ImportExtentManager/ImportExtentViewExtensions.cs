@@ -183,14 +183,14 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 yield return
                     new RowItemButtonDefinition(
                         "Load Extent",
-                        (x, y) =>
+                        async (x, y) =>
                         {
                             var asElement = y as IElement ?? throw new InvalidOperationException("Not an Element");
                             var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
                             var scopeStorage = GiveMe.Scope.ScopeStorage;
                             
                             var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
-                            var result = extentManager.LoadExtent(asElement, ExtentCreationFlags.LoadOrCreate);
+                            var result = await extentManager.LoadExtent(asElement, ExtentCreationFlags.LoadOrCreate);
 
                             if (result.LoadingState == ExtentLoadingState.Loaded)
                             {

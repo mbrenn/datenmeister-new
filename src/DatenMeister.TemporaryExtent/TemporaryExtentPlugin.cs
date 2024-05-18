@@ -42,7 +42,7 @@ namespace DatenMeister.TemporaryExtent
         /// the workspace logic since it shall not be persisted. Upon restart of server, the data may be lost
         /// </summary>
         /// <param name="position">Position to be used</param>
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -68,6 +68,8 @@ namespace DatenMeister.TemporaryExtent
                     }
                     break;
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

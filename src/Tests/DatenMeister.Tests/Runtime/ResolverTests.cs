@@ -26,8 +26,8 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var uriExtentNavigator = new ExtentUrlNavigator(extent, extent.ScopeStorage);
-            var firstChild = uriExtentNavigator.element(TestUri + "#child1") as IElement;
-            var firstChildCached = uriExtentNavigator.element(TestUri + "#child1") as IElement;
+            var firstChild = uriExtentNavigator.element(TestUri + "#child1") as MofElement;
+            var firstChildCached = uriExtentNavigator.element(TestUri + "#child1") as MofElement;
 
             Assert.That(firstChild, Is.Not.Null);
             Assert.That(firstChildCached, Is.Not.Null);
@@ -40,17 +40,17 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var firstChild = extent.GetUriResolver().Resolve(TestUri + "#child1", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var firstChildCached = extent.GetUriResolver().Resolve(TestUri + "#child1", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var noChild = extent.GetUriResolver().Resolve(TestUri + "#none", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var child2Child1 = extent.GetUriResolver().Resolve(TestUri + "#child2child1", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var item1 = extent.GetUriResolver().Resolve(TestUri + "#item1", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var item1_2 = extent.GetUriResolver().Resolve("#item1", ResolveType.Default)
-                as IElement;
+                as MofElement;
 
             Assert.That(firstChild, Is.Not.Null);
             Assert.That(firstChildCached, Is.Not.Null);
@@ -70,14 +70,14 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var firstChild = extent.GetUriResolver().Resolve(TestUri + "?fn=item2::child1", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var noChild = extent.GetUriResolver().Resolve(TestUri + "?fn=none", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var child2Child1 = extent.GetUriResolver()
                     .Resolve(TestUri + "?fn=item2::child2::child2child1", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var item1 = extent.GetUriResolver().Resolve(TestUri + "?fn=item1", ResolveType.Default)
-                as IElement;
+                as MofElement;
 
             Assert.That(firstChild, Is.Not.Null);
             Assert.That(item1, Is.Not.Null);
@@ -134,7 +134,7 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var firstChild = extent.GetUriResolver().Resolve(TestUri + "#child1", ResolveType.Default)
-                as IElement;
+                as MofElement;
             var asShadow = new MofObjectShadow(TestUri + "#child1");
 
             Assert.That(firstChild, Is.Not.Null);

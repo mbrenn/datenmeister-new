@@ -1,17 +1,18 @@
 using DatenMeister.Integration.DotNet;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using ZipCodeWebsite.Models;
 
 namespace ZipCodeWebsite
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            using var dm = GiveMe.DatenMeister();
+            using var dm = await GiveMe.DatenMeister();
 
-            ZipCodeLogic.PrepareZipCode(dm);
+            await ZipCodeLogic.PrepareZipCode(dm);
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using DatenMeister.BootStrap;
 using DatenMeister.Core.EMOF.Implementation;
@@ -91,9 +92,9 @@ namespace DatenMeister.Tests.Xmi
         }
 
         [Test]
-        public void TestThatPropertyIsIElement()
+        public async Task TestThatPropertyIsIElement()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var comment = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.CommonStructure.__Comment.GetUri()!, ResolveType.Default)
@@ -119,9 +120,9 @@ namespace DatenMeister.Tests.Xmi
         }
 
         [Test]
-        public void TestThatGeneralizationsAreOk()
+        public async Task TestThatGeneralizationsAreOk()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var package = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Packages.__Package.GetUri()!, ResolveType.Default)

@@ -2,6 +2,7 @@
 
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -30,12 +31,12 @@ namespace DatenMeister.Extent.Manager
         /// <param name="uri"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static ExtentStorageData.LoadedExtentInformation CreateAndAddXmiExtent(
+        public static async Task<ExtentStorageData.LoadedExtentInformation> CreateAndAddXmiExtent(
             ExtentManager scope,
             string uri,
             string filename)
         {
-            return scope.CreateAndAddXmiExtent(uri, filename);
+            return await scope.CreateAndAddXmiExtent(uri, filename);
         }
 
         /// <summary>

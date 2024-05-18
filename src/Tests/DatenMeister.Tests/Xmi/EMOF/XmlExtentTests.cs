@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -238,9 +239,9 @@ namespace DatenMeister.Tests.Xmi.EMOF
         }
 
         [Test]
-        public void TestXmlExtentStorage()
+        public async Task TestXmlExtentStorage()
         {
-            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
             using var scope = builder.BeginLifetimeScope();
             var path = PathForTemporaryDataFile;
@@ -259,7 +260,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             // Creates the extent
             var loader = scope.Resolve<ExtentManager>();
-            var loadedExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
+            var loadedExtent = await loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
             Assert.That(loadedExtent.Extent, Is.Not.Null);
 
             // Includes some data
@@ -271,17 +272,17 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(createdElement.get("test"), Is.EqualTo("Test"));
 
             // Stores the extent
-            loader.StoreExtent(loadedExtent.Extent);
+            await loader.StoreExtent(loadedExtent.Extent);
 
             // Detaches it
-            loader.DetachExtent(loadedExtent.Extent);
+            await loader.DetachExtent(loadedExtent.Extent);
 
             // Reloads it
 
             storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
                 "dm:///test_new");
 
-            var newExtent = loader.LoadExtent(storageConfiguration);
+            var newExtent = await loader.LoadExtent(storageConfiguration);
             Assert.That(newExtent, Is.Not.Null);
             Assert.That(newExtent.Extent, Is.Not.Null);
             Assert.That(newExtent!.Extent!.elements().size(), Is.EqualTo(1));
@@ -289,9 +290,9 @@ namespace DatenMeister.Tests.Xmi.EMOF
         }
 
         [Test]
-        public void TestWithMetaClass()
+        public async Task TestWithMetaClass()
         {
-            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
             using var scope = builder.BeginLifetimeScope();
             var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
@@ -317,11 +318,11 @@ namespace DatenMeister.Tests.Xmi.EMOF
         }
 
         [Test]
-        public void TestRemoveAllElements()
+        public async Task TestRemoveAllElements()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var creator = dm.Resolve<ExtentCreator>();
-            var xmi = creator.GetOrCreateXmiExtentInInternalDatabase(
+            var xmi = await creator.GetOrCreateXmiExtentInInternalDatabase(
                 null,
                 "dm:///test",
                 "Name",

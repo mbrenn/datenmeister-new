@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -72,7 +73,7 @@ namespace ZipCodeWebsite.Models
         /// Prepares the zipcode
         /// </summary>
         /// <param name="dm"></param>
-        public static void PrepareZipCode(IDatenMeisterScope dm)
+        public static async Task PrepareZipCode(IDatenMeisterScope dm)
         {
             var manager = new ZipCodeExampleManager(
                 dm.WorkspaceLogic,
@@ -81,7 +82,7 @@ namespace ZipCodeWebsite.Models
 
             if (dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///zipcodes/") is not IUriExtent foundExtent)
             {
-                foundExtent = manager.AddZipCodeExample(
+                foundExtent = await manager.AddZipCodeExample(
                     WorkspaceNames.WorkspaceData, 
                     "dm:///zipcodes/",
                     null,

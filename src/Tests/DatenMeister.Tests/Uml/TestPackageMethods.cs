@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.InMemory;
@@ -12,9 +13,9 @@ namespace DatenMeister.Tests.Uml
     public class TestPackageMethods
     {
         [Test]
-        public void TestImportOfPackageIntoExtent()
+        public async Task TestImportOfPackageIntoExtent()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);

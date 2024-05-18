@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Uml
 {
@@ -8,9 +9,9 @@ namespace DatenMeister.Tests.Uml
     public class TestMofUmlWorkspaceIntegration
     {
         [Test]
-        public void TestUrisOfWorkspaces()
+        public async Task TestUrisOfWorkspaces()
         {
-            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
             using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();

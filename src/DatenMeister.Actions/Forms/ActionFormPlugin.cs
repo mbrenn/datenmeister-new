@@ -8,6 +8,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormModifications;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Actions.Forms
 {
@@ -25,7 +26,7 @@ namespace DatenMeister.Actions.Forms
             _scopeStorage = scopeStorage;
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -36,6 +37,8 @@ namespace DatenMeister.Actions.Forms
                         new ActionFormModificationPlugin());
                     break;
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

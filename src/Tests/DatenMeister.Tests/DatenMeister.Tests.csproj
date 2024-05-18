@@ -12,6 +12,12 @@
     <None Update="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Examples\xmi2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\xmi1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Excel\Quadratzahlen.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

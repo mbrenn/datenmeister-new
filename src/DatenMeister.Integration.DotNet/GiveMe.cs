@@ -43,35 +43,27 @@ namespace DatenMeister.Integration.DotNet
         }
 
         /// <summary>
-        /// Return the DatenMeisterScope asynchronisously as a task.
-        /// </summary>
-        /// <param name="settings">Settings to be used</param>
-        /// <returns>The created task, retuning the DatenMeister. </returns>
-        public static Task<IDatenMeisterScope> DatenMeisterAsync(IntegrationSettings? settings = null)
-            => Task.Run(() => DatenMeister(settings));
-
-        /// <summary>
         /// Returns a fully initialized DatenMeister for use.
         /// </summary>
         /// <param name="settings">Integration settings for the initialization of DatenMeister</param>
         /// <param name="pluginLoaderSettings">The default plugin loader settings</param>
         /// <returns>The initialized DatenMeister that can be used</returns>
-        public static IDatenMeisterScope DatenMeister(IntegrationSettings? settings = null,
+        public static async Task <IDatenMeisterScope> DatenMeister(IntegrationSettings? settings = null,
             PluginLoaderSettings? pluginLoaderSettings = null)
         {
             settings ??= GetDefaultIntegrationSettings();
             pluginLoaderSettings ??= GetDefaultPluginLoaderSettings();
 
             var kernel = new ContainerBuilder();
-            var container = kernel.UseDatenMeister(settings, pluginLoaderSettings);
+            var container = await kernel.UseDatenMeister(settings, pluginLoaderSettings);
 
             var scope = new DatenMeisterScope(container.BeginLifetimeScope());
             scope.ScopeStorage = scope.Resolve<IScopeStorage>();
 
             Scope = scope;
-            scope.BeforeDisposing += (x, y) =>
+            scope.BeforeDisposing += async (x, y) =>
             {
-                scope.UnuseDatenMeister();
+                await scope.UnuseDatenMeister();
                 ClearScope();
             };
 

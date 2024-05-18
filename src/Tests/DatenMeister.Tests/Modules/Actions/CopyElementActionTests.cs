@@ -28,16 +28,16 @@ namespace DatenMeister.Tests.Modules.Actions
 
             await actionLogic.ExecuteAction(action);
 
-            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
 
-            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
         }
 
         [Test]
@@ -56,16 +56,16 @@ namespace DatenMeister.Tests.Modules.Actions
 
             await actionLogic.ExecuteAction(action);
 
-            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
 
-            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace), Is.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace) as MofElement, Is.Null);
         }
 
         [Test]
@@ -84,15 +84,15 @@ namespace DatenMeister.Tests.Modules.Actions
 
             await actionLogic.ExecuteAction(action);
 
-            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
 
-            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
         }
 
         [Test]
@@ -110,15 +110,15 @@ namespace DatenMeister.Tests.Modules.Actions
 
             await actionLogic.ExecuteAction(action);
 
-            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
 
-            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
         }
 
         [Test]
@@ -136,17 +136,17 @@ namespace DatenMeister.Tests.Modules.Actions
 
             await actionLogic.ExecuteAction(action);
 
-            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
 
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.NoWorkspace),
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.NoWorkspace) as MofElement,
                 Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.NoWorkspace),
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.NoWorkspace) as MofElement,
                 Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace), Is.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
         }
 
         [Test]
@@ -172,15 +172,15 @@ namespace DatenMeister.Tests.Modules.Actions
 
             await actionLogic.ExecuteAction(action);
 
-            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
 
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace), Is.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace), Is.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace) as MofElement, Is.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
         }
 
         [Test]
@@ -205,17 +205,17 @@ namespace DatenMeister.Tests.Modules.Actions
 
             await actionLogic.ExecuteAction(action);
 
-            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source1::source1.2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(source.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
 
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace), Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.NoWorkspace),
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1", ResolveType.NoWorkspace) as MofElement, Is.Not.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.1", ResolveType.NoWorkspace) as MofElement,
                 Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.NoWorkspace),
+            Assert.That(target.GetUriResolver().Resolve("?target1::source1::source1.2", ResolveType.NoWorkspace) as MofElement,
                 Is.Not.Null);
-            Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace), Is.Null);
+            Assert.That(target.GetUriResolver().Resolve("?target1::source2", ResolveType.NoWorkspace) as MofElement, Is.Null);
         }
     }
 }

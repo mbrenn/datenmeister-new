@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
@@ -26,11 +27,11 @@ namespace ScriptTests
         
         private static string GetScriptFolder([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
 
-        public static void TestReportIssues(IElement configuration) => TestReports(true, configuration);
+        public static async Task TestReportIssues(IElement configuration) => await TestReports(true, configuration);
         
-        public static void TestReportZipCode(IElement configuration) => TestReports(false, configuration);
+        public static async Task TestReportZipCode(IElement configuration) => await TestReports(false, configuration);
 
-        public static void TestReports(bool doIssues , IElement configuration)
+        public static async Task TestReports(bool doIssues , IElement configuration)
         {
             TheLog.ClearProviders();
             TheLog.AddProvider(new ConsoleProvider());
@@ -39,7 +40,7 @@ namespace ScriptTests
 
             GiveMe.DropDatenMeisterStorage(settings);
 
-            using var dm = GiveMe.DatenMeister(settings);
+            using var dm = await GiveMe.DatenMeister(settings);
             IUriExtent testExtent;
             if (doIssues)
             {
@@ -52,12 +53,12 @@ namespace ScriptTests
                     _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, 
                     "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi");
                     
-                testExtent = extentManager.LoadExtent(loaderConfig).Extent;
+                testExtent = (await extentManager.LoadExtent(loaderConfig)).Extent;
             }
             else
             {
                 var zipCodeManager = dm.Resolve<ZipCodeExampleManager>();
-                testExtent = zipCodeManager.AddZipCodeExample(
+                testExtent = await zipCodeManager.AddZipCodeExample(
                     WorkspaceNames.WorkspaceData,
                     Path.Combine(GetScriptFolder(), "plz.csv"));
             }

@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DataView.Evaluation;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.DataView
 {
@@ -27,7 +28,7 @@ namespace DatenMeister.DataView
         /// Starts the plugin
         /// </summary>
         /// <param name="position"></param>
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -45,6 +46,8 @@ namespace DatenMeister.DataView
                     _scopeStorage.Add(factories);
                     break;
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

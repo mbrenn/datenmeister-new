@@ -74,7 +74,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             _cachedWorkspaceLogic = workspaceLogic;
         }
 
-
         /// <inheritdoc />
         public MofUriExtent(IProvider provider, string uri, IScopeStorage? scopeStorage) :
             this(provider, scopeStorage)

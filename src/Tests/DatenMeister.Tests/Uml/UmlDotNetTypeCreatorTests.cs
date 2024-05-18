@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
@@ -10,9 +11,9 @@ namespace DatenMeister.Tests.Uml
     public class UmlDotNetTypeCreatorTests
     {
         [Test]
-        public void TestZipCode()
+        public async Task TestZipCode()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var typeWorkspace = dm.WorkspaceLogic.GetTypesWorkspace();
             var zipCodes = typeWorkspace.ResolveElement(
                 "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode",

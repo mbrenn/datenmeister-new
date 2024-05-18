@@ -19,7 +19,7 @@ namespace DatenMeister.Actions.ActionHandler
 
         public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 var configuration =
                     action.getOrDefault<IElement>(_DatenMeister._Actions._LoadExtentAction.configuration);
@@ -47,10 +47,10 @@ namespace DatenMeister.Actions.ActionHandler
                 var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
                 if (dropExisting)
                 {
-                    extentManager.RemoveExtent(workspaceId, extentUri);
+                    await extentManager.RemoveExtent(workspaceId, extentUri);
                 }
 
-                var result = extentManager.LoadExtent(
+                var result = await extentManager.LoadExtent(
                     configuration,
                     ExtentCreationFlags.LoadOrCreate);
 

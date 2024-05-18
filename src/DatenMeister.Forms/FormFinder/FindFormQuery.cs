@@ -22,9 +22,9 @@ namespace DatenMeister.Forms.FormFinder
 
         public string parentProperty { get; set; } = string.Empty;
 
-        public string workspaceId { get; set; }
+        public string workspaceId { get; set; } = string.Empty;
 
-        public string extentUri { get; set; }
+        public string extentUri { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the information whether the Form Finding shall be with active debugger break,

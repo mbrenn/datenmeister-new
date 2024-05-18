@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -55,7 +56,7 @@ namespace DatenMeister.Users.UserManagement
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public async Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -70,7 +71,7 @@ namespace DatenMeister.Users.UserManagement
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:
-                    _extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                    _extent = await _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                         WorkspaceNames.WorkspaceManagement,
                         ExtentUri,
                         ExtentTypeName,

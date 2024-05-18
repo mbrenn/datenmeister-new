@@ -22,7 +22,7 @@ namespace DatenMeister.Reports.Forms
             this.scopeStorage = scopeStorage;
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             if (position == PluginLoadingPosition.AfterLoadingOfExtents)
             {
@@ -58,6 +58,8 @@ namespace DatenMeister.Reports.Forms
                 scopeStorage.Get<ActionLogicState>().AddActionHandler(
                     new RequestReportAction(workspaceLogic, scopeStorage));
             }
+
+            return Task.CompletedTask;
         }
 
         public static Stream GetXmiStreamForForms()

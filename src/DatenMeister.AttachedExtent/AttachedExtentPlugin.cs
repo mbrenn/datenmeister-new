@@ -2,6 +2,7 @@
 using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.AttachedExtent
 {
@@ -15,7 +16,7 @@ namespace DatenMeister.AttachedExtent
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             if ((position & PluginLoadingPosition.AfterInitialization) != 0)
             {
@@ -30,6 +31,8 @@ namespace DatenMeister.AttachedExtent
             else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)
             {
             }
+
+            return Task.CompletedTask;
         }
     }
 }

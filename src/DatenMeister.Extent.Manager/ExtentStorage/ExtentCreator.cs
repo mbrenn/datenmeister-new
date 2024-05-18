@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -44,14 +45,14 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// <param name="name">Name of the extent (being used to stored into database). The
         /// name needs to be unique</param>
         /// <returns>The uri extent being found</returns>
-        public static IUriExtent? GetOrCreateXmiExtentInInternalDatabase(ILifetimeScope scope, string workspace,
+        public static async Task<IUriExtent?> GetOrCreateXmiExtentInInternalDatabase(ILifetimeScope scope, string workspace,
             string uri, string name)
         {
             var creator = scope.Resolve<ExtentCreator>();
-            return creator.GetOrCreateXmiExtentInInternalDatabase(workspace, uri, name);
+            return await creator.GetOrCreateXmiExtentInInternalDatabase(workspace, uri, name);
         }
 
-        public IUriExtent? GetOrCreateXmiExtentInInternalDatabase(
+        public async Task<IUriExtent?> GetOrCreateXmiExtentInInternalDatabase(
             string? workspace,
             string uri,
             string name,
@@ -75,7 +76,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                     workspace);
 
-                foundExtent = _extentManager.LoadExtent(storageConfiguration, extentCreationFlags).Extent;
+                foundExtent = (await _extentManager.LoadExtent(storageConfiguration, extentCreationFlags)).Extent;
 
                 if (foundExtent != null)
                 {

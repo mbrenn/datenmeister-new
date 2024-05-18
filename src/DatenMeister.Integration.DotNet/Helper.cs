@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.BootStrap;
 using DatenMeister.Core;
@@ -18,14 +19,14 @@ namespace DatenMeister.Integration.DotNet
     {
         private static Integrator? _integration;
 
-        public static IDatenMeisterScope UseDatenMeister(
+        public static async Task<IDatenMeisterScope> UseDatenMeister(
             this ContainerBuilder kernel,
             IntegrationSettings settings,
             PluginLoaderSettings? pluginLoaderSettings = null)
         {
             pluginLoaderSettings ??= new PluginLoaderSettings();
             _integration = new Integrator(settings, pluginLoaderSettings);
-            return _integration.UseDatenMeister(kernel);
+            return await _integration.UseDatenMeister(kernel);
         }
 
         /// <summary>
@@ -33,10 +34,10 @@ namespace DatenMeister.Integration.DotNet
         /// This method is typically called at the end of the lifecycle of the application
         /// </summary>
         /// <param name="scope">Kernel to be used to find the appropriate methods</param>
-        public static void UnuseDatenMeister(this IDatenMeisterScope scope)
+        public static async Task UnuseDatenMeister(this IDatenMeisterScope scope)
         {
             Debug.Assert(_integration != null, nameof(_integration) + " != null");
-            _integration.UnuseDatenMeister();
+            await _integration.UnuseDatenMeister();
             
             var integrationSettings = scope.ScopeStorage.Get<IntegrationSettings>();
             if (!integrationSettings.IsReadOnly)
@@ -44,7 +45,7 @@ namespace DatenMeister.Integration.DotNet
                 scope.Resolve<WorkspaceLoader>().Store();
             }
             
-            scope.Resolve<ExtentManager>().UnloadManager(true);
+            await scope.Resolve<ExtentManager>().UnloadManager(true);
         }
     }
 }

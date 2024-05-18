@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.BootStrap.PublicSettings;
@@ -32,7 +33,7 @@ namespace DatenMeister.WebServer
             await _host.StopAsync();
         }
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // Loads the Public Settings
             var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
@@ -60,7 +61,7 @@ namespace DatenMeister.WebServer
                             new List<string>(new[] {"DatenMeister.WebServer.Views.dll"})
                     });
 
-                GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
+                GiveMe.Scope = await GiveMe.DatenMeister(defaultSettings);
 
                 // Loads the configuration for the webserver
                 if (configuration != null)

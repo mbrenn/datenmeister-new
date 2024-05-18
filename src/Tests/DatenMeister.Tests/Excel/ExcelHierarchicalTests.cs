@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -21,9 +22,9 @@ namespace DatenMeister.Tests.Excel
     public class ExcelHierarchicalTests
     {
         [Test]
-        public void TestHierarchicalExcelLoad()
+        public async Task TestHierarchicalExcelLoad()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var filePath = Path.Combine(currentDirectory!, "Excel/Hierarchical Test.xlsx");
 
@@ -70,7 +71,7 @@ namespace DatenMeister.Tests.Excel
                 new[] { definition1, definition2 });
 
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
-            var inMemoryExtent = extentManager.LoadExtent(loaderConfig);
+            var inMemoryExtent = await extentManager.LoadExtent(loaderConfig);
 
             Assert.That(inMemoryExtent, Is.Not.Null);
             Assert.That(inMemoryExtent.Extent, Is.Not.Null);

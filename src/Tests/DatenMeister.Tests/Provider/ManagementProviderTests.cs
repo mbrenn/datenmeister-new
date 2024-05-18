@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -21,9 +23,9 @@ namespace DatenMeister.Tests.Provider
     public class ManagementProviderTests
     {
         [Test]
-        public void TestSettingOfUri()
+        public async Task TestSettingOfUri()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var uriExtent = scope.WorkspaceLogic.GetManagementWorkspace()
                 .FindExtent(WorkspaceNames.UriExtentWorkspaces);
 
@@ -50,9 +52,9 @@ namespace DatenMeister.Tests.Provider
         }
 
         [Test]
-        public void TestRemovalOfExtentViaProvider()
+        public async Task TestRemovalOfExtentViaProvider()
         {
-            var (_, workspaceLogic, _, _, extent) = GetInitializedWorkspace();
+            var (_, workspaceLogic, _, _, extent) = await GetInitializedWorkspace();
 
             var firstWorkspace = extent.elements().OfType<IElement>().FirstOrDefault();
             Assert.That(firstWorkspace, Is.Not.Null);
@@ -83,9 +85,9 @@ namespace DatenMeister.Tests.Provider
             Assert.That(extents.Count(), Is.EqualTo(0));
         }
 
-        private static (ScopeStorage scopeStorage, WorkspaceLogic workspaceLogic,
+        private static async Task<(ScopeStorage scopeStorage, WorkspaceLogic workspaceLogic,
             ExtentStorageData.LoadedExtentInformation loadedExtent, ExtentOfWorkspaceProvider provider, MofUriExtent
-            managementExtent) GetInitializedWorkspace()
+            managementExtent)> GetInitializedWorkspace()
         {
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(WorkspaceLogic.InitDefault());
@@ -103,7 +105,7 @@ namespace DatenMeister.Tests.Provider
             loadConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.name, "dm:///test");
             loadConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
             loadConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "Data");
-            var loadedExtent = extentManager.LoadExtent(loadConfig, ExtentCreationFlags.LoadOrCreate);
+            var loadedExtent = await extentManager.LoadExtent(loadConfig, ExtentCreationFlags.LoadOrCreate);
             Assert.That(loadedExtent.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
 
             var provider = new ExtentOfWorkspaceProvider(workspaceLogic, scopeStorage);
@@ -112,9 +114,9 @@ namespace DatenMeister.Tests.Provider
         }
 
         [Test]
-        public void TestPropertiesViaProviderAccess()
+        public async Task TestPropertiesViaProviderAccess()
         {
-            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = GetInitializedWorkspace();
+            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = await GetInitializedWorkspace();
             loadedExtent.Extent!.set("name", "Brenn");
 
             var firstWorkspace = extent.elements().OfType<IElement>().FirstOrDefault();
@@ -132,12 +134,12 @@ namespace DatenMeister.Tests.Provider
         }
 
         [Test]
-        public void TestUrlsOfWorkspaceAndExtentAndProperties()
+        public async Task TestUrlsOfWorkspaceAndExtentAndProperties()
         {
-            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = GetInitializedWorkspace();
+            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = await GetInitializedWorkspace();
             loadedExtent.Extent!.set("name", "Brenn");
             var plugin = new ManagementProviderPlugin(workspaceLogic, scopeStorage);
-            plugin.Start(PluginLoadingPosition.AfterInitialization);
+            await plugin.Start(PluginLoadingPosition.AfterInitialization);
 
             var data = workspaceLogic.FindElement(
                 ExtentManagementUrlHelper.GetUrlOfWorkspace(

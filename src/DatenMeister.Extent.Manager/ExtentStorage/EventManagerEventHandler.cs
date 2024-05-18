@@ -3,6 +3,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage
 {
@@ -16,17 +17,17 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             _scopeStorage = scopeStorage;
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var workspaceData = _scopeStorage.Get<WorkspaceData>();
-                    workspaceData.WorkspaceRemoved += (x, y) =>
+                    workspaceData.WorkspaceRemoved += async (x, y) =>
                     {
                         var logic = new WorkspaceLogic(_scopeStorage);
                         var manager = new ExtentManager(logic, _scopeStorage);
-                        manager.DetachAllExtents(info =>
+                        await manager.DetachAllExtents(info =>
                             info.Configuration
                                 .getOrDefault<string>(
                                     _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
@@ -34,6 +35,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     };
                     break;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

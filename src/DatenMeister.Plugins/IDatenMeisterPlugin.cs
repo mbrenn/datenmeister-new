@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Plugins
+﻿using System.Threading.Tasks;
+
+namespace DatenMeister.Plugins
 {
     /// <summary>
     ///     Defines the interface for the plugins.
@@ -9,6 +11,6 @@
         /// <summary>
         ///     Starts the plugin
         /// </summary>
-        void Start(PluginLoadingPosition position);
+        Task Start(PluginLoadingPosition position);
     }
 }

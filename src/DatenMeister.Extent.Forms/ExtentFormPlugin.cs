@@ -5,6 +5,7 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Extent.Forms
 {
@@ -33,7 +34,7 @@ namespace DatenMeister.Extent.Forms
             _extentManager = extentManager;
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -118,6 +119,8 @@ namespace DatenMeister.Extent.Forms
                         });
                     break;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -177,7 +177,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
                     new RowItemButtonDefinition("Save", SaveExtent),
-                    new RowItemButtonDefinition("Delete", DeleteExtent),
+                    new RowItemButtonDefinition("Delete", async(INavigationGuest x, IObject element) => await DeleteExtent(x, element)),   
                     new RowItemButtonDefinition(
                         "Edit Properties",
                         async (navigationGuest, element) =>
@@ -247,7 +247,7 @@ namespace DatenMeister.WPF.Forms.Lists
                         }
                     }));
 
-            void DeleteExtent(INavigationGuest guest, IObject element)
+            async Task DeleteExtent(INavigationGuest guest, IObject element)
             {
                 var extentObject = (element as MofElement)?.ProviderObject as ExtentObject;
                 var uri = element.getOrDefault<string>("uri");
@@ -263,12 +263,12 @@ namespace DatenMeister.WPF.Forms.Lists
                         workspaceLogic.FindExtent(workspaceId, uri);
                     if (extentToBeDeleted != null)
                     {
-                        extentManager.RemoveExtent(extentToBeDeleted);
+                        await extentManager.RemoveExtent(extentToBeDeleted);
                     }
 
                     if (extentObject?.LoadedExtentInformation != null)
                     {
-                        extentManager.RemoveExtent(extentObject.LoadedExtentInformation);
+                        await extentManager.RemoveExtent(extentObject.LoadedExtentInformation);
                     }
 
                     guest.UpdateForm();
@@ -315,7 +315,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
                     try
                     {
-                        var loadedExtent = extentManager.LoadExtent(
+                        var loadedExtent = await extentManager.LoadExtent(
                             extentLoaderConfig,
                             ExtentCreationFlags.LoadOrCreate);
                         if (loadedExtent.LoadingState == ExtentLoadingState.Failed)
@@ -381,7 +381,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Load from extent import class
                     var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
-                    extentImport.ImportExtent(navigationResult.DetailElement);
+                    await extentImport.ImportExtent(navigationResult.DetailElement);
                 }
             }
             catch (Exception exc)
@@ -432,15 +432,15 @@ namespace DatenMeister.WPF.Forms.Lists
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var extent =
                 workspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
+
             if (extent == null)
             {
                 Logger.Error("Extent for Types is not found");
                 return null;
             }
 
-            var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
             var package =
-                packageMethods.GetPackageStructure(
+                PackageMethods.GetPackageStructure(
                     extent.elements(),
                     ExtentManager.PackagePathTypesExtentLoaderConfig);
             if (package == null)

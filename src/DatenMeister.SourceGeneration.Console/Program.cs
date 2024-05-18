@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
 using DatenMeister.Core.EMOF.Implementation;
@@ -11,17 +12,16 @@ namespace DatenMeister.SourceGeneration.Console
 {
     class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-
             if (args.Length == 0)
             {
-                PerformStandardProcedure();
+                await PerformStandardProcedure();
             }
             else
             {
                 var value = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-                value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace));
+                value.WithParsed(async x => await CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace));
                 value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
             }
         }
@@ -29,7 +29,7 @@ namespace DatenMeister.SourceGeneration.Console
         /// <summary>
         /// Performs the standard procedure
         /// </summary>
-        private static void PerformStandardProcedure()
+        private static async Task PerformStandardProcedure()
         {
             System.Console.WriteLine("Perform the standard procedure.");
 
@@ -40,9 +40,9 @@ namespace DatenMeister.SourceGeneration.Console
 
             StandardProcedure.CreateSourceForExcel();
 
-            StandardProcedure.CreateSourceCodeForDatenMeisterAllTypes();
+            await StandardProcedure.CreateSourceCodeForDatenMeisterAllTypes();
 
-            StandardProcedure.CreateTypescriptForDatenMeisterAllTypes();
+            await StandardProcedure.CreateTypescriptForDatenMeisterAllTypes();
             
             System.Console.WriteLine("Closing Source Code Generator");
 
@@ -76,13 +76,13 @@ namespace DatenMeister.SourceGeneration.Console
         }
 
 
-        public static void CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
+        public static async Task CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
         {
             System.Console.WriteLine("Reading from: " + pathXml);
             System.Console.WriteLine("Writing to  : " + pathTarget);
             System.Console.WriteLine();
 
-            using var dm = GiveMe.DatenMeister();
+            using var dm = await GiveMe.DatenMeister();
             var filename = Path.GetFileNameWithoutExtension(pathXml);
 
             var typeExtent = new MofUriExtent(

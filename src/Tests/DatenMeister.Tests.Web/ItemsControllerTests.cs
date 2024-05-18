@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Controller;
 using DatenMeister.WebServer.Library.Helper;
+using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -20,9 +23,9 @@ namespace DatenMeister.Tests.Web
     public class ItemsControllerTests
     {
         [Test]
-        public void TestGetProperty()
+        public async Task TestGetProperty()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var extent);
+            var (dm, extent) = await ElementControllerTests.CreateExampleExtent();
             var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
             var found = itemsController.GetPropertyInternal(
                 "Data",
@@ -49,12 +52,14 @@ namespace DatenMeister.Tests.Web
                     .OfType<IElement>()
                     .Any(x => x.getOrDefault<string>("name") == "item1"),
                 Is.True);
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestUnsetProperty()
+        public async Task TestUnsetProperty()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+            var (dm, example) = await ElementControllerTests.CreateExampleExtent();
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
 
             var item1 = example.element("#item1");
@@ -68,12 +73,14 @@ namespace DatenMeister.Tests.Web
                 new ItemsController.UnsetPropertyParams {Property = "name"});
 
             Assert.That(item1.getOrDefault<string>("name"), Is.Null);
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestGetRootElements()
+        public async Task TestGetRootElements()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var extent);
+            var (dm, extent) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var rootElements = itemsController
@@ -99,13 +106,15 @@ namespace DatenMeister.Tests.Web
             }
 
             Assert.That(found, Is.Not.Null);
+
+            dm.Dispose();
         }
 
 
         [Test]
-        public void TestGetRootElementsWithMetaClass()
+        public async Task TestGetRootElementsWithMetaClass()
         {
-            var (zipExtent, formsController, x) = FormControllerTests.CreateZipExtent();
+            var (zipExtent, formsController, x) = await FormControllerTests.CreateZipExtent();
 
             var itemsController = new ItemsController(x.WorkspaceLogic, x.ScopeStorage);
             var rootElements = itemsController.GetRootElements(
@@ -124,9 +133,9 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestDeleteItems()
+        public async Task TestDeleteItems()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+            var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var rootElements = example.elements().ToList();
@@ -140,12 +149,14 @@ namespace DatenMeister.Tests.Web
 
             var newRootElements = example.elements().ToList();
             Assert.That(newRootElements.Count, Is.EqualTo(count - 1));
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestSetMetaClass()
+        public async Task TestSetMetaClass()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+            var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var rootElements = example.elements().ToList();
@@ -168,12 +179,14 @@ namespace DatenMeister.Tests.Web
                 });
 
             Assert.That(first.getMetaClass()?.@equals(new MofObjectShadow(newMetaClass)), Is.True);
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestAddReferenceToCollection()
+        public async Task TestAddReferenceToCollection()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+            var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
 
@@ -209,12 +222,14 @@ namespace DatenMeister.Tests.Web
 
             list = first.getOrDefault<IReflectiveCollection>("reference");
             Assert.That(list.size() == 2, Is.True);
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestSetPropertyReference()
+        public async Task TestSetPropertyReference()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+            var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
 
@@ -243,9 +258,9 @@ namespace DatenMeister.Tests.Web
         }
 
         [Test]
-        public void TestRemoveReferenceToCollection()
+        public async Task TestRemoveReferenceToCollection()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var example);
+            var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
 
@@ -273,12 +288,14 @@ namespace DatenMeister.Tests.Web
 
             list = first.get<IReflectiveCollection>("reference");
             Assert.That(list.size() == 0, Is.True);
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestGetContainer()
+        public async Task TestGetContainer()
         {
-            using var dm = ElementControllerTests.CreateExampleExtent(out var extent);
+            var (dm, extent) = await ElementControllerTests.CreateExampleExtent();
 
             var item1 = extent.element("item1");
             var item4 = extent.element("item4");
@@ -329,13 +346,15 @@ namespace DatenMeister.Tests.Web
             
             Assert.That(container7[3].name, Is.EqualTo("Data"));
             Assert.That(container7[3].workspace, Is.EqualTo("Management"));
+
+            dm.Dispose();
         }
         
 
         [Test]
-        public void TestExportXmiOfManagement()
+        public async Task TestExportXmiOfManagement()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
             
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var result = itemsController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces#Data");

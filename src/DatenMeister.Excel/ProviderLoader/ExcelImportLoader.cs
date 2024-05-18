@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -18,7 +19,7 @@ namespace DatenMeister.Excel.ProviderLoader
         
         public IScopeStorage? ScopeStorage { get; set; }
 
-        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        public async Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             configuration = ObjectCopier.CopyForTemporary(configuration) as IElement
                             ?? throw new InvalidOperationException("Element is not of type IElement");
@@ -40,7 +41,7 @@ namespace DatenMeister.Excel.ProviderLoader
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
 
-            var loadedInfo = extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
+            var loadedInfo = await extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
             if (loadedInfo.LoadingState == ExtentLoadingState.Failed || loadedInfo.Extent == null)
             {
                 throw new InvalidOperationException("Loading of the extent has failed");
@@ -57,7 +58,7 @@ namespace DatenMeister.Excel.ProviderLoader
                 {IsExtentAlreadyAddedToWorkspace = true};
         }
 
-        public void StoreProvider(IProvider extent, IElement configuration)
+        public Task StoreProvider(IProvider extent, IElement configuration)
         {
             throw new NotImplementedException();
         }

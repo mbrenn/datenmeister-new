@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -18,9 +20,9 @@ namespace DatenMeister.Tests.Web
         public const string UriTemporaryExtent = "dm:///temp";
 
         [Test]
-        public void TestWorkspaces()
+        public async Task TestWorkspaces()
         {
-            using var dm = CreateExampleExtent(out var extent);
+            var (dm, extent) = await CreateExampleExtent();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -31,12 +33,14 @@ namespace DatenMeister.Tests.Web
             Assert.That(result.Value.Any(x => x.name == "Data"));
             Assert.That(result.Value.Any(x => x.id == "Data"));
             Assert.That(result.Value.Any(x => x.name == "Management"));
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestExtents()
+        public async Task TestExtents()
         {
-            using var dm = CreateExampleExtent(out var extent);
+            var (dm, extent) = await CreateExampleExtent();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -46,12 +50,15 @@ namespace DatenMeister.Tests.Web
             // Check, that the workspaces are in... 
             Assert.That(result.Value.Any(x => x.name == "Test Extent"));
             Assert.That(result.Value.Any(x => x.id == "Data_dm:///temp"));
+
+            dm.Dispose();
+
         }
 
         [Test]
-        public void TestRootElements()
+        public async Task TestRootElements()
         {
-            using var dm = CreateExampleExtent(out var extent);
+            var (dm, extent) = await CreateExampleExtent();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -61,12 +68,14 @@ namespace DatenMeister.Tests.Web
             // Check, that the workspaces are in... 
             Assert.That(result.Value.Any(x => x.name == "item1"));
             Assert.That(result.Value.Any(x => x.name == "item2"));
+
+            dm.Dispose();
         }
 
         [Test]
-        public void TestSubElementsWithSingleChild()
+        public async Task TestSubElementsWithSingleChild()
         {
-            using var dm = CreateExampleExtent(out var extent);
+            var (dm, extent) = await CreateExampleExtent();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -81,12 +90,13 @@ namespace DatenMeister.Tests.Web
                 "Data", "dm:///temp#" + (firstElement as IHasId)?.Id);
 
             Assert.That(result.Value.Any(x => x.name == "item3"));
+            dm.Dispose();
         }
 
         [Test]
-        public void TestSubElementsWithMultipleChildren()
+        public async Task TestSubElementsWithMultipleChildren()
         {
-            using var dm = CreateExampleExtent(out var extent);
+            var (dm, extent) = await CreateExampleExtent();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -102,12 +112,13 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(result.Value.Any(x => x.name == "item4"));
             Assert.That(result.Value.Any(x => x.name == "item5"));
+            dm.Dispose();
         }
 
         [Test]
-        public void TestFindBySearchString()
+        public async Task TestFindBySearchString()
         {
-            using var dm = CreateExampleExtent(out var extent);
+            var (dm, extent) = await CreateExampleExtent();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -132,16 +143,18 @@ namespace DatenMeister.Tests.Web
             Assert.That(result.reference.extentUri, Is.EqualTo("dm:///temp"));
             Assert.That(result.reference.workspace, Is.EqualTo("Data"));
             Assert.That(result.reference.name, Is.EqualTo("Test Extent"));
+
+            dm.Dispose();
         }
 
-        public static IDatenMeisterScope CreateExampleExtent(out IUriExtent extent)
+        public static async Task<(IDatenMeisterScope, IUriExtent)> CreateExampleExtent()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope(
+            var dm = await DatenMeisterTests.GetDatenMeisterScope(
                 true,
                 DatenMeisterTests.GetIntegrationSettings());
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
 
-            var createdExtent = extentManager.CreateAndAddXmiExtent(UriTemporaryExtent, "./test.xmi");
+            var createdExtent = await extentManager.CreateAndAddXmiExtent(UriTemporaryExtent, "./test.xmi");
             createdExtent.Extent!.set("name", "Test Extent");
 
             var factory = new MofFactory(createdExtent.Extent);
@@ -161,8 +174,8 @@ namespace DatenMeister.Tests.Web
             var item7 = factory.create(null).SetProperty("name", "item7").SetId("item7");
             item4.set(propertyName, new[] { item6, item7 });
 
-            extent = createdExtent.Extent;
-            return dm;
+            var extent = createdExtent.Extent;
+            return (dm, extent);
         }
     }
 }

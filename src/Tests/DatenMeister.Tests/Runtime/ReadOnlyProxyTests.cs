@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -19,9 +20,9 @@ namespace DatenMeister.Tests.Runtime
     public class ReadOnlyProxyTests
     {
         [Test]
-        public void TestChainFromExtentToElement()
+        public async Task TestChainFromExtentToElement()
         {
-            var csvExtent = CreateSimpleCsvExtent();
+            var csvExtent = await CreateSimpleCsvExtent();
 
             var readOnly = new ReadOnlyUriExtent(csvExtent);
             Assert.Throws<ReadOnlyAccessException>(() => readOnly.elements().clear());
@@ -44,7 +45,7 @@ namespace DatenMeister.Tests.Runtime
         /// Creates a simple extent containing three elements with four properties
         /// </summary>
         /// <returns>The created uri extent</returns>
-        private static IUriExtent CreateSimpleCsvExtent()
+        private static async Task<IUriExtent> CreateSimpleCsvExtent()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             File.WriteAllText(CSVExtentTests.PathForTemporaryDataFile, csvFile);
@@ -87,7 +88,7 @@ namespace DatenMeister.Tests.Runtime
                 }
             };*/
 
-            var csvExtent = logic.LoadExtent(configuration);
+            var csvExtent = await logic.LoadExtent(configuration);
             return csvExtent.Extent ?? throw new InvalidOperationException("Loading failed");
         }
     }

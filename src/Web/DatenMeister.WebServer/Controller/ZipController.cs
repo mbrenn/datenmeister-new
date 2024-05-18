@@ -3,6 +3,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.ZipCodeExample;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace DatenMeister.WebServer.Controller
 {
@@ -35,11 +36,11 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpPost("api/zip/create")]
-        public ActionResult<CreateZipExampleResult> CreateZipExample([FromBody] CreateZipExampleParam param)
+        public async Task<ActionResult<CreateZipExampleResult>> CreateZipExample([FromBody] CreateZipExampleParam param)
         {
             var zipExample = new ZipCodeExampleManager(_workspaceLogic,
                 new ExtentManager(_workspaceLogic, _scopeStorage), _scopeStorage);
-            var result = zipExample.AddZipCodeExample(param.Workspace);
+            var result = await zipExample.AddZipCodeExample(param.Workspace);
 
             return new CreateZipExampleResult(
                 true,

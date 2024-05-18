@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Extent.Forms
 {
@@ -13,7 +14,7 @@ namespace DatenMeister.Extent.Forms
             _scopeStorage = scopeStorage;
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -24,6 +25,8 @@ namespace DatenMeister.Extent.Forms
                         new PackageFormModificationPlugin());
                     break;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

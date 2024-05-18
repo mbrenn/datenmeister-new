@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Core.Provider.InMemory
@@ -114,5 +115,16 @@ namespace DatenMeister.Core.Provider.InMemory
         /// </summary>
         /// <returns></returns>
         public ProviderCapability GetCapabilities() => _providerCapability;
+
+        
+        public void Lock()
+        {
+            Monitor.Enter(_elements);
+        }
+
+        public void Unlock()
+        {
+            Monitor.Exit(_elements);
+        }
     }
 }

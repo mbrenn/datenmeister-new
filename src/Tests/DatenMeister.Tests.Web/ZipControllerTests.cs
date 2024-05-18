@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.WebServer.Controller;
 using NUnit.Framework;
@@ -10,9 +11,9 @@ namespace DatenMeister.Tests.Web
     public class ZipControllerTests
     {
         [Test]
-        public void TestZipControllerCreation()
+        public async Task TestZipControllerCreation()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var zipController = new ZipController(dm.WorkspaceLogic, dm.ScopeStorage);
 
@@ -20,7 +21,7 @@ namespace DatenMeister.Tests.Web
                               ?? throw new InvalidOperationException("No management workspace found");
             var n = extentsData.extent.Count();
 
-            zipController.CreateZipExample(new ZipController.CreateZipExampleParam
+            await zipController.CreateZipExample(new ZipController.CreateZipExampleParam
             {
                 Workspace = WorkspaceNames.WorkspaceData
             });

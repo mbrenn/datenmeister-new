@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
@@ -98,9 +99,9 @@ namespace DatenMeister.Tests.Provider
         }
 
         [Test]
-        public void TestOfEnumerationWithFactory()
+        public async Task TestOfEnumerationWithFactory()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
@@ -165,9 +166,9 @@ namespace DatenMeister.Tests.Provider
         }
 
         [Test]
-        public void TestFindingXmiStorageLoaderConfig()
+        public async Task TestFindingXmiStorageLoaderConfig()
         {
-            using var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            using var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();

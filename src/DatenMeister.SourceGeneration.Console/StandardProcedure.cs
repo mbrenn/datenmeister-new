@@ -10,6 +10,7 @@ using DatenMeister.SourcecodeGenerator;
 using DatenMeister.Types;
 using System.Reflection;
 using System;
+using System.Threading.Tasks;
 
 namespace DatenMeister.SourceGeneration.Console;
 
@@ -26,9 +27,9 @@ public class StandardProcedure
     /// </summary>
     public const string T = "./";
 
-    public static void CreateTypescriptForDatenMeisterAllTypes()
+    public static async Task CreateTypescriptForDatenMeisterAllTypes()
     {
-        using var dm = GiveMe.DatenMeister();
+        using var dm = await GiveMe.DatenMeister();
 
         System.Console.Write("Create TypeScript for DatenMeister...");
 
@@ -49,9 +50,9 @@ public class StandardProcedure
         System.Console.WriteLine(" Done");
     }
 
-    public static void CreateSourceCodeForDatenMeisterAllTypes()
+    public static async Task CreateSourceCodeForDatenMeisterAllTypes()
     {
-        using var dm = GiveMe.DatenMeister();
+        using var dm = await GiveMe.DatenMeister();
 
         System.Console.Write("Create Sourcecode for DatenMeister...");
 

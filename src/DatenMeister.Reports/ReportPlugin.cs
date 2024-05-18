@@ -3,6 +3,7 @@ using DatenMeister.Plugins;
 using DatenMeister.Reports.Adoc;
 using DatenMeister.Reports.Generic;
 using DatenMeister.Reports.Html;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Reports
 {
@@ -17,10 +18,12 @@ namespace DatenMeister.Reports
             _scopeStorage = scopeStorage;
         }
         
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             _scopeStorage.Add(CreateAdocEvaluators());
             _scopeStorage.Add(CreateHtmlEvaluators());
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

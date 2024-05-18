@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using DatenMeister.Actions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
@@ -17,9 +19,9 @@ namespace DatenMeister.Tests.Modules.Actions
     public class StoreExtentTests
     {
         [Test]
-        public void StoreExtent()
+        public async Task StoreExtent()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             
             var actionLogic = new ActionLogic(dm.WorkspaceLogic, dm.ScopeStorage);
             var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
@@ -34,7 +36,7 @@ namespace DatenMeister.Tests.Modules.Actions
             loaderConfig.set(
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, 
                 WorkspaceNames.WorkspaceData);
-            var loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
             Assert.That(
                 loadedInfo.LoadingState,
                 Is.EqualTo(ExtentLoadingState.Loaded),

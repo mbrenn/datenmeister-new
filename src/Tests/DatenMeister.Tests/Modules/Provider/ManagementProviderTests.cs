@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
@@ -13,9 +14,9 @@ namespace DatenMeister.Tests.Modules.Provider
     public class ManagementProviderTests
     {
         [Test]
-        public void TestContainering()
+        public async Task TestContainering()
         {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var workspace = scope.WorkspaceLogic.GetManagementWorkspace();
             Assert.That(workspace, Is.Not.Null);
 

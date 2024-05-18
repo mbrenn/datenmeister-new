@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -19,7 +20,7 @@ namespace DatenMeister.Provider.DynamicRuntime
 
         public IScopeStorage? ScopeStorage { get;set; }
 
-        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        public Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             var runtimeClass = configuration.getOrDefault<string>(_DynamicRuntimeLoaderConfig.runtimeClass);
             var provider = CreateInstanceByRuntimeClass<IDynamicRuntimeProvider>(runtimeClass);
@@ -27,7 +28,7 @@ namespace DatenMeister.Provider.DynamicRuntime
             var resultProvider = new DynamicRuntimeProviderWrapper(
                 provider,
                 configuration);
-            return new LoadedProviderInfo(resultProvider, configuration);
+            return Task.FromResult(new LoadedProviderInfo(resultProvider, configuration));
         }
 
         public static T CreateInstanceByRuntimeClass<T>(string runtimeClass) where T : class
@@ -64,9 +65,10 @@ namespace DatenMeister.Provider.DynamicRuntime
             return result;
         }
 
-        public void StoreProvider(IProvider extent, IElement configuration)
+        public Task StoreProvider(IProvider extent, IElement configuration)
         {
             // There is no need to store this
+            return Task.CompletedTask;
         }
 
         public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities()

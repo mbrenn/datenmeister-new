@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -21,9 +22,9 @@ namespace DatenMeister.Tests.Modules
     public class DataviewTests
     {
         [Test]
-        public void TestCreationOfDataviews()
+        public async Task TestCreationOfDataviews()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var helper = dm.Resolve<DataViewHelper>();
             var viewWorkspace = helper.GetViewWorkspace();
 
@@ -34,10 +35,10 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestPropertyFilter()
+        public async Task TestPropertyFilter()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var dataExtent = CreateDataForTest(dm);
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            var dataExtent = await CreateDataForTest(dm);
             Assert.That(dataExtent.elements().Count(), Is.GreaterThan(1));
 
             var helper = dm.Resolve<DataViewHelper>();
@@ -80,10 +81,10 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestDynamicSourceNodes()
+        public async Task TestDynamicSourceNodes()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var dataExtent = CreateDataForTest(dm);
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            var dataExtent = await CreateDataForTest(dm);
 
             var factory = InMemoryObject.TemporaryFactory;
 
@@ -111,7 +112,7 @@ namespace DatenMeister.Tests.Modules
             Assert.That(elements.Length, Is.GreaterThan(0));
         }
 
-        private IUriExtent CreateDataForTest(IDatenMeisterScope dm)
+        private async Task<IUriExtent> CreateDataForTest(IDatenMeisterScope dm)
         {
             var localTypeSupport = dm.Resolve<LocalTypeSupport>();
             var userTypeExtent = localTypeSupport.GetUserTypeExtent();
@@ -127,8 +128,8 @@ namespace DatenMeister.Tests.Modules
             userTypeExtent.elements().add(secondClass);
 
             // Ok, now add the data
-            var extent = XmiExtensions
-                .CreateAndAddXmiExtent(dm.Resolve<ExtentManager>(), "dm:///testdata", "testdata.xmi").Extent!;
+            var extent = (await XmiExtensions
+                .CreateAndAddXmiExtent(dm.Resolve<ExtentManager>(), "dm:///testdata", "testdata.xmi")).Extent!;
             Assert.That(extent, Is.Not.Null);
             var factory = new MofFactory(extent);
             var element1 = factory.create(createdClass);

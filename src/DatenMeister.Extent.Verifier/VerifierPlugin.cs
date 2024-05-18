@@ -18,7 +18,7 @@ public class VerifierPlugin : IDatenMeisterPlugin
         _scopeStorage = scopeStorage;
     }
     
-    public void Start(PluginLoadingPosition position)
+    public Task Start(PluginLoadingPosition position)
     {
         switch (position)
         {
@@ -37,5 +37,7 @@ public class VerifierPlugin : IDatenMeisterPlugin
                 });
                 break;
         }
+
+        return Task.CompletedTask;
     }
 }

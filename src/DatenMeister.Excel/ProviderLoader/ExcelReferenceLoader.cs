@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -32,21 +33,25 @@ namespace DatenMeister.Excel.ProviderLoader
         /// <param name="extentCreationFlags"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        public async Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
-            // Now load the stuff
-            var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, ScopeStorage);
+            return await Task.Run(() =>
+            {
+                // Now load the stuff
+                var provider = new InMemoryProvider();
+                var extent = new MofUriExtent(provider, ScopeStorage);
 
-            ImportExcelIntoExtent(extent, configuration);
+                ImportExcelIntoExtent(extent, configuration);
 
-            // Returns the provider
-            return new LoadedProviderInfo(provider);
+                // Returns the provider
+                return new LoadedProviderInfo(provider);
+            });
         }
 
-        public void StoreProvider(IProvider extent, IElement configuration)
+        public Task StoreProvider(IProvider extent, IElement configuration)
         {
             // Nothing to store, since the Excel Reference Provider is just a read-only thing
+            return Task.CompletedTask;
         }
 
         public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities()

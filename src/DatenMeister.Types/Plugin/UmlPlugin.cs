@@ -2,6 +2,7 @@
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Types.Plugin
 {
@@ -15,8 +16,14 @@ namespace DatenMeister.Types.Plugin
         /// Stores the name of the extent type
         /// </summary>
         public const string ExtentType = "Uml.Classes";
+        private readonly IScopeStorage scopeStorage;
 
         public UmlPlugin(IScopeStorage scopeStorage)
+        {
+            this.scopeStorage = scopeStorage;
+        }
+
+        public Task Start(PluginLoadingPosition position)
         {
             var extentSettings = scopeStorage.Get<ExtentSettings>();
             extentSettings.extentTypeSettings.Add(
@@ -29,11 +36,7 @@ namespace DatenMeister.Types.Plugin
                         _UML.TheOne.SimpleClassifiers.__Enumeration
                     }
                 });
-        }
-
-        public void Start(PluginLoadingPosition position)
-        {
-          
+            return Task.CompletedTask;
         }
     }
 }

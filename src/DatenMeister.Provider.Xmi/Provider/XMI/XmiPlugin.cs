@@ -3,6 +3,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Provider.Xmi.Provider.XMI
 {
@@ -21,7 +22,7 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI
             _storageMapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -30,6 +31,8 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI
                         _ => new XmiStorageProviderLoader());
                     break;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

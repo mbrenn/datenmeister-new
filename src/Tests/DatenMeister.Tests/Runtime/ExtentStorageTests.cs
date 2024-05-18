@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -20,7 +22,7 @@ namespace DatenMeister.Tests.Runtime
     public class ExtentStorageTests
     {
         [Test]
-        public void TestExtentStorageLogic()
+        public async Task TestExtentStorageLogic()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             var fullPath = Path.Combine(CSVExtentTests.PathForTemporaryDataFile);
@@ -52,12 +54,12 @@ namespace DatenMeister.Tests.Runtime
                 WorkspaceNames.WorkspaceData);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, setting);
 
-            var csvExtent = extentManager.LoadExtent(configuration);
+            var csvExtent = await extentManager.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
             Assert.That(csvExtent.Extent, Is.Not.Null);
 
             Assert.That(csvExtent.Extent!.elements().Count(), Is.EqualTo(4));
-            extentManager.StoreExtent(csvExtent.Extent);
+            await extentManager.StoreExtent(csvExtent.Extent);
 
             // Changes content, store it and check, if stored
             var settings =
@@ -71,7 +73,7 @@ namespace DatenMeister.Tests.Runtime
             ((IObject)csvExtent.Extent.elements().ElementAt(0)!)
                 .set(columns.ElementAt(0) as string ?? throw new InvalidOperationException(
                     "Exception"), "eens");
-            extentManager.UnloadManager(true);
+            await extentManager.UnloadManager(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);
@@ -79,7 +81,7 @@ namespace DatenMeister.Tests.Runtime
         }
 
         [Test]
-        public void TestConfigurationRetrieval()
+        public async Task TestConfigurationRetrieval()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             var fullPath = Path.Combine(CSVExtentTests.PathForTemporaryDataFile);
@@ -106,7 +108,7 @@ namespace DatenMeister.Tests.Runtime
                 CSVExtentTests.PathForTemporaryDataFile);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
 
-            var csvExtent = logic.LoadExtent(configuration);
+            var csvExtent = await logic.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
             Assert.That(csvExtent.Extent, Is.Not.Null);
 

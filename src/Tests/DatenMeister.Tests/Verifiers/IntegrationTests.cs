@@ -11,7 +11,7 @@ namespace DatenMeister.Tests.Verifiers
         [Test]
         public async Task TestThatDatenMeisterIsWithoutVerificationIssues()
         {
-            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var verifier = new Verifier(dm.WorkspaceLogic, dm.ScopeStorage);
             Initializer.InitWithDefaultVerifiers(dm.WorkspaceLogic, verifier);
 

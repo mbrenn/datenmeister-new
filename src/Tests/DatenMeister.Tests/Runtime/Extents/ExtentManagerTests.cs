@@ -8,6 +8,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Runtime.Extents
 {
@@ -15,9 +16,9 @@ namespace DatenMeister.Tests.Runtime.Extents
     public class ExtentManagerTests
     {
         [Test]
-        public void TestLoadAndUnloading()
+        public async Task TestLoadAndUnloading()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig =
@@ -26,24 +27,23 @@ namespace DatenMeister.Tests.Runtime.Extents
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
                 WorkspaceNames.WorkspaceData);
 
-
-            extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
-            extentManager.DeleteExtent(
+            await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            await extentManager.DeleteExtent(
                 loaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId),
                 loaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri));
-            var extent = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            var extent = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
 
             Assert.That(extent, Is.Not.Null);
             Assert.That(extent.Extent, Is.Not.Null);
 
-            extentManager.RemoveExtent(extent.Extent!);
-            extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            await extentManager.RemoveExtent(extent.Extent!);
+            await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
         }
 
         [Test]
-        public void TestCorrectRemovalOfExtentsWhenWorkspaceIsDeleted()
+        public async Task TestCorrectRemovalOfExtentsWhenWorkspaceIsDeleted()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             dm.WorkspaceLogic.AddWorkspace(
                 new Workspace("Test", "Test Extent"));
 
@@ -54,21 +54,21 @@ namespace DatenMeister.Tests.Runtime.Extents
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "Test");
-            var loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
             Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
 
             // Removes the workspace
             dm.WorkspaceLogic.RemoveWorkspace("Test");
 
             // Load again, it should work
-            loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
             Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
         }
 
         [Test]
-        public void TestGetProviderAndConfiguration()
+        public async Task TestGetProviderAndConfiguration()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig =
@@ -78,7 +78,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 WorkspaceNames.WorkspaceData);
             loaderConfig.set("Test", "test");
             
-            var loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
 
             var result = extentManager.GetProviderLoaderAndConfiguration(
                 WorkspaceNames.WorkspaceData, "dm:///test");
@@ -91,16 +91,16 @@ namespace DatenMeister.Tests.Runtime.Extents
         }
 
         [Test]
-        public void GetExtentInformationWithoutSetWorkspace()
+        public async Task GetExtentInformationWithoutSetWorkspace()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
             
-            var loadedInfo = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
             
             // First, check if loading was success
             Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));

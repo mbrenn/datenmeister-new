@@ -1,5 +1,6 @@
 ﻿using DatenMeister.WebServer.Controller;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Web
 {
@@ -7,9 +8,9 @@ namespace DatenMeister.Tests.Web
     public class TypesControllerTests
     {
         [Test]
-        public void TestGetTypes()
+        public async Task TestGetTypes()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var typeController = new TypesController(dm.WorkspaceLogic, dm.ScopeStorage);
             var types = typeController.GetTypes().Value;

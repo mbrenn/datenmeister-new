@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -21,9 +22,9 @@ namespace DatenMeister.Tests.Modules.Forms
     public class FormCreatorTests
     {
         [Test]
-        public void TestListFormCreatorByMetaClass()
+        public async Task TestListFormCreatorByMetaClass()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -48,9 +49,9 @@ namespace DatenMeister.Tests.Modules.Forms
         }
 
         [Test]
-        public void TestDataUrlOfTablesInCollectionForm()
+        public async Task TestDataUrlOfTablesInCollectionForm()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
             
@@ -93,9 +94,9 @@ namespace DatenMeister.Tests.Modules.Forms
         }
 
         [Test]
-        public void TestNoReadOnlyOnDetailFormByMetaClass()
+        public async Task TestNoReadOnlyOnDetailFormByMetaClass()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -125,9 +126,9 @@ namespace DatenMeister.Tests.Modules.Forms
         }
 
         [Test]
-        public void TestNoReadOnlyOnDetailFormByObject()
+        public async Task TestNoReadOnlyOnDetailFormByObject()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -158,9 +159,9 @@ namespace DatenMeister.Tests.Modules.Forms
         }
 
         [Test]
-        public void TestExtentTypeSettings()
+        public async Task TestExtentTypeSettings()
         {
-            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 

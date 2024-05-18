@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Modules
 {
@@ -10,9 +11,9 @@ namespace DatenMeister.Tests.Modules
     public class ViewLogicTests
     {
         [Test]
-        public void TestAvailabiltyOfInternalViews()
+        public async Task TestAvailabiltyOfInternalViews()
         {
-            var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
             var viewLogic = datenMeister.Resolve<FormMethods>();
             var internalViewExtent = viewLogic.GetInternalFormExtent();
 
@@ -20,9 +21,9 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestAvailabilityOfUserViews()
+        public async Task TestAvailabilityOfUserViews()
         {
-            var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
             var viewLogic = datenMeister.Resolve<FormMethods>();
             var userViewExtent = viewLogic.GetUserFormExtent();
 
@@ -30,9 +31,9 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestGetAllViews()
+        public async Task TestGetAllViews()
         {
-            var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
             var viewLogic = datenMeister.Resolve<FormMethods>();
             var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);

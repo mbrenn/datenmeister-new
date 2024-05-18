@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -69,7 +70,7 @@ namespace DatenMeister.Forms
         /// <summary>
         /// Integrates the the view logic into the workspace.
         /// </summary>
-        public void Start(PluginLoadingPosition position)
+        public async Task Start(PluginLoadingPosition position)
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
                                 ?? throw new InvalidOperationException("Management Workspace is not found");
@@ -87,7 +88,7 @@ namespace DatenMeister.Forms
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:
-                    var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                    var extent = await _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                         WorkspaceNames.WorkspaceManagement,
                         WorkspaceNames.UriExtentUserForm,
                         "DatenMeister.Forms_User",

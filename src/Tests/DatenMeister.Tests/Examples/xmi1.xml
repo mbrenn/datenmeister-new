@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xml xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+  <node name="M" p1:id="first=" />
+  <node name="B" p1:id="second=" />
+</xml>

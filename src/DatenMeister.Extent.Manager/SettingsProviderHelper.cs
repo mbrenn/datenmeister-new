@@ -5,6 +5,7 @@ using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Extent.Manager
 {
@@ -20,7 +21,7 @@ namespace DatenMeister.Extent.Manager
             _scopeStorage = scopeStorage;
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             var typesWorkspace = _workspaceLogic.GetTypesWorkspace();
             var dotNetProvider = new ManagementSettingsProvider(new WorkspaceDotNetTypeLookup(typesWorkspace));
@@ -33,6 +34,8 @@ namespace DatenMeister.Extent.Manager
             var settings = _scopeStorage.Get<ExtentSettings>();
             var settingsObject = new DotNetProviderObject(dotNetProvider, settings);
             settingsExtent.elements().add(settingsObject);
+
+            return Task.CompletedTask;
         }
     }
 }

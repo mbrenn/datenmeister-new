@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
@@ -19,21 +20,24 @@ namespace DatenMeister.Provider.Environmental
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
         public IScopeStorage? ScopeStorage { get; set; }
         
-        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        public async Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
-            var provider = new InMemoryProvider();
-            
-            var variables = Environment.GetEnvironmentVariables();
-            foreach (var pair in variables.OfType<DictionaryEntry>().OrderBy(x => x.Key))
+            return await Task.Run(() =>
             {
-                var value = new InMemoryObject(provider, _DatenMeister.TheOne.CommonTypes.OSIntegration.__EnvironmentalVariable.Uri);
-                value.SetProperty(_DatenMeister._CommonTypes._OSIntegration._EnvironmentalVariable.name, pair.Key);
-                value.SetProperty(_DatenMeister._CommonTypes._OSIntegration._EnvironmentalVariable.value, pair.Value);
-                value.Id = pair.Key.ToString();
-                provider.AddElement(value);
-            }
+                var provider = new InMemoryProvider();
 
-            return new LoadedProviderInfo(provider);
+                var variables = Environment.GetEnvironmentVariables();
+                foreach (var pair in variables.OfType<DictionaryEntry>().OrderBy(x => x.Key))
+                {
+                    var value = new InMemoryObject(provider, _DatenMeister.TheOne.CommonTypes.OSIntegration.__EnvironmentalVariable.Uri);
+                    value.SetProperty(_DatenMeister._CommonTypes._OSIntegration._EnvironmentalVariable.name, pair.Key);
+                    value.SetProperty(_DatenMeister._CommonTypes._OSIntegration._EnvironmentalVariable.value, pair.Value);
+                    value.Id = pair.Key.ToString();
+                    provider.AddElement(value);
+                }
+
+                return new LoadedProviderInfo(provider);
+            });
         }
 
         /// <summary>
@@ -41,8 +45,9 @@ namespace DatenMeister.Provider.Environmental
         /// </summary>
         /// <param name="extent"></param>
         /// <param name="configuration"></param>
-        public void StoreProvider(IProvider extent, IElement configuration)
+        public Task StoreProvider(IProvider extent, IElement configuration)
         {
+            return Task.CompletedTask;
         }
 
         public ProviderLoaderCapabilities ProviderLoaderCapabilities { get; } = new ProviderLoaderCapabilities()

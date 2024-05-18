@@ -77,7 +77,7 @@ namespace DatenMeister.BootStrap
         public static string GetPathToExtents(IntegrationSettings settings)
             => Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
 
-        public IDatenMeisterScope UseDatenMeister(ContainerBuilder kernel)
+        public async Task<IDatenMeisterScope> UseDatenMeister(ContainerBuilder kernel)
         {
             if (_pluginManager != null)
             {
@@ -188,7 +188,7 @@ namespace DatenMeister.BootStrap
             _dmScope = new DatenMeisterScope(scope);
 
             // Creates the content
-            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
+            await _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
 
             // Load the default extents
             // Performs the bootstrap
@@ -234,7 +234,7 @@ namespace DatenMeister.BootStrap
 
             Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
-            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
+            await _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
 
             // Creates the workspace and extent for the types layer which are belonging to the types
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
@@ -257,7 +257,7 @@ namespace DatenMeister.BootStrap
             MofExtent.GlobalSlimUmlEvaluation = false;
 
             // Finally loads the plugin
-            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterInitialization);
+            await _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
             // Boots up the typical DatenMeister Environment by loading the data
             var extentManager = scope.Resolve<ExtentManager>();
@@ -269,7 +269,7 @@ namespace DatenMeister.BootStrap
                 // Loads all extents after all plugins were started
                 try
                 {
-                    extentManager.LoadAllExtents();
+                    await extentManager.LoadAllExtents();
                 }
                 catch (LoadingExtentsFailedException)
                 {
@@ -282,7 +282,7 @@ namespace DatenMeister.BootStrap
             }
 
             // Finally loads the plugin
-            _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
+            await _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
             ResetUpdateFlagsOfExtent(workspaceLogic);
             watch.Stop();
@@ -294,14 +294,14 @@ namespace DatenMeister.BootStrap
         /// <summary>
         /// Performs a shutdown. This method just calls the plugins currently
         /// </summary>
-        public void UnuseDatenMeister()
+        public async Task UnuseDatenMeister()
         {
             if (_pluginManager == null || _dmScope == null)
             {
                 throw new InvalidOperationException("The Integrator has not been started by UseDatenMeister");
             }
 
-            _pluginManager.StartPlugins(
+            await _pluginManager.StartPlugins(
                 _dmScope,
                 _pluginLoaderSettings.PluginLoader,
                 PluginLoadingPosition.AfterShutdownStarted);

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -27,7 +28,7 @@ namespace DatenMeister.Tests.Provider
                 "data.txt");
 
         [Test]
-        public void TestStorage()
+        public async Task TestStorage()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             var csvOtherFile = "eens 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
@@ -50,7 +51,7 @@ namespace DatenMeister.Tests.Provider
                 WorkspaceLogic = WorkspaceLogic.GetEmptyLogic()
             };
             
-            var provider = storage.LoadProvider(storageConfiguration, ExtentCreationFlags.LoadOnly);
+            var provider = await storage.LoadProvider(storageConfiguration, ExtentCreationFlags.LoadOnly);
             var extent = new MofUriExtent(provider.Provider, "dm:////test/", null);
 
             var csvSettings = storageConfiguration
@@ -64,7 +65,7 @@ namespace DatenMeister.Tests.Provider
             Assert.That(extent.elements().Count(), Is.EqualTo(4));
 
             // Stores the csv file
-            storage.StoreProvider(provider.Provider, storageConfiguration);
+            await storage.StoreProvider(provider.Provider, storageConfiguration);
             var readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
 
             // We need to change a bit the line endings since the tests are also required to within Linux 
@@ -85,7 +86,7 @@ namespace DatenMeister.Tests.Provider
 
             Assert.That(firstElement.getOrDefault<string>("Column 1"), Is.EqualTo("eens"));
 
-            storage.StoreProvider(provider.Provider, storageConfiguration);
+            await storage.StoreProvider(provider.Provider, storageConfiguration);
             readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
             // We need to change a bit the line endings since the tests are also required to within Linux 
             Assert.That(

@@ -4,6 +4,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Modules
 {
@@ -24,9 +25,9 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestCallsOfEvents()
+        public async Task TestCallsOfEvents()
         {
-            using var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            using var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
             var manager = datenMeister.ScopeStorage.Get<ChangeEventManager>();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
             var data = workspaceLogic.GetDataWorkspace();

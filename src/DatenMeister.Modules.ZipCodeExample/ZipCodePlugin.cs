@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.Helper;
@@ -49,7 +50,7 @@ namespace DatenMeister.Modules.ZipCodeExample
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -95,6 +96,8 @@ namespace DatenMeister.Modules.ZipCodeExample
                         new ZipCodeFormModificationPlugin());
                     break;
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

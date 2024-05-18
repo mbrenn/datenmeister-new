@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using BurnSystems.Logging;
 
@@ -61,7 +62,7 @@ namespace DatenMeister.Plugins
         /// <param name="pluginLoader">The plugin loader being used</param>
         /// <param name="loadingPosition">Defines the plugin position currently used</param>
         /// <returns>true, if all plugins have been started without exception</returns>
-        public bool StartPlugins(
+        public async Task<bool> StartPlugins(
             ILifetimeScope kernel,
             IPluginLoader pluginLoader,
             PluginLoadingPosition loadingPosition)
@@ -108,11 +109,11 @@ namespace DatenMeister.Plugins
                     Logger.Info($"Called plugin [{loadingPosition}]: {plugin.GetType().FullName}");
                     if (Debugger.IsAttached)
                         // When a debugger is attached, we are directly interested to figure out that an exception was thrown
-                        plugin.Start(loadingPosition);
+                        await plugin.Start(loadingPosition);
                     else
                         try
                         {
-                            plugin.Start(loadingPosition);
+                            await plugin.Start(loadingPosition);
                         }
                         catch (Exception exc)
                         {

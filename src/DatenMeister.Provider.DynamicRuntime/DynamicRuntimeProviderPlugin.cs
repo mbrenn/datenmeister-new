@@ -2,6 +2,7 @@
 using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Provider.DynamicRuntime
 {
@@ -18,7 +19,7 @@ namespace DatenMeister.Provider.DynamicRuntime
 
         public IScopeStorage ScopeStorage { get; }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             switch (position)
             {
@@ -31,6 +32,8 @@ namespace DatenMeister.Provider.DynamicRuntime
                     break;
                 }
             }
+
+            return Task.CompletedTask;
         }
     }
 }

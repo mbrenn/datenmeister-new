@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -32,7 +33,7 @@ namespace DatenMeister.Provider.ExtentManagement
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             // Adds the extent setting
             _extentSettings.extentTypeSettings.Add(new ExtentType(WorkspaceExtentType));
@@ -46,6 +47,8 @@ namespace DatenMeister.Provider.ExtentManagement
             
             // Adds the extent containing the workspaces
             _workspaceLogic.GetManagementWorkspace().AddExtent(managementExtent);
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

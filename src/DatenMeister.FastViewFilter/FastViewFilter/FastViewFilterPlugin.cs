@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Plugins;
 using DatenMeister.Types;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Modules.FastViewFilter
 {
@@ -24,8 +25,9 @@ namespace DatenMeister.Modules.FastViewFilter
             _localTypeSupport = localTypeSupport;
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
+            return Task.CompletedTask;
         }
     }
 }

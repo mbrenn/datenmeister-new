@@ -4,6 +4,7 @@ using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
+using System.Threading.Tasks;
 
 namespace IssueMeisterLib
 {
@@ -35,7 +36,7 @@ namespace IssueMeisterLib
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
-        public void Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
             // Import 
             PackageMethods.ImportByManifest(
@@ -58,6 +59,8 @@ namespace IssueMeisterLib
             extentSetting.rootElementMetaClasses.Add(
                 _localTypeSupport.InternalTypes.element("#IssueMeister.Issue"));
             _extentSettings.extentTypeSettings.Add(extentSetting);
+
+            return Task.CompletedTask;
         }
     }
 }

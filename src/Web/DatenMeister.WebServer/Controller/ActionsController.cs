@@ -51,7 +51,7 @@ namespace DatenMeister.WebServer.Controller
 
                     var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
                     var extentManager = new ExtentManager(workspaceLogic, GiveMe.Scope.ScopeStorage);
-                    var result = extentManager.LoadExtent(
+                    var result = await extentManager.LoadExtent(
                         mofParameter,
                         ExtentCreationFlags.LoadOrCreate);
                     success =

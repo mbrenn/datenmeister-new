@@ -6,6 +6,7 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Uml
 {
@@ -13,9 +14,9 @@ namespace DatenMeister.Tests.Uml
     public class TestNamedElementMethods
     {
         [Test]
-        public void TestFullName()
+        public async Task TestFullName()
         {
-            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
             using var scope = builder.BeginLifetimeScope();
             var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
             var workspaceLogic = scope.Resolve<WorkspaceLogic>();

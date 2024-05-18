@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -20,7 +21,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
     public class StorageTests
     {
         [Test]
-        public void TestXmlStorage()
+        public async Task TestXmlStorage()
         {
             var xmlProvider = new XmiProvider();
             var extent = new MofUriExtent(xmlProvider, "dm:///test/", null);
@@ -40,7 +41,6 @@ namespace DatenMeister.Tests.Xmi.Runtime
             extent.elements().add(mofObject2);
             extent.elements().add(mofObject3);
 
-
             var xmiStorageConfiguration = InMemoryObject.CreateEmpty(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
             xmiStorageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
@@ -53,11 +53,11 @@ namespace DatenMeister.Tests.Xmi.Runtime
                 ScopeStorage = new ScopeStorage().Add(new ExtentStorageData())
             };
 
-            xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
+            await xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
 
             var otherExtent =
                 new MofUriExtent(
-                    xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly).Provider,
+                    (await xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly)).Provider,
                     "dm:///tests/", null);
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
             Assert.That(otherExtent.contextURI(), Is.EqualTo("dm:///tests/"));

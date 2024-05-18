@@ -26,8 +26,14 @@ namespace DatenMeister.WebServer.Library.PageRegistration
         /// </summary>
         EmbedAndLoad
     }
+
     public class PageRegistrationLogic
     {
+        /// <summary>
+        /// Configuration option to inhibit loading from file and to enforce loading from manifeld
+        /// </summary>
+        public const bool AllowLoadingFromLocalFile = true;
+
         /// <summary>
         /// Defines the logger
         /// </summary>
@@ -75,11 +81,11 @@ namespace DatenMeister.WebServer.Library.PageRegistration
             RegistrationType registrationType = RegistrationType.EmbedAndLoad)
         {
             // Check first, whether Manifest loading is working to avoid a running debug version and a non-running release version
-
             var result = manifestType.GetTypeInfo().Assembly.GetManifestResourceStream(manifestName)
                 ?? throw new InvalidOperationException($"The manifest {manifestName} was not found");
+            result.Dispose();            
 
-            if (originalFilePath != null && File.Exists(originalFilePath))
+            if (originalFilePath != null && File.Exists(originalFilePath) && AllowLoadingFromLocalFile)
             {
                 _logger.Info($"Local file used instead of resource: {originalFilePath}");
             }
@@ -90,12 +96,13 @@ namespace DatenMeister.WebServer.Library.PageRegistration
                 () =>
                 {
                     // If local file exists, take the local file to allow edit during running
-                    if (originalFilePath != null && File.Exists(originalFilePath))
+                    if (originalFilePath != null && File.Exists(originalFilePath) && AllowLoadingFromLocalFile)
                     {
                         return new FileStream(originalFilePath, FileMode.Open, FileAccess.Read);
                     }
 
-                    return result;
+                    return manifestType.GetTypeInfo().Assembly.GetManifestResourceStream(manifestName)
+                        ?? throw new InvalidOperationException($"The manifest {manifestName} was not found");
                 });
 
             if (registrationType == RegistrationType.EmbedAndLoad)

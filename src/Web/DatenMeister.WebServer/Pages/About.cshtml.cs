@@ -5,6 +5,7 @@ using DatenMeister.Core;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.Plugins;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages
@@ -30,6 +31,15 @@ namespace DatenMeister.WebServer.Pages
             {
                 var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
                 return extentSettings.extentTypeSettings.Select(x => x.name).ToList();
+            }
+        }
+
+        public static List<string> LoadedPlugins
+        {
+            get
+            {
+                var pluginLoader = GiveMe.Scope.ScopeStorage.Get<PluginManager>();
+                return  pluginLoader.PluginTypes!.Select(x => x.FullName!).OrderBy(x => x).ToList();
             }
         }
 

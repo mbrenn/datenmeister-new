@@ -12,8 +12,19 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Xmi\DatenMeister.Extent.Forms.Forms.xmi" />
+      <None Remove="Xmi\DatenMeister.Extent.Forms.Types.xmi" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Xmi\DatenMeister.Extent.Forms.Forms.xmi" />
+      <EmbeddedResource Include="Xmi\DatenMeister.Extent.Forms.Types.xmi" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
+      <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
     </ItemGroup>
 
 </Project>

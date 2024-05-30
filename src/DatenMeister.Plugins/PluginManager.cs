@@ -18,7 +18,7 @@ namespace DatenMeister.Plugins
         /// </summary>
         private readonly Dictionary<Type, IDatenMeisterPlugin> _instantiatedPlugins = new();
 
-        private List<Type>? _pluginTypes;
+        public List<Type>? PluginTypes { get; private set; } = null;
 
         /// <summary>
         ///     Gets or sets va value indicating whether at least one exception occured during the loading.
@@ -38,8 +38,10 @@ namespace DatenMeister.Plugins
                 {
                     foreach (var type in assembly.GetTypes())
                     {
-                        var found = type.GetCustomAttributes(typeof(T)).FirstOrDefault() as T;
-                        if (found == null) continue;
+                        if (type.GetCustomAttributes(typeof(T)).FirstOrDefault() is not T found)
+                        {
+                            continue;
+                        }
 
                         types.Add(new KeyValuePair<Type, T>(type, found));
                     }
@@ -68,8 +70,8 @@ namespace DatenMeister.Plugins
             PluginLoadingPosition loadingPosition)
         {
             Logger.Debug($"Calling Plugins: {loadingPosition}");
-            _pluginTypes ??= pluginLoader.GetPluginTypes();
-            var pluginList = _pluginTypes
+            PluginTypes ??= pluginLoader.GetPluginTypes();
+            var pluginList = PluginTypes
                 .Where(type => GetPluginLoadingPosition(type).HasFlag(loadingPosition))
                 .Select(type =>
                 {

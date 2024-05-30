@@ -4,6 +4,7 @@ import * as ItemModules from "./ItemModules.js"
 import * as WorkspaceModules from "./WorkspaceModules.js"
 import * as FormModules from "./FormModules.js"
 import * as ActionModules from "./ActionModules.js"
+import * as NavigationModules from "./NavigationModules.js"
 
 let loaded = false;
 export function loadDefaultModules() {
@@ -14,6 +15,7 @@ export function loadDefaultModules() {
         WorkspaceModules.loadModules();
         FormModules.loadModules();
         ActionModules.loadModules();
+        NavigationModules.loadModules();
     }
     
     loaded = true;

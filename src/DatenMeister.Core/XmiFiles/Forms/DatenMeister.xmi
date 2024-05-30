@@ -159,20 +159,22 @@
         </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="31b89f89-b79b-4b20-9895-89fe531fe7e0" name="Association - List View for Working" parentProperty="extents" formType="Row" parentMetaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace" form-ref="dm:///_internal/forms/internal#Workspace.TableFormForExtents" />
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" p1:id="Workspace.ExtentDetail" xmlns:p1="http://www.omg.org/spec/XMI/20131001" name="Detail Form - Extent">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="11cd4d41-4d63-4b97-8f5a-8630cb7d1e73" name="name" title="Name" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" title="Extent Uri" p1:id="13b33a1e-0dbe-47ac-b058-265b73c2e032" name="uri" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData" title="Extent Type" separator=" " containsFreeText="True" p1:id="6e092346-085b-4166-ba67-6e7f60cc2953" name="extentType" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" title="Auto Enumeration Type" p1:id="d221d2f1-7096-4196-98d9-040ae40bc3db" name="autoEnumerateType">
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Guid" name="Guid" p1:id="8dd98d07-9bc0-4b16-842c-252c03ed224c" />
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Ordinal" name="Ordinal" p1:id="2a65c22d-7007-4ae0-a1f7-bd0c6e2adf56" />
-        </field>
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData" p1:id="58ad0d97-9d35-4de5-b832-dcce1391b241" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="count" title="# Root Objects" isAttached="True" p1:id="e1f6b6b7-5520-4ab7-bb2e-dfad510e7902" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="totalCount" title="# Objects" isAttached="True" p1:id="1bd5d9ad-3740-4da1-8543-9e9bca6e7517" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="type" title="Provider" isAttached="True" p1:id="7eb7b5da-a6aa-4caa-a0c9-ecae16d620cb" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="alternativeUris" title="alternativeUris" isAttached="True" isEnumeration="True" p1:id="01dfaf41-9d0b-430a-b97d-c039268f9e2e" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData" p1:id="e06a553f-38b5-4367-81c2-8a9de3257b38" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" p1:id="Workspace.ExtentDetail" xmlns:p1="http://www.omg.org/spec/XMI/20131001" name="Detail Form - Extent">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" xmlns:p1="http://www.omg.org/spec/XMI/20131001" name="Detail Row Form - Extent">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="11cd4d41-4d63-4b97-8f5a-8630cb7d1e73" name="name" title="Name" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" title="Extent Uri" p1:id="13b33a1e-0dbe-47ac-b058-265b73c2e032" name="uri" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData" title="Extent Type" separator=" " containsFreeText="True" p1:id="6e092346-085b-4166-ba67-6e7f60cc2953" name="extentType" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" title="Auto Enumeration Type" p1:id="d221d2f1-7096-4196-98d9-040ae40bc3db" name="autoEnumerateType">
+            <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Guid" name="Guid" p1:id="8dd98d07-9bc0-4b16-842c-252c03ed224c" />
+            <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Ordinal" name="Ordinal" p1:id="2a65c22d-7007-4ae0-a1f7-bd0c6e2adf56" />
+          </field>
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData" p1:id="58ad0d97-9d35-4de5-b832-dcce1391b241" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="count" title="# Root Objects" isAttached="True" p1:id="e1f6b6b7-5520-4ab7-bb2e-dfad510e7902" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="totalCount" title="# Objects" isAttached="True" p1:id="1bd5d9ad-3740-4da1-8543-9e9bca6e7517" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="type" title="Provider" isAttached="True" p1:id="7eb7b5da-a6aa-4caa-a0c9-ecae16d620cb" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="alternativeUris" title="alternativeUris" isAttached="True" isEnumeration="True" p1:id="01dfaf41-9d0b-430a-b97d-c039268f9e2e" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData" p1:id="e06a553f-38b5-4367-81c2-8a9de3257b38" />
+        </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="df8baf49-5cf8-414a-93c0-47e4249b14da" name="Association - DetailForm for Extent" formType="Object" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent" form-ref="dm:///_internal/forms/internal#Workspace.ExtentDetail" />
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm" p1:id="51c7b715-cdb8-4c0b-b2f6-8fe194f32862" title="Workspaces - CollectionForm" name="Workspaces - CollectionForm">

@@ -21,7 +21,7 @@ namespace DatenMeister.SourceGeneration.Console
             else
             {
                 var value = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-                value.WithParsed(async x => await CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace));
+                value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).Wait());
                 value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
             }
         }

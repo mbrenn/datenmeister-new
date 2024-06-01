@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -25,6 +25,11 @@
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
       <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Model\" />
+      <Folder Include="Js\" />
     </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ import { _DatenMeister } from "../models/DatenMeister.class.js";
 
 export function loadModules() {
 
+    FormActions.addModule(new ChangeForm());
 }
 
 class ChangeForm extends FormActions.ItemFormActionModuleBase {

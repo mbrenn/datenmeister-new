@@ -1,4 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xmi>
   <meta p2:id="d31195e1-f897-4fe7-a39d-118a9dab2362" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///DatenMeister.Extent.Forms.Types.xmi" />
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="b5e9f945-6c33-4b26-837b-38a5ad2f65fc" name="MassImportDefinition" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <isAbstract p2:id="b49aa7d1-afa2-4622-8cad-b8a3caefefa1" />
+    <isActive p2:id="46c123b2-da5d-4003-b5ce-4ed6bc8f721b" />
+    <isFinalSpecialization p2:id="fbc990b6-8cf6-462f-a24a-0aad4265dc56" />
+    <isLeaf p2:id="779b007f-cf3d-43e4-9e6f-a782447c08bd" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="872c71b6-21c0-4b0c-892d-9ee94d710b71" name="text" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+      <aggregation p2:id="ea15ad8f-c374-46bd-800a-9e9866e30b55" />
+      <isDerived p2:id="89a56200-12b8-494b-b59a-5c33b140f01f" />
+      <isDerivedUnion p2:id="8e9c46d8-2732-4ad6-a57d-b60fab82baa0" />
+      <isReadOnly p2:id="b1345015-f6c5-4340-918c-11303f16bfe8" />
+      <isOrdered p2:id="0f55e2f7-0004-4a66-b317-bdf101d118b9" />
+      <isUnique p2:id="9bfa4f3e-c6da-4f78-b50d-5b590ba3d7e5" />
+      <isStatic p2:id="8a2de014-db8a-493d-9d51-5907efa0f2b7" />
+      <isLeaf p2:id="c9f12f0e-25ba-4422-81c4-c792594e18dc" />
+    </ownedAttribute>
+  </item>
 </xmi>

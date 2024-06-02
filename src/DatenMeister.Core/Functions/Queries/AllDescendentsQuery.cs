@@ -126,7 +126,7 @@ namespace DatenMeister.Core.Functions.Queries
             var elementAsIObjectExt = (IObjectAllProperties) element;
             if (elementAsIObjectExt == null)
             {
-                throw new InvalidOperationException("element is not of type IObjectExt");
+                throw new InvalidOperationException("element is not of type IObjectAllProperties");
             }
 
             // Gets the property list

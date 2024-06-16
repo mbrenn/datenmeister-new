@@ -56,8 +56,12 @@ namespace DatenMeister.Users.UserManagement
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 
-        public async Task Start(PluginLoadingPosition position)
+        public Task Start(PluginLoadingPosition position)
         {
+            // Disables User Management because nobody needs it. 
+            return Task.CompletedTask;
+
+            /*
             switch (position)
             {
                 case PluginLoadingPosition.AfterBootstrapping:
@@ -107,6 +111,7 @@ namespace DatenMeister.Users.UserManagement
 
                     break;
             }
+            */
         }
 
         /// <summary>

@@ -292,6 +292,14 @@ export var _DatenMeister;
         _MoveOrCopyActionResult.targetWorkspace = "targetWorkspace";
         _Actions._MoveOrCopyActionResult = _MoveOrCopyActionResult;
         _Actions.__MoveOrCopyActionResult_Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1";
+        let _ParameterTypes;
+        (function (_ParameterTypes) {
+            class _NavigationDefineActionParameter {
+            }
+            _NavigationDefineActionParameter.actionType = "actionType";
+            _ParameterTypes._NavigationDefineActionParameter = _NavigationDefineActionParameter;
+            _ParameterTypes.__NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
+        })(_ParameterTypes = _Actions._ParameterTypes || (_Actions._ParameterTypes = {}));
     })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
     let _DataViews;
     (function (_DataViews) {

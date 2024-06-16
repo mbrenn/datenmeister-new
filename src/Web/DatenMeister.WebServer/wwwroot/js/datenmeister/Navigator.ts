@@ -20,6 +20,17 @@ export function navigateToWorkspace(workspace: string) {
         getLinkForNavigateToWorkspace(workspace);
 }
 
+
+export function getLinkForNavigateToDefineAction(actionType: string) {
+    return Settings.baseUrl + "Item/Management/" +
+        encodeURIComponent("dm:///_internal/workspaces#" + actionType);
+}
+
+export function navigateToDefineAction(workspace: string) {
+    document.location.href =
+        getLinkForNavigateToWorkspace(workspace);
+}
+
 export interface NavigationToExtentItemsParameter{
     /**
      * Metaclass to which the shown items will be filtered

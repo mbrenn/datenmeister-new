@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item abc="DEF">
-  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///datenmeister.types/"></meta>
+  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///intern.datenmeister.types/"></meta>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_CommonTypes" name="CommonTypes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="Default" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DefaultTypes.Package" name="Package">
@@ -1030,6 +1030,25 @@
       <isLeaf p2:id="6172caae-1291-46a2-9e18-e858b44425f8" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0b4f9964-045a-426e-8c83-71fdab09ebbf" name="targetUrl" type-ref="dm:///_internal/model/primitivetypes#String" isComposite="true"></ownedAttribute>
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0b4f9964-045a-426e-8c83-71fdab09eabf" name="targetWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" isComposite="true"></ownedAttribute>
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="6ed8bd1b-2b02-4bea-966e-2bcd16be1603" name="ParameterTypes">
+      <visibility p2:id="cc7d6b7b-7c0f-4ddb-ab94-d4d92163892e" />
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="90f61e4e-a5ea-42eb-9caa-912d010fbccd" name="NavigationDefineActionParameter">
+        <isAbstract p2:id="011bb510-fef3-4084-a044-2adec3d3aba3" />
+        <isActive p2:id="757c3aec-36d4-4de4-b9a0-544ca12a0bfa" />
+        <isFinalSpecialization p2:id="af18ae81-4d36-4eae-932b-7cac4ee4d3a5" />
+        <isLeaf p2:id="e9649321-400c-4caf-b5d8-2b02949037af" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4670e1d3-a62b-4bbf-86c1-972380bef6b2" name="actionType" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:id="d296330e-825b-4760-b71b-3ad3a4e6e1d1" />
+          <isDerived p2:id="ae3d030f-4a5c-4286-bcfb-2823a7365e20" />
+          <isDerivedUnion p2:id="022c680e-dc8d-4b09-8ba8-4e88dbca3eeb" />
+          <isReadOnly p2:id="feddd8d3-008f-4631-af29-9d84f3db3a55" />
+          <isOrdered p2:id="94a12096-94ba-41d0-90ed-0244e4b76dc4" />
+          <isUnique p2:id="f204143c-22f0-467b-9a4d-92abfe8db191" />
+          <isStatic p2:id="ed1d0136-c249-4297-91d5-c4777893f2e4" />
+          <isLeaf p2:id="b608bf4f-42e6-4971-a46b-7767e978c228" />
+        </ownedAttribute>
+      </packagedElement>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

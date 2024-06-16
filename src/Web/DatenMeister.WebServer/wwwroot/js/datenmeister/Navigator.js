@@ -14,6 +14,14 @@ export function navigateToWorkspace(workspace) {
     document.location.href =
         getLinkForNavigateToWorkspace(workspace);
 }
+export function getLinkForNavigateToDefineAction(actionType) {
+    return Settings.baseUrl + "Item/Management/" +
+        encodeURIComponent("dm:///_internal/workspaces#" + actionType);
+}
+export function navigateToDefineAction(workspace) {
+    document.location.href =
+        getLinkForNavigateToWorkspace(workspace);
+}
 export function getLinkForNavigateToExtentItems(workspace, extentUri, parameter) {
     let urlParameter = "";
     let ampersand = '?';

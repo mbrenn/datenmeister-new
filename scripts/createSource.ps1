@@ -6,7 +6,7 @@ $project = "datenmeister-new.sln"
 $parameter = "/p:Configuration=Release"
 $switches = "-nologo"
 
-#& dotnet build $switches -v:m $parameter $project
+& dotnet build $switches -v:m $parameter $project
 
 Set-Location ./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/
 

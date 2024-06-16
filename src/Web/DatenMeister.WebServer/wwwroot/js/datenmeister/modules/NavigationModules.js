@@ -1,5 +1,7 @@
 import * as FormActions from "../FormActions.js";
 import { ObjectType } from "../Mof.js";
+import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as Navigator from "../Navigator.js";
 export function loadModules() {
     FormActions.addModule(new ChangeForm());
 }
@@ -12,6 +14,16 @@ class ChangeForm extends FormActions.ItemFormActionModuleBase {
         const formUrl = parameter.get("formUrl", ObjectType.String);
         var asFormPage = form;
         asFormPage.pageNavigation.switchFormUrl(formUrl);
+    }
+}
+class DefineAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("DatenMeister.Navigation.DefineAction");
+        this.skipSaving = true;
+    }
+    async execute(form, element, parameter, submitMethod) {
+        const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionType, ObjectType.String);
+        Navigator.navigateToDefineAction(actionType);
     }
 }
 //# sourceMappingURL=NavigationModules.js.map

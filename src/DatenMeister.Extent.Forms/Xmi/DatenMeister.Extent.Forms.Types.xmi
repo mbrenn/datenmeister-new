@@ -16,5 +16,6 @@
       <isStatic p2:id="8a2de014-db8a-493d-9d51-5907efa0f2b7" />
       <isLeaf p2:id="c9f12f0e-25ba-4422-81c4-c792594e18dc" />
     </ownedAttribute>
+    <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="dec692aa-1926-4dc4-9aa4-05860cbc00d4" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
   </item>
 </xmi>

@@ -672,6 +672,22 @@ namespace DatenMeister.Core.Models
             public _MoveOrCopyActionResult @MoveOrCopyActionResult = new _MoveOrCopyActionResult();
             public MofObjectShadow @__MoveOrCopyActionResult = new MofObjectShadow("dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1");
 
+            public class _ParameterTypes
+            {
+                public class _NavigationDefineActionParameter
+                {
+                    public static string @actionType = "actionType";
+                    public IElement? @_actionType = null;
+
+                }
+
+                public _NavigationDefineActionParameter @NavigationDefineActionParameter = new _NavigationDefineActionParameter();
+                public MofObjectShadow @__NavigationDefineActionParameter = new MofObjectShadow("dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd");
+
+            }
+
+            public _ParameterTypes ParameterTypes = new _ParameterTypes();
+
         }
 
         public _Actions Actions = new _Actions();

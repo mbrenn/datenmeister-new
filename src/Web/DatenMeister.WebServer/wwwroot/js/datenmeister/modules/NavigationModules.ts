@@ -3,7 +3,7 @@ import { DmObject, ObjectType } from "../Mof.js";
 import { IFormNavigation, IPageForm } from "../forms/Interfaces.js";
 import { SubmitMethod } from "../forms/Forms.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
-
+import * as Navigator from "../Navigator.js"
 export function loadModules() {
 
     FormActions.addModule(new ChangeForm());
@@ -20,5 +20,19 @@ class ChangeForm extends FormActions.ItemFormActionModuleBase {
 
         var asFormPage = form as IPageForm;
         asFormPage.pageNavigation.switchFormUrl(formUrl);
+    }
+}
+
+class DefineAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("DatenMeister.Navigation.DefineAction");
+        this.skipSaving = true;
+    }
+
+
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionType, ObjectType.String);
+
+        Navigator.navigateToDefineAction(actionType);
     }
 }

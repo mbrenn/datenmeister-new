@@ -335,6 +335,16 @@ export namespace _DatenMeister
                 }
 
                 export const __MoveOrCopyActionResult_Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1";
+                export namespace _ParameterTypes
+                {
+                        export class _NavigationDefineActionParameter
+                        {
+                            static actionType = "actionType";
+                        }
+
+                        export const __NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
+                }
+
         }
 
         export namespace _DataViews

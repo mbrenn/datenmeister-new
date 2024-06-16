@@ -13,6 +13,12 @@ namespace DatenMeister.Extent.Forms.Model
             public static string @text = "text";
             public IElement? @_text = null;
 
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+            public static string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
         }
 
         public _MassImportDefinition @MassImportDefinition = new _MassImportDefinition();

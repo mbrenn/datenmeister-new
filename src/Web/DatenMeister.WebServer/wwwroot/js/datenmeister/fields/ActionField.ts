@@ -1,7 +1,7 @@
 
 import * as FormActions from "../FormActions.js";
 import {BaseField, IFormField} from "./Interfaces.js";
-import {DmObject, DmObjectWithSync} from "../Mof.js";
+import {DmObject, DmObjectWithSync, ObjectType} from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 import * as MofSync from "../MofSync.js";
 
@@ -14,10 +14,10 @@ export class Field extends BaseField implements IFormField {
     async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
-        const title = this.field.get('title');
-        const action = this.field.get('actionName');
-        
-        const parameter = this.field.get('parameter');
+        const title = this.field.get('title', ObjectType.String);
+        const action = this.field.get('actionName', ObjectType.String);
+
+        const parameter = this.field.get('parameter', ObjectType.Single);
 
         const module = FormActions.getModule(action);
         this.inConfirmation = false;

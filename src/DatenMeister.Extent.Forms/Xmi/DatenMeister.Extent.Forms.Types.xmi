@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xmi>
   <meta p2:id="d31195e1-f897-4fe7-a39d-118a9dab2362" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///DatenMeister.Extent.Forms.Types.xmi" />
-  <item p2:type="dm:///_internal/model/uml#Class" p2:id="b5e9f945-6c33-4b26-837b-38a5ad2f65fc" name="MassImportDefinition" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="b5e9f945-6c33-4b26-837b-38a5ad2f65fc" xmlns:p2="http://www.omg.org/spec/XMI/20131001" name="MassImportDefinitionAction">
     <isAbstract p2:id="b49aa7d1-afa2-4622-8cad-b8a3caefefa1" />
     <isActive p2:id="46c123b2-da5d-4003-b5ce-4ed6bc8f721b" />
     <isFinalSpecialization p2:id="fbc990b6-8cf6-462f-a24a-0aad4265dc56" />

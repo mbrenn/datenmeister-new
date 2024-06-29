@@ -1,12 +1,13 @@
 import * as FormActions from "../FormActions.js";
 import { BaseField } from "./Interfaces.js";
+import { ObjectType } from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 export class Field extends BaseField {
     async createDom(dmElement) {
         const tthis = this;
-        const title = this.field.get('title');
-        const action = this.field.get('actionName');
-        const parameter = this.field.get('parameter');
+        const title = this.field.get('title', ObjectType.String);
+        const action = this.field.get('actionName', ObjectType.String);
+        const parameter = this.field.get('parameter', ObjectType.Single);
         const module = FormActions.getModule(action);
         this.inConfirmation = false;
         const requireConfirmation = module?.requiresConfirmation === true;

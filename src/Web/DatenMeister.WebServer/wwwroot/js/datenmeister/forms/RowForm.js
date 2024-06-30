@@ -166,7 +166,16 @@ export class RowForm {
         tableInfo.append($("<tr><th>Workspace</th><td><a class='dm-detail-info-workspace'>W</a></td></tr>"));
         tableInfo.append($("<tr><th>Extent-Uri</th><td><a class='dm-detail-info-extenturi'>E</a></td></tr>"));
         tableInfo.append($("<tr><th>Metaclass</th><td><a class='dm-detail-info-metaclass'>m</a></td></tr>"));
-        $(".dm-detail-info-uri", tableInfo).text(this.element.uri ?? "none");
+        $(".dm-detail-info-uri", tableInfo).text((this.element.uri + " ") ?? "none");
+        if (this.element.uri !== undefined && this.element.uri !== "") {
+            const copy = $("<a href='#' class='nounderline'>📋</a>");
+            copy.on('click', () => {
+                navigator.clipboard.writeText(this.element.uri);
+                alert('Url copied to Clipboard');
+                return false;
+            });
+            $(".dm-detail-info-uri", tableInfo).append(copy);
+        }
         $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace ?? "none");
         if (this.element.workspace !== undefined) {
             $(".dm-detail-info-workspace", tableInfo).attr('href', Navigation.getLinkForNavigateToWorkspace(this.element.workspace));

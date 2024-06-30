@@ -234,7 +234,18 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         tableInfo.append(
             $("<tr><th>Metaclass</th><td><a class='dm-detail-info-metaclass'>m</a></td></tr>"));
 
-        $(".dm-detail-info-uri", tableInfo).text(this.element.uri ?? "none");
+        $(".dm-detail-info-uri", tableInfo).text((this.element.uri + " ")?? "none");
+        if (this.element.uri !== undefined && this.element.uri !== "") {
+
+            const copy = $("<a href='#' class='nounderline'>📋</a>");
+            copy.on('click', () => {
+                navigator.clipboard.writeText(this.element.uri);
+                alert('Url copied to Clipboard');
+                return false;
+            });
+
+            $(".dm-detail-info-uri", tableInfo).append(copy);
+        }
 
         $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace ?? "none");
         if (this.element.workspace !== undefined) {

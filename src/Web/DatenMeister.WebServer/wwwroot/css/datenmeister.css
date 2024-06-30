@@ -78,6 +78,10 @@ a {
     text-decoration: underline;
 }
 
+a.nounderline{
+    text-decoration: none;
+}
+
 /* Restyle the buttons that they are a bit more beautiful */
 .btn{
     font-size: 80%;

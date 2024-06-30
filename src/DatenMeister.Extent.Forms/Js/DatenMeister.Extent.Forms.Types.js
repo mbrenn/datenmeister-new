@@ -8,6 +8,6 @@ export var _Root;
     _MassImportDefinitionAction._name_ = "name";
     _MassImportDefinitionAction.isDisabled = "isDisabled";
     _Root._MassImportDefinitionAction = _MassImportDefinitionAction;
-    _Root.__MassImportDefinitionAction_Uri = "dm:///types/#b5e9f945-6c33-4b26-837b-38a5ad2f65fc";
+    _Root.__MassImportDefinitionAction_Uri = "dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc";
 })(_Root || (_Root = {}));
 //# sourceMappingURL=DatenMeister.Extent.Forms.Types.js.map

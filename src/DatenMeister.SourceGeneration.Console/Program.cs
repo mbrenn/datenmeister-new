@@ -87,7 +87,7 @@ namespace DatenMeister.SourceGeneration.Console
 
             var typeExtent = new MofUriExtent(
                 XmiProvider.CreateByFile(pathXml),
-                "dm:///types/", null);
+                "dm:///_internal/types/internal", null);
 
             dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
 

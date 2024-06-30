@@ -12,7 +12,7 @@ export namespace _Root
             static creationProtocol = "creationProtocol";
         }
 
-        export const __ReportForm_Uri = "dm:///types/#89dea433-d199-4889-95eb-7ef30c0b5695";
+        export const __ReportForm_Uri = "dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695";
         export class _RequestReportAction
         {
             static workspace = "workspace";
@@ -21,12 +21,12 @@ export namespace _Root
             static isDisabled = "isDisabled";
         }
 
-        export const __RequestReportAction_Uri = "dm:///types/#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c";
+        export const __RequestReportAction_Uri = "dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c";
         export class _RequestReportResult
         {
             static report = "report";
         }
 
-        export const __RequestReportResult_Uri = "dm:///types/#75aaa247-9e5d-4f8c-ad11-8ba43d996684";
+        export const __RequestReportResult_Uri = "dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684";
 }
 

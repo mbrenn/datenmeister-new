@@ -25,7 +25,7 @@ namespace DatenMeister.Extent.Forms.Model
         }
 
         public _MassImportDefinitionAction @MassImportDefinitionAction = new _MassImportDefinitionAction();
-        public MofObjectShadow @__MassImportDefinitionAction = new MofObjectShadow("dm:///types/#b5e9f945-6c33-4b26-837b-38a5ad2f65fc");
+        public MofObjectShadow @__MassImportDefinitionAction = new MofObjectShadow("dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc");
 
         public static readonly _Root TheOne = new _Root();
 

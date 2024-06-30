@@ -1038,7 +1038,7 @@
         <isActive p2:id="757c3aec-36d4-4de4-b9a0-544ca12a0bfa" />
         <isFinalSpecialization p2:id="af18ae81-4d36-4eae-932b-7cac4ee4d3a5" />
         <isLeaf p2:id="e9649321-400c-4caf-b5d8-2b02949037af" />
-        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4670e1d3-a62b-4bbf-86c1-972380bef6b2" name="actionType" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4670e1d3-a62b-4bbf-86c1-972380bef6b2" type-ref="dm:///_internal/model/primitivetypes#String" name="actionName" isID="false" isComposite="false">
           <aggregation p2:id="d296330e-825b-4760-b71b-3ad3a4e6e1d1" />
           <isDerived p2:id="ae3d030f-4a5c-4286-bcfb-2823a7365e20" />
           <isDerivedUnion p2:id="022c680e-dc8d-4b09-8ba8-4e88dbca3eeb" />
@@ -1047,6 +1047,26 @@
           <isUnique p2:id="f204143c-22f0-467b-9a4d-92abfe8db191" />
           <isStatic p2:id="ed1d0136-c249-4297-91d5-c4777893f2e4" />
           <isLeaf p2:id="b608bf4f-42e6-4971-a46b-7767e978c228" />
+        </ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a6c14a23-c7fe-40b0-963c-7199be102845" name="formUrl" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:id="1d1e2c7d-b219-491f-a63c-04981b333641" />
+          <isDerived p2:id="e3e81577-bcbe-4b44-9720-b4c6bd68abf6" />
+          <isDerivedUnion p2:id="08580aed-d2dd-40fc-a039-e738c5af0176" />
+          <isReadOnly p2:id="3d6beb7b-7ebd-4811-beb6-3db5fe2eed3f" />
+          <isOrdered p2:id="46f6f645-f451-45cb-a42b-27a76eee6e96" />
+          <isUnique p2:id="50c3cf2c-60da-4471-a9c7-45cfbf631895" />
+          <isStatic p2:id="79c04276-03e9-4f81-8c36-54b070f9ce16" />
+          <isLeaf p2:id="345c9cbd-b0ac-479f-a113-04f0b1a08149" />
+        </ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="aee31cf5-a557-4045-b3ab-a8dc3dd20f9e" name="metaClassUrl" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:id="108d2916-0e02-4109-9201-1d4257c68b8a" />
+          <isDerived p2:id="62ed9e40-caf2-4896-916e-ba13ce54d0d3" />
+          <isDerivedUnion p2:id="0836ccbc-878f-450e-a76d-71bb68cb6f88" />
+          <isReadOnly p2:id="f54322f9-d788-48b2-bfbe-123be86ecdec" />
+          <isOrdered p2:id="5cf85849-fcb5-4344-b8d3-3becfa36cdce" />
+          <isUnique p2:id="a9b16828-e10d-442a-8b96-bb78b6bf78c4" />
+          <isStatic p2:id="bc6a1c2c-a7ae-425b-b9a1-84736160bb50" />
+          <isLeaf p2:id="d65b1896-76d6-4d00-ad8f-d7ab4bcf376d" />
         </ownedAttribute>
       </packagedElement>
     </packagedElement>

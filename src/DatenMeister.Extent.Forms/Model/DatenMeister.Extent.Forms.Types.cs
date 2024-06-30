@@ -10,6 +10,9 @@ namespace DatenMeister.Extent.Forms.Model
     {
         public class _MassImportDefinitionAction
         {
+            public static string @item = "item";
+            public IElement? @_item = null;
+
             public static string @text = "text";
             public IElement? @_text = null;
 

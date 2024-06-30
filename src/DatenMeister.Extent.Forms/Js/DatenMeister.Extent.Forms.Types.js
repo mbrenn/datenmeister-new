@@ -3,6 +3,7 @@ export var _Root;
 (function (_Root) {
     class _MassImportDefinitionAction {
     }
+    _MassImportDefinitionAction.item = "item";
     _MassImportDefinitionAction.text = "text";
     _MassImportDefinitionAction._name_ = "name";
     _MassImportDefinitionAction.isDisabled = "isDisabled";

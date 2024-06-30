@@ -339,7 +339,9 @@ export namespace _DatenMeister
                 {
                         export class _NavigationDefineActionParameter
                         {
-                            static actionType = "actionType";
+                            static actionName = "actionName";
+                            static formUrl = "formUrl";
+                            static metaClassUrl = "metaClassUrl";
                         }
 
                         export const __NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";

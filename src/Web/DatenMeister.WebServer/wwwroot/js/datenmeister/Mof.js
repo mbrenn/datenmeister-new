@@ -134,6 +134,9 @@ export class DmObject {
         return DmObject.valueToString(values);
     }
     setMetaClassByUri(metaClassUri, workspace) {
+        if (workspace === undefined) {
+            workspace = "Types";
+        }
         this.metaClass = { uri: metaClassUri, workspace: workspace };
     }
     static valueToString(item, indent = "") {
@@ -179,6 +182,7 @@ export class DmObjectWithSync extends DmObject {
     constructor(metaClass) {
         super(metaClass);
         this.propertiesSet = new Array();
+        this.isMetaClassSet = true;
     }
     clearSync() {
         this.propertiesSet = new Array();
@@ -193,6 +197,10 @@ export class DmObjectWithSync extends DmObject {
             this.propertiesSet[key] = true;
         }
         return result;
+    }
+    setMetaClassByUri(metaClassUri, workspace) {
+        super.setMetaClassByUri(metaClassUri, workspace);
+        this.isMetaClassSet = true;
     }
     static createFromReference(workspaceId, itemUri) {
         const result = new DmObjectWithSync();

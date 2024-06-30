@@ -676,8 +676,14 @@ namespace DatenMeister.Core.Models
             {
                 public class _NavigationDefineActionParameter
                 {
-                    public static string @actionType = "actionType";
-                    public IElement? @_actionType = null;
+                    public static string @actionName = "actionName";
+                    public IElement? @_actionName = null;
+
+                    public static string @formUrl = "formUrl";
+                    public IElement? @_formUrl = null;
+
+                    public static string @metaClassUrl = "metaClassUrl";
+                    public IElement? @_metaClassUrl = null;
 
                 }
 

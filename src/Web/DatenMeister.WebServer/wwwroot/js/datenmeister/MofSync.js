@@ -43,6 +43,9 @@ export async function sync(element) {
             console.log('MofSync: Setting: ' + element.uri + " - " + key);
         }
     }
+    if (element.isMetaClassSet === true && element.metaClass?.uri !== undefined) {
+        await ClientItem.setMetaclass(element.workspace, element.uri, element.metaClass.uri);
+    }
     // Checks, if there is any property to be set
     if (paras.length > 0) {
         // Ok, we need to set the properties

@@ -3,6 +3,7 @@ export namespace _Root
 {
         export class _MassImportDefinitionAction
         {
+            static item = "item";
             static text = "text";
             static _name_ = "name";
             static isDisabled = "isDisabled";

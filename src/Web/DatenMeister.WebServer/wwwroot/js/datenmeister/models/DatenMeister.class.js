@@ -296,7 +296,9 @@ export var _DatenMeister;
         (function (_ParameterTypes) {
             class _NavigationDefineActionParameter {
             }
-            _NavigationDefineActionParameter.actionType = "actionType";
+            _NavigationDefineActionParameter.actionName = "actionName";
+            _NavigationDefineActionParameter.formUrl = "formUrl";
+            _NavigationDefineActionParameter.metaClassUrl = "metaClassUrl";
             _ParameterTypes._NavigationDefineActionParameter = _NavigationDefineActionParameter;
             _ParameterTypes.__NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
         })(_ParameterTypes = _Actions._ParameterTypes || (_Actions._ParameterTypes = {}));

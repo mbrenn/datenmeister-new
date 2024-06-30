@@ -6,6 +6,16 @@
     <isActive p2:id="46c123b2-da5d-4003-b5ce-4ed6bc8f721b" />
     <isFinalSpecialization p2:id="fbc990b6-8cf6-462f-a24a-0aad4265dc56" />
     <isLeaf p2:id="779b007f-cf3d-43e4-9e6f-a782447c08bd" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0d8d861e-8cdb-4df0-8528-493b3bcb02d5" isComposite="false" isID="false" name="item">
+      <aggregation p2:id="e98b71c0-bda8-4d5d-8b29-14cc59d6d3f3" />
+      <isDerived p2:id="04e15a95-0e2a-4af6-b876-96e2547be027" />
+      <isDerivedUnion p2:id="03a48ae6-0767-4d5d-9fda-e369036ceb47" />
+      <isReadOnly p2:id="ab3af592-976c-4689-9a09-f116a80a65e2" />
+      <isOrdered p2:id="f0114c33-fd87-4659-811a-0e4ab69ae80a" />
+      <isUnique p2:id="dda87a31-18f8-4fd8-a377-72e1e8178411" />
+      <isStatic p2:id="fb282bce-4501-467a-b3bb-557ecf9fcd7b" />
+      <isLeaf p2:id="226ca84c-3d60-495c-bc1f-c21fef96af62" />
+    </ownedAttribute>
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="872c71b6-21c0-4b0c-892d-9ee94d710b71" name="text" lower="1" upper="1" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
       <aggregation p2:id="ea15ad8f-c374-46bd-800a-9e9866e30b55" />
       <isDerived p2:id="89a56200-12b8-494b-b59a-5c33b140f01f" />

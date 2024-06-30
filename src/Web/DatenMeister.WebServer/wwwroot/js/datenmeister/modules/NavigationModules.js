@@ -32,8 +32,10 @@ class CreateAction extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     async execute(form, element, parameter, submitMethod) {
-        const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionType, ObjectType.String);
-        Navigation.navigateToAction(actionType, undefined, { workspace: element.workspace, itemUri: element.uri });
+        const actionType = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.actionName, ObjectType.String);
+        const formUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.formUrl, ObjectType.String);
+        const metaClassUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.metaClassUrl, ObjectType.String);
+        Navigation.navigateToAction(actionType, formUrl, { workspace: element.workspace, itemUri: element.uri, metaClass: metaClassUrl });
     }
 }
 //# sourceMappingURL=NavigationModules.js.map

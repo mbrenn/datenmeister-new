@@ -7,7 +7,7 @@ import * as ClientElements from "./client/Elements.js"
  * Creates a temporary DmObjectWithSync which is mirrored on the server
  * @param metaClass Metaclass of the element to be created
  */
-export async function createTemporaryDmObject (metaClass?: string) : Promise<Mof.DmObjectWithSync>
+export async function createTemporaryDmObject(metaClass?: string) : Promise<Mof.DmObjectWithSync>
 {
     const result = await ClientElements.createTemporaryElement(metaClass);
     return Mof.DmObjectWithSync.createFromReference(result.workspace, result.uri);
@@ -51,6 +51,10 @@ export async function sync(element : Mof.DmObjectWithSync) : Promise<void> {
 
             console.log('MofSync: Setting: ' + element.uri + " - " + key);
         }
+    }
+
+    if (element.isMetaClassSet === true && element.metaClass?.uri !== undefined) {
+        await ClientItem.setMetaclass(element.workspace, element.uri, element.metaClass.uri);
     }
     
     // Checks, if there is any property to be set

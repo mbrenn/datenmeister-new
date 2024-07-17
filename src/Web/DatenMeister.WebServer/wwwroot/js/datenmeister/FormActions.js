@@ -40,32 +40,6 @@ export function getModule(actionName) {
     }
     return undefined;
 }
-/*
-    Supporting methods
- */
-export async function loadObjectForAction(actionName) {
-    const foundModule = getModule(actionName);
-    if (foundModule !== undefined) {
-        return foundModule.loadObject();
-    }
-    /* Nothing has been found, so return an undefined */
-    return Promise.resolve(undefined);
-}
-/* Finds the best form fitting for the action */
-export async function loadFormForAction(actionName) {
-    const foundModule = getModule(actionName);
-    if (foundModule !== undefined) {
-        return foundModule.loadForm();
-    }
-    return Promise.resolve(undefined);
-}
-export function requiresConfirmation(actionName) {
-    const foundModule = getModule(actionName);
-    if (foundModule !== undefined) {
-        return foundModule.requiresConfirmation === true;
-    }
-    return false;
-}
 // Calls to execute the form actions.
 // actionName: Name of the action to be executed. This is a simple string describing the action
 // form: The form which was used to trigger the action

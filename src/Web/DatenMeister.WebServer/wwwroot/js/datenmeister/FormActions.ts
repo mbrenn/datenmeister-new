@@ -46,7 +46,7 @@ export interface IItemFormActionModule
         form: IIForms.IFormNavigation,
         element: DmObject,
         parameter?: DmObject,
-        submitMethod?: SubmitMethod) : Promise<void>;
+        submitMethod?: SubmitMethod): Promise<DmObject | void>;
 
 
     /**
@@ -55,7 +55,7 @@ export interface IItemFormActionModule
      * @param element Element to be shown
      * @param form Form that was used. 
      */
-    preparePage(element: DmObject, form: IIForms.IFormNavigation): Promise<void> | undefined 
+    preparePage(element: DmObject, form: IIForms.IFormNavigation): Promise<void>
 
     /**
      * Contains a flag, whether the action is a 'dangerous' action
@@ -95,7 +95,7 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
      */
     skipSaving: boolean | undefined;
 
-    execute(form: IIForms.IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+    execute(form: IIForms.IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<DmObject | void> {
         return Promise.resolve(undefined);
     }
 
@@ -142,39 +142,6 @@ export function getModule(actionName:string): IItemFormActionModule | undefined 
 }
 
 
-/*
-    Supporting methods
- */
-
-export async function loadObjectForAction(actionName: string): Promise<DmObject> | undefined {
-    const foundModule = getModule(actionName);
-    if (foundModule !== undefined) {
-        return foundModule.loadObject();
-    }
-
-    /* Nothing has been found, so return an undefined */
-    return Promise.resolve(undefined);
-}
-
-/* Finds the best form fitting for the action */
-export async function loadFormForAction(actionName: string) {
-    const foundModule = getModule(actionName);
-    if (foundModule !== undefined) {
-        return foundModule.loadForm();
-    }
-    
-    return Promise.resolve(undefined);
-}
-
-export function requiresConfirmation(actionName: string): boolean {
-
-    const foundModule = getModule(actionName);
-    if (foundModule !== undefined) {
-        return foundModule.requiresConfirmation === true;
-    }
-    
-    return false;
-}
 
 // Calls to execute the form actions.
 // actionName: Name of the action to be executed. This is a simple string describing the action
@@ -189,7 +156,7 @@ export async function execute(
     form: IIForms.IFormNavigation,
     element: DmObject,
     parameter?: DmObject,
-    submitMethod?: SubmitMethod) {
+    submitMethod?: SubmitMethod): Promise<DmObject | void> {
 
     const foundModule = getModule(actionName);
     if (foundModule !== undefined) {

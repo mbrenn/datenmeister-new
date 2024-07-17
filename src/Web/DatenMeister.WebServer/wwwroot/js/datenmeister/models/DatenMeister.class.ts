@@ -347,6 +347,34 @@ export namespace _DatenMeister
                         export const __NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
                 }
 
+                export class _ActionResult
+                {
+                    static isSuccess = "isSuccess";
+                    static clientActions = "clientActions";
+                }
+
+                export const __ActionResult_Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d";
+                export namespace _ClientActions
+                {
+                        export class _ClientAction
+                        {
+                            static actionName = "actionName";
+                            static element = "element";
+                            static parameter = "parameter";
+                        }
+
+                        export const __ClientAction_Uri = "dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998";
+                        export class _AlertClientAction
+                        {
+                            static messageText = "messageText";
+                            static actionName = "actionName";
+                            static element = "element";
+                            static parameter = "parameter";
+                        }
+
+                        export const __AlertClientAction_Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971";
+                }
+
         }
 
         export namespace _DataViews

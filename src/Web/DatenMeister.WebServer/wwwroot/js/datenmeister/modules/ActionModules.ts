@@ -8,9 +8,23 @@ import * as ActionClient from "../client/Actions.js";
 
 
 export function loadModules() {
+    FormActions.addModule(new AlertClientAction());
     FormActions.addModule(new JsonItemAlertAction());
     FormActions.addModule(new ActionExecuteAction());
     FormActions.addModule(new ActionExecuteOnItemAction());
+}
+
+
+class AlertClientAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Alert");
+        this.actionVerb = "Alert";
+        this.skipSaving = true;
+    }
+
+    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        alert(parameter.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String));
+    }
 }
 
 class JsonItemAlertAction extends FormActions.ItemFormActionModuleBase {
@@ -79,7 +93,7 @@ class ActionExecuteOnItemAction extends FormActions.ItemFormActionModuleBase {
         form: IFormNavigation,
         element: Mof.DmObject,
         parameter?: Mof.DmObject,
-        submitMethod?: SubmitMethod): Promise<void> {
+        submitMethod?: SubmitMethod): Promise<Mof.DmObject|undefined> {
 
         // Executes the action directly
         const result = await ActionClient.executeAction(
@@ -89,6 +103,7 @@ class ActionExecuteOnItemAction extends FormActions.ItemFormActionModuleBase {
 
         if (result.success) {
             alert('Success: ' + result.result);
+            return result.resultAsDmObject;
         } else {
             alert("Unfortunately, the action failed: \n\n" + result.reason);
         }

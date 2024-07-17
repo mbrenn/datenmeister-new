@@ -1070,6 +1070,88 @@
         </ownedAttribute>
       </packagedElement>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="899324b1-85dc-40a1-ba95-dec50509040d" name="ActionResult">
+      <isAbstract p2:id="7848f2a9-1a26-4b1e-955c-debc41a65f4e" />
+      <isActive p2:id="99f108f1-0dfa-49b8-9312-923d58483120" />
+      <isFinalSpecialization p2:id="e18bfb14-fb29-4d12-bd3a-dcf1794ea9fd" />
+      <isLeaf p2:id="aeac4126-fe24-461f-8d1c-d89aae39a388" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b37dc68-3efa-4b43-88ee-3d4caa18ceb9" name="isSuccess" type-ref="dm:///_internal/model/primitivetypes#_package_PrimitiveTypes" isID="false" isComposite="false">
+        <aggregation p2:id="02e77687-2fde-43c7-b1e4-87a697cbfd22" />
+        <isDerived p2:id="0c65887f-ebcf-4f83-bf04-d68b94302501" />
+        <isDerivedUnion p2:id="6bd90e64-3e0d-411a-8a97-e5ede6da27c0" />
+        <isReadOnly p2:id="b5f2ed88-9ece-45f8-a719-4c5316644422" />
+        <isOrdered p2:id="d43730a7-38e1-4d0a-aa71-0c9e4317ec31" />
+        <isUnique p2:id="d1060d11-a199-4c4c-b136-6e4f4e612643" />
+        <isStatic p2:id="5e7acea7-faf4-4f3f-a46c-de4d4ff352c7" />
+        <isLeaf p2:id="6c82f9aa-bed2-4e45-a15c-28bc3c163d15" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="dea3245e-f59d-48a3-a75d-a38f8a0bec95" isComposite="true" isID="false" name="clientActions" lower="0" upper="*">
+        <aggregation p2:id="a7c0c4f6-515b-492d-a1f0-cb669b2d5959" />
+        <isDerived p2:id="3f79d698-2400-4f7a-a9c7-68ed984dd5e0" />
+        <isDerivedUnion p2:id="66598588-7b67-4534-a234-fb8ef02965d7" />
+        <isReadOnly p2:id="0ad809f9-ad37-4175-924f-ac9a8cce2d91" />
+        <isOrdered p2:id="55cc89a8-5e8d-4521-95c7-2a3d3ea0fed4" />
+        <isUnique p2:id="1ce2f769-6d2a-4160-bd7e-c6b9d25d5502" />
+        <isStatic p2:id="263d0576-f914-488a-8ec4-a15dabf48b70" />
+        <isLeaf p2:id="f82df864-e73e-49ba-b8f5-bade71ccdcad" />
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="fd8a596f-725c-4768-bfcf-319e63422168" name="ClientActions">
+      <visibility p2:id="74512b0f-744b-4ec0-a719-2bdb866cbbcb" />
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="e07ca80e-2540-4f91-8214-60dbd464e998" name="ClientAction">
+        <isAbstract p2:id="27dde1a6-70b0-4a08-b15c-f7d750c5a422" />
+        <isActive p2:id="c364235e-ca30-4526-9a65-64825debcf06" />
+        <isFinalSpecialization p2:id="dda6deb3-9ad7-45ab-bf82-4f7a73ebc61e" />
+        <isLeaf p2:id="dba4247b-2740-493c-aefe-623c4a3f5449" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="cadbcfa6-9adc-4234-89ae-18386059496a" name="actionName" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:id="951a112c-7a3e-4457-a31c-95f7be777a36" />
+          <isDerived p2:id="5181aa16-23e4-41fb-968e-f8bc2397876c" />
+          <isDerivedUnion p2:id="de0dc972-5af0-41b3-833a-0939cb602478" />
+          <isReadOnly p2:id="e63157d6-357e-41df-a92e-839ce35a6ff6" />
+          <isOrdered p2:id="e5e592ab-c439-48dc-8f90-865dc349ab0e" />
+          <isUnique p2:id="6acd5142-4275-4e7e-9760-708fb8230f35" />
+          <isStatic p2:id="dce0b4a5-2ce3-4957-9fcc-4dbf51606775" />
+          <isLeaf p2:id="0d821806-9096-4f0a-aa4a-8cd5ba8d7d8e" />
+        </ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b032c92-833a-4d5e-9103-fbb3dbb8e9af" isComposite="false" isID="false" name="element">
+          <aggregation p2:id="7343ed18-8e76-4447-9f5b-fa181c4a8fa6" />
+          <isDerived p2:id="e5de191d-804f-48ea-ae80-b7977e9ec870" />
+          <isDerivedUnion p2:id="5a423f54-75fb-4058-aeef-fa181575cd7c" />
+          <isReadOnly p2:id="4837c336-3a07-4e16-9ecd-aaf7eff84240" />
+          <isOrdered p2:id="1b04f101-b155-4e6b-862d-1041c2a04c3a" />
+          <isUnique p2:id="0117a28b-ad06-4c66-b04e-3e294d852db1" />
+          <isStatic p2:id="bc8ecd4a-a039-4371-b10b-3996647d08ba" />
+          <isLeaf p2:id="6c656e38-966e-4580-993a-6e24d5f1bca7" />
+        </ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="9e318252-1b57-45d9-aa3f-23d766388354" isComposite="false" isID="false" name="parameter">
+          <aggregation p2:id="65c48e1e-227a-4f07-96c8-da23b72120d6" />
+          <isDerived p2:id="42f69d02-3d06-4ff4-93f2-9208acd62218" />
+          <isDerivedUnion p2:id="a83d0d60-333e-4f0c-8975-727ff23446a8" />
+          <isReadOnly p2:id="98ca0bb2-9b63-4326-9c04-06e7a1971eb8" />
+          <isOrdered p2:id="0693823a-de17-4f11-ae49-53f364338df2" />
+          <isUnique p2:id="8c3858a2-2d2c-4032-931e-02cda15927fc" />
+          <isStatic p2:id="5ad16a8e-d9ab-4a8e-a0aa-9ca31afb60d2" />
+          <isLeaf p2:id="5fa3f55a-4786-4f65-8412-239e92e99059" />
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="0ee17f2a-5407-4d38-b1b4-34ead2186971" name="AlertClientAction">
+        <isAbstract p2:id="6aeb7d5b-f054-49f5-bac4-b9785a2c7952" />
+        <isActive p2:id="bfad868f-b314-4920-b2c7-260bb8139464" />
+        <isFinalSpecialization p2:id="96ea28c4-917b-4889-a9b7-a95a79176201" />
+        <isLeaf p2:id="00b46d0c-2465-46b3-b2a1-97b497ad5cd2" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f506ec76-264d-4bf9-9ce7-fcbde08bc3c3" name="messageText" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:id="76ad535b-55aa-43fc-85d3-2933a5b46e3e" />
+          <isDerived p2:id="e8d3470c-f2e6-46ac-9f09-d9f9aa12e6c0" />
+          <isDerivedUnion p2:id="936178ef-b6b1-463e-b068-69e8e215456e" />
+          <isReadOnly p2:id="16e57301-c9bd-45de-ab61-082919d6eb30" />
+          <isOrdered p2:id="ecfe47cb-fde6-4ef2-b5ad-259a2174f471" />
+          <isUnique p2:id="9bf3d730-d9e5-412f-b6c3-4fc944673399" />
+          <isStatic p2:id="96116ef7-9652-4115-8b13-8bd10265cd03" />
+          <isLeaf p2:id="400bcb15-5565-4185-8aa1-473fb7ed1077" />
+        </ownedAttribute>
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f34529f8-1641-4d08-9387-044095cef715" general-ref="dm:///intern.datenmeister.types/#e07ca80e-2540-4f91-8214-60dbd464e998" isSubstitutable="false" />
+      </packagedElement>
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

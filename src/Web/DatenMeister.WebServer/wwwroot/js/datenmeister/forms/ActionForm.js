@@ -1,4 +1,4 @@
-import { DmObjectWithSync } from "../Mof.js";
+import { DmObjectWithSync, ObjectType } from "../Mof.js";
 import { debugElementToDom } from "../DomHelper.js";
 import * as Forms from "./Forms.js";
 import * as ObjectForm from "./ObjectForm.js";
@@ -8,6 +8,7 @@ import * as ClientElements from '../client/Elements.js';
 import * as ClientItems from '../client/Items.js';
 import * as MofSync from "../MofSync.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
+import { _DatenMeister } from "../models/DatenMeister.class.js";
 export async function createActionFormForEmptyObject(parent, metaClass, configuration, actionName) {
     const statusOverview = new StatusFieldControl();
     const module = FormActions.getModule(actionName);
@@ -37,9 +38,30 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
         let loadedElement = await ClientItems.getObjectByUri(element.workspace, element.uri);
         statusOverview.setListStatus("Execute Action", false);
         // Executes the detail form
-        await FormActions.execute(actionName, creator, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
+        const result = await FormActions.execute(actionName, creator, loadedElement, undefined, // The action form cannot provide additional parameters as the ActionButton
         method);
         statusOverview.setListStatus("Execute Action", true);
+        if (result !== undefined) {
+            // Checks, if we are having a client-actions responded back from the server
+            const resultAsMof = result;
+            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, ObjectType.Array);
+            if (clientActions !== undefined) {
+                for (let n in clientActions) {
+                    // Try to find the module and execute the client action
+                    const clientAction = clientActions[n];
+                    const moduleName = clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.actionName);
+                    const module = FormActions.getModule(moduleName);
+                    if (module === undefined) {
+                        alert('Unknown action: ' + moduleName);
+                    }
+                    else {
+                        await module.execute(creator, loadedElement, clientAction, Forms.SubmitMethod.Save);
+                    }
+                }
+                alert('Execute Client actions');
+                // TODO : EXEUCTE CLIENT ACTIONS
+            }
+        }
     };
     /* Loads the object being used as a base for the new action.
     * Usually context information from GET-Query are retrieved. Or some default fields are filled out

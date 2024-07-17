@@ -694,6 +694,60 @@ namespace DatenMeister.Core.Models
 
             public _ParameterTypes ParameterTypes = new _ParameterTypes();
 
+            public class _ActionResult
+            {
+                public static string @isSuccess = "isSuccess";
+                public IElement? @_isSuccess = null;
+
+                public static string @clientActions = "clientActions";
+                public IElement? @_clientActions = null;
+
+            }
+
+            public _ActionResult @ActionResult = new _ActionResult();
+            public MofObjectShadow @__ActionResult = new MofObjectShadow("dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d");
+
+            public class _ClientActions
+            {
+                public class _ClientAction
+                {
+                    public static string @actionName = "actionName";
+                    public IElement? @_actionName = null;
+
+                    public static string @element = "element";
+                    public IElement? @_element = null;
+
+                    public static string @parameter = "parameter";
+                    public IElement? @_parameter = null;
+
+                }
+
+                public _ClientAction @ClientAction = new _ClientAction();
+                public MofObjectShadow @__ClientAction = new MofObjectShadow("dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998");
+
+                public class _AlertClientAction
+                {
+                    public static string @messageText = "messageText";
+                    public IElement? @_messageText = null;
+
+                    public static string @actionName = "actionName";
+                    public IElement? @_actionName = null;
+
+                    public static string @element = "element";
+                    public IElement? @_element = null;
+
+                    public static string @parameter = "parameter";
+                    public IElement? @_parameter = null;
+
+                }
+
+                public _AlertClientAction @AlertClientAction = new _AlertClientAction();
+                public MofObjectShadow @__AlertClientAction = new MofObjectShadow("dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971");
+
+            }
+
+            public _ClientActions ClientActions = new _ClientActions();
+
         }
 
         public _Actions Actions = new _Actions();

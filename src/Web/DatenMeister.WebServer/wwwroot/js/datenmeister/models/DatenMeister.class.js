@@ -302,6 +302,30 @@ export var _DatenMeister;
             _ParameterTypes._NavigationDefineActionParameter = _NavigationDefineActionParameter;
             _ParameterTypes.__NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
         })(_ParameterTypes = _Actions._ParameterTypes || (_Actions._ParameterTypes = {}));
+        class _ActionResult {
+        }
+        _ActionResult.isSuccess = "isSuccess";
+        _ActionResult.clientActions = "clientActions";
+        _Actions._ActionResult = _ActionResult;
+        _Actions.__ActionResult_Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d";
+        let _ClientActions;
+        (function (_ClientActions) {
+            class _ClientAction {
+            }
+            _ClientAction.actionName = "actionName";
+            _ClientAction.element = "element";
+            _ClientAction.parameter = "parameter";
+            _ClientActions._ClientAction = _ClientAction;
+            _ClientActions.__ClientAction_Uri = "dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998";
+            class _AlertClientAction {
+            }
+            _AlertClientAction.messageText = "messageText";
+            _AlertClientAction.actionName = "actionName";
+            _AlertClientAction.element = "element";
+            _AlertClientAction.parameter = "parameter";
+            _ClientActions._AlertClientAction = _AlertClientAction;
+            _ClientActions.__AlertClientAction_Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971";
+        })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
     })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
     let _DataViews;
     (function (_DataViews) {

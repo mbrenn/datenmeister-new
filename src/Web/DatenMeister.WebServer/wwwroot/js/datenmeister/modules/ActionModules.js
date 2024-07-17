@@ -4,9 +4,20 @@ import * as MofSync from "../MofSync.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 import * as ActionClient from "../client/Actions.js";
 export function loadModules() {
+    FormActions.addModule(new AlertClientAction());
     FormActions.addModule(new JsonItemAlertAction());
     FormActions.addModule(new ActionExecuteAction());
     FormActions.addModule(new ActionExecuteOnItemAction());
+}
+class AlertClientAction extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super("Alert");
+        this.actionVerb = "Alert";
+        this.skipSaving = true;
+    }
+    async execute(form, element, parameter, submitMethod) {
+        alert(parameter.get(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, Mof.ObjectType.String));
+    }
 }
 class JsonItemAlertAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
@@ -56,6 +67,7 @@ class ActionExecuteOnItemAction extends FormActions.ItemFormActionModuleBase {
         const result = await ActionClient.executeAction(element.workspace, element.uri);
         if (result.success) {
             alert('Success: ' + result.result);
+            return result.resultAsDmObject;
         }
         else {
             alert("Unfortunately, the action failed: \n\n" + result.reason);

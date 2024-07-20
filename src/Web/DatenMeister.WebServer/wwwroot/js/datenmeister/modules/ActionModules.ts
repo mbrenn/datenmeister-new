@@ -102,7 +102,6 @@ class ActionExecuteOnItemAction extends FormActions.ItemFormActionModuleBase {
         );
 
         if (result.success) {
-            alert('Success: ' + result.result);
             return result.resultAsDmObject;
         } else {
             alert("Unfortunately, the action failed: \n\n" + result.reason);

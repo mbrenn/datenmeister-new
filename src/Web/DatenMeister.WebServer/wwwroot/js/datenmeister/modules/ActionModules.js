@@ -66,7 +66,6 @@ class ActionExecuteOnItemAction extends FormActions.ItemFormActionModuleBase {
         // Executes the action directly
         const result = await ActionClient.executeAction(element.workspace, element.uri);
         if (result.success) {
-            alert('Success: ' + result.result);
             return result.resultAsDmObject;
         }
         else {

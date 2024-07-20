@@ -46,6 +46,7 @@ namespace DatenMeister.Extent.Forms.MassImport
             var clientAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.ClientActions.__AlertClientAction);
             result.AddCollectionItem(_DatenMeister._Actions._ActionResult.clientActions, clientAction);
             clientAction.set(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, "This is a test");
+            clientAction.set(_DatenMeister._Actions._ClientActions._AlertClientAction.actionName, "Alert");
 
             return await Task.FromResult(result);
         }

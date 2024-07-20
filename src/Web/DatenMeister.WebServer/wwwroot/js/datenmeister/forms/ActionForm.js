@@ -42,6 +42,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
         method);
         statusOverview.setListStatus("Execute Action", true);
         if (result !== undefined) {
+            statusOverview.setListStatus("Execute Client-Action", false);
             // Checks, if we are having a client-actions responded back from the server
             const resultAsMof = result;
             const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, ObjectType.Array);
@@ -58,9 +59,8 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
                         await module.execute(creator, loadedElement, clientAction, Forms.SubmitMethod.Save);
                     }
                 }
-                alert('Execute Client actions');
-                // TODO : EXEUCTE CLIENT ACTIONS
             }
+            statusOverview.setListStatus("Execute Client-Action", true);
         }
     };
     /* Loads the object being used as a base for the new action.

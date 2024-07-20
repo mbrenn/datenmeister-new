@@ -10,8 +10,6 @@ export async function pageOpenSelectItemControl()
             "Uri:" + x.uri+ ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
     await control.initAsync(selectItemControl);
 }
-
-
 export async function pageOpenSelectItemControlFullBreadcrumb()
 {
     const selectItemControl =$("#selectitemcontrol");

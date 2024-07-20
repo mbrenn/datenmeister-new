@@ -64,6 +64,10 @@ export async function createActionFormForEmptyObject(
         statusOverview.setListStatus("Execute Action", true);
 
         if (result !== undefined) {
+
+            statusOverview.setListStatus("Execute Client-Action", false);
+
+
             // Checks, if we are having a client-actions responded back from the server
             const resultAsMof = result as DmObject;
             const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, ObjectType.Array);
@@ -80,13 +84,10 @@ export async function createActionFormForEmptyObject(
                     } else {
                         await module.execute(creator, loadedElement, clientAction, Forms.SubmitMethod.Save);
                     }
-                }
-
-                alert('Execute Client actions');
-
-
-                // TODO : EXEUCTE CLIENT ACTIONS
+                }                
             }
+
+            statusOverview.setListStatus("Execute Client-Action", true);
         }
     };
 

@@ -30,7 +30,7 @@ namespace DatenMeister.WebServer.Pages
             var workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspace(workspaceModel.id)
                             ?? throw new InvalidOperationException(
                                 "Workspace is not found");
-            return ExtentManagementUrlHelper.GetIdOfWorkspace(workspace);
+            return ExtentManagementHelper.GetIdOfWorkspace(workspace);
         }
 
         public string GetIdOfExtent(WorkspaceModel workspaceModel, ExtentModel extentModel)
@@ -40,7 +40,7 @@ namespace DatenMeister.WebServer.Pages
             var extent = workspace.FindExtent(extentModel.uri)
                          ?? throw new InvalidOperationException("Extent is not found");
 
-            return ExtentManagementUrlHelper.GetIdOfExtent(workspace, extent);
+            return ExtentManagementHelper.GetIdOfExtent(workspace, extent);
         }
 
         public string GetIdOfExtentsProperties(WorkspaceModel workspaceModel, ExtentModel extentModel)
@@ -50,7 +50,7 @@ namespace DatenMeister.WebServer.Pages
             var extent = workspace.FindExtent(extentModel.uri)
                          ?? throw new InvalidOperationException("Extent is not found");
 
-            return ExtentManagementUrlHelper.GetIdOfExtentsProperties(workspace, extent);
+            return ExtentManagementHelper.GetIdOfExtentsProperties(workspace, extent);
         }
     }
 }

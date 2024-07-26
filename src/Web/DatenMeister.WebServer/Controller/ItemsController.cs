@@ -529,7 +529,7 @@ namespace DatenMeister.WebServer.Controller
                            ?? throw new InvalidOperationException("Should not happen"));
 
                 var managementWorkspaceItem = _workspaceLogic.GetManagementWorkspace()
-                    .ResolveById(ExtentManagementUrlHelper.GetIdOfWorkspace(workspace.id));
+                    .ResolveById(ExtentManagementHelper.GetIdOfWorkspace(workspace.id));
                 if (managementWorkspaceItem != null)
                 {
                     result.Add(ItemWithNameAndId.Create(managementWorkspaceItem, EntentType.Workspace)

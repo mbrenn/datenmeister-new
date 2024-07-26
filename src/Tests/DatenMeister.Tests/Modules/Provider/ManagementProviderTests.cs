@@ -6,6 +6,7 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Provider.ExtentManagement;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Provider
@@ -42,6 +43,31 @@ namespace DatenMeister.Tests.Modules.Provider
             Assert.That(containeredElement, Is.Not.Null);
 
             Assert.That(containeredElement, Is.EqualTo(workspaceValue));
+        }
+
+        [Test]
+        public async Task TestGetWorkspaceElement()
+        {
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+
+            var managementExtent = ExtentManagementHelper.GetExtentForWorkspaces(scope.WorkspaceLogic);
+
+            var workspaceElement = ExtentManagementHelper.GetWorkspaceElement(managementExtent, WorkspaceNames.WorkspaceTypes);
+            Assert.That(workspaceElement, Is.Not.Null);
+            Assert.That(workspaceElement.getOrDefault<string>(_DatenMeister._Management._Workspace.id), Is.EqualTo(WorkspaceNames.WorkspaceTypes));
+        }
+
+        [Test]
+        public async Task TestGetExtentElement()
+        {
+            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+
+            var managementExtent = ExtentManagementHelper.GetExtentForWorkspaces(scope.WorkspaceLogic);
+
+            var extentElement =
+                ExtentManagementHelper.GetExtentElement(managementExtent, WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
+            Assert.That(extentElement, Is.Not.Null);
+            Assert.That(extentElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri), Is.EqualTo(WorkspaceNames.UriExtentInternalTypes));
         }
     }
 }

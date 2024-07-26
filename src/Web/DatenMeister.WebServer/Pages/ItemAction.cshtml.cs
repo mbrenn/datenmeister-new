@@ -40,7 +40,7 @@ namespace DatenMeister.WebServer.Pages
                                  $"Extent '{extentName}' in '{workspaceId}' not found");
                 var itemUri =
                     HttpUtility.UrlEncode(ManagementProviderPlugin.UriExtentWorkspaces + "#" +
-                                          ExtentManagementUrlHelper.GetIdOfExtentsProperties(workspace, extent));
+                                          ExtentManagementHelper.GetIdOfExtentsProperties(workspace, extent));
 
                 return Redirect(
                     $"~/Item/Management/{itemUri}");

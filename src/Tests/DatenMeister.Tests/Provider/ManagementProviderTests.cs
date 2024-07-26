@@ -142,20 +142,20 @@ namespace DatenMeister.Tests.Provider
             await plugin.Start(PluginLoadingPosition.AfterInitialization);
 
             var data = workspaceLogic.FindElement(
-                ExtentManagementUrlHelper.GetUrlOfWorkspace(
+                ExtentManagementHelper.GetUrlOfWorkspace(
                     workspaceLogic.GetDataWorkspace()));
             Assert.That(data, Is.Not.Null);
             Assert.That(data.getOrDefault<string>(_DatenMeister._Management._Workspace.id), Is.EqualTo("Data"));
 
             var extentData = workspaceLogic.FindElement(
-                ExtentManagementUrlHelper.GetUrlOfExtent(
+                ExtentManagementHelper.GetUrlOfExtent(
                     workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
             Assert.That(extentData, Is.Not.Null);
             Assert.That(extentData.getOrDefault<string>(_DatenMeister._Management._Extent.uri),
                 Is.EqualTo("dm:///test"));
 
             var extentProperties = workspaceLogic.FindElement(
-                ExtentManagementUrlHelper.GetUrlOfExtentsProperties(
+                ExtentManagementHelper.GetUrlOfExtentsProperties(
                     workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
             Assert.That(extentProperties, Is.Not.Null);
             Assert.That(extentProperties.getOrDefault<string>("name"), Is.EqualTo("Brenn"));

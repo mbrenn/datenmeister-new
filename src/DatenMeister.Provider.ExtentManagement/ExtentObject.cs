@@ -29,7 +29,7 @@ namespace DatenMeister.Provider.ExtentManagement
                 string.Empty /*will be set below*/,
                 MetaclassUriPath)
         {
-            Id = ExtentManagementUrlHelper.GetIdOfExtent(parentWorkspace, uriExtent);
+            Id = ExtentManagementHelper.GetIdOfExtent(parentWorkspace, uriExtent);
 
             LoadedExtentInformation = loadedExtentInformation;
 
@@ -136,7 +136,7 @@ namespace DatenMeister.Provider.ExtentManagement
                         ? null
                         : new ProxyIdProviderObject(
                             found.ProviderObject,
-                            ExtentManagementUrlHelper.GetIdOfExtentsProperties(parentWorkspace, uriExtent));
+                            ExtentManagementHelper.GetIdOfExtentsProperties(parentWorkspace, uriExtent));
                 },
                 (e, v) => throw new InvalidOperationException("properties cannot be set"));
 

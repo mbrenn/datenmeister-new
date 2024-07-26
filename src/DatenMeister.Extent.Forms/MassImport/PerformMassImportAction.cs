@@ -31,6 +31,8 @@ namespace DatenMeister.Extent.Forms.MassImport
             var extent = action.getOrDefault<IObject>(_Root._MassImportDefinitionAction.item);
             var text = action.getOrDefault<string>(_Root._MassImportDefinitionAction.text);
 
+            // Assumes that the given extent is a definition of Extent-Management instance
+
             var workspace = extent.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId);
             var extentUri = extent.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
 
@@ -40,6 +42,10 @@ namespace DatenMeister.Extent.Forms.MassImport
             {
                 throw new InvalidOperationException("The given 'item' is not an extent.");
             }
+
+            // We got all the data together, so let's do the massimport
+            var massImportLogic = new MassImportLogic();
+            massImportLogic.PerformMassImport(foundExtent, text);
 
             // Now return the client action
             var result = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionResult);

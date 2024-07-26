@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
@@ -26,7 +26,7 @@ namespace DatenMeister.Provider.ExtentManagement
         public WorkspaceObject(ExtentOfWorkspaceProvider provider, Workspace workspace) : base(workspace, provider,
             workspace.id, MetaclassUriPath)
         {
-            Id = ExtentManagementUrlHelper.GetIdOfWorkspace(workspace);
+            Id = ExtentManagementHelper.GetIdOfWorkspace(workspace);
 
             AddMapping(
                 _DatenMeister._Management._Workspace.id,

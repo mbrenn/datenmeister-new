@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Web;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ExtentManagement
 {
-    public class ExtentManagementUrlHelper
+    public class ExtentManagementHelper
     {
         /// <summary>
         ///     Gets the management url of the workspace
@@ -54,9 +55,36 @@ namespace DatenMeister.Provider.ExtentManagement
             return workspaceName.Replace("_", "__") +
                    "_" +
                    extentUri.Replace("_", "__");
-
         }
 
+        /// <summary>
+        /// Gets the element in the management workspace reflecting the given workspace
+        /// </summary>
+        /// <param name="managementExtent">The management extent</param>
+        /// <param name="workspace">Name of the workspace</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static IElement GetWorkspaceElement(IUriExtent managementExtent, string workspace)
+        {
+            var workspaceId = GetIdOfWorkspace(workspace);
+            return managementExtent.element(workspaceId)
+                ?? throw new InvalidOperationException("Workspace Element was not found");
+        }
+
+        /// <summary>
+        /// Gets the element in the management workspace reflecting the given extent
+        /// </summary>
+        /// <param name="managementExtent">The management extent</param>
+        /// <param name="workspace">Name of the workspace</param>
+        /// <param name="extentUri">Uri of the extent</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static IElement GetExtentElement(IUriExtent managementExtent, string workspace, string extentUri)
+        {
+            var extentId = GetIdOfExtent(workspace, extentUri);
+            return managementExtent.element(extentId)
+                ?? throw new InvalidOperationException("Extent Element was not found");
+        }
 
         /// <summary>
         ///     Gets the management url of the extent's properties
@@ -97,6 +125,17 @@ namespace DatenMeister.Provider.ExtentManagement
         {
             return
                 $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfExtentsProperties(workspace, extent))}";
+        }
+
+        /// <summary>
+        ///     Gets the extent that contains the workspaces
+        /// </summary>
+        /// <param name="workspaceLogic">Logic for the workspace to be used</param>
+        /// <returns>The found uri extent</returns>
+        public static IUriExtent GetExtentForWorkspaces(IWorkspaceLogic workspaceLogic)
+        {
+            return workspaceLogic.GetManagementWorkspace().FindExtent(WorkspaceNames.UriExtentWorkspaces)
+                   ?? throw new InvalidOperationException("Extent for uri extents not found");
         }
     }
 }

@@ -316,7 +316,7 @@ namespace DatenMeister.Tests.Web
             
             Assert.That(container1[1].name, Is.EqualTo("Data"));
             Assert.That(container1[1].workspace, Is.EqualTo("Management"));
-            Assert.That(container1[1].uri, Is.EqualTo(ExtentManagementUrlHelper.GetUrlOfWorkspace("Data")));
+            Assert.That(container1[1].uri, Is.EqualTo(ExtentManagementHelper.GetUrlOfWorkspace("Data")));
 
             // Get the containers of the root items. This element should be the item2, extent and the workspace
             var container4 = itemsController.GetContainer("Data", "dm:///temp#item4")?.Value;

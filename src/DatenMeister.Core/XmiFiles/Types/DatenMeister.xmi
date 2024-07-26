@@ -1149,7 +1149,7 @@
           <isStatic p2:id="96116ef7-9652-4115-8b13-8bd10265cd03" />
           <isLeaf p2:id="400bcb15-5565-4185-8aa1-473fb7ed1077" />
         </ownedAttribute>
-        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f34529f8-1641-4d08-9387-044095cef715" general-ref="dm:///intern.datenmeister.types/#e07ca80e-2540-4f91-8214-60dbd464e998" isSubstitutable="false" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f34529f8-1641-4d08-9387-044095cef715" general-ref="#e07ca80e-2540-4f91-8214-60dbd464e998" isSubstitutable="false" />
       </packagedElement>
     </packagedElement>
   </item>

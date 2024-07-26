@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -10,11 +11,17 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
+using static DatenMeister.Core.Models.EMOF._UML._Classification;
 
 namespace DatenMeister.Core.Uml.Helper
 {
     public static class ClassifierMethods
     {
+        /// <summary>
+        /// Logger for the classifier methods
+        /// </summary>
+        public static ILogger ClassLogger = new ClassLogger(typeof(ClassifierMethods));
+
         /// <summary>
         /// Returns a list of all properties within the classifier.
         /// Also properties from generalized classes will be returned
@@ -128,8 +135,10 @@ namespace DatenMeister.Core.Uml.Helper
 
                     if (general == null)
                     {
-                        throw new InvalidOperationException(
-                            "Somehow I got a null.... Generalizations needs to be verified");
+                        var innerText = $"Somehow I got a null for the general of the generalizations of " +
+                            $"{classifier}.... Generalizations needs to be verified";
+                        ClassLogger.Error(innerText);
+                        throw new InvalidOperationException(innerText);
                     }
 
                     if (alreadyVisited.Contains(general))
@@ -195,12 +204,28 @@ namespace DatenMeister.Core.Uml.Helper
                         .Where(elementInExtent => classInstance.equals(elementInExtent.getMetaClass()))
                         .Where(elementInExtent => !visitedElements.Contains(elementInExtent)))
                 {
-                    var generalizations = GetGeneralizations(elementInExtent).ToList();
-                    if (!visitedElements.Contains(elementInExtent) && generalizations.Contains(element))
+                    var found = false;
+                    try
+                    {
+                        var generalizations = GetGeneralizations(elementInExtent).ToList();
+                        if (!visitedElements.Contains(elementInExtent) && generalizations.Contains(element))
+                        {
+                            found = true;
+
+                            visitedElements.Add(elementInExtent);
+                        }
+                    }
+                    catch(InvalidOperationException exc)
+                    {
+                        var innerText = $"Exception during determination of generalizations: " +
+                            $"{exc} - Element {elementInExtent.ToString()} is disregarded";
+                        ClassLogger.Warn(innerText);
+                    }
+
+                    // We have to move the yielding outside the try catch block
+                    if (found)
                     {
                         yield return elementInExtent;
-
-                        visitedElements.Add(elementInExtent);
                     }
                 }
             }

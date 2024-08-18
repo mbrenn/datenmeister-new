@@ -44,7 +44,7 @@ namespace DatenMeister.Extent.Forms.MassImport
             }
 
             // We got all the data together, so let's do the massimport
-            var massImportLogic = new MassImportLogic();
+            var massImportLogic = new MassImportLogic(workspaceLogic, scopeStorage);
             massImportLogic.PerformMassImport(foundExtent, text);
 
             // Now return the client action

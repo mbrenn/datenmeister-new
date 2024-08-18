@@ -59,14 +59,15 @@ namespace DatenMeister.Provider.CSV
         private void ReadFromStream(IProvider extent, Stream stream, IElement? settings)
         {
             var columns =
-                settings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+                settings?.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
             var hasHeader =
-                settings.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader);
+                settings?.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader) ?? true;
             var createColumns = false;
 
             IElement? metaClass = null;
             var metaClassUri =
-                settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri);
+                settings?.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri) ?? null;
+
             if (!string.IsNullOrEmpty(metaClassUri))
             {
                 metaClass = _workspaceLogic.FindElement(metaClassUri);

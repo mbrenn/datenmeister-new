@@ -36,7 +36,7 @@ namespace DatenMeister.WebServer.Controller
 
             if (workspaceId == null)
             {
-                var extent = ManagementProviderPlugin.GetExtentForWorkspaces(_workspaceLogic);
+                var extent = ExtentManagementHelper.GetExtentForWorkspaces(_workspaceLogic);
                 var rootElements = extent.elements();
 
                 return rootElements.OfType<IObject>().Select(x => ItemWithNameAndId.Create(x)!).ToArray();
@@ -44,7 +44,7 @@ namespace DatenMeister.WebServer.Controller
 
             if (itemUrl == null)
             {
-                var workspaceExtent = ManagementProviderPlugin.GetExtentForWorkspaces(_workspaceLogic);
+                var workspaceExtent = ExtentManagementHelper.GetExtentForWorkspaces(_workspaceLogic);
                 var rootElements = workspaceExtent.elements();
 
                 var foundExtent =

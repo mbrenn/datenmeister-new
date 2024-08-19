@@ -50,16 +50,5 @@ namespace DatenMeister.Provider.ExtentManagement
 
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        ///     Gets the extent that contains the workspaces
-        /// </summary>
-        /// <param name="workspaceLogic">Logic for the workspace to be used</param>
-        /// <returns>The found uri extent</returns>
-        [Obsolete]
-        public static IUriExtent GetExtentForWorkspaces(IWorkspaceLogic workspaceLogic)
-        {
-            return ExtentManagementHelper.GetExtentForWorkspaces(workspaceLogic);
-        }
     }
 }

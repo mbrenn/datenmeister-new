@@ -78,7 +78,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             const fieldMetaClassUri = field.metaClass?.uri ?? "Undefined metaclass";
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created...
-            const isFieldReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly);
+            const isFieldReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean);
             
             // Creates the field to be shown 
             fieldElement = createField(

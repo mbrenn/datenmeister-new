@@ -14,6 +14,11 @@ export interface IItemFormActionModule
      */
     actionName: string;
 
+    /** 
+     * Alternatively, defines the action by its metaclass uri.
+     */
+    actionMetaClassUri: string; 
+
     /**
      * Defines the verb of the action. This information is used to fill the button
      */
@@ -75,12 +80,22 @@ export interface IItemFormActionModule
  * Defines the base implementation which can be overridden
  */
 export class ItemFormActionModuleBase implements IItemFormActionModule {
-    constructor(actionName?: string) {
+    constructor(actionName?: string, actionMetaClassUri?: string) {
         this.actionName = actionName;
+        this.actionMetaClassUri = actionMetaClassUri;
     }
 
+    /** 
+     * Name of the action
+     */
     actionName: string;
+
+    /** 
+     * Defines the uri of the metaclass of the action which provides a unique and 
+     */
+    actionMetaClassUri: string;                         
     actionVerb: string;
+
     requiresConfirmation: boolean | undefined;
 
     /**
@@ -134,6 +149,20 @@ export function getModule(actionName:string): IItemFormActionModule | undefined 
     for (let n in modules) {
         const module = modules[n];
         if (module.actionName === actionName) {
+            return module;
+        }
+    }
+
+    return undefined;
+}
+export function getModuleByUri(actionMetaClassUri: string): IItemFormActionModule | undefined {
+    if (actionMetaClassUri === undefined || actionMetaClassUri === "") {
+        return undefined;
+    }
+
+    for (let n in modules) {
+        const module = modules[n];
+        if (module.actionMetaClassUri === actionMetaClassUri) {
             return module;
         }
     }

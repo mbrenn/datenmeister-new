@@ -49,10 +49,10 @@ namespace DatenMeister.Extent.Forms.MassImport
 
             // Now return the client action
             var result = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionResult);
-            var clientAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.ClientActions.__AlertClientAction);
+            var clientAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.ClientActions.__NavigateToExtentClientAction);
             result.AddCollectionItem(_DatenMeister._Actions._ActionResult.clientActions, clientAction);
-            clientAction.set(_DatenMeister._Actions._ClientActions._AlertClientAction.messageText, "This is a test");
-            clientAction.set(_DatenMeister._Actions._ClientActions._AlertClientAction.actionName, "Alert");
+            clientAction.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, workspace);
+            clientAction.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, extentUri);
 
             return await Task.FromResult(result);
         }

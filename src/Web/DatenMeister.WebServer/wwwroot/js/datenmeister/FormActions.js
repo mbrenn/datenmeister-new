@@ -3,8 +3,9 @@ import { DmObjectWithSync } from "./Mof.js";
  * Defines the base implementation which can be overridden
  */
 export class ItemFormActionModuleBase {
-    constructor(actionName) {
+    constructor(actionName, actionMetaClassUri) {
         this.actionName = actionName;
+        this.actionMetaClassUri = actionMetaClassUri;
     }
     execute(form, element, parameter, submitMethod) {
         return Promise.resolve(undefined);
@@ -35,6 +36,18 @@ export function getModule(actionName) {
     for (let n in modules) {
         const module = modules[n];
         if (module.actionName === actionName) {
+            return module;
+        }
+    }
+    return undefined;
+}
+export function getModuleByUri(actionMetaClassUri) {
+    if (actionMetaClassUri === undefined || actionMetaClassUri === "") {
+        return undefined;
+    }
+    for (let n in modules) {
+        const module = modules[n];
+        if (module.actionMetaClassUri === actionMetaClassUri) {
             return module;
         }
     }

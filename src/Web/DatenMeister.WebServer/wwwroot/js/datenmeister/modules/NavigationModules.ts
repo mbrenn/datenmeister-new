@@ -10,6 +10,7 @@ export function loadModules() {
     FormActions.addModule(new ChangeForm());
     FormActions.addModule(new CreateNewItem());
     FormActions.addModule(new CreateAction());
+    FormActions.addModule(new NavigateToExtent());
 }
 
 class ChangeForm extends FormActions.ItemFormActionModuleBase {
@@ -52,5 +53,21 @@ class CreateAction extends FormActions.ItemFormActionModuleBase {
         const metaClassUrl = parameter.get(_DatenMeister._Actions._ParameterTypes._NavigationDefineActionParameter.metaClassUrl, ObjectType.String);
 
         Navigation.navigateToAction(actionType, formUrl, { workspace: element.workspace, itemUri: element.uri, metaClass: metaClassUrl });
+    }
+}
+
+class NavigateToExtent extends FormActions.ItemFormActionModuleBase {
+    constructor() {
+        super(
+            "DatenMeister.Navigation.ToExtent",
+            _DatenMeister._Actions._ClientActions.__NavigateToExtentClientAction_Uri);
+        this.skipSaving = true;
+    }
+    
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
+        Navigation.navigateToExtent(
+            element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId),
+            element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri)
+        );
     }
 }

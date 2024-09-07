@@ -20,7 +20,6 @@ import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
 import {createBreadcrumbForItem} from "../controls/ElementBreadcrumb.js";
 import {TableForm} from "../forms/TableForm.js";
 import {DmObject} from "../Mof.js";
-import {navigateToExtent} from "../Navigator.js";
 
 export function loadModules() {
     FormActions.addModule(new ExtentNavigateToExtent());

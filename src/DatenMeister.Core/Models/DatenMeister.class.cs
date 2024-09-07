@@ -744,6 +744,19 @@ namespace DatenMeister.Core.Models
                 public _AlertClientAction @AlertClientAction = new _AlertClientAction();
                 public MofObjectShadow @__AlertClientAction = new MofObjectShadow("dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971");
 
+                public class _NavigateToExtentClientAction
+                {
+                    public static string @workspaceId = "workspaceId";
+                    public IElement? @_workspaceId = null;
+
+                    public static string @extentUri = "extentUri";
+                    public IElement? @_extentUri = null;
+
+                }
+
+                public _NavigateToExtentClientAction @NavigateToExtentClientAction = new _NavigateToExtentClientAction();
+                public MofObjectShadow @__NavigateToExtentClientAction = new MofObjectShadow("dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462");
+
             }
 
             public _ClientActions ClientActions = new _ClientActions();
@@ -1546,6 +1559,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @metaclassUri = "metaclassUri";
                 public IElement? @_metaclassUri = null;
+
+                public static string @trimCells = "trimCells";
+                public IElement? @_trimCells = null;
 
             }
 

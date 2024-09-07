@@ -373,6 +373,13 @@ export namespace _DatenMeister
                         }
 
                         export const __AlertClientAction_Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971";
+                        export class _NavigateToExtentClientAction
+                        {
+                            static workspaceId = "workspaceId";
+                            static extentUri = "extentUri";
+                        }
+
+                        export const __NavigateToExtentClientAction_Uri = "dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462";
                 }
 
         }
@@ -752,6 +759,7 @@ export namespace _DatenMeister
                     static separator = "separator";
                     static columns = "columns";
                     static metaclassUri = "metaclassUri";
+                    static trimCells = "trimCells";
                 }
 
                 export const __CsvSettings_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings";

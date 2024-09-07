@@ -154,7 +154,7 @@ namespace DatenMeister.Tests.Web
                 DatenMeisterTests.GetIntegrationSettings());
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
 
-            var createdExtent = await extentManager.CreateAndAddXmiExtent(UriTemporaryExtent, "./test.xmi");
+            var createdExtent = await extentManager.CreateAndAddXmiExtent(UriTemporaryExtent, "./test_element.xmi");
             createdExtent.Extent!.set("name", "Test Extent");
 
             var factory = new MofFactory(createdExtent.Extent);

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -10,7 +9,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
-using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace DatenMeister.Tests.Provider
 {

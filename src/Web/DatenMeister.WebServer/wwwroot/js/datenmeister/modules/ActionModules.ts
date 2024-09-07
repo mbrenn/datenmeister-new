@@ -17,7 +17,7 @@ export function loadModules() {
 
 class AlertClientAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
-        super("Alert");
+        super("Alert", _DatenMeister._Actions._ClientActions.__AlertClientAction_Uri);
         this.actionVerb = "Alert";
         this.skipSaving = true;
     }

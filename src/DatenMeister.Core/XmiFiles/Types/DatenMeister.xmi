@@ -1151,6 +1151,32 @@
         </ownedAttribute>
         <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="f34529f8-1641-4d08-9387-044095cef715" general-ref="#e07ca80e-2540-4f91-8214-60dbd464e998" isSubstitutable="false" />
       </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="3251783f-2683-4c24-bad5-828930028462" name="NavigateToExtentClientAction">
+        <isAbstract p2:id="95090f78-146a-42fb-896f-62426c11adb6" />
+        <isActive p2:id="146ecf6c-ad45-45c6-868a-0a4e70f7e565" />
+        <isFinalSpecialization p2:id="d1bfebbe-979b-4347-9fdc-305ffae47bc4" />
+        <isLeaf p2:id="a0482bc1-335e-4e41-8f74-123efede31e3" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6e01d349-4d72-4be7-9038-22e2e8c5449f" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isID="true" isComposite="true">
+          <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+          <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+          <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+          <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+          <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+          <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+          <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+        </ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c2406255-991c-40c1-9d86-44dfb1606bb6" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:id="3846059d-d0bc-462f-9048-e8289858fc12" />
+          <isDerived p2:id="b569a825-d7b6-4b14-8bcb-4e7d142b3418" />
+          <isDerivedUnion p2:id="a299198f-4216-427b-b104-777b4904af22" />
+          <isReadOnly p2:id="5cdcf838-aafd-456a-acdc-574727bb6ab3" />
+          <isOrdered p2:id="725b78f5-5f35-484a-9a77-fed19279686a" />
+          <isUnique p2:id="ee8a8432-698f-44ee-9657-9deefc6ddf64" />
+          <isStatic p2:id="0c59d39a-e160-44bf-9611-714c5d2a347d" />
+          <isLeaf p2:id="86a8d617-5e2a-4ced-a5c3-e3486be31866" />
+        </ownedAttribute>
+      </packagedElement>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -1446,6 +1472,16 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="separator" type-ref="#System.Char" p1:id="ff80eba2-94fb-4175-9b13-6e608a225c23" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="columns" type-ref="dm:///_internal/model/primitivetypes#String" upper="2" p1:id="572ae828-0ad8-4b5c-9710-bf4fd44103ec" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="metaclassUri" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="2bec6d90-f843-4f14-b59f-614b0dfa2766" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45a58b8b-6f03-47bf-a490-4f1736bb1cc1" name="trimCells" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false">
+        <aggregation p1:id="2c6683b5-63b2-46cf-8132-90c94c452458" />
+        <isDerived p1:id="32fb2855-2402-4b60-8ede-8fc9f25878e6" />
+        <isDerivedUnion p1:id="8a12a1f8-5601-4eec-9400-720e5d4b74b2" />
+        <isReadOnly p1:id="1091bcb9-1948-46b0-84fa-8a324c6363a6" />
+        <isOrdered p1:id="d7bb030f-55df-4442-94fe-9d8bdae8bfff" />
+        <isUnique p1:id="df4bfaf2-7421-41cb-9f06-18b06cf08e89" />
+        <isStatic p1:id="61c876f0-d209-458b-ad0b-1f458bd36361" />
+        <isLeaf p1:id="fbbdf59e-310e-468b-add1-59fee2d95ba4" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition" name="ExcelHierarchicalColumnDefinition">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />

@@ -34,6 +34,13 @@ namespace DatenMeister.Extent.Forms.MassImport
         /// <param name="importText">Text to be imported</param>
         public void PerformMassImport(IUriExtent extent, string importText)
         {
+            // Checks if import Text is null or empty. 
+            if (importText == null || importText == string.Empty)
+            {
+                return;
+            }
+
+            // Ok, we have at least some kind of text
             var factory = new MofFactory(extent);
 
             /// Step 1: Load the data

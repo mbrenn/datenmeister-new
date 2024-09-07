@@ -17,9 +17,9 @@ namespace DatenMeister.Provider.CSV
     /// </summary>
     public class CsvLoader
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IWorkspaceLogic? _workspaceLogic;
 
-        public CsvLoader(IWorkspaceLogic workspaceLogic)
+        public CsvLoader(IWorkspaceLogic? workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
         }
@@ -62,13 +62,16 @@ namespace DatenMeister.Provider.CSV
                 settings?.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
             var hasHeader =
                 settings?.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader) ?? true;
+
+            var trimCells =
+                settings?.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.trimCells) ?? false;
             var createColumns = false;
 
             IElement? metaClass = null;
             var metaClassUri =
                 settings?.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri) ?? null;
 
-            if (!string.IsNullOrEmpty(metaClassUri))
+            if (_workspaceLogic != null && !string.IsNullOrEmpty(metaClassUri))
             {
                 metaClass = _workspaceLogic.FindElement(metaClassUri);
             }
@@ -95,7 +98,7 @@ namespace DatenMeister.Provider.CSV
                     var columnNames = SplitLine(headerLine, settings);
                     foreach (var columnName in columnNames)
                     {
-                        tempColumns.Add(columnName);
+                        tempColumns.Add(EvaluateString(columnName));
                     }
                 }
             }
@@ -126,13 +129,19 @@ namespace DatenMeister.Provider.CSV
                         foundColumn = tempColumns[n];
                     }
 
-                    csvObject.SetProperty(foundColumn, values[n]);
+                    csvObject.SetProperty(foundColumn, EvaluateString(values[n]));
                 }
 
                 extent.AddElement(csvObject);
             }
                 
             settings?.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
+
+            string EvaluateString(string value)
+            {
+                return trimCells ? value.Trim() : value;
+            }
+
         }
 
         /// <summary>

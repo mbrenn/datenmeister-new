@@ -325,6 +325,12 @@ export var _DatenMeister;
             _AlertClientAction.parameter = "parameter";
             _ClientActions._AlertClientAction = _AlertClientAction;
             _ClientActions.__AlertClientAction_Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971";
+            class _NavigateToExtentClientAction {
+            }
+            _NavigateToExtentClientAction.workspaceId = "workspaceId";
+            _NavigateToExtentClientAction.extentUri = "extentUri";
+            _ClientActions._NavigateToExtentClientAction = _NavigateToExtentClientAction;
+            _ClientActions.__NavigateToExtentClientAction_Uri = "dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462";
         })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
     })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
     let _DataViews;
@@ -664,6 +670,7 @@ export var _DatenMeister;
         _CsvSettings.separator = "separator";
         _CsvSettings.columns = "columns";
         _CsvSettings.metaclassUri = "metaclassUri";
+        _CsvSettings.trimCells = "trimCells";
         _ExtentLoaderConfigs._CsvSettings = _CsvSettings;
         _ExtentLoaderConfigs.__CsvSettings_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings";
         class _ExcelHierarchicalColumnDefinition {

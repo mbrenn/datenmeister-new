@@ -1,4 +1,6 @@
 import { DmObjectWithSync } from "./Mof.js";
+import { SubmitMethod } from "./forms/Forms.js";
+import { _DatenMeister } from "./models/DatenMeister.class.js";
 /**
  * Defines the base implementation which can be overridden
  */
@@ -67,5 +69,19 @@ export async function execute(actionName, form, element, parameter, submitMethod
         return foundModule.execute(form, element, parameter, submitMethod);
     }
     alert("Unknown action type: " + actionName);
+}
+export async function executeClientAction(clientAction, form, parameter, submitMethod) {
+    submitMethod ?? (submitMethod = SubmitMethod.Save);
+    const moduleName = clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.actionName);
+    let module = getModule(moduleName);
+    if (module === undefined) {
+        module = getModuleByUri(clientAction.metaClass?.uri);
+    }
+    if (module === undefined) {
+        alert('Unknown action: ' + moduleName + clientAction.metaClass?.uri);
+    }
+    else {
+        await module.execute(form, clientAction, parameter, submitMethod);
+    }
 }
 //# sourceMappingURL=FormActions.js.map

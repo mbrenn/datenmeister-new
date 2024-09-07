@@ -50,17 +50,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
                 for (let n in clientActions) {
                     // Try to find the module and execute the client action
                     const clientAction = clientActions[n];
-                    const moduleName = clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.actionName);
-                    let module = FormActions.getModule(moduleName);
-                    if (module === undefined) {
-                        module = FormActions.getModuleByUri(clientAction.metaClass?.uri);
-                    }
-                    if (module === undefined) {
-                        alert('Unknown action: ' + moduleName + clientAction.metaClass?.uri);
-                    }
-                    else {
-                        await module.execute(creator, clientAction, undefined, Forms.SubmitMethod.Save);
-                    }
+                    FormActions.executeClientAction(clientAction, creator);
                 }
             }
             statusOverview.setListStatus("Execute Client-Action", true);

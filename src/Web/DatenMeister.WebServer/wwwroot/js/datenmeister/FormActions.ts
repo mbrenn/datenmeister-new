@@ -1,6 +1,7 @@
 ﻿import {DmObject, DmObjectWithSync} from "./Mof.js";
 import * as IIForms from "./forms/Interfaces.js";
 import { SubmitMethod } from "./forms/Forms.js";
+import { _DatenMeister } from "./models/DatenMeister.class.js"
 
 /**
  * This interface describes one module being used for the action form
@@ -170,8 +171,6 @@ export function getModuleByUri(actionMetaClassUri: string): IItemFormActionModul
     return undefined;
 }
 
-
-
 // Calls to execute the form actions.
 // actionName: Name of the action to be executed. This is a simple string describing the action
 // form: The form which was used to trigger the action
@@ -193,4 +192,26 @@ export async function execute(
     }
 
     alert("Unknown action type: " + actionName);
+}
+
+
+export async function executeClientAction(    
+    clientAction: DmObject,
+    form?: IIForms.IFormNavigation,
+    parameter?: DmObject,
+    submitMethod?: SubmitMethod): Promise<DmObject | void> {
+
+    submitMethod ??= SubmitMethod.Save;
+
+    const moduleName = clientAction.get(_DatenMeister._Actions._ClientActions._ClientAction.actionName);
+    let module = getModule(moduleName);
+
+    if (module === undefined) {
+        module = getModuleByUri(clientAction.metaClass?.uri);
+    }
+    if (module === undefined) {
+        alert('Unknown action: ' + moduleName + clientAction.metaClass?.uri);
+    } else {
+        await module.execute(form, clientAction, parameter, submitMethod);
+    }
 }

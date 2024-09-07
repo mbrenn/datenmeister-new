@@ -77,61 +77,52 @@
         <li>
             <a onclick="openSelectItemControlItem(); return false;" href="#">Open Select Item Control with Item</a>
         </li>
+        <li>
+            <a onclick="openNavigateToExtentPropertiesViaClientNavigation(); return false;" href="#">Navigate to Extent Properties via ClientNavigation</a>
+        </li>
     </ul>
 </div>
 <div id="selectitemcontrol"></div>
 
-<script type="application/javascript">
+<script type="module">
 
-function openSelectItemControl()
-{
-    requirejs(['page/Actions'], function (Action)
-    {
+    import * as Action from './js/DatenMeister/page/Actions.js';
+
+    window.openSelectItemControl = function openSelectItemControl() {
         Action.pageOpenSelectItemControl();
-    });
     
-    return false;
-}
+        return false;
+    }
 
-function openSelectItemControlFullBreadcrumb()
-{
-    requirejs(['page/Actions'], function (Action)
-    {
+    window.openSelectItemControlFullBreadcrumb = function openSelectItemControlFullBreadcrumb() {
         Action.pageOpenSelectItemControlFullBreadcrumb();
-    });
     
-    return false;
-}
+        return false;
+    }
 
-function openSelectItemControlWorkspace()
-{
-    requirejs(['page/Actions'], function (Action)
-    {
+    window.openSelectItemControlWorkspace = function openSelectItemControlWorkspace() {
         Action.pageOpenSelectItemControlWithWorkspace();
-    });
     
-    return false;
-}
+        return false;
+    }
 
-function openSelectItemControlExtent()
-{
-    requirejs(['page/Actions'], function (Action)
-    {
+    window.openSelectItemControlExtent = function openSelectItemControlExtent() {
         Action.pageOpenSelectItemControlWithExtent();
-    });
     
-    return false;
-}
+        return false;
+    }
 
-function openSelectItemControlItem()
-{
-    requirejs(['page/Actions'], function (Action)
-    {
+    window.openSelectItemControlItem = function openSelectItemControlItem() {
         Action.pageOpenSelectItemControlWithItem();
-    });
     
-    return false;
-}
+        return false;
+    }
+
+    window.openNavigateToExtentPropertiesViaClientNavigation = function openNavigateToExtentPropertiesViaClientNavigation() {
+        Action.openNavigateToExtentPropertiesViaClientNavigation();
+    
+        return false;
+    }
 </script>
 
 <h2>Forms</h2>

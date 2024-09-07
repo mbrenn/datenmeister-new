@@ -8,7 +8,7 @@ export function navigateToWorkspaces() {
 }
 export function getLinkForNavigateToWorkspace(workspace) {
     return Settings.baseUrl + "Item/Management/" +
-        encodeURIComponent("dm:///_internal/workspaces#" + workspace);
+        encodeURIComponent("dm:///_internal/workspaces#" + encodeURIComponent(workspace));
 }
 export function navigateToWorkspace(workspace) {
     document.location.href =
@@ -42,10 +42,13 @@ export function navigateToExtentItems(workspace, extentUri, parameter) {
         getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
 }
 export function navigateToExtentProperties(workspace, extentUri) {
-    document.location.href =
-        Settings.baseUrl + "Item/Management/" +
+    document.location.href = getLinkForNavigateToExtentProperties(workspace, extentUri);
+}
+export function getLinkForNavigateToExtentProperties(workspace, extentUri) {
+    return Settings.baseUrl + "Item/Management/" +
+        encodeURIComponent("dm:///_internal/workspaces#" +
             encodeURIComponent(workspace) + "_" +
-            encodeURIComponent(extentUri);
+            encodeURIComponent(extentUri));
 }
 export function getLinkForNavigateToMofItem(item, param) {
     return getLinkForNavigateToItemByUrl(item.workspace, item.uri, param);
@@ -59,15 +62,6 @@ export function getLinkForNavigateToItem(workspace, extentUri, itemId, param) {
 export function navigateToItem(workspace, extentUri, itemId, param) {
     document.location.href =
         getLinkForNavigateToItem(workspace, extentUri, itemId, param);
-}
-export function getLinkForNavigateToExtent(workspace, extentUri) {
-    return Settings.baseUrl + "Item/Management/" +
-        encodeURIComponent("dm:///_internal/workspaces#" + workspace +
-            "_" + extentUri);
-}
-export function navigateToExtent(workspace, extentUri) {
-    document.location.href =
-        getLinkForNavigateToExtent(workspace, extentUri);
 }
 export function getLinkForNavigateToItemByUrl(workspace, itemUrl, param) {
     return Settings.baseUrl + "Item/" +

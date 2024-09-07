@@ -45,7 +45,7 @@ class NavigateToExtent extends FormActions.ItemFormActionModuleBase {
         this.skipSaving = true;
     }
     async execute(form, element, parameter, submitMethod) {
-        Navigation.navigateToExtent(element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId), element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri));
+        Navigation.navigateToExtentProperties(element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId), element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri));
     }
 }
 //# sourceMappingURL=NavigationModules.js.map

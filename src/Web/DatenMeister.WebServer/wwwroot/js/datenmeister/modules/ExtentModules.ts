@@ -19,10 +19,8 @@ import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
 import {createBreadcrumbForItem} from "../controls/ElementBreadcrumb.js";
 import {TableForm} from "../forms/TableForm.js";
-import {DmObject} from "../Mof.js";
 
 export function loadModules() {
-    FormActions.addModule(new ExtentNavigateToExtent());
     FormActions.addModule(new ExtentPropertiesUpdateAction());
     FormActions.addModule(new ExtentCreateItemAction());
     FormActions.addModule(new ExtentClearAction());
@@ -41,18 +39,6 @@ export function loadModules() {
     FormActions.addModule(new ExtentXmiImport());
 }
 
-class ExtentNavigateToExtent extends FormActions.ItemFormActionModuleBase{
-    constructor() {
-        super("Extent.NavigateTo.Extent");
-    }
-    
-    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        Navigator.navigateToExtent(
-            element.workspace,
-            element.uri
-        );
-    }
-}
 
 class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {

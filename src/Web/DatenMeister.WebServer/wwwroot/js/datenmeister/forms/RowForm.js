@@ -182,7 +182,7 @@ export class RowForm {
         }
         $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri ?? "none");
         if (this.element.extentUri !== undefined) {
-            $(".dm-detail-info-extenturi", tableInfo).attr('href', Navigation.getLinkForNavigateToExtent(this.element.workspace, this.element.extentUri));
+            $(".dm-detail-info-extenturi", tableInfo).attr('href', Navigation.getLinkForNavigateToExtentProperties(this.element.workspace, this.element.extentUri));
         }
         $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName ?? "none");
         if (this.element.metaClass !== undefined) {

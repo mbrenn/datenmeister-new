@@ -63,7 +63,7 @@ namespace DatenMeister.Extent.Forms
                 var field = factory.create(_DatenMeister.TheOne.Forms.__ActionFieldData);
                 field.set(_DatenMeister._Forms._ActionFieldData.name, "Go to Extent");
                 field.set(_DatenMeister._Forms._ActionFieldData.title, "Go to Extent");
-                field.set(_DatenMeister._Forms._ActionFieldData.actionName, "Extent.NavigateTo.Extent");
+                field.set(_DatenMeister._Forms._ActionFieldData.actionName, "DatenMeister.Navigation.ToExtent");
 
                 fields.add(field);
                 return true;

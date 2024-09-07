@@ -65,7 +65,7 @@ class NavigateToExtent extends FormActions.ItemFormActionModuleBase {
     }
     
     async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        Navigation.navigateToExtent(
+        Navigation.navigateToExtentProperties(
             element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId),
             element.get(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri)
         );

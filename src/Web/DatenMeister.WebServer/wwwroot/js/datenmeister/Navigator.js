@@ -47,8 +47,8 @@ export function navigateToExtentProperties(workspace, extentUri) {
 export function getLinkForNavigateToExtentProperties(workspace, extentUri) {
     return Settings.baseUrl + "Item/Management/" +
         encodeURIComponent("dm:///_internal/workspaces#" +
-            encodeURIComponent(workspace) + "_" +
-            encodeURIComponent(extentUri));
+            encodeURIComponent(workspace).replace('_', '__') + "_" +
+            encodeURIComponent(extentUri).replace('_', '__'));
 }
 export function getLinkForNavigateToMofItem(item, param) {
     return getLinkForNavigateToItemByUrl(item.workspace, item.uri, param);

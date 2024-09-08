@@ -69,8 +69,8 @@ export function navigateToExtentProperties(workspace: string, extentUri: string)
 export function getLinkForNavigateToExtentProperties(workspace: string, extentUri: string) {
     return Settings.baseUrl + "Item/Management/" +
         encodeURIComponent("dm:///_internal/workspaces#" +
-            encodeURIComponent(workspace) + "_" +
-            encodeURIComponent(extentUri));
+            encodeURIComponent(workspace).replace('_', '__') + "_" +
+            encodeURIComponent(extentUri).replace('_', '__'));
 }
 
 export interface INavigateToItemParams

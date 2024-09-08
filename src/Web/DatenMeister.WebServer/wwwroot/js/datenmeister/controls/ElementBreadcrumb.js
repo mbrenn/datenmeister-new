@@ -32,6 +32,13 @@ export class ElementBreadcrumb {
                 element.attr('href', Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
             }
             this._container.append(element);
+            // Adds the properties, in case the ententType is of type Extent
+            if (item.ententType === EntentType.Extent) {
+                const propertyElement = $("<a>(Properties)</a>");
+                $(propertyElement).attr('href', Navigator.getLinkForNavigateToExtentProperties(item.workspace, item.extentUri));
+                this._container.append($("<span> </span>"));
+                this._container.append(propertyElement);
+            }
             first = false;
         }
     }

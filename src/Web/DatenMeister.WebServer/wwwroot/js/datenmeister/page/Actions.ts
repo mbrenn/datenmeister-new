@@ -75,7 +75,7 @@ export async function openNavigateToExtentPropertiesViaClientNavigation() {
     const navigate = new Mof.DmObject();
     navigate.setMetaClassByUri(_DatenMeister._DatenMeister._Actions._ClientActions.__NavigateToExtentClientAction_Uri);
     navigate.set(_DatenMeister._DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, "Data");
-    navigate.set(_DatenMeister._DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, "dm:///__internal/temp");
+    navigate.set(_DatenMeister._DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, "dm:///_internal/temp");
 
     FormActions.executeClientAction(navigate);
 }

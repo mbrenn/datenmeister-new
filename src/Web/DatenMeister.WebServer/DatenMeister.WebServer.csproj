@@ -68,6 +68,9 @@
     <IconPngFiles Include="../../../assets/icons/output/*.*" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Remove="wwwroot\js\%2a%2a.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

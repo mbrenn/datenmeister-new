@@ -31,6 +31,7 @@ class X implements IForm.IObjectFormElement {
 }
 
 class Y implements IForm.ICollectionFormElement {
+    callbackLoadItems: (query: IForm.QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
     pageNavigation: IForm.IPageNavigation;
     element: Mof.DmObject;
     extentUri: string;

@@ -310,7 +310,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         this.statusTextControl.setListStatus("Actionfields", false);
         const fields = 
             this.formElement.get(_DatenMeister._Forms._CollectionForm.field, Mof.ObjectType.Array) as Array<Mof.DmObject>
-        if ( fields!== undefined) {
+        if (fields !== undefined) {
             const actionFields = $("<div></div>");
 
             for (const n in fields) {
@@ -360,16 +360,17 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     parameter.viewNode = viewNodeUrl.uri;
                 }
 
-                // Load the object for the specific form
-                const elements =
-                    await ClientItems.getRootElements(
+                const callbackLoadItems = async () => {
+                    // Load the object for the specific form
+                    return await ClientItems.getRootElements(
                         tthis.workspace, tthis.extentUri, parameter);
+                };
 
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
                     const tableForm = formFactory();
                     tableForm.pageNavigation = this;
-                    tableForm.elements = elements;
+                    tableForm.callbackLoadItems = callbackLoadItems;
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;
                     tableForm.extentUri = tthis.extentUri;

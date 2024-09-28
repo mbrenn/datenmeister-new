@@ -17,8 +17,9 @@ interface PropertyMenuItem
 }
 
 export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
+
     /**
-     * To be set, when a set of elements shall be shown
+     * Caches the elements to allow direct manipulation without additional server round-trip
      */
     elements: Array<Mof.DmObject>;
 
@@ -44,6 +45,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
     cacheButtons: JQuery;
 
+    callbackLoadItems: (query: InterfacesForms.QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
+
     async refreshForm(): Promise<void> {
 
         if (this.configuration.refreshForm !== undefined) {
@@ -61,11 +64,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
      * @param refresh true, if we just would like to refresh the table and not create new elements
      */
     async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean)
-    {
-        if (this.elements === undefined && this.element !== undefined) {
-            this.elements = this.element.get(this.formElement.get("property"));
-        }
-        
+    {        
         return await this.createFormByCollection(parent, configuration, refresh);
     }
 
@@ -78,6 +77,10 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
+        }
+
+        if (this.callbackLoadItems === undefined) {
+            throw "No callbackLoadItems is set";
         }
 
         this.cacheHeadline =
@@ -149,19 +152,23 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             }
         }
 
-        if (this.elements === undefined) {
-            this.elements = [];
+        const query = new InterfacesForms.QueryFilterParameter();
+
+        let elements = this.elements = await this.callbackLoadItems(query);
+
+        if (elements === undefined) {
+            elements = [];
         }
 
         // Evaluate the elements themselves
-        if (!Array.isArray(this.elements)) {
+        if (!Array.isArray(elements)) {
             this.cacheEmptyDiv =
                 refresh === true && this.cacheTable !== undefined
                     ? this.cacheTable
                     : $("<div></div>");
             this.cacheEmptyDiv.empty();
             this.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
-            this.cacheEmptyDiv.append($("<em></em>").text((this.elements as any).toString()));
+            this.cacheEmptyDiv.append($("<em></em>").text((elements as any).toString()));
 
             if (refresh !== true) {
                 parent.append(this.cacheEmptyDiv);
@@ -199,10 +206,9 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
             let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
 
-            let elements = this.elements;
             for (let n in elements) {
                 if (Object.prototype.hasOwnProperty.call(elements, n)) {
-                    let element = this.elements[n];
+                    let element = elements[n];
 
                     // Check, if the element may be shown
                     let elementsMetaClass = element.metaClass?.uri;

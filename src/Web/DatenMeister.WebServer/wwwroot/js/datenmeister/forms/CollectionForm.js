@@ -221,13 +221,15 @@ export class CollectionFormCreator {
                 if (viewNodeUrl !== undefined) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
-                // Load the object for the specific form
-                const elements = await ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
+                const callbackLoadItems = async () => {
+                    // Load the object for the specific form
+                    return await ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
+                };
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
                     const tableForm = formFactory();
                     tableForm.pageNavigation = this;
-                    tableForm.elements = elements;
+                    tableForm.callbackLoadItems = callbackLoadItems;
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;
                     tableForm.extentUri = tthis.extentUri;

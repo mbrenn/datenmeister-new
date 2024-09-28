@@ -1,5 +1,5 @@
 ﻿import * as Mof from "../Mof.js";
-import {IFormConfiguration} from "./IFormConfiguration.js";
+import { IFormConfiguration } from "./IFormConfiguration.js";
 
 export enum FormType {
     Object = "object",
@@ -75,7 +75,18 @@ export interface ICollectionFormElement extends IPageForm {
     /**
      * Elements which are required to shown
      */
-    elements: Array<Mof.DmObject>;
+    callbackLoadItems: (query: QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
 
     createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean): Promise<void>
+}
+
+/**
+ * Defines the filter parameters when a query shall be executed upon a set of items to allow
+ * filtering, sorting or other data transformations directly on server-side
+ */
+export class QueryFilterParameter {
+    orderBy: string; // Property to which the ordering shall be done
+    orderByDescending: boolean; // Flag, whether ordering shall be done by descending
+    filterByProperties: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
+    filterByFreetext: string; // Additional freetext
 }

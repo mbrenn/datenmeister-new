@@ -158,9 +158,9 @@ namespace DatenMeister.Tests.Web
             createdExtent.Extent!.set("name", "Test Extent");
 
             var factory = new MofFactory(createdExtent.Extent);
-            var item1 = factory.create(null).SetProperty("name", "item1").SetId("item1");
-            var item2 = factory.create(null).SetProperty("name", "item2").SetId("item2");
-            var item3 = factory.create(null).SetProperty("name", "item3").SetId("item3");
+            var item1 = factory.create(null).SetProperty("name", "item1").SetProperty("value", 55).SetId("item1");
+            var item2 = factory.create(null).SetProperty("name", "item2").SetProperty("value", 4).SetId("item2");
+            var item3 = factory.create(null).SetProperty("name", "item3").SetProperty("value", 1).SetId("item3");
             var item4 = factory.create(null).SetProperty("name", "item4").SetId("item4");
             var item5 = factory.create(null).SetProperty("name", "item5").SetId("item5");
 

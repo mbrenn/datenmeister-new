@@ -85,8 +85,8 @@ export interface ICollectionFormElement extends IPageForm {
  * filtering, sorting or other data transformations directly on server-side
  */
 export class QueryFilterParameter {
-    orderBy: string; // Property to which the ordering shall be done
-    orderByDescending: boolean; // Flag, whether ordering shall be done by descending
-    filterByProperties: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
-    filterByFreetext: string; // Additional freetext
+    orderBy?: string; // Property to which the ordering shall be done
+    orderByDescending?: boolean; // Flag, whether ordering shall be done by descending
+    filterByProperties?: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
+    filterByFreetext?: string; // Additional freetext
 }

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DataView;
 using DatenMeister.Json;
 
 namespace DatenMeister.WebServer.Controller
@@ -75,6 +78,126 @@ namespace DatenMeister.WebServer.Controller
                     throw new InvalidOperationException($"Element '{itemUri}' in Workspace {workspaceId} is not found");
 
                 return foundElement;
+            }
+        }
+
+        public List<IObject>? GetRootElementsInternal(string workspaceId, string extentUri, string? viewNode = null, QueryFilterParameter? filterParameter = null)
+        {
+            var (collection, extent) = WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
+            if (collection == null || extent == null)
+            {
+                return null;
+            }
+
+            /*
+             * Checks, if a view node was specified, if a view node was specified, the elements will be filtered
+             * according the viewnode
+             */
+            if (viewNode != null)
+            {
+                var dataviewHandler =
+                    new DataViewEvaluation(WorkspaceLogic, _scopeStorage);
+                dataviewHandler.AddDynamicSource("input", collection);
+
+                var viewNodeElement =
+                    WorkspaceLogic.FindElement(WorkspaceNames.WorkspaceManagement, viewNode)
+                    ?? WorkspaceLogic.FindElement(WorkspaceNames.WorkspaceData, viewNode);
+
+                if (viewNodeElement != null)
+                {
+                    collection = dataviewHandler.GetElementsForViewNode(viewNodeElement);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            var finalElements = collection.OfType<IObject>().ToList();
+
+            // Evaluates the filter parameters
+            if (filterParameter != null && !string.IsNullOrEmpty(filterParameter.OrderBy))
+            {
+                var sorter = new PropertyComparer(filterParameter.OrderBy, filterParameter.OrderByDescending);
+
+                finalElements = finalElements.Order(sorter).ToList();
+            }
+
+#if LimitNumberOfElements
+#warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
+            return finalElements.Take(100).ToList();
+#else
+            return finalElements;
+#endif
+
+        }
+
+        private class PropertyComparer : IComparer<IObject>
+        {
+            private readonly string property;
+            private readonly bool descending;
+
+            public PropertyComparer(string property, bool descending)
+            {
+                this.property = property;
+                this.descending = descending;
+            }
+
+            public int Compare(IObject? x, IObject? y)
+            {
+                var isPropertyX = x == null || !x.isSet(property);
+                var isPropertyY = y == null || !y.isSet(property);
+                var factor = descending ? -1 : 1;
+
+                // Checks whether the values are existing
+                // Per definition, these values will be sorted to the end of the table
+                if (isPropertyX && isPropertyY)
+                {
+                    return 0;
+                }
+
+                if (isPropertyY)
+                {
+                    return -1;
+                }
+
+                if (isPropertyX)
+                {
+                    return 1;
+                }
+
+                // Checks the content of these values
+                var propertyX = x!.get(property);
+                var propertyY = y!.get(property);
+
+                // Null properties will go to the bottom
+                if (propertyX == null && propertyY == null)
+                {
+                    return 0;
+                }
+
+                if (propertyY == null)
+                {
+                    return -1;
+                }
+
+                if (propertyX == null)
+                {
+                    return 1;
+                }
+
+                // Checks the content
+                if (propertyX is int intX && propertyY is int intY)
+                {
+                    return factor * intX.CompareTo(intY);
+                }
+
+                if (propertyX is double doubleX && propertyY is double doubleY)
+                {
+                    return factor * doubleX.CompareTo(doubleY);
+                }
+
+                return factor * propertyX!.ToString()!.CompareTo(propertyY.ToString());
             }
         }
     }

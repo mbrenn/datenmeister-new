@@ -312,13 +312,21 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="viewNode">The view node being used to filter the items</param>
         /// <returns></returns>
         [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
-        public ActionResult<string> GetRootElements(string workspaceId, string extentUri, string? viewNode = null)
+        public ActionResult<string> GetRootElements(string workspaceId, string extentUri, string? viewNode = null,
+            string? orderBy = null, bool? orderByDescending = false, string? filterByProperties = null, string? filterByFreeText = null)
         {
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
             extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
             viewNode = MvcUrlEncoder.DecodePath(viewNode);
 
-            var finalElements = GetRootElementsInternal(workspaceId, extentUri, viewNode);
+            var query = new QueryFilterParameter()
+            {
+                OrderBy = orderBy,
+                OrderByDescending = orderByDescending == true,
+                FilterByFreeText = filterByFreeText
+            };
+
+            var finalElements = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode, query);
             if (finalElements == null)
             {
                 return NotFound();
@@ -390,7 +398,7 @@ namespace DatenMeister.WebServer.Controller
             extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
             viewNode = MvcUrlEncoder.DecodePath(viewNode);
 
-            var finalElements = GetRootElementsInternal(workspaceId, extentUri, viewNode);
+            var finalElements = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode);
             if (finalElements == null)
             {
                 return NotFound($"{extentUri} did not return a reflective collection");
@@ -420,49 +428,6 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return NotFound($"{queryUri} did not return a reflective collection");
-        }
-
-        private List<object?>? GetRootElementsInternal(string workspaceId, string extentUri, string? viewNode = null)
-        {
-            var (collection, extent) = _workspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
-            if (collection == null || extent == null)
-            {
-                return null;
-            }
-
-            /*
-             * Checks, if a view node was specified, if a view node was specified, the elements will be filtered
-             * according the viewnode
-             */
-            if (viewNode != null)
-            {
-                var dataviewHandler =
-                    new DataViewEvaluation(_workspaceLogic, _scopeStorage);
-                dataviewHandler.AddDynamicSource("input", collection);
-
-                var viewNodeElement =
-                    _workspaceLogic.FindElement(WorkspaceNames.WorkspaceManagement, viewNode)
-                    ?? _workspaceLogic.FindElement(WorkspaceNames.WorkspaceData, viewNode);
-
-                if (viewNodeElement != null)
-                {
-                    collection = dataviewHandler.GetElementsForViewNode(viewNodeElement);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-#if LimitNumberOfElements
-#warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
-            var finalElements = collection.Take(100).ToList();
-#else
-            var finalElements = collection.ToList();
-#endif
-
-            return finalElements;
-
         }
 
         [HttpGet("api/items/get_container/{workspaceId}/{itemUri}")]

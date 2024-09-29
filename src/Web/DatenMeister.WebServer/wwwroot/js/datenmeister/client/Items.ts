@@ -153,6 +153,11 @@ export interface IGetRootElementsParameter{
      * Url to the view node being used to retrieve the elements
      */
     viewNode?: string;    
+    orderBy?: string; // Property to which the ordering shall be done
+    orderByDescending?: boolean; // Flag, whether ordering shall be done by descending
+    filterByProperties?: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
+    filterByFreetext?: string; // Additional freetext
+
 }
 
 export async function getRootElements(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<Array<Mof.DmObject>> {

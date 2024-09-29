@@ -221,7 +221,11 @@ export class CollectionFormCreator {
                 if (viewNodeUrl !== undefined) {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
-                const callbackLoadItems = async () => {
+                const callbackLoadItems = async (query) => {
+                    parameter.filterByFreetext = query.filterByFreetext;
+                    parameter.filterByProperties = query.filterByProperties;
+                    parameter.orderBy = query.orderBy;
+                    parameter.orderByDescending = query.orderByDescending;
                     // Load the object for the specific form
                     return await ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
                 };

@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Controller;
@@ -106,6 +110,59 @@ namespace DatenMeister.Tests.Web
             }
 
             Assert.That(found, Is.Not.Null);
+
+            dm.Dispose();
+        }
+
+        [Test]
+        public async Task TestGetRootElementsOrderBy()
+        {
+            var (dm, extent) = await CreateExampleExtentForSorting();
+
+            var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
+            var elements = itemsController
+                                   .GetRootElementsInternal(
+                                       WorkspaceNames.WorkspaceData,
+                                       ElementControllerTests.UriTemporaryExtent,
+                                       null,
+                                       new QueryFilterParameter()
+                                       {
+                                           OrderBy = "value"
+                                       })
+                
+                               ?? throw new InvalidOperationException("Should not happen");
+
+            Assert.That(elements.Count(), Is.GreaterThan(0));
+            Assert.That(elements[0].getOrDefault<int>("value"), Is.EqualTo(1));
+            Assert.That(elements[1].getOrDefault<int>("value"), Is.EqualTo(4));
+            Assert.That(elements[2].getOrDefault<int>("value"), Is.EqualTo(55));
+
+            dm.Dispose();
+        }
+
+        [Test]
+        public async Task TestGetRootElementsOrderByDescending()
+        {
+            var (dm, extent) = await CreateExampleExtentForSorting();
+
+            var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
+            var elements = itemsController
+                                   .GetRootElementsInternal(
+                                       WorkspaceNames.WorkspaceData,
+                                       ElementControllerTests.UriTemporaryExtent,
+                                       null,
+                                       new QueryFilterParameter()
+                                       {
+                                           OrderBy = "value",
+                                           OrderByDescending = true
+                                       })
+
+                               ?? throw new InvalidOperationException("Should not happen");
+
+            Assert.That(elements.Count(), Is.GreaterThan(0));
+            Assert.That(elements[0].getOrDefault<int>("value"), Is.EqualTo( 55));
+            Assert.That(elements[1].getOrDefault<int>("value"), Is.EqualTo(4));
+            Assert.That(elements[2].getOrDefault<int>("value"), Is.EqualTo(1));
 
             dm.Dispose();
         }
@@ -360,6 +417,34 @@ namespace DatenMeister.Tests.Web
             var result = itemsController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces#Data");
             
             Assert.That(result.Value.Xmi.Contains("dm:///_internal/temp"), Is.True);
+        }
+
+        public static async Task<(IDatenMeisterScope, IUriExtent)> CreateExampleExtentForSorting()
+        {
+            var dm = await DatenMeisterTests.GetDatenMeisterScope(
+                true,
+                DatenMeisterTests.GetIntegrationSettings());
+            var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
+
+            var createdExtent = await extentManager.CreateAndAddXmiExtent(
+                ElementControllerTests.UriTemporaryExtent, "./test_element.xmi");
+            createdExtent.Extent!.set("name", "Test Extent");
+
+            var factory = new MofFactory(createdExtent.Extent);
+            var item1 = factory.create(null).SetProperty("name", "item1").SetProperty("value", 55).SetId("item1");
+            var item2 = factory.create(null).SetProperty("name", "item2").SetProperty("value", 4).SetId("item2");
+            var item3 = factory.create(null).SetProperty("name", "item3").SetProperty("value", 1).SetId("item3");
+            var item4 = factory.create(null).SetProperty("name", "item4").SetId("item4");
+            var item5 = factory.create(null).SetProperty("name", "item5").SetId("item5");
+
+            createdExtent.Extent.elements().add(item1);
+            createdExtent.Extent.elements().add(item2);
+            createdExtent.Extent.elements().add(item3);
+            createdExtent.Extent.elements().add(item4);
+            createdExtent.Extent.elements().add(item5);
+
+            var extent = createdExtent.Extent;
+            return (dm, extent);
         }
     }
 }

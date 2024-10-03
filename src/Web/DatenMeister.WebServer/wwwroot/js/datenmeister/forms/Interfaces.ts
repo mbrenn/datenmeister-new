@@ -33,12 +33,6 @@ export interface IFormNavigation {
     formElement: Mof.DmObject;
 
     /**
-     * Gets or sets a value indication whether long texts shall be shortened by the fields. 
-     * This is needed for overview tables in which very long texts would be cumbersome. 
-     */
-    shortenFullText?: boolean;
-
-    /**
      * Stores the values of the form into the DOM, this is an optional method
      * @param reuseExistingElement This parameter decides whether the already provided element shall be 
      * directly returned or if a completely new element shall be created to only consider the diff

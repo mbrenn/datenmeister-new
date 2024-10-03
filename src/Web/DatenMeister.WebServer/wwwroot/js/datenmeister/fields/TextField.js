@@ -13,7 +13,7 @@ export class Field extends BaseField {
         const originalValue = value;
         // If we are in a table view, then reduce the length of the text to 100 
         // characters. 
-        if (this.form.shortenFullText === true) {
+        if (this.form.tableParameter.shortenFullText === true) {
             value = truncateText(value, {
                 useWordBoundary: true,
                 maxLines: 3,

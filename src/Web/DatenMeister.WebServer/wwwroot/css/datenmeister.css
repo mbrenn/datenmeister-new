@@ -147,11 +147,26 @@ a.nounderline{
     white-space: pre-wrap;
 }
 
+.dm-tableform .dm-tableform-sortbutton {
+    border: 1px solid black;
+    background-color: white;
+    display: inline;
+    padding: 1px 4px 1px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 25px;
+    display: inline-block;
+    text-align: center
+}
+
+.dm-tableform .dm-tableform-sortbutton:hover {
+    background-color: lightgray;
+}
 
 /* Used to style undefined values in textfields and other fields with a light color to de-emphasize 
  * the visibility of these items
 */
-.dm-undefined{
+.dm-undefined {
     color: darkgray;
 }
 

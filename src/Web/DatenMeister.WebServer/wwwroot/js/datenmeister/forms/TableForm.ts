@@ -1,4 +1,4 @@
-import * as InterfacesForms from "./Interfaces.js";
+﻿import * as InterfacesForms from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import {createField} from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
@@ -16,6 +16,34 @@ interface PropertyMenuItem
     requireConfirmation?: boolean;
 }
 
+export class TableFormParameter {
+    shortenFullText: boolean = true;
+    allowSortingOfColumn: boolean = true;
+
+    /**
+     * MetaClass that is used to filter only upon the items having that specific metaclass
+     */
+    metaClass: string; 
+}
+
+class TableState {
+    orderBy: string = undefined;
+    orderByDescending: boolean = false;
+}
+
+class TableJQueryCaches {
+
+    cacheHeadline: JQuery;
+
+    cacheTable: JQuery;
+
+    cacheEmptyDiv: JQuery;
+
+    cacheButtons: JQuery;
+
+    parentHtml: JQuery<HTMLElement>;
+
+}
 export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
 
     /**
@@ -31,29 +59,36 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     extentUri: string;
     formElement: Mof.DmObject;
     itemUrl: string;
-    workspace: string;
-    parentHtml: JQuery<HTMLElement>;
+    workspace: string;    
+
     configuration: IFormConfiguration;
-    shortenFullText: boolean = true; 
+    tableParameter: TableFormParameter = new TableFormParameter();
+    tableState: TableState = new TableState();
+    tableCache: TableJQueryCaches = new TableJQueryCaches();
+
     pageNavigation: InterfacesForms.IPageNavigation;
-
-    cacheHeadline: JQuery;
-
-    cacheTable: JQuery;
-
-    cacheEmptyDiv: JQuery;
-
-    cacheButtons: JQuery;
 
     callbackLoadItems: (query: InterfacesForms.QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
 
+    /**
+     * Refreshes the complete form including the parent item which might contain multiple tables
+     */
     async refreshForm(): Promise<void> {
 
         if (this.configuration.refreshForm !== undefined) {
             this.configuration.refreshForm();
         } else {
-            await this.createFormByCollection(this.parentHtml, this.configuration, true);
+            await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
         }
+    }
+
+    /**
+     * Just refreshes the form and performs a reloading of items from the server
+     * The query parameters are taken into consideration
+     */
+    async reloadTable(): Promise<void> {
+
+        await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
     }
 
     /**
@@ -69,49 +104,57 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     }
 
     async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean) {
-        this.parentHtml = parent;
+        this.tableCache.parentHtml = parent;
         this.configuration = configuration;
 
-        let metaClass = (this.formElement.get('metaClass') as Mof.DmObject)?.uri;
+        this.tableParameter.metaClass = (this.formElement.get('metaClass') as Mof.DmObject)?.uri;
         const tthis = this;
 
-        if (configuration.isReadOnly === undefined) {
-            configuration.isReadOnly = true;
+        if (this.configuration.isReadOnly === undefined) {
+            this.configuration.isReadOnly = true;
         }
 
         if (this.callbackLoadItems === undefined) {
             throw "No callbackLoadItems is set";
         }
 
-        this.cacheHeadline =
-            refresh === true && this.cacheHeadline !== undefined
-                ? this.cacheHeadline
+        // Loads the data
+        const query = new InterfacesForms.QueryFilterParameter();
+        query.orderBy = this.tableState.orderBy;
+        query.orderByDescending = this.tableState.orderByDescending;
+
+        this.elements = await this.callbackLoadItems(query);
+
+        // Creates the headlines
+        this.tableCache.cacheHeadline =
+            refresh === true && this.tableCache.cacheHeadline !== undefined
+                ? this.tableCache.cacheHeadline
                 : $("<h2><a></a></h2>");
 
-        const headLineLink = $("a", this.cacheHeadline);
+        const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(
             this.formElement.get('title')
             ?? this.formElement.get('name'));
 
         headLineLink.attr(
             'href',
-            Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, {metaClass: metaClass}));
+            Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass}));
 
         if (refresh !== true) {
-            parent.append(this.cacheHeadline);
+            parent.append(this.tableCache.cacheHeadline);
         }
 
         const property = this.formElement.get('property');
 
-        this.cacheButtons =
-            refresh === true && this.cacheHeadline !== undefined
-                ? this.cacheButtons
+        this.tableCache.cacheButtons =
+            refresh === true && this.tableCache.cacheHeadline !== undefined
+            ? this.tableCache.cacheButtons
                 : $("<div></div>");
-        this.cacheButtons.empty();
+        this.tableCache.cacheButtons.empty();
         if (refresh !== true) {
-            parent.append(this.cacheButtons);
+            parent.append(this.tableCache.cacheButtons);
         }
-        
+
         // Evaluate the new buttons to create objects
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {
@@ -146,119 +189,165 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                         }
                     });
 
-                    tthis.cacheButtons.append(btn);
+                    tthis.tableCache.cacheButtons.append(btn);
                 })(inner);
 
             }
         }
 
-        const query = new InterfacesForms.QueryFilterParameter();
-
-        let elements = this.elements = await this.callbackLoadItems(query);
-
-        if (elements === undefined) {
-            elements = [];
+        // Creates the table 
+        if (this.elements === undefined) {
+            this.elements = [];
         }
-
-        // Evaluate the elements themselves
-        if (!Array.isArray(elements)) {
-            this.cacheEmptyDiv =
-                refresh === true && this.cacheTable !== undefined
-                    ? this.cacheTable
+                
+        if (!Array.isArray(this.elements)) {
+            // Creates an empty table in case a non-array was given
+            this.tableCache.cacheEmptyDiv =
+                refresh === true && this.tableCache.cacheTable !== undefined
+                ? this.tableCache.cacheTable
                     : $("<div></div>");
-            this.cacheEmptyDiv.empty();
-            this.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
-            this.cacheEmptyDiv.append($("<em></em>").text((elements as any).toString()));
+            this.tableCache.cacheEmptyDiv.empty();
+            this.tableCache.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
+            this.tableCache.cacheEmptyDiv.append($("<em></em>").text((this.elements as any).toString()));
 
             if (refresh !== true) {
-                parent.append(this.cacheEmptyDiv);
+                parent.append(this.tableCache.cacheEmptyDiv);
             }
         } else {
-            this.cacheTable =
-                refresh === true && this.cacheTable !== undefined
-                    ? this.cacheTable
+            // Creates the the table
+            this.tableCache.cacheTable =
+                refresh === true && this.tableCache.cacheTable !== undefined
+                ? this.tableCache.cacheTable
                     : $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
-            this.cacheTable.empty();
 
-            const fields = this.formElement.getAsArray("field");
-
-            const headerRow = $("<tbody><tr></tr></tbody>");
-            const innerRow = $("tr", headerRow);
-
-            // Create the column headlines
-            for (let n in fields) {
-                if (!fields.hasOwnProperty(n)) continue;
-                const field = fields[n] as Mof.DmObject;
-
-                // Create the column
-                let cell = $("<th></th>");
-
-                // Create the text of the headline
-                cell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
-
-                // Create the column menu
-                await this.appendColumnMenus(field, cell);
-
-                innerRow.append(cell);
-            }
-
-            this.cacheTable.append(headerRow);
-
-            let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
-
-            for (let n in elements) {
-                if (Object.prototype.hasOwnProperty.call(elements, n)) {
-                    let element = elements[n];
-
-                    // Check, if the element may be shown
-                    let elementsMetaClass = element.metaClass?.uri;
-                    if ((elementsMetaClass !== undefined && elementsMetaClass !== "") && noItemsWithMetaClass) {
-                        // Only items with no metaclass may be shown, but the element is the metaclass
-                        continue;
-                    }
-
-                    if ((metaClass !== undefined && metaClass !== "") && elementsMetaClass !== metaClass) {
-                        // Only elements with given metaclass shall be shown, but given element is not of
-                        // the metaclass type
-                        continue;
-                    }
-
-                    const row = $("<tr></tr>");
-
-                    for (let n in fields) {
-                        if (!fields.hasOwnProperty(n)) continue;
-                        const field = fields[n] as Mof.DmObject;
-                        let cell = $("<td></td>");
-
-                        const fieldMetaClassUri = field.metaClass.uri;
-                        const fieldElement = createField(
-                            fieldMetaClassUri,
-                            {
-                                configuration: configuration,
-                                field: field,
-                                itemUrl: element.uri,
-                                isReadOnly: configuration.isReadOnly,
-                                form: this
-                            });
-
-                        let dom;
-                        if (fieldElement === undefined) {
-                            dom = $("<span></span>");
-                            dom.text ("Field for " + field.get("name", Mof.ObjectType.String) + " not found");
-                        } else {
-                            dom = await fieldElement.createDom(element);
-                        }
-
-                        cell.append(dom);
-                        row.append(cell);
-                    }
-
-                    this.cacheTable.append(row);
-                }
-            }
+            await this.createTable();
 
             if (refresh !== true) {
-                parent.append(this.cacheTable);
+                parent.append(this.tableCache.cacheTable);
+            }
+        }
+    }
+
+    /**
+    * Creates the table itself that shall be shown
+    */
+    private async createTable() {
+        const tthis = this;
+        this.tableCache.cacheTable.empty();
+
+        const fields = this.formElement.getAsArray("field");
+
+        const headerRow = $("<tbody><tr></tr></tbody>");
+        const innerRow = $("tr", headerRow);
+
+        // Create the column headlines
+        for (let n in fields) {
+            if (!fields.hasOwnProperty(n)) continue;
+            const field = fields[n] as Mof.DmObject;
+            const fieldName = field.get(_FieldData._name_);
+
+            // Create the column
+            let cell = $("<th></th>");
+
+            // Create the text of the headline
+            cell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
+
+            if (this.tableParameter.allowSortingOfColumn) {
+                const isSorted = this.tableState.orderBy === fieldName;
+                const isSortedDescending = this.tableState.orderByDescending;
+
+                let sortingArrow: JQuery;
+                let onClick: () => void;
+                if (isSorted) {
+                    if (!isSortedDescending) {
+                        sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
+                        onClick = async () => {
+                            tthis.tableState.orderBy = fieldName;
+                            tthis.tableState.orderByDescending = true;
+                            await tthis.reloadTable();
+                        };
+                    }
+                    else {
+                        sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
+                        onClick = async () => {
+                            tthis.tableState.orderBy = fieldName;
+                            tthis.tableState.orderByDescending = false;
+                            await tthis.reloadTable();
+
+                        };
+                    }
+                }
+                else {
+                    sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
+
+                    onClick = async () => {
+                        tthis.tableState.orderBy = fieldName;
+                        tthis.tableState.orderByDescending = false;
+                        await tthis.reloadTable();
+                    };
+                }
+
+                sortingArrow.on('click', onClick);
+                cell.append(sortingArrow);
+            }
+
+            // Create the column menu
+            await this.appendColumnMenus(field, cell);
+
+            innerRow.append(cell);
+        }
+
+        this.tableCache.cacheTable.append(headerRow);
+
+        let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
+
+        for (let n in this.elements) {
+            if (Object.prototype.hasOwnProperty.call(this.elements, n)) {
+                let element = this.elements[n];
+
+                // Check, if the element may be shown
+                let elementsMetaClass = element.metaClass?.uri;
+                if ((elementsMetaClass !== undefined && elementsMetaClass !== "") && noItemsWithMetaClass) {
+                    // The Element has a metaclass, but we don't want to see them
+                    continue;
+                }
+
+                if ((this.tableParameter.metaClass !== undefined && this.tableParameter.metaClass !== "") && elementsMetaClass !== this.tableParameter.metaClass) {
+                    // The element has no metaclass or wrong metaclass but we have a specific metaclass to be queried
+                    continue;
+                }
+
+                const row = $("<tr></tr>");
+
+                for (let n in fields) {
+                    if (!fields.hasOwnProperty(n)) continue;
+                    const field = fields[n] as Mof.DmObject;
+                    let cell = $("<td></td>");
+
+                    const fieldMetaClassUri = field.metaClass.uri;
+                    const fieldElement = createField(
+                        fieldMetaClassUri,
+                        {
+                            configuration: this.configuration,
+                            field: field,
+                            itemUrl: element.uri,
+                            isReadOnly: this.configuration.isReadOnly,
+                            form: this
+                        });
+
+                    let dom;
+                    if (fieldElement === undefined) {
+                        dom = $("<span></span>");
+                        dom.text("Field for " + field.get("name", Mof.ObjectType.String) + " not found");
+                    } else {
+                        dom = await fieldElement.createDom(element);
+                    }
+
+                    cell.append(dom);
+                    row.append(cell);
+                }
+
+                this.tableCache.cacheTable.append(row);
             }
         }
     }

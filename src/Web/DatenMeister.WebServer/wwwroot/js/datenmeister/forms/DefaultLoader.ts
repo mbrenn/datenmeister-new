@@ -16,5 +16,10 @@ export function loadDefaultForms()
     
     FormFactory.registerCollectionForm(
         _DatenMeister._Forms.__TableForm_Uri,
-        () => new TableForm());
+        () => {
+            const result = new TableForm();
+            result.tableParameter.allowSortingOfColumn = true;
+            return result;
+        }
+    );
 }

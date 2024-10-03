@@ -172,9 +172,29 @@ export async function getRootElements(workspace: string, extentUri: string, para
         "/" +
         encodeURIComponent(extentUri);
 
-    // Checks, if there is a view node being attached
+    const queryParams: string[] = [];
+
+    // Checks if there is a view node being attached
     if (parameter?.viewNode !== undefined) {
-        url += "?viewNode=" + encodeURIComponent(parameter.viewNode);
+        queryParams.push("viewNode=" + encodeURIComponent(parameter.viewNode));
+    }
+
+    if (parameter?.orderBy !== undefined && parameter?.orderBy !== '') {
+        queryParams.push("orderBy=" + encodeURIComponent(parameter.orderBy));
+
+        if (parameter?.orderByDescending !== undefined) {
+            // Only order by descending in case orderBy is set
+            queryParams.push("orderByDescending=" + encodeURIComponent(parameter.orderByDescending ? "true" : "false"));
+        }
+    }
+
+    if (parameter?.filterByFreetext !== undefined && parameter?.filterByFreetext !== '') {
+        queryParams.push("filterByFreetext=" + encodeURIComponent(parameter.filterByFreetext));
+    }
+
+    // Join query parameters with '&' and append them to the URL
+    if (queryParams.length > 0) {
+        url += '?' + queryParams.join('&');
     }
 
     const resultFromServer = await ApiConnection.get<string>(url);

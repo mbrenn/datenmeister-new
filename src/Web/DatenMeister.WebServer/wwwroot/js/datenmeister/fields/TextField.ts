@@ -5,6 +5,7 @@ import {_DatenMeister} from "../models/DatenMeister.class.js";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
 import {truncateText} from "../../burnsystems/StringManipulation.js";
 import { injectNameByUri } from "../DomHelper.js";
+import { TableForm } from "../forms/TableForm.js";
 
 export class Field extends BaseField implements IFormField
 {
@@ -23,7 +24,7 @@ export class Field extends BaseField implements IFormField
         
         // If we are in a table view, then reduce the length of the text to 100 
         // characters. 
-        if (this.form.shortenFullText === true) {
+        if ((this.form as TableForm).tableParameter.shortenFullText === true) {
             value = truncateText(value, {
                 useWordBoundary: true,
                 maxLines: 3,

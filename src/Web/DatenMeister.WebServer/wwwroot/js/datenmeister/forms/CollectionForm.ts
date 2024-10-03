@@ -21,6 +21,7 @@ import _TableForm = _DatenMeister._Forms._TableForm;
 import * as ActionField from "../fields/ActionField.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
+import { TableForm } from "./TableForm.js";
 
 export class CollectionFormHtmlElements
 {

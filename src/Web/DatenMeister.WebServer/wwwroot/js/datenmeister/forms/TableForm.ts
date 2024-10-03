@@ -1,6 +1,6 @@
 ﻿import * as InterfacesForms from "./Interfaces.js";
 import * as Mof from "../Mof.js";
-import {createField} from "./FieldFactory.js";
+import * as FieldFactory from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
@@ -32,18 +32,13 @@ class TableState {
 }
 
 class TableJQueryCaches {
-
     cacheHeadline: JQuery;
-
     cacheTable: JQuery;
-
     cacheEmptyDiv: JQuery;
-
     cacheButtons: JQuery;
-
     parentHtml: JQuery<HTMLElement>;
-
 }
+
 export class TableForm implements InterfacesForms.ICollectionFormElement, InterfacesForms.IObjectFormElement {
 
     /**
@@ -245,14 +240,21 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             if (!fields.hasOwnProperty(n)) continue;
             const field = fields[n] as Mof.DmObject;
             const fieldName = field.get(_FieldData._name_);
+            const fieldCanBeSorted = FieldFactory.canBeSorted(field);
 
             // Create the column
             let cell = $("<th></th>");
 
-            // Create the text of the headline
-            cell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
+            const innerTable = $("<table class='dm-tablerow-columnheader'><tr><td class='dm-tablerow-columntitle'></td><td class='dm-tablerow-columnbuttons'></td></tr></table>");
+            cell.append(innerTable);
 
-            if (this.tableParameter.allowSortingOfColumn) {
+            const titleCell = $(".dm-tablerow-columntitle", innerTable);
+            const titleButtons = $(".dm-tablerow-columnbuttons", innerTable);
+
+            // Create the text of the headline
+            titleCell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
+
+            if (this.tableParameter.allowSortingOfColumn && fieldCanBeSorted) {
                 const isSorted = this.tableState.orderBy === fieldName;
                 const isSortedDescending = this.tableState.orderByDescending;
 
@@ -288,11 +290,11 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 }
 
                 sortingArrow.on('click', onClick);
-                cell.append(sortingArrow);
+                titleButtons.append(sortingArrow);
             }
 
             // Create the column menu
-            await this.appendColumnMenus(field, cell);
+            await this.appendColumnMenus(field, titleButtons);
 
             innerRow.append(cell);
         }
@@ -325,7 +327,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     let cell = $("<td></td>");
 
                     const fieldMetaClassUri = field.metaClass.uri;
-                    const fieldElement = createField(
+                    const fieldElement = FieldFactory.createField(
                         fieldMetaClassUri,
                         {
                             configuration: this.configuration,
@@ -355,7 +357,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     private async appendColumnMenus(field: Mof.DmObject, cell: JQuery<HTMLElement>) {
         const column = await this.createPropertyMenuItems(field);
         if (column.length > 0) {
-            let contextItem = $("<div class='dm-contextmenu'><div class='dm-contextmenu-dots'>...</div><div class='dm-contextmenu-item-container'></div></div>");
+            let contextItem = $("<div class='dm-contextmenu'><div class='dm-tableform-sortbutton'>...</div><div class='dm-contextmenu-item-container'></div></div>");
             const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
             for (const m in column) {
                 const menuProperty = column[m];

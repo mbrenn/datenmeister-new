@@ -123,7 +123,7 @@ namespace DatenMeister.WebServer.Controller
                 finalElements = finalElements.Order(sorter).ToList();
             }
 
-#if LimitNumberOfElements
+#if DEBUG
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
             return finalElements.Take(100).ToList();
 #else

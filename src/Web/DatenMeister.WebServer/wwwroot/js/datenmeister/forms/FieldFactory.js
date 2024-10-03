@@ -19,6 +19,13 @@ export function registerField(metaClassFieldData, factoryMethod) {
         factoryMethod: factoryMethod
     });
 }
+export function canBeSorted(field) {
+    const metaClassUri = field.metaClass.uri;
+    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
+        return true;
+    }
+    return false;
+}
 export function createField(fieldMetaClassUri, parameter) {
     let result;
     switch (fieldMetaClassUri) {

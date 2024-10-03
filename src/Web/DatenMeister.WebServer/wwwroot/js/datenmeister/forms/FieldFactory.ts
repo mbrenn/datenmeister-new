@@ -51,6 +51,16 @@ export function canBeSorted(field: DmObject): boolean {
     return false;
 }
 
+export function canBeTextFiltered(field: DmObject): boolean {
+    const metaClassUri = field.metaClass.uri;
+
+    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
+        return true;
+    }
+
+    return false;
+}
+
 export function createField(fieldMetaClassUri: string, parameter: ICreateFieldParameter): IFormField {
 
     let result: IFormField;

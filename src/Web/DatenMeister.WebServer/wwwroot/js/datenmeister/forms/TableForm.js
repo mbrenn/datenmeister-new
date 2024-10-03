@@ -11,12 +11,14 @@ export class TableFormParameter {
     constructor() {
         this.shortenFullText = true;
         this.allowSortingOfColumn = true;
+        this.allowFreeTextFiltering = true;
     }
 }
 class TableState {
     constructor() {
         this.orderBy = undefined;
         this.orderByDescending = false;
+        this.freeTextFilter = "";
     }
 }
 class TableJQueryCaches {
@@ -44,6 +46,9 @@ export class TableForm {
      */
     async reloadTable() {
         await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
+    }
+    async refreshTable() {
+        this.createTable();
     }
     /**
      * This method just calls the createFormByCollection since a TableForm can
@@ -83,16 +88,60 @@ export class TableForm {
         if (refresh !== true) {
             parent.append(this.tableCache.cacheHeadline);
         }
-        const property = this.formElement.get('property');
+        this.tableCache.cacheFreeTextField =
+            refresh === true && this.tableCache.cacheFreeTextField !== undefined ?
+                this.tableCache.cacheFreeTextField
+                : $("<div class='dm-tableform-freetextform'></div>");
+        this.tableCache.cacheFreeTextField.empty();
+        if (refresh !== true) {
+            parent.append(this.tableCache.cacheFreeTextField);
+        }
         this.tableCache.cacheButtons =
-            refresh === true && this.tableCache.cacheHeadline !== undefined
-                ? this.tableCache.cacheButtons
+            refresh === true && this.tableCache.cacheButtons !== undefined ?
+                this.tableCache.cacheButtons
                 : $("<div></div>");
         this.tableCache.cacheButtons.empty();
         if (refresh !== true) {
             parent.append(this.tableCache.cacheButtons);
         }
         // Evaluate the new buttons to create objects
+        this.createButtonsForNewInstance();
+        if (this.tableParameter.allowFreeTextFiltering) {
+            // Create freetext
+            this.createFreeTextField();
+        }
+        // Creates the table 
+        if (this.elements === undefined) {
+            this.elements = [];
+        }
+        if (!Array.isArray(this.elements)) {
+            // Creates an empty table in case a non-array was given
+            this.tableCache.cacheEmptyDiv =
+                refresh === true && this.tableCache.cacheTable !== undefined
+                    ? this.tableCache.cacheTable
+                    : $("<div></div>");
+            this.tableCache.cacheEmptyDiv.empty();
+            this.tableCache.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
+            this.tableCache.cacheEmptyDiv.append($("<em></em>").text(this.elements.toString()));
+            if (refresh !== true) {
+                parent.append(this.tableCache.cacheEmptyDiv);
+            }
+        }
+        else {
+            // Creates the the table
+            this.tableCache.cacheTable =
+                refresh === true && this.tableCache.cacheTable !== undefined
+                    ? this.tableCache.cacheTable
+                    : $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
+            await this.createTable();
+            if (refresh !== true) {
+                parent.append(this.tableCache.cacheTable);
+            }
+        }
+    }
+    createButtonsForNewInstance() {
+        const property = this.formElement.get('property');
+        const tthis = this;
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {
             for (let n in defaultTypesForNewElements) {
@@ -129,40 +178,24 @@ export class TableForm {
                 })(inner);
             }
         }
-        // Creates the table 
-        if (this.elements === undefined) {
-            this.elements = [];
-        }
-        if (!Array.isArray(this.elements)) {
-            // Creates an empty table in case a non-array was given
-            this.tableCache.cacheEmptyDiv =
-                refresh === true && this.tableCache.cacheTable !== undefined
-                    ? this.tableCache.cacheTable
-                    : $("<div></div>");
-            this.tableCache.cacheEmptyDiv.empty();
-            this.tableCache.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
-            this.tableCache.cacheEmptyDiv.append($("<em></em>").text(this.elements.toString()));
-            if (refresh !== true) {
-                parent.append(this.tableCache.cacheEmptyDiv);
-            }
-        }
-        else {
-            // Creates the the table
-            this.tableCache.cacheTable =
-                refresh === true && this.tableCache.cacheTable !== undefined
-                    ? this.tableCache.cacheTable
-                    : $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
-            await this.createTable();
-            if (refresh !== true) {
-                parent.append(this.tableCache.cacheTable);
-            }
-        }
+    }
+    createFreeTextField() {
+        const tthis = this;
+        const inputField = $('<input type="text" placeholder="Filter by Text"></input>');
+        inputField.on('input', () => {
+            tthis.tableState.freeTextFilter = inputField.val().toString();
+            tthis.refreshTable();
+        });
+        this.tableCache.cacheFreeTextField.append(inputField);
+        this.refreshTable();
     }
     /**
     * Creates the table itself that shall be shown
     */
     async createTable() {
         const tthis = this;
+        if (this.tableCache?.cacheTable === undefined)
+            return;
         this.tableCache.cacheTable.empty();
         const fields = this.formElement.getAsArray("field");
         const headerRow = $("<tbody><tr></tr></tbody>");
@@ -172,8 +205,6 @@ export class TableForm {
             if (!fields.hasOwnProperty(n))
                 continue;
             const field = fields[n];
-            const fieldName = field.get(_FieldData._name_);
-            const fieldCanBeSorted = FieldFactory.canBeSorted(field);
             // Create the column
             let cell = $("<th></th>");
             const innerTable = $("<table class='dm-tablerow-columnheader'><tr><td class='dm-tablerow-columntitle'></td><td class='dm-tablerow-columnbuttons'></td></tr></table>");
@@ -182,39 +213,8 @@ export class TableForm {
             const titleButtons = $(".dm-tablerow-columnbuttons", innerTable);
             // Create the text of the headline
             titleCell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
-            if (this.tableParameter.allowSortingOfColumn && fieldCanBeSorted) {
-                const isSorted = this.tableState.orderBy === fieldName;
-                const isSortedDescending = this.tableState.orderByDescending;
-                let sortingArrow;
-                let onClick;
-                if (isSorted) {
-                    if (!isSortedDescending) {
-                        sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
-                        onClick = async () => {
-                            tthis.tableState.orderBy = fieldName;
-                            tthis.tableState.orderByDescending = true;
-                            await tthis.reloadTable();
-                        };
-                    }
-                    else {
-                        sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
-                        onClick = async () => {
-                            tthis.tableState.orderBy = fieldName;
-                            tthis.tableState.orderByDescending = false;
-                            await tthis.reloadTable();
-                        };
-                    }
-                }
-                else {
-                    sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
-                    onClick = async () => {
-                        tthis.tableState.orderBy = fieldName;
-                        tthis.tableState.orderByDescending = false;
-                        await tthis.reloadTable();
-                    };
-                }
-                sortingArrow.on('click', onClick);
-                titleButtons.append(sortingArrow);
+            if (this.tableParameter.allowSortingOfColumn) {
+                this.createSortingButton(field, titleButtons);
             }
             // Create the column menu
             await this.appendColumnMenus(field, titleButtons);
@@ -225,6 +225,7 @@ export class TableForm {
         for (let n in this.elements) {
             if (Object.prototype.hasOwnProperty.call(this.elements, n)) {
                 let element = this.elements[n];
+                // Creates the row
                 // Check, if the element may be shown
                 let elementsMetaClass = element.metaClass?.uri;
                 if ((elementsMetaClass !== undefined && elementsMetaClass !== "") && noItemsWithMetaClass) {
@@ -234,6 +235,29 @@ export class TableForm {
                 if ((this.tableParameter.metaClass !== undefined && this.tableParameter.metaClass !== "") && elementsMetaClass !== this.tableParameter.metaClass) {
                     // The element has no metaclass or wrong metaclass but we have a specific metaclass to be queried
                     continue;
+                }
+                // If we have freetext, then we need to skip the row.
+                if (this.tableParameter.allowFreeTextFiltering) {
+                    let found = false;
+                    for (let m in fields) {
+                        if (!fields.hasOwnProperty(m))
+                            continue;
+                        const field = fields[m];
+                        // Check if the field can be text filtered
+                        const canBeTextFiltered = FieldFactory.canBeTextFiltered(field);
+                        if (!canBeTextFiltered) {
+                            continue;
+                        }
+                        const fieldName = field.get(_FieldData._name_);
+                        const fieldValue = element.get(fieldName, Mof.ObjectType.String);
+                        if (fieldValue !== undefined && fieldValue.toString().toLowerCase().indexOf(this.tableState.freeTextFilter.toLowerCase()) >= 0) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        continue;
+                    }
                 }
                 const row = $("<tr></tr>");
                 for (let n in fields) {
@@ -262,6 +286,45 @@ export class TableForm {
                 }
                 this.tableCache.cacheTable.append(row);
             }
+        }
+    }
+    createSortingButton(field, titleButtons) {
+        const tthis = this;
+        const fieldCanBeSorted = FieldFactory.canBeSorted(field);
+        if (fieldCanBeSorted) {
+            const fieldName = field.get(_FieldData._name_);
+            const isSorted = this.tableState.orderBy === fieldName;
+            const isSortedDescending = this.tableState.orderByDescending;
+            let sortingArrow;
+            let onClick;
+            if (isSorted) {
+                if (!isSortedDescending) {
+                    sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
+                    onClick = async () => {
+                        tthis.tableState.orderBy = fieldName;
+                        tthis.tableState.orderByDescending = true;
+                        await tthis.reloadTable();
+                    };
+                }
+                else {
+                    sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
+                    onClick = async () => {
+                        tthis.tableState.orderBy = fieldName;
+                        tthis.tableState.orderByDescending = false;
+                        await tthis.reloadTable();
+                    };
+                }
+            }
+            else {
+                sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
+                onClick = async () => {
+                    tthis.tableState.orderBy = fieldName;
+                    tthis.tableState.orderByDescending = false;
+                    await tthis.reloadTable();
+                };
+            }
+            sortingArrow.on('click', onClick);
+            titleButtons.append(sortingArrow);
         }
     }
     async appendColumnMenus(field, cell) {

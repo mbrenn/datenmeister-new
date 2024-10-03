@@ -26,6 +26,13 @@ export function canBeSorted(field) {
     }
     return false;
 }
+export function canBeTextFiltered(field) {
+    const metaClassUri = field.metaClass.uri;
+    if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
+        return true;
+    }
+    return false;
+}
 export function createField(fieldMetaClassUri, parameter) {
     let result;
     switch (fieldMetaClassUri) {

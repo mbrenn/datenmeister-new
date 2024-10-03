@@ -19,6 +19,7 @@ interface PropertyMenuItem
 export class TableFormParameter {
     shortenFullText: boolean = true;
     allowSortingOfColumn: boolean = true;
+    allowFreeTextFiltering: boolean = true;
 
     /**
      * MetaClass that is used to filter only upon the items having that specific metaclass
@@ -29,6 +30,7 @@ export class TableFormParameter {
 class TableState {
     orderBy: string = undefined;
     orderByDescending: boolean = false;
+    freeTextFilter: string = "";
 }
 
 class TableJQueryCaches {
@@ -36,6 +38,7 @@ class TableJQueryCaches {
     cacheTable: JQuery;
     cacheEmptyDiv: JQuery;
     cacheButtons: JQuery;
+    cacheFreeTextField: JQuery;
     parentHtml: JQuery<HTMLElement>;
 }
 
@@ -85,6 +88,10 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
     }
+
+    async refreshTable(): Promise<void> {
+        this.createTable();
+    }    
 
     /**
      * This method just calls the createFormByCollection since a TableForm can 
@@ -139,55 +146,32 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             parent.append(this.tableCache.cacheHeadline);
         }
 
-        const property = this.formElement.get('property');
+        this.tableCache.cacheFreeTextField =
+            refresh === true && this.tableCache.cacheFreeTextField !== undefined ?
+                this.tableCache.cacheFreeTextField
+                : $("<div class='dm-tableform-freetextform'></div>");
+        this.tableCache.cacheFreeTextField.empty();
+
+        if (refresh !== true) {
+            parent.append(this.tableCache.cacheFreeTextField);
+        }
 
         this.tableCache.cacheButtons =
-            refresh === true && this.tableCache.cacheHeadline !== undefined
-            ? this.tableCache.cacheButtons
+            refresh === true && this.tableCache.cacheButtons !== undefined ?
+                this.tableCache.cacheButtons
                 : $("<div></div>");
         this.tableCache.cacheButtons.empty();
+
         if (refresh !== true) {
             parent.append(this.tableCache.cacheButtons);
         }
 
         // Evaluate the new buttons to create objects
-        const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
-        if (defaultTypesForNewElements !== undefined) {
-            for (let n in defaultTypesForNewElements) {
-                const inner = defaultTypesForNewElements[n] as Mof.DmObject;
-                (function (innerValue) {
+        this.createButtonsForNewInstance();
 
-                    const btn = $("<btn class='btn btn-secondary'></btn>");
-                    btn.text("Create " + inner.get('name'));
-                    btn.on('click', () => {
-                        const uri = innerValue.get('metaClass').uri;
-                        if (property === undefined) {
-                            document.location.href =
-                                Settings.baseUrl +
-                                "ItemAction/Extent.CreateItem?workspace=" +
-                                encodeURIComponent(tthis.workspace) +
-                                "&extent=" +
-                                encodeURIComponent(tthis.extentUri) +
-                                "&metaclass=" +
-                                encodeURIComponent(uri);
-                        } else {
-                            document.location.href =
-                                Settings.baseUrl +
-                                "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                                encodeURIComponent(tthis.workspace) +
-                                "&itemUrl=" +
-                                encodeURIComponent(tthis.itemUrl) +
-                                "&metaclass=" +
-                                encodeURIComponent(uri) +
-                                "&property=" +
-                                encodeURIComponent(property);
-                        }
-                    });
-
-                    tthis.tableCache.cacheButtons.append(btn);
-                })(inner);
-
-            }
+        if (this.tableParameter.allowFreeTextFiltering) {
+            // Create freetext
+            this.createFreeTextField();
         }
 
         // Creates the table 
@@ -223,11 +207,69 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
     }
 
+    private createButtonsForNewInstance() {
+        const property = this.formElement.get('property');
+        const tthis = this;
+        const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
+        if (defaultTypesForNewElements !== undefined) {
+            for (let n in defaultTypesForNewElements) {
+                const inner = defaultTypesForNewElements[n] as Mof.DmObject;
+                (function(innerValue) {
+
+                    const btn = $("<btn class='btn btn-secondary'></btn>");
+                    btn.text("Create " + inner.get('name'));
+                    btn.on('click', () => {
+                        const uri = innerValue.get('metaClass').uri;
+                        if (property === undefined) {
+                            document.location.href =
+                                Settings.baseUrl +
+                                "ItemAction/Extent.CreateItem?workspace=" +
+                                encodeURIComponent(tthis.workspace) +
+                                "&extent=" +
+                                encodeURIComponent(tthis.extentUri) +
+                                "&metaclass=" +
+                                encodeURIComponent(uri);
+                        } else {
+                            document.location.href =
+                                Settings.baseUrl +
+                                "ItemAction/Extent.CreateItemInProperty?workspace=" +
+                                encodeURIComponent(tthis.workspace) +
+                                "&itemUrl=" +
+                                encodeURIComponent(tthis.itemUrl) +
+                                "&metaclass=" +
+                                encodeURIComponent(uri) +
+                                "&property=" +
+                                encodeURIComponent(property);
+                        }
+                    });
+
+                    tthis.tableCache.cacheButtons.append(btn);
+                })(inner);
+
+            }
+        }
+    }
+
+    private createFreeTextField() {
+        const tthis = this;
+        
+        const inputField = $('<input type="text" placeholder="Filter by Text"></input>');
+        inputField.on('input', () => {
+            tthis.tableState.freeTextFilter = inputField.val().toString();
+            tthis.refreshTable();
+        });
+
+        this.tableCache.cacheFreeTextField.append(inputField);
+
+        this.refreshTable();
+    }
+
     /**
     * Creates the table itself that shall be shown
     */
     private async createTable() {
         const tthis = this;
+        if (this.tableCache?.cacheTable === undefined) return;
         this.tableCache.cacheTable.empty();
 
         const fields = this.formElement.getAsArray("field");
@@ -239,8 +281,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         for (let n in fields) {
             if (!fields.hasOwnProperty(n)) continue;
             const field = fields[n] as Mof.DmObject;
-            const fieldName = field.get(_FieldData._name_);
-            const fieldCanBeSorted = FieldFactory.canBeSorted(field);
 
             // Create the column
             let cell = $("<th></th>");
@@ -254,43 +294,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             // Create the text of the headline
             titleCell.text(field.get(_FieldData.title) ?? field.get(_FieldData._name_));
 
-            if (this.tableParameter.allowSortingOfColumn && fieldCanBeSorted) {
-                const isSorted = this.tableState.orderBy === fieldName;
-                const isSortedDescending = this.tableState.orderByDescending;
-
-                let sortingArrow: JQuery;
-                let onClick: () => void;
-                if (isSorted) {
-                    if (!isSortedDescending) {
-                        sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
-                        onClick = async () => {
-                            tthis.tableState.orderBy = fieldName;
-                            tthis.tableState.orderByDescending = true;
-                            await tthis.reloadTable();
-                        };
-                    }
-                    else {
-                        sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
-                        onClick = async () => {
-                            tthis.tableState.orderBy = fieldName;
-                            tthis.tableState.orderByDescending = false;
-                            await tthis.reloadTable();
-
-                        };
-                    }
-                }
-                else {
-                    sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
-
-                    onClick = async () => {
-                        tthis.tableState.orderBy = fieldName;
-                        tthis.tableState.orderByDescending = false;
-                        await tthis.reloadTable();
-                    };
-                }
-
-                sortingArrow.on('click', onClick);
-                titleButtons.append(sortingArrow);
+            if (this.tableParameter.allowSortingOfColumn) {
+                this.createSortingButton(field, titleButtons);
             }
 
             // Create the column menu
@@ -303,10 +308,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
 
-        for (let n in this.elements) {
+        for (let n in this.elements) {            
             if (Object.prototype.hasOwnProperty.call(this.elements, n)) {
                 let element = this.elements[n];
+                               
 
+                // Creates the row
                 // Check, if the element may be shown
                 let elementsMetaClass = element.metaClass?.uri;
                 if ((elementsMetaClass !== undefined && elementsMetaClass !== "") && noItemsWithMetaClass) {
@@ -317,6 +324,32 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 if ((this.tableParameter.metaClass !== undefined && this.tableParameter.metaClass !== "") && elementsMetaClass !== this.tableParameter.metaClass) {
                     // The element has no metaclass or wrong metaclass but we have a specific metaclass to be queried
                     continue;
+                }
+
+                // If we have freetext, then we need to skip the row.
+                if (this.tableParameter.allowFreeTextFiltering) {
+                    let found = false;
+                    for (let m in fields) {
+                        if (!fields.hasOwnProperty(m)) continue;
+                        const field = fields[m] as Mof.DmObject;
+                        
+                        // Check if the field can be text filtered
+                        const canBeTextFiltered = FieldFactory.canBeTextFiltered(field);
+                        if (!canBeTextFiltered) {
+                            continue;
+                        }
+
+                        const fieldName = field.get(_FieldData._name_);
+                        const fieldValue = element.get(fieldName, Mof.ObjectType.String);
+                        if (fieldValue !== undefined && fieldValue.toString().toLowerCase().indexOf(this.tableState.freeTextFilter.toLowerCase()) >= 0) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        continue;
+                    }
                 }
 
                 const row = $("<tr></tr>");
@@ -351,6 +384,52 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
                 this.tableCache.cacheTable.append(row);
             }
+        }
+    }
+
+    private createSortingButton(field: Mof.DmObject, titleButtons: JQuery<HTMLElement>) {
+
+        const tthis = this;
+        const fieldCanBeSorted = FieldFactory.canBeSorted(field);
+
+        if (fieldCanBeSorted) {
+            const fieldName = field.get(_FieldData._name_);
+            const isSorted = this.tableState.orderBy === fieldName;
+            const isSortedDescending = this.tableState.orderByDescending;
+
+            let sortingArrow: JQuery;
+            let onClick: () => void;
+            if (isSorted) {
+                if (!isSortedDescending) {
+                    sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
+                    onClick = async () => {
+                        tthis.tableState.orderBy = fieldName;
+                        tthis.tableState.orderByDescending = true;
+                        await tthis.reloadTable();
+                    };
+                }
+                else {
+                    sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
+                    onClick = async () => {
+                        tthis.tableState.orderBy = fieldName;
+                        tthis.tableState.orderByDescending = false;
+                        await tthis.reloadTable();
+
+                    };
+                }
+            }
+            else {
+                sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
+
+                onClick = async () => {
+                    tthis.tableState.orderBy = fieldName;
+                    tthis.tableState.orderByDescending = false;
+                    await tthis.reloadTable();
+                };
+            }
+
+            sortingArrow.on('click', onClick);
+            titleButtons.append(sortingArrow);
         }
     }
 

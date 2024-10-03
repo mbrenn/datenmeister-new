@@ -172,12 +172,19 @@ a.nounderline{
 }
 .dm-tablerow-columnheader .dm-tablerow-columnbuttons {
     text-align: right;
+    white-space: nowrap;
+}
+
+.dm-tableform-freetextform {
+
+    float: right;
+    margin-left: 10px;
 }
 
 /* Used to style undefined values in textfields and other fields with a light color to de-emphasize 
  * the visibility of these items
 */
-    .dm-undefined {
+.dm-undefined {
     color: darkgray;
 }
 

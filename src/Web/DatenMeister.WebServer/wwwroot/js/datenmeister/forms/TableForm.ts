@@ -13,8 +13,6 @@ import * as burnJsPopup from "../../burnJsPopup.js"
 interface PropertyMenuItem
 {
     onCreateDom: (popupResult: burnJsPopup.PopupResult, jQuery: JQuery) => void;
-    onClick?: () => (void);
-    requireConfirmation?: boolean;
 }
 
 export class TableFormParameter {
@@ -276,15 +274,13 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         if (this.tableCache?.cacheTable === undefined) return;
         this.tableCache.cacheTable.empty();
 
-        const fields = this.formElement.getAsArray("field");
+        const fields = this.formElement.getAsArray("field") as Mof.DmObject[];
 
         const headerRow = $("<tbody><tr></tr></tbody>");
         const innerRow = $("tr", headerRow);
 
         // Create the column headlines
-        for (let n in fields) {
-            if (!fields.hasOwnProperty(n)) continue;
-            const field = fields[n] as Mof.DmObject;
+        for (const field of fields) {
 
             // Create the column
             let cell = $("<th></th>");
@@ -311,131 +307,111 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         this.tableCache.cacheTable.append(headerRow);
 
         let noItemsWithMetaClass = this.formElement.get('noItemsWithMetaClass');
+        const metaClassFilter = this.tableParameter.metaClass;
 
-        for (let n in this.elements) {            
-            if (Object.prototype.hasOwnProperty.call(this.elements, n)) {
-                let element = this.elements[n];
-                               
+        for (const element of this.elements) {
 
-                // Creates the row
-                // Check, if the element may be shown
-                let elementsMetaClass = element.metaClass?.uri;
-                if ((elementsMetaClass !== undefined && elementsMetaClass !== "") && noItemsWithMetaClass) {
-                    // The Element has a metaclass, but we don't want to see them
-                    continue;
-                }
+            const elementsMetaClass = element.metaClass?.uri;
 
-                if ((this.tableParameter.metaClass !== undefined && this.tableParameter.metaClass !== "") && elementsMetaClass !== this.tableParameter.metaClass) {
-                    // The element has no metaclass or wrong metaclass but we have a specific metaclass to be queried
-                    continue;
-                }
-
-                // If we have freetext, then we need to skip the row.
-                if (this.tableParameter.allowFreeTextFiltering) {
-                    let found = false;
-                    for (let m in fields) {
-                        if (!fields.hasOwnProperty(m)) continue;
-                        const field = fields[m] as Mof.DmObject;
-                        
-                        // Check if the field can be text filtered
-                        const canBeTextFiltered = FieldFactory.canBeTextFiltered(field);
-                        if (!canBeTextFiltered) {
-                            continue;
-                        }
-
-                        const fieldName = field.get(_FieldData._name_);
-                        const fieldValue = element.get(fieldName, Mof.ObjectType.String);
-                        if (fieldValue !== undefined && fieldValue.toString().toLowerCase().indexOf(this.tableState.freeTextFilter.toLowerCase()) >= 0) {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        continue;
-                    }
-                }
-
-                const row = $("<tr></tr>");
-
-                for (let n in fields) {
-                    if (!fields.hasOwnProperty(n)) continue;
-                    const field = fields[n] as Mof.DmObject;
-                    let cell = $("<td></td>");
-
-                    const fieldMetaClassUri = field.metaClass.uri;
-                    const fieldElement = FieldFactory.createField(
-                        fieldMetaClassUri,
-                        {
-                            configuration: this.configuration,
-                            field: field,
-                            itemUrl: element.uri,
-                            isReadOnly: this.configuration.isReadOnly,
-                            form: this
-                        });
-
-                    let dom;
-                    if (fieldElement === undefined) {
-                        dom = $("<span></span>");
-                        dom.text("Field for " + field.get("name", Mof.ObjectType.String) + " not found");
-                    } else {
-                        dom = await fieldElement.createDom(element);
-                    }
-
-                    cell.append(dom);
-                    row.append(cell);
-                }
-
-                this.tableCache.cacheTable.append(row);
+            // Check if the element may be shown
+            if ((elementsMetaClass && noItemsWithMetaClass) ||
+                (metaClassFilter && elementsMetaClass !== metaClassFilter)) {
+                continue;
             }
+
+            // If we have freetext, then we need to skip the row.
+            if (this.tableParameter.allowFreeTextFiltering && !this.isElementMatchingFreeTextFilter(element, fields)) {
+                continue;
+            }
+
+            const row = $("<tr></tr>");
+
+            for (const field of fields) {
+                let cell = $("<td></td>");
+
+                const fieldMetaClassUri = field.metaClass.uri;
+                const fieldElement = FieldFactory.createField(
+                    fieldMetaClassUri,
+                    {
+                        configuration: this.configuration,
+                        field: field,
+                        itemUrl: element.uri,
+                        isReadOnly: this.configuration.isReadOnly,
+                        form: this
+                    });
+
+                let dom;
+                if (fieldElement === undefined) {
+                    dom = $("<span></span>");
+                    dom.text("Field for " + field.get("name", Mof.ObjectType.String) + " not found");
+                } else {
+                    dom = await fieldElement.createDom(element);
+                }
+
+                cell.append(dom);
+                row.append(cell);
+            }
+
+            this.tableCache.cacheTable.append(row);
         }
     }
 
-    private createSortingButton(field: Mof.DmObject, titleButtons: JQuery<HTMLElement>) {
+    /**
+     * Checks if the specified element matches the free text filter based on the provided fields.
+     * @param element - The element to check against the free text filter.
+     * @param fields - The fields to consider for the free text filter.
+     * @returns True if the element matches the free text filter, false otherwise.
+     */
+    private isElementMatchingFreeTextFilter(element: Mof.DmObject, fields: Mof.DmObject[]): boolean {
+        const filterText = this.tableState.freeTextFilter.toLowerCase();
+        return fields.some(field => {
+            if (!FieldFactory.canBeTextFiltered(field)) return false;
+            const fieldName = field.get(_FieldData._name_);
+            const fieldValue = element.get(fieldName, Mof.ObjectType.String);
+            return fieldValue?.toString().toLowerCase().includes(filterText);
+        });
+    }
 
-        const tthis = this;
+    /**
+     * Creates a sorting button for the specified field and appends it to the title buttons.
+     * The button allows toggling between ascending, descending, and no sorting states.
+     *
+     * @param field - The field for which the sorting button is created.
+     * @param titleButtons - The jQuery element to which the sorting button will be appended.
+     */
+    private createSortingButton(field: Mof.DmObject, titleButtons: JQuery<HTMLElement>) {
         const fieldCanBeSorted = FieldFactory.canBeSorted(field);
 
-        if (fieldCanBeSorted) {
-            const fieldName = field.get(_FieldData._name_);
-            const isSorted = this.tableState.orderBy === fieldName;
-            const isSortedDescending = this.tableState.orderByDescending;
+        if (!fieldCanBeSorted) return;
 
-            let sortingArrow: JQuery;
-            let onClick: () => void;
-            if (isSorted) {
-                if (!isSortedDescending) {
-                    sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
-                    onClick = async () => {
-                        tthis.tableState.orderBy = fieldName;
-                        tthis.tableState.orderByDescending = true;
-                        await tthis.reloadTable();
-                    };
-                }
-                else {
-                    sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
-                    onClick = async () => {
-                        tthis.tableState.orderBy = fieldName;
-                        tthis.tableState.orderByDescending = false;
-                        await tthis.reloadTable();
+        const fieldName = field.get(_FieldData._name_);
+        const isSorted = this.tableState.orderBy === fieldName;
+        const isSortedDescending = this.tableState.orderByDescending;
 
-                    };
-                }
-            }
-            else {
-                sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
+        let sortingArrow: JQuery;
+        let onClick: () => Promise<void>;
 
-                onClick = async () => {
-                    tthis.tableState.orderBy = fieldName;
-                    tthis.tableState.orderByDescending = false;
-                    await tthis.reloadTable();
-                };
-            }
-
-            sortingArrow.on('click', onClick);
-            titleButtons.append(sortingArrow);
+        if (isSorted) {
+            sortingArrow = isSortedDescending
+                ? $('<span class="dm-tableform-sortbutton">↑</span>')
+                : $('<span class="dm-tableform-sortbutton">↓</span>');
+            onClick = async () => {
+                this.tableState.orderByDescending = !isSortedDescending;
+                await this.reloadTable();
+            };
+        } else {
+            sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
+            onClick = async () => {
+                this.tableState.orderBy = fieldName;
+                this.tableState.orderByDescending = false;
+                await this.reloadTable();
+            };
         }
+
+        sortingArrow.on('click', onClick);
+        titleButtons.append(sortingArrow);
     }
+
 
     private async appendColumnMenus(field: Mof.DmObject, cell: JQuery<HTMLElement>) {
         const propertyMenuItems = await this.createPropertyMenuItems(field);

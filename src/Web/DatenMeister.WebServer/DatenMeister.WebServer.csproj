@@ -75,7 +75,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  
+
+  <Target Name="RunCakeBuild" BeforeTargets="Build">
+    <Exec Command="dotnet cake build.cake --target=Build" />
+  </Target>  
 
   <Target Name="CopyIconPngFiles" BeforeTargets="BeforeCompile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />

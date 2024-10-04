@@ -189,3 +189,4 @@ nugets/*.nupkg
 
 
 .nyc_output/
+/src/Web/DatenMeister.WebServer/tools/Addins/

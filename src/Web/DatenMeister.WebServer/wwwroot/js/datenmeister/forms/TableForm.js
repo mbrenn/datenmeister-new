@@ -179,6 +179,9 @@ export class TableForm {
             }
         }
     }
+    /**
+     * Creates the free text field for filtering
+     */
     createFreeTextField() {
         const tthis = this;
         const inputField = $('<input type="text" placeholder="Filter by Text"></input>');

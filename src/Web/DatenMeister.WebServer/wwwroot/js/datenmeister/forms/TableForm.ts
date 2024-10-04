@@ -250,6 +250,9 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
     }
 
+    /**
+     * Creates the free text field for filtering
+     */
     private createFreeTextField() {
         const tthis = this;
         

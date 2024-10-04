@@ -8,10 +8,11 @@ import {_DatenMeister} from "../models/DatenMeister.class.js";
 import _TableForm = _DatenMeister._Forms._TableForm;
 import * as Actions from "../client/Actions.js";
 import _FieldData = _DatenMeister._Forms._FieldData;
+import * as burnJsPopup from "../../burnJsPopup.js"
 
 interface PropertyMenuItem
 {
-    title: string;
+    onCreateDom: (popupResult: burnJsPopup.PopupResult, jQuery: JQuery) => void;
     onClick?: () => (void);
     requireConfirmation?: boolean;
 }
@@ -437,45 +438,27 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     }
 
     private async appendColumnMenus(field: Mof.DmObject, cell: JQuery<HTMLElement>) {
-        const column = await this.createPropertyMenuItems(field);
-        if (column.length > 0) {
-            let contextItem = $("<div class='dm-contextmenu'><div class='dm-tableform-sortbutton'>...</div><div class='dm-contextmenu-item-container'></div></div>");
-            const htmlContainer = $(".dm-contextmenu-item-container", contextItem);
-            for (const m in column) {
-                const menuProperty = column[m];
-                const htmlItem = $("<div class='dm-contextmenu-item'></div>");
-                htmlItem.text(menuProperty.title);
-                if (menuProperty.onClick !== undefined) {
-                    htmlItem.on('click',
-                        () => {
-                            if (menuProperty.requireConfirmation !== true
-                                || htmlItem.attr('data-require') === '1') {
-                                menuProperty.onClick();
-                            }
-                            else {
-                                htmlItem.attr('data-require', '1');
-                                htmlItem.text('Confirm?');
-                            }
-                        });
-                }
-
-                htmlContainer.append(htmlItem);
-            }
-            $(".dm-contextmenu-dots", contextItem).on('click', () => {
-
-                if (htmlContainer.attr('data-display') === 'visible') {
-                    htmlContainer.hide();
-                    htmlContainer.attr('data-display', '');
-                }
-                else {
-                    htmlContainer.show();
-                    htmlContainer.attr('data-display', 'visible');
-                }
-            });
-
-
-            cell.append(contextItem);
+        const propertyMenuItems = await this.createPropertyMenuItems(field);
+        if (propertyMenuItems.length === 0) {
+            return;
         }
+
+        // Now create the button
+        let contextItem = $("<div class='dm-tableform-sortbutton'>...</div>");
+        cell.append(contextItem);
+
+        contextItem.on('click', () => {
+                        
+            const popup = burnJsPopup.createPopup();   
+
+            for (var n in propertyMenuItems) {
+                const div = $("<div></div>");
+
+                propertyMenuItems[n].onCreateDom(popup, div);
+
+                $(popup.htmlContent).append(div);
+            }
+        });
     }
 
     async createPropertyMenuItems(field: Mof.DmObject): Promise<PropertyMenuItem[]> {
@@ -486,11 +469,10 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         if (field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
             && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
             const menuRemoveProperty =
-                {
-                    title: "Clear Property",
-                    requireConfirmation: true,
-                    onClick: async () => {
-
+            {
+                onCreateDom: (popup: burnJsPopup.PopupResult, jquery: JQuery) => {
+                    const button = $("<button class='btn btn-secondary' type='button'>Clear Properties</button>");
+                    button.on('click', async () => {
                         // Gets the data
                         const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
                         const dataUrl = this.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
@@ -502,14 +484,18 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                         action.set(_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName, propertyName);
 
                         const parameter: Actions.ExecuteActionParams =
-                            {
-                                parameter: action
-                            };
+                        {
+                            parameter: action
+                        };
 
                         await Actions.executeActionDirectly("Execute", parameter);
                         await this.refreshForm();
-                    }
-                };
+                    });
+
+                    jquery.append(button);
+                },
+                requireConfirmation: true
+            };
 
             result.push(menuRemoveProperty);
         }

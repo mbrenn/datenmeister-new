@@ -103,12 +103,28 @@ export async function getRootElements(workspace, extentUri, parameter) {
     if (parameter?.filterByFreetext !== undefined && parameter?.filterByFreetext !== '') {
         queryParams.push("filterByFreetext=" + encodeURIComponent(parameter.filterByFreetext));
     }
+    if (parameter?.filterByProperties !== undefined) {
+        const serialized = serializeArrayToString(parameter.filterByProperties);
+        if (serialized !== "" && serialized !== undefined) {
+            queryParams.push("filterByProperties=" + serialized);
+        }
+    }
     // Join query parameters with '&' and append them to the URL
     if (queryParams.length > 0) {
         url += '?' + queryParams.join('&');
     }
     const resultFromServer = await ApiConnection.get(url);
     return convertToMofObjects(resultFromServer);
+}
+function serializeArrayToString(arrayValue) {
+    let result = '';
+    let ampersand = '';
+    for (var key in arrayValue) {
+        const value = arrayValue[key];
+        result += `${ampersand}${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        ampersand = '&';
+    }
+    return encodeURIComponent(result);
 }
 function convertToMofObjects(resultFromServer) {
     const x = JSON.parse(resultFromServer);

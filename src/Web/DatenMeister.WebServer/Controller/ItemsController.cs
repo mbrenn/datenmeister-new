@@ -323,7 +323,9 @@ namespace DatenMeister.WebServer.Controller
             {
                 OrderBy = orderBy,
                 OrderByDescending = orderByDescending == true,
-                FilterByFreeText = filterByFreeText
+                FilterByFreeText = filterByFreeText,
+                FilterByProperties = ItemsControllerInternal.DeserializeStringToDictionary(filterByProperties ?? ""),
+
             };
 
             var finalElements = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode, query);

@@ -192,6 +192,13 @@ export async function getRootElements(workspace: string, extentUri: string, para
         queryParams.push("filterByFreetext=" + encodeURIComponent(parameter.filterByFreetext));
     }
 
+    if (parameter?.filterByProperties !== undefined) {
+        const serialized = serializeArrayToString(parameter.filterByProperties);
+        if (serialized !== "" && serialized !== undefined) {
+            queryParams.push("filterByProperties=" + serialized);
+        }
+    }
+
     // Join query parameters with '&' and append them to the URL
     if (queryParams.length > 0) {
         url += '?' + queryParams.join('&');
@@ -199,6 +206,19 @@ export async function getRootElements(workspace: string, extentUri: string, para
 
     const resultFromServer = await ApiConnection.get<string>(url);
     return convertToMofObjects(resultFromServer);
+}
+
+function serializeArrayToString(arrayValue) {
+    let result = '';
+    let ampersand = '';
+    for (var key in arrayValue) {
+        const value = arrayValue[key];
+        result += `${ampersand}${encodeURIComponent(key)}=${ encodeURIComponent(value) }`;
+
+        ampersand = '&';
+    }
+
+    return encodeURIComponent(result);
 }
 
 function convertToMofObjects(resultFromServer: string) {

@@ -123,6 +123,15 @@ namespace DatenMeister.WebServer.Controller
                 finalElements = finalElements.Order(sorter).ToList();
             }
 
+            // Evaluate the filters from the query itself by going through all the filter properties
+            if (filterParameter?.FilterByProperties != null && filterParameter.FilterByProperties.Count() > 0)
+            {
+                foreach (var filter in filterParameter.FilterByProperties)
+                {
+                    finalElements = finalElements.Where(x => x.isSet(filter.Key) && x.get(filter.Key)?.ToString() == filter.Value).ToList();
+                }
+            }
+
 #if DEBUG
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
             return finalElements.Take(100).ToList();
@@ -199,6 +208,23 @@ namespace DatenMeister.WebServer.Controller
 
                 return factor * propertyX!.ToString()!.CompareTo(propertyY.ToString());
             }
+        }
+        public static Dictionary<string, string> DeserializeStringToDictionary(string serializedString)
+        {
+            var decodedString = Uri.UnescapeDataString(serializedString);
+            var result = new Dictionary<string, string>();
+            var pairs = serializedString.Split('&');
+            foreach (var pair in pairs)
+            {
+                var keyValue = pair.Split('=');
+                if (keyValue.Length == 2)
+                {
+                    var key = Uri.UnescapeDataString(keyValue[0]);
+                    var value = Uri.UnescapeDataString(keyValue[1]);
+                    result[key] = value;
+                }
+            }
+            return result;
         }
     }
 }

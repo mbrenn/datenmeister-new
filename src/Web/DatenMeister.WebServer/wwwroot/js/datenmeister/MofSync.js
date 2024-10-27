@@ -6,8 +6,12 @@ import * as ClientElements from "./client/Elements.js";
  * @param metaClass Metaclass of the element to be created
  */
 export async function createTemporaryDmObject(metaClass) {
-    const result = await ClientElements.createTemporaryElement(metaClass);
-    return Mof.DmObjectWithSync.createFromReference(result.workspace, result.uri);
+    const createdTemporaryObject = await ClientElements.createTemporaryElement(metaClass);
+    const result = Mof.DmObjectWithSync.createFromReference(createdTemporaryObject.workspace, createdTemporaryObject.uri);
+    if (createdTemporaryObject.metaClassUri !== undefined && createdTemporaryObject.metaClassUri !== "") {
+        result.setMetaClassByUri(createdTemporaryObject.metaClassUri, createdTemporaryObject.metaClassWorkspace);
+    }
+    return result;
 }
 /**
  * Performs a sync of the element to the server.

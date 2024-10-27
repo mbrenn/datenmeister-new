@@ -130,7 +130,9 @@ namespace DatenMeister.WebServer.Controller
             {
                 Success = true,
                 Workspace = logic.WorkspaceName,
-                Uri = result.GetUri() ?? throw new InvalidOperationException("No uri defined")
+                Uri = result.GetUri() ?? throw new InvalidOperationException("No uri defined"),
+                MetaClassUri = result.metaclass?.GetUri() ?? string.Empty,
+                MetaClassWorkspace = result.metaclass?.GetUriExtentOf()?.GetWorkspace()?.id ?? string.Empty
             };
         }
 
@@ -153,6 +155,16 @@ namespace DatenMeister.WebServer.Controller
             /// Gets or sets the uri 
             /// </summary>
             public string Uri { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the metaclass Uri which contains the metaclass of the created element
+            /// </summary>
+            public string MetaClassUri { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the workspace of the metaclass which was created by the temporary element
+            /// </summary>
+            public string MetaClassWorkspace { get; set; } = string.Empty;
         }
     }
 }

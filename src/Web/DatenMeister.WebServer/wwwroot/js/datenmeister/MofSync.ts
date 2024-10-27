@@ -9,8 +9,13 @@ import * as ClientElements from "./client/Elements.js"
  */
 export async function createTemporaryDmObject(metaClass?: string) : Promise<Mof.DmObjectWithSync>
 {
-    const result = await ClientElements.createTemporaryElement(metaClass);
-    return Mof.DmObjectWithSync.createFromReference(result.workspace, result.uri);
+    const createdTemporaryObject = await ClientElements.createTemporaryElement(metaClass);
+    const result = Mof.DmObjectWithSync.createFromReference(createdTemporaryObject.workspace, createdTemporaryObject.uri);
+    if (createdTemporaryObject.metaClassUri !== undefined && createdTemporaryObject.metaClassUri !== "") {
+        result.setMetaClassByUri(createdTemporaryObject.metaClassUri, createdTemporaryObject.metaClassWorkspace);
+    }
+
+    return result;
 }
 
 /**

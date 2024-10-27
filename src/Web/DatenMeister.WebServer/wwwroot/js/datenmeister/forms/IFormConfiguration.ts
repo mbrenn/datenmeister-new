@@ -7,6 +7,7 @@ export interface IFormConfiguration {
     isNewItem?: boolean;
     submitName?: string;
     showCancelButton?: boolean;
+    formElement?: DmObject;
 
     // Form Uri to be set, if the caller wants to have an explicit form
     formUri?: string;

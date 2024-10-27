@@ -9,10 +9,12 @@ import * as Actions from "../client/Actions.js";
 var _FieldData = _DatenMeister._Forms._FieldData;
 import * as burnJsPopup from "../../burnJsPopup.js";
 import { truncateText } from "../../burnsystems/StringManipulation.js";
+import * as ClientItem from "../client/Items.js";
 export class TableFormParameter {
     constructor() {
         this.shortenFullText = true;
         this.allowSortingOfColumn = true;
+        this.allowFilteringOnProperty = true;
         this.allowFreeTextFiltering = true;
         this.showFilterQuery = true;
     }
@@ -65,6 +67,22 @@ export class TableForm {
      * @param refresh true, if we just would like to refresh the table and not create new elements
      */
     async createFormByObject(parent, configuration, refresh) {
+        const tthis = this;
+        // We need to get a loading mechanism in case the user wants to filter or sort. Unfortunately, the queries are not support
+        this.callbackLoadItems = async (query) => {
+            // As mentioned, the queries are not supported, so we don't show them
+            this.tableParameter.allowSortingOfColumn = false;
+            this.tableParameter.allowFilteringOnProperty = false;
+            // Loads the properties as a whole
+            const property = this.formElement.get(_DatenMeister._Forms._TableForm.property, Mof.ObjectType.String);
+            const result = await ClientItem.getProperty(tthis.workspace, tthis.itemUrl, property);
+            if (Array.isArray(result)) {
+                return result;
+            }
+            else {
+                return [refresh];
+            }
+        };
         return await this.createFormByCollection(parent, configuration, refresh);
     }
     async createFormByCollection(parent, configuration, refresh) {
@@ -365,7 +383,9 @@ export class TableForm {
         if (field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
             && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
             result.push(createFunctionForRemoveProperties());
-            result.push(createFunctionToFilterInProperty());
+            if (this.tableParameter.allowFilteringOnProperty) {
+                result.push(createFunctionToFilterInProperty());
+            }
         }
         return result;
         function createFunctionForRemoveProperties() {

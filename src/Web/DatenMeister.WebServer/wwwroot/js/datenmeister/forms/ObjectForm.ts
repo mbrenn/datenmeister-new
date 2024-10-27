@@ -92,7 +92,6 @@ export class ObjectFormCreator implements IForm.IPageForm {
 
     }
 
-
     private async createFormForItem() {
         const configuration = this.htmlItemContainer;
         const tthis = this;
@@ -127,7 +126,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
                     detailForm.extentUri = this.extentUri;
                     detailForm.itemUrl = this.itemUrl;
                     detailForm.formElement = tab;
-                    detailForm.element = this.element;
+                    detailForm.element = this.element;                              
 
                     await detailForm.createFormByObject(form, configuration);
                 } else {

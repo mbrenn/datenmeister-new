@@ -84,6 +84,11 @@ namespace DatenMeister.Forms.Helper
                         actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);
                         actionField.set(_DatenMeister._Forms._ActionFieldData.name, _parameter.ActionName);
 
+                        if (_parameter.ButtonText != null && !string.IsNullOrEmpty(_parameter.ButtonText))
+                        {
+                            actionField.set(_DatenMeister._Forms._ActionFieldData.buttonText, _parameter.ButtonText);
+                        }
+
                         if (_parameter.Parameter.Count > 0)
                         {
                             var parameter = MofFactory.CreateElement(form, null);

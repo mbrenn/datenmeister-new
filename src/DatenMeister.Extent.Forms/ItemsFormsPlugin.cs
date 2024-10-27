@@ -55,14 +55,14 @@ namespace DatenMeister.Extent.Forms
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin,
-                        new ActionButtonAdderParameter(NavigationExportXmi, "Export Item as Xmi")
+                        new ActionButtonAdderParameter(NavigationExportXmi, "Export", "Export Item as Xmi")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Row
                         });
 
                     ActionButtonToFormAdder.AddActionButton(
                         formsPlugin,
-                        new ActionButtonAdderParameter(NavigationImportXmi, "Import Item as Xmi")
+                        new ActionButtonAdderParameter(NavigationImportXmi, "Import", "Import Item as Xmi")
                         {
                             FormType = _DatenMeister._Forms.___FormType.Row
                         });

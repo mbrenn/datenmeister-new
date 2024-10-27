@@ -861,6 +861,7 @@ export namespace _DatenMeister
                 {
                     static actionName = "actionName";
                     static parameter = "parameter";
+                    static buttonText = "buttonText";
                     static isAttached = "isAttached";
                     static _name_ = "name";
                     static title = "title";

@@ -762,6 +762,7 @@ export var _DatenMeister;
         }
         _ActionFieldData.actionName = "actionName";
         _ActionFieldData.parameter = "parameter";
+        _ActionFieldData.buttonText = "buttonText";
         _ActionFieldData.isAttached = "isAttached";
         _ActionFieldData._name_ = "name";
         _ActionFieldData.title = "title";

@@ -4,6 +4,7 @@ import {BaseField, IFormField} from "./Interfaces.js";
 import {DmObject, DmObjectWithSync, ObjectType} from "../Mof.js";
 import * as ClientItems from "../client/Items.js";
 import * as MofSync from "../MofSync.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 export class Field extends BaseField implements IFormField {
 
@@ -14,17 +15,19 @@ export class Field extends BaseField implements IFormField {
     async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
-        const title = this.field.get('title', ObjectType.String);
-        const action = this.field.get('actionName', ObjectType.String);
+        const title = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.title, ObjectType.String);
+        const action = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.actionName, ObjectType.String);
 
-        const parameter = this.field.get('parameter', ObjectType.Single);
+        const parameter = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.parameter, ObjectType.Single);
+        const buttonText = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.buttonText, ObjectType.String);
+
 
         const module = FormActions.getModule(action);
         this.inConfirmation = false;
         const requireConfirmation = module?.requiresConfirmation === true;
 
         this.button = $("<button class='btn btn-secondary' type='button'></button>");
-        this.button.text(title);
+        this.button.text(buttonText ?? title ?? action);
 
         this.button.on('click',
             async () => {

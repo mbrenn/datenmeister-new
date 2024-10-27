@@ -1788,6 +1788,9 @@ namespace DatenMeister.Core.Models
                 public static string @parameter = "parameter";
                 public IElement? @_parameter = null;
 
+                public static string @buttonText = "buttonText";
+                public IElement? @_buttonText = null;
+
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
 

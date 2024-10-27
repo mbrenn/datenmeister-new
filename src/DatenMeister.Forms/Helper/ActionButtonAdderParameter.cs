@@ -8,7 +8,7 @@ namespace DatenMeister.Forms.Helper
     /// <summary>
     /// Defines the parameter for the ActionButtonToFormadder
     /// </summary>
-    public record ActionButtonAdderParameter(string ActionName, string Title) : FormCreationContext
+    public record ActionButtonAdderParameter(string ActionName, string Title, string? ButtonText = "") : FormCreationContext
     {
         /// <summary>
         /// The action name being used. 
@@ -25,6 +25,11 @@ namespace DatenMeister.Forms.Helper
         /// The title being used. 
         /// </summary>
         public string Title { get; set; } = Title;
+
+        /// <summary>
+        /// The Button Text being used. 
+        /// </summary>
+        public string ButtonText { get; set; } = ButtonText ?? string.Empty;
 
         /// <summary>
         /// Gets or sets a predicate that can be used as an additional filtering option.

@@ -1622,6 +1622,16 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="0b40a1f8-11c7-478b-9881-08ed6eef41e8" general-ref="#DatenMeister.Models.Forms.FieldData" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5dac053a-d3d8-1115-9c70-af81f4b7d896" name="actionName" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5dac053a-d3d8-1115-9c70-af81f4b7d832" name="parameter" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="714f0b57-9631-454d-bd96-929f2fe56629" name="buttonText" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+        <aggregation p1:id="f070ec05-450e-4185-9f60-75dca571a937" />
+        <isDerived p1:id="9277c4fd-ec9e-4191-9134-7e08bac13d4d" />
+        <isDerivedUnion p1:id="07b825ad-ad1e-4f1c-aa4b-9a7a21d65ca9" />
+        <isReadOnly p1:id="2e531c3a-ff11-49a7-9544-2d7e422a22c7" />
+        <isOrdered p1:id="6938b309-7b2c-482e-8db8-7dc5ff5a5a0f" />
+        <isUnique p1:id="3101d011-dbbe-4624-9202-e0b1cd04dcef" />
+        <isStatic p1:id="ca202b8c-9fe5-4173-8da2-012084606737" />
+        <isLeaf p1:id="05eac67a-a286-409d-b2dc-fef978f97362" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DateTimeFieldData" name="DateTimeFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="a1ffbbdf-9302-40d2-99f7-d94bdbe8f978" general-ref="#DatenMeister.Models.Forms.FieldData" />

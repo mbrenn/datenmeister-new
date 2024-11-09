@@ -137,7 +137,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 return result;
             }
             else {
-                return [refresh];
+                return [];
             }
         };
 

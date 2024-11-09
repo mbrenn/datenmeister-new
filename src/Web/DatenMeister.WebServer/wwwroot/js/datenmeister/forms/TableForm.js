@@ -80,7 +80,7 @@ export class TableForm {
                 return result;
             }
             else {
-                return [refresh];
+                return [];
             }
         };
         return await this.createFormByCollection(parent, configuration, refresh);

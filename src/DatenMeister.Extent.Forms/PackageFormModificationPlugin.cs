@@ -51,11 +51,13 @@ namespace DatenMeister.Extent.Forms
                             _DatenMeister._CommonTypes._Default._Package.preferredPackage);
 
                     if (preferredPackages != null)
+                    {
                         foreach (var preferredPackage in preferredPackages.OfType<IElement>())
                         {
                             var preferredTypes2 = PackageMethods.GetPackagedObjects(preferredPackage);
                             AddPreferredTypes(form, factory, preferredTypes2, defaultTypes);
                         }
+                    }
                 }
 
                 return true;

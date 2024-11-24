@@ -58,6 +58,7 @@ namespace DatenMeister.Json
         /// Creates the element out of the attached object 
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="ententType">Of which kind is the entent of the element</param>
         /// <returns></returns>
         public static ItemWithNameAndId? Create(IObject? value, EntentType ententType = EntentType.Item)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using NUnit.Framework;
 
@@ -30,6 +31,20 @@ namespace DatenMeister.Tests.Core
             Assert.Throws<InvalidOperationException>(() => { (element2 as ICanSetId)!.Id = "YES"; });
 
             Assert.That((element2 as IHasId)!.Id, Is.EqualTo("No"));
+        }
+
+        [Test]
+        public void SetAndGetId()
+        {
+            var extent = new MofUriExtent(new InMemoryProvider(), null);
+
+            var element1 = MofFactory.CreateElement(extent, null);
+
+            var oldId = element1.GetId();
+            Assert.That(oldId, Is.Not.Null.And.Not.Empty);
+
+            element1.SetId("Test1");
+            Assert.That(element1.GetId(), Is.EqualTo("Test1"));
         }
     }
 }

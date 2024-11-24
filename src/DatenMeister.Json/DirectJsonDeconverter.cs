@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
 
@@ -96,7 +97,13 @@ namespace DatenMeister.Json
                 }
 
                 result ??= InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
-
+                
+                // Sets the id, if the id is given
+                if (!string.IsNullOrEmpty(jsonObject.id) && result.GetId() != jsonObject.id)
+                {
+                    result.SetId(jsonObject.id);
+                }
+                
                 foreach (var pair in jsonObject.v)
                 {
                     result.set(pair.Key, ConvertJsonValue(pair.Value));

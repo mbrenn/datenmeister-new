@@ -66,7 +66,14 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
+        /// <summary>
+        /// Caches the boolean type
+        /// </summary>
         private IElement? _booleanType;
+
+        /// <summary>
+        /// Caches the datatime type
+        /// </summary>
         private IElement? _dateTimeType;
 
         /// <summary>
@@ -809,14 +816,15 @@ namespace DatenMeister.Forms.FormCreator
             {
                 fieldsAsList.Remove(fieldName);
                 fieldsAsList.Insert(0, fieldName);
+
+
+                FormMethods.AddToFormCreationProtocol(
+                    form,
+                    "[FormCreator.SortFieldsByImportantProperties]: Field 'name' was put up-front");
             }
 
             // Sets it
             form.set(_DatenMeister._Forms._TableForm.field, fieldsAsList);
-
-            FormMethods.AddToFormCreationProtocol(
-                form,
-                "[FormCreator.SortFieldsByImportantProperties]: Fields are sorted");
         }
 
         /// <summary>

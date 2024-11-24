@@ -121,6 +121,14 @@ namespace DatenMeister.Json
                     item.AppendJson(builder);
                 }
             }
+            
+            // Creates the id
+            var id = value.GetId();
+            if (!string.IsNullOrEmpty(id))
+            {
+                builder.Append(", \"id\": ");
+                AppendValue(builder, id);
+            }
 
             // Creates the uri
             var uri = value.GetUri();

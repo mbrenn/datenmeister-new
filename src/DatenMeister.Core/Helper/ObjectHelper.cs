@@ -427,6 +427,21 @@ namespace DatenMeister.Core.Helper
         }
 
         /// <summary>
+        /// Gets the id of the element, if available, otherwise return an empty string
+        /// </summary>
+        /// <param name="element">Element to be queried</param>
+        /// <returns>The id of the element or empty string</returns>
+        public static string GetId(this IObject element)
+        {
+            if ( element is IHasId elementWithId)
+            {
+                return elementWithId.Id ?? string.Empty;
+            }
+            
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Gets a certain property value as a reflective sequence.
         /// If the value is not a reflective sequence, an exception is thrown
         /// </summary>

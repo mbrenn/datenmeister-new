@@ -34,5 +34,10 @@ namespace DatenMeister.Json
         /// The uri of the element to retrieve additional information, 
         /// </summary>
         public string? u { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the id of the element
+        /// </summary>
+        public string? id { get; set; } = string.Empty;
     }
 }

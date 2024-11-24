@@ -10,7 +10,10 @@ import * as ClientElements from "./client/Elements.js"
 export async function createTemporaryDmObject(metaClass?: string) : Promise<Mof.DmObjectWithSync>
 {
     const createdTemporaryObject = await ClientElements.createTemporaryElement(metaClass);
-    const result = Mof.DmObjectWithSync.createFromReference(createdTemporaryObject.workspace, createdTemporaryObject.uri);
+    const result = 
+        Mof.DmObjectWithSync.createFromReference(createdTemporaryObject.workspace, createdTemporaryObject.uri);
+    result.id = createdTemporaryObject.id;
+    
     if (createdTemporaryObject.metaClassUri !== undefined && createdTemporaryObject.metaClassUri !== "") {
         result.setMetaClassByUri(createdTemporaryObject.metaClassUri, createdTemporaryObject.metaClassWorkspace);
     }

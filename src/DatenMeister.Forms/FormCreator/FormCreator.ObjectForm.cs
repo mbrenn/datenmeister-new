@@ -40,14 +40,14 @@ namespace DatenMeister.Forms.FormCreator
 
             FormMethods.AddToFormCreationProtocol(
                 objectForm,
-                "[FormCreator.CreateObjectFormForItem]: Create ExtentForm");
+                "[FormCreator.CreateObjectFormForItem]: Create Object Form");
 
             var objectMetaClass = (element as IElement)?.getMetaClass();
 
             var tabs = new List<IElement>();
 
             // Get all properties of the elements
-            var flagAddByMetaClass = creationMode.AutomaticMetaClassField;
+            var flagAddByMetaClass = creationMode.CreateByMetaClass;
             var propertyNamesWithCollection = new List<P>();
             var propertyNamesWithoutCollection = new List<P>();
 
@@ -113,7 +113,6 @@ namespace DatenMeister.Forms.FormCreator
                     select new { propertyName = p.PropertyName, propertyType = p.PropertyType, propertyContent })
                 .ToList();
 
-            //
             // Now, we got
             // propertyNamesWithCollection containing all properties which have a collection as a subitem ==> List Form
             // propertyNamesWithoutCollection containing all properties which have a collection as a subitem ==> Detail Form
@@ -252,7 +251,7 @@ namespace DatenMeister.Forms.FormCreator
                 {
                     FormMethods.AddToFormCreationProtocol(
                         objectForm,
-                        "[FormCreator.CreateExtentFormForObject]: Add Table Form for by reflective collection: " +
+                        "[FormCreator.CreateObjectFormForItem]: Add Table Form for by reflective collection: " +
                         propertyName);
 
                     // If there are elements included and they are filled

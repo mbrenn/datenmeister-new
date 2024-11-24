@@ -226,6 +226,8 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         const tableInfo =
             $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
         tableInfo.append(
+            $("<tr><th>ID</th><td class='dm-detail-info-id'>I</td></tr>"));
+        tableInfo.append(
             $("<tr><th>URL</th><td class='dm-detail-info-uri'>U</td></tr>"));
         tableInfo.append(
             $("<tr><th>Workspace</th><td><a class='dm-detail-info-workspace'>W</a></td></tr>"));
@@ -234,7 +236,8 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         tableInfo.append(
             $("<tr><th>Metaclass</th><td><a class='dm-detail-info-metaclass'>m</a></td></tr>"));
 
-        $(".dm-detail-info-uri", tableInfo).text((this.element.uri + " ")?? "none");
+        $(".dm-detail-info-id", tableInfo).text((this.element.id)?? "none");
+        
         if (this.element.uri !== undefined && this.element.uri !== "") {
 
             const copy = $("<a href='#' class='nounderline'>📋</a>");

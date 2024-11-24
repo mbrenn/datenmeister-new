@@ -32,6 +32,8 @@ export class DmObject {
     extentUri: string;
 
     workspace: string;
+    
+    id: string; 
 
     /**
      * Creates a new instance of the MofObject
@@ -287,6 +289,7 @@ export class DmObjectWithSync extends DmObject
  */
 export function convertToItemWithNameAndId(element: DmObject) {
     return {
+        id: element.id,
         uri: element.uri,
         extentUri: element.extentUri,
         workspace: element.workspace,
@@ -300,7 +303,7 @@ export function convertToItemWithNameAndId(element: DmObject) {
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {v: {}, m: {}, r: "", w: ""};
+    const result = {id: {}, v: {}, m: {}, r: "", w: ""};
     const values = result.v;
 
     function convertValue(elementValue) {
@@ -336,6 +339,8 @@ export function createJsonFromObject(element: DmObject) {
     if (element.metaClass !== undefined && element.metaClass !== null) {
         result.m = element.metaClass;
     }
+    
+    result.id = element.id;
 
     return result;
 }
@@ -423,6 +428,11 @@ export function convertJsonObjectToDmObject(element: object | string | undefined
     const elementUri = element["u"];
     if (elementUri !== undefined && elementUri !== null) {
         result.uri = elementUri;
+    }
+    
+    const elementId= element["id"];
+    if (elementId !== undefined && elementId !== null) {
+        result.id = elementId;
     }
 
     const elementReferenceUri = element["r"];

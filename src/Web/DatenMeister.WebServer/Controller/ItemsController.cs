@@ -318,13 +318,12 @@ namespace DatenMeister.WebServer.Controller
             extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
             viewNode = MvcUrlEncoder.DecodePath(viewNode);
 
-            var query = new QueryFilterParameter()
+            var query = new QueryFilterParameter
             {
                 OrderBy = orderBy,
                 OrderByDescending = orderByDescending == true,
                 FilterByFreeText = filterByFreeText,
                 FilterByProperties = ItemsControllerInternal.DeserializeStringToDictionary(filterByProperties ?? ""),
-
             };
 
             var finalElements = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode, query);

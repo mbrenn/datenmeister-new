@@ -27,8 +27,7 @@ export class ObjectFormHtmlElements
     Here, the items themselves will be added.
     This element should be a 'div' or another container item which is capable to hold a table
      */
-    itemContainer: JQuery;
-    
+    itemContainer: JQuery;    
     
     /*
     Here, the options for selection will be added. 

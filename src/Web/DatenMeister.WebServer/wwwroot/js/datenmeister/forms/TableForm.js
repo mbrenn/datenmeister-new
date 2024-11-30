@@ -145,7 +145,7 @@ export class TableForm {
             }
         }
         else {
-            // Creates the the table            
+            // Creates the table            
             await this.createTable();
         }
     }
@@ -282,6 +282,10 @@ export class TableForm {
      */
     isElementMatchingFreeTextFilter(element, fields) {
         const filterText = this.tableState.freeTextFilter.toLowerCase();
+        if (filterText === undefined || filterText === null || filterText === "") {
+            // Item is matching in case the filterText is empty
+            return true;
+        }
         return fields.some(field => {
             if (!FieldFactory.canBeTextFiltered(field))
                 return false;

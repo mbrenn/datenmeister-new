@@ -198,7 +198,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             'href',
             Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass }));
 
-           
         this.tableCache.cacheFreeTextField.empty();
 
         this.tableCache.cacheButtons.empty();
@@ -230,7 +229,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 
             }
         } else {
-            // Creates the the table            
+            // Creates the table            
             await this.createTable();
         }
     }
@@ -398,6 +397,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
      */
     private isElementMatchingFreeTextFilter(element: Mof.DmObject, fields: Mof.DmObject[]): boolean {
         const filterText = this.tableState.freeTextFilter.toLowerCase();
+        
+        if (filterText === undefined || filterText === null || filterText === "") {
+            // Item is matching in case the filterText is empty
+            return true;
+        }
+        
         return fields.some(field => {
             if (!FieldFactory.canBeTextFiltered(field)) return false;
             const fieldName = field.get(_FieldData._name_);

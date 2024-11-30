@@ -101,7 +101,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
             form = Forms.FormModel.createEmptyFormObject();
         }
         else {
-            form = await ClientForms.getObjectFormForMetaClass(metaClass);
+            form = await ClientForms.getDefaultObjectForMetaClass(metaClass);
         }
     }
     statusOverview.setListStatus("Load Form", true);

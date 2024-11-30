@@ -286,6 +286,17 @@ div .dm-tableform-querytext {
     font-family: monospace;
 }
 
+.dm-detail-info-id-edit
+{
+    font-size: 80%;
+    color: darkgray;
+    font-style: italic;
+}
+
+.dm-detail-info-id-value-field
+{
+    width: 30em;
+}
 .dm-logging-trace {
     color: #333333;
 }

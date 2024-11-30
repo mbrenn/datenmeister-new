@@ -242,6 +242,24 @@ export async function getElements(queryUri: string): Promise<Array<Mof.DmObject>
     return convertToMofObjects(resultFromServer);
 }
 
+export interface ISetIdParams {
+    id: string;
+}
+
+export interface ISetIdResult {
+    success: boolean;
+    newUri: string;
+}
+
+export async function setId(workspaceId: string, itemUrl: string, newId: string) {
+    let url = Settings.baseUrl +
+        "api/items/set_id/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+    return await ApiConnection.post<ISetIdResult>(url, {id: newId} as ISetIdParams);
+}
+
 export async function getRootElementsAsItem(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<Array<ItemWithNameAndId>> {
     // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
     if (workspace === undefined || workspace === "" || workspace === null) {
@@ -284,7 +302,7 @@ export async function getContainer(workspaceId: string, itemUri: string, self?: 
     return await ApiConnection.get<Array<ItemWithNameAndId>>(uri);
 }
 
-export async  function setProperty(
+export async function setProperty(
     workspaceId: string, itemUrl: string, property: string, value: any): Promise<ISuccessResult> {
     let url = Settings.baseUrl +
         "api/items/set_property/" +
@@ -445,7 +463,7 @@ export class ExportXmiResult
 }
 export async function exportXmi(workspace: string, itemUri: string) {
     let url = Settings.baseUrl +
-        "api/item/export_xmi/"
+        "api/items/export_xmi/"
         + encodeURIComponent(workspace) + "/"
         + encodeURIComponent(itemUri);
     return await ApiConnection.get<ExportXmiResult>(url);
@@ -458,7 +476,7 @@ export class ImportXmiResult
 
 export async function importXmi(workspace: string, itemUri: string, property: string, addToCollection: boolean, xmi: string) {
     let url = Settings.baseUrl +
-        "api/item/import_xmi/"
+        "api/items/import_xmi/"
         + encodeURIComponent(workspace) + "/"
         + encodeURIComponent(itemUri)
         + "?property=" + encodeURIComponent(property)

@@ -78,7 +78,7 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
     }
     
     override async loadForm(metaClass:string): Promise<Mof.DmObject> | undefined {
-        const form = await ClientForms.getObjectFormForMetaClass(metaClass,
+        const form = await ClientForms.getDefaultObjectForMetaClass(metaClass,
             "ViewMode.DataManipulation");
         
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
@@ -159,7 +159,7 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
 
     override async loadForm(metaClass?: string): Promise<Mof.DmObject> | undefined {
         const form =
-            await ClientForms.getObjectFormForMetaClass(metaClass,
+            await ClientForms.getDefaultObjectForMetaClass(metaClass,
             "ViewMode.DataManipulation");
 
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);

@@ -114,6 +114,24 @@ export function includeTests() {
                 const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
             });
+            
+            it('Set Id', async function () {
+                const result = await ClientItems.createItemInExtent(
+                    "Test",
+                    "dm:///unittest",
+                    {}
+                );
+
+                chai.assert.isTrue(result.success, 'Item was not created');
+
+                const newResult = await ClientItems.setId('Test', result.itemUrl, 'newId');
+                
+                const property = await ClientItems.getItemWithNameAndId('Test', newResult.newUri);
+                chai.assert.isTrue(property.id === 'newId');
+
+                const result2 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
+                chai.assert.isTrue(result2.success, "Deletion of all root Elements did not work");
+            });
 
             it('Get Elements', async function () {
                 const result = await ClientItems.createItemInExtent(

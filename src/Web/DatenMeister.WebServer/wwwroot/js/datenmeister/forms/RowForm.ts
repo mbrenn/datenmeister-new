@@ -6,8 +6,8 @@ import * as Navigation from "../Navigator.js"
 import * as TextField from "../fields/TextField.js"
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import {_DatenMeister} from "../models/DatenMeister.class.js";
-import {DmObject, DmObjectWithSync} from "../Mof.js";
 import { SubmitMethod } from "./Forms.js";
+import * as ClientItem from "../client/Items.js";
     
 export class RowForm implements InterfacesForms.IObjectFormElement {
     pageNavigation: InterfacesForms.IPageNavigation;
@@ -209,7 +209,6 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 }
             });
 
-
             $(".dm-detail-form-save", tr).on('click', async () => {
                 const result = await this.storeFormValuesIntoDom();
                 tthis.onChange(result, SubmitMethod.Save);
@@ -226,7 +225,8 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         const tableInfo =
             $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
         tableInfo.append(
-            $("<tr><th>ID</th><td class='dm-detail-info-id'>I</td></tr>"));
+            $("<tr><th>ID</th><td class='dm-detail-info-id'><span class='dm-detail-info-id-value'>I</span>" +
+                "<span class='dm-detail-info-id-edit'>Edit</span></td></tr>"));
         tableInfo.append(
             $("<tr><th>URL</th><td class='dm-detail-info-uri'>U</td></tr>"));
         tableInfo.append(
@@ -236,10 +236,30 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         tableInfo.append(
             $("<tr><th>Metaclass</th><td><a class='dm-detail-info-metaclass'>m</a></td></tr>"));
 
-        $(".dm-detail-info-id", tableInfo).text((this.element.id)?? "none");
+        $(".dm-detail-info-id-value", tableInfo).text((this.element.id)?? "none");
+        let isEditing = false;
+        let editField: JQuery<HTMLElement> = null;
+        $(".dm-detail-info-id-edit", tableInfo).on('click', async () => {
+            if (!isEditing) {
+                editField = $("<input type='text' class='dm-detail-info-id-value-field' />");
+                editField.val(this.element.id);
+                $(".dm-detail-info-id-value", tableInfo).empty().append(editField);
+            }
+            else {
+                this.element.id = editField.val().toString();
+                await ClientItem.setId(this.element.workspace, this.element.uri, this.element.id);
+                $(".dm-detail-info-id-value", tableInfo).text(this.element.id);
+                
+                // Since the id got changed, we navigate to the new id to avoid any mishap
+                Navigation.navigateToItem(this.element.workspace, this.element.extentUri, this.element.id);
+            }
+            
+            isEditing = !isEditing;
+        });
         
         if (this.element.uri !== undefined && this.element.uri !== "") {
 
+            $(".dm-detail-info-uri", tableInfo).text(this.element.uri);
             const copy = $("<a href='#' class='nounderline'>📋</a>");
             copy.on('click', () => {
                 navigator.clipboard.writeText(this.element.uri);
@@ -270,7 +290,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         parent.append(tableInfo);
     }
 
-    async storeFormValuesIntoDom() : Promise<DmObjectWithSync> {
+    async storeFormValuesIntoDom() : Promise<Mof.DmObjectWithSync> {
         if (this.onChange !== undefined && this.onCancel !== null) {
 
             for (let m in this.fieldElements) {

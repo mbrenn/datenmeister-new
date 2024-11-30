@@ -88,7 +88,6 @@ namespace DatenMeister.WebServer.Controller
             };
         }
         
-
         /// <summary>
         /// Parameters to create an item within an extent
         /// </summary>
@@ -787,7 +786,7 @@ namespace DatenMeister.WebServer.Controller
             public string Xmi { get; set; } = string.Empty;
         }
 
-        [HttpGet("api/item/export_xmi/{workspace}/{itemUri}")]
+        [HttpGet("api/items/export_xmi/{workspace}/{itemUri}")]
         public ActionResult<ExportXmiResult> ExportXmi(string workspace, string itemUri)
         {
             workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
@@ -824,7 +823,7 @@ namespace DatenMeister.WebServer.Controller
             public bool Success { get; set; }
         }
 
-        [HttpPost("api/item/import_xmi/{workspace}/{itemUri}")]
+        [HttpPost("api/items/import_xmi/{workspace}/{itemUri}")]
         public async Task<ActionResult<ImportXmiResult>> ImportXmi(
             string workspace, string itemUri,
             [FromQuery(Name = "property")] string property, 
@@ -847,6 +846,44 @@ namespace DatenMeister.WebServer.Controller
             await importXmi.Evaluate(actionLogic, action);
 
             return new ImportXmiResult { Success = true };
+        }
+        
+        public class SetIdParams
+        {
+            public string Id { get; set; } = string.Empty;
+        }
+        
+        public class SetIdResult
+        {
+            public bool Success { get; set; }
+            
+            public string NewUri { get; set; } = string.Empty;
+        }
+        
+        /// <summary>
+        /// Sets the id of the item via the API
+        /// </summary>
+        /// <param name="workspace">Workspace in which the item resides</param>
+        /// <param name="itemUri">Uri of the item whose id shall be changed</param>
+        /// <param name="parameter">Defines the new Id of the item</param>
+        /// <returns></returns>
+        [HttpPost("api/items/set_id/{workspace}/{itemUri}")]
+        public async Task<ActionResult<SetIdResult>> SetId(string workspace, string itemUri, [FromBody] SetIdParams parameter)
+        {
+            workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
+            itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
+
+            var foundItem = _workspaceLogic.FindObject(workspace, itemUri);
+            switch (foundItem)
+            {
+                case null:
+                    return NotFound(new SetIdResult { Success = false });
+                case ICanSetId asCanSetId:
+                    asCanSetId.Id = parameter.Id;
+                    return new SetIdResult { Success = true, NewUri = foundItem.GetUri() ?? string.Empty };
+                default:
+                    return NotFound(new SetIdResult { Success = false });
+            }
         }
     }
 }

@@ -144,6 +144,14 @@ export async function getElements(queryUri) {
     const resultFromServer = await ApiConnection.get(url);
     return convertToMofObjects(resultFromServer);
 }
+export async function setId(workspaceId, itemUrl, newId) {
+    let url = Settings.baseUrl +
+        "api/items/set_id/" +
+        encodeURIComponent(workspaceId) +
+        "/" +
+        encodeURIComponent(itemUrl);
+    return await ApiConnection.post(url, { id: newId });
+}
 export async function getRootElementsAsItem(workspace, extentUri, parameter) {
     // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
     if (workspace === undefined || workspace === "" || workspace === null) {
@@ -267,7 +275,7 @@ export class ExportXmiResult {
 }
 export async function exportXmi(workspace, itemUri) {
     let url = Settings.baseUrl +
-        "api/item/export_xmi/"
+        "api/items/export_xmi/"
         + encodeURIComponent(workspace) + "/"
         + encodeURIComponent(itemUri);
     return await ApiConnection.get(url);
@@ -276,7 +284,7 @@ export class ImportXmiResult {
 }
 export async function importXmi(workspace, itemUri, property, addToCollection, xmi) {
     let url = Settings.baseUrl +
-        "api/item/import_xmi/"
+        "api/items/import_xmi/"
         + encodeURIComponent(workspace) + "/"
         + encodeURIComponent(itemUri)
         + "?property=" + encodeURIComponent(property)

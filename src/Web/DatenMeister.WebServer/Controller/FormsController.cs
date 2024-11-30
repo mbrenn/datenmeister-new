@@ -48,7 +48,7 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
-        public ActionResult<string> GetObjectFormForItem(string workspaceId, string itemUrl, string? viewMode)
+        public ActionResult<string> GetDefaultForItem(string workspaceId, string itemUrl, string? viewMode)
         {
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
             itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
@@ -60,7 +60,7 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
-        public ActionResult<string> GetCollectionFormForExtent(string workspaceId, string extentUri, string? viewMode)
+        public ActionResult<string> GetDefaultForExtent(string workspaceId, string extentUri, string? viewMode)
         {
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -186,11 +186,15 @@ namespace DatenMeister.WebServer.Controller
 
 
         [HttpGet("api/forms/default_object_for_metaclass/{metaClass?}/{viewMode?}")]
-        public ActionResult<string> GetObjectFormForMetaClass(string? metaClass, string? viewMode) 
+        public ActionResult<string> GetDefaultObjectForMetaClass(string? metaClass, string? viewMode) 
         {
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             metaClass = MvcUrlEncoder.DecodePath(metaClass);
-
+            if (metaClass == "_")
+            {
+                metaClass = null;
+            }
+            
             var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode);
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);

@@ -24,8 +24,12 @@ export async function getCollectionFormForExtent(workspace: string, extentUri: s
 /*
     Gets the default form for an extent uri by the webserver
  */
-export async function getObjectFormForMetaClass(metaClassUri: string, viewMode?: string) {
+export async function getDefaultObjectForMetaClass(metaClassUri: string, viewMode?: string) {
 
+    if ( metaClassUri === undefined || metaClassUri === null || metaClassUri === "") {
+        metaClassUri = "_";
+    }
+    
     const viewModeUri = 
         viewMode === undefined || viewMode === "" ? 
             "" : 

@@ -151,7 +151,6 @@ a.nounderline{
     font-size: 80%;
     border: 1px solid black;
     background-color: white;
-    display: inline;
     padding: 1px 4px 1px 4px;
     margin: 0px 0px 0px 4px;
     border-radius: 4px;
@@ -257,7 +256,6 @@ div .dm-tableform-querytext {
     color: black;
 }
 
-
 .dm-selectitemcontrol .dm-sic-selected a
 {
     color: black;
@@ -289,8 +287,6 @@ div .dm-tableform-querytext {
 .dm-detail-info-id-edit
 {
     font-size: 80%;
-    color: darkgray;
-    font-style: italic;
 }
 
 .dm-detail-info-id-value-field

@@ -195,9 +195,9 @@ export class TableForm {
     createFreeTextField() {
         const tthis = this;
         const inputField = $('<input type="text" placeholder="Filter by Text"></input>');
-        inputField.on('input', () => {
+        inputField.on('input', async () => {
             tthis.tableState.freeTextFilter = inputField.val().toString();
-            tthis.refreshTable();
+            await tthis.refreshTable();
         });
         this.tableCache.cacheFreeTextField.append(inputField);
     }

@@ -226,7 +226,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
         tableInfo.append(
             $("<tr><th>ID</th><td class='dm-detail-info-id'><span class='dm-detail-info-id-value'>I</span>" +
-                "<span class='dm-detail-info-id-edit'>Edit</span></td></tr>"));
+                "<button class='dm-detail-info-id-edit btn btn-secondary' type='button'>Edit</button></td></tr>"));
         tableInfo.append(
             $("<tr><th>URL</th><td class='dm-detail-info-uri'>U</td></tr>"));
         tableInfo.append(
@@ -244,6 +244,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 editField = $("<input type='text' class='dm-detail-info-id-value-field' />");
                 editField.val(this.element.id);
                 $(".dm-detail-info-id-value", tableInfo).empty().append(editField);
+                $(".dm-detail-info-id-edit", tableInfo).text('Change ID');
             }
             else {
                 this.element.id = editField.val().toString();

@@ -867,7 +867,7 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="parameter">Defines the new Id of the item</param>
         /// <returns></returns>
         [HttpPost("api/items/set_id/{workspace}/{itemUri}")]
-        public async Task<ActionResult<SetIdResult>> SetId(string workspace, string itemUri, [FromBody] SetIdParams parameter)
+        public ActionResult<SetIdResult> SetId(string workspace, string itemUri, [FromBody] SetIdParams parameter)
         {
             workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
             itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);

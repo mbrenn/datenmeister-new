@@ -180,11 +180,20 @@ export class RowForm {
                 $(".dm-detail-info-id-edit", tableInfo).text('Change ID');
             }
             else {
+                const oldId = this.element.id;
+                const newId = editField.val().toString();
+                if (newId === '') {
+                    $(".dm-detail-info-id", tableInfo).append("<span class='warning'>An empty id cannot be set.</span>");
+                    return;
+                }
                 this.element.id = editField.val().toString();
-                await ClientItem.setId(this.element.workspace, this.element.uri, this.element.id);
+                if (oldId !== this.element.id) {
+                    // We only need to update the text in case the id changes
+                    await ClientItem.setId(this.element.workspace, this.element.uri, this.element.id);
+                    // Since the id got changed, we navigate to the new id to avoid any mishap
+                    Navigation.navigateToItem(this.element.workspace, this.element.extentUri, this.element.id);
+                }
                 $(".dm-detail-info-id-value", tableInfo).text(this.element.id);
-                // Since the id got changed, we navigate to the new id to avoid any mishap
-                Navigation.navigateToItem(this.element.workspace, this.element.extentUri, this.element.id);
             }
             isEditing = !isEditing;
         });

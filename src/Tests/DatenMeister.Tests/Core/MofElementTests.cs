@@ -46,5 +46,19 @@ namespace DatenMeister.Tests.Core
             element1.SetId("Test1");
             Assert.That(element1.GetId(), Is.EqualTo("Test1"));
         }
+
+        [Test]
+        public void SetIdWithSameValue()
+        {
+            var extent = new MofUriExtent(new InMemoryProvider(), null);
+
+            var element1 = MofFactory.CreateElement(extent, null);
+
+            var oldId = element1.GetId();
+            (element1 as ICanSetId)!.Id = oldId;
+
+            Assert.That(element1.GetId(), Is.EqualTo(oldId));
+            Assert.That((element1 as IHasId)!.Id, Is.EqualTo(oldId));
+        }
     }
 }

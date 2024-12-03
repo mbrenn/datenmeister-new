@@ -251,18 +251,27 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 const newId = editField.val().toString();
 
                 if (newId === '') {
-                    $(".dm-detail-info-id", tableInfo).append("<span class='warning'>An empty id cannot be set.</span>")
+                    $(".dm-detail-info-id", tableInfo).append("<span class='text-warning'>An empty id cannot be set.</span>")
                     return;
                 }
 
                 this.element.id = editField.val().toString();
 
                 if (oldId !== this.element.id) {
-                    // We only need to update the text in case the id changes
-                    await ClientItem.setId(this.element.workspace, this.element.uri, this.element.id);
+                    try {
+                        // We only need to update the text in case the id changes
+                        await ClientItem.setId(this.element.workspace, this.element.uri, this.element.id);
 
-                    // Since the id got changed, we navigate to the new id to avoid any mishap
-                    Navigation.navigateToItem(this.element.workspace, this.element.extentUri, this.element.id);
+                        // Since the id got changed, we navigate to the new id to avoid any mishap
+                        Navigation.navigateToItem(this.element.workspace, this.element.extentUri, this.element.id);
+                    }
+                    catch (e: any) {
+                        if (e.toString().includes("IdIsAlreadySetException")) {
+                            $(".dm-detail-info-id", tableInfo).append("<span class='text-warning'>The ID is already set within that extent.</span>");
+                        } else {
+                            $(".dm-detail-info-id", tableInfo).append(e.toString());
+                        }
+                    }
                 }
 
                 $(".dm-detail-info-id-value", tableInfo).text(this.element.id);

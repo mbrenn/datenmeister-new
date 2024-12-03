@@ -8,6 +8,14 @@ using DatenMeister.Core.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
+    public class IdIsAlreadySetException : InvalidOperationException
+    {
+        public IdIsAlreadySetException(string message) : base(message)
+        {
+
+        }
+    }
+
     /// <summary>
     /// Defines a Mof Element according to MOF specification
     /// </summary>
@@ -107,12 +115,18 @@ namespace DatenMeister.Core.EMOF.Implementation
             get => ProviderObject.Id;
             set
             {
+                if (Id == value)
+                {
+                    // Id is not modified, so we can skip the action
+                    return;
+                }
+
                 if (Extent is MofUriExtent mofUriExtent && !string.IsNullOrEmpty(value))
                 {
                     var foundValue = mofUriExtent.element($"#{value!}");
                     if (foundValue != null && !foundValue.Equals(this))
                     {
-                        throw new InvalidOperationException("The ID is already set within the extent.");
+                        throw new IdIsAlreadySetException("The ID is already set within the extent.");
                     }
                 }
 

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Json;
 using DatenMeister.WebServer.Library.Helper;
@@ -95,7 +92,7 @@ namespace DatenMeister.WebServer.Controller
             string extentUri, string? viewMode)
         {
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-            var formCreator = new FormCreator(_internal.WorkspaceLogic, _internal.ScopeStorage);
+            var formFactory = new FormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -111,7 +108,7 @@ namespace DatenMeister.WebServer.Controller
             }
 
             // Creates the form itself
-            var form = formCreator.CreateCollectionFormForExtent(
+            var form = formFactory.CreateCollectionFormForExtent(
                 extent,
                 collection,
                 new FormFactoryConfiguration
@@ -153,7 +150,7 @@ namespace DatenMeister.WebServer.Controller
             string workspaceId, string itemUri, string? viewMode)
         {
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-            var formCreator = new FormCreator(_internal.WorkspaceLogic, _internal.ScopeStorage);
+            var formFactory = new FormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -168,7 +165,7 @@ namespace DatenMeister.WebServer.Controller
             }
 
             // Creates the form itself
-            var form = formCreator.CreateObjectFormForItem(
+            var form = formFactory.CreateObjectFormForItem(
                 element,
                 new FormFactoryConfiguration
                 {

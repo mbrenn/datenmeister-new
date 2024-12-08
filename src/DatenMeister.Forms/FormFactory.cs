@@ -64,10 +64,12 @@ namespace DatenMeister.Forms
 
             string? packageViewMode = null;
 
-            // Checks if the current item is a package and if the viewmode
+            // Checks if the current item is a package and if the viewmode is defined by the package itself
             if (DefaultClassifierHints.IsPackageLike(element))
+            {
                 packageViewMode =
                     element.getOrDefault<string>(_DatenMeister._CommonTypes._Default._Package.defaultViewMode);
+            }
 
             packageViewMode = string.IsNullOrEmpty(packageViewMode) ? ViewModes.Default : packageViewMode;
 
@@ -758,14 +760,26 @@ namespace DatenMeister.Forms
                         "[FormFactory.CreateTableFormForProperty] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
-
+                        
             if (foundForm == null && configuration.ViaFormCreator)
             {
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateTableFormForCollection(
-                    parentElement.get<IReflectiveCollection>(propertyName),
-                    new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
 
+                // Checks, if an explicit property type is set: 
+                if (propertyType == null)
+                {
+                    foundForm = formCreator.CreateTableFormForCollection(
+                        parentElement.get<IReflectiveCollection>(propertyName),
+                        new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
+                }
+                else
+                {
+                    foundForm = formCreator.CreateTableFormForMetaClass(
+                        propertyType,
+                        new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });                    
+                }
+
+                foundForm.set(_TableForm.property, propertyName);
                 FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateTableFormForProperty] Found Form via FormCreator");
             }
 

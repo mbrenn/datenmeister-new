@@ -87,7 +87,7 @@ namespace DatenMeister.Forms.FormCreator
                             });
                     }
                     
-                    // As temporary workaround, we do also add the collections tothe detail view
+                    // As temporary workaround, we do also add the collections to the detail view
                     propertyNamesWithoutCollection.Add(
                         new P
                         {

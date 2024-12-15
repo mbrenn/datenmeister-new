@@ -306,7 +306,6 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             }
         }
 
-
         // Create the action fields for the collection field
         this.statusTextControl.setListStatus("Actionfields", false);
         const fields = 

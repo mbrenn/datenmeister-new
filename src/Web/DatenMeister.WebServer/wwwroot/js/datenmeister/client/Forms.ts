@@ -31,7 +31,6 @@ export async function getObjectFormForMetaClass(metaClassUri: string, viewMode?:
             "" : 
             "/" + encodeURI(viewMode);
 
-
     if (metaClassUri === undefined || metaClassUri === null || metaClassUri === '') {
         // Replaces empty metaclassUri by '_' to match URI-pattern
         metaClassUri = '_';

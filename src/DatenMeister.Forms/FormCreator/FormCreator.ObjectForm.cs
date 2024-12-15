@@ -274,6 +274,9 @@ namespace DatenMeister.Forms.FormCreator
                         form.set(_DatenMeister._Forms._TableForm.name, $"Property: {propertyName}");
                         form.set(_DatenMeister._Forms._TableForm.property, propertyName);
 
+                        // Inhibit Unclassified Item
+                        form.set(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, true);
+
                         // Adds the form to the tabs
                         tabs.Add(form);
 

@@ -1137,6 +1137,7 @@ export namespace _DatenMeister
                     static autoGenerateFields = "autoGenerateFields";
                     static duplicatePerType = "duplicatePerType";
                     static dataUrl = "dataUrl";
+                    static inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
                     static _name_ = "name";
                     static title = "title";
                     static isReadOnly = "isReadOnly";

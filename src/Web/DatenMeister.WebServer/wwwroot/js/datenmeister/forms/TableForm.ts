@@ -239,8 +239,11 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         const property = this.formElement.get('property');
         const tthis = this;
 
-        // Creates default unclassified button
-        createButton("Unclassified", null);
+        if (this.formElement.get(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
+
+            // Creates default unclassified button
+            createButton("Unclassified", null);
+        }
 
         // Goes through all the elements
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");

@@ -776,7 +776,11 @@ namespace DatenMeister.Forms
                 {
                     foundForm = formCreator.CreateTableFormForMetaClass(
                         propertyType,
-                        new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });                    
+                        new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
+
+                    foundForm.set(
+                        _TableForm.title,
+                        "Property: packagedElements of type " + NamedElementMethods.GetName(propertyType));
                 }
 
                 foundForm.set(_TableForm.property, propertyName);

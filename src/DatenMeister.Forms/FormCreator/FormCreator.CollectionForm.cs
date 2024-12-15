@@ -362,6 +362,10 @@ namespace DatenMeister.Forms.FormCreator
                         CreateByPropertyValues = false, AutomaticMetaClassField = false, AllowFormModifications = false
                     },
                     pair.property);
+                
+                tableForm.set(
+                    _DatenMeister._Forms._TableForm.title,
+                    "Property: packagedElements of type " + NamedElementMethods.GetName(propertyType));
 
                 tabs.Add(tableForm);
             }

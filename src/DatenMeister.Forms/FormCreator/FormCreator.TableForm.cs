@@ -132,6 +132,7 @@ namespace DatenMeister.Forms.FormCreator
                     form,
                     "[FormCreator.CreateTableFormForMetaClass] Added Default Type for: " +
                     NamedElementMethods.GetName(metaClass));
+
                 FormMethods.AddDefaultTypeForNewElement(form, metaClass);
             }
             else

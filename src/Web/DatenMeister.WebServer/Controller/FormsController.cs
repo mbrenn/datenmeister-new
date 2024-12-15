@@ -187,6 +187,12 @@ namespace DatenMeister.WebServer.Controller
         {
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             metaClass = MvcUrlEncoder.DecodePath(metaClass);
+                        
+            if (metaClass == "_")
+            {
+                // Converts back the underscore to undefined value
+                metaClass = null;
+            }
 
             var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode);
 

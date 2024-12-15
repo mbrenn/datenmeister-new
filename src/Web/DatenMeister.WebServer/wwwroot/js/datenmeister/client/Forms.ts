@@ -30,6 +30,12 @@ export async function getObjectFormForMetaClass(metaClassUri: string, viewMode?:
         viewMode === undefined || viewMode === "" ? 
             "" : 
             "/" + encodeURI(viewMode);
+
+
+    if (metaClassUri === undefined || metaClassUri === null || metaClassUri === '') {
+        // Replaces empty metaclassUri by '_' to match URI-pattern
+        metaClassUri = '_';
+    }
         
     const resultFromServer = await ApiConnection.get<object>(
         Settings.baseUrl +

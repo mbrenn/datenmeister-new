@@ -237,43 +237,59 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     private createButtonsForNewInstance() {
         const property = this.formElement.get('property');
         const tthis = this;
+
+        if (this.formElement.get(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
+
+            // Creates default unclassified button
+            createButton("Unclassified", null);
+        }
+
+        // Goes through all the elements
         const defaultTypesForNewElements = this.formElement.getAsArray("defaultTypesForNewElements");
         if (defaultTypesForNewElements !== undefined) {
             for (let n in defaultTypesForNewElements) {
                 const inner = defaultTypesForNewElements[n] as Mof.DmObject;
-                (function (innerValue) {
-
-                    const btn = $("<btn class='btn btn-secondary'></btn>");
-                    btn.text("Create " + inner.get('name'));
-                    btn.on('click', () => {
-                        const uri = innerValue.get('metaClass').uri;
-                        if (property === undefined) {
-                            document.location.href =
-                                Settings.baseUrl +
-                                "ItemAction/Extent.CreateItem?workspace=" +
-                                encodeURIComponent(tthis.workspace) +
-                                "&extent=" +
-                                encodeURIComponent(tthis.extentUri) +
-                                "&metaclass=" +
-                                encodeURIComponent(uri);
-                        } else {
-                            document.location.href =
-                                Settings.baseUrl +
-                                "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                                encodeURIComponent(tthis.workspace) +
-                                "&itemUrl=" +
-                                encodeURIComponent(tthis.itemUrl) +
-                                "&metaclass=" +
-                                encodeURIComponent(uri) +
-                                "&property=" +
-                                encodeURIComponent(property);
-                        }
-                    });
-
-                    tthis.tableCache.cacheButtons.append(btn);
-                })(inner);
-
+                createButton(
+                    inner.get('name'),
+                    inner.get('metaClass').uri);
             }
+        }
+
+        function createButton (name: string, metaClassUri?: string) {
+
+            const btn = $("<btn class='btn btn-secondary'></btn>");
+            btn.text("Create " + name);
+            btn.on('click', () => {
+
+                // Checks, if the metaClassUri is set
+                let metaClassUriParameter = '';
+                if (metaClassUri !== undefined && metaClassUri !== null) {
+                    metaClassUriParameter = "&metaclass=" + encodeURIComponent(metaClassUri);
+                }
+
+                // Creates the location to the buttons
+                if (property === undefined || property === null) {
+                    document.location.href =
+                        Settings.baseUrl +
+                        "ItemAction/Extent.CreateItem?workspace=" +
+                        encodeURIComponent(tthis.workspace) +
+                        "&extent=" +
+                        encodeURIComponent(tthis.extentUri) +
+                        metaClassUriParameter;
+                } else {
+                    document.location.href =
+                        Settings.baseUrl +
+                        "ItemAction/Extent.CreateItemInProperty?workspace=" +
+                        encodeURIComponent(tthis.workspace) +
+                        "&itemUrl=" +
+                        encodeURIComponent(tthis.itemUrl) +
+                        metaClassUriParameter +
+                        "&property=" +
+                        encodeURIComponent(property);
+                }
+            });
+
+            tthis.tableCache.cacheButtons.append(btn);
         }
     }
 

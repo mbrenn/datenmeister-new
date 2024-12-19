@@ -272,7 +272,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
 
         this.statusTextControl.setListStatus("Load Form", false);
         // Load the form
-        const defer2 =
+        const defer2: Promise<Mof.DmObject> =
             this._overrideFormUrl === undefined ?
                 ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
                 ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Object);

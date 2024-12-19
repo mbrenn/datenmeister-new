@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Json;
 using DatenMeister.WebServer.Library.Helper;
@@ -95,7 +92,7 @@ namespace DatenMeister.WebServer.Controller
             string extentUri, string? viewMode)
         {
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-            var formCreator = new FormCreator(_internal.WorkspaceLogic, _internal.ScopeStorage);
+            var formFactory = new FormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -111,7 +108,7 @@ namespace DatenMeister.WebServer.Controller
             }
 
             // Creates the form itself
-            var form = formCreator.CreateCollectionFormForExtent(
+            var form = formFactory.CreateCollectionFormForExtent(
                 extent,
                 collection,
                 new FormFactoryConfiguration
@@ -153,13 +150,14 @@ namespace DatenMeister.WebServer.Controller
             string workspaceId, string itemUri, string? viewMode)
         {
             var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-            var formCreator = new FormCreator(_internal.WorkspaceLogic, _internal.ScopeStorage);
+            var formFactory = new FormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
             itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
-            var factory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User));
+            var userFormExtent = formMethods.GetUserFormExtent();
+            var factory = new MofFactory(userFormExtent);
 
             var element = _internal.WorkspaceLogic.FindObject(workspaceId, itemUri);
             if (element == null)
@@ -168,15 +166,16 @@ namespace DatenMeister.WebServer.Controller
             }
 
             // Creates the form itself
-            var form = formCreator.CreateObjectFormForItem(
+            var form = formFactory.CreateObjectFormForItem(
                 element,
                 new FormFactoryConfiguration
-                {
+                {                    
                     ViewModeId = viewMode ?? string.Empty,
-                    Factory = factory
-                });
+                    Factory = factory, 
+                    ViaFormFinder = false // We want to create a complete and fresh form
+                }) ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
-            formMethods.GetUserFormExtent().elements().add(form);
+            userFormExtent.elements().add(form);
 
             return new CreateObjectFormForItemResult
             {
@@ -190,11 +189,13 @@ namespace DatenMeister.WebServer.Controller
         {
             viewMode = MvcUrlEncoder.DecodePath(viewMode);
             metaClass = MvcUrlEncoder.DecodePath(metaClass);
+                        
             if (metaClass == "_")
             {
+                // Converts back the underscore to undefined value
                 metaClass = null;
             }
-            
+
             var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode);
 
             return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);

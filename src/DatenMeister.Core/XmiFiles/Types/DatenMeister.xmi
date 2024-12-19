@@ -1823,6 +1823,16 @@
         <isStatic p1:id="8e489ed3-596e-4663-b12c-196f0036baf4" />
         <isLeaf p1:id="271ec96a-ec53-425f-93df-be34143514f1" />
       </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e5c558df-9c50-47fc-a2d8-daf6a0bfedda" name="inhibitNewUnclassifiedItems" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false">
+        <aggregation p1:id="de963de2-a8ba-4428-b0e1-600ffc46bad1" />
+        <isDerived p1:id="98877df2-1a92-4e7e-94ca-f82226e85db0" />
+        <isDerivedUnion p1:id="43d60e0f-55db-4035-994c-ea96e59c6bd2" />
+        <isReadOnly p1:id="95dbf163-2e15-4b90-bd87-3b8d93423627" />
+        <isOrdered p1:id="70b923fc-e071-46f7-ae63-721003db5eaf" />
+        <isUnique p1:id="a3e48e5a-a22e-44a5-bf67-55e5cc538117" />
+        <isStatic p1:id="22918919-a4a1-42e8-93d2-bb63d20c9fc4" />
+        <isLeaf p1:id="5b2fb915-ffe3-40fb-aeda-7696dc2c201f" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.CollectionForm" name="CollectionForm">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="8cae918e-73c1-498c-8479-19d1aaa39caa" general-ref="#DatenMeister.Models.Forms.Form" />

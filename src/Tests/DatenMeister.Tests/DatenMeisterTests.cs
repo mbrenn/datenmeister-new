@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
@@ -63,6 +64,8 @@ namespace DatenMeister.Tests
             return (workspaceLogic, scopeStorage);
         }
 
+        public static int round = 1;
+
         /// <summary>
         /// Gets the integration settings
         /// </summary>
@@ -73,7 +76,7 @@ namespace DatenMeister.Tests
             var path = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??
                 throw new InvalidOperationException("Get Directory Name failed"),
-                "testing/datenmeister/data");
+                $"testing/datenmeister/data{Interlocked.Increment(ref round)}");
             var integrationSettings = new IntegrationSettings
             {
                 DatabasePath = path,

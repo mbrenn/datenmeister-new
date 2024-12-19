@@ -40,7 +40,10 @@ namespace DatenMeister.WebServer.Controller
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateObjectFormForItem(item,
-                new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
+                new FormFactoryConfiguration
+                {
+                    ViewModeId = viewMode ?? string.Empty
+                });
 
             if (form == null)
             {

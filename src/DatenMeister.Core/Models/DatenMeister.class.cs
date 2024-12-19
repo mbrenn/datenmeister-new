@@ -2437,6 +2437,9 @@ namespace DatenMeister.Core.Models
                 public static string @dataUrl = "dataUrl";
                 public IElement? @_dataUrl = null;
 
+                public static string @inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
+                public IElement? @_inhibitNewUnclassifiedItems = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

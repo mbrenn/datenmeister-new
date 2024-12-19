@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -64,10 +65,12 @@ namespace DatenMeister.Forms
 
             string? packageViewMode = null;
 
-            // Checks if the current item is a package and if the viewmode
+            // Checks if the current item is a package and if the viewmode is defined by the package itself
             if (DefaultClassifierHints.IsPackageLike(element))
+            {
                 packageViewMode =
                     element.getOrDefault<string>(_DatenMeister._CommonTypes._Default._Package.defaultViewMode);
+            }
 
             packageViewMode = string.IsNullOrEmpty(packageViewMode) ? ViewModes.Default : packageViewMode;
 
@@ -98,8 +101,10 @@ namespace DatenMeister.Forms
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateObjectFormForItem(
                     element,
-                    new FormFactoryConfiguration
-                        { IncludeOnlyCommonProperties = true, AllowFormModifications = false });
+                    configuration with
+                    {
+                        AllowFormModifications = false
+                    });
 
                 FormMethods.AddToFormCreationProtocol(foundForm,
                     "[FormFactory.CreateObjectFormForItem] Created Form via FormCreator");
@@ -758,14 +763,30 @@ namespace DatenMeister.Forms
                         "[FormFactory.CreateTableFormForProperty] Found Form via FormFinder: " + foundForm.GetUri());
                 }
             }
-
+                        
             if (foundForm == null && configuration.ViaFormCreator)
             {
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateTableFormForCollection(
-                    parentElement.get<IReflectiveCollection>(propertyName),
-                    new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
 
+                // Checks, if an explicit property type is set: 
+                if (propertyType == null)
+                {
+                    foundForm = formCreator.CreateTableFormForCollection(
+                        parentElement.get<IReflectiveCollection>(propertyName),
+                        new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
+                }
+                else
+                {
+                    foundForm = formCreator.CreateTableFormForMetaClass(
+                        propertyType,
+                        new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
+
+                    foundForm.set(
+                        _TableForm.title,
+                        "Property: packagedElements of type " + NamedElementMethods.GetName(propertyType));
+                }
+
+                foundForm.set(_TableForm.property, propertyName);
                 FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateTableFormForProperty] Found Form via FormCreator");
             }
 
@@ -1084,7 +1105,7 @@ namespace DatenMeister.Forms
         private static IElement CloneForm(IElement foundForm)
         {
             var originalUrl = foundForm.GetUri();
-            foundForm = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, foundForm, new CopyOption());
+            foundForm = ObjectCopier.Copy(new MofFactory(foundForm), foundForm, new CopyOption());
             if (originalUrl != null) foundForm.set(_Form.originalUri, originalUrl);
 
             return foundForm;

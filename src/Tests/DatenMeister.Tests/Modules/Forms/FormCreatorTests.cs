@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public async Task TestListFormCreatorByMetaClass()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -51,7 +51,7 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public async Task TestDataUrlOfTablesInCollectionForm()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
             
@@ -96,7 +96,7 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public async Task TestNoReadOnlyOnDetailFormByMetaClass()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -128,7 +128,7 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public async Task TestNoReadOnlyOnDetailFormByObject()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 
@@ -159,9 +159,77 @@ namespace DatenMeister.Tests.Modules.Forms
         }
 
         [Test]
+        public async Task TestThatRowFormIsAlwaysExisting()
+        {
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.WorkspaceLogic;
+            var scopeStorage = dm.ScopeStorage;
+
+            var instance = InMemoryObject.CreateEmpty();
+            
+            var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+            var createdForm =
+                formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
+            
+            var rowForms = FormMethods.GetRowForms(createdForm).ToList();
+            Assert.That(rowForms.Count, Is.GreaterThan(0));
+            
+            var tableForms = FormMethods.GetTableForms(createdForm).ToList();
+            Assert.That(tableForms.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task TestThatPackagedElementsHaveATableFormPerInstanceType()
+        {
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.WorkspaceLogic;
+            var scopeStorage = dm.ScopeStorage;
+            
+            // Prepare instance
+            var packageModel = InMemoryObject.CreateEmpty(_UML.TheOne.Packages.__Package);
+            var instance1 = InMemoryObject.CreateEmpty(_UML.TheOne.StructuredClassifiers.__Class);
+            instance1.set(_UML._StructuredClassifiers._Class.name, "Instance1");
+            var instance2 = InMemoryObject.CreateEmpty(_UML.TheOne.StructuredClassifiers.__Connector);
+            instance2.set(_UML._StructuredClassifiers._Connector.name, "Instance2");
+            var instance3 = InMemoryObject.CreateEmpty(_UML.TheOne.StructuredClassifiers.__Connector);
+            instance3.set(_UML._StructuredClassifiers._Connector.name, "Instance3");
+            packageModel.set(_UML._Packages._Package.packagedElement, new[] {instance1, instance2, instance3});
+            
+            var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+            var createdForm =
+                formCreator.CreateObjectFormForItem(packageModel, new FormFactoryConfiguration());
+            
+            var rowForms = FormMethods.GetRowForms(createdForm).ToList();
+            Assert.That(rowForms.Count, Is.EqualTo(1));
+            
+            // Checks, if the # of tableforms is bigger or equal to 2. 
+            // We have to check for higher values since additional table forms might be created by metaclass
+            var tableForms = FormMethods.GetTableForms(createdForm).ToList();
+            Assert.That(tableForms.Count, Is.GreaterThanOrEqualTo(2));
+            
+            // Now get all table forms withi properties of packagedElements
+            var tableFormsForPackagedElements = tableForms
+                .Where(x => x.getOrDefault<string>(_DatenMeister._Forms._TableForm.property) == "packagedElement")
+                .ToList();
+            
+            // Here, we should now have two table forms, one for the class and one for the connector
+            Assert.That(tableFormsForPackagedElements.Count, Is.EqualTo(2));
+            
+            // Checks that the metaclass is correctly 
+            Assert.That(
+                tableFormsForPackagedElements.Any(
+                    x => x.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass)?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true),
+                Is.True);
+            Assert.That(
+                tableFormsForPackagedElements.Any(
+                    x => x.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass)?.equals(_UML.TheOne.StructuredClassifiers.__Connector) == true), 
+                Is.True);
+        }
+
+        [Test]
         public async Task TestExtentTypeSettings()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.WorkspaceLogic;
             var scopeStorage = dm.ScopeStorage;
 

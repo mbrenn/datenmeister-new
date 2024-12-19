@@ -1,5 +1,3 @@
-#nullable enable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -397,6 +395,21 @@ namespace DatenMeister.Forms.FormCreator
                 public int GetHashCode(P obj)
                 {
                     return obj.PropertyName?.GetHashCode() ?? 0;
+                }
+            }
+            
+            public class MofObjectComparer : IEqualityComparer<IElement?>
+            {
+                public bool Equals(IElement? x, IElement? y)
+                {
+                    if (x == null || y == null) return false;
+
+                    return MofObject.AreEqual(x, y);
+                }
+
+                public int GetHashCode(IElement obj)
+                {
+                    return obj.GetHashCode();
                 }
             }
         }

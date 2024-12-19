@@ -39,7 +39,7 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public async Task TestValidator()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var extent = XmiExtensions.CreateXmiExtent("dm:///test");
 
@@ -76,7 +76,7 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public async Task TestAutoExtensionOfDropDownValueReferences()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var localTypeSupport = new LocalTypeSupport(scope.WorkspaceLogic, scope.ScopeStorage);
 
@@ -150,7 +150,7 @@ namespace DatenMeister.Tests.Modules.Forms
         [Test]
         public async Task TestGetViewModes()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var formMethods = new FormMethods(scope.WorkspaceLogic, scope.ScopeStorage);
 
             // Check, if default view mode is in

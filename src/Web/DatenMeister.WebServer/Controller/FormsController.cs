@@ -156,7 +156,8 @@ namespace DatenMeister.WebServer.Controller
             workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
             itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
-            var factory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User));
+            var userFormExtent = formMethods.GetUserFormExtent();
+            var factory = new MofFactory(userFormExtent);
 
             var element = _internal.WorkspaceLogic.FindObject(workspaceId, itemUri);
             if (element == null)
@@ -168,12 +169,13 @@ namespace DatenMeister.WebServer.Controller
             var form = formFactory.CreateObjectFormForItem(
                 element,
                 new FormFactoryConfiguration
-                {
+                {                    
                     ViewModeId = viewMode ?? string.Empty,
-                    Factory = factory
-                });
+                    Factory = factory, 
+                    ViaFormFinder = false // We want to create a complete and fresh form
+                }) ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
-            formMethods.GetUserFormExtent().elements().add(form);
+            userFormExtent.elements().add(form);
 
             return new CreateObjectFormForItemResult
             {

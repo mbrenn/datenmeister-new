@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Forms;
 using DatenMeister.Forms;
 using DatenMeister.Modules.ZipCodeExample;
@@ -26,19 +27,21 @@ namespace DatenMeister.Tests.Web
         [Test]
         public async Task TestDefaultForExtent()
         {
-            var (zipExtent, formsController, _) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, _) = await CreateZipExtent();
             var foundForm = formsController.GetCollectionFormForExtent(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
                 ViewModes.Default);
             Assert.That(foundForm, Is.Not.Null);
             Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
+            
+            dm.Dispose();
         }
         
         [Test]
         public async Task TestDefaultForExtentWithMetaClass()
         {
-            var (zipExtent, formsController, _) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, _) = await CreateZipExtent();
             var foundForm = formsController.GetCollectionFormForExtent(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI() 
@@ -46,12 +49,14 @@ namespace DatenMeister.Tests.Web
                 ViewModes.Default);
             Assert.That(foundForm, Is.Not.Null);
             Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
+            
+            dm.Dispose();
         }
 
         [Test]
         public async Task TestDefaultForItem()
         {
-            var (zipExtent, formsController, _) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, _) = await CreateZipExtent();
             var firstElement = zipExtent.elements().First() as IElement;
             Assert.That(firstElement, Is.Not.Null);
             var foundForm = formsController.GetObjectFormForItem(
@@ -62,12 +67,14 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundForm, Is.Not.Null);
             Assert.That(foundForm.Value, Is.Not.Null);
             Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
+            
+            dm.Dispose();
         }
 
         [Test]
         public async Task TestDetailFormForDefaultButtons()
         {
-            var (zipExtent, formsController, formsInternal) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
             var firstElement = zipExtent.elements().First() as IElement;
             Assert.That(firstElement, Is.Not.Null);
             var foundForm = formsInternal.GetObjectFormForItemInternal(
@@ -89,12 +96,14 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(foundFields.Any(), Is.True);
             Assert.That(foundFields.Count, Is.EqualTo(1));
+            
+            dm.Dispose();
         }
 
         [Test]
         public async Task TestTableFormForDefaultButtons()
         {
-            var (zipExtent, formsController, formsInternal) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
             var foundForm = formsInternal.GetCollectionFormForExtentInternal(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
@@ -126,12 +135,14 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(foundFields.Any(), Is.True);
             Assert.That(foundFields.Count, Is.EqualTo(1));
+            
+            dm.Dispose();
         }
 
         [Test]
         public async Task TestWorkspaceFormForViewExtentButtonInTableForm()
         {
-            var (zipExtent, formsController, formsInternal) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
             var foundForm = formsInternal.GetObjectFormForItemInternal(
                 WorkspaceNames.WorkspaceManagement,
                 WorkspaceNames.UriExtentWorkspaces + "#Data",
@@ -149,6 +160,8 @@ namespace DatenMeister.Tests.Web
                     .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
                                          ExtentFormPlugin.NavigationExtentNavigateTo);
             Assert.That(firstField, Is.Not.Null);
+            
+            dm.Dispose();
         }
 
         [Test]
@@ -182,7 +195,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public async Task TestFormByUri()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var controller = new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
             var form = controller.GetInternal(WorkspaceNames.UriExtentInternalForm + "#DatenMeister.Extent.Properties");
@@ -202,7 +215,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public async Task TestCreateCollectionFormByExtent()
         {
-            var (zipExtent, formsController, formsInternal) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
             var formMethods = new FormMethods(formsInternal.WorkspaceLogic, formsInternal.ScopeStorage);
             var actionResult = formsController.CreateCollectionFormForExtent(
                 WorkspaceNames.WorkspaceData,
@@ -224,13 +237,15 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundElement, Is.Not.Null);
             Assert.That(
                 foundElement.metaclass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true);
+            
+            dm.Dispose();
         }
 
 
         [Test]
         public async Task TestCreateObjectFormByItem()
         {
-            var (zipExtent, formsController, formsInternal) = await CreateZipExtent();
+            var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
             var formMethods = new FormMethods(formsInternal.WorkspaceLogic, formsInternal.ScopeStorage);
 
             var zipItem = zipExtent.elements().OfType<IObject>().First();
@@ -255,6 +270,8 @@ namespace DatenMeister.Tests.Web
             Assert.That(foundElement, Is.Not.Null);
             Assert.That(
                 foundElement.metaclass?.equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true);
+            
+            dm.Dispose();
         }
 
 
@@ -264,11 +281,12 @@ namespace DatenMeister.Tests.Web
         /// <returns>Tuple of zipExtent and corresponding Forms Controller</returns>
         /// <exception cref="InvalidOperationException"></exception>
         internal static async Task<(
+            IDatenMeisterScope dm,
             IUriExtent zipExtent,
             FormsController formsController,
             FormsControllerInternal internalFormController)> CreateZipExtent()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var zipController = new ZipController(dm.WorkspaceLogic, dm.ScopeStorage);
 
@@ -288,7 +306,7 @@ namespace DatenMeister.Tests.Web
                 .FirstOrDefault(x=>x.contextURI() == result.Value!.ExtentUri);
 
             var formsController = new FormsController(dm.WorkspaceLogic, dm.ScopeStorage);
-            return (zipExtent!, formsController, new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage));
+            return (dm, zipExtent!, formsController, new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage));
         }
     }
 }

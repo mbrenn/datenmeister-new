@@ -171,7 +171,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public async Task TestGetRootElementsWithMetaClass()
         {
-            var (zipExtent, formsController, x) = await FormControllerTests.CreateZipExtent();
+            var (dm, zipExtent, formsController, x) = await FormControllerTests.CreateZipExtent();
 
             var itemsController = new ItemsController(x.WorkspaceLogic, x.ScopeStorage);
             var rootElements = itemsController.GetRootElements(
@@ -187,6 +187,8 @@ namespace DatenMeister.Tests.Web
 
             var elements = JsonConvert.DeserializeObject(rootElements);
             Assert.That(elements, Is.Not.Null);
+            
+            dm.Dispose();
         }
 
         [Test]

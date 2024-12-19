@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -148,13 +149,17 @@ namespace DatenMeister.Tests.Web
         }
 
         public static async Task<(IDatenMeisterScope, IUriExtent)> CreateExampleExtent()
-        {
+        {            
             var dm = await DatenMeisterTests.GetDatenMeisterScope(
-                true,
-                DatenMeisterTests.GetIntegrationSettings());
+            true,
+            DatenMeisterTests.GetIntegrationSettings());
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
 
-            var createdExtent = await extentManager.CreateAndAddXmiExtent(UriTemporaryExtent, "./test_element.xmi");
+            var createdExtent =
+                await extentManager.CreateAndAddXmiExtent(
+                    UriTemporaryExtent,
+                    "./test_element.xmi");
+
             createdExtent.Extent!.set("name", "Test Extent");
 
             var factory = new MofFactory(createdExtent.Extent);
@@ -175,7 +180,9 @@ namespace DatenMeister.Tests.Web
             item4.set(propertyName, new[] { item6, item7 });
 
             var extent = createdExtent.Extent;
+
             return (dm, extent);
+
         }
     }
 }

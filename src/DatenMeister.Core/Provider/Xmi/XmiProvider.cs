@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.Core.Provider.Xmi
 {
@@ -125,13 +125,33 @@ namespace DatenMeister.Core.Provider.Xmi
                     }
                     else if (index < 0 || index >= count)
                     {
+                        // Add new node at the end of the document
                         _rootNode.Add(providerObject.XmlNode);
                     }
                     else
                     {
+                        // Insert the node at the given index
                         var before = _rootNode.Elements(ElementName).ElementAt(index - 1);
                         before.AddAfterSelf(providerObject.XmlNode);
                     }
+                }
+                else
+                {
+                    // We need to create a new element by copying the values from the provider object to the new element
+                    var newProviderObject = CreateElement(valueAsObject?.MetaclassUri);
+                    foreach (var property in valueAsObject?.GetProperties() ?? new string[] { })
+                    {
+                        newProviderObject.SetProperty(property, valueAsObject?.GetProperty(property));
+                    }
+
+                    // Recursive call, but now the provider object is having the correct type
+                    if (newProviderObject is not XmiProviderObject xmiProviderObject)
+                    {
+                        // Additional, cautious check to avoid unlimited recursion
+                        throw new InvalidOperationException("newProviderObject is not XmiProviderObject");
+                    }
+
+                    AddElement(newProviderObject, index);
                 }
             }
         }

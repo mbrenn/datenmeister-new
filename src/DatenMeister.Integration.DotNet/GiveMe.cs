@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core;
@@ -95,14 +96,20 @@ namespace DatenMeister.Integration.DotNet
         {
             if (!Directory.Exists(settings.DatabasePath))
             {
-                // Directory does not exist. So remove it
+                // Directory does not exist. So skip it
                 return;
             }
 
             var path = settings.DatabasePath;
-            foreach (var files in Directory.EnumerateFiles(path))
+            foreach (var file in Directory.EnumerateFiles(path))
             {
-                File.Delete(files);
+                File.Delete(file);
+            }
+
+            // Check, that really no file is existing, otherwise throw an exception
+            if (Directory.EnumerateFiles(path).Any())
+            {
+                throw new InvalidOperationException("Could not delete all files");
             }
         }
     }

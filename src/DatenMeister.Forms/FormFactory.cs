@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -100,8 +101,10 @@ namespace DatenMeister.Forms
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateObjectFormForItem(
                     element,
-                    new FormFactoryConfiguration
-                        { IncludeOnlyCommonProperties = true, AllowFormModifications = false });
+                    configuration with
+                    {
+                        AllowFormModifications = false
+                    });
 
                 FormMethods.AddToFormCreationProtocol(foundForm,
                     "[FormFactory.CreateObjectFormForItem] Created Form via FormCreator");
@@ -1102,7 +1105,7 @@ namespace DatenMeister.Forms
         private static IElement CloneForm(IElement foundForm)
         {
             var originalUrl = foundForm.GetUri();
-            foundForm = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, foundForm, new CopyOption());
+            foundForm = ObjectCopier.Copy(new MofFactory(foundForm), foundForm, new CopyOption());
             if (originalUrl != null) foundForm.set(_Form.originalUri, originalUrl);
 
             return foundForm;

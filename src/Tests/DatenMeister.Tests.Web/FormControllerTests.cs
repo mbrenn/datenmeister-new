@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Web
         public async Task TestDefaultForExtent()
         {
             var (dm, zipExtent, formsController, _) = await CreateZipExtent();
-            var foundForm = formsController.GetCollectionFormForExtent(
+            var foundForm = formsController.GetDefaultForExtent(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
                 ViewModes.Default);
@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.Web
         public async Task TestDefaultForExtentWithMetaClass()
         {
             var (dm, zipExtent, formsController, _) = await CreateZipExtent();
-            var foundForm = formsController.GetCollectionFormForExtent(
+            var foundForm = formsController.GetDefaultForExtent(
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI() 
                     + "?metaclass=" + HttpUtility.UrlEncode( "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode"),

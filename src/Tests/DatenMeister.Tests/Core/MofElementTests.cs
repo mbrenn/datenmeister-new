@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Core
             (element2 as ICanSetId)!.Id = "No";
             Assert.That((element2 as IHasId)!.Id, Is.EqualTo("No"));
 
-            Assert.Throws<InvalidOperationException>(() => { (element2 as ICanSetId)!.Id = "YES"; });
+            Assert.Throws<IdIsAlreadySetException>(() => { (element2 as ICanSetId)!.Id = "YES"; });
 
             Assert.That((element2 as IHasId)!.Id, Is.EqualTo("No"));
         }

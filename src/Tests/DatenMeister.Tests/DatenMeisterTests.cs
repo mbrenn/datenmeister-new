@@ -63,9 +63,7 @@ namespace DatenMeister.Tests
 
             return (workspaceLogic, scopeStorage);
         }
-
-        public static int round = 1;
-
+                
         /// <summary>
         /// Gets the integration settings
         /// </summary>
@@ -76,7 +74,7 @@ namespace DatenMeister.Tests
             var path = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??
                 throw new InvalidOperationException("Get Directory Name failed"),
-                $"testing/datenmeister/data{Interlocked.Increment(ref round)}");
+                $"testing/datenmeister/data");
             var integrationSettings = new IntegrationSettings
             {
                 DatabasePath = path,

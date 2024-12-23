@@ -115,7 +115,8 @@ namespace DatenMeister.WebServer.Controller
                 {
                     ViewModeId = viewMode ?? string.Empty,
                     Factory = factory
-                });
+                })
+                ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
             formMethods.GetUserFormExtent().elements().add(form);
             

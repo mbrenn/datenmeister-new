@@ -1,4 +1,4 @@
-﻿import * as MofTests from "./MofTests.js"
+﻿import * as MofTests from "./Test.Mof.js"
 import * as ClientWorkspace from "./Test.Client.Workspace.js"
 import * as ClientExtent from "./Test.Client.Extents.js"
 import * as ClientItems from "./Test.Client.Items.js"

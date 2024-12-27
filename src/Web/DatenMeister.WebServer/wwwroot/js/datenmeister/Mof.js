@@ -9,6 +9,8 @@ export var ObjectType;
     ObjectType[ObjectType["Number"] = 5] = "Number";
     ObjectType[ObjectType["Object"] = 6] = "Object";
 })(ObjectType || (ObjectType = {}));
+// This id is a running id being used to define IDs of recently created objects
+let runningId = 0;
 export class DmObject {
     /**
      * Creates a new instance of the MofObject
@@ -21,12 +23,24 @@ export class DmObject {
         if (metaClassUri !== undefined) {
             this.setMetaClassByUri(metaClassUri, metaclassWorkspace);
         }
+        runningId++;
+        this.id = 'local_' + runningId.toString();
     }
     static createFromReference(workspaceId, itemUri) {
         const result = new DmObject();
         result.isReference = true;
         result.workspace = workspaceId;
         result.uri = itemUri;
+        return result;
+    }
+    static createAsReferenceFromLocalId(id) {
+        const result = new DmObject();
+        result.isReference = true;
+        if (id.id !== undefined) {
+            id = id.id;
+        }
+        result.uri = '#' + id;
+        result.id = id;
         return result;
     }
     /**

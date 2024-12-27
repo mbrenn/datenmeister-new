@@ -35,6 +35,34 @@ export function includeTests() {
                 chai.assert.isTrue(mofObject2.metaClass !== undefined, "Metaclass needs to be undefined");
                 chai.assert.isTrue(mofObject2.metaClass.uri === "dm:///test#test", "Metaclass needs to be undefined");
             });
+            it('References on its own', () => {
+                const mofObject = new mof.DmObject();
+                mofObject.set("test", mofObject);
+                chai.assert.isTrue(mofObject.get("test") === mofObject, "Reference should be the same");
+            });
+            it('Reference to parallel object', () => {
+                const mofObject = new mof.DmObject();
+                const mofObject2 = new mof.DmObject();
+                mofObject.set("test", mofObject2);
+                chai.assert.isTrue(mofObject.get("test") === mofObject2, "Reference should be the same");
+            });
+            it('Reference to parallel object within same collection', () => {
+                const mofObject = new mof.DmObject();
+                const mofObject2 = new mof.DmObject();
+                const collection = new mof.DmObject();
+                collection.set('items', [mofObject, mofObject2]);
+                mofObject.set('test', mofObject2);
+                chai.assert.isTrue(mofObject.get("test") === mofObject2, "Reference should be the same");
+            });
+            it('Reference to parallel object within same collection via id and reference', () => {
+                const mofObject = new mof.DmObject();
+                const mofObject2 = new mof.DmObject();
+                const collection = new mof.DmObject();
+                collection.set('items', [mofObject, mofObject2]);
+                mofObject.set('test', mof.DmObject.createAsReferenceFromLocalId(mofObject2));
+                const mofObject2AsReference = mofObject.get('test');
+                chai.assert.isTrue(mofObject2AsReference.uri === '#' + mofObject2.id);
+            });
         });
         describe('Element', function () {
             it('Move Item in Array Up', () => {
@@ -76,4 +104,4 @@ export function includeTests() {
         });
     });
 }
-//# sourceMappingURL=MofTests.js.map
+//# sourceMappingURL=Test.Mof.js.map

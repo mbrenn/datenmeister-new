@@ -20,6 +20,9 @@ type DmObjectReturnType<T> =
                         T extends ObjectType.Object ? DmObject :
                             T extends ObjectType.Number ? number : any;
 
+
+// This id is a running id being used to define IDs of recently created objects
+let runningId = 0;
 export class DmObject {
     private readonly values: Array<any>;
 
@@ -46,6 +49,9 @@ export class DmObject {
         if (metaClassUri !== undefined) {
             this.setMetaClassByUri(metaClassUri, metaclassWorkspace);
         }
+
+        runningId++;
+        this.id = 'local_' + runningId.toString();
     }
     
     static createFromReference(workspaceId: string, itemUri: string)
@@ -55,6 +61,19 @@ export class DmObject {
         result.workspace = workspaceId;
         result.uri = itemUri;
         
+        return result;
+    }
+
+    static createAsReferenceFromLocalId(id: string | DmObject) {
+        const result = new DmObject();
+        result.isReference = true;
+
+        if ((id as DmObject).id !== undefined) {
+            id = (id as DmObject).id;
+        }
+        result.uri = '#' + id;
+        result.id = id as string;
+
         return result;
     }
 

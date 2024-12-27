@@ -69,6 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Remove="wwwroot\js\%2a%2a.ts" />
+    <TypeScriptCompile Remove="wwwroot\js\DatenMeister\test\Test.Mof.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="wwwroot\js\DatenMeister\test\Test.Mof.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Examples\plz.csv">

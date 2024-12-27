@@ -12,7 +12,7 @@ using DatenMeister.TemporaryExtent;
 namespace DatenMeister.Json
 {
     /// <summary>
-    /// Some helper methods
+    /// Some helper methods for converting json values to Xmi
     /// </summary>
     public class DirectJsonDeconverter
     {

@@ -1241,6 +1241,48 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf" name="SourcePathNode">
+      <isAbstract p1:id="fc0a7451-f1e7-4ab8-bf2f-4a6fe4c41141" />
+      <isActive p1:id="7033c342-047d-46a0-b3c4-bd4f9007911f" />
+      <isFinalSpecialization p1:id="db67a215-845c-44ca-83c3-246c5177d697" />
+      <isLeaf p1:id="7972d3d9-5ee8-41b4-aa57-cecf0cb300c4" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f7932d28-cb5d-47a3-9f09-e57cfe6175b8" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+        <aggregation p1:id="128640e3-d323-4b4d-99f1-73a7b09c16cf" />
+        <isDerived p1:id="1c113109-1f97-4915-9a32-b21b3bc7039a" />
+        <isDerivedUnion p1:id="11725943-8eac-41f7-973f-b7d2ea8bbbdd" />
+        <isReadOnly p1:id="f70647b5-e49a-41c1-aa56-137f163b9d1f" />
+        <isOrdered p1:id="2d8895cc-2a31-4862-84af-7ee29eb1097d" />
+        <isUnique p1:id="4f686de3-06a3-4460-947b-552e51654a7c" />
+        <isStatic p1:id="8c9b05f1-127e-4201-aaa2-11ae19ba77e3" />
+        <isLeaf p1:id="35810d64-bae9-4155-ba0b-f640ec89fe67" />
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4300e582-e75a-46c9-aafe-65871b3dbb46" name="path" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+        <aggregation p1:id="8ed5e0d1-4fc1-4747-94e0-d89d6fc3cacc" />
+        <isDerived p1:id="2e827117-6fe6-42ce-ad22-cdd2678891ae" />
+        <isDerivedUnion p1:id="2de0f124-cc46-4e46-8f99-34eafb8c4101" />
+        <isReadOnly p1:id="0e503a8b-c208-4620-8c19-4652c19bb31e" />
+        <isOrdered p1:id="ae0d5e71-36e3-491f-ba3d-d1b04cecbe7c" />
+        <isUnique p1:id="50c37d10-5089-4f22-8dce-27152f3c7504" />
+        <isStatic p1:id="9e0361aa-e33e-4b1a-b094-e1e8baa2c945" />
+        <isLeaf p1:id="fa03f0cb-9e01-46eb-85e3-7b041aabc101" />
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="ad5a73ba-118a-44bc-8c2c-bb5c19b58518" name="QueryStatement">
+      <isAbstract p1:id="4c92bc3e-dfea-4a21-9a41-db4991d3e8e9" />
+      <isActive p1:id="9e7f7b08-fe37-4eba-9cb9-540fb8ede2a8" />
+      <isFinalSpecialization p1:id="6b1fd280-235c-4625-ab70-b214481ad442" />
+      <isLeaf p1:id="4b45f662-66c5-4852-abb6-22e6bcfb4806" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="dec9a363-4e79-48bf-9168-83784aaeb31d" name="nodes" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" lower="0" upper="*">
+        <aggregation p1:id="bce34014-3ae1-4f43-bc4d-7c5c96394b3b" />
+        <isDerived p1:id="0d239e30-a7fa-487d-a89f-bde870ef3dcc" />
+        <isDerivedUnion p1:id="8c6293ed-85b7-45ab-af9b-402f83923b1d" />
+        <isReadOnly p1:id="59fa173a-6e38-4a59-83bf-f05cb3955fee" />
+        <isOrdered p1:id="2d970699-dd32-4176-adcb-c7cc11da4a68" />
+        <isUnique p1:id="b76543ea-e44d-4cbb-a6ec-ddacf0f63863" />
+        <isStatic p1:id="4c292d58-ce38-44b1-8da0-54dd32182d0c" />
+        <isLeaf p1:id="913f0550-b6d9-4b18-b6e0-f167bb62ece7" />
+      </ownedAttribute>
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">

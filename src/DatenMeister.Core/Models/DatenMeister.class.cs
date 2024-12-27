@@ -932,6 +932,29 @@ namespace DatenMeister.Core.Models
             public _DynamicSourceNode @DynamicSourceNode = new _DynamicSourceNode();
             public MofObjectShadow @__DynamicSourceNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
 
+            public class _SourcePathNode
+            {
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @path = "path";
+                public IElement? @_path = null;
+
+            }
+
+            public _SourcePathNode @SourcePathNode = new _SourcePathNode();
+            public MofObjectShadow @__SourcePathNode = new MofObjectShadow("dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf");
+
+            public class _QueryStatement
+            {
+                public static string @nodes = "nodes";
+                public IElement? @_nodes = null;
+
+            }
+
+            public _QueryStatement @QueryStatement = new _QueryStatement();
+            public MofObjectShadow @__QueryStatement = new MofObjectShadow("dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518");
+
         }
 
         public _DataViews DataViews = new _DataViews();

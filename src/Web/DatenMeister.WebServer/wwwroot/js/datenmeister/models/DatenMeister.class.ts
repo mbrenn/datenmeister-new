@@ -474,6 +474,19 @@ export namespace _DatenMeister
                 }
 
                 export const __DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
+                export class _SourcePathNode
+                {
+                    static workspaceId = "workspaceId";
+                    static path = "path";
+                }
+
+                export const __SourcePathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
+                export class _QueryStatement
+                {
+                    static nodes = "nodes";
+                }
+
+                export const __QueryStatement_Uri = "dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518";
         }
 
         export namespace _Reports

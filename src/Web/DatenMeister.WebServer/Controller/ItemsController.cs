@@ -22,13 +22,11 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DataView;
 using DatenMeister.Json;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Library.Helper;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.SS.Formula.Functions;
 
 namespace DatenMeister.WebServer.Controller
 {

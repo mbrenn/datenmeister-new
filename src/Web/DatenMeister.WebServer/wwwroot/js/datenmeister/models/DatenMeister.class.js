@@ -413,6 +413,17 @@ export var _DatenMeister;
         _DynamicSourceNode._name_ = "name";
         _DataViews._DynamicSourceNode = _DynamicSourceNode;
         _DataViews.__DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
+        class _SourcePathNode {
+        }
+        _SourcePathNode.workspaceId = "workspaceId";
+        _SourcePathNode.path = "path";
+        _DataViews._SourcePathNode = _SourcePathNode;
+        _DataViews.__SourcePathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
+        class _QueryStatement {
+        }
+        _QueryStatement.nodes = "nodes";
+        _DataViews._QueryStatement = _QueryStatement;
+        _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518";
     })(_DataViews = _DatenMeister._DataViews || (_DatenMeister._DataViews = {}));
     let _Reports;
     (function (_Reports) {

@@ -121,5 +121,78 @@ namespace DatenMeister.Tests.Json
             Assert.That(child2, Is.Not.Null);
             Assert.IsTrue(child2.metaclass!.equals(new MofObjectShadow("dm:///meta2")));
         }
+
+        [Test]
+        public void TestReverseConversionWithReference()
+        {
+            var json = """
+                {
+                    "id":"local_17",
+                    "v":{
+                        "name":"Collection",
+                        "items":{
+                            "0":{
+                                "id":"local_15",
+                                "v":{
+                                    "name":"Object 1",
+                                    "test":{
+                                        "id":"local_16",
+                                        "v":{
+                                            
+                                        },
+                                        "m":{
+                                            
+                                        },
+                                        "r":"#local_16"
+                                    }
+                                },
+                                "m":{
+                                    
+                                },
+                                "r":"",
+                                "w":""
+                            },
+                            "1":{
+                                "id":"local_16",
+                                "v":{
+                                    "name":"Object 2"
+                                },
+                                "m":{
+                                    
+                                },
+                                "r":"",
+                                "w":""
+                            }
+                        }
+                    },
+                    "m":{
+                        
+                    },
+                    "r":"",
+                    "w":""
+                }
+                """;
+
+            var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json);
+            var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!) as IElement;
+            Assert.That(deconverted, Is.Not.Null);
+            Assert.That(deconverted.getOrDefault<string>("name"), Is.EqualTo("Collection"));
+            var items = deconverted.get<IReflectiveCollection>("items");
+            Assert.That(items, Is.Not.Null);
+            Assert.That(items.size(), Is.EqualTo(2));
+            var item1 = items.OfType<IElement>().FirstOrDefault(x => x.getOrDefault<string>("name") == "Object 1");
+            Assert.That(item1, Is.Not.Null);
+            var item2 = items.OfType<IElement>().FirstOrDefault(x => x.getOrDefault<string>("name") == "Object 2");
+            Assert.That(item1, Is.Not.Null);
+
+            var referenceItem1 = item1.get<IElement>("test");
+            Assert.That(referenceItem1, Is.Not.Null);
+
+            // Checks that name of referenceItem1 is Object 2
+            Assert.That(referenceItem1.getOrDefault<string>("name"), Is.EqualTo("Object 2"));
+
+            // Assert that even the reference is the same to item2
+            Assert.That(referenceItem1, Is.EqualTo(item2));
+        }
     }
 }

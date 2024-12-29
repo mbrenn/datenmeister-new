@@ -103,8 +103,9 @@ export class DmObject {
      * @param value Value to be set
      */
     set(key: string, value: any): boolean {
-        const oldValue = this.values[DmObject.internalizeKey(key)];
-        this.values[DmObject.internalizeKey(key)] = value;
+        var internalizedKey = DmObject.internalizeKey(key);
+        const oldValue = this.values[internalizedKey];
+        this.values[internalizedKey] = value;
         return !(oldValue === value);
     }
 
@@ -333,6 +334,7 @@ export function createJsonFromObject(element: DmObject) {
                 const childItem = elementValue[n];
                 value[n] = convertValue(childItem);
             }
+
             return value;
 
         } else if (((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {

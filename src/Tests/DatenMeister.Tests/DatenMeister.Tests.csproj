@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <LangVersion>8</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;WPF</Configurations>
     <Platforms>AnyCPU</Platforms>
     <TargetFrameworks>net8.0</TargetFrameworks>

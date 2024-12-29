@@ -65,8 +65,9 @@ export class DmObject {
      * @param value Value to be set
      */
     set(key, value) {
-        const oldValue = this.values[DmObject.internalizeKey(key)];
-        this.values[DmObject.internalizeKey(key)] = value;
+        var internalizedKey = DmObject.internalizeKey(key);
+        const oldValue = this.values[internalizedKey];
+        this.values[internalizedKey] = value;
         return !(oldValue === value);
     }
     get(key, objectType) {

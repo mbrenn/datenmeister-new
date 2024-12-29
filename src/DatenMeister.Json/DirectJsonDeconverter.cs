@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
+using System.Collections.Generic;
 
 namespace DatenMeister.Json
 {
@@ -50,8 +51,11 @@ namespace DatenMeister.Json
                     JsonValueKind.False => false,
                     JsonValueKind.Null => null,
                     JsonValueKind.Undefined => null,
-                    JsonValueKind.Object => ConvertToObject(
-                        JsonSerializer.Deserialize<MofObjectAsJson>(jsonElement.GetRawText())
+                    JsonValueKind.Object when jsonElement.TryGetProperty ("0", out JsonElement _) =>
+                        ConvertFromArray(jsonElement),
+                    JsonValueKind.Object when !jsonElement.TryGetProperty("0", out JsonElement _) => 
+                        ConvertToObject(
+                            JsonSerializer.Deserialize<MofObjectAsJson>(jsonElement.GetRawText())
                         ?? throw new InvalidOperationException("Invalid Json for Conversion to MofObjectAsJson")),
                     JsonValueKind.Array => jsonElement.EnumerateArray().Select(x => ConvertJsonValue(x)).ToList(),
                     _ => jsonElement.GetString()
@@ -62,12 +66,39 @@ namespace DatenMeister.Json
         }
 
         /// <summary>
+        /// Converts the given json element being an object to an array
+        /// </summary>
+        /// <param name="jsonElement"></param>
+        /// <returns></returns>
+        private List<object> ConvertFromArray(JsonElement jsonElement)
+        {
+            var result = new List<object>();
+
+            // Walk through the object by starting at 0 until the last element is retrieved
+            var index = 0;
+            while (jsonElement.TryGetProperty(index.ToString(), out var element))
+            {
+                var lineResult = ConvertJsonValue(element);
+
+                if (lineResult is not null)
+                {
+                    result.Add(lineResult);
+                }
+
+                index++;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Takes a MofObjectAsJson element and converts it back to an IObject element
         /// </summary>
         /// <param name="jsonObject">Json Object to be converted</param>
         /// <returns>The converted Json Object</returns>
         public IObject? ConvertToObject(MofObjectAsJson jsonObject)
         {
+            // Checks, that we are having a reference            
             if (!string.IsNullOrEmpty(jsonObject.r) && !string.IsNullOrEmpty(jsonObject.w))
             {
                 if (_workspaceLogic != null)

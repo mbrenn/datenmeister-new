@@ -54,7 +54,7 @@ export function includeTests() {
                 mofObject.set('test', mofObject2);
                 chai.assert.isTrue(mofObject.get("test") === mofObject2, "Reference should be the same");
             });
-            it('Reference to parallel object within same collection via id and reference', () => {
+            it('Reference to parallel object within same collection via object and reference', () => {
                 const mofObject = new mof.DmObject();
                 const mofObject2 = new mof.DmObject();
                 const collection = new mof.DmObject();
@@ -62,6 +62,21 @@ export function includeTests() {
                 mofObject.set('test', mof.DmObject.createAsReferenceFromLocalId(mofObject2));
                 const mofObject2AsReference = mofObject.get('test');
                 chai.assert.isTrue(mofObject2AsReference.uri === '#' + mofObject2.id);
+            });
+            it('Reference to parallel object within same collection via id and reference', () => {
+                const mofObject = new mof.DmObject();
+                mofObject.set('name', 'Object 1');
+                const mofObject2 = new mof.DmObject();
+                mofObject2.set('name', 'Object 2');
+                const collection = new mof.DmObject();
+                collection.set('name', 'Collection');
+                collection.set('items', [mofObject, mofObject2]);
+                mofObject.set('test', mof.DmObject.createAsReferenceFromLocalId(mofObject2.id));
+                const mofObject2AsReference = mofObject.get('test');
+                chai.assert.isTrue(mofObject2AsReference.uri === '#' + mofObject2.id);
+                // Convert to json and alert for debugging
+                const json = mof.createJsonFromObject(collection);
+                alert(JSON.stringify(json));
             });
         });
         describe('Element', function () {

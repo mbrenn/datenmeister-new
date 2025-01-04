@@ -244,8 +244,8 @@ export function convertToItemWithNameAndId(element) {
     value is returned to MofObject
  */
 export function createJsonFromObject(element) {
-    const result = { id: {}, v: {}, m: {}, r: "", w: "" };
-    const values = result.v;
+    const result = {};
+    const values = {};
     function convertValue(elementValue) {
         if (Array.isArray(elementValue)) {
             // Do not send out arrays or objects
@@ -279,6 +279,9 @@ export function createJsonFromObject(element) {
         result.m = element.metaClass;
     }
     result.id = element.id;
+    if (Object.keys(values).length > 0) {
+        result.v = values;
+    }
     return result;
 }
 /**

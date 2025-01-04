@@ -317,14 +317,34 @@ export function convertToItemWithNameAndId(element: DmObject) {
     };
 }
 
+export interface JsonFromMofObject{
+    id?: string;
+    v?: any;
+
+    /** 
+     * Uri of the reference
+     */
+    r?: string;
+
+    /**
+     * Workspace of the reference
+     */
+    w?: string;
+
+    /**
+     * The metaclass of the element
+     */
+    m?: ItemWithNameAndId;
+}
+
 /*
     Converts the given element to a json element that it can be used to send to the webserver
     The receiving function is MofJsonDeconverter.Convert in which the retrieved
     value is returned to MofObject
  */
 export function createJsonFromObject(element: DmObject) {
-    const result = {id: {}, v: {}, m: {}, r: "", w: ""};
-    const values = result.v;
+    const result = {} as JsonFromMofObject;
+    const values = { };
 
     function convertValue(elementValue) {
         if (Array.isArray(elementValue)) {
@@ -362,6 +382,10 @@ export function createJsonFromObject(element: DmObject) {
     }
     
     result.id = element.id;
+
+    if (Object.keys(values).length > 0) {
+        result.v = values;
+    }
 
     return result;
 }

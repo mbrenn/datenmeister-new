@@ -3,7 +3,7 @@
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;WPF</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <Nullable>enable</Nullable>

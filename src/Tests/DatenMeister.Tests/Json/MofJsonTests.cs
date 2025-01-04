@@ -108,7 +108,6 @@ namespace DatenMeister.Tests.Json
             element.set("name", "parent");
             element.set("child", childElement);
 
-
             var jsonText = MofJsonConverter.ConvertToJsonWithDefaultParameter(element);
 
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(jsonText);
@@ -127,50 +126,29 @@ namespace DatenMeister.Tests.Json
         {
             var json = """
                 {
-                    "id":"local_17",
-                    "v":{
-                        "name":"Collection",
-                        "items":{
-                            "0":{
-                                "id":"local_15",
-                                "v":{
-                                    "name":"Object 1",
-                                    "test":{
-                                        "id":"local_16",
-                                        "v":{
-                                            
-                                        },
-                                        "m":{
-                                            
-                                        },
-                                        "r":"#local_16"
-                                    }
-                                },
-                                "m":{
-                                    
-                                },
-                                "r":"",
-                                "w":""
-                            },
-                            "1":{
-                                "id":"local_16",
-                                "v":{
-                                    "name":"Object 2"
-                                },
-                                "m":{
-                                    
-                                },
-                                "r":"",
-                                "w":""
-                            }
+                  "id": "local_17",
+                  "v": {
+                    "name": "Collection",
+                    "items": {
+                      "0": {
+                        "id": "local_15",
+                        "v": {
+                          "name": "Object 1",
+                          "test": {
+                            "r": "#local_16",
+                            "id": "local_16"
+                          }
                         }
-                    },
-                    "m":{
-                        
-                    },
-                    "r":"",
-                    "w":""
-                }
+                      },
+                      "1": {
+                        "id": "local_16",
+                        "v": {
+                          "name": "Object 2"
+                        }
+                      }
+                    }
+                  }
+                }                   
                 """;
 
             var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json);

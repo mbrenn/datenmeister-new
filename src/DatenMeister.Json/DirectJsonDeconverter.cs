@@ -17,8 +17,27 @@ namespace DatenMeister.Json
     /// </summary>
     public class DirectJsonDeconverter
     {
+        /// <summary>
+        /// This helper class supports the dereferencing of shadows to actual objects
+        /// </summary>
+        /// <param name="Shadow">Shadow being used</param>
+        /// <param name="ActionToSetShadow">This method sets the new object instead of the shadow</param>
+        private class ShadowInformation(MofObjectShadow Shadow, Action<IObject> ActionToSetShadow)
+        {
+            public MofObjectShadow Shadow { get; } = Shadow;
+            public Action<IObject> ActionToSetShadow { get; } = ActionToSetShadow;
+        }
+
         private readonly IWorkspaceLogic? _workspaceLogic;
         private readonly IScopeStorage? _scopeStorage;
+
+        /// <summary>
+        /// Defines a list of shadow object that are created during the conversion and are used to resolve references within each conversion
+        /// </summary>
+        private List<ShadowInformation> Shadows { get; set; } = new List<ShadowInformation>();
+
+        // Stores a list of all references which are used to replace the shadows with the actual objects
+        private List<IElement> References { get; set; } = new List<IElement>();
 
         public DirectJsonDeconverter()
         {
@@ -51,10 +70,10 @@ namespace DatenMeister.Json
                     JsonValueKind.False => false,
                     JsonValueKind.Null => null,
                     JsonValueKind.Undefined => null,
-                    JsonValueKind.Object when jsonElement.TryGetProperty ("0", out JsonElement _) =>
+                    JsonValueKind.Object when jsonElement.TryGetProperty("0", out JsonElement _) =>
                         ConvertFromArray(jsonElement),
-                    JsonValueKind.Object when !jsonElement.TryGetProperty("0", out JsonElement _) => 
-                        ConvertToObject(
+                    JsonValueKind.Object when !jsonElement.TryGetProperty("0", out JsonElement _) =>
+                        ConvertToObjectInternal(
                             JsonSerializer.Deserialize<MofObjectAsJson>(jsonElement.GetRawText())
                         ?? throw new InvalidOperationException("Invalid Json for Conversion to MofObjectAsJson")),
                     JsonValueKind.Array => jsonElement.EnumerateArray().Select(x => ConvertJsonValue(x)).ToList(),
@@ -80,6 +99,12 @@ namespace DatenMeister.Json
             {
                 var lineResult = ConvertJsonValue(element);
 
+                // Allows to update the shadow object in case the reference can be resolved
+                if (lineResult is MofObjectShadow shadow)
+                {
+                    Shadows.Add(new ShadowInformation(shadow, x => result[index] = x));
+                }
+
                 if (lineResult is not null)
                 {
                     result.Add(lineResult);
@@ -92,29 +117,82 @@ namespace DatenMeister.Json
         }
 
         /// <summary>
+        /// Flag to be sure that there is only one caller within that instance. 
+        /// </summary>
+        private bool isInCall = false;
+
+        /// <summary>
         /// Takes a MofObjectAsJson element and converts it back to an IObject element
         /// </summary>
         /// <param name="jsonObject">Json Object to be converted</param>
         /// <returns>The converted Json Object</returns>
         public IObject? ConvertToObject(MofObjectAsJson jsonObject)
         {
-            // Checks, that we are having a reference            
-            if (!string.IsNullOrEmpty(jsonObject.r) && !string.IsNullOrEmpty(jsonObject.w))
+            if (isInCall)
             {
-                if (_workspaceLogic != null)
+                throw new InvalidOperationException("The method is not allowed to be multiple times in different threads");
+            }
+
+            try
+            {
+                isInCall = true;
+                Shadows.Clear();
+                References.Clear();
+
+                var result = ConvertToObjectInternal(jsonObject);
+
+                // Now replaces all the shadows with the actual instances
+                foreach (var shadowInfo in Shadows)
+                {
+                    var shadow = shadowInfo.Shadow;
+                    var actualObject = References.FirstOrDefault(x => "#" + x.GetId() == shadow.Uri);
+                    if (actualObject != null)
+                    {
+                        shadowInfo.ActionToSetShadow(actualObject);
+                    }
+                }
+
+                // Cleans up the memory at the end of the call
+                Shadows.Clear();
+                References.Clear();
+                return result;
+            }
+            finally
+            {
+                isInCall = false;
+            }
+        }
+
+
+        /// <summary>
+        /// Converts the object to an IObject element and tries to resolve the references in case the rootcall is being exiecte
+        /// </summary>
+        /// <param name="jsonObject"></param>
+        /// <param name="isRootCall"></param>
+        /// <returns></returns>
+        private IObject? ConvertToObjectInternal(MofObjectAsJson jsonObject)
+        { 
+            IObject? result = null;
+            // Checks, that we are having a reference            
+            if (!string.IsNullOrEmpty(jsonObject.r))
+            {
+                if (_workspaceLogic != null && !string.IsNullOrEmpty(jsonObject.w))
                 {
                     // We have a reference
-                    return _workspaceLogic.FindObject(
+                    result = _workspaceLogic.FindObject(
                         jsonObject.w,
                         jsonObject.r
                     );
                 }
 
-                throw new InvalidOperationException("No workspace collection is given for reference");
+                if (result == null)
+                {
+                    // Create a shadow object, so the final object can be resolved later
+                    return new MofObjectShadow(jsonObject.r);                    
+                }
             }
             else
             {
-                IElement? result = null;
                 if (_workspaceLogic != null && _scopeStorage != null)
                 {
                     var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
@@ -128,6 +206,12 @@ namespace DatenMeister.Json
                 }
 
                 result ??= InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
+
+                // Adds the element to the references
+                if (result is IElement asElement)
+                {
+                    References.Add(asElement);
+                }
                 
                 // Sets the id, if the id is given
                 if (!string.IsNullOrEmpty(jsonObject.id) && result.GetId() != jsonObject.id)
@@ -137,11 +221,17 @@ namespace DatenMeister.Json
                 
                 foreach (var pair in jsonObject.v)
                 {
-                    result.set(pair.Key, ConvertJsonValue(pair.Value));
-                }   
+                    var value = ConvertJsonValue(pair.Value);
+                    if(value is MofObjectShadow shadow)
+                    {
+                        Shadows.Add(new ShadowInformation(shadow, x => result.set(pair.Key, x)));
+                    }
 
-                return result;
+                    result.set(pair.Key, value);
+                }   
             }
+
+            return result;
         }
     }
 }

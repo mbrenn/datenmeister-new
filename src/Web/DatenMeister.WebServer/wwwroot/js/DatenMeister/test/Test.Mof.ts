@@ -93,10 +93,6 @@ export function includeTests() {
 
                 const mofObject2AsReference = mofObject.get('test');
                 chai.assert.isTrue(mofObject2AsReference.uri === '#' + mofObject2.id);
-
-                // Convert to json and alert for debugging
-                const json = mof.createJsonFromObject(collection);
-                alert(JSON.stringify(json));
             })
         });
 

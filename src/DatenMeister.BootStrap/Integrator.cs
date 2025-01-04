@@ -115,7 +115,10 @@ namespace DatenMeister.BootStrap
             {
                 Directory.CreateDirectory(_settings.DatabasePath);
             }
+            
+            Logger.Info($"Database path: {_settings.DatabasePath}");
 
+            // Performs the initialization
             var watch = new Stopwatch();
             watch.Start();
 

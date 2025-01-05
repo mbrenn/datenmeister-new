@@ -34,9 +34,9 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestPropertiesOfManagementProvider()
         {
-            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
-            using var scope = builder.BeginLifetimeScope();
+            await using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.UriExtentWorkspaces);
             Assert.That(workspaceExtent, Is.Not.Null);
@@ -75,7 +75,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                 WorkspaceNames.WorkspaceData);
 
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
                 {
@@ -94,7 +94,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 await dm.UnuseDatenMeister();
             }
 
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
             {
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
                 var foundExtent = workspaceLogic.FindExtent("dm:///data");
@@ -110,7 +110,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestDefaultExtentType()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
@@ -149,7 +149,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestExtentSettingsExtentType()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentSettings = dm.ScopeStorage.Get<ExtentSettings>();
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == UmlPlugin.ExtentType), Is.True);
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == FormMethods.FormExtentType), Is.True);
@@ -168,7 +168,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                 WorkspaceNames.WorkspaceData);
 
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
                 {
@@ -185,7 +185,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 await dm.UnuseDatenMeister();
             }
 
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
             {
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
                 var foundExtent = workspaceLogic.FindExtent("dm:///data");
@@ -202,7 +202,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestAddDefaultExtentType()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
@@ -324,7 +324,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public static async Task TestDefaultValue()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var extent = CreateType(dm, out var type);
 
@@ -338,7 +338,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public static async Task TestAutoEnumerateGuidProperty()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var extent = CreateType(dm, out var type);
 
@@ -366,7 +366,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public static async Task TestAutoEnumerateOrdinalProperty()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extent = CreateType(dm, out var type);
 
             var extentFactory = new MofFactory(extent);

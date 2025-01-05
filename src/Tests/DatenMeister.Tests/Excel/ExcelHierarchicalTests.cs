@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public async Task TestHierarchicalExcelLoad()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var filePath = Path.Combine(currentDirectory!, "Excel/Hierarchical Test.xlsx");
 

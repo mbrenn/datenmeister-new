@@ -8,10 +8,8 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Runtime.Extents
@@ -22,7 +20,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestReferenceXmi()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<ExtentManager>();
 
             // Clean

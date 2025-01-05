@@ -34,10 +34,10 @@ namespace DatenMeister.Json
         /// <summary>
         /// Defines a list of shadow object that are created during the conversion and are used to resolve references within each conversion
         /// </summary>
-        private List<ShadowInformation> Shadows { get; set; } = new List<ShadowInformation>();
+        private List<ShadowInformation> Shadows { get; set; } = [];
 
         // Stores a list of all references which are used to replace the shadows with the actual objects
-        private List<IElement> References { get; set; } = new List<IElement>();
+        private List<IElement> References { get; set; } = [];
 
         public DirectJsonDeconverter()
         {

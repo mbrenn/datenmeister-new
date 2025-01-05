@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
@@ -22,7 +21,7 @@ namespace DatenMeister.Tests
         public static string GetPathForTemporaryStorage(string fileName)
         {
             var path = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location!)!,
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
                 "testing/datenmeister/data");
             if (!Directory.Exists(path))
             {
@@ -90,7 +89,7 @@ namespace DatenMeister.Tests
         [Test]
         public async Task CheckFailureFreeLoadingOfDatenMeister()
         {
-            using var datenMeister = await GetDatenMeisterScope();
+            await using var datenMeister = await GetDatenMeisterScope();
             var pluginManager = datenMeister.ScopeStorage.Get<PluginManager>();
             Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }
@@ -101,7 +100,7 @@ namespace DatenMeister.Tests
             var integrationSettings = GetIntegrationSettings();
             integrationSettings.PerformSlimIntegration = true;
 
-            using var datenMeister = await GetDatenMeisterScope(integrationSettings: integrationSettings);
+            await using var datenMeister = await GetDatenMeisterScope(integrationSettings: integrationSettings);
             var pluginManager = datenMeister.ScopeStorage.Get<PluginManager>();
             Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }

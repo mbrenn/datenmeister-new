@@ -17,7 +17,7 @@ namespace DatenMeister.Tests.Modules.Provider
         [Test]
         public async Task TestContainering()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var workspace = scope.WorkspaceLogic.GetManagementWorkspace();
             Assert.That(workspace, Is.Not.Null);
 
@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Modules.Provider
         [Test]
         public async Task TestGetWorkspaceElement()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var managementExtent = ExtentManagementHelper.GetExtentForWorkspaces(scope.WorkspaceLogic);
 
@@ -60,7 +60,7 @@ namespace DatenMeister.Tests.Modules.Provider
         [Test]
         public async Task TestGetExtentElement()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var managementExtent = ExtentManagementHelper.GetExtentForWorkspaces(scope.WorkspaceLogic);
 

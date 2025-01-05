@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestLoadAndUnloading()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig =
@@ -43,7 +43,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestCorrectRemovalOfExtentsWhenWorkspaceIsDeleted()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             dm.WorkspaceLogic.AddWorkspace(
                 new Workspace("Test", "Test Extent"));
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task TestGetProviderAndConfiguration()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig =
@@ -78,7 +78,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 WorkspaceNames.WorkspaceData);
             loaderConfig.set("Test", "test");
             
-            var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
 
             var result = extentManager.GetProviderLoaderAndConfiguration(
                 WorkspaceNames.WorkspaceData, "dm:///test");
@@ -93,7 +93,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public async Task GetExtentInformationWithoutSetWorkspace()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig =

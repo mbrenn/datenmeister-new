@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestCompositeProperties()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
@@ -39,7 +39,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestAddGeneralization()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
@@ -66,7 +66,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestGeneralizedProperties()
         {
-            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
             // Gets the logic
             var feature = builder.WorkspaceLogic.GetUmlWorkspace()
@@ -85,7 +85,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestGeneralizationEvaluation()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
@@ -111,7 +111,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestIsOfPrimitiveType()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var activity = dm.WorkspaceLogic.GetUmlWorkspace()
                     .Resolve(_UML.TheOne.Activities.__Activity.GetUri()!, ResolveType.Default)
@@ -127,7 +127,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestGetPropertyTypeOfMetaClass()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var commandLineMetaClass = dm.WorkspaceLogic.GetTypesWorkspace()
                     .Resolve(_DatenMeister.TheOne.CommonTypes.OSIntegration.__CommandLineApplication.GetUri()!,
                         ResolveType.Default)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -31,7 +30,7 @@ namespace DatenMeister.Tests.Runtime
             var mapper = new ProviderToProviderLoaderMapper();
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
-                scope => new CsvProviderLoader());
+                _ => new CsvProviderLoader());
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();
@@ -90,7 +89,7 @@ namespace DatenMeister.Tests.Runtime
             var mapper = new ProviderToProviderLoaderMapper();
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
-                scope => new CsvProviderLoader());
+                _ => new CsvProviderLoader());
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();

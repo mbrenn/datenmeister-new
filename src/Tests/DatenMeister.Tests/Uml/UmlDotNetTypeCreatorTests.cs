@@ -13,7 +13,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestZipCode()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var typeWorkspace = dm.WorkspaceLogic.GetTypesWorkspace();
             var zipCodes = typeWorkspace.ResolveElement(
                 "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode",

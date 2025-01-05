@@ -241,9 +241,9 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public async Task TestXmlExtentStorage()
         {
-            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
-            using var scope = builder.BeginLifetimeScope();
+            await using var scope = builder.BeginLifetimeScope();
             var path = PathForTemporaryDataFile;
             if (File.Exists(path))
             {
@@ -285,16 +285,16 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var newExtent = await loader.LoadExtent(storageConfiguration);
             Assert.That(newExtent, Is.Not.Null);
             Assert.That(newExtent.Extent, Is.Not.Null);
-            Assert.That(newExtent!.Extent!.elements().size(), Is.EqualTo(1));
+            Assert.That(newExtent.Extent!.elements().size(), Is.EqualTo(1));
             Assert.That((newExtent.Extent.elements().ElementAt(0) as IElement)!.get("test"), Is.EqualTo("Test"));
         }
 
         [Test]
         public async Task TestWithMetaClass()
         {
-            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
-            using var scope = builder.BeginLifetimeScope();
+            await using var scope = builder.BeginLifetimeScope();
             var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
             var xmlProvider = new XmiProvider();
@@ -320,7 +320,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public async Task TestRemoveAllElements()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var creator = dm.Resolve<ExtentCreator>();
             var xmi = await creator.GetOrCreateXmiExtentInInternalDatabase(
                 null,

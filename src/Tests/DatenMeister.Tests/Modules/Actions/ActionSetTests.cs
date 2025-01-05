@@ -96,13 +96,13 @@ namespace DatenMeister.Tests.Modules.Actions
         {
             var result = new ProviderToProviderLoaderMapper();
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
-                manager => new InMemoryProviderLoader());
+                _ => new InMemoryProviderLoader());
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
-                manager => new CsvProviderLoader());
+                _ => new CsvProviderLoader());
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig,
-                manager => new XmiStorageProviderLoader());
+                _ => new XmiStorageProviderLoader());
             result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
-                manager => new XmlReferenceLoader());
+                _ => new XmlReferenceLoader());
             return result;
         }
 

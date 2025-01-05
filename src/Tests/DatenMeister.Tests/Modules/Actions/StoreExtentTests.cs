@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DatenMeister.Actions;
 using DatenMeister.Core.EMOF.Implementation;
@@ -10,7 +9,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Actions
@@ -21,7 +19,7 @@ namespace DatenMeister.Tests.Modules.Actions
         [Test]
         public async Task StoreExtent()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             
             var actionLogic = new ActionLogic(dm.WorkspaceLogic, dm.ScopeStorage);
             var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);

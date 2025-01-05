@@ -120,8 +120,8 @@ namespace DatenMeister.Tests.Modules
                 elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "root");
             var copyPackage =
                 elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "package");
-            var copyChildRoot =
-                elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "husband root");
+            var husbandRoot = elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "husband root");
+            Assert.That(husbandRoot, Is.Not.Null);
 
             Assert.That(
                 copyRoot.getOrDefault<IElement>("child").getOrDefault<string>("name"),
@@ -140,8 +140,7 @@ namespace DatenMeister.Tests.Modules
 
             var copyInPackage =
                 packageChildren.FirstOrDefault(x => x.getOrDefault<string>("name") == "inpackage");
-            var copyHusbandPackage =
-                packageChildren.FirstOrDefault(x => x.getOrDefault<string>("name") == "husband package");
+            Assert.That(packageChildren.FirstOrDefault(x => x.getOrDefault<string>("name") == "husband package"), Is.Not.Null);
 
 
             Assert.That(

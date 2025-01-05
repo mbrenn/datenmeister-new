@@ -101,7 +101,7 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public async Task TestOfEnumerationWithFactory()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
@@ -168,7 +168,7 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public async Task TestFindingXmiStorageLoaderConfig()
         {
-            using var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();

@@ -53,7 +53,7 @@ namespace DatenMeister.Tests.Runtime
             var mapper = new ProviderToProviderLoaderMapper();
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
-                scope => new CsvProviderLoader());
+                _ => new CsvProviderLoader());
 
             var workspaceData = WorkspaceLogic.InitDefault();
 

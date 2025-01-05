@@ -103,7 +103,7 @@ namespace DatenMeister.Tests.Provider
         {
             var csvFile = "Name , Vorname\r\n Martin,Brenn \r\nAndi , Köpke ";
 
-            /// Step 1: Load the data
+            // Step 1: Load the data
             // Does nothing... Test stub
             // Use the CSV Importer
             var data = new InMemoryProvider();

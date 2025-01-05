@@ -288,13 +288,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfig.extentUri) ?? string.Empty;
                 var alreadyFoundExtent = (IUriExtent?) WorkspaceLogic.FindExtent(
                     newWorkspaceId,
-                    newExtentUri);
-                if (alreadyFoundExtent == null)
-                {
-                    throw new InvalidOperationException("The extent was not found: " +
+                    newExtentUri) ?? throw new InvalidOperationException("The extent was not found: " +
                                                         newExtentUri);
-                }
-
                 extentInformation.Extent = alreadyFoundExtent;
                 extentInformation.IsExtentAddedToWorkspace = true;
                 VerifyDatabaseContent();
@@ -571,7 +566,10 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
             foreach (var loadInfo in loadedExtents)
             {
-                await DetachExtent(loadInfo.Extent!, doStore);
+                if (filter(loadInfo))
+                {
+                    await DetachExtent(loadInfo.Extent!, doStore);
+                }
             }
         }
 
@@ -701,7 +699,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             Exception? lastException = null;
 
             var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
-            List<IElement>? loaded = null;
+            List<IElement>? loaded;
             try
             {
                 loaded = configurationLoader.GetConfigurationFromFile();

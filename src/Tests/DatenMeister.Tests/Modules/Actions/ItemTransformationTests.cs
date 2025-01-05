@@ -17,7 +17,7 @@ namespace DatenMeister.Tests.Modules.Actions
         public async Task TestItemTransformation()
         {
             var actionLogic = ActionSetTests.CreateActionLogic();
-            var (source, target) = ActionSetTests.CreateExtents(actionLogic);
+            var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
             // This is only required to let the right reflection type working
             var temp = new UpperCaseTransformation();

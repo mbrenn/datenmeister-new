@@ -16,8 +16,8 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestFullName()
         {
-            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
-            using var scope = builder.BeginLifetimeScope();
+            await using var builder = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = builder.BeginLifetimeScope();
             var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
             var workspaceLogic = scope.Resolve<WorkspaceLogic>();
 

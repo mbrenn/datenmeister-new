@@ -44,7 +44,7 @@ namespace DatenMeister.Tests.Modules.Actions
         [Test]
         public void TestCreateSimpleReportByIndirectRootElement()
         {
-            var (actionLogic, extent, factory) = GetActionLogic();
+            var (actionLogic, _, factory) = GetActionLogic();
 
             /*
              * Performs the test

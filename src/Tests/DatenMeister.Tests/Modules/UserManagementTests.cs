@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace DatenMeister.Tests.Modules
+﻿namespace DatenMeister.Tests.Modules
 {
     /*
     [TestFixture]

@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
         [Test]
         public async Task TestCreationAndResolving()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             var element = temporaryLogic.CreateTemporaryElement(null);
@@ -38,8 +38,8 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
         {
             var oldValue = TemporaryExtentLogic.DefaultCleanupTime;
             TemporaryExtentLogic.DefaultCleanupTime = TimeSpan.FromMilliseconds(150);
-            
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             var element = temporaryLogic.CreateTemporaryElement(null);
@@ -77,7 +77,7 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
         [Test]
         public async Task TestAutomaticRecreationOfTemporaryExtent()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
             
             Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);

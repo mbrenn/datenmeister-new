@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public async Task TestCallsOfEvents()
         {
-            using var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var datenMeister = await DatenMeisterTests.GetDatenMeisterScope();
             var manager = datenMeister.ScopeStorage.Get<ChangeEventManager>();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
             var data = workspaceLogic.GetDataWorkspace();
@@ -41,9 +41,9 @@ namespace DatenMeister.Tests.Modules
             extent.elements().add(element);
 
             var counter = new CounterClass {elementCount = 0, extentCount = 0, workspaceCount = 0};
-            manager.RegisterFor(element, x => counter.elementCount++);
-            manager.RegisterFor(extent, (x, y) => counter.extentCount++);
-            manager.RegisterFor(data, (x, y, z) => counter.workspaceCount++);
+            manager.RegisterFor(element, _ => counter.elementCount++);
+            manager.RegisterFor(extent, (_, _) => counter.extentCount++);
+            manager.RegisterFor(data, (_, _, _) => counter.workspaceCount++);
 
             element.set("Test", 1);
 

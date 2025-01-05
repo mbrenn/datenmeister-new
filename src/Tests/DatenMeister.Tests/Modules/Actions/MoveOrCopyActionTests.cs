@@ -7,7 +7,6 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
-using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using NUnit.Framework;
 

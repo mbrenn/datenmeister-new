@@ -131,7 +131,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(((IHasExtent)otherMofElement).Extent, Is.SameAs(uriExtent));
 
             otherMofElement.set("Test", innerMofElement);
-            Assert.That(((IHasExtent)otherMofElement.get("Test")!)!.Extent, Is.SameAs(uriExtent));
+            Assert.That(((IHasExtent)otherMofElement.get("Test")!).Extent, Is.SameAs(uriExtent));
         }
 
         [Test]

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using BurnSystems.Collections;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -118,8 +117,8 @@ namespace DatenMeister.Tests.Runtime
 
             var counter = 0;
 
-            data.WorkspaceAdded += (x, y) => { counter++; };
-            data.WorkspaceRemoved += (x, y) => { counter--; };
+            data.WorkspaceAdded += (_, _) => { counter++; };
+            data.WorkspaceRemoved += (_, _) => { counter--; };
 
             Assert.That(counter, Is.EqualTo(0));
 

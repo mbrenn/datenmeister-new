@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public async Task TestCreationOfDataviews()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var helper = dm.Resolve<DataViewHelper>();
             var viewWorkspace = helper.GetViewWorkspace();
 
@@ -37,7 +37,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public async Task TestPropertyFilter()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var dataExtent = await CreateDataForTest(dm);
             Assert.That(dataExtent.elements().Count(), Is.GreaterThan(1));
 
@@ -83,7 +83,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public async Task TestDynamicSourceNodes()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
             var dataExtent = await CreateDataForTest(dm);
 
             var factory = InMemoryObject.TemporaryFactory;

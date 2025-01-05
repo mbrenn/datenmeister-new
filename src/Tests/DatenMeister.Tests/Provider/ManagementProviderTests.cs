@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core;
@@ -25,7 +24,7 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public async Task TestSettingOfUri()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
             var uriExtent = scope.WorkspaceLogic.GetManagementWorkspace()
                 .FindExtent(WorkspaceNames.UriExtentWorkspaces);
 
@@ -97,7 +96,7 @@ namespace DatenMeister.Tests.Provider
             scopeStorage.Add(mapper);
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
-                manager => new InMemoryProviderLoader());
+                _ => new InMemoryProviderLoader());
 
             var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
             var loadConfig = InMemoryObject.CreateEmpty(
@@ -116,7 +115,7 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public async Task TestPropertiesViaProviderAccess()
         {
-            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = await GetInitializedWorkspace();
+            var (_, _, loadedExtent, _, extent) = await GetInitializedWorkspace();
             loadedExtent.Extent!.set("name", "Brenn");
 
             var firstWorkspace = extent.elements().OfType<IElement>().FirstOrDefault();
@@ -136,7 +135,7 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public async Task TestUrlsOfWorkspaceAndExtentAndProperties()
         {
-            var (scopeStorage, workspaceLogic, loadedExtent, provider, extent) = await GetInitializedWorkspace();
+            var (scopeStorage, workspaceLogic, loadedExtent, _, _) = await GetInitializedWorkspace();
             loadedExtent.Extent!.set("name", "Brenn");
             var plugin = new ManagementProviderPlugin(workspaceLogic, scopeStorage);
             await plugin.Start(PluginLoadingPosition.AfterInitialization);

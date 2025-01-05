@@ -15,8 +15,8 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestImportOfPackageIntoExtent()
         {
-            using var scope = await DatenMeisterTests.GetDatenMeisterScope();
-            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            scope.Resolve<IWorkspaceLogic>();
 
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
 

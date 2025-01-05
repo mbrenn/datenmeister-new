@@ -75,7 +75,7 @@ namespace DatenMeister.Tests.Modules.Actions
         [Test]
         public void TestHtmlReport()
         {
-            var (workspaceLogic, scopeStorage, extent, factory, reportInstance, actionLogic) =
+            var (_, _, _, factory, reportInstance, actionLogic) =
                 CreateReportInstance(_DatenMeister.TheOne.Reports.__HtmlReportInstance);
 
             var tempFileName = Path.GetTempFileName();
@@ -95,7 +95,7 @@ namespace DatenMeister.Tests.Modules.Actions
         [Test]
         public void TestAdocReport()
         {
-            var (workspaceLogic, scopeStorage, extent, factory, reportInstance, actionLogic) =
+            var (_, _, _, factory, reportInstance, actionLogic) =
                 CreateReportInstance(_DatenMeister.TheOne.Reports.__AdocReportInstance);
 
             var tempFileName = Path.GetTempFileName();

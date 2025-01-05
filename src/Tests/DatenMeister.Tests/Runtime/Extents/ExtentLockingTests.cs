@@ -26,9 +26,9 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
                 "testing/datenmeister/data2");
 
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(true, settings))
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope(true, settings))
             {
-                using (var dm2 = await DatenMeisterTests.GetDatenMeisterScope(true, settings2))
+                await using (var dm2 = await DatenMeisterTests.GetDatenMeisterScope(true, settings2))
                 {
                     try
                     {

@@ -11,9 +11,9 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public async Task TestUrisOfWorkspaces()
         {
-            using var builder = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var builder = await DatenMeisterTests.GetDatenMeisterScope();
 
-            using var scope = builder.BeginLifetimeScope();
+            await using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var umlWorkspace = workspaceLogic.GetUmlWorkspace();
             var umlExtent = umlWorkspace.FindExtent(WorkspaceNames.UriExtentUml);

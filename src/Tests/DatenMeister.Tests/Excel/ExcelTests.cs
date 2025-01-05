@@ -16,7 +16,6 @@ using DatenMeister.Excel.Integration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
-using Org.BouncyCastle.Crypto;
 
 namespace DatenMeister.Tests.Excel
 {
@@ -55,7 +54,7 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public async Task PerformExcelReference()
         {
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var excelReferenceSettings =
@@ -85,7 +84,7 @@ namespace DatenMeister.Tests.Excel
                 await dm.UnuseDatenMeister();
             }
 
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(false))
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
 
@@ -106,7 +105,7 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public async Task PerformExcelTestSkipRows()
         {
-            using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelReferenceSettings =
@@ -157,7 +156,7 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public async Task PerformExcelImport()
         {
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -183,7 +182,7 @@ namespace DatenMeister.Tests.Excel
                 var secondElement = loadedExtent.Extent!.elements().ElementAtOrDefault(1) as IObject;
                 Assert.That(secondElement, Is.Not.Null);
                 var value1 = DotNetHelper.AsInteger(secondElement!.get("Wert"));
-                var value2 = DotNetHelper.AsInteger(secondElement!.get("Quadratzahl"));
+                var value2 = DotNetHelper.AsInteger(secondElement.get("Quadratzahl"));
 
                 Assert.That(value1, Is.EqualTo(2));
                 Assert.That(value2, Is.EqualTo(4));
@@ -191,7 +190,7 @@ namespace DatenMeister.Tests.Excel
                 await dm.UnuseDatenMeister();
             }
 
-            using (var dm = await DatenMeisterTests.GetDatenMeisterScope(false))
+            await using (var dm = await DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
 

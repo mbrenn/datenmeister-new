@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Core
             var deleted = new List<object>();
 
             var temporaryReflectionCollection = new TemporaryReflectiveCollection(list);
-            temporaryReflectionCollection.OnDelete += (x, y) =>
+            temporaryReflectionCollection.OnDelete += (_, y) =>
             {
                 z++;
                 deleted.Add(y.DeleteObject!);

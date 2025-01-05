@@ -276,6 +276,12 @@ namespace DatenMeister.BootStrap
                 catch (LoadingExtentsFailedException)
                 {
                     Logger.Info("Failure of loading extents will lead to a read-only application");
+
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
+                    }
+
                     if (_settings.AllowNoFailOfLoading)
                     {
                         throw;
@@ -287,6 +293,7 @@ namespace DatenMeister.BootStrap
             await _pluginManager.StartPlugins(_dmScope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
             ResetUpdateFlagsOfExtent(workspaceLogic);
+
             watch.Stop();
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 

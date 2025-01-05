@@ -54,6 +54,7 @@ namespace DatenMeister.WebServer
                 // Loads the DatenMeister
                 var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
                 defaultSettings.IsLockingActivated = true;
+                defaultSettings.AllowNoFailOfLoading = true;
                 defaultSettings.AdditionalSettings.Add(
                     new DefaultPluginSettings
                     {

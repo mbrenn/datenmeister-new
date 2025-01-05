@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -56,11 +57,15 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             if (!File.Exists(path))
             {
                 Logger.Info($"File for Extent not found: {path}");
+
+                if (Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
             }
             else
             {
                 Logger.Info($"Loading extent configuration from file: {path}");
-
 
                 var document = XDocument.Load(path);
                 var version = document.Root?.Attribute("Version")?.Value;

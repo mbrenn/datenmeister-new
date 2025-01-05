@@ -167,9 +167,8 @@ namespace DatenMeister.Json
         /// <summary>
         /// Converts the object to an IObject element and tries to resolve the references in case the rootcall is being exiecte
         /// </summary>
-        /// <param name="jsonObject"></param>
-        /// <param name="isRootCall"></param>
-        /// <returns></returns>
+        /// <param name="jsonObject">Json Object to be converted</param>
+        /// <returns>The converted object as a Mof Object</returns>
         private IObject? ConvertToObjectInternal(MofObjectAsJson jsonObject)
         { 
             IObject? result = null;

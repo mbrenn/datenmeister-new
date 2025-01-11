@@ -161,7 +161,7 @@ namespace DatenMeister.Tests.Json
             var item1 = items.OfType<IElement>().FirstOrDefault(x => x.getOrDefault<string>("name") == "Object 1");
             Assert.That(item1, Is.Not.Null);
             var item2 = items.OfType<IElement>().FirstOrDefault(x => x.getOrDefault<string>("name") == "Object 2");
-            Assert.That(item1, Is.Not.Null);
+            Assert.That(item2, Is.Not.Null);
 
             var referenceItem1 = item1.get<IElement>("test");
             Assert.That(referenceItem1, Is.Not.Null);
@@ -171,6 +171,11 @@ namespace DatenMeister.Tests.Json
 
             // Assert that even the reference is the same to item2
             Assert.That(referenceItem1, Is.EqualTo(item2));
+
+            // We check it also by converting the property of the element and then checking whether the reference's property also has changed
+
+            item2!.set("name", "New Name");
+            Assert.That(referenceItem1.getOrDefault<string>("name"), Is.EqualTo("New Name"));
         }
     }
 }

@@ -11,15 +11,15 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation
 {
-    public class FilterPropertyNodeEvaluation : IDataViewNodeEvaluation
+    public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
     {
-        private static readonly ILogger Logger = new ClassLogger(typeof(FilterPropertyNodeEvaluation));
+        private static readonly ILogger Logger = new ClassLogger(typeof(FilterByPropertyValueNodeEvaluation));
 
         public bool IsResponsible(IElement node)
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.equals(_DatenMeister.TheOne.DataViews.__FilterPropertyNode);
+                   metaClass.equals(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
@@ -33,14 +33,14 @@ namespace DatenMeister.DataView.Evaluation
 
             var input = evaluation.GetElementsForViewNode(inputNode);
 
-            var property = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterPropertyNode.property);
+            var property = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterByPropertyValueNode.property);
             if (property == null)
             {
                 Logger.Warn("Property not found");
                 return new PureReflectiveSequence();
             }
 
-            var propertyValue = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterPropertyNode.value);
+            var propertyValue = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterByPropertyValueNode.value);
             if (propertyValue == null)
             {
                 Logger.Warn("Property Value not found");
@@ -49,7 +49,7 @@ namespace DatenMeister.DataView.Evaluation
 
             var comparisonMode =
                 viewNode.getOrNull<_DatenMeister._DataViews.___ComparisonMode>(_DatenMeister._DataViews
-                    ._FilterPropertyNode.comparisonMode);
+                    ._FilterByPropertyValueNode.comparisonMode);
             if (comparisonMode == null)
             {
                 Logger.Warn("Comparison not found");

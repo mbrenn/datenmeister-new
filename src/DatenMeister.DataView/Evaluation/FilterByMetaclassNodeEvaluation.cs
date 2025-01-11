@@ -9,20 +9,20 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation
 {
-    public class FilterTypeNodeEvaluation : IDataViewNodeEvaluation
+    public class FilterByMetaclassNodeEvaluation : IDataViewNodeEvaluation
     {
-        private static readonly ILogger Logger = new ClassLogger(typeof(FilterTypeNodeEvaluation));
+        private static readonly ILogger Logger = new ClassLogger(typeof(FilterByMetaclassNodeEvaluation));
 
         public bool IsResponsible(IElement node)
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.equals(_DatenMeister.TheOne.DataViews.__FilterTypeNode);
+                   metaClass.equals(_DatenMeister.TheOne.DataViews.__FilterByMetaclassNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {
-            var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterTypeNode.input);
+            var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterByMetaclassNode.input);
             if (inputNode == null)
             {
                 Logger.Warn("Input node not found");
@@ -31,7 +31,7 @@ namespace DatenMeister.DataView.Evaluation
 
             var input = evaluation.GetElementsForViewNode(inputNode);
 
-            var type = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterTypeNode.type);
+            var type = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterByMetaclassNode.type);
             if (type == null)
             {
                 return new TemporaryReflectiveSequence(input.WhenMetaClassIsNotSet());

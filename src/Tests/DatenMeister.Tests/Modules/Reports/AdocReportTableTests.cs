@@ -37,10 +37,10 @@ namespace DatenMeister.Tests.Modules.Reports
             dynamicViewNode.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
             extent.elements().add(dynamicViewNode);
 
-            var filterMetaClass = factory.create(_DatenMeister.TheOne.DataViews.__FilterTypeNode);
-            filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.name, "filter");
-            filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.type, null);
-            filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.input, dynamicViewNode);
+            var filterMetaClass = factory.create(_DatenMeister.TheOne.DataViews.__FilterByMetaclassNode);
+            filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.name, "filter");
+            filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.type, null);
+            filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, dynamicViewNode);
             extent.elements().add(filterMetaClass);
 
             /* Create the report paragraph and its corresponding view node */

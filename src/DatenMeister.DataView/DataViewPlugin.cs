@@ -58,11 +58,11 @@ namespace DatenMeister.DataView
         {
             var result = new DataViewNodeFactories();
             result.Add(new DynamicSourceNodeEvaluation());
-            result.Add(new FilterPropertyNodeEvaluation());
-            result.Add(new FilterTypeNodeEvaluation());
+            result.Add(new FilterByPropertyValueNodeEvaluation());
+            result.Add(new FilterByMetaclassNodeEvaluation());
             result.Add(new FlattenNodeEvaluation());
             result.Add(new SelectByFullNameNodeEvaluation());
-            result.Add(new SourceExtentNodeEvaluation());
+            result.Add(new SelectByExtentNodeEvaluation());
 
             return result;
         }

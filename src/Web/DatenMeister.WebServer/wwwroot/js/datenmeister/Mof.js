@@ -123,6 +123,20 @@ export class DmObject {
             return newArray;
         }
     }
+    appendToArray(key, value) {
+        const existingValue = this.get(key);
+        if (Array.isArray(existingValue)) {
+            existingValue.push(value);
+            return;
+        }
+        if (existingValue === undefined || existingValue === null) {
+            this.set(key, [value]);
+            return;
+        }
+        else {
+            this.set(key, [existingValue, value]);
+        }
+    }
     /**
      * Gets an enumeration of all property values.
      * This method is used to protect the internal transformation of key values according

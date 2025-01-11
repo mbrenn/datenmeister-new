@@ -26,6 +26,27 @@ export function includeTests() {
                 chai.assert.equal(array2[0], 'yes');
             });
 
+            it('Append to Array Property', function () {
+                const element = new mof.DmObject();
+                element.set('test', 'yes');
+                element.appendToArray('test', 'no');
+
+                const array = element.getAsArray('test');
+                chai.assert.equal(array.length, 2);
+                chai.assert.equal(array[0], 'yes');
+                chai.assert.equal(array[1], 'no');
+
+                // Now check, if we can add another element to that array
+                element.appendToArray('test', 'maybe');
+
+                // Test that all three elements are in
+                const array2 = element.getAsArray('test');
+                chai.assert.equal(array2.length, 3);
+                chai.assert.equal(array2[0], 'yes');
+                chai.assert.equal(array2[1], 'no');
+                chai.assert.equal(array2[2], 'maybe');                
+            })
+
             it('Internalize and Externalize', () => {
                 chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("name")) == "name", "name");
                 chai.assert.isTrue(mof.DmObject.externalizeKey(mof.DmObject.internalizeKey("_name_")) == "_name_", "_name_");

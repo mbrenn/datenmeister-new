@@ -1282,6 +1282,28 @@
         <isStatic p1:id="4c292d58-ce38-44b1-8da0-54dd32182d0c" />
         <isLeaf p1:id="913f0550-b6d9-4b18-b6e0-f167bb62ece7" />
       </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false">
+        <aggregation p1:type="dm:///_internal/model/uml#InstanceValue" p1:id="Property-aggregation-_defaultValue" type="AggregationKind" instance="AggregationKind-none" />
+        <isDerived p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Property-isDerived-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isDerived>
+        <isDerivedUnion p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Property-isDerivedUnion-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isDerivedUnion>
+        <isReadOnly p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="StructuralFeature-isReadOnly-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isReadOnly>
+        <isOrdered p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="MultiplicityElement-isOrdered-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isOrdered>
+        <isUnique p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="MultiplicityElement-isUnique-_defaultValue" value="true" />
+        <isStatic p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Feature-isStatic-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isStatic>
+        <isLeaf p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="RedefinableElement-isLeaf-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isLeaf>
+      </ownedAttribute>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

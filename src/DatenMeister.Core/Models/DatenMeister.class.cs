@@ -950,6 +950,9 @@ namespace DatenMeister.Core.Models
                 public static string @nodes = "nodes";
                 public IElement? @_nodes = null;
 
+                public static string @resultNode = "resultNode";
+                public IElement? @_resultNode = null;
+
             }
 
             public _QueryStatement @QueryStatement = new _QueryStatement();

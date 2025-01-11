@@ -484,6 +484,7 @@ export namespace _DatenMeister
                 export class _QueryStatement
                 {
                     static nodes = "nodes";
+                    static resultNode = "resultNode";
                 }
 
                 export const __QueryStatement_Uri = "dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518";

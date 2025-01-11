@@ -2,7 +2,7 @@
 import * as Mof from '../Mof.js'
 import * as _DatenMeister from '../models/DatenMeister.class.js'
 import * as FormActions from '../FormActions.js'
-import { loadDefaultModules } from "../modules/DefaultLoader.js"
+import { loadDefaultModules } from "../actions/DefaultLoader.js"
 
 loadDefaultModules();
 

@@ -348,36 +348,36 @@ export var _DatenMeister;
         _ViewNode._name_ = "name";
         _DataViews._ViewNode = _ViewNode;
         _DataViews.__ViewNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode";
-        class _SourceExtentNode {
+        class _SelectByExtentNode {
         }
-        _SourceExtentNode.extentUri = "extentUri";
-        _SourceExtentNode.workspace = "workspace";
-        _SourceExtentNode._name_ = "name";
-        _DataViews._SourceExtentNode = _SourceExtentNode;
-        _DataViews.__SourceExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
+        _SelectByExtentNode.extentUri = "extentUri";
+        _SelectByExtentNode.workspace = "workspace";
+        _SelectByExtentNode._name_ = "name";
+        _DataViews._SelectByExtentNode = _SelectByExtentNode;
+        _DataViews.__SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
         class _FlattenNode {
         }
         _FlattenNode.input = "input";
         _FlattenNode._name_ = "name";
         _DataViews._FlattenNode = _FlattenNode;
         _DataViews.__FlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
-        class _FilterPropertyNode {
+        class _FilterByPropertyValueNode {
         }
-        _FilterPropertyNode.input = "input";
-        _FilterPropertyNode.property = "property";
-        _FilterPropertyNode.value = "value";
-        _FilterPropertyNode.comparisonMode = "comparisonMode";
-        _FilterPropertyNode._name_ = "name";
-        _DataViews._FilterPropertyNode = _FilterPropertyNode;
-        _DataViews.__FilterPropertyNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode";
-        class _FilterTypeNode {
+        _FilterByPropertyValueNode.input = "input";
+        _FilterByPropertyValueNode.property = "property";
+        _FilterByPropertyValueNode.value = "value";
+        _FilterByPropertyValueNode.comparisonMode = "comparisonMode";
+        _FilterByPropertyValueNode._name_ = "name";
+        _DataViews._FilterByPropertyValueNode = _FilterByPropertyValueNode;
+        _DataViews.__FilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode";
+        class _FilterByMetaclassNode {
         }
-        _FilterTypeNode.input = "input";
-        _FilterTypeNode.type = "type";
-        _FilterTypeNode.includeInherits = "includeInherits";
-        _FilterTypeNode._name_ = "name";
-        _DataViews._FilterTypeNode = _FilterTypeNode;
-        _DataViews.__FilterTypeNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode";
+        _FilterByMetaclassNode.input = "input";
+        _FilterByMetaclassNode.type = "type";
+        _FilterByMetaclassNode.includeInherits = "includeInherits";
+        _FilterByMetaclassNode._name_ = "name";
+        _DataViews._FilterByMetaclassNode = _FilterByMetaclassNode;
+        _DataViews.__FilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode";
         let _ComparisonMode;
         (function (_ComparisonMode) {
             _ComparisonMode.Equal = "Equal";
@@ -413,12 +413,12 @@ export var _DatenMeister;
         _DynamicSourceNode._name_ = "name";
         _DataViews._DynamicSourceNode = _DynamicSourceNode;
         _DataViews.__DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
-        class _SourcePathNode {
+        class _SelectByPathNode {
         }
-        _SourcePathNode.workspaceId = "workspaceId";
-        _SourcePathNode.path = "path";
-        _DataViews._SourcePathNode = _SourcePathNode;
-        _DataViews.__SourcePathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
+        _SelectByPathNode.workspaceId = "workspaceId";
+        _SelectByPathNode.path = "path";
+        _DataViews._SelectByPathNode = _SelectByPathNode;
+        _DataViews.__SelectByPathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
         class _QueryStatement {
         }
         _QueryStatement.nodes = "nodes";

@@ -1,5 +1,5 @@
 import * as Form from "../forms/ObjectForm.js";
-import { loadDefaultModules } from "../modules/DefaultLoader.js";
+import { loadDefaultModules } from "../actions/DefaultLoader.js";
 export function init(workspace, itemUri) {
     loadDefaultModules();
     const objectForm = new Form.ObjectFormCreatorForItem({

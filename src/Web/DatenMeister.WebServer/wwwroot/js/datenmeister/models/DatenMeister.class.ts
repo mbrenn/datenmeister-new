@@ -401,14 +401,14 @@ export namespace _DatenMeister
                 }
 
                 export const __ViewNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode";
-                export class _SourceExtentNode
+                export class _SelectByExtentNode
                 {
                     static extentUri = "extentUri";
                     static workspace = "workspace";
                     static _name_ = "name";
                 }
 
-                export const __SourceExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
+                export const __SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
                 export class _FlattenNode
                 {
                     static input = "input";
@@ -416,7 +416,7 @@ export namespace _DatenMeister
                 }
 
                 export const __FlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
-                export class _FilterPropertyNode
+                export class _FilterByPropertyValueNode
                 {
                     static input = "input";
                     static property = "property";
@@ -425,8 +425,8 @@ export namespace _DatenMeister
                     static _name_ = "name";
                 }
 
-                export const __FilterPropertyNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode";
-                export class _FilterTypeNode
+                export const __FilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode";
+                export class _FilterByMetaclassNode
                 {
                     static input = "input";
                     static type = "type";
@@ -434,7 +434,7 @@ export namespace _DatenMeister
                     static _name_ = "name";
                 }
 
-                export const __FilterTypeNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode";
+                export const __FilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode";
                 export module _ComparisonMode
                 {
                     export const Equal = "Equal";
@@ -474,13 +474,13 @@ export namespace _DatenMeister
                 }
 
                 export const __DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
-                export class _SourcePathNode
+                export class _SelectByPathNode
                 {
                     static workspaceId = "workspaceId";
                     static path = "path";
                 }
 
-                export const __SourcePathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
+                export const __SelectByPathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
                 export class _QueryStatement
                 {
                     static nodes = "nodes";

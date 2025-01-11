@@ -1,6 +1,7 @@
 ﻿import {ItemWithNameAndId} from "../ApiModels.js";
 import * as ApiConnection from "../ApiConnection.js"
 import * as Settings from "../Settings.js"
+import * as Mof from "../Mof.js";
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
     return load(undefined, undefined);
@@ -79,14 +80,22 @@ export async function createTemporaryElement(metaClassUri?: string) : Promise<IC
         });
 }
 
-export function findBySearchString(searchString): Promise<IFindBySearchString> {
-    return ApiConnection.get<IFindBySearchString>(
+export function findBySearchString(searchString): Promise<IFindBySearchStringResult> {
+    return ApiConnection.get<IFindBySearchStringResult>(
         Settings.baseUrl +
         "api/elements/find_by_searchstring?search=" +
         encodeURIComponent(searchString));
 }
 
-export interface IFindBySearchString {
+export interface IFindBySearchStringResult {
     resultType: string;
     reference: ItemWithNameAndId;
+}
+
+export interface IQueryObjectResult {
+    elements: Array<Mof.DmObject>;
+}
+
+export function queryObject(query: Mof.DmObject): IQueryObjectResult {
+    throw "Not implemented";
 }

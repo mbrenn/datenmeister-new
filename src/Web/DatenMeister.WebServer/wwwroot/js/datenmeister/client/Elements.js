@@ -54,4 +54,7 @@ export function findBySearchString(searchString) {
         "api/elements/find_by_searchstring?search=" +
         encodeURIComponent(searchString));
 }
+export function queryObject(query) {
+    throw "Not implemented";
+}
 //# sourceMappingURL=Elements.js.map

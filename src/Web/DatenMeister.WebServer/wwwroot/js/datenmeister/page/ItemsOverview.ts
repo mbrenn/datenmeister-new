@@ -1,6 +1,6 @@
 ﻿
 import * as CollectionForm from "../forms/CollectionForm.js"
-import {loadDefaultModules} from "../modules/DefaultLoader.js";
+import {loadDefaultModules} from "../actions/DefaultLoader.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 
 export async function init(workspace: string, extentUri: string) : Promise<void> {

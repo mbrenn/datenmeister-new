@@ -1,6 +1,6 @@
 ﻿
 import * as Form from "../forms/ObjectForm.js"
-import {loadDefaultModules} from "../modules/DefaultLoader.js"
+import {loadDefaultModules} from "../actions/DefaultLoader.js"
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 
 export function init(workspace: string, itemUri: string) {

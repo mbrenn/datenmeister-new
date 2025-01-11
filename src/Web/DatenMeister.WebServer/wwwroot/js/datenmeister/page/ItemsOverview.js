@@ -1,5 +1,5 @@
 import * as CollectionForm from "../forms/CollectionForm.js";
-import { loadDefaultModules } from "../modules/DefaultLoader.js";
+import { loadDefaultModules } from "../actions/DefaultLoader.js";
 export async function init(workspace, extentUri) {
     loadDefaultModules();
     let listForm = new CollectionForm.CollectionFormCreator({

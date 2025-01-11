@@ -1,6 +1,6 @@
 ﻿
 import * as Form from "../forms/ActionForm.js"
-import {loadDefaultModules} from "../modules/DefaultLoader.js";
+import {loadDefaultModules} from "../actions/DefaultLoader.js";
 
 export async function init(actionName: string, metaClass: undefined | string, formUri: undefined | string) {
     loadDefaultModules();

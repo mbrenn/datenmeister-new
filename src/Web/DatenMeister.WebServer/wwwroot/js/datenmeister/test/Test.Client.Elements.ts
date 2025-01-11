@@ -4,7 +4,7 @@ import * as ClientItems from "../client/Items.js"
 export function includeTests() {
     describe('Client', function () {
         describe('Elements', function () {
-            it('Test Temporary Element', async () =>{
+            it('Test Temporary Element', async () => {
                 const result = await ClientElements.createTemporaryElement();
                 chai.assert.isTrue(result.success, "Element was not successfully created");
                 
@@ -17,7 +17,7 @@ export function includeTests() {
                 chai.assert.isTrue(property === "Test", "Property could not be set correctly");                
             });
 
-            it('Test Temporary Element with MetaClass', async () =>{
+            it('Test Temporary Element with MetaClass', async () => {
                 const result = await ClientElements.createTemporaryElement("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
                 chai.assert.isTrue(result.success, "Element was not successfully created");
 

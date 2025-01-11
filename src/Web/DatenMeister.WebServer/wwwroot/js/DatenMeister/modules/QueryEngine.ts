@@ -22,11 +22,14 @@ export class QueryBuilder {
     }
 }
 
-export function filterByMetaClass(builder: QueryBuilder, metaClass: Mof.DmObject, includeInherits: boolean) {
+export function filterByMetaClass(builder: QueryBuilder, metaClass: Mof.DmObject, includeInherits?: boolean) {
     var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FilterByMetaclassNode_Uri);
     viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, builder.getResultNode());
     viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, metaClass);
-    viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.includeInherits, includeInherits);
+    if (includeInherits !== undefined) {
+        viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.includeInherits, includeInherits)
+    };
+
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;

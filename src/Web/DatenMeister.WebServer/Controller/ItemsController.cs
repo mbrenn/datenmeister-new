@@ -338,7 +338,7 @@ namespace DatenMeister.WebServer.Controller
         /// </summary>
         /// <param name="finalElements">Final elements to be converted</param>
         /// <returns>The json as string</returns>
-        private static ActionResult<string> ConvertToJson(IEnumerable<object?> finalElements)
+        public static string ConvertToJson(IEnumerable<object?> finalElements)
         {
             var converter = new MofJsonConverter { MaxRecursionDepth = 2 };
 

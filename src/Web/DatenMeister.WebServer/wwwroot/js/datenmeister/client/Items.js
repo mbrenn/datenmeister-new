@@ -126,7 +126,7 @@ function serializeArrayToString(arrayValue) {
     }
     return encodeURIComponent(result);
 }
-function convertToMofObjects(resultFromServer) {
+export function convertToMofObjects(resultFromServer) {
     const x = JSON.parse(resultFromServer);
     let result = new Array();
     for (let n in x) {

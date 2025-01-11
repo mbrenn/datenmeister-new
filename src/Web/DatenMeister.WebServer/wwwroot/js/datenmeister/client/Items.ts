@@ -221,7 +221,7 @@ function serializeArrayToString(arrayValue) {
     return encodeURIComponent(result);
 }
 
-function convertToMofObjects(resultFromServer: string) {
+export function convertToMofObjects(resultFromServer: string) {
     const x = JSON.parse(resultFromServer);
     let result = new Array<Mof.DmObject>();
     for (let n in x) {

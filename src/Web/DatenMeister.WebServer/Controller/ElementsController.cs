@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Json;
 using DatenMeister.TemporaryExtent;
@@ -49,7 +52,7 @@ namespace DatenMeister.WebServer.Controller
         {
             workspace = MvcUrlEncoder.DecodePath(workspace);
             uri = MvcUrlEncoder.DecodePathOrEmpty(uri);
-            
+
             IObject? foundItem;
             if (string.IsNullOrEmpty(workspace) || workspace == "_")
             {
@@ -75,7 +78,7 @@ namespace DatenMeister.WebServer.Controller
         {
             workspaceId = MvcUrlEncoder.DecodePath(workspaceId);
             itemUrl = MvcUrlEncoder.DecodePath(itemUrl);
-            
+
             var result = Internal.GetComposites(workspaceId, itemUrl);
             if (result == null)
             {
@@ -96,9 +99,9 @@ namespace DatenMeister.WebServer.Controller
             public const string ResultTypeNone = "none";
             public const string ResultTypeReference = "reference";
             public const string ResultTypeReferenceExtent = "referenceExtent";
-            
+
             public string resultType { get; set; } = ResultTypeNone;
-            
+
             public ItemWithNameAndId? reference { get; set; }
         }
 
@@ -171,6 +174,44 @@ namespace DatenMeister.WebServer.Controller
             /// Gets or sets the workspace of the metaclass which was created by the temporary element
             /// </summary>
             public string MetaClassWorkspace { get; set; } = string.Empty;
+        }
+
+        public class QueryObjectParameter
+        {
+            public MofObjectAsJson Query { get; set; } = new MofObjectAsJson();
+        }
+
+        [HttpPost("api/elements/query_object")]
+        public ActionResult<QueryObjectResult> QueryObject([FromBody] QueryObjectParameter parameter)
+        {
+
+            // First, convert the object
+            var converter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
+            var objectToBeSet = converter.ConvertToObject(parameter.Query)
+                ?? throw new InvalidOperationException("Object to be set is null");
+            var resultNode = objectToBeSet.get<IElement>(_DatenMeister._DataViews._QueryStatement.resultNode)
+                ?? throw new InvalidOperationException("resultNode is not set");
+
+            // Second, execute the query
+            var viewLogic = new DataView.DataViewEvaluation(_workspaceLogic, _scopeStorage);
+            var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);
+
+            // Third, convert the query result to the json interface
+            var result = new QueryObjectResult
+            {
+                Result = ItemsController.ConvertToJson(resultingNodes)
+            };
+
+            return result;
+        }
+
+        public class QueryObjectResult
+        {
+            /// <summary>
+            /// Gets or sets the result of the query as a jsonized string of MofObjects. 
+            /// The client side has to convert back the information
+            /// </summary>
+            public string Result { get; set; } = string.Empty;
         }
     }
 }

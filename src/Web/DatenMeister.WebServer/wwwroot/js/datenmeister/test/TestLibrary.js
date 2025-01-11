@@ -4,6 +4,7 @@ import * as ClientExtent from "./Test.Client.Extents.js";
 import * as ClientItems from "./Test.Client.Items.js";
 import * as ClientTypes from "./Test.Client.Types.js";
 import * as ClientElements from "./Test.Client.Elements.js";
+import * as ClientElementsQuery from "./Test.Client.Elements.Query.js";
 import * as ClientActions from "./Test.Client.Actions.js";
 import * as ClientSync from "./Test.Client.Sync.js";
 import * as ClientForms from "./Test.Client.Forms.js";
@@ -20,6 +21,7 @@ export function includeTests() {
     ClientItems.includeTests();
     ClientTypes.includeTests();
     ClientElements.includeTests();
+    ClientElementsQuery.includeTests();
     ClientForms.includeTests();
     ClientActions.includeTests();
     ClientActionsItems.includeTests();

@@ -1,5 +1,7 @@
 import * as ApiConnection from "../ApiConnection.js";
 import * as Settings from "../Settings.js";
+import * as Mof from "../Mof.js";
+import { convertToMofObjects } from "./Items.js";
 export function getAllWorkspaces() {
     return load(undefined, undefined);
 }
@@ -54,7 +56,14 @@ export function findBySearchString(searchString) {
         "api/elements/find_by_searchstring?search=" +
         encodeURIComponent(searchString));
 }
-export function queryObject(query) {
-    throw "Not implemented";
+export async function queryObject(query) {
+    var json = Mof.createJsonFromObject(query);
+    var result = await ApiConnection.post(Settings.baseUrl +
+        "api/elements/query_object", {
+        query: json
+    });
+    return {
+        result: convertToMofObjects(result.result)
+    };
 }
 //# sourceMappingURL=Elements.js.map

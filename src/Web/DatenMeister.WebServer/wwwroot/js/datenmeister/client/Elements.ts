@@ -2,6 +2,7 @@
 import * as ApiConnection from "../ApiConnection.js"
 import * as Settings from "../Settings.js"
 import * as Mof from "../Mof.js";
+import { convertToMofObjects } from "./Items.js"
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
     return load(undefined, undefined);
@@ -92,10 +93,25 @@ export interface IFindBySearchStringResult {
     reference: ItemWithNameAndId;
 }
 
-export interface IQueryObjectResult {
-    elements: Array<Mof.DmObject>;
+export interface IQueryObjectParameter {
+    query: Mof.JsonFromMofObject;
 }
 
-export function queryObject(query: Mof.DmObject): IQueryObjectResult {
-    throw "Not implemented";
+export interface IQueryObjectResult {
+    result: Array<Mof.DmObject>;
+}
+
+export async function queryObject(query: Mof.DmObject): Promise<IQueryObjectResult> {
+    var json = Mof.createJsonFromObject(query);
+
+    var result = await ApiConnection.post<any>(
+        Settings.baseUrl +
+        "api/elements/query_object",
+        {
+            query: json
+        });
+
+    return {
+        result: convertToMofObjects(result.result)
+    };
 }

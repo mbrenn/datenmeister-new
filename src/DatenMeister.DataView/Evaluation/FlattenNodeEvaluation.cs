@@ -28,7 +28,7 @@ namespace DatenMeister.DataView.Evaluation
                 return new PureReflectiveSequence();
             }
 
-            return evaluation.GetElementsForViewNode(inputNode).GetAllDescendants();
+            return evaluation.GetElementsForViewNode(inputNode).GetAllDescendantsIncludingThemselves();
         }
     }
 }

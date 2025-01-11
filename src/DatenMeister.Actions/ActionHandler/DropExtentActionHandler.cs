@@ -17,9 +17,9 @@ namespace DatenMeister.Actions.ActionHandler
 
         public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspace) ??
+                var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspaceId) ??
                                     "Data";
                 var extentUri = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.extentUri);
 
@@ -35,7 +35,7 @@ namespace DatenMeister.Actions.ActionHandler
                 }
 
                 var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-                extentManager.RemoveExtent(workspaceName, extentUri);
+                await extentManager.RemoveExtent(workspaceName, extentUri);
             });
 
             return null;

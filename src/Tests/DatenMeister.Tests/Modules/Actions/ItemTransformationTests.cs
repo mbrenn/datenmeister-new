@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Modules.Actions
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._TransformItemsAction.path] = "dm:///source/",
-                    [_DatenMeister._Actions._TransformItemsAction.workspace] = "Data",
+                    [_DatenMeister._Actions._TransformItemsAction.workspaceId] = "Data",
                     [_DatenMeister._Actions._TransformItemsAction.runtimeClass] =
                         "DatenMeister.Actions.Transformations.UpperCaseTransformation"
                 });

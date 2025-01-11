@@ -32,7 +32,7 @@ export function flatten(builder) {
 }
 export function getElementsOfExtent(builder, workspaceId, extentUrl) {
     var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByExtentNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.workspace, workspaceId);
+    viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.workspaceId, workspaceId);
     viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.extentUri, extentUrl);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);

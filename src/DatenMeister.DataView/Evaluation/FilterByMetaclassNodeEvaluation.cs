@@ -31,7 +31,7 @@ namespace DatenMeister.DataView.Evaluation
 
             var input = evaluation.GetElementsForViewNode(inputNode);
 
-            var type = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterByMetaclassNode.type);
+            var type = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass);
             if (type == null)
             {
                 return new TemporaryReflectiveSequence(input.WhenMetaClassIsNotSet());

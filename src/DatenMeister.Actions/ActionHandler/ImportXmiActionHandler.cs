@@ -27,7 +27,7 @@ namespace DatenMeister.Actions.ActionHandler
         {
             await Task.Run(() =>
             {
-                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.workspace);
+                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.workspaceId);
                 var itemUri = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.itemUri);
                 var xmi = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.xmi);
 

@@ -55,7 +55,7 @@ export function includeTests() {
                 chai.assert.isTrue(success.exists === true, "dm:///unittestaction should exist");
                 const drop = new Mof.DmObject();
                 drop.setMetaClassByUri(_DatenMeister._Actions.__DropExtentAction_Uri, 'Types');
-                drop.set(_DatenMeister._Actions._DropExtentAction.workspace, "Test");
+                drop.set(_DatenMeister._Actions._DropExtentAction.workspaceId, "Test");
                 drop.set(_DatenMeister._Actions._DropExtentAction.extentUri, "dm:///unittestaction");
                 await ClientActions.executeActionDirectly("Execute", { parameter: drop });
                 success = await ClientExtent.exists("Test", "dm:///unittestaction");

@@ -46,7 +46,7 @@ export namespace _DatenMeister
                         {
                             static filePath = "filePath";
                             static extentUri = "extentUri";
-                            static workspace = "workspace";
+                            static workspaceId = "workspaceId";
                         }
 
                         export const __ImportSettings_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings";
@@ -126,7 +126,7 @@ export namespace _DatenMeister
                 export const __LoadExtentAction_Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee";
                 export class _DropExtentAction
                 {
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static extentUri = "extentUri";
                     static _name_ = "name";
                     static isDisabled = "isDisabled";
@@ -135,7 +135,7 @@ export namespace _DatenMeister
                 export const __DropExtentAction_Uri = "dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09";
                 export class _CreateWorkspaceAction
                 {
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static annotation = "annotation";
                     static _name_ = "name";
                     static isDisabled = "isDisabled";
@@ -144,7 +144,7 @@ export namespace _DatenMeister
                 export const __CreateWorkspaceAction_Uri = "dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe";
                 export class _DropWorkspaceAction
                 {
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static _name_ = "name";
                     static isDisabled = "isDisabled";
                 }
@@ -175,7 +175,7 @@ export namespace _DatenMeister
                 export const __ExportToXmiAction_Uri = "dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863";
                 export class _ClearCollectionAction
                 {
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static path = "path";
                     static _name_ = "name";
                     static isDisabled = "isDisabled";
@@ -186,7 +186,7 @@ export namespace _DatenMeister
                 {
                     static metaClass = "metaClass";
                     static runtimeClass = "runtimeClass";
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static path = "path";
                     static excludeDescendents = "excludeDescendents";
                     static _name_ = "name";
@@ -312,7 +312,7 @@ export namespace _DatenMeister
                 export const __StoreExtentAction_Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1";
                 export class _ImportXmiAction
                 {
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static itemUri = "itemUri";
                     static xmi = "xmi";
                     static property = "property";
@@ -389,7 +389,7 @@ export namespace _DatenMeister
                 export class _DataView
                 {
                     static _name_ = "name";
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static uri = "uri";
                     static viewNode = "viewNode";
                 }
@@ -404,7 +404,7 @@ export namespace _DatenMeister
                 export class _SelectByExtentNode
                 {
                     static extentUri = "extentUri";
-                    static workspace = "workspace";
+                    static workspaceId = "workspaceId";
                     static _name_ = "name";
                 }
 
@@ -429,7 +429,7 @@ export namespace _DatenMeister
                 export class _FilterByMetaclassNode
                 {
                     static input = "input";
-                    static type = "type";
+                    static metaClass = "metaClass";
                     static includeInherits = "includeInherits";
                     static _name_ = "name";
                 }

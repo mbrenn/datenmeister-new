@@ -74,7 +74,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var createWorkspaceAction =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
+            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspaceId, "ws");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
 
             actionLogic.ExecuteAction(createWorkspaceAction).Wait();
@@ -85,7 +85,7 @@ namespace DatenMeister.Tests.Modules.Actions
 
             var dropWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DropWorkspaceAction);
             Debug.Assert(dropWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-            dropWorkspaceAction.set(_DatenMeister._Actions._DropWorkspaceAction.workspace, "ws");
+            dropWorkspaceAction.set(_DatenMeister._Actions._DropWorkspaceAction.workspaceId, "ws");
             actionLogic.ExecuteAction(dropWorkspaceAction).Wait();
             Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.False);
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.False);
@@ -122,7 +122,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var createWorkspaceAction =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
+            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspaceId, "ws");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
 
             actionLogic.ExecuteAction(createWorkspaceAction).Wait();

@@ -22,7 +22,7 @@ namespace DatenMeister.Actions.ActionHandler
         {
             await Task.Run(() =>
             {
-                var workspaceId = action.getOrDefault<string>(_DatenMeister._Actions._ClearCollectionAction.workspace)
+                var workspaceId = action.getOrDefault<string>(_DatenMeister._Actions._ClearCollectionAction.workspaceId)
                                   ?? WorkspaceNames.WorkspaceData;
                 var path = action.getOrDefault<string>(_DatenMeister._Actions._ClearCollectionAction.path);
 

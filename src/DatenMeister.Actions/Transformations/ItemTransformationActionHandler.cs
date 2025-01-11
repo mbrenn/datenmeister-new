@@ -32,7 +32,7 @@ namespace DatenMeister.Actions.Transformations
                 var runtimeClass =
                     action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.runtimeClass);
                 var workspace =
-                    action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.workspace);
+                    action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.workspaceId);
                 var path = action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.path);
 
                 var sourceWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(workspace);

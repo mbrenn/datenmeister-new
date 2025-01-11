@@ -34,7 +34,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             var importXmi = new ImportXmiActionHandler();
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-            action.set(_DatenMeister._Actions._ImportXmiAction.workspace, WorkspaceNames.WorkspaceData);
+            action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
             action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test");
             action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi);
             
@@ -67,7 +67,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             var importXmi = new ImportXmiActionHandler();
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-            action.set(_DatenMeister._Actions._ImportXmiAction.workspace, WorkspaceNames.WorkspaceData);
+            action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
             action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
             action.set(_DatenMeister._Actions._ImportXmiAction.property, "issue");
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, false);
@@ -106,7 +106,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             var importXmi = new ImportXmiActionHandler();
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-            action.set(_DatenMeister._Actions._ImportXmiAction.workspace, WorkspaceNames.WorkspaceData);
+            action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
             action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
             action.set(_DatenMeister._Actions._ImportXmiAction.property, "issue");
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, true);
@@ -129,7 +129,7 @@ namespace DatenMeister.Tests.Modules.Actions
             // Now adds the second item
             
             action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-            action.set(_DatenMeister._Actions._ImportXmiAction.workspace, WorkspaceNames.WorkspaceData);
+            action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
             action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
             action.set(_DatenMeister._Actions._ImportXmiAction.property, "issue");
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, true);

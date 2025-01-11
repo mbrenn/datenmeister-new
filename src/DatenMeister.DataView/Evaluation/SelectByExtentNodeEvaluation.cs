@@ -30,7 +30,7 @@ namespace DatenMeister.DataView.Evaluation
                 return new PureReflectiveSequence();
             }
 
-            var workspaceName = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByExtentNode.workspace);
+            var workspaceName = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByExtentNode.workspaceId);
             if (string.IsNullOrEmpty(workspaceName))
             {
                 workspaceName = WorkspaceNames.WorkspaceData;

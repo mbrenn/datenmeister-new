@@ -87,8 +87,8 @@ namespace DatenMeister.Core.Models
                     public static string @extentUri = "extentUri";
                     public IElement? @_extentUri = null;
 
-                    public static string @workspace = "workspace";
-                    public IElement? @_workspace = null;
+                    public static string @workspaceId = "workspaceId";
+                    public IElement? @_workspaceId = null;
 
                 }
 
@@ -241,8 +241,8 @@ namespace DatenMeister.Core.Models
 
             public class _DropExtentAction
             {
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
@@ -260,8 +260,8 @@ namespace DatenMeister.Core.Models
 
             public class _CreateWorkspaceAction
             {
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @annotation = "annotation";
                 public IElement? @_annotation = null;
@@ -279,8 +279,8 @@ namespace DatenMeister.Core.Models
 
             public class _DropWorkspaceAction
             {
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;
@@ -348,8 +348,8 @@ namespace DatenMeister.Core.Models
 
             public class _ClearCollectionAction
             {
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @path = "path";
                 public IElement? @_path = null;
@@ -373,8 +373,8 @@ namespace DatenMeister.Core.Models
                 public static string @runtimeClass = "runtimeClass";
                 public IElement? @_runtimeClass = null;
 
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @path = "path";
                 public IElement? @_path = null;
@@ -623,8 +623,8 @@ namespace DatenMeister.Core.Models
 
             public class _ImportXmiAction
             {
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @itemUri = "itemUri";
                 public IElement? @_itemUri = null;
@@ -772,8 +772,8 @@ namespace DatenMeister.Core.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @uri = "uri";
                 public IElement? @_uri = null;
@@ -801,8 +801,8 @@ namespace DatenMeister.Core.Models
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
-                public static string @workspace = "workspace";
-                public IElement? @_workspace = null;
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;
@@ -852,8 +852,8 @@ namespace DatenMeister.Core.Models
                 public static string @input = "input";
                 public IElement? @_input = null;
 
-                public static string @type = "type";
-                public IElement? @_type = null;
+                public static string @metaClass = "metaClass";
+                public IElement? @_metaClass = null;
 
                 public static string @includeInherits = "includeInherits";
                 public IElement? @_includeInherits = null;

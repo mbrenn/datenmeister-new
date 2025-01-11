@@ -834,7 +834,7 @@ namespace DatenMeister.WebServer.Controller
             var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
             var importXmi = new ImportXmiActionHandler();
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-            action.set(_DatenMeister._Actions._ImportXmiAction.workspace, workspace);
+            action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, workspace);
             action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, itemUri);
             action.set(_DatenMeister._Actions._ImportXmiAction.property, property);
             action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, addToCollection);

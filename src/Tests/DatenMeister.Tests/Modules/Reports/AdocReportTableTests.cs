@@ -39,7 +39,7 @@ namespace DatenMeister.Tests.Modules.Reports
 
             var filterMetaClass = factory.create(_DatenMeister.TheOne.DataViews.__FilterByMetaclassNode);
             filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.name, "filter");
-            filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.type, null);
+            filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, null);
             filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, dynamicViewNode);
             extent.elements().add(filterMetaClass);
 

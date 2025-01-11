@@ -27,7 +27,7 @@ namespace DatenMeister.Actions.ActionHandler
         {
             await Task.Run(() =>
             {
-                var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspace) ??
+                var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspaceId) ??
                                     "Data";
                 var extentUri = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.extentUri);
 

@@ -18,7 +18,7 @@ namespace DatenMeister.Actions.ActionHandler
         {
             await Task.Run(() =>
             {
-                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._DropWorkspaceAction.workspace);
+                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._DropWorkspaceAction.workspaceId);
                 if (string.IsNullOrEmpty(workspace))
                 {
                     throw new InvalidOperationException("workspace is not set");

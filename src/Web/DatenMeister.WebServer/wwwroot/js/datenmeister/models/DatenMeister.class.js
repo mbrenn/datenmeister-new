@@ -40,7 +40,7 @@ export var _DatenMeister;
             }
             _ImportSettings.filePath = "filePath";
             _ImportSettings.extentUri = "extentUri";
-            _ImportSettings.workspace = "workspace";
+            _ImportSettings.workspaceId = "workspaceId";
             _ExtentManager._ImportSettings = _ImportSettings;
             _ExtentManager.__ImportSettings_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings";
             class _ImportException {
@@ -108,7 +108,7 @@ export var _DatenMeister;
         _Actions.__LoadExtentAction_Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee";
         class _DropExtentAction {
         }
-        _DropExtentAction.workspace = "workspace";
+        _DropExtentAction.workspaceId = "workspaceId";
         _DropExtentAction.extentUri = "extentUri";
         _DropExtentAction._name_ = "name";
         _DropExtentAction.isDisabled = "isDisabled";
@@ -116,7 +116,7 @@ export var _DatenMeister;
         _Actions.__DropExtentAction_Uri = "dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09";
         class _CreateWorkspaceAction {
         }
-        _CreateWorkspaceAction.workspace = "workspace";
+        _CreateWorkspaceAction.workspaceId = "workspaceId";
         _CreateWorkspaceAction.annotation = "annotation";
         _CreateWorkspaceAction._name_ = "name";
         _CreateWorkspaceAction.isDisabled = "isDisabled";
@@ -124,7 +124,7 @@ export var _DatenMeister;
         _Actions.__CreateWorkspaceAction_Uri = "dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe";
         class _DropWorkspaceAction {
         }
-        _DropWorkspaceAction.workspace = "workspace";
+        _DropWorkspaceAction.workspaceId = "workspaceId";
         _DropWorkspaceAction._name_ = "name";
         _DropWorkspaceAction.isDisabled = "isDisabled";
         _Actions._DropWorkspaceAction = _DropWorkspaceAction;
@@ -152,7 +152,7 @@ export var _DatenMeister;
         _Actions.__ExportToXmiAction_Uri = "dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863";
         class _ClearCollectionAction {
         }
-        _ClearCollectionAction.workspace = "workspace";
+        _ClearCollectionAction.workspaceId = "workspaceId";
         _ClearCollectionAction.path = "path";
         _ClearCollectionAction._name_ = "name";
         _ClearCollectionAction.isDisabled = "isDisabled";
@@ -162,7 +162,7 @@ export var _DatenMeister;
         }
         _TransformItemsAction.metaClass = "metaClass";
         _TransformItemsAction.runtimeClass = "runtimeClass";
-        _TransformItemsAction.workspace = "workspace";
+        _TransformItemsAction.workspaceId = "workspaceId";
         _TransformItemsAction.path = "path";
         _TransformItemsAction.excludeDescendents = "excludeDescendents";
         _TransformItemsAction._name_ = "name";
@@ -272,7 +272,7 @@ export var _DatenMeister;
         _Actions.__StoreExtentAction_Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1";
         class _ImportXmiAction {
         }
-        _ImportXmiAction.workspace = "workspace";
+        _ImportXmiAction.workspaceId = "workspaceId";
         _ImportXmiAction.itemUri = "itemUri";
         _ImportXmiAction.xmi = "xmi";
         _ImportXmiAction.property = "property";
@@ -338,7 +338,7 @@ export var _DatenMeister;
         class _DataView {
         }
         _DataView._name_ = "name";
-        _DataView.workspace = "workspace";
+        _DataView.workspaceId = "workspaceId";
         _DataView.uri = "uri";
         _DataView.viewNode = "viewNode";
         _DataViews._DataView = _DataView;
@@ -351,7 +351,7 @@ export var _DatenMeister;
         class _SelectByExtentNode {
         }
         _SelectByExtentNode.extentUri = "extentUri";
-        _SelectByExtentNode.workspace = "workspace";
+        _SelectByExtentNode.workspaceId = "workspaceId";
         _SelectByExtentNode._name_ = "name";
         _DataViews._SelectByExtentNode = _SelectByExtentNode;
         _DataViews.__SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
@@ -373,7 +373,7 @@ export var _DatenMeister;
         class _FilterByMetaclassNode {
         }
         _FilterByMetaclassNode.input = "input";
-        _FilterByMetaclassNode.type = "type";
+        _FilterByMetaclassNode.metaClass = "metaClass";
         _FilterByMetaclassNode.includeInherits = "includeInherits";
         _FilterByMetaclassNode._name_ = "name";
         _DataViews._FilterByMetaclassNode = _FilterByMetaclassNode;

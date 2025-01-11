@@ -19,7 +19,7 @@ namespace DatenMeister.Actions.ActionHandler
         {
             await Task.Run(() =>
             {
-                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.workspace);
+                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.workspaceId);
                 var annotation = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.annotation);
                 if (string.IsNullOrEmpty(workspace))
                 {

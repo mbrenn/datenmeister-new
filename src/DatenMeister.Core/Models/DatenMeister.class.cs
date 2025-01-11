@@ -796,7 +796,7 @@ namespace DatenMeister.Core.Models
             public _ViewNode @ViewNode = new _ViewNode();
             public MofObjectShadow @__ViewNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode");
 
-            public class _SourceExtentNode
+            public class _SelectByExtentNode
             {
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
@@ -809,8 +809,8 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _SourceExtentNode @SourceExtentNode = new _SourceExtentNode();
-            public MofObjectShadow @__SourceExtentNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode");
+            public _SelectByExtentNode @SelectByExtentNode = new _SelectByExtentNode();
+            public MofObjectShadow @__SelectByExtentNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode");
 
             public class _FlattenNode
             {
@@ -825,7 +825,7 @@ namespace DatenMeister.Core.Models
             public _FlattenNode @FlattenNode = new _FlattenNode();
             public MofObjectShadow @__FlattenNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode");
 
-            public class _FilterPropertyNode
+            public class _FilterByPropertyValueNode
             {
                 public static string @input = "input";
                 public IElement? @_input = null;
@@ -844,10 +844,10 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _FilterPropertyNode @FilterPropertyNode = new _FilterPropertyNode();
-            public MofObjectShadow @__FilterPropertyNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode");
+            public _FilterByPropertyValueNode @FilterByPropertyValueNode = new _FilterByPropertyValueNode();
+            public MofObjectShadow @__FilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode");
 
-            public class _FilterTypeNode
+            public class _FilterByMetaclassNode
             {
                 public static string @input = "input";
                 public IElement? @_input = null;
@@ -863,8 +863,8 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _FilterTypeNode @FilterTypeNode = new _FilterTypeNode();
-            public MofObjectShadow @__FilterTypeNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode");
+            public _FilterByMetaclassNode @FilterByMetaclassNode = new _FilterByMetaclassNode();
+            public MofObjectShadow @__FilterByMetaclassNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode");
 
             public class _ComparisonMode
             {
@@ -932,7 +932,7 @@ namespace DatenMeister.Core.Models
             public _DynamicSourceNode @DynamicSourceNode = new _DynamicSourceNode();
             public MofObjectShadow @__DynamicSourceNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
 
-            public class _SourcePathNode
+            public class _SelectByPathNode
             {
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
@@ -942,8 +942,8 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _SourcePathNode @SourcePathNode = new _SourcePathNode();
-            public MofObjectShadow @__SourcePathNode = new MofObjectShadow("dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf");
+            public _SelectByPathNode @SelectByPathNode = new _SelectByPathNode();
+            public MofObjectShadow @__SelectByPathNode = new MofObjectShadow("dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf");
 
             public class _QueryStatement
             {

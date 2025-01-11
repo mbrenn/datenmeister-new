@@ -5,15 +5,15 @@
     <!-- The filter -->
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="DataView" p1:id="4593ccf1-a127-47e2-bbe5-4d5bd228761e">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter In Work" p1:id="34fdd75a-49db-4bf2-8305-740ca33c46ba">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="In Work Issues" input-ref="#IssueMeister.FilterInWork.Node1" property="state" value="InWork" comparisonMode="Equal" p1:id="IssueMeister.InWorkIssuesViews" />
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="In Work Issues" input-ref="#IssueMeister.FilterInWork.Node1" property="state" value="InWork" comparisonMode="Equal" p1:id="IssueMeister.InWorkIssuesViews" />
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterInWork.Node1" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter Open" p1:id="4da4d52a-84cc-498c-978b-68d68e12b448">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="Open Issues" input-ref="#IssueMeister.FilterOpen.Node1" property="state" value="Open" comparisonMode="Equal" p1:id="IssueMeister.OpenIssuesViews" />
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="Open Issues" input-ref="#IssueMeister.FilterOpen.Node1" property="state" value="Open" comparisonMode="Equal" p1:id="IssueMeister.OpenIssuesViews" />
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterOpen.Node1" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter Closed" p1:id="34fdd35a-49db-4bf2-8305-740ca33c46ba">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="Closed Issues" input-ref="#IssueMeister.FilterClosed.Node1" property="state" value="Closed" comparisonMode="Equal" p1:id="IssueMeister.ClosedIssuesViews" />
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="Closed Issues" input-ref="#IssueMeister.FilterClosed.Node1" property="state" value="Closed" comparisonMode="Equal" p1:id="IssueMeister.ClosedIssuesViews" />
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterClosed.Node1" />
       </packagedElement>
     </packagedElement>

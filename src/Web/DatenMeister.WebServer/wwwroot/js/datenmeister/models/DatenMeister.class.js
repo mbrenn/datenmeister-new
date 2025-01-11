@@ -422,6 +422,7 @@ export var _DatenMeister;
         class _QueryStatement {
         }
         _QueryStatement.nodes = "nodes";
+        _QueryStatement.resultNode = "resultNode";
         _DataViews._QueryStatement = _QueryStatement;
         _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518";
     })(_DataViews = _DatenMeister._DataViews || (_DatenMeister._DataViews = {}));

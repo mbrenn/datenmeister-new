@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -29,6 +30,14 @@ namespace DatenMeister.DataView
         private DataViewNodeFactories _dataViewFactories;
 
         private int _referenceCount;
+
+        private Stopwatch stopwatch = new Stopwatch();
+
+        /// <summary>
+        /// Gets or sets the time for the maximum execution timing of the dataview. If the execution time is longer, the evaluation will be stopped
+        /// and an exception will be thrown
+        /// </summary>
+        public TimeSpan MaximumExecutionTiming = TimeSpan.MaxValue;
 
         public DataViewEvaluation(DataViewNodeFactories dataViewFactories)
         {
@@ -71,17 +80,42 @@ namespace DatenMeister.DataView
         /// <returns>The reflective Sequence</returns>
         public IReflectiveCollection GetElementsForViewNode(IElement viewNode)
         {
-            _referenceCount++;
-            if (_referenceCount > MaximumReferenceCount)
+            if (_referenceCount == 0)
             {
-                Logger.Warn("Maximum number of recursions are evaluated in dataview evaluation");
-                return new PureReflectiveSequence();
+                stopwatch.Start();
             }
 
-            var result = GetElementsForViewNodeInternal(viewNode);
-            _referenceCount--;
+            _referenceCount++;
+            try
+            {
+                if (_referenceCount > MaximumReferenceCount)
+                {
+                    Logger.Error("Maximum number of recursions are evaluated in dataview evaluation");
+                    throw new InvalidOperationException("Maximum number of recursions are evaluated in dataview evaluation");
+                }
 
-            return result;
+                // Checks the timeout
+                if (MaximumExecutionTiming != TimeSpan.MaxValue && stopwatch.Elapsed > MaximumExecutionTiming)
+                {
+                    Logger.Error("Maximum execution timing exceeded");
+                    throw new InvalidOperationException("Maximum execution timing exceeded");
+                }
+
+                // Gets the elements
+                var result = GetElementsForViewNodeInternal(viewNode);
+                return result;
+            }
+            finally
+            {
+                _referenceCount--;
+
+                if (_referenceCount == 0)
+                {
+                    stopwatch.Stop();
+                    Logger.Info($"Time for evaluation: {stopwatch.ElapsedMilliseconds}ms");
+                    stopwatch.Reset();
+                }
+            }
         }
 
         /// <summary>

@@ -30,8 +30,7 @@ namespace DatenMeister.Core.Functions.Queries
                 collection,
                 property,
                 x => x?.StartsWith(value) == true);
-        }
-        
+        }      
 
         public static IReflectiveCollection WhenElementIsObject(
             this IReflectiveCollection collection)
@@ -124,7 +123,7 @@ namespace DatenMeister.Core.Functions.Queries
             this IReflectiveCollection collection,
             Func<object?, bool> filter)
             =>
-                new TemporaryReflectiveSequence(collection.Where(filter).ToList());
+                new TemporaryReflectiveSequence(collection.Where(filter));
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively
@@ -134,7 +133,7 @@ namespace DatenMeister.Core.Functions.Queries
         public static IReflectiveSequence GetAllDescendants(
             this IReflectiveCollection collection)
             =>
-                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
+                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>());
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively
@@ -144,7 +143,7 @@ namespace DatenMeister.Core.Functions.Queries
         public static IReflectiveSequence GetCompositeDescendents(
             this IReflectiveCollection collection)
             =>
-                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, null, DescendentMode.OnlyComposites).Cast<object>().ToList());
+                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, null, DescendentMode.OnlyComposites).Cast<object>());
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively.
@@ -159,7 +158,7 @@ namespace DatenMeister.Core.Functions.Queries
         {
             return new TemporaryReflectiveSequence(
                 collection.AsEnumerable().Union(
-                    AllDescendentsQuery.GetDescendents(collection, byFollowingProperties, DescendentMode.IncludingItself).Cast<object>().ToList()));
+                    AllDescendentsQuery.GetDescendents(collection, byFollowingProperties, DescendentMode.IncludingItself).Cast<object>()));
         }
 
         /// <summary>
@@ -189,7 +188,7 @@ namespace DatenMeister.Core.Functions.Queries
             this IReflectiveCollection collection,
             IEnumerable<string> byFollowingProperties)
             =>
-                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>().ToList());
+                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>());
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively

@@ -95,21 +95,28 @@ export interface IFindBySearchStringResult {
 
 export interface IQueryObjectParameter {
     query: Mof.JsonFromMofObject;
+    timeout?: number; // Timeout in seconds
 }
 
 export interface IQueryObjectResult {
     result: Array<Mof.DmObject>;
 }
 
-export async function queryObject(query: Mof.DmObject): Promise<IQueryObjectResult> {
+export async function queryObject(query: Mof.DmObject, timeout?: number): Promise<IQueryObjectResult> {
     var json = Mof.createJsonFromObject(query);
+
+    var parameters: IQueryObjectParameter = {
+        query: json
+    };
+
+    if (timeout !== undefined && timeout !== null && timeout > 0) {
+        parameters.timeout = timeout;
+    }
 
     var result = await ApiConnection.post<any>(
         Settings.baseUrl +
         "api/elements/query_object",
-        {
-            query: json
-        });
+        parameters);
 
     return {
         result: convertToMofObjects(result.result)

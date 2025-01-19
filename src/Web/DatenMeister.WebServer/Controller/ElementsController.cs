@@ -180,7 +180,7 @@ namespace DatenMeister.WebServer.Controller
         {
             public MofObjectAsJson Query { get; set; } = new MofObjectAsJson();
 
-            public int? timeout = 0;
+            public int? Timeout = 0;
         }
 
         [HttpPost("api/elements/query_object")]
@@ -201,13 +201,13 @@ namespace DatenMeister.WebServer.Controller
             stopWatch.Start();
 
             // Sets the maximum allowed timeout
-            if (parameter.timeout > 0 && parameter.timeout != null)
+            if (parameter.Timeout > 0 && parameter.Timeout != null)
             {
-                viewLogic.MaximumExecutionTiming = TimeSpan.FromSeconds(parameter.timeout.Value);
+                viewLogic.MaximumExecutionTiming = TimeSpan.FromSeconds(parameter.Timeout.Value);
             }
              
-            var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);            
-            List<object> results = new  ();
+            var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);
+            List<object> results = new();
 
             // Get the items and take care of the allowed timeout
             foreach (var item in resultingNodes)

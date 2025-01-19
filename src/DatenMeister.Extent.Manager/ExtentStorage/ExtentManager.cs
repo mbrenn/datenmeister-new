@@ -762,7 +762,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                         failedExtents.Add(configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
                         lastException = exc;
 
-                        if (Debugger.IsAttached)
+                        if (Debugger.IsAttached && ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading)
                         {
                             Debugger.Break();
                         }

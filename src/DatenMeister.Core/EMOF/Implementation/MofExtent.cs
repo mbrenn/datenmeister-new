@@ -381,12 +381,12 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if (_metaExtents.Any(x => x.Equals(extent))) return;
 
-                if (XmlMetaExtent != this)
-                {
-                    XmlMetaExtent.AddMetaExtent(extent);
-                }
-
                 _metaExtents.Add(extent);
+            }
+
+            if (XmlMetaExtent != this)
+            {
+                XmlMetaExtent.AddMetaExtent(extent);
             }
         }
 

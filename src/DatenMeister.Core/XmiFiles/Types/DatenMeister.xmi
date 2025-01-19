@@ -1189,7 +1189,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.ViewNode" name="ViewNode">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="240fcd1f-cca6-426a-b845-8b780a178d8b" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SourceExtentNode" name="SelectByExtentNode">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SelectByExtentNode" name="SelectByExtentNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="fa637685-7051-4c12-8fd1-dcfe7eec729b" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cf43d462-4efa-40ba-8d85-4cb5b33b860b" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a93e4d0b-d9cf-4b55-ac8f-a3d08713d0d1" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -1198,14 +1198,14 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="59886420-a68c-4a3d-937c-2c168b128127" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b3262eeb-1bd2-45cf-b30e-5a9a93a5ba7d" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterPropertyNode" name="FilterByPropertyValueNode">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="FilterByPropertyValueNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b08ec0ba-93c0-45ec-a75f-e2b76db2be85" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="248423b3-6df8-476e-8f0d-42fd2ede4df1" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7bf90409-330b-4c2c-8eaf-587b9a858820" name="property" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d761ff6b-d3c5-4089-ab72-0d6451250d09" name="value" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d4911f0d-61d9-401e-9afb-bcc667a6dfa1" name="comparisonMode" type-ref="#DatenMeister.Models.DataViews.ComparisonMode" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterTypeNode" name="FilterByMetaclassNode">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByMetaclassNode" name="FilterByMetaclassNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="307ae9ff-38c4-48bb-bec7-40be26c5d81f" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="24eaa825-980c-434c-a853-7825f1a2d2b2" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7e4e02f7-36ae-48d6-8d91-fd48b0a435a1" name="metaClass" />
@@ -1241,7 +1241,7 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf" name="SelectByPathNode">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SelectByPathNode" name="SelectByPathNode">
       <isAbstract p1:id="fc0a7451-f1e7-4ab8-bf2f-4a6fe4c41141" />
       <isActive p1:id="7033c342-047d-46a0-b3c4-bd4f9007911f" />
       <isFinalSpecialization p1:id="db67a215-845c-44ca-83c3-246c5177d697" />
@@ -1267,7 +1267,7 @@
         <isLeaf p1:id="fa03f0cb-9e01-46eb-85e3-7b041aabc101" />
       </ownedAttribute>
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="ad5a73ba-118a-44bc-8c2c-bb5c19b58518" name="QueryStatement">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.QueryStatement" name="QueryStatement">
       <isAbstract p1:id="4c92bc3e-dfea-4a21-9a41-db4991d3e8e9" />
       <isActive p1:id="9e7f7b08-fe37-4eba-9cb9-540fb8ede2a8" />
       <isFinalSpecialization p1:id="6b1fd280-235c-4625-ab70-b214481ad442" />

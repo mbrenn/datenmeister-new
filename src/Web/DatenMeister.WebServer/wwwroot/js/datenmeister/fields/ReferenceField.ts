@@ -53,7 +53,7 @@ export class Control {
                 this._list.append(div);
             } else {
                 const div = $("<div />");
-                injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
+                let _ = injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
                 this._list.append(div);
             }
 

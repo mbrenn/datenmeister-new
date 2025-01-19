@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -179,6 +179,8 @@ namespace DatenMeister.WebServer.Controller
         public class QueryObjectParameter
         {
             public MofObjectAsJson Query { get; set; } = new MofObjectAsJson();
+
+            public int? timeout = 0;
         }
 
         [HttpPost("api/elements/query_object")]
@@ -194,12 +196,37 @@ namespace DatenMeister.WebServer.Controller
 
             // Second, execute the query
             var viewLogic = new DataView.DataViewEvaluation(_workspaceLogic, _scopeStorage);
-            var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            // Sets the maximum allowed timeout
+            if (parameter.timeout > 0 && parameter.timeout != null)
+            {
+                viewLogic.MaximumExecutionTiming = TimeSpan.FromSeconds(parameter.timeout.Value);
+            }
+             
+            var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);            
+            List<object> results = new  ();
+
+            // Get the items and take care of the allowed timeout
+            foreach (var item in resultingNodes)
+            {
+                if (stopWatch.Elapsed > viewLogic.MaximumExecutionTiming)
+                {
+                    break;
+                }
+
+                if (item != null)
+                {
+                    results.Add(item);
+                }
+            }
 
             // Third, convert the query result to the json interface
             var result = new QueryObjectResult
             {
-                Result = ItemsController.ConvertToJson(resultingNodes)
+                Result = ItemsController.ConvertToJson(results)
             };
 
             return result;

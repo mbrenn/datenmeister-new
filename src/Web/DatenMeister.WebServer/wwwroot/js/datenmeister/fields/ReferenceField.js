@@ -30,7 +30,7 @@ export class Control {
             }
             else {
                 const div = $("<div />");
-                injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
+                let _ = injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
                 this._list.append(div);
             }
             if (!this.isReadOnly) {

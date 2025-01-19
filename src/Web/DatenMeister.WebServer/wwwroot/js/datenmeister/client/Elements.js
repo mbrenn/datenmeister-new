@@ -56,12 +56,16 @@ export function findBySearchString(searchString) {
         "api/elements/find_by_searchstring?search=" +
         encodeURIComponent(searchString));
 }
-export async function queryObject(query) {
+export async function queryObject(query, timeout) {
     var json = Mof.createJsonFromObject(query);
-    var result = await ApiConnection.post(Settings.baseUrl +
-        "api/elements/query_object", {
+    var parameters = {
         query: json
-    });
+    };
+    if (timeout !== undefined && timeout !== null && timeout > 0) {
+        parameters.timeout = timeout;
+    }
+    var result = await ApiConnection.post(Settings.baseUrl +
+        "api/elements/query_object", parameters);
     return {
         result: convertToMofObjects(result.result)
     };

@@ -408,7 +408,7 @@ export namespace _DatenMeister
                     static _name_ = "name";
                 }
 
-                export const __SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
+                export const __SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode";
                 export class _FlattenNode
                 {
                     static input = "input";
@@ -425,7 +425,7 @@ export namespace _DatenMeister
                     static _name_ = "name";
                 }
 
-                export const __FilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode";
+                export const __FilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
                 export class _FilterByMetaclassNode
                 {
                     static input = "input";
@@ -434,7 +434,7 @@ export namespace _DatenMeister
                     static _name_ = "name";
                 }
 
-                export const __FilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode";
+                export const __FilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
                 export module _ComparisonMode
                 {
                     export const Equal = "Equal";
@@ -480,14 +480,14 @@ export namespace _DatenMeister
                     static path = "path";
                 }
 
-                export const __SelectByPathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
+                export const __SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";
                 export class _QueryStatement
                 {
                     static nodes = "nodes";
                     static resultNode = "resultNode";
                 }
 
-                export const __QueryStatement_Uri = "dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518";
+                export const __QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
         }
 
         export namespace _Reports

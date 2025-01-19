@@ -354,7 +354,7 @@ export var _DatenMeister;
         _SelectByExtentNode.workspaceId = "workspaceId";
         _SelectByExtentNode._name_ = "name";
         _DataViews._SelectByExtentNode = _SelectByExtentNode;
-        _DataViews.__SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode";
+        _DataViews.__SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode";
         class _FlattenNode {
         }
         _FlattenNode.input = "input";
@@ -369,7 +369,7 @@ export var _DatenMeister;
         _FilterByPropertyValueNode.comparisonMode = "comparisonMode";
         _FilterByPropertyValueNode._name_ = "name";
         _DataViews._FilterByPropertyValueNode = _FilterByPropertyValueNode;
-        _DataViews.__FilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode";
+        _DataViews.__FilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
         class _FilterByMetaclassNode {
         }
         _FilterByMetaclassNode.input = "input";
@@ -377,7 +377,7 @@ export var _DatenMeister;
         _FilterByMetaclassNode.includeInherits = "includeInherits";
         _FilterByMetaclassNode._name_ = "name";
         _DataViews._FilterByMetaclassNode = _FilterByMetaclassNode;
-        _DataViews.__FilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode";
+        _DataViews.__FilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
         let _ComparisonMode;
         (function (_ComparisonMode) {
             _ComparisonMode.Equal = "Equal";
@@ -418,13 +418,13 @@ export var _DatenMeister;
         _SelectByPathNode.workspaceId = "workspaceId";
         _SelectByPathNode.path = "path";
         _DataViews._SelectByPathNode = _SelectByPathNode;
-        _DataViews.__SelectByPathNode_Uri = "dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf";
+        _DataViews.__SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";
         class _QueryStatement {
         }
         _QueryStatement.nodes = "nodes";
         _QueryStatement.resultNode = "resultNode";
         _DataViews._QueryStatement = _QueryStatement;
-        _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518";
+        _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
     })(_DataViews = _DatenMeister._DataViews || (_DatenMeister._DataViews = {}));
     let _Reports;
     (function (_Reports) {

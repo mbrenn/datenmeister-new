@@ -7,6 +7,7 @@ using BurnSystems.Logging.Provider;
 using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Plugins;
 using NUnit.Framework;
@@ -50,6 +51,7 @@ namespace DatenMeister.Tests
                 GiveMe.DropDatenMeisterStorage(integrationSettings);
             }
 
+            ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading = false;
             return await GiveMe.DatenMeister(integrationSettings);
         }
 

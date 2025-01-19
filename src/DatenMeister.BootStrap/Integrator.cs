@@ -277,7 +277,7 @@ namespace DatenMeister.BootStrap
                 {
                     Logger.Info("Failure of loading extents will lead to a read-only application");
 
-                    if (Debugger.IsAttached)
+                    if (Debugger.IsAttached && ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading)
                     {
                         Debugger.Break();
                     }

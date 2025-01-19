@@ -810,7 +810,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _SelectByExtentNode @SelectByExtentNode = new _SelectByExtentNode();
-            public MofObjectShadow @__SelectByExtentNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SourceExtentNode");
+            public MofObjectShadow @__SelectByExtentNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode");
 
             public class _FlattenNode
             {
@@ -845,7 +845,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _FilterByPropertyValueNode @FilterByPropertyValueNode = new _FilterByPropertyValueNode();
-            public MofObjectShadow @__FilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode");
+            public MofObjectShadow @__FilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
 
             public class _FilterByMetaclassNode
             {
@@ -864,7 +864,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _FilterByMetaclassNode @FilterByMetaclassNode = new _FilterByMetaclassNode();
-            public MofObjectShadow @__FilterByMetaclassNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterTypeNode");
+            public MofObjectShadow @__FilterByMetaclassNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode");
 
             public class _ComparisonMode
             {
@@ -943,7 +943,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _SelectByPathNode @SelectByPathNode = new _SelectByPathNode();
-            public MofObjectShadow @__SelectByPathNode = new MofObjectShadow("dm:///_internal/types/internal#6c44d52f-7d6f-4af4-ae11-a5ab3071a0cf");
+            public MofObjectShadow @__SelectByPathNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode");
 
             public class _QueryStatement
             {
@@ -956,7 +956,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _QueryStatement @QueryStatement = new _QueryStatement();
-            public MofObjectShadow @__QueryStatement = new MofObjectShadow("dm:///_internal/types/internal#ad5a73ba-118a-44bc-8c2c-bb5c19b58518");
+            public MofObjectShadow @__QueryStatement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement");
 
         }
 

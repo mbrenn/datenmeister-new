@@ -285,7 +285,7 @@ namespace DatenMeister.Tests.Runtime
     <item p1:id=""item3"" name=""item3"" /> 
     
     <item p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"" name=""Filter Open"">
-        <packagedElement p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode""
+        <packagedElement p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode""
             name=""Open Issues""
             input-ref=""#filterNode1"" property=""name"" value=""child1"" comparisonMode=""Equal""
                 p1:id=""child1Filter"" />

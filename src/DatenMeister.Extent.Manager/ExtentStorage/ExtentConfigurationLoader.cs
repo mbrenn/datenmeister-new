@@ -25,6 +25,13 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
 
         private readonly IScopeStorage _scopeStorage;
 
+        /// <summary>
+        /// Information whether the debugger shall be triggered in case of a failed
+        /// workspace loading. This flag is set, except for unit and integration tests
+        /// to figure out the root cause for resetted configurations.
+        /// </summary>
+        public static bool BreakOnFailedWorkspaceLoading = true;
+
         public ExtentConfigurationLoader(
             IScopeStorage scopeStorage,
             ExtentManager extentManager)
@@ -58,7 +65,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             {
                 Logger.Info($"File for Extent not found: {path}");
 
-                if (Debugger.IsAttached)
+                if (Debugger.IsAttached && BreakOnFailedWorkspaceLoading)
                 {
                     Debugger.Break();
                 }

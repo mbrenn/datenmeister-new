@@ -1,6 +1,8 @@
 import {BaseField, IFormField} from "./Interfaces.js";
-import {DmObject} from "../Mof.js";
+import { DmObject } from "../Mof.js";
+import * as DropDownBaseField from "./DropDownBaseField.js";
 
+/*
 export class Field extends BaseField implements IFormField {
     private selectBox: JQuery<HTMLElement>;
 
@@ -35,5 +37,26 @@ export class Field extends BaseField implements IFormField {
     async evaluateDom(dmElement: DmObject) : Promise<void> {
         const fieldName = this.field.get('name').toString();
         dmElement.set(fieldName, this.selectBox.val());
+    }
+}*/
+
+export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {
+    constructor() {
+        super();
+        this.fieldType = DropDownBaseField.FieldType.Strings;
+    }
+
+    async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
+        const values = this.field.get('values') as Array<DmObject>;
+        if (Array.isArray(values)) {
+            return await Promise.resolve(values.map(x => {
+                return {
+                    title: x.get('name').toString(),
+                    value: x.get('value').toString()
+                };
+            }));
+        } else {
+            return [];
+        }
     }
 }

@@ -2,15 +2,18 @@
 import {DmObject, ObjectType} from "../Mof.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 import * as ClientItems from "../client/Items.js"
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import { _DatenMeister } from "../models/DatenMeister.class.js";
 
+import * as DropDownBaseField from "./DropDownBaseField.js";
+
+/*
 export class Field extends BaseField implements IFormField {
 
     _dropDown: JQuery;
 
     /**
      * Stores the element to which the DOM needs to be created
-     */
+     *
     _element: DmObject | undefined;
 
     async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
@@ -63,10 +66,10 @@ export class Field extends BaseField implements IFormField {
         }
     }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
+    async evaluateDom(dmElement: DmObject): Promise<void> {
         const fieldName = this.field.get('name').toString();
         const fieldValue = this._dropDown.val();
-        if ( fieldValue === '' || fieldValue === undefined) {
+        if (fieldValue === '' || fieldValue === undefined) {
             dmElement.unset(fieldName);
         }
         else {
@@ -87,5 +90,33 @@ export class Field extends BaseField implements IFormField {
                 _DatenMeister._Forms._ReferenceFieldFromCollectionData.defaultWorkspace, ObjectType.String) ?? "",
             this.field.get(
                 _DatenMeister._Forms._ReferenceFieldFromCollectionData.collection, ObjectType.String));
+    }
+}*/
+
+
+export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {
+
+    constructor() {
+        super();
+        this.fieldType = DropDownBaseField.FieldType.References;
+    }
+
+    async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
+        if (this._element === undefined) {
+            throw "The element is not set. 'createDom' must be called in advance";
+        }
+
+        const rootElements = await ClientItems.getRootElementsAsItem(
+            this.field.get(
+                _DatenMeister._Forms._ReferenceFieldFromCollectionData.defaultWorkspace, ObjectType.String) ?? "",
+            this.field.get(
+                _DatenMeister._Forms._ReferenceFieldFromCollectionData.collection, ObjectType.String))
+        return rootElements.map(x => {
+            return {
+                title: x.name,
+                workspace: x.workspace,
+                itemUrl: x.uri
+            }
+        });
     }
 }

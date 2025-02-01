@@ -6,6 +6,11 @@ import { loadDefaultModules } from "../actions/DefaultLoader.js"
 
 loadDefaultModules();
 
+export async function pageTestFormFields() {
+    var action = new Mof.DmObject(_DatenMeister._DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);
+    await FormActions.executeActionOnServer(action);
+}
+
 export async function pageOpenSelectItemControl()
 {
     const selectItemControl =$("#selectitemcontrol"); 

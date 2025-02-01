@@ -1177,6 +1177,86 @@
           <isLeaf p2:id="86a8d617-5e2a-4ced-a5c3-e3486be31866" />
         </ownedAttribute>
       </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="5f69675e-df58-4ad7-84bf-359cdfba5db4" name="NavigateToItemClientAction">
+        <isAbstract p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Class-isAbstract-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isAbstract>
+        <isActive p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Class-isActive-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isActive>
+        <isFinalSpecialization p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Classifier-isFinalSpecialization-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isFinalSpecialization>
+        <isLeaf p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="RedefinableElement-isLeaf-_defaultValue">
+          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+        </isLeaf>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e43bd256-2486-4825-af79-5a8c0387a48f" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:type="dm:///_internal/model/uml#InstanceValue" p2:id="Property-aggregation-_defaultValue" type="AggregationKind" instance="AggregationKind-none" />
+          <isDerived p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Property-isDerived-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isDerived>
+          <isDerivedUnion p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Property-isDerivedUnion-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isDerivedUnion>
+          <isReadOnly p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="StructuralFeature-isReadOnly-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isReadOnly>
+          <isOrdered p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="MultiplicityElement-isOrdered-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isOrdered>
+          <isUnique p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="MultiplicityElement-isUnique-_defaultValue" value="true" />
+          <isStatic p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Feature-isStatic-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isStatic>
+          <isLeaf p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="RedefinableElement-isLeaf-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isLeaf>
+        </ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="61332eab-3939-4ecd-ac84-f5370931e566" name="itemUrl" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:type="dm:///_internal/model/uml#InstanceValue" p2:id="Property-aggregation-_defaultValue" type="AggregationKind" instance="AggregationKind-none" />
+          <isDerived p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Property-isDerived-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isDerived>
+          <isDerivedUnion p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Property-isDerivedUnion-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isDerivedUnion>
+          <isReadOnly p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="StructuralFeature-isReadOnly-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isReadOnly>
+          <isOrdered p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="MultiplicityElement-isOrdered-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isOrdered>
+          <isUnique p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="MultiplicityElement-isUnique-_defaultValue" value="true" />
+          <isStatic p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Feature-isStatic-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isStatic>
+          <isLeaf p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="RedefinableElement-isLeaf-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isLeaf>
+        </ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3c3dcee3-b48d-4ff1-b7aa-a8e2e759aa4d" name="formUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
+          <aggregation p2:type="dm:///_internal/model/uml#InstanceValue" p2:id="Property-aggregation-_defaultValue" type="AggregationKind" instance="AggregationKind-none" />
+          <isDerived p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Property-isDerived-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isDerived>
+          <isDerivedUnion p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Property-isDerivedUnion-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isDerivedUnion>
+          <isReadOnly p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="StructuralFeature-isReadOnly-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isReadOnly>
+          <isOrdered p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="MultiplicityElement-isOrdered-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isOrdered>
+          <isUnique p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="MultiplicityElement-isUnique-_defaultValue" value="true" />
+          <isStatic p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="Feature-isStatic-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isStatic>
+          <isLeaf p2:type="dm:///_internal/model/uml#LiteralBoolean" p2:id="RedefinableElement-isLeaf-_defaultValue">
+            <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+          </isLeaf>
+        </ownedAttribute>
+      </packagedElement>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -1973,6 +2053,21 @@
           <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
         </general>
       </generalization>
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="ba1403c9-20cd-487d-8147-3937889deeb0" name="NavigateToFieldsForTestAction">
+      <isAbstract p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Class-isAbstract-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isAbstract>
+      <isActive p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Class-isActive-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isActive>
+      <isFinalSpecialization p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Classifier-isFinalSpecialization-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isFinalSpecialization>
+      <isLeaf p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="RedefinableElement-isLeaf-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isLeaf>
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="58beb095-b794-4d67-97dc-c890b80fd22a" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="AttachedExtent" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="7447d350-9b9d-47d3-85d4-737fb6e886c7">

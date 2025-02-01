@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
     <ProjectReference Include="..\..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Forms.Actions\DatenMeister.Forms.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Html\DatenMeister.Html.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Reports.Forms\DatenMeister.Reports.Forms.csproj" />

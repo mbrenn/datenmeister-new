@@ -40,10 +40,11 @@ export async function loadNameByUri(workspaceId, elementUri) {
     if (workspaceId === undefined) {
         workspaceId = "_";
     }
-    return await ApiConnection.get(Settings.baseUrl +
+    const getUrl = Settings.baseUrl +
         "api/elements/get_name/" +
         encodeURIComponent(workspaceId) + "/" +
-        encodeURIComponent(elementUri));
+        encodeURIComponent(elementUri);
+    return await ApiConnection.get(getUrl);
 }
 export async function createTemporaryElement(metaClassUri) {
     return await ApiConnection.put(Settings.baseUrl +

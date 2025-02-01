@@ -128,6 +128,7 @@ namespace DatenMeister.Forms.FormFinder
                 {
                     Logger.Warn(
                         "Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
+                    if(Debugger.IsAttached) Debugger.Break();
                     continue;
                 }
 

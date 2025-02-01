@@ -52,11 +52,13 @@ export async function loadNameByUri(workspaceId: string, elementUri: string): Pr
     if (workspaceId === undefined) {
         workspaceId = "_";
     }
-    return await ApiConnection.get<ItemWithNameAndId>(
-        Settings.baseUrl +
+
+    const getUrl = Settings.baseUrl +
         "api/elements/get_name/" +
         encodeURIComponent(workspaceId) + "/" +
-        encodeURIComponent(elementUri));
+        encodeURIComponent(elementUri);
+
+    return await ApiConnection.get<ItemWithNameAndId>(getUrl);
 }
 
 export interface ICreateTemporaryElementResult {

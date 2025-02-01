@@ -2623,6 +2623,19 @@ namespace DatenMeister.Core.Models
             public _UriReferenceFieldData @UriReferenceFieldData = new _UriReferenceFieldData();
             public MofObjectShadow @__UriReferenceFieldData = new MofObjectShadow("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
 
+            public class _NavigateToFieldsForTestAction
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _NavigateToFieldsForTestAction @NavigateToFieldsForTestAction = new _NavigateToFieldsForTestAction();
+            public MofObjectShadow @__NavigateToFieldsForTestAction = new MofObjectShadow("dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0");
+
         }
 
         public _Forms Forms = new _Forms();

@@ -1,6 +1,7 @@
-import { DmObjectWithSync } from "./Mof.js";
+import * as Mof from "./Mof.js";
 import { SubmitMethod } from "./forms/Forms.js";
 import { _DatenMeister } from "./models/DatenMeister.class.js";
+import * as ActionClient from "./client/Actions.js";
 /**
  * Defines the base implementation which can be overridden
  */
@@ -20,7 +21,7 @@ export class ItemFormActionModuleBase {
     }
     loadObject() {
         if (this.defaultMetaClassUri !== undefined) {
-            return Promise.resolve(new DmObjectWithSync(this.defaultMetaClassUri));
+            return Promise.resolve(new Mof.DmObjectWithSync(this.defaultMetaClassUri));
         }
         return Promise.resolve(undefined);
     }
@@ -83,5 +84,59 @@ export async function executeClientAction(clientAction, form, parameter, submitM
     else {
         await module.execute(form, clientAction, parameter, submitMethod);
     }
+}
+/**
+ *
+ * Executes the action by the given action object and executes the returned client actions
+ * @param action The action to be executed
+ * @param form The form which was used to trigger the action
+ * @param element The element which is reflected within the form
+ * @param parameter Additional parameters which could be provided to the action
+ * @param submitMethod The method which was used to submit the action
+ * @returns The result of the action
+ */
+export async function executeAction(action, form, element, parameter, submitMethod) {
+    var module = getModuleByUri(action.metaClass?.uri);
+    if (module === undefined) {
+        alert("Unknown action: " + action.metaClass?.uri);
+        return;
+    }
+    const result = await module.execute(form, element, parameter, submitMethod);
+    if (result !== undefined) {
+        // Checks, if we are having a client-actions responded back from the server
+        const resultAsMof = result;
+        const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+        if (clientActions !== undefined) {
+            for (let n in clientActions) {
+                // Try to find the module and execute the client action
+                const clientAction = clientActions[n];
+                executeClientAction(clientAction, form);
+            }
+        }
+    }
+    return result;
+}
+export async function executeActionOnServer(action, form) {
+    const result = await ActionClient.executeActionDirectly("Execute", {
+        parameter: action
+    });
+    if (result !== undefined) {
+        if (!result.success) {
+            throw result.reason + "\r\n" + result.stackTrace;
+        }
+        // Checks, if we are having a client-actions responded back from the server
+        const resultAsMof = result.resultAsDmObject;
+        if (resultAsMof !== undefined) {
+            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+            if (clientActions !== undefined) {
+                for (let n in clientActions) {
+                    // Try to find the module and execute the client action
+                    const clientAction = clientActions[n];
+                    executeClientAction(clientAction, form);
+                }
+            }
+        }
+    }
+    return result;
 }
 //# sourceMappingURL=FormActions.js.map

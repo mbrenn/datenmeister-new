@@ -57,6 +57,9 @@
 <div>
     <ul>
         <li>
+            <a href="#" onclick="testFormFields(); return false;">Test Form Fields</a>
+        </li>
+        <li>
             <a href="~/ItemAction/JSON.Item.Alert">Alerting of an empty object</a>
         </li>
         <li>
@@ -86,7 +89,13 @@
 
 <script type="module">
 
-    import * as Action from './js/DatenMeister/page/Actions.js';
+    import * as Action from './js/datenmeister/page/Actions.js';
+
+    window.testFormFields = function testFormFields() {
+        Action.pageTestFormFields();
+
+        return false;
+    }
 
     window.openSelectItemControl = function openSelectItemControl() {
         Action.pageOpenSelectItemControl();

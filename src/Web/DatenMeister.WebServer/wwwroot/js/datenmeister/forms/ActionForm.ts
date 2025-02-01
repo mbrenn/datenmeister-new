@@ -67,7 +67,6 @@ export async function createActionFormForEmptyObject(
 
             statusOverview.setListStatus("Execute Client-Action", false);
 
-
             // Checks, if we are having a client-actions responded back from the server
             const resultAsMof = result as DmObject;
             const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, ObjectType.Array);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using DatenMeister.Actions;
 using DatenMeister.Core;
@@ -43,6 +44,13 @@ namespace DatenMeister.WebServer.Controller
             switch (actionName)
             {
                 case "Workspace.Extent.Xmi.Create":
+                    if (Debugger.IsAttached)
+                    {
+                        // Figure out when this method is called. 
+                        // It needs to be transfered by using the Execute
+                        Debugger.Break();
+                    }
+
                     if (mofParameter.metaclass?.@equals(_DatenMeister.TheOne.ExtentLoaderConfigs
                             .__XmiStorageLoaderConfig) != true)
                     {

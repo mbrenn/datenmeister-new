@@ -1,7 +1,8 @@
-﻿import {DmObject, DmObjectWithSync} from "./Mof.js";
+﻿import * as Mof from "./Mof.js";
 import * as IIForms from "./forms/Interfaces.js";
 import { SubmitMethod } from "./forms/Forms.js";
 import { _DatenMeister } from "./models/DatenMeister.class.js"
+import * as ActionClient from "./client/Actions.js"
 
 /**
  * This interface describes one module being used for the action form
@@ -29,13 +30,13 @@ export interface IItemFormActionModule
      * Loads the object for a certain action. 
      * Can be undefined, if a default object can be used
      */
-    loadObject(): Promise<DmObjectWithSync> | undefined;
+    loadObject(): Promise<Mof.DmObjectWithSync> | undefined;
 
     /**
      * Loads a certain form fitting to the action
      * Can be undefined, if a default form shall be generated 
      */
-    loadForm(metaClass?: string): Promise<DmObject> | undefined;
+    loadForm(metaClass?: string): Promise<Mof.DmObject> | undefined;
 
     /**
      * Will be called to execute the action 
@@ -50,9 +51,9 @@ export interface IItemFormActionModule
      */
     execute(
         form: IIForms.IFormNavigation,
-        element: DmObject,
-        parameter?: DmObject,
-        submitMethod?: SubmitMethod): Promise<DmObject | void>;
+        element: Mof.DmObject,
+        parameter?: Mof.DmObject,
+        submitMethod?: SubmitMethod): Promise<Mof.DmObject | void>;
 
 
     /**
@@ -61,7 +62,7 @@ export interface IItemFormActionModule
      * @param element Element to be shown
      * @param form Form that was used. 
      */
-    preparePage(element: DmObject, form: IIForms.IFormNavigation): Promise<void>
+    preparePage(element: Mof.DmObject, form: IIForms.IFormNavigation): Promise<void>
 
     /**
      * Contains a flag, whether the action is a 'dangerous' action
@@ -111,22 +112,22 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
      */
     skipSaving: boolean | undefined;
 
-    execute(form: IIForms.IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<DmObject | void> {
+    execute(form: IIForms.IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
         return Promise.resolve(undefined);
     }
 
-    loadForm(metaClass?: string): Promise<DmObject> | undefined {
+    loadForm(metaClass?: string): Promise<Mof.DmObject> | undefined {
         return Promise.resolve(undefined);
     }
 
-    preparePage(element: DmObject, form: IIForms.IFormNavigation): Promise<void> | undefined {
+    preparePage(element: Mof.DmObject, form: IIForms.IFormNavigation): Promise<void> | undefined {
         return Promise.resolve(undefined);
     }
 
-    loadObject(): Promise<DmObjectWithSync> | undefined {
+    loadObject(): Promise<Mof.DmObjectWithSync> | undefined {
         if (this.defaultMetaClassUri !== undefined) {
             return Promise.resolve(
-                new DmObjectWithSync(this.defaultMetaClassUri)
+                new Mof.DmObjectWithSync(this.defaultMetaClassUri)
             );
         }
 
@@ -182,9 +183,9 @@ export function getModuleByUri(actionMetaClassUri: string): IItemFormActionModul
 export async function execute(
     actionName: string,
     form: IIForms.IFormNavigation,
-    element: DmObject,
-    parameter?: DmObject,
-    submitMethod?: SubmitMethod): Promise<DmObject | void> {
+    element: Mof.DmObject,
+    parameter?: Mof.DmObject,
+    submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
 
     const foundModule = getModule(actionName);
     if (foundModule !== undefined) {
@@ -196,10 +197,10 @@ export async function execute(
 
 
 export async function executeClientAction(    
-    clientAction: DmObject,
+    clientAction: Mof.DmObject,
     form?: IIForms.IFormNavigation,
-    parameter?: DmObject,
-    submitMethod?: SubmitMethod): Promise<DmObject | void> {
+    parameter?: Mof.DmObject,
+    submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
 
     submitMethod ??= SubmitMethod.Save;
 
@@ -214,4 +215,81 @@ export async function executeClientAction(
     } else {
         await module.execute(form, clientAction, parameter, submitMethod);
     }
+}
+
+/**
+ * 
+ * Executes the action by the given action object and executes the returned client actions
+ * @param action The action to be executed
+ * @param form The form which was used to trigger the action
+ * @param element The element which is reflected within the form
+ * @param parameter Additional parameters which could be provided to the action
+ * @param submitMethod The method which was used to submit the action
+ * @returns The result of the action
+ */
+export async function executeAction(
+    action: Mof.DmObject,
+    form?: IIForms.IFormNavigation,
+    element?: Mof.DmObject,
+    parameter?: Mof.DmObject,
+    submitMethod?: SubmitMethod) {
+
+    var module = getModuleByUri(action.metaClass?.uri);
+    if (module === undefined) {
+        alert("Unknown action: " + action.metaClass?.uri);
+        return;
+    }
+
+    const result = await module.execute(form, element, parameter, submitMethod);
+
+    if (result !== undefined) {
+
+        // Checks, if we are having a client-actions responded back from the server
+        const resultAsMof = result as Mof.DmObject;
+        const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+        if (clientActions !== undefined) {
+
+            for (let n in clientActions) {
+
+                // Try to find the module and execute the client action
+                const clientAction = clientActions[n] as Mof.DmObject;
+                executeClientAction(clientAction, form);
+            }
+        }
+    }
+
+    return result
+}
+
+export async function executeActionOnServer(
+    action: Mof.DmObject,
+    form?: IIForms.IFormNavigation) {
+
+    const result = await ActionClient.executeActionDirectly("Execute", {
+        parameter: action
+    });
+
+    if (result !== undefined) {
+
+        if (!result.success) {
+            throw result.reason + "\r\n" + result.stackTrace;
+        }
+
+        // Checks, if we are having a client-actions responded back from the server
+        const resultAsMof = result.resultAsDmObject;
+        if (resultAsMof !== undefined) {
+            const clientActions = resultAsMof.get(_DatenMeister._Actions._ActionResult.clientActions, Mof.ObjectType.Array);
+            if (clientActions !== undefined) {
+
+                for (let n in clientActions) {
+
+                    // Try to find the module and execute the client action
+                    const clientAction = clientActions[n] as Mof.DmObject;
+                    executeClientAction(clientAction, form);
+                }
+            }
+        }
+    }
+
+    return result;
 }

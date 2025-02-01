@@ -534,6 +534,7 @@ namespace DatenMeister.WebServer.Controller
             var reference = _internal.GetItemByUriParameter(
                                 parameters.WorkspaceId,
                                 parameters.ReferenceUri);
+
             if (reference == null)
             {
                 return NotFound("Reference was not found");

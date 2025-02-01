@@ -47,5 +47,10 @@ namespace DatenMeister.Core.Provider
         {
             return Uri.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return "UriReference: " + Uri + " (" + Workspace + ")";
+        }
     }
 }

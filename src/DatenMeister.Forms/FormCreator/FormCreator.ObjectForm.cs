@@ -280,15 +280,16 @@ namespace DatenMeister.Forms.FormCreator
                         form.set(_DatenMeister._Forms._TableForm.name, $"Property: {propertyName}");
                         form.set(_DatenMeister._Forms._TableForm.property, propertyName);
 
-                        // Inhibit Unclassified Item
-                        form.set(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, true);
-
                         // Adds the form to the tabs
                         tabs.Add(form);
 
                         var propertyType = pair.propertyType;
                         if (propertyType != null)
                         {
+                            // Inhibit Unclassified Item in case thje property type is set
+                            form.set(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, true);
+
+                            // Add the fields to the form
                             AddFieldsToRowOrTableFormByMetaClass(form, propertyType, creationMode, cache);
                             FormMethods.AddDefaultTypeForNewElement(form, propertyType);
 

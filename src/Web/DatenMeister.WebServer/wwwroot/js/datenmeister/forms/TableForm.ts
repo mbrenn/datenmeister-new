@@ -1,4 +1,5 @@
 ﻿import * as InterfacesForms from "./Interfaces.js";
+import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
@@ -241,7 +242,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         if (this.formElement.get(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
 
             // Creates default unclassified button
-            createButton("Unclassified", null);
+            createUnclassifiedButton();
         }
 
         // Goes through all the elements
@@ -253,6 +254,48 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     inner.get('name'),
                     inner.get('metaClass').uri);
             }
+        }
+        
+        function createUnclassifiedButton() {
+            // If user clicks on the button, the user has the opportunity to select the field to be created. 
+            const btn = $("<btn class='btn btn-secondary'></btn>");
+            const typeSelection = $("<div></div>");
+            btn.text("Create new Item");
+                btn.on('click', async () => {
+                    typeSelection.empty();
+                    const selectItem = new SIC.SelectItemControl();
+                    const settings = new SIC.Settings();
+                    settings.showWorkspaceInBreadcrumb = true;
+                    settings.showExtentInBreadcrumb = true;
+                    selectItem.itemSelected.addListener(
+                        selectedItem => {
+                            if (selectedItem === undefined) {
+                                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
+                                    tthis.workspace,
+                                    tthis.itemUrl,
+                                    undefined,
+                                    undefined,
+                                    property);
+                            } else {
+
+                                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
+                                    tthis.workspace,
+                                    tthis.itemUrl,
+                                    selectedItem.uri,
+                                    selectedItem.workspace,
+                                    property);
+                            }
+                        });
+
+                    await selectItem.setWorkspaceById('Types');
+                    await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
+
+                    selectItem.init(typeSelection, settings);
+                });
+
+
+            tthis.tableCache.cacheButtons.append(btn);
+            tthis.tableCache.cacheButtons.append(typeSelection);
         }
 
         function createButton (name: string, metaClassUri?: string) {
@@ -277,15 +320,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                         encodeURIComponent(tthis.extentUri) +
                         metaClassUriParameter;
                 } else {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItemInProperty?workspace=" +
-                        encodeURIComponent(tthis.workspace) +
-                        "&itemUrl=" +
-                        encodeURIComponent(tthis.itemUrl) +
-                        metaClassUriParameter +
-                        "&property=" +
-                        encodeURIComponent(property);
+                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
+                        tthis.workspace,
+                        tthis.itemUrl,
+                        property,
+                        "Types",
+                        property);
                 }
             });
 

@@ -7,28 +7,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="8ac22534-b3f7-4286-a527-4342255e3bd8" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="state" type-ref="#IssueMeister.IssueState" defaultValue="Open" p1:id="cda11d81-1ce7-44cd-817b-65d6ac33b794" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="description" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="49faba8f-08a9-418d-ac40-3819cb63233a" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4528cb30-60a9-4a27-b36f-0bad32439068" name="iteration" type-ref="dm:///_internal/types/internal#IssueMeister.Iteration" isID="false" isComposite="false">
-        <aggregation p1:type="dm:///_internal/model/uml#InstanceValue" p1:id="Property-aggregation-_defaultValue" type="AggregationKind" instance="AggregationKind-none" />
-        <isDerived p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Property-isDerived-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isDerived>
-        <isDerivedUnion p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Property-isDerivedUnion-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isDerivedUnion>
-        <isReadOnly p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="StructuralFeature-isReadOnly-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isReadOnly>
-        <isOrdered p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="MultiplicityElement-isOrdered-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isOrdered>
-        <isUnique p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="MultiplicityElement-isUnique-_defaultValue" value="true" />
-        <isStatic p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Feature-isStatic-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isStatic>
-        <isLeaf p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="RedefinableElement-isLeaf-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isLeaf>
-      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4528cb30-60a9-4a27-b36f-0bad32439068" name="iteration" type-ref="dm:///_internal/types/internal#IssueMeister.Iteration" isID="false" isComposite="false"></ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" name="IssueState" p1:id="IssueMeister.IssueState" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="Open" p1:id="5b40cfe6-d474-4390-8ef8-d91d6ca0608f" />

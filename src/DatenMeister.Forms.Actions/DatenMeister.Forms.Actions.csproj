@@ -11,6 +11,7 @@
     <ProjectReference Include="..\DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj" />
     <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
     <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
+    <ProjectReference Include="..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
   </ItemGroup>
 
 </Project>

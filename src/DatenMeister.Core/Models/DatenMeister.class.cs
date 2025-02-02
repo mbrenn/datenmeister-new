@@ -757,6 +757,22 @@ namespace DatenMeister.Core.Models
                 public _NavigateToExtentClientAction @NavigateToExtentClientAction = new _NavigateToExtentClientAction();
                 public MofObjectShadow @__NavigateToExtentClientAction = new MofObjectShadow("dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462");
 
+                public class _NavigateToItemClientAction
+                {
+                    public static string @workspaceId = "workspaceId";
+                    public IElement? @_workspaceId = null;
+
+                    public static string @itemUrl = "itemUrl";
+                    public IElement? @_itemUrl = null;
+
+                    public static string @formUri = "formUri";
+                    public IElement? @_formUri = null;
+
+                }
+
+                public _NavigateToItemClientAction @NavigateToItemClientAction = new _NavigateToItemClientAction();
+                public MofObjectShadow @__NavigateToItemClientAction = new MofObjectShadow("dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4");
+
             }
 
             public _ClientActions ClientActions = new _ClientActions();

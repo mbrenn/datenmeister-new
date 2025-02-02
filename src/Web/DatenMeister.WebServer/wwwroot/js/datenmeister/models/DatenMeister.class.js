@@ -331,6 +331,13 @@ export var _DatenMeister;
             _NavigateToExtentClientAction.extentUri = "extentUri";
             _ClientActions._NavigateToExtentClientAction = _NavigateToExtentClientAction;
             _ClientActions.__NavigateToExtentClientAction_Uri = "dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462";
+            class _NavigateToItemClientAction {
+            }
+            _NavigateToItemClientAction.workspaceId = "workspaceId";
+            _NavigateToItemClientAction.itemUrl = "itemUrl";
+            _NavigateToItemClientAction.formUri = "formUri";
+            _ClientActions._NavigateToItemClientAction = _NavigateToItemClientAction;
+            _ClientActions.__NavigateToItemClientAction_Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4";
         })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
     })(_Actions = _DatenMeister._Actions || (_DatenMeister._Actions = {}));
     let _DataViews;

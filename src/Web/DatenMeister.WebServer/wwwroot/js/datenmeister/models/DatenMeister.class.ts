@@ -380,6 +380,14 @@ export namespace _DatenMeister
                         }
 
                         export const __NavigateToExtentClientAction_Uri = "dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462";
+                        export class _NavigateToItemClientAction
+                        {
+                            static workspaceId = "workspaceId";
+                            static itemUrl = "itemUrl";
+                            static formUri = "formUri";
+                        }
+
+                        export const __NavigateToItemClientAction_Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4";
                 }
 
         }

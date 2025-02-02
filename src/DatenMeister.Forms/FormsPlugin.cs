@@ -110,6 +110,13 @@ namespace DatenMeister.Forms
                                 _DatenMeister.TheOne.Forms.__RowForm,
                                 _DatenMeister.TheOne.Forms.__FormAssociation});
 
+                    // Tests the existence of the test form and other forms
+                    var testForm = _workspaceLogic.FindElement(WorkspaceNames.WorkspaceManagement, Uris.TestFormUri);
+                    if (testForm == null)
+                    {
+                        Logger.Error("The Testform with uri " + Uris.TestFormUri + " is not found");
+                    }
+
                     break;
             }
         }

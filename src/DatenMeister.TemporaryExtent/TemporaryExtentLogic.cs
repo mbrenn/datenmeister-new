@@ -29,10 +29,16 @@ namespace DatenMeister.TemporaryExtent
 
         public static TimeSpan DefaultCleanupTime { get; set; } = TimeSpan.FromHours(1);
 
+
         /// <summary>
         /// Gets the name of the workspace
         /// </summary>
-        public string WorkspaceName => _workspaceLogic.GetDataWorkspace().id;
+        public Workspace Workspace => _workspaceLogic.GetDataWorkspace();
+
+        /// <summary>
+        /// Gets the name of the workspace
+        /// </summary>
+        public string WorkspaceName => Workspace.id;
 
         /// <summary>
         /// Maps the element to a datetime until when it shall be deleted.
@@ -53,7 +59,7 @@ namespace DatenMeister.TemporaryExtent
         {
             get
             {
-                if (_workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri) 
+                if (_workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri) 
                     is not IUriExtent foundExtent)
                 {
                     // Somebody deleted the extent... So, we will create a new one
@@ -72,12 +78,12 @@ namespace DatenMeister.TemporaryExtent
         /// <returns>Found extent or null, if not found</returns>
         public IUriExtent? TryGetTemporaryExtent()
         {
-            return _workspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, TemporaryExtentPlugin.Uri)
+            return _workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri)
                 as IUriExtent;
         }
-        
+
         /// <summary>
-        /// Creates a simple temporary element
+        /// Creates a simple temporary element and adds it to the temporary extent
         /// </summary>
         /// <param name="metaClass">Metaclass to be used</param>
         /// <param name="cleanUpTime">Defines the cleanup time for the given item.
@@ -145,7 +151,7 @@ namespace DatenMeister.TemporaryExtent
         {
             var temporaryProvider = new InMemoryProvider();
             var extent = new MofUriExtent(temporaryProvider, InternalTempUri, _scopeStorage);
-            _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), extent);
+            _workspaceLogic.AddExtent(Workspace, extent);
             return extent;
         }
     }

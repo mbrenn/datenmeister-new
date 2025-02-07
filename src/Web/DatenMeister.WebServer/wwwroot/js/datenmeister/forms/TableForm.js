@@ -162,7 +162,7 @@ export class TableForm {
         if (defaultTypesForNewElements !== undefined) {
             for (let n in defaultTypesForNewElements) {
                 const inner = defaultTypesForNewElements[n];
-                createButton(inner.get('name'), inner.get('metaClass').uri);
+                createButton(inner.get('name', Mof.ObjectType.String), inner.get('metaClass', Mof.ObjectType.Object).uri);
             }
         }
         function createUnclassifiedButton() {
@@ -176,6 +176,7 @@ export class TableForm {
                 const settings = new SIC.Settings();
                 settings.showWorkspaceInBreadcrumb = true;
                 settings.showExtentInBreadcrumb = true;
+                settings.setButtonText = 'Create new Item';
                 selectItem.itemSelected.addListener(selectedItem => {
                     if (selectedItem === undefined) {
                         document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, undefined, undefined, property);
@@ -211,7 +212,7 @@ export class TableForm {
                             metaClassUriParameter;
                 }
                 else {
-                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, property, "Types", property);
+                    document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, metaClassUri, "Types", property);
                 }
             });
             tthis.tableCache.cacheButtons.append(btn);

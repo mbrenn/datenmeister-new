@@ -251,8 +251,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             for (let n in defaultTypesForNewElements) {
                 const inner = defaultTypesForNewElements[n] as Mof.DmObject;
                 createButton(
-                    inner.get('name'),
-                    inner.get('metaClass').uri);
+                    inner.get('name', Mof.ObjectType.String),
+                    inner.get('metaClass', Mof.ObjectType.Object).uri);
             }
         }
         
@@ -267,6 +267,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     const settings = new SIC.Settings();
                     settings.showWorkspaceInBreadcrumb = true;
                     settings.showExtentInBreadcrumb = true;
+                    settings.setButtonText = 'Create new Item';
                     selectItem.itemSelected.addListener(
                         selectedItem => {
                             if (selectedItem === undefined) {
@@ -323,7 +324,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                         tthis.workspace,
                         tthis.itemUrl,
-                        property,
+                        metaClassUri,
                         "Types",
                         property);
                 }

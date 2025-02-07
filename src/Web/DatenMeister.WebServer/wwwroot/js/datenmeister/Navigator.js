@@ -83,6 +83,11 @@ function parseNavigateToItemParam(param) {
         result += ampersand + "edit=true";
         ampersand = '&';
     }
+    // Adds the formUri to the result uri
+    if (param.formUri !== undefined && param.formUri !== null && param.formUri !== "") {
+        result += ampersand + "formUri=" + encodeURIComponent(param.formUri);
+        ampersand = '&';
+    }
     return result;
 }
 export function getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass) {

@@ -189,6 +189,10 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             this.formMode = FormMode.EditMode;
         }
 
+        if (p.get('formUri') !== null) {
+            this._overrideFormUrl = p.get('formUri');
+        }
+
         try {
             await this.rebuildForm();
         }

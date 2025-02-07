@@ -13,7 +13,7 @@ namespace DatenMeister.Forms.Actions
         public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
         {
             // First, create a temporary object
-            var temporaryExtentLogic= new TemporaryExtentLogic (actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+            var temporaryExtentLogic = new TemporaryExtentLogic(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             var temporaryObject = temporaryExtentLogic.CreateTemporaryElement(null, TimeSpan.FromHours(1));
 
             // Second, navigate the user to the recently created object with the testing form
@@ -22,7 +22,9 @@ namespace DatenMeister.Forms.Actions
             navigateToItem.set(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.itemUrl, temporaryObject.GetUri());
             navigateToItem.set(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.formUri, Uris.TestFormUri);
 
-            return await Task.FromResult<IElement?>(navigateToItem);
+            var result = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionResult);
+            result.AddCollectionItem(_DatenMeister._Actions._ActionResult.clientActions, navigateToItem);
+            return await Task.FromResult<IElement?>(result);
         }
 
         public bool IsResponsible(IElement node)

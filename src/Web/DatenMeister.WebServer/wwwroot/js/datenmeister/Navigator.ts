@@ -79,6 +79,11 @@ export interface INavigateToItemParams
      * Defines whether the user shall move to the edit mode
      */
     editMode?: boolean;
+
+    /**
+     * Defines the form uri to be used to show the item itself
+     */
+    formUri?: string;
 }
 
 export function getLinkForNavigateToMofItem(item: Mof.DmObject, param?: INavigateToItemParams) {
@@ -119,6 +124,12 @@ function parseNavigateToItemParam(param? : INavigateToItemParams) {
     let ampersand = '?';
     if (param.editMode === true) {
         result += ampersand + "edit=true"
+        ampersand = '&';
+    }
+
+    // Adds the formUri to the result uri
+    if (param.formUri !== undefined && param.formUri !== null && param.formUri !== "") {
+        result += ampersand + "formUri=" + encodeURIComponent(param.formUri);
         ampersand = '&';
     }
 

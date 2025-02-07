@@ -105,6 +105,9 @@ export class ObjectFormCreatorForItem {
         if (p.get('edit') === 'true') {
             this.formMode = FormMode.EditMode;
         }
+        if (p.get('formUri') !== null) {
+            this._overrideFormUrl = p.get('formUri');
+        }
         try {
             await this.rebuildForm();
         }

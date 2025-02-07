@@ -138,7 +138,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
             const fieldName = this.field.get('name').toString();
             dmElement.set(fieldName, this._dropDown.val());
         }
-        else if (this.fieldType === FieldType.References) {
+        else if (this.fieldType === FieldType.References && this._dropDown !== undefined) {
             const fieldName = this.field.get('name').toString();
             const fieldValue = this._dropDown.val();
             if (fieldValue === '' || fieldValue === undefined) {

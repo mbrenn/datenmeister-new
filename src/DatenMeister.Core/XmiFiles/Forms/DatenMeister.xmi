@@ -89,7 +89,7 @@
           <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" p1:id="3ee7e9b3-ca4a-4aca-ace8-58e20317c0ff" name="Reliability" value="reliability" />
         </field>
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData" p1:id="837c90cc-eb95-4e57-88ef-f4c989485098" name="numberField" isInteger="false" isAttached="false" title="Number Field" isEnumeration="false" isReadOnly="false" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData" p1:id="14ca8fb3-756e-4d24-90ad-740d3eb01aab" name="referenceFieldFromCollection" isAttached="false" title="Reference Field From Collection" isEnumeration="false" isReadOnly="false" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData" p1:id="14ca8fb3-756e-4d24-90ad-740d3eb01aab" name="referenceFieldFromCollection" title="Reference Field From Collection" isAttached="false" isEnumeration="false" isReadOnly="false" collection="dm:///_internal/types/internal?composites=includingSelf#DatenMeister.Modules.ZipCodeExample.Model.ZipCode" />
         <field p1:type="dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00" p1:id="4333683c-d216-439f-86fe-37c17906c6bd" />
       </tab>
     </packagedElement>

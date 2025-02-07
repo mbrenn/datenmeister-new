@@ -286,8 +286,9 @@ namespace DatenMeister.Forms.FormCreator
                         var propertyType = pair.propertyType;
                         if (propertyType != null)
                         {
-                            // Inhibit Unclassified Item in case thje property type is set
-                            form.set(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, true);
+                            // Inhibit Unclassified Item in case the property type is set
+                            // Addendum: We decided to allow to create an unclasssified item. 
+                            //form.set(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, true);
 
                             // Add the fields to the form
                             AddFieldsToRowOrTableFormByMetaClass(form, propertyType, creationMode, cache);

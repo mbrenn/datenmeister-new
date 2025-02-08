@@ -60,6 +60,10 @@
             <a href="#" onclick="testFormFields(); return false;">Test Form Fields</a>
         </li>
         <li>
+            <a href="#" onclick="debugQueryElements(); return false;">Debug Query Elements</a>
+            <div id="debug_query_elements"></div>
+        </li>
+        <li>
             <a href="~/ItemAction/JSON.Item.Alert">Alerting of an empty object</a>
         </li>
         <li>
@@ -94,6 +98,11 @@
     window.testFormFields = function testFormFields() {
         Action.pageTestFormFields();
 
+        return false;
+    }
+
+    window.debugQueryElements = function debugQueryElements() {
+        Action.pageDebugQueryElements();
         return false;
     }
 

@@ -186,7 +186,6 @@ namespace DatenMeister.WebServer.Controller
         [HttpPost("api/elements/query_object")]
         public ActionResult<QueryObjectResult> QueryObject([FromBody] QueryObjectParameter parameter)
         {
-
             // First, convert the object
             var converter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
             var objectToBeSet = converter.ConvertToObject(parameter.Query)

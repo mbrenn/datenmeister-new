@@ -52,3 +52,12 @@ export function getElementsOfExtent(builder: QueryBuilder, workspaceId: string, 
     return viewNode;
 }
 
+export function getElementsByPath(builder: QueryBuilder, workspaceId: string, path: string) {
+    var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByPathNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._SelectByPathNode.workspaceId, workspaceId);
+    viewNode.set(_DatenMeister._DataViews._SelectByPathNode.path, path);
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
+}
+

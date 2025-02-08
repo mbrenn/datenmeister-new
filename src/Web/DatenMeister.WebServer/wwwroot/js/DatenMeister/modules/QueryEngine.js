@@ -41,4 +41,12 @@ export function getElementsOfExtent(builder, workspaceId, extentUrl) {
     builder.setResultNode(viewNode);
     return viewNode;
 }
+export function getElementsByPath(builder, workspaceId, path) {
+    var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByPathNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._SelectByPathNode.workspaceId, workspaceId);
+    viewNode.set(_DatenMeister._DataViews._SelectByPathNode.path, path);
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
+}
 //# sourceMappingURL=QueryEngine.js.map

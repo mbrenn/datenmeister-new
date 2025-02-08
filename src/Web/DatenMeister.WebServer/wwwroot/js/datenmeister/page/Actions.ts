@@ -11,6 +11,10 @@ export async function pageTestFormFields() {
     await FormActions.executeActionOnServer(action);
 }
 
+export async function pageDebugQueryElements() {
+    alert('Debug');
+}
+
 export async function pageOpenSelectItemControl()
 {
     const selectItemControl =$("#selectitemcontrol"); 

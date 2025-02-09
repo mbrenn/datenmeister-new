@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,7 +6,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DataView
@@ -143,11 +142,11 @@ namespace DatenMeister.DataView
             if (metaClass == null)
             {
                 Logger.Warn("Unknown type of viewnode: null");
-                return new PureReflectiveSequence();
+                throw new InvalidOperationException("Unknown type of viewnode: null");
             }
 
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
-            return new PureReflectiveSequence();
+            throw new InvalidOperationException($"Unknown type of viewnode: {viewNode.getMetaClass()}");
         }
     }
 }

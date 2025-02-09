@@ -3,6 +3,7 @@ import * as Mof from '../Mof.js'
 import * as _DatenMeister from '../models/DatenMeister.class.js'
 import * as FormActions from '../FormActions.js'
 import { loadDefaultModules } from "../actions/DefaultLoader.js"
+import * as PathQueryDebugControl from "../controls/PathQueryDebugControl.js"
 
 loadDefaultModules();
 
@@ -12,7 +13,8 @@ export async function pageTestFormFields() {
 }
 
 export async function pageDebugQueryElements() {
-    alert('Debug');
+    var control = new PathQueryDebugControl.Control();
+    control.init($("#debug_query_elements"));
 }
 
 export async function pageOpenSelectItemControl()
@@ -25,6 +27,7 @@ export async function pageOpenSelectItemControl()
             "Uri:" + x.uri+ ", Extent:" + x.extentUri + ", Workspace: " + x.workspace));
     await control.initAsync(selectItemControl);
 }
+
 export async function pageOpenSelectItemControlFullBreadcrumb()
 {
     const selectItemControl =$("#selectitemcontrol");

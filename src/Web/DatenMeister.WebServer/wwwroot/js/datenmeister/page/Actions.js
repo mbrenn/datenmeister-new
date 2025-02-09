@@ -3,13 +3,15 @@ import * as Mof from '../Mof.js';
 import * as _DatenMeister from '../models/DatenMeister.class.js';
 import * as FormActions from '../FormActions.js';
 import { loadDefaultModules } from "../actions/DefaultLoader.js";
+import * as PathQueryDebugControl from "../controls/PathQueryDebugControl.js";
 loadDefaultModules();
 export async function pageTestFormFields() {
     var action = new Mof.DmObject(_DatenMeister._DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);
     await FormActions.executeActionOnServer(action);
 }
 export async function pageDebugQueryElements() {
-    alert('Debug');
+    var control = new PathQueryDebugControl.Control();
+    control.init($("#debug_query_elements"));
 }
 export async function pageOpenSelectItemControl() {
     const selectItemControl = $("#selectitemcontrol");

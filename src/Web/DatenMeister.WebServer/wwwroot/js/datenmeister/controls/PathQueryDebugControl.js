@@ -15,7 +15,7 @@ export class Control {
             "<div>Path: <input type='text' class='dm-pathquery-debug-path' /></div>" +
             "<button class='dm-pathquery-debug-query'>Query</button>" +
             "<div class='dm-pathquery-debug-result'></div>" +
-            "< /div>");
+            "</div>");
         // Add click handler to the button        
         const queryButton = this._control.find('.dm-pathquery-debug-query');
         queryButton.on('click', async () => {
@@ -34,10 +34,14 @@ export class Control {
         const result = this._control.find('.dm-pathquery-debug-result');
         result.empty();
         var queryBuilder = new QueryBuilder.QueryBuilder();
-        QueryBuilder.getElementsOfExtent(queryBuilder, workspace, path);
-        const serverResult = await ElementClient.queryObject(queryBuilder.queryStatement);
-        result.append(DomHelper.convertToDom(serverResult));
-        serverResult.result;
+        QueryBuilder.getElementsByPath(queryBuilder, workspace, path);
+        try {
+            const serverResult = await ElementClient.queryObject(queryBuilder.queryStatement);
+            result.append(DomHelper.convertToDom(serverResult.result));
+        }
+        catch (textMessage) {
+            result.append($("<div class='alert-warning'></div>").text(textMessage.toString()));
+        }
     }
 }
 //# sourceMappingURL=PathQueryDebugControl.js.map

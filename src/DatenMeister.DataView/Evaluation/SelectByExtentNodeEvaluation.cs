@@ -5,6 +5,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
+using System;
 
 namespace DatenMeister.DataView.Evaluation
 {
@@ -27,7 +28,7 @@ namespace DatenMeister.DataView.Evaluation
                 // No workspace logic is set but source extent queries for an extent and so is dependent upon 
                 // the workspacelogic
                 Logger.Error("SourceExtent specified but no workspace Logic given");
-                return new PureReflectiveSequence();
+                throw new InvalidOperationException("SourceExtent specified but no workspace Logic given");
             }
 
             var workspaceName = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByExtentNode.workspaceId);
@@ -41,14 +42,14 @@ namespace DatenMeister.DataView.Evaluation
             if (workspace == null)
             {
                 Logger.Warn($"Workspace is not found: {workspaceName}");
-                return new PureReflectiveSequence();
+                throw new InvalidOperationException($"Workspace is not found: {workspaceName}");
             }
 
             var extent = workspace.FindExtent(extentUri);
             if (extent == null)
             {
                 Logger.Warn($"Extent is not found: {extentUri}");
-                return new PureReflectiveSequence();
+                throw new InvalidOperationException($"Extent is not found: {extentUri}");
             }
 
             return extent.elements();

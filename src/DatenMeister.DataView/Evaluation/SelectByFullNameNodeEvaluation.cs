@@ -4,14 +4,14 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Uml.Helper;
+using System;
 
 namespace DatenMeister.DataView.Evaluation
 {
     public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
     {
-        private static readonly ILogger Logger = new ClassLogger(typeof(SelectByFullNameNodeEvaluation));
+        private static readonly ILogger Logger = new ClassLogger(typeof(SelectByPathNodeEvaluation));
 
         public bool IsResponsible(IElement node)
         {
@@ -26,7 +26,7 @@ namespace DatenMeister.DataView.Evaluation
             if (inputNode == null)
             {
                 Logger.Warn("Input node not found");
-                return new PureReflectiveSequence();
+                throw new InvalidOperationException("Input node not found");
             }
 
             var input = evaluation.GetElementsForViewNode(inputNode);
@@ -35,14 +35,14 @@ namespace DatenMeister.DataView.Evaluation
             if (pathNode == null)
             {
                 Logger.Warn("Path is not set");
-                return new PureReflectiveSequence();
+                throw new InvalidOperationException("Path is not set");
             }
 
             var targetElement = NamedElementMethods.GetByFullName(input, pathNode);
             if (targetElement == null)
             {
                 // Path is not found
-                return new PureReflectiveSequence();
+                throw new InvalidOperationException($"Path is not found: {pathNode}");
             }
 
             return new TemporaryReflectiveSequence(NamedElementMethods.GetAllPropertyValues(targetElement));

@@ -57,10 +57,11 @@ namespace DatenMeister.DataView
         public static DataViewNodeFactories GetDefaultViewNodeFactories()
         {
             var result = new DataViewNodeFactories();
-            result.Add(new DynamicSourceNodeEvaluation());
+            result.Add(new DynamicSourceNodeEvaluation());            
             result.Add(new FilterByPropertyValueNodeEvaluation());
             result.Add(new FilterByMetaclassNodeEvaluation());
             result.Add(new FlattenNodeEvaluation());
+            result.Add(new SelectByPathNodeEvaluation());
             result.Add(new SelectByFullNameNodeEvaluation());
             result.Add(new SelectByExtentNodeEvaluation());
 

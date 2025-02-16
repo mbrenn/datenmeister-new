@@ -22,7 +22,7 @@ export class Field extends BaseField {
         const valuePairs = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, ObjectType.Array);
         this.isFieldReadOnly = this.field.get(_DatenMeister._Forms._CheckboxListTaggingFieldData.isReadOnly, ObjectType.Boolean);
         // Gets the value and splits it
-        const currentValue = dmElement.get(this.name, ObjectType.String);
+        const currentValue = dmElement.get(this.name, ObjectType.String) ?? "";
         const currentList = currentValue.split(this.separator);
         // Create the element       
         const result = $("<table></table>");

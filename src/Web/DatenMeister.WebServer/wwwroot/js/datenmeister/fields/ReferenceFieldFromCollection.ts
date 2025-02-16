@@ -2,9 +2,11 @@
 import {DmObject, ObjectType} from "../Mof.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 import * as ClientItems from "../client/Items.js"
+import * as ElementClient from "../client/Elements.js"
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 
 import * as DropDownBaseField from "./DropDownBaseField.js";
+import * as QueryBuilder from "../modules/QueryEngine.js";
 
 /*
 export class Field extends BaseField implements IFormField {
@@ -102,18 +104,20 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
     }
 
     async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
-        if (this._element === undefined) {
-            throw "The element is not set. 'createDom' must be called in advance";
-        }
+        const workspace = this.field.get(
+            _DatenMeister._Forms._ReferenceFieldFromCollectionData.defaultWorkspace, ObjectType.String) ?? "Data";
+        const path = this.field.get(
+            _DatenMeister._Forms._ReferenceFieldFromCollectionData.collection, ObjectType.String)
 
-        const rootElements = await ClientItems.getRootElementsAsItem(
-            this.field.get(
-                _DatenMeister._Forms._ReferenceFieldFromCollectionData.defaultWorkspace, ObjectType.String) ?? "",
-            this.field.get(
-                _DatenMeister._Forms._ReferenceFieldFromCollectionData.collection, ObjectType.String))
-        return rootElements.map(x => {
+        // Builds the query
+        var queryBuilder = new QueryBuilder.QueryBuilder();
+        QueryBuilder.getElementsByPath(queryBuilder, workspace, path);
+
+        const serverResult = await ElementClient.queryObject(queryBuilder.queryStatement);
+
+        return serverResult.result.map(x => {
             return {
-                title: x.name,
+                title: x.get("name", ObjectType.String) ?? x.id,
                 workspace: x.workspace,
                 itemUrl: x.uri
             }

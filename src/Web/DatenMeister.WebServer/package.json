@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "amd-loader": "0.0.8",
-    "burnJsPopup": "file:../../../../burnJsPopup/burnJsPopup-1.0.0.tgz",
+    "@mbrenn/burnjspopup": "1.0.0",
     "mocha": "10.2.0"
   }
 }

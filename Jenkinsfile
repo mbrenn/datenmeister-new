@@ -7,7 +7,11 @@ pipeline {
         {
             steps
             {                    
-                sh """ 
+                sh """                 
+                    cd src/DatenMeister.Reports.Forms
+                    npm install
+                    cd ../..
+
                     cd src/Web/DatenMeister.WebServer
                     npm install 
                     cd ../../..

@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath,
                 Path.Combine(Environment.CurrentDirectory, "Examples\\xmi-temp-trx.xml"));
 
-            File.Copy("Examples\\xmi1.xml", "Examples\\xmi-temp-trx.xml", true);
+            File.Copy("Examples/xmi1.xml", "Examples\\xmi-temp-trx.xml", true);
 
 
             var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
@@ -49,7 +49,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(first.getOrDefault<string>("name"), Is.EqualTo("M"));
 
             // Reload
-            File.Copy("Examples\\xmi2.xml", "Examples\\xmi-temp-trx.xml", true);
+            File.Copy("Examples/xmi2.xml", "Examples\\xmi-temp-trx.xml", true);
             await extentManager.ReloadExtent(loadedInfo.Extent);
 
             var first2 = loadedInfo.Extent!.elements().OfType<IElement>().FirstOrDefault();

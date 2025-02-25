@@ -34,27 +34,21 @@ pipeline {
             }
         }
 
-        stage ('Builds')
+        stage ('Build Debug') 
         {
-            parallel
-            {        
-                stage ('Build Debug') 
-                {
-                    steps 
-                    {
-                        // Shell build step
-                        dotnetBuild project: 'datenmeister-new.sln', workDirectory: 'src'
-                    }
-                }
+            steps 
+            {
+                // Shell build step
+                dotnetBuild project: 'datenmeister-new.sln', workDirectory: 'src'
+            }
+        }
 
-                stage ('Build Release')
-                {
-                    steps
-                    {
+        stage ('Build Release')
+        {
+            steps
+            {
 
-                        dotnetBuild configuration: 'Release', project: 'datenmeister-new.sln', workDirectory: 'src'
-                    }
-                }
+                dotnetBuild configuration: 'Release', project: 'datenmeister-new.sln', workDirectory: 'src'
             }
         }
 

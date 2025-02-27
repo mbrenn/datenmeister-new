@@ -19,7 +19,7 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
             _DatenMeister._Forms._ReferenceFieldFromCollectionData.collection, ObjectType.String)
 
         // Builds the query
-        var queryBuilder = new QueryBuilder.QueryBuilder();
+        const queryBuilder = new QueryBuilder.QueryBuilder();
         QueryBuilder.getElementsByPath(queryBuilder, workspace, path);
 
         const serverResult = await ElementClient.queryObject(queryBuilder.queryStatement);

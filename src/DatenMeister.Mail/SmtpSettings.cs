@@ -90,8 +90,11 @@ namespace DatenMeister.Mail
         {
             var smtp = new SmtpClient();
             smtp.Connect(Host, Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(Username, Password);
-
+            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
+            {
+                smtp.Authenticate(Username, Password);   
+            }
+            
             return smtp;
         }
     }

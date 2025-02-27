@@ -9,7 +9,7 @@ import * as AnyDataField from "../fields/AnyDataField.js";
 import * as SubElementField from "../fields/SubElementField.js";
 import * as SeparatorLineField from "../fields/SeparatorLineField.js";
 import * as ReferenceField from "../fields/ReferenceField.js";
-import * as ReferenceFieldFromCollection from "../fields/DropDownByCollection";
+import * as DropDownByCollection from "../fields/DropDownByCollection.js";
 import * as UriReferenceFieldData from "../fields/UriReferenceFieldData.js";
 import * as UnknownField from "../fields/UnknownField.js";
 import {IFormField} from "../fields/Interfaces.js";
@@ -74,8 +74,8 @@ export function createField(fieldMetaClassUri: string, parameter: ICreateFieldPa
         case _DatenMeister._Forms.__ReferenceFieldData_Uri:
             result = new ReferenceField.Field();
             break;
-        case _DatenMeister._Forms.__ReferenceFieldFromCollectionData_Uri:
-            result = new ReferenceFieldFromCollection.Field();
+        case _DatenMeister._Forms.__DropDownByCollection_Uri:
+            result = new DropDownByCollection.Field();
             break;
         case _DatenMeister._Forms.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();

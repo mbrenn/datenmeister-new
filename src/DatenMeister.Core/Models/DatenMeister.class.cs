@@ -2595,7 +2595,7 @@ namespace DatenMeister.Core.Models
             public _ViewMode @ViewMode = new _ViewMode();
             public MofObjectShadow @__ViewMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
-            public class _ReferenceFieldFromCollectionData
+            public class _DropDownByCollection
             {
                 public static string @defaultWorkspace = "defaultWorkspace";
                 public IElement? @_defaultWorkspace = null;
@@ -2623,8 +2623,8 @@ namespace DatenMeister.Core.Models
 
             }
 
-            public _ReferenceFieldFromCollectionData @ReferenceFieldFromCollectionData = new _ReferenceFieldFromCollectionData();
-            public MofObjectShadow @__ReferenceFieldFromCollectionData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData");
+            public _DropDownByCollection @DropDownByCollection = new _DropDownByCollection();
+            public MofObjectShadow @__DropDownByCollection = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
 
             public class _UriReferenceFieldData
             {

@@ -1207,7 +1207,7 @@ export namespace _DatenMeister
                 }
 
                 export const __ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
-                export class _ReferenceFieldFromCollectionData
+                export class _DropDownByCollection
                 {
                     static defaultWorkspace = "defaultWorkspace";
                     static collection = "collection";
@@ -1219,7 +1219,7 @@ export namespace _DatenMeister
                     static isReadOnly = "isReadOnly";
                 }
 
-                export const __ReferenceFieldFromCollectionData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData";
+                export const __DropDownByCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection";
                 export class _UriReferenceFieldData
                 {
                     static defaultWorkspace = "defaultWorkspace";

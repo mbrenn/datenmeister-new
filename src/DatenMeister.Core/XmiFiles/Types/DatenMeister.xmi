@@ -1907,7 +1907,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36db9d08-802c-4e84-b547-adf297978dc8" name="id" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5f7cc38f-6431-4103-b7d1-fa60720178a6" name="defaultExtentType" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ReferenceFieldFromCollectionData" name="DropDownByCollection">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DropDownByCollection" name="DropDownByCollection">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="4c7227a4-4e25-4ddc-876e-6dcfc3282249" general-ref="#DatenMeister.Models.Forms.FieldData" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d5caf8d-b3e7-4df9-8f64-b06d77279cad" name="defaultWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36d692e2-73dc-46e4-b92b-2c2a6e2747b2" type-ref="dm:///_internal/model/primitivetypes#String" name="collection" isID="True" isComposite="True" />

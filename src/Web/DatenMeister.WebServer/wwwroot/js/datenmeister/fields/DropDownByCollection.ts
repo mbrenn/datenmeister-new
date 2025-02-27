@@ -14,9 +14,9 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
 
     async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
         const workspace = this.field.get(
-            _DatenMeister._Forms._ReferenceFieldFromCollectionData.defaultWorkspace, ObjectType.String) ?? "Data";
+            _DatenMeister._Forms._DropDownByCollection.defaultWorkspace, ObjectType.String) ?? "Data";
         const path = this.field.get(
-            _DatenMeister._Forms._ReferenceFieldFromCollectionData.collection, ObjectType.String)
+            _DatenMeister._Forms._DropDownByCollection.collection, ObjectType.String)
 
         // Builds the query
         const queryBuilder = new QueryBuilder.QueryBuilder();

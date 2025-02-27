@@ -1081,18 +1081,18 @@ export var _DatenMeister;
         _ViewMode.defaultExtentType = "defaultExtentType";
         _Forms._ViewMode = _ViewMode;
         _Forms.__ViewMode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode";
-        class _ReferenceFieldFromCollectionData {
+        class _DropDownByCollection {
         }
-        _ReferenceFieldFromCollectionData.defaultWorkspace = "defaultWorkspace";
-        _ReferenceFieldFromCollectionData.collection = "collection";
-        _ReferenceFieldFromCollectionData.isAttached = "isAttached";
-        _ReferenceFieldFromCollectionData._name_ = "name";
-        _ReferenceFieldFromCollectionData.title = "title";
-        _ReferenceFieldFromCollectionData.isEnumeration = "isEnumeration";
-        _ReferenceFieldFromCollectionData.defaultValue = "defaultValue";
-        _ReferenceFieldFromCollectionData.isReadOnly = "isReadOnly";
-        _Forms._ReferenceFieldFromCollectionData = _ReferenceFieldFromCollectionData;
-        _Forms.__ReferenceFieldFromCollectionData_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldFromCollectionData";
+        _DropDownByCollection.defaultWorkspace = "defaultWorkspace";
+        _DropDownByCollection.collection = "collection";
+        _DropDownByCollection.isAttached = "isAttached";
+        _DropDownByCollection._name_ = "name";
+        _DropDownByCollection.title = "title";
+        _DropDownByCollection.isEnumeration = "isEnumeration";
+        _DropDownByCollection.defaultValue = "defaultValue";
+        _DropDownByCollection.isReadOnly = "isReadOnly";
+        _Forms._DropDownByCollection = _DropDownByCollection;
+        _Forms.__DropDownByCollection_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection";
         class _UriReferenceFieldData {
         }
         _UriReferenceFieldData.defaultWorkspace = "defaultWorkspace";

@@ -1234,6 +1234,18 @@ export namespace _DatenMeister
                 }
 
                 export const __NavigateToFieldsForTestAction_Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0";
+                export class _DropDownByQueryData
+                {
+                    static query = "query";
+                    static isAttached = "isAttached";
+                    static _name_ = "name";
+                    static title = "title";
+                    static isEnumeration = "isEnumeration";
+                    static defaultValue = "defaultValue";
+                    static isReadOnly = "isReadOnly";
+                }
+
+                export const __DropDownByQueryData_Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2";
         }
 
         export namespace _AttachedExtent

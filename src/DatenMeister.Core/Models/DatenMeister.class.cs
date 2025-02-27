@@ -2652,6 +2652,34 @@ namespace DatenMeister.Core.Models
             public _NavigateToFieldsForTestAction @NavigateToFieldsForTestAction = new _NavigateToFieldsForTestAction();
             public MofObjectShadow @__NavigateToFieldsForTestAction = new MofObjectShadow("dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0");
 
+            public class _DropDownByQueryData
+            {
+                public static string @query = "query";
+                public IElement? @_query = null;
+
+                public static string @isAttached = "isAttached";
+                public IElement? @_isAttached = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @title = "title";
+                public IElement? @_title = null;
+
+                public static string @isEnumeration = "isEnumeration";
+                public IElement? @_isEnumeration = null;
+
+                public static string @defaultValue = "defaultValue";
+                public IElement? @_defaultValue = null;
+
+                public static string @isReadOnly = "isReadOnly";
+                public IElement? @_isReadOnly = null;
+
+            }
+
+            public _DropDownByQueryData @DropDownByQueryData = new _DropDownByQueryData();
+            public MofObjectShadow @__DropDownByQueryData = new MofObjectShadow("dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2");
+
         }
 
         public _Forms Forms = new _Forms();

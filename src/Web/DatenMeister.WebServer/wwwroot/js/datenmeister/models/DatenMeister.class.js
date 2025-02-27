@@ -1105,6 +1105,17 @@ export var _DatenMeister;
         _NavigateToFieldsForTestAction.isDisabled = "isDisabled";
         _Forms._NavigateToFieldsForTestAction = _NavigateToFieldsForTestAction;
         _Forms.__NavigateToFieldsForTestAction_Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0";
+        class _DropDownByQueryData {
+        }
+        _DropDownByQueryData.query = "query";
+        _DropDownByQueryData.isAttached = "isAttached";
+        _DropDownByQueryData._name_ = "name";
+        _DropDownByQueryData.title = "title";
+        _DropDownByQueryData.isEnumeration = "isEnumeration";
+        _DropDownByQueryData.defaultValue = "defaultValue";
+        _DropDownByQueryData.isReadOnly = "isReadOnly";
+        _Forms._DropDownByQueryData = _DropDownByQueryData;
+        _Forms.__DropDownByQueryData_Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2";
     })(_Forms = _DatenMeister._Forms || (_DatenMeister._Forms = {}));
     let _AttachedExtent;
     (function (_AttachedExtent) {

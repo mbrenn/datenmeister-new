@@ -91,6 +91,11 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData" p1:id="837c90cc-eb95-4e57-88ef-f4c989485098" name="numberField" isInteger="false" isAttached="false" title="Number Field" isEnumeration="false" isReadOnly="false" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection" p1:id="14ca8fb3-756e-4d24-90ad-740d3eb01aab" name="dropDownFromCollection" title="Reference Field From Collection" collection="dm:///_internal/types/internal?composites=includingSelf#DatenMeister.Modules.ZipCodeExample.Model.ZipCode" isAttached="false" isEnumeration="false" isReadOnly="false" defaultWorkspace="Types" />
         <field p1:type="dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00" p1:id="4333683c-d216-439f-86fe-37c17906c6bd" />
+        <field p1:type="dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2" p1:id="75e4f30f-052a-4696-9980-18d764a8957c" name="dropDownByQueryData" isAttached="false" isEnumeration="false" isReadOnly="false" title="DropDownByQueryData">
+          <query p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement" p1:id="d0869d2e-02fa-47e8-836b-4c04fb015678" resultNode-ref="dm:///_internal/forms/internal#58e395d4-37a3-4e9c-8b6b-573b76a2536b">
+            <nodes p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode" p1:id="58e395d4-37a3-4e9c-8b6b-573b76a2536b" name="Types" extentUri="dm:///_internal/types/internal" workspaceId="Types" />
+          </query>
+        </field>
       </tab>
     </packagedElement>
   </item>

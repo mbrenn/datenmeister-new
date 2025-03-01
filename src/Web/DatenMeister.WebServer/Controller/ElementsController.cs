@@ -190,7 +190,7 @@ namespace DatenMeister.WebServer.Controller
             var converter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
             var objectToBeSet = converter.ConvertToObject(parameter.Query)
                 ?? throw new InvalidOperationException("Object to be set is null");
-            var resultNode = objectToBeSet.get<IElement>(_DatenMeister._DataViews._QueryStatement.resultNode)
+            var resultNode = objectToBeSet.getOrDefault<IElement>(_DatenMeister._DataViews._QueryStatement.resultNode)
                 ?? throw new InvalidOperationException("resultNode is not set");
 
             // Second, execute the query

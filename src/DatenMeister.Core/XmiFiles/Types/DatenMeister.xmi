@@ -1287,7 +1287,7 @@
         <isStatic p1:id="4c292d58-ce38-44b1-8da0-54dd32182d0c" />
         <isLeaf p1:id="913f0550-b6d9-4b18-b6e0-f167bb62ece7" />
       </ownedAttribute>
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false"></ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -1963,8 +1963,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="8bb3e235-beed-4eb7-a95e-b5cfa4417bd2" name="DropDownByQueryData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="fee3c655-d4b0-4892-b514-15cef1ef687e" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" isSubstitutable="false" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="92388190-e8c4-4e5e-894a-05bb06a5d219" name="query" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement" isID="false" isComposite="false">
-      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="92388190-e8c4-4e5e-894a-05bb06a5d219" name="query" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement" isID="false" isComposite="false" />
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="AttachedExtent" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="7447d350-9b9d-47d3-85d4-737fb6e886c7">

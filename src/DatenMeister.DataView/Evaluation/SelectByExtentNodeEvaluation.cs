@@ -49,7 +49,7 @@ namespace DatenMeister.DataView.Evaluation
             if (extent == null)
             {
                 Logger.Warn($"Extent is not found: {extentUri}");
-                throw new InvalidOperationException($"Extent is not found: {extentUri}");
+                throw new InvalidOperationException($"Extent is not found: {extentUri} for workspace {workspaceName}");
             }
 
             return extent.elements();

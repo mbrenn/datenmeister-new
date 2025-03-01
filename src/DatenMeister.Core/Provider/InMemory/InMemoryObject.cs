@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
@@ -210,7 +209,6 @@ namespace DatenMeister.Core.Provider.InMemory
         ///     Creates an empty element with the given type
         /// </summary>
         /// <param name="type">Type of the element to be created</param>
-        /// <param name="workspace">Defines the workspace to which the created element is connected (for resolving, etc)</param>
         /// <returns>Returned element to be created</returns>
         public static IElement CreateEmpty(IElement type)
         {

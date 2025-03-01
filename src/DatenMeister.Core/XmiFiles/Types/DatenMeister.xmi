@@ -1962,40 +1962,8 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="58beb095-b794-4d67-97dc-c890b80fd22a" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="8bb3e235-beed-4eb7-a95e-b5cfa4417bd2" name="DropDownByQueryData">
-      <isAbstract p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Class-isAbstract-_defaultValue">
-        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-      </isAbstract>
-      <isActive p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Class-isActive-_defaultValue">
-        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-      </isActive>
-      <isFinalSpecialization p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Classifier-isFinalSpecialization-_defaultValue">
-        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-      </isFinalSpecialization>
-      <isLeaf p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="RedefinableElement-isLeaf-_defaultValue">
-        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-      </isLeaf>
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="fee3c655-d4b0-4892-b514-15cef1ef687e" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData" isSubstitutable="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="92388190-e8c4-4e5e-894a-05bb06a5d219" name="query" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement" isID="false" isComposite="false">
-        <aggregation p1:type="dm:///_internal/model/uml#InstanceValue" p1:id="Property-aggregation-_defaultValue" type="AggregationKind" instance="AggregationKind-none" />
-        <isDerived p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Property-isDerived-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isDerived>
-        <isDerivedUnion p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Property-isDerivedUnion-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isDerivedUnion>
-        <isReadOnly p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="StructuralFeature-isReadOnly-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isReadOnly>
-        <isOrdered p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="MultiplicityElement-isOrdered-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isOrdered>
-        <isUnique p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="MultiplicityElement-isUnique-_defaultValue" value="true" />
-        <isStatic p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Feature-isStatic-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isStatic>
-        <isLeaf p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="RedefinableElement-isLeaf-_defaultValue">
-          <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
-        </isLeaf>
       </ownedAttribute>
     </packagedElement>
   </item>

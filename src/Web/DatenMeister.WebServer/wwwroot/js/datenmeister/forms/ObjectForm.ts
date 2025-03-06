@@ -214,11 +214,15 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
         this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.append($("<div>Loading Data and Form</div>"));
 
-        // Creates the breadcrumb
-        this.statusTextControl.setListStatus("Create Breadcrumb ", false);
-        let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
-        await breadcrumb.createForItem(this.workspace, this.itemUri);
-        this.statusTextControl.setListStatus("Create Breadcrumb ", true);
+        // Creates the breadcrumb, if visible        
+        const breadcrumbDom = $(".dm-breadcrumb-page");
+        if(breadcrumbDom.length > 0) {            
+            this.statusTextControl.setListStatus("Create Breadcrumb ", false);
+            let breadcrumb = new ElementBreadcrumb(breadcrumbDom);
+
+            await breadcrumb.createForItem(this.workspace, this.itemUri);
+            this.statusTextControl.setListStatus("Create Breadcrumb ", true);
+        }
         
         const tthis = this;
 

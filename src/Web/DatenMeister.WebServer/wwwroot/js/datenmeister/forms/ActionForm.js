@@ -86,10 +86,9 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
         }
     }
     /* Now find the right form */
-    let form;
     // Asks the detail form actions, whether we have a form for the action itself
     statusOverview.setListStatus("Load Form", false);
-    form = await module.loadForm(metaClass);
+    let form = await module.loadForm(metaClass);
     if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {
@@ -119,7 +118,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
     statusOverview.setListStatus("Create Form By Object", true);
     // Asks the detail form actions, whether we have a form for the action itself
     statusOverview.setListStatus("Prepare Page", false);
-    await module.preparePage(creator.element, form);
+    await module.preparePage(creator.element, creator);
     statusOverview.setListStatus("Prepare Page", true);
     debugElementToDom(form, "#debug_formelement");
 }

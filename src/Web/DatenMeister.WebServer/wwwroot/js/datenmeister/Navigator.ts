@@ -142,8 +142,9 @@ export function getLinkForNavigateToCreateNewItemInExtent(workspace: string, ext
         encodeURIComponent(workspace) +
         "&extent=" +
         encodeURIComponent(extentUri) +
-        "&metaclass=" +
-        encodeURIComponent(metaclass);
+        (metaclass !== undefined 
+            ? "&metaclass=" + encodeURIComponent(metaclass)
+            : "");
 }
 
 export function navigateToCreateNewItemInExtent(workspace: string, extentUri: string, metaclass: string) {
@@ -182,10 +183,12 @@ export function getLinkForNavigateToCreateItemInProperty(workspace: string,
         encodeURIComponent(workspace) +
         "&itemUrl=" +
         encodeURIComponent(itemUrl) +
-        "&metaclass=" +
-        encodeURIComponent(metaclass) +
-        "&metaclassworkspace=" + 
-        encodeURIComponent(metaclassWorkspace) + 
+        (metaclass !== undefined
+            ? "&metaclass=" + encodeURIComponent(metaclass)
+            : "") +
+        (metaclassWorkspace !== undefined
+            ? "&metaclassworkspace=" + encodeURIComponent(metaclassWorkspace)
+            : "") +
         "&property=" +
         encodeURIComponent(propertyName);
 }

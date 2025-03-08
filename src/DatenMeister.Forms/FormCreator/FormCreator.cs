@@ -81,7 +81,6 @@ namespace DatenMeister.Forms.FormCreator
         /// </summary>
         private IFactory? _f;
 
-
         /// <summary>
         ///     Defines the parent form factory which is used to create subforms.
         /// </summary>
@@ -146,7 +145,7 @@ namespace DatenMeister.Forms.FormCreator
         }
 
         /// <summary>
-        ///     Stores the factory to create the fields and forms
+        /// Gets the factory to create the fields and forms
         /// </summary>
         internal IFactory GetMofFactory(FormFactoryConfiguration? configuration)
         {
@@ -193,7 +192,7 @@ namespace DatenMeister.Forms.FormCreator
         ///     Creates the fields of the form by evaluation of the given object.
         ///     Depending on the creation mode, the evaluation will be done by metaclass
         ///     or by evaluation of the properties.
-        ///     This method is independent whether it is used in an list or extent form.
+        ///     This method is independent whether it is used in a list or extent form.
         /// </summary>
         /// <param name="rowOrTableForm">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
@@ -214,9 +213,8 @@ namespace DatenMeister.Forms.FormCreator
 
             if (creationMode.CreateByMetaClass && metaClass != null)
             {
-                if (!cache.CoveredMetaClasses.Contains(metaClass))
+                if (cache.CoveredMetaClasses.Add(metaClass))
                 {
-                    cache.CoveredMetaClasses.Add(metaClass);
                     wasInMetaClass = AddFieldsToRowOrTableFormByMetaClass(
                         rowOrTableForm,
                         metaClass,

@@ -12,6 +12,7 @@ import _FieldData = _DatenMeister._Forms._FieldData;
 import * as burnJsPopup from "../../burnJsPopup.js"
 import { truncateText } from "../../burnsystems/StringManipulation.js";
 import * as ClientItem from "../client/Items.js"
+import {getLinkForNavigateToCreateNewItemInExtent} from "../Navigator.js";
 
 interface PropertyMenuItem
 {
@@ -93,7 +94,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     async refreshForm(): Promise<void> {
 
         if (this.configuration.refreshForm !== undefined) {
-            this.configuration.refreshForm();
+            await this.configuration.refreshForm();
         } else {
             await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
         }
@@ -110,7 +111,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
     async refreshTable(): Promise<void> {
         this.updateFilterQueryText();
-        this.createTable();
+        await this.createTable();
     }
 
     /**
@@ -270,20 +271,18 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     settings.setButtonText = 'Create new Item';
                     selectItem.itemSelected.addListener(
                         selectedItem => {
-                            if (selectedItem === undefined) {
-                                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
+                            if (tthis.itemUrl === undefined)
+                            {
+                                document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(
                                     tthis.workspace,
-                                    tthis.itemUrl,
-                                    undefined,
-                                    undefined,
-                                    property);
+                                    tthis.extentUri,
+                                    selectedItem === undefined ? undefined : selectedItem.uri);
                             } else {
-
                                 document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                                     tthis.workspace,
                                     tthis.itemUrl,
-                                    selectedItem.uri,
-                                    selectedItem.workspace,
+                                    selectedItem === undefined ? undefined : selectedItem.uri,
+                                    selectedItem === undefined ? undefined : selectedItem.workspace,
                                     property);
                             }
                         });
@@ -300,7 +299,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
 
         function createButton (name: string, metaClassUri?: string) {
-
             const btn = $("<btn class='btn btn-secondary'></btn>");
             btn.text("Create " + name);
             btn.on('click', () => {
@@ -314,12 +312,10 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 // Creates the location to the buttons
                 if (property === undefined || property === null) {
                     document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(tthis.workspace) +
-                        "&extent=" +
-                        encodeURIComponent(tthis.extentUri) +
-                        metaClassUriParameter;
+                        Navigator.getLinkForNavigateToCreateNewItemInExtent(
+                            tthis.workspace,
+                            tthis.extentUri,
+                            metaClassUri);
                 } else {
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                         tthis.workspace,

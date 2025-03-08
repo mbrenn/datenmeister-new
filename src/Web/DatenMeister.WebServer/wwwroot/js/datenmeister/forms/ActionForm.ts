@@ -76,7 +76,7 @@ export async function createActionFormForEmptyObject(
 
                     // Try to find the module and execute the client action
                     const clientAction = clientActions[n] as DmObject;
-                    FormActions.executeClientAction(clientAction, creator);
+                    await FormActions.executeClientAction(clientAction, creator);
                 }                
             }
 

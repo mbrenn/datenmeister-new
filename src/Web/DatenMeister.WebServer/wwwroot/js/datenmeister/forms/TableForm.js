@@ -2,7 +2,6 @@ import * as InterfacesForms from "./Interfaces.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
-import * as Settings from "../Settings.js";
 import * as Navigator from '../Navigator.js';
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
@@ -42,7 +41,7 @@ export class TableForm {
      */
     async refreshForm() {
         if (this.configuration.refreshForm !== undefined) {
-            this.configuration.refreshForm();
+            await this.configuration.refreshForm();
         }
         else {
             await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
@@ -58,7 +57,7 @@ export class TableForm {
     }
     async refreshTable() {
         this.updateFilterQueryText();
-        this.createTable();
+        await this.createTable();
     }
     /**
      * This method just calls the createFormByCollection since a TableForm can
@@ -178,11 +177,11 @@ export class TableForm {
                 settings.showExtentInBreadcrumb = true;
                 settings.setButtonText = 'Create new Item';
                 selectItem.itemSelected.addListener(selectedItem => {
-                    if (selectedItem === undefined) {
-                        document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, undefined, undefined, property);
+                    if (tthis.itemUrl === undefined) {
+                        document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(tthis.workspace, tthis.extentUri, selectedItem === undefined ? undefined : selectedItem.uri);
                     }
                     else {
-                        document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, selectedItem.uri, selectedItem.workspace, property);
+                        document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, selectedItem === undefined ? undefined : selectedItem.uri, selectedItem === undefined ? undefined : selectedItem.workspace, property);
                     }
                 });
                 await selectItem.setWorkspaceById('Types');
@@ -204,12 +203,7 @@ export class TableForm {
                 // Creates the location to the buttons
                 if (property === undefined || property === null) {
                     document.location.href =
-                        Settings.baseUrl +
-                            "ItemAction/Extent.CreateItem?workspace=" +
-                            encodeURIComponent(tthis.workspace) +
-                            "&extent=" +
-                            encodeURIComponent(tthis.extentUri) +
-                            metaClassUriParameter;
+                        Navigator.getLinkForNavigateToCreateNewItemInExtent(tthis.workspace, tthis.extentUri, metaClassUri);
                 }
                 else {
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, metaClassUri, "Types", property);

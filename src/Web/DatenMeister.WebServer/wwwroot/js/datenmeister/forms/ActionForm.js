@@ -50,7 +50,7 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
                 for (let n in clientActions) {
                     // Try to find the module and execute the client action
                     const clientAction = clientActions[n];
-                    FormActions.executeClientAction(clientAction, creator);
+                    await FormActions.executeClientAction(clientAction, creator);
                 }
             }
             statusOverview.setListStatus("Execute Client-Action", true);

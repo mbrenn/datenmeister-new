@@ -974,15 +974,28 @@ namespace DatenMeister.Core.Models
             public _QueryStatement @QueryStatement = new _QueryStatement();
             public MofObjectShadow @__QueryStatement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement");
 
-            public class _SelectAllElementsInAllWorkspacesNode
+            public class _SelectFromAllWorkspacesNode
             {
                 public static string @name = "name";
                 public IElement? @_name = null;
 
             }
 
-            public _SelectAllElementsInAllWorkspacesNode @SelectAllElementsInAllWorkspacesNode = new _SelectAllElementsInAllWorkspacesNode();
-            public MofObjectShadow @__SelectAllElementsInAllWorkspacesNode = new MofObjectShadow("dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a");
+            public _SelectFromAllWorkspacesNode @SelectFromAllWorkspacesNode = new _SelectFromAllWorkspacesNode();
+            public MofObjectShadow @__SelectFromAllWorkspacesNode = new MofObjectShadow("dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a");
+
+            public class _SelectByWorkspaceNode
+            {
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _SelectByWorkspaceNode @SelectByWorkspaceNode = new _SelectByWorkspaceNode();
+            public MofObjectShadow @__SelectByWorkspaceNode = new MofObjectShadow("dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db");
 
         }
 

@@ -432,11 +432,17 @@ export var _DatenMeister;
         _QueryStatement.resultNode = "resultNode";
         _DataViews._QueryStatement = _QueryStatement;
         _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
-        class _SelectAllElementsInAllWorkspacesNode {
+        class _SelectFromAllWorkspacesNode {
         }
-        _SelectAllElementsInAllWorkspacesNode._name_ = "name";
-        _DataViews._SelectAllElementsInAllWorkspacesNode = _SelectAllElementsInAllWorkspacesNode;
-        _DataViews.__SelectAllElementsInAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
+        _SelectFromAllWorkspacesNode._name_ = "name";
+        _DataViews._SelectFromAllWorkspacesNode = _SelectFromAllWorkspacesNode;
+        _DataViews.__SelectFromAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
+        class _SelectByWorkspaceNode {
+        }
+        _SelectByWorkspaceNode.workspaceId = "workspaceId";
+        _SelectByWorkspaceNode._name_ = "name";
+        _DataViews._SelectByWorkspaceNode = _SelectByWorkspaceNode;
+        _DataViews.__SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
     })(_DataViews = _DatenMeister._DataViews || (_DatenMeister._DataViews = {}));
     let _Reports;
     (function (_Reports) {

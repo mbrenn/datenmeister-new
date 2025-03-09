@@ -15,6 +15,7 @@ using DatenMeister.Extent.Manager;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Types;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace DatenMeister.Tests.Modules
 {
@@ -110,6 +111,61 @@ namespace DatenMeister.Tests.Modules
             Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
             Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
             Assert.That(elements.Length, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task TestAllWorkspacesEvaluation()
+        {
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await CreateDataForTest(dm);
+
+            var factory = InMemoryObject.TemporaryFactory;
+
+            var selectFromAllWorkspacesNode =
+                factory.create(_DatenMeister.TheOne.DataViews.__SelectFromAllWorkspacesNode);
+
+            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+            var result =
+                dataViewEvaluator
+                    .GetElementsForViewNode(selectFromAllWorkspacesNode)
+                    .OfType<IElement>()
+                    .ToList();
+
+            var grouped = result.GroupBy(x => x.GetUriExtentOf()?.GetWorkspace())
+                .ToList();
+            
+            Assert.That(grouped.Count(), Is.GreaterThan(1));
+            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceData), Is.True);
+            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceTypes), Is.True);
+        }
+
+        [Test]
+        public async Task TestSelectByWorkspaceEvaluation()
+        {
+            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+            await CreateDataForTest(dm);
+
+            var factory = InMemoryObject.TemporaryFactory;
+
+            var selectByWorkspaceNode =
+                factory.create(_DatenMeister.TheOne.DataViews.__SelectByWorkspaceNode);
+            selectByWorkspaceNode.set(_DatenMeister._DataViews._SelectByWorkspaceNode.workspaceId, WorkspaceNames.WorkspaceData);
+
+            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+            var result =
+                dataViewEvaluator
+                    .GetElementsForViewNode(selectByWorkspaceNode)
+                    .OfType<IElement>()
+                    .ToList();
+
+            var grouped = result.GroupBy(x => x.GetUriExtentOf()?.GetWorkspace())
+                .ToList();
+            
+            Assert.That(grouped.Count(), Is.EqualTo(1));
+            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceData), Is.True);
+            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceTypes), Is.False);
+            
+            Assert.That(result.Any(x=>x.getOrDefault<string>("name") == "Bach"), Is.True);
         }
 
         private async Task<IUriExtent> CreateDataForTest(IDatenMeisterScope dm)

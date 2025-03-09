@@ -496,12 +496,19 @@ export namespace _DatenMeister
                 }
 
                 export const __QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
-                export class _SelectAllElementsInAllWorkspacesNode
+                export class _SelectFromAllWorkspacesNode
                 {
                     static _name_ = "name";
                 }
 
-                export const __SelectAllElementsInAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
+                export const __SelectFromAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
+                export class _SelectByWorkspaceNode
+                {
+                    static workspaceId = "workspaceId";
+                    static _name_ = "name";
+                }
+
+                export const __SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
         }
 
         export namespace _Reports

@@ -64,6 +64,8 @@ namespace DatenMeister.DataView
             result.Add(new SelectByPathNodeEvaluation());
             result.Add(new SelectByFullNameNodeEvaluation());
             result.Add(new SelectByExtentNodeEvaluation());
+            result.Add(new SelectFromAllWorkspacesNodeEvaluation());
+            result.Add(new SelectByWorkspaceNodeEvaluation());
 
             return result;
         }

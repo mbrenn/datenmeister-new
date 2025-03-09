@@ -496,6 +496,12 @@ export namespace _DatenMeister
                 }
 
                 export const __QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
+                export class _SelectAllElementsInAllWorkspacesNode
+                {
+                    static _name_ = "name";
+                }
+
+                export const __SelectAllElementsInAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
         }
 
         export namespace _Reports

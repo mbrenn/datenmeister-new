@@ -1289,6 +1289,21 @@
       </ownedAttribute>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="a890d5ec-2686-4f18-9f9f-7037c7fe226a" name="SelectAllElementsInAllWorkspacesNode">
+      <isAbstract p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Class-isAbstract-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isAbstract>
+      <isActive p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Class-isActive-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isActive>
+      <isFinalSpecialization p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="Classifier-isFinalSpecialization-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isFinalSpecialization>
+      <isLeaf p1:type="dm:///_internal/model/uml#LiteralBoolean" p1:id="RedefinableElement-isLeaf-_defaultValue">
+        <value href="dm:///_internal/model/uml#LiteralBoolean-value-_defaultValue" />
+      </isLeaf>
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="96ed79cd-7898-4334-b0d8-5c0b4d18966d" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">

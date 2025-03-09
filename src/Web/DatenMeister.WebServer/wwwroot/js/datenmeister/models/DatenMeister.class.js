@@ -432,6 +432,11 @@ export var _DatenMeister;
         _QueryStatement.resultNode = "resultNode";
         _DataViews._QueryStatement = _QueryStatement;
         _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
+        class _SelectAllElementsInAllWorkspacesNode {
+        }
+        _SelectAllElementsInAllWorkspacesNode._name_ = "name";
+        _DataViews._SelectAllElementsInAllWorkspacesNode = _SelectAllElementsInAllWorkspacesNode;
+        _DataViews.__SelectAllElementsInAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
     })(_DataViews = _DatenMeister._DataViews || (_DatenMeister._DataViews = {}));
     let _Reports;
     (function (_Reports) {

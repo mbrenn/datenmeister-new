@@ -407,9 +407,9 @@ namespace DatenMeister.Forms.FormCreator
                     metaClass,
                     property,
                     propertyName,
-                    configuration,
-                    column => 
-                        rowOrObjectForm.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column));
+                    configuration);
+
+                rowOrObjectForm.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                 FormMethods.AddToFormCreationProtocol(rowOrObjectForm,
                     "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass: " +
@@ -513,9 +513,8 @@ namespace DatenMeister.Forms.FormCreator
                     umlClassOrProperty.container(),
                     umlClassOrProperty,
                     null,
-                    creationMode,
-                    column => 
-                        form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column));
+                    creationMode);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
 
                 FormMethods.AddToFormCreationProtocol(form,
                     "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property to row or table form: " +
@@ -618,15 +617,12 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="property">Uml-Property which is requesting a field</param>
         /// <param name="propertyName">Name of the property wo whose values the list form shall be created.</param>
         /// <param name="configuration">Defines the mode how to create the fields</param>
-        /// <param name="setterFunction">Defines the setter function being called to add the freshly added
-        /// element. This function must be called by the creator</param>
         /// <returns>The field data</returns>
         private IElement CreateFieldForProperty(
             IObject? parentMetaClass,
             IObject? property,
             string? propertyName,
-            FormFactoryConfiguration configuration,
-            Action<IElement> setterFunction)
+            FormFactoryConfiguration configuration)
         {
             if (property == null && propertyName == null)
                 throw new InvalidOperationException("property == null && propertyName == null");
@@ -665,7 +661,6 @@ namespace DatenMeister.Forms.FormCreator
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.title, propertyName);
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.isReadOnly, isReadOnly);
-                    setterFunction(checkbox);
                     return checkbox;
                 }
 
@@ -675,7 +670,6 @@ namespace DatenMeister.Forms.FormCreator
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.title, propertyName);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.isReadOnly, isReadOnly);
-                    setterFunction(dateTimeField);
                     return dateTimeField;
                 }
 
@@ -726,7 +720,6 @@ namespace DatenMeister.Forms.FormCreator
                                 elementsField.set(_DatenMeister._Forms._SubElementFieldData.form, enumerationListForm);
                         }
 
-                        setterFunction(elementsField);
                         return elementsField;
                     }
 
@@ -750,7 +743,6 @@ namespace DatenMeister.Forms.FormCreator
                         queryByMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, queryFlatten);
                         queryByMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, propertyType);
 
-                        setterFunction(dropDownByQueryData);
                         return dropDownByQueryData;
                     }
                     else
@@ -788,7 +780,6 @@ namespace DatenMeister.Forms.FormCreator
                     FormMethods.AddDefaultTypeForNewElement(element, propertyType);
                 }
 
-                setterFunction(element);
                 return element;
             }
 
@@ -805,7 +796,6 @@ namespace DatenMeister.Forms.FormCreator
                 column.set(_DatenMeister._Forms._TextFieldData.width, 10);
             }
 
-            setterFunction(column);
             return column;
         }
 

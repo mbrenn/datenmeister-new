@@ -742,6 +742,9 @@ namespace DatenMeister.Forms.FormCreator
                         
                         queryByMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, queryFlatten);
                         queryByMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, propertyType);
+                        
+                        dropDownByQueryData.set(_DatenMeister._Forms._SubElementFieldData.name, propertyName);
+                        dropDownByQueryData.set(_DatenMeister._Forms._SubElementFieldData.title, propertyName);
 
                         return dropDownByQueryData;
                     }

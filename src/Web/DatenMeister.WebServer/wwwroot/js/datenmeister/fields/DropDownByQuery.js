@@ -5,7 +5,7 @@ import * as ElementClient from "../client/Elements.js";
 export class Field extends DropDownBaseField.DropDownBaseField {
     constructor() {
         super();
-        this.fieldType = DropDownBaseField.FieldType.Strings;
+        this.fieldType = DropDownBaseField.FieldType.References;
     }
     async loadFields() {
         const query = this.field.get(_DatenMeister._Forms._DropDownByQueryData.query, Mof.ObjectType.Single);
@@ -18,7 +18,7 @@ export class Field extends DropDownBaseField.DropDownBaseField {
                 }
             ];
         }
-        // Takes the query and executes the request
+        // Takes the query and executes the requests
         const serverResult = await ElementClient.queryObject(query);
         return serverResult.result.map(x => {
             return {

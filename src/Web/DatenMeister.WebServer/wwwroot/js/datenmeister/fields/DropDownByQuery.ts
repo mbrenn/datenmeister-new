@@ -7,7 +7,7 @@ import * as ElementClient from "../client/Elements.js";
 export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {
     constructor() {
         super();
-        this.fieldType = DropDownBaseField.FieldType.Strings;
+        this.fieldType = DropDownBaseField.FieldType.References;
     }
 
     async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
@@ -24,7 +24,7 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
             ];
         }
 
-        // Takes the query and executes the request
+        // Takes the query and executes the requests
         const serverResult = await ElementClient.queryObject(query);
 
         return serverResult.result.map(x => {

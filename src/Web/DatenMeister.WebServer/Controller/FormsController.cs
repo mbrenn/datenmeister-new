@@ -219,7 +219,7 @@ namespace DatenMeister.WebServer.Controller
             /// <summary>
             /// A list of view modes
             /// </summary>
-            public List<string> ViewModes { get; set; } = new();
+            public List<string> ViewModes { get; set; } = [];
         }
 
         [HttpGet("api/forms/get_default_viewmode/{workspaceId}/{extentUri}")]

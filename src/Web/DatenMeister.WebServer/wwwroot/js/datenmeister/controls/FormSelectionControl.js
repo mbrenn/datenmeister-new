@@ -65,7 +65,7 @@ export class FormSelectionControl {
             settings.headline = "Select Form:";
             await this.selectionField.initAsync(controlSelect, settings);
             if (this.currentFormUrl !== undefined) {
-                await this.selectionField.setItemByUri("Management", this.currentFormUrl.uri);
+                await this.selectionField.setItemByUri(this.currentFormUrl.workspace, this.currentFormUrl.uri);
             }
             else {
                 await this.selectionField.setExtentByUri("Management", "dm:///_internal/forms/internal");

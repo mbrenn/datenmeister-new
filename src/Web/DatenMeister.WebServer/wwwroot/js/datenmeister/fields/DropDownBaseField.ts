@@ -56,7 +56,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
             if (this.isReadOnly) {
                 const result = $("<span></span>");
                 if (value === undefined) {
-                    result.text("<em>Not set</em>");
+                    result.html("<em>Not set</em>");
                 }
                 else {
                     result.text(value);

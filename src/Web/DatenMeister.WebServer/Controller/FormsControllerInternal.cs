@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
+using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.WebServer.Controller
 {
@@ -12,11 +13,15 @@ namespace DatenMeister.WebServer.Controller
     {
         private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly TemporaryExtentFactory _temporaryExtentFactory;
 
         public FormsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
+            
+            var temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
+            _temporaryExtentFactory = new TemporaryExtentFactory(temporaryLogic);
         }
 
         public IScopeStorage ScopeStorage => _scopeStorage;
@@ -42,7 +47,8 @@ namespace DatenMeister.WebServer.Controller
             var form = formFactory.CreateObjectFormForItem(item,
                 new FormFactoryConfiguration
                 {
-                    ViewModeId = viewMode ?? string.Empty
+                    ViewModeId = viewMode ?? string.Empty,
+                    Factory = _temporaryExtentFactory
                 });
 
             if (form == null)
@@ -64,7 +70,11 @@ namespace DatenMeister.WebServer.Controller
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory
                 .CreateCollectionFormForExtent(extent,
-                new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
+                new FormFactoryConfiguration
+                {
+                    ViewModeId = viewMode ?? string.Empty,
+                    Factory = _temporaryExtentFactory
+                });
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
@@ -83,7 +93,11 @@ namespace DatenMeister.WebServer.Controller
         {
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
 
-            var configurationMode = new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty};
+            var configurationMode = new FormFactoryConfiguration
+            {
+                ViewModeId = viewMode ?? string.Empty,
+                Factory = _temporaryExtentFactory
+            };
 
             IElement? resolvedMetaClass = null;
             if (!string.IsNullOrEmpty(metaClass))

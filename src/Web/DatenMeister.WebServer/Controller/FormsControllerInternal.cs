@@ -62,7 +62,8 @@ namespace DatenMeister.WebServer.Controller
             }
             
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-            var form = formFactory.CreateCollectionFormForExtent(extent,
+            var form = formFactory
+                .CreateCollectionFormForExtent(extent,
                 new FormFactoryConfiguration {ViewModeId = viewMode ?? string.Empty});
             if (form == null)
             {

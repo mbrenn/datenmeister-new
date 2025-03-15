@@ -12,11 +12,10 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
 
     async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
         const query = this.field.get(
-            _DatenMeister._Forms._DropDownByQueryData.query, Mof.ObjectType.Single);        
-        
+            _DatenMeister._Forms._DropDownByQueryData.query, Mof.ObjectType.Single);
+
         // Checks, if the query is set, otherwise return an error message
-        if (query === undefined || query === null)
-        {
+        if (query === undefined || query === null) {
             return [
                 {
                     title: "-- ERROR: Parameter Query is not set",
@@ -26,8 +25,7 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
         }
 
         // Takes the query and executes the request
-        const serverResult = await ElementClient.queryObject(
-            Mof.DmObject.createFromReference(query.workspace, query.uri));
+        const serverResult = await ElementClient.queryObject(query);
 
         return serverResult.result.map(x => {
             return {
@@ -36,5 +34,5 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
                 itemUrl: x.uri
             }
         });
-    }    
+    }
 }

@@ -38,7 +38,7 @@ export abstract class DropDownBaseField extends BaseField implements IFormField 
 
 
     async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
-        // Enumrates the fields
+        // Enumerates the fields
         this._loadedFields = await this.loadFields();
         for (const field of this._loadedFields) {
             field.key = "item_" + this.counter.toString();

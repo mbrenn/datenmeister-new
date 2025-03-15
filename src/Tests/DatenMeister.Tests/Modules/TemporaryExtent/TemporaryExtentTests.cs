@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
 using NUnit.Framework;
@@ -96,6 +97,22 @@ namespace DatenMeister.Tests.Modules.TemporaryExtent
             Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
             temporaryLogic.CleanElements();
             Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
+        }
+
+        [Test]
+        public async Task TestFactory()
+        {
+            await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
+            var temporaryLogic = new TemporaryExtentLogic(scope.WorkspaceLogic, scope.ScopeStorage);
+            
+            var temporaryFactory = new TemporaryExtentFactory(temporaryLogic);
+            var element = temporaryFactory.create(null);
+            Assert.That(element, Is.Not.Null);
+            
+            var element2 = temporaryFactory.create(_DatenMeister.TheOne.Forms.__RowForm);
+            Assert.That(element2, Is.Not.Null);
+            Assert.That(element2.getMetaClass(), Is.Not.Null);
+            Assert.That(element2.getMetaClass()!.Equals(_DatenMeister.TheOne.Forms.__RowForm), Is.Not.Null);
         }
     }
 }

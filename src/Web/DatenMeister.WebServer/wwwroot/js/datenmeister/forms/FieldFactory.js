@@ -50,7 +50,8 @@ export function createField(fieldMetaClassUri, parameter) {
             result = new DropDownByCollection.Field();
             break;
         case _DatenMeister._Forms.__DropDownByQueryData_Uri:
-            return new DropDownByQuery.Field();
+            result = new DropDownByQuery.Field();
+            break;
         case _DatenMeister._Forms.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();
             break;

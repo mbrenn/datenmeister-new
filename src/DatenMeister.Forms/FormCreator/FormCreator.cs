@@ -403,8 +403,13 @@ namespace DatenMeister.Forms.FormCreator
 
                 if (isAlreadyIn) continue;
 
-                var column = CreateFieldForProperty(metaClass, property, propertyName, configuration);
-                rowOrObjectForm.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
+                var column = CreateFieldForProperty(
+                    metaClass,
+                    property,
+                    propertyName,
+                    configuration,
+                    column => 
+                        rowOrObjectForm.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column));
 
                 FormMethods.AddToFormCreationProtocol(rowOrObjectForm,
                     "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass: " +
@@ -422,7 +427,6 @@ namespace DatenMeister.Forms.FormCreator
                 rowOrObjectForm.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(metaClassField);
 
                 cache.MetaClassAlreadyAdded = true;
-
 
                 FormMethods.AddToFormCreationProtocol(rowOrObjectForm,
                     "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added metaclass information");
@@ -509,8 +513,9 @@ namespace DatenMeister.Forms.FormCreator
                     umlClassOrProperty.container(),
                     umlClassOrProperty,
                     null,
-                    creationMode);
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column);
+                    creationMode,
+                    column => 
+                        form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field).add(column));
 
                 FormMethods.AddToFormCreationProtocol(form,
                     "[FormCreator.AddFieldsToFormByMetaClassProperty]: Added Property to row or table form: " +
@@ -613,12 +618,15 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="property">Uml-Property which is requesting a field</param>
         /// <param name="propertyName">Name of the property wo whose values the list form shall be created.</param>
         /// <param name="configuration">Defines the mode how to create the fields</param>
+        /// <param name="setterFunction">Defines the setter function being called to add the freshly added
+        /// element. This function must be called by the creator</param>
         /// <returns>The field data</returns>
         private IElement CreateFieldForProperty(
             IObject? parentMetaClass,
             IObject? property,
             string? propertyName,
-            FormFactoryConfiguration configuration)
+            FormFactoryConfiguration configuration,
+            Action<IElement> setterFunction)
         {
             if (property == null && propertyName == null)
                 throw new InvalidOperationException("property == null && propertyName == null");
@@ -628,7 +636,7 @@ namespace DatenMeister.Forms.FormCreator
             var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
 
             propertyName ??= property.get<string>("name");
-            var propertyIsEnumeration = property != null && PropertyMethods.IsCollection(property);
+            var propertyIsCollection = property != null && PropertyMethods.IsCollection(property);
             var isReadOnly = configuration.IsReadOnly;
 
             // Check, if field property is an enumeration
@@ -646,7 +654,9 @@ namespace DatenMeister.Forms.FormCreator
             if (propertyTypeMetaClass != null && propertyType != null)
             {
                 if (propertyTypeMetaClass.equals(_UML.TheOne.SimpleClassifiers.__Enumeration))
+                {
                     return CreateFieldForEnumeration(propertyName, propertyType, configuration);
+                }
 
                 if (propertyType.equals(_booleanType))
                 {
@@ -655,6 +665,7 @@ namespace DatenMeister.Forms.FormCreator
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.title, propertyName);
                     checkbox.set(_DatenMeister._Forms._CheckboxFieldData.isReadOnly, isReadOnly);
+                    setterFunction(checkbox);
                     return checkbox;
                 }
 
@@ -664,6 +675,7 @@ namespace DatenMeister.Forms.FormCreator
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.title, propertyName);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.isReadOnly, isReadOnly);
+                    setterFunction(dateTimeField);
                     return dateTimeField;
                 }
 
@@ -675,7 +687,7 @@ namespace DatenMeister.Forms.FormCreator
                     !propertyType.equals(_dateTimeType))
                 {
                     // If we have something else than a primitive type and it is not for a list form
-                    if (propertyIsEnumeration)
+                    if (propertyIsCollection)
                     {
                         // It can contain multiple factory
                         var elementsField = factory.create(_DatenMeister.TheOne.Forms.__SubElementFieldData);
@@ -714,27 +726,54 @@ namespace DatenMeister.Forms.FormCreator
                                 elementsField.set(_DatenMeister._Forms._SubElementFieldData.form, enumerationListForm);
                         }
 
+                        setterFunction(elementsField);
                         return elementsField;
                     }
 
-                    // It can just contain one element (or is in list view)
-                    var reference = factory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
-                    reference.set(_DatenMeister._Forms._ReferenceFieldData.name, propertyName);
-                    reference.set(_DatenMeister._Forms._ReferenceFieldData.title, propertyName);
-                    reference.set(_DatenMeister._Forms._ReferenceFieldData.isReadOnly, isReadOnly);
-                    reference.set(_DatenMeister._Forms._ReferenceFieldData.isEnumeration, propertyIsEnumeration);
-                    reference.set(
-                        _DatenMeister._Forms._ReferenceFieldData.metaClassFilter,
-                        new[] { propertyType });
+                    if (Configuration.CreateDropDownForReferences)
+                    {
+                        var dropDownByQueryData = factory.create(_DatenMeister.TheOne.Forms.__DropDownByQueryData);
+                        var queryStatement = factory.create(_DatenMeister.TheOne.DataViews.__QueryStatement);
+                        var queryByExtent = factory.create(_DatenMeister.TheOne.DataViews.__SelectFromAllWorkspacesNode);
+                        var queryFlatten = factory.create(_DatenMeister.TheOne.DataViews.__FlattenNode);
+                        var queryByMetaClass = factory.create(_DatenMeister.TheOne.DataViews.__FilterByMetaclassNode);
+                        
+                        queryStatement.AddCollectionItem(_DatenMeister._DataViews._QueryStatement.nodes, queryByExtent);
+                        queryStatement.AddCollectionItem(_DatenMeister._DataViews._QueryStatement.nodes, queryByMetaClass);
+                        queryStatement.AddCollectionItem(_DatenMeister._DataViews._QueryStatement.nodes, queryFlatten);
+                        queryStatement.set(_DatenMeister._DataViews._QueryStatement.resultNode, queryByMetaClass);
+                        
+                        dropDownByQueryData.set(_DatenMeister._Forms._DropDownByQueryData.query, queryStatement);
+                        
+                        queryFlatten.set(_DatenMeister._DataViews._FlattenNode.input, queryByExtent);
+                        
+                        queryByMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, queryFlatten);
+                        queryByMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, propertyType);
 
-                    return reference;
+                        setterFunction(dropDownByQueryData);
+                        return dropDownByQueryData;
+                    }
+                    else
+                    {
+                        // It can just contain one element (or is in list view)
+                        var reference = factory.create(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
+                        reference.set(_DatenMeister._Forms._ReferenceFieldData.name, propertyName);
+                        reference.set(_DatenMeister._Forms._ReferenceFieldData.title, propertyName);
+                        reference.set(_DatenMeister._Forms._ReferenceFieldData.isReadOnly, isReadOnly);
+                        reference.set(_DatenMeister._Forms._ReferenceFieldData.isEnumeration, propertyIsCollection);
+                        reference.set(
+                            _DatenMeister._Forms._ReferenceFieldData.metaClassFilter,
+                            new[] { propertyType });
+
+                        return reference;
+                    }   
                 }
             }
 
             if (propertyType == null)
             {
                 // If we have something else than a primitive type and it is not for a list form
-                var element = factory.create(propertyIsEnumeration
+                var element = factory.create(propertyIsCollection
                     ? _DatenMeister.TheOne.Forms.__SubElementFieldData
                     : _DatenMeister.TheOne.Forms.__AnyDataFieldData);
 
@@ -742,13 +781,14 @@ namespace DatenMeister.Forms.FormCreator
                 element.set(_DatenMeister._Forms._SubElementFieldData.name, propertyName);
                 element.set(_DatenMeister._Forms._SubElementFieldData.title, propertyName);
                 element.set(_DatenMeister._Forms._SubElementFieldData.isReadOnly, isReadOnly);
-                element.set(_DatenMeister._Forms._SubElementFieldData.isEnumeration, propertyIsEnumeration);
+                element.set(_DatenMeister._Forms._SubElementFieldData.isEnumeration, propertyIsCollection);
 
                 if (propertyType != null)
                 {
                     FormMethods.AddDefaultTypeForNewElement(element, propertyType);
                 }
 
+                setterFunction(element);
                 return element;
             }
 
@@ -765,6 +805,7 @@ namespace DatenMeister.Forms.FormCreator
                 column.set(_DatenMeister._Forms._TextFieldData.width, 10);
             }
 
+            setterFunction(column);
             return column;
         }
 
@@ -775,7 +816,9 @@ namespace DatenMeister.Forms.FormCreator
         /// <param name="propertyType">Type of the enumeration</param>
         /// <param name="creationMode">The used creation mode</param>
         /// <returns>The created element of the enumeration</returns>
-        private IElement CreateFieldForEnumeration(string propertyName, IElement propertyType,
+        private IElement CreateFieldForEnumeration(
+            string propertyName,
+            IElement propertyType,
             FormFactoryConfiguration creationMode)
         {
             var factory = GetMofFactory(creationMode);

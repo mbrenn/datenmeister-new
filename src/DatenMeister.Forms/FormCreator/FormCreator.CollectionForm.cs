@@ -315,8 +315,8 @@ namespace DatenMeister.Forms.FormCreator
                         metaClass,
                         property.property,
                         null,
-                        new FormFactoryConfiguration { IsReadOnly = true });
-                    fields.Add(field);
+                        new FormFactoryConfiguration { IsReadOnly = true },
+                        field => fields.Add(field));
 
                     FormMethods.AddToFormCreationProtocol(
                         collectionForm,

@@ -19,7 +19,7 @@ export class Field extends DropDownBaseField.DropDownBaseField {
             ];
         }
         // Takes the query and executes the request
-        const serverResult = await ElementClient.queryObject(Mof.DmObject.createFromReference(query.workspace, query.uri));
+        const serverResult = await ElementClient.queryObject(query);
         return serverResult.result.map(x => {
             return {
                 title: x.get("name", Mof.ObjectType.String) ?? x.id,

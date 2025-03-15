@@ -15,7 +15,7 @@ export class DropDownBaseField extends BaseField {
         this._loadedFields = [];
     }
     async createDom(dmElement) {
-        // Enumrates the fields
+        // Enumerates the fields
         this._loadedFields = await this.loadFields();
         for (const field of this._loadedFields) {
             field.key = "item_" + this.counter.toString();

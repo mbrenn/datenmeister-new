@@ -150,8 +150,9 @@ namespace DatenMeister.Forms.FormCreator
                             objectMetaClass,
                             property,
                             pair.propertyName,
-                            creationMode);
-                        detailForm.AddCollectionItem(_DatenMeister._Forms._RowForm.field, field);
+                            creationMode,
+                            field => 
+                                detailForm.AddCollectionItem(_DatenMeister._Forms._RowForm.field, field));
 
                         FormMethods.AddToFormCreationProtocol(
                             objectForm,

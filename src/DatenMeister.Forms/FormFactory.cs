@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -1102,13 +1103,37 @@ namespace DatenMeister.Forms
             }
         }
 
-        private static IElement CloneForm(IElement foundForm)
+        /// <summary>
+        /// Clones the form and sets the orignal uri and workspace
+        /// </summary>
+        /// <param name="form">The form to be cloned</param>
+        /// <returns>The cloned form including the original uri and workspalce</returns>
+        private static IElement CloneForm(IElement form)
         {
-            var originalUrl = foundForm.GetUri();
-            foundForm = ObjectCopier.Copy(new MofFactory(foundForm), foundForm, new CopyOption());
-            if (originalUrl != null) foundForm.set(_Form.originalUri, originalUrl);
+            // Performs the cloning
+            form = ObjectCopier.Copy(
+                new MofFactory(form), form, new CopyOption());
 
-            return foundForm;
+            // Sets the original ori and workspace, so the client can reference to the original uri
+            var originalUrl =
+                form.isSet(_Form.originalUri)
+                    ? form.get<string>(_Form.originalUri)
+                    : form.GetUri();
+            if (originalUrl != null)
+            {
+                form.set(_Form.originalUri, originalUrl);
+            }
+
+            var originalWorkspace =
+                form.isSet(_Form.originalWorkspace)
+                    ? form.get<string>(_Form.originalWorkspace)
+                    : form.GetExtentOf()?.GetWorkspace()?.id;
+            if (originalWorkspace != null)
+            {
+                form.set(_Form.originalWorkspace, originalWorkspace);
+            }
+
+            return form;
         }
 
         /// <summary>

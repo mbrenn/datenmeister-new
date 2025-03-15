@@ -232,17 +232,18 @@ export class ObjectFormCreatorForItem {
                     };
                 }
                 else {
-                    const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                    if (form.uri !== undefined && byForm === undefined) {
+                    const originalUri = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                    const originalWorkspace = form.get(_DatenMeister._Forms._Form.originalWorkspace, Mof.ObjectType.String);
+                    if (form.uri !== undefined && originalUri === undefined) {
                         formUrl = {
                             workspace: form.workspace,
                             uri: form.uri
                         };
                     }
-                    else if (byForm !== undefined) {
+                    else if (originalUri !== undefined) {
                         formUrl = {
-                            workspace: "Management",
-                            uri: byForm
+                            workspace: originalWorkspace ?? "Management",
+                            uri: originalUri
                         };
                     }
                 }

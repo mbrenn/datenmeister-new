@@ -779,6 +779,9 @@ namespace DatenMeister.Forms
             {
                 var converted = FormMethods.GetCollectionFormForSubforms(form);
                 converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+                converted.set(
+                    _DatenMeister._Forms._Form.originalWorkspace, 
+                    form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
                 FormMethods.AddToFormCreationProtocol(
                     converted,
@@ -793,6 +796,9 @@ namespace DatenMeister.Forms
             {
                 var converted = FormMethods.GetObjectFormForSubforms(form);
                 converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+                converted.set(
+                    _DatenMeister._Forms._Form.originalWorkspace, 
+                    form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
                 FormMethods.AddToFormCreationProtocol(
                     converted,
@@ -803,6 +809,7 @@ namespace DatenMeister.Forms
             }
 
             form.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+            form.set(_DatenMeister._Forms._Form.originalWorkspace, form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
             return form;
         }

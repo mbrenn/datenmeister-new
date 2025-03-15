@@ -2404,6 +2404,9 @@ namespace DatenMeister.Core.Models
                 public static string @originalUri = "originalUri";
                 public IElement? @_originalUri = null;
 
+                public static string @originalWorkspace = "originalWorkspace";
+                public IElement? @_originalWorkspace = null;
+
                 public static string @creationProtocol = "creationProtocol";
                 public IElement? @_creationProtocol = null;
 
@@ -2446,6 +2449,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @originalUri = "originalUri";
                 public IElement? @_originalUri = null;
+
+                public static string @originalWorkspace = "originalWorkspace";
+                public IElement? @_originalWorkspace = null;
 
                 public static string @creationProtocol = "creationProtocol";
                 public IElement? @_creationProtocol = null;
@@ -2523,6 +2529,9 @@ namespace DatenMeister.Core.Models
                 public static string @originalUri = "originalUri";
                 public IElement? @_originalUri = null;
 
+                public static string @originalWorkspace = "originalWorkspace";
+                public IElement? @_originalWorkspace = null;
+
                 public static string @creationProtocol = "creationProtocol";
                 public IElement? @_creationProtocol = null;
 
@@ -2560,6 +2569,9 @@ namespace DatenMeister.Core.Models
                 public static string @originalUri = "originalUri";
                 public IElement? @_originalUri = null;
 
+                public static string @originalWorkspace = "originalWorkspace";
+                public IElement? @_originalWorkspace = null;
+
                 public static string @creationProtocol = "creationProtocol";
                 public IElement? @_creationProtocol = null;
 
@@ -2593,6 +2605,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @originalUri = "originalUri";
                 public IElement? @_originalUri = null;
+
+                public static string @originalWorkspace = "originalWorkspace";
+                public IElement? @_originalWorkspace = null;
 
                 public static string @creationProtocol = "creationProtocol";
                 public IElement? @_creationProtocol = null;

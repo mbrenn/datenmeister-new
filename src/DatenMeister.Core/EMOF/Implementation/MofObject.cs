@@ -183,7 +183,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             => get(property, false, ObjectType.None);
 
         // ReSharper disable once InconsistentNaming
-        public object? get(string property, bool noReferences, ObjectType objectType)
+        public virtual object? get(string property, bool noReferences, ObjectType objectType)
         {
             // Checks, if we have a dynamic property
             var (isValid, resultValue) = GetDynamicProperty(property);

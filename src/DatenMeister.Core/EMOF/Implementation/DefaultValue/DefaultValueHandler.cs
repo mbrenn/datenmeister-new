@@ -39,5 +39,31 @@ namespace DatenMeister.Core.EMOF.Implementation.DefaultValue
                 }
             }
         }
+
+        /// <summary>
+        /// Reads the default value of a property. It does not check whether the property already had been set. 
+        /// </summary>
+        /// <param name="value">Value whose property shall be retrieved</param>
+        /// <param name="property">The property that shall be read</param>
+        /// <returns>The default value or null, if not set</returns>
+        public static T? ReadDefaultValueOfProperty<T>(IElement value, string property)
+        {
+            var type = value.getMetaClass();
+            if (type == null)
+            {
+                // No type ==> no default value
+                return default;
+            }
+
+            var propertyElement = ClassifierMethods.GetPropertyOfClassifier(type, property);
+            if (propertyElement == null)
+            {
+                // No property ==> No default value
+                return default;
+            }
+            
+            return propertyElement.getOrDefault<T>(_UML._Classification._Property.defaultValue);
+
+        }
     }
 }

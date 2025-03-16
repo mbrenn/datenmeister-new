@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -56,11 +57,19 @@ namespace DatenMeister.Core.EMOF.Implementation
                 {
                     return true;
                 }
+                
+                // Checks whether we are having a default Value
+                var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty<object>(this, property);
+                if (defaultValue != null)
+                {
+                    // If we have a default value, then it is quite sure that the property is set!
+                    return true;
+                }
             }
 
             return base.isSet(property);
         }
-
+        
         /// <inheritdoc />
         IElement? IElement.getMetaClass()
         {
@@ -172,6 +181,29 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return (false, null);
+        }
+
+        public override object? get(string property, bool noReferences, ObjectType objectType)
+        {
+            // Checks, if we have a dynamic property
+            var (isValid, resultValue) = GetDynamicProperty(property);
+            if (isValid)
+            {
+                return ConvertToMofObject(this, property, resultValue, noReferences);
+            }
+            
+            // Checks, if the property is set
+            if (ProviderObject.IsPropertySet(property))
+            {
+                var result = ProviderObject.GetProperty(property, objectType);
+                return ConvertToMofObject(this, property, result, noReferences);
+            }
+            else
+            {
+                // If not set, get the default value
+                var result = DefaultValueHandler.ReadDefaultValueOfProperty<object?>(this, property);
+                return ConvertToMofObject(this, property, result, noReferences);
+            }
         }
 
         /// <inheritdoc />

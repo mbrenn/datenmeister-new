@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Json
+namespace DatenMeister.Web.Json
 {
     /// <summary>
     /// Converts an object or an element directly to a JSON element

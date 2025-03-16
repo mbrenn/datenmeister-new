@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DatenMeister.Json
+namespace DatenMeister.Web.Json
 {
     /// <summary>
     /// This class defines the structure of the MofObject interface between

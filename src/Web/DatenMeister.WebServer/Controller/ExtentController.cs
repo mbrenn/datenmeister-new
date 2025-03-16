@@ -12,7 +12,7 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;
 

@@ -2,7 +2,7 @@
 using DatenMeister.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 
 namespace DatenMeister.WebServer.Controller
 {

@@ -7,7 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Json
+namespace DatenMeister.Web.Json
 {
     /// <summary>
     /// This enumeration method is a helper for the GetContainer method and supports to

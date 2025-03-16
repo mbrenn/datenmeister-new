@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Json

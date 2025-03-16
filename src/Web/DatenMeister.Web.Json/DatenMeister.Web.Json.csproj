@@ -12,8 +12,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
-      <ProjectReference Include="..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Core\DatenMeister.Core.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
     </ItemGroup>
 
 </Project>

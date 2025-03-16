@@ -9,7 +9,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;
 

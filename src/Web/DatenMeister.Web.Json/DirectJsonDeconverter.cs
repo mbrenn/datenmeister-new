@@ -10,7 +10,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
 using System.Collections.Generic;
 
-namespace DatenMeister.Json
+namespace DatenMeister.Web.Json
 {
     /// <summary>
     /// Some helper methods for converting json values to Xmi

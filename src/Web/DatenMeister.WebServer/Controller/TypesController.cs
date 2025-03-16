@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 using DatenMeister.Types;
 using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;

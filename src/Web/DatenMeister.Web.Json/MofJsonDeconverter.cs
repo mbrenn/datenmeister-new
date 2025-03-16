@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Json
+namespace DatenMeister.Web.Json
 {
     public class MofJsonDeconverter : DirectJsonDeconverter
     {

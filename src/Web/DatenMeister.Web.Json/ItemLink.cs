@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Json
+﻿namespace DatenMeister.Web.Json
 {
     /// <summary>
     /// Defines the link to the item by defining the workspace and the

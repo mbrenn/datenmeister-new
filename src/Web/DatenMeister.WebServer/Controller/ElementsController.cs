@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 using DatenMeister.TemporaryExtent;
 using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Mvc;

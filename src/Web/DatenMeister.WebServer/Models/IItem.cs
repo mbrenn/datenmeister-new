@@ -1,5 +1,5 @@
 ﻿using System;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 
 namespace DatenMeister.WebServer.Models
 {

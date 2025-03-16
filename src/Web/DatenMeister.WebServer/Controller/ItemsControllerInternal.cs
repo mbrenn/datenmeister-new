@@ -7,7 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DataView;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 
 namespace DatenMeister.WebServer.Controller
 {

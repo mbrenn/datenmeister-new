@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 using DatenMeister.WebServer.Controller;
 using NUnit.Framework;
 

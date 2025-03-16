@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -11,7 +10,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Library.Helper;
 

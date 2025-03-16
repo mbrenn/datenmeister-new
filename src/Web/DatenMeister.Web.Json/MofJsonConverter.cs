@@ -9,7 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
-namespace DatenMeister.Json
+namespace DatenMeister.Web.Json
 {
     /// <summary>
     /// Converts an object or a mof element to a json element in which

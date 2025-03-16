@@ -57,6 +57,20 @@ namespace DatenMeister.Core.Extensions
                         }
                     }
                     
+                    /* Hard coded removals which are now resolved and can be deprecated
+                    if (property == "isDerived"
+                        || property == "aggregation"
+                        || property == "isDerivedUnion"
+                        || property == "isReadOnly"
+                        || property == "isOrdered"
+                        || property == "isUnique"
+                        || property == "isStatic"
+                        || property == "isLeaf"
+                       )
+                    {
+                        remove = true;
+                    }*/
+                    
                     if (remove)
                     {
                         if (dryRun)

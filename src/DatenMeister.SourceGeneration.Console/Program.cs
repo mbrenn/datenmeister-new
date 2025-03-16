@@ -15,6 +15,11 @@ namespace DatenMeister.SourceGeneration.Console
 {
     class Program
     {
+#if DEBUG
+        const bool dryRun = true;
+#else
+        const bool dryRun = false;
+#endif
         public static async Task Main(string[] args)
         {
             if (args.Length == 0)
@@ -49,11 +54,6 @@ namespace DatenMeister.SourceGeneration.Console
             var T = StandardProcedure.T;
 
             System.Console.WriteLine("Clean up .xmi-Files");
-#if DEBUG
-            var dryRun = true;
-#else
-            var dryRun = false;
-#endif
 
             await CleanUpProcedure.CleanUpExtent(
                 $"{R}/..//DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",
@@ -110,12 +110,16 @@ namespace DatenMeister.SourceGeneration.Console
 #endif
         }
 
-
         public static async Task CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
         {
             System.Console.WriteLine("Reading from: " + pathXml);
             System.Console.WriteLine("Writing to  : " + pathTarget);
             System.Console.WriteLine();
+            
+            await CleanUpProcedure.CleanUpExtent(
+                pathXml,
+                "dm:///intern.datenmeister.forms/",
+                dryRun);
 
             await using var dm = await GiveMeDatenMeister();
             var filename = Path.GetFileNameWithoutExtension(pathXml);

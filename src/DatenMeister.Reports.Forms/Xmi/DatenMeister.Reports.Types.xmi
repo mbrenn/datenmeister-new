@@ -1,54 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xmi>
-  <meta p2:id="fe20ea7b-2310-4125-915b-f22d066cbadf" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///datenmeister.reports.forms.types" />
+  <meta p2:id="fe20ea7b-2310-4125-915b-f22d066cbadf" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///intern.datenmeister.forms/" />
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="89dea433-d199-4889-95eb-7ef30c0b5695" name="ReportForm" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
-    <isAbstract p2:id="9c045e77-2d98-4015-ac74-0887cd0e574e" />
-    <isActive p2:id="7f0af77f-0282-4174-a6f2-4aee7d200e49" />
-    <isFinalSpecialization p2:id="aef2691a-8fbb-45bf-94a3-f8d2001a688c" />
-    <isLeaf p2:id="cfedb1f8-f05a-4116-99b7-f2736a520c2f" />
     <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a2884e45-3957-475a-8e77-66823611b621" general-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" isSubstitutable="false" />
   </item>
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c" name="RequestReportAction" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
-    <isAbstract p2:id="e41a5ddb-143e-4f17-b901-3d7a68fa39ae" />
-    <isActive p2:id="b055dda8-cf19-45ca-89e6-83c452d077dc" />
-    <isFinalSpecialization p2:id="afdc1cbc-682d-4dd3-a11e-49eca5da95db" />
-    <isLeaf p2:id="56c3387f-2b31-4702-819b-313d36174b0d" />
     <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="90c99d80-f64e-412d-851b-d9697ebb2aff" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
-    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09f468b0-2f88-40cb-8960-fe8a3e1f8dc2" type-ref="dm:///_internal/model/primitivetypes#String" name="workspace" isID="true" isComposite="true">
-      <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
-      <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
-      <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
-      <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
-      <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
-      <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
-      <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
-      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
-    </ownedAttribute>
-    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09671348-3765-4559-8f77-de64af9d6d5d" name="itemUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
-      <aggregation p2:id="60d61217-75da-4cdf-8d84-a4181ae9819d" />
-      <isDerived p2:id="99676bb4-cfe0-4f76-8941-b46bda0e82cc" />
-      <isDerivedUnion p2:id="9fa84f04-2d26-4394-9d69-e8401d3263dd" />
-      <isReadOnly p2:id="a25172a1-adc0-445d-81f7-c6b57f2bc63e" />
-      <isOrdered p2:id="459dea30-ddf1-4f29-bd13-6cb4a7f41461" />
-      <isUnique p2:id="5f100051-6ce4-4962-ba9b-dddbd78b39bf" />
-      <isStatic p2:id="9b6637ba-387d-4318-9908-ee29c15e28c7" />
-      <isLeaf p2:id="d8e03067-9c19-4549-9ff9-8b375b13e400" />
-    </ownedAttribute>
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09f468b0-2f88-40cb-8960-fe8a3e1f8dc2" type-ref="dm:///_internal/model/primitivetypes#String" name="workspace" isID="true" isComposite="true" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="09671348-3765-4559-8f77-de64af9d6d5d" name="itemUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
   </item>
   <item p2:type="dm:///_internal/model/uml#Class" p2:id="75aaa247-9e5d-4f8c-ad11-8ba43d996684" name="RequestReportResult" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
-    <isAbstract p2:id="ee547ef8-86f8-4f17-9565-a9dac533db87" />
-    <isActive p2:id="e3ab5c9b-8fa4-4783-8178-fbdacc42981b" />
-    <isFinalSpecialization p2:id="06944844-4c7b-4c2b-b0f7-55379de5333e" />
-    <isLeaf p2:id="5fcd5ff8-d63c-4bd7-b260-be8ce64a266c" />
-    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="74434478-42cb-41a0-9616-e4a0a0ebebf9" name="report" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false">
-      <aggregation p2:id="af7db1ff-889c-494c-ab43-1254fd927a67" />
-      <isDerived p2:id="e46e5714-fa41-446e-bdcc-6815b7edd152" />
-      <isDerivedUnion p2:id="46fbce93-a9cd-42cc-9ce2-2935041e9bb2" />
-      <isReadOnly p2:id="b50d6b4e-6449-4efe-93ff-d3ac3e714923" />
-      <isOrdered p2:id="bb8ffb97-9d05-438a-99a7-444be7c721a0" />
-      <isUnique p2:id="14835bba-9ea9-4f9b-a928-98a5d63a4911" />
-      <isStatic p2:id="cc8d1876-6623-4f9d-a734-81503e1d6216" />
-      <isLeaf p2:id="a92dd368-bb16-4ce2-915c-4ea4fbb7b395" />
-    </ownedAttribute>
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="74434478-42cb-41a0-9616-e4a0a0ebebf9" name="report" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
   </item>
 </xmi>

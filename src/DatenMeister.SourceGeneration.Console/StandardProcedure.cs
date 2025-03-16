@@ -29,7 +29,7 @@ public class StandardProcedure
 
     public static async Task CreateTypescriptForDatenMeisterAllTypes()
     {
-        await using var dm = await GiveMe.DatenMeister();
+        await using var dm = await Program.GiveMeDatenMeister();
 
         System.Console.Write("Create TypeScript for DatenMeister...");
 
@@ -52,7 +52,7 @@ public class StandardProcedure
 
     public static async Task CreateSourceCodeForDatenMeisterAllTypes()
     {
-        await using var dm = await GiveMe.DatenMeister();
+        await using var dm = await Program.GiveMeDatenMeister();
 
         System.Console.Write("Create Sourcecode for DatenMeister...");
 

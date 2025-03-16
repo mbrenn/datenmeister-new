@@ -99,7 +99,7 @@
       </tab>
     </packagedElement>
   </item>
-  <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms" __uri="dm:///intern/forms" />
+  <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="DatenMeister.Forms" __uri="dm:///intern.datenmeister.forms/" />
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Forms" name="Forms">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm" name="Forms - Create By Metaclass" hideMetaInformation="True" allowNewProperties="False" p1:id="Forms.Create.ByMetaClass" comment="Used by Action 'Forms.Create.ByMetaClass'">
       <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Select Meta Class" title="Select your MetaClass" p1:id="Forms.Create.ByMetaClass.Detail" name="Select Extent Type">

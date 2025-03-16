@@ -56,7 +56,7 @@ namespace DatenMeister.Core.Extensions
                             remove = true;
                         }
                     }
-
+                    
                     if (remove)
                     {
                         if (dryRun)
@@ -65,6 +65,7 @@ namespace DatenMeister.Core.Extensions
                         }
                         else
                         {
+                            Console.WriteLine($"Remove {property} of {element}");
                             element.unset(property);
                         }
                     }

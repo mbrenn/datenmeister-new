@@ -29,7 +29,7 @@ public class StandardProcedure
 
     public static async Task CreateTypescriptForDatenMeisterAllTypes()
     {
-        using var dm = await GiveMe.DatenMeister();
+        await using var dm = await GiveMe.DatenMeister();
 
         System.Console.Write("Create TypeScript for DatenMeister...");
 
@@ -52,7 +52,7 @@ public class StandardProcedure
 
     public static async Task CreateSourceCodeForDatenMeisterAllTypes()
     {
-        using var dm = await GiveMe.DatenMeister();
+        await using var dm = await GiveMe.DatenMeister();
 
         System.Console.Write("Create Sourcecode for DatenMeister...");
 
@@ -168,13 +168,14 @@ public class StandardProcedure
         File.WriteAllText($"{T}/primitivetypes.ts", generator.Result.ToString());
         System.Console.WriteLine("C# Code for PrimitiveTypes written");
     }
-    public static string AssemblyDirectory
+
+    private static string AssemblyDirectory
     {
         get
         {
-            string codeBase = Assembly.GetExecutingAssembly().Location ?? throw new InvalidOperationException("Unknown CodeBase");
+            var codeBase = Assembly.GetExecutingAssembly().Location ?? throw new InvalidOperationException("Unknown CodeBase");
             UriBuilder uri = new UriBuilder(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path);
+            var path = Uri.UnescapeDataString(uri.Path);
             return Path.GetDirectoryName(path);
         }
     }

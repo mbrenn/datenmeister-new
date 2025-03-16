@@ -31,6 +31,20 @@ namespace DatenMeister.SourceGeneration.Console
         /// </summary>
         private static async Task PerformStandardProcedure()
         {
+            
+            var R = StandardProcedure.R;
+            var T = StandardProcedure.T;
+
+            System.Console.WriteLine("Clean up .xmi-Files");
+#if DEBUG
+            var dryRun = true;
+#else
+            var dryRun = false;
+#endif
+            
+            await CleanUpProcedure.CleanUpExtent($"{R}/..//DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi", dryRun);
+            await CleanUpProcedure.CleanUpExtent($"{R}/..//DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi", dryRun);
+            
             System.Console.WriteLine("Perform the standard procedure.");
 
             // First, creates
@@ -45,11 +59,10 @@ namespace DatenMeister.SourceGeneration.Console
             await StandardProcedure.CreateTypescriptForDatenMeisterAllTypes();
             
             System.Console.WriteLine("Closing Source Code Generator");
+            
 
 #if !DEBUG
 
-            var R = StandardProcedure.R;
-            var T = StandardProcedure.T;
 
             File.Copy($"{T}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
                 File.Copy($"{T}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
@@ -82,7 +95,7 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.WriteLine("Writing to  : " + pathTarget);
             System.Console.WriteLine();
 
-            using var dm = await GiveMe.DatenMeister();
+            await using var dm = await GiveMe.DatenMeister();
             var filename = Path.GetFileNameWithoutExtension(pathXml);
 
             var typeExtent = new MofUriExtent(

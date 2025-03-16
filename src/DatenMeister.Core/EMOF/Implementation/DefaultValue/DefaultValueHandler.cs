@@ -6,7 +6,9 @@ using DatenMeister.Core.Uml.Helper;
 namespace DatenMeister.Core.EMOF.Implementation.DefaultValue
 {
     /// <summary>
-    /// The handler to set the default value 
+    /// This handler sets the default properties of the metaclass explicitly.
+    /// This is to be avoided since the default values may change and the default values
+    /// should be added in case of a reading and not upon the creation of the items themselves
     /// </summary>
     public static class DefaultValueHandler
     {

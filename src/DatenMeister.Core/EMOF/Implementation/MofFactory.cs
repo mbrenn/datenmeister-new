@@ -154,7 +154,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (!Extent.SlimUmlEvaluation)
             {
                 AutoEnumerateHandler.HandleNewItem(Extent, created);
-                DefaultValueHandler.HandleNewItem(created, metaClass);
+                
+                // The setting of default values is deactivated since it causes troubles by having too 
+                // many properties within the extents and these even had duplicate IDs. 
+                // Also, the determination of default values should happen at the reading of an item and not 
+                // upon the creation. ==> Deactivation 
+                // Solution would be to set the default value in case a property is not set upon reading
+                /* DefaultValueHandler.HandleNewItem(created, metaClass); */
             }
 
             return created;

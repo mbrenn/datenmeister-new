@@ -127,7 +127,8 @@ class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleB
         await createBreadcrumbForItem($(".dm-breadcrumb-page"), workspace, itemUrl);
     }
     async loadForm(metaClass) {
-        const form = await ClientForms.getDefaultObjectForMetaClass(metaClass, "ViewMode.DataManipulation");
+        const form = 
+            await ClientForms.getDefaultObjectForMetaClass(metaClass, "ViewMode.DataManipulation");
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
         const firstTab = tabs[0];
         const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);

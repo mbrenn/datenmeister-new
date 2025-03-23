@@ -43,29 +43,56 @@ public class JsonCompressedImporter
     /// <param name="container">Container to be used</param>
     public void ImportFromText(string jsonContent, IReflectiveCollection container)
     {
-        var parsedJson = JsonNode.Parse(jsonContent);
+        var jsonImporter = new JsonImporter(_factory);
+        var parsedJson = JsonNode.Parse(jsonContent) ??
+                         throw new InvalidOperationException("Parsing failed");
         
         var columns = parsedJson[ColumnPropertyName]?.AsArray()
-                      ?? throw new InvalidOperationException($"The column {ColumnPropertyName} could not be found");
+                      ?? throw new InvalidOperationException(
+                          $"The column \"{ColumnPropertyName}\" could not be found");
 
         var columnPositions = new List<string>();
-        var backwardsPosition = new Dictionary<string, int>();
 
         var currentPosition = 0;
         foreach (var column in columns.Where(x => x != null))
         {
             columnPositions.Add(column!.ToString());
-            backwardsPosition[column.ToString()] = currentPosition;
-
             currentPosition++;
         }
 
         var data = parsedJson[DataPropertyName]?.AsArray()
-                   ?? throw new InvalidOperationException($"The column {DataPropertyName} could not be found");
+                   ?? throw new InvalidOperationException(
+                       $"The column \"{DataPropertyName}\" could not be found");
 
         foreach (var item in data.AsArray())
         {
             // We found something, now perform the conversion
+            // Confirm that array is an item
+            var itemAsArray = item?.AsArray();
+            if (itemAsArray == null)
+            {
+                throw new InvalidOperationException("The item is an array");
+            }
+            
+            if(itemAsArray.Count != columnPositions.Count)
+            {
+                throw new InvalidOperationException(
+                    $"We have a mismatch of array length. " +
+                    $"{itemAsArray.Count} != {columnPositions.Count}");
+            }
+
+            // Now perform the conversion
+            currentPosition = 0;
+            var createdItem = _factory.create(null);
+            container.add(createdItem);
+            foreach (var cell in itemAsArray)
+            {   
+                createdItem.set(
+                    columnPositions[currentPosition],
+                    jsonImporter.Import(cell));
+
+                currentPosition++;
+            }
         }
     }
 }

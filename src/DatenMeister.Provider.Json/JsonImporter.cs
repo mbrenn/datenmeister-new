@@ -56,7 +56,7 @@ public class JsonImporter
     ///  Performs an import of the parsed Json into the container
     /// </summary>
     /// <param name="parsedJson">Json to be parsed</param>
-    private object? Import(object? parsedJson)
+    internal object? Import(object? parsedJson)
     {
         switch (parsedJson)
         {

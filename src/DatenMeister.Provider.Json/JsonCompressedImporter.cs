@@ -1,10 +1,17 @@
 ﻿using System.Text.Json.Nodes;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.Json;
 
 public class JsonCompressedImporter
 {
+    private readonly IFactory _factory;
+
+    public JsonCompressedImporter(IFactory factory)
+    {
+        _factory = factory;
+    }
     
     /// <summary>
     /// Defines the name in which the compressed data is given
@@ -24,10 +31,20 @@ public class JsonCompressedImporter
     public void ImportFromFile(string fileName, IReflectiveCollection container)
     {
         var jsonContent = File.ReadAllText(fileName);
-        var parsedJson = JsonNode.Parse(jsonContent)
-                         ?? throw new InvalidOperationException($"Json could not be loaded: {fileName}");
 
+        ImportFromText(jsonContent, container);
 
+    }
+    
+    /// <summary>
+    /// Parses the json script from the text and puts it into the container
+    /// </summary>
+    /// <param name="jsonContent">Content to be parsed</param>
+    /// <param name="container">Container to be used</param>
+    public void ImportFromText(string jsonContent, IReflectiveCollection container)
+    {
+        var parsedJson = JsonNode.Parse(jsonContent);
+        
         var columns = parsedJson[ColumnPropertyName]?.AsArray()
                       ?? throw new InvalidOperationException($"The column {ColumnPropertyName} could not be found");
 
@@ -37,7 +54,7 @@ public class JsonCompressedImporter
         var currentPosition = 0;
         foreach (var column in columns.Where(x => x != null))
         {
-            columnPositions.Add(column.ToString());
+            columnPositions.Add(column!.ToString());
             backwardsPosition[column.ToString()] = currentPosition;
 
             currentPosition++;

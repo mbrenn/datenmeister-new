@@ -194,7 +194,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public async Task TestDeleteItems()
         {
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(100);
             var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
@@ -216,7 +216,7 @@ namespace DatenMeister.Tests.Web
         [Test]
         public async Task TestSetMetaClass()
         {
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(100);
             var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);

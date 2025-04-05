@@ -151,9 +151,10 @@ namespace DatenMeister.Tests.Runtime.Extents
             loaderConfig2.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.dropExisting, true);
             
             
-            var loadedInfo2 = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+            var loadedInfo2 = await extentManager.LoadExtent(loaderConfig2, ExtentCreationFlags.CreateOnly);
             Assert.That(loadedInfo2.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
-            Assert.That(loadedInfo.Extent.elements().Count(), Is.EqualTo(0));
+            Assert.That(loadedInfo2.Extent, Is.Not.Null);         
+            Assert.That(loadedInfo2.Extent!.elements().Count(), Is.EqualTo(0));
         }
     }
 }

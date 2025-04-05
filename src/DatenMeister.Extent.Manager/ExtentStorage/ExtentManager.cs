@@ -90,6 +90,8 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId);
                 var extentUri =
                     configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri);
+                var dropExisting =
+                    configuration.getOrDefault<bool>(_ExtentLoaderConfig.dropExisting);
                 
                 // Checks, if workspace is not set, and then override it with 'Data'
                 if (string.IsNullOrEmpty(workspaceId))
@@ -98,13 +100,24 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                     configuration.set(_ExtentLoaderConfig.workspaceId, workspaceId);
                 }
 
+                ExtentStorageData.LoadedExtentInformation? foundLoadedExtentInformation;
                 // Checks, if that extent is already loaded
                 lock (_extentStorageData.LoadedExtents)
                 {
-                    // Now, perform the check itself
-                    if (_extentStorageData.LoadedExtents.Any(
+                    foundLoadedExtentInformation =
+                        _extentStorageData.LoadedExtents.FirstOrDefault(
                             x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
-                                 && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
+                                 && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                }
+
+                if (foundLoadedExtentInformation != null)
+                {
+                    if (dropExisting)
+                    {
+                        // We may drop the existing
+                        await RemoveExtent(foundLoadedExtentInformation);
+                    }
+                    else
                     {
                         throw new InvalidOperationException(
                             $"There is already the extent loaded with extentUri: {extentUri}");

@@ -11,5 +11,9 @@ export async function init(workspace, extentUri) {
         formSelectorContainer: $("#form_selection_container")
     });
     await listForm.createCollectionForRootElements(workspace, extentUri, { isReadOnly: true });
+    // Sets the window title for the page
+    if (listForm.extentUri !== undefined) {
+        window.document.title = "Items Overview - '" + listForm.extentUri + "' - Der DatenMeister";
+    }
 }
 //# sourceMappingURL=ItemsOverview.js.map

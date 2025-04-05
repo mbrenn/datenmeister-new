@@ -1,6 +1,7 @@
 import * as Form from "../forms/ObjectForm.js";
 import { loadDefaultModules } from "../actions/DefaultLoader.js";
-export function init(workspace, itemUri) {
+import * as UmlHelper from "./../UmlHelper.js";
+export async function init(workspace, itemUri) {
     loadDefaultModules();
     const objectForm = new Form.ObjectFormCreatorForItem({
         itemContainer: $("#form_view"),
@@ -9,6 +10,10 @@ export function init(workspace, itemUri) {
         storeCurrentFormBtn: $("#dm-store-current-form-btn"),
         statusContainer: $(".dm-status-text-container")
     });
-    const _ = objectForm.createForm(workspace, itemUri);
+    const _ = await objectForm.createForm(workspace, itemUri);
+    const name = await UmlHelper.NamedElement.getName(objectForm.element);
+    if (name !== undefined) {
+        window.document.title = "Item '" + name + "' - Der DatenMeister";
+    }
 }
 //# sourceMappingURL=Item.js.map

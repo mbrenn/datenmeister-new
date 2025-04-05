@@ -7,7 +7,9 @@ export async function init(actionName: string, metaClass: undefined | string, fo
     
     await Form.createActionFormForEmptyObject(
         $("#form_view"),
-        metaClass,
+        metaClass,  
         {isReadOnly: false, allowAddingNewProperties: true, formUri: formUri},
         actionName);
+    
+    window.document.title = "Action - '" + actionName + "' - Der DatenMeister";
 }

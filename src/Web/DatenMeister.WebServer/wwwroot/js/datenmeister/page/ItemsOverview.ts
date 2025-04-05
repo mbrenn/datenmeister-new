@@ -1,7 +1,5 @@
-﻿
-import * as CollectionForm from "../forms/CollectionForm.js"
+﻿import * as CollectionForm from "../forms/CollectionForm.js"
 import {loadDefaultModules} from "../actions/DefaultLoader.js";
-import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 
 export async function init(workspace: string, extentUri: string) : Promise<void> {
     loadDefaultModules();
@@ -16,10 +14,15 @@ export async function init(workspace: string, extentUri: string) : Promise<void>
             formSelectorContainer: $("#form_selection_container")
         }
     );
+    
     await listForm.createCollectionForRootElements(        
         workspace,
         extentUri,
         {isReadOnly: true});
     
-    
+    // Sets the window title for the page
+    if (listForm.extentUri !== undefined)
+    {
+        window.document.title = "Items Overview - '" + listForm.extentUri + "' - Der DatenMeister";
+    }    
 }

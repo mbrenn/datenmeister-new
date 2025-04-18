@@ -41,12 +41,12 @@ pipeline {
             {                    
                 sh """                 
                     cd src/DatenMeister.Reports.Forms
-                    dotnet new tool-manifest
+                    dotnet new tool-manifest --force
                     dotnet tool install Cake.Tool --version 5.0.0
                     cd ../..
 
                     cd src/Web/DatenMeister.WebServer
-                    dotnet new tool-manifest
+                    dotnet new tool-manifest --force
                     dotnet tool install Cake.Tool --version 5.0.0
                     cd ../../..
                 """

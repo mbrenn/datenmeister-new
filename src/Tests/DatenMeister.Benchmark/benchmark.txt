@@ -84,22 +84,15 @@ Now with xmiprovider cache
 
 
 UseIndexCache = None
-|             Method |     Mean |     Error |  StdDev |
-|------------------- |---------:|----------:|--------:|
-|           AddItems | 145.5 ms |  99.66 ms | 5.46 ms |
-| DeleteItemsForward | 408.5 ms | 170.10 ms | 9.32 ms |
-| DeleteItemsReverse | 271.9 ms |  87.36 ms | 4.79 ms |
-
-UseIndexCache = Index
-|             Method |        Mean |     Error |    StdDev |
-|------------------- |------------:|----------:|----------:|
-|           AddItems |   184.41 ms | 569.06 ms | 31.192 ms |
-| DeleteItemsForward | 1,350.80 ms | 618.99 ms | 33.929 ms |
-| DeleteItemsReverse |    20.51 ms |  15.09 ms |  0.827 ms |
-
+|             Method |      Mean |    Error |   StdDev |
+|------------------- |----------:|---------:|---------:|
+|           AddItems |  96.27 ms | 1.889 ms | 2.100 ms |
+| DeleteItemsForward | 473.00 ms | 9.297 ms | 8.241 ms |
+| DeleteItemsReverse | 304.74 ms | 5.902 ms | 5.521 ms |
 UseIndexCache = Instance
-|             Method |      Mean |      Error |    StdDev |
-|------------------- |----------:|-----------:|----------:|
-|           AddItems | 185.19 ms | 389.965 ms | 21.375 ms |
-| DeleteItemsForward |  24.97 ms |   0.824 ms |  0.045 ms |
-| DeleteItemsReverse | 328.19 ms |  50.396 ms |  2.762 ms |
+
+|             Method |      Mean |    Error |   StdDev |
+|------------------- |----------:|---------:|---------:|
+|           AddItems | 112.77 ms | 1.940 ms | 1.720 ms |
+| DeleteItemsForward |  23.39 ms | 0.454 ms | 0.558 ms |
+| DeleteItemsReverse | 310.57 ms | 2.549 ms | 2.385 ms |

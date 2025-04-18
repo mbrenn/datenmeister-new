@@ -185,8 +185,7 @@ node_modules/
 
 nugets/*.snupkg
 nugets/*.nupkg
-/src/Web/DatenMeister.WebServer/package-lock.json
-
+package-lock.json
 
 .nyc_output/
-/src/Web/DatenMeister.WebServer/tools/Addins/
+Cake.Npm.5.0.0

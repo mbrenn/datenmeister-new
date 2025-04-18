@@ -64,8 +64,16 @@ public class JsonCompressedImporter
                    ?? throw new InvalidOperationException(
                        $"The column \"{DataPropertyName}\" could not be found");
 
+        var x = 0;
+
         foreach (var item in data.AsArray())
         {
+            x++;
+            if (x % 100 == 0)
+            {
+                Console.WriteLine(x + "/" + data.Count);
+            }
+            
             // We found something, now perform the conversion
             // Confirm that array is an item
             var itemAsArray = item?.AsArray();

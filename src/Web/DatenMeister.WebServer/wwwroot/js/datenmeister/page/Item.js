@@ -13,7 +13,7 @@ export async function init(workspace, itemUri) {
     const _ = await objectForm.createForm(workspace, itemUri);
     const name = await UmlHelper.NamedElement.getName(objectForm.element);
     if (name !== undefined) {
-        window.document.title = "Item '" + name + "' - Der DatenMeister";
+        window.document.title = "Item - '" + name + "' - Der DatenMeister";
     }
 }
 //# sourceMappingURL=Item.js.map

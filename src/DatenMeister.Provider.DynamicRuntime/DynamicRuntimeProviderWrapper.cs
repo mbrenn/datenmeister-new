@@ -57,7 +57,6 @@ namespace DatenMeister.Provider.DynamicRuntime
 
         public IEnumerable<IProviderObject> GetRootObjects()
         {
-
             var runtimeConfiguration = _configuration.getOrDefault<IElement>(_DynamicRuntimeLoaderConfig.configuration);
             var n = 1;
             foreach (var element in _provider.Get(this, runtimeConfiguration))

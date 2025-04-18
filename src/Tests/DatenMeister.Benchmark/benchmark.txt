@@ -81,3 +81,25 @@ Now with xmiprovider cache
 |           Method |     Mean |   Error |   StdDev |
 |----------------- |---------:|--------:|---------:|
 | LoadDatenMeister | 175.4 ms | 5.93 ms | 17.11 ms |
+
+
+UseIndexCache = None
+|             Method |     Mean |     Error |  StdDev |
+|------------------- |---------:|----------:|--------:|
+|           AddItems | 145.5 ms |  99.66 ms | 5.46 ms |
+| DeleteItemsForward | 408.5 ms | 170.10 ms | 9.32 ms |
+| DeleteItemsReverse | 271.9 ms |  87.36 ms | 4.79 ms |
+
+UseIndexCache = Index
+|             Method |        Mean |     Error |    StdDev |
+|------------------- |------------:|----------:|----------:|
+|           AddItems |   184.41 ms | 569.06 ms | 31.192 ms |
+| DeleteItemsForward | 1,350.80 ms | 618.99 ms | 33.929 ms |
+| DeleteItemsReverse |    20.51 ms |  15.09 ms |  0.827 ms |
+
+UseIndexCache = Instance
+|             Method |      Mean |      Error |    StdDev |
+|------------------- |----------:|-----------:|----------:|
+|           AddItems | 185.19 ms | 389.965 ms | 21.375 ms |
+| DeleteItemsForward |  24.97 ms |   0.824 ms |  0.045 ms |
+| DeleteItemsReverse | 328.19 ms |  50.396 ms |  2.762 ms |

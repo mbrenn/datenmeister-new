@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.BootStrap;
 using DatenMeister.Core;
@@ -22,7 +23,7 @@ namespace DatenMeister.WebServer.Pages
         {
         }
 
-        public void OnPost(string action)
+        public async Task OnPost(string action)
         {
             if (action != "reset") return;
 
@@ -50,7 +51,7 @@ namespace DatenMeister.WebServer.Pages
                 }
             }
 
-            GiveMe.Scope.UnuseDatenMeister();
+            await GiveMe.Scope.UnuseDatenMeister();
             GiveMe.Scope = null!;
 
             foreach (var file in files) System.IO.File.Delete(file);
@@ -60,7 +61,7 @@ namespace DatenMeister.WebServer.Pages
 
             // Reloads the DatenMeister
             IsRestarted = true;
-            Program.Stop(true);
+            await Program.Stop(true);
         }
     }
 }

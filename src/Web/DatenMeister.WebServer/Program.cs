@@ -25,7 +25,7 @@ namespace DatenMeister.WebServer
         /// Stops the program and performs a restart, if required
         /// </summary>
         /// <param name="restart">Flag, whether the application shall be restarted</param>
-        public static async void Stop(bool restart = false)
+        public static async Task Stop(bool restart = false)
         {
             if (_host == null) return; // Nothing to do
 

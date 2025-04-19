@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -19,7 +18,7 @@ namespace DatenMeister.Core.Provider.InMemory
     /// <summary>
     /// Stores all elements in the memory
     /// </summary>
-    public class InMemoryProvider : IProvider
+    public class InMemoryProvider : IProvider, ICanUpdateCacheId
     {
         /// <summary>
         /// Defines a configuration variable whether the index cache itself shall be used.
@@ -256,7 +255,7 @@ namespace DatenMeister.Core.Provider.InMemory
         /// </summary>
         /// <param name="inMemoryObject">Object which has been modified</param>
         /// <param name="formerId">Former Id of the element before the modification</param>
-        internal void UpdateCachedId(InMemoryObject inMemoryObject, string? formerId)
+        void ICanUpdateCacheId.UpdateCachedId(InMemoryObject inMemoryObject, string? formerId)
         {
             lock (_elements)
             {

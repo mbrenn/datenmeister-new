@@ -74,11 +74,11 @@ namespace DatenMeister.WebServer
 
                 _performRestart = false;
                 _host = CreateHostBuilder(args).Build();
-                _host.Run();
+                await _host.RunAsync();
             } while (_performRestart);
 
             // Unloads the DatenMeister
-            GiveMe.TryGetScope()?.UnuseDatenMeister();
+            await GiveMe.TryGetScope()!.UnuseDatenMeister();
             TheLog.Info("Good bye - Your DatenMeister");
         }
 

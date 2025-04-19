@@ -649,6 +649,7 @@ export var _DatenMeister;
         _ExtentLoaderConfigs.__ExcelExtentLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig";
         class _InMemoryLoaderConfig {
         }
+        _InMemoryLoaderConfig.isLinkedList = "isLinkedList";
         _InMemoryLoaderConfig._name_ = "name";
         _InMemoryLoaderConfig.extentUri = "extentUri";
         _InMemoryLoaderConfig.workspaceId = "workspaceId";

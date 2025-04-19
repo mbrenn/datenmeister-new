@@ -437,6 +437,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="InMemoryLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" p1:id="cac7dc54-0da0-495c-b360-c02701d7ccca" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="252d063f-5a0b-4bc5-8b34-2ecd180d802a" name="isLinkedList" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmlReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" p1:id="b21f2730-0fc6-4e4c-8171-37647e432dde" />

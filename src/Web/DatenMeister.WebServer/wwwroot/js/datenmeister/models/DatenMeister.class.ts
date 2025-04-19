@@ -738,6 +738,7 @@ export namespace _DatenMeister
                 export const __ExcelExtentLoaderConfig_Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig";
                 export class _InMemoryLoaderConfig
                 {
+                    static isLinkedList = "isLinkedList";
                     static _name_ = "name";
                     static extentUri = "extentUri";
                     static workspaceId = "workspaceId";

@@ -1497,6 +1497,9 @@ namespace DatenMeister.Core.Models
 
             public class _InMemoryLoaderConfig
             {
+                public static string @isLinkedList = "isLinkedList";
+                public IElement? @_isLinkedList = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

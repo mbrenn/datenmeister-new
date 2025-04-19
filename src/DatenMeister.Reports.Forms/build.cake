@@ -9,18 +9,13 @@ Task("Build")
 {
 	NpmInstall();
 
-	Information("Copying burnJsPopup Files to wwwroot");
-	
-	CopyFiles("node_modules/burnJsPopup/dist/js/*.*", "wwwroot/js", false);
-	CopyFiles("node_modules/burnJsPopup/dist/css/*.*", "wwwroot/css", false);
-		
     var process = new System.Diagnostics.Process
     {
         StartInfo =
         {
             FileName = "tsc",
-            UseShellExecute = true,            
             WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+            UseShellExecute = true,
             CreateNoWindow = true    
         }
     };

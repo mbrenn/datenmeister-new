@@ -19,7 +19,7 @@ namespace DatenMeister.Benchmark.Integration
         {
             Task.Run(async () =>
             {
-                using var datenMeister = await DatenMeisterBenchmark.GetDatenMeisterScope();
+                await using var datenMeister = await DatenMeisterBenchmark.GetDatenMeisterScope();
                 _umlElements = datenMeister.WorkspaceLogic.GetUmlWorkspace().extent
                                    .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == "dm:///_internal/model/uml")
                                ?? throw new InvalidOperationException("Uml extent is not found");

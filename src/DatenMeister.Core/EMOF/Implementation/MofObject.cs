@@ -315,7 +315,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Sets the container of the child object to the this instance
+        /// Sets the container of the child object to this instance
         /// </summary>
         /// <param name="parentProviderObject">The parent object containing the child after the allocation</param>
         /// <param name="childAsProviderObject">Child as potential provider object</param>
@@ -323,7 +323,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (childAsProviderObject is IProviderObject childProviderObject)
             {
-                if (!childProviderObject.IsRoot() && !childProviderObject.HasContainer())
+                if (/*!childProviderObject.IsRoot() && */ !childProviderObject.HasContainer())
                 {
                     SetContainer(parentProviderObject, childProviderObject);
                 }

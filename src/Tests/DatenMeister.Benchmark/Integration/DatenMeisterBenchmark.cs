@@ -58,7 +58,7 @@ namespace DatenMeister.Benchmark.Integration
         [Benchmark]
         public void LoadDatenMeister()
         {
-            using var datenMeister = GetDatenMeisterScope();
+            using var datenMeister = GetDatenMeisterScope().Result;
         }
     }
 }

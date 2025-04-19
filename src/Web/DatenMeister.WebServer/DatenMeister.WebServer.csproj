@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BurnSystems" Version="1.1.0" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.4.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -62,13 +63,6 @@
     <IconPngFiles Include="../../../assets/icons/output/*.*" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Remove="wwwroot\js\%2a%2a.ts" />
-    <TypeScriptCompile Remove="wwwroot\js\datenmeister\test\Test.Mof.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\js\datenmeister\test\Test.Mof.ts" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -98,10 +92,4 @@
       <Compile Include="Commit.cs" />
     </ItemGroup>
   </Target>
-  
-    <ItemGroup>
-      <PackageReference Include="BurnSystems" Version="1.1.0" />
-    </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties tsconfig_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

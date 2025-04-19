@@ -211,6 +211,37 @@ namespace DatenMeister.Tests.Core
             Assert.That(asObject.get("Y"), Is.EqualTo(24));
         }
 
+        [Test]
+        public void TestChangeOfIdAfterBeingSetToExtent()
+        {
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
+            var factory = new MofFactory(uriExtent);
+
+            // Sets the object
+            var mofElement = factory.create(null);
+            uriExtent.elements().add(mofElement);
+            var mofElement2 = factory.create(null);
+            uriExtent.elements().add(mofElement2);
+            var asMofElement = mofElement as MofElement;
+            Assert.That(asMofElement, Is.Not.Null);
+            
+            // First, check that everything is working of getting an object
+            Assert.That(uriExtent.element(asMofElement!.Id!), Is.Not.Null);
+            
+            // Tries to remove first object, should succeed
+            uriExtent.elements().remove(mofElement);
+            Assert.That(uriExtent.elements().Count(), Is.EqualTo(1));
+            
+            // Changes id of second object 
+            mofElement2.SetId("Test");
+            var foundElement = uriExtent.element("Test");
+            Assert.That(foundElement, Is.Not.Null);
+            
+            // Removes it. Should succeed
+            uriExtent.elements().remove(mofElement2);
+            Assert.That(uriExtent.elements().Count(), Is.EqualTo(0));
+        }
+
         /// <summary>
         /// Defines the point class being used for the test above
         /// </summary>

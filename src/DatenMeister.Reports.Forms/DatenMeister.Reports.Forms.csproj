@@ -38,10 +38,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Css\DatenMeister.Reports.Forms.css" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js" />
-    <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js.map" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.ts" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js" />
-    <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js.map" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Types.ts" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Types.xmi" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Forms.xmi" />
@@ -62,5 +60,9 @@
     <Folder Include="Model\" />
   </ItemGroup>
 
+
+  <Target Name="RunCakeBuild" BeforeTargets="Build">
+    <Exec Command="dotnet cake build.cake --target=Build" />
+  </Target>
 </Project>
 

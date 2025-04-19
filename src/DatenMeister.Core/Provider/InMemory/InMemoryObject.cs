@@ -25,9 +25,30 @@ namespace DatenMeister.Core.Provider.InMemory
         private readonly Dictionary<string, object?> _values = new();
 
         /// <summary>
-        /// Stores the container being associated to the in memory object
+        /// Stores the container being associated with this InMemoryObject
         /// </summary>
         private IProviderObject? _container;
+
+        private string? _id;
+
+        public IProvider Provider { get; }
+        /// <inheritdoc />
+        public string? MetaclassUri { get; set; }
+
+        public string? Id
+        {
+            get => _id;
+            set
+            {
+                var formerId = _id;
+                _id = value;
+
+                if (Provider is InMemoryProvider inMemoryProvider)
+                {
+                    inMemoryProvider.UpdateCachedId(this, formerId);
+                }
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the InMemoryObject.
@@ -46,13 +67,6 @@ namespace DatenMeister.Core.Provider.InMemory
         /// </summary>
         public static IFactory TemporaryFactory =>
             _temporaryFactory ??= new MofFactory(InMemoryProvider.TemporaryExtent);
-
-        public IProvider Provider { get; }
-
-        /// <inheritdoc />
-        public string? MetaclassUri { get; set; }
-
-        public string? Id { get; set; }
 
         /// <summary>
         /// Gets the property of the element or returns an exception, if the property could not be found

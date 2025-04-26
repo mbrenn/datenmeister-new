@@ -13,7 +13,9 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
     /// <param name="container">Container in which the result shall be added</param>
     public void ImportFromFile(string fileName, IReflectiveCollection container)
     {
+        Console.WriteLine($"* Importing from file: {fileName}");
         var jsonContent = File.ReadAllText(fileName);
+        Console.WriteLine($"** Json loaded");
 
         ImportFromText(jsonContent, container);
     }
@@ -28,6 +30,8 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
         var jsonImporter = new JsonImporter(factory);
         var parsedJson = JsonNode.Parse(jsonContent) ??
                          throw new InvalidOperationException("Parsing failed");
+        
+        Console.WriteLine($"** Json parsed");
         
         var columns = parsedJson[settings.ColumnPropertyName]?.AsArray()
                       ?? throw new InvalidOperationException(
@@ -52,7 +56,7 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
             x++;
             if (x % 100 == 0)
             {
-                Console.Write(x + "/" + data.Count + "\r");
+                Console.Write($"** {x}/{data.Count} converted\r");
             }
             
             // We found something, now perform the conversion
@@ -78,10 +82,19 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
             {
                 if (settings.FilterProperty(columnPositions[currentPosition]))
                 {
+                    object? convertedCell = cell;
+                    
+                    // Perform the conversion
+                    if (settings.ConvertProperty != null)
+                    {
+                        convertedCell = settings.ConvertProperty(columnPositions[currentPosition], cell);
+                    }
+
                     // Only the items which shall be managed are really imported
+
                     createdItem.set(
                         columnPositions[currentPosition],
-                        jsonImporter.Import(cell));
+                        jsonImporter.Import(convertedCell));
                 }
 
                 currentPosition++;

@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Provider.Json;
+﻿using System.Text.Json.Nodes;
+
+namespace DatenMeister.Provider.Json;
 
 public class JsonCompressedImporterSettings
 {
@@ -12,5 +14,14 @@ public class JsonCompressedImporterSettings
     /// </summary>
     public string DataPropertyName { get; set; } = "data";
     
+    /// <summary>
+    /// Used to filter-out the properties.
+    /// In case the method returns false, the property is not evaluated
+    /// </summary>
     public Func<string, bool> FilterProperty { get; set; } = _ => true;
+    
+    /// <summary>
+    /// Converts the properties for a certain string
+    /// </summary>
+    public Func<string, object?, object?> ConvertProperty { get; set; } = (_, value) => value;
 }

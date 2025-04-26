@@ -17,10 +17,18 @@ namespace DatenMeister.HtmlEngine
 
         public string Id { get; set; } = string.Empty;
 
+
+        /// <summary>
+        /// Gets or sets the tool tip for the span element
+        /// </summary>
+        public string ToolTip { get; set; } = string.Empty;
+        
         protected string AttributeString =>
             (string.IsNullOrEmpty(CssClass) ? string.Empty : $" class=\"{HttpUtility.HtmlEncode(CssClass)}\"") +
-            (string.IsNullOrEmpty(Id) ? string.Empty : $" id=\"{HttpUtility.HtmlEncode(Id)}\"");
+            (string.IsNullOrEmpty(Id) ? string.Empty : $" id=\"{HttpUtility.HtmlEncode(Id)}\"") + 
+            (string.IsNullOrEmpty(ToolTip) ? string.Empty : $" title=\"{HttpUtility.HtmlEncode(ToolTip)}\"");
 
+        
         /// <summary>
         /// Initializes a new instance of the HtmlElement class
         /// </summary>

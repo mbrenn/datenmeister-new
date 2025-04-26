@@ -14,7 +14,7 @@
 
         public override string ToString()
         {
-            return $"<div{AttributeString}>{DivElement}</div>\r\n";
+            return $"<div{AttributeString}>{DivElement}</div>";
         }
     }
 }

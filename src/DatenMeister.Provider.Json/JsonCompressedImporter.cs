@@ -38,11 +38,13 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
                           $"The column \"{settings.ColumnPropertyName}\" could not be found");
 
         var columnPositions = new List<string>();
+        var columnIndex = new Dictionary<string, int>();
 
         var currentPosition = 0;
         foreach (var column in columns.Where(x => x != null))
         {
             columnPositions.Add(column!.ToString());
+            columnIndex[column!.ToString()] = currentPosition;
             currentPosition++;
         }
 
@@ -67,6 +69,11 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
                 throw new InvalidOperationException("The item is an array");
             }
 
+            if (settings.FilterJsonOut(columnIndex, itemAsArray))
+            {
+                continue;
+            }
+
             if (itemAsArray.Count != columnPositions.Count)
             {
                 throw new InvalidOperationException(
@@ -77,7 +84,6 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
             // Now perform the conversion
             currentPosition = 0;
             var createdItem = factory.create(null);
-            container.add(createdItem);
             foreach (var cell in itemAsArray)
             {
                 if (settings.FilterProperty(columnPositions[currentPosition]))
@@ -91,7 +97,6 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
                     }
 
                     // Only the items which shall be managed are really imported
-
                     createdItem.set(
                         columnPositions[currentPosition],
                         jsonImporter.Import(convertedCell));
@@ -99,6 +104,11 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
 
                 currentPosition++;
             }
+            
+            if(!settings.FilterItemOut(createdItem))
+            {
+                container.add(createdItem);
+            }           
         }
 
         Console.WriteLine();

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Nodes;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.Json;
 
@@ -24,4 +25,8 @@ public class JsonCompressedImporterSettings
     /// Converts the properties for a certain string
     /// </summary>
     public Func<string, object?, object?> ConvertProperty { get; set; } = (_, value) => value;
+
+    public Predicate<IElement> FilterItemOut { get; set; } = (_) => false;
+
+    public Func<Dictionary<string, int>, JsonArray, bool> FilterJsonOut { get; set; } = (_, _) => false;
 }

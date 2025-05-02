@@ -43,7 +43,7 @@ export function registerField(metaClassFieldData: string, factoryMethod: () => I
 }
 
 export function canBeSorted(field: DmObject): boolean {
-    const metaClassUri = field.metaClass.uri;
+    const metaClassUri = field.metaClass?.uri;
 
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
         return true;
@@ -53,7 +53,7 @@ export function canBeSorted(field: DmObject): boolean {
 }
 
 export function canBeTextFiltered(field: DmObject): boolean {
-    const metaClassUri = field.metaClass.uri;
+    const metaClassUri = field.metaClass?.uri;
 
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
         return true;

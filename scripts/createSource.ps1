@@ -28,6 +28,11 @@ Write-Output "-- Creating for DatenMeister.Extent.Forms"
 ./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/DatenMeister.SourceGeneration.Console.exe "DatenMeister.Extent.Forms\xmi\DatenMeister.Extent.Forms.Types.xmi" ".\DatenMeister.Extent.Forms\Model" "DatenMeister.Extent.Forms.Model"
 
 
+Write-Output "-- Creating for DatenMeister.Zip"
+
+./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/DatenMeister.SourceGeneration.Console.exe "DatenMeister.Zip\xmi\DatenMeister.Zip.Types.xmi" ".\DatenMeister.Zip\Model" "DatenMeister.Zip.Model"
+
+
 # Create .js files
 Write-Output "--- Creating Java-Script Files"
 

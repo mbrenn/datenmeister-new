@@ -134,6 +134,11 @@ namespace DatenMeister.SourceGeneration.Console
             var generator = new TypeScriptInterfaceGenerator();
             generator.Walk(typeExtent);
 
+            if (!Directory.Exists(pathTarget))
+            {
+                Directory.CreateDirectory(pathTarget);
+            }
+
             File.WriteAllText(Path.Combine(pathTarget, $"{filename}.ts"), generator.Result.ToString());
             System.Console.WriteLine($"TypeScript Code for {theNamespace} written");
 

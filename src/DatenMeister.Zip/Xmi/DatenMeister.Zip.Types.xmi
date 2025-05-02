@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi>
+  <meta p2:id="38168343-00e1-4399-b4a9-678c3645802b" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes " __uri="dm:///intern.datenmeister.forms/" />
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="bb766314-6b49-48a6-b80b-08d61c549ff6" name="ZipFileExtractAction" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="2e651a0f-e687-459a-886e-8bf2a01da815" name="sourcePath" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3a3fb4bb-690f-43ba-b6e1-9bbc50a97fff" type-ref="dm:///_internal/model/primitivetypes#String" name="targetPath" isID="false" isComposite="false" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="74dd91bd-171b-405d-918e-088bcff4f37c" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="overwriteIfExisting" isID="false" isComposite="false" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6f86750f-9def-4628-892a-d7fc455b1595" name="overwriteIfNewer" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
+  </item>
+</xmi>

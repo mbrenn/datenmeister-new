@@ -15,4 +15,9 @@
       <Folder Include="Xmi\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Xmi\DatenMeister.Zip.Types.xmi" />
+      <EmbeddedResource Include="Xmi\DatenMeister.Zip.Types.xmi" />
+    </ItemGroup>
+
 </Project>

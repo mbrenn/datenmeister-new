@@ -3,7 +3,7 @@
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;WPF</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
     <Nullable>enable</Nullable>
@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
     <ProjectReference Include="..\..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Zip\DatenMeister.Zip.csproj" />
     <ProjectReference Include="..\..\Web\DatenMeister.Web.Json\DatenMeister.Web.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />

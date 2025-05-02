@@ -275,7 +275,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var valueForSetting = MofExtent.ConvertForSetting(this, child);
                     if (valueForSetting == null)
                     {
-                        //Null elements will not be set
+                        // Null elements will not be set
                         continue;
                     }
                     

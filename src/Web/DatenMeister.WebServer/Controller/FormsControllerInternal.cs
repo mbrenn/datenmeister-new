@@ -14,14 +14,15 @@ namespace DatenMeister.WebServer.Controller
         private readonly IScopeStorage _scopeStorage;
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly TemporaryExtentFactory _temporaryExtentFactory;
+        private TemporaryExtentLogic _temporaryLogic;
 
         public FormsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
             
-            var temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
-            _temporaryExtentFactory = new TemporaryExtentFactory(temporaryLogic);
+            _temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
+            _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic);
         }
 
         public IScopeStorage ScopeStorage => _scopeStorage;
@@ -42,7 +43,6 @@ namespace DatenMeister.WebServer.Controller
         {
             var item = GetItemByUriParameter(workspaceId, itemUrl);
 
-            var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);
             var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
             var form = formFactory.CreateObjectFormForItem(item,
                 new FormFactoryConfiguration
@@ -75,10 +75,13 @@ namespace DatenMeister.WebServer.Controller
                     ViewModeId = viewMode ?? string.Empty,
                     Factory = _temporaryExtentFactory
                 });
+            
             if (form == null)
             {
                 throw new InvalidOperationException("Form is not defined");
             }
+            
+            _temporaryLogic.TemporaryExtent.elements().add(form);
 
             return form;
         }

@@ -21,7 +21,7 @@ public class TemporaryExtentFactory : IFactory
     public IElement package { get; }
     public IElement create(IElement? metaClass)
     {
-        return _logic.CreateTemporaryElement(metaClass);
+        return _logic.CreateTemporaryElement(metaClass, addToExtent: false);
     }
 
     public IObject createFromString(IElement dataType, string value)

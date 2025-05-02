@@ -206,6 +206,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                     PropertyName,
                     foundValue);
 
+                // Removes the extent allocation
+                if (foundValue is MofObject element
+                    && element.Extent == Extent)
+                {
+                    element.Extent = null;
+                }
+                
                 UpdateContent();
             }
         }
@@ -214,6 +221,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         public object? set(int index, object value)
         {
             var valueToBeRemoved = GetPropertyAsEnumerable().ElementAt(index);
+            
+            // Removes the extent allocation
+            if (valueToBeRemoved is MofObject element
+                && element.Extent == Extent)
+            {
+                element.Extent = null;
+            }
+            
             MofObject.ProviderObject.RemoveFromProperty(PropertyName, valueToBeRemoved);
             add(index, value);
 

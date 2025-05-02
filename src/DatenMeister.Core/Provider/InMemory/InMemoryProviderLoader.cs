@@ -3,6 +3,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using System.Threading.Tasks;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 
 namespace DatenMeister.Core.Provider.InMemory
 {
@@ -24,8 +26,19 @@ namespace DatenMeister.Core.Provider.InMemory
         public async Task<LoadedProviderInfo> LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             Logger.Info("InMemoryProvider is created");
-
-            var provider = new InMemoryProvider();
+            
+            // Checks whether the item is a linked list
+            IProvider provider;
+            if (configuration.getOrDefault<bool>(
+                    _DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.isLinkedList))
+            {
+                provider = new InMemoryProviderLinkedList();
+            }
+            else
+            {
+                provider = new InMemoryProvider();
+            }
+            
             return await Task.FromResult(new LoadedProviderInfo(provider));
         }
 

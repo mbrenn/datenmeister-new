@@ -32,6 +32,7 @@ namespace DatenMeister.Core.Provider.InMemory
         private string? _id;
 
         public IProvider Provider { get; }
+        
         /// <inheritdoc />
         public string? MetaclassUri { get; set; }
 
@@ -43,7 +44,9 @@ namespace DatenMeister.Core.Provider.InMemory
                 var formerId = _id;
                 _id = value;
 
-                if (Provider is InMemoryProvider inMemoryProvider)
+                if (formerId != null
+                    && _id != null
+                    && Provider is ICanUpdateCacheId inMemoryProvider)
                 {
                     inMemoryProvider.UpdateCachedId(this, formerId);
                 }

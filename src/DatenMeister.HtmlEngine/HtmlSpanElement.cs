@@ -5,16 +5,16 @@
         /// <summary>
         /// Gets or sets the paragraph to be stored
         /// </summary>
-        private HtmlElement DivElement { get; }
-
-        public HtmlSpanElement(HtmlElement divElement)
+        private HtmlElement Content { get; }
+        
+        public HtmlSpanElement(HtmlElement content)
         {
-            DivElement = divElement;
+            Content = content;
         }
 
         public override string ToString()
         {
-            return $"<span{AttributeString}>{DivElement}</span>\r\n";
+            return $"<span{AttributeString}>{Content}</span>";
         }
     }
 }

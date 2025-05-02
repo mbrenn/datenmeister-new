@@ -93,6 +93,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                 if (id != null)
                 {
                     var result = _extent.Provider.DeleteElement(id);
+
+                    // Remove the extent allocation
+                    if (_extent == valueAsObject.Extent)
+                    {
+                        valueAsObject.Extent = null;
+                    }
+
                     UpdateContent();
                     return result;
                 }

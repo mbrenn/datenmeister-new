@@ -4,25 +4,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.Json;
 
-public class JsonCompressedImporter
+public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSettings settings)
 {
-    private readonly IFactory _factory;
-
-    public JsonCompressedImporter(IFactory factory)
-    {
-        _factory = factory;
-    }
-    
-    /// <summary>
-    /// Defines the name in which the compressed data is given
-    /// </summary>
-    public string ColumnPropertyName { get; set; } = "columns";
-    
-    /// <summary>
-    /// Defines the name in which the compressed data is given
-    /// </summary>
-    public string DataPropertyName { get; set; } = "data";
-
     /// <summary>
     /// Performs the import from the file
     /// </summary>
@@ -30,10 +13,11 @@ public class JsonCompressedImporter
     /// <param name="container">Container in which the result shall be added</param>
     public void ImportFromFile(string fileName, IReflectiveCollection container)
     {
+        Console.WriteLine($"* Importing from file: {fileName}");
         var jsonContent = File.ReadAllText(fileName);
+        Console.WriteLine($"** Json loaded");
 
         ImportFromText(jsonContent, container);
-
     }
     
     /// <summary>
@@ -43,35 +27,38 @@ public class JsonCompressedImporter
     /// <param name="container">Container to be used</param>
     public void ImportFromText(string jsonContent, IReflectiveCollection container)
     {
-        var jsonImporter = new JsonImporter(_factory);
+        var jsonImporter = new JsonImporter(factory);
         var parsedJson = JsonNode.Parse(jsonContent) ??
                          throw new InvalidOperationException("Parsing failed");
         
-        var columns = parsedJson[ColumnPropertyName]?.AsArray()
+        Console.WriteLine($"** Json parsed");
+        
+        var columns = parsedJson[settings.ColumnPropertyName]?.AsArray()
                       ?? throw new InvalidOperationException(
-                          $"The column \"{ColumnPropertyName}\" could not be found");
+                          $"The column \"{settings.ColumnPropertyName}\" could not be found");
 
         var columnPositions = new List<string>();
+        var columnIndex = new Dictionary<string, int>();
 
         var currentPosition = 0;
         foreach (var column in columns.Where(x => x != null))
         {
             columnPositions.Add(column!.ToString());
+            columnIndex[column!.ToString()] = currentPosition;
             currentPosition++;
         }
 
-        var data = parsedJson[DataPropertyName]?.AsArray()
+        var data = parsedJson[settings.DataPropertyName]?.AsArray()
                    ?? throw new InvalidOperationException(
-                       $"The column \"{DataPropertyName}\" could not be found");
+                       $"The column \"{settings.DataPropertyName}\" could not be found");
 
         var x = 0;
-
         foreach (var item in data.AsArray())
         {
             x++;
             if (x % 100 == 0)
             {
-                Console.WriteLine(x + "/" + data.Count);
+                Console.Write($"** {x}/{data.Count} converted\r");
             }
             
             // We found something, now perform the conversion
@@ -81,8 +68,13 @@ public class JsonCompressedImporter
             {
                 throw new InvalidOperationException("The item is an array");
             }
-            
-            if(itemAsArray.Count != columnPositions.Count)
+
+            if (settings.FilterJsonOut(columnIndex, itemAsArray))
+            {
+                continue;
+            }
+
+            if (itemAsArray.Count != columnPositions.Count)
             {
                 throw new InvalidOperationException(
                     $"We have a mismatch of array length. " +
@@ -91,16 +83,34 @@ public class JsonCompressedImporter
 
             // Now perform the conversion
             currentPosition = 0;
-            var createdItem = _factory.create(null);
-            container.add(createdItem);
+            var createdItem = factory.create(null);
             foreach (var cell in itemAsArray)
-            {   
-                createdItem.set(
-                    columnPositions[currentPosition],
-                    jsonImporter.Import(cell));
+            {
+                if (settings.FilterProperty(columnPositions[currentPosition]))
+                {
+                    object? convertedCell = cell;
+                    
+                    // Perform the conversion
+                    if (settings.ConvertProperty != null)
+                    {
+                        convertedCell = settings.ConvertProperty(columnPositions[currentPosition], cell);
+                    }
+
+                    // Only the items which shall be managed are really imported
+                    createdItem.set(
+                        columnPositions[currentPosition],
+                        jsonImporter.Import(convertedCell));
+                }
 
                 currentPosition++;
             }
+            
+            if(!settings.FilterItemOut(createdItem))
+            {
+                container.add(createdItem);
+            }           
         }
+
+        Console.WriteLine();
     }
 }

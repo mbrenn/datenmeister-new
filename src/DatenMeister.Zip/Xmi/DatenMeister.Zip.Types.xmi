@@ -5,6 +5,11 @@
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="2e651a0f-e687-459a-886e-8bf2a01da815" name="sourcePath" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3a3fb4bb-690f-43ba-b6e1-9bbc50a97fff" type-ref="dm:///_internal/model/primitivetypes#String" name="targetPath" isID="false" isComposite="false" />
     <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="74dd91bd-171b-405d-918e-088bcff4f37c" type-ref="dm:///_internal/model/primitivetypes#Boolean" name="overwriteIfExisting" isID="false" isComposite="false" />
-    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6f86750f-9def-4628-892a-d7fc455b1595" name="overwriteIfNewer" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6f86750f-9def-4628-892a-d7fc455b1595" name="overwriteOnlyIfNewer" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
+  </item>
+  <item p2:type="dm:///_internal/model/uml#Class" p2:id="a03dae8c-4f44-4d08-9cf8-e98627d05e2f" name="ZipFileExtractActionResult" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a013eef2-c5a8-4a2c-932c-f365951a7a2e" name="success" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="e0acd587-4ac3-4938-9664-e3db7fc5ce7d" name="alreadyExisting" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
+    <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="fa52019d-d2c6-4edb-a93b-c36757d9ef2e" name="isAlreadyUpToDate" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
   </item>
 </xmi>

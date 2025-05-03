@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
+using DatenMeister.Actions;
 using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
+using DatenMeister.Zip.Logic;
 
 namespace DatenMeister.Zip;
 
@@ -23,7 +25,13 @@ public class Plugin : IDatenMeisterPlugin
     
     public Task Start(PluginLoadingPosition position)
     {
+        // Loads the Xmi
         LoadXmi();
+        
+        // Add ActionHandler
+        var actionState = _scopeStorage.Get<ActionLogicState>();
+        actionState.AddActionHandler(new ZipLogicActionHandler());
+        
         return Task.CompletedTask;
     }
     
@@ -35,7 +43,7 @@ public class Plugin : IDatenMeisterPlugin
             GetXmiStreamForTypes(), null, localTypeExtent, "DatenMeister.Zip");
     }
 
-    public static Stream GetXmiStreamForTypes()
+    private static Stream GetXmiStreamForTypes()
     {
         var stream = typeof(Plugin).GetTypeInfo()
             .Assembly.GetManifestResourceStream("DatenMeister.Zip.Xmi.DatenMeister.Zip.Types.xmi");

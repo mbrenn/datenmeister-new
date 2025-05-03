@@ -132,7 +132,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             // Performs now the final deletion
             MofObject.ProviderObject.EmptyListForProperty(PropertyName);
             
-            
             UpdateContent();
         }
 

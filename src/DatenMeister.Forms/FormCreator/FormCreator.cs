@@ -837,7 +837,7 @@ namespace DatenMeister.Forms.FormCreator
         
         private static void SortFieldsByImportantProperties(IObject form)
         {
-            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
+            var fields = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field);
             if (fields == null) return;
             var fieldsAsList = fields.OfType<IElement>().ToList();
 
@@ -848,17 +848,16 @@ namespace DatenMeister.Forms.FormCreator
 
             if (fieldName != null)
             {
-                fieldsAsList.Remove(fieldName);
-                fieldsAsList.Insert(0, fieldName);
-
+                fields.remove(fieldName);
+                fields.add(0, fieldName);
 
                 FormMethods.AddToFormCreationProtocol(
                     form,
                     "[FormCreator.SortFieldsByImportantProperties]: Field 'name' was put up-front");
             }
 
-            // Sets it
-            form.set(_DatenMeister._Forms._TableForm.field, fieldsAsList);
+            // Performs a resetting of all properties
+            // form.set(_DatenMeister._Forms._TableForm.field, fieldsAsList);
         }
 
         /// <summary>

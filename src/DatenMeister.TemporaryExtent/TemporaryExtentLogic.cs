@@ -89,7 +89,7 @@ namespace DatenMeister.TemporaryExtent
         /// <param name="cleanUpTime">Defines the cleanup time for the given item.
         /// If this is not set, then the default time is taken</param>
         /// <returns>The created element itself</returns>
-        public IElement CreateTemporaryElement(IElement? metaClass, TimeSpan? cleanUpTime = null)
+        public IElement CreateTemporaryElement(IElement? metaClass, TimeSpan? cleanUpTime = null, bool addToExtent = true)
         {
             var foundExtent = TemporaryExtent;
 
@@ -97,7 +97,10 @@ namespace DatenMeister.TemporaryExtent
             var id = (created as IHasId)?.Id 
                      ?? throw new InvalidOperationException("Element does not has an id");
             _elementMapping[id] = DateTime.Now + (cleanUpTime ?? DefaultCleanupTime);
-            foundExtent.elements().add(created);
+            if (addToExtent)
+            {
+                foundExtent.elements().add(created);
+            }
 
             return created;
         }

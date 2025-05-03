@@ -21,14 +21,14 @@ export function registerField(metaClassFieldData, factoryMethod) {
     });
 }
 export function canBeSorted(field) {
-    const metaClassUri = field.metaClass.uri;
+    const metaClassUri = field.metaClass?.uri;
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
         return true;
     }
     return false;
 }
 export function canBeTextFiltered(field) {
-    const metaClassUri = field.metaClass.uri;
+    const metaClassUri = field.metaClass?.uri;
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
         return true;
     }

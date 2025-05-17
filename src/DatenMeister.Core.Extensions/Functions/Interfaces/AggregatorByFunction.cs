@@ -1,7 +1,5 @@
 ﻿#nullable disable
 
-using System;
-
 namespace DatenMeister.Core.Extensions.Functions.Interfaces
 {
     public abstract class AggregatorByFunction<T, TItem> : Aggregator<T, TItem> where T : notnull

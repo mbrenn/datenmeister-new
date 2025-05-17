@@ -1,14 +1,11 @@
-﻿using System;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.InMemory;
-using System.Linq;
 using System.Text.Json;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
-using System.Collections.Generic;
 
 namespace DatenMeister.Web.Json
 {

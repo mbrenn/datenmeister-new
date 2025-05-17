@@ -1,7 +1,5 @@
 ﻿#nullable enable
 
-using System;
-using System.Collections.Generic;
 using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Locking
+﻿namespace DatenMeister.Locking
 {
     /// <summary>
     /// Defines the exception, that a an extent could not be loaded

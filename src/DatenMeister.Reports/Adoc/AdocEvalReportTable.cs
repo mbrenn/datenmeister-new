@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Reports.Generic;
+﻿using DatenMeister.Reports.Generic;
 
 namespace DatenMeister.Reports.Adoc
 {

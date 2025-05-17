@@ -1,5 +1,3 @@
-using System;
-
 namespace DatenMeister.WPF.Modules.ViewExtensions
 {
     /// <summary>

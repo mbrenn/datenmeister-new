@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace DatenMeister.WebServer.Library.PageRegistration
+﻿namespace DatenMeister.WebServer.Library.PageRegistration
 {
     /// <summary>
     /// Defines the page factory to be used 

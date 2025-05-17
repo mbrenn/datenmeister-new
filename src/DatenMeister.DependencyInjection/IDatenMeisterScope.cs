@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;

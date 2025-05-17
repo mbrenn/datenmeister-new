@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using DatenMeister.BootStrap;
 using DatenMeister.Core;
 using DatenMeister.Core.Helper;

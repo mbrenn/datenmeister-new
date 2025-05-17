@@ -1,5 +1,4 @@
-﻿using System.IO;
-using BurnSystems;
+﻿using BurnSystems;
 
 namespace DatenMeister.Reports
 {

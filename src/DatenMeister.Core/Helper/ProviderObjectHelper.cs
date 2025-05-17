@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DatenMeister.Core.Provider;
+﻿using DatenMeister.Core.Provider;
 
 namespace DatenMeister.Core.Helper
 {

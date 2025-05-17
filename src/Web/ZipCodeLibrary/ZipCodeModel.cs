@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ZipCodeLibrary
+﻿namespace ZipCodeLibrary
 {
     public class ZipCodeModel
     {

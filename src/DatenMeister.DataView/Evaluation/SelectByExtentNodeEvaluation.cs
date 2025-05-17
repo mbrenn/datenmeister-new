@@ -3,9 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Runtime.Workspaces;
-using System;
 
 namespace DatenMeister.DataView.Evaluation
 {

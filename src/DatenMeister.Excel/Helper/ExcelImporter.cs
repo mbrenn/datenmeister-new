@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Excel.Spreadsheet;
@@ -184,7 +181,7 @@ namespace DatenMeister.Excel.Helper
                     
                     if (string.IsNullOrEmpty(columnName) || columnNames.Contains(columnName))
                     {
-                        columnNames.Add(null);
+                        columnNames.Add(string.Empty);
                     }
                     else
                     {

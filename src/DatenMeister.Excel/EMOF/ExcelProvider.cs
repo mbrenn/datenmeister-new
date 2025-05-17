@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider;
 using DatenMeister.Excel.Helper;
 using NPOI.XSSF.UserModel;
@@ -23,7 +21,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject CreateElement(string metaClassUri)
+        public IProviderObject CreateElement(string? metaClassUri)
         {
             throw new NotImplementedException();
         }
@@ -35,7 +33,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject Get(string id)
+        public IProviderObject Get(string? id)
         {
             throw new NotImplementedException();
         }
@@ -51,7 +49,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public void AddElement(IProviderObject valueAsObject, int index)
+        public void AddElement(IProviderObject? valueAsObject, int index)
         {
             throw new NotImplementedException();
         }

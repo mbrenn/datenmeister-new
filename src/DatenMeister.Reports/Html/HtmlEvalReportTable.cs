@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DatenMeister.HtmlEngine;
+﻿using DatenMeister.HtmlEngine;
 using DatenMeister.Reports.Generic;
 
 namespace DatenMeister.Reports.Html

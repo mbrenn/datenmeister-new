@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Core.EMOF.Interface.Reflection
+﻿namespace DatenMeister.Core.EMOF.Interface.Reflection
 {
     /// <summary>
     ///     Defines the interface for some additional reflection methods to

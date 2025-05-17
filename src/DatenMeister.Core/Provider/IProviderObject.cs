@@ -1,6 +1,4 @@
 ﻿#nullable enable
-using System.Collections.Generic;
-
 namespace DatenMeister.Core.Provider
 {
     /// <summary>

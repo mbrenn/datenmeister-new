@@ -4,11 +4,7 @@
 #define LimitNumberOfElements
 #endif
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;

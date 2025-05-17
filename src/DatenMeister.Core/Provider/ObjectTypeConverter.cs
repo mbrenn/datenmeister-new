@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Core.Provider
 {

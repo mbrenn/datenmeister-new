@@ -1,7 +1,6 @@
 ﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using System.Threading.Tasks;
 using static DatenMeister.Core.Models._DatenMeister._Reports;
 
 namespace ScriptTests

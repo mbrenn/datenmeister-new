@@ -1,14 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
-using BurnSystems.Logging;
-using BurnSystems.Logging.Provider;
-using DatenMeister.BootStrap.PublicSettings;
-using DatenMeister.Integration.DotNet;
-
-namespace DatenMeisterWPF
+﻿namespace DatenMeisterWPF
 {
     /// <summary>
     /// Interaktionslogik für "App.xaml"

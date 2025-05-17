@@ -2,7 +2,6 @@
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Types.Plugin
 {

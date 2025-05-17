@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using DatenMeister.Extent.Verifier;
+﻿using DatenMeister.Extent.Verifier;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Verifiers

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Provider.CSV
+﻿namespace DatenMeister.Provider.CSV
 {
     public class CsvSettings
     {

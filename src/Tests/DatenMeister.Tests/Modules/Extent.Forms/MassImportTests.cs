@@ -13,8 +13,6 @@ using DatenMeister.Extent.Forms.MassImport;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Provider.ExtentManagement;
 using NUnit.Framework;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Modules.Extent.Forms
 {

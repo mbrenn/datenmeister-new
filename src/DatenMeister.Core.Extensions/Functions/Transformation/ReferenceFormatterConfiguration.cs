@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Core.Extensions.Functions.Transformation
+﻿namespace DatenMeister.Core.Extensions.Functions.Transformation
 {
     /// <summary>
     /// Defines the configuration for the reference formatter

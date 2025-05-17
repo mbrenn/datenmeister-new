@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Uml
 {

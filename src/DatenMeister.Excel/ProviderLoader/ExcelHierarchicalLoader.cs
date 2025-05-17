@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -94,7 +89,7 @@ namespace DatenMeister.Excel.ProviderLoader
                 {
                     var skipItem = false;
                     var current = tempExtent.elements();
-                    IElement lastCreated = null;
+                    IElement? lastCreated = null;
                     var idBuilder = new StringBuilder();
                     var firstDefinition = true;
 
@@ -182,9 +177,11 @@ namespace DatenMeister.Excel.ProviderLoader
 
         private class DefinitionColumn
         {
-            public string Name { get; set; }
-            public IElement MetaClass { get; set; }
-            public string Property { get; set; }
+            public string Name { get; set; } = string.Empty;
+            
+            public IElement? MetaClass { get; set; }
+            
+            public string Property { get; set; } = string.Empty;
         }
     }
 }

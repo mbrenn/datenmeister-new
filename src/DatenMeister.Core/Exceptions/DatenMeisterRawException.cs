@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Core.Exceptions
+﻿namespace DatenMeister.Core.Exceptions
 {
     /// <summary>
     /// Defines the exception that is used within DatenMeister containing and object with

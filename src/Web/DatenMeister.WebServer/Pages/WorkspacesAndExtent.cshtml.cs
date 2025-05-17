@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.InterfaceController;

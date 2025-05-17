@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System;
 using System.Windows.Controls;
 
 namespace DatenMeister.WPF.Forms.Base

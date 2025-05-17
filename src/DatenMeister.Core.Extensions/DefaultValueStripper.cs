@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace DatenMeister.Plugins
+﻿namespace DatenMeister.Plugins
 {
     /// <summary>
     ///     Defines the interface for the plugins.

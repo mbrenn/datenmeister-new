@@ -1,7 +1,4 @@
 using DatenMeister.Integration.DotNet;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using ZipCodeWebsite.Models;
 
 namespace ZipCodeWebsite

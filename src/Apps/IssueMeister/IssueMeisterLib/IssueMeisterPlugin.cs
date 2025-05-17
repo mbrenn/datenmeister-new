@@ -4,7 +4,6 @@ using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
-using System.Threading.Tasks;
 
 namespace IssueMeisterLib
 {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Actions.Transformations
 {

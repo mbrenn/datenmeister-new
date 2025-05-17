@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Core.EMOF.Interface.Common
+﻿namespace DatenMeister.Core.EMOF.Interface.Common
 {
     public interface IReflectiveCollection : IEnumerable<object?>
     {

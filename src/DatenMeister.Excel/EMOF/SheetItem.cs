@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DatenMeister.Core.Provider;
+﻿using DatenMeister.Core.Provider;
 using DatenMeister.Excel.Helper;
 using NPOI.SS.UserModel;
 
@@ -131,16 +129,16 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             switch (property)
             {
                 case "columnOffset":
-                    ColumnOffset = (int) value;
+                    ColumnOffset = (int) (value ?? 0);
                     InitializeData();
                     break;
                 case "rowOffset":
-                    RowOffset = (int) value;
+                    RowOffset = (int) (value ?? 0);
                     InitializeData();
                     break;
                 default:
@@ -165,12 +163,12 @@ namespace DatenMeister.Excel.EMOF
             return false;
         }
 
-        public IProviderObject GetContainer()
+        public IProviderObject? GetContainer()
         {
             return null;
         }
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             throw new NotImplementedException();
         }

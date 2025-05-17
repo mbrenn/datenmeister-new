@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.WPF.Forms.Base;
+﻿using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
 {

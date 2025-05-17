@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.InMemory;
 

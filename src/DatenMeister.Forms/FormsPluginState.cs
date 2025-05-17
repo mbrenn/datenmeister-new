@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Forms.FormModifications;
 
 namespace DatenMeister.Forms

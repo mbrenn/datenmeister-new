@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Functions.Queries;
-using DatenMeister.Core.Helper;
 using StundenMeister.Model;
 
 namespace StundenMeister.Logic

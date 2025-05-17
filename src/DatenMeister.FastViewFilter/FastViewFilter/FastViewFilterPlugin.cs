@@ -1,6 +1,5 @@
 ﻿using DatenMeister.Plugins;
 using DatenMeister.Types;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Modules.FastViewFilter
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider;
 using DatenMeister.Excel.Helper;
@@ -16,7 +13,7 @@ namespace DatenMeister.Excel.EMOF
         public SheetItem SheetItem { get; }
 
         /// <inheritdoc />
-        public string MetaclassUri { get; set; }
+        public string? MetaclassUri { get; set; }
 
         public int Row { get; }
 
@@ -35,8 +32,7 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public object? GetProperty(string property, ObjectType objectType)
         {
-            int column;
-            if (SheetItem.Columns.TryGetValue(property, out column))
+            if (SheetItem.Columns.TryGetValue(property, out var column))
             {
                 return SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.GetStringContent();
             }
@@ -53,8 +49,7 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public bool DeleteProperty(string property)
         {
-            int column;
-            if (SheetItem.Columns.TryGetValue(property, out column))
+            if (SheetItem.Columns.TryGetValue(property, out var column))
             {
                 SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(string.Empty);
                 SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellType(CellType.Blank);
@@ -66,10 +61,9 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public void SetProperty(string property, object? value)
         {
-            int column;
-            if (SheetItem.Columns.TryGetValue(property, out column))
+            if (SheetItem.Columns.TryGetValue(property, out var column))
             {
-                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(value.ToString());
+                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(value?.ToString() ?? "");
             }
         }
 
@@ -95,7 +89,7 @@ namespace DatenMeister.Excel.EMOF
             return SheetItem;
         }
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             throw new NotImplementedException();
         }
@@ -169,7 +163,7 @@ namespace DatenMeister.Excel.EMOF
         /// <summary>
         /// Gets the id of a row
         /// </summary>
-        public string Id
+        public string? Id
         {
             get
             {

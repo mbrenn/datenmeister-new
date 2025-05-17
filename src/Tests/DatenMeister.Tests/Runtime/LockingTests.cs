@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Threading;
+﻿using System.Reflection;
 using DatenMeister.Locking;
 using NUnit.Framework;
 

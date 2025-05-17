@@ -3,7 +3,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Excel.ProviderLoader;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Excel.Integration
 {

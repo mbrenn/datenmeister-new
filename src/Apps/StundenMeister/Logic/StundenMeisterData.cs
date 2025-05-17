@@ -1,6 +1,3 @@
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-
 namespace StundenMeister.Logic
 {
     public class StundenMeisterData

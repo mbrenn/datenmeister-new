@@ -1,11 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows;
-using BurnSystems.Logging;
-using BurnSystems.Logging.Provider;
-
-namespace StundenMeister
+﻿namespace StundenMeister
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,30 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
-using BurnSystems;
-using DatenMeister.Core;
-using DatenMeister.Core.Helper;
-using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration.DotNet;
-using DatenMeister.Locking;
-using DatenMeister.WPF;
-using DatenMeister.WPF.Forms;
-using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Modules;
-using DatenMeister.WPF.Modules.ViewExtensions;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
-using DatenMeister.WPF.Modules.ViewExtensions.Information;
-using DatenMeister.WPF.Navigation;
-using DatenMeister.WPF.Windows;
-
-namespace DatenMeisterWPF
+﻿namespace DatenMeisterWPF
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml

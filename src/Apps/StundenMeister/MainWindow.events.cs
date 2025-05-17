@@ -1,14 +1,3 @@
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using DatenMeister.Core;
-using DatenMeister.Core.Functions.Queries;
-using DatenMeister.Core.Helper;
-using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration.DotNet;
-using DatenMeister.Reports;
-using DatenMeister.Reports.Html;
-using DatenMeister.WPF.Navigation;
 using StundenMeister.Logic;
 
 namespace StundenMeister

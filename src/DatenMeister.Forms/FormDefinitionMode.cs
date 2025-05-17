@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Forms
+﻿namespace DatenMeister.Forms
 {
     /// <summary>
     /// Defines possible types of the list view control type

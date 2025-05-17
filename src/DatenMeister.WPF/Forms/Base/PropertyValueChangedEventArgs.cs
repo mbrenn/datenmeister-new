@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.WPF.Forms.Base
+﻿namespace DatenMeister.WPF.Forms.Base
 {
     public class PropertyValueChangedEventArgs : EventArgs
     {

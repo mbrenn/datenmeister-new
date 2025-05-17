@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.WebServer.Library.PageRegistration
+﻿namespace DatenMeister.WebServer.Library.PageRegistration
 {
     /// <summary>
     /// Defines the data that is handled

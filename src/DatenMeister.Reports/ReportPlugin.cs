@@ -3,7 +3,6 @@ using DatenMeister.Plugins;
 using DatenMeister.Reports.Adoc;
 using DatenMeister.Reports.Generic;
 using DatenMeister.Reports.Html;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Reports
 {

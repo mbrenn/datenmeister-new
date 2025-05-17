@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.Core.Extensions.Functions.Interfaces;
+﻿using DatenMeister.Core.Extensions.Functions.Interfaces;
 
 namespace DatenMeister.Core.Extensions.Functions.Aggregation
 {

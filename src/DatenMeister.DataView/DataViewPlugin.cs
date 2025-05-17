@@ -3,7 +3,6 @@ using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DataView.Evaluation;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
 namespace DatenMeister.DataView
 {

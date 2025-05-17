@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.WebServer.Models
+﻿namespace DatenMeister.WebServer.Models
 {
     public class WorkspaceModel
     {

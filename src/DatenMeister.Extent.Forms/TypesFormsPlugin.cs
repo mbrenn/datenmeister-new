@@ -3,7 +3,6 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Extent.Forms
 {

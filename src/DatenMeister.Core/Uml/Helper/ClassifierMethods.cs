@@ -1,8 +1,5 @@
 ﻿#nullable enable
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -11,7 +8,6 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
-using static DatenMeister.Core.Models.EMOF._UML._Classification;
 
 namespace DatenMeister.Core.Uml.Helper
 {

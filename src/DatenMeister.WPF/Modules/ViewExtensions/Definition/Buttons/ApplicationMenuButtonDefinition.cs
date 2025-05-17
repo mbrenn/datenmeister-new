@@ -1,7 +1,5 @@
 #nullable enable
 
-using System;
-
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
 {
     /// <summary>

@@ -1,10 +1,6 @@
-﻿using System.Web;
-using DatenMeister.WebServer.Library.Helper;
+﻿using DatenMeister.WebServer.Library.Helper;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace DatenMeister.WebServer.Pages
 {

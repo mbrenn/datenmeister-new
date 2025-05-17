@@ -1,16 +1,12 @@
-﻿using System.IO;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Models;
-using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.Xmi.Provider.XMI;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.Types;
 using System.Reflection;
-using System;
-using System.Threading.Tasks;
 
 namespace DatenMeister.SourceGeneration.Console;
 
@@ -176,7 +172,7 @@ public class StandardProcedure
             var codeBase = Assembly.GetExecutingAssembly().Location ?? throw new InvalidOperationException("Unknown CodeBase");
             UriBuilder uri = new UriBuilder(codeBase);
             var path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path);
+            return Path.GetDirectoryName(path) ?? throw new InvalidOperationException("Unknown Path");
         }
     }
 }

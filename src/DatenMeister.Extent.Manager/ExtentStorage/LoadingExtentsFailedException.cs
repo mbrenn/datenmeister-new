@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
-namespace DatenMeister.Extent.Manager.ExtentStorage
+﻿namespace DatenMeister.Extent.Manager.ExtentStorage
 {
     public class LoadingExtentsFailedException : Exception
     {

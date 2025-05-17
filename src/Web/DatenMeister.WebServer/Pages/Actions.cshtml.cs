@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using DatenMeister.Core.Helper;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.ZipCodeExample.Model;

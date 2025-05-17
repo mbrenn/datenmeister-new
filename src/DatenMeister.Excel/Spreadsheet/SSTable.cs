@@ -34,7 +34,7 @@ namespace DatenMeister.Excel.Spreadsheet
         /// </summary>
         /// <param name="cell">Cell to be checked</param>
         /// <returns>The merged cell or the cell itself</returns>
-        private static ICell GetFirstCellInMergedRegionContainingCell(ICell cell)
+        private static ICell? GetFirstCellInMergedRegionContainingCell(ICell? cell)
         {
             if (cell != null && cell.IsMergedCell)
             {
@@ -46,7 +46,7 @@ namespace DatenMeister.Excel.Spreadsheet
                         region.ContainsColumn(cell.ColumnIndex))
                     {
                         IRow row = sheet.GetRow(region.FirstRow);
-                        ICell firstCell = row?.GetCell(region.FirstColumn);
+                        ICell? firstCell = row?.GetCell(region.FirstColumn);
                         return firstCell;
                     }
                 }
@@ -55,7 +55,7 @@ namespace DatenMeister.Excel.Spreadsheet
             return cell;
         }
 
-        public SsCell GetCell(int row, int column)
+        public SsCell? GetCell(int row, int column)
         {
             var nativeCell = _sheet?.GetRow(row)?.GetCell(column);
             if (nativeCell == null)

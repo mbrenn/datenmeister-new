@@ -1,10 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using DatenMeister.Core.Extensions;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration.DotNet;
 
 namespace DatenMeister.SourceGeneration.Console;
 

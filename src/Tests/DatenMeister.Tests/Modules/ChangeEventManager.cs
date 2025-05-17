@@ -4,7 +4,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Modules
 {

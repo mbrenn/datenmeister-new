@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;

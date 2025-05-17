@@ -1,6 +1,5 @@
 #nullable enable
 
-using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons

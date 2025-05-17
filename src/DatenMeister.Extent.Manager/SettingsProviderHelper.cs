@@ -5,7 +5,6 @@ using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Extent.Manager
 {

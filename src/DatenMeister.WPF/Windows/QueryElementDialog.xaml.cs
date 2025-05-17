@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System;
 using System.Windows;
 
 namespace DatenMeister.WPF.Windows

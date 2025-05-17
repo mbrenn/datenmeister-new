@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System;
 using System.Windows;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements

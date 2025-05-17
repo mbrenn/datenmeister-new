@@ -1,5 +1,3 @@
-using System;
-
 namespace DatenMeister.HtmlEngine
 {
     public class HtmlHeadline : HtmlElement

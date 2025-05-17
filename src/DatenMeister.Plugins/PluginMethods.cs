@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace DatenMeister.Plugins
+﻿namespace DatenMeister.Plugins
 {
     public static class PluginMethods
     {

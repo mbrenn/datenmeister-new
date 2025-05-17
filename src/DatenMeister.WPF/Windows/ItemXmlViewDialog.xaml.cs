@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System;
 using System.Windows;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;

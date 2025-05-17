@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using DatenMeister.Actions;
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;

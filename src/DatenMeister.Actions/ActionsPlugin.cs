@@ -1,6 +1,5 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Actions
 {

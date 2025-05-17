@@ -1,5 +1,4 @@
-﻿using System;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
 using Microsoft.AspNetCore.Mvc;

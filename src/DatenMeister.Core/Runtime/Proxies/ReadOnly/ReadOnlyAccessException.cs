@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Core.Runtime.Proxies.ReadOnly
+﻿namespace DatenMeister.Core.Runtime.Proxies.ReadOnly
 {
     /// <summary>
     /// This exception is thrown, when write access to a read-only element was triggered

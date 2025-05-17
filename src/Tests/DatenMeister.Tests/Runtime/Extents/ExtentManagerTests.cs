@@ -1,6 +1,5 @@
 #nullable enable
 
-using System.Linq;
 using Autofac;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -9,7 +8,6 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
-using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Tests.Runtime.Extents

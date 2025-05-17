@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
 using NUnit.Framework;
 

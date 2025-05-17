@@ -1,8 +1,5 @@
-using System;
-using System.IO;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration.DotNet;

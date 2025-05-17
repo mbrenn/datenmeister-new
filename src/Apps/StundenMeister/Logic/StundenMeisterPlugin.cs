@@ -1,19 +1,3 @@
-using System;
-using System.IO;
-using Autofac;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
-using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Provider.Interfaces;
-using DatenMeister.Core.Runtime.ChangeEvents;
-using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration.DotNet;
-using DatenMeister.Plugins;
-using DatenMeister.Types;
 using StundenMeister.Model;
 
 namespace StundenMeister.Logic

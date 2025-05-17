@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using BurnSystems.Logging;
-using BurnSystems.WPF;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Formatter;
-using DatenMeister.Core.Helper;
-using DatenMeister.Integration.DotNet;
-using StundenMeister.Logic;
+﻿using StundenMeister.Logic;
 using StundenMeister.Model;
 
 namespace StundenMeister

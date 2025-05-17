@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Core.EMOF.Implementation
+﻿namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
     /// Defines the interface that is supported by extents which are not just called

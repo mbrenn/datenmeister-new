@@ -1,5 +1,4 @@
-﻿using System;
-using Scriban;
+﻿using Scriban;
 using Scriban.Parsing;
 using Scriban.Runtime;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -49,9 +46,7 @@ namespace DatenMeister.SourceGeneration.Console
         /// </summary>
         private static async Task PerformStandardProcedure()
         {
-
             var R = StandardProcedure.R;
-            var T = StandardProcedure.T;
 
             System.Console.WriteLine("Clean up .xmi-Files");
 
@@ -81,7 +76,7 @@ namespace DatenMeister.SourceGeneration.Console
 
 
 #if !DEBUG
-
+            var T = StandardProcedure.T;
 
             File.Copy($"{T}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
             File.Copy($"{T}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);

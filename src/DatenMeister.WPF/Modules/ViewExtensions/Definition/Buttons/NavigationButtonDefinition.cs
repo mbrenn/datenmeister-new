@@ -1,7 +1,5 @@
 ﻿#nullable enable
 
-using System;
-using System.Collections.Generic;
 using BurnSystems;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons

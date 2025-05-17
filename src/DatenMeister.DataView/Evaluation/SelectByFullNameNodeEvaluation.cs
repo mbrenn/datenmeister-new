@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
-using System;
 
 namespace DatenMeister.DataView.Evaluation
 {

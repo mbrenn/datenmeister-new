@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
 using DatenMeister.BootStrap.PublicSettings;
 using NUnit.Framework;
 

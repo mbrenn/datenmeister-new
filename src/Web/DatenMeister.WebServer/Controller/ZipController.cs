@@ -3,7 +3,6 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.ZipCodeExample;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DatenMeister.WebServer.Controller
 {

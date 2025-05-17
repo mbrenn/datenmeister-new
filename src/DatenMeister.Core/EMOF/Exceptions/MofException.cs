@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Core.EMOF.Exceptions
+﻿namespace DatenMeister.Core.EMOF.Exceptions
 {
     /// <summary>
     ///     This exception will be thrown, when a violation of Mof is found out

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation.DotNet

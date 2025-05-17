@@ -1,6 +1,3 @@
-using System;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-
 namespace StundenMeister.Logic
 {
     public class TimeRecordingSet

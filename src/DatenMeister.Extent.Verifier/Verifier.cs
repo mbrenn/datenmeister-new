@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Reflection.PortableExecutable;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.Models;

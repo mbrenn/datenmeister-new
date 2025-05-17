@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Actions.ActionHandler;
+﻿using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Actions.ActionHandler.Reports;
 using DatenMeister.Actions.Transformations;
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Core.Provider.Proxies
+﻿namespace DatenMeister.Core.Provider.Proxies
 {
     public class ProxyIdProviderObject : IProviderObject
     {

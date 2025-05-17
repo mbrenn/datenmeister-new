@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Core.Functions.Queries

@@ -1,9 +1,7 @@
-﻿using System;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.DataView
 {

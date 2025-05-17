@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DatenMeister.SourcecodeGenerator
+﻿namespace DatenMeister.SourcecodeGenerator
 {
     public class SourceGeneratorOptions
     {

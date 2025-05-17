@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Implementation.Hooks.Library;
+﻿using DatenMeister.Core.EMOF.Implementation.Hooks.Library;
 
 namespace DatenMeister.Core.EMOF.Implementation.Hooks
 {

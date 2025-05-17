@@ -1,6 +1,5 @@
 ﻿using DatenMeister.WebServer.Controller;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Web
 {

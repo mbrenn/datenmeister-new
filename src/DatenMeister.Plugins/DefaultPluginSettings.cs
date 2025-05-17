@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Plugins
+﻿namespace DatenMeister.Plugins
 {
     /// <summary>
     ///     Defines the settings for the default plugin loader

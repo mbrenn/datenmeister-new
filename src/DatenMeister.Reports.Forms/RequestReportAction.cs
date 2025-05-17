@@ -3,17 +3,10 @@ using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.HtmlEngine;
 using DatenMeister.Reports.Forms.Model;
 using DatenMeister.Reports.Html;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Reports.Forms
 {

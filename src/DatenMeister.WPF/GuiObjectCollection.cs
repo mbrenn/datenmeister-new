@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System.Collections.Generic;
 using DatenMeister.Users.UserProperties;
 using DatenMeister.WPF.Modules.ViewExtensions;
 

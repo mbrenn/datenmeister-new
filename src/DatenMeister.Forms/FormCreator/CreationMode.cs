@@ -1,7 +1,5 @@
 #nullable enable
 
-using System;
-
 namespace DatenMeister.Forms.FormCreator
 {
     /// <summary>

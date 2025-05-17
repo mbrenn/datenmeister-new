@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.WebServer.Library
+﻿namespace DatenMeister.WebServer.Library
 {
     public class AppNavigationDefinition
     {

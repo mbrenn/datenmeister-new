@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;

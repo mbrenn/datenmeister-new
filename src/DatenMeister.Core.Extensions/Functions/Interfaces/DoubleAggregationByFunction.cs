@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Core.Extensions.Functions.Interfaces
+﻿namespace DatenMeister.Core.Extensions.Functions.Interfaces
 {
     public abstract class DoubleAggregationByFunction<TItem> : AggregatorByFunction<double, TItem>
     {

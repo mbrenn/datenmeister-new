@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Forms.FormCreator
+﻿namespace DatenMeister.Forms.FormCreator
 {
     /// <summary>
     /// This class contains additional properties which can be used for the auto-generation

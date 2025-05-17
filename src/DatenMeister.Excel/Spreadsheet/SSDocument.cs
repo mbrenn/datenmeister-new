@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using NPOI.XSSF.UserModel;
+﻿using NPOI.XSSF.UserModel;
 
 namespace DatenMeister.Excel.Spreadsheet
 {

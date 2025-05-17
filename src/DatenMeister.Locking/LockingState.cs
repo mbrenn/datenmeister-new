@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace DatenMeister.Locking
+﻿namespace DatenMeister.Locking
 {
     public class LockingState
     {

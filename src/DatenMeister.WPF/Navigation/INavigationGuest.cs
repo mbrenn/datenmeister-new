@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Common;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

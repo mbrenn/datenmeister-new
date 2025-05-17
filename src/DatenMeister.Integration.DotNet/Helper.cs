@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.BootStrap;
 using DatenMeister.Core;

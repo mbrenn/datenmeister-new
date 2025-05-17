@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 using NUnit.Framework;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;

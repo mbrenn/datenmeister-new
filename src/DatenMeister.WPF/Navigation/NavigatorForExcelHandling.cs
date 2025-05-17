@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using Autofac;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.BootStrap.PublicSettings;
@@ -10,8 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Plugins;
 using DatenMeister.WebServer.Library.ServerConfiguration;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using LogLevel = BurnSystems.Logging.LogLevel;
 
 namespace DatenMeister.WebServer

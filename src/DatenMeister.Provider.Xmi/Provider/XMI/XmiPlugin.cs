@@ -3,7 +3,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Provider.Xmi.Provider.XMI.ExtentStorage;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Provider.Xmi.Provider.XMI
 {

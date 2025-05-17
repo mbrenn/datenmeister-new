@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DatenMeister.Excel.Models
+﻿namespace DatenMeister.Excel.Models
 {
     public static class ExcelModels
     {

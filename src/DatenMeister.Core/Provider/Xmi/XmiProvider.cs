@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.Core.Provider.Xmi
 {

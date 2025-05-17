@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Controller;
 using DatenMeister.WebServer.Library.Helper;
-using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -94,7 +86,7 @@ namespace DatenMeister.Tests.Web
                                ?? throw new InvalidOperationException("Should not happen");
             
             Assert.That(rootElements, Is.Not.Null);
-            object elements = JsonConvert.DeserializeObject(rootElements!);
+            var elements = JsonConvert.DeserializeObject(rootElements!);
             Assert.That(elements, Is.Not.Null);
 
             var asEnumeration = (elements as IEnumerable<object>)?.ToArray();

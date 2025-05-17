@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DatenMeister.Core.Runtime.Workspaces
+﻿namespace DatenMeister.Core.Runtime.Workspaces
 {
     /// <summary>
     /// Stores the data which is persistent within the process

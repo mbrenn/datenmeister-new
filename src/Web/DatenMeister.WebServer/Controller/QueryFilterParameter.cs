@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.WebServer.Controller
+﻿namespace DatenMeister.WebServer.Controller
 {
     /// <summary>
     ///  Defines the filterparameter being used to query and order the retrieved elements. 

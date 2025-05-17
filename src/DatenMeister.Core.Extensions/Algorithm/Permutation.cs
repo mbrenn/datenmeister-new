@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Core.Extensions.Algorithm
+﻿namespace DatenMeister.Core.Extensions.Algorithm
 {
     /// <summary>
     /// Implements an algorithm for permutations

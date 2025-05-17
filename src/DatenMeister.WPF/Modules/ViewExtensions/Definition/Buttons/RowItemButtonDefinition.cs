@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;

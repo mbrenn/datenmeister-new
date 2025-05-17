@@ -149,7 +149,7 @@ namespace DatenMeister.Tests.Web
             var result = extentController.ExportXmi(WorkspaceNames.WorkspaceData, "dm:///test");
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Value, Is.Not.Null);
-            Assert.That(result.Value.Xmi.Contains("Martin"), Is.True);
+            Assert.That(result.Value!.Xmi.Contains("Martin"), Is.True);
             Assert.That(result.Value.Xmi.Contains("child"), Is.True);
             Assert.That(result.Value.Xmi.Contains("Martinson"), Is.True);
         }
@@ -162,7 +162,7 @@ namespace DatenMeister.Tests.Web
             var extentController = new ExtentController(dm.WorkspaceLogic, dm.ScopeStorage);
             var result = extentController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces");
             
-            Assert.That(result.Value.Xmi.Contains("dm:///_internal/temp"), Is.True);
+            Assert.That(result.Value!.Xmi.Contains("dm:///_internal/temp"), Is.True);
         }
         
 

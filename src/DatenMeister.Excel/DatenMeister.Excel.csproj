@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
     <OutputType>Library</OutputType>
     <Nullable>annotations</Nullable>
-    <LangVersion>8</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <PackageVersion>1.1.0</PackageVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <TargetFramework>net8.0</TargetFramework>
     <Configurations>Debug;Release;WPF</Configurations>
     <Platforms>AnyCPU</Platforms>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />

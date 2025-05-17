@@ -35,14 +35,14 @@ namespace DatenMeister.Tests.Web
                 "Data",
                 ElementControllerTests.UriTemporaryExtent + "#item1", "name");
             Assert.That(found, Is.Not.Null);
-            Assert.That(found.ToString(), Is.EqualTo("item1"));
+            Assert.That(found!.ToString(), Is.EqualTo("item1"));
 
             var item1 = extent.element("#item1");
             var item2 = extent.element("#item2");
             var item3 = extent.element("#item3");
+            
             Assert.That(item3, Is.Not.Null);
-
-            item3.set("children", new[] {item1, item2});
+            item3!.set("children", new[] {item1, item2});
 
             var foundChildren = itemsController.GetPropertyInternal(
                 "Data",
@@ -92,9 +92,9 @@ namespace DatenMeister.Tests.Web
                                        WorkspaceNames.WorkspaceData,
                                        ElementControllerTests.UriTemporaryExtent).Value?.ToString()
                                ?? throw new InvalidOperationException("Should not happen");
+            
             Assert.That(rootElements, Is.Not.Null);
-
-            object elements = JsonConvert.DeserializeObject(rootElements);
+            object elements = JsonConvert.DeserializeObject(rootElements!);
             Assert.That(elements, Is.Not.Null);
 
             var asEnumeration = (elements as IEnumerable<object>)?.ToArray();
@@ -203,9 +203,9 @@ namespace DatenMeister.Tests.Web
 
             var count = rootElements.Count;
             var second = rootElements.ElementAtOrDefault(1) as IObject;
+            
             Assert.That(second, Is.Not.Null);
-
-            itemsController.DeleteItem(WorkspaceNames.WorkspaceData, second.GetUri()!);
+            itemsController.DeleteItem(WorkspaceNames.WorkspaceData, second!.GetUri()!);
 
             var newRootElements = example.elements().ToList();
             Assert.That(newRootElements.Count, Is.EqualTo(count - 1));
@@ -227,7 +227,7 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(first, Is.Not.Null);
 
-            var metaClass = first.getMetaClass();
+            var metaClass = first!.getMetaClass();
             Assert.That(metaClass, Is.Null);
 
             var newMetaClass = "dm:///types#metaclass";
@@ -332,7 +332,7 @@ namespace DatenMeister.Tests.Web
             var list = first.get<IReflectiveCollection>("reference");
             var second = example.element("#item2");
             Assert.That(second, Is.Not.Null);
-            list.add(second);
+            list.add(second!);
 
             list = first.get<IReflectiveCollection>("reference");
             Assert.That(list.size() == 1, Is.True);
@@ -370,7 +370,7 @@ namespace DatenMeister.Tests.Web
 
             // Get the containers of the root items. This element should be the extent and the workspace
             var container1 = itemsController.GetContainer("Data", "dm:///temp#item1")?.Value;
-            Assert.That(container1.Count, Is.EqualTo(2));
+            Assert.That(container1!.Count, Is.EqualTo(2));
             Assert.That(container1[0].name, Is.EqualTo("Test Extent"));
             Assert.That(container1[0].workspace, Is.EqualTo("Data"));
             Assert.That(container1[0].uri, Is.EqualTo("dm:///temp"));
@@ -382,7 +382,7 @@ namespace DatenMeister.Tests.Web
             // Get the containers of the root items. This element should be the item2, extent and the workspace
             var container4 = itemsController.GetContainer("Data", "dm:///temp#item4")?.Value;
             
-            Assert.That(container4.Count, Is.EqualTo(3));
+            Assert.That(container4!.Count, Is.EqualTo(3));
             Assert.That(container4[0].name, Is.EqualTo("item2"));
             Assert.That(container4[0].workspace, Is.EqualTo("Data"));
             
@@ -395,7 +395,7 @@ namespace DatenMeister.Tests.Web
             // Get the containers of the root items. This element should be the item4, item2, extent and the workspace
             var container7 = itemsController.GetContainer("Data", "dm:///temp#item7")?.Value;
 
-            Assert.That(container7.Count, Is.EqualTo(4));
+            Assert.That(container7!.Count, Is.EqualTo(4));
             Assert.That(container7[0].name, Is.EqualTo("item4"));
             Assert.That(container7[0].workspace, Is.EqualTo("Data"));
             
@@ -420,7 +420,7 @@ namespace DatenMeister.Tests.Web
             var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
             var result = itemsController.ExportXmi(WorkspaceNames.WorkspaceManagement, "dm:///_internal/workspaces#Data");
             
-            Assert.That(result.Value.Xmi.Contains("dm:///_internal/temp"), Is.True);
+            Assert.That(result.Value!.Xmi.Contains("dm:///_internal/temp"), Is.True);
         }
 
         public static async Task<(IDatenMeisterScope, IUriExtent)> CreateExampleExtentForSorting()

@@ -12,6 +12,7 @@ using DatenMeister.Plugins;
 using DatenMeister.WebServer.Library.ServerConfiguration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using LogLevel = BurnSystems.Logging.LogLevel;
 
 namespace DatenMeister.WebServer
 {

@@ -31,9 +31,10 @@ namespace DatenMeister.Tests.Web
             var result = elementsController.GetComposites(null, null);
 
             // Check, that the workspaces are in... 
-            Assert.That(result.Value.Any(x => x.name == "Data"));
-            Assert.That(result.Value.Any(x => x.id == "Data"));
-            Assert.That(result.Value.Any(x => x.name == "Management"));
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(result.Value!.Any(x => x.name == "Data"));
+            Assert.That(result.Value!.Any(x => x.id == "Data"));
+            Assert.That(result.Value!.Any(x => x.name == "Management"));
 
             dm.Dispose();
         }
@@ -49,8 +50,8 @@ namespace DatenMeister.Tests.Web
             var result = elementsController.GetComposites("Data", null);
 
             // Check, that the workspaces are in... 
-            Assert.That(result.Value.Any(x => x.name == "Test Extent"));
-            Assert.That(result.Value.Any(x => x.id == "Data_dm:///temp"));
+            Assert.That(result.Value!.Any(x => x.name == "Test Extent"));
+            Assert.That(result.Value!.Any(x => x.id == "Data_dm:///temp"));
 
             dm.Dispose();
 
@@ -67,8 +68,8 @@ namespace DatenMeister.Tests.Web
             var result = elementsController.GetComposites("Data", "dm:///temp");
 
             // Check, that the workspaces are in... 
-            Assert.That(result.Value.Any(x => x.name == "item1"));
-            Assert.That(result.Value.Any(x => x.name == "item2"));
+            Assert.That(result.Value!.Any(x => x.name == "item1"));
+            Assert.That(result.Value!.Any(x => x.name == "item2"));
 
             dm.Dispose();
         }
@@ -90,7 +91,7 @@ namespace DatenMeister.Tests.Web
             var result = elementsController.GetComposites(
                 "Data", "dm:///temp#" + (firstElement as IHasId)?.Id);
 
-            Assert.That(result.Value.Any(x => x.name == "item3"));
+            Assert.That(result.Value!.Any(x => x.name == "item3"));
             dm.Dispose();
         }
 
@@ -111,8 +112,8 @@ namespace DatenMeister.Tests.Web
             var result = elementsController.GetComposites(
                 "Data", "dm:///temp#" + (firstElement as IHasId)?.Id);
 
-            Assert.That(result.Value.Any(x => x.name == "item4"));
-            Assert.That(result.Value.Any(x => x.name == "item5"));
+            Assert.That(result.Value!.Any(x => x.name == "item4"));
+            Assert.That(result.Value!.Any(x => x.name == "item5"));
             dm.Dispose();
         }
 

@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <LangVersion>8</LangVersion>
+  <PropertyGroup>   
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
     <OutputType>WinExe</OutputType>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
     <Configurations>Debug;Release;WPF</Configurations>

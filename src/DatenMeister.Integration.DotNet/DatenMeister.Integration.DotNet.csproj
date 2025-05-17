@@ -1,15 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latestmajor</LangVersion>
         <Configurations>Debug;Release;WPF</Configurations>
-        <Platforms>AnyCPU</Platforms>        
-    </PropertyGroup>
-    <PropertyGroup>
-        <LangVersion>9.0</LangVersion>
+        <Platforms>AnyCPU</Platforms>
         <Nullable>enable</Nullable>
         <PackageVersion>1.1.0</PackageVersion>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>

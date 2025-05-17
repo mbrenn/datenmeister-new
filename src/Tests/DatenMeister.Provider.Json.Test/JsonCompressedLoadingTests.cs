@@ -10,9 +10,9 @@ namespace DatenMeister.Provider.Json.Test;
 [TestFixture]
 public class JsonCompressedLoadingTests
 {
-    private InMemoryProvider _provider;
-    private MofUriExtent _extent;
-    private MofFactory _factory;
+    private InMemoryProvider? _provider;
+    private MofUriExtent? _extent;
+    private MofFactory? _factory;
     
     [SetUp]
     public void SetUp()
@@ -26,9 +26,9 @@ public class JsonCompressedLoadingTests
     public void TestCompressedJsonSimple()
     {
         var importer = new JsonCompressedImporter(
-            _factory,
+            _factory!,
             new JsonCompressedImporterSettings());
-        importer.ImportFromText(SimpleCompressedJson, _extent.elements());
+        importer.ImportFromText(SimpleCompressedJson, _extent!.elements());
 
         var elements = _extent.elements().OfType<IElement>().ToList();
         Assert.That(elements.Count, Is.EqualTo(3));
@@ -44,12 +44,12 @@ public class JsonCompressedLoadingTests
     public void TestFilteredPropertiesJsonSimple()
     {
         var importer = new JsonCompressedImporter(
-            _factory,
+            _factory!,
             new JsonCompressedImporterSettings()
             {
                 FilterProperty = x => x != "prename"
             });
-        importer.ImportFromText(SimpleCompressedJson, _extent.elements());
+        importer.ImportFromText(SimpleCompressedJson, _extent!.elements());
 
         var elements = _extent.elements().OfType<IElement>().ToList();
 
@@ -64,9 +64,9 @@ public class JsonCompressedLoadingTests
     public void TestCompressedJsonComplex()
     {
         var importer = new JsonCompressedImporter(
-            _factory,
+            _factory!,
             new JsonCompressedImporterSettings());
-        importer.ImportFromText(ComplexCompressedJson, _extent.elements());
+        importer.ImportFromText(ComplexCompressedJson, _extent!.elements());
 
         var elements = _extent.elements().OfType<IElement>().ToList();
         Assert.That(elements.Count, Is.EqualTo(3));

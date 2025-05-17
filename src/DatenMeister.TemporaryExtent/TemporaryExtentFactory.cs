@@ -16,7 +16,8 @@ public class TemporaryExtentFactory : IFactory
         _internalFactory = new MofFactory(logic.TemporaryExtent);
     }
 
-    public IElement package { get; }
+    public IElement? package { get; }
+    
     public IElement create(IElement? metaClass)
     {
         return _logic.CreateTemporaryElement(metaClass, addToExtent: false);

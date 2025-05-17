@@ -745,6 +745,7 @@ namespace DatenMeister.Forms.FormCreator
 
                         return dropDownByQueryData;
                     }
+#pragma warning disable CS0162 // Unreachable code detected
                     else
                     {
                         // It can just contain one element (or is in list view)
@@ -759,6 +760,7 @@ namespace DatenMeister.Forms.FormCreator
 
                         return reference;
                     }   
+#pragma warning restore CS0162 // Unreachable code detected
                 }
             }
 

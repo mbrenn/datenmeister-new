@@ -12,7 +12,7 @@ namespace DatenMeister.Actions.ActionHandler
 {
     public class ExportToXmiActionHandler : IActionHandler
     {
-        private static readonly ILogger logger = new ClassLogger(typeof(ExportToXmiActionHandler));
+        private static readonly ILogger Logger = new ClassLogger(typeof(ExportToXmiActionHandler));
 
         public bool IsResponsible(IElement node)
         {
@@ -37,7 +37,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (workspace == null)
                 {
                     var message = $"workspace is not found ${workspaceId}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }
@@ -46,7 +46,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (sourceElement == null)
                 {
                     var message = $"sourcePath is not found {sourcePath}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }

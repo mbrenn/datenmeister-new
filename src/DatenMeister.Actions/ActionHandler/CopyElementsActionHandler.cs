@@ -13,7 +13,7 @@ namespace DatenMeister.Actions.ActionHandler
 {
     public class CopyElementsActionHandler : IActionHandler
     {
-        private static readonly ILogger logger = new ClassLogger(typeof(CopyElementsActionHandler));
+        private static readonly ILogger Logger = new ClassLogger(typeof(CopyElementsActionHandler));
 
         public bool IsResponsible(IElement node)
         {
@@ -46,7 +46,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (sourceWorkspace == null)
                 {
                     var message = $"sourceWorkspace is not found {sourceWorkspaceId}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }
@@ -54,7 +54,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (targetWorkspace == null)
                 {
                     var message = $"targetWorkspace is not found {targetWorkspaceId}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }
@@ -65,7 +65,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (sourceElement == null)
                 {
                     var message = $"sourcePath is not found ${sourcePath}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }
@@ -73,7 +73,7 @@ namespace DatenMeister.Actions.ActionHandler
                 if (targetElement == null)
                 {
                     var message = $"targetPath is not found ${targetPath}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }
@@ -98,7 +98,7 @@ namespace DatenMeister.Actions.ActionHandler
 
                     if (moveOnly)
                     {
-                        logger.Warn("Moving of single elements is not supported since it is not known" +
+                        Logger.Warn("Moving of single elements is not supported since it is not known" +
                                     "how the element is connected to its container. ");
                     }
                 }

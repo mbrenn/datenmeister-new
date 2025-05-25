@@ -40,7 +40,7 @@ namespace DatenMeister.Actions.ActionHandler
                 }
 
                 var resolvedElement = actionLogic.WorkspaceLogic.Resolve(
-                    collectionUrl, ResolveType.Default, true);
+                    collectionUrl, ResolveType.Default);
 
                 var collection =
                     resolvedElement as IReflectiveCollection

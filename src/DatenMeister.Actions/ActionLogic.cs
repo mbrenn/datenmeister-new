@@ -42,7 +42,7 @@ namespace DatenMeister.Actions
         /// Gets or sets a flag whether an asynchronous execution shall be performed
         /// that means whether the action itself shall be executed in a task. 
         /// </summary>
-        private const bool asyncExecution = true;
+        private const bool AsyncExecution = true;
 
         private static readonly ILogger ClassLogger = new ClassLogger(typeof(ActionLogic));
         
@@ -121,7 +121,7 @@ namespace DatenMeister.Actions
                 });
 
 #pragma warning disable CS0162
-                if (asyncExecution)
+                if (AsyncExecution)
                 {
                     result = await Task.Run(() => fct());
                 }

@@ -12,7 +12,7 @@ namespace DatenMeister.Actions.ActionHandler
         /// <summary>
         /// Defines the logger 
         /// </summary>
-        private readonly ClassLogger Logger = new(typeof(CommandExecutionActionHandler));
+        private readonly ClassLogger _logger = new(typeof(CommandExecutionActionHandler));
         
         public bool IsResponsible(IElement node)
         {
@@ -33,7 +33,7 @@ namespace DatenMeister.Actions.ActionHandler
 
                 File.WriteAllText(tempPath, script);
 
-                Logger.Info("Powershell started");
+                _logger.Info("Powershell started");
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = "powershell.exe",
@@ -52,7 +52,7 @@ namespace DatenMeister.Actions.ActionHandler
 
                 File.Delete(tempPath);
 
-                Logger.Info("Powershell exited");
+                _logger.Info("Powershell exited");
             });
 
             return null;

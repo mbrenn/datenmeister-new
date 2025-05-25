@@ -7,7 +7,7 @@ namespace DatenMeister.Actions.ActionHandler
 {
     public class ActionSetMethods
     {
-        private static ILogger logger = new ClassLogger(typeof(ActionSetMethods));
+        private static readonly ILogger Logger = new ClassLogger(typeof(ActionSetMethods));
 
         /// <summary>
         /// Returns the item identified by path and workspace
@@ -23,7 +23,7 @@ namespace DatenMeister.Actions.ActionHandler
             if (workspace == null)
             {
                 var message = $"workspace is not found ${workspaceId}";
-                logger.Error(message);
+                Logger.Error(message);
                 
                 throw new InvalidOperationException(message);
             }
@@ -32,7 +32,7 @@ namespace DatenMeister.Actions.ActionHandler
             if (!(sourceElement is IElement asElement))
             {
                 var message = $"sourcePath is not found {path}";
-                logger.Error(message);
+                Logger.Error(message);
                 
                 throw new InvalidOperationException(message);
             }
@@ -54,7 +54,7 @@ namespace DatenMeister.Actions.ActionHandler
             if (workspace == null)
             {
                 var message = $"workspace is not found ${workspaceId}";
-                logger.Error(message);
+                Logger.Error(message);
                 
                 throw new InvalidOperationException(message);
             }
@@ -63,7 +63,7 @@ namespace DatenMeister.Actions.ActionHandler
             if (!(sourceElement is IReflectiveCollection asReflectiveCollection))
             {
                 var message = $"sourcePath is not found {path}";
-                logger.Error(message);
+                Logger.Error(message);
                 
                 throw new InvalidOperationException(message);
             }

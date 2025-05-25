@@ -14,7 +14,7 @@ namespace DatenMeister.Actions.Transformations
     /// </summary>
     public class ItemTransformationActionHandler : IActionHandler
     {
-        private static readonly ILogger logger = new ClassLogger(typeof(ItemTransformationActionHandler));
+        private static readonly ILogger Logger = new ClassLogger(typeof(ItemTransformationActionHandler));
         
         public bool IsResponsible(IElement node)
         {
@@ -37,7 +37,7 @@ namespace DatenMeister.Actions.Transformations
                 if (sourceWorkspace == null)
                 {
                     var message = $"sourceWorkspace is not found {workspace}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }
@@ -47,7 +47,7 @@ namespace DatenMeister.Actions.Transformations
                 if (sourceElement == null)
                 {
                     var message = $"sourcePath is not found ${path}";
-                    logger.Error(message);
+                    Logger.Error(message);
 
                     throw new InvalidOperationException(message);
                 }

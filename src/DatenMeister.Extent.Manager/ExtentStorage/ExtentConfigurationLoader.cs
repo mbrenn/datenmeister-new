@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -7,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
+using static System.Diagnostics.Debugger;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage;
 
@@ -61,9 +61,9 @@ public partial class ExtentConfigurationLoader
         {
             Logger.Info($"File for Extent not found: {path}");
 
-            if (Debugger.IsAttached && BreakOnFailedWorkspaceLoading)
+            if (IsAttached && BreakOnFailedWorkspaceLoading)
             {
-                Debugger.Break();
+                Break();
             }
         }
         else

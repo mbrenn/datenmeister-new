@@ -10,17 +10,8 @@ using DatenMeister.Reports.Html;
 
 namespace DatenMeister.Reports.Forms;
 
-internal class RequestReportAction : IActionHandler
+internal class RequestReportAction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IActionHandler
 {
-    private readonly IWorkspaceLogic workspaceLogic;
-    private readonly IScopeStorage scopeStorage;
-
-    public RequestReportAction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        this.workspaceLogic = workspaceLogic;
-        this.scopeStorage = scopeStorage;
-    }
-
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         var workspace = action.getOrDefault<string>(_Root._RequestReportAction.workspace);

@@ -13,11 +13,6 @@ namespace DatenMeister.SourcecodeGenerator;
 public class ClassTreeGenerator : WalkPackageClass
 {
     /// <summary>
-    /// Gets or sets the name of the class that is used for the model
-    /// </summary>
-    public string? UsedClassName { get; set; }
-
-    /// <summary>
     ///     Initializes a new instance of the ClassTreeGenerator
     /// </summary>
     public ClassTreeGenerator(ISourceParser? parser = null) : base(parser)
@@ -35,12 +30,10 @@ public class ClassTreeGenerator : WalkPackageClass
     /// </param>
     public override void Walk(IUriExtent extent)
     {
-        Result.AppendLine("#nullable enable");
-        WriteUsages(new[]
-        {
+        WriteUsages([
             "DatenMeister.Core.EMOF.Interface.Reflection",
             "DatenMeister.Core.EMOF.Implementation"
-        });
+        ]);
             
         WriteResharperComments();
 
@@ -63,14 +56,13 @@ public class ClassTreeGenerator : WalkPackageClass
 
         var innerStack = new CallStack(stack)
         {
-            Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}"
+            Fullname = string.IsNullOrEmpty(stack.Fullname) ? name : $"{stack.Fullname}.{name}"
         };
 
         base.WalkPackage(element, stack);
 
         if (stack.Level == 0)
         {
-            UsedClassName = $"_{name}";
             Result.AppendLine($"{innerStack.Indentation}public static readonly _{name} TheOne = new _{name}();");
             Result.AppendLine();
         }

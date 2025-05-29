@@ -122,6 +122,7 @@ public class WalkPackageClass
 
     protected void WriteResharperComments()
     {
+        Result.AppendLine("// ReSharper disable InconsistentNaming");
         Result.AppendLine("// ReSharper disable RedundantNameQualifier");
     }
 

@@ -2,9 +2,9 @@
 
 public static class ExcelModels
 {
-    public static IEnumerable<Type> AllTypes => new[]
-    {
+    public static IEnumerable<Type> AllTypes =>
+    [
         typeof(Workbook),
         typeof(Table)
-    };
+    ];
 }

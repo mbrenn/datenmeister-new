@@ -55,7 +55,6 @@ public static class SourceGenerator
         var pathOfClassTree = GetPath(options, ".class.cs");
         var fileContent = classTreeGenerator.Result.ToString();
         File.WriteAllText(pathOfClassTree, fileContent);
-            
 
         ////////////////////////////////////////
         // Creates the TypeScript tree
@@ -90,6 +89,7 @@ public static class SourceGenerator
 
         ////////////////////////////////////////
         // Creates the Dot Net Integration Parser
+        /* No .Net Integration Parser anymore!
         var dotNetGenerator = new DotNetIntegrationGenerator();
         dotNetGenerator.Create(
             options.Namespace,
@@ -98,6 +98,7 @@ public static class SourceGenerator
 
         var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");
         File.WriteAllText(pathOfDotNetIntegration, dotNetGenerator.Result.ToString());
+        */
     }
 
     /// <summary>
@@ -108,12 +109,12 @@ public static class SourceGenerator
     /// <returns>Path to be used</returns>
     private static string GetPath(SourceGeneratorOptions options, string extension)
     {
-        var pathOfDotNetIngegration =
+        var pathOfDotNetIntegration =
             Path.ChangeExtension(
                 Path.Combine(
                     options.Path,
                     options.Name),
                 extension);
-        return pathOfDotNetIngegration;
+        return pathOfDotNetIntegration;
     }
 }

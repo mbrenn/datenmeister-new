@@ -75,6 +75,7 @@ public static class StandardProcedure
     public static void CreateSourceForExcel()
     {
         System.Console.Write("Create Sourcecode for Excel...");
+        
         SourceGenerator.GenerateSourceFor(
             new SourceGeneratorOptions
             {
@@ -84,6 +85,7 @@ public static class StandardProcedure
                 Namespace = "DatenMeister.Excel.Models",
                 Types = ExcelModels.AllTypes
             });
+        
         System.Console.WriteLine(" Done");
     }
 

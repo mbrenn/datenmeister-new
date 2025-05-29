@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.SourcecodeGenerator;
 
@@ -19,6 +20,10 @@ internal class Program
 #endif
     public static async Task Main(string[] args)
     {
+        // We do not need to interrupt the execution, since the loading will always 
+        // be completely reinitialized
+        ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading = false;
+        
         if (args.Length == 0)
         {
             await PerformStandardProcedure();
@@ -26,11 +31,15 @@ internal class Program
         else
         {
             var value = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-            value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).Wait());
+            value.WithParsed(x =>
+            {
+                if (CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).GetAwaiter().GetResult())
+                {
+                    System.Console.WriteLine("Sourcecode Generation finished");
+                }
+            });
             value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
         }
-        
-        System.Console.WriteLine("Sourcecode Generation finished");
     }
 
     public static Task<IDatenMeisterScope> GiveMeDatenMeister()
@@ -107,11 +116,18 @@ internal class Program
 #endif
     }
 
-    private static async Task CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
+    private static async Task<bool> CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
     {
         System.Console.WriteLine("Reading from: " + pathXml);
         System.Console.WriteLine("Writing to  : " + pathTarget);
         System.Console.WriteLine();
+
+        if (!File.Exists(pathXml))
+        {
+            System.Console.WriteLine($"'{pathXml}' was not found! Operation aborted");
+            System.Console.WriteLine($"Current environment path: {Environment.CurrentDirectory}");
+            return false;
+        }
             
         await CleanUpProcedure.CleanUpExtent(
             pathXml,
@@ -150,7 +166,23 @@ internal class Program
         var pathOfClassTree = Path.Combine(pathTarget, $"{filename}.cs");
         var fileContent = classGenerator.Result.ToString();
         await File.WriteAllTextAsync(pathOfClassTree, fileContent);
+        
+        // Generate wrapper
+        
+        // Generates tree for StundenPlan
+        var wrapperGenerator = new WrapperTreeGenerator()
+        {
+            Namespace = theNamespace
+        };
+
+        wrapperGenerator.Walk(typeExtent);
+
+        var pathOfWrapper = Path.Combine(pathTarget, $"{filename}.Wrapper.cs");
+        var wrapperFileContent = wrapperGenerator.Result.ToString();
+        await File.WriteAllTextAsync(pathOfWrapper, wrapperFileContent);
 
         System.Console.WriteLine($"C#-Code for {theNamespace} written");
+
+        return true;
     }
 }

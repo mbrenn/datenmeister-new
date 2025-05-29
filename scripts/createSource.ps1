@@ -8,29 +8,29 @@ $switches = "-nologo"
 
 & dotnet build $switches -v:m $parameter $project
 
-Set-Location ./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/
+Set-Location ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/
 
 Write-Output ""
 Write-Output "-- Creating for DatenMeister itself"
 Write-Output ""
 
-./DatenMeister.SourceGeneration.Console.exe
+dotnet ./DatenMeister.SourceGeneration.Console.dll
 
 Set-Location ../../../../
 
 Write-Output "-- Creating for DatenMeister.Reports.Forms"
 
 
-./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/DatenMeister.SourceGeneration.Console.exe "DatenMeister.Reports.Forms\xmi\DatenMeister.Reports.Types.xmi" ".\DatenMeister.Reports.Forms\Model" "DatenMeister.Reports.Forms.Model"
+dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Reports.Forms\xmi\DatenMeister.Reports.Types.xmi" ".\DatenMeister.Reports.Forms\Model" "DatenMeister.Reports.Forms.Model"
 
 Write-Output "-- Creating for DatenMeister.Extent.Forms"
 
-./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/DatenMeister.SourceGeneration.Console.exe "DatenMeister.Extent.Forms\xmi\DatenMeister.Extent.Forms.Types.xmi" ".\DatenMeister.Extent.Forms\Model" "DatenMeister.Extent.Forms.Model"
+dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Extent.Forms\xmi\DatenMeister.Extent.Forms.Types.xmi" ".\DatenMeister.Extent.Forms\Model" "DatenMeister.Extent.Forms.Model"
 
 
 Write-Output "-- Creating for DatenMeister.Zip"
 
-./DatenMeister.SourceGeneration.Console/bin/Release/net8.0/DatenMeister.SourceGeneration.Console.exe "DatenMeister.Zip\xmi\DatenMeister.Zip.Types.xmi" ".\DatenMeister.Zip\Model" "DatenMeister.Zip.Model"
+dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Zip\xmi\DatenMeister.Zip.Types.xmi" ".\DatenMeister.Zip\Model" "DatenMeister.Zip.Model"
 
 
 # Create .js files

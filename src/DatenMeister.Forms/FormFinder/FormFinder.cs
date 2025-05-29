@@ -37,17 +37,11 @@ public class FormFinder
         _formsMethods = formsMethods;
     }
 
-    private class FoundForm
+    private class FoundForm(IElement form, int points)
     {
-        public int Points { get; set; }
+        public int Points { get; set; } = points;
 
-        public IElement Form { get; set; }
-
-        public FoundForm(IElement form, int points)
-        {
-            Form = form;
-            Points = points;
-        }
+        public IElement Form { get; set; } = form;
     }
 
     /// <summary>
@@ -60,7 +54,7 @@ public class FormFinder
         // Check, if the view mode is AutoGenerate. If that is the case, then no query will be performed
         if (query.viewModeId == ViewModes.AutoGenerate)
         {
-            return Array.Empty<IElement>();
+            return [];
         }
             
         // Ok, View Mode is not AutoGenerate ==> Standard procedure to be executed
@@ -71,7 +65,7 @@ public class FormFinder
         stopWatch.IntermediateLog("# of FormAssociations: " + formAssociations.Count);
 
         var foundForms = new List<FoundForm>();
-        var queryViewModeIds = query.viewModeId?.Split(' ');
+        var queryViewModeIds = query.viewModeId.Split(' ');
 
         foreach (var element in formAssociations)
         {
@@ -133,7 +127,7 @@ public class FormFinder
             // Now go through each property and get the points
 
             // ExtentType
-            if (!string.IsNullOrEmpty(associationExtentType) && associationExtentType != null)
+            if (!string.IsNullOrEmpty(associationExtentType))
             {
                 if (query.extentTypes.Any()
                     && query.extentTypes.All(x=> x.Contains(associationExtentType)))
@@ -228,7 +222,7 @@ public class FormFinder
             if (!string.IsNullOrEmpty(associationParentProperty))
             {
                 if (!string.IsNullOrEmpty(query.parentProperty) &&
-                    query.parentProperty?.Equals(associationParentProperty) == true)
+                    query.parentProperty.Equals(associationParentProperty))
                 {
                     InternalDebug("-- MATCH: Requested ParentProperty: " + query.parentProperty +
                                   ", FormAssociation ParentProperty: " +
@@ -248,7 +242,7 @@ public class FormFinder
             if (!string.IsNullOrEmpty(associationWorkspaceId))
             {
                 if (!string.IsNullOrEmpty(query.workspaceId) &&
-                    query.workspaceId?.Equals(associationWorkspaceId) == true)
+                    query.workspaceId.Equals(associationWorkspaceId))
                 {
                     InternalDebug("-- MATCH: Requested WorkspaceId: " + query.workspaceId +
                                   ", FormAssociation WorkspaceId: " +
@@ -268,7 +262,7 @@ public class FormFinder
             if (!string.IsNullOrEmpty(associationExtentUri))
             {
                 if (!string.IsNullOrEmpty(query.extentUri) &&
-                    query.extentUri?.Equals(associationExtentUri) == true)
+                    query.extentUri.Equals(associationExtentUri))
                 {
                     InternalDebug("-- MATCH: Requested extentUri: " + query.extentUri +
                                   ", FormAssociation extentUri: " +

@@ -34,7 +34,7 @@ dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.S
 
 
 # Create .js files
-Write-Output "--- Creating Java-Script Files"
+Write-Output "--- Creating Java-Script Files for Reports"
 
 Set-Location ..
 Set-Location src/DatenMeister.Reports.Forms
@@ -48,7 +48,7 @@ Move-Item Model\*.map Js\ -Force
 Set-Location ../..
 
 # Create .js files
-Write-Output "--- Creating Java-Script Files"
+Write-Output "--- Creating Java-Script Files for Extents"
 
 Set-Location src/DatenMeister.Extent.Forms
 

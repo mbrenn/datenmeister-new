@@ -10,12 +10,12 @@ using DatenMeister.SourcecodeGenerator;
 
 namespace DatenMeister.SourceGeneration.Console;
 
-class Program
+internal class Program
 {
 #if DEBUG
-    const bool dryRun = true;
+    private const bool DryRun = true;
 #else
-        const bool dryRun = false;
+    private const bool DryRun = false;
 #endif
     public static async Task Main(string[] args)
     {
@@ -29,6 +29,8 @@ class Program
             value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).Wait());
             value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
         }
+        
+        System.Console.WriteLine("Sourcecode Generation finished");
     }
 
     public static Task<IDatenMeisterScope> GiveMeDatenMeister()
@@ -51,13 +53,13 @@ class Program
         System.Console.WriteLine("Clean up .xmi-Files");
 
         await CleanUpProcedure.CleanUpExtent(
-            $"{R}/..//DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",
+            $"{R}/../DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",
             "dm:///intern.datenmeister.forms/",
-            dryRun);
+            DryRun);
         await CleanUpProcedure.CleanUpExtent(
-            $"{R}/..//DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi",
+            $"{R}/../DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi",
             "dm:///intern.datenmeister.types/",
-            dryRun);
+            DryRun);
 
         System.Console.WriteLine("Perform the standard procedure.");
 
@@ -105,7 +107,7 @@ class Program
 #endif
     }
 
-    public static async Task CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
+    private static async Task CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
     {
         System.Console.WriteLine("Reading from: " + pathXml);
         System.Console.WriteLine("Writing to  : " + pathTarget);
@@ -114,7 +116,7 @@ class Program
         await CleanUpProcedure.CleanUpExtent(
             pathXml,
             "dm:///intern.datenmeister.forms/",
-            dryRun);
+            DryRun);
 
         await using var dm = await GiveMeDatenMeister();
         var filename = Path.GetFileNameWithoutExtension(pathXml);
@@ -134,7 +136,7 @@ class Program
             Directory.CreateDirectory(pathTarget);
         }
 
-        File.WriteAllText(Path.Combine(pathTarget, $"{filename}.ts"), generator.Result.ToString());
+        await File.WriteAllTextAsync(Path.Combine(pathTarget, $"{filename}.ts"), generator.Result.ToString());
         System.Console.WriteLine($"TypeScript Code for {theNamespace} written");
 
         // Generates tree for StundenPlan
@@ -147,7 +149,7 @@ class Program
 
         var pathOfClassTree = Path.Combine(pathTarget, $"{filename}.cs");
         var fileContent = classGenerator.Result.ToString();
-        File.WriteAllText(pathOfClassTree, fileContent);
+        await File.WriteAllTextAsync(pathOfClassTree, fileContent);
 
         System.Console.WriteLine($"C#-Code for {theNamespace} written");
     }

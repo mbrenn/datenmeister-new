@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace DatenMeister.SourceGeneration.Console;
 
-public class StandardProcedure
+public static class StandardProcedure
 {
     /// <summary>
     /// Defines the target path into which the files shall be stored in case
@@ -21,7 +21,7 @@ public class StandardProcedure
     /// <summary>
     /// Defines the target path into which the files will be stored temporarily.
     /// </summary>
-    public const string T = "./";
+    private const string T = "./";
 
     public static async Task CreateTypescriptForDatenMeisterAllTypes()
     {
@@ -42,7 +42,7 @@ public class StandardProcedure
 
         var pathOfClassTree = "DatenMeister.class.ts";
         var fileContent = classTreeGenerator.Result.ToString();
-        File.WriteAllText(pathOfClassTree, fileContent);
+        await File.WriteAllTextAsync(pathOfClassTree, fileContent);
         System.Console.WriteLine(" Done");
     }
 
@@ -68,7 +68,7 @@ public class StandardProcedure
 
         var pathOfClassTree = "DatenMeister.class.cs";
         var fileContent = classTreeGenerator.Result.ToString();
-        File.WriteAllText(pathOfClassTree, fileContent);
+        await File.WriteAllTextAsync(pathOfClassTree, fileContent);
         System.Console.WriteLine(" Done");
     }
 
@@ -97,7 +97,8 @@ public class StandardProcedure
         var loader = new SimpleLoader();
         loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, Path.Combine(AssemblyDirectory, "data/UML.xmi"));
         loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, Path.Combine(AssemblyDirectory, "data/MOF.xmi"));
-        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent, Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
+        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent,
+            Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
 
         // Generates tree for UML
         var generator = new ClassTreeGenerator
@@ -141,7 +142,8 @@ public class StandardProcedure
         var loader = new SimpleLoader();
         loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, Path.Combine(AssemblyDirectory, "data/UML.xmi"));
         loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, Path.Combine(AssemblyDirectory, "data/MOF.xmi"));
-        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent, Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
+        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent,
+            Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
 
         // Generates tree for UML
         var generator = new TypeScriptInterfaceGenerator();
@@ -165,15 +167,10 @@ public class StandardProcedure
         System.Console.WriteLine("C# Code for PrimitiveTypes written");
     }
 
-    private static string AssemblyDirectory
-    {
-        get
-        {
-            var codeBase = Assembly.GetExecutingAssembly().Location ?? throw new InvalidOperationException("Unknown CodeBase");
-            UriBuilder uri = new UriBuilder(codeBase);
-            var path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path) ?? throw new InvalidOperationException("Unknown Path");
-        }
-    }
+    private static string AssemblyDirectory =>
+        Path.GetDirectoryName(
+            Assembly.GetExecutingAssembly().Location
+            ?? throw new InvalidOperationException("Unknown Path"))
+        ?? throw new InvalidOperationException("Unknown Path");
 }
 

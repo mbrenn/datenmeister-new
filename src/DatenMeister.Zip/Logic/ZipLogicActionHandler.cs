@@ -90,6 +90,12 @@ public class ZipLogicActionHandler : IActionHandler
     
     private static bool IsSourceFileNewer(string sourcePath, string targetPath)
     {
-        return File.GetLastWriteTime(sourcePath) > File.GetLastWriteTime(targetPath);
+        // The write time within the ZIP File (the source)
+        var writeTimeSourcePath = File.GetLastWriteTime(sourcePath);
+        
+        // The last write time within the target directory
+        var writeTimeTargetPath = File.GetLastWriteTime(targetPath);
+
+        return writeTimeSourcePath > writeTimeTargetPath;
     }
 }

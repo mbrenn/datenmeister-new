@@ -8,40 +8,40 @@ namespace DatenMeister.BootStrap.PublicSettings
         /// <summary>
         /// Gets or sets the title of the window
         /// </summary>
-        public string? windowTitle { get; set; }
+        public string? WindowTitle { get; set; }
         
         /// <summary>
         /// Gets or sets the path to the database
         /// </summary>
-        public string? databasePath { get; set; }
+        public string? DatabasePath { get; set; }
 
         /// <summary>
         /// Gets or sets the path of the file being loaded.
         /// This information is not retrieved from the content. This information is directly written
         /// by the PublicSettingsHandler
         /// </summary>
-        public string settingsFilePath { get; set; } = string.Empty;
+        public string SettingsFilePath { get; set; } = string.Empty;
         
         /// <summary>
         /// Gets or sets a flag indicating whether the complete DatenMeister shall run in Read-Only mode. 
         /// </summary>
-        public bool isReadOnly { get; set; }
+        public bool IsReadOnly { get; set; }
         
         /// <summary>
         /// Defines the standard location of the logging
         /// </summary>
-        public LogLocation logLocation { get; set; }
+        public LogLocation LogLocation { get; set; }
 
         /// <summary>
         /// Defines an enumeration of environmental variables which are added at startup.
         /// </summary>
-        public List<PublicEnvironmentVariable> environmentVariable { get; } = new();
+        public List<PublicEnvironmentVariable> EnvironmentVariable { get; } = new();
     }
 
     public class PublicEnvironmentVariable
     {
-        public string? key { get; set; }
-        public string? value { get; set; }
+        public string? Key { get; set; }
+        public string? Value { get; set; }
     }
 
     /// <summary>

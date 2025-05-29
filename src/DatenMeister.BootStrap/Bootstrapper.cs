@@ -8,7 +8,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Core.XmiFiles;
 using DatenMeister.Types.Plugin;
 
@@ -440,73 +439,6 @@ namespace DatenMeister.BootStrap
                         throw new InvalidOperationException($"Found unknown generalization: {general}");
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Converts all properties of all objects to the real property function.
-        /// This method is not needed anymore, since we are using now strings as the property reference
-        /// and not the real properties anymore
-        /// </summary>
-        /// <param name="allElements"></param>
-        private void ConvertPropertiesToRealProperties(IEnumerable<IObject> allElements)
-        {
-            // Now we replace the property information from string form to real properties
-            var actions = new List<Action>();
-
-            foreach (var element in allElements.OfType<IObjectAllProperties>())
-            {
-                if (!(element is IElement asElement))
-                {
-                    throw new InvalidOperationException($"Given Element is not an element: {element}");
-                }
-
-                var metaClass = asElement.getMetaClass();
-                if (metaClass == null)
-                {
-                    // The item does not have a metaclass, most probable a reference
-                    continue;
-                }
-
-                var propertiesOfMetaClass = ClassifierMethods.GetPropertyNamesOfClassifier(metaClass).ToList();
-                var mapping = new Dictionary<string, string>();
-                foreach (var property in propertiesOfMetaClass)
-                {
-                    mapping[property] = property;
-                }
-
-                foreach (var property in element.getPropertiesBeingSet())
-                {
-                    var textProperty = property;
-                    if (textProperty.Contains(Namespaces.Xmi.ToString())
-                        || textProperty == "href")
-                    {
-                        continue;
-                    }
-
-                    var value = asElement.get(property);
-
-                    // Find the property in the properties of the metaclass
-
-                    if (!mapping.ContainsKey(textProperty))
-                    {
-                        throw new InvalidOperationException($"Property {textProperty} not found in {element}");
-                    }
-
-                    var realProperty = mapping[textProperty];
-
-                    actions.Add(() =>
-                    {
-                        asElement.unset(textProperty);
-                        asElement.set(realProperty, value);
-                    });
-                }
-            }
-
-            // Now, execute the collected actions
-            foreach (var action in actions)
-            {
-                action();
             }
         }
 

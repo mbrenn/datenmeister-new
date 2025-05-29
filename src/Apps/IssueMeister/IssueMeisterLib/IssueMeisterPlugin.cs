@@ -56,7 +56,8 @@ namespace IssueMeisterLib
             var extentSetting =
                 new ExtentType(ExtentTypeName);
             extentSetting.rootElementMetaClasses.Add(
-                _localTypeSupport.InternalTypes.element("#IssueMeister.Issue"));
+                _localTypeSupport.InternalTypes.element("#IssueMeister.Issue")
+                ?? throw new InvalidOperationException("IssueMeister.Issue was not found. "));
             _extentSettings.extentTypeSettings.Add(extentSetting);
 
             return Task.CompletedTask;

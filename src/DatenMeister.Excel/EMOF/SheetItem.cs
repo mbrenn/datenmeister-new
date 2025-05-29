@@ -7,7 +7,7 @@ namespace DatenMeister.Excel.EMOF
     public class SheetItem : IProviderObject
     {
         public ISheet Sheet { get; }
-        
+
         /// <summary>
         /// Gets the provider 
         /// </summary>
@@ -48,7 +48,7 @@ namespace DatenMeister.Excel.EMOF
         {
             Provider = provider as ExcelProvider ??
                        throw new InvalidOperationException("Provided excel is not an excel provider");
-            
+
             Sheet = sheet;
 
             InitializeData();
@@ -60,7 +60,7 @@ namespace DatenMeister.Excel.EMOF
         private void InitializeData()
         {
             Columns.Clear();
-            
+
             var n = ColumnOffset;
             while (true)
             {
@@ -117,10 +117,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetProperties()
-        {
-            return new[] {"items", "name"};
-        }
+        public IEnumerable<string> GetProperties() => ["items", "name"];
 
         /// <inheritdoc />
         public bool DeleteProperty(string property)
@@ -134,11 +131,11 @@ namespace DatenMeister.Excel.EMOF
             switch (property)
             {
                 case "columnOffset":
-                    ColumnOffset = (int) (value ?? 0);
+                    ColumnOffset = (int)(value ?? 0);
                     InitializeData();
                     break;
                 case "rowOffset":
-                    RowOffset = (int) (value ?? 0);
+                    RowOffset = (int)(value ?? 0);
                     InitializeData();
                     break;
                 default:
@@ -147,31 +144,19 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public bool AddToProperty(string property, object value, int index)
-        {
+        public bool AddToProperty(string property, object value, int index) =>
             throw new NotImplementedException();
-        }
 
         /// <inheritdoc />
-        public bool RemoveFromProperty(string property, object value)
-        {
+        public bool RemoveFromProperty(string property, object value) =>
             throw new NotImplementedException();
-        }
 
-        public bool HasContainer()
-        {
-            return false;
-        }
+        public bool HasContainer() => false;
 
-        public IProviderObject? GetContainer()
-        {
-            return null;
-        }
+        public IProviderObject? GetContainer() => null;
 
-        public void SetContainer(IProviderObject? value)
-        {
+        public void SetContainer(IProviderObject? value) =>
             throw new NotImplementedException();
-        }
 
         /// <inheritdoc />
         public string? Id { get; set; }
@@ -180,9 +165,7 @@ namespace DatenMeister.Excel.EMOF
         public string? MetaclassUri { get; set; }
 
         /// <inheritdoc />
-        public void EmptyListForProperty(string property)
-        {
+        public void EmptyListForProperty(string property) => 
             throw new NotImplementedException();
-        }
     }
 }

@@ -39,7 +39,7 @@ namespace DatenMeister.WebServer
 
             // Initializes the Logging
             var settings = InitializeLogging(configuration);
-            settings.settingsFilePath = path;
+            settings.SettingsFilePath = path;
 
             TheLog.Info("Welcome to DatenMeister");
 
@@ -90,9 +90,9 @@ namespace DatenMeister.WebServer
             var publicSettings = 
                 PublicSettingHandler.ParseSettingsFromFile(configurationExtent)
                     ?? new PublicIntegrationSettings();
-            if (publicSettings is not { logLocation: LogLocation.None })
+            if (publicSettings is not { LogLocation: LogLocation.None })
             {
-                var location = publicSettings?.logLocation ?? LogLocation.Application;
+                var location = publicSettings?.LogLocation ?? LogLocation.Application;
 
                 var logPath = location switch
                 {

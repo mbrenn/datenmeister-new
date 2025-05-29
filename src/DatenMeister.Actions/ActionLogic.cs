@@ -120,6 +120,7 @@ namespace DatenMeister.Actions
                     }
                 });
 
+                // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable CS0162
                 if (AsyncExecution)
                 {
@@ -130,6 +131,7 @@ namespace DatenMeister.Actions
                     result = await fct();
                 }
 #pragma warning restore CS0162
+                // ReSharper restore HeuristicUnreachableCode
 
                 found = true;
             }

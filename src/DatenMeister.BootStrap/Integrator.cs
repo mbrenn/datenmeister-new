@@ -25,29 +25,19 @@ using DatenMeister.Types;
 
 namespace DatenMeister.BootStrap
 {
-    public class Integrator
+    public class Integrator(IntegrationSettings settings, PluginLoaderSettings pluginLoaderSettings)
     {
         private static readonly ClassLogger Logger = new(typeof(Integrator));
 
-        private readonly PluginLoaderSettings _pluginLoaderSettings;
         private string? _pathExtents;
 
         private string? _pathWorkspaces;
         private PublicIntegrationSettings? _publicSettings;
 
-        /// <summary>
-        /// Settings being used for integration
-        /// </summary>
-        private IntegrationSettings _settings;
-
         private PluginManager? _pluginManager;
         private DatenMeisterScope? _dmScope;
-
-        public Integrator(IntegrationSettings settings, PluginLoaderSettings pluginLoaderSettings)
-        {
-            _settings = settings;
-            _pluginLoaderSettings = pluginLoaderSettings;
-        }
+        
+        private IntegrationSettings _settings = settings;
 
         public string PathWorkspaces
         {
@@ -146,10 +136,10 @@ namespace DatenMeister.BootStrap
             scopeStorage.Add(mapper);
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
-                manager => new InMemoryProviderLoader());
+                _ => new InMemoryProviderLoader());
             mapper.AddMapping(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
-                manager => new XmlReferenceLoader());
+                _ => new XmlReferenceLoader());
             
             // First resolve hooks
             ResolveHookContainer.AddDefaultHooks(scopeStorage);
@@ -171,7 +161,7 @@ namespace DatenMeister.BootStrap
             _pluginManager = pluginManager;
             scopeStorage.Add(_pluginManager);
 
-            var pluginLoader = _pluginLoaderSettings.PluginLoader;
+            var pluginLoader = pluginLoaderSettings.PluginLoader;
             var defaultPluginSettings = _settings.AdditionalSettings.TryGet<DefaultPluginSettings>();
             if (defaultPluginSettings != null && pluginLoader is DefaultPluginLoader defaultPluginLoader)
                 defaultPluginLoader.Settings = defaultPluginSettings;
@@ -308,7 +298,7 @@ namespace DatenMeister.BootStrap
 
             await _pluginManager.StartPlugins(
                 _dmScope,
-                _pluginLoaderSettings.PluginLoader,
+                pluginLoaderSettings.PluginLoader,
                 PluginLoadingPosition.AfterShutdownStarted);
         }
 
@@ -324,7 +314,7 @@ namespace DatenMeister.BootStrap
             {
                 foreach (var extent in workspace.extent.OfType<MofExtent>())
                 {
-                    if (extent.Provider.GetCapabilities()?.IsTemporaryStorage == true)
+                    if (extent.Provider.GetCapabilities().IsTemporaryStorage)
                     {
                         extent.SignalUpdateOfContent(false);
                     }
@@ -337,12 +327,6 @@ namespace DatenMeister.BootStrap
         /// </summary>
         private void PrepareSettings()
         {
-            if (_settings == null)
-            {
-                Logger.Info("No integration settings were given. Loading the default values.");
-                _settings = new IntegrationSettings();
-            }
-
             // Checks whether a public setting is available
             try
             {
@@ -353,19 +337,19 @@ namespace DatenMeister.BootStrap
                         throw new InvalidOperationException("Path is null"), out _);
                     if (_publicSettings != null)
                     {
-                        if (_publicSettings.databasePath != null && !string.IsNullOrEmpty(_publicSettings.databasePath))
+                        if (_publicSettings.DatabasePath != null && !string.IsNullOrEmpty(_publicSettings.DatabasePath))
                         {
-                            Logger.Info($"Overwriting database path to {_publicSettings.databasePath}");
+                            Logger.Info($"Overwriting database path to {_publicSettings.DatabasePath}");
 
-                            _settings.DatabasePath = _publicSettings.databasePath;
+                            _settings.DatabasePath = _publicSettings.DatabasePath;
                         }
 
-                        if (_publicSettings.windowTitle != null && !string.IsNullOrEmpty(_publicSettings.windowTitle))
+                        if (_publicSettings.WindowTitle != null && !string.IsNullOrEmpty(_publicSettings.WindowTitle))
                         {
-                            _settings.WindowTitle = _publicSettings.windowTitle;
+                            _settings.WindowTitle = _publicSettings.WindowTitle;
                         }
 
-                        _settings.IsReadOnly = _publicSettings.isReadOnly;
+                        _settings.IsReadOnly = _publicSettings.IsReadOnly;
                     }
                 }
             }

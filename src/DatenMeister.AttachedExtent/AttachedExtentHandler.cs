@@ -60,7 +60,7 @@ namespace DatenMeister.AttachedExtent
                 return null;
             }
 
-            return _workspaceLogic.FindExtent(workspace, extent) as IUriExtent;
+            return _workspaceLogic.FindExtent(workspace, extent);
         }
 
         /// <summary>

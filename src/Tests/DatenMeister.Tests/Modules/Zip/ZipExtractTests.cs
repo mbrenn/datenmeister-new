@@ -75,7 +75,7 @@ public class ZipExtractTests
         Thread.Sleep(100);
         
         // Checks, updates Last Writing time in past and checks that the wroting is correctly being doen
-        File.SetLastWriteTime(TargetPathFile, DateTime.Now.Subtract(TimeSpan.FromMinutes(30)));
+        File.SetLastWriteTime(TargetPathFile, new DateTime(1990,01,01));
         
         action = InMemoryObject.CreateEmpty(_Root.TheOne.__ZipFileExtractAction);
         action.set(_Root._ZipFileExtractAction.sourcePath, ZipFilePath);

@@ -43,7 +43,7 @@ namespace DatenMeister.BootStrap.PublicSettings
                     return null;
                 }
                 
-                result.settingsFilePath = path;
+                result.SettingsFilePath = path;
                 return result;
             }
 
@@ -98,10 +98,10 @@ namespace DatenMeister.BootStrap.PublicSettings
             // We got a configuration, so we can try to parse it. 
             var settings = ParsePublicIntegrationSettings(extentConfiguration);
 
-            // Now starts to set the set the environment according the public settings
-            if (!string.IsNullOrEmpty(settings?.databasePath))
+            // Now starts to set the environment according the public settings
+            if (!string.IsNullOrEmpty(settings?.DatabasePath))
             {
-                Environment.SetEnvironmentVariable("dm_DatabasePath", settings?.databasePath);
+                Environment.SetEnvironmentVariable("dm_DatabasePath", settings.DatabasePath);
             }
 
             // Now set the default paths, if they are not set
@@ -146,15 +146,15 @@ namespace DatenMeister.BootStrap.PublicSettings
             {
                 settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
 
-                settings.databasePath = settings.databasePath != null
-                    ? Environment.ExpandEnvironmentVariables(settings.databasePath)
+                settings.DatabasePath = settings.DatabasePath != null
+                    ? Environment.ExpandEnvironmentVariables(settings.DatabasePath)
                     : null;
 
-                foreach (var variable in settings.environmentVariable
-                             .Where(variable => variable.key != null && variable.value != null))
+                foreach (var variable in settings.EnvironmentVariable
+                             .Where(variable => variable.Key != null && variable.Value != null))
                 {
-                    Environment.SetEnvironmentVariable(variable.key!, variable.value);
-                    Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
+                    Environment.SetEnvironmentVariable(variable.Key!, variable.Value);
+                    Logger.Info($"Setting Environmental Variable: {variable.Key} = {variable.Value}");
                 }
             }
 

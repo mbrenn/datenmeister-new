@@ -77,7 +77,9 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
 
             // Gets the uri of the lookup up type
             var metaClassUri = _extent.GetMetaClassUri(value.GetType());
-            var metaClass = metaClassUri == null ? null : _extent.ResolveElement(metaClassUri, ResolveType.OnlyMetaClasses);
+            var metaClass = metaClassUri == null
+                ? null
+                : _extent.ResolveElement(metaClassUri, ResolveType.OnlyMetaClasses);
 
             return ConvertToMofObject(value, metaClass, requestedId);
         }
@@ -100,13 +102,13 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
 
             var type = value.GetType();
             foreach (var reflectedProperty in type.GetProperties(
-                BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
+                         BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
             {
                 var innerValue = reflectedProperty.GetValue(value);
                 if (DotNetHelper.IsOfEnumeration(innerValue) && innerValue != null)
                 {
                     var list = new List<object>();
-                    var enumeration = (IEnumerable) innerValue;
+                    var enumeration = (IEnumerable)innerValue;
                     foreach (var innerElementValue in enumeration)
                     {
                         var convertedValue = ConvertToMofIfNotPrimitive(innerElementValue);
@@ -143,7 +145,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="value">Value to be set</param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
         public static object? ConvertToMofObject(IUriExtent receiver, object value, string? requestedId = null)
-            => ConvertToMofObject((MofUriExtent) receiver, value, requestedId);
+            => ConvertToMofObject((MofUriExtent)receiver, value, requestedId);
 
         /// <summary>
         /// Converts the given .Net Object in value to a MofObject
@@ -158,7 +160,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
             object value,
             IElement? metaclass = null,
             string? requestedId = null)
-            => new DotNetConverter((MofUriExtent) receiver).ConvertToMofObject(value, metaclass, requestedId);
+            => new DotNetConverter((MofUriExtent)receiver).ConvertToMofObject(value, metaclass, requestedId);
 
         /// <summary>
         /// Converts the given .Net Object in value to a MofObject. The intermediate InMemory Extent is used.
@@ -199,7 +201,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <returns>The converted .Net Type</returns>
         public static object? ConvertToDotNetObject(IElement element)
         {
-            var mofElement = (MofElement) element;
+            var mofElement = (MofElement)element;
             var metaClassUri = mofElement.metaclass?.GetUri();
             if (metaClassUri == null)
                 throw new InvalidOperationException("metaClassUri is null");
@@ -222,7 +224,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object</returns>
         public static T ConvertToDotNetObject<T>(IObject value)
-            => (T) ConvertToDotNetObject(value, typeof(T))!;
+            => (T)ConvertToDotNetObject(value, typeof(T))!;
 
         /// <summary>
         /// Converts the given MOF Object into a .Net Object
@@ -233,104 +235,135 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         public static object? ConvertToDotNetObject(IObject value, Type type)
         {
             if (value == null) return null;
-            var result = Activator.CreateInstance(type);
+            var result = Activator.CreateInstance(type)!;
             foreach (var reflectedProperty in type.GetProperties(
-                BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
+                         BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
             {
-                if (value.isSet(reflectedProperty.Name))
+                var nameOfProperty = reflectedProperty.Name;
+                if (SetPropertyByElementsProperty(value, result, nameOfProperty, reflectedProperty))
                 {
-                    var propertyValue = value.get(reflectedProperty.Name);
-                    if (propertyValue == null)
-                    {
-                        reflectedProperty.SetValue(result, null);
-                    }
-                    else if (reflectedProperty.PropertyType == typeof(string))
-                    {
-                        reflectedProperty.SetValue(result, DotNetHelper.AsString(propertyValue));
-                    }
-                    else if (reflectedProperty.PropertyType == typeof(int))
-                    {
-                        reflectedProperty.SetValue(result, DotNetHelper.AsInteger(propertyValue));
-                    }
-                    else if (reflectedProperty.PropertyType == typeof(double))
-                    {
-                        reflectedProperty.SetValue(result, DotNetHelper.AsDouble(propertyValue));
-                    }
-                    else if (reflectedProperty.PropertyType == typeof(bool))
-                    {
-                        reflectedProperty.SetValue(result, DotNetHelper.AsBoolean(propertyValue));
-                    }
-                    else if (reflectedProperty.PropertyType == typeof(DateTime))
-                    {
-                        if (!DateTime.TryParse(propertyValue.ToString()
-                                              ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
-                            CultureInfo.InvariantCulture,
-                            DateTimeStyles.None,
-                            out var dateResult))
-                        {
-                            dateResult = DateTime.MinValue;
-                        }
-
-                        reflectedProperty.SetValue(result, dateResult);
-                    }
-                    else if (reflectedProperty.PropertyType == typeof(IObject) ||
-                             reflectedProperty.PropertyType == typeof(IElement))
-                    {
-                        reflectedProperty.SetValue(result, propertyValue as IObject);
-                    }
-                    else if (reflectedProperty.PropertyType.IsEnum)
-                    {
-                        var propertyValueType = propertyValue.GetType();
-                        if (propertyValueType == reflectedProperty.PropertyType)
-                        {
-                            reflectedProperty.SetValue(result, propertyValue);
-                        }
-                        else if (propertyValue is string propertyValueAsString)
-                        {
-                            reflectedProperty.SetValue(result, Enum.Parse(reflectedProperty.PropertyType, propertyValueAsString));
-                        }
-                        else if (propertyValue is IElement propertyObject && value is MofObject mofObject)
-                        {
-                            // Get Enumeration Instance
-                            var resolvedElement = mofObject.ReferencedExtent.Resolve(propertyObject);
-                            if (resolvedElement == null)
-                            {
-                                reflectedProperty.SetValue(result, null);
-                            }
-                            else
-                            {
-                                var name = NamedElementMethods.GetName(resolvedElement);
-                                reflectedProperty.SetValue(result, Enum.Parse(reflectedProperty.PropertyType, name));
-                            }
-                        }
-                    }
-                    else if (DotNetHelper.IsEnumeration(reflectedProperty.PropertyType))
-                    {
-                        var asCollection = reflectedProperty.GetValue(result) as IList;
-                        if (asCollection == null)
-                        {
-                            continue;
-                        }
-                        
-                        var listPropertyType = DotNetTypeGenerator.GetAnyElementType(reflectedProperty.PropertyType);
-                        foreach (var valueInList in (IEnumerable) propertyValue)
-                        {
-                            if (valueInList is IObject asObject)
-                            {
-                                var listItem = ConvertToDotNetObject(asObject, listPropertyType);
-                                asCollection.Add(listItem);
-                            }
-                        }
-                        
-                    }
-                    else
-                    {
-                        Logger.Error($"Unknown type for Property: {reflectedProperty.Name}: {reflectedProperty.PropertyType}");
-                    }
+                    continue;
                 }
+                
+                // Checks, if the name of the property starts with an upcase letter 
+                // and retry it with a lower case
+                if (nameOfProperty.Length <= 0 || !Char.IsUpper(nameOfProperty[0]))
+                {
+                    continue;
+                }
+
+                // Retry with lowered property
+                nameOfProperty = Char.ToLower(nameOfProperty[0]) + nameOfProperty.Substring(1);
+                SetPropertyByElementsProperty(value, result, nameOfProperty, reflectedProperty);
             }
 
             return result;
         }
+
+        private static bool SetPropertyByElementsProperty(
+            IObject value,
+            object result,
+            string nameOfProperty,
+            PropertyInfo reflectedProperty)
+        {
+            if (!value.isSet(nameOfProperty))
+            {
+                return false;
+            }
+            
+            var propertyValue = value.get(nameOfProperty);
+            if (propertyValue == null)
+            {
+                reflectedProperty.SetValue(result, null);
+            }
+            else if (reflectedProperty.PropertyType == typeof(string))
+            {
+                reflectedProperty.SetValue(result, DotNetHelper.AsString(propertyValue));
+            }
+            else if (reflectedProperty.PropertyType == typeof(int))
+            {
+                reflectedProperty.SetValue(result, DotNetHelper.AsInteger(propertyValue));
+            }
+            else if (reflectedProperty.PropertyType == typeof(double))
+            {
+                reflectedProperty.SetValue(result, DotNetHelper.AsDouble(propertyValue));
+            }
+            else if (reflectedProperty.PropertyType == typeof(bool))
+            {
+                reflectedProperty.SetValue(result, DotNetHelper.AsBoolean(propertyValue));
+            }
+            else if (reflectedProperty.PropertyType == typeof(DateTime))
+            {
+                if (!DateTime.TryParse(propertyValue.ToString()
+                                       ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out var dateResult))
+                {
+                    dateResult = DateTime.MinValue;
+                }
+
+                reflectedProperty.SetValue(result, dateResult);
+            }
+            else if (reflectedProperty.PropertyType == typeof(IObject) ||
+                     reflectedProperty.PropertyType == typeof(IElement))
+            {
+                reflectedProperty.SetValue(result, propertyValue as IObject);
+            }
+            else if (reflectedProperty.PropertyType.IsEnum)
+            {
+                var propertyValueType = propertyValue.GetType();
+                if (propertyValueType == reflectedProperty.PropertyType)
+                {
+                    reflectedProperty.SetValue(result, propertyValue);
+                }
+                else if (propertyValue is string propertyValueAsString)
+                {
+                    reflectedProperty.SetValue(result,
+                        Enum.Parse(reflectedProperty.PropertyType, propertyValueAsString));
+                }
+                else if (propertyValue is IElement propertyObject && value is MofObject mofObject)
+                {
+                    // Get Enumeration Instance
+                    var resolvedElement = mofObject.ReferencedExtent.Resolve(propertyObject);
+                    if (resolvedElement == null)
+                    {
+                        reflectedProperty.SetValue(result, null);
+                    }
+                    else
+                    {
+                        var name = NamedElementMethods.GetName(resolvedElement);
+                        reflectedProperty.SetValue(result, Enum.Parse(reflectedProperty.PropertyType, name));
+                    }
+                }
+            }
+            else if (DotNetHelper.IsEnumeration(reflectedProperty.PropertyType))
+            {
+                if (reflectedProperty.GetValue(result) is not IList asCollection)
+                {
+                    return false;
+                }
+
+                var listPropertyType = DotNetTypeGenerator.GetAnyElementType(reflectedProperty.PropertyType);
+                foreach (var valueInList in (IEnumerable)propertyValue)
+                {
+                    if (valueInList is IObject asObject)
+                    {
+                        var listItem = ConvertToDotNetObject(asObject, listPropertyType);
+                        asCollection.Add(listItem);
+                    }
+                }
+
+            }
+            else
+            {
+                Logger.Error(
+                    $"Unknown type for Property: {reflectedProperty.Name}: {reflectedProperty.PropertyType}");
+            }
+                
+            return true;
+
+        }
+
     }
 }

@@ -8,64 +8,63 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Actions.ActionHandler
+namespace DatenMeister.Actions.ActionHandler;
+
+public class ExportToXmiActionHandler : IActionHandler
 {
-    public class ExportToXmiActionHandler : IActionHandler
+    private static readonly ILogger Logger = new ClassLogger(typeof(ExportToXmiActionHandler));
+
+    public bool IsResponsible(IElement node)
     {
-        private static readonly ILogger Logger = new ClassLogger(typeof(ExportToXmiActionHandler));
+        return node.getMetaClass()?.equals(
+            _DatenMeister.TheOne.Actions.__ExportToXmiAction) == true;
+    }
 
-        public bool IsResponsible(IElement node)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    {
+        await Task.Run(() =>
         {
-            return node.getMetaClass()?.equals(
-                _DatenMeister.TheOne.Actions.__ExportToXmiAction) == true;
-        }
+            var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
+            var sourcePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourcePath);
+            var filePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.filePath);
+            filePath = integrationSettings.NormalizeDirectoryPath(filePath);
 
-        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
-        {
-            await Task.Run(() =>
+            var workspaceId =
+                action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourceWorkspaceId)
+                ?? WorkspaceNames.WorkspaceData;
+
+            var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);
+            if (workspace == null)
             {
-                var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
-                var sourcePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourcePath);
-                var filePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.filePath);
-                filePath = integrationSettings.NormalizeDirectoryPath(filePath);
+                var message = $"workspace is not found ${workspaceId}";
+                Logger.Error(message);
 
-                var workspaceId =
-                    action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourceWorkspaceId)
-                    ?? WorkspaceNames.WorkspaceData;
+                throw new InvalidOperationException(message);
+            }
 
-                var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);
-                if (workspace == null)
-                {
-                    var message = $"workspace is not found ${workspaceId}";
-                    Logger.Error(message);
+            var sourceElement = workspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
+            if (sourceElement == null)
+            {
+                var message = $"sourcePath is not found {sourcePath}";
+                Logger.Error(message);
 
-                    throw new InvalidOperationException(message);
-                }
+                throw new InvalidOperationException(message);
+            }
 
-                var sourceElement = workspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
-                if (sourceElement == null)
-                {
-                    var message = $"sourcePath is not found {sourcePath}";
-                    Logger.Error(message);
+            var sourceCollection = CopyElementsActionHandler.GetCollectionFromResolvedElement(sourceElement)
+                                   ?? throw new InvalidOperationException(
+                                       "sourceCollection is null");
 
-                    throw new InvalidOperationException(message);
-                }
+            var provider = new XmiProvider();
+            var tempExtent = new MofUriExtent(provider, "dm:///export", actionLogic.ScopeStorage);
 
-                var sourceCollection = CopyElementsActionHandler.GetCollectionFromResolvedElement(sourceElement)
-                                       ?? throw new InvalidOperationException(
-                                           "sourceCollection is null");
+            // Now do the copying. it makes us all happy
+            var extentCopier = new ExtentCopier(new MofFactory(tempExtent));
+            extentCopier.Copy(sourceCollection, tempExtent.elements(), CopyOptions.CopyId);
 
-                var provider = new XmiProvider();
-                var tempExtent = new MofUriExtent(provider, "dm:///export", actionLogic.ScopeStorage);
+            provider.Document.Save(filePath);
+        });
 
-                // Now do the copying. it makes us all happy
-                var extentCopier = new ExtentCopier(new MofFactory(tempExtent));
-                extentCopier.Copy(sourceCollection, tempExtent.elements(), CopyOptions.CopyId);
-
-                provider.Document.Save(filePath);
-            });
-
-            return null;
-        }
+        return null;
     }
 }

@@ -1,12 +1,11 @@
 ﻿using DatenMeister.Core.Extensions.Functions.Interfaces;
 
-namespace DatenMeister.Core.Extensions.Functions.Aggregation
+namespace DatenMeister.Core.Extensions.Functions.Aggregation;
+
+public class CountAggregator : DoubleAggregationByFunction<object>
 {
-    public class CountAggregator : DoubleAggregationByFunction<object>
+    public CountAggregator()
+        : base((a, b) => a + 1)
     {
-        public CountAggregator()
-            : base((a, b) => a + 1)
-        {
-        }
     }
 }

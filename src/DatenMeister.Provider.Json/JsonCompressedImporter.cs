@@ -44,7 +44,7 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
         foreach (var column in columns.Where(x => x != null))
         {
             columnPositions.Add(column!.ToString());
-            columnIndex[column!.ToString()] = currentPosition;
+            columnIndex[column.ToString()] = currentPosition;
             currentPosition++;
         }
 

@@ -5,57 +5,56 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 
-namespace DatenMeister.Actions.ActionHandler
+namespace DatenMeister.Actions.ActionHandler;
+
+public class PowershellExecutionActionHandler : IActionHandler
 {
-    public class PowershellExecutionActionHandler : IActionHandler
-    {
-        /// <summary>
-        /// Defines the logger 
-        /// </summary>
-        private readonly ClassLogger _logger = new(typeof(CommandExecutionActionHandler));
+    /// <summary>
+    /// Defines the logger 
+    /// </summary>
+    private readonly ClassLogger _logger = new(typeof(CommandExecutionActionHandler));
         
-        public bool IsResponsible(IElement node)
-        {
-            return node.getMetaClass()?.equals(
-                _DatenMeister.TheOne.Actions.__PowershellExecutionAction) == true;
-        }
+    public bool IsResponsible(IElement node)
+    {
+        return node.getMetaClass()?.equals(
+            _DatenMeister.TheOne.Actions.__PowershellExecutionAction) == true;
+    }
 
-        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    {
+        await Task.Run(() =>
         {
-            await Task.Run(() =>
+            var script = action.getOrDefault<string>(_DatenMeister._Actions._PowershellExecutionAction.script);
+            var workingDirectory =
+                action.getOrDefault<string>(_DatenMeister._Actions._PowershellExecutionAction.workingDirectory);
+
+            var tempPath = Path.Combine(Path.GetTempPath(),
+                StringManipulation.RandomString(16) + ".ps1");
+
+            File.WriteAllText(tempPath, script);
+
+            _logger.Info("Powershell started");
+            var startInfo = new ProcessStartInfo
             {
-                var script = action.getOrDefault<string>(_DatenMeister._Actions._PowershellExecutionAction.script);
-                var workingDirectory =
-                    action.getOrDefault<string>(_DatenMeister._Actions._PowershellExecutionAction.workingDirectory);
+                FileName = "powershell.exe",
+                UseShellExecute = true,
+                Arguments = tempPath
+            };
 
-                var tempPath = Path.Combine(Path.GetTempPath(),
-                    StringManipulation.RandomString(16) + ".ps1");
+            if (!string.IsNullOrEmpty(workingDirectory))
+            {
+                startInfo.WorkingDirectory = workingDirectory;
+            }
 
-                File.WriteAllText(tempPath, script);
+            var process = Process.Start(startInfo)
+                          ?? throw new InvalidOperationException("Process was not created");
+            process.WaitForExit();
 
-                _logger.Info("Powershell started");
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    UseShellExecute = true,
-                    Arguments = tempPath
-                };
+            File.Delete(tempPath);
 
-                if (!string.IsNullOrEmpty(workingDirectory))
-                {
-                    startInfo.WorkingDirectory = workingDirectory;
-                }
+            _logger.Info("Powershell exited");
+        });
 
-                var process = Process.Start(startInfo)
-                              ?? throw new InvalidOperationException("Process was not created");
-                process.WaitForExit();
-
-                File.Delete(tempPath);
-
-                _logger.Info("Powershell exited");
-            });
-
-            return null;
-        }
+        return null;
     }
 }

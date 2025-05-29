@@ -1,34 +1,32 @@
-﻿#nullable enable
-using System.Windows;
+﻿using System.Windows;
 
-namespace DatenMeister.WPF.Windows
+namespace DatenMeister.WPF.Windows;
+
+/// <summary>
+/// Interaktionslogik für QueryElementDialog.xaml
+/// </summary>
+public partial class QueryElementDialog : Window
 {
-    /// <summary>
-    /// Interaktionslogik für QueryElementDialog.xaml
-    /// </summary>
-    public partial class QueryElementDialog : Window
+    public QueryElementDialog()
     {
-        public QueryElementDialog()
-        {
-            InitializeComponent();
-            QueryUrl.Focus();
-        }
+        InitializeComponent();
+        QueryUrl.Focus();
+    }
 
-        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            Close();
-        }
+    private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        DialogResult = false;
+        Close();
+    }
 
-        private void OpenButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Close();
-        }
+    private void OpenButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        DialogResult = true;
+        Close();
+    }
 
-        private void QueryElementDialog_OnClosed(object sender, EventArgs e)
-        {
-            Owner?.Focus();
-        }
+    private void QueryElementDialog_OnClosed(object sender, EventArgs e)
+    {
+        Owner?.Focus();
     }
 }

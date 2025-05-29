@@ -2,17 +2,16 @@
 using BurnSystems.Logging;
 using BurnSystems.WPF;
 
-namespace DatenMeister.WPF.Forms
+namespace DatenMeister.WPF.Forms;
+
+/// <summary>
+/// Interaktionslogik für IntroScreen.xaml
+/// </summary>
+public partial class IntroScreen : UserControl
 {
-    /// <summary>
-    /// Interaktionslogik für IntroScreen.xaml
-    /// </summary>
-    public partial class IntroScreen : UserControl
+    public IntroScreen()
     {
-        public IntroScreen()
-        {
-            InitializeComponent();
-            TheLog.AddProvider(new TextBlockLogProvider(LoggingText));
-        }
+        InitializeComponent();
+        TheLog.AddProvider(new TextBlockLogProvider(LoggingText));
     }
 }

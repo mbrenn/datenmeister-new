@@ -1,44 +1,41 @@
 using BurnSystems.Collections;
 
-#nullable enable
+namespace DatenMeister.Validators;
 
-namespace DatenMeister.Validators
+public enum ValidatorState
 {
-    public enum ValidatorState
+    NotValidated,
+    Ok,
+    Recommendation,
+    Error
+}
+
+public class ValidatorResult : IChainNode<ValidatorResult>
+{
+    public ValidatorResult(ValidatorState state, string message, string propertyName = "")
     {
-        NotValidated,
-        Ok,
-        Recommendation,
-        Error
+        State = state;
+        Message = message;
+        PropertyName = propertyName;
     }
 
-    public class ValidatorResult : IChainNode<ValidatorResult>
-    {
-        public ValidatorResult(ValidatorState state, string message, string propertyName = "")
-        {
-            State = state;
-            Message = message;
-            PropertyName = propertyName;
-        }
+    /// <summary>
+    /// Gets or sets the state of the validation
+    /// </summary>
+    public ValidatorState State { get; }
 
-        /// <summary>
-        /// Gets or sets the state of the validation
-        /// </summary>
-        public ValidatorState State { get; }
+    /// <summary>
+    /// Defines the message for the user
+    /// </summary>
+    public string Message { get; }
 
-        /// <summary>
-        /// Defines the message for the user
-        /// </summary>
-        public string Message { get; }
+    /// <summary>
+    /// If there is one specific property associated to the validation, take this
+    /// </summary>
+    public string? PropertyName { get; }
 
-        /// <summary>
-        /// If there is one specific property associated to the validation, take this
-        /// </summary>
-        public string? PropertyName { get; }
-
-        /// <summary>
-        /// Gets the next validator result as a chained list
-        /// </summary>
-        public ValidatorResult? Next { get; set; }
-    }
+    /// <summary>
+    /// Gets the next validator result as a chained list
+    /// </summary>
+    public ValidatorResult? Next { get; set; }
 }

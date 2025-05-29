@@ -1,18 +1,17 @@
-﻿namespace DatenMeister.WPF.Modules.ViewExtensions.Definition
+﻿namespace DatenMeister.WPF.Modules.ViewExtensions.Definition;
+
+/// <summary>
+/// Defines an extension for the view, like row buttons, Navigation buttons and
+/// additional buttons. Depending on the control being used, the values will be evaluated
+/// </summary>
+public class ViewExtension
 {
     /// <summary>
-    /// Defines an extension for the view, like row buttons, Navigation buttons and
-    /// additional buttons. Depending on the control being used, the values will be evaluated
+    /// Gets or sets a tag that can be used to identify the purpose of the viewextension
     /// </summary>
-    public class ViewExtension
+    public object? Tag
     {
-        /// <summary>
-        /// Gets or sets a tag that can be used to identify the purpose of the viewextension
-        /// </summary>
-        public object? Tag
-        {
-            get;
-            set;
-        }
+        get;
+        set;
     }
 }

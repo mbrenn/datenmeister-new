@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DatenMeister.WebServer.Pages
+namespace DatenMeister.WebServer.Pages;
+
+public class TestCases : PageModel
 {
-    public class TestCases : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
             
-        }
     }
 }

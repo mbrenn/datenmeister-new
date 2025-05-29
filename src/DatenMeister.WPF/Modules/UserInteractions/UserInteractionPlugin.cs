@@ -1,26 +1,25 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.WPF.Modules.UserInteractions
+namespace DatenMeister.WPF.Modules.UserInteractions;
+
+[PluginLoading(PluginLoadingPosition.AfterInitialization)]
+public class UserInteractionPlugin : IDatenMeisterPlugin
 {
-    [PluginLoading(PluginLoadingPosition.AfterInitialization)]
-    public class UserInteractionPlugin : IDatenMeisterPlugin
+    private readonly IScopeStorage _scopeStorage;
+
+    public UserInteractionPlugin(IScopeStorage scopeStorage)
     {
-        private readonly IScopeStorage _scopeStorage;
+        _scopeStorage = scopeStorage;
+    }
 
-        public UserInteractionPlugin(IScopeStorage scopeStorage)
+    public void Start(PluginLoadingPosition position)
+    {
+        switch (position)
         {
-            _scopeStorage = scopeStorage;
-        }
-
-        public void Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterInitialization:
-                    _scopeStorage.Add(new UserInteractionState());
-                    break;
-            }
+            case PluginLoadingPosition.AfterInitialization:
+                _scopeStorage.Add(new UserInteractionState());
+                break;
         }
     }
 }

@@ -3,61 +3,60 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Core.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries;
+
+public class FilterOnPropertyByPredicateCollection<T> : ProxyReflectiveCollection
 {
-    public class FilterOnPropertyByPredicateCollection<T> : ProxyReflectiveCollection
+    /// <summary>
+    ///     Stores the filter to filter on the property
+    /// </summary>
+    private readonly Predicate<T> _filter;
+
+    /// <summary>
+    ///     Stores the property
+    /// </summary>
+    private readonly string _property;
+
+    public FilterOnPropertyByPredicateCollection(
+        IReflectiveCollection collection,
+        string property,
+        Predicate<T> filter)
+        : base(collection)
     {
-        /// <summary>
-        ///     Stores the filter to filter on the property
-        /// </summary>
-        private readonly Predicate<T> _filter;
+        _property = property;
+        _filter = filter;
+    }
 
-        /// <summary>
-        ///     Stores the property
-        /// </summary>
-        private readonly string _property;
-
-        public FilterOnPropertyByPredicateCollection(
-            IReflectiveCollection collection,
-            string property,
-            Predicate<T> filter)
-            : base(collection)
+    public override IEnumerator<object> GetEnumerator()
+    {
+        foreach (var value in Collection)
         {
-            _property = property;
-            _filter = filter;
-        }
-
-        public override IEnumerator<object> GetEnumerator()
-        {
-            foreach (var value in Collection)
+            if (value is IObject valueAsObject && valueAsObject.isSet(_property))
             {
-                if (value is IObject valueAsObject && valueAsObject.isSet(_property))
+                var property = valueAsObject.get<T>(_property);
+                if (_filter(property))
                 {
-                    var property = valueAsObject.get<T>(_property);
-                    if (_filter(property))
-                    {
-                        yield return valueAsObject;
-                    }
+                    yield return valueAsObject;
+                }
+            }
+        }
+    }
+
+    public override int size()
+    {
+        var result = 0;
+        foreach (var value in Collection)
+        {
+            if (value is IObject valueAsObject && valueAsObject.isSet(_property))
+            {
+                var property = valueAsObject.get<T>(_property);
+                if (_filter(property))
+                {
+                    result++;
                 }
             }
         }
 
-        public override int size()
-        {
-            var result = 0;
-            foreach (var value in Collection)
-            {
-                if (value is IObject valueAsObject && valueAsObject.isSet(_property))
-                {
-                    var property = valueAsObject.get<T>(_property);
-                    if (_filter(property))
-                    {
-                        result++;
-                    }
-                }
-            }
-
-            return result;
-        }
+        return result;
     }
 }

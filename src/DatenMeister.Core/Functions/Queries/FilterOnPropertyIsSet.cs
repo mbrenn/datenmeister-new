@@ -2,34 +2,33 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Core.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries;
+
+/// <summary>
+/// Performs a filtering on all properties
+/// </summary>
+public class FilterOnPropertyIsSet : ProxyReflectiveCollection
 {
-    /// <summary>
-    /// Performs a filtering on all properties
-    /// </summary>
-    public class FilterOnPropertyIsSet : ProxyReflectiveCollection
+    private readonly string _property;
+
+    public FilterOnPropertyIsSet(IReflectiveCollection collection, string property) : base(collection)
     {
-        private readonly string _property;
+        _property = property;
+    }
 
-        public FilterOnPropertyIsSet(IReflectiveCollection collection, string property) : base(collection)
+    public override IEnumerator<object> GetEnumerator()
+    {
+        foreach (var element in Collection.OfType<IObject>())
         {
-            _property = property;
-        }
-
-        public override IEnumerator<object> GetEnumerator()
-        {
-            foreach (var element in Collection.OfType<IObject>())
+            if (element.isSet(_property))
             {
-                if (element.isSet(_property))
-                {
-                    yield return element;
-                }
+                yield return element;
             }
         }
+    }
 
-        public override int size()
-        {
-            return Collection.OfType<IObject>().Count(x => x.isSet(_property));
-        }
+    public override int size()
+    {
+        return Collection.OfType<IObject>().Count(x => x.isSet(_property));
     }
 }

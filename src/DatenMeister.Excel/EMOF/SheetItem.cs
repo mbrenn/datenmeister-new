@@ -2,170 +2,169 @@
 using DatenMeister.Excel.Helper;
 using NPOI.SS.UserModel;
 
-namespace DatenMeister.Excel.EMOF
+namespace DatenMeister.Excel.EMOF;
+
+public class SheetItem : IProviderObject
 {
-    public class SheetItem : IProviderObject
+    public ISheet Sheet { get; }
+
+    /// <summary>
+    /// Gets the provider 
+    /// </summary>
+    IProvider IProviderObject.Provider => Provider;
+
+    /// <summary>
+    /// Gets the provider being used to create the element
+    /// </summary>
+    public ExcelProvider Provider { get; }
+
+    /// <summary>
+    /// Gets the provider as a typed instance
+    /// </summary>
+    public ExcelProvider ExcelProvider => Provider;
+
+    /// <summary>
+    /// Gets or sets the columns and their names
+    /// The name of the column mapping to the column
+    /// </summary>
+    public Dictionary<string, int> Columns { get; set; } = new();
+
+    /// <summary>
+    /// First column where data can be found
+    /// </summary>
+    public int ColumnOffset { get; set; }
+
+    /// <summary>
+    /// First of data
+    /// </summary>
+    public int RowOffset { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the SheetItem
+    /// </summary>
+    /// <param name="provider">Extent to which the item belongs</param>
+    /// <param name="sheet">The sheet that is used for access</param>
+    public SheetItem(IProvider provider, ISheet sheet)
     {
-        public ISheet Sheet { get; }
+        Provider = provider as ExcelProvider ??
+                   throw new InvalidOperationException("Provided excel is not an excel provider");
 
-        /// <summary>
-        /// Gets the provider 
-        /// </summary>
-        IProvider IProviderObject.Provider => Provider;
+        Sheet = sheet;
 
-        /// <summary>
-        /// Gets the provider being used to create the element
-        /// </summary>
-        public ExcelProvider Provider { get; }
+        InitializeData();
+    }
 
-        /// <summary>
-        /// Gets the provider as a typed instance
-        /// </summary>
-        public ExcelProvider ExcelProvider => Provider;
+    /// <summary>
+    /// Initializes data
+    /// </summary>
+    private void InitializeData()
+    {
+        Columns.Clear();
 
-        /// <summary>
-        /// Gets or sets the columns and their names
-        /// The name of the column mapping to the column
-        /// </summary>
-        public Dictionary<string, int> Columns { get; set; } = new Dictionary<string, int>();
-
-        /// <summary>
-        /// First column where data can be found
-        /// </summary>
-        public int ColumnOffset { get; set; }
-
-        /// <summary>
-        /// First of data
-        /// </summary>
-        public int RowOffset { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the SheetItem
-        /// </summary>
-        /// <param name="provider">Extent to which the item belongs</param>
-        /// <param name="sheet">The sheet that is used for access</param>
-        public SheetItem(IProvider provider, ISheet sheet)
+        var n = ColumnOffset;
+        while (true)
         {
-            Provider = provider as ExcelProvider ??
-                       throw new InvalidOperationException("Provided excel is not an excel provider");
-
-            Sheet = sheet;
-
-            InitializeData();
-        }
-
-        /// <summary>
-        /// Initializes data
-        /// </summary>
-        private void InitializeData()
-        {
-            Columns.Clear();
-
-            var n = ColumnOffset;
-            while (true)
+            var headline = Sheet.GetRow(RowOffset)?.GetCell(n)?.GetStringContent();
+            if (string.IsNullOrEmpty(headline))
             {
-                var headline = Sheet.GetRow(RowOffset)?.GetCell(n)?.GetStringContent();
-                if (string.IsNullOrEmpty(headline))
-                {
-                    break;
-                }
-
-                Columns[Provider.ColumnTranslator.TranslateHeader(headline)] = n;
-                n++;
+                break;
             }
 
-            RowOffset++;
+            Columns[Provider.ColumnTranslator.TranslateHeader(headline)] = n;
+            n++;
         }
 
-        /// <inheritdoc />
-        public bool IsPropertySet(string property)
-        {
-            return property == "items" || property == "name";
-        }
+        RowOffset++;
+    }
 
-        /// <inheritdoc />
-        public object GetProperty(string property, ObjectType objectType)
-        {
-            switch (property)
-            {
-                case "items":
-                    var collection = new List<object>();
+    /// <inheritdoc />
+    public bool IsPropertySet(string property)
+    {
+        return property == "items" || property == "name";
+    }
 
-                    var n = RowOffset;
-                    while (true)
+    /// <inheritdoc />
+    public object GetProperty(string property, ObjectType objectType)
+    {
+        switch (property)
+        {
+            case "items":
+                var collection = new List<object>();
+
+                var n = RowOffset;
+                while (true)
+                {
+                    var cell = Sheet.GetRow(n)?.GetCell(ColumnOffset);
+                    if (string.IsNullOrEmpty(cell?.GetStringContent()))
                     {
-                        var cell = Sheet.GetRow(n)?.GetCell(ColumnOffset);
-                        if (string.IsNullOrEmpty(cell?.GetStringContent()))
-                        {
-                            break;
-                        }
-
-                        collection.Add(new RowItem(this, n));
-                        n++;
+                        break;
                     }
 
-                    return collection;
-                case "name":
-                    return Sheet.SheetName;
-                case "columnOffset":
-                    return ColumnOffset;
-                case "rowOffset":
-                    return RowOffset;
-            }
+                    collection.Add(new RowItem(this, n));
+                    n++;
+                }
 
-            throw new NotImplementedException();
+                return collection;
+            case "name":
+                return Sheet.SheetName;
+            case "columnOffset":
+                return ColumnOffset;
+            case "rowOffset":
+                return RowOffset;
         }
 
-        /// <inheritdoc />
-        public IEnumerable<string> GetProperties() => ["items", "name"];
-
-        /// <inheritdoc />
-        public bool DeleteProperty(string property)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void SetProperty(string property, object? value)
-        {
-            switch (property)
-            {
-                case "columnOffset":
-                    ColumnOffset = (int)(value ?? 0);
-                    InitializeData();
-                    break;
-                case "rowOffset":
-                    RowOffset = (int)(value ?? 0);
-                    InitializeData();
-                    break;
-                default:
-                    throw new NotImplementedException("Given property is not known");
-            }
-        }
-
-        /// <inheritdoc />
-        public bool AddToProperty(string property, object value, int index) =>
-            throw new NotImplementedException();
-
-        /// <inheritdoc />
-        public bool RemoveFromProperty(string property, object value) =>
-            throw new NotImplementedException();
-
-        public bool HasContainer() => false;
-
-        public IProviderObject? GetContainer() => null;
-
-        public void SetContainer(IProviderObject? value) =>
-            throw new NotImplementedException();
-
-        /// <inheritdoc />
-        public string? Id { get; set; }
-
-        /// <inheritdoc />
-        public string? MetaclassUri { get; set; }
-
-        /// <inheritdoc />
-        public void EmptyListForProperty(string property) => 
-            throw new NotImplementedException();
+        throw new NotImplementedException();
     }
+
+    /// <inheritdoc />
+    public IEnumerable<string> GetProperties() => ["items", "name"];
+
+    /// <inheritdoc />
+    public bool DeleteProperty(string property)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public void SetProperty(string property, object? value)
+    {
+        switch (property)
+        {
+            case "columnOffset":
+                ColumnOffset = (int)(value ?? 0);
+                InitializeData();
+                break;
+            case "rowOffset":
+                RowOffset = (int)(value ?? 0);
+                InitializeData();
+                break;
+            default:
+                throw new NotImplementedException("Given property is not known");
+        }
+    }
+
+    /// <inheritdoc />
+    public bool AddToProperty(string property, object value, int index) =>
+        throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public bool RemoveFromProperty(string property, object value) =>
+        throw new NotImplementedException();
+
+    public bool HasContainer() => false;
+
+    public IProviderObject? GetContainer() => null;
+
+    public void SetContainer(IProviderObject? value) =>
+        throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public string? Id { get; set; }
+
+    /// <inheritdoc />
+    public string? MetaclassUri { get; set; }
+
+    /// <inheritdoc />
+    public void EmptyListForProperty(string property) => 
+        throw new NotImplementedException();
 }

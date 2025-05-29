@@ -3,36 +3,35 @@ using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Provider.DynamicRuntime
+namespace DatenMeister.Provider.DynamicRuntime;
+
+/// <summary>
+/// Defines the plugin for the dynamic runtime providers
+/// </summary>
+[PluginLoading(PluginLoadingPosition.AfterInitialization)]
+public class DynamicRuntimeProviderPlugin : IDatenMeisterPlugin
 {
-    /// <summary>
-    /// Defines the plugin for the dynamic runtime providers
-    /// </summary>
-    [PluginLoading(PluginLoadingPosition.AfterInitialization)]
-    public class DynamicRuntimeProviderPlugin : IDatenMeisterPlugin
+    public DynamicRuntimeProviderPlugin(IScopeStorage scopeStorage)
     {
-        public DynamicRuntimeProviderPlugin(IScopeStorage scopeStorage)
-        {
-            ScopeStorage = scopeStorage;
-        }
+        ScopeStorage = scopeStorage;
+    }
 
-        public IScopeStorage ScopeStorage { get; }
+    public IScopeStorage ScopeStorage { get; }
 
-        public Task Start(PluginLoadingPosition position)
+    public Task Start(PluginLoadingPosition position)
+    {
+        switch (position)
         {
-            switch (position)
+            case PluginLoadingPosition.AfterInitialization:
             {
-                case PluginLoadingPosition.AfterInitialization:
-                {
-                    var mapper = ScopeStorage.Get<ProviderToProviderLoaderMapper>();
-                    mapper.AddMapping(
-                        _DatenMeister.TheOne.DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig,
-                        manager => new DynamicRuntimeProviderLoader());
-                    break;
-                }
+                var mapper = ScopeStorage.Get<ProviderToProviderLoaderMapper>();
+                mapper.AddMapping(
+                    _DatenMeister.TheOne.DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig,
+                    _ => new DynamicRuntimeProviderLoader());
+                break;
             }
-
-            return Task.CompletedTask;
         }
+
+        return Task.CompletedTask;
     }
 }

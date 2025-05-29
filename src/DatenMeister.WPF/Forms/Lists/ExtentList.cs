@@ -12,105 +12,104 @@ using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Forms.Lists
+namespace DatenMeister.WPF.Forms.Lists;
+
+public class ExtentList : ItemExplorerControl
 {
-    public class ExtentList : ItemExplorerControl
+    /// <summary>
+    /// Initializes a new instance of the ExtentList class
+    /// </summary>
+    public ExtentList()
     {
-        /// <summary>
-        /// Initializes a new instance of the ExtentList class
-        /// </summary>
-        public ExtentList()
+        Loaded += ExtentList_Loaded;
+
+        Extent = ExtentManagementHelper.GetExtentForWorkspaces(GiveMe.Scope.WorkspaceLogic);
+    }
+
+    /// <summary>
+    /// Gets or sets the id to be shown in the workspace
+    /// </summary>
+    public string WorkspaceId { get; set; } = string.Empty;
+
+    private void ExtentList_Loaded(object sender, RoutedEventArgs e)
+    {
+        SetContent(WorkspaceId);
+    }
+
+    /// <summary>
+    /// Shows the workspaces of the DatenMeister
+    /// </summary>
+    /// <param name="workspaceId">Id of the workspace whose extents shall be shown</param>
+    public void SetContent(string workspaceId)
+    {
+        WorkspaceId = workspaceId;
+
+        if (Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() is IElement workspace)
         {
-            Loaded += ExtentList_Loaded;
+            SetRootItem(workspace);
 
-            Extent = ExtentManagementHelper.GetExtentForWorkspaces(GiveMe.Scope.WorkspaceLogic);
+            // Registers upon events
+            var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
+            EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
+                Dispatcher?.Invoke(() =>
+                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm()));
         }
+    }
 
-        /// <summary>
-        /// Gets or sets the id to be shown in the workspace
-        /// </summary>
-        public string WorkspaceId { get; set; } = string.Empty;
+    protected override void OnRecreateForms()
+    {
+        if (SelectedItem == null)
+            return;
 
-        private void ExtentList_Loaded(object sender, RoutedEventArgs e)
+        var overridingDefinition = OverridingViewDefinition;
+
+        if (IsExtentSelectedInTreeview ||
+            SelectedItem is IElement selectedElement &&
+            selectedElement.metaclass?.equals(_DatenMeister.TheOne.Management.__Workspace) == true)
         {
-            SetContent(WorkspaceId);
-        }
+            var formDefinition =
+                overridingDefinition ??
+                WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,
+                    NavigationHost);
 
-        /// <summary>
-        /// Shows the workspaces of the DatenMeister
-        /// </summary>
-        /// <param name="workspaceId">Id of the workspace whose extents shall be shown</param>
-        public void SetContent(string workspaceId)
+            EvaluateForm(
+                SelectedItem,
+                formDefinition);
+        }
+        else if (SelectedItem != null)
         {
-            WorkspaceId = workspaceId;
+            var formFactory = GiveMe.Scope.Resolve<FormFactory>();
+            var form = formFactory.CreateObjectFormForItem(
+                           SelectedItem,
+                           new FormFactoryConfiguration() { ViewModeId = CurrentViewModeId })
+                       ?? throw new InvalidOperationException("form == null");
+            var formDefinition = overridingDefinition ??
+                                 new FormDefinition(form);
 
-            if (Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() is IElement workspace)
-            {
-                SetRootItem(workspace);
-
-                // Registers upon events
-                var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
-                EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
-                    Dispatcher?.Invoke(() =>
-                        Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm()));
-            }
+            EvaluateForm(
+                SelectedItem,
+                formDefinition);
         }
+    }
 
-        protected override void OnRecreateForms()
+    public virtual void OnMouseDoubleClick(IObject element)
+    {
+        var uri = element.getOrDefault<string>("uri") ?? string.Empty;
+
+        _ = NavigatorForItems.NavigateToItemsInExtent(
+            NavigationHost,
+            WorkspaceId,
+            uri);
+    }
+
+    /// <inheritdoc />
+    public override ViewExtensionInfo GetViewExtensionInfo()
+    {
+        return new ViewExtensionInfoExploreExtents(NavigationHost, this)
         {
-            if (SelectedItem == null)
-                return;
-
-            var overridingDefinition = OverridingViewDefinition;
-
-            if (IsExtentSelectedInTreeview ||
-                SelectedItem is IElement selectedElement &&
-                selectedElement.metaclass?.equals(_DatenMeister.TheOne.Management.__Workspace) == true)
-            {
-                var formDefinition =
-                    overridingDefinition ??
-                    WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,
-                        NavigationHost);
-
-                EvaluateForm(
-                    SelectedItem,
-                    formDefinition);
-            }
-            else if (SelectedItem != null)
-            {
-                var formFactory = GiveMe.Scope.Resolve<FormFactory>();
-                var form = formFactory.CreateObjectFormForItem(
-                               SelectedItem,
-                               new FormFactoryConfiguration() { ViewModeId = CurrentViewModeId })
-                           ?? throw new InvalidOperationException("form == null");
-                var formDefinition = overridingDefinition ??
-                                     new FormDefinition(form);
-
-                EvaluateForm(
-                    SelectedItem,
-                    formDefinition);
-            }
-        }
-
-        public virtual void OnMouseDoubleClick(IObject element)
-        {
-            var uri = element.getOrDefault<string>("uri") ?? string.Empty;
-
-            _ = NavigatorForItems.NavigateToItemsInExtent(
-                NavigationHost,
-                WorkspaceId,
-                uri);
-        }
-
-        /// <inheritdoc />
-        public override ViewExtensionInfo GetViewExtensionInfo()
-        {
-            return new ViewExtensionInfoExploreExtents(NavigationHost, this)
-            {
-                WorkspaceId = WorkspaceId,
-                RootElement = RootItem,
-                SelectedElement = SelectedItem
-            };
-        }
+            WorkspaceId = WorkspaceId,
+            RootElement = RootItem,
+            SelectedElement = SelectedItem
+        };
     }
 }

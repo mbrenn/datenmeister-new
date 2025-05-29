@@ -2,30 +2,29 @@
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 
-namespace DatenMeister.Actions.ActionHandler
+namespace DatenMeister.Actions.ActionHandler;
+
+public class DropWorkspaceActionHandler : IActionHandler
 {
-    public class DropWorkspaceActionHandler : IActionHandler
+    public bool IsResponsible(IElement node)
     {
-        public bool IsResponsible(IElement node)
-        {
-            return node.getMetaClass()?.equals(
-                _DatenMeister.TheOne.Actions.__DropWorkspaceAction) == true;
-        }
+        return node.getMetaClass()?.equals(
+            _DatenMeister.TheOne.Actions.__DropWorkspaceAction) == true;
+    }
 
-        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    {
+        await Task.Run(() =>
         {
-            await Task.Run(() =>
+            var workspace = action.getOrDefault<string>(_DatenMeister._Actions._DropWorkspaceAction.workspaceId);
+            if (string.IsNullOrEmpty(workspace))
             {
-                var workspace = action.getOrDefault<string>(_DatenMeister._Actions._DropWorkspaceAction.workspaceId);
-                if (string.IsNullOrEmpty(workspace))
-                {
-                    throw new InvalidOperationException("workspace is not set");
-                }
+                throw new InvalidOperationException("workspace is not set");
+            }
 
-                actionLogic.WorkspaceLogic.RemoveWorkspace(workspace);
-            });
+            actionLogic.WorkspaceLogic.RemoveWorkspace(workspace);
+        });
 
-            return null;
-        }
+        return null;
     }
 }

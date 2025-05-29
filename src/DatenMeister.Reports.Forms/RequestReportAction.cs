@@ -8,46 +8,45 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Reports.Forms.Model;
 using DatenMeister.Reports.Html;
 
-namespace DatenMeister.Reports.Forms
+namespace DatenMeister.Reports.Forms;
+
+internal class RequestReportAction : IActionHandler
 {
-    internal class RequestReportAction : IActionHandler
+    private readonly IWorkspaceLogic workspaceLogic;
+    private readonly IScopeStorage scopeStorage;
+
+    public RequestReportAction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
-        private readonly IWorkspaceLogic workspaceLogic;
-        private readonly IScopeStorage scopeStorage;
+        this.workspaceLogic = workspaceLogic;
+        this.scopeStorage = scopeStorage;
+    }
 
-        public RequestReportAction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
+    {
+        var workspace = action.getOrDefault<string>(_Root._RequestReportAction.workspace);
+        var itemUri = action.getOrDefault<string>(_Root._RequestReportAction.itemUri);
+
+        var textWriter = new StringWriter();
+        var reportLogic = new ReportLogic(workspaceLogic, scopeStorage, new HtmlReportCreator(textWriter)
         {
-            this.workspaceLogic = workspaceLogic;
-            this.scopeStorage = scopeStorage;
-        }
+            EmbedInExistingPage = true
+        });
 
-        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
-        {
-            var workspace = action.getOrDefault<string>(_Root._RequestReportAction.workspace);
-            var itemUri = action.getOrDefault<string>(_Root._RequestReportAction.itemUri);
+        // Generates the report
+        var foundReportInstance = workspaceLogic.FindElement(workspace, itemUri)
+                                  ?? throw new InvalidOperationException($"Report was not found: {workspace} / {itemUri}");
 
-            var textWriter = new StringWriter();
-            var reportLogic = new ReportLogic(workspaceLogic, scopeStorage, new HtmlReportCreator(textWriter)
-            {
-                EmbedInExistingPage = true
-            });
+        reportLogic.GenerateReportByInstance(foundReportInstance);
 
-            // Generates the report
-            var foundReportInstance = workspaceLogic.FindElement(workspace, itemUri)
-                ?? throw new InvalidOperationException($"Report was not found: {workspace} / {itemUri}");
+        // Returns the found report
+        var result = InMemoryObject.CreateEmpty(_Root.TheOne.__RequestReportResult);
+        result.set(_Root._RequestReportResult.report, textWriter.ToString());
 
-            reportLogic.GenerateReportByInstance(foundReportInstance);
+        return await Task.FromResult(result);
+    }
 
-            // Returns the found report
-            var result = InMemoryObject.CreateEmpty(_Root.TheOne.__RequestReportResult);
-            result.set(_Root._RequestReportResult.report, textWriter.ToString());
-
-            return await Task.FromResult(result);
-        }
-
-        public bool IsResponsible(IElement node)
-        {
-            return node.getMetaClass()?.equals(_Root.TheOne.@__RequestReportAction) == true;
-        }
+    public bool IsResponsible(IElement node)
+    {
+        return node.getMetaClass()?.equals(_Root.TheOne.@__RequestReportAction) == true;
     }
 }

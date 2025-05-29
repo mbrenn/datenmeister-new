@@ -1,21 +1,18 @@
-﻿#nullable enable
+﻿using System.Windows.Controls;
 
-using System.Windows.Controls;
+namespace DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeister.WPF.Forms.Base
+public class ViewButton : Button
 {
-    public class ViewButton : Button
+    public ViewButton()
     {
-        public ViewButton()
-        {
-            Click += (x, y) => { OnPressed(); };
-        }
+        Click += (x, y) => { OnPressed(); };
+    }
 
-        public event EventHandler? Pressed;
+    public event EventHandler? Pressed;
 
-        protected virtual void OnPressed()
-        {
-            Pressed?.Invoke(this, EventArgs.Empty);
-        }
+    protected virtual void OnPressed()
+    {
+        Pressed?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -4,42 +4,41 @@ using DatenMeister.Core.Models;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.WPF.Modules.UserInteractions;
 
-namespace DatenMeister.WPF.Modules.Actions
+namespace DatenMeister.WPF.Modules.Actions;
+
+public class ActionInteractionHandler : BaseElementInteractionHandler
 {
-    public class ActionInteractionHandler : BaseElementInteractionHandler
+    /// <summary>
+    /// Initializes a new instance of the ActionInteractionHandler
+    /// </summary>
+    public ActionInteractionHandler()
     {
-        /// <summary>
-        /// Initializes a new instance of the ActionInteractionHandler
-        /// </summary>
-        public ActionInteractionHandler()
-        {
-            OnlyElementsOfType = _DatenMeister.TheOne.Actions.__Action;
-        }
+        OnlyElementsOfType = _DatenMeister.TheOne.Actions.__Action;
+    }
         
-        public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
+    public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
+    {
+        if (IsRelevant(element)
+            && element is IElement asElement
+            && asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Actions.__ActionSet) != true)
         {
-            if (IsRelevant(element)
-                && element is IElement asElement
-                && asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Actions.__ActionSet) != true)
-            {
-                yield return new DefaultElementInteraction(
-                    "Execute Action",
-                    async () =>
+            yield return new DefaultElementInteraction(
+                "Execute Action",
+                async () =>
+                {
+                    var actionLogic = new ActionLogic(
+                        GiveMe.Scope.WorkspaceLogic,
+                        GiveMe.Scope.ScopeStorage);
+                    try
                     {
-                        var actionLogic = new ActionLogic(
-                            GiveMe.Scope.WorkspaceLogic,
-                            GiveMe.Scope.ScopeStorage);
-                        try
-                        {
-                            await actionLogic.ExecuteAction(asElement);
-                            MessageBox.Show("Action was executed.");
-                        }
-                        catch (Exception exc)
-                        {
-                            MessageBox.Show($"An exception occured during the action execution: \r\n{exc}");
-                        }
-                    });
-            }
+                        await actionLogic.ExecuteAction(asElement);
+                        MessageBox.Show("Action was executed.");
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show($"An exception occured during the action execution: \r\n{exc}");
+                    }
+                });
         }
     }
 }

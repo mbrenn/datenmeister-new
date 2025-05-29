@@ -1,7 +1,6 @@
-﻿namespace DatenMeister.Core.EMOF.Implementation.Hooks
+﻿namespace DatenMeister.Core.EMOF.Implementation.Hooks;
+
+public interface IResolveHook
 {
-    public interface IResolveHook
-    {
-        public object? Resolve(ResolveHookParameters hookParameters);
-    }
+    public object? Resolve(ResolveHookParameters hookParameters);
 }

@@ -1,20 +1,17 @@
-﻿#nullable enable 
+﻿namespace DatenMeister.Forms.FormFinder;
 
-namespace DatenMeister.Forms.FormFinder
+/// <summary>
+/// Defines an enumeration of possible location types
+/// </summary>
+public enum FormLocationType
 {
     /// <summary>
-    /// Defines an enumeration of possible location types
+    /// Defines that the element shall be included in the internal extent.
     /// </summary>
-    public enum FormLocationType
-    {
-        /// <summary>
-        /// Defines that the element shall be included in the internal extent.
-        /// </summary>
-        Internal,
+    Internal,
 
-        /// <summary>
-        /// Defines that the element shall be included in the user extent
-        /// </summary>
-        User
-    }
+    /// <summary>
+    /// Defines that the element shall be included in the user extent
+    /// </summary>
+    User
 }

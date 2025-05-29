@@ -1,9 +1,8 @@
-namespace StundenMeister.Model
-{
-    public class CostCenter
-    {
-        public string id { get; set; }
+namespace StundenMeister.Model;
 
-        public string name { get; set; }
-    }
+public class CostCenter
+{
+    public string id { get; set; }
+
+    public string name { get; set; }
 }

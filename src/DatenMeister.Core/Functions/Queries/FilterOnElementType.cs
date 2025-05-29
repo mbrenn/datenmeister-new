@@ -1,38 +1,37 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Core.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries;
+
+public class FilterOnElementType<T> : ProxyReflectiveCollection
 {
-    public class FilterOnElementType<T> : ProxyReflectiveCollection
+    public FilterOnElementType(IReflectiveCollection collection)
+        : base(collection)
     {
-        public FilterOnElementType(IReflectiveCollection collection)
-            : base(collection)
-        {
-        }
+    }
 
-        public override IEnumerator<object> GetEnumerator()
+    public override IEnumerator<object> GetEnumerator()
+    {
+        foreach (var value in Collection)
         {
-            foreach (var value in Collection)
+            if (value is T)
             {
-                if (value is T)
-                {
-                    yield return value;
-                }
+                yield return value;
+            }
+        }
+    }
+
+    public override int size()
+    {
+        var result = 0;
+        foreach (var value in Collection)
+        {
+            if (value is T) 
+            {
+                result++;
             }
         }
 
-        public override int size()
-        {
-            var result = 0;
-            foreach (var value in Collection)
-            {
-                if (value is T) 
-                {
-                    result++;
-                }
-            }
-
-            return result;
-        }
+        return result;
     }
 }

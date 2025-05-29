@@ -3,32 +3,31 @@ using DatenMeister.Core;
 using Microsoft.AspNetCore.Mvc;
 using DatenMeister.Web.Json;
 
-namespace DatenMeister.WebServer.Controller
+namespace DatenMeister.WebServer.Controller;
+
+[Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
+[ApiController]
+
+public class QueryController : ControllerBase
 {
-    [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
-    [ApiController]
+    private IWorkspaceLogic _workspaceLogic;
+    private IScopeStorage _scopeStorage;
 
-    public class QueryController : ControllerBase
+    public QueryController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
-        private IWorkspaceLogic _workspaceLogic;
-        private IScopeStorage _scopeStorage;
+        _workspaceLogic = workspaceLogic;
+        _scopeStorage = scopeStorage;
+    }
 
-        public QueryController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-        {
-            _workspaceLogic = workspaceLogic;
-            _scopeStorage = scopeStorage;
-        }
+    [HttpPost("api/query/query_objects")]
+    public async Task<ActionResult> QueryObjects([FromBody] MofObjectAsJson queryStatementAsText)
+    {   
+        // We finally have the raw data. Convert it to an Xmi  
+        var mofJsonDeconverter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
+        var queryStatement = mofJsonDeconverter.ConvertToObject(queryStatementAsText);
 
-        [HttpPost("api/query/query_objects")]
-        public async Task<ActionResult> QueryObjects([FromBody] MofObjectAsJson queryStatementAsText)
-        {   
-            // We finally have the raw data. Convert it to an Xmi  
-            var mofJsonDeconverter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
-            var queryStatement = mofJsonDeconverter.ConvertToObject(queryStatementAsText);
+        // Now we have the query statement. Get source and filters
+        return await Task.FromResult(Ok());
 
-            // Now we have the query statement. Get source and filters
-            return await Task.FromResult(Ok());
-
-        }
     }
 }

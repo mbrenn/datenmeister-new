@@ -5,44 +5,43 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 
-namespace DatenMeister.Forms
+namespace DatenMeister.Forms;
+
+/// <summary>
+/// Takes the form information and the selected element and creates a list of elements
+/// for this
+/// </summary>
+public static class ListFormCollectionCreator
 {
     /// <summary>
-    /// Takes the form information and the selected element and creates a list of elements
-    /// for this
+    /// Gets the reflective collection for the given element, depending on the
+    /// form and the selected value
     /// </summary>
-    public static class ListFormCollectionCreator
+    /// <param name="listForm">Form to be evaluated</param>
+    /// <param name="value">Value, which is used to derive the collection</param>
+    /// <returns>The collection being derived</returns>
+    public static IReflectiveCollection GetCollection(IObject? listForm, IObject value)
     {
-        /// <summary>
-        /// Gets the reflective collection for the given element, depending on the
-        /// form and the selected value
-        /// </summary>
-        /// <param name="listForm">Form to be evaluated</param>
-        /// <param name="value">Value, which is used to derive the collection</param>
-        /// <returns>The collection being derived</returns>
-        public static IReflectiveCollection GetCollection(IObject? listForm, IObject value)
+        if (value is IExtent extent)
         {
-            if (value is IExtent extent)
-            {
-                return extent.elements();
-            }
+            return extent.elements();
+        }
 
-            var propertyName = listForm?.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
+        var propertyName = listForm?.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
                 
-            return GetPropertiesAsReflection(value, propertyName);
-        }
+        return GetPropertiesAsReflection(value, propertyName);
+    }
 
-        /// <summary>
-        /// Gets the properties of an item as a reflection
-        /// </summary>
-        /// <param name="value">Object to be evaluated</param>
-        /// <param name="propertyName">Name of the property or null, if all properties shall be returned</param>
-        /// <returns></returns>
-        private static IReflectiveCollection GetPropertiesAsReflection(IObject value, string? propertyName)
-        {
-            return string.IsNullOrEmpty(propertyName) 
-                ? new PropertiesAsReflectiveCollection(value) 
-                : value.get<IReflectiveCollection>(propertyName);
-        }
+    /// <summary>
+    /// Gets the properties of an item as a reflection
+    /// </summary>
+    /// <param name="value">Object to be evaluated</param>
+    /// <param name="propertyName">Name of the property or null, if all properties shall be returned</param>
+    /// <returns></returns>
+    private static IReflectiveCollection GetPropertiesAsReflection(IObject value, string? propertyName)
+    {
+        return string.IsNullOrEmpty(propertyName) 
+            ? new PropertiesAsReflectiveCollection(value) 
+            : value.get<IReflectiveCollection>(propertyName);
     }
 }

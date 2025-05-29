@@ -4,223 +4,222 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Core.Runtime.ChangeEvents
+namespace DatenMeister.Core.Runtime.ChangeEvents;
+
+/// <summary>
+/// This class handles all events occuring due to changes, insertion or deletions of the objects
+/// within the extent
+/// </summary>
+public class ChangeEventManager
 {
+    private static readonly ClassLogger ClassLogger = new(typeof(ChangeEventManager));
+
     /// <summary>
-    /// This class handles all events occuring due to changes, insertion or deletions of the objects
-    /// within the extent
+    /// Stores the handles that would like to get informed about changes
     /// </summary>
-    public class ChangeEventManager
+    private readonly List<RegisteredEventHandle> _handles = new();
+
+    /// <summary>
+    /// Defines the locking for the change events
+    /// </summary>
+    private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.NoRecursion);
+
+    /// <summary>
+    /// Has to be called, when the given object has changed
+    /// </summary>
+    /// <param name="value">Object that was changed</param>
+    public void SendChangeEvent(IObject value)
     {
-        private static readonly ClassLogger ClassLogger = new(typeof(ChangeEventManager));
+        var extent = value.GetExtentOf();
+        var workspace = extent?.GetWorkspace();
 
-        /// <summary>
-        /// Stores the handles that would like to get informed about changes
-        /// </summary>
-        private readonly List<RegisteredEventHandle> _handles = new();
-
-        /// <summary>
-        /// Defines the locking for the change events
-        /// </summary>
-        private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.NoRecursion);
-
-        /// <summary>
-        /// Has to be called, when the given object has changed
-        /// </summary>
-        /// <param name="value">Object that was changed</param>
-        public void SendChangeEvent(IObject value)
+        RegisteredEventHandle[] handles;
+        try
         {
-            var extent = value.GetExtentOf();
-            var workspace = extent?.GetWorkspace();
-
-            RegisteredEventHandle[] handles;
-            try
+            _lock.EnterReadLock();
+            if (_handles.Count == 0)
             {
-                _lock.EnterReadLock();
-                if (_handles.Count == 0)
-                {
-                    // Nothing to do.
-                    return;
-                }
-
-                handles = _handles.Where(
-                    x => x.Value?.Equals(value) == true
-                         || x.Extent?.Equals(extent) == true
-                         || x.Workspace?.Equals(workspace) == true).ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
+                // Nothing to do.
+                return;
             }
 
-            // After having collected the items, call them
-            foreach (var handle in handles)
-            {
-                handle.ValueAction?.Invoke(value);
-                if (extent != null)
-                {
-                    handle.ExtentAction?.Invoke(extent, value);
-                }
-
-                if (extent != null && workspace != null)
-                {
-                    handle.WorkspaceAction?.Invoke(workspace, extent, value);
-                }
-            }
+            handles = _handles.Where(
+                x => x.Value?.Equals(value) == true
+                     || x.Extent?.Equals(extent) == true
+                     || x.Workspace?.Equals(workspace) == true).ToArray();
+        }
+        finally
+        {
+            _lock.ExitReadLock();
         }
 
-        /// <summary>
-        /// Has to be called, when the given extent has changed
-        /// </summary>
-        /// <param name="extent">Extent that was changed</param>
-        public void SendChangeEvent(IExtent extent)
+        // After having collected the items, call them
+        foreach (var handle in handles)
         {
-            var workspace = extent.GetWorkspace();
-
-            RegisteredEventHandle[] handles;
-            try
+            handle.ValueAction?.Invoke(value);
+            if (extent != null)
             {
-                _lock.EnterReadLock();
-
-                if (_handles.Count == 0)
-                    // Nothing to do.
-                    return;
-
-                handles = _handles.Where(
-                    x => x.Extent?.Equals(extent) == true ||
-                         x.Workspace?.Equals(workspace) == true).ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
+                handle.ExtentAction?.Invoke(extent, value);
             }
 
-            // After having collected the items, call them
-            foreach (var handle in handles)
+            if (extent != null && workspace != null)
             {
-                handle.ExtentAction?.Invoke(extent, null);
-
-                if (workspace != null)
-                {
-                    handle.WorkspaceAction?.Invoke(workspace, extent, null);
-                }
+                handle.WorkspaceAction?.Invoke(workspace, extent, value);
             }
         }
+    }
 
-        /// <summary>
-        /// Sends a change event that a workspace has been changed
-        /// </summary>
-        /// <param name="workspace">Changed workspace</param>
-        public void SendChangeEvent(IWorkspace workspace)
+    /// <summary>
+    /// Has to be called, when the given extent has changed
+    /// </summary>
+    /// <param name="extent">Extent that was changed</param>
+    public void SendChangeEvent(IExtent extent)
+    {
+        var workspace = extent.GetWorkspace();
+
+        RegisteredEventHandle[] handles;
+        try
         {
-            RegisteredEventHandle[] handles;
+            _lock.EnterReadLock();
 
-            try
-            {
-                _lock.EnterReadLock();
+            if (_handles.Count == 0)
+                // Nothing to do.
+                return;
 
-                if (_handles.Count == 0) // Nothing to do.
-                    return;
-
-                handles = _handles.Where(
-                    x => x.Workspace?.Equals(workspace) == true).ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            // After having collected the items, call them
-            foreach (var handle in handles)
-            {
-                handle.WorkspaceAction?.Invoke(workspace, null, null);
-            }
+            handles = _handles.Where(
+                x => x.Extent?.Equals(extent) == true ||
+                     x.Workspace?.Equals(workspace) == true).ToArray();
+        }
+        finally
+        {
+            _lock.ExitReadLock();
         }
 
-        public EventHandle RegisterFor(IObject value, Action<IObject?> valueAction)
+        // After having collected the items, call them
+        foreach (var handle in handles)
         {
-            try
+            handle.ExtentAction?.Invoke(extent, null);
+
+            if (workspace != null)
             {
-                _lock.EnterWriteLock();
-
-                var eventHandle = new RegisteredEventHandle
-                {
-                    Value = value,
-                    ValueAction = valueAction
-                };
-
-                _handles.Add(eventHandle);
-
-                ClassLogger.Trace($"Registered event for: {value} ({_handles.Count})");
-                return eventHandle;
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
+                handle.WorkspaceAction?.Invoke(workspace, extent, null);
             }
         }
+    }
 
-        public EventHandle RegisterFor(IExtent extent, Action<IExtent, IObject?> extentAction)
+    /// <summary>
+    /// Sends a change event that a workspace has been changed
+    /// </summary>
+    /// <param name="workspace">Changed workspace</param>
+    public void SendChangeEvent(IWorkspace workspace)
+    {
+        RegisteredEventHandle[] handles;
+
+        try
         {
-            try
-            {
-                _lock.EnterWriteLock();
+            _lock.EnterReadLock();
 
-                var eventHandle = new RegisteredEventHandle
-                {
-                    Extent = extent,
-                    ExtentAction = extentAction
-                };
+            if (_handles.Count == 0) // Nothing to do.
+                return;
 
-                _handles.Add(eventHandle);
-
-                ClassLogger.Trace($"Registered event for: {extent} ({_handles.Count})");
-
-                return eventHandle;
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
+            handles = _handles.Where(
+                x => x.Workspace?.Equals(workspace) == true).ToArray();
+        }
+        finally
+        {
+            _lock.ExitReadLock();
         }
 
-        public EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent?, IObject?> workspaceAction)
+        // After having collected the items, call them
+        foreach (var handle in handles)
         {
-            try
-            {
-                _lock.EnterWriteLock();
-
-                var eventHandle = new RegisteredEventHandle
-                {
-                    Workspace = workspace,
-                    WorkspaceAction = workspaceAction
-                };
-
-                _handles.Add(eventHandle);
-
-                ClassLogger.Trace($"Registered event for: {workspace} ({_handles.Count})");
-
-                return eventHandle;
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
+            handle.WorkspaceAction?.Invoke(workspace, null, null);
         }
+    }
 
-        public void Unregister(EventHandle eventHandle)
+    public EventHandle RegisterFor(IObject value, Action<IObject?> valueAction)
+    {
+        try
         {
-            try
-            {
-                _lock.EnterWriteLock();
-                _handles.Remove((RegisteredEventHandle) eventHandle);
+            _lock.EnterWriteLock();
 
-                ClassLogger.Trace($"Unregistered event ({_handles.Count})");
-            }
-            finally
+            var eventHandle = new RegisteredEventHandle
             {
-                _lock.ExitWriteLock();
-            }
+                Value = value,
+                ValueAction = valueAction
+            };
+
+            _handles.Add(eventHandle);
+
+            ClassLogger.Trace($"Registered event for: {value} ({_handles.Count})");
+            return eventHandle;
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
+    }
+
+    public EventHandle RegisterFor(IExtent extent, Action<IExtent, IObject?> extentAction)
+    {
+        try
+        {
+            _lock.EnterWriteLock();
+
+            var eventHandle = new RegisteredEventHandle
+            {
+                Extent = extent,
+                ExtentAction = extentAction
+            };
+
+            _handles.Add(eventHandle);
+
+            ClassLogger.Trace($"Registered event for: {extent} ({_handles.Count})");
+
+            return eventHandle;
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
+    }
+
+    public EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent?, IObject?> workspaceAction)
+    {
+        try
+        {
+            _lock.EnterWriteLock();
+
+            var eventHandle = new RegisteredEventHandle
+            {
+                Workspace = workspace,
+                WorkspaceAction = workspaceAction
+            };
+
+            _handles.Add(eventHandle);
+
+            ClassLogger.Trace($"Registered event for: {workspace} ({_handles.Count})");
+
+            return eventHandle;
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
+    }
+
+    public void Unregister(EventHandle eventHandle)
+    {
+        try
+        {
+            _lock.EnterWriteLock();
+            _handles.Remove((RegisteredEventHandle) eventHandle);
+
+            ClassLogger.Trace($"Unregistered event ({_handles.Count})");
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
         }
     }
 }

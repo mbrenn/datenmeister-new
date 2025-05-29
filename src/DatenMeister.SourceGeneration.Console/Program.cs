@@ -8,71 +8,71 @@ using DatenMeister.DependencyInjection;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.SourcecodeGenerator;
 
-namespace DatenMeister.SourceGeneration.Console
+namespace DatenMeister.SourceGeneration.Console;
+
+class Program
 {
-    class Program
-    {
 #if DEBUG
-        const bool dryRun = true;
+    const bool dryRun = true;
 #else
         const bool dryRun = false;
 #endif
-        public static async Task Main(string[] args)
+    public static async Task Main(string[] args)
+    {
+        if (args.Length == 0)
         {
-            if (args.Length == 0)
-            {
-                await PerformStandardProcedure();
-            }
-            else
-            {
-                var value = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-                value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).Wait());
-                value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
-            }
+            await PerformStandardProcedure();
         }
-
-        public static Task<IDatenMeisterScope> GiveMeDatenMeister()
+        else
         {
-            var integrationSettings = new IntegrationSettings
-            {
-                DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Bootstrap")
-            };
-
-            return GiveMe.DatenMeister(integrationSettings);
+            var value = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
+            value.WithParsed(x => CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).Wait());
+            value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
         }
+    }
 
-        /// <summary>
-        /// Performs the standard procedure
-        /// </summary>
-        private static async Task PerformStandardProcedure()
+    public static Task<IDatenMeisterScope> GiveMeDatenMeister()
+    {
+        var integrationSettings = new IntegrationSettings
         {
-            var R = StandardProcedure.R;
+            DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Bootstrap")
+        };
 
-            System.Console.WriteLine("Clean up .xmi-Files");
+        return GiveMe.DatenMeister(integrationSettings);
+    }
 
-            await CleanUpProcedure.CleanUpExtent(
-                $"{R}/..//DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",
-                "dm:///intern.datenmeister.forms/",
-                dryRun);
-            await CleanUpProcedure.CleanUpExtent(
-                $"{R}/..//DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi",
-                "dm:///intern.datenmeister.types/",
-                dryRun);
+    /// <summary>
+    /// Performs the standard procedure
+    /// </summary>
+    private static async Task PerformStandardProcedure()
+    {
+        var R = StandardProcedure.R;
 
-            System.Console.WriteLine("Perform the standard procedure.");
+        System.Console.WriteLine("Clean up .xmi-Files");
 
-            // First, creates
-            StandardProcedure.CreateSourceForUmlAndMof();
+        await CleanUpProcedure.CleanUpExtent(
+            $"{R}/..//DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",
+            "dm:///intern.datenmeister.forms/",
+            dryRun);
+        await CleanUpProcedure.CleanUpExtent(
+            $"{R}/..//DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi",
+            "dm:///intern.datenmeister.types/",
+            dryRun);
 
-            StandardProcedure.CreateTypescriptForUmlAndMof();
+        System.Console.WriteLine("Perform the standard procedure.");
 
-            StandardProcedure.CreateSourceForExcel();
+        // First, creates
+        StandardProcedure.CreateSourceForUmlAndMof();
 
-            await StandardProcedure.CreateSourceCodeForDatenMeisterAllTypes();
+        StandardProcedure.CreateTypescriptForUmlAndMof();
 
-            await StandardProcedure.CreateTypescriptForDatenMeisterAllTypes();
+        StandardProcedure.CreateSourceForExcel();
 
-            System.Console.WriteLine("Closing Source Code Generator");
+        await StandardProcedure.CreateSourceCodeForDatenMeisterAllTypes();
+
+        await StandardProcedure.CreateTypescriptForDatenMeisterAllTypes();
+
+        System.Console.WriteLine("Closing Source Code Generator");
 
 
 #if !DEBUG
@@ -103,53 +103,52 @@ namespace DatenMeister.SourceGeneration.Console
             File.Delete($"{T}/uml.ts");
             File.Delete($"{T}/uml.js");
 #endif
-        }
+    }
 
-        public static async Task CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
-        {
-            System.Console.WriteLine("Reading from: " + pathXml);
-            System.Console.WriteLine("Writing to  : " + pathTarget);
-            System.Console.WriteLine();
+    public static async Task CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
+    {
+        System.Console.WriteLine("Reading from: " + pathXml);
+        System.Console.WriteLine("Writing to  : " + pathTarget);
+        System.Console.WriteLine();
             
-            await CleanUpProcedure.CleanUpExtent(
-                pathXml,
-                "dm:///intern.datenmeister.forms/",
-                dryRun);
+        await CleanUpProcedure.CleanUpExtent(
+            pathXml,
+            "dm:///intern.datenmeister.forms/",
+            dryRun);
 
-            await using var dm = await GiveMeDatenMeister();
-            var filename = Path.GetFileNameWithoutExtension(pathXml);
+        await using var dm = await GiveMeDatenMeister();
+        var filename = Path.GetFileNameWithoutExtension(pathXml);
 
-            var typeExtent = new MofUriExtent(
-                XmiProvider.CreateByFile(pathXml),
-                "dm:///_internal/types/internal", null);
+        var typeExtent = new MofUriExtent(
+            XmiProvider.CreateByFile(pathXml),
+            "dm:///_internal/types/internal", null);
 
-            dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
+        dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
 
-            // Generates tree for Type Script
-            var generator = new TypeScriptInterfaceGenerator();
-            generator.Walk(typeExtent);
+        // Generates tree for Type Script
+        var generator = new TypeScriptInterfaceGenerator();
+        generator.Walk(typeExtent);
 
-            if (!Directory.Exists(pathTarget))
-            {
-                Directory.CreateDirectory(pathTarget);
-            }
-
-            File.WriteAllText(Path.Combine(pathTarget, $"{filename}.ts"), generator.Result.ToString());
-            System.Console.WriteLine($"TypeScript Code for {theNamespace} written");
-
-            // Generates tree for StundenPlan
-            var classGenerator = new ClassTreeGenerator
-            {
-                Namespace = theNamespace
-            };
-
-            classGenerator.Walk(typeExtent);
-
-            var pathOfClassTree = Path.Combine(pathTarget, $"{filename}.cs");
-            var fileContent = classGenerator.Result.ToString();
-            File.WriteAllText(pathOfClassTree, fileContent);
-
-            System.Console.WriteLine($"C#-Code for {theNamespace} written");
+        if (!Directory.Exists(pathTarget))
+        {
+            Directory.CreateDirectory(pathTarget);
         }
+
+        File.WriteAllText(Path.Combine(pathTarget, $"{filename}.ts"), generator.Result.ToString());
+        System.Console.WriteLine($"TypeScript Code for {theNamespace} written");
+
+        // Generates tree for StundenPlan
+        var classGenerator = new ClassTreeGenerator
+        {
+            Namespace = theNamespace
+        };
+
+        classGenerator.Walk(typeExtent);
+
+        var pathOfClassTree = Path.Combine(pathTarget, $"{filename}.cs");
+        var fileContent = classGenerator.Result.ToString();
+        File.WriteAllText(pathOfClassTree, fileContent);
+
+        System.Console.WriteLine($"C#-Code for {theNamespace} written");
     }
 }

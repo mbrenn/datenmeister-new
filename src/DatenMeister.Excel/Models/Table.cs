@@ -1,8 +1,8 @@
-﻿namespace DatenMeister.Excel.Models
+﻿namespace DatenMeister.Excel.Models;
+
+public class Table
 {
-    public class Table
-    {
-        public string? name { get; set; }
-        public IEnumerable<object>? items { get; set; }
-    }
+    public string? name { get; set; }
+    
+    public IEnumerable<object>? items { get; set; }
 }

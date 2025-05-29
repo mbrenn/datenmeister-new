@@ -1,7 +1,6 @@
-﻿namespace DatenMeister.WPF.Commands
-{
-    public class DatenMeisterCommands
-    {
+﻿namespace DatenMeister.WPF.Commands;
 
-    }
+public class DatenMeisterCommands
+{
+
 }

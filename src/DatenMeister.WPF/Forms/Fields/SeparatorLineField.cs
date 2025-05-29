@@ -4,30 +4,29 @@ using System.Windows.Media;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeister.WPF.Forms.Fields
+namespace DatenMeister.WPF.Forms.Fields;
+
+public class SeparatorLineField : IDetailField
 {
-    public class SeparatorLineField : IDetailField
+    public UIElement CreateElement(
+        IObject value,
+        IElement fieldData,
+        DetailFormControl detailForm,
+        FieldParameter fieldFlags)
     {
-        public UIElement CreateElement(
-            IObject value,
-            IElement fieldData,
-            DetailFormControl detailForm,
-            FieldParameter fieldFlags)
+        var rectangle = new Canvas
         {
-            var rectangle = new Canvas
-            {
-                Background = Brushes.Black,
-                Margin = new Thickness(0,5,0,5),
-                Height = 1
-            };
+            Background = Brushes.Black,
+            Margin = new Thickness(0,5,0,5),
+            Height = 1
+        };
 
-            fieldFlags.IsSpanned = true;
+        fieldFlags.IsSpanned = true;
 
-            return rectangle;
-        }
+        return rectangle;
+    }
 
-        public void CallSetAction(IObject element)
-        {
-        }
+    public void CallSetAction(IObject element)
+    {
     }
 }

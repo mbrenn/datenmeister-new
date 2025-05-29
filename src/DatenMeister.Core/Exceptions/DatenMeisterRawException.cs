@@ -1,34 +1,33 @@
-﻿namespace DatenMeister.Core.Exceptions
+﻿namespace DatenMeister.Core.Exceptions;
+
+/// <summary>
+/// Defines the exception that is used within DatenMeister containing and object with
+/// an exception object being a Mof Object
+/// </summary>
+public class DatenMeisterRawException : Exception
 {
     /// <summary>
-    /// Defines the exception that is used within DatenMeister containing and object with
-    /// an exception object being a Mof Object
+    /// Initializes a new instance of the DatenMeisterRawException class.
     /// </summary>
-    public class DatenMeisterRawException : Exception
+    public DatenMeisterRawException()
     {
-        /// <summary>
-        /// Initializes a new instance of the DatenMeisterRawException class.
-        /// </summary>
-        public DatenMeisterRawException()
-        {
-        }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the DatenMeisterRawException class.
-        /// </summary>
-        /// <param name="message">Message, why check failed</param>
-        public DatenMeisterRawException(string message) : base(message)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the DatenMeisterRawException class.
+    /// </summary>
+    /// <param name="message">Message, why check failed</param>
+    public DatenMeisterRawException(string message) : base(message)
+    {
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the DatenMeisterRawException class.
-        /// </summary>
-        /// <param name="message">Message of check</param>
-        /// <param name="inner">Inner exception</param>
-        public DatenMeisterRawException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the DatenMeisterRawException class.
+    /// </summary>
+    /// <param name="message">Message of check</param>
+    /// <param name="inner">Inner exception</param>
+    public DatenMeisterRawException(string message, Exception inner)
+        : base(message, inner)
+    {
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System.Windows;
 
-namespace DatenMeister.WPF.Controls.GridControl
+namespace DatenMeister.WPF.Controls.GridControl;
+
+/// <summary>
+/// Defines the element for the cell
+/// </summary>
+public class CellInstantiation
 {
     /// <summary>
-    /// Defines the element for the cell
+    /// Gets or sets the UI Element to be shown to the user. 
     /// </summary>
-    public class CellInstantiation
-    {
-        /// <summary>
-        /// Gets or sets the UI Element to be shown to the user. 
-        /// </summary>
-        public FrameworkElement? CellElement { get; set; }
-    }
+    public FrameworkElement? CellElement { get; set; }
 }

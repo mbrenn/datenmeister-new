@@ -8,50 +8,49 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Runtime.Extents
+namespace DatenMeister.Tests.Runtime.Extents;
+
+[TestFixture]
+internal class ExtentManagerReloadTests
 {
-    [TestFixture]
-    internal class ExtentManagerReloadTests
+    [Test]
+    public async Task TestReferenceXmi()
     {
-        [Test]
-        public async Task TestReferenceXmi()
-        {
-            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
-            var extentManager = dm.Resolve<ExtentManager>();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var extentManager = dm.Resolve<ExtentManager>();
 
-            // Clean
-            await extentManager.RemoveExtent(WorkspaceNames.WorkspaceData, "dm:///test");
+        // Clean
+        await extentManager.RemoveExtent(WorkspaceNames.WorkspaceData, "dm:///test");
 
-            // Load
-            var loaderConfig =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig);
-            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.extentUri, "dm:///test");
-            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.workspaceId,
-                WorkspaceNames.WorkspaceData);
-            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath,
-                Path.Combine(Environment.CurrentDirectory, "Examples\\xmi-temp-trx.xml"));
+        // Load
+        var loaderConfig =
+            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig);
+        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.extentUri, "dm:///test");
+        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.workspaceId,
+            WorkspaceNames.WorkspaceData);
+        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath,
+            Path.Combine(Environment.CurrentDirectory, "Examples\\xmi-temp-trx.xml"));
 
-            File.Copy("Examples/xmi1.xml", "Examples\\xmi-temp-trx.xml", true);
+        File.Copy("Examples/xmi1.xml", "Examples\\xmi-temp-trx.xml", true);
 
 
-            var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
+        var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
 
-            // Check
-            Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
-            Assert.That(loadedInfo.Extent, Is.Not.Null);
+        // Check
+        Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
+        Assert.That(loadedInfo.Extent, Is.Not.Null);
 
-            var first = loadedInfo.Extent!.elements().OfType<IElement>().FirstOrDefault();
-            Assert.That(first, Is.Not.Null);
-            Assert.That(first.getOrDefault<string>("name"), Is.EqualTo("M"));
+        var first = loadedInfo.Extent!.elements().OfType<IElement>().FirstOrDefault();
+        Assert.That(first, Is.Not.Null);
+        Assert.That(first.getOrDefault<string>("name"), Is.EqualTo("M"));
 
-            // Reload
-            File.Copy("Examples/xmi2.xml", "Examples\\xmi-temp-trx.xml", true);
-            await extentManager.ReloadExtent(loadedInfo.Extent);
+        // Reload
+        File.Copy("Examples/xmi2.xml", "Examples\\xmi-temp-trx.xml", true);
+        await extentManager.ReloadExtent(loadedInfo.Extent);
 
-            var first2 = loadedInfo.Extent!.elements().OfType<IElement>().FirstOrDefault();
+        var first2 = loadedInfo.Extent!.elements().OfType<IElement>().FirstOrDefault();
 
-            Assert.That(first2, Is.Not.Null);
-            Assert.That(first2.getOrDefault<string>("name"), Is.EqualTo("Ma"));
-        }
+        Assert.That(first2, Is.Not.Null);
+        Assert.That(first2.getOrDefault<string>("name"), Is.EqualTo("Ma"));
     }
 }

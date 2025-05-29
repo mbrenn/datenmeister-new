@@ -14,193 +14,192 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Types;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Modules
+namespace DatenMeister.Tests.Modules;
+
+[TestFixture]
+public class DataviewTests
 {
-    [TestFixture]
-    public class DataviewTests
+    [Test]
+    public async Task TestCreationOfDataviews()
     {
-        [Test]
-        public async Task TestCreationOfDataviews()
-        {
-            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
-            var helper = dm.Resolve<DataViewHelper>();
-            var viewWorkspace = helper.GetViewWorkspace();
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var helper = dm.Resolve<DataViewHelper>();
+        var viewWorkspace = helper.GetViewWorkspace();
 
-            Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(0));
-            helper.CreateDataview("Test", "dm:///view/test");
+        Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(0));
+        helper.CreateDataview("Test", "dm:///view/test");
 
-            Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(1));
-        }
+        Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(1));
+    }
 
-        [Test]
-        public async Task TestPropertyFilter()
-        {
-            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
-            var dataExtent = await CreateDataForTest(dm);
-            Assert.That(dataExtent.elements().Count(), Is.GreaterThan(1));
+    [Test]
+    public async Task TestPropertyFilter()
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var dataExtent = await CreateDataForTest(dm);
+        Assert.That(dataExtent.elements().Count(), Is.GreaterThan(1));
 
-            var helper = dm.Resolve<DataViewHelper>();
-            var dataView = helper.CreateDataview("Test", "dm:///view/test");
+        var helper = dm.Resolve<DataViewHelper>();
+        var dataView = helper.CreateDataview("Test", "dm:///view/test");
 
-            var userViewExtent = helper.GetUserFormExtent();
+        var userViewExtent = helper.GetUserFormExtent();
 
-            var factory = new MofFactory(userViewExtent);
-            var extentSource = factory.create(_DatenMeister.TheOne.DataViews.__SelectByExtentNode);
-            extentSource.set(_DatenMeister._DataViews._SelectByExtentNode.extentUri, "dm:///testdata");
-            userViewExtent.elements().add(extentSource);
+        var factory = new MofFactory(userViewExtent);
+        var extentSource = factory.create(_DatenMeister.TheOne.DataViews.__SelectByExtentNode);
+        extentSource.set(_DatenMeister._DataViews._SelectByExtentNode.extentUri, "dm:///testdata");
+        userViewExtent.elements().add(extentSource);
 
-            var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
-            userViewExtent.elements().add(propertyFilter);
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, "name");
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
-                _DatenMeister._DataViews.___ComparisonMode.Contains);
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, "ai");
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, extentSource);
+        var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
+        userViewExtent.elements().add(propertyFilter);
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, "name");
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
+            _DatenMeister._DataViews.___ComparisonMode.Contains);
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, "ai");
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, extentSource);
 
-            dataView.set(_DatenMeister._DataViews._DataView.viewNode, propertyFilter);
+        dataView.set(_DatenMeister._DataViews._DataView.viewNode, propertyFilter);
 
-            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-            var extent = workspaceLogic.FindExtent("dm:///view/test");
+        var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+        var extent = workspaceLogic.FindExtent("dm:///view/test");
 
-            Assert.That(extent, Is.Not.Null);
+        Assert.That(extent, Is.Not.Null);
 
-            var elements = extent!.elements().OfType<IElement>().ToArray();
-            Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
-            Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
-            Assert.That(elements.Length, Is.GreaterThan(0));
+        var elements = extent!.elements().OfType<IElement>().ToArray();
+        Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+        Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+        Assert.That(elements.Length, Is.GreaterThan(0));
 
-            // Go to Non-Contain
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
-                _DatenMeister._DataViews.___ComparisonMode.DoesNotContain);
-            elements = extent.elements().OfType<IElement>().ToArray();
-            Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
-            Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
-            Assert.That(elements.Length, Is.GreaterThan(0));
-        }
+        // Go to Non-Contain
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
+            _DatenMeister._DataViews.___ComparisonMode.DoesNotContain);
+        elements = extent.elements().OfType<IElement>().ToArray();
+        Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
+        Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
+        Assert.That(elements.Length, Is.GreaterThan(0));
+    }
 
-        [Test]
-        public async Task TestDynamicSourceNodes()
-        {
-            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
-            var dataExtent = await CreateDataForTest(dm);
+    [Test]
+    public async Task TestDynamicSourceNodes()
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        var dataExtent = await CreateDataForTest(dm);
 
-            var factory = InMemoryObject.TemporaryFactory;
+        var factory = InMemoryObject.TemporaryFactory;
 
-            // Creates the dataview
-            var extentSource = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
-            extentSource.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
+        // Creates the dataview
+        var extentSource = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
+        extentSource.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
 
-            var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, "name");
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
-                _DatenMeister._DataViews.___ComparisonMode.Contains);
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, "ai");
-            propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, extentSource);
+        var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, "name");
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
+            _DatenMeister._DataViews.___ComparisonMode.Contains);
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, "ai");
+        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, extentSource);
 
-            // Gets the elements
-            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
-            dataViewEvaluator.AddDynamicSource("input", dataExtent.elements());
+        // Gets the elements
+        var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+        dataViewEvaluator.AddDynamicSource("input", dataExtent.elements());
 
-            var elements = dataViewEvaluator.GetElementsForViewNode(propertyFilter)
-                .OfType<IElement>().ToArray();
+        var elements = dataViewEvaluator.GetElementsForViewNode(propertyFilter)
+            .OfType<IElement>().ToArray();
 
-            // Evaluates the elements
-            Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
-            Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
-            Assert.That(elements.Length, Is.GreaterThan(0));
-        }
+        // Evaluates the elements
+        Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+        Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+        Assert.That(elements.Length, Is.GreaterThan(0));
+    }
 
-        [Test]
-        public async Task TestAllWorkspacesEvaluation()
-        {
-            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
-            await CreateDataForTest(dm);
+    [Test]
+    public async Task TestAllWorkspacesEvaluation()
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        await CreateDataForTest(dm);
 
-            var factory = InMemoryObject.TemporaryFactory;
+        var factory = InMemoryObject.TemporaryFactory;
 
-            var selectFromAllWorkspacesNode =
-                factory.create(_DatenMeister.TheOne.DataViews.__SelectFromAllWorkspacesNode);
+        var selectFromAllWorkspacesNode =
+            factory.create(_DatenMeister.TheOne.DataViews.__SelectFromAllWorkspacesNode);
 
-            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
-            var result =
-                dataViewEvaluator
-                    .GetElementsForViewNode(selectFromAllWorkspacesNode)
-                    .OfType<IElement>()
-                    .ToList();
-
-            var grouped = result.GroupBy(x => x.GetUriExtentOf()?.GetWorkspace())
+        var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+        var result =
+            dataViewEvaluator
+                .GetElementsForViewNode(selectFromAllWorkspacesNode)
+                .OfType<IElement>()
                 .ToList();
+
+        var grouped = result.GroupBy(x => x.GetUriExtentOf()?.GetWorkspace())
+            .ToList();
             
-            Assert.That(grouped.Count(), Is.GreaterThan(1));
-            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceData), Is.True);
-            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceTypes), Is.True);
-        }
+        Assert.That(grouped.Count(), Is.GreaterThan(1));
+        Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceData), Is.True);
+        Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceTypes), Is.True);
+    }
 
-        [Test]
-        public async Task TestSelectByWorkspaceEvaluation()
-        {
-            await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
-            await CreateDataForTest(dm);
+    [Test]
+    public async Task TestSelectByWorkspaceEvaluation()
+    {
+        await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
+        await CreateDataForTest(dm);
 
-            var factory = InMemoryObject.TemporaryFactory;
+        var factory = InMemoryObject.TemporaryFactory;
 
-            var selectByWorkspaceNode =
-                factory.create(_DatenMeister.TheOne.DataViews.__SelectByWorkspaceNode);
-            selectByWorkspaceNode.set(_DatenMeister._DataViews._SelectByWorkspaceNode.workspaceId, WorkspaceNames.WorkspaceData);
+        var selectByWorkspaceNode =
+            factory.create(_DatenMeister.TheOne.DataViews.__SelectByWorkspaceNode);
+        selectByWorkspaceNode.set(_DatenMeister._DataViews._SelectByWorkspaceNode.workspaceId, WorkspaceNames.WorkspaceData);
 
-            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
-            var result =
-                dataViewEvaluator
-                    .GetElementsForViewNode(selectByWorkspaceNode)
-                    .OfType<IElement>()
-                    .ToList();
-
-            var grouped = result.GroupBy(x => x.GetUriExtentOf()?.GetWorkspace())
+        var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+        var result =
+            dataViewEvaluator
+                .GetElementsForViewNode(selectByWorkspaceNode)
+                .OfType<IElement>()
                 .ToList();
+
+        var grouped = result.GroupBy(x => x.GetUriExtentOf()?.GetWorkspace())
+            .ToList();
             
-            Assert.That(grouped.Count(), Is.EqualTo(1));
-            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceData), Is.True);
-            Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceTypes), Is.False);
+        Assert.That(grouped.Count(), Is.EqualTo(1));
+        Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceData), Is.True);
+        Assert.That(grouped.Any(x => x.Key?.id == WorkspaceNames.WorkspaceTypes), Is.False);
             
-            Assert.That(result.Any(x=>x.getOrDefault<string>("name") == "Bach"), Is.True);
-        }
+        Assert.That(result.Any(x=>x.getOrDefault<string>("name") == "Bach"), Is.True);
+    }
 
-        private async Task<IUriExtent> CreateDataForTest(IDatenMeisterScope dm)
-        {
-            var localTypeSupport = dm.Resolve<LocalTypeSupport>();
-            var userTypeExtent = localTypeSupport.GetUserTypeExtent();
+    private async Task<IUriExtent> CreateDataForTest(IDatenMeisterScope dm)
+    {
+        var localTypeSupport = dm.Resolve<LocalTypeSupport>();
+        var userTypeExtent = localTypeSupport.GetUserTypeExtent();
 
-            // Create two example types
-            var userTypeFactory = new MofFactory(userTypeExtent);
-            var createdClass = userTypeFactory.create(_UML.TheOne.StructuredClassifiers.__Class);
-            createdClass.set(_UML._CommonStructure._NamedElement.name, "First Class");
-            userTypeExtent.elements().add(createdClass);
+        // Create two example types
+        var userTypeFactory = new MofFactory(userTypeExtent);
+        var createdClass = userTypeFactory.create(_UML.TheOne.StructuredClassifiers.__Class);
+        createdClass.set(_UML._CommonStructure._NamedElement.name, "First Class");
+        userTypeExtent.elements().add(createdClass);
 
-            var secondClass = userTypeFactory.create(_UML.TheOne.StructuredClassifiers.__Class);
-            secondClass.set(_UML._CommonStructure._NamedElement.name, "Second Class");
-            userTypeExtent.elements().add(secondClass);
+        var secondClass = userTypeFactory.create(_UML.TheOne.StructuredClassifiers.__Class);
+        secondClass.set(_UML._CommonStructure._NamedElement.name, "Second Class");
+        userTypeExtent.elements().add(secondClass);
 
-            // Ok, now add the data
-            var extent = (await XmiExtensions
-                .CreateAndAddXmiExtent(dm.Resolve<ExtentManager>(), "dm:///testdata", "testdata.xmi")).Extent!;
-            Assert.That(extent, Is.Not.Null);
-            var factory = new MofFactory(extent);
-            var element1 = factory.create(createdClass);
-            element1.set("name", "Bach");
-            element1.set("zip", 32432);
-            extent.elements().add(element1);
+        // Ok, now add the data
+        var extent = (await XmiExtensions
+            .CreateAndAddXmiExtent(dm.Resolve<ExtentManager>(), "dm:///testdata", "testdata.xmi")).Extent!;
+        Assert.That(extent, Is.Not.Null);
+        var factory = new MofFactory(extent);
+        var element1 = factory.create(createdClass);
+        element1.set("name", "Bach");
+        element1.set("zip", 32432);
+        extent.elements().add(element1);
 
-            element1 = factory.create(createdClass);
-            element1.set("name", "Mainz");
-            element1.set("zip", 55130);
-            extent.elements().add(element1);
+        element1 = factory.create(createdClass);
+        element1.set("name", "Mainz");
+        element1.set("zip", 55130);
+        extent.elements().add(element1);
 
-            element1 = factory.create(secondClass);
-            element1.set("name", "Bischofsheim");
-            element1.set("zip", 65474);
-            extent.elements().add(element1);
+        element1 = factory.create(secondClass);
+        element1.set("name", "Bischofsheim");
+        element1.set("zip", 65474);
+        extent.elements().add(element1);
 
-            return extent;
-        }
+        return extent;
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Reflection
+﻿namespace DatenMeister.Core.EMOF.Interface.Reflection;
+
+/// <summary>
+/// Defines an interface when it has an id, which can be set
+/// </summary>
+public interface ICanSetId
 {
     /// <summary>
-    /// Defines an interface when it has an id, which can be set
+    /// Sets the id of the object
     /// </summary>
-    public interface ICanSetId
-    {
-        /// <summary>
-        /// Sets the id of the object
-        /// </summary>
-        string Id { set; }
-    }
+    string Id { set; }
 }

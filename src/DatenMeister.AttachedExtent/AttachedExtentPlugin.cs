@@ -3,35 +3,34 @@ using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.AttachedExtent
+namespace DatenMeister.AttachedExtent;
+
+[PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
+public class AttachedExtentPlugin : IDatenMeisterPlugin
 {
-    [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
-    public class AttachedExtentPlugin : IDatenMeisterPlugin
+    private readonly ExtentSettings _extentSettings;
+
+    public AttachedExtentPlugin(IScopeStorage scopeStorage)
     {
-        private readonly ExtentSettings _extentSettings;
+        _extentSettings = scopeStorage.Get<ExtentSettings>();
+    }
 
-        public AttachedExtentPlugin(IScopeStorage scopeStorage)
+    public Task Start(PluginLoadingPosition position)
+    {
+        if ((position & PluginLoadingPosition.AfterInitialization) != 0)
         {
-            _extentSettings = scopeStorage.Get<ExtentSettings>();
+            _extentSettings.propertyDefinitions.Add(
+                new ExtentPropertyDefinition
+                {
+                    name = AttachedExtentHandler.AttachedExtentProperty,
+                    title = "Attached Extent",
+                    metaClass = _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration
+                });
+        }
+        else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)
+        {
         }
 
-        public Task Start(PluginLoadingPosition position)
-        {
-            if ((position & PluginLoadingPosition.AfterInitialization) != 0)
-            {
-                _extentSettings.propertyDefinitions.Add(
-                    new ExtentPropertyDefinition
-                    {
-                        name = AttachedExtentHandler.AttachedExtentProperty,
-                        title = "Attached Extent",
-                        metaClass = _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration
-                    });
-            }
-            else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)
-            {
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

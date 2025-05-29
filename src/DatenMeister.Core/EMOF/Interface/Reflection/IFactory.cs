@@ -1,16 +1,17 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Reflection
+﻿// ReSharper disable InconsistentNaming
+
+namespace DatenMeister.Core.EMOF.Interface.Reflection;
+
+/// <summary>
+///     Interface to Factory according to MOFSpecification 2.5, Clause 9.3
+/// </summary>
+public interface IFactory
 {
-    /// <summary>
-    ///     Interface to Factory according to MOFSpecification 2.5, Clause 9.3
-    /// </summary>
-    public interface IFactory
-    {
-        IElement package { get; }
+    IElement? package { get; }
 
-        IElement create(IElement? metaClass);
+    IElement create(IElement? metaClass);
 
-        IObject createFromString(IElement dataType, string value);
+    IObject createFromString(IElement dataType, string value);
 
-        string convertToString(IElement dataType, IObject value);
-    }
+    string convertToString(IElement dataType, IObject value);
 }

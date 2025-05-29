@@ -9,260 +9,259 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Excel.Helper;
 
-namespace DatenMeister.WPF.Windows
+namespace DatenMeister.WPF.Windows;
+
+public enum ExcelImportType
 {
-    public enum ExcelImportType
+    AsCopy,
+    AsReference
+}
+
+/// <summary>
+/// Interaktionslogik für ExcelImportDefinitionClosedxaml
+/// </summary>
+public partial class ExcelImportDefinitionDialog : Window
+{
+    private ExcelImporter? _importer;
+
+    public ExcelImportType ImportType { get; set; } = ExcelImportType.AsCopy;
+
+    /// <summary>
+    /// Defines the excel settings
+    /// </summary>
+    public IElement? ExcelSettings => _importer?.LoaderConfig;
+
+    public ExcelImportDefinitionDialog()
     {
-        AsCopy,
-        AsReference
+        InitializeComponent();
     }
 
     /// <summary>
-    /// Interaktionslogik für ExcelImportDefinitionClosedxaml
+    /// Prepares the excel file by reading it in and updating all the necessary views
     /// </summary>
-    public partial class ExcelImportDefinitionDialog : Window
+    /// <param name="filePath">Excel file to be loaded</param>
+    public async Task<ExcelImporter> LoadFile(string filePath)
     {
-        private ExcelImporter? _importer;
-
-        public ExcelImportType ImportType { get; set; } = ExcelImportType.AsCopy;
-
-        /// <summary>
-        /// Defines the excel settings
-        /// </summary>
-        public IElement? ExcelSettings => _importer?.LoaderConfig;
-
-        public ExcelImportDefinitionDialog()
-        {
-            InitializeComponent();
-        }
-
-        /// <summary>
-        /// Prepares the excel file by reading it in and updating all the necessary views
-        /// </summary>
-        /// <param name="filePath">Excel file to be loaded</param>
-        public async Task<ExcelImporter> LoadFile(string filePath)
-        {
-            txtFileName.Text = Path.GetFileName(filePath);
-            var importConfig =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig)
-                ?? throw new InvalidOperationException("Not an IElement");
-            importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///dm_temp");
-            importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath, filePath);
+        txtFileName.Text = Path.GetFileName(filePath);
+        var importConfig =
+            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig)
+            ?? throw new InvalidOperationException("Not an IElement");
+        importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///dm_temp");
+        importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath, filePath);
             
-            _importer = new ExcelImporter(importConfig);
+        _importer = new ExcelImporter(importConfig);
 
-            await Task.Run(() => _importer.LoadExcel());
+        await Task.Run(() => _importer.LoadExcel());
 
-            DataContext = _importer.LoaderConfig;
+        DataContext = _importer.LoaderConfig;
 
-            _importer.GuessColumnCount();
-            _importer.GuessRowCount();
-            UpdateDataPreview();
+        _importer.GuessColumnCount();
+        _importer.GuessRowCount();
+        UpdateDataPreview();
 
-            cboSheet.ItemsSource = _importer.SheetNames;
-            cboSheet.SelectedItem = _importer.SheetNames.FirstOrDefault();
+        cboSheet.ItemsSource = _importer.SheetNames;
+        cboSheet.SelectedItem = _importer.SheetNames.FirstOrDefault();
 
-            return _importer;
-        }
+        return _importer;
+    }
 
-        /// <summary>
-        /// Whenever a value is changed, the view of the imported Excel will be updated
-        /// </summary>
-        private void UpdateDataPreview()
+    /// <summary>
+    /// Whenever a value is changed, the view of the imported Excel will be updated
+    /// </summary>
+    private void UpdateDataPreview()
+    {
+        if (_importer == null)
+            throw new InvalidOperationException("_importer == null");
+
+        if (IsExcelNotLoaded()) return;
+
+        // Gets the columns names
+        var columnNames = _importer.GetColumnNames().ToList();
+        var countRows = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countRows);
+        var countColumns = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countColumns);
+
+        // Now create the items
+        dgrExcelDataGrid.Columns.Clear();
+        var items = new List<object>();
+        for (
+            var r = 0; 
+            r < countRows; 
+            r++)
         {
-            if (_importer == null)
-                throw new InvalidOperationException("_importer == null");
+            var item = (IDictionary<string, object?>) new ExpandoObject();
 
-            if (IsExcelNotLoaded()) return;
-
-            // Gets the columns names
-            var columnNames = _importer.GetColumnNames().ToList();
-            var countRows = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countRows);
-            var countColumns = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countColumns);
-
-            // Now create the items
-            dgrExcelDataGrid.Columns.Clear();
-            var items = new List<object>();
             for (
-                var r = 0; 
-                r < countRows; 
-                r++)
+                var c = 0;
+                c < countColumns;
+                c++)
             {
-                var item = (IDictionary<string, object?>) new ExpandoObject();
-
-                for (
-                    var c = 0;
-                    c < countColumns;
-                    c++)
+                var internalColumnName = "_ " + c;
+                var columnName = columnNames[c];
+                if (string.IsNullOrEmpty(columnName))
                 {
-                    var internalColumnName = "_ " + c;
-                    var columnName = columnNames[c];
-                    if (string.IsNullOrEmpty(columnName))
-                    {
-                        // Skip not set columns
-                        continue;
-                    }
-
-                    if (r == 0)
-                    {
-                        var column = new DataGridTextColumn
-                        {
-                            Binding = new Binding(internalColumnName),
-                            Header = columnName
-                        };
-
-                        dgrExcelDataGrid.Columns.Add(column);
-                    }
-
-                    item[internalColumnName] = _importer.GetCellContent(r, c);
+                    // Skip not set columns
+                    continue;
                 }
 
-                items.Add(item);
+                if (r == 0)
+                {
+                    var column = new DataGridTextColumn
+                    {
+                        Binding = new Binding(internalColumnName),
+                        Header = columnName
+                    };
+
+                    dgrExcelDataGrid.Columns.Add(column);
+                }
+
+                item[internalColumnName] = _importer.GetCellContent(r, c);
             }
 
-            dgrExcelDataGrid.ItemsSource = items;
+            items.Add(item);
         }
 
-        private bool IsExcelNotLoaded() =>
-            !IsInitialized || _importer?.LoaderConfig == null || !_importer.IsExcelLoaded;
+        dgrExcelDataGrid.ItemsSource = items;
+    }
 
-        [Flags]
-        private enum ContentRange
-        {
-            None = 0,
-            Rows = 1,
-            Columns = 1 << 1,
-        }
+    private bool IsExcelNotLoaded() =>
+        !IsInitialized || _importer?.LoaderConfig == null || !_importer.IsExcelLoaded;
 
-        private void GuessContentRange(ContentRange rangeTypes)
-        {
-            if (_importer == null)
-                throw new InvalidOperationException("_importer == null");
+    [Flags]
+    private enum ContentRange
+    {
+        None = 0,
+        Rows = 1,
+        Columns = 1 << 1,
+    }
+
+    private void GuessContentRange(ContentRange rangeTypes)
+    {
+        if (_importer == null)
+            throw new InvalidOperationException("_importer == null");
             
-            if (rangeTypes.HasFlag(ContentRange.Rows))
-            {
-                txtCountRow.Text = _importer.GuessRowCount().ToString();
-            }
-
-            if (rangeTypes.HasFlag(ContentRange.Columns))
-            {
-                txtCountColumn.Text = _importer.GuessColumnCount().ToString();
-            }
+        if (rangeTypes.HasFlag(ContentRange.Rows))
+        {
+            txtCountRow.Text = _importer.GuessRowCount().ToString();
         }
 
-        private void CboSheet_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        if (rangeTypes.HasFlag(ContentRange.Columns))
         {
-            if (IsExcelNotLoaded()) return;
-
-            txtOffsetRow.Text = "0";
-            txtOffsetColumn.Text = "0";
-            GuessContentRange(ContentRange.Columns | ContentRange.Rows);
-            UpdateDataPreview();
+            txtCountColumn.Text = _importer.GuessColumnCount().ToString();
         }
+    }
 
-        private void TxtOffsetRow_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_importer == null)
-                throw new InvalidOperationException("_importer == null");
+    private void CboSheet_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (IsExcelNotLoaded()) return;
 
-            if (IsExcelNotLoaded()) return;
+        txtOffsetRow.Text = "0";
+        txtOffsetColumn.Text = "0";
+        GuessContentRange(ContentRange.Columns | ContentRange.Rows);
+        UpdateDataPreview();
+    }
 
-            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetRow, DotNetHelper.AsInteger(txtOffsetRow.Text));
-            _importer.GuessRowCount();
-            UpdateDataPreview();
-        }
+    private void TxtOffsetRow_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_importer == null)
+            throw new InvalidOperationException("_importer == null");
 
-        private void TxtOffsetColumn_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_importer == null)
-                throw new InvalidOperationException("_importer == null");
+        if (IsExcelNotLoaded()) return;
 
-            if (IsExcelNotLoaded()) return;
+        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetRow, DotNetHelper.AsInteger(txtOffsetRow.Text));
+        _importer.GuessRowCount();
+        UpdateDataPreview();
+    }
+
+    private void TxtOffsetColumn_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_importer == null)
+            throw new InvalidOperationException("_importer == null");
+
+        if (IsExcelNotLoaded()) return;
 
             
-            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetColumn, DotNetHelper.AsInteger(txtOffsetColumn.Text));
-            _importer.GuessColumnCount();
-            UpdateDataPreview();
-        }
+        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetColumn, DotNetHelper.AsInteger(txtOffsetColumn.Text));
+        _importer.GuessColumnCount();
+        UpdateDataPreview();
+    }
 
-        private void TxtCountRow_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateDataPreview();
-        }
+    private void TxtCountRow_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateDataPreview();
+    }
 
-        private void TxtCountColumn_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateDataPreview();
-        }
+    private void TxtCountColumn_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateDataPreview();
+    }
 
-        private void ChkHeaderRow_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (_importer == null)
-                throw new InvalidOperationException("_importer == null");
+    private void ChkHeaderRow_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_importer == null)
+            throw new InvalidOperationException("_importer == null");
 
-            if (IsExcelNotLoaded()) return;
+        if (IsExcelNotLoaded()) return;
 
-            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader, chkHeaderRow.IsChecked == true);
-            _importer.GuessRowCount();
-            UpdateDataPreview();
-        }
+        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader, chkHeaderRow.IsChecked == true);
+        _importer.GuessRowCount();
+        UpdateDataPreview();
+    }
 
-        private void chkAutoCount_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (_importer == null)
-                throw new InvalidOperationException("_importer == null");
+    private void chkAutoCount_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_importer == null)
+            throw new InvalidOperationException("_importer == null");
 
-            if (IsExcelNotLoaded()) return;
+        if (IsExcelNotLoaded()) return;
 
-            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixRowCount, chkAutoCount.IsChecked == true);
-            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixColumnCount, chkAutoCount.IsChecked == true);
+        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixRowCount, chkAutoCount.IsChecked == true);
+        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixColumnCount, chkAutoCount.IsChecked == true);
 
-            _importer.GuessColumnCount();
-            _importer.GuessRowCount();
-        }
+        _importer.GuessColumnCount();
+        _importer.GuessRowCount();
+    }
 
-        private void Window_Initialized(object sender, EventArgs e)
-        {
-            if (_importer == null)
-                throw new InvalidOperationException("_importer == null");
+    private void Window_Initialized(object sender, EventArgs e)
+    {
+        if (_importer == null)
+            throw new InvalidOperationException("_importer == null");
 
-            if (IsExcelNotLoaded()) return;
+        if (IsExcelNotLoaded()) return;
 
-            _importer.GuessColumnCount();
-            _importer.GuessRowCount();
-            UpdateDataPreview();
-        }
+        _importer.GuessColumnCount();
+        _importer.GuessRowCount();
+        UpdateDataPreview();
+    }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            Close();
-        }
+    private void btnCancel_Click(object sender, RoutedEventArgs e)
+    {
+        DialogResult = false;
+        Close();
+    }
 
-        private void btnImport_Click(object sender, RoutedEventArgs e)
-        {
-            ImportType = ExcelImportType.AsCopy;
-            DialogResult = true;
-            Close();
-        }
+    private void btnImport_Click(object sender, RoutedEventArgs e)
+    {
+        ImportType = ExcelImportType.AsCopy;
+        DialogResult = true;
+        Close();
+    }
 
-        private void btnImportReference_Click(object sender, RoutedEventArgs e)
-        {
-            ImportType = ExcelImportType.AsReference;
-            DialogResult = true;
-            Close();
-        }
+    private void btnImportReference_Click(object sender, RoutedEventArgs e)
+    {
+        ImportType = ExcelImportType.AsReference;
+        DialogResult = true;
+        Close();
+    }
 
-        /// <summary>
-        /// Gets the configuration as an item
-        /// </summary>
-        /// <returns>The configuration object describing the elements</returns>
-        public IElement? GetConfigurationObject()
-            => _importer?.LoaderConfig;
+    /// <summary>
+    /// Gets the configuration as an item
+    /// </summary>
+    /// <returns>The configuration object describing the elements</returns>
+    public IElement? GetConfigurationObject()
+        => _importer?.LoaderConfig;
 
-        private void OnClosed(object sender, EventArgs e)
-        {
-            Owner?.Focus();
-        }
+    private void OnClosed(object sender, EventArgs e)
+    {
+        Owner?.Focus();
     }
 }

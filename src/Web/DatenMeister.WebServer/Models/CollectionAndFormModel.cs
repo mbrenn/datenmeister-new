@@ -1,9 +1,8 @@
-﻿namespace DatenMeister.WebServer.Models
-{
-    public class CollectionAndFormModel
-    {
-        public string form = string.Empty;
+﻿namespace DatenMeister.WebServer.Models;
 
-        public string items = string.Empty;
-    }
+public class CollectionAndFormModel
+{
+    public string form = string.Empty;
+
+    public string items = string.Empty;
 }

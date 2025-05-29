@@ -12,134 +12,133 @@ using DatenMeister.Forms.FormCreator;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
 
-namespace DatenMeister.Reports.Simple
+namespace DatenMeister.Reports.Simple;
+
+/// <summary>
+/// This class creates a simple report just for a collection. 
+/// </summary>
+public class SimpleReportForCollection
 {
+    private readonly IHtmlReport _report;
+    private readonly FormCreator _formCreator;
+    private readonly ItemFormatter _itemFormatter;
+
     /// <summary>
-    /// This class creates a simple report just for a collection. 
+    /// Gets or sets the report table mode
     /// </summary>
-    public class SimpleReportForCollection
+    public _DatenMeister._Reports._Elements.___ReportTableForTypeMode TableForTypeMode
     {
-        private readonly IHtmlReport _report;
-        private readonly FormCreator _formCreator;
-        private readonly ItemFormatter _itemFormatter;
+        get;
+        set;
+    } = _DatenMeister._Reports._Elements.___ReportTableForTypeMode.PerType;
 
-        /// <summary>
-        /// Gets or sets the report table mode
-        /// </summary>
-        public _DatenMeister._Reports._Elements.___ReportTableForTypeMode TableForTypeMode
-        {
-            get;
-            set;
-        } = _DatenMeister._Reports._Elements.___ReportTableForTypeMode.PerType;
+    /// <summary>
+    /// Gets or sets the form to be set
+    /// If set to null, the default form will be applied
+    /// </summary>
+    public IElement? Form
+    {
+        get;
+        set;
+    }
 
-        /// <summary>
-        /// Gets or sets the form to be set
-        /// If set to null, the default form will be applied
-        /// </summary>
-        public IElement? Form
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets whether metaclass headlines shall be shown
-        /// </summary>
-        public bool ShowMetaClassHeadlines { get; set; } = true;
+    /// <summary>
+    /// Gets or sets whether metaclass headlines shall be shown
+    /// </summary>
+    public bool ShowMetaClassHeadlines { get; set; } = true;
         
-        public bool AddFullNameColumn { get; set; }
+    public bool AddFullNameColumn { get; set; }
 
-        public SimpleReportForCollection(FormCreator formCreator, ItemFormatter itemFormatter, IHtmlReport report)
-        {
-            _formCreator = formCreator;
-            _itemFormatter = itemFormatter;
-            _report = report;
-        }
+    public SimpleReportForCollection(FormCreator formCreator, ItemFormatter itemFormatter, IHtmlReport report)
+    {
+        _formCreator = formCreator;
+        _itemFormatter = itemFormatter;
+        _report = report;
+    }
 
-        public SimpleReportForCollection(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage, IHtmlReport report)
-        {
-            _report = report;
-            _formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
-            _itemFormatter = new ItemFormatter(_report);
-        }
+    public SimpleReportForCollection(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage, IHtmlReport report)
+    {
+        _report = report;
+        _formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+        _itemFormatter = new ItemFormatter(_report);
+    }
         
-        public void WriteReportForCollection(
-            IReflectiveCollection elements,
-            FormFactoryConfiguration creationMode)
+    public void WriteReportForCollection(
+        IReflectiveCollection elements,
+        FormFactoryConfiguration creationMode)
+    {
+        var foundForm = Form;
+        if (TableForTypeMode == _DatenMeister._Reports._Elements.___ReportTableForTypeMode.PerType)
         {
-            var foundForm = Form;
-            if (TableForTypeMode == _DatenMeister._Reports._Elements.___ReportTableForTypeMode.PerType)
+            // Splits them up by metaclasses 
+            var metaClasses =
+                elements.GroupBy(
+                    x => x is IElement element ? element.metaclass : null,
+                    new MofObjectEqualityComparer()).ToList();
+
+            foreach (var metaClass in metaClasses)
             {
-                // Splits them up by metaclasses 
-                var metaClasses =
-                    elements.GroupBy(
-                        x => x is IElement element ? element.metaclass : null,
-                        new MofObjectEqualityComparer()).ToList();
+                // Gets the name of the metaclass
+                var metaClassName = metaClass.Key == null
+                    ? "Unclassified"
+                    : "Classifier: " + NamedElementMethods.GetName(metaClass.Key);
 
-                foreach (var metaClass in metaClasses)
+                if (ShowMetaClassHeadlines)
                 {
-                    // Gets the name of the metaclass
-                    var metaClassName = metaClass.Key == null
-                        ? "Unclassified"
-                        : "Classifier: " + NamedElementMethods.GetName(metaClass.Key);
-
-                    if (ShowMetaClassHeadlines)
-                    {
-                        _report.Add(new HtmlHeadline(metaClassName, 2));
-                    }
-
-                    var collection = new TemporaryReflectiveCollection(metaClass);
-
-                    if (metaClass.Key == null)
-                    {
-                        foundForm = _formCreator.CreateTableFormForCollection(
-                            collection,
-                            creationMode);
-                    }
-                    else
-                    {
-                        foundForm = _formCreator.CreateTableFormForMetaClass(metaClass.Key, creationMode);
-                    }
-
-                    AddFullNameColumnIfNecessary(foundForm);
-
-                    ReportItemCollection(collection, foundForm);
+                    _report.Add(new HtmlHeadline(metaClassName, 2));
                 }
-            }
-            else
-            {
-                if (foundForm == null)
+
+                var collection = new TemporaryReflectiveCollection(metaClass);
+
+                if (metaClass.Key == null)
                 {
                     foundForm = _formCreator.CreateTableFormForCollection(
-                        elements,
+                        collection,
                         creationMode);
-
-                    AddFullNameColumnIfNecessary(foundForm);
+                }
+                else
+                {
+                    foundForm = _formCreator.CreateTableFormForMetaClass(metaClass.Key, creationMode);
                 }
 
-                ReportItemCollection(elements, foundForm);
+                AddFullNameColumnIfNecessary(foundForm);
+
+                ReportItemCollection(collection, foundForm);
             }
         }
-
-        private void AddFullNameColumnIfNecessary(IObject foundForm)
+        else
         {
-            if (AddFullNameColumn)
+            if (foundForm == null)
             {
-                // Create the metaclass as a field
-                var fullNamefield = MofFactory.CreateElement(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
-                fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
-                fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
-                foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(0, fullNamefield);
+                foundForm = _formCreator.CreateTableFormForCollection(
+                    elements,
+                    creationMode);
+
+                AddFullNameColumnIfNecessary(foundForm);
             }
-        }
 
-        private void ReportItemCollection(IReflectiveCollection metaClass, IObject form)
+            ReportItemCollection(elements, foundForm);
+        }
+    }
+
+    private void AddFullNameColumnIfNecessary(IObject foundForm)
+    {
+        if (AddFullNameColumn)
         {
-            // Gets the reflective sequence for the name
-            var collection = new TemporaryReflectiveSequence(metaClass);
-
-            Debug.Assert(_itemFormatter != null, nameof(_itemFormatter) + " != null");
-            _itemFormatter.FormatCollectionOfItems(collection, form);
+            // Create the metaclass as a field
+            var fullNamefield = MofFactory.CreateElement(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
+            fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
+            fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
+            foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(0, fullNamefield);
         }
+    }
+
+    private void ReportItemCollection(IReflectiveCollection metaClass, IObject form)
+    {
+        // Gets the reflective sequence for the name
+        var collection = new TemporaryReflectiveSequence(metaClass);
+
+        Debug.Assert(_itemFormatter != null, nameof(_itemFormatter) + " != null");
+        _itemFormatter.FormatCollectionOfItems(collection, form);
     }
 }

@@ -1,24 +1,21 @@
-﻿#nullable enable
+﻿using System.Windows;
 
-using System.Windows;
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 
-namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements
+public class InfoLineDefinition : ViewExtension
 {
-    public class InfoLineDefinition : ViewExtension
+    public InfoLineDefinition(Func<UIElement> infolineFactory)
     {
-        public InfoLineDefinition(Func<UIElement> infolineFactory)
-        {
-            InfolineFactory = infolineFactory;
-        }
+        InfolineFactory = infolineFactory;
+    }
 
-        /// <summary>
-        /// Gets the factory for the infoline
-        /// </summary>
-        public Func<UIElement> InfolineFactory { get; }
+    /// <summary>
+    /// Gets the factory for the infoline
+    /// </summary>
+    public Func<UIElement> InfolineFactory { get; }
 
-        public override string ToString()
-        {
-            return "InfoLineDefinition";
-        }
+    public override string ToString()
+    {
+        return "InfoLineDefinition";
     }
 }

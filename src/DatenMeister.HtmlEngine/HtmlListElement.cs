@@ -1,34 +1,33 @@
 ﻿using System.Text;
 
-namespace DatenMeister.HtmlEngine
+namespace DatenMeister.HtmlEngine;
+
+/// <summary>
+/// Describes an html list element describing a list.
+/// An ordered and an non-ordered list is supported by this implementation
+/// </summary>
+public class HtmlListElement: HtmlElement, IHtmlElementWithMultipleItems
 {
-    /// <summary>
-    /// Describes an html list element describing a list.
-    /// An ordered and an non-ordered list is supported by this implementation
-    /// </summary>
-    public class HtmlListElement: HtmlElement, IHtmlElementWithMultipleItems
+    public bool IsOrderedList { get; set; }
+
+    public List<HtmlElement> Items { get; } = new(); 
+
+    private string HtmlTag =>
+        IsOrderedList ? "ol" : "ul";
+
+    public override string ToString()
     {
-        public bool IsOrderedList { get; set; }
+        var builder = new StringBuilder();
 
-        public List<HtmlElement> Items { get; } = new(); 
-
-        private string HtmlTag =>
-            IsOrderedList ? "ol" : "ul";
-
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
-
-            builder.Append($"<{HtmlTag}>");
+        builder.Append($"<{HtmlTag}>");
             
-            foreach (var item in Items)
-            {
-                builder.Append($"<li {AttributeString}>{item}</li>");
-            }
-
-            builder.AppendLine($"</{HtmlTag}>");
-
-            return builder.ToString();
+        foreach (var item in Items)
+        {
+            builder.Append($"<li {AttributeString}>{item}</li>");
         }
+
+        builder.AppendLine($"</{HtmlTag}>");
+
+        return builder.ToString();
     }
 }

@@ -21,7 +21,8 @@ public static class StandardProcedure
     /// <summary>
     /// Defines the target path into which the files will be stored temporarily.
     /// </summary>
-    private const string T = "./";
+    // ReSharper disable once MemberCanBePrivate.Global
+    public const string T = "./";
 
     public static async Task CreateTypescriptForDatenMeisterAllTypes()
     {
@@ -69,6 +70,18 @@ public static class StandardProcedure
         var pathOfClassTree = "DatenMeister.class.cs";
         var fileContent = classTreeGenerator.Result.ToString();
         await File.WriteAllTextAsync(pathOfClassTree, fileContent);
+        
+        
+        var wrapperTreeGenerator = new WrapperTreeGenerator(sourceParser)
+        {
+            Namespace = "DatenMeister.Core.Models"
+        };
+
+        wrapperTreeGenerator.Walk(pseudoExtent);
+
+        var pathOfWrapper = "DatenMeister.wrapper.cs";
+        var wrappedFileContent = wrapperTreeGenerator.Result.ToString();
+        await File.WriteAllTextAsync(pathOfWrapper, wrappedFileContent);
         System.Console.WriteLine(" Done");
     }
 
@@ -111,7 +124,7 @@ public static class StandardProcedure
         generator.Walk(umlExtent);
 
         File.WriteAllText($"{T}/uml.cs", generator.Result.ToString());
-        System.Console.WriteLine("TS-Code for UML written");
+        System.Console.WriteLine("CS-Code for UML written");
 
         // Generates tree for MOF
         generator = new ClassTreeGenerator
@@ -121,7 +134,8 @@ public static class StandardProcedure
         generator.Walk(mofExtent);
 
         File.WriteAllText($"{T}/mof.cs", generator.Result.ToString());
-        System.Console.WriteLine("TS-Code for MOF written");
+        System.Console.WriteLine("CS-Code for MOF written");
+        
 
         // Generates tree for PrimitiveTypes
         generator = new ClassTreeGenerator
@@ -132,6 +146,38 @@ public static class StandardProcedure
 
         File.WriteAllText($"{T}/primitivetypes.cs", generator.Result.ToString());
         System.Console.WriteLine("TS-Code for PrimitiveTypes written");
+        
+        // Generates tree for UML
+        var wrapperGenerator = new WrapperTreeGenerator
+        {
+            Namespace = "DatenMeister.Core.Models.EMOF"
+        };
+
+        wrapperGenerator.Walk(umlExtent);
+
+        File.WriteAllText($"{T}/uml.wrapper.cs", wrapperGenerator.Result.ToString());
+        System.Console.WriteLine("Wrapper-CS-Code for UML written");
+
+        // Generates tree for MOF
+        wrapperGenerator = new WrapperTreeGenerator
+        {
+            Namespace = "DatenMeister.Core.Models.EMOF"
+        };
+        wrapperGenerator.Walk(mofExtent);
+
+        File.WriteAllText($"{T}/mof.wrapper.cs", wrapperGenerator.Result.ToString());
+        System.Console.WriteLine("Wrapper-CS-Code for MOF written");
+        
+        // Generates tree for PrimitiveTypes
+        wrapperGenerator = new WrapperTreeGenerator
+        {
+            Namespace = "DatenMeister.Core.Models.EMOF"
+        };
+        wrapperGenerator.Walk(primitiveTypeExtent);
+
+        File.WriteAllText($"{T}/primitivetypes.wrapper.cs", wrapperGenerator.Result.ToString());
+        System.Console.WriteLine("Wrapper-TS-Code for PrimitiveTypes written");
+            
     }
 
     public static void CreateTypescriptForUmlAndMof()

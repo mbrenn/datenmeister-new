@@ -61,9 +61,9 @@ public class WrapperTreeGenerator : WalkPackageClass
 
         var name = GetNameOfElement(classInstance);
 
-        Result.AppendLine($"{stack.Indentation}public class {name}Wrapper(IElement element)");
+        Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper(IElement innerDmElement)");
         Result.AppendLine($"{stack.Indentation}{{");
-        Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => element;");
+        Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => innerDmElement;");
         Result.AppendLine();
         
         base.WalkClass(classInstance, stack);
@@ -112,22 +112,22 @@ public class WrapperTreeGenerator : WalkPackageClass
             isTyped = false;
         }
         
-        Result.AppendLine($"{stack.Indentation}public {typeByCsName} {name}");
+        Result.AppendLine($"{stack.Indentation}public {typeByCsName} @{name}");
         Result.AppendLine($"{stack.Indentation}{{");
         Result.AppendLine($"{stack.Indentation}    get =>");
 
         if (isTyped)
         {
-            Result.AppendLine($"{stack.Indentation}        element.getOrDefault<{typeByCsName}>(\"{name}\");");
+            Result.AppendLine($"{stack.Indentation}        innerDmElement.getOrDefault<{typeByCsName}>(\"{name}\");");
         }
         else
         {
-            Result.AppendLine($"{stack.Indentation}        element.get(\"{name}\");");
+            Result.AppendLine($"{stack.Indentation}        innerDmElement.get(\"{name}\");");
         }
 
         
         Result.AppendLine($"{stack.Indentation}    set => ");
-        Result.AppendLine($"{stack.Indentation}        element.set(\"{name}\", value);");
+        Result.AppendLine($"{stack.Indentation}        innerDmElement.set(\"{name}\", value);");
         Result.AppendLine($"{stack.Indentation}}}");
 
         Result.AppendLine();

@@ -8,6 +8,7 @@ using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.SourcecodeGenerator;
+// ReSharper disable InconsistentNaming
 
 namespace DatenMeister.SourceGeneration.Console;
 
@@ -30,7 +31,7 @@ internal class Program
         }
         else
         {
-            var value = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
+            var value = Parser.Default.ParseArguments<CommandOptions>(args);
             value.WithParsed(x =>
             {
                 if (CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).GetAwaiter().GetResult())
@@ -38,7 +39,7 @@ internal class Program
                     System.Console.WriteLine("Sourcecode Generation finished");
                 }
             });
-            value.WithNotParsed(x => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
+            value.WithNotParsed(_ => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
         }
     }
 
@@ -92,6 +93,9 @@ internal class Program
             File.Copy($"{T}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
             File.Copy($"{T}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
             File.Copy($"{T}/uml.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.cs", true);
+            File.Copy($"{T}/primitivetypes.wrapper.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.wrapper.cs", true);
+            File.Copy($"{T}/mof.wrapper.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.wrapper.cs", true);
+            File.Copy($"{T}/uml.wrapper.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.wrapper.cs", true);
             File.Copy($"{T}/primitivetypes.ts",
                 $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts", true);
             File.Copy($"{T}/mof.ts", $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts", true);
@@ -99,6 +103,8 @@ internal class Program
 
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister.Core/Models/DatenMeister.class.cs", true);
+            File.Copy($"./ExcelModels.wrapper.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.wrapper.cs", true);
+            File.Copy($"./DatenMeister.wrapper.cs", $"{R}/../DatenMeister.Core/Models/DatenMeister.wrapper.cs", true);
             File.Copy($"./DatenMeister.class.ts",
                 $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts", true);
             File.Copy($"./ExcelModels.class.ts",
@@ -170,14 +176,14 @@ internal class Program
         // Generate wrapper
         
         // Generates tree for StundenPlan
-        var wrapperGenerator = new WrapperTreeGenerator()
+        var wrapperGenerator = new WrapperTreeGenerator
         {
             Namespace = theNamespace
         };
 
         wrapperGenerator.Walk(typeExtent);
 
-        var pathOfWrapper = Path.Combine(pathTarget, $"{filename}.Wrapper.cs");
+        var pathOfWrapper = Path.Combine(pathTarget, $"{filename}.wrapper.cs");
         var wrapperFileContent = wrapperGenerator.Result.ToString();
         await File.WriteAllTextAsync(pathOfWrapper, wrapperFileContent);
 

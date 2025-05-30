@@ -55,6 +55,19 @@ public static class SourceGenerator
         var pathOfClassTree = GetPath(options, ".class.cs");
         var fileContent = classTreeGenerator.Result.ToString();
         File.WriteAllText(pathOfClassTree, fileContent);
+        
+        ////////////////////////////////////////
+        // Creates the class tree
+        var wrapperTreeGenerator = new WrapperTreeGenerator(sourceParser)
+        {
+            Namespace = options.Namespace
+        };
+
+        wrapperTreeGenerator.Walk(extent);
+
+        var pathOfWrapper = GetPath(options, ".wrapper.cs");
+        var wrappedContent = classTreeGenerator.Result.ToString();
+        File.WriteAllText(pathOfWrapper, wrappedContent);
 
         ////////////////////////////////////////
         // Creates the TypeScript tree

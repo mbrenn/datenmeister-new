@@ -66,7 +66,7 @@ public static class SourceGenerator
         wrapperTreeGenerator.Walk(extent);
 
         var pathOfWrapper = GetPath(options, ".wrapper.cs");
-        var wrappedContent = classTreeGenerator.Result.ToString();
+        var wrappedContent = wrapperTreeGenerator.Result.ToString();
         File.WriteAllText(pathOfWrapper, wrappedContent);
 
         ////////////////////////////////////////

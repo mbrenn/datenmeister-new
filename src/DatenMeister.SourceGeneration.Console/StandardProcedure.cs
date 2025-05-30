@@ -1,12 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Models;
-using DatenMeister.Provider.Xmi.Provider.XMI;
-using DatenMeister.SourcecodeGenerator.SourceParser;
 using DatenMeister.SourcecodeGenerator;
-using DatenMeister.Types;
-using System.Reflection;
 
 namespace DatenMeister.SourceGeneration.Console;
 
@@ -24,67 +18,6 @@ public static class StandardProcedure
     // ReSharper disable once MemberCanBePrivate.Global
     public const string T = "./";
 
-    public static async Task CreateTypescriptForDatenMeisterAllTypes()
-    {
-        await using var dm = await Program.GiveMeDatenMeister();
-
-        System.Console.Write("Create TypeScript for DatenMeister...");
-
-        var pseudoExtent = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage).InternalTypes;
-
-        ////////////////////////////////////////
-        // Creates the class tree
-
-        // Creates the source parser which is needed to navigate through the package
-        var sourceParser = new ElementSourceParser();
-        var classTreeGenerator = new TypeScriptInterfaceGenerator(sourceParser);
-
-        classTreeGenerator.Walk(pseudoExtent);
-
-        var pathOfClassTree = "DatenMeister.class.ts";
-        var fileContent = classTreeGenerator.Result.ToString();
-        await File.WriteAllTextAsync(pathOfClassTree, fileContent);
-        System.Console.WriteLine(" Done");
-    }
-
-    public static async Task CreateSourceCodeForDatenMeisterAllTypes()
-    {
-        await using var dm = await Program.GiveMeDatenMeister();
-
-        System.Console.Write("Create Sourcecode for DatenMeister...");
-
-        var pseudoExtent = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage).InternalTypes;
-
-        ////////////////////////////////////////
-        // Creates the class tree
-
-        // Creates the source parser which is needed to navigate through the package
-        var sourceParser = new ElementSourceParser();
-        var classTreeGenerator = new ClassTreeGenerator(sourceParser)
-        {
-            Namespace = "DatenMeister.Core.Models"
-        };
-
-        classTreeGenerator.Walk(pseudoExtent);
-
-        var pathOfClassTree = "DatenMeister.class.cs";
-        var fileContent = classTreeGenerator.Result.ToString();
-        await File.WriteAllTextAsync(pathOfClassTree, fileContent);
-        
-        
-        var wrapperTreeGenerator = new WrapperTreeGenerator(sourceParser)
-        {
-            Namespace = "DatenMeister.Core.Models"
-        };
-
-        wrapperTreeGenerator.Walk(pseudoExtent);
-
-        var pathOfWrapper = "DatenMeister.wrapper.cs";
-        var wrappedFileContent = wrapperTreeGenerator.Result.ToString();
-        await File.WriteAllTextAsync(pathOfWrapper, wrappedFileContent);
-        System.Console.WriteLine(" Done");
-    }
-
     public static void CreateSourceForExcel()
     {
         System.Console.Write("Create Sourcecode for Excel...");
@@ -96,129 +29,10 @@ public static class StandardProcedure
                 Name = "ExcelModels",
                 Path = "./",
                 Namespace = "DatenMeister.Excel.Models",
-                Types = ExcelModels.AllTypes
+                Types = ExcelModelInfo.AllTypes
             });
         
         System.Console.WriteLine(" Done");
     }
-
-    public static void CreateSourceForUmlAndMof()
-    {
-        var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml, null);
-        var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof, null);
-        var primitiveTypeExtent =
-            new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes, null);
-
-        var loader = new SimpleLoader();
-        loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, Path.Combine(AssemblyDirectory, "data/UML.xmi"));
-        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, Path.Combine(AssemblyDirectory, "data/MOF.xmi"));
-        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent,
-            Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
-
-        // Generates tree for UML
-        var generator = new ClassTreeGenerator
-        {
-            Namespace = "DatenMeister.Core.Models.EMOF"
-        };
-
-        generator.Walk(umlExtent);
-
-        File.WriteAllText($"{T}/uml.cs", generator.Result.ToString());
-        System.Console.WriteLine("CS-Code for UML written");
-
-        // Generates tree for MOF
-        generator = new ClassTreeGenerator
-        {
-            Namespace = "DatenMeister.Core.Models.EMOF"
-        };
-        generator.Walk(mofExtent);
-
-        File.WriteAllText($"{T}/mof.cs", generator.Result.ToString());
-        System.Console.WriteLine("CS-Code for MOF written");
-        
-
-        // Generates tree for PrimitiveTypes
-        generator = new ClassTreeGenerator
-        {
-            Namespace = "DatenMeister.Core.Models.EMOF"
-        };
-        generator.Walk(primitiveTypeExtent);
-
-        File.WriteAllText($"{T}/primitivetypes.cs", generator.Result.ToString());
-        System.Console.WriteLine("TS-Code for PrimitiveTypes written");
-        
-        // Generates tree for UML
-        var wrapperGenerator = new WrapperTreeGenerator
-        {
-            Namespace = "DatenMeister.Core.Models.EMOF"
-        };
-
-        wrapperGenerator.Walk(umlExtent);
-
-        File.WriteAllText($"{T}/uml.wrapper.cs", wrapperGenerator.Result.ToString());
-        System.Console.WriteLine("Wrapper-CS-Code for UML written");
-
-        // Generates tree for MOF
-        wrapperGenerator = new WrapperTreeGenerator
-        {
-            Namespace = "DatenMeister.Core.Models.EMOF"
-        };
-        wrapperGenerator.Walk(mofExtent);
-
-        File.WriteAllText($"{T}/mof.wrapper.cs", wrapperGenerator.Result.ToString());
-        System.Console.WriteLine("Wrapper-CS-Code for MOF written");
-        
-        // Generates tree for PrimitiveTypes
-        wrapperGenerator = new WrapperTreeGenerator
-        {
-            Namespace = "DatenMeister.Core.Models.EMOF"
-        };
-        wrapperGenerator.Walk(primitiveTypeExtent);
-
-        File.WriteAllText($"{T}/primitivetypes.wrapper.cs", wrapperGenerator.Result.ToString());
-        System.Console.WriteLine("Wrapper-TS-Code for PrimitiveTypes written");
-            
-    }
-
-    public static void CreateTypescriptForUmlAndMof()
-    {
-        var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml, null);
-        var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof, null);
-        var primitiveTypeExtent =
-            new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes, null);
-
-        var loader = new SimpleLoader();
-        loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, Path.Combine(AssemblyDirectory, "data/UML.xmi"));
-        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, Path.Combine(AssemblyDirectory, "data/MOF.xmi"));
-        loader.LoadFromFile(new MofFactory(primitiveTypeExtent), primitiveTypeExtent,
-            Path.Combine(AssemblyDirectory, "data/PrimitiveTypes.xmi"));
-
-        // Generates tree for UML
-        var generator = new TypeScriptInterfaceGenerator();
-        generator.Walk(umlExtent);
-
-        File.WriteAllText($"{T}/uml.ts", generator.Result.ToString());
-        System.Console.WriteLine("TypeScript Code for UML written");
-
-        // Generates tree for MOF
-        generator = new TypeScriptInterfaceGenerator();
-        generator.Walk(mofExtent);
-
-        File.WriteAllText($"{T}/mof.ts", generator.Result.ToString());
-        System.Console.WriteLine("TypeScript Code for MOF written");
-
-        // Generates tree for PrimitiveTypes
-        generator = new TypeScriptInterfaceGenerator();
-        generator.Walk(primitiveTypeExtent);
-
-        File.WriteAllText($"{T}/primitivetypes.ts", generator.Result.ToString());
-        System.Console.WriteLine("C# Code for PrimitiveTypes written");
-    }
-
-    private static string AssemblyDirectory =>
-        Path.GetDirectoryName(
-            Assembly.GetExecutingAssembly().Location
-            ?? throw new InvalidOperationException("Unknown Path"))
-        ?? throw new InvalidOperationException("Unknown Path");
 }
 

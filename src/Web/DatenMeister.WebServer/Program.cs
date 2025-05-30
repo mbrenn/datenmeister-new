@@ -53,8 +53,7 @@ public class Program
             defaultSettings.AdditionalSettings.Add(
                 new DefaultPluginSettings
                 {
-                    AssemblyFilesToBeSkipped =
-                        new List<string>(new[] {"DatenMeister.WebServer.Views.dll"})
+                    AssemblyFilesToBeSkipped = ["DatenMeister.WebServer.Views.dll"]
                 });
 
             GiveMe.Scope = await GiveMe.DatenMeister(defaultSettings);

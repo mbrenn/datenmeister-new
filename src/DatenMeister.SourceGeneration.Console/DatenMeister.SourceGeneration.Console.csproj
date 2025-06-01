@@ -28,7 +28,7 @@
     <ProjectReference Include="..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="BurnSystems.CommandLine" Version="1.2.0" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>

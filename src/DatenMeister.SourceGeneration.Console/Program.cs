@@ -1,6 +1,4 @@
-﻿using CommandLine;
-using CommandLine.Text;
-using DatenMeister.Core;
+﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -31,15 +29,19 @@ internal class Program
         }
         else
         {
-            var value = Parser.Default.ParseArguments<CommandOptions>(args);
-            value.WithParsed(x =>
+            var value = BurnSystems.CommandLine.Parser.ParseIntoOrShowUsage<CommandOptions>(args);
+            
+            if (value != null)
             {
-                if (CreateCodeForTypes(x.PathXml, x.PathTarget, x.Namespace).GetAwaiter().GetResult())
+                if (string.IsNullOrEmpty(value.XmiNamespace))
                 {
-                    System.Console.WriteLine("Sourcecode Generation finished");
+                    value.XmiNamespace = "dm:///_internal/types/internal";
                 }
-            });
-            value.WithNotParsed(_ => System.Console.WriteLine(HelpText.AutoBuild(value, h => h)));
+                
+                await CreateCodeForTypes(value);
+                
+                System.Console.WriteLine("Sourcecode Generation finished");
+            }
         }
     }
 
@@ -70,7 +72,12 @@ internal class Program
         await CleanUpProcedure.CleanUpExtent(
             $"{R}/../DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi",
             "dm:///intern.datenmeister.types/",
-            DryRun);*/
+            DryRun);
+        await CleanUpProcedure.CleanUpExtent(
+            pathXml,
+            "dm:///intern.datenmeister.forms/",
+            DryRun);
+            */
 
         System.Console.WriteLine("Perform the standard procedure.");
 
@@ -92,8 +99,11 @@ internal class Program
         return Task.CompletedTask;
     }
 
-    private static async Task<bool> CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)
+    private static async Task<bool> CreateCodeForTypes(CommandOptions options)
     {
+        var pathXml = options.PathXml;
+        var pathTarget = options.PathTarget;
+        var codeNamespace = options.CodeNamespace;
         System.Console.WriteLine("Reading from: " + pathXml);
         System.Console.WriteLine("Writing to  : " + pathTarget);
         System.Console.WriteLine();
@@ -104,18 +114,13 @@ internal class Program
             System.Console.WriteLine($"Current environment path: {Environment.CurrentDirectory}");
             return false;
         }
-            
-        await CleanUpProcedure.CleanUpExtent(
-            pathXml,
-            "dm:///intern.datenmeister.forms/",
-            DryRun);
 
         await using var dm = await GiveMeDatenMeister();
         var filename = Path.GetFileNameWithoutExtension(pathXml);
 
         var typeExtent = new MofUriExtent(
             XmiProvider.CreateByFile(pathXml),
-            "dm:///_internal/types/internal", null);
+            options.XmiNamespace, null);
 
         dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
 
@@ -129,12 +134,12 @@ internal class Program
         }
 
         await File.WriteAllTextAsync(Path.Combine(pathTarget, $"{filename}.ts"), generator.Result.ToString());
-        System.Console.WriteLine($"TypeScript Code for {theNamespace} written");
+        System.Console.WriteLine($"TypeScript Code for {codeNamespace} written");
 
         // Generates tree for StundenPlan
         var classGenerator = new ClassTreeGenerator
         {
-            Namespace = theNamespace
+            Namespace = codeNamespace
         };
 
         classGenerator.Walk(typeExtent);
@@ -148,7 +153,7 @@ internal class Program
         // Generates tree for StundenPlan
         var wrapperGenerator = new WrapperTreeGenerator
         {
-            Namespace = theNamespace
+            Namespace = codeNamespace
         };
 
         wrapperGenerator.Walk(typeExtent);
@@ -157,7 +162,7 @@ internal class Program
         var wrapperFileContent = wrapperGenerator.Result.ToString();
         await File.WriteAllTextAsync(pathOfWrapper, wrapperFileContent);
 
-        System.Console.WriteLine($"C#-Code for {theNamespace} written");
+        System.Console.WriteLine($"C#-Code for {codeNamespace} written");
 
         return true;
     }

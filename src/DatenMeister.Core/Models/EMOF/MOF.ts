@@ -7,12 +7,12 @@ export namespace _MOF
                 {
                 }
 
-                export const __URIExtent_Uri = "dm:///_internal/types/internal#_MOF-Identifiers-URIExtent";
+                export const __URIExtent_Uri = "dm:///_internal/model/uml#_MOF-Identifiers-URIExtent";
                 export class _Extent
                 {
                 }
 
-                export const __Extent_Uri = "dm:///_internal/types/internal#_MOF-Identifiers-Extent";
+                export const __Extent_Uri = "dm:///_internal/model/uml#_MOF-Identifiers-Extent";
         }
 
         export namespace _EMOF
@@ -29,7 +29,7 @@ export namespace _MOF
                     static owner = "owner";
                 }
 
-                export const __Tag_Uri = "dm:///_internal/types/internal#_MOF-CMOFExtension-Tag";
+                export const __Tag_Uri = "dm:///_internal/model/uml#_MOF-CMOFExtension-Tag";
         }
 
         export namespace _Extension
@@ -41,7 +41,7 @@ export namespace _MOF
                     static element = "element";
                 }
 
-                export const __Tag_Uri = "dm:///_internal/types/internal#_MOF-Extension-Tag";
+                export const __Tag_Uri = "dm:///_internal/model/uml#_MOF-Extension-Tag";
         }
 
         export namespace _Common
@@ -50,12 +50,12 @@ export namespace _MOF
                 {
                 }
 
-                export const __ReflectiveSequence_Uri = "dm:///_internal/types/internal#_MOF-Common-ReflectiveSequence";
+                export const __ReflectiveSequence_Uri = "dm:///_internal/model/uml#_MOF-Common-ReflectiveSequence";
                 export class _ReflectiveCollection
                 {
                 }
 
-                export const __ReflectiveCollection_Uri = "dm:///_internal/types/internal#_MOF-Common-ReflectiveCollection";
+                export const __ReflectiveCollection_Uri = "dm:///_internal/model/uml#_MOF-Common-ReflectiveCollection";
         }
 
         export namespace _CMOF
@@ -68,24 +68,24 @@ export namespace _MOF
                 {
                 }
 
-                export const __Factory_Uri = "dm:///_internal/types/internal#_MOF-CMOFReflection-Factory";
+                export const __Factory_Uri = "dm:///_internal/model/uml#_MOF-CMOFReflection-Factory";
                 export class _Element
                 {
                 }
 
-                export const __Element_Uri = "dm:///_internal/types/internal#_MOF-CMOFReflection-Element";
+                export const __Element_Uri = "dm:///_internal/model/uml#_MOF-CMOFReflection-Element";
                 export class _Argument
                 {
                     static _name_ = "name";
                     static value = "value";
                 }
 
-                export const __Argument_Uri = "dm:///_internal/types/internal#_MOF-CMOFReflection-Argument";
+                export const __Argument_Uri = "dm:///_internal/model/uml#_MOF-CMOFReflection-Argument";
                 export class _Extent
                 {
                 }
 
-                export const __Extent_Uri = "dm:///_internal/types/internal#_MOF-CMOFReflection-Extent";
+                export const __Extent_Uri = "dm:///_internal/model/uml#_MOF-CMOFReflection-Extent";
                 export class _Link
                 {
                     static firstElement = "firstElement";
@@ -93,7 +93,7 @@ export namespace _MOF
                     static association = "association";
                 }
 
-                export const __Link_Uri = "dm:///_internal/types/internal#_MOF-CMOFReflection-Link";
+                export const __Link_Uri = "dm:///_internal/model/uml#_MOF-CMOFReflection-Link";
                 export class _Exception
                 {
                     static objectInError = "objectInError";
@@ -101,7 +101,7 @@ export namespace _MOF
                     static description = "description";
                 }
 
-                export const __Exception_Uri = "dm:///_internal/types/internal#_MOF-CMOFReflection-Exception";
+                export const __Exception_Uri = "dm:///_internal/model/uml#_MOF-CMOFReflection-Exception";
         }
 
         export namespace _Reflection
@@ -111,23 +111,23 @@ export namespace _MOF
                     static _package_ = "package";
                 }
 
-                export const __Factory_Uri = "dm:///_internal/types/internal#_MOF-Reflection-Factory";
+                export const __Factory_Uri = "dm:///_internal/model/uml#_MOF-Reflection-Factory";
                 export class _Type
                 {
                 }
 
-                export const __Type_Uri = "dm:///_internal/types/internal#_MOF-Reflection-Type";
+                export const __Type_Uri = "dm:///_internal/model/uml#_MOF-Reflection-Type";
                 export class _Object
                 {
                 }
 
-                export const __Object_Uri = "dm:///_internal/types/internal#_MOF-Reflection-Object";
+                export const __Object_Uri = "dm:///_internal/model/uml#_MOF-Reflection-Object";
                 export class _Element
                 {
                     static metaclass = "metaclass";
                 }
 
-                export const __Element_Uri = "dm:///_internal/types/internal#_MOF-Reflection-Element";
+                export const __Element_Uri = "dm:///_internal/model/uml#_MOF-Reflection-Element";
         }
 
 }

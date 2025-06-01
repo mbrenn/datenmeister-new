@@ -74,7 +74,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __Activity_Uri = "dm:///_internal/types/internal#Activity";
+                export const __Activity_Uri = "dm:///_internal/model/mof#Activity";
                 export class _ActivityEdge
                 {
                     static activity = "activity";
@@ -101,7 +101,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ActivityEdge_Uri = "dm:///_internal/types/internal#ActivityEdge";
+                export const __ActivityEdge_Uri = "dm:///_internal/model/mof#ActivityEdge";
                 export class _ActivityFinalNode
                 {
                     static activity = "activity";
@@ -126,7 +126,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ActivityFinalNode_Uri = "dm:///_internal/types/internal#ActivityFinalNode";
+                export const __ActivityFinalNode_Uri = "dm:///_internal/model/mof#ActivityFinalNode";
                 export class _ActivityGroup
                 {
                     static containedEdge = "containedEdge";
@@ -145,7 +145,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ActivityGroup_Uri = "dm:///_internal/types/internal#ActivityGroup";
+                export const __ActivityGroup_Uri = "dm:///_internal/model/mof#ActivityGroup";
                 export class _ActivityNode
                 {
                     static activity = "activity";
@@ -170,7 +170,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ActivityNode_Uri = "dm:///_internal/types/internal#ActivityNode";
+                export const __ActivityNode_Uri = "dm:///_internal/model/mof#ActivityNode";
                 export class _ActivityParameterNode
                 {
                     static parameter = "parameter";
@@ -202,7 +202,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __ActivityParameterNode_Uri = "dm:///_internal/types/internal#ActivityParameterNode";
+                export const __ActivityParameterNode_Uri = "dm:///_internal/model/mof#ActivityParameterNode";
                 export class _ActivityPartition
                 {
                     static edge = "edge";
@@ -228,7 +228,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ActivityPartition_Uri = "dm:///_internal/types/internal#ActivityPartition";
+                export const __ActivityPartition_Uri = "dm:///_internal/model/mof#ActivityPartition";
                 export class _CentralBufferNode
                 {
                     static inState = "inState";
@@ -259,7 +259,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __CentralBufferNode_Uri = "dm:///_internal/types/internal#CentralBufferNode";
+                export const __CentralBufferNode_Uri = "dm:///_internal/model/mof#CentralBufferNode";
                 export class _ControlFlow
                 {
                     static activity = "activity";
@@ -286,7 +286,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ControlFlow_Uri = "dm:///_internal/types/internal#ControlFlow";
+                export const __ControlFlow_Uri = "dm:///_internal/model/mof#ControlFlow";
                 export class _ControlNode
                 {
                     static activity = "activity";
@@ -311,7 +311,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ControlNode_Uri = "dm:///_internal/types/internal#ControlNode";
+                export const __ControlNode_Uri = "dm:///_internal/model/mof#ControlNode";
                 export class _DataStoreNode
                 {
                     static inState = "inState";
@@ -342,7 +342,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __DataStoreNode_Uri = "dm:///_internal/types/internal#DataStoreNode";
+                export const __DataStoreNode_Uri = "dm:///_internal/model/mof#DataStoreNode";
                 export class _DecisionNode
                 {
                     static decisionInput = "decisionInput";
@@ -369,7 +369,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __DecisionNode_Uri = "dm:///_internal/types/internal#DecisionNode";
+                export const __DecisionNode_Uri = "dm:///_internal/model/mof#DecisionNode";
                 export class _ExceptionHandler
                 {
                     static exceptionInput = "exceptionInput";
@@ -381,7 +381,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ExceptionHandler_Uri = "dm:///_internal/types/internal#ExceptionHandler";
+                export const __ExceptionHandler_Uri = "dm:///_internal/model/mof#ExceptionHandler";
                 export class _ExecutableNode
                 {
                     static handler = "handler";
@@ -407,7 +407,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ExecutableNode_Uri = "dm:///_internal/types/internal#ExecutableNode";
+                export const __ExecutableNode_Uri = "dm:///_internal/model/mof#ExecutableNode";
                 export class _FinalNode
                 {
                     static activity = "activity";
@@ -432,7 +432,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __FinalNode_Uri = "dm:///_internal/types/internal#FinalNode";
+                export const __FinalNode_Uri = "dm:///_internal/model/mof#FinalNode";
                 export class _FlowFinalNode
                 {
                     static activity = "activity";
@@ -457,7 +457,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __FlowFinalNode_Uri = "dm:///_internal/types/internal#FlowFinalNode";
+                export const __FlowFinalNode_Uri = "dm:///_internal/model/mof#FlowFinalNode";
                 export class _ForkNode
                 {
                     static activity = "activity";
@@ -482,7 +482,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ForkNode_Uri = "dm:///_internal/types/internal#ForkNode";
+                export const __ForkNode_Uri = "dm:///_internal/model/mof#ForkNode";
                 export class _InitialNode
                 {
                     static activity = "activity";
@@ -507,7 +507,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __InitialNode_Uri = "dm:///_internal/types/internal#InitialNode";
+                export const __InitialNode_Uri = "dm:///_internal/model/mof#InitialNode";
                 export class _InterruptibleActivityRegion
                 {
                     static interruptingEdge = "interruptingEdge";
@@ -528,7 +528,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __InterruptibleActivityRegion_Uri = "dm:///_internal/types/internal#InterruptibleActivityRegion";
+                export const __InterruptibleActivityRegion_Uri = "dm:///_internal/model/mof#InterruptibleActivityRegion";
                 export class _JoinNode
                 {
                     static isCombineDuplicate = "isCombineDuplicate";
@@ -555,7 +555,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __JoinNode_Uri = "dm:///_internal/types/internal#JoinNode";
+                export const __JoinNode_Uri = "dm:///_internal/model/mof#JoinNode";
                 export class _MergeNode
                 {
                     static activity = "activity";
@@ -580,7 +580,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __MergeNode_Uri = "dm:///_internal/types/internal#MergeNode";
+                export const __MergeNode_Uri = "dm:///_internal/model/mof#MergeNode";
                 export class _ObjectFlow
                 {
                     static isMulticast = "isMulticast";
@@ -611,7 +611,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ObjectFlow_Uri = "dm:///_internal/types/internal#ObjectFlow";
+                export const __ObjectFlow_Uri = "dm:///_internal/model/mof#ObjectFlow";
                 export class _ObjectNode
                 {
                     static inState = "inState";
@@ -642,7 +642,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __ObjectNode_Uri = "dm:///_internal/types/internal#ObjectNode";
+                export const __ObjectNode_Uri = "dm:///_internal/model/mof#ObjectNode";
                 export class _Variable
                 {
                     static activityScope = "activityScope";
@@ -668,7 +668,7 @@ export namespace _UML
                     static upperValue = "upperValue";
                 }
 
-                export const __Variable_Uri = "dm:///_internal/types/internal#Variable";
+                export const __Variable_Uri = "dm:///_internal/model/mof#Variable";
                 export module _ObjectNodeOrderingKind
                 {
                     export const unordered = "unordered";
@@ -707,7 +707,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __Duration_Uri = "dm:///_internal/types/internal#Duration";
+                export const __Duration_Uri = "dm:///_internal/model/mof#Duration";
                 export class _DurationConstraint
                 {
                     static firstEvent = "firstEvent";
@@ -727,7 +727,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __DurationConstraint_Uri = "dm:///_internal/types/internal#DurationConstraint";
+                export const __DurationConstraint_Uri = "dm:///_internal/model/mof#DurationConstraint";
                 export class _DurationInterval
                 {
                     static max = "max";
@@ -746,7 +746,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __DurationInterval_Uri = "dm:///_internal/types/internal#DurationInterval";
+                export const __DurationInterval_Uri = "dm:///_internal/model/mof#DurationInterval";
                 export class _DurationObservation
                 {
                     static event = "event";
@@ -764,7 +764,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __DurationObservation_Uri = "dm:///_internal/types/internal#DurationObservation";
+                export const __DurationObservation_Uri = "dm:///_internal/model/mof#DurationObservation";
                 export class _Expression
                 {
                     static operand = "operand";
@@ -783,7 +783,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __Expression_Uri = "dm:///_internal/types/internal#Expression";
+                export const __Expression_Uri = "dm:///_internal/model/mof#Expression";
                 export class _Interval
                 {
                     static max = "max";
@@ -802,7 +802,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __Interval_Uri = "dm:///_internal/types/internal#Interval";
+                export const __Interval_Uri = "dm:///_internal/model/mof#Interval";
                 export class _IntervalConstraint
                 {
                     static specification = "specification";
@@ -821,7 +821,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __IntervalConstraint_Uri = "dm:///_internal/types/internal#IntervalConstraint";
+                export const __IntervalConstraint_Uri = "dm:///_internal/model/mof#IntervalConstraint";
                 export class _LiteralBoolean
                 {
                     static value = "value";
@@ -839,7 +839,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __LiteralBoolean_Uri = "dm:///_internal/types/internal#LiteralBoolean";
+                export const __LiteralBoolean_Uri = "dm:///_internal/model/mof#LiteralBoolean";
                 export class _LiteralInteger
                 {
                     static value = "value";
@@ -857,7 +857,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __LiteralInteger_Uri = "dm:///_internal/types/internal#LiteralInteger";
+                export const __LiteralInteger_Uri = "dm:///_internal/model/mof#LiteralInteger";
                 export class _LiteralNull
                 {
                     static type = "type";
@@ -874,7 +874,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __LiteralNull_Uri = "dm:///_internal/types/internal#LiteralNull";
+                export const __LiteralNull_Uri = "dm:///_internal/model/mof#LiteralNull";
                 export class _LiteralReal
                 {
                     static value = "value";
@@ -892,7 +892,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __LiteralReal_Uri = "dm:///_internal/types/internal#LiteralReal";
+                export const __LiteralReal_Uri = "dm:///_internal/model/mof#LiteralReal";
                 export class _LiteralSpecification
                 {
                     static type = "type";
@@ -909,7 +909,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __LiteralSpecification_Uri = "dm:///_internal/types/internal#LiteralSpecification";
+                export const __LiteralSpecification_Uri = "dm:///_internal/model/mof#LiteralSpecification";
                 export class _LiteralString
                 {
                     static value = "value";
@@ -927,7 +927,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __LiteralString_Uri = "dm:///_internal/types/internal#LiteralString";
+                export const __LiteralString_Uri = "dm:///_internal/model/mof#LiteralString";
                 export class _LiteralUnlimitedNatural
                 {
                     static value = "value";
@@ -945,7 +945,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __LiteralUnlimitedNatural_Uri = "dm:///_internal/types/internal#LiteralUnlimitedNatural";
+                export const __LiteralUnlimitedNatural_Uri = "dm:///_internal/model/mof#LiteralUnlimitedNatural";
                 export class _Observation
                 {
                     static visibility = "visibility";
@@ -961,7 +961,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Observation_Uri = "dm:///_internal/types/internal#Observation";
+                export const __Observation_Uri = "dm:///_internal/model/mof#Observation";
                 export class _OpaqueExpression
                 {
                     static behavior = "behavior";
@@ -982,7 +982,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __OpaqueExpression_Uri = "dm:///_internal/types/internal#OpaqueExpression";
+                export const __OpaqueExpression_Uri = "dm:///_internal/model/mof#OpaqueExpression";
                 export class _StringExpression
                 {
                     static owningExpression = "owningExpression";
@@ -1005,7 +1005,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __StringExpression_Uri = "dm:///_internal/types/internal#StringExpression";
+                export const __StringExpression_Uri = "dm:///_internal/model/mof#StringExpression";
                 export class _TimeConstraint
                 {
                     static firstEvent = "firstEvent";
@@ -1025,7 +1025,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __TimeConstraint_Uri = "dm:///_internal/types/internal#TimeConstraint";
+                export const __TimeConstraint_Uri = "dm:///_internal/model/mof#TimeConstraint";
                 export class _TimeExpression
                 {
                     static expr = "expr";
@@ -1044,7 +1044,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __TimeExpression_Uri = "dm:///_internal/types/internal#TimeExpression";
+                export const __TimeExpression_Uri = "dm:///_internal/model/mof#TimeExpression";
                 export class _TimeInterval
                 {
                     static max = "max";
@@ -1063,7 +1063,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __TimeInterval_Uri = "dm:///_internal/types/internal#TimeInterval";
+                export const __TimeInterval_Uri = "dm:///_internal/model/mof#TimeInterval";
                 export class _TimeObservation
                 {
                     static event = "event";
@@ -1081,7 +1081,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __TimeObservation_Uri = "dm:///_internal/types/internal#TimeObservation";
+                export const __TimeObservation_Uri = "dm:///_internal/model/mof#TimeObservation";
                 export class _ValueSpecification
                 {
                     static type = "type";
@@ -1098,7 +1098,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __ValueSpecification_Uri = "dm:///_internal/types/internal#ValueSpecification";
+                export const __ValueSpecification_Uri = "dm:///_internal/model/mof#ValueSpecification";
         }
 
         export namespace _UseCases
@@ -1147,7 +1147,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Actor_Uri = "dm:///_internal/types/internal#Actor";
+                export const __Actor_Uri = "dm:///_internal/model/mof#Actor";
                 export class _Extend
                 {
                     static condition = "condition";
@@ -1168,7 +1168,7 @@ export namespace _UML
                     static relatedElement = "relatedElement";
                 }
 
-                export const __Extend_Uri = "dm:///_internal/types/internal#Extend";
+                export const __Extend_Uri = "dm:///_internal/model/mof#Extend";
                 export class _ExtensionPoint
                 {
                     static useCase = "useCase";
@@ -1186,7 +1186,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ExtensionPoint_Uri = "dm:///_internal/types/internal#ExtensionPoint";
+                export const __ExtensionPoint_Uri = "dm:///_internal/model/mof#ExtensionPoint";
                 export class _Include
                 {
                     static addition = "addition";
@@ -1205,7 +1205,7 @@ export namespace _UML
                     static visibility = "visibility";
                 }
 
-                export const __Include_Uri = "dm:///_internal/types/internal#Include";
+                export const __Include_Uri = "dm:///_internal/model/mof#Include";
                 export class _UseCase
                 {
                     static extend = "extend";
@@ -1254,7 +1254,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __UseCase_Uri = "dm:///_internal/types/internal#UseCase";
+                export const __UseCase_Uri = "dm:///_internal/model/mof#UseCase";
         }
 
         export namespace _StructuredClassifiers
@@ -1306,7 +1306,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Association_Uri = "dm:///_internal/types/internal#Association";
+                export const __Association_Uri = "dm:///_internal/model/mof#Association";
                 export class _AssociationClass
                 {
                     static extension = "extension";
@@ -1368,7 +1368,7 @@ export namespace _UML
                     static relatedElement = "relatedElement";
                 }
 
-                export const __AssociationClass_Uri = "dm:///_internal/types/internal#AssociationClass";
+                export const __AssociationClass_Uri = "dm:///_internal/model/mof#AssociationClass";
                 export class _Class
                 {
                     static extension = "extension";
@@ -1424,7 +1424,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __Class_Uri = "dm:///_internal/types/internal#Class";
+                export const __Class_Uri = "dm:///_internal/model/mof#Class";
                 export class _Collaboration
                 {
                     static collaborationRole = "collaborationRole";
@@ -1474,7 +1474,7 @@ export namespace _UML
                     static ownedBehavior = "ownedBehavior";
                 }
 
-                export const __Collaboration_Uri = "dm:///_internal/types/internal#Collaboration";
+                export const __Collaboration_Uri = "dm:///_internal/model/mof#Collaboration";
                 export class _CollaborationUse
                 {
                     static roleBinding = "roleBinding";
@@ -1490,7 +1490,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CollaborationUse_Uri = "dm:///_internal/types/internal#CollaborationUse";
+                export const __CollaborationUse_Uri = "dm:///_internal/model/mof#CollaborationUse";
                 export class _Component
                 {
                     static isIndirectlyInstantiated = "isIndirectlyInstantiated";
@@ -1551,7 +1551,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __Component_Uri = "dm:///_internal/types/internal#Component";
+                export const __Component_Uri = "dm:///_internal/model/mof#Component";
                 export class _ComponentRealization
                 {
                     static abstraction = "abstraction";
@@ -1575,7 +1575,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __ComponentRealization_Uri = "dm:///_internal/types/internal#ComponentRealization";
+                export const __ComponentRealization_Uri = "dm:///_internal/model/mof#ComponentRealization";
                 export class _ConnectableElement
                 {
                     static end = "end";
@@ -1593,7 +1593,7 @@ export namespace _UML
                     static owningTemplateParameter = "owningTemplateParameter";
                 }
 
-                export const __ConnectableElement_Uri = "dm:///_internal/types/internal#ConnectableElement";
+                export const __ConnectableElement_Uri = "dm:///_internal/model/mof#ConnectableElement";
                 export class _ConnectableElementTemplateParameter
                 {
                     static parameteredElement = "parameteredElement";
@@ -1606,7 +1606,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ConnectableElementTemplateParameter_Uri = "dm:///_internal/types/internal#ConnectableElementTemplateParameter";
+                export const __ConnectableElementTemplateParameter_Uri = "dm:///_internal/model/mof#ConnectableElementTemplateParameter";
                 export class _Connector
                 {
                     static contract = "contract";
@@ -1630,7 +1630,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Connector_Uri = "dm:///_internal/types/internal#Connector";
+                export const __Connector_Uri = "dm:///_internal/model/mof#Connector";
                 export class _ConnectorEnd
                 {
                     static definingEnd = "definingEnd";
@@ -1647,7 +1647,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ConnectorEnd_Uri = "dm:///_internal/types/internal#ConnectorEnd";
+                export const __ConnectorEnd_Uri = "dm:///_internal/model/mof#ConnectorEnd";
                 export class _EncapsulatedClassifier
                 {
                     static ownedPort = "ownedPort";
@@ -1694,7 +1694,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __EncapsulatedClassifier_Uri = "dm:///_internal/types/internal#EncapsulatedClassifier";
+                export const __EncapsulatedClassifier_Uri = "dm:///_internal/model/mof#EncapsulatedClassifier";
                 export class _Port
                 {
                     static isBehavior = "isBehavior";
@@ -1749,7 +1749,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Port_Uri = "dm:///_internal/types/internal#Port";
+                export const __Port_Uri = "dm:///_internal/model/mof#Port";
                 export class _StructuredClassifier
                 {
                     static ownedAttribute = "ownedAttribute";
@@ -1795,7 +1795,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __StructuredClassifier_Uri = "dm:///_internal/types/internal#StructuredClassifier";
+                export const __StructuredClassifier_Uri = "dm:///_internal/model/mof#StructuredClassifier";
                 export module _ConnectorKind
                 {
                     export const assembly = "assembly";
@@ -1831,7 +1831,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ConnectionPointReference_Uri = "dm:///_internal/types/internal#ConnectionPointReference";
+                export const __ConnectionPointReference_Uri = "dm:///_internal/model/mof#ConnectionPointReference";
                 export class _FinalState
                 {
                     static connection = "connection";
@@ -1871,7 +1871,7 @@ export namespace _UML
                     static outgoing = "outgoing";
                 }
 
-                export const __FinalState_Uri = "dm:///_internal/types/internal#FinalState";
+                export const __FinalState_Uri = "dm:///_internal/model/mof#FinalState";
                 export class _ProtocolConformance
                 {
                     static generalMachine = "generalMachine";
@@ -1884,7 +1884,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ProtocolConformance_Uri = "dm:///_internal/types/internal#ProtocolConformance";
+                export const __ProtocolConformance_Uri = "dm:///_internal/model/mof#ProtocolConformance";
                 export class _ProtocolStateMachine
                 {
                     static conformance = "conformance";
@@ -1953,7 +1953,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __ProtocolStateMachine_Uri = "dm:///_internal/types/internal#ProtocolStateMachine";
+                export const __ProtocolStateMachine_Uri = "dm:///_internal/model/mof#ProtocolStateMachine";
                 export class _ProtocolTransition
                 {
                     static postCondition = "postCondition";
@@ -1987,7 +1987,7 @@ export namespace _UML
                     static redefinedElement = "redefinedElement";
                 }
 
-                export const __ProtocolTransition_Uri = "dm:///_internal/types/internal#ProtocolTransition";
+                export const __ProtocolTransition_Uri = "dm:///_internal/model/mof#ProtocolTransition";
                 export class _Pseudostate
                 {
                     static kind = "kind";
@@ -2007,7 +2007,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Pseudostate_Uri = "dm:///_internal/types/internal#Pseudostate";
+                export const __Pseudostate_Uri = "dm:///_internal/model/mof#Pseudostate";
                 export class _Region
                 {
                     static extendedRegion = "extendedRegion";
@@ -2035,7 +2035,7 @@ export namespace _UML
                     static redefinedElement = "redefinedElement";
                 }
 
-                export const __Region_Uri = "dm:///_internal/types/internal#Region";
+                export const __Region_Uri = "dm:///_internal/model/mof#Region";
                 export class _State
                 {
                     static connection = "connection";
@@ -2075,7 +2075,7 @@ export namespace _UML
                     static outgoing = "outgoing";
                 }
 
-                export const __State_Uri = "dm:///_internal/types/internal#State";
+                export const __State_Uri = "dm:///_internal/model/mof#State";
                 export class _StateMachine
                 {
                     static connectionPoint = "connectionPoint";
@@ -2143,7 +2143,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __StateMachine_Uri = "dm:///_internal/types/internal#StateMachine";
+                export const __StateMachine_Uri = "dm:///_internal/model/mof#StateMachine";
                 export class _Transition
                 {
                     static container = "container";
@@ -2174,7 +2174,7 @@ export namespace _UML
                     static redefinedElement = "redefinedElement";
                 }
 
-                export const __Transition_Uri = "dm:///_internal/types/internal#Transition";
+                export const __Transition_Uri = "dm:///_internal/model/mof#Transition";
                 export class _Vertex
                 {
                     static container = "container";
@@ -2191,7 +2191,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Vertex_Uri = "dm:///_internal/types/internal#Vertex";
+                export const __Vertex_Uri = "dm:///_internal/model/mof#Vertex";
                 export module _PseudostateKind
                 {
                     export const initial = "initial";
@@ -2282,7 +2282,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __BehavioredClassifier_Uri = "dm:///_internal/types/internal#BehavioredClassifier";
+                export const __BehavioredClassifier_Uri = "dm:///_internal/model/mof#BehavioredClassifier";
                 export class _DataType
                 {
                     static ownedAttribute = "ownedAttribute";
@@ -2326,7 +2326,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __DataType_Uri = "dm:///_internal/types/internal#DataType";
+                export const __DataType_Uri = "dm:///_internal/model/mof#DataType";
                 export class _Enumeration
                 {
                     static ownedLiteral = "ownedLiteral";
@@ -2371,7 +2371,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Enumeration_Uri = "dm:///_internal/types/internal#Enumeration";
+                export const __Enumeration_Uri = "dm:///_internal/model/mof#Enumeration";
                 export class _EnumerationLiteral
                 {
                     static classifier = "classifier";
@@ -2393,7 +2393,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __EnumerationLiteral_Uri = "dm:///_internal/types/internal#EnumerationLiteral";
+                export const __EnumerationLiteral_Uri = "dm:///_internal/model/mof#EnumerationLiteral";
                 export class _Interface
                 {
                     static nestedClassifier = "nestedClassifier";
@@ -2441,7 +2441,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Interface_Uri = "dm:///_internal/types/internal#Interface";
+                export const __Interface_Uri = "dm:///_internal/model/mof#Interface";
                 export class _InterfaceRealization
                 {
                     static contract = "contract";
@@ -2465,7 +2465,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __InterfaceRealization_Uri = "dm:///_internal/types/internal#InterfaceRealization";
+                export const __InterfaceRealization_Uri = "dm:///_internal/model/mof#InterfaceRealization";
                 export class _PrimitiveType
                 {
                     static ownedAttribute = "ownedAttribute";
@@ -2509,7 +2509,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __PrimitiveType_Uri = "dm:///_internal/types/internal#PrimitiveType";
+                export const __PrimitiveType_Uri = "dm:///_internal/model/mof#PrimitiveType";
                 export class _Reception
                 {
                     static signal = "signal";
@@ -2541,7 +2541,7 @@ export namespace _UML
                     static packageImport = "packageImport";
                 }
 
-                export const __Reception_Uri = "dm:///_internal/types/internal#Reception";
+                export const __Reception_Uri = "dm:///_internal/model/mof#Reception";
                 export class _Signal
                 {
                     static ownedAttribute = "ownedAttribute";
@@ -2584,7 +2584,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Signal_Uri = "dm:///_internal/types/internal#Signal";
+                export const __Signal_Uri = "dm:///_internal/model/mof#Signal";
         }
 
         export namespace _Packages
@@ -2638,7 +2638,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Extension_Uri = "dm:///_internal/types/internal#Extension";
+                export const __Extension_Uri = "dm:///_internal/model/mof#Extension";
                 export class _ExtensionEnd
                 {
                     static lower = "lower";
@@ -2686,7 +2686,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __ExtensionEnd_Uri = "dm:///_internal/types/internal#ExtensionEnd";
+                export const __ExtensionEnd_Uri = "dm:///_internal/model/mof#ExtensionEnd";
                 export class _Image
                 {
                     static content = "content";
@@ -2697,7 +2697,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Image_Uri = "dm:///_internal/types/internal#Image";
+                export const __Image_Uri = "dm:///_internal/model/mof#Image";
                 export class _Model
                 {
                     static viewpoint = "viewpoint";
@@ -2730,7 +2730,7 @@ export namespace _UML
                     static packageImport = "packageImport";
                 }
 
-                export const __Model_Uri = "dm:///_internal/types/internal#Model";
+                export const __Model_Uri = "dm:///_internal/model/mof#Model";
                 export class _Package
                 {
                     static URI = "URI";
@@ -2762,7 +2762,7 @@ export namespace _UML
                     static packageImport = "packageImport";
                 }
 
-                export const __Package_Uri = "dm:///_internal/types/internal#Package";
+                export const __Package_Uri = "dm:///_internal/model/mof#Package";
                 export class _PackageMerge
                 {
                     static mergedPackage = "mergedPackage";
@@ -2775,7 +2775,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __PackageMerge_Uri = "dm:///_internal/types/internal#PackageMerge";
+                export const __PackageMerge_Uri = "dm:///_internal/model/mof#PackageMerge";
                 export class _Profile
                 {
                     static metaclassReference = "metaclassReference";
@@ -2809,7 +2809,7 @@ export namespace _UML
                     static packageImport = "packageImport";
                 }
 
-                export const __Profile_Uri = "dm:///_internal/types/internal#Profile";
+                export const __Profile_Uri = "dm:///_internal/model/mof#Profile";
                 export class _ProfileApplication
                 {
                     static appliedProfile = "appliedProfile";
@@ -2823,7 +2823,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ProfileApplication_Uri = "dm:///_internal/types/internal#ProfileApplication";
+                export const __ProfileApplication_Uri = "dm:///_internal/model/mof#ProfileApplication";
                 export class _Stereotype
                 {
                     static icon = "icon";
@@ -2881,7 +2881,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __Stereotype_Uri = "dm:///_internal/types/internal#Stereotype";
+                export const __Stereotype_Uri = "dm:///_internal/model/mof#Stereotype";
         }
 
         export namespace _Interactions
@@ -2906,7 +2906,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ActionExecutionSpecification_Uri = "dm:///_internal/types/internal#ActionExecutionSpecification";
+                export const __ActionExecutionSpecification_Uri = "dm:///_internal/model/mof#ActionExecutionSpecification";
                 export class _BehaviorExecutionSpecification
                 {
                     static behavior = "behavior";
@@ -2927,7 +2927,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __BehaviorExecutionSpecification_Uri = "dm:///_internal/types/internal#BehaviorExecutionSpecification";
+                export const __BehaviorExecutionSpecification_Uri = "dm:///_internal/model/mof#BehaviorExecutionSpecification";
                 export class _CombinedFragment
                 {
                     static cfragmentGate = "cfragmentGate";
@@ -2948,7 +2948,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CombinedFragment_Uri = "dm:///_internal/types/internal#CombinedFragment";
+                export const __CombinedFragment_Uri = "dm:///_internal/model/mof#CombinedFragment";
                 export class _ConsiderIgnoreFragment
                 {
                     static message = "message";
@@ -2970,7 +2970,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ConsiderIgnoreFragment_Uri = "dm:///_internal/types/internal#ConsiderIgnoreFragment";
+                export const __ConsiderIgnoreFragment_Uri = "dm:///_internal/model/mof#ConsiderIgnoreFragment";
                 export class _Continuation
                 {
                     static setting = "setting";
@@ -2989,7 +2989,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Continuation_Uri = "dm:///_internal/types/internal#Continuation";
+                export const __Continuation_Uri = "dm:///_internal/model/mof#Continuation";
                 export class _DestructionOccurrenceSpecification
                 {
                     static message = "message";
@@ -3010,7 +3010,7 @@ export namespace _UML
                     static generalOrdering = "generalOrdering";
                 }
 
-                export const __DestructionOccurrenceSpecification_Uri = "dm:///_internal/types/internal#DestructionOccurrenceSpecification";
+                export const __DestructionOccurrenceSpecification_Uri = "dm:///_internal/model/mof#DestructionOccurrenceSpecification";
                 export class _ExecutionOccurrenceSpecification
                 {
                     static execution = "execution";
@@ -3031,7 +3031,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ExecutionOccurrenceSpecification_Uri = "dm:///_internal/types/internal#ExecutionOccurrenceSpecification";
+                export const __ExecutionOccurrenceSpecification_Uri = "dm:///_internal/model/mof#ExecutionOccurrenceSpecification";
                 export class _ExecutionSpecification
                 {
                     static finish = "finish";
@@ -3051,7 +3051,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ExecutionSpecification_Uri = "dm:///_internal/types/internal#ExecutionSpecification";
+                export const __ExecutionSpecification_Uri = "dm:///_internal/model/mof#ExecutionSpecification";
                 export class _Gate
                 {
                     static message = "message";
@@ -3066,7 +3066,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Gate_Uri = "dm:///_internal/types/internal#Gate";
+                export const __Gate_Uri = "dm:///_internal/model/mof#Gate";
                 export class _GeneralOrdering
                 {
                     static after = "after";
@@ -3082,7 +3082,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __GeneralOrdering_Uri = "dm:///_internal/types/internal#GeneralOrdering";
+                export const __GeneralOrdering_Uri = "dm:///_internal/model/mof#GeneralOrdering";
                 export class _Interaction
                 {
                     static action = "action";
@@ -3155,7 +3155,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __Interaction_Uri = "dm:///_internal/types/internal#Interaction";
+                export const __Interaction_Uri = "dm:///_internal/model/mof#Interaction";
                 export class _InteractionConstraint
                 {
                     static maxint = "maxint";
@@ -3176,7 +3176,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __InteractionConstraint_Uri = "dm:///_internal/types/internal#InteractionConstraint";
+                export const __InteractionConstraint_Uri = "dm:///_internal/model/mof#InteractionConstraint";
                 export class _InteractionFragment
                 {
                     static covered = "covered";
@@ -3194,7 +3194,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __InteractionFragment_Uri = "dm:///_internal/types/internal#InteractionFragment";
+                export const __InteractionFragment_Uri = "dm:///_internal/model/mof#InteractionFragment";
                 export class _InteractionOperand
                 {
                     static fragment = "fragment";
@@ -3220,7 +3220,7 @@ export namespace _UML
                     static packageImport = "packageImport";
                 }
 
-                export const __InteractionOperand_Uri = "dm:///_internal/types/internal#InteractionOperand";
+                export const __InteractionOperand_Uri = "dm:///_internal/model/mof#InteractionOperand";
                 export class _InteractionUse
                 {
                     static actualGate = "actualGate";
@@ -3243,7 +3243,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __InteractionUse_Uri = "dm:///_internal/types/internal#InteractionUse";
+                export const __InteractionUse_Uri = "dm:///_internal/model/mof#InteractionUse";
                 export class _Lifeline
                 {
                     static coveredBy = "coveredBy";
@@ -3262,7 +3262,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Lifeline_Uri = "dm:///_internal/types/internal#Lifeline";
+                export const __Lifeline_Uri = "dm:///_internal/model/mof#Lifeline";
                 export class _Message
                 {
                     static argument = "argument";
@@ -3284,7 +3284,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Message_Uri = "dm:///_internal/types/internal#Message";
+                export const __Message_Uri = "dm:///_internal/model/mof#Message";
                 export class _MessageEnd
                 {
                     static message = "message";
@@ -3299,7 +3299,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __MessageEnd_Uri = "dm:///_internal/types/internal#MessageEnd";
+                export const __MessageEnd_Uri = "dm:///_internal/model/mof#MessageEnd";
                 export class _MessageOccurrenceSpecification
                 {
                     static message = "message";
@@ -3320,7 +3320,7 @@ export namespace _UML
                     static generalOrdering = "generalOrdering";
                 }
 
-                export const __MessageOccurrenceSpecification_Uri = "dm:///_internal/types/internal#MessageOccurrenceSpecification";
+                export const __MessageOccurrenceSpecification_Uri = "dm:///_internal/model/mof#MessageOccurrenceSpecification";
                 export class _OccurrenceSpecification
                 {
                     static covered = "covered";
@@ -3340,7 +3340,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __OccurrenceSpecification_Uri = "dm:///_internal/types/internal#OccurrenceSpecification";
+                export const __OccurrenceSpecification_Uri = "dm:///_internal/model/mof#OccurrenceSpecification";
                 export class _PartDecomposition
                 {
                     static actualGate = "actualGate";
@@ -3363,7 +3363,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __PartDecomposition_Uri = "dm:///_internal/types/internal#PartDecomposition";
+                export const __PartDecomposition_Uri = "dm:///_internal/model/mof#PartDecomposition";
                 export class _StateInvariant
                 {
                     static covered = "covered";
@@ -3382,7 +3382,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __StateInvariant_Uri = "dm:///_internal/types/internal#StateInvariant";
+                export const __StateInvariant_Uri = "dm:///_internal/model/mof#StateInvariant";
                 export module _InteractionOperatorKind
                 {
                     export const seq = "seq";
@@ -3480,7 +3480,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __InformationFlow_Uri = "dm:///_internal/types/internal#InformationFlow";
+                export const __InformationFlow_Uri = "dm:///_internal/model/mof#InformationFlow";
                 export class _InformationItem
                 {
                     static represented = "represented";
@@ -3523,7 +3523,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __InformationItem_Uri = "dm:///_internal/types/internal#InformationItem";
+                export const __InformationItem_Uri = "dm:///_internal/model/mof#InformationItem";
         }
 
         export namespace _Deployments
@@ -3574,7 +3574,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Artifact_Uri = "dm:///_internal/types/internal#Artifact";
+                export const __Artifact_Uri = "dm:///_internal/model/mof#Artifact";
                 export class _CommunicationPath
                 {
                     static endType = "endType";
@@ -3622,7 +3622,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __CommunicationPath_Uri = "dm:///_internal/types/internal#CommunicationPath";
+                export const __CommunicationPath_Uri = "dm:///_internal/model/mof#CommunicationPath";
                 export class _DeployedArtifact
                 {
                     static clientDependency = "clientDependency";
@@ -3636,7 +3636,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __DeployedArtifact_Uri = "dm:///_internal/types/internal#DeployedArtifact";
+                export const __DeployedArtifact_Uri = "dm:///_internal/model/mof#DeployedArtifact";
                 export class _Deployment
                 {
                     static configuration = "configuration";
@@ -3660,7 +3660,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Deployment_Uri = "dm:///_internal/types/internal#Deployment";
+                export const __Deployment_Uri = "dm:///_internal/model/mof#Deployment";
                 export class _DeploymentSpecification
                 {
                     static deployment = "deployment";
@@ -3710,7 +3710,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __DeploymentSpecification_Uri = "dm:///_internal/types/internal#DeploymentSpecification";
+                export const __DeploymentSpecification_Uri = "dm:///_internal/model/mof#DeploymentSpecification";
                 export class _DeploymentTarget
                 {
                     static deployedElement = "deployedElement";
@@ -3726,7 +3726,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __DeploymentTarget_Uri = "dm:///_internal/types/internal#DeploymentTarget";
+                export const __DeploymentTarget_Uri = "dm:///_internal/model/mof#DeploymentTarget";
                 export class _Device
                 {
                     static nestedNode = "nestedNode";
@@ -3785,7 +3785,7 @@ export namespace _UML
                     static deployment = "deployment";
                 }
 
-                export const __Device_Uri = "dm:///_internal/types/internal#Device";
+                export const __Device_Uri = "dm:///_internal/model/mof#Device";
                 export class _ExecutionEnvironment
                 {
                     static nestedNode = "nestedNode";
@@ -3844,7 +3844,7 @@ export namespace _UML
                     static deployment = "deployment";
                 }
 
-                export const __ExecutionEnvironment_Uri = "dm:///_internal/types/internal#ExecutionEnvironment";
+                export const __ExecutionEnvironment_Uri = "dm:///_internal/model/mof#ExecutionEnvironment";
                 export class _Manifestation
                 {
                     static utilizedElement = "utilizedElement";
@@ -3867,7 +3867,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Manifestation_Uri = "dm:///_internal/types/internal#Manifestation";
+                export const __Manifestation_Uri = "dm:///_internal/model/mof#Manifestation";
                 export class _Node
                 {
                     static nestedNode = "nestedNode";
@@ -3926,7 +3926,7 @@ export namespace _UML
                     static deployment = "deployment";
                 }
 
-                export const __Node_Uri = "dm:///_internal/types/internal#Node";
+                export const __Node_Uri = "dm:///_internal/model/mof#Node";
         }
 
         export namespace _CommonStructure
@@ -3952,7 +3952,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Abstraction_Uri = "dm:///_internal/types/internal#Abstraction";
+                export const __Abstraction_Uri = "dm:///_internal/model/mof#Abstraction";
                 export class _Comment
                 {
                     static annotatedElement = "annotatedElement";
@@ -3962,7 +3962,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Comment_Uri = "dm:///_internal/types/internal#Comment";
+                export const __Comment_Uri = "dm:///_internal/model/mof#Comment";
                 export class _Constraint
                 {
                     static constrainedElement = "constrainedElement";
@@ -3981,7 +3981,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Constraint_Uri = "dm:///_internal/types/internal#Constraint";
+                export const __Constraint_Uri = "dm:///_internal/model/mof#Constraint";
                 export class _Dependency
                 {
                     static client = "client";
@@ -4002,7 +4002,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Dependency_Uri = "dm:///_internal/types/internal#Dependency";
+                export const __Dependency_Uri = "dm:///_internal/model/mof#Dependency";
                 export class _DirectedRelationship
                 {
                     static source = "source";
@@ -4013,7 +4013,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __DirectedRelationship_Uri = "dm:///_internal/types/internal#DirectedRelationship";
+                export const __DirectedRelationship_Uri = "dm:///_internal/model/mof#DirectedRelationship";
                 export class _Element
                 {
                     static ownedComment = "ownedComment";
@@ -4021,7 +4021,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Element_Uri = "dm:///_internal/types/internal#Element";
+                export const __Element_Uri = "dm:///_internal/model/mof#Element";
                 export class _ElementImport
                 {
                     static alias = "alias";
@@ -4036,7 +4036,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ElementImport_Uri = "dm:///_internal/types/internal#ElementImport";
+                export const __ElementImport_Uri = "dm:///_internal/model/mof#ElementImport";
                 export class _MultiplicityElement
                 {
                     static isOrdered = "isOrdered";
@@ -4050,7 +4050,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __MultiplicityElement_Uri = "dm:///_internal/types/internal#MultiplicityElement";
+                export const __MultiplicityElement_Uri = "dm:///_internal/model/mof#MultiplicityElement";
                 export class _NamedElement
                 {
                     static clientDependency = "clientDependency";
@@ -4064,7 +4064,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __NamedElement_Uri = "dm:///_internal/types/internal#NamedElement";
+                export const __NamedElement_Uri = "dm:///_internal/model/mof#NamedElement";
                 export class _Namespace
                 {
                     static elementImport = "elementImport";
@@ -4084,7 +4084,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Namespace_Uri = "dm:///_internal/types/internal#Namespace";
+                export const __Namespace_Uri = "dm:///_internal/model/mof#Namespace";
                 export class _PackageableElement
                 {
                     static visibility = "visibility";
@@ -4100,7 +4100,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __PackageableElement_Uri = "dm:///_internal/types/internal#PackageableElement";
+                export const __PackageableElement_Uri = "dm:///_internal/model/mof#PackageableElement";
                 export class _PackageImport
                 {
                     static importedPackage = "importedPackage";
@@ -4114,7 +4114,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __PackageImport_Uri = "dm:///_internal/types/internal#PackageImport";
+                export const __PackageImport_Uri = "dm:///_internal/model/mof#PackageImport";
                 export class _ParameterableElement
                 {
                     static owningTemplateParameter = "owningTemplateParameter";
@@ -4124,7 +4124,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ParameterableElement_Uri = "dm:///_internal/types/internal#ParameterableElement";
+                export const __ParameterableElement_Uri = "dm:///_internal/model/mof#ParameterableElement";
                 export class _Realization
                 {
                     static mapping = "mapping";
@@ -4146,7 +4146,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Realization_Uri = "dm:///_internal/types/internal#Realization";
+                export const __Realization_Uri = "dm:///_internal/model/mof#Realization";
                 export class _Relationship
                 {
                     static relatedElement = "relatedElement";
@@ -4155,7 +4155,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Relationship_Uri = "dm:///_internal/types/internal#Relationship";
+                export const __Relationship_Uri = "dm:///_internal/model/mof#Relationship";
                 export class _TemplateableElement
                 {
                     static ownedTemplateSignature = "ownedTemplateSignature";
@@ -4165,7 +4165,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __TemplateableElement_Uri = "dm:///_internal/types/internal#TemplateableElement";
+                export const __TemplateableElement_Uri = "dm:///_internal/model/mof#TemplateableElement";
                 export class _TemplateBinding
                 {
                     static boundElement = "boundElement";
@@ -4179,7 +4179,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __TemplateBinding_Uri = "dm:///_internal/types/internal#TemplateBinding";
+                export const __TemplateBinding_Uri = "dm:///_internal/model/mof#TemplateBinding";
                 export class _TemplateParameter
                 {
                     static _default_ = "default";
@@ -4192,7 +4192,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __TemplateParameter_Uri = "dm:///_internal/types/internal#TemplateParameter";
+                export const __TemplateParameter_Uri = "dm:///_internal/model/mof#TemplateParameter";
                 export class _TemplateParameterSubstitution
                 {
                     static actual = "actual";
@@ -4204,7 +4204,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __TemplateParameterSubstitution_Uri = "dm:///_internal/types/internal#TemplateParameterSubstitution";
+                export const __TemplateParameterSubstitution_Uri = "dm:///_internal/model/mof#TemplateParameterSubstitution";
                 export class _TemplateSignature
                 {
                     static ownedParameter = "ownedParameter";
@@ -4215,7 +4215,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __TemplateSignature_Uri = "dm:///_internal/types/internal#TemplateSignature";
+                export const __TemplateSignature_Uri = "dm:///_internal/model/mof#TemplateSignature";
                 export class _Type
                 {
                     static _package_ = "package";
@@ -4232,7 +4232,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Type_Uri = "dm:///_internal/types/internal#Type";
+                export const __Type_Uri = "dm:///_internal/model/mof#Type";
                 export class _TypedElement
                 {
                     static type = "type";
@@ -4247,7 +4247,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __TypedElement_Uri = "dm:///_internal/types/internal#TypedElement";
+                export const __TypedElement_Uri = "dm:///_internal/model/mof#TypedElement";
                 export class _Usage
                 {
                     static client = "client";
@@ -4268,7 +4268,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Usage_Uri = "dm:///_internal/types/internal#Usage";
+                export const __Usage_Uri = "dm:///_internal/model/mof#Usage";
                 export module _VisibilityKind
                 {
                     export const _public_ = "public";
@@ -4304,7 +4304,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __AnyReceiveEvent_Uri = "dm:///_internal/types/internal#AnyReceiveEvent";
+                export const __AnyReceiveEvent_Uri = "dm:///_internal/model/mof#AnyReceiveEvent";
                 export class _Behavior
                 {
                     static context = "context";
@@ -4368,7 +4368,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __Behavior_Uri = "dm:///_internal/types/internal#Behavior";
+                export const __Behavior_Uri = "dm:///_internal/model/mof#Behavior";
                 export class _CallEvent
                 {
                     static operation = "operation";
@@ -4385,7 +4385,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __CallEvent_Uri = "dm:///_internal/types/internal#CallEvent";
+                export const __CallEvent_Uri = "dm:///_internal/model/mof#CallEvent";
                 export class _ChangeEvent
                 {
                     static changeExpression = "changeExpression";
@@ -4402,7 +4402,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __ChangeEvent_Uri = "dm:///_internal/types/internal#ChangeEvent";
+                export const __ChangeEvent_Uri = "dm:///_internal/model/mof#ChangeEvent";
                 export class _Event
                 {
                     static visibility = "visibility";
@@ -4418,7 +4418,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Event_Uri = "dm:///_internal/types/internal#Event";
+                export const __Event_Uri = "dm:///_internal/model/mof#Event";
                 export class _FunctionBehavior
                 {
                     static body = "body";
@@ -4484,7 +4484,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __FunctionBehavior_Uri = "dm:///_internal/types/internal#FunctionBehavior";
+                export const __FunctionBehavior_Uri = "dm:///_internal/model/mof#FunctionBehavior";
                 export class _MessageEvent
                 {
                     static visibility = "visibility";
@@ -4500,7 +4500,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __MessageEvent_Uri = "dm:///_internal/types/internal#MessageEvent";
+                export const __MessageEvent_Uri = "dm:///_internal/model/mof#MessageEvent";
                 export class _OpaqueBehavior
                 {
                     static body = "body";
@@ -4566,7 +4566,7 @@ export namespace _UML
                     static role = "role";
                 }
 
-                export const __OpaqueBehavior_Uri = "dm:///_internal/types/internal#OpaqueBehavior";
+                export const __OpaqueBehavior_Uri = "dm:///_internal/model/mof#OpaqueBehavior";
                 export class _SignalEvent
                 {
                     static signal = "signal";
@@ -4583,7 +4583,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __SignalEvent_Uri = "dm:///_internal/types/internal#SignalEvent";
+                export const __SignalEvent_Uri = "dm:///_internal/model/mof#SignalEvent";
                 export class _TimeEvent
                 {
                     static isRelative = "isRelative";
@@ -4601,7 +4601,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __TimeEvent_Uri = "dm:///_internal/types/internal#TimeEvent";
+                export const __TimeEvent_Uri = "dm:///_internal/model/mof#TimeEvent";
                 export class _Trigger
                 {
                     static event = "event";
@@ -4617,7 +4617,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Trigger_Uri = "dm:///_internal/types/internal#Trigger";
+                export const __Trigger_Uri = "dm:///_internal/model/mof#Trigger";
         }
 
         export namespace _Classification
@@ -4645,7 +4645,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __Substitution_Uri = "dm:///_internal/types/internal#Substitution";
+                export const __Substitution_Uri = "dm:///_internal/model/mof#Substitution";
                 export class _BehavioralFeature
                 {
                     static concurrency = "concurrency";
@@ -4676,7 +4676,7 @@ export namespace _UML
                     static packageImport = "packageImport";
                 }
 
-                export const __BehavioralFeature_Uri = "dm:///_internal/types/internal#BehavioralFeature";
+                export const __BehavioralFeature_Uri = "dm:///_internal/model/mof#BehavioralFeature";
                 export class _Classifier
                 {
                     static attribute = "attribute";
@@ -4718,7 +4718,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Classifier_Uri = "dm:///_internal/types/internal#Classifier";
+                export const __Classifier_Uri = "dm:///_internal/model/mof#Classifier";
                 export class _ClassifierTemplateParameter
                 {
                     static allowSubstitutable = "allowSubstitutable";
@@ -4733,7 +4733,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ClassifierTemplateParameter_Uri = "dm:///_internal/types/internal#ClassifierTemplateParameter";
+                export const __ClassifierTemplateParameter_Uri = "dm:///_internal/model/mof#ClassifierTemplateParameter";
                 export class _Feature
                 {
                     static featuringClassifier = "featuringClassifier";
@@ -4752,7 +4752,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Feature_Uri = "dm:///_internal/types/internal#Feature";
+                export const __Feature_Uri = "dm:///_internal/model/mof#Feature";
                 export class _Generalization
                 {
                     static general = "general";
@@ -4767,7 +4767,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Generalization_Uri = "dm:///_internal/types/internal#Generalization";
+                export const __Generalization_Uri = "dm:///_internal/model/mof#Generalization";
                 export class _GeneralizationSet
                 {
                     static generalization = "generalization";
@@ -4787,7 +4787,7 @@ export namespace _UML
                     static qualifiedName = "qualifiedName";
                 }
 
-                export const __GeneralizationSet_Uri = "dm:///_internal/types/internal#GeneralizationSet";
+                export const __GeneralizationSet_Uri = "dm:///_internal/model/mof#GeneralizationSet";
                 export class _InstanceSpecification
                 {
                     static classifier = "classifier";
@@ -4808,7 +4808,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __InstanceSpecification_Uri = "dm:///_internal/types/internal#InstanceSpecification";
+                export const __InstanceSpecification_Uri = "dm:///_internal/model/mof#InstanceSpecification";
                 export class _InstanceValue
                 {
                     static instance = "instance";
@@ -4826,7 +4826,7 @@ export namespace _UML
                     static templateParameter = "templateParameter";
                 }
 
-                export const __InstanceValue_Uri = "dm:///_internal/types/internal#InstanceValue";
+                export const __InstanceValue_Uri = "dm:///_internal/model/mof#InstanceValue";
                 export class _Operation
                 {
                     static bodyCondition = "bodyCondition";
@@ -4874,7 +4874,7 @@ export namespace _UML
                     static packageImport = "packageImport";
                 }
 
-                export const __Operation_Uri = "dm:///_internal/types/internal#Operation";
+                export const __Operation_Uri = "dm:///_internal/model/mof#Operation";
                 export class _OperationTemplateParameter
                 {
                     static parameteredElement = "parameteredElement";
@@ -4887,7 +4887,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __OperationTemplateParameter_Uri = "dm:///_internal/types/internal#OperationTemplateParameter";
+                export const __OperationTemplateParameter_Uri = "dm:///_internal/model/mof#OperationTemplateParameter";
                 export class _Parameter
                 {
                     static _default_ = "default";
@@ -4919,7 +4919,7 @@ export namespace _UML
                     static owningTemplateParameter = "owningTemplateParameter";
                 }
 
-                export const __Parameter_Uri = "dm:///_internal/types/internal#Parameter";
+                export const __Parameter_Uri = "dm:///_internal/model/mof#Parameter";
                 export class _ParameterSet
                 {
                     static condition = "condition";
@@ -4935,7 +4935,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ParameterSet_Uri = "dm:///_internal/types/internal#ParameterSet";
+                export const __ParameterSet_Uri = "dm:///_internal/model/mof#ParameterSet";
                 export class _Property
                 {
                     static aggregation = "aggregation";
@@ -4983,7 +4983,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __Property_Uri = "dm:///_internal/types/internal#Property";
+                export const __Property_Uri = "dm:///_internal/model/mof#Property";
                 export class _RedefinableElement
                 {
                     static isLeaf = "isLeaf";
@@ -5000,7 +5000,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __RedefinableElement_Uri = "dm:///_internal/types/internal#RedefinableElement";
+                export const __RedefinableElement_Uri = "dm:///_internal/model/mof#RedefinableElement";
                 export class _RedefinableTemplateSignature
                 {
                     static classifier = "classifier";
@@ -5023,7 +5023,7 @@ export namespace _UML
                     static template = "template";
                 }
 
-                export const __RedefinableTemplateSignature_Uri = "dm:///_internal/types/internal#RedefinableTemplateSignature";
+                export const __RedefinableTemplateSignature_Uri = "dm:///_internal/model/mof#RedefinableTemplateSignature";
                 export class _Slot
                 {
                     static definingFeature = "definingFeature";
@@ -5034,7 +5034,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Slot_Uri = "dm:///_internal/types/internal#Slot";
+                export const __Slot_Uri = "dm:///_internal/model/mof#Slot";
                 export class _StructuralFeature
                 {
                     static isReadOnly = "isReadOnly";
@@ -5061,7 +5061,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __StructuralFeature_Uri = "dm:///_internal/types/internal#StructuralFeature";
+                export const __StructuralFeature_Uri = "dm:///_internal/model/mof#StructuralFeature";
                 export module _AggregationKind
                 {
                     export const none = "none";
@@ -5159,7 +5159,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ValueSpecificationAction_Uri = "dm:///_internal/types/internal#ValueSpecificationAction";
+                export const __ValueSpecificationAction_Uri = "dm:///_internal/model/mof#ValueSpecificationAction";
                 export class _VariableAction
                 {
                     static variable = "variable";
@@ -5192,7 +5192,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __VariableAction_Uri = "dm:///_internal/types/internal#VariableAction";
+                export const __VariableAction_Uri = "dm:///_internal/model/mof#VariableAction";
                 export class _WriteLinkAction
                 {
                     static endData = "endData";
@@ -5226,7 +5226,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __WriteLinkAction_Uri = "dm:///_internal/types/internal#WriteLinkAction";
+                export const __WriteLinkAction_Uri = "dm:///_internal/model/mof#WriteLinkAction";
                 export class _WriteStructuralFeatureAction
                 {
                     static result = "result";
@@ -5262,7 +5262,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __WriteStructuralFeatureAction_Uri = "dm:///_internal/types/internal#WriteStructuralFeatureAction";
+                export const __WriteStructuralFeatureAction_Uri = "dm:///_internal/model/mof#WriteStructuralFeatureAction";
                 export class _WriteVariableAction
                 {
                     static value = "value";
@@ -5296,7 +5296,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __WriteVariableAction_Uri = "dm:///_internal/types/internal#WriteVariableAction";
+                export const __WriteVariableAction_Uri = "dm:///_internal/model/mof#WriteVariableAction";
                 export module _ExpansionKind
                 {
                     export const parallel = "parallel";
@@ -5346,7 +5346,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __AcceptCallAction_Uri = "dm:///_internal/types/internal#AcceptCallAction";
+                export const __AcceptCallAction_Uri = "dm:///_internal/model/mof#AcceptCallAction";
                 export class _AcceptEventAction
                 {
                     static isUnmarshall = "isUnmarshall";
@@ -5381,7 +5381,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __AcceptEventAction_Uri = "dm:///_internal/types/internal#AcceptEventAction";
+                export const __AcceptEventAction_Uri = "dm:///_internal/model/mof#AcceptEventAction";
                 export class _Action
                 {
                     static context = "context";
@@ -5413,7 +5413,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Action_Uri = "dm:///_internal/types/internal#Action";
+                export const __Action_Uri = "dm:///_internal/model/mof#Action";
                 export class _ActionInputPin
                 {
                     static fromAction = "fromAction";
@@ -5452,7 +5452,7 @@ export namespace _UML
                     static upperValue = "upperValue";
                 }
 
-                export const __ActionInputPin_Uri = "dm:///_internal/types/internal#ActionInputPin";
+                export const __ActionInputPin_Uri = "dm:///_internal/model/mof#ActionInputPin";
                 export class _AddStructuralFeatureValueAction
                 {
                     static insertAt = "insertAt";
@@ -5490,7 +5490,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __AddStructuralFeatureValueAction_Uri = "dm:///_internal/types/internal#AddStructuralFeatureValueAction";
+                export const __AddStructuralFeatureValueAction_Uri = "dm:///_internal/model/mof#AddStructuralFeatureValueAction";
                 export class _AddVariableValueAction
                 {
                     static insertAt = "insertAt";
@@ -5526,7 +5526,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __AddVariableValueAction_Uri = "dm:///_internal/types/internal#AddVariableValueAction";
+                export const __AddVariableValueAction_Uri = "dm:///_internal/model/mof#AddVariableValueAction";
                 export class _BroadcastSignalAction
                 {
                     static signal = "signal";
@@ -5561,7 +5561,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __BroadcastSignalAction_Uri = "dm:///_internal/types/internal#BroadcastSignalAction";
+                export const __BroadcastSignalAction_Uri = "dm:///_internal/model/mof#BroadcastSignalAction";
                 export class _CallAction
                 {
                     static isSynchronous = "isSynchronous";
@@ -5597,7 +5597,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CallAction_Uri = "dm:///_internal/types/internal#CallAction";
+                export const __CallAction_Uri = "dm:///_internal/model/mof#CallAction";
                 export class _CallBehaviorAction
                 {
                     static behavior = "behavior";
@@ -5634,7 +5634,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CallBehaviorAction_Uri = "dm:///_internal/types/internal#CallBehaviorAction";
+                export const __CallBehaviorAction_Uri = "dm:///_internal/model/mof#CallBehaviorAction";
                 export class _CallOperationAction
                 {
                     static operation = "operation";
@@ -5672,7 +5672,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CallOperationAction_Uri = "dm:///_internal/types/internal#CallOperationAction";
+                export const __CallOperationAction_Uri = "dm:///_internal/model/mof#CallOperationAction";
                 export class _Clause
                 {
                     static body = "body";
@@ -5686,7 +5686,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __Clause_Uri = "dm:///_internal/types/internal#Clause";
+                export const __Clause_Uri = "dm:///_internal/model/mof#Clause";
                 export class _ClearAssociationAction
                 {
                     static association = "association";
@@ -5720,7 +5720,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ClearAssociationAction_Uri = "dm:///_internal/types/internal#ClearAssociationAction";
+                export const __ClearAssociationAction_Uri = "dm:///_internal/model/mof#ClearAssociationAction";
                 export class _ClearStructuralFeatureAction
                 {
                     static result = "result";
@@ -5755,7 +5755,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ClearStructuralFeatureAction_Uri = "dm:///_internal/types/internal#ClearStructuralFeatureAction";
+                export const __ClearStructuralFeatureAction_Uri = "dm:///_internal/model/mof#ClearStructuralFeatureAction";
                 export class _ClearVariableAction
                 {
                     static variable = "variable";
@@ -5788,7 +5788,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ClearVariableAction_Uri = "dm:///_internal/types/internal#ClearVariableAction";
+                export const __ClearVariableAction_Uri = "dm:///_internal/model/mof#ClearVariableAction";
                 export class _ConditionalNode
                 {
                     static clause = "clause";
@@ -5841,7 +5841,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __ConditionalNode_Uri = "dm:///_internal/types/internal#ConditionalNode";
+                export const __ConditionalNode_Uri = "dm:///_internal/model/mof#ConditionalNode";
                 export class _CreateLinkAction
                 {
                     static endData = "endData";
@@ -5875,7 +5875,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CreateLinkAction_Uri = "dm:///_internal/types/internal#CreateLinkAction";
+                export const __CreateLinkAction_Uri = "dm:///_internal/model/mof#CreateLinkAction";
                 export class _CreateLinkObjectAction
                 {
                     static result = "result";
@@ -5910,7 +5910,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CreateLinkObjectAction_Uri = "dm:///_internal/types/internal#CreateLinkObjectAction";
+                export const __CreateLinkObjectAction_Uri = "dm:///_internal/model/mof#CreateLinkObjectAction";
                 export class _CreateObjectAction
                 {
                     static classifier = "classifier";
@@ -5944,7 +5944,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __CreateObjectAction_Uri = "dm:///_internal/types/internal#CreateObjectAction";
+                export const __CreateObjectAction_Uri = "dm:///_internal/model/mof#CreateObjectAction";
                 export class _DestroyLinkAction
                 {
                     static endData = "endData";
@@ -5978,7 +5978,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __DestroyLinkAction_Uri = "dm:///_internal/types/internal#DestroyLinkAction";
+                export const __DestroyLinkAction_Uri = "dm:///_internal/model/mof#DestroyLinkAction";
                 export class _DestroyObjectAction
                 {
                     static isDestroyLinks = "isDestroyLinks";
@@ -6013,7 +6013,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __DestroyObjectAction_Uri = "dm:///_internal/types/internal#DestroyObjectAction";
+                export const __DestroyObjectAction_Uri = "dm:///_internal/model/mof#DestroyObjectAction";
                 export class _ExpansionNode
                 {
                     static regionAsInput = "regionAsInput";
@@ -6046,7 +6046,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __ExpansionNode_Uri = "dm:///_internal/types/internal#ExpansionNode";
+                export const __ExpansionNode_Uri = "dm:///_internal/model/mof#ExpansionNode";
                 export class _ExpansionRegion
                 {
                     static inputElement = "inputElement";
@@ -6098,7 +6098,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __ExpansionRegion_Uri = "dm:///_internal/types/internal#ExpansionRegion";
+                export const __ExpansionRegion_Uri = "dm:///_internal/model/mof#ExpansionRegion";
                 export class _InputPin
                 {
                     static isControl = "isControl";
@@ -6136,7 +6136,7 @@ export namespace _UML
                     static upperValue = "upperValue";
                 }
 
-                export const __InputPin_Uri = "dm:///_internal/types/internal#InputPin";
+                export const __InputPin_Uri = "dm:///_internal/model/mof#InputPin";
                 export class _InvocationAction
                 {
                     static argument = "argument";
@@ -6170,7 +6170,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __InvocationAction_Uri = "dm:///_internal/types/internal#InvocationAction";
+                export const __InvocationAction_Uri = "dm:///_internal/model/mof#InvocationAction";
                 export class _LinkAction
                 {
                     static endData = "endData";
@@ -6204,7 +6204,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __LinkAction_Uri = "dm:///_internal/types/internal#LinkAction";
+                export const __LinkAction_Uri = "dm:///_internal/model/mof#LinkAction";
                 export class _LinkEndCreationData
                 {
                     static insertAt = "insertAt";
@@ -6217,7 +6217,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __LinkEndCreationData_Uri = "dm:///_internal/types/internal#LinkEndCreationData";
+                export const __LinkEndCreationData_Uri = "dm:///_internal/model/mof#LinkEndCreationData";
                 export class _LinkEndData
                 {
                     static end = "end";
@@ -6228,7 +6228,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __LinkEndData_Uri = "dm:///_internal/types/internal#LinkEndData";
+                export const __LinkEndData_Uri = "dm:///_internal/model/mof#LinkEndData";
                 export class _LinkEndDestructionData
                 {
                     static destroyAt = "destroyAt";
@@ -6241,7 +6241,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __LinkEndDestructionData_Uri = "dm:///_internal/types/internal#LinkEndDestructionData";
+                export const __LinkEndDestructionData_Uri = "dm:///_internal/model/mof#LinkEndDestructionData";
                 export class _LoopNode
                 {
                     static bodyOutput = "bodyOutput";
@@ -6299,7 +6299,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __LoopNode_Uri = "dm:///_internal/types/internal#LoopNode";
+                export const __LoopNode_Uri = "dm:///_internal/model/mof#LoopNode";
                 export class _OpaqueAction
                 {
                     static body = "body";
@@ -6335,7 +6335,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __OpaqueAction_Uri = "dm:///_internal/types/internal#OpaqueAction";
+                export const __OpaqueAction_Uri = "dm:///_internal/model/mof#OpaqueAction";
                 export class _OutputPin
                 {
                     static isControl = "isControl";
@@ -6373,7 +6373,7 @@ export namespace _UML
                     static upperValue = "upperValue";
                 }
 
-                export const __OutputPin_Uri = "dm:///_internal/types/internal#OutputPin";
+                export const __OutputPin_Uri = "dm:///_internal/model/mof#OutputPin";
                 export class _Pin
                 {
                     static isControl = "isControl";
@@ -6411,7 +6411,7 @@ export namespace _UML
                     static upperValue = "upperValue";
                 }
 
-                export const __Pin_Uri = "dm:///_internal/types/internal#Pin";
+                export const __Pin_Uri = "dm:///_internal/model/mof#Pin";
                 export class _QualifierValue
                 {
                     static qualifier = "qualifier";
@@ -6421,7 +6421,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __QualifierValue_Uri = "dm:///_internal/types/internal#QualifierValue";
+                export const __QualifierValue_Uri = "dm:///_internal/model/mof#QualifierValue";
                 export class _RaiseExceptionAction
                 {
                     static exception = "exception";
@@ -6454,7 +6454,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __RaiseExceptionAction_Uri = "dm:///_internal/types/internal#RaiseExceptionAction";
+                export const __RaiseExceptionAction_Uri = "dm:///_internal/model/mof#RaiseExceptionAction";
                 export class _ReadExtentAction
                 {
                     static classifier = "classifier";
@@ -6488,7 +6488,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadExtentAction_Uri = "dm:///_internal/types/internal#ReadExtentAction";
+                export const __ReadExtentAction_Uri = "dm:///_internal/model/mof#ReadExtentAction";
                 export class _ReadIsClassifiedObjectAction
                 {
                     static classifier = "classifier";
@@ -6524,7 +6524,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadIsClassifiedObjectAction_Uri = "dm:///_internal/types/internal#ReadIsClassifiedObjectAction";
+                export const __ReadIsClassifiedObjectAction_Uri = "dm:///_internal/model/mof#ReadIsClassifiedObjectAction";
                 export class _ReadLinkAction
                 {
                     static result = "result";
@@ -6559,7 +6559,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadLinkAction_Uri = "dm:///_internal/types/internal#ReadLinkAction";
+                export const __ReadLinkAction_Uri = "dm:///_internal/model/mof#ReadLinkAction";
                 export class _ReadLinkObjectEndAction
                 {
                     static end = "end";
@@ -6594,7 +6594,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadLinkObjectEndAction_Uri = "dm:///_internal/types/internal#ReadLinkObjectEndAction";
+                export const __ReadLinkObjectEndAction_Uri = "dm:///_internal/model/mof#ReadLinkObjectEndAction";
                 export class _ReadLinkObjectEndQualifierAction
                 {
                     static object = "object";
@@ -6629,7 +6629,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadLinkObjectEndQualifierAction_Uri = "dm:///_internal/types/internal#ReadLinkObjectEndQualifierAction";
+                export const __ReadLinkObjectEndQualifierAction_Uri = "dm:///_internal/model/mof#ReadLinkObjectEndQualifierAction";
                 export class _ReadSelfAction
                 {
                     static result = "result";
@@ -6662,7 +6662,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadSelfAction_Uri = "dm:///_internal/types/internal#ReadSelfAction";
+                export const __ReadSelfAction_Uri = "dm:///_internal/model/mof#ReadSelfAction";
                 export class _ReadStructuralFeatureAction
                 {
                     static result = "result";
@@ -6697,7 +6697,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadStructuralFeatureAction_Uri = "dm:///_internal/types/internal#ReadStructuralFeatureAction";
+                export const __ReadStructuralFeatureAction_Uri = "dm:///_internal/model/mof#ReadStructuralFeatureAction";
                 export class _ReadVariableAction
                 {
                     static result = "result";
@@ -6731,7 +6731,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReadVariableAction_Uri = "dm:///_internal/types/internal#ReadVariableAction";
+                export const __ReadVariableAction_Uri = "dm:///_internal/model/mof#ReadVariableAction";
                 export class _ReclassifyObjectAction
                 {
                     static isReplaceAll = "isReplaceAll";
@@ -6767,7 +6767,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReclassifyObjectAction_Uri = "dm:///_internal/types/internal#ReclassifyObjectAction";
+                export const __ReclassifyObjectAction_Uri = "dm:///_internal/model/mof#ReclassifyObjectAction";
                 export class _ReduceAction
                 {
                     static collection = "collection";
@@ -6803,7 +6803,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReduceAction_Uri = "dm:///_internal/types/internal#ReduceAction";
+                export const __ReduceAction_Uri = "dm:///_internal/model/mof#ReduceAction";
                 export class _RemoveStructuralFeatureValueAction
                 {
                     static isRemoveDuplicates = "isRemoveDuplicates";
@@ -6841,7 +6841,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __RemoveStructuralFeatureValueAction_Uri = "dm:///_internal/types/internal#RemoveStructuralFeatureValueAction";
+                export const __RemoveStructuralFeatureValueAction_Uri = "dm:///_internal/model/mof#RemoveStructuralFeatureValueAction";
                 export class _RemoveVariableValueAction
                 {
                     static isRemoveDuplicates = "isRemoveDuplicates";
@@ -6877,7 +6877,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __RemoveVariableValueAction_Uri = "dm:///_internal/types/internal#RemoveVariableValueAction";
+                export const __RemoveVariableValueAction_Uri = "dm:///_internal/model/mof#RemoveVariableValueAction";
                 export class _ReplyAction
                 {
                     static replyToCall = "replyToCall";
@@ -6912,7 +6912,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __ReplyAction_Uri = "dm:///_internal/types/internal#ReplyAction";
+                export const __ReplyAction_Uri = "dm:///_internal/model/mof#ReplyAction";
                 export class _SendObjectAction
                 {
                     static request = "request";
@@ -6948,7 +6948,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __SendObjectAction_Uri = "dm:///_internal/types/internal#SendObjectAction";
+                export const __SendObjectAction_Uri = "dm:///_internal/model/mof#SendObjectAction";
                 export class _SendSignalAction
                 {
                     static signal = "signal";
@@ -6984,7 +6984,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __SendSignalAction_Uri = "dm:///_internal/types/internal#SendSignalAction";
+                export const __SendSignalAction_Uri = "dm:///_internal/model/mof#SendSignalAction";
                 export class _SequenceNode
                 {
                     static executableNode = "executableNode";
@@ -7034,7 +7034,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __SequenceNode_Uri = "dm:///_internal/types/internal#SequenceNode";
+                export const __SequenceNode_Uri = "dm:///_internal/model/mof#SequenceNode";
                 export class _StartClassifierBehaviorAction
                 {
                     static object = "object";
@@ -7067,7 +7067,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __StartClassifierBehaviorAction_Uri = "dm:///_internal/types/internal#StartClassifierBehaviorAction";
+                export const __StartClassifierBehaviorAction_Uri = "dm:///_internal/model/mof#StartClassifierBehaviorAction";
                 export class _StartObjectBehaviorAction
                 {
                     static object = "object";
@@ -7104,7 +7104,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __StartObjectBehaviorAction_Uri = "dm:///_internal/types/internal#StartObjectBehaviorAction";
+                export const __StartObjectBehaviorAction_Uri = "dm:///_internal/model/mof#StartObjectBehaviorAction";
                 export class _StructuralFeatureAction
                 {
                     static object = "object";
@@ -7138,7 +7138,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __StructuralFeatureAction_Uri = "dm:///_internal/types/internal#StructuralFeatureAction";
+                export const __StructuralFeatureAction_Uri = "dm:///_internal/model/mof#StructuralFeatureAction";
                 export class _StructuredActivityNode
                 {
                     static activity = "activity";
@@ -7187,7 +7187,7 @@ export namespace _UML
                     static redefinitionContext = "redefinitionContext";
                 }
 
-                export const __StructuredActivityNode_Uri = "dm:///_internal/types/internal#StructuredActivityNode";
+                export const __StructuredActivityNode_Uri = "dm:///_internal/model/mof#StructuredActivityNode";
                 export class _TestIdentityAction
                 {
                     static first = "first";
@@ -7222,7 +7222,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __TestIdentityAction_Uri = "dm:///_internal/types/internal#TestIdentityAction";
+                export const __TestIdentityAction_Uri = "dm:///_internal/model/mof#TestIdentityAction";
                 export class _UnmarshallAction
                 {
                     static object = "object";
@@ -7257,7 +7257,7 @@ export namespace _UML
                     static owner = "owner";
                 }
 
-                export const __UnmarshallAction_Uri = "dm:///_internal/types/internal#UnmarshallAction";
+                export const __UnmarshallAction_Uri = "dm:///_internal/model/mof#UnmarshallAction";
                 export class _ValuePin
                 {
                     static value = "value";
@@ -7296,7 +7296,7 @@ export namespace _UML
                     static upperValue = "upperValue";
                 }
 
-                export const __ValuePin_Uri = "dm:///_internal/types/internal#ValuePin";
+                export const __ValuePin_Uri = "dm:///_internal/model/mof#ValuePin";
         }
 
 }

@@ -104,8 +104,11 @@ internal class Program
         var pathXml = options.PathXml;
         var pathTarget = options.PathTarget;
         var codeNamespace = options.CodeNamespace;
-        System.Console.WriteLine("Reading from: " + pathXml);
-        System.Console.WriteLine("Writing to  : " + pathTarget);
+        var xmiNamespace = options.XmiNamespace;
+        System.Console.WriteLine("Reading from  : " + pathXml);
+        System.Console.WriteLine("Writing to    : " + pathTarget);
+        System.Console.WriteLine("Code Namespace: " + codeNamespace);
+        System.Console.WriteLine("Xmi Namespace : " + xmiNamespace);
         System.Console.WriteLine();
 
         if (!File.Exists(pathXml))

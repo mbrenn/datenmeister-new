@@ -123,10 +123,21 @@ internal class Program
             options.XmiNamespace, null);
 
         dm.WorkspaceLogic.AddExtent(dm.WorkspaceLogic.GetDataWorkspace(), typeExtent);
+        if (!typeExtent.elements().Any())
+        {
+            System.Console.WriteLine("Aborted creation because no item is loaded.");
+            return false;
+        }
 
         // Generates tree for Type Script
         var generator = new TypeScriptInterfaceGenerator();
         generator.Walk(typeExtent);
+        
+        if (generator.TotalWalked == 0)
+        {
+            System.Console.WriteLine("Aborted creation because no package or class has been found.");
+            return false;
+        }
 
         if (!Directory.Exists(pathTarget))
         {
@@ -143,10 +154,13 @@ internal class Program
         };
 
         classGenerator.Walk(typeExtent);
+        
 
         var pathOfClassTree = Path.Combine(pathTarget, $"{filename}.cs");
         var fileContent = classGenerator.Result.ToString();
         await File.WriteAllTextAsync(pathOfClassTree, fileContent);
+        
+        System.Console.WriteLine($"C#-Code for {codeNamespace} written");
         
         // Generate wrapper
         
@@ -162,7 +176,7 @@ internal class Program
         var wrapperFileContent = wrapperGenerator.Result.ToString();
         await File.WriteAllTextAsync(pathOfWrapper, wrapperFileContent);
 
-        System.Console.WriteLine($"C#-Code for {codeNamespace} written");
+        System.Console.WriteLine($"C#-Wrapper-Code for {codeNamespace} written");
 
         return true;
     }

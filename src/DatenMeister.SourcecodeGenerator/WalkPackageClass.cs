@@ -42,6 +42,19 @@ public class WalkPackageClass
     /// </summary>
     public StringBuilder Result { get; set; }
 
+    public int PackagesWalked { get; set; }
+    
+    public int ClassesWalked { get; set; }
+    
+    public int PropertiesWalked { get; set; }
+    
+    public int EnumWalked { get; set; }
+    
+    public int LiteralWalked { get; set; }
+
+    public int TotalWalked 
+        => PackagesWalked + ClassesWalked+ PropertiesWalked + EnumWalked + LiteralWalked;
+
     /// <summary>
     ///     Creates a C# class instance for all the packages and classes within the extent
     /// </summary>
@@ -88,16 +101,19 @@ public class WalkPackageClass
         if (_parser.IsPackage(element))
         {
             WalkPackage(element, stack);
+            PackagesWalked++;
         }
 
         if (_parser.IsClass(element))
         {
             WalkClass(element, stack);
+            ClassesWalked++;
         }
 
         if (_parser.IsEnum(element))
         {
             WalkEnum(element, stack);
+            EnumWalked++;
         }
     }
 
@@ -198,13 +214,22 @@ public class WalkPackageClass
         foreach (var subElement in Helper.GetSubProperties(element))
         {
             if (_parser.IsPackage(subElement))
+            {
                 WalkPackage(subElement, innerStack);
+                PackagesWalked++;
+            }
 
             if (_parser.IsClass(subElement) || _parser.IsPrimitiveType(subElement))
+            {
                 WalkClass(subElement, innerStack);
+                ClassesWalked++;
+            }
 
             if (_parser.IsEnum(subElement))
+            {
                 WalkEnum(subElement, innerStack);
+                EnumWalked++;
+            }
         }
     }
 
@@ -234,6 +259,7 @@ public class WalkPackageClass
             if (_parser.IsProperty(propertyObject))
             {
                 WalkProperty(propertyObject, innerStack);
+                PropertiesWalked++;
             }
         }
     }
@@ -269,6 +295,7 @@ public class WalkPackageClass
                 else
                 {
                     WalkEnumLiteral(enumLiteral, innerStack);
+                    LiteralWalked++;
                 }
             }
         }

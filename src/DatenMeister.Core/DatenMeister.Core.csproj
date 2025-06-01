@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Models\EMOF\" />
       <Folder Include="Uml" />
     </ItemGroup>
 

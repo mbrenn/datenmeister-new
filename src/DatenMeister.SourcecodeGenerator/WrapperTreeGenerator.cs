@@ -13,7 +13,7 @@ public class WrapperTreeGenerator : WalkPackageClass
     /// </summary>
     public WrapperTreeGenerator(ISourceParser? parser = null) : base(parser)
     {
-        FactoryVersion = new Version(1, 2, 0, 0);
+        FactoryVersion = new Version(1, 3, 0, 0);
     }
 
     /// <summary>

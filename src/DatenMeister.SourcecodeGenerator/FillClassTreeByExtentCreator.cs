@@ -9,7 +9,7 @@ public class FillClassTreeByExtentCreator : WalkPackageClass
     public FillClassTreeByExtentCreator(string classNameOfTree, ISourceParser? parser = null) : base(parser)
     {
         ClassNameOfTree = classNameOfTree;
-        FactoryVersion = new Version(1, 1, 0, 0);
+        FactoryVersion = new Version(1, 3, 0, 0);
     }
 
     public string ClassNameOfTree { get; set; }

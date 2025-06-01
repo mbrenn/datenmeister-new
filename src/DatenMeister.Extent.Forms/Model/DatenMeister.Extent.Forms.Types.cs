@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.3.0.0
 namespace DatenMeister.Extent.Forms.Model
 {
     public class _Root

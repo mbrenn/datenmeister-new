@@ -3,13 +3,14 @@
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latestmajor</LangVersion>
-        <PackageVersion>1.1.0</PackageVersion>
+        <PackageVersion>1.3.0.0</PackageVersion>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <Configurations>Debug;Release;WPF</Configurations>
         <Platforms>AnyCPU</Platforms>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AssemblyVersion>1.3.0.0</AssemblyVersion>
     </PropertyGroup>
 
     <ItemGroup>

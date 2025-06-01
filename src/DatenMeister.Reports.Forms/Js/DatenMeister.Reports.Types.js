@@ -1,4 +1,4 @@
-// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.0.0.0
+// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 export var _Root;
 (function (_Root) {
     class _ReportForm {

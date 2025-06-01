@@ -3,7 +3,7 @@ using DatenMeister.Core.Helper;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
-// Created by DatenMeister.SourcecodeGenerator.WrapperTreeGenerator Version 1.2.0.0
+// Created by DatenMeister.SourcecodeGenerator.WrapperTreeGenerator Version 1.3.0.0
 namespace DatenMeister.Reports.Forms.Model
 {
     public class Root

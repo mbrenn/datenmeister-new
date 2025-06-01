@@ -17,7 +17,7 @@ public class TypeScriptInterfaceGenerator : WalkPackageClass
     /// </summary>
     public TypeScriptInterfaceGenerator(ISourceParser? parser = null) : base(parser)
     {
-        FactoryVersion = new Version(1, 0, 0, 0);
+        FactoryVersion = new Version(1, 3, 0, 0);
     }
 
     /// <summary>

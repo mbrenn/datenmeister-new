@@ -1,4 +1,4 @@
-// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.0.0.0
+// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 namespace DatenMeister.Excel.Models
 {
     export namespace _ExcelModels

@@ -57,7 +57,7 @@ internal class Program
     /// <summary>
     /// Performs the standard procedure
     /// </summary>
-    private static async Task PerformStandardProcedure()
+    private static Task PerformStandardProcedure()
     {
         var R = StandardProcedure.R;
 
@@ -88,6 +88,8 @@ internal class Program
             File.Copy($"./ExcelModels.class.ts",
                 $"{R}/../Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/ExcelModels.class.ts", true);
 #endif
+        
+        return Task.CompletedTask;
     }
 
     private static async Task<bool> CreateCodeForTypes(string pathXml, string pathTarget, string theNamespace)

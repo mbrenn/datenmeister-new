@@ -7,15 +7,8 @@ using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Provider.Json;
 
-public class JsonImporter
+public class JsonImporter(IFactory factory)
 {
-    private readonly IFactory _factory;
-
-    public JsonImporter(IFactory factory)
-    {
-        _factory = factory;
-    }
-    
     /// <summary>
     /// Performs the import from the file
     /// </summary>
@@ -71,7 +64,7 @@ public class JsonImporter
             }
             case JsonObject asObject:
             {
-                var result = _factory.create(null);
+                var result = factory.create(null);
 
                 foreach (var property in asObject)
                 {

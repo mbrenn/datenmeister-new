@@ -12,14 +12,9 @@ namespace DatenMeister.Provider.CSV;
 // ReSharper disable once UnusedMember.Global
 // ReSharper disable once InconsistentNaming
 [PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
-public class CsvPlugin : IDatenMeisterPlugin
+public class CsvPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly ProviderToProviderLoaderMapper _providerToProviderLoaderMapper;
-
-    public CsvPlugin(IScopeStorage scopeStorage)
-    {
-        _providerToProviderLoaderMapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
-    }
+    private readonly ProviderToProviderLoaderMapper _providerToProviderLoaderMapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
 
     public Task Start(PluginLoadingPosition position)
     {

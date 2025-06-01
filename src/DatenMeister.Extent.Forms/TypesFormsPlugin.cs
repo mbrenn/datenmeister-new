@@ -11,18 +11,9 @@ namespace DatenMeister.Extent.Forms;
 /// Defines the default form extensions which are used to navigate through the
 /// items, extents and also offers the simple creation and deletion of items. 
 /// </summary>
-public class TypesFormsPlugin : IDatenMeisterPlugin
+public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly ExtentSettings _extentSettings;
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
-
-    public TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-        _extentSettings = scopeStorage.Get<ExtentSettings>();
-    }
+    private readonly ExtentSettings _extentSettings = scopeStorage.Get<ExtentSettings>();
 
     public Task Start(PluginLoadingPosition position)
     {
@@ -30,9 +21,9 @@ public class TypesFormsPlugin : IDatenMeisterPlugin
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
-                var formsPlugin = _scopeStorage.Get<FormsPluginState>();
+                var formsPlugin = scopeStorage.Get<FormsPluginState>();
                 formsPlugin.FormModificationPlugins.Add(
-                    new ExtentTypeFormModification(_workspaceLogic, _extentSettings));
+                    new ExtentTypeFormModification(workspaceLogic, _extentSettings));
 
                 break;
         }

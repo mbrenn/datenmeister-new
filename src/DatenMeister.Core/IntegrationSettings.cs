@@ -2,11 +2,6 @@
 
 public class IntegrationSettings
 {
-    public IntegrationSettings()
-    {
-        DatabasePath = DefaultDatabasePath;
-    }
-
     /// <summary>
     /// Gets or sets a value indicating whether the complete MOF and UML integration shall
     /// be performed or if a slim integration without having the complete meta model is sufficient.
@@ -34,7 +29,7 @@ public class IntegrationSettings
     /// <summary>
     /// Gets or sets the name of the database path in which the databases are stored per default
     /// </summary>
-    public string DatabasePath { get; set; }
+    public string DatabasePath { get; set; } = DefaultDatabasePath;
 
     /// <summary>
     /// Gets or sets a value indicating whether the loading of an extent may fail without interrupting the complete initialization of the DatenMeister

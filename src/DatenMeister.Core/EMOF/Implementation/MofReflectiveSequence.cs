@@ -11,28 +11,22 @@ namespace DatenMeister.Core.EMOF.Implementation;
 /// Implements a reflective sequence as given by the MOF specification.
 /// The sequence needs to be correlated to a Mof Object
 /// </summary>
-public class MofReflectiveSequence : IReflectiveSequence, IHasExtent
+public class MofReflectiveSequence(MofObject mofObject, string property) : IReflectiveSequence, IHasExtent
 {
     /// <summary>
     /// Gets the name of the property
     /// </summary>
-    internal string PropertyName { get; }
+    internal string PropertyName { get; } = property;
 
     /// <summary>
     /// Gets the mof object being assigned to the
     /// </summary>
-    internal MofObject MofObject { get; }
-        
+    internal MofObject MofObject { get; } = mofObject;
+
     /// <summary>
     /// Gets or sets a flag indicating whether references shall be followed or not
     /// </summary>
     public bool NoReferences { get; set; }
-
-    public MofReflectiveSequence(MofObject mofObject, string property)
-    {
-        MofObject = mofObject;
-        PropertyName = property;
-    }
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

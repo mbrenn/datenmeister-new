@@ -28,18 +28,9 @@ namespace DatenMeister.WebServer.Controller;
 
 [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
 [ApiController]
-public class ItemsController : ControllerBase
+public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
-    private readonly ItemsControllerInternal _internal;
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-        _internal = new ItemsControllerInternal(workspaceLogic, scopeStorage);
-    }
+    private readonly ItemsControllerInternal _internal = new(workspaceLogic, scopeStorage);
 
     [HttpPost("api/items/create_in_extent/{workspaceId}/{extentUri}")]
     public ActionResult<object> CreateItemInExtent(
@@ -49,7 +40,7 @@ public class ItemsController : ControllerBase
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
-        var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
+        var extent = workspaceLogic.FindExtent(workspaceId, extentUri)
                      ?? throw new InvalidOperationException("Extent is not found");
 
         var factory = new MofFactory(extent);
@@ -65,7 +56,7 @@ public class ItemsController : ControllerBase
             foreach (var propertyParam in values)
             {
                 var value = propertyParam.Value;
-                var propertyValue = new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+                var propertyValue = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
                     .ConvertJsonValue(value);
 
                 if (propertyValue != null) item.set(propertyParam.Key, propertyValue);
@@ -140,7 +131,7 @@ public class ItemsController : ControllerBase
             foreach (var propertyParam in values)
             {
                 var value = propertyParam.Value;
-                var propertyValue = new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+                var propertyValue = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
                     .ConvertJsonValue(value);
 
                 if (propertyValue != null) child.set(propertyParam.Key, propertyValue);
@@ -203,7 +194,7 @@ public class ItemsController : ControllerBase
         itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
 
         var success = false;
-        var foundItem = _workspaceLogic.FindObject(workspaceId, itemUrl);
+        var foundItem = workspaceLogic.FindObject(workspaceId, itemUrl);
         if (foundItem != null) success = ObjectHelper.DeleteObject(foundItem);
 
         return new {success = success};
@@ -222,7 +213,7 @@ public class ItemsController : ControllerBase
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
         var success = true;
-        var extent = _workspaceLogic.FindExtent(workspaceId, extentUri);
+        var extent = workspaceLogic.FindExtent(workspaceId, extentUri);
         if (extent == null)
         {
             return NotFound("Extent is not found");
@@ -364,7 +355,7 @@ public class ItemsController : ControllerBase
     public ActionResult<string> GetElements(string queryUri)
     {
         queryUri = MvcUrlEncoder.DecodePathOrEmpty(queryUri);
-        var result = _workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
+        var result = workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
         if (result is IUriExtent asUriExtent)
         {
             result = asUriExtent.elements();
@@ -410,7 +401,7 @@ public class ItemsController : ControllerBase
     public ActionResult<IEnumerable<ItemWithNameAndId>> GetElementsAsItem(string queryUri)
     {
         queryUri = MvcUrlEncoder.DecodePathOrEmpty(queryUri);
-        var result = _workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
+        var result = workspaceLogic.Resolve(queryUri, ResolveType.Default, true);
         if (result is IUriExtent asUriExtent)
         {
             result = asUriExtent.elements();
@@ -434,7 +425,7 @@ public class ItemsController : ControllerBase
         IUriExtent? extent;
             
         // Checks, if we have found the item
-        var foundItem = _workspaceLogic.FindObjectOrCollection(workspaceId, itemUri);
+        var foundItem = workspaceLogic.FindObjectOrCollection(workspaceId, itemUri);
             
         switch (foundItem)
         {
@@ -487,7 +478,7 @@ public class ItemsController : ControllerBase
             result.Add(ItemWithNameAndId.Create(extent, EntentType.Extent)
                        ?? throw new InvalidOperationException("Should not happen"));
 
-            var managementWorkspaceItem = _workspaceLogic.GetManagementWorkspace()
+            var managementWorkspaceItem = workspaceLogic.GetManagementWorkspace()
                 .ResolveById(ExtentManagementHelper.GetIdOfWorkspace(workspace.id));
             if (managementWorkspaceItem != null)
             {
@@ -647,7 +638,7 @@ public class ItemsController : ControllerBase
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
-        var converter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
+        var converter = new MofJsonDeconverter(workspaceLogic, scopeStorage);
         var objectToBeSet = converter.ConvertToObject(jsonObject);
         if (objectToBeSet == null)
         {
@@ -785,14 +776,14 @@ public class ItemsController : ControllerBase
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
-        var foundItem = _workspaceLogic.FindObject(workspace, itemUri);
+        var foundItem = workspaceLogic.FindObject(workspace, itemUri);
         if (foundItem == null)
         {
             throw new InvalidOperationException("Item has not been found");
         }
 
         var provider = new XmiProvider();
-        var tempExtent = new MofUriExtent(provider, "dm:///export", _scopeStorage);
+        var tempExtent = new MofUriExtent(provider, "dm:///export", scopeStorage);
 
         // Now do the copying. it makes us all happy
         var copiedElement = ObjectCopier.Copy(new MofFactory(tempExtent), foundItem, CopyOptions.CopyId);
@@ -828,7 +819,7 @@ public class ItemsController : ControllerBase
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
         // Performs the import via the action handler...
-        var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
+        var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
         var importXmi = new ImportXmiActionHandler();
         var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
         action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, workspace);
@@ -867,7 +858,7 @@ public class ItemsController : ControllerBase
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
-        var foundItem = _workspaceLogic.FindObject(workspace, itemUri);
+        var foundItem = workspaceLogic.FindObject(workspace, itemUri);
         switch (foundItem)
         {
             case null:

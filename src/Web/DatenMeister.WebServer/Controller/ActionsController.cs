@@ -14,17 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace DatenMeister.WebServer.Controller;
 
 [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
-public class ActionsController : ControllerBase
+public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-        
     [HttpPost("api/action/execute_directly/{actionName}")]
     public async Task<ActionResult<ExecuteActionResult>> ExecuteAction(string actionName, [FromBody] ActionParams actionParams)
     {
@@ -35,7 +26,7 @@ public class ActionsController : ControllerBase
         }
 
         var mofParameter = 
-            new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+            new DirectJsonDeconverter(workspaceLogic, scopeStorage)
                 .ConvertToObject(actionParams.Parameter) as IElement
             ?? throw new InvalidOperationException("Conversion was not successful");
 

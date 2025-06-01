@@ -11,17 +11,8 @@ using System.Reflection;
 namespace DatenMeister.Reports.Forms;
 
 [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
-internal class Plugin : IDatenMeisterPlugin
+internal class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IWorkspaceLogic workspaceLogic;
-    private readonly IScopeStorage scopeStorage;
-
-    public Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        this.workspaceLogic = workspaceLogic;
-        this.scopeStorage = scopeStorage;
-    }
-
     public Task Start(PluginLoadingPosition position)
     {
         if (position == PluginLoadingPosition.AfterLoadingOfExtents)

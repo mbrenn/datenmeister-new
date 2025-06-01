@@ -8,15 +8,9 @@ using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.WPF.Commands;
 
-public class PasteToClipboardCommand
+public class PasteToClipboardCommand(IObject targetElement)
 {
     private static readonly ClassLogger Logger = new(typeof(PasteToClipboardCommand));
-    private readonly IObject _targetElement;
-
-    public PasteToClipboardCommand(IObject targetElement)
-    {
-        _targetElement = targetElement;
-    }
 
     /// <summary>
     ///     Gets the currently selected element and copies it to the clipboard
@@ -55,7 +49,7 @@ public class PasteToClipboardCommand
                 var element = new MofElement(providerObject, tempExtent);
 
                 var copier = new ObjectCopier(new MofFactory(tempExtent));
-                copier.CopyProperties(element, _targetElement);
+                copier.CopyProperties(element, targetElement);
             }
             else
             {

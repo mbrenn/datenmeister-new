@@ -5,18 +5,13 @@ namespace DatenMeister.Extent.Manager.Extents.Configuration;
 /// <summary>
 /// Stores the setting of the extent
 /// </summary>
-public class ExtentType
+public class ExtentType(string name)
 {
-    public ExtentType(string name)
-    {
-        this.name = name;
-    }
-        
     /// <summary>
     /// Gets or sets the name of the extent type to which the extent type is added
     /// </summary>
-    public string name { get; set; }
-        
+    public string name { get; set; } = name;
+
     /// <summary>
     /// Stores the metaclasses of the root elements which are preferred to get added
     /// to the extent. Other metaclasses are also possible, but these one are actively offered

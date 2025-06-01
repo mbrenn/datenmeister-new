@@ -7,14 +7,9 @@ namespace DatenMeister.Core.Runtime.Copier;
 /// <summary>
 /// Supports the copying of an extent
 /// </summary>
-public class ExtentCopier
+public class ExtentCopier(IFactory factory)
 {
-    private readonly IFactory _factory;
-
-    public ExtentCopier(IFactory factory)
-    {
-        _factory = factory ?? throw new InvalidOperationException(nameof(factory));
-    }
+    private readonly IFactory _factory = factory ?? throw new InvalidOperationException(nameof(factory));
 
     public void Copy(IExtent source, IExtent target, CopyOption? copyOptions = null)
     {

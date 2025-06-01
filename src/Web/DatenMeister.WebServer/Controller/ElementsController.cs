@@ -15,19 +15,9 @@ namespace DatenMeister.WebServer.Controller;
 
 [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
 [ApiController]
-public class ElementsController : ControllerBase
+public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public readonly ElementsControllerInternal Internal;
-
-    public ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-        Internal = new ElementsControllerInternal(workspaceLogic, scopeStorage);
-    }
+    public readonly ElementsControllerInternal Internal = new(workspaceLogic, scopeStorage);
 
     [HttpGet("api/elements/get_name/{workspace}/{extentUri}/{itemId}")]
     public ActionResult<object> GetName(string workspace, string extentUri, string itemId)
@@ -36,7 +26,7 @@ public class ElementsController : ControllerBase
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
         itemId = MvcUrlEncoder.DecodePathOrEmpty(itemId);
 
-        var foundItem = _workspaceLogic.FindElement(workspace, extentUri, itemId);
+        var foundItem = workspaceLogic.FindElement(workspace, extentUri, itemId);
         if (foundItem == null)
         {
             return NotFound();
@@ -54,12 +44,12 @@ public class ElementsController : ControllerBase
         IObject? foundItem;
         if (string.IsNullOrEmpty(workspace) || workspace == "_")
         {
-            foundItem = _workspaceLogic.FindElement(HttpUtility.UrlDecode(uri));
+            foundItem = workspaceLogic.FindElement(HttpUtility.UrlDecode(uri));
         }
         else
         {
             foundItem =
-                _workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.NoMetaWorkspaces)
+                workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.NoMetaWorkspaces)
                     as IObject;
         }
 
@@ -114,14 +104,14 @@ public class ElementsController : ControllerBase
     [HttpPut("api/elements/create_temporary_element")]
     public ActionResult<CreateTemporaryElementResult> CreateTemporaryElement([FromBody] CreateTemporaryElementParams? parameter)
     {
-        var logic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
+        var logic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
 
         // Defines the metaclass
         IElement? metaClass = null;
         if (parameter != null && !string.IsNullOrEmpty(parameter.MetaClassUri))
         {
             metaClass =
-                _workspaceLogic.GetTypesWorkspace()
+                workspaceLogic.GetTypesWorkspace()
                     .Resolve(parameter.MetaClassUri, ResolveType.Default) as IElement;
         }
 
@@ -185,14 +175,14 @@ public class ElementsController : ControllerBase
     public ActionResult<QueryObjectResult> QueryObject([FromBody] QueryObjectParameter parameter)
     {
         // First, convert the object
-        var converter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
+        var converter = new MofJsonDeconverter(workspaceLogic, scopeStorage);
         var objectToBeSet = converter.ConvertToObject(parameter.Query)
                             ?? throw new InvalidOperationException("Object to be set is null");
         var resultNode = objectToBeSet.getOrDefault<IElement>(_DatenMeister._DataViews._QueryStatement.resultNode)
                          ?? throw new InvalidOperationException("resultNode is not set");
 
         // Second, execute the query
-        var viewLogic = new DataView.DataViewEvaluation(_workspaceLogic, _scopeStorage);
+        var viewLogic = new DataView.DataViewEvaluation(workspaceLogic, scopeStorage);
 
         var stopWatch = new Stopwatch();
         stopWatch.Start();

@@ -11,20 +11,12 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler;
 /// </summary>
 [PluginDependency(typeof(UserInteractionPlugin))]
 [PluginLoading(PluginLoadingPosition.AfterInitialization)]
-public class ExtentPropertyInteractionPlugin : IDatenMeisterPlugin
+public class ExtentPropertyInteractionPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    : IDatenMeisterPlugin
 {
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
-
-    public ExtentPropertyInteractionPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-
     public void Start(PluginLoadingPosition position)
     {
-        _scopeStorage.Get<UserInteractionState>().ElementInteractionHandler.Add(
-            new ExtentPropertyUserInteraction(_workspaceLogic, _scopeStorage));
+        scopeStorage.Get<UserInteractionState>().ElementInteractionHandler.Add(
+            new ExtentPropertyUserInteraction(workspaceLogic, scopeStorage));
     }
 }

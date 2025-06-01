@@ -4,14 +4,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class ExtentOverviewModel : PageModel
+public class ExtentOverviewModel(ILogger<ExtentOverviewModel> logger) : PageModel
 {
-    private readonly ILogger<ExtentOverviewModel> _logger;
-
-    public ExtentOverviewModel(ILogger<ExtentOverviewModel> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<ExtentOverviewModel> _logger = logger;
 
 
     [Parameter] public string Workspace { get; set; } = string.Empty;

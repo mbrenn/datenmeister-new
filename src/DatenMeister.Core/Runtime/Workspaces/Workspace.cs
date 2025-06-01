@@ -14,7 +14,7 @@ namespace DatenMeister.Core.Runtime.Workspaces;
 /// Defines a workspace according to the Mof specification
 /// MOF Facility Object Lifecycle (MOFFOL)
 /// </summary>
-public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
+public class Workspace(string id, string annotation = "") : IWorkspace, IObject, IUriResolver, IObjectAllProperties
 {
     private static readonly ClassLogger Logger = new(typeof(Workspace));
 
@@ -30,12 +30,6 @@ public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
     /// </summary>
     public List<IEnumerable<IExtent>> ExtentFactory = new();
 
-    public Workspace(string id, string annotation = "")
-    {
-        this.id = id ?? throw new ArgumentNullException(nameof(id));
-        this.annotation = annotation;
-    }
-
     /// <summary>
     /// Gets or sets the information whether the workspace is a dynamic workspace
     /// If it is so, then it is skipped during resolvings
@@ -47,7 +41,7 @@ public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
     /// </summary>
     internal List<object> FilledTypeCache { get; } = new();
 
-    public string annotation { get; set; }
+    public string annotation { get; set; } = annotation;
 
     public IEnumerable<ITag> properties => _properties;
 
@@ -114,7 +108,7 @@ public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
     /// </summary>
     public DynamicFunctionManager DynamicFunctionManager { get; } = new();
 
-    public string id { get; }
+    public string id { get; } = id ?? throw new ArgumentNullException(nameof(id));
 
     /// <summary>
     /// Gets the extents. The source of the extent list is the _extent combined with the

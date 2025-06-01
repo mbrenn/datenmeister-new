@@ -7,21 +7,14 @@ using DatenMeister.Plugins;
 namespace DatenMeister.Excel.Integration;
 
 [PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
-public class ExcelPlugin : IDatenMeisterPlugin
+public class ExcelPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
-    public ExcelPlugin(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-        
     public Task Start(PluginLoadingPosition position)
     {
         switch (position)
         {
             case PluginLoadingPosition.AfterBootstrapping:
-                var mapper = _scopeStorage.Get<ProviderToProviderLoaderMapper>();
+                var mapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
                 mapper.AddMapping(
                     _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelExtentLoaderConfig,
                     _ => new ExcelFileProviderLoader());

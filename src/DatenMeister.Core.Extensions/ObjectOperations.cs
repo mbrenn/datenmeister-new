@@ -5,7 +5,7 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Modules.DefaultTypes;
+namespace DatenMeister.Core.Extensions;
 
 public static class ObjectOperations
 {

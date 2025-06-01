@@ -794,16 +794,9 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
     /// by the user. It takes two text boxes and sets
     /// the new property as defined by the user within the given object
     /// </summary>
-    private class NewPropertyField : IDetailField
+    private class NewPropertyField(TextBox fieldKey, UIElement fieldUiElement) : IDetailField
     {
-        private readonly TextBox _fieldKey;
-        private readonly UIElement _fieldUiElement;
-
-        public NewPropertyField(TextBox fieldKey, UIElement fieldUiElement)
-        {
-            _fieldKey = fieldKey;
-            _fieldUiElement = fieldUiElement;
-        }
+        private readonly TextBox _fieldKey = fieldKey;
 
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags) =>
             throw new NotImplementedException();
@@ -811,7 +804,7 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
         public void CallSetAction(IObject element)
         {
             var propertyKey = _fieldKey.Text;
-            var propertyValue = (_fieldUiElement as TextBox)?.Text;
+            var propertyValue = (fieldUiElement as TextBox)?.Text;
 
             if (string.IsNullOrEmpty(propertyKey) || propertyValue == null)
             {
@@ -887,14 +880,9 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
         CopyToClipboardCommand.Execute(this, CopyType.Default);
     }
 
-    public class ViewEventArgs : EventArgs
+    public class ViewEventArgs(IObject view) : EventArgs
     {
-        public ViewEventArgs(IObject view)
-        {
-            View = view;
-        }
-
-        public IObject View { get; }
+        public IObject View { get; } = view;
     }
 
     public void EvaluateViewExtensions(ICollection<ViewExtension> extensions)

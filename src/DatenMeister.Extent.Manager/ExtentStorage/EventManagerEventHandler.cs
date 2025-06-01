@@ -8,25 +8,18 @@ namespace DatenMeister.Extent.Manager.ExtentStorage;
 
 [PluginLoading]
 // ReSharper disable once UnusedType.Global
-public class EventManagerEventHandler : IDatenMeisterPlugin
+public class EventManagerEventHandler(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
-    public EventManagerEventHandler(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-
     public Task Start(PluginLoadingPosition position)
     {
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
-                var workspaceData = _scopeStorage.Get<WorkspaceData>();
+                var workspaceData = scopeStorage.Get<WorkspaceData>();
                 workspaceData.WorkspaceRemoved += async (_, y) =>
                 {
-                    var logic = new WorkspaceLogic(_scopeStorage);
-                    var manager = new ExtentManager(logic, _scopeStorage);
+                    var logic = new WorkspaceLogic(scopeStorage);
+                    var manager = new ExtentManager(logic, scopeStorage);
                     await manager.DetachAllExtents(info =>
                         info.Configuration
                             .getOrDefault<string>(

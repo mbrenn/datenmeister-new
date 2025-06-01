@@ -12,7 +12,7 @@ namespace DatenMeister.TemporaryExtent;
 /// <summary>
 /// Defines some helper methods for the temporary extent plugin
 /// </summary>
-public class TemporaryExtentLogic
+public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
     public const string InternalTempUri = "dm:///_internal/temp";
 
@@ -20,9 +20,6 @@ public class TemporaryExtentLogic
     /// Defines the logger
     /// </summary>
     private static readonly ILogger ClassLogger = new ClassLogger(typeof(TemporaryExtentLogic));
-        
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
 
     public static TimeSpan DefaultCleanupTime { get; set; } = TimeSpan.FromHours(1);
 
@@ -30,7 +27,7 @@ public class TemporaryExtentLogic
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public Workspace Workspace => _workspaceLogic.GetDataWorkspace();
+    public Workspace Workspace => workspaceLogic.GetDataWorkspace();
 
     /// <summary>
     /// Gets the name of the workspace
@@ -41,13 +38,7 @@ public class TemporaryExtentLogic
     /// Maps the element to a datetime until when it shall be deleted.
     /// If the element is not found here, then it will be directly deleted
     /// </summary>
-    private static readonly ConcurrentDictionary<string, DateTime> _elementMapping = new ();
-
-    public TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
+    private static readonly ConcurrentDictionary<string, DateTime> ElementMapping = new ();
 
     /// <summary>
     /// Gets the temporary extent and creates a new one, if necessary
@@ -56,7 +47,7 @@ public class TemporaryExtentLogic
     {
         get
         {
-            if (_workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri) 
+            if (workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri) 
                 is not IUriExtent foundExtent)
             {
                 // Somebody deleted the extent... So, we will create a new one
@@ -75,8 +66,7 @@ public class TemporaryExtentLogic
     /// <returns>Found extent or null, if not found</returns>
     public IUriExtent? TryGetTemporaryExtent()
     {
-        return _workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri)
-            as IUriExtent;
+        return workspaceLogic.FindExtent(WorkspaceName, TemporaryExtentPlugin.Uri);
     }
 
     /// <summary>
@@ -85,6 +75,7 @@ public class TemporaryExtentLogic
     /// <param name="metaClass">Metaclass to be used</param>
     /// <param name="cleanUpTime">Defines the cleanup time for the given item.
     /// If this is not set, then the default time is taken</param>
+    /// <param name="addToExtent">true, if the created element shall be added to the extent</param>
     /// <returns>The created element itself</returns>
     public IElement CreateTemporaryElement(IElement? metaClass, TimeSpan? cleanUpTime = null, bool addToExtent = true)
     {
@@ -93,7 +84,7 @@ public class TemporaryExtentLogic
         var created = MofFactory.CreateElement(foundExtent, metaClass);
         var id = (created as IHasId)?.Id 
                  ?? throw new InvalidOperationException("Element does not has an id");
-        _elementMapping[id] = DateTime.Now + (cleanUpTime ?? DefaultCleanupTime);
+        ElementMapping[id] = DateTime.Now + (cleanUpTime ?? DefaultCleanupTime);
         if (addToExtent)
         {
             foundExtent.elements().add(created);
@@ -115,7 +106,7 @@ public class TemporaryExtentLogic
                 .Where(element =>
                 {
                     var id = element.Id;
-                    if (id != null && _elementMapping.TryGetValue(id, out var time))
+                    if (id != null && ElementMapping.TryGetValue(id, out var time))
                     {
                         return time < currentTime;
                     }
@@ -132,7 +123,7 @@ public class TemporaryExtentLogic
             var id = element.Id;
             if (id != null)
             {
-                _elementMapping.Remove(id, out _);
+                ElementMapping.Remove(id, out _);
             }
         }
 
@@ -150,8 +141,8 @@ public class TemporaryExtentLogic
     public IUriExtent CreateTemporaryExtent()
     {
         var temporaryProvider = new InMemoryProvider();
-        var extent = new MofUriExtent(temporaryProvider, InternalTempUri, _scopeStorage);
-        _workspaceLogic.AddExtent(Workspace, extent);
+        var extent = new MofUriExtent(temporaryProvider, InternalTempUri, scopeStorage);
+        workspaceLogic.AddExtent(Workspace, extent);
         return extent;
     }
 }

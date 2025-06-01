@@ -17,14 +17,9 @@ public class PublicSettingsSupport : IDatenMeisterPlugin
     }
 }
 
-public class PublicSettingsViewExtension : IViewExtensionFactory
+public class PublicSettingsViewExtension(PublicSettingsSupport publicSettingsSupport) : IViewExtensionFactory
 {
-    private readonly PublicSettingsSupport _publicSettingsSupport;
-
-    public PublicSettingsViewExtension(PublicSettingsSupport publicSettingsSupport)
-    {
-        _publicSettingsSupport = publicSettingsSupport;
-    }
+    private readonly PublicSettingsSupport _publicSettingsSupport = publicSettingsSupport;
 
     public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
     {

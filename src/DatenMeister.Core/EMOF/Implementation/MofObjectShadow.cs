@@ -7,17 +7,12 @@ namespace DatenMeister.Core.EMOF.Implementation;
 /// to a specific object which could not be looked up. This supports usages
 /// of DatenMeister with typed instances but without having the full MOF database in memory
 /// </summary>
-public class MofObjectShadow : IElement, IKnowsUri
+public class MofObjectShadow(string uri) : IElement, IKnowsUri
 {
     /// <summary>
     /// Gets the uri, which describes the given element
     /// </summary>
-    public string Uri { get; }
-
-    public MofObjectShadow(string uri)
-    {
-        Uri = uri;
-    }
+    public string Uri { get; } = uri;
 
     public bool equals(object? other)
         => MofObject.AreEqual(this, other as IObject);

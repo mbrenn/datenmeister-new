@@ -11,7 +11,7 @@ namespace DatenMeister.Extent.Forms;
 /// Defines the default form extensions which are used to navigate through the
 /// items also offers the simple creation and deletion of items. 
 /// </summary>
-public class ItemsFormsPlugin : IDatenMeisterPlugin
+public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     public const string NavigationItemDelete = "Item.Delete";
     public const string NavigationItemPropertyMoveUpItem = "Item.MoveUpItem";
@@ -24,20 +24,13 @@ public class ItemsFormsPlugin : IDatenMeisterPlugin
     public const string NavigationExportXmi = "Item.ExportXmi.Navigate";
     public const string NavigationImportXmi = "Item.ImportXmi.Navigate";
 
-    private readonly IScopeStorage _scopeStorage;
-
-    public ItemsFormsPlugin(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-
     public Task Start(PluginLoadingPosition position)
     {
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
                     
-                var formsPlugin = _scopeStorage.Get<FormsPluginState>();
+                var formsPlugin = scopeStorage.Get<FormsPluginState>();
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")

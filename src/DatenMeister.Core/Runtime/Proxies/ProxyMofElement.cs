@@ -3,12 +3,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.Runtime.Proxies;
 
-public class ProxyMofElement : ProxyMofObject, IElement, IElementSetMetaClass
+public class ProxyMofElement(MofElement element) : ProxyMofObject(element), IElement, IElementSetMetaClass
 {
-    public ProxyMofElement(MofElement element) : base(element)
-    {
-    }
-
     private MofElement Element => (Object as MofElement)!;
 
     public virtual IElement? metaclass => Element.metaclass;

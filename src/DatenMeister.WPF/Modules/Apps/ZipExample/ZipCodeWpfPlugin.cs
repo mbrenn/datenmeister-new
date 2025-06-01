@@ -4,18 +4,11 @@ using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.Apps.ZipExample;
 
-public class ZipCodeWpfPlugin : IDatenMeisterPlugin
+public class ZipCodeWpfPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
-    public ZipCodeWpfPlugin(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-
     public void Start(PluginLoadingPosition position)
     {
-        _scopeStorage
+        scopeStorage
             .Get<UserInteractionState>()
             .ElementInteractionHandler
             .Add(

@@ -4,12 +4,8 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class FilterOnMetaClassIsNotSet : ProxyReflectiveCollection
+public class FilterOnMetaClassIsNotSet(IReflectiveCollection collection) : ProxyReflectiveCollection(collection)
 {
-    public FilterOnMetaClassIsNotSet(IReflectiveCollection collection) : base(collection)
-    {
-    }
-
     public override IEnumerator<object?> GetEnumerator()
     {
         foreach (var value in Collection)

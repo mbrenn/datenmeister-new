@@ -17,25 +17,15 @@ namespace DatenMeister.Core.Runtime;
 /// <summary>
 /// Caches the ids to improve navigation
 /// </summary>
-public class ExtentUrlNavigator
+public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
 {
     private static readonly ClassLogger Logger = new(typeof(ExtentUrlNavigator));
 
     private readonly ConcurrentDictionary<string, IHasId> _cacheIds = new();
 
-    private readonly IUriExtent _extent;
-        
-    private readonly IScopeStorage? _scopeStorage;
-
-    public ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
-    {
-        _extent = extent;
-        _scopeStorage = scopeStorage;
-    }
-
     private ResolveHookContainer? GetResolveHooks()
     {
-        return _scopeStorage?.Get<ResolveHookContainer>();
+        return scopeStorage?.Get<ResolveHookContainer>();
     }
         
     /// <summary>
@@ -73,13 +63,13 @@ public class ExtentUrlNavigator
 
         // Check, if the given extent contains the alternative uri
         var matchesAlternativeUri =
-            _extent is IHasAlternativeUris hasAlternativeUris && hasAlternativeUris.AlternativeUris.Contains(extentUri);
+            extent is IHasAlternativeUris hasAlternativeUris && hasAlternativeUris.AlternativeUris.Contains(extentUri);
             
         // Checks, if the extent itself is selected
         if (posQuestion == -1 && posHash == -1
-                              && (uri == _extent.contextURI() || matchesAlternativeUri))
+                              && (uri == extent.contextURI() || matchesAlternativeUri))
         {
-            return _extent;
+            return extent;
         }
 
         if (posQuestion == -1 && posHash == -1)
@@ -96,7 +86,7 @@ public class ExtentUrlNavigator
 
         // Verifies whether the context can be found in context uri or alternative Uris if extent uri is set
         if (!string.IsNullOrEmpty(extentUri) &&
-            extentUri != _extent.contextURI() &&
+            extentUri != extent.contextURI() &&
             !matchesAlternativeUri)
         {
             return null;
@@ -163,7 +153,7 @@ public class ExtentUrlNavigator
             var resolveHook = GetResolveHooks();
             if (resolveHook != null)
             {
-                var parameters = new ResolveHookParameters(_scopeStorage, queryString, foundItem ?? _extent, _extent);
+                var parameters = new ResolveHookParameters(scopeStorage, queryString, foundItem ?? extent, extent);
 
                 foreach (var hook in resolveHook.ResolveHooks)
                 {
@@ -227,7 +217,7 @@ public class ExtentUrlNavigator
             
         // Check if the extent type already supports the direct querying of objects
         if (
-            _extent is MofUriExtent mofUriExtent && 
+            extent is MofUriExtent mofUriExtent && 
             mofUriExtent.Provider is IProviderSupportFunctions supportFunctions &&
             supportFunctions.ProviderSupportFunctions.QueryById != null)
         {
@@ -235,7 +225,7 @@ public class ExtentUrlNavigator
             if (resultingObject != null)
             {
 #if DEBUG
-                if (_extent == null) throw new InvalidOperationException("_extent is null");
+                if (extent == null) throw new InvalidOperationException("_extent is null");
 #endif
                 var resultElement = new MofElement(resultingObject, mofUriExtent)
                     { Extent = mofUriExtent };
@@ -245,7 +235,7 @@ public class ExtentUrlNavigator
         else
         {
             // Now go through the list
-            foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
+            foreach (var element in AllDescendentsQuery.GetDescendents(extent))
             {
                 var elementAsMofObject =
                     element as IHasId ?? throw new ArgumentException("elementAsMofObject");
@@ -273,6 +263,6 @@ public class ExtentUrlNavigator
             throw new InvalidOperationException("element is not of type IHasId. Element is: " + element);
         }
 
-        return _extent.contextURI() + "#" + HttpUtility.UrlEncode(elementAsObject.Id);
+        return extent.contextURI() + "#" + HttpUtility.UrlEncode(elementAsObject.Id);
     }
 }

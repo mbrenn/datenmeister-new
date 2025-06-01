@@ -16,22 +16,15 @@ namespace DatenMeister.Actions.Forms;
 /// </summary>
 // ReSharper disable once UnusedType.Global
 // ReSharper disable once ClassNeverInstantiated.Global
-public class ActionFormPlugin : IDatenMeisterPlugin
+public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
-    public ActionFormPlugin(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-
     public Task Start(PluginLoadingPosition position)
     {
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
-                var formsPluginState = _scopeStorage.Get<FormsPluginState>();
+                var formsPluginState = scopeStorage.Get<FormsPluginState>();
                 formsPluginState.FormModificationPlugins.Add(
                     new ActionFormModificationPlugin());
                 break;

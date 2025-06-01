@@ -6,13 +6,7 @@ using DatenMeister.Core.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
-public class IdIsAlreadySetException : InvalidOperationException
-{
-    public IdIsAlreadySetException(string message) : base(message)
-    {
-
-    }
-}
+public class IdIsAlreadySetException(string message) : InvalidOperationException(message);
 
 /// <summary>
 /// Defines a Mof Element according to MOF specification
@@ -173,8 +167,6 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
             {
                 return extent.DynamicFunctionManager.GetDerivedPropertyValue(this, metaClass, property);
             }
-
-            return (false, null);
         }
 
         return (false, null);
@@ -203,7 +195,6 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
         }
     }
 
-    /// <inheritdoc />
     public IElement? getMetaClass(bool traceFailing = true)
     {
         if (_cachedMetaClass != null)

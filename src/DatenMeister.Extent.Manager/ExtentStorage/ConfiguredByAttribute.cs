@@ -7,12 +7,7 @@
 /// is portable and AppDomains are not supported by the Portable Framework. They are currently defined in 'DatenMeister.Full.Integration.Integration'.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class ConfiguredByAttribute : Attribute
+public class ConfiguredByAttribute(Type configurationType) : Attribute
 {
-    public Type ConfigurationType { get; private set; }
-
-    public ConfiguredByAttribute(Type configurationType)
-    {
-        ConfigurationType = configurationType;
-    }
+    public Type ConfigurationType { get; private set; } = configurationType;
 }

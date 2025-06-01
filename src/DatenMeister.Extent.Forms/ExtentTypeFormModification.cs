@@ -15,17 +15,9 @@ namespace DatenMeister.Extent.Forms;
 /// <summary>
 /// Modifies the form according to the Extent Type
 /// </summary>
-public class ExtentTypeFormModification : IFormModificationPlugin
+public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSettings extentSettings)
+    : IFormModificationPlugin
 {
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly ExtentSettings _extentSettings;
-
-    public ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSettings extentSettings)
-    {
-        _workspaceLogic = workspaceLogic;
-        _extentSettings = extentSettings;
-    }
-
     /// <summary>
     /// Performs some modifications for the extent forms
     /// </summary>
@@ -98,7 +90,7 @@ public class ExtentTypeFormModification : IFormModificationPlugin
                 .OfType<IElement>()
                 .ToList();
 
-            var extentTypes = _extentSettings.extentTypeSettings.Select(x => x.name).ToList();
+            var extentTypes = extentSettings.extentTypeSettings.Select(x => x.name).ToList();
             var factory = new MofFactory(field);
             foreach (var extentType in extentTypes)
             {
@@ -135,7 +127,7 @@ public class ExtentTypeFormModification : IFormModificationPlugin
     {
         // Finds the extent type fitting to the extent to be shown
         var foundExtentTypes =
-            _extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
+            extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
 
         if (!foundExtentTypes.Any() || context.FormType != _DatenMeister._Forms.___FormType.Collection)
         {
@@ -166,7 +158,7 @@ public class ExtentTypeFormModification : IFormModificationPlugin
                 foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                 {
                     var resolvedMetaClass =
-                        _workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+                        workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
 
                     if (resolvedMetaClass == null)
                     {
@@ -204,7 +196,7 @@ public class ExtentTypeFormModification : IFormModificationPlugin
 
         // Finds the extent type fitting to the extent to be shown
         var foundExtentTypes =
-            _extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
+            extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
 
         if (!foundExtentTypes.Any() || context.FormType != _DatenMeister._Forms.___FormType.Object)
         {
@@ -237,7 +229,7 @@ public class ExtentTypeFormModification : IFormModificationPlugin
                     foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
                     {
                         var resolvedMetaClass =
-                            _workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+                            workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
 
                         if (resolvedMetaClass == null)
                         {

@@ -6,18 +6,11 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DataView;
 
-public class DataViewHelper
+public class DataViewHelper(IWorkspaceLogic workspaceLogic)
 {
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public DataViewHelper(IWorkspaceLogic workspaceLogic)
-    {
-        _workspaceLogic = workspaceLogic;
-    }
-
     public IElement CreateDataview(string name, string extentUri)
     {
-        var viewExtent = _workspaceLogic.GetUserFormsExtent();
+        var viewExtent = workspaceLogic.GetUserFormsExtent();
         var metaClass = _DatenMeister.TheOne.DataViews.__DataView;
         var createdElement = new MofFactory(viewExtent).create(metaClass);
 
@@ -34,8 +27,8 @@ public class DataViewHelper
     /// </summary>
     /// <returns>Extent containing the user views</returns>
     public IUriExtent GetUserFormExtent() =>
-        _workspaceLogic.GetUserFormsExtent();
+        workspaceLogic.GetUserFormsExtent();
 
     public Workspace GetViewWorkspace() =>
-        _workspaceLogic.GetViewsWorkspace();
+        workspaceLogic.GetViewsWorkspace();
 }

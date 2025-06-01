@@ -7,15 +7,8 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.AttachedExtent;
 
-public class AttachedExtentUserInteraction : IElementInteractionsHandler
+public class AttachedExtentUserInteraction(AttachedExtentHandler attachedExtentHandler) : IElementInteractionsHandler
 {
-    private readonly AttachedExtentHandler _attachedExtentHandler;
-
-    public AttachedExtentUserInteraction(AttachedExtentHandler attachedExtentHandler)
-    {
-        _attachedExtentHandler = attachedExtentHandler;
-    }
-
     public IEnumerable<IElementInteraction> GetInteractions(IObject element)
     {
         if (!(element is IElement asElement))
@@ -29,10 +22,10 @@ public class AttachedExtentUserInteraction : IElementInteractionsHandler
             yield break;
         }
 
-        var attachedExtents = _attachedExtentHandler.FindAttachedExtents(uriExtent);
+        var attachedExtents = attachedExtentHandler.FindAttachedExtents(uriExtent);
         foreach (var attachedExtent in attachedExtents)
         {
-            var configuration = _attachedExtentHandler.GetConfiguration(attachedExtent);
+            var configuration = attachedExtentHandler.GetConfiguration(attachedExtent);
             if (configuration == null) continue;
 
             var interaction = new DefaultElementInteraction(
@@ -40,7 +33,7 @@ public class AttachedExtentUserInteraction : IElementInteractionsHandler
                 async (guest, o) =>
                 {
                     var attachedItem =
-                        _attachedExtentHandler.GetOrCreateAttachedItem(asElement, attachedExtent);
+                        attachedExtentHandler.GetOrCreateAttachedItem(asElement, attachedExtent);
                     await NavigatorForItems.NavigateToElementDetailView(guest.NavigationHost, attachedItem);
                 });
             yield return interaction;

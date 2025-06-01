@@ -76,13 +76,13 @@ public class ItemsControllerTests
     [Test]
     public async Task TestGetRootElements()
     {
-        var (dm, extent) = await ElementControllerTests.CreateExampleExtent();
+        var (dm, _) = await ElementControllerTests.CreateExampleExtent();
 
         var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
         var rootElements = itemsController
                                .GetRootElements(
                                    WorkspaceNames.WorkspaceData,
-                                   ElementControllerTests.UriTemporaryExtent).Value?.ToString()
+                                   ElementControllerTests.UriTemporaryExtent).Value
                            ?? throw new InvalidOperationException("Should not happen");
             
         Assert.That(rootElements, Is.Not.Null);
@@ -109,7 +109,7 @@ public class ItemsControllerTests
     [Test]
     public async Task TestGetRootElementsOrderBy()
     {
-        var (dm, extent) = await CreateExampleExtentForSorting();
+        var (dm, _) = await CreateExampleExtentForSorting();
 
         var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
         var elements = itemsController
@@ -135,7 +135,7 @@ public class ItemsControllerTests
     [Test]
     public async Task TestGetRootElementsOrderByDescending()
     {
-        var (dm, extent) = await CreateExampleExtentForSorting();
+        var (dm, _) = await CreateExampleExtentForSorting();
 
         var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
         var elements = itemsController
@@ -163,7 +163,7 @@ public class ItemsControllerTests
     [Test]
     public async Task TestGetRootElementsWithMetaClass()
     {
-        var (dm, zipExtent, formsController, x) = await FormControllerTests.CreateZipExtent();
+        var (dm, zipExtent, _, x) = await FormControllerTests.CreateZipExtent();
 
         var itemsController = new ItemsController(x.WorkspaceLogic, x.ScopeStorage);
         var rootElements = itemsController.GetRootElements(
@@ -173,7 +173,7 @@ public class ItemsControllerTests
                                        + "?metaclass=" +
                                        MvcUrlEncoder.EncodePath(
                                            "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode")))
-                               .Value?.ToString()
+                               .Value
                            ?? throw new InvalidOperationException("Should not happen");
         Assert.That(rootElements, Is.Not.Null);
 
@@ -186,7 +186,7 @@ public class ItemsControllerTests
     [Test]
     public async Task TestDeleteItems()
     {
-        System.Threading.Thread.Sleep(200);
+        Thread.Sleep(200);
         var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
         var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
@@ -208,7 +208,7 @@ public class ItemsControllerTests
     [Test]
     public async Task TestSetMetaClass()
     {
-        System.Threading.Thread.Sleep(100);
+        Thread.Sleep(100);
         var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
         var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
@@ -361,7 +361,7 @@ public class ItemsControllerTests
         var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
 
         // Get the containers of the root items. This element should be the extent and the workspace
-        var container1 = itemsController.GetContainer("Data", "dm:///temp#item1")?.Value;
+        var container1 = itemsController.GetContainer("Data", "dm:///temp#item1").Value;
         Assert.That(container1!.Count, Is.EqualTo(2));
         Assert.That(container1[0].name, Is.EqualTo("Test Extent"));
         Assert.That(container1[0].workspace, Is.EqualTo("Data"));
@@ -372,7 +372,7 @@ public class ItemsControllerTests
         Assert.That(container1[1].uri, Is.EqualTo(ExtentManagementHelper.GetUrlOfWorkspace("Data")));
 
         // Get the containers of the root items. This element should be the item2, extent and the workspace
-        var container4 = itemsController.GetContainer("Data", "dm:///temp#item4")?.Value;
+        var container4 = itemsController.GetContainer("Data", "dm:///temp#item4").Value;
             
         Assert.That(container4!.Count, Is.EqualTo(3));
         Assert.That(container4[0].name, Is.EqualTo("item2"));
@@ -385,7 +385,7 @@ public class ItemsControllerTests
         Assert.That(container4[2].workspace, Is.EqualTo("Management"));
 
         // Get the containers of the root items. This element should be the item4, item2, extent and the workspace
-        var container7 = itemsController.GetContainer("Data", "dm:///temp#item7")?.Value;
+        var container7 = itemsController.GetContainer("Data", "dm:///temp#item7").Value;
 
         Assert.That(container7!.Count, Is.EqualTo(4));
         Assert.That(container7[0].name, Is.EqualTo("item4"));

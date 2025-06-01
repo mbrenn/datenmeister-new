@@ -21,15 +21,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager;
 /// <summary>
 /// Defines the view extension factory for the Import Extent function
 /// </summary>
-public class ImportExtentViewExtensions : IViewExtensionFactory
+public class ImportExtentViewExtensions(ImportExtentManagerPlugin plugin) : IViewExtensionFactory
 {
-    private readonly ImportExtentManagerPlugin _plugin;
-
-    public ImportExtentViewExtensions(ImportExtentManagerPlugin plugin)
-    {
-        _plugin = plugin;
-    }
-
     public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
     {
         foreach (var viewExtension in OfferExtentLoadingForDetail(viewExtensionInfo)) 
@@ -125,7 +118,7 @@ public class ImportExtentViewExtensions : IViewExtensionFactory
                 var itemCountBefore = sourceExtent.elements().Count();
                 var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                ?? throw new InvalidOperationException("elements == null");
-                _plugin.PerformImport(sourceExtent, elements);
+                plugin.PerformImport(sourceExtent, elements);
                 var itemCountAfter = sourceExtent.elements().Count();
 
                 MessageBox.Show(
@@ -154,7 +147,7 @@ public class ImportExtentViewExtensions : IViewExtensionFactory
                     var itemCountBefore = loadedExtent.Extent.elements().Count();
                     var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                    ?? throw new InvalidOperationException("elements == null");
-                    _plugin.PerformImport(loadedExtent.Extent, elements);
+                    plugin.PerformImport(loadedExtent.Extent, elements);
                     var itemCountAfter = loadedExtent.Extent.elements().Count();
 
                     MessageBox.Show(

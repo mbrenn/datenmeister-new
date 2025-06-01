@@ -7,20 +7,14 @@ namespace DatenMeister.Core.Functions.Queries;
 /// <summary>
 /// Performs a filtering on all properties
 /// </summary>
-public class FilterOnPropertyIsSet : ProxyReflectiveCollection
+public class FilterOnPropertyIsSet(IReflectiveCollection collection, string property)
+    : ProxyReflectiveCollection(collection)
 {
-    private readonly string _property;
-
-    public FilterOnPropertyIsSet(IReflectiveCollection collection, string property) : base(collection)
-    {
-        _property = property;
-    }
-
     public override IEnumerator<object> GetEnumerator()
     {
         foreach (var element in Collection.OfType<IObject>())
         {
-            if (element.isSet(_property))
+            if (element.isSet(property))
             {
                 yield return element;
             }
@@ -29,6 +23,6 @@ public class FilterOnPropertyIsSet : ProxyReflectiveCollection
 
     public override int size()
     {
-        return Collection.OfType<IObject>().Count(x => x.isSet(_property));
+        return Collection.OfType<IObject>().Count(x => x.isSet(property));
     }
 }

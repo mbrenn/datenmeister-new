@@ -12,17 +12,9 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler;
 
-public class ExtentPropertyUserInteraction : IElementInteractionsHandler
+public class ExtentPropertyUserInteraction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    : IElementInteractionsHandler
 {
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
-
-    public ExtentPropertyUserInteraction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-
     public IEnumerable<IElementInteraction> GetInteractions(IObject element)
     {
         if (!(element is IElement asElement))
@@ -35,10 +27,10 @@ public class ExtentPropertyUserInteraction : IElementInteractionsHandler
             yield break;
         }
 
-        var extent = _workspaceLogic.GetExtentByManagementModel(asElement);
+        var extent = workspaceLogic.GetExtentByManagementModel(asElement);
 
         // Adds a button to read the extent loading configuration
-        var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
+        var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
         var loadConfiguration = extentManager.GetLoadConfigurationFor(extent);
         if (loadConfiguration != null)
         {
@@ -57,7 +49,7 @@ public class ExtentPropertyUserInteraction : IElementInteractionsHandler
         }
             
         // Adds a new button for each of the possible configuration items that could be added to an extent 
-        var extentSettings = _scopeStorage.Get<ExtentSettings>();
+        var extentSettings = scopeStorage.Get<ExtentSettings>();
         foreach (var property in extentSettings.propertyDefinitions)
         {
             var newData = new DefaultElementInteraction(
@@ -86,13 +78,13 @@ public class ExtentPropertyUserInteraction : IElementInteractionsHandler
                         !foundElementMetaClass.equals(property.metaClass))
                     {
                         var resolvedElementMetaClass =
-                            _workspaceLogic.GetTypesWorkspace().ResolveElement(
+                            workspaceLogic.GetTypesWorkspace().ResolveElement(
                                 foundElementMetaClass,
                                 ResolveType.NoMetaWorkspaces,
                                 false) ?? foundElementMetaClass;
 
                         var resolvedPropertyMetaClass =
-                            _workspaceLogic.GetTypesWorkspace().ResolveElement(
+                            workspaceLogic.GetTypesWorkspace().ResolveElement(
                                 propertyMetaClass,
                                 ResolveType.NoMetaWorkspaces,
                                 false) ?? propertyMetaClass;

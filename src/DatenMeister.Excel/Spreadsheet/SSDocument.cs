@@ -7,27 +7,20 @@ namespace DatenMeister.Excel.Spreadsheet;
 /// of the workbook. No conversion or other 'intelligent' data
 /// interpretation is performed
 /// </summary>
-public class SSDocument
+public class SSDocument(XSSFWorkbook document)
 {
-    private readonly XSSFWorkbook _document;
-
-    public SSDocument(XSSFWorkbook document)
-    {
-        _document = document;
-    }
-
     public IEnumerable<SsTable> Tables
     {
         get
         {
             var result = new List<SsTable>();
-            lock (_document)
+            lock (document)
             {
-                var count = _document.NumberOfSheets;
+                var count = document.NumberOfSheets;
 
                 for (var n = 0; n < count; n++)
                 {
-                    result.Add(new SsTable(_document.GetSheetAt(n)));
+                    result.Add(new SsTable(document.GetSheetAt(n)));
                 }
             }
 

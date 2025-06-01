@@ -11,15 +11,8 @@ namespace DatenMeister.Provider.CSV;
 /// <summary>
 ///     Loads and stores the the extent from an CSV file
 /// </summary>
-public class CsvLoader
+public class CsvLoader(IWorkspaceLogic? workspaceLogic)
 {
-    private readonly IWorkspaceLogic? _workspaceLogic;
-
-    public CsvLoader(IWorkspaceLogic? workspaceLogic)
-    {
-        _workspaceLogic = workspaceLogic;
-    }
-
     /// <summary>
     ///     Loads the CSV Extent out of the settings and stores the extent Uri
     /// </summary>
@@ -67,9 +60,9 @@ public class CsvLoader
         var metaClassUri =
             settings?.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri) ?? null;
 
-        if (_workspaceLogic != null && !string.IsNullOrEmpty(metaClassUri))
+        if (workspaceLogic != null && !string.IsNullOrEmpty(metaClassUri))
         {
-            metaClass = _workspaceLogic.FindElement(metaClassUri);
+            metaClass = workspaceLogic.FindElement(metaClassUri);
         }
 
         using var streamReader = new StreamReader(stream, Encoding.GetEncoding(

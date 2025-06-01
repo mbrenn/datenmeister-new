@@ -11,15 +11,11 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information;
 /// The NavigationHost is the host in which the form is shown (most probably the ApplicationWindow)
 /// The NavigationGuest is the ItemExplorerInstance
 /// </summary>
-public class ViewExtensionInfoTab : ViewExtensionInfo
+public class ViewExtensionInfoTab(INavigationHost navigationHost, INavigationGuest navigationGuest)
+    : ViewExtensionInfo(navigationHost, navigationGuest)
 {
     /// <summary>
     /// Gets or sets the definition for the tab
     /// </summary>
     public IElement? TabFormDefinition { get; set; }
-
-    public ViewExtensionInfoTab(INavigationHost navigationHost, INavigationGuest navigationGuest) 
-        : base(navigationHost, navigationGuest)
-    {
-    }
 }

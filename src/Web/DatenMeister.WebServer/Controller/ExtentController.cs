@@ -17,17 +17,8 @@ namespace DatenMeister.WebServer.Controller;
 
 [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
 [ApiController]
-public class ExtentController : ControllerBase
+public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-        
     public record ExistsResults
     {
         public bool Exists { get; set; }
@@ -39,7 +30,7 @@ public class ExtentController : ControllerBase
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
-        var foundExtent = _workspaceLogic.FindExtent(workspace, extent);
+        var foundExtent = workspaceLogic.FindExtent(workspace, extent);
         return foundExtent == null 
             ? new ExistsResults { Exists = false } 
             : new ExistsResults { Exists = true };
@@ -52,10 +43,10 @@ public class ExtentController : ControllerBase
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
-        var foundExtent = _workspaceLogic.FindExtent(workspace, extent)
+        var foundExtent = workspaceLogic.FindExtent(workspace, extent)
                           ?? throw new InvalidOperationException("The extent was not found");
 
-        var asObject = new DirectJsonDeconverter(_workspaceLogic, _scopeStorage)
+        var asObject = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
                            .ConvertToObject(properties)
                        ?? throw new InvalidOperationException("Should not happen");
         var asAllProperties = asObject as IObjectAllProperties
@@ -76,7 +67,7 @@ public class ExtentController : ControllerBase
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
-        var foundExtent = _workspaceLogic.FindExtent(workspace, extent)
+        var foundExtent = workspaceLogic.FindExtent(workspace, extent)
                           ?? throw new InvalidOperationException("The extent was not found");
         var metaObject = (foundExtent as MofExtent)?.GetMetaObject();
         return metaObject == null
@@ -127,7 +118,7 @@ public class ExtentController : ControllerBase
         if (string.IsNullOrEmpty(workspace)) workspace = WorkspaceNames.WorkspaceData;
             
         if (param.SkipIfExisting && 
-            _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri) != null)
+            workspaceLogic.FindExtent(param.Workspace, param.ExtentUri) != null)
         {
             return new CreateXmiExtentResult
             {
@@ -136,7 +127,7 @@ public class ExtentController : ControllerBase
             };
         }
 
-        var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
+        var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
         var loaded = await extentManager.CreateAndAddXmiExtent(param.ExtentUri, param.FilePath, workspace);
             
         return new CreateXmiExtentResult
@@ -165,10 +156,10 @@ public class ExtentController : ControllerBase
     [HttpDelete("api/extent/delete")]
     public async Task<ActionResult<DeleteExtentResult>> DeleteExtent([FromBody] DeleteExtentParams param)
     {
-        var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
+        var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
 
         if (param.SkipIfNotExisting && 
-            _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri) == null)
+            workspaceLogic.FindExtent(param.Workspace, param.ExtentUri) == null)
         {
             return new DeleteExtentResult
             {
@@ -198,7 +189,7 @@ public class ExtentController : ControllerBase
     [HttpPost("api/extent/clear")]
     public ActionResult<ClearExtentResult> ClearExtent([FromBody] ClearExtentParams param)
     {
-        var extent = _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri);
+        var extent = workspaceLogic.FindExtent(param.Workspace, param.ExtentUri);
         if (extent == null)
         {
             throw new InvalidOperationException("Extent has not been found");
@@ -221,14 +212,14 @@ public class ExtentController : ControllerBase
     {
         workspace = MvcUrlEncoder.DecodePathOrEmpty(workspace);
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
-        var foundExtent = _workspaceLogic.FindExtent(workspace, extent);
+        var foundExtent = workspaceLogic.FindExtent(workspace, extent);
         if (foundExtent == null)
         {
             throw new InvalidOperationException("Extent has not been found");
         }
             
         var provider = new XmiProvider();
-        var tempExtent = new MofUriExtent(provider, "dm:///export", _scopeStorage);
+        var tempExtent = new MofUriExtent(provider, "dm:///export", scopeStorage);
 
         // Now do the copying. it makes us all happy
         var extentCopier = new ExtentCopier(new MofFactory(tempExtent));
@@ -257,7 +248,7 @@ public class ExtentController : ControllerBase
         extent = MvcUrlEncoder.DecodePathOrEmpty(extent);
 
         // Performs the import via the action handler...
-        var actionLogic = new ActionLogic(_workspaceLogic, _scopeStorage);
+        var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
         var importXmi = new ImportXmiActionHandler();
         var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
         action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, workspace);

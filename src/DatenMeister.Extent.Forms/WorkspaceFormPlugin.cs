@@ -7,10 +7,8 @@ using DatenMeister.Plugins;
 
 namespace DatenMeister.Extent.Forms;
 
-public class WorkspaceFormPlugin: IDatenMeisterPlugin
+public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
     /// <summary>
     /// Defines the name of the action to create a new extent in the workspace
     /// </summary>
@@ -26,17 +24,13 @@ public class WorkspaceFormPlugin: IDatenMeisterPlugin
     public const string WorkspaceCreateExtentNavigate = "Workspace.Extent.LoadOrCreate.Navigate";
 
 
-    public WorkspaceFormPlugin(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
     public Task Start(PluginLoadingPosition position)
     {
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
                     
-                var formsPlugin = _scopeStorage.Get<FormsPluginState>();
+                var formsPlugin = scopeStorage.Get<FormsPluginState>();
   
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")

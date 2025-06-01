@@ -16,31 +16,22 @@ namespace DatenMeister.Types;
 /// b) Creates a DateTime type instance
 /// c) Add additional default types likes packages from the Default.xmi
 /// </summary>
-public class DefaultTypeIntegrator
+public class DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    private readonly IntegrationSettings _integrationSettings;
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-        _integrationSettings = scopeStorage.Get<IntegrationSettings>();
-    }
+    private readonly IntegrationSettings _integrationSettings = scopeStorage.Get<IntegrationSettings>();
 
     /// <summary>
     /// Creates the default types in the types workspaces
     /// </summary>
     public void CreateDefaultTypesForTypesWorkspace()
     {
-        var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
+        var typeWorkspace = workspaceLogic.GetTypesWorkspace();
 
         // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
         var primitiveTypes = new MofUriExtent(
             new InMemoryProvider(),
             WorkspaceNames.UriExtentPrimitiveTypes,
-            _scopeStorage);
+            scopeStorage);
         primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
         primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
 
@@ -50,11 +41,11 @@ public class DefaultTypeIntegrator
             var foundPackage =
                 PackageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
 
-            _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
+            workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
 
             // Copy the primitive type into a new extent for the type workspace
             CopyMethods.CopyToElementsProperty(
-                _workspaceLogic.GetUmlWorkspace()
+                workspaceLogic.GetUmlWorkspace()
                     .FindObject(WorkspaceNames.UriExtentPrimitiveTypes + "#_0")
                     ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection
                 ?? throw new InvalidOperationException("PrimitiveTypes is not found"),
@@ -63,7 +54,7 @@ public class DefaultTypeIntegrator
                 CopyOptions.CopyId);
 
             // Create the Primitive Type for the .Net-Type: DateTime
-            var internalUserExtent = LocalTypeSupport.GetInternalTypeExtent(_workspaceLogic);
+            var internalUserExtent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);
             var factory = new MofFactory(internalUserExtent);
             var package =
                 PackageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");

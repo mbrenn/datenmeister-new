@@ -11,18 +11,13 @@ namespace DatenMeister.Reports.Html;
 /// <summary>
 /// Creates the report
 /// </summary>
-public class HtmlReportCreator : GenericReportCreator
+public class HtmlReportCreator(TextWriter textWriter) : GenericReportCreator
 {
-    private readonly ClassLogger Logger = new(typeof(HtmlReportCreator));
-
-    /// <summary>
-    /// Stores the possible source of the report
-    /// </summary>
-    private readonly Dictionary<string, IReflectiveCollection> _sources = new();
+    private static readonly ClassLogger Logger = new(typeof(HtmlReportCreator));
 
     private HtmlReport? _htmlReporter;
 
-    public TextWriter TextWriter { get; set; }
+    public TextWriter TextWriter { get; set; } = textWriter;
 
     /// <summary>
     /// Inhibits the creation for CSS Style sheets
@@ -30,11 +25,6 @@ public class HtmlReportCreator : GenericReportCreator
     public bool EmbedInExistingPage
     {
         get;set;
-    }
-
-    public HtmlReportCreator(TextWriter textWriter)
-    {
-        TextWriter = textWriter;
     }
 
     public HtmlReport HtmlReporter =>

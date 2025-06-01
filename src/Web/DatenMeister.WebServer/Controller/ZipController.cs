@@ -8,17 +8,8 @@ namespace DatenMeister.WebServer.Controller;
 
 [Microsoft.AspNetCore.Components.Route("api/zip")]
 [ApiController]
-public class ZipController : ControllerBase
+public class ZipController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
-
-    public ZipController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-        
     public class CreateZipExampleParam
     {
         public string Workspace { get; set; } = string.Empty;
@@ -37,8 +28,8 @@ public class ZipController : ControllerBase
     [HttpPost("api/zip/create")]
     public async Task<ActionResult<CreateZipExampleResult>> CreateZipExample([FromBody] CreateZipExampleParam param)
     {
-        var zipExample = new ZipCodeExampleManager(_workspaceLogic,
-            new ExtentManager(_workspaceLogic, _scopeStorage), _scopeStorage);
+        var zipExample = new ZipCodeExampleManager(workspaceLogic,
+            new ExtentManager(workspaceLogic, scopeStorage), scopeStorage);
         var result = await zipExample.AddZipCodeExample(param.Workspace);
 
         return new CreateZipExampleResult(

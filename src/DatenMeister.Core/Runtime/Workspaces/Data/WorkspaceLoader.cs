@@ -2,25 +2,20 @@
 
 namespace DatenMeister.Core.Runtime.Workspaces.Data;
 
-public class WorkspaceLoader : ObjectFileStorage<WorkspaceFileData>
+public class WorkspaceLoader(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    : ObjectFileStorage<WorkspaceFileData>
 {
     private static readonly ClassLogger Logger = new(typeof(WorkspaceLoader));
 
     /// <summary>
     /// Stores the configuration of the workspace loader
     /// </summary>
-    public WorkspaceLoaderConfig Config { get; set; }
+    public WorkspaceLoaderConfig Config { get; set; } = scopeStorage.Get<WorkspaceLoaderConfig>();
 
     /// <summary>
     /// Stores the workspace logic storing the workspaces in memory
     /// </summary>
-    public IWorkspaceLogic WorkspaceLogic { get; set; }
-
-    public WorkspaceLoader(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
-        Config = scopeStorage.Get<WorkspaceLoaderConfig>();
-    }
+    public IWorkspaceLogic WorkspaceLogic { get; set; } = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
 
     /// <summary>
     /// Loads the workspaces from the given file.

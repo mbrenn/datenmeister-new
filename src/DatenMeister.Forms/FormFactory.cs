@@ -23,7 +23,7 @@ namespace DatenMeister.Forms;
 /// This formfactory can be used to get the forms for specific elements, collections or extents
 /// It will call the automatic form finder or the form creator, dependent on the configuration.
 /// </summary>
-public class FormFactory : IFormFactory
+public class FormFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IFormFactory
 {
     /// <summary>
     ///     Defines the logger
@@ -33,18 +33,8 @@ public class FormFactory : IFormFactory
     /// <summary>
     ///     Defines the state for the form plugin
     /// </summary>
-    private readonly FormsPluginState _formPluginState;
-    private readonly FormMethods _plugin;
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
-
-    public FormFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _plugin = new FormMethods(workspaceLogic, scopeStorage);
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-        _formPluginState = scopeStorage.Get<FormsPluginState>();
-    }
+    private readonly FormsPluginState _formPluginState = scopeStorage.Get<FormsPluginState>();
+    private readonly FormMethods _plugin = new(workspaceLogic, scopeStorage);
 
     public IElement? CreateObjectFormForItem(IObject element, FormFactoryConfiguration configuration)
     {
@@ -895,7 +885,7 @@ public class FormFactory : IFormFactory
     private FormCreator.FormCreator CreateFormCreator()
     {
         return FormCreator.FormCreator.Create(
-            _workspaceLogic, _scopeStorage, this
+            workspaceLogic, scopeStorage, this
         );
     }
 

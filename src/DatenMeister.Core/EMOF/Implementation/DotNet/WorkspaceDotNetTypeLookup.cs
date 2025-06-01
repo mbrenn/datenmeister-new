@@ -5,15 +5,8 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet;
 /// <summary>
 /// Performs an abstraction of the workspace to have an access to the types of the extents
 /// </summary>
-public class WorkspaceDotNetTypeLookup : IDotNetTypeLookup
-{      
-    private readonly Workspace _workspace;
-
-    public WorkspaceDotNetTypeLookup(Workspace workspace)
-    {
-        _workspace = workspace;
-    }
-        
+public class WorkspaceDotNetTypeLookup(Workspace workspace) : IDotNetTypeLookup
+{
     /// <summary>
     /// Defines a cache between all objects and their id
     /// </summary>
@@ -60,7 +53,7 @@ public class WorkspaceDotNetTypeLookup : IDotNetTypeLookup
 
         if (result == null)
         {
-            return WorkspaceDotNetHelper.GetMetaClassUriOfDotNetType(_workspace, type);
+            return WorkspaceDotNetHelper.GetMetaClassUriOfDotNetType(workspace, type);
         }
             
         return result;
@@ -73,7 +66,7 @@ public class WorkspaceDotNetTypeLookup : IDotNetTypeLookup
 
         if (result == null)
         {
-            return WorkspaceDotNetHelper.GetDotNetTypeOfMetaClassUri(_workspace, metaclassUri);
+            return WorkspaceDotNetHelper.GetDotNetTypeOfMetaClassUri(workspace, metaclassUri);
         }
             
         return result;

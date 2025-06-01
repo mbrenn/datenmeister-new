@@ -2,13 +2,8 @@
 
 namespace DatenMeister.Excel.Spreadsheet;
 
-public class SsCell
+public class SsCell(ICell nativeCell)
 {
     // ReSharper disable once NotAccessedField.Local
-    private readonly ICell _nativeCell;
-
-    public SsCell(ICell nativeCell)
-    {
-        _nativeCell = nativeCell;
-    }
+    private readonly ICell _nativeCell = nativeCell;
 }

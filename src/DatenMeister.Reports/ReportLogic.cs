@@ -15,7 +15,10 @@ using DatenMeister.TextTemplates;
 
 namespace DatenMeister.Reports;
 
-public class ReportLogic
+public class ReportLogic(
+    IWorkspaceLogic workspaceLogic,
+    IScopeStorage scopeStorage,
+    GenericReportCreator reportCreator)
 {
     private static readonly ClassLogger Logger = new(typeof(ReportLogic));
 
@@ -25,11 +28,11 @@ public class ReportLogic
     private Dictionary<string, IReflectiveCollection> _sources
         = new();
 
-    public IWorkspaceLogic WorkspaceLogic { get; set; }
+    public IWorkspaceLogic WorkspaceLogic { get; set; } = workspaceLogic;
 
-    public IScopeStorage ScopeStorage { get; set; }
+    public IScopeStorage ScopeStorage { get; set; } = scopeStorage;
 
-    public GenericReportCreator ReportCreator { get; }
+    public GenericReportCreator ReportCreator { get; } = reportCreator;
 
     /// <summary>
     /// Stores the possible source of the report
@@ -38,16 +41,6 @@ public class ReportLogic
     {
         get => _sources;
         set => _sources = value;
-    }
-
-    public ReportLogic(
-        IWorkspaceLogic workspaceLogic, 
-        IScopeStorage scopeStorage,
-        GenericReportCreator reportCreator)
-    {
-        ReportCreator = reportCreator;
-        WorkspaceLogic = workspaceLogic;
-        ScopeStorage = scopeStorage;
     }
 
     /// <summary>

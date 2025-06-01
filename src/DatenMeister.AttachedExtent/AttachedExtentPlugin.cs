@@ -6,14 +6,9 @@ using DatenMeister.Plugins;
 namespace DatenMeister.AttachedExtent;
 
 [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
-public class AttachedExtentPlugin : IDatenMeisterPlugin
+public class AttachedExtentPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly ExtentSettings _extentSettings;
-
-    public AttachedExtentPlugin(IScopeStorage scopeStorage)
-    {
-        _extentSettings = scopeStorage.Get<ExtentSettings>();
-    }
+    private readonly ExtentSettings _extentSettings = scopeStorage.Get<ExtentSettings>();
 
     public Task Start(PluginLoadingPosition position)
     {

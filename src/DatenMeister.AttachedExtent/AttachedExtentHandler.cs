@@ -11,15 +11,9 @@ namespace DatenMeister.AttachedExtent;
 /// <summary>
 /// Defines the handler to support the attached extents. 
 /// </summary>
-public class AttachedExtentHandler
+public class AttachedExtentHandler(IWorkspaceLogic workspaceLogic)
 {
     public const string AttachedExtentProperty = "DatenMeister.AttachedExtent";
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public AttachedExtentHandler(IWorkspaceLogic workspaceLogic)
-    {
-        _workspaceLogic = workspaceLogic;
-    }
 
     /// <summary>
     /// Gets the configuration for the attached extent
@@ -60,7 +54,7 @@ public class AttachedExtentHandler
             return null;
         }
 
-        return _workspaceLogic.FindExtent(workspace, extent);
+        return workspaceLogic.FindExtent(workspace, extent);
     }
 
     /// <summary>
@@ -74,7 +68,7 @@ public class AttachedExtentHandler
         var extentName = originalExtent.contextURI();
 
         var foundExtents =
-            from workspace in _workspaceLogic.Workspaces
+            from workspace in workspaceLogic.Workspaces
             from extent in workspace.extent
             let configuration = GetConfiguration(extent)
             where configuration != null

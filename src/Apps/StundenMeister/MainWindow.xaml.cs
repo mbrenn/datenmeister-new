@@ -250,17 +250,11 @@ public partial class MainWindow : Window
         return selectedItem?.CostCenter;
     }
 
-    private class CostCenterDropDownItem
+    private class CostCenterDropDownItem(IElement costCenter, string title)
     {
-        public CostCenterDropDownItem(IElement costCenter, string title)
-        {
-            CostCenter = costCenter;
-            Title = title;
-        }
+        public IElement CostCenter { get; } = costCenter;
 
-        public IElement CostCenter { get; }
-
-        public string Title { get; }
+        public string Title { get; } = title;
 
         public override string ToString()
         {

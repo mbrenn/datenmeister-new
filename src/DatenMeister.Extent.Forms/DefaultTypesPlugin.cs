@@ -4,22 +4,15 @@ using DatenMeister.Plugins;
 
 namespace DatenMeister.Extent.Forms;
 
-public class DefaultTypesPlugin : IDatenMeisterPlugin
+public class DefaultTypesPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
-    public DefaultTypesPlugin(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-
     public Task Start(PluginLoadingPosition position)
     {
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
-                var formsPluginState = _scopeStorage.Get<FormsPluginState>();
+                var formsPluginState = scopeStorage.Get<FormsPluginState>();
                 formsPluginState.FormModificationPlugins.Add(
                     new PackageFormModificationPlugin());
                 break;

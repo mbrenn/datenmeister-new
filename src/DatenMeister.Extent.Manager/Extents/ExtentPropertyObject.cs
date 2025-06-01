@@ -7,14 +7,9 @@ namespace DatenMeister.Extent.Manager.Extents;
 /// Defines a MofObject wrapper which returns all the properties being allocated to the extent
 /// within the interfaces of IObject and IObjectAllProperties
 /// </summary>
-public class ExtentPropertyObject : IObject, IObjectAllProperties
+public class ExtentPropertyObject(IExtent extent) : IObject, IObjectAllProperties
 {
-    private readonly IExtent _extent;
-
-    public ExtentPropertyObject(IExtent extent)
-    {
-        _extent = extent ?? throw new ArgumentNullException(nameof(extent));
-    }
+    private readonly IExtent _extent = extent ?? throw new ArgumentNullException(nameof(extent));
 
     public bool equals(object? other) => other is IExtent extent && _extent.equals(extent);
 

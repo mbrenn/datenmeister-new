@@ -3,17 +3,12 @@
 /// <summary>
 /// Defines a html button
 /// </summary>
-public class HtmlButtonElement : HtmlElement
+public class HtmlButtonElement(HtmlElement content) : HtmlElement
 {
     /// <summary>
     /// Gets or sets the paragraph to be stored
     /// </summary>
-    private HtmlElement Content { get; }
-
-    public HtmlButtonElement(HtmlElement content)
-    {
-        Content = content;
-    }
+    private HtmlElement Content { get; } = content;
 
     public override string ToString()
     {

@@ -2,12 +2,12 @@
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 
-public class TreeViewItemCommandDefinition : ViewExtension
+public class TreeViewItemCommandDefinition(string text, Action<TreeViewItemParameter> onClick) : ViewExtension
 {
     /// <summary>
     /// Gets or sets the text of the tree view item
     /// </summary>
-    public string Text { get; set; }
+    public string Text { get; set; } = text;
 
     /// <summary>
     /// Gets or sets the name of the category. This leads to the creation of submenus
@@ -17,13 +17,7 @@ public class TreeViewItemCommandDefinition : ViewExtension
     /// <summary>
     /// Gets or sets the action that shall be executed upon click
     /// </summary>
-    public Action<TreeViewItemParameter> Action { get; set; }
-
-    public TreeViewItemCommandDefinition(string text, Action<TreeViewItemParameter> onClick)
-    {
-        Text = text;
-        Action = onClick;
-    }
+    public Action<TreeViewItemParameter> Action { get; set; } = onClick;
 
     public TreeViewItemCommandDefinition(string text, Action<TreeViewItemParameter> onClick, string categoryName)
         : this(text, onClick)

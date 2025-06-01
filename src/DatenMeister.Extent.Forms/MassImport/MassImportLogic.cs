@@ -11,17 +11,8 @@ using System.Text;
 
 namespace DatenMeister.Extent.Forms.MassImport;
 
-public class MassImportLogic
+public class MassImportLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    private readonly IWorkspaceLogic workspaceLogic;
-    private readonly IScopeStorage scopeStorage;
-
-    public MassImportLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        this.workspaceLogic = workspaceLogic;
-        this.scopeStorage = scopeStorage;
-    }
-
     /// <summary>
     /// Performs the massimport
     /// </summary>

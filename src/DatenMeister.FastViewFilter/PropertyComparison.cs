@@ -4,14 +4,9 @@ using static DatenMeister.Core.Models._DatenMeister._FastViewFilters;
 
 namespace DatenMeister.FastViewFilter;
 
-public class PropertyComparison : IFastFilter
+public class PropertyComparison(IObject filterObject) : IFastFilter
 {
-    private readonly IObject _filterObject;
-
-    public PropertyComparison(IObject filterObject)
-    {
-        _filterObject = filterObject;
-    }
+    private readonly IObject _filterObject = filterObject;
 
     public bool IsFiltered(object? value)
     {

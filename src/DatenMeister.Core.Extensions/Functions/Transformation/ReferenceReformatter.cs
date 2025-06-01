@@ -8,15 +8,8 @@ namespace DatenMeister.Core.Extensions.Functions.Transformation;
 /// Converts a reflective sequence of items which contain a cross reference table into a list of items
 /// where the reference are stored as a list within each item. This eases the handling of properties
 /// </summary>
-public class ReferenceReformatter
+public class ReferenceReformatter(ReferenceFormatterConfiguration configuration)
 {
-    private readonly ReferenceFormatterConfiguration _configuration;
-
-    public ReferenceReformatter(ReferenceFormatterConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     /// <summary>
     /// Converts the elements of the source collection into the target collection according to the given algorithm
     /// </summary>
@@ -24,9 +17,9 @@ public class ReferenceReformatter
     /// <param name="target">Target to which the elements will be added</param>
     public void Convert(IReflectiveCollection source, IReflectiveCollection target)
     {
-        var referenceProperty = _configuration.ReferenceProperty
+        var referenceProperty = configuration.ReferenceProperty
                                 ?? throw new InvalidOperationException("referenceProperty == null");
-        var contentProperty = _configuration.ContentProperty
+        var contentProperty = configuration.ContentProperty
                               ?? throw new InvalidOperationException("contenttProperty == null");
 
         var factory = new MofFactory(target);
@@ -40,7 +33,7 @@ public class ReferenceReformatter
             // Parses through each properties and adds the values directly or as subitems
             foreach (var property in ((IObjectAllProperties)element).getPropertiesBeingSet())
             {
-                if (_configuration.FixedProperty.Contains(property))
+                if (configuration.FixedProperty.Contains(property))
                 {
                     if (element.isSet(property))
                         created.set(property, element.get(property));
@@ -62,7 +55,7 @@ public class ReferenceReformatter
             }
 
             if (list.Count > 0)
-                created.set(_configuration.SubItemProperty ?? string.Empty, list);
+                created.set(configuration.SubItemProperty ?? string.Empty, list);
         }
     }
 }

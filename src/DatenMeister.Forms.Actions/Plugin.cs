@@ -4,14 +4,9 @@ using DatenMeister.Plugins;
 
 namespace DatenMeister.Forms.Actions;
 
-internal class Plugin : IDatenMeisterPlugin
+internal class Plugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    public Plugin(IScopeStorage scopeStorage)
-    {
-        ScopeStorage = scopeStorage;
-    }
-
-    public IScopeStorage ScopeStorage { get; }
+    public IScopeStorage ScopeStorage { get; } = scopeStorage;
 
     public Task Start(PluginLoadingPosition position)
     {

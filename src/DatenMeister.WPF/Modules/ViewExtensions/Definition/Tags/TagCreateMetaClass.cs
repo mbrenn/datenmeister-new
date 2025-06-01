@@ -2,14 +2,9 @@
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;
 
-public struct TagCreateMetaClass
+public struct TagCreateMetaClass(IElement metaClass)
 {
-    public TagCreateMetaClass(IElement metaClass)
-    {
-        MetaClass = metaClass;
-    }
-
-    public IElement MetaClass { get; }
+    public IElement MetaClass { get; } = metaClass;
 
     public override bool Equals(object? obj)
     {

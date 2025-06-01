@@ -375,16 +375,10 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
             _cache[new ResolverKey(uri, resolveType)] = foundElement;
         }
 
-        private class ResolverKey
+        private class ResolverKey(string uri, ResolveType resolveType)
         {
-            private readonly ResolveType _resolveType;
-            private readonly string _uri;
-
-            public ResolverKey(string uri, ResolveType resolveType)
-            {
-                _uri = uri;
-                _resolveType = resolveType;
-            }
+            private readonly ResolveType _resolveType = resolveType;
+            private readonly string _uri = uri;
 
             protected bool Equals(ResolverKey other)
             {

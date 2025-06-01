@@ -7,20 +7,12 @@ using DatenMeister.Reports.Html;
 namespace DatenMeister.Reports;
 
 [PluginLoading]
-public class ReportPlugin : IDatenMeisterPlugin
+public class ReportPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
-    public ReportPlugin(
-        IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-        
     public Task Start(PluginLoadingPosition position)
     {
-        _scopeStorage.Add(CreateAdocEvaluators());
-        _scopeStorage.Add(CreateHtmlEvaluators());
+        scopeStorage.Add(CreateAdocEvaluators());
+        scopeStorage.Add(CreateHtmlEvaluators());
 
         return Task.CompletedTask;
     }

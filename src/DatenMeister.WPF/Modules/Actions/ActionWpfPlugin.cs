@@ -7,18 +7,11 @@ namespace DatenMeister.WPF.Modules.Actions;
 /// <summary>
 /// Defines the plugin for action
 /// </summary>
-public class ActionWpfPlugin : IDatenMeisterPlugin
+public class ActionWpfPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IScopeStorage _scopeStorage;
-
-    public ActionWpfPlugin(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-        
     public void Start(PluginLoadingPosition position)
     {
-        _scopeStorage
+        scopeStorage
             .Get<UserInteractionState>()
             .ElementInteractionHandler
             .AddRange(

@@ -10,15 +10,8 @@ using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Actions;
 
-public class ActionSetExecutionState
+public class ActionSetExecutionState(IElement element)
 {
-    private readonly IElement _element;
-
-    public ActionSetExecutionState(IElement element)
-    {
-        _element = element;
-    }
-        
     /// <summary>
     /// Stores the number of actions
     /// </summary>
@@ -32,11 +25,11 @@ public class ActionSetExecutionState
     public void IncrementNumberOfActions()
     {
         Interlocked.Increment(ref _numberOfActions);
-        _element.set("numberOfActions", _numberOfActions);
+        element.set("numberOfActions", _numberOfActions);
     }
 }
 
-public class ActionLogic
+public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
     /// <summary>
     /// Gets or sets a flag whether an asynchronous execution shall be performed
@@ -46,15 +39,9 @@ public class ActionLogic
 
     private static readonly ILogger ClassLogger = new ClassLogger(typeof(ActionLogic));
         
-    public IWorkspaceLogic WorkspaceLogic { get; }
-    public IScopeStorage ScopeStorage { get; }
+    public IWorkspaceLogic WorkspaceLogic { get; } = workspaceLogic;
+    public IScopeStorage ScopeStorage { get; } = scopeStorage;
 
-    public ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        WorkspaceLogic = workspaceLogic;
-        ScopeStorage = scopeStorage;
-    }
-        
     /// <summary>
     /// Executes the given action
     /// </summary>

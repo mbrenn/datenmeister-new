@@ -12,15 +12,8 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.DefaultTypes;
 
-public class DefaultTypesExtension : IViewExtensionFactory
+public class DefaultTypesExtension(DefaultClassifierHints hints) : IViewExtensionFactory
 {
-    private readonly DefaultClassifierHints _defaultClassifierHints;
-
-    public DefaultTypesExtension(DefaultClassifierHints hints)
-    {
-        _defaultClassifierHints = hints;
-    }
-
     public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
     {
         var btn = GetNewPackageButton(viewExtensionInfo);
@@ -72,7 +65,7 @@ public class DefaultTypesExtension : IViewExtensionFactory
 
                     // Create new package
                     var factory = new MofFactory(extent);
-                    var type = _defaultClassifierHints.GetDefaultPackageClassifier(asExtent);
+                    var type = hints.GetDefaultPackageClassifier(asExtent);
                     var package = factory.create(type);
                     package.set(_UML._CommonStructure._NamedElement.name, "Unnamed");
 

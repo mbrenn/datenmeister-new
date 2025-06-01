@@ -12,13 +12,8 @@ namespace DatenMeister.Provider.Xmi.Provider.XMI;
 /// </summary>
 public class XmlConverter
 {
-    private readonly MofExtent _extent;
-
-    public XmlConverter()
-    {
-        _extent = new MofExtent(
-            new XmiProvider());
-    }
+    private readonly MofExtent _extent = new(
+        new XmiProvider());
 
     /// <summary>
     /// Ignores the ids

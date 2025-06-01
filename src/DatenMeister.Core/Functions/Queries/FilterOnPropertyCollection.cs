@@ -4,27 +4,18 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class FilterOnPropertyCollection : ProxyReflectiveCollection
+public class FilterOnPropertyCollection(
+    IReflectiveSequence collection,
+    string property,
+    object filterValue)
+    : ProxyReflectiveCollection(collection)
 {
-    private readonly object _filterValue;
-    private readonly string _property;
-
-    public FilterOnPropertyCollection(
-        IReflectiveSequence collection,
-        string property,
-        object filterValue)
-        : base(collection)
-    {
-        _property = property;
-        _filterValue = filterValue;
-    }
-
     public override IEnumerator<object> GetEnumerator()
     {
         foreach (var value in Collection)
         {
             var valueAsObject = value as IObject;
-            if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
+            if (valueAsObject?.get(property)?.Equals(filterValue) == true)
             {
                 yield return valueAsObject;
             }
@@ -37,7 +28,7 @@ public class FilterOnPropertyCollection : ProxyReflectiveCollection
         foreach (var value in Collection)
         {
             var valueAsObject = value as IObject;
-            if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
+            if (valueAsObject?.get(property)?.Equals(filterValue) == true)
             {
                 result++;
             }

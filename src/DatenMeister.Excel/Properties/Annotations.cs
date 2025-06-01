@@ -119,14 +119,9 @@ public sealed class StringFormatMethodAttribute : Attribute
 [AttributeUsage(
   AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Field,
   AllowMultiple = true)]
-public sealed class ValueProviderAttribute : Attribute
+public sealed class ValueProviderAttribute([NotNull] string name) : Attribute
 {
-  public ValueProviderAttribute([NotNull] string name)
-  {
-    Name = name;
-  }
-
-  [NotNull] public string Name { get; private set; }
+  [NotNull] public string Name { get; private set; } = name;
 }
 
 /// <summary>
@@ -238,20 +233,14 @@ public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
 /// </code></item>
 /// </list></examples>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-public sealed class ContractAnnotationAttribute : Attribute
+public sealed class ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates) : Attribute
 {
   public ContractAnnotationAttribute([NotNull] string contract)
     : this(contract, false) { }
 
-  public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
-  {
-    Contract = contract;
-    ForceFullStates = forceFullStates;
-  }
+  [NotNull] public string Contract { get; private set; } = contract;
 
-  [NotNull] public string Contract { get; private set; }
-
-  public bool ForceFullStates { get; private set; }
+  public bool ForceFullStates { get; private set; } = forceFullStates;
 }
 
 /// <summary>
@@ -264,16 +253,11 @@ public sealed class ContractAnnotationAttribute : Attribute
 /// }
 /// </code></example>
 [AttributeUsage(AttributeTargets.All)]
-public sealed class LocalizationRequiredAttribute : Attribute
+public sealed class LocalizationRequiredAttribute(bool required) : Attribute
 {
   public LocalizationRequiredAttribute() : this(true) { }
 
-  public LocalizationRequiredAttribute(bool required)
-  {
-    Required = required;
-  }
-
-  public bool Required { get; private set; }
+  public bool Required { get; private set; } = required;
 }
 
 /// <summary>
@@ -312,14 +296,9 @@ public sealed class CannotApplyEqualityOperatorAttribute : Attribute { }
 /// </code></example>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 [BaseTypeRequired(typeof(Attribute))]
-public sealed class BaseTypeRequiredAttribute : Attribute
+public sealed class BaseTypeRequiredAttribute([NotNull] Type baseType) : Attribute
 {
-  public BaseTypeRequiredAttribute([NotNull] Type baseType)
-  {
-    BaseType = baseType;
-  }
-
-  [NotNull] public Type BaseType { get; private set; }
+  [NotNull] public Type BaseType { get; private set; } = baseType;
 }
 
 /// <summary>
@@ -327,7 +306,8 @@ public sealed class BaseTypeRequiredAttribute : Attribute
 /// so this symbol will not be marked as unused (as well as by other usage inspections).
 /// </summary>
 [AttributeUsage(AttributeTargets.All)]
-public sealed class UsedImplicitlyAttribute : Attribute
+public sealed class UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
+  : Attribute
 {
   public UsedImplicitlyAttribute()
     : this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
@@ -338,15 +318,9 @@ public sealed class UsedImplicitlyAttribute : Attribute
   public UsedImplicitlyAttribute(ImplicitUseTargetFlags targetFlags)
     : this(ImplicitUseKindFlags.Default, targetFlags) { }
 
-  public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
-  {
-    UseKindFlags = useKindFlags;
-    TargetFlags = targetFlags;
-  }
+  public ImplicitUseKindFlags UseKindFlags { get; private set; } = useKindFlags;
 
-  public ImplicitUseKindFlags UseKindFlags { get; private set; }
-
-  public ImplicitUseTargetFlags TargetFlags { get; private set; }
+  public ImplicitUseTargetFlags TargetFlags { get; private set; } = targetFlags;
 }
 
 /// <summary>
@@ -354,7 +328,8 @@ public sealed class UsedImplicitlyAttribute : Attribute
 /// as unused (as well as by other usage inspections)
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.GenericParameter)]
-public sealed class MeansImplicitUseAttribute : Attribute
+public sealed class MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
+  : Attribute
 {
   public MeansImplicitUseAttribute()
     : this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
@@ -365,15 +340,9 @@ public sealed class MeansImplicitUseAttribute : Attribute
   public MeansImplicitUseAttribute(ImplicitUseTargetFlags targetFlags)
     : this(ImplicitUseKindFlags.Default, targetFlags) { }
 
-  public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
-  {
-    UseKindFlags = useKindFlags;
-    TargetFlags = targetFlags;
-  }
+  [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; private set; } = useKindFlags;
 
-  [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; private set; }
-
-  [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; private set; }
+  [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; private set; } = targetFlags;
 }
 
 [Flags]
@@ -581,69 +550,39 @@ public sealed class MacroAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-public sealed class AspMvcAreaMasterLocationFormatAttribute : Attribute
+public sealed class AspMvcAreaMasterLocationFormatAttribute([NotNull] string format) : Attribute
 {
-  public AspMvcAreaMasterLocationFormatAttribute([NotNull] string format)
-  {
-    Format = format;
-  }
-
-  [NotNull] public string Format { get; private set; }
+  [NotNull] public string Format { get; private set; } = format;
 }
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-public sealed class AspMvcAreaPartialViewLocationFormatAttribute : Attribute
+public sealed class AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format) : Attribute
 {
-  public AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format)
-  {
-    Format = format;
-  }
-
-  [NotNull] public string Format { get; private set; }
+  [NotNull] public string Format { get; private set; } = format;
 }
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-public sealed class AspMvcAreaViewLocationFormatAttribute : Attribute
+public sealed class AspMvcAreaViewLocationFormatAttribute([NotNull] string format) : Attribute
 {
-  public AspMvcAreaViewLocationFormatAttribute([NotNull] string format)
-  {
-    Format = format;
-  }
-
-  [NotNull] public string Format { get; private set; }
+  [NotNull] public string Format { get; private set; } = format;
 }
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-public sealed class AspMvcMasterLocationFormatAttribute : Attribute
+public sealed class AspMvcMasterLocationFormatAttribute([NotNull] string format) : Attribute
 {
-  public AspMvcMasterLocationFormatAttribute([NotNull] string format)
-  {
-    Format = format;
-  }
-
-  [NotNull] public string Format { get; private set; }
+  [NotNull] public string Format { get; private set; } = format;
 }
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-public sealed class AspMvcPartialViewLocationFormatAttribute : Attribute
+public sealed class AspMvcPartialViewLocationFormatAttribute([NotNull] string format) : Attribute
 {
-  public AspMvcPartialViewLocationFormatAttribute([NotNull] string format)
-  {
-    Format = format;
-  }
-
-  [NotNull] public string Format { get; private set; }
+  [NotNull] public string Format { get; private set; } = format;
 }
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-public sealed class AspMvcViewLocationFormatAttribute : Attribute
+public sealed class AspMvcViewLocationFormatAttribute([NotNull] string format) : Attribute
 {
-  public AspMvcViewLocationFormatAttribute([NotNull] string format)
-  {
-    Format = format;
-  }
-
-  [NotNull] public string Format { get; private set; }
+  [NotNull] public string Format { get; private set; } = format;
 }
 
 /// <summary>
@@ -806,14 +745,9 @@ public sealed class HtmlElementAttributesAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
-public sealed class HtmlAttributeValueAttribute : Attribute
+public sealed class HtmlAttributeValueAttribute([NotNull] string name) : Attribute
 {
-  public HtmlAttributeValueAttribute([NotNull] string name)
-  {
-    Name = name;
-  }
-
-  [NotNull] public string Name { get; private set; }
+  [NotNull] public string Name { get; private set; } = name;
 }
 
 /// <summary>
@@ -829,14 +763,9 @@ public sealed class RazorSectionAttribute : Attribute { }
 /// over collection type affects content of the collection.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property)]
-public sealed class CollectionAccessAttribute : Attribute
+public sealed class CollectionAccessAttribute(CollectionAccessType collectionAccessType) : Attribute
 {
-  public CollectionAccessAttribute(CollectionAccessType collectionAccessType)
-  {
-    CollectionAccessType = collectionAccessType;
-  }
-
-  public CollectionAccessType CollectionAccessType { get; private set; }
+  public CollectionAccessType CollectionAccessType { get; private set; } = collectionAccessType;
 }
 
 [Flags]
@@ -866,14 +795,9 @@ public sealed class AssertionMethodAttribute : Attribute { }
 /// the attribute is the assertion type.
 /// </summary>
 [AttributeUsage(AttributeTargets.Parameter)]
-public sealed class AssertionConditionAttribute : Attribute
+public sealed class AssertionConditionAttribute(AssertionConditionType conditionType) : Attribute
 {
-  public AssertionConditionAttribute(AssertionConditionType conditionType)
-  {
-    ConditionType = conditionType;
-  }
-
-  public AssertionConditionType ConditionType { get; private set; }
+  public AssertionConditionType ConditionType { get; private set; } = conditionType;
 }
 
 /// <summary>
@@ -950,17 +874,11 @@ public sealed class XamlItemsControlAttribute : Attribute { }
 public sealed class XamlItemBindingOfItemsControlAttribute : Attribute { }
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public sealed class AspChildControlTypeAttribute : Attribute
+public sealed class AspChildControlTypeAttribute([NotNull] string tagName, [NotNull] Type controlType) : Attribute
 {
-  public AspChildControlTypeAttribute([NotNull] string tagName, [NotNull] Type controlType)
-  {
-    TagName = tagName;
-    ControlType = controlType;
-  }
+  [NotNull] public string TagName { get; private set; } = tagName;
 
-  [NotNull] public string TagName { get; private set; }
-
-  [NotNull] public Type ControlType { get; private set; }
+  [NotNull] public Type ControlType { get; private set; } = controlType;
 }
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -973,78 +891,46 @@ public sealed class AspDataFieldsAttribute : Attribute { }
 public sealed class AspMethodPropertyAttribute : Attribute { }
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public sealed class AspRequiredAttributeAttribute : Attribute
+public sealed class AspRequiredAttributeAttribute([NotNull] string attribute) : Attribute
 {
-  public AspRequiredAttributeAttribute([NotNull] string attribute)
-  {
-    Attribute = attribute;
-  }
-
-  [NotNull] public string Attribute { get; private set; }
+  [NotNull] public string Attribute { get; private set; } = attribute;
 }
 
 [AttributeUsage(AttributeTargets.Property)]
-public sealed class AspTypePropertyAttribute : Attribute
+public sealed class AspTypePropertyAttribute(bool createConstructorReferences) : Attribute
 {
-  public bool CreateConstructorReferences { get; private set; }
-
-  public AspTypePropertyAttribute(bool createConstructorReferences)
-  {
-    CreateConstructorReferences = createConstructorReferences;
-  }
+  public bool CreateConstructorReferences { get; private set; } = createConstructorReferences;
 }
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class RazorImportNamespaceAttribute : Attribute
+public sealed class RazorImportNamespaceAttribute([NotNull] string name) : Attribute
 {
-  public RazorImportNamespaceAttribute([NotNull] string name)
-  {
-    Name = name;
-  }
-
-  [NotNull] public string Name { get; private set; }
+  [NotNull] public string Name { get; private set; } = name;
 }
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class RazorInjectionAttribute : Attribute
+public sealed class RazorInjectionAttribute([NotNull] string type, [NotNull] string fieldName) : Attribute
 {
-  public RazorInjectionAttribute([NotNull] string type, [NotNull] string fieldName)
-  {
-    Type = type;
-    FieldName = fieldName;
-  }
+  [NotNull] public string Type { get; private set; } = type;
 
-  [NotNull] public string Type { get; private set; }
-
-  [NotNull] public string FieldName { get; private set; }
+  [NotNull] public string FieldName { get; private set; } = fieldName;
 }
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class RazorDirectiveAttribute : Attribute
+public sealed class RazorDirectiveAttribute([NotNull] string directive) : Attribute
 {
-  public RazorDirectiveAttribute([NotNull] string directive)
-  {
-    Directive = directive;
-  }
-
-  [NotNull] public string Directive { get; private set; }
+  [NotNull] public string Directive { get; private set; } = directive;
 }
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class RazorPageBaseTypeAttribute : Attribute
+public sealed class RazorPageBaseTypeAttribute([NotNull] string baseType, string pageName) : Attribute
 {
-  public RazorPageBaseTypeAttribute([NotNull] string baseType)
+  public RazorPageBaseTypeAttribute([NotNull] string baseType) : this(baseType, null)
   {
-    BaseType = baseType;
-  }
-  public RazorPageBaseTypeAttribute([NotNull] string baseType, string pageName)
-  {
-    BaseType = baseType;
-    PageName = pageName;
   }
 
-  [NotNull] public string BaseType { get; private set; }
-  [CanBeNull] public string PageName { get; private set; }
+  [NotNull] public string BaseType { get; private set; } = baseType;
+  [CanBeNull] public string PageName { get; private set; } = pageName;
 }
 
 [AttributeUsage(AttributeTargets.Method)]

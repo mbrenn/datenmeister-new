@@ -80,10 +80,8 @@ public class ExtentCreator
             {
                 foundExtent.GetConfiguration().ExtentType = extentType;
             }
-
-            return (IUriExtent?)foundExtent;
         }
 
-        return (IUriExtent?)foundExtent;
+        return foundExtent;
     }
 }

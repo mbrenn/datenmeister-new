@@ -15,11 +15,11 @@ namespace DatenMeister.Extent.Manager.ExtentStorage;
 /// In addition, it will also use the ExtentManager class to load the actual data
 /// of the extents
 /// </summary>
-public partial class ExtentConfigurationLoader
+public class ExtentConfigurationLoader(
+    IScopeStorage scopeStorage,
+    ExtentManager extentManager)
 {
     private static readonly ClassLogger Logger = new(typeof(ExtentConfigurationLoader));
-
-    private readonly IScopeStorage _scopeStorage;
 
     /// <summary>
     /// Information whether the debugger shall be triggered in case of a failed
@@ -28,25 +28,16 @@ public partial class ExtentConfigurationLoader
     /// </summary>
     public static bool BreakOnFailedWorkspaceLoading = true;
 
-    public ExtentConfigurationLoader(
-        IScopeStorage scopeStorage,
-        ExtentManager extentManager)
-    {
-        _scopeStorage = scopeStorage;
-        ExtentManager = extentManager;
-        ExtentStorageData = scopeStorage.Get<ExtentStorageData>();
-    }
-
     /// <summary>
     /// Gets the information about the loaded extents,
     /// and filepath where to look after
     /// </summary>
-    private ExtentStorageData ExtentStorageData { get; }
+    private ExtentStorageData ExtentStorageData { get; } = scopeStorage.Get<ExtentStorageData>();
 
     /// <summary>
     /// Gets the extent manager being used to actual load an extent
     /// </summary>
-    private ExtentManager ExtentManager { get; }
+    private ExtentManager ExtentManager { get; } = extentManager;
 
     /// <summary>
     /// Loads the configuration of the extents and returns the configuration
@@ -79,7 +70,7 @@ public partial class ExtentConfigurationLoader
             }
 
             var xmiProvider = new XmiProvider(document);
-            var extent = new MofUriExtent(xmiProvider, _scopeStorage)
+            var extent = new MofUriExtent(xmiProvider, scopeStorage)
             {
                 Workspace = ExtentManager.WorkspaceLogic.GetDataWorkspace()
             };
@@ -107,7 +98,7 @@ public partial class ExtentConfigurationLoader
         }
 
         var xmiProvider = new XmiProvider();
-        var extentConfigurations = new MofUriExtent(xmiProvider, _scopeStorage);
+        var extentConfigurations = new MofUriExtent(xmiProvider, scopeStorage);
         var factory = new MofFactory(extentConfigurations);
 
         var path = ExtentStorageData.FilePath;

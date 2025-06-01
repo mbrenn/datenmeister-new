@@ -7,22 +7,12 @@ using DatenMeister.Plugins;
 namespace DatenMeister.DataView;
 
 [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
-public class DataViewPlugin : IDatenMeisterPlugin
+public class DataViewPlugin(
+    IWorkspaceLogic workspaceLogic,
+    DataViewLogic dataViewLogic,
+    IScopeStorage scopeStorage)
+    : IDatenMeisterPlugin
 {
-    private readonly DataViewLogic _dataViewLogic;
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public DataViewPlugin(
-        IWorkspaceLogic workspaceLogic,
-        DataViewLogic dataViewLogic,
-        IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _dataViewLogic = dataViewLogic;
-        _scopeStorage = scopeStorage;
-    }
-
     /// <summary>
     /// Starts the plugin
     /// </summary>
@@ -35,14 +25,14 @@ public class DataViewPlugin : IDatenMeisterPlugin
                 var workspace = new Workspace(WorkspaceNames.WorkspaceViews,
                     "Container of all views which are created dynamically.");
                 workspace.IsDynamicWorkspace = true;
-                _workspaceLogic.AddWorkspace(workspace);
-                workspace.ExtentFactory.Add(new DataViewExtentFactory(_dataViewLogic, _scopeStorage));
+                workspaceLogic.AddWorkspace(workspace);
+                workspace.ExtentFactory.Add(new DataViewExtentFactory(dataViewLogic, scopeStorage));
 
-                _scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
+                scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
                 break;
             case PluginLoadingPosition.AfterLoadingOfExtents:
                 var factories = GetDefaultViewNodeFactories();
-                _scopeStorage.Add(factories);
+                scopeStorage.Add(factories);
                 break;
         }
 

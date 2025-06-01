@@ -2,14 +2,9 @@
 
 namespace DatenMeister.Core.Runtime.Proxies;
 
-public class ProxyMofObject : IHasProxiedObject, IObject, IObjectAllProperties
+public class ProxyMofObject(IObject value) : IHasProxiedObject, IObject, IObjectAllProperties
 {
-    protected readonly IObject Object;
-
-    public ProxyMofObject(IObject value)
-    {
-        Object = value;
-    }
+    protected readonly IObject Object = value;
 
     /// <summary>
     /// Gets the proxied element which can be used to dereference the

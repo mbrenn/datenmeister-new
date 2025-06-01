@@ -2,53 +2,45 @@
 
 namespace DatenMeister.Core.Runtime.Proxies;
 
-public class ProxyIdElement : IElement, IHasId
+public class ProxyIdElement(IObject element, string id) : IElement, IHasId
 {
-    private readonly IObject _element;
-
-    public ProxyIdElement(IObject element, string id)
-    {
-        _element = element;
-        Id = id;
-    }
-
     public bool equals(object? other)
     {
-        return _element.equals(other);
+        return element.equals(other);
     }
 
     public object? get(string property)
     {
-        return _element.get(property);
+        return element.get(property);
     }
 
     public void set(string property, object? value)
     {
-        _element.set(property, value);
+        element.set(property, value);
     }
 
     public bool isSet(string property)
     {
-        return _element.isSet(property);
+        return element.isSet(property);
     }
 
     public void unset(string property)
     {
-        _element.unset(property);
+        element.unset(property);
     }
 
     public IElement? metaclass =>
-        (_element as IElement ?? throw new InvalidOperationException("not an element")).metaclass;
+        (element as IElement ?? throw new InvalidOperationException("not an element")).metaclass;
 
     public IElement? getMetaClass()
     {
-        return (_element as IElement ?? throw new InvalidOperationException("not an element")).getMetaClass();
+        return (element as IElement ?? throw new InvalidOperationException("not an element")).getMetaClass();
     }
 
     public IElement? container()
     {
-        return (_element as IElement ?? throw new InvalidOperationException("not an element")).container();
+        return (element as IElement ?? throw new InvalidOperationException("not an element")).container();
     }
 
-    public string? Id { get; }
+    public string? Id { get; } = id;
 }

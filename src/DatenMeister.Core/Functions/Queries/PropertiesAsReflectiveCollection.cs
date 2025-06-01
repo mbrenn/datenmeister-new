@@ -11,21 +11,14 @@ namespace DatenMeister.Core.Functions.Queries;
 /// Only the values are returned which are inside a reflective collection, so properties with
 /// multiplicity of one are not enumerated.
 /// </summary>
-public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExtent
+public class PropertiesAsReflectiveCollection(IObject value) : IReflectiveCollection, IHasExtent
 {
     /// <summary>
     /// Defines the names of the properties to be parsed
     /// </summary>
-    private readonly ICollection<string> _propertyNames;
+    private readonly ICollection<string> _propertyNames = new List<string>();
 
     private readonly List<Tuple<string, object>> _propertyValues = new();
-    private readonly IObject _value;
-
-    public PropertiesAsReflectiveCollection(IObject value)
-    {
-        _value = value;
-        _propertyNames = new List<string>();
-    }
 
     /// <summary>
     /// Initializes a new instance of the PropertiesAsReflectiveCollection
@@ -54,7 +47,7 @@ public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExten
         {
             lock (_propertyValues)
             {
-                return (_value as IHasExtent)?.Extent;
+                return (value as IHasExtent)?.Extent;
             }
         }
     }
@@ -66,7 +59,7 @@ public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExten
         lock (_propertyValues)
         {
             _propertyValues.Clear();
-            if (_value is IObjectAllProperties objectWithProperties)
+            if (value is IObjectAllProperties objectWithProperties)
             {
                 var propertyNames = _propertyNames;
                 if (propertyNames.Count == 0)
@@ -75,9 +68,9 @@ public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExten
                 }
 
                 foreach (var property in propertyNames
-                             .Where(property => _value.isSet(property)))
+                             .Where(property => value.isSet(property)))
                 {
-                    if (!(_value.get(property)
+                    if (!(value.get(property)
                             is IReflectiveCollection valueAsCollection))
                     {
                         continue;
@@ -110,17 +103,17 @@ public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExten
         throw new NotImplementedException();
     }
 
-    public bool remove(object? value)
+    public bool remove(object? value1)
     {
         lock (_propertyValues)
         {
-            var foundTuple = _propertyValues.FirstOrDefault(x => x.Item2.Equals(value));
+            var foundTuple = _propertyValues.FirstOrDefault(x => x.Item2.Equals(value1));
             if (foundTuple == null)
             {
                 return false;
             }
 
-            _value.getOrDefault<IReflectiveCollection>(foundTuple.Item1).remove(foundTuple.Item2);
+            value.getOrDefault<IReflectiveCollection>(foundTuple.Item1).remove(foundTuple.Item2);
             return true;
         }
     }

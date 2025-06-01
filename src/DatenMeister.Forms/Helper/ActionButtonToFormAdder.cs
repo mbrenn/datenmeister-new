@@ -24,15 +24,8 @@ public static class ActionButtonToFormAdder
             new FormModification(adder));
     }
 
-    private class FormModification : IFormModificationPlugin
+    private class FormModification(ActionButtonAdderParameter parameter) : IFormModificationPlugin
     {
-        private readonly ActionButtonAdderParameter _parameter;
-
-        public FormModification(ActionButtonAdderParameter parameter)
-        {
-            _parameter = parameter;
-        }
-
         /// <summary>
         /// Modifies the form by checking whether the action button can be applied
         /// </summary>
@@ -42,16 +35,16 @@ public static class ActionButtonToFormAdder
         /// <returns>true, if the form has been modified</returns>
         public bool ModifyForm(FormCreationContext context, IElement form)
         {
-            _parameter.OnCall?.Invoke(context.DetailElement, _parameter);
+            parameter.OnCall?.Invoke(context.DetailElement, parameter);
 
             if (
-                FormCreationContext.EvaluateMatching(_parameter, context) &&
-                (_parameter.PredicateForElement == null || _parameter.PredicateForElement(context.DetailElement)) &&
-                (_parameter.PredicateForContext == null || _parameter.PredicateForContext(context))
+                FormCreationContext.EvaluateMatching(parameter, context) &&
+                (parameter.PredicateForElement == null || parameter.PredicateForElement(context.DetailElement)) &&
+                (parameter.PredicateForContext == null || parameter.PredicateForContext(context))
             )
             {
                 // Calls the OnCall method to allow property debugging
-                _parameter.OnCallSuccess?.Invoke(context.DetailElement, _parameter);
+                parameter.OnCallSuccess?.Invoke(context.DetailElement, parameter);
                 var formMetaClass = form.getMetaClass();
 
                 var forms = new List<IObject>();
@@ -79,39 +72,39 @@ public static class ActionButtonToFormAdder
                 {
                     var fields = formWithFields.get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
                     var actionField = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, _parameter.ActionName);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.name, _parameter.ActionName);
+                    actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, parameter.ActionName);
+                    actionField.set(_DatenMeister._Forms._ActionFieldData.title, parameter.Title);
+                    actionField.set(_DatenMeister._Forms._ActionFieldData.name, parameter.ActionName);
 
-                    if (_parameter.ButtonText != null && !string.IsNullOrEmpty(_parameter.ButtonText))
+                    if (parameter.ButtonText != null && !string.IsNullOrEmpty(parameter.ButtonText))
                     {
-                        actionField.set(_DatenMeister._Forms._ActionFieldData.buttonText, _parameter.ButtonText);
+                        actionField.set(_DatenMeister._Forms._ActionFieldData.buttonText, parameter.ButtonText);
                     }
 
-                    if (_parameter.Parameter.Count > 0)
+                    if (parameter.Parameter.Count > 0)
                     {
-                        var parameter = MofFactory.CreateElement(form, null);
-                        foreach (var (key, value) in _parameter.Parameter)
+                        var parameter1 = MofFactory.CreateElement(form, null);
+                        foreach (var (key, value) in parameter.Parameter)
                         {
-                            parameter.set(key, value);
+                            parameter1.set(key, value);
                         }
 
-                        actionField.set(_DatenMeister._Forms._ActionFieldData.parameter, parameter);
+                        actionField.set(_DatenMeister._Forms._ActionFieldData.parameter, parameter1);
                     }
 
-                    if (_parameter.ActionButtonPosition == -1)
+                    if (parameter.ActionButtonPosition == -1)
                     {
                         fields.add(actionField);
                     }
                     else
                     {
-                        fields.add(_parameter.ActionButtonPosition, actionField);
+                        fields.add(parameter.ActionButtonPosition, actionField);
                     }
                 }
 
                 FormMethods.AddToFormCreationProtocol(
                     form,
-                    $"[ActionButtonToFormAdder]: Added Button{_parameter.Title}");
+                    $"[ActionButtonToFormAdder]: Added Button{parameter.Title}");
 
                 return true;
             }
@@ -121,7 +114,7 @@ public static class ActionButtonToFormAdder
 
         public override string ToString()
         {
-            return "ActionButton: " + _parameter.ActionName;
+            return "ActionButton: " + parameter.ActionName;
         }
     }
 }

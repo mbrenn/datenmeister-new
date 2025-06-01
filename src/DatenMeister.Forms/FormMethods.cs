@@ -19,7 +19,7 @@ namespace DatenMeister.Forms;
 /// <summary>
 ///     Contains some helper methods for forms
 /// </summary>
-public class FormMethods
+public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
     /// <summary>
     ///     Logger being used
@@ -29,7 +29,7 @@ public class FormMethods
     /// <summary>
     /// Stores the scope storage
     /// </summary>
-    private readonly IScopeStorage _scopeStorage;
+    private readonly IScopeStorage _scopeStorage = scopeStorage;
         
     /// <summary>
     /// Stores the type of the extent containing the views
@@ -39,13 +39,7 @@ public class FormMethods
     /// <summary>
     ///     Stores the workspacelogic
     /// </summary>
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
+    private readonly IWorkspaceLogic _workspaceLogic = workspaceLogic;
 
     /// <summary>
     ///     Performs a verification of the form and returns false, if the form is not in a valid state

@@ -2,12 +2,8 @@
 
 namespace DatenMeister.Core.Runtime.Proxies.ReadOnly;
 
-public class ReadOnlyObject : ProxyMofObject
+public class ReadOnlyObject(IObject value) : ProxyMofObject(value)
 {
-    public ReadOnlyObject(IObject value) : base(value)
-    {
-    }
-
     public override void set(string property, object? value)
     {
         throw new ReadOnlyAccessException("Element is readonly");

@@ -5,27 +5,21 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class FilterOnPropertyByPredicateCollection<T> : ProxyReflectiveCollection
+public class FilterOnPropertyByPredicateCollection<T>(
+    IReflectiveCollection collection,
+    string property,
+    Predicate<T> filter)
+    : ProxyReflectiveCollection(collection)
 {
     /// <summary>
     ///     Stores the filter to filter on the property
     /// </summary>
-    private readonly Predicate<T> _filter;
+    private readonly Predicate<T> _filter = filter;
 
     /// <summary>
     ///     Stores the property
     /// </summary>
-    private readonly string _property;
-
-    public FilterOnPropertyByPredicateCollection(
-        IReflectiveCollection collection,
-        string property,
-        Predicate<T> filter)
-        : base(collection)
-    {
-        _property = property;
-        _filter = filter;
-    }
+    private readonly string _property = property;
 
     public override IEnumerator<object> GetEnumerator()
     {

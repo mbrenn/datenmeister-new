@@ -3,15 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Shared;
 
-public class _Layout : PageModel
+public class _Layout(IScopeStorage scopeStorage) : PageModel
 {
-    private readonly IScopeStorage _scopeStorage;
+    private readonly IScopeStorage _scopeStorage = scopeStorage;
 
-    public _Layout(IScopeStorage scopeStorage)
-    {
-        _scopeStorage = scopeStorage;
-    }
-        
     public void OnGet()
     {
             

@@ -8,42 +8,28 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 
 namespace DatenMeister.WPF.Windows;
 
-public class MenuHelper : NavigationExtensionHelper
+public class MenuHelper(Menu menu, NavigationScope navigationScope) : NavigationExtensionHelper(navigationScope)
 {
     /// <summary>
     /// Defines the logger
     /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(MenuHelper));
 
-    private readonly Menu _menu;
-
     private readonly List<MenuHelperItem> _buttons = new();
 
-    private class MenuHelperItem
+    private class MenuHelperItem(NavigationButtonDefinition definition, MenuItem button, RoutedEventHandler clickEvent)
     {
-        public NavigationButtonDefinition Definition { get; set; }
+        public NavigationButtonDefinition Definition { get; set; } = definition;
 
-        public MenuItem Button { get; set; }
+        public MenuItem Button { get; set; } = button;
 
-        public RoutedEventHandler ClickEvent { get; set; }
+        public RoutedEventHandler ClickEvent { get; set; } = clickEvent;
 
         /// <summary>
         /// Converts the item to a string
         /// </summary>
         /// <returns></returns>
         public override string ToString() => $"HelperItem: {Definition}";
-
-        public MenuHelperItem(NavigationButtonDefinition definition, MenuItem button, RoutedEventHandler clickEvent)
-        {
-            Definition = definition;
-            Button = button;
-            ClickEvent = clickEvent;
-        }
-    }
-
-    public MenuHelper(Menu menu, NavigationScope navigationScope) : base(navigationScope)
-    {
-        _menu = menu;
     }
 
     /// <summary>
@@ -87,7 +73,7 @@ public class MenuHelper : NavigationExtensionHelper
             groupName = null;
         }*/
 
-        var tab = _menu.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header?.ToString() == tabName);
+        var tab = menu.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header?.ToString() == tabName);
         if (tab == null)
         {
             tab = new MenuItem
@@ -95,7 +81,7 @@ public class MenuHelper : NavigationExtensionHelper
                 Header = tabName
             };
 
-            _menu.Items.Add(tab);
+            menu.Items.Add(tab);
         }
 
         MenuItem? group;
@@ -149,7 +135,7 @@ public class MenuHelper : NavigationExtensionHelper
 
     private void ClearNavigationButtons()
     {
-        _menu.Items.Clear();
+        menu.Items.Clear();
         _buttons.Clear();
     }
 

@@ -15,14 +15,14 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _URIExtent @URIExtent = new _URIExtent();
-            public MofObjectShadow @__URIExtent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
+            public MofObjectShadow @__URIExtent = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Identifiers-URIExtent");
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-Extent");
+            public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Identifiers-Extent");
 
         }
 
@@ -39,12 +39,21 @@ namespace DatenMeister.Core.Models.EMOF
             public class _Tag
             {
                 public static string @tagOwner = "tagOwner";
-                public IElement @_tagOwner = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag-tagOwner");
+                public IElement @_tagOwner = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFExtension-Tag-tagOwner");
+
+                public static string @ownedComment = "ownedComment";
+                public IElement @_ownedComment = new MofObjectShadow("dm:///_internal/model/uml#Element-ownedComment");
+
+                public static string @ownedElement = "ownedElement";
+                public IElement @_ownedElement = new MofObjectShadow("dm:///_internal/model/uml#Element-ownedElement");
+
+                public static string @owner = "owner";
+                public IElement @_owner = new MofObjectShadow("dm:///_internal/model/uml#Element-owner");
 
             }
 
             public _Tag @Tag = new _Tag();
-            public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag");
+            public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFExtension-Tag");
 
         }
 
@@ -55,21 +64,18 @@ namespace DatenMeister.Core.Models.EMOF
             public class _Tag
             {
                 public static string @name = "name";
-                public IElement @_name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-name");
+                public IElement @_name = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Extension-Tag-name");
 
                 public static string @value = "value";
-                public IElement @_value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-value");
+                public IElement @_value = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Extension-Tag-value");
 
                 public static string @element = "element";
-                public IElement @_element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-element");
-
-                public static string @metaclass = "metaclass";
-                public IElement @_metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
+                public IElement @_element = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Extension-Tag-element");
 
             }
 
             public _Tag @Tag = new _Tag();
-            public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag");
+            public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Extension-Tag");
 
         }
 
@@ -82,14 +88,14 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
-            public MofObjectShadow @__ReflectiveSequence = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
+            public MofObjectShadow @__ReflectiveSequence = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Common-ReflectiveSequence");
 
             public class _ReflectiveCollection
             {
             }
 
             public _ReflectiveCollection @ReflectiveCollection = new _ReflectiveCollection();
-            public MofObjectShadow @__ReflectiveCollection = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection");
+            public MofObjectShadow @__ReflectiveCollection = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Common-ReflectiveCollection");
 
         }
 
@@ -108,66 +114,66 @@ namespace DatenMeister.Core.Models.EMOF
             }
 
             public _Factory @Factory = new _Factory();
-            public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
+            public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Factory");
 
             public class _Element
             {
             }
 
             public _Element @Element = new _Element();
-            public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
+            public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Element");
 
             public class _Argument
             {
                 public static string @name = "name";
-                public IElement @_name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-name");
+                public IElement @_name = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Argument-name");
 
                 public static string @value = "value";
-                public IElement @_value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-value");
+                public IElement @_value = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Argument-value");
 
             }
 
             public _Argument @Argument = new _Argument();
-            public MofObjectShadow @__Argument = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
+            public MofObjectShadow @__Argument = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Argument");
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
+            public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Extent");
 
             public class _Link
             {
                 public static string @firstElement = "firstElement";
-                public IElement @_firstElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-firstElement");
+                public IElement @_firstElement = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Link-firstElement");
 
                 public static string @secondElement = "secondElement";
-                public IElement @_secondElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-secondElement");
+                public IElement @_secondElement = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Link-secondElement");
 
                 public static string @association = "association";
-                public IElement @_association = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-association");
+                public IElement @_association = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Link-association");
 
             }
 
             public _Link @Link = new _Link();
-            public MofObjectShadow @__Link = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
+            public MofObjectShadow @__Link = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Link");
 
             public class _Exception
             {
                 public static string @objectInError = "objectInError";
-                public IElement @_objectInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-objectInError");
+                public IElement @_objectInError = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Exception-objectInError");
 
                 public static string @elementInError = "elementInError";
-                public IElement @_elementInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-elementInError");
+                public IElement @_elementInError = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Exception-elementInError");
 
                 public static string @description = "description";
-                public IElement @_description = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-description");
+                public IElement @_description = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Exception-description");
 
             }
 
             public _Exception @Exception = new _Exception();
-            public MofObjectShadow @__Exception = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception");
+            public MofObjectShadow @__Exception = new MofObjectShadow("dm:///_internal/types/internal#_MOF-CMOFReflection-Exception");
 
         }
 
@@ -178,39 +184,36 @@ namespace DatenMeister.Core.Models.EMOF
             public class _Factory
             {
                 public static string @package = "package";
-                public IElement @_package = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory-package");
-
-                public static string @metaclass = "metaclass";
-                public IElement @_metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
+                public IElement @_package = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Reflection-Factory-package");
 
             }
 
             public _Factory @Factory = new _Factory();
-            public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory");
+            public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Reflection-Factory");
 
             public class _Type
             {
             }
 
             public _Type @Type = new _Type();
-            public MofObjectShadow @__Type = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Type");
+            public MofObjectShadow @__Type = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Reflection-Type");
 
             public class _Object
             {
             }
 
             public _Object @Object = new _Object();
-            public MofObjectShadow @__Object = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Object");
+            public MofObjectShadow @__Object = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Reflection-Object");
 
             public class _Element
             {
                 public static string @metaclass = "metaclass";
-                public IElement @_metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
+                public IElement @_metaclass = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Reflection-Element-metaclass");
 
             }
 
             public _Element @Element = new _Element();
-            public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element");
+            public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/types/internal#_MOF-Reflection-Element");
 
         }
 

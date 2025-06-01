@@ -6,20 +6,16 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 /// This definition is allocated to the current extent to which the item belongs to.
 /// This is shown within the context of the extent
 /// </summary>
-public class ExtentMenuButtonDefinition : NavigationButtonDefinition
+public class ExtentMenuButtonDefinition(
+    string name,
+    Action<IExtent> onPressed,
+    string? imageName,
+    string categoryName,
+    int priority = 0)
+    : NavigationButtonDefinition(name, NavigationScope.Extent, imageName, categoryName, priority)
 {
     ///<summary>
     /// Gets the action being executed when the user clicked upon the button
     /// </summary>
-    public Action<IExtent> OnPressed { get; }
-
-    public ExtentMenuButtonDefinition(
-        string name,
-        Action<IExtent> onPressed,
-        string? imageName,
-        string categoryName,
-        int priority = 0) : base(name, NavigationScope.Extent, imageName, categoryName, priority)
-    {
-        OnPressed = onPressed;
-    }
+    public Action<IExtent> OnPressed { get; } = onPressed;
 }

@@ -294,7 +294,7 @@ public class ExtentManager
                 string.Empty;
             var newExtentUri =
                 loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfig.extentUri) ?? string.Empty;
-            var alreadyFoundExtent = (IUriExtent?) WorkspaceLogic.FindExtent(
+            var alreadyFoundExtent = WorkspaceLogic.FindExtent(
                 newWorkspaceId,
                 newExtentUri) ?? throw new InvalidOperationException("The extent was not found: " +
                                                                      newExtentUri);
@@ -658,8 +658,6 @@ public class ExtentManager
 
         lock (_extentStorageData.LoadedExtents)
         {
-
-
             // Removes the loading information of the extent
             _extentStorageData.LoadedExtents.Remove(information);
             VerifyDatabaseContent();
@@ -689,44 +687,43 @@ public class ExtentManager
     /// </summary>
     public async Task LoadAllExtents()
     {
-        // Checks, if loading has already occured
-        if (_extentStorageData.IsOpened)
-        {
-            Logger.Warn("The Extent Storage was already opened...");
-        }
-        else
-        {
-            _lockingHandler?.Lock(_extentStorageData.GetLockPath());
-        }
-
-        var failedExtents = new List<string>();
-        _extentStorageData.IsOpened = true;
-        _extentStorageData.IsRegistrationOpen = true;
-
-        // Stores the last the exception
-        Exception? lastException = null;
-
-        var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
         List<IElement>? loaded;
-        try
+        Exception? lastException = null;
+        var failedExtents = new List<string>();
+        
+        lock (_extentStorageData.LoadedExtents)
         {
-            loaded = configurationLoader.GetConfigurationFromFile();
-        }
-        catch (Exception exc)
-        {
-            Logger.Fatal("Exception during loading of Extents: " + exc.Message);
+            // Checks, if loading has already occured
+            if (_extentStorageData.IsOpened)
+            {
+                Logger.Warn("The Extent Storage was already opened...");
+            }
+            else
+            {
+                _lockingHandler?.Lock(_extentStorageData.GetLockPath());
+            }
 
-            failedExtents.Add("Extent Configuration Database");
-            _extentStorageData.FailedLoading = true;
-            _extentStorageData.FailedLoadingException = exc;
-            _extentStorageData.FailedLoadingExtents = failedExtents;
+            _extentStorageData.IsOpened = true;
+            _extentStorageData.IsRegistrationOpen = true;
 
-            throw new LoadingExtentsFailedException(failedExtents);
-        }
+            // Stores the last the exception
 
-        if (loaded == null)
-        {
-            return;
+            var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
+            try
+            {
+                loaded = configurationLoader.GetConfigurationFromFile();
+            }
+            catch (Exception exc)
+            {
+                Logger.Fatal("Exception during loading of Extents: " + exc.Message);
+
+                failedExtents.Add("Extent Configuration Database");
+                _extentStorageData.FailedLoading = true;
+                _extentStorageData.FailedLoadingException = exc;
+                _extentStorageData.FailedLoadingExtents = failedExtents;
+
+                throw new LoadingExtentsFailedException(failedExtents);
+            }
         }
 
         while (loaded.Count > 0)
@@ -802,19 +799,24 @@ public class ExtentManager
             }
         }
 
-        // If one of the extents failed, the exception will be thrown
-        if (failedExtents.Count > 0 || _extentStorageData.FailedLoading)
-        {
-            Logger.Warn("Storing of extents is disabled due to failed loading");
-            _extentStorageData.FailedLoading = true;
-            _extentStorageData.FailedLoadingException = lastException;
-            _extentStorageData.FailedLoadingExtents = failedExtents;
 
-            throw new LoadingExtentsFailedException(failedExtents);
+        lock (_extentStorageData.LoadedExtents)
+        {
+            // If one of the extents failed, the exception will be thrown
+            if (failedExtents.Count > 0 || _extentStorageData.FailedLoading)
+            {
+                Logger.Warn("Storing of extents is disabled due to failed loading");
+                _extentStorageData.FailedLoading = true;
+                _extentStorageData.FailedLoadingException = lastException;
+                _extentStorageData.FailedLoadingExtents = failedExtents;
+
+                throw new LoadingExtentsFailedException(failedExtents);
+            }
         }
 
         VerifyDatabaseContent();
     }
+
 
     /// <summary>
     /// Checks if a loading request is still open for one
@@ -1035,16 +1037,10 @@ public class ExtentManager
                ProviderCapabilities.None;
     }
 
-    private class VerifyDatabaseEntry
+    private class VerifyDatabaseEntry(string workspace, string extentUri)
     {
-        public VerifyDatabaseEntry(string workspace, string extentUri)
-        {
-            Workspace = workspace;
-            ExtentUri = extentUri;
-        }
+        public string Workspace { get; set; } = workspace;
 
-        public string Workspace { get; set; }
-
-        public string ExtentUri { get; set; }
+        public string ExtentUri { get; set; } = extentUri;
     }
 }

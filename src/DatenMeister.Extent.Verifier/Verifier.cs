@@ -11,7 +11,7 @@ namespace DatenMeister.Extent.Verifier;
 /// <summary>
 /// Verifies that the extents are correct and there is no inconsistency in the data
 /// </summary>
-public class Verifier : IWorkspaceVerifierLog
+public class Verifier(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IWorkspaceVerifierLog
 {
     /// <summary>
     /// Stores the logger
@@ -21,9 +21,7 @@ public class Verifier : IWorkspaceVerifierLog
     /// <summary>
     /// Defines the workspace logic
     /// </summary>
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    private readonly IScopeStorage _scopeStorage;
+    private readonly IWorkspaceLogic _workspaceLogic = workspaceLogic;
 
     /// <summary>
     /// Stores the verify entries
@@ -45,12 +43,6 @@ public class Verifier : IWorkspaceVerifierLog
     /// Gets a copy of all verify entries
     /// </summary>
     public List<VerifyEntry> VerifyEntries => _verifyEntries.ToList();
-
-    public Verifier(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
 
     /// <summary>
     /// Creates all factories and verifies
@@ -85,7 +77,7 @@ public class Verifier : IWorkspaceVerifierLog
         Logger.Info("Verification issue: " + entry);
         
         // Creates a new item into the database
-        var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
+        var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, scopeStorage);
         
         var newElement =
             temporaryExtentLogic.CreateTemporaryElement(_DatenMeister.TheOne.Verifier.__VerifyEntry,

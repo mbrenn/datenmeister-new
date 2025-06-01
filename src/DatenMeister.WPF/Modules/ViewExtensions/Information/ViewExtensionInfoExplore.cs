@@ -3,12 +3,9 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Information;
 
-public class ViewExtensionInfoExplore : ViewExtensionInfo
+public class ViewExtensionInfoExplore(INavigationHost navigationHost, INavigationGuest? navigationGuest)
+    : ViewExtensionInfo(navigationHost, navigationGuest)
 {
-    public ViewExtensionInfoExplore(INavigationHost navigationHost, INavigationGuest? navigationGuest) : base(navigationHost, navigationGuest)
-    {
-    }
-        
     /// <summary>
     /// Gets or sets the root element 
     /// </summary>

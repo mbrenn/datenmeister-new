@@ -13,10 +13,10 @@ namespace DatenMeister.WPF.Controls;
 /// </summary>
 public class ItemListViewGrid : DockPanel
 {
-    private readonly Canvas _canvas;
-    private readonly ScrollBar _scrollVertical;
-    private readonly ScrollBar _scrollHorizontal;
-    private readonly DockPanel _contentPanel;
+    private readonly Canvas _canvas = new();
+    private readonly ScrollBar _scrollVertical = new ScrollBar();
+    private readonly ScrollBar _scrollHorizontal = new ScrollBar();
+    private readonly DockPanel _contentPanel = new();
         
     private readonly List<RowInstantiation> _rowInstantiations = new();
 
@@ -66,14 +66,6 @@ public class ItemListViewGrid : DockPanel
             new FrameworkPropertyMetadata(typeof(ItemListViewGrid)));
     }
 
-    public ItemListViewGrid()
-    {
-        _scrollVertical = new ScrollBar();
-        _scrollHorizontal = new ScrollBar();
-        _canvas = new Canvas();
-        _contentPanel = new DockPanel();
-    }
-        
     protected override void OnInitialized(EventArgs e)
     {
         Background = Brushes.Transparent;

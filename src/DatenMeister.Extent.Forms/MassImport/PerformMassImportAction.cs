@@ -10,17 +10,9 @@ using DatenMeister.Extent.Forms.Model;
 
 namespace DatenMeister.Extent.Forms.MassImport;
 
-internal class PerformMassImportActionHandler : IActionHandler
+internal class PerformMassImportActionHandler(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    : IActionHandler
 {
-    private readonly IWorkspaceLogic workspaceLogic;
-    private readonly IScopeStorage scopeStorage;
-
-    public PerformMassImportActionHandler(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        this.workspaceLogic = workspaceLogic;
-        this.scopeStorage = scopeStorage;
-    }
-
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         // Check the extent

@@ -6,17 +6,8 @@ using DatenMeister.Plugins;
 namespace DatenMeister.Extent.Forms.MassImport;
 
 [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
-internal class MassImportPlugin : IDatenMeisterPlugin
+internal class MassImportPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    private readonly IWorkspaceLogic workspaceLogic;
-    private readonly IScopeStorage scopeStorage;
-
-    public MassImportPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        this.workspaceLogic = workspaceLogic;
-        this.scopeStorage = scopeStorage;
-    }
-
     public Task Start(PluginLoadingPosition position)
     {
         scopeStorage.Get<ActionLogicState>().AddActionHandler(

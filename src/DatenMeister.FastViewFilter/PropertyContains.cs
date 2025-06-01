@@ -4,15 +4,8 @@ using DatenMeister.Core.Models;
 
 namespace DatenMeister.FastViewFilter;
 
-public class PropertyContains : IFastFilter
+public class PropertyContains(IObject fastFilter) : IFastFilter
 {
-    private readonly IObject _fastFilter;
-
-    public PropertyContains(IObject fastFilter)
-    {
-        _fastFilter = fastFilter;
-    }
-
     /// <summary>
     /// True, if the element shall be shown
     /// </summary>
@@ -22,8 +15,8 @@ public class PropertyContains : IFastFilter
     {
         if (value is IObject valueAsObject)
         {
-            var filterValue = _fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Value);
-            var propertyName = _fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Property);
+            var filterValue = fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Value);
+            var propertyName = fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Property);
 
             if (filterValue == null || propertyName == null)
             {

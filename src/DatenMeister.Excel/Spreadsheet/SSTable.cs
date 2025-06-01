@@ -4,16 +4,9 @@ using NPOI.SS.Util;
 
 namespace DatenMeister.Excel.Spreadsheet;
 
-public class SsTable
+public class SsTable(ISheet sheet)
 {
-    private readonly ISheet _sheet;
-
-    public SsTable(ISheet sheet)
-    {
-        _sheet = sheet;
-    }
-
-    public string Name => _sheet.SheetName;
+    public string Name => sheet.SheetName;
 
     /// <summary>
     /// Gets the cell content at a specific position in the spreadsheet
@@ -24,7 +17,7 @@ public class SsTable
     public string GetCellContent(int row, int column)
     {
         var cell = GetFirstCellInMergedRegionContainingCell(
-            _sheet?.GetRow(row)?.GetCell(column));
+            sheet?.GetRow(row)?.GetCell(column));
         return cell?.GetStringContent() ?? string.Empty;
     }
         
@@ -57,7 +50,7 @@ public class SsTable
 
     public SsCell? GetCell(int row, int column)
     {
-        var nativeCell = _sheet?.GetRow(row)?.GetCell(column);
+        var nativeCell = sheet?.GetRow(row)?.GetCell(column);
         if (nativeCell == null)
         {
             return null;

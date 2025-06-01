@@ -6,17 +6,12 @@ namespace DatenMeister.Core.Extensions;
 /// <summary>
 /// Defines the metaclass 
 /// </summary>
-public class MetaClassGroup<T>
+public class MetaClassGroup<T>(IElement? metaClass)
 {
-    public MetaClassGroup(IElement? metaClass)
-    {
-        MetaClass = metaClass;
-    }
-
     /// <summary>
     /// Gets the metaclass
     /// </summary>
-    public IElement? MetaClass { get; }
+    public IElement? MetaClass { get; } = metaClass;
 
     /// <summary>
     /// Gets the elements

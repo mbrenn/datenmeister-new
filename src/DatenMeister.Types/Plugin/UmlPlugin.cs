@@ -6,7 +6,7 @@ using DatenMeister.Plugins;
 namespace DatenMeister.Types.Plugin;
 
 // ReSharper disable once UnusedMember.Global
-public class UmlPlugin : IDatenMeisterPlugin
+public class UmlPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
 
     public const string PackageName = "Uml";
@@ -15,12 +15,6 @@ public class UmlPlugin : IDatenMeisterPlugin
     /// Stores the name of the extent type
     /// </summary>
     public const string ExtentType = "Uml.Classes";
-    private readonly IScopeStorage scopeStorage;
-
-    public UmlPlugin(IScopeStorage scopeStorage)
-    {
-        this.scopeStorage = scopeStorage;
-    }
 
     public Task Start(PluginLoadingPosition position)
     {

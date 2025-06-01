@@ -3,12 +3,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.Runtime.Proxies.ReadOnly;
 
-public class ReadOnlyElement : ProxyMofElement
+public class ReadOnlyElement(MofElement element) : ProxyMofElement(element)
 {
-    public ReadOnlyElement(MofElement element) : base(element)
-    {
-    }
-
     public override void set(string property, object? value)
     {
         throw new ReadOnlyAccessException("Element is read-only");

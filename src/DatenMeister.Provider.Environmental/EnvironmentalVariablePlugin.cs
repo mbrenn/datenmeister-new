@@ -9,19 +9,12 @@ namespace DatenMeister.Provider.Environmental;
 
 [PluginLoading(PluginLoadingPosition.AfterInitialization |PluginLoadingPosition.AfterLoadingOfExtents)]
 // ReSharper disable once UnusedType.Global
-public class EnvironmentalVariablePlugin : IDatenMeisterPlugin
+public class EnvironmentalVariablePlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    : IDatenMeisterPlugin
 {
     public const string DefaultExtentUri = "dm:///_internal/environmentalvariables/";
-        
-    private readonly IWorkspaceLogic _workspaceLogic;
 
-    public EnvironmentalVariablePlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        ScopeStorage = scopeStorage;
-    }
-
-    public IScopeStorage ScopeStorage { get; }
+    public IScopeStorage ScopeStorage { get; } = scopeStorage;
 
     public async Task Start(PluginLoadingPosition position)
     {
@@ -36,10 +29,10 @@ public class EnvironmentalVariablePlugin : IDatenMeisterPlugin
                 break;
             }
             case PluginLoadingPosition.AfterLoadingOfExtents:
-                var mgmtProvider = _workspaceLogic.GetManagementWorkspace();
+                var mgmtProvider = workspaceLogic.GetManagementWorkspace();
                 if (mgmtProvider.FindExtent(DefaultExtentUri) == null)
                 {
-                    var extentLoader = new ExtentManager(_workspaceLogic, ScopeStorage);
+                    var extentLoader = new ExtentManager(workspaceLogic, ScopeStorage);
                     var loaderConfig = InMemoryObject.CreateEmpty(
                         _DatenMeister.TheOne.ExtentLoaderConfigs.__EnvironmentalVariableLoaderConfig);
                     loaderConfig.set(

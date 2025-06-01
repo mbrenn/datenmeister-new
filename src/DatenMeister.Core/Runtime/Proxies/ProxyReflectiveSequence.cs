@@ -3,16 +3,13 @@ using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Core.Runtime.Proxies;
 
-public class ProxyReflectiveSequence : ProxyReflectiveCollection, IReflectiveSequence
+public class ProxyReflectiveSequence(IReflectiveSequence sequence)
+    : ProxyReflectiveCollection(sequence), IReflectiveSequence
 {
     /// <summary>
     ///     Stores the sequence
     /// </summary>
     protected IReflectiveSequence Sequence => (IReflectiveSequence) Collection;
-
-    public ProxyReflectiveSequence(IReflectiveSequence sequence) : base(sequence)
-    {
-    }
 
     public virtual void add(int index, object value)
     {

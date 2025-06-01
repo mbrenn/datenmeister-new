@@ -7,7 +7,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DependencyInjection;
 
-public class DatenMeisterScope : IDatenMeisterScope
+public class DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation) : IDatenMeisterScope
 {
     /// <summary>
     /// Gets the workspace logic
@@ -23,7 +23,6 @@ public class DatenMeisterScope : IDatenMeisterScope
         set => _scopeStorage  = value;
     }
 
-    private readonly ILifetimeScope _lifetimeScopeImplementation;
     private IScopeStorage? _scopeStorage ;
 
     /// <summary>
@@ -31,67 +30,62 @@ public class DatenMeisterScope : IDatenMeisterScope
     /// </summary>
     public event EventHandler? BeforeDisposing;
 
-    public DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation)
-    {
-        _lifetimeScopeImplementation = lifetimeScopeImplementation;
-    }
-
     public object ResolveComponent(ResolveRequest request)
     {
-        return _lifetimeScopeImplementation.ResolveComponent(request);
+        return lifetimeScopeImplementation.ResolveComponent(request);
     }
 
-    public IComponentRegistry ComponentRegistry => _lifetimeScopeImplementation.ComponentRegistry;
+    public IComponentRegistry ComponentRegistry => lifetimeScopeImplementation.ComponentRegistry;
 
     public void Dispose()
     {
         BeforeDisposing?.Invoke(this, EventArgs.Empty);
 
-        _lifetimeScopeImplementation.Dispose();
+        lifetimeScopeImplementation.Dispose();
     }
 
     public ILifetimeScope BeginLifetimeScope() =>
-        _lifetimeScopeImplementation.BeginLifetimeScope();
+        lifetimeScopeImplementation.BeginLifetimeScope();
 
-    public IDisposer Disposer => _lifetimeScopeImplementation.Disposer;
+    public IDisposer Disposer => lifetimeScopeImplementation.Disposer;
 
-    public object Tag => _lifetimeScopeImplementation.Tag;
+    public object Tag => lifetimeScopeImplementation.Tag;
 
     public event EventHandler<LifetimeScopeBeginningEventArgs> ChildLifetimeScopeBeginning
     {
-        add => _lifetimeScopeImplementation.ChildLifetimeScopeBeginning += value;
-        remove => _lifetimeScopeImplementation.ChildLifetimeScopeBeginning -= value;
+        add => lifetimeScopeImplementation.ChildLifetimeScopeBeginning += value;
+        remove => lifetimeScopeImplementation.ChildLifetimeScopeBeginning -= value;
     }
 
     public event EventHandler<LifetimeScopeEndingEventArgs> CurrentScopeEnding
     {
-        add => _lifetimeScopeImplementation.CurrentScopeEnding += value;
-        remove => _lifetimeScopeImplementation.CurrentScopeEnding -= value;
+        add => lifetimeScopeImplementation.CurrentScopeEnding += value;
+        remove => lifetimeScopeImplementation.CurrentScopeEnding -= value;
     }
 
     public event EventHandler<ResolveOperationBeginningEventArgs> ResolveOperationBeginning
     {
-        add => _lifetimeScopeImplementation.ResolveOperationBeginning += value;
-        remove => _lifetimeScopeImplementation.ResolveOperationBeginning -= value;
+        add => lifetimeScopeImplementation.ResolveOperationBeginning += value;
+        remove => lifetimeScopeImplementation.ResolveOperationBeginning -= value;
     }
 
     public ILifetimeScope BeginLifetimeScope(object tag, Action<ContainerBuilder> configurationAction)
     {
-        return _lifetimeScopeImplementation.BeginLifetimeScope(tag, configurationAction);
+        return lifetimeScopeImplementation.BeginLifetimeScope(tag, configurationAction);
     }
 
     public ILifetimeScope BeginLifetimeScope(Action<ContainerBuilder> configurationAction)
     {
-        return _lifetimeScopeImplementation.BeginLifetimeScope(configurationAction);
+        return lifetimeScopeImplementation.BeginLifetimeScope(configurationAction);
     }
 
     public ILifetimeScope BeginLifetimeScope(object tag)
     {
-        return _lifetimeScopeImplementation.BeginLifetimeScope(tag);
+        return lifetimeScopeImplementation.BeginLifetimeScope(tag);
     }
 
     public ValueTask DisposeAsync()
     {
-        return _lifetimeScopeImplementation.DisposeAsync();
+        return lifetimeScopeImplementation.DisposeAsync();
     }
 }

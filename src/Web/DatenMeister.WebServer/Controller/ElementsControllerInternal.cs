@@ -14,16 +14,9 @@ using DatenMeister.WebServer.Library.Helper;
 
 namespace DatenMeister.WebServer.Controller;
 
-public class ElementsControllerInternal
+public class ElementsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public ElementsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
+    private readonly IScopeStorage _scopeStorage = scopeStorage;
 
 
     public ItemWithNameAndId[]? GetComposites(string? workspaceId, string? itemUrl)
@@ -33,7 +26,7 @@ public class ElementsControllerInternal
 
         if (workspaceId == null)
         {
-            var extent = ExtentManagementHelper.GetExtentForWorkspaces(_workspaceLogic);
+            var extent = ExtentManagementHelper.GetExtentForWorkspaces(workspaceLogic);
             var rootElements = extent.elements();
 
             return rootElements.OfType<IObject>().Select(x => ItemWithNameAndId.Create(x)!).ToArray();
@@ -41,7 +34,7 @@ public class ElementsControllerInternal
 
         if (itemUrl == null)
         {
-            var workspaceExtent = ExtentManagementHelper.GetExtentForWorkspaces(_workspaceLogic);
+            var workspaceExtent = ExtentManagementHelper.GetExtentForWorkspaces(workspaceLogic);
             var rootElements = workspaceExtent.elements();
 
             var foundExtent =
@@ -58,7 +51,7 @@ public class ElementsControllerInternal
                     .Select(t =>
                     {
                         var x = ItemWithNameAndId.Create(t)!;
-                        var realExtent = _workspaceLogic.FindExtent(
+                        var realExtent = workspaceLogic.FindExtent(
                             workspaceId,
                             t.get<string>(_DatenMeister._Management._Extent.uri));
                         x.extentUri = (realExtent as IUriExtent)?.contextURI() ?? string.Empty;
@@ -73,7 +66,7 @@ public class ElementsControllerInternal
                     .ToArray();
         }
 
-        var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+        var workspace = workspaceLogic.GetWorkspace(workspaceId);
         if (workspace?.Resolve(itemUrl, ResolveType.NoMetaWorkspaces) is not IObject foundItem) return null;
 
         var packagedItems = DefaultClassifierHints.GetPackagedElements(foundItem);
@@ -90,7 +83,7 @@ public class ElementsControllerInternal
     public ElementsController.FindBySearchStringResult FindBySearchString(string search)
     {
         var result = new ElementsController.FindBySearchStringResult();
-        var found = _workspaceLogic.Resolve(search, ResolveType.Default, false);
+        var found = workspaceLogic.Resolve(search, ResolveType.Default, false);
         if (found is IUriExtent asExtent)
         {
             result.ResultType = ElementsController.FindBySearchStringResult.ResultTypeReferenceExtent;

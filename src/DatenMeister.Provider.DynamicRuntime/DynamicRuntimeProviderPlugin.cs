@@ -9,14 +9,9 @@ namespace DatenMeister.Provider.DynamicRuntime;
 /// Defines the plugin for the dynamic runtime providers
 /// </summary>
 [PluginLoading(PluginLoadingPosition.AfterInitialization)]
-public class DynamicRuntimeProviderPlugin : IDatenMeisterPlugin
+public class DynamicRuntimeProviderPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    public DynamicRuntimeProviderPlugin(IScopeStorage scopeStorage)
-    {
-        ScopeStorage = scopeStorage;
-    }
-
-    public IScopeStorage ScopeStorage { get; }
+    public IScopeStorage ScopeStorage { get; } = scopeStorage;
 
     public Task Start(PluginLoadingPosition position)
     {

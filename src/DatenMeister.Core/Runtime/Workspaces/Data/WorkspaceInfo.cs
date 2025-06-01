@@ -4,20 +4,12 @@ namespace DatenMeister.Core.Runtime.Workspaces.Data;
 /// <summary>
 /// Stores the information for a workspace which can be stored as an xml file
 /// </summary>
-public class WorkspaceInfo
+public class WorkspaceInfo(string id, string annotation)
 {
-    public WorkspaceInfo()
+    public WorkspaceInfo() : this(string.Empty, string.Empty)
     {
-        id = string.Empty;
-        annotation = string.Empty;
-    }
-        
-    public WorkspaceInfo(string id, string annotation)
-    {
-        this.id = id;
-        this.annotation = annotation;
     }
 
-    public string id { get; set; }
-    public string annotation { get; set; }
+    public string id { get; set; } = id;
+    public string annotation { get; set; } = annotation;
 }

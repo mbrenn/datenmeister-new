@@ -3,21 +3,14 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class TakeFirstQuery : ProxyReflectiveCollection
+public class TakeFirstQuery(IReflectiveCollection collection, int number) : ProxyReflectiveCollection(collection)
 {
-    private readonly int _number;
-
-    public TakeFirstQuery(IReflectiveCollection collection, int number) : base(collection)
-    {
-        _number = number;
-    }
-
     public override IEnumerator<object?> GetEnumerator()
     {
         var n = 0;
         foreach (var item in Collection)
         {
-            if (n >= _number)
+            if (n >= number)
             {
                 break;
             }
@@ -29,6 +22,6 @@ public class TakeFirstQuery : ProxyReflectiveCollection
 
     public override int size()
     {
-        return Math.Min(Collection.size(), _number);
+        return Math.Min(Collection.size(), number);
     }
 }

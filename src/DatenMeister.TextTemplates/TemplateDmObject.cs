@@ -10,57 +10,50 @@ namespace DatenMeister.TextTemplates;
 /// It provides the properties of the datenmeister objects to
 /// the Template Engine
 /// </summary>
-public class TemplateDmObject : ScriptObject
+public class TemplateDmObject(IObject? value) : ScriptObject
 {
-    private readonly IObject? _value;
-
-    public TemplateDmObject(IObject? value)
+    public override bool TryGetValue(TemplateContext context, SourceSpan span, string member, out object value1)
     {
-        _value = value;
-    }
-
-    public override bool TryGetValue(TemplateContext context, SourceSpan span, string member, out object value)
-    {
-        if (_value == null)
+        if (value == null)
         {
-            value = new NullDmObject();
+            value1 = new NullDmObject();
             return true;
         }
 
         if (member == "_container")
         {
-            var asElement = _value as IElement;
+            var asElement = value as IElement;
             var container = asElement?.container();
-            value = container == null ? new NullDmObject() : new TemplateDmObject(container);
+            value1 = container == null ? new NullDmObject() : new TemplateDmObject(container);
             return true;
         }
 
-        if (_value.isSet(member))
+        if (value.isSet(member))
         {
-            var tempValue = _value.get(member);
+            var tempValue = value.get(member);
             switch (tempValue)
             {
                 case IObject o:
-                    value = new TemplateDmObject(o);
+                    value1 = new TemplateDmObject(o);
                     break;
                 case null:
-                    value = new NullDmObject();
+                    value1 = new NullDmObject();
                     break;
                 default:
-                    value = tempValue;
+                    value1 = tempValue;
                     break;
             }
 
             return true;
         }
 
-        value = new NullDmObject();
+        value1 = new NullDmObject();
         return false;
     }
 
-    public override bool TrySetValue(TemplateContext context, SourceSpan span, string member, object value, bool readOnly)
+    public override bool TrySetValue(TemplateContext context, SourceSpan span, string member, object value1, bool readOnly)
     {
-        _value?.set(member, value);
+        value?.set(member, value1);
         return true;
     }
 }

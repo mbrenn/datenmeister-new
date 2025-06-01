@@ -10,29 +10,23 @@ public enum ValidatorState
     Error
 }
 
-public class ValidatorResult : IChainNode<ValidatorResult>
+public class ValidatorResult(ValidatorState state, string message, string propertyName = "")
+    : IChainNode<ValidatorResult>
 {
-    public ValidatorResult(ValidatorState state, string message, string propertyName = "")
-    {
-        State = state;
-        Message = message;
-        PropertyName = propertyName;
-    }
-
     /// <summary>
     /// Gets or sets the state of the validation
     /// </summary>
-    public ValidatorState State { get; }
+    public ValidatorState State { get; } = state;
 
     /// <summary>
     /// Defines the message for the user
     /// </summary>
-    public string Message { get; }
+    public string Message { get; } = message;
 
     /// <summary>
     /// If there is one specific property associated to the validation, take this
     /// </summary>
-    public string? PropertyName { get; }
+    public string? PropertyName { get; } = propertyName;
 
     /// <summary>
     /// Gets the next validator result as a chained list

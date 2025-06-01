@@ -1,16 +1,11 @@
 ﻿namespace DatenMeister.HtmlEngine;
 
-public class HtmlSpanElement : HtmlElement
+public class HtmlSpanElement(HtmlElement content) : HtmlElement
 {
     /// <summary>
     /// Gets or sets the paragraph to be stored
     /// </summary>
-    private HtmlElement Content { get; }
-        
-    public HtmlSpanElement(HtmlElement content)
-    {
-        Content = content;
-    }
+    private HtmlElement Content { get; } = content;
 
     public override string ToString()
     {

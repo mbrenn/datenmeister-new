@@ -7,23 +7,16 @@ namespace DatenMeister.WebServer.Controller;
 
 [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
 [ApiController]
-public class WorkspaceController : ControllerBase
+public class WorkspaceController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
     private static readonly ClassLogger Logger = new(typeof(WorkspaceController));
-        
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
 
-    public WorkspaceController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-        
+    private readonly IScopeStorage _scopeStorage = scopeStorage;
+
     [HttpDelete("api/workspace/delete")]
     public ActionResult<object> DeleteWorkspace([FromBody] DeleteWorkspaceParams workspace)
     {
-        _workspaceLogic.RemoveWorkspace(workspace.Id);
+        workspaceLogic.RemoveWorkspace(workspace.Id);
         return new {success = true};
     }
 
@@ -37,7 +30,7 @@ public class WorkspaceController : ControllerBase
     {
         try
         {
-            _workspaceLogic.AddWorkspace(new Workspace(workspace.id, workspace.annotation));
+            workspaceLogic.AddWorkspace(new Workspace(workspace.id, workspace.annotation));
 
             return new {success = true};
         }

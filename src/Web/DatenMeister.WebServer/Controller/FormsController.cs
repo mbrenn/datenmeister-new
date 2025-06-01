@@ -12,14 +12,9 @@ namespace DatenMeister.WebServer.Controller;
 
 [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
 [ApiController]
-public class FormsController : ControllerBase
+public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
-    private readonly FormsControllerInternal _internal;
-
-    public FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _internal = new FormsControllerInternal(workspaceLogic, scopeStorage);
-    }
+    private readonly FormsControllerInternal _internal = new(workspaceLogic, scopeStorage);
 
     [HttpGet("api/forms/get/{formUri}")]
     public ActionResult<string> Get(string formUri, string? formType)

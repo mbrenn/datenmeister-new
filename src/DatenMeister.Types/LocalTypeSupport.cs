@@ -54,7 +54,6 @@ public class LocalTypeSupport : IDatenMeisterPlugin
     /// </summary>
     /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
     /// <param name="extentCreator">The reportCreator for the extents</param>
-    /// <param name="packageMethods">The methods for the packages</param>
     /// <param name="scopeStorage">The Integration settings</param>
     public LocalTypeSupport(
         IWorkspaceLogic workspaceLogic,

@@ -2,18 +2,11 @@ using StundenMeister.Model;
 
 namespace StundenMeister.Logic;
 
-public class TimeRecordingLogic
+public class TimeRecordingLogic(StundenMeisterPlugin stundenMeisterPlugin)
 {
-    private bool hibernationActive => _stundenMeisterPlugin.Configuration.HibernationDetectionActive;
+    private bool hibernationActive => stundenMeisterPlugin.Configuration.HibernationDetectionActive;
 
-    private TimeSpan hibernationTime => _stundenMeisterPlugin.Configuration.HibernationDetectionTime;
-
-    private readonly StundenMeisterPlugin _stundenMeisterPlugin;
-
-    public TimeRecordingLogic(StundenMeisterPlugin stundenMeisterPlugin)
-    {
-        _stundenMeisterPlugin = stundenMeisterPlugin;
-    }
+    private TimeSpan hibernationTime => stundenMeisterPlugin.Configuration.HibernationDetectionTime;
 
     /// <summary>
     /// Performs the initialization.
@@ -23,9 +16,9 @@ public class TimeRecordingLogic
     /// </summary>
     public void Initialize()
     {
-        var list = _stundenMeisterPlugin.Data.Extent.elements()
+        var list = stundenMeisterPlugin.Data.Extent.elements()
             .WhenMetaClassIs(
-                _stundenMeisterPlugin.Data.ClassTimeRecording)
+                stundenMeisterPlugin.Data.ClassTimeRecording)
             .WhenPropertyHasValue(
                 nameof(TimeRecording.isActive), true)
             .OfType<IElement>()
@@ -64,7 +57,7 @@ public class TimeRecordingLogic
 
         if (theActiveOne != null)
         {
-            _stundenMeisterPlugin.Data.CurrentTimeRecording = theActiveOne;
+            stundenMeisterPlugin.Data.CurrentTimeRecording = theActiveOne;
         }
     }
 
@@ -83,9 +76,9 @@ public class TimeRecordingLogic
 
         TimeRecordingSet costCenterSet = null;
             
-        foreach (var recording in _stundenMeisterPlugin.Data.Extent
+        foreach (var recording in stundenMeisterPlugin.Data.Extent
                      .elements()
-                     .WhenMetaClassIs(_stundenMeisterPlugin.Data.ClassTimeRecording)
+                     .WhenMetaClassIs(stundenMeisterPlugin.Data.ClassTimeRecording)
                      .OfType<IElement>())
         {
             // Checks, if cost center is in given list
@@ -152,7 +145,7 @@ public class TimeRecordingLogic
         var factory = new MofFactory(StundenMeisterData.TheOne.Extent);
         var createdItem = factory.create(StundenMeisterData.TheOne.ClassTimeRecording);
         StundenMeisterData.TheOne.Extent.elements().add(createdItem);
-        _stundenMeisterPlugin.Data.CurrentTimeRecording = createdItem;
+        stundenMeisterPlugin.Data.CurrentTimeRecording = createdItem;
         return createdItem;
     }
 
@@ -179,12 +172,12 @@ public class TimeRecordingLogic
     /// </summary>
     public void EndRecording()
     {
-        var currentTimeRecording = _stundenMeisterPlugin.Data.CurrentTimeRecording;
+        var currentTimeRecording = stundenMeisterPlugin.Data.CurrentTimeRecording;
             
         if (currentTimeRecording != null)
         {
             currentTimeRecording.set(nameof(TimeRecording.isActive), false);
-            _stundenMeisterPlugin.Data.CurrentTimeRecording = null;
+            stundenMeisterPlugin.Data.CurrentTimeRecording = null;
         }
             
         // By the way. Check for any other active time recording
@@ -199,7 +192,7 @@ public class TimeRecordingLogic
     public void ChangeCostCenter(IElement selectedCostCenter)
     {
         var costCenter =
-            _stundenMeisterPlugin.Data?.CurrentTimeRecording
+            stundenMeisterPlugin.Data?.CurrentTimeRecording
                 ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
 
         if (costCenter != null && costCenter == selectedCostCenter)
@@ -207,13 +200,13 @@ public class TimeRecordingLogic
             return;
         }
 
-        if (_stundenMeisterPlugin.Data?.CurrentTimeRecording?.getOrDefault<bool>(nameof(TimeRecording.isActive)) != true)
+        if (stundenMeisterPlugin.Data?.CurrentTimeRecording?.getOrDefault<bool>(nameof(TimeRecording.isActive)) != true)
         {
             // If, there is no "isActive" time recording, then do not start a new time recording
             return;
         }
 
-        var recordingLogic = new TimeRecordingLogic(_stundenMeisterPlugin);
+        var recordingLogic = new TimeRecordingLogic(stundenMeisterPlugin);
         recordingLogic.StartNewRecording(selectedCostCenter);
     }
 
@@ -223,9 +216,9 @@ public class TimeRecordingLogic
     /// </summary>
     private void CheckForActiveTimeRecordingsAndDeactivate()
     {
-        foreach (var element in _stundenMeisterPlugin.Data.Extent.elements()
+        foreach (var element in stundenMeisterPlugin.Data.Extent.elements()
                      .WhenMetaClassIs(
-                         _stundenMeisterPlugin.Data.ClassTimeRecording)
+                         stundenMeisterPlugin.Data.ClassTimeRecording)
                      .WhenPropertyHasValue(
                          nameof(TimeRecording.isActive), true)
                      .OfType<IElement>())
@@ -271,12 +264,12 @@ public class TimeRecordingLogic
             if (hibernationActive && (endDate - currentEndDate) > hibernationTime)
             {
                 // Ok, we have a hibernation overflow
-                _stundenMeisterPlugin.Data.HibernationDetected = true;
+                stundenMeisterPlugin.Data.HibernationDetected = true;
             }
             else
             {
                 // No hibernation, we can continue
-                _stundenMeisterPlugin.Data.HibernationDetected = false;
+                stundenMeisterPlugin.Data.HibernationDetected = false;
                 currentTimeRecording.set(nameof(TimeRecording.endDate), endDate);
             }
         }
@@ -289,7 +282,7 @@ public class TimeRecordingLogic
     /// <param name="continueRecording">true, if the hibernation is confirmed</param>
     public void ConfirmHibernation(bool continueRecording)
     {
-        if (!_stundenMeisterPlugin.Data.HibernationDetected)
+        if (!stundenMeisterPlugin.Data.HibernationDetected)
         {
             // No active hibernation
             return;
@@ -307,7 +300,7 @@ public class TimeRecordingLogic
             // Ok, it is OK to continue with timing
             var endDate = DateTime.UtcNow;
 
-            _stundenMeisterPlugin.Data.HibernationDetected = false;
+            stundenMeisterPlugin.Data.HibernationDetected = false;
             currentTimeRecording.set(nameof(TimeRecording.endDate), endDate);
         }
         else
@@ -316,7 +309,7 @@ public class TimeRecordingLogic
             EndRecording();
         }
             
-        _stundenMeisterPlugin.Data.HibernationDetected = false;
+        stundenMeisterPlugin.Data.HibernationDetected = false;
     }
 
     public TimeSpan CalculateWorkingHoursInDay(DateTime day = default)
@@ -367,9 +360,9 @@ public class TimeRecordingLogic
     {
         var result = TimeSpan.Zero;
 
-        foreach (var recording in _stundenMeisterPlugin.Data.Extent
+        foreach (var recording in stundenMeisterPlugin.Data.Extent
                      .elements()
-                     .WhenMetaClassIs(_stundenMeisterPlugin.Data.ClassTimeRecording)
+                     .WhenMetaClassIs(stundenMeisterPlugin.Data.ClassTimeRecording)
                      .OfType<IElement>())
         {
             var recordingStartDate = recording.getOrDefault<DateTime>(nameof(TimeRecording.startDate));

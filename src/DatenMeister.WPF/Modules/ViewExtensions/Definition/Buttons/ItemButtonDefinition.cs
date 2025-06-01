@@ -2,17 +2,11 @@
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 
-public class ItemButtonDefinition : ViewExtension
+public class ItemButtonDefinition(string name, Action<IObject> onPressed) : ViewExtension
 {
-    public ItemButtonDefinition(string name, Action<IObject> onPressed)
-    {
-        Name = name;
-        OnPressed = onPressed;
-    }
+    public string Name { get; } = name;
 
-    public string Name { get; }
-
-    public Action<IObject> OnPressed { get; }
+    public Action<IObject> OnPressed { get; } = onPressed;
 
     public override string ToString()
     {

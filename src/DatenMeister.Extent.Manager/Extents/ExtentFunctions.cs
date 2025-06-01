@@ -33,7 +33,7 @@ public class ExtentFunctions
     /// <param name="collection">The reflectivecollection into which a new instance shall be created</param>
     /// <returns>Enumeration of types</returns>
     public CreatableTypeResult GetCreatableTypes(IReflectiveCollection collection) =>
-        GetCreatableTypes(((IHasExtent) collection)?.Extent ?? throw new InvalidOperationException("No extent"));
+        GetCreatableTypes(((IHasExtent) collection).Extent ?? throw new InvalidOperationException("No extent"));
 
     /// <summary>
     /// Gets an enumeration of creatable types for a given extent.
@@ -42,7 +42,7 @@ public class ExtentFunctions
     /// <param name="element">The reflectivecollection into which a new instance shall be created</param>
     /// <returns>Enumeration of types</returns>
     public CreatableTypeResult GetCreatableTypes(IElement element) =>
-        GetCreatableTypes(((IHasExtent) element)?.Extent ?? throw new InvalidOperationException("No extent"));
+        GetCreatableTypes(((IHasExtent) element).Extent ?? throw new InvalidOperationException("No extent"));
 
     /// <summary>
     /// Gets an enumeration of creatable types for a given extent.

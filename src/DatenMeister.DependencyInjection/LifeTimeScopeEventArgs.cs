@@ -2,12 +2,7 @@
 
 namespace DatenMeister.DependencyInjection;
 
-public class LifeTimeScopeEventArgs : EventArgs
+public class LifeTimeScopeEventArgs(ILifetimeScope scope) : EventArgs
 {
-    public LifeTimeScopeEventArgs(ILifetimeScope scope)
-    {
-        Scope = scope;
-    }
-
-    public ILifetimeScope Scope { get; set; }
+    public ILifetimeScope Scope { get; set; } = scope;
 }

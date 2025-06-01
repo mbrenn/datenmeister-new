@@ -10,13 +10,8 @@ namespace DatenMeister.WPF.Windows;
 /// This helper stores the possible scopes for which a ribbon or a
 /// menu shall be created
 /// </summary>
-public class NavigationExtensionHelper
+public class NavigationExtensionHelper(NavigationScope navigationScope)
 {
-    public NavigationExtensionHelper(NavigationScope navigationScope)
-    {
-        NavigationScope = navigationScope;
-    }
-
     /// <summary>
     /// Defines the menuscope
     /// </summary>
@@ -24,7 +19,7 @@ public class NavigationExtensionHelper
     {
         get;
         set;
-    }
+    } = navigationScope;
 
     /// <summary>
     /// Gets the extent to which the menu is associated. This extent is given to the

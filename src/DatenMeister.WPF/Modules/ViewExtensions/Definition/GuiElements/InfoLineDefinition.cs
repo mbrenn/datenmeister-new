@@ -2,17 +2,12 @@
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 
-public class InfoLineDefinition : ViewExtension
+public class InfoLineDefinition(Func<UIElement> infolineFactory) : ViewExtension
 {
-    public InfoLineDefinition(Func<UIElement> infolineFactory)
-    {
-        InfolineFactory = infolineFactory;
-    }
-
     /// <summary>
     /// Gets the factory for the infoline
     /// </summary>
-    public Func<UIElement> InfolineFactory { get; }
+    public Func<UIElement> InfolineFactory { get; } = infolineFactory;
 
     public override string ToString()
     {

@@ -4,33 +4,27 @@ using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Core.Provider.Mapping;
 
-public class MappingProviderObject<T> : IProviderObject where T : class
+public class MappingProviderObject<T>(T value, IProvider provider, string id, string? metaclassUri = null)
+    : IProviderObject
+    where T : class
 {
     /// <summary>
     /// Stores the mappings
     /// </summary>
     private readonly Dictionary<string, MappingProperty> _mappings = new();
 
-    public MappingProviderObject(T value, IProvider provider, string id, string? metaclassUri = null)
-    {
-        Value = value;
-        Provider = provider;
-        Id = id;
-        MetaclassUri = metaclassUri;
-    }
-
-    private T Value { get; }
+    private T Value { get; } = value;
 
     /// <summary>
     /// Gets or sets the mapping for the container property
     /// </summary>
     private MappingContainerProperty? ContainerMapping { get; set; }
 
-    public IProvider Provider { get; }
+    public IProvider Provider { get; } = provider;
 
-    public string? Id { get; set; }
+    public string? Id { get; set; } = id;
 
-    public string? MetaclassUri { get; set; }
+    public string? MetaclassUri { get; set; } = metaclassUri;
 
     /// <summary>
     /// Gets a value indicating whether the property is set
@@ -163,31 +157,20 @@ public class MappingProviderObject<T> : IProviderObject where T : class
     /// <summary>
     /// Defines the class to define the properties
     /// </summary>
-    private class MappingProperty
+    private class MappingProperty(Func<T, object?> getFunction, Action<T, object?> setFunction)
     {
-        public MappingProperty(Func<T, object?> getFunction, Action<T, object?> setFunction)
-        {
-            GetFunction = getFunction;
-            SetFunction = setFunction;
-        }
-
-        public Func<T, object?> GetFunction { get; }
-        public Action<T, object?> SetFunction { get; }
+        public Func<T, object?> GetFunction { get; } = getFunction;
+        public Action<T, object?> SetFunction { get; } = setFunction;
     }
 
     /// <summary>
     /// Defines the class to define the properties
     /// </summary>
-    private class MappingContainerProperty
+    private class MappingContainerProperty(
+        Func<T, IProviderObject> getFunction,
+        Action<T, IProviderObject?> setFunction)
     {
-        public MappingContainerProperty(Func<T, IProviderObject> getFunction,
-            Action<T, IProviderObject?> setFunction)
-        {
-            GetFunction = getFunction;
-            SetFunction = setFunction;
-        }
-
-        public Func<T, IProviderObject> GetFunction { get; }
-        public Action<T, IProviderObject?> SetFunction { get; }
+        public Func<T, IProviderObject> GetFunction { get; } = getFunction;
+        public Action<T, IProviderObject?> SetFunction { get; } = setFunction;
     }
 }

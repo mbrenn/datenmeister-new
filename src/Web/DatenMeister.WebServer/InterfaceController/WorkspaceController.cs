@@ -8,21 +8,14 @@ namespace DatenMeister.WebServer.InterfaceController;
 /// <summary>
 /// This controller supports the export of the workspaces including extents
 /// </summary>
-public class WorkspaceController
+public class WorkspaceController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
-
-    public WorkspaceController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
+    private readonly IScopeStorage _scopeStorage = scopeStorage;
 
     public List<WorkspaceModel> GetWorkspaceModels()
     {
         var result = new List<WorkspaceModel>();
-        var workspaces = _workspaceLogic.Workspaces;
+        var workspaces = workspaceLogic.Workspaces;
         foreach (var workspace in workspaces)
         {
             var workspaceModel = new WorkspaceModel

@@ -8,15 +8,8 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Extent.Manager.Extents;
 
-public class ExtentImport
+public class ExtentImport(ExtentManager extentManager)
 {
-    private readonly ExtentManager _extentManager;
-
-    public ExtentImport(ExtentManager extentManager)
-    {
-        _extentManager = extentManager;
-    }
-
     /// <summary>
     /// Imports the file for according the given settings.
     /// The settings are of type "DatenMeister.UserFormSupport.LoadFileFromXmi"
@@ -37,7 +30,7 @@ public class ExtentImport
             configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filePath);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspaceId);
                 
-            var resultingExtent = await _extentManager.LoadExtent(configuration);
+            var resultingExtent = await extentManager.LoadExtent(configuration);
 
             if (resultingExtent.LoadingState == ExtentLoadingState.Failed)
             {

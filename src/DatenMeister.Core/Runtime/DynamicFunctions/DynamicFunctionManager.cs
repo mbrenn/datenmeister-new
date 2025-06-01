@@ -59,17 +59,11 @@ public class DynamicFunctionManager
 /// <summary>
 /// Defines the key for derived property
 /// </summary>
-class DerivedPropertyKey
+class DerivedPropertyKey(IElement metaClass, string property)
 {
-    public DerivedPropertyKey(IElement metaClass, string property)
-    {
-        MetaClass = metaClass;
-        Property = property;
-    }
+    public IElement MetaClass { get; } = metaClass;
 
-    public IElement MetaClass { get; }
-
-    public string Property { get; }
+    public string Property { get; } = property;
 
     public override bool Equals(object? obj)
     {
@@ -95,15 +89,10 @@ class DerivedPropertyKey
     }
 }
 
-class DerivedProperty
+class DerivedProperty(Func<IObject, object> propertyFunction)
 {
-    public DerivedProperty(Func<IObject, object> propertyFunction)
-    {
-        PropertyFunction = propertyFunction;
-    }
-
     /// <summary>
     /// Gets or sets the property function
     /// </summary>
-    public Func<IObject, object> PropertyFunction { get; set; }
+    public Func<IObject, object> PropertyFunction { get; set; } = propertyFunction;
 }

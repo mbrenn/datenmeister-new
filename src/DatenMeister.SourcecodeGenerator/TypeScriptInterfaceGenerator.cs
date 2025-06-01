@@ -21,19 +21,6 @@ public class TypeScriptInterfaceGenerator : WalkPackageClass
     }
 
     /// <summary>
-    ///     Creates a C# source code. Not to be used for recursive
-    ///     call since the namespace is just once created
-    /// </summary>
-    /// <param name="extent">
-    ///     Regards the given element as a package
-    ///     and returns a full namespace for the package.
-    /// </param>
-    public override void Walk(IUriExtent extent)
-    {
-        base.Walk(extent);
-    }
-
-    /// <summary>
     ///     Parses the packages and creates the C# Code for all the
     ///     packages by recursive calls to itself for packages and
     ///     ParseClasses for classes.
@@ -49,7 +36,9 @@ public class TypeScriptInterfaceGenerator : WalkPackageClass
 
         var innerStack = new CallStack(stack)
         {
-            Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}"
+            Fullname = string.IsNullOrEmpty(stack.Fullname) 
+                ? name 
+                : $"{stack.Fullname}.{name}"
         };
 
         base.WalkPackage(element, innerStack);

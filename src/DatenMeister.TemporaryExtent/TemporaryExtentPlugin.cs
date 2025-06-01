@@ -6,7 +6,7 @@ using DatenMeister.Plugins;
 namespace DatenMeister.TemporaryExtent;
 
 [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterShutdownStarted)]
-public class TemporaryExtentPlugin : IDatenMeisterPlugin
+public class TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     /// <summary>
     /// Defines the logger
@@ -18,22 +18,14 @@ public class TemporaryExtentPlugin : IDatenMeisterPlugin
     /// </summary>
     public const string Uri = "dm:///_internal/temp";
 
-    private readonly IWorkspaceLogic _workspaceLogic;
-    private readonly IScopeStorage _scopeStorage;
     private CancellationToken _taskCancellation;
     private CancellationTokenSource? _taskCancellationSource;
 
     /// <summary>
     /// Defines the period time in which the background task shall be activated
     /// </summary>
-    public TimeSpan CleaningPeriod { get; } = TimeSpan.FromMinutes(1); 
+    public TimeSpan CleaningPeriod { get; } = TimeSpan.FromMinutes(1);
 
-    public TemporaryExtentPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-    {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
-    }
-        
     /// <summary>
     /// Starts the plugin by creating the InMemoryProvider. The provider will be directly added to
     /// the workspace logic since it shall not be persisted. Upon restart of server, the data may be lost
@@ -47,7 +39,7 @@ public class TemporaryExtentPlugin : IDatenMeisterPlugin
                 _taskCancellationSource = new CancellationTokenSource();
                 _taskCancellation = _taskCancellationSource.Token;
                     
-                var logic = new TemporaryExtentLogic(_workspaceLogic,_scopeStorage);
+                var logic = new TemporaryExtentLogic(workspaceLogic,scopeStorage);
                 logic.CreateTemporaryExtent();
                     
                 Task.Run(() => CleanTemporaryExtentRunAsync(_taskCancellation), _taskCancellation);
@@ -74,7 +66,7 @@ public class TemporaryExtentPlugin : IDatenMeisterPlugin
     /// </summary>
     public async void CleanTemporaryExtentRunAsync(CancellationToken cancellationToken)
     {
-        var logic = new TemporaryExtentLogic(_workspaceLogic, _scopeStorage);
+        var logic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
         try
         {
             while (!cancellationToken.IsCancellationRequested)

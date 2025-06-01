@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 
-public class TemporaryReflectiveCollection : IReflectiveCollection
+public class TemporaryReflectiveCollection(IEnumerable<object?> values, bool isReadOnly) : IReflectiveCollection
 {
     /// <summary>
     /// Defines the event arguments for deletion
@@ -13,32 +13,24 @@ public class TemporaryReflectiveCollection : IReflectiveCollection
         public object? DeleteObject { get; set; }
     }
 
-    protected IEnumerable<object?> Values;
+    protected IEnumerable<object?> Values = values;
 
     /// <summary>
     /// Gets or sets a value whether the temporary collection is read-only and hinders adding new items
     /// </summary>
-    public bool IsReadOnly { get; set; }
-        
+    public bool IsReadOnly { get; set; } = isReadOnly;
+
     /// <summary>
     /// Add or removes the events
     /// </summary>
     public event EventHandler<DeleteEventArgs>? OnDelete;
 
-    public TemporaryReflectiveCollection()
+    public TemporaryReflectiveCollection() : this(new List<object?>(), false)
     {
-        Values = new List<object?>();
     }
 
-    public TemporaryReflectiveCollection(IEnumerable<object?> values)
+    public TemporaryReflectiveCollection(IEnumerable<object?> values) : this(values, false)
     {
-        Values = values;
-    }
-
-    public TemporaryReflectiveCollection(IEnumerable<object?> values, bool isReadOnly)
-    {
-        Values = values;
-        IsReadOnly = isReadOnly;
     }
 
     /// <inheritdoc />

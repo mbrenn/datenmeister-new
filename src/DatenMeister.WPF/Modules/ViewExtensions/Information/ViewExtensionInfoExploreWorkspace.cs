@@ -2,10 +2,5 @@
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Information;
 
-public class ViewExtensionInfoExploreWorkspace : ViewExtensionInfoExplore
-{
-    public ViewExtensionInfoExploreWorkspace(INavigationHost navigationHost, INavigationGuest? navigationGuest) :
-        base(navigationHost, navigationGuest)
-    {
-    }
-}
+public class ViewExtensionInfoExploreWorkspace(INavigationHost navigationHost, INavigationGuest? navigationGuest)
+    : ViewExtensionInfoExplore(navigationHost, navigationGuest);

@@ -11,14 +11,13 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows;
 
-public class RibbonHelper : NavigationExtensionHelper
+public class RibbonHelper(IHasRibbon mainWindow, NavigationScope navigationScope)
+    : NavigationExtensionHelper(navigationScope)
 {
     /// <summary>
     /// Defines the logger
     /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(RibbonHelper));
-
-    private readonly IHasRibbon _mainWindow;
 
     /// <summary>
     /// Stores the icon repository
@@ -27,21 +26,18 @@ public class RibbonHelper : NavigationExtensionHelper
 
     private readonly List<RibbonHelperItem> _buttons = new();
 
-    private class RibbonHelperItem
+    private class RibbonHelperItem(
+        NavigationButtonDefinition definition,
+        RibbonButton button,
+        RoutedEventHandler clickEvent)
     {
-        public NavigationButtonDefinition Definition { get; set; }
+        public NavigationButtonDefinition Definition { get; set; } = definition;
 
-        public RibbonButton Button { get; set; }
+        public RibbonButton Button { get; set; } = button;
 
-        public RoutedEventHandler? ClickEvent { get; set; }
+        public RoutedEventHandler? ClickEvent { get; set; } = clickEvent;
 
 
-        public RibbonHelperItem(NavigationButtonDefinition definition, RibbonButton button, RoutedEventHandler clickEvent)
-        {
-            Definition = definition;
-            Button = button;
-            ClickEvent = clickEvent;
-        }
         /// <summary>
         /// Converts the item to a string
         /// </summary>
@@ -73,11 +69,6 @@ public class RibbonHelper : NavigationExtensionHelper
                 IconRepository = new StandardRepository();
             }
         }
-    }
-
-    public RibbonHelper(IHasRibbon mainWindow, NavigationScope navigationScope) : base(navigationScope)
-    {
-        _mainWindow = mainWindow;
     }
 
     /// <summary>
@@ -113,7 +104,7 @@ public class RibbonHelper : NavigationExtensionHelper
             groupName = categoryName.Substring(indexOfSemicolon + 1);
         }
 
-        var tab = _mainWindow.GetRibbon().Items.OfType<RibbonTab>().FirstOrDefault(x => x.Header?.ToString() == tabName);
+        var tab = mainWindow.GetRibbon().Items.OfType<RibbonTab>().FirstOrDefault(x => x.Header?.ToString() == tabName);
         if (tab == null)
         {
             tab = new RibbonTab
@@ -123,7 +114,7 @@ public class RibbonHelper : NavigationExtensionHelper
 
             // Find perfect position
             var posFound = Array.IndexOf(NavigationCategories.RibbonOrder, tabName);
-            var ribbons = _mainWindow.GetRibbon();
+            var ribbons = mainWindow.GetRibbon();
             if (posFound == -1)
             {
                 ribbons.Items.Add(tab);

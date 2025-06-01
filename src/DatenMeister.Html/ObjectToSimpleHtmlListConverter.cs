@@ -84,7 +84,6 @@ public class ObjectToSimpleHtmlListConverter
         }
         else if (DotNetHelper.IsOfEnumeration(propertyValue) && propertyValue is IEnumerable enumerable)
         {
-            var n = 0;
 
             var contentElement = new HtmlListElement {IsOrderedList = true};
             foreach (var element in enumerable)
@@ -98,8 +97,6 @@ public class ObjectToSimpleHtmlListConverter
                 {
                     ConvertPropertyValue(contentElement, property, element, currentRecursion + 1);
                 }
-
-                n++;
             }
 
             parent.Items.Add(

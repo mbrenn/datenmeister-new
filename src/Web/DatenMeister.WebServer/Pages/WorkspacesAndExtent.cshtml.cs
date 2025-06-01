@@ -7,20 +7,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
-public class WorkspacesAndExtent : PageModel
+public class WorkspacesAndExtent(WorkspaceController workspaceController) : PageModel
 {
-    private readonly WorkspaceController _workspaceController;
-
     public List<WorkspaceModel> Workspaces = new();
-
-    public WorkspacesAndExtent(WorkspaceController workspaceController)
-    {
-        _workspaceController = workspaceController;
-    }
 
     public void OnGet()
     {
-        Workspaces = _workspaceController.GetWorkspaceModels();
+        Workspaces = workspaceController.GetWorkspaceModels();
     }
 
     public string GetIdOfWorkspace(WorkspaceModel workspaceModel)

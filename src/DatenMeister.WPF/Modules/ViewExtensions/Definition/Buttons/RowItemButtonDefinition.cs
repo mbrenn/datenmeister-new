@@ -4,21 +4,15 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 
-public class RowItemButtonDefinition : ViewExtension
+public class RowItemButtonDefinition(
+    string name,
+    Action<INavigationGuest, IObject> onPressed,
+    ItemListViewControl.ButtonPosition position = ItemListViewControl.ButtonPosition.After)
+    : ViewExtension
 {
-    public RowItemButtonDefinition(
-        string name,
-        Action<INavigationGuest, IObject> onPressed,
-        ItemListViewControl.ButtonPosition position = ItemListViewControl.ButtonPosition.After)
-    {
-        Name = name;
-        OnPressed = onPressed;
-        Position = position;
-    }
-
-    public string Name { get;  }
-    public Action<INavigationGuest, IObject> OnPressed { get; }
-    public ItemListViewControl.ButtonPosition Position { get; }
+    public string Name { get;  } = name;
+    public Action<INavigationGuest, IObject> OnPressed { get; } = onPressed;
+    public ItemListViewControl.ButtonPosition Position { get; } = position;
 
     public override string ToString()
     {

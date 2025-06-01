@@ -24,7 +24,7 @@ public class LoggingWriterActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__LoggingWriterAction) == true;
+            _Actions.TheOne.__LoggingWriterAction) == true;
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class LoggingWriterActionHandler : IActionHandler
     {
         await Task.Run(() =>
         {
-            var message = action.getOrDefault<string>(_DatenMeister._Actions._LoggingWriterAction.message);
+            var message = action.getOrDefault<string>(_Actions._LoggingWriterAction.message);
             if (message != null)
             {
                 LastMessage = message;

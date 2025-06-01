@@ -10,10 +10,10 @@ public class ManagementSettingsProvider : DotNetProvider
     public ManagementSettingsProvider(IDotNetTypeLookup typeLookup) : base(typeLookup)
     {
         typeLookup.Add(
-            _DatenMeister.TheOne.Management.__ExtentTypeSetting,
+            _Management.TheOne.__ExtentTypeSetting,
             typeof(ExtentType));
         typeLookup.Add(
-            _DatenMeister.TheOne.Management.__ExtentPropertyDefinition,
+            _Management.TheOne.__ExtentPropertyDefinition,
             typeof(ExtentPropertyDefinition));
     }
 }

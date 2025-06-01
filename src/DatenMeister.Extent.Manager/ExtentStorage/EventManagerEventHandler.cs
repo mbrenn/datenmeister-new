@@ -23,7 +23,7 @@ public class EventManagerEventHandler(IScopeStorage scopeStorage) : IDatenMeiste
                     await manager.DetachAllExtents(info =>
                         info.Configuration
                             .getOrDefault<string>(
-                                _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
+                                _ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
                         == y.Id);
                 };
                 break;

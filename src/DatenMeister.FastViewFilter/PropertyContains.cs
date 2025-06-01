@@ -15,8 +15,8 @@ public class PropertyContains(IObject fastFilter) : IFastFilter
     {
         if (value is IObject valueAsObject)
         {
-            var filterValue = fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Value);
-            var propertyName = fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Property);
+            var filterValue = fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Value);
+            var propertyName = fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Property);
 
             if (filterValue == null || propertyName == null)
             {

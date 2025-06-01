@@ -355,36 +355,36 @@ public static class NavigatorForItems
                     {
                         // Gets the view definition
                         var fields = y.View
-                            .get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
+                            .get<IReflectiveSequence>(_Forms._RowForm.field);
                         var formFactory = new MofFactory(fields);
                         var containerProperty = config.ContainerProperty;
 
                         if (containerProperty == null) // ParentProperty is not given, so user gives property
                         {
                             // Parent property is already given by function call
-                            var dropField = formFactory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
+                            var dropField = formFactory.create(_Forms.TheOne.__DropDownFieldData);
 
                             //dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
-                            dropField.set(_DatenMeister._Forms._DropDownFieldData.name, "ParentProperty");
-                            dropField.set(_DatenMeister._Forms._DropDownFieldData.title, "Parent Property");
-                            dropField.set(_DatenMeister._Forms._DropDownFieldData.isAttached, true);
+                            dropField.set(_Forms._DropDownFieldData.name, "ParentProperty");
+                            dropField.set(_Forms._DropDownFieldData.title, "Parent Property");
+                            dropField.set(_Forms._DropDownFieldData.isAttached, true);
 
                             var list = new List<object>();
                             var properties = ObjectHelper.GetPropertyNames(containerElement)
                                 .OrderBy(z => z).Distinct();
                             foreach (var property in properties)
                             {
-                                var valuePair = formFactory.create(_DatenMeister.TheOne.Forms.__ValuePair);
-                                valuePair.set(_DatenMeister._Forms._ValuePair.name, property);
-                                valuePair.set(_DatenMeister._Forms._ValuePair.value, property);
+                                var valuePair = formFactory.create(_Forms.TheOne.__ValuePair);
+                                valuePair.set(_Forms._ValuePair.name, property);
+                                valuePair.set(_Forms._ValuePair.value, property);
                                 list.Add(valuePair);
                             }
 
-                            dropField.set(_DatenMeister._Forms._DropDownFieldData.values, list);
+                            dropField.set(_Forms._DropDownFieldData.values, list);
                             fields.add(0, dropField);
 
                             // Adds the line to separate it from the other side
-                            var lineField = formFactory.create(_DatenMeister.TheOne.Forms.__SeparatorLineFieldData);
+                            var lineField = formFactory.create(_Forms.TheOne.__SeparatorLineFieldData);
                             fields.add(1, lineField);
                         }
                     },

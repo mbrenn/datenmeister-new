@@ -10,7 +10,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Types;
 using NUnit.Framework;
-using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
+using static DatenMeister.Core.Models._ExtentLoaderConfigs;
 
 namespace DatenMeister.Tests.Excel;
 
@@ -35,7 +35,7 @@ public class ExcelHierarchicalTests
         localTypes.elements().add(type3);
 
         var loaderConfig = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalLoaderConfig);
+            _ExtentLoaderConfigs.TheOne.__ExcelHierarchicalLoaderConfig);
 
         loaderConfig.set(_ExcelHierarchicalLoaderConfig.extentUri, "dm:///test");
         loaderConfig.set(_ExcelHierarchicalLoaderConfig.filePath, filePath);
@@ -45,7 +45,7 @@ public class ExcelHierarchicalTests
         loaderConfig.set(_ExcelHierarchicalLoaderConfig.workspaceId, "Data");
 
         var definition1 = InMemoryObject.CreateEmpty(
-                _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalColumnDefinition)
+                _ExtentLoaderConfigs.TheOne.__ExcelHierarchicalColumnDefinition)
             .SetProperties(new Dictionary<string, object>
                 {
                     [_ExcelHierarchicalColumnDefinition.name] = "Liga",
@@ -54,7 +54,7 @@ public class ExcelHierarchicalTests
                 }
             );
         var definition2 = InMemoryObject.CreateEmpty(
-                _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalColumnDefinition)
+                _ExtentLoaderConfigs.TheOne.__ExcelHierarchicalColumnDefinition)
             .SetProperties(new Dictionary<string, object>
                 {
                     [_ExcelHierarchicalColumnDefinition.name] = "Team",

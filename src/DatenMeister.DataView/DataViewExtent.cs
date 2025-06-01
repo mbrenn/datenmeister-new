@@ -51,7 +51,7 @@ public class DataViewExtent : IUriExtent, IUriResolver
     {
         var itemResult = new PureReflectiveSequence();
         var result = new ReadOnlyReflectiveSequence(itemResult);
-        var viewNode = _dataViewElement.getOrDefault<IElement>(_DatenMeister._DataViews._DataView.viewNode);
+        var viewNode = _dataViewElement.getOrDefault<IElement>(_DataViews._DataView.viewNode);
         if (viewNode == null)
         {
             return result;
@@ -61,7 +61,7 @@ public class DataViewExtent : IUriExtent, IUriResolver
     }
 
     public string contextURI() =>
-        _dataViewElement.getOrDefault<string>(_DatenMeister._DataViews._DataView.uri);
+        _dataViewElement.getOrDefault<string>(_DataViews._DataView.uri);
 
     public string? uri(IElement element) =>
         element.GetUri();

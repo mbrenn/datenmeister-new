@@ -45,10 +45,10 @@ public static class ReportTests
             var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///");
+                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+            loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///");
             loaderConfig.set(
-                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, 
+                _ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, 
                 "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi");
                     
             testExtent = (await extentManager.LoadExtent(loaderConfig)).Extent;
@@ -61,7 +61,7 @@ public static class ReportTests
                 Path.Combine(GetScriptFolder(), "plz.csv"));
         }
 
-        configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, testExtent!.contextURI());
+        configuration.set(_Reports._SimpleReportConfiguration.rootElement, testExtent!.contextURI());
 
         var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
         Directory.CreateDirectory(targetPath);

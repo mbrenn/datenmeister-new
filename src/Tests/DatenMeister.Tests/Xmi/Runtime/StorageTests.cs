@@ -39,10 +39,10 @@ public class StorageTests
         extent.elements().add(mofObject3);
 
         var xmiStorageConfiguration = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-        xmiStorageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+            _ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+        xmiStorageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
             "dm:///test");
-        xmiStorageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+        xmiStorageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
             DatenMeisterTests.GetPathForTemporaryStorage("data.xml"));
 
         var xmiStorage = new XmiStorageProviderLoader

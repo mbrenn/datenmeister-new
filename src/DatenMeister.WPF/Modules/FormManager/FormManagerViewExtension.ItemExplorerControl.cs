@@ -41,7 +41,7 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
                     return;
                 }
 
-                var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
+                var url = effectiveForm.getOrDefault<string>(_Forms._Form.originalUri);
                 var originalForm = string.IsNullOrEmpty(url)
                     ? null
                     : GiveMe.Scope.WorkspaceLogic.FindElement(url) as IObject;
@@ -82,7 +82,7 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
                     return;
                 }
 
-                var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
+                var url = effectiveForm.getOrDefault<string>(_Forms._Form.originalUri);
                 var originalForm = string.IsNullOrEmpty(url)
                     ? null
                     : GiveMe.Scope.WorkspaceLogic.FindElement(url) as IObject;
@@ -192,10 +192,10 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
 
                     viewLogic.RemoveFormAssociationForExtentType(selectedExtentType);
 
-                    var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
-                    formAssociation.set(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType);
-                    formAssociation.set(_DatenMeister._Forms._FormAssociation.form, itemExplorerControl.EffectiveForm);
-                    formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Collection);
+                    var formAssociation = factory.create(_Forms.TheOne.__FormAssociation);
+                    formAssociation.set(_Forms._FormAssociation.extentType, selectedExtentType);
+                    formAssociation.set(_Forms._FormAssociation.form, itemExplorerControl.EffectiveForm);
+                    formAssociation.set(_Forms._FormAssociation.formType, _Forms.___FormType.Collection);
                     userViewExtent.elements().add(formAssociation);
 
                     MessageBox.Show("View Association created");
@@ -404,9 +404,9 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
             // Creates association
             var formLogic = GiveMe.Scope.Resolve<FormMethods>();
             var association1 = 
-                formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, _DatenMeister._Forms.___FormType.Collection);
+                formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, _Forms.___FormType.Collection);
             var association2 = 
-                formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, _DatenMeister._Forms.___FormType.Object);
+                formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, _Forms.___FormType.Object);
                 
             DefaultClassifierHints.AddToExtentOrElement(package, association1);
             name = fullName + "AssociationDetail";

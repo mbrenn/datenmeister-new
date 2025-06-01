@@ -20,15 +20,15 @@ public class ExtentManagerTests
         var extentManager = dm.Resolve<ExtentManager>();
 
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
 
         await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
         await extentManager.DeleteExtent(
-            loaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId),
-            loaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri));
+            loaderConfig.getOrDefault<string>(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId),
+            loaderConfig.getOrDefault<string>(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri));
         var extent = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
 
         Assert.That(extent, Is.Not.Null);
@@ -49,9 +49,9 @@ public class ExtentManagerTests
 
         // Performs the first loading of the extent
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "Test");
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "Test");
         var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
         Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
 
@@ -70,9 +70,9 @@ public class ExtentManagerTests
         var extentManager = dm.Resolve<ExtentManager>();
 
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
         loaderConfig.set("Test", "test");
             
@@ -95,8 +95,8 @@ public class ExtentManagerTests
         var extentManager = dm.Resolve<ExtentManager>();
 
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
             
         var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
             
@@ -118,7 +118,7 @@ public class ExtentManagerTests
         Assert.That(providerAndLoader.providerLoader, Is.TypeOf<InMemoryProviderLoader>());
             
         Assert.That(providerAndLoader.loadConfiguration, Is.Not.Null);
-        Assert.That(providerAndLoader.loadConfiguration?.metaclass?.equals(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig) == true);
+        Assert.That(providerAndLoader.loadConfiguration?.metaclass?.equals(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig) == true);
     }
 
     [Test]
@@ -129,8 +129,8 @@ public class ExtentManagerTests
 
         // Create first extent 
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
             
         var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
         Assert.That(loadedInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
@@ -142,9 +142,9 @@ public class ExtentManagerTests
         Assert.That(loadedInfo.Extent.elements().Count(), Is.EqualTo(1));
             
         // Now reload with the expectation that the already loaded extent is empty
-        var loaderConfig2 = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
-        loaderConfig2.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-        loaderConfig2.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.dropExisting, true);
+        var loaderConfig2 = InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig2.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+        loaderConfig2.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.dropExisting, true);
             
             
         var loadedInfo2 = await extentManager.LoadExtent(loaderConfig2, ExtentCreationFlags.CreateOnly);

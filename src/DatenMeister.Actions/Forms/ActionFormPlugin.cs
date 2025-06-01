@@ -41,19 +41,19 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
         public bool ModifyForm(FormCreationContext context, IElement form)
         {
             var isAction = ClassifierMethods.IsSpecializedClassifierOf(
-                context.MetaClass, _DatenMeister.TheOne.Actions.__Action);
+                context.MetaClass, _Actions.TheOne.__Action);
 
             if (isAction
-                && context.FormType == _DatenMeister._Forms.___FormType.Row
+                && context.FormType == _Forms.___FormType.Row
                 && context.ParentPropertyName == string.Empty
                 && context.DetailElement != null)
             {
                 // Fitting, create the field
-                var fields = form.get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
-                var actionField = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
-                actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, "Action.Execute");
-                actionField.set(_DatenMeister._Forms._ActionFieldData.title, "Execute Action");
-                actionField.set(_DatenMeister._Forms._ActionFieldData.name, "Execute");
+                var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
+                var actionField = MofFactory.CreateElement(form, _Forms.TheOne.__ActionFieldData);
+                actionField.set(_Forms._ActionFieldData.actionName, "Action.Execute");
+                actionField.set(_Forms._ActionFieldData.title, "Execute Action");
+                actionField.set(_Forms._ActionFieldData.name, "Execute");
                 fields.add(actionField);
 
                 return true;

@@ -12,7 +12,7 @@ public class LoadExtentActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__LoadExtentAction) == true;
+            _Actions.TheOne.__LoadExtentAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -20,22 +20,22 @@ public class LoadExtentActionHandler : IActionHandler
         await Task.Run(async () =>
         {
             var configuration =
-                action.getOrDefault<IElement>(_DatenMeister._Actions._LoadExtentAction.configuration);
+                action.getOrDefault<IElement>(_Actions._LoadExtentAction.configuration);
             if (configuration == null)
             {
                 throw new InvalidOperationException("configuration is null");
             }
 
             var extentUri =
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
+                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                     .extentUri);
             var workspaceId =
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
+                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                     .workspaceId)
                 ?? WorkspaceNames.WorkspaceData;
 
             var dropExisting =
-                action.getOrDefault<bool>(_DatenMeister._Actions._LoadExtentAction.dropExisting);
+                action.getOrDefault<bool>(_Actions._LoadExtentAction.dropExisting);
 
             if (configuration == null)
             {

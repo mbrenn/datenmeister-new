@@ -15,12 +15,12 @@ public class FastViewFilterConverter
     /// <returns>The returned instance or </returns>
     public static IFastFilter? Convert(IElement element)
     {
-        if (element.getMetaClass()?.Equals(_DatenMeister.TheOne.FastViewFilters.__PropertyComparisonFilter) == true)
+        if (element.getMetaClass()?.Equals(_FastViewFilters.TheOne.__PropertyComparisonFilter) == true)
         {
             return new PropertyComparison(element);
         }
 
-        if (element.getMetaClass()?.Equals(_DatenMeister.TheOne.FastViewFilters.__PropertyContainsFilter) == true)
+        if (element.getMetaClass()?.Equals(_FastViewFilters.TheOne.__PropertyContainsFilter) == true)
         {
             return new PropertyContains(element);
         }

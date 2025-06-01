@@ -16,7 +16,7 @@ public class SimpleReportActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.Reports.__SimpleReportAction) == true;
+            _Actions.TheOne.Reports.__SimpleReportAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -24,21 +24,21 @@ public class SimpleReportActionHandler : IActionHandler
         await Task.Run(() =>
         {
             var workspace =
-                action.getOrDefault<string>(_DatenMeister._Actions._Reports._SimpleReportAction.workspaceId)
+                action.getOrDefault<string>(_Actions._Reports._SimpleReportAction.workspaceId)
                 ?? WorkspaceNames.WorkspaceData;
-            var path = action.getOrDefault<string>(_DatenMeister._Actions._Reports._SimpleReportAction.path);
+            var path = action.getOrDefault<string>(_Actions._Reports._SimpleReportAction.path);
             var filePath =
-                action.getOrDefault<string>(_DatenMeister._Actions._Reports._SimpleReportAction.filePath);
+                action.getOrDefault<string>(_Actions._Reports._SimpleReportAction.filePath);
             var configuration =
-                action.getOrDefault<IElement>(_DatenMeister._Actions._Reports._SimpleReportAction.configuration);
+                action.getOrDefault<IElement>(_Actions._Reports._SimpleReportAction.configuration);
 
             if (configuration is null)
             {
                 configuration = new MofFactory(action)
-                    .create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration)
-                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showDescendents, true)
-                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showRootElement, true)
-                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showFullName, true);
+                    .create(_Reports.TheOne.__SimpleReportConfiguration)
+                    .SetProperty(_Reports._SimpleReportConfiguration.showDescendents, true)
+                    .SetProperty(_Reports._SimpleReportConfiguration.showRootElement, true)
+                    .SetProperty(_Reports._SimpleReportConfiguration.showFullName, true);
             }
 
             if (string.IsNullOrEmpty(filePath))
@@ -66,10 +66,10 @@ public class SimpleReportActionHandler : IActionHandler
             {
                 // Set default item
                 configuration.SetProperty(
-                    _DatenMeister._Reports._SimpleReportConfiguration.rootElement,
+                    _Reports._SimpleReportConfiguration.rootElement,
                     path);
                 configuration.SetProperty(
-                    _DatenMeister._Reports._SimpleReportConfiguration.workspaceId,
+                    _Reports._SimpleReportConfiguration.workspaceId,
                     workspace);
             }
 

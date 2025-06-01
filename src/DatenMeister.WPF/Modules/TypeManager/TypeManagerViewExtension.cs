@@ -47,7 +47,7 @@ public class TypeManagerViewExtension : IViewExtensionFactory
         var enumerationMetaClass = _UML.TheOne.SimpleClassifiers.__Enumeration;
         var enumerationLiteralMetaClass = _UML.TheOne.SimpleClassifiers.__EnumerationLiteral;
         var propertyMetaClass = _UML.TheOne.Classification.__Property;
-        var packageInternalClass = _DatenMeister.TheOne.CommonTypes.Default.__Package;
+        var packageInternalClass = _CommonTypes.TheOne.Default.__Package;
             
         var isExtentInListView = viewExtensionInfo.IsExtentInListViewControl(UmlPlugin.ExtentType);
         var isInPackage = viewExtensionInfo.IsItemOfExtentTypeInListViewControl(

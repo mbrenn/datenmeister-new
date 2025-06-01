@@ -16,10 +16,10 @@ public class ClearCollectionActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ClearCollectionAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._ClearCollectionAction.path] = "dm:///source/",
+                [_Actions._ClearCollectionAction.path] = "dm:///source/",
             });
 
         Assert.That(source.elements().Count(), Is.GreaterThan(0));
@@ -33,10 +33,10 @@ public class ClearCollectionActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ClearCollectionAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._ClearCollectionAction.path] =
+                [_Actions._ClearCollectionAction.path] =
                     "dm:///source/?fn=source1&prop=packagedElement",
             });
 

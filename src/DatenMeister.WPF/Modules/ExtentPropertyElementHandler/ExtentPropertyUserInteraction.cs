@@ -22,7 +22,7 @@ public class ExtentPropertyUserInteraction(IWorkspaceLogic workspaceLogic, IScop
             yield break;
         }
 
-        if (asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
+        if (asElement.getMetaClass()?.equals(_Management.TheOne.__Extent) != true)
         {
             yield break;
         }

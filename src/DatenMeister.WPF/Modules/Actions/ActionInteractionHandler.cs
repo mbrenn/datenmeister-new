@@ -13,14 +13,14 @@ public class ActionInteractionHandler : BaseElementInteractionHandler
     /// </summary>
     public ActionInteractionHandler()
     {
-        OnlyElementsOfType = _DatenMeister.TheOne.Actions.__Action;
+        OnlyElementsOfType = _Actions.TheOne.__Action;
     }
         
     public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
     {
         if (IsRelevant(element)
             && element is IElement asElement
-            && asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Actions.__ActionSet) != true)
+            && asElement.getMetaClass()?.equals(_Actions.TheOne.__ActionSet) != true)
         {
             yield return new DefaultElementInteraction(
                 "Execute Action",

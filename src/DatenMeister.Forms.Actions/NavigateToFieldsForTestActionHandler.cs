@@ -17,19 +17,19 @@ internal class NavigateToFieldsForTestActionHandler : IActionHandler
         var temporaryObject = temporaryExtentLogic.CreateTemporaryElement(null, TimeSpan.FromHours(1));
 
         // Second, navigate the user to the recently created object with the testing form
-        var navigateToItem = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.ClientActions.__NavigateToItemClientAction);
-        navigateToItem.set(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.workspaceId, temporaryExtentLogic.WorkspaceName);
-        navigateToItem.set(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.itemUrl, temporaryObject.GetUri());
-        navigateToItem.set(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.formUri, Uris.TestFormUri);
+        var navigateToItem = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__NavigateToItemClientAction);
+        navigateToItem.set(_Actions._ClientActions._NavigateToItemClientAction.workspaceId, temporaryExtentLogic.WorkspaceName);
+        navigateToItem.set(_Actions._ClientActions._NavigateToItemClientAction.itemUrl, temporaryObject.GetUri());
+        navigateToItem.set(_Actions._ClientActions._NavigateToItemClientAction.formUri, Uris.TestFormUri);
 
-        var result = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionResult);
-        result.AddCollectionItem(_DatenMeister._Actions._ActionResult.clientActions, navigateToItem);
+        var result = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionResult);
+        result.AddCollectionItem(_Actions._ActionResult.clientActions, navigateToItem);
         return await Task.FromResult<IElement?>(result);
     }
 
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Forms.__NavigateToFieldsForTestAction) == true;
+            _Forms.TheOne.__NavigateToFieldsForTestAction) == true;
     }
 }

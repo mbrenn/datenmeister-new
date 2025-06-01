@@ -44,10 +44,10 @@ public partial class ExcelImportDefinitionDialog : Window
     {
         txtFileName.Text = Path.GetFileName(filePath);
         var importConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig)
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__ExcelImportLoaderConfig)
             ?? throw new InvalidOperationException("Not an IElement");
-        importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///dm_temp");
-        importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath, filePath);
+        importConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///dm_temp");
+        importConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath, filePath);
             
         _importer = new ExcelImporter(importConfig);
 
@@ -77,8 +77,8 @@ public partial class ExcelImportDefinitionDialog : Window
 
         // Gets the columns names
         var columnNames = _importer.GetColumnNames().ToList();
-        var countRows = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countRows);
-        var countColumns = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countColumns);
+        var countRows = _importer.LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelImportLoaderConfig.countRows);
+        var countColumns = _importer.LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelImportLoaderConfig.countColumns);
 
         // Now create the items
         dgrExcelDataGrid.Columns.Clear();
@@ -167,7 +167,7 @@ public partial class ExcelImportDefinitionDialog : Window
 
         if (IsExcelNotLoaded()) return;
 
-        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetRow, DotNetHelper.AsInteger(txtOffsetRow.Text));
+        _importer.LoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetRow, DotNetHelper.AsInteger(txtOffsetRow.Text));
         _importer.GuessRowCount();
         UpdateDataPreview();
     }
@@ -180,7 +180,7 @@ public partial class ExcelImportDefinitionDialog : Window
         if (IsExcelNotLoaded()) return;
 
             
-        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetColumn, DotNetHelper.AsInteger(txtOffsetColumn.Text));
+        _importer.LoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetColumn, DotNetHelper.AsInteger(txtOffsetColumn.Text));
         _importer.GuessColumnCount();
         UpdateDataPreview();
     }
@@ -202,7 +202,7 @@ public partial class ExcelImportDefinitionDialog : Window
 
         if (IsExcelNotLoaded()) return;
 
-        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader, chkHeaderRow.IsChecked == true);
+        _importer.LoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader, chkHeaderRow.IsChecked == true);
         _importer.GuessRowCount();
         UpdateDataPreview();
     }
@@ -214,8 +214,8 @@ public partial class ExcelImportDefinitionDialog : Window
 
         if (IsExcelNotLoaded()) return;
 
-        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixRowCount, chkAutoCount.IsChecked == true);
-        _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixColumnCount, chkAutoCount.IsChecked == true);
+        _importer.LoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.fixRowCount, chkAutoCount.IsChecked == true);
+        _importer.LoaderConfig.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.fixColumnCount, chkAutoCount.IsChecked == true);
 
         _importer.GuessColumnCount();
         _importer.GuessRowCount();

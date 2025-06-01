@@ -70,12 +70,12 @@ public class ZipCodePlugin : IDatenMeisterPlugin
                     _scopeStorage.Get<FormsPluginState>(),
                     new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
                     {
-                        MetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                        FormType = _DatenMeister._Forms.___FormType.Object,
+                        MetaClass = _Management.TheOne.__Workspace,
+                        FormType = _Forms.___FormType.Object,
                         PredicateForElement = 
                             element => 
                                 element?.getOrDefault<string>(
-                                    _DatenMeister._Management._Workspace.id) == WorkspaceNames.WorkspaceData
+                                    _Management._Workspace.id) == WorkspaceNames.WorkspaceData
                     });
 
                 break;

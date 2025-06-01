@@ -28,21 +28,21 @@ public class ExcelImportLoader : IProviderLoader
 
         var extentPath =
             configuration.getOrDefault<string>(
-                _DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig
+                _ExtentLoaderConfigs._ExcelImportLoaderConfig
                     .extentPath) ?? throw new InvalidOperationException("extentPath == null");
             
         // Creates the XMI being used as a target
         var factory = new MofFactory(configuration);
-        var xmiConfiguration = factory.create(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+        var xmiConfiguration = factory.create(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
         xmiConfiguration.set(
-            _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+            _ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
             extentPath);
         xmiConfiguration.set(
-            _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
-            configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri));
+            _ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri));
         xmiConfiguration.set(
-            _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
-            configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
+            _ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
 
         var loadedInfo = await extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
         if (loadedInfo.LoadingState == ExtentLoadingState.Failed || loadedInfo.Extent == null)

@@ -92,22 +92,22 @@ public class ReportLogic(
     public IEnumerable<ReportSource> EvaluateSources(IObject reportInstance)
     {
         var sources =
-            reportInstance.get<IReflectiveCollection>(_DatenMeister._Reports._HtmlReportInstance.sources);
+            reportInstance.get<IReflectiveCollection>(_Reports._HtmlReportInstance.sources);
         foreach (var source in sources.OfType<IObject>())
         {
-            var name = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.name);
+            var name = source.getOrDefault<string>(_Reports._ReportInstanceSource.name);
             if (string.IsNullOrEmpty(name))
             {
                 throw new InvalidOperationException("name of ReportInstanceSource is not set");
             }
 
-            var workspaceId = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.workspaceId);
+            var workspaceId = source.getOrDefault<string>(_Reports._ReportInstanceSource.workspaceId);
             if (string.IsNullOrEmpty(workspaceId))
             {
                 workspaceId = WorkspaceNames.WorkspaceData;
             }
 
-            var sourceRef = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.path);
+            var sourceRef = source.getOrDefault<string>(_Reports._ReportInstanceSource.path);
 
             IReflectiveCollection? sourceItems = null;
             var workspace = WorkspaceLogic.GetWorkspace(workspaceId) ?? WorkspaceLogic.GetDataWorkspace();
@@ -165,18 +165,18 @@ public class ReportLogic(
     {
         var viewNode = reportNodeOrigin.getOrDefault<IElement>(viewNodePropertyName);
         viewNode ??= InMemoryObject.CreateEmpty(
-                _DatenMeister.TheOne.DataViews.__DynamicSourceNode)
-            .SetProperty(_DatenMeister._DataViews._DynamicSourceNode.nodeName, "item");
+                _DataViews.TheOne.__DynamicSourceNode)
+            .SetProperty(_DataViews._DynamicSourceNode.nodeName, "item");
         return viewNode;
     }
 
     public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin, string propertyName)
     {
         var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
-        if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties))
+        if (reportNode.isSet(_Reports._Elements._ReportParagraph.evalProperties))
         {
             GetObjectViaDataEvaluation(reportNodeOrigin, out var element, propertyName);
-            var evalProperties = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties);
+            var evalProperties = reportNode.getOrDefault<string>(_Reports._Elements._ReportParagraph.evalProperties);
 
             var dict = new Dictionary<string, object> { ["v"] = reportNode };
             if (element != null)
@@ -203,7 +203,7 @@ public class ReportLogic(
             AddSource(scope.Name, scope.Collection);
         }
 
-        var definition = reportInstance.getOrDefault<IObject>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
+        var definition = reportInstance.getOrDefault<IObject>(_Reports._HtmlReportInstance.reportDefinition);
         if (definition == null)
         {
             throw new InvalidOperationException("There is no report definition set.");
@@ -217,7 +217,7 @@ public class ReportLogic(
         ReportCreator.StartReport(this, reportInstance, reportDefinition);
 
         var elements = reportDefinition.get<IReflectiveCollection>(
-            _DatenMeister._Reports._ReportDefinition.elements);
+            _Reports._ReportDefinition.elements);
         ReportCreator.EvaluateElements(this, elements);
 
         ReportCreator.EndReport(this, reportDefinition);

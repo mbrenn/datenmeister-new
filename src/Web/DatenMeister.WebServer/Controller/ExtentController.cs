@@ -250,10 +250,10 @@ public class ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         // Performs the import via the action handler...
         var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
         var importXmi = new ImportXmiActionHandler();
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-        action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, workspace);
-        action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, extent);
-        action.set(_DatenMeister._Actions._ImportXmiAction.xmi, param.Xmi);
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ImportXmiAction);
+        action.set(_Actions._ImportXmiAction.workspaceId, workspace);
+        action.set(_Actions._ImportXmiAction.itemUri, extent);
+        action.set(_Actions._ImportXmiAction.xmi, param.Xmi);
             
         await importXmi.Evaluate(actionLogic, action);
 

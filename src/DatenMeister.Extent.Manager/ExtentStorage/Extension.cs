@@ -25,10 +25,10 @@ public static class Extension
         this ExtentManager extentManager, string uri, string filename, string workspace = WorkspaceNames.WorkspaceData)
     {
         var configuration = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, uri);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspace);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filename);
+            _ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+        configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, uri);
+        configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspace);
+        configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filename);
 
         return await extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
     }
@@ -99,12 +99,12 @@ public static class Extension
                               ?? throw new InvalidOperationException("extentManager is not ExtentManager");
         var workspaceLogic = asExtentManager.WorkspaceLogic;
         var workspace = workspaceLogic.GetWorkspace(
-            loaderConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
+            loaderConfiguration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                 .workspaceId) ?? WorkspaceNames.WorkspaceData);
 
         var foundExtent = workspace?.extent.OfType<IUriExtent>().FirstOrDefault(
             x => x.contextURI() ==
-                 loaderConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
+                 loaderConfiguration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                      .extentUri));
 
         return foundExtent ?? (await extentManager.LoadExtent(loaderConfiguration, flags)).Extent;

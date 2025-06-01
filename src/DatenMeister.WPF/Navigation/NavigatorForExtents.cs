@@ -91,13 +91,13 @@ public static class NavigatorForExtents
                 // Add the options for the extent types
                 var foundExtentType =
                     resolvedForm.GetByPropertyFromCollection(
-                        _DatenMeister._Forms._TableForm.field,
-                        _DatenMeister._Forms._Form.name,
-                        _DatenMeister._Management._Extent.extentType).FirstOrDefault();
+                        _Forms._TableForm.field,
+                        _Forms._Form.name,
+                        _Management._Extent.extentType).FirstOrDefault();
                 if (foundExtentType == null)
                 {
                     Logger.Error(
-                        $"Found Form #ExtentPropertyDetailForm did not find the field ${_DatenMeister._Management._Extent.extentType}");
+                        $"Found Form #ExtentPropertyDetailForm did not find the field ${_Management._Extent.extentType}");
                 }
                 else
                 {
@@ -105,14 +105,14 @@ public static class NavigatorForExtents
                     var factory = new MofFactory(foundExtentType);
                     foreach (var setting in extentSettings.extentTypeSettings)
                     {
-                        var pair = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
-                        pair.set(_DatenMeister._Forms._ValuePair.name, setting.name);
-                        pair.set(_DatenMeister._Forms._ValuePair.value, setting.name);
+                        var pair = factory.create(_Forms.TheOne.__ValuePair);
+                        pair.set(_Forms._ValuePair.name, setting.name);
+                        pair.set(_Forms._ValuePair.value, setting.name);
 
                         list.Add(pair);
                     }
 
-                    foundExtentType.set(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, list);
+                    foundExtentType.set(_Forms._CheckboxListTaggingFieldData.values, list);
                 }
             }
 
@@ -192,14 +192,14 @@ public static class NavigatorForExtents
                 : string.Empty;
 
             var configuration =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+            configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
                 uri);
-            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+            configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
                 detailElement.isSet("filepath")
                     ? detailElement.getOrDefault<string>("filepath")
                     : string.Empty);
-            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+            configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                 workspaceId);
 
             var extentManager = GiveMe.Scope.Resolve<ExtentManager>();

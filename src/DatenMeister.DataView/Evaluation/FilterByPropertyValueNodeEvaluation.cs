@@ -16,12 +16,12 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
+               metaClass.equals(_DataViews.TheOne.__FilterByPropertyValueNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FlattenNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -30,14 +30,14 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
 
         var input = evaluation.GetElementsForViewNode(inputNode);
 
-        var property = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterByPropertyValueNode.property);
+        var property = viewNode.getOrDefault<string>(_DataViews._FilterByPropertyValueNode.property);
         if (property == null)
         {
             Logger.Warn("Property not found");
             return new PureReflectiveSequence();
         }
 
-        var propertyValue = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterByPropertyValueNode.value);
+        var propertyValue = viewNode.getOrDefault<string>(_DataViews._FilterByPropertyValueNode.value);
         if (propertyValue == null)
         {
             Logger.Warn("Property Value not found");
@@ -45,7 +45,7 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
         }
 
         var comparisonMode =
-            viewNode.getOrNull<_DatenMeister._DataViews.___ComparisonMode>(_DatenMeister._DataViews
+            viewNode.getOrNull<_DataViews.___ComparisonMode>(_DataViews
                 ._FilterByPropertyValueNode.comparisonMode);
         if (comparisonMode == null)
         {
@@ -67,7 +67,7 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
     /// <param name="comparisonMode">The type of the comparison</param>
     /// <returns>Enumeration of elements being in the filter</returns>
     private IEnumerable<object> FilterElementsForPropertyNode(IReflectiveCollection input, string property,
-        string propertyValue, _DatenMeister._DataViews.___ComparisonMode comparisonMode)
+        string propertyValue, _DataViews.___ComparisonMode comparisonMode)
     {
         foreach (var element in input.OfType<IObject>())
         {
@@ -81,18 +81,18 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
 
             var isIn = comparisonMode switch
             {
-                _DatenMeister._DataViews.___ComparisonMode.Equal => elementValue == propertyValue,
-                _DatenMeister._DataViews.___ComparisonMode.NotEqual => elementValue != propertyValue,
-                _DatenMeister._DataViews.___ComparisonMode.Contains => elementValue.Contains(propertyValue),
-                _DatenMeister._DataViews.___ComparisonMode.DoesNotContain => !elementValue.Contains(propertyValue),
-                _DatenMeister._DataViews.___ComparisonMode.GreaterThan =>
+                _DataViews.___ComparisonMode.Equal => elementValue == propertyValue,
+                _DataViews.___ComparisonMode.NotEqual => elementValue != propertyValue,
+                _DataViews.___ComparisonMode.Contains => elementValue.Contains(propertyValue),
+                _DataViews.___ComparisonMode.DoesNotContain => !elementValue.Contains(propertyValue),
+                _DataViews.___ComparisonMode.GreaterThan =>
                     string.Compare(elementValue, propertyValue, StringComparison.Ordinal) > 0,
-                _DatenMeister._DataViews.___ComparisonMode.GreaterOrEqualThan => string.Compare(elementValue,
+                _DataViews.___ComparisonMode.GreaterOrEqualThan => string.Compare(elementValue,
                     propertyValue,
                     StringComparison.Ordinal) >= 0,
-                _DatenMeister._DataViews.___ComparisonMode.LighterThan =>
+                _DataViews.___ComparisonMode.LighterThan =>
                     string.Compare(elementValue, propertyValue, StringComparison.Ordinal) < 0,
-                _DatenMeister._DataViews.___ComparisonMode.LighterOrEqualThan => string.Compare(elementValue,
+                _DataViews.___ComparisonMode.LighterOrEqualThan => string.Compare(elementValue,
                     propertyValue,
                     StringComparison.Ordinal) <= 0,
                 _ => throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, null)

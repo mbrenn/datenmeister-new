@@ -79,26 +79,26 @@ public static class ControlFactory
         }
 
         var isEnumeration =
-            field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
+            field.getOrDefault<bool>(_Forms._FieldData.isEnumeration);
 
         // Checks, if the value is an action field
-        if (field.GetMetaClassWithoutTracing()?.equals(_DatenMeister.TheOne.Forms.__ActionFieldData) == true)
+        if (field.GetMetaClassWithoutTracing()?.equals(_Forms.TheOne.__ActionFieldData) == true)
         {
             var id = HtmlElement.GetRandomId();
             var button = new HtmlButtonElement(
-                field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.title))
+                field.getOrDefault<string>(_Forms._ActionFieldData.title))
             {
                 Id = id,
                 CssClass = "btn btn-secondary"
             };
 
-            var actionType = field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName);
+            var actionType = field.getOrDefault<string>(_Forms._ActionFieldData.actionName);
             var itemAsElement = item as IElement;
             if (actionType == ExtentFormPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
             {
                 WriteScriptLineFunction(id, "extentNavigateTo",
-                    itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
-                    itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
+                    itemAsElement.getOrDefault<string>(_Management._Extent.workspaceId),
+                    itemAsElement.getOrDefault<string>(_Management._Extent.uri));
             }
 
             if (actionType == ItemsFormsPlugin.NavigationItemDelete && itemAsElement is not null)
@@ -110,8 +110,8 @@ public static class ControlFactory
             if (actionType == ExtentFormPlugin.NavigationItemNew && itemAsElement is not null)
             {
                 WriteScriptLineFunction(id, "itemNew",
-                    itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
-                    itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
+                    itemAsElement.getOrDefault<string>(_Management._Extent.workspaceId),
+                    itemAsElement.getOrDefault<string>(_Management._Extent.uri));
             }
 
             if (actionType == ItemsFormsPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
@@ -130,7 +130,7 @@ public static class ControlFactory
             if (actionType == ZipCodePlugin.CreateZipExample && itemAsElement is not null)
             {
                 WriteScriptLineFunction(id, "createZipExample",
-                    itemAsElement.getOrDefault<string>(_DatenMeister._Management._Workspace.id));
+                    itemAsElement.getOrDefault<string>(_Management._Workspace.id));
             }
 
             return button;
@@ -257,19 +257,19 @@ public static class ControlFactory
     public static object? GetValueOfElement(IObject element, IElement field)
     {
         var fieldMetaClass = field?.getMetaClass();
-        if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+        if (fieldMetaClass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
         {
             return (element as MofElement)?.getMetaClass(false);
         }
 
-        var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-        if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+        var name = field.getOrDefault<string>(_Forms._FieldData.name);
+        if (fieldMetaClass?.equals(_Forms.TheOne.__EvalTextFieldData) == true)
         {
             var cellInformation = InMemoryObject.CreateEmpty();
             var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;
             cellInformation.set("text", defaultText);
 
-            var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
+            var evalProperties = field.getOrDefault<string>(_Forms._EvalTextFieldData.evalCellProperties);
             if (evalProperties != null)
             {
                 defaultText = TextTemplateEngine.Parse(

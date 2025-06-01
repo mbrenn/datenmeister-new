@@ -55,7 +55,7 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
                     return;
                 }
 
-                var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
+                var url = effectiveForm.getOrDefault<string>(_Forms._Form.originalUri);
                 var originalForm = string.IsNullOrEmpty(url)
                     ? null
                     : GiveMe.Scope.WorkspaceLogic.FindElement(url) as IObject;
@@ -96,7 +96,7 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
                     return;
                 }
 
-                var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
+                var url = effectiveForm.getOrDefault<string>(_Forms._Form.originalUri);
                 var originalForm = string.IsNullOrEmpty(url)
                     ? null
                     : GiveMe.Scope.WorkspaceLogic.FindElement(url) as IObject;
@@ -156,7 +156,7 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
 
 
         // The currently selected element is a form
-        if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, _DatenMeister.TheOne.Forms.__Form)
+        if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, _Forms.TheOne.__Form)
             && detailAsElement != null)
         {
             yield return new ApplicationMenuButtonDefinition(
@@ -247,10 +247,10 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
 
             viewLogic.RemoveFormAssociationForObjectMetaClass(metaClass);
 
-            var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
-            formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
-            formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
-            formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Row);
+            var formAssociation = factory.create(_Forms.TheOne.__FormAssociation);
+            formAssociation.set(_Forms._FormAssociation.metaClass, metaClass);
+            formAssociation.set(_Forms._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
+            formAssociation.set(_Forms._FormAssociation.formType, _Forms.___FormType.Row);
             userViewExtent.elements().add(formAssociation);
 
             MessageBox.Show("View Association created");
@@ -289,27 +289,27 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
             var container = detailAsElement.container();
             var isPackage = container != null && DefaultClassifierHints.IsPackageLike(container);
 
-            var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
+            var formAssociation = factory.create(_Forms.TheOne.__FormAssociation);
 
             DefaultClassifierHints.AddToExtentOrElement(
                 isPackage && container != null ? container : (IObject) extent,
                 formAssociation);
                 
             formAssociation.set(
-                _DatenMeister._Forms._FormAssociation.name, 
+                _Forms._FormAssociation.name, 
                 "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
 
             var formMetaClass = detailAsElement.metaclass;
-            var isRowForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__RowForm);
-            var isCollectionForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__CollectionForm);
-            var isTableForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__TableForm);
+            var isRowForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _Forms.TheOne.__RowForm);
+            var isCollectionForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _Forms.TheOne.__CollectionForm);
+            var isTableForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _Forms.TheOne.__TableForm);
             var formType = 
-                isCollectionForm ? _DatenMeister._Forms.___FormType.Collection :
-                isRowForm ? _DatenMeister._Forms.___FormType.Row :
-                isTableForm ? _DatenMeister._Forms.___FormType.Table : _DatenMeister._Forms.___FormType.Object;
+                isCollectionForm ? _Forms.___FormType.Collection :
+                isRowForm ? _Forms.___FormType.Row :
+                isTableForm ? _Forms.___FormType.Table : _Forms.___FormType.Object;
 
-            formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
-            formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailAsElement);
+            formAssociation.set(_Forms._FormAssociation.formType, formType);
+            formAssociation.set(_Forms._FormAssociation.form, detailAsElement);
 
             await NavigatorForItems.NavigateToElementDetailView(navigationHost, formAssociation);
         }

@@ -79,12 +79,12 @@ public class FormControllerTests
         Assert.That(foundForm, Is.Not.Null);
         var detailForm = FormMethods.GetRowForms(foundForm).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
-        var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         var foundFields =
             fields.OfType<IElement>()
                 .Where(
                     x =>
-                        x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
+                        x.getOrDefault<string>(_Forms._ActionFieldData.actionName) ==
                         ItemsFormsPlugin.NavigationItemDelete)
                 .ToList();
 
@@ -106,13 +106,13 @@ public class FormControllerTests
         Assert.That(foundForm, Is.Not.Null);
         var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
         Assert.That(listForm, Is.Not.Null);
-        var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = listForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
 
         var foundFields =
             fields.OfType<IElement>()
                 .Where(
                     x =>
-                        x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
+                        x.getOrDefault<string>(_Forms._ActionFieldData.actionName) ==
                         ItemsFormsPlugin.NavigationExtentsListDeleteItem)
                 .ToList();
 
@@ -123,7 +123,7 @@ public class FormControllerTests
             fields.OfType<IElement>()
                 .Where(
                     x =>
-                        x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
+                        x.getOrDefault<string>(_Forms._ActionFieldData.actionName) ==
                         ItemsFormsPlugin.NavigationExtentsListViewItem)
                 .ToList();
 
@@ -145,13 +145,13 @@ public class FormControllerTests
         Assert.That(foundForm, Is.Not.Null);
         var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
         Assert.That(listForm, Is.Not.Null);
-        var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = listForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
 
         // Check that field is at first five positions
         var firstField =
             fields.OfType<IElement>()
                 .Take(5)
-                .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName) ==
+                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._ActionFieldData.actionName) ==
                                      ExtentFormPlugin.NavigationExtentNavigateTo);
         Assert.That(firstField, Is.Not.Null);
             
@@ -173,15 +173,15 @@ public class FormControllerTests
         var form = (controller.GetObjectFormForMetaClassInternal(zipCodeMetaUrl) as IElement)!;
 
         Assert.That(form, Is.Not.Null);
-        Assert.That(form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ObjectForm), Is.True);
+        Assert.That(form.getMetaClass()?.@equals(_Forms.TheOne.__ObjectForm), Is.True);
         var rowForm = FormMethods.GetRowForms(form).FirstOrDefault();
         Assert.That(rowForm, Is.Not.Null);
-        var fields = rowForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
+        var fields = rowForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
         Assert.That(fields.Count(), Is.GreaterThan(3));
 
         var positionLat = fields
             .OfType<IElement>()
-            .FirstOrDefault(x => x.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ==
+            .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) ==
                                  nameof(ZipCode.positionLat));
         Assert.That(positionLat, Is.Not.Null);
     }
@@ -198,11 +198,11 @@ public class FormControllerTests
         var detailForm = FormMethods.GetRowForms(form).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
-        var fields = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         Assert.That(fields, Is.Not.Null);
         Assert.That(
             fields.OfType<IElement>().Any(x =>
-                x.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) == "DefaultTypes"), Is.True);
+                x.getOrDefault<string>(_Forms._FieldData.title) == "DefaultTypes"), Is.True);
     }
 
 
@@ -230,7 +230,7 @@ public class FormControllerTests
         var foundElement = formMethods.GetUserFormExtent().element(createdForm.id!)!;
         Assert.That(foundElement, Is.Not.Null);
         Assert.That(
-            foundElement.metaclass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true);
+            foundElement.metaclass?.equals(_Forms.TheOne.__CollectionForm) == true);
             
         dm.Dispose();
     }
@@ -263,7 +263,7 @@ public class FormControllerTests
         var foundElement = formMethods.GetUserFormExtent().element(createdForm.id!)!;
         Assert.That(foundElement, Is.Not.Null);
         Assert.That(
-            foundElement.metaclass?.equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true);
+            foundElement.metaclass?.equals(_Forms.TheOne.__ObjectForm) == true);
             
         dm.Dispose();
     }

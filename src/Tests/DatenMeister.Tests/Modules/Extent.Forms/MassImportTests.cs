@@ -37,9 +37,9 @@ internal class MassImportTests
         var extentManager = dm.Resolve<ExtentManager>();
 
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
 
         var loadedExtentInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);

@@ -69,7 +69,7 @@ public class DefaultReportManagerViewExtensions : IViewExtensionFactory
         // Handles the simple report
         var simpleReportInfo =
             viewExtensionInfo.IsItemInDetailWindowOfType(
-                _DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
+                _Reports.TheOne.__SimpleReportConfiguration);
         if (simpleReportInfo != null)
         {
             yield return
@@ -112,7 +112,7 @@ public class DefaultReportManagerViewExtensions : IViewExtensionFactory
     {
         // Creates a html report
         var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
-            _DatenMeister.TheOne.Reports.__HtmlReportInstance);
+            _Reports.TheOne.__HtmlReportInstance);
         if (reportInstance != null)
         {
             yield return
@@ -139,7 +139,7 @@ public class DefaultReportManagerViewExtensions : IViewExtensionFactory
     {
         // Creates a html report
         var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
-            _DatenMeister.TheOne.Reports.__AdocReportInstance);
+            _Reports.TheOne.__AdocReportInstance);
         if (reportInstance != null)
         {
             yield return
@@ -177,7 +177,7 @@ public class DefaultReportManagerViewExtensions : IViewExtensionFactory
         }
 
         var reportDefinition =
-            definition.getOrDefault<IElement>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
+            definition.getOrDefault<IElement>(_Reports._HtmlReportInstance.reportDefinition);
         if (reportDefinition == null)
         {
             MessageBox.Show($"The report is not found: {NamedElementMethods.GetName(definition)}");
@@ -262,16 +262,16 @@ public class DefaultReportManagerViewExtensions : IViewExtensionFactory
     {
         simpleReportConfiguration ??=
             new MofFactory(rootElement)
-                .create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration)
-                .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showDescendents, true)
-                .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showRootElement, true)
-                .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showFullName, true)
+                .create(_Reports.TheOne.__SimpleReportConfiguration)
+                .SetProperty(_Reports._SimpleReportConfiguration.showDescendents, true)
+                .SetProperty(_Reports._SimpleReportConfiguration.showRootElement, true)
+                .SetProperty(_Reports._SimpleReportConfiguration.showFullName, true)
                 .SetProperty(
-                    _DatenMeister._Reports._SimpleReportConfiguration.rootElement,
+                    _Reports._SimpleReportConfiguration.rootElement,
                     rootElement.GetUri() ??
                     throw new InvalidOperationException("Uri of element could not be retrieved"))
                 .SetProperty(
-                    _DatenMeister._Reports._SimpleReportConfiguration.workspaceId,
+                    _Reports._SimpleReportConfiguration.workspaceId,
                     rootElement.GetUriExtentOf()?.GetWorkspace()?.id ?? WorkspaceNames.WorkspaceData);
             
         string tmpPath;

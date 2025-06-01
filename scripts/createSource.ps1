@@ -26,10 +26,10 @@ dotnet ./DatenMeister.SourceGeneration.Console.dll
 Set-Location ../../../../
 
 Write-Output "-- Mof"
-dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Core/XmiFiles/MOF.xmi" "./DatenMeister.Core/Models/EMOF" "DatenMeister.Core.Models.EMOF" "dm:///_internal/model/uml"
+dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Core/XmiFiles/MOF.xmi" "./DatenMeister.Core/Models/EMOF" "DatenMeister.Core.Models.EMOF" "dm:///_internal/model/mof"
 
 Write-Output "-- UML"
-dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Core/XmiFiles/UML.xmi" "./DatenMeister.Core/Models/EMOF" "DatenMeister.Core.Models.EMOF" "dm:///_internal/model/mof"
+dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Core/XmiFiles/UML.xmi" "./DatenMeister.Core/Models/EMOF" "DatenMeister.Core.Models.EMOF" "dm:///_internal/model/uml"
 
 Write-Output "-- PrimitiveTypes"
 dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Core/XmiFiles/PrimitiveTypes.xmi" "./DatenMeister.Core/Models/EMOF" "DatenMeister.Core.Models.EMOF" "dm:///_internal/model/primitivetypes"

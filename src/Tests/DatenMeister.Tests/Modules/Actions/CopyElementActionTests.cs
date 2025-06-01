@@ -17,11 +17,11 @@ public class CopyElementActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__CopyElementsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/",
-                [_DatenMeister._Actions._CopyElementsAction.targetPath] = "dm:///target/"
+                [_Actions._CopyElementsAction.sourcePath] = "dm:///source/",
+                [_Actions._CopyElementsAction.targetPath] = "dm:///target/"
             });
 
         await actionLogic.ExecuteAction(action);
@@ -44,12 +44,12 @@ public class CopyElementActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__CopyElementsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/",
-                [_DatenMeister._Actions._CopyElementsAction.targetPath] = "dm:///target/",
-                [_DatenMeister._Actions._CopyElementsAction.emptyTarget] = true
+                [_Actions._CopyElementsAction.sourcePath] = "dm:///source/",
+                [_Actions._CopyElementsAction.targetPath] = "dm:///target/",
+                [_Actions._CopyElementsAction.emptyTarget] = true
             });
 
         await actionLogic.ExecuteAction(action);
@@ -72,12 +72,12 @@ public class CopyElementActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__CopyElementsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/",
-                [_DatenMeister._Actions._CopyElementsAction.targetPath] = "dm:///target/",
-                [_DatenMeister._Actions._CopyElementsAction.moveOnly] = true
+                [_Actions._CopyElementsAction.sourcePath] = "dm:///source/",
+                [_Actions._CopyElementsAction.targetPath] = "dm:///target/",
+                [_Actions._CopyElementsAction.moveOnly] = true
             });
 
         await actionLogic.ExecuteAction(action);
@@ -99,11 +99,11 @@ public class CopyElementActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__CopyElementsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
-                [_DatenMeister._Actions._CopyElementsAction.targetPath] = "dm:///target/"
+                [_Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
+                [_Actions._CopyElementsAction.targetPath] = "dm:///target/"
             });
 
         await actionLogic.ExecuteAction(action);
@@ -125,11 +125,11 @@ public class CopyElementActionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__CopyElementsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
-                [_DatenMeister._Actions._CopyElementsAction.targetPath] = "dm:///target/?fn=target1"
+                [_Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
+                [_Actions._CopyElementsAction.targetPath] = "dm:///target/?fn=target1"
             });
 
         await actionLogic.ExecuteAction(action);
@@ -159,12 +159,12 @@ public class CopyElementActionTests
         Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement!),
             Is.EqualTo("packagedElement"));
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__CopyElementsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._CopyElementsAction.sourcePath] =
+                [_Actions._CopyElementsAction.sourcePath] =
                     "dm:///source/?fn=source1&prop=packagedElement",
-                [_DatenMeister._Actions._CopyElementsAction.targetPath] =
+                [_Actions._CopyElementsAction.targetPath] =
                     "dm:///target/?fn=target1&prop=packagedElement"
             });
 
@@ -193,11 +193,11 @@ public class CopyElementActionTests
         Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement!),
             Is.EqualTo("packagedElement"));
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__CopyElementsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
-                [_DatenMeister._Actions._CopyElementsAction.targetPath] =
+                [_Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
+                [_Actions._CopyElementsAction.targetPath] =
                     "dm:///target/?fn=target1&prop=packagedElement"
             });
 

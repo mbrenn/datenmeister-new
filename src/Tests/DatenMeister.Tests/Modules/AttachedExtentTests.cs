@@ -8,7 +8,7 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
-using static DatenMeister.Core.Models._DatenMeister._AttachedExtent;
+using static DatenMeister.Core.Models._AttachedExtent;
 
 namespace DatenMeister.Tests.Modules;
 
@@ -27,7 +27,7 @@ public class AttachedExtentTests
 
         // Create the attachedconfiguration
         var attachedConfiguration = factory.create(
-                _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration)
+                _AttachedExtent.TheOne.__AttachedExtentConfiguration)
             .SetProperties(
                 new Dictionary<string, object>
                 {
@@ -166,7 +166,7 @@ public class AttachedExtentTests
         testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.NonConnectedExtent);
 
         var config = InMemoryObject.CreateEmpty(
-                _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration)
+                _AttachedExtent.TheOne.__AttachedExtentConfiguration)
             .SetProperties(
                 new Dictionary<string, object>
                 {

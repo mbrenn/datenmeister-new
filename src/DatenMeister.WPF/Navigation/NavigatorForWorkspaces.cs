@@ -56,7 +56,7 @@ public static class NavigatorForWorkspaces
         {
             var creator = GiveMe.Scope.Resolve<FormCreator>();
             formElement =
-                creator.CreateRowFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
+                creator.CreateRowFormByMetaClass(_Management.TheOne.__CreateNewWorkspaceModel);
         }
 
         var result = await NavigatorForItems.NavigateToElementDetailView(
@@ -116,7 +116,7 @@ public static class NavigatorForWorkspaces
                 if (loadConfiguration != null)
                 {
                     var extentStoragePath =
-                        loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                        loadConfiguration.getOrDefault<string>(_ExtentLoaderConfigs
                             ._ExtentFileLoaderConfig.filePath);
 
                     if (extentStoragePath != null)

@@ -12,7 +12,7 @@ public class HtmlReportActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.Reports.__HtmlReportAction) == true;
+            _Actions.TheOne.Reports.__HtmlReportAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -20,9 +20,9 @@ public class HtmlReportActionHandler : IActionHandler
         await Task.Run(() =>
         {
             var reportInstance =
-                action.getOrDefault<IElement>(_DatenMeister._Actions._Reports._HtmlReportAction.reportInstance);
+                action.getOrDefault<IElement>(_Actions._Reports._HtmlReportAction.reportInstance);
             var filePath =
-                action.getOrDefault<string>(_DatenMeister._Actions._Reports._HtmlReportAction.filePath);
+                action.getOrDefault<string>(_Actions._Reports._HtmlReportAction.filePath);
 
             if (string.IsNullOrEmpty(filePath))
             {

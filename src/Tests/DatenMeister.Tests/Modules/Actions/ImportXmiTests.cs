@@ -31,10 +31,10 @@ public class ImportXmiTests
         // Performs the import via the action handler...
         var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
         var importXmi = new ImportXmiActionHandler();
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-        action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
-        action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test");
-        action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi);
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ImportXmiAction);
+        action.set(_Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
+        action.set(_Actions._ImportXmiAction.itemUri, "dm:///test");
+        action.set(_Actions._ImportXmiAction.xmi, xmi);
             
         await importXmi.Evaluate(actionLogic, action);
 
@@ -64,12 +64,12 @@ public class ImportXmiTests
         // Performs the import via the action handler...
         var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
         var importXmi = new ImportXmiActionHandler();
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-        action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
-        action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
-        action.set(_DatenMeister._Actions._ImportXmiAction.property, "issue");
-        action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, false);
-        action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi);
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ImportXmiAction);
+        action.set(_Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
+        action.set(_Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
+        action.set(_Actions._ImportXmiAction.property, "issue");
+        action.set(_Actions._ImportXmiAction.addToCollection, false);
+        action.set(_Actions._ImportXmiAction.xmi, xmi);
             
         await importXmi.Evaluate(actionLogic, action);
 
@@ -103,12 +103,12 @@ public class ImportXmiTests
         // Performs the import via the action handler...
         var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
         var importXmi = new ImportXmiActionHandler();
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-        action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
-        action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
-        action.set(_DatenMeister._Actions._ImportXmiAction.property, "issue");
-        action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, true);
-        action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi);
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ImportXmiAction);
+        action.set(_Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
+        action.set(_Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
+        action.set(_Actions._ImportXmiAction.property, "issue");
+        action.set(_Actions._ImportXmiAction.addToCollection, true);
+        action.set(_Actions._ImportXmiAction.xmi, xmi);
             
         await importXmi.Evaluate(actionLogic, action);
 
@@ -126,12 +126,12 @@ public class ImportXmiTests
             
         // Now adds the second item
             
-        action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-        action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
-        action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
-        action.set(_DatenMeister._Actions._ImportXmiAction.property, "issue");
-        action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, true);
-        action.set(_DatenMeister._Actions._ImportXmiAction.xmi, xmi2);
+        action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ImportXmiAction);
+        action.set(_Actions._ImportXmiAction.workspaceId, WorkspaceNames.WorkspaceData);
+        action.set(_Actions._ImportXmiAction.itemUri, "dm:///test#Item1");
+        action.set(_Actions._ImportXmiAction.property, "issue");
+        action.set(_Actions._ImportXmiAction.addToCollection, true);
+        action.set(_Actions._ImportXmiAction.xmi, xmi2);
             
         await importXmi.Evaluate(actionLogic, action);
             

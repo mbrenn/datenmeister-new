@@ -24,7 +24,7 @@ public class EnvironmentalVariablePlugin(IWorkspaceLogic workspaceLogic, IScopeS
             {
                 var mapper = ScopeStorage.Get<ProviderToProviderLoaderMapper>();
                 mapper.AddMapping(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__EnvironmentalVariableLoaderConfig,
+                    _ExtentLoaderConfigs.TheOne.__EnvironmentalVariableLoaderConfig,
                     _ => new EnvironmentalProvider());
                 break;
             }
@@ -34,12 +34,12 @@ public class EnvironmentalVariablePlugin(IWorkspaceLogic workspaceLogic, IScopeS
                 {
                     var extentLoader = new ExtentManager(workspaceLogic, ScopeStorage);
                     var loaderConfig = InMemoryObject.CreateEmpty(
-                        _DatenMeister.TheOne.ExtentLoaderConfigs.__EnvironmentalVariableLoaderConfig);
+                        _ExtentLoaderConfigs.TheOne.__EnvironmentalVariableLoaderConfig);
                     loaderConfig.set(
-                        _DatenMeister._ExtentLoaderConfigs._EnvironmentalVariableLoaderConfig.extentUri,
+                        _ExtentLoaderConfigs._EnvironmentalVariableLoaderConfig.extentUri,
                         DefaultExtentUri);
                     loaderConfig.set(
-                        _DatenMeister._ExtentLoaderConfigs._EnvironmentalVariableLoaderConfig.workspaceId,
+                        _ExtentLoaderConfigs._EnvironmentalVariableLoaderConfig.workspaceId,
                         WorkspaceNames.WorkspaceManagement);
                     await extentLoader.LoadExtent(loaderConfig);
                 }

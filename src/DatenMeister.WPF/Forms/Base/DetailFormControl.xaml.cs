@@ -113,8 +113,8 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
     ///     Gets the default size
     /// </summary>
     public Size DefaultSize => new Size(
-        EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultWidth) ?? 0.0,
-        EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultHeight) ?? 0.0
+        EffectiveForm?.getOrDefault<double>(_Forms._RowForm.defaultWidth) ?? 0.0,
+        EffectiveForm?.getOrDefault<double>(_Forms._RowForm.defaultHeight) ?? 0.0
     );
 
     /// <summary>
@@ -392,14 +392,14 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
         RefreshViewDefinition();
 
         // Checks, if the form overwrites the allow new properties information. If yes, store it
-        var t = EffectiveForm?.getOrNull<bool>(_DatenMeister._Forms._RowForm.allowNewProperties);
+        var t = EffectiveForm?.getOrNull<bool>(_Forms._RowForm.allowNewProperties);
         AllowNewProperties = t ?? AllowNewProperties;
 
         DataGrid.Children.Clear();
         AttachedItemFields.Clear();
         ItemFields.Clear();
 
-        var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         if (fields == null)
         {
             return;
@@ -423,7 +423,7 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
         if (fields == null) throw new ArgumentNullException(nameof(fields));
         if (DetailElement == null) throw new InvalidOperationException("DetailElement == null");
 
-        var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._Form.isReadOnly) == true
+        var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_Forms._Form.isReadOnly) == true
                              || FormParameter?.IsReadOnly == true;
 
         DataGrid.Children.Clear();
@@ -431,7 +431,7 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
         foreach (var field in fields.Cast<IElement>())
         {
             var flags = new FieldParameter {IsReadOnly = isFormReadOnly};
-            var isAttached = field.getOrNull<bool>(_DatenMeister._Forms._FieldData.isAttached) == true;
+            var isAttached = field.getOrNull<bool>(_Forms._FieldData.isAttached) == true;
 
             var usedElement = isAttached ? AttachedElement : DetailElement;
             if (usedElement == null) continue;
@@ -456,9 +456,9 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
             {
                 if (!flags.IsSpanned)
                 {
-                    var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
+                    var title = field.getOrDefault<string>(_Forms._FieldData.title);
                     var isReadOnly = 
-                        field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly) || isFormReadOnly;
+                        field.getOrDefault<bool>(_Forms._FieldData.isReadOnly) || isFormReadOnly;
 
                     // Sets the title block
                     var titleBlock = new TextBlock
@@ -477,7 +477,7 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
 
             // Checks whether the control element shall be stored in
             // the detail element itself or within the attached fields
-            if (field.getOrNull<bool>(_DatenMeister._Forms._FieldData.isAttached) == true)
+            if (field.getOrNull<bool>(_Forms._FieldData.isAttached) == true)
             {
                 AttachedItemFields.Add(detailElement);
             }
@@ -657,7 +657,7 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
         if (EffectiveForm == null)
             throw new InvalidOperationException("EffectiveForm == null");
 
-        saveText ??= EffectiveForm.getOrDefault<string>(_DatenMeister._Forms._RowForm.buttonApplyText);
+        saveText ??= EffectiveForm.getOrDefault<string>(_Forms._RowForm.buttonApplyText);
         saveText ??= "Save";
 
         if (AllowNewProperties)
@@ -671,7 +671,7 @@ public partial class DetailFormControl : UserControl, INavigationGuest, IHasSele
                 var fieldValue = new TextboxField();
                 var flags = new FieldParameter();
 
-                var fieldData = _DatenMeister.TheOne.Forms.__TextFieldData;
+                var fieldData = _Forms.TheOne.__TextFieldData;
 
                 var fieldUiElement = fieldValue.CreateElement(
                     DetailElement,

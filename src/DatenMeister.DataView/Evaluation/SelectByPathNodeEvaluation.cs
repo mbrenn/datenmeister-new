@@ -17,13 +17,13 @@ public class SelectByPathNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DatenMeister.TheOne.DataViews.__SelectByPathNode);
+               metaClass.equals(_DataViews.TheOne.__SelectByPathNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var workspaceId = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByPathNode.workspaceId);
-        var path = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByPathNode.path);
+        var workspaceId = viewNode.getOrDefault<string>(_DataViews._SelectByPathNode.workspaceId);
+        var path = viewNode.getOrDefault<string>(_DataViews._SelectByPathNode.path);
         if (workspaceId == null)
         {
             Logger.Warn("Workspace is not set.");

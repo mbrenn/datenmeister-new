@@ -50,7 +50,7 @@ public class SubElementsField : IDetailField
         _navigationHost = detailForm.NavigationHost;
         if (_navigationHost == null) throw new InvalidOperationException("detailform.NavigationHost is null");
 
-        _propertyName = _fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+        _propertyName = _fieldData.getOrDefault<string>(_Forms._FieldData.name);
         _panel = new DockPanel();
 
         RefreshPanelElement();
@@ -83,15 +83,15 @@ public class SubElementsField : IDetailField
 
         // Get the required information
         var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
-        var form = _fieldData.getOrDefault<IObject>(_DatenMeister._Forms._SubElementFieldData.form);
-        var isReadOnly = _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.isReadOnly)
+        var form = _fieldData.getOrDefault<IObject>(_Forms._SubElementFieldData.form);
+        var isReadOnly = _fieldData.getOrDefault<bool>(_Forms._SubElementFieldData.isReadOnly)
                          || _fieldFlags?.IsReadOnly == true;
 
         // Check whether specialized classes shall be included
         _includeSpecializationsForDefaultTypes =
-            !_fieldData.isSet(_DatenMeister._Forms._SubElementFieldData.includeSpecializationsForDefaultTypes)
+            !_fieldData.isSet(_Forms._SubElementFieldData.includeSpecializationsForDefaultTypes)
             || _fieldData.getOrDefault<bool>(
-                _DatenMeister._Forms._SubElementFieldData.includeSpecializationsForDefaultTypes);
+                _Forms._SubElementFieldData.includeSpecializationsForDefaultTypes);
 
         valueOfElement ??= _element.get<IReflectiveCollection>(_propertyName);
         var valueCount = valueOfElement.Count();
@@ -135,8 +135,8 @@ public class SubElementsField : IDetailField
                 };
 
         form.set(
-            _DatenMeister._Forms._TableForm.inhibitNewItems,
-            _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements));
+            _Forms._TableForm.inhibitNewItems,
+            _fieldData.getOrDefault<bool>(_Forms._SubElementFieldData.allowOnlyExistingElements));
 
         _listViewControl.SetContent(valueOfElement, form, viewExtensions);
 
@@ -176,16 +176,16 @@ public class SubElementsField : IDetailField
         }
 
         var defaultTypes =
-            form.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
+            form.get<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
         if (defaultTypes == null || defaultTypes.Any(x => x != null && x.Equals(propertyType)))
         {
             // Already included
             return;
         }
 
-        var defaultType = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-        defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, propertyType);
-        defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
+        var defaultType = MofFactory.CreateElement(form, _Forms.TheOne.__DefaultTypeForNewElement);
+        defaultType.set(_Forms._DefaultTypeForNewElement.metaClass, propertyType);
+        defaultType.set(_Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
         defaultTypes.add(defaultType);
     }
 
@@ -281,7 +281,7 @@ public class SubElementsField : IDetailField
         stackPanel.Children.Add(buttonDelete);
             
         var allowOnlyExistingElements =
-            _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements);
+            _fieldData.getOrDefault<bool>(_Forms._SubElementFieldData.allowOnlyExistingElements);
         if (!allowOnlyExistingElements)
         {
             var buttonNew = new CreateNewInstanceButton {Content = "N"};
@@ -291,7 +291,7 @@ public class SubElementsField : IDetailField
         }
 
         var buttonAttach = new Button {Content = "A"};
-        var metaClass = _fieldData.getOrDefault<IElement>(_DatenMeister._Forms._SubElementFieldData.metaClass);
+        var metaClass = _fieldData.getOrDefault<IElement>(_Forms._SubElementFieldData.metaClass);
             
         buttonAttach.Click += async (x, y) =>
         {
@@ -356,13 +356,13 @@ public class SubElementsField : IDetailField
         // Gets the default types
         var defaultTypesForNewItems = 
             _fieldData?.getOrDefault<IReflectiveCollection>(
-                _DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements);
+                _Forms._SubElementFieldData.defaultTypesForNewElements);
             
         var typeList =
             defaultTypesForNewItems?.OfType<IElement>().Select(
                 innerType =>
-                    innerType.isSet(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
-                        ? innerType.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement
+                    innerType.isSet(_Forms._DefaultTypeForNewElement.metaClass)
+                        ? innerType.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement
                             .metaClass)
                         : innerType);
 

@@ -11,32 +11,32 @@ public abstract class GenericReportParagraph<T> :
     public bool IsRelevant(IElement element)
     {
         var metaClass = element.getMetaClass();
-        return metaClass?.equals(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph) == true;
+        return metaClass?.equals(_Reports.TheOne.Elements.__ReportParagraph) == true;
     }
 
     public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNodeOrigin)
     {
-        var reportNode = reportLogic.GetNodeWithEvaluatedProperties(reportNodeOrigin, _DatenMeister._Reports._Elements._ReportParagraph.viewNode);
+        var reportNode = reportLogic.GetNodeWithEvaluatedProperties(reportNodeOrigin, _Reports._Elements._ReportParagraph.viewNode);
 
-        var paragraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.paragraph);
+        var paragraph = reportNode.getOrDefault<string>(_Reports._Elements._ReportParagraph.paragraph);
 
         // Evaluates the paragraph if required
-        if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph))
+        if (reportNode.isSet(_Reports._Elements._ReportParagraph.evalParagraph))
         {
             // Dynamic evaluation
             if (!reportLogic.GetObjectViaDataEvaluation(
                     reportNodeOrigin, 
                     out var element, 
-                    _DatenMeister._Reports._Elements._ReportParagraph.viewNode) || element == null) return;
+                    _Reports._Elements._ReportParagraph.viewNode) || element == null) return;
 
-            var evalParagraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph);
+            var evalParagraph = reportNode.getOrDefault<string>(_Reports._Elements._ReportParagraph.evalParagraph);
             paragraph = TextTemplateEngine.Parse(
                 evalParagraph,
                 new Dictionary<string, object> { ["i"] = element });
         }
 
         var cssClass = 
-            reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.cssClass);
+            reportNode.getOrDefault<string>(_Reports._Elements._ReportParagraph.cssClass);
 
         WriteParagraph(reportCreator, paragraph, cssClass);
     }

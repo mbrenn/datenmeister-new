@@ -106,9 +106,9 @@ public class TemporaryExtentTests
         var element = temporaryFactory.create(null);
         Assert.That(element, Is.Not.Null);
             
-        var element2 = temporaryFactory.create(_DatenMeister.TheOne.Forms.__RowForm);
+        var element2 = temporaryFactory.create(_Forms.TheOne.__RowForm);
         Assert.That(element2, Is.Not.Null);
         Assert.That(element2.getMetaClass(), Is.Not.Null);
-        Assert.That(element2.getMetaClass()!.Equals(_DatenMeister.TheOne.Forms.__RowForm), Is.Not.Null);
+        Assert.That(element2.getMetaClass()!.Equals(_Forms.TheOne.__RowForm), Is.Not.Null);
     }
 }

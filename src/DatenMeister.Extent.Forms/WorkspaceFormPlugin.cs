@@ -35,12 +35,12 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Row,
-                        MetaClass = _DatenMeister.TheOne.Management.__Workspace,
+                        FormType = _Forms.___FormType.Row,
+                        MetaClass = _Management.TheOne.__Workspace,
                         OnCallSuccess = (element, parameter) =>
                         {
                             // Sets the parameter that the right workspace is used
-                            var workspaceId = element?.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
+                            var workspaceId = element?.getOrDefault<string>(_Management._Workspace.id);
                             if (!string.IsNullOrEmpty(workspaceId))
                             {
                                 parameter.Parameter["workspaceId"] = workspaceId;
@@ -51,12 +51,12 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Row,
-                        MetaClass = _DatenMeister.TheOne.Management.__Workspace,
+                        FormType = _Forms.___FormType.Row,
+                        MetaClass = _Management.TheOne.__Workspace,
                         OnCallSuccess = (element, parameter) =>
                         {
                             // Sets the parameter that the right workspace is used
-                            var workspaceId = element?.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
+                            var workspaceId = element?.getOrDefault<string>(_Management._Workspace.id);
                             if (!string.IsNullOrEmpty(workspaceId))
                             {
                                 parameter.Parameter["workspaceId"] = workspaceId;

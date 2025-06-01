@@ -41,10 +41,10 @@ public class ElementsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeSt
                 rootElements
                     .OfType<IObject>()
                     .FirstOrDefault(x =>
-                        x.getOrDefault<string>(_DatenMeister._Management._Workspace.id) == workspaceId);
+                        x.getOrDefault<string>(_Management._Workspace.id) == workspaceId);
 
             var foundExtents =
-                foundExtent?.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
+                foundExtent?.getOrDefault<IReflectiveCollection>(_Management._Workspace.extents);
 
             return
                 foundExtents?.OfType<IObject>()
@@ -53,7 +53,7 @@ public class ElementsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeSt
                         var x = ItemWithNameAndId.Create(t)!;
                         var realExtent = workspaceLogic.FindExtent(
                             workspaceId,
-                            t.get<string>(_DatenMeister._Management._Extent.uri));
+                            t.get<string>(_Management._Extent.uri));
                         x.extentUri = (realExtent as IUriExtent)?.contextURI() ?? string.Empty;
                         if (t.isSet(_UML._CommonStructure._NamedElement.name))
                             x.name = realExtent.get<string>(_UML._CommonStructure._NamedElement.name);

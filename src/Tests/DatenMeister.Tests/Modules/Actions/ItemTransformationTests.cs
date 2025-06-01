@@ -20,12 +20,12 @@ public class ItemTransformationTests
         var temp = new UpperCaseTransformation();
         Assert.That(temp is IItemTransformation);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__TransformItemsAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__TransformItemsAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._TransformItemsAction.path] = "dm:///source/",
-                [_DatenMeister._Actions._TransformItemsAction.workspaceId] = "Data",
-                [_DatenMeister._Actions._TransformItemsAction.runtimeClass] =
+                [_Actions._TransformItemsAction.path] = "dm:///source/",
+                [_Actions._TransformItemsAction.workspaceId] = "Data",
+                [_Actions._TransformItemsAction.runtimeClass] =
                     "DatenMeister.Actions.Transformations.UpperCaseTransformation"
             });
 

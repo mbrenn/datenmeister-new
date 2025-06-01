@@ -821,12 +821,12 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         // Performs the import via the action handler...
         var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
         var importXmi = new ImportXmiActionHandler();
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ImportXmiAction);
-        action.set(_DatenMeister._Actions._ImportXmiAction.workspaceId, workspace);
-        action.set(_DatenMeister._Actions._ImportXmiAction.itemUri, itemUri);
-        action.set(_DatenMeister._Actions._ImportXmiAction.property, property);
-        action.set(_DatenMeister._Actions._ImportXmiAction.addToCollection, addToCollection);
-        action.set(_DatenMeister._Actions._ImportXmiAction.xmi, parameter.Xmi);
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ImportXmiAction);
+        action.set(_Actions._ImportXmiAction.workspaceId, workspace);
+        action.set(_Actions._ImportXmiAction.itemUri, itemUri);
+        action.set(_Actions._ImportXmiAction.property, property);
+        action.set(_Actions._ImportXmiAction.addToCollection, addToCollection);
+        action.set(_Actions._ImportXmiAction.xmi, parameter.Xmi);
             
         await importXmi.Evaluate(actionLogic, action);
 

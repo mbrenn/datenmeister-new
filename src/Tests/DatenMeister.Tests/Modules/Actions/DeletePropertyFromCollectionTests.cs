@@ -20,11 +20,11 @@ public class DeletePropertyFromCollectionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var testExtent = CreateTestExtent(actionLogic);
             
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DeletePropertyFromCollectionAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__DeletePropertyFromCollectionAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl] = "dm:///source/",
-                [_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName] = "test"
+                [_Actions._DeletePropertyFromCollectionAction.collectionUrl] = "dm:///source/",
+                [_Actions._DeletePropertyFromCollectionAction.propertyName] = "test"
             });
             
         await actionLogic.ExecuteAction(action);
@@ -51,11 +51,11 @@ public class DeletePropertyFromCollectionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var testExtent = CreateTestExtent(actionLogic);
             
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DeletePropertyFromCollectionAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__DeletePropertyFromCollectionAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl] = "dm:///source/?fn=source1&prop=packagedElement",
-                [_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName] = "test"
+                [_Actions._DeletePropertyFromCollectionAction.collectionUrl] = "dm:///source/?fn=source1&prop=packagedElement",
+                [_Actions._DeletePropertyFromCollectionAction.propertyName] = "test"
             });
             
         await actionLogic.ExecuteAction(action);
@@ -82,13 +82,13 @@ public class DeletePropertyFromCollectionTests
         var actionLogic = ActionSetTests.CreateActionLogic();
         var testExtent = CreateTestExtent(actionLogic);
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DeletePropertyFromCollectionAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__DeletePropertyFromCollectionAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl]
+                [_Actions._DeletePropertyFromCollectionAction.collectionUrl]
                     = "dm:///source/?fn=source1&prop=packagedElement&metaclass="
-                      + HttpUtility.UrlEncode(_DatenMeister.TheOne.Actions.__EchoAction.Uri),
-                [_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName] = "test"
+                      + HttpUtility.UrlEncode(_Actions.TheOne.__EchoAction.Uri),
+                [_Actions._DeletePropertyFromCollectionAction.propertyName] = "test"
             });
 
         await actionLogic.ExecuteAction(action);
@@ -119,16 +119,16 @@ public class DeletePropertyFromCollectionTests
         workspaceLogic.AddExtent(workspaceLogic.GetDataWorkspace(), sourceExtent);
             
         var sourceFactory = new MofFactory(sourceExtent);
-        var sourceElement1 = sourceFactory.create(_DatenMeister.TheOne.CommonTypes.Default.__Package)
+        var sourceElement1 = sourceFactory.create(_CommonTypes.TheOne.Default.__Package)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1", ["test"] = "test"})
             .SetId("source1");
-        var sourceElement1_1 = sourceFactory.create(_DatenMeister.TheOne.Actions.__EchoAction)
+        var sourceElement1_1 = sourceFactory.create(_Actions.TheOne.__EchoAction)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1.1", ["test"] = "test"})
             .SetId("source1.1");
-        var sourceElement1_2 = sourceFactory.create(_DatenMeister.TheOne.Actions.__CommandExecutionAction)
+        var sourceElement1_2 = sourceFactory.create(_Actions.TheOne.__CommandExecutionAction)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1.2", ["test"] = "test"})
             .SetId("source1.2");
-        var sourceElement2 = sourceFactory.create(_DatenMeister.TheOne.Actions.__EchoAction)
+        var sourceElement2 = sourceFactory.create(_Actions.TheOne.__EchoAction)
             .SetProperties(new Dictionary<string, object> {["name"] = "source2", ["test"] = "test"})
             .SetId("source2");
             

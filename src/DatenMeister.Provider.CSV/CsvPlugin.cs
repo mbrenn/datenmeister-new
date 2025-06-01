@@ -22,7 +22,7 @@ public class CsvPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
         {
             case PluginLoadingPosition.AfterBootstrapping:
                 _providerToProviderLoaderMapper.AddMapping(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
+                    _ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig,
                     _ => new CsvProviderLoader());
                 break;
         }

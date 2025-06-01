@@ -79,20 +79,20 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
         ActionButtonToFormAdder.AddActionButton(
             formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")
             {
-                FormType = _DatenMeister._Forms.___FormType.Row,
-                MetaClass = _DatenMeister.TheOne.Management.__Extent
+                FormType = _Forms.___FormType.Row,
+                MetaClass = _Management.TheOne.__Extent
             });
 
         ActionButtonToFormAdder.AddActionButton(
             formsPlugin, new ActionButtonAdderParameter(NavigationStore, "Store Extent")
             {
-                FormType = _DatenMeister._Forms.___FormType.Row,
-                MetaClass = _DatenMeister.TheOne.Management.__Extent,
+                FormType = _Forms.___FormType.Row,
+                MetaClass = _Management.TheOne.__Extent,
                 PredicateForElement =
                     element =>
                         extentManager.GetProviderLoaderAndConfiguration(
-                                element.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
-                                element.getOrDefault<string>(_DatenMeister._Management._Extent.uri))
+                                element.getOrDefault<string>(_Management._Extent.workspaceId),
+                                element.getOrDefault<string>(_Management._Extent.uri))
                             .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true
             });
 
@@ -100,29 +100,29 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
             formsPlugin,
             new ActionButtonAdderParameter(NavigationExtentProperties, "View Extent Properties")
             {
-                FormType = _DatenMeister._Forms.___FormType.Row,
-                MetaClass = _DatenMeister.TheOne.Management.__Extent
+                FormType = _Forms.___FormType.Row,
+                MetaClass = _Management.TheOne.__Extent
             });
 
         ActionButtonToFormAdder.AddActionButton(
             formsPlugin, new ActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
             {
-                FormType = _DatenMeister._Forms.___FormType.Row,
-                MetaClass = _DatenMeister.TheOne.Management.__Extent
+                FormType = _Forms.___FormType.Row,
+                MetaClass = _Management.TheOne.__Extent
             });
 
         ActionButtonToFormAdder.AddActionButton(
             formsPlugin, new ActionButtonAdderParameter(NavigationExtentClear, "Clear Extent")
             {
-                FormType = _DatenMeister._Forms.___FormType.Row,
-                MetaClass = _DatenMeister.TheOne.Management.__Extent
+                FormType = _Forms.___FormType.Row,
+                MetaClass = _Management.TheOne.__Extent
             });
 
         ActionButtonToFormAdder.AddActionButton(
             formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "New Item")
             {
-                MetaClass = _DatenMeister.TheOne.Management.__Extent,
-                FormType = _DatenMeister._Forms.___FormType.Collection
+                MetaClass = _Management.TheOne.__Extent,
+                FormType = _Forms.___FormType.Collection
             }
         );
 
@@ -130,9 +130,9 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
             formsPlugin,
             new ActionButtonAdderParameter(NavigationExtentNavigateTo, "Items")
             {
-                ParentMetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                FormType = _DatenMeister._Forms.___FormType.Table,
-                ParentPropertyName = _DatenMeister._Management._Workspace.extents,
+                ParentMetaClass = _Management.TheOne.__Workspace,
+                FormType = _Forms.___FormType.Table,
+                ParentPropertyName = _Management._Workspace.extents,
                 ActionButtonPosition = 0
             });
 
@@ -140,16 +140,16 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
             formsPlugin,
             new ActionButtonAdderParameter(NavigationExportXmi, "Export Xmi")
             {
-                FormType = _DatenMeister._Forms.___FormType.Row,
-                MetaClass = _DatenMeister.TheOne.Management.__Extent
+                FormType = _Forms.___FormType.Row,
+                MetaClass = _Management.TheOne.__Extent
             });
 
         ActionButtonToFormAdder.AddActionButton(
             formsPlugin,
             new ActionButtonAdderParameter(NavigationImportXmi, "Import Xmi")
             {
-                FormType = _DatenMeister._Forms.___FormType.Row,
-                MetaClass = _DatenMeister.TheOne.Management.__Extent
+                FormType = _Forms.___FormType.Row,
+                MetaClass = _Management.TheOne.__Extent
             });
     }
 }

@@ -12,17 +12,17 @@ public class ActionFormTests
     [Test]
     public void TestAddingOfActionButtonInActions()
     {
-        var form = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__Form);
-        var actionDirect = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__Action);
-        var actionIndirect1 = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionSet);
-        var actionIndirect2 = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DocumentOpenAction);
-        var actionNon = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Management.__Extent);
+        var form = InMemoryObject.CreateEmpty(_Forms.TheOne.__Form);
+        var actionDirect = InMemoryObject.CreateEmpty(_Actions.TheOne.__Action);
+        var actionIndirect1 = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionSet);
+        var actionIndirect2 = InMemoryObject.CreateEmpty(_Actions.TheOne.__DocumentOpenAction);
+        var actionNon = InMemoryObject.CreateEmpty(_Management.TheOne.__Extent);
 
         var formHandler = new ActionFormPlugin.ActionFormModificationPlugin();
         var context = new FormCreationContext()
         {
             DetailElement = actionDirect,
-            FormType = _DatenMeister._Forms.___FormType.Row,
+            FormType = _Forms.___FormType.Row,
             MetaClass = actionDirect.metaclass
         };
             

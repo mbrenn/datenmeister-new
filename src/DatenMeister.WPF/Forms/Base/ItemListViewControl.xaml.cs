@@ -211,7 +211,7 @@ public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavi
         EvaluateViewExtensions();
 
         watch.IntermediateLog("UpdateColumnDefinitions done");
-        var fields2 = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
+        var fields2 = EffectiveForm?.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
         if (EffectiveForm is IElement currentForm && Items != null && fields2 != null)
         {
             DataGrid2.SetForm(currentForm, ViewExtensions);
@@ -254,7 +254,7 @@ public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavi
         }
 
         // Checks, if we have a view node
-        var viewNode = _effectiveForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.viewNode);
+        var viewNode = _effectiveForm.getOrDefault<IElement>(_Forms._TableForm.viewNode);
         if (viewNode != null)
         {
             var dataviewHandler =
@@ -286,13 +286,13 @@ public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavi
 
         // Go through the form and create the creation button
         var defaultTypes =
-            EffectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
-        if (Items != null && EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitNewItems) == false)
+            EffectiveForm.get<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
+        if (Items != null && EffectiveForm.getOrDefault<bool>(_Forms._TableForm.inhibitNewItems) == false)
         {
             foreach (var defaultType in defaultTypes.OfType<IElement>().Distinct())
             {
                 var defaultTypeMetaClass =
-                    defaultType.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
+                    defaultType.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement.metaClass);
                 if (defaultTypeMetaClass != null)
                 {
                     effectiveViewExtensions.Add(
@@ -476,37 +476,37 @@ public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavi
                                                 throw new InvalidOperationException("EffectiveForm == null");
 
                             // Remove the field with property
-                            var fields = b.View.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field);
+                            var fields = b.View.get<IReflectiveSequence>(_Forms._TableForm.field);
                             var propertyField = QueryHelper.GetChildWithProperty(fields,
-                                _DatenMeister._Forms._FieldData.name,
-                                _DatenMeister._FastViewFilters._PropertyComparisonFilter.Property);
+                                _Forms._FieldData.name,
+                                _FastViewFilters._PropertyComparisonFilter.Property);
                             if (propertyField != null) fields.remove(propertyField);
 
                             // Now, create the replacement
                             var factory = new MofFactory(b.View);
-                            var element = factory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
-                            element.set(_DatenMeister._Forms._DropDownFieldData.name,
-                                _DatenMeister._FastViewFilters._PropertyComparisonFilter.Property);
-                            element.set(_DatenMeister._Forms._DropDownFieldData.title,
-                                _DatenMeister._FastViewFilters._PropertyComparisonFilter.Property);
+                            var element = factory.create(_Forms.TheOne.__DropDownFieldData);
+                            element.set(_Forms._DropDownFieldData.name,
+                                _FastViewFilters._PropertyComparisonFilter.Property);
+                            element.set(_Forms._DropDownFieldData.title,
+                                _FastViewFilters._PropertyComparisonFilter.Property);
 
                             var pairs = new List<IObject>();
                             foreach (var field in
-                                     effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field)
+                                     effectiveForm.get<IReflectiveCollection>(_Forms._TableForm.field)
                                          .OfType<IObject>())
                             {
-                                if (!field.isSet(_DatenMeister._Forms._FieldData.name)) continue;
+                                if (!field.isSet(_Forms._FieldData.name)) continue;
 
-                                var pair = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
+                                var pair = factory.create(_Forms.TheOne.__ValuePair);
 
-                                pair.set(_DatenMeister._Forms._ValuePair.name,
-                                    field.get<string>(_DatenMeister._Forms._FieldData.title));
-                                pair.set(_DatenMeister._Forms._ValuePair.value,
-                                    field.get<string>(_DatenMeister._Forms._FieldData.name));
+                                pair.set(_Forms._ValuePair.name,
+                                    field.get<string>(_Forms._FieldData.title));
+                                pair.set(_Forms._ValuePair.value,
+                                    field.get<string>(_Forms._FieldData.name));
                                 pairs.Add(pair);
                             }
 
-                            element.set(_DatenMeister._Forms._DropDownFieldData.values, pairs);
+                            element.set(_Forms._DropDownFieldData.values, pairs);
                             fields.add(0, element);
                         };
                     });
@@ -532,7 +532,7 @@ public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavi
     {
         var effectiveForm = EffectiveForm 
                             ?? throw new InvalidOperationException("EffectiveForm == null");
-        effectiveForm.AddCollectionItem(_DatenMeister._Forms._TableForm.fastViewFilters, fastFilter);
+        effectiveForm.AddCollectionItem(_Forms._TableForm.fastViewFilters, fastFilter);
         UpdateFastFilterTexts();
         UpdateForm();
     }
@@ -544,7 +544,7 @@ public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavi
             
         FastViewFilterPanel.Children.Clear();
         var fastFilters =
-            effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.fastViewFilters);
+            effectiveForm.get<IReflectiveCollection>(_Forms._TableForm.fastViewFilters);
 
         foreach (var filter in fastFilters.OfType<IElement>())
         {
@@ -575,7 +575,7 @@ public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavi
         var effectiveForm = EffectiveForm
                             ?? throw new InvalidOperationException("EffectiveForm == null"); 
                                 
-        return effectiveForm.ForceAsEnumerable(_DatenMeister._Forms._TableForm.fastViewFilters).OfType<IElement>();
+        return effectiveForm.ForceAsEnumerable(_Forms._TableForm.fastViewFilters).OfType<IElement>();
     }
 
     private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)

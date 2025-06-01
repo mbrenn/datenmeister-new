@@ -40,14 +40,14 @@ public class ItemListViewGridDm : ItemListViewGrid
         _currentForm = formDefinition;
         ColumnDefinitions.Clear();
             
-        var fields = _currentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
+        var fields = _currentForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
         foreach (var field in fields.Cast<IElement>())
         {
             var fieldMetaClass = field.getMetaClass();
                 
-            var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) ?? string.Empty;
+            var title = field.getOrDefault<string>(_Forms._FieldData.title) ?? string.Empty;
 
-            if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+            if (fieldMetaClass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
             {
                 title = "Metaclass";
             }
@@ -152,7 +152,7 @@ public class ItemListViewGridDm : ItemListViewGrid
     {
         var value = GetValueOfElement(element, field);
         var isEnumeration =
-            field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
+            field.getOrDefault<bool>(_Forms._FieldData.isEnumeration);
 
         if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
         {
@@ -191,7 +191,7 @@ public class ItemListViewGridDm : ItemListViewGrid
     private object? GetValueOfElement(IObject element, IElement field)
     {
         var fieldMetaClass = field.getMetaClass();
-        if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+        if (fieldMetaClass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
         {
             var elementAsElement = element as IElement;
             var metaClass = elementAsElement?.getMetaClass();
@@ -201,14 +201,14 @@ public class ItemListViewGridDm : ItemListViewGrid
                 : NamedElementMethods.GetFullName(metaClass);
         }
 
-        var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-        if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+        var name = field.getOrDefault<string>(_Forms._FieldData.name);
+        if (fieldMetaClass?.equals(_Forms.TheOne.__EvalTextFieldData) == true)
         {
             var cellInformation = InMemoryObject.CreateEmpty();
             var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;
             cellInformation.set("text", defaultText);
 
-            var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
+            var evalProperties = field.getOrDefault<string>(_Forms._EvalTextFieldData.evalCellProperties);
             if (evalProperties != null)
             {
                 defaultText = TextTemplateEngine.Parse(

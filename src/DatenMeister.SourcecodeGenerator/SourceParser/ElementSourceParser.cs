@@ -16,7 +16,7 @@ public class ElementSourceParser : ISourceParser
         }
 
         return metaClass.equals(_UML.TheOne.Packages.__Package)
-               || metaClass.equals(_DatenMeister.TheOne.CommonTypes.Default.__Package);
+               || metaClass.equals(_CommonTypes.TheOne.Default.__Package);
     }
 
     public bool IsClass(IObject element)

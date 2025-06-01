@@ -4,7 +4,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Mapping;
 using DatenMeister.Core.Runtime.Workspaces;
-using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
+using static DatenMeister.Core.Models._ExtentLoaderConfigs;
 
 namespace DatenMeister.Provider.ExtentManagement;
 
@@ -12,7 +12,7 @@ public class WorkspaceObject : MappingProviderObject<Workspace>
 {
     static WorkspaceObject()
     {
-        MetaclassUriPath = _DatenMeister.TheOne.Management.__Workspace.Uri;
+        MetaclassUriPath = _Management.TheOne.__Workspace.Uri;
     }
 
     /// <summary>
@@ -26,17 +26,17 @@ public class WorkspaceObject : MappingProviderObject<Workspace>
         Id = ExtentManagementHelper.GetIdOfWorkspace(workspace);
 
         AddMapping(
-            _DatenMeister._Management._Workspace.id,
+            _Management._Workspace.id,
             w => w.id,
             (_, _) => throw new InvalidOperationException("Id cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Workspace.annotation,
+            _Management._Workspace.annotation,
             w => w.annotation,
             (w, v) => w.annotation = v?.ToString() ?? string.Empty);
 
         AddMapping(
-            _DatenMeister._Management._Workspace.extents,
+            _Management._Workspace.extents,
             w => 
             {
                 var result = new List<ExtentObject?>();

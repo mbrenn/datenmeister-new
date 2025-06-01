@@ -35,63 +35,63 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Row
+                        FormType = _Forms.___FormType.Row
                     });
                     
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemMoveOrCopyNavigate, "Move/Copy")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Row
+                        FormType = _Forms.___FormType.Row
                     });
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin,
                     new ActionButtonAdderParameter(NavigationExportXmi, "Export", "Export Item as Xmi")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Row
+                        FormType = _Forms.___FormType.Row
                     });
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin,
                     new ActionButtonAdderParameter(NavigationImportXmi, "Import", "Import Item as Xmi")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Row
+                        FormType = _Forms.___FormType.Row
                     });
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
                     {
                         ActionButtonPosition = 0, 
-                        FormType = _DatenMeister._Forms.___FormType.Table
+                        FormType = _Forms.___FormType.Table
                     });
                     
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListMoveUpItem, "⬆️")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Table,
-                        ParentMetaClass = _DatenMeister.TheOne.Management.__Extent
+                        FormType = _Forms.___FormType.Table,
+                        ParentMetaClass = _Management.TheOne.__Extent
                     });
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListMoveDownItem, "⬇️")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Table,
-                        ParentMetaClass = _DatenMeister.TheOne.Management.__Extent
+                        FormType = _Forms.___FormType.Table,
+                        ParentMetaClass = _Management.TheOne.__Extent
                     });
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListDeleteItem, "❌")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Table,
-                        ParentMetaClass = _DatenMeister.TheOne.Management.__Extent
+                        FormType = _Forms.___FormType.Table,
+                        ParentMetaClass = _Management.TheOne.__Extent
                     });
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveUpItem, "⬆️I")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Table,
+                        FormType = _Forms.___FormType.Table,
                         PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
                         IsReadOnly = false
                     });
@@ -99,7 +99,7 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveDownItem, "⬇️I")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Table,
+                        FormType = _Forms.___FormType.Table,
                         PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
                         IsReadOnly = false
                     });
@@ -107,7 +107,7 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "❌I")
                     {
-                        FormType = _DatenMeister._Forms.___FormType.Table,
+                        FormType = _Forms.___FormType.Table,
                         PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
                         IsReadOnly = false
                     });

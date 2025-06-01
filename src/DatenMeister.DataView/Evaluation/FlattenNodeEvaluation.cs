@@ -16,12 +16,12 @@ public class FlattenNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DatenMeister.TheOne.DataViews.__FlattenNode);
+               metaClass.equals(_DataViews.TheOne.__FlattenNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FlattenNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");

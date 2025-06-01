@@ -11,7 +11,7 @@ public class ActionSetActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__ActionSet) == true;
+            _Actions.TheOne.__ActionSet) == true;
     }
 
     /// <summary>

@@ -24,12 +24,12 @@ public class TextboxField : IDetailField, IPropertyValueChangeable, IInjectPrope
         if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
         if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
             
-        _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly)
+        _name = fieldData.getOrDefault<string>(_Forms._FieldData.name);
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._FieldData.isReadOnly)
                          || fieldFlags.IsReadOnly;
-        var width = fieldData.getOrDefault<int>(_DatenMeister._Forms._TextFieldData.width);
-        var height = fieldData.getOrDefault<int>(_DatenMeister._Forms._TextFieldData.lineHeight);
-        var isEnumeration = fieldData.getOrDefault<bool>(_DatenMeister._Forms._TextFieldData.isEnumeration);
+        var width = fieldData.getOrDefault<int>(_Forms._TextFieldData.width);
+        var height = fieldData.getOrDefault<int>(_Forms._TextFieldData.lineHeight);
+        var isEnumeration = fieldData.getOrDefault<bool>(_Forms._TextFieldData.isEnumeration);
 
         _valueText = string.Empty;
         if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
@@ -49,9 +49,9 @@ public class TextboxField : IDetailField, IPropertyValueChangeable, IInjectPrope
         }
         else
         {
-            if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
+            if (fieldData.isSet(_Forms._FieldData.defaultValue))
             {
-                _valueText = fieldData.get(_DatenMeister._Forms._FieldData.defaultValue)?.ToString() ?? string.Empty;
+                _valueText = fieldData.get(_Forms._FieldData.defaultValue)?.ToString() ?? string.Empty;
             }
         }
 

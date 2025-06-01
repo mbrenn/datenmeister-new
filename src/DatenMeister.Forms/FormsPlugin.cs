@@ -99,12 +99,12 @@ public class FormsPlugin : IDatenMeisterPlugin
 
                 extent.GetConfiguration()
                     .AddDefaultTypes(new[]
-                    {_DatenMeister.TheOne.Forms.__Form,
-                        _DatenMeister.TheOne.Forms.__CollectionForm,
-                        _DatenMeister.TheOne.Forms.__ObjectForm,
-                        _DatenMeister.TheOne.Forms.__TableForm,
-                        _DatenMeister.TheOne.Forms.__RowForm,
-                        _DatenMeister.TheOne.Forms.__FormAssociation});
+                    {_Forms.TheOne.__Form,
+                        _Forms.TheOne.__CollectionForm,
+                        _Forms.TheOne.__ObjectForm,
+                        _Forms.TheOne.__TableForm,
+                        _Forms.TheOne.__RowForm,
+                        _Forms.TheOne.__FormAssociation});
 
                 // Tests the existence of the test form and other forms
                 var testForm = _workspaceLogic.FindElement(WorkspaceNames.WorkspaceManagement, Uris.TestFormUri);

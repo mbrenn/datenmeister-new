@@ -27,7 +27,7 @@ public static class ListFormCollectionCreator
             return extent.elements();
         }
 
-        var propertyName = listForm?.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
+        var propertyName = listForm?.getOrDefault<string>(_Forms._TableForm.property);
                 
         return GetPropertiesAsReflection(value, propertyName);
     }

@@ -17,7 +17,7 @@ public class ExportToXmiActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__ExportToXmiAction) == true;
+            _Actions.TheOne.__ExportToXmiAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -25,12 +25,12 @@ public class ExportToXmiActionHandler : IActionHandler
         await Task.Run(() =>
         {
             var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
-            var sourcePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourcePath);
-            var filePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.filePath);
+            var sourcePath = action.getOrDefault<string>(_Actions._ExportToXmiAction.sourcePath);
+            var filePath = action.getOrDefault<string>(_Actions._ExportToXmiAction.filePath);
             filePath = integrationSettings.NormalizeDirectoryPath(filePath);
 
             var workspaceId =
-                action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourceWorkspaceId)
+                action.getOrDefault<string>(_Actions._ExportToXmiAction.sourceWorkspaceId)
                 ?? WorkspaceNames.WorkspaceData;
 
             var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);

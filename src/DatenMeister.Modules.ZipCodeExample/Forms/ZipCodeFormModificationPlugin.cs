@@ -20,16 +20,16 @@ public class ZipCodeFormModificationPlugin : IFormModificationPlugin
     /// <returns></returns>
     public bool ModifyForm(FormCreationContext context, IElement form)
     {
-        if (context.FormType == _DatenMeister._Forms.___FormType.Row
-            && context.MetaClass?.equals(_DatenMeister.TheOne.Management.__Workspace) == true)
+        if (context.FormType == _Forms.___FormType.Row
+            && context.MetaClass?.equals(_Management.TheOne.__Workspace) == true)
         {
             // Ok, I got it
 
-            var fields = form.get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
-            var actionField = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
-            actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, "ZipExample.CreateExample");
-            actionField.set(_DatenMeister._Forms._ActionFieldData.title, "Create Zip Model");
-            actionField.set(_DatenMeister._Forms._ActionFieldData.name, "CreateZipModel");
+            var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
+            var actionField = MofFactory.CreateElement(form, _Forms.TheOne.__ActionFieldData);
+            actionField.set(_Forms._ActionFieldData.actionName, "ZipExample.CreateExample");
+            actionField.set(_Forms._ActionFieldData.title, "Create Zip Model");
+            actionField.set(_Forms._ActionFieldData.name, "CreateZipModel");
             fields.add(actionField);
             return true;
         }

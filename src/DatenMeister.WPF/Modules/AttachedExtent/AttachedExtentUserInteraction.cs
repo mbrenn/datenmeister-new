@@ -29,7 +29,7 @@ public class AttachedExtentUserInteraction(AttachedExtentHandler attachedExtentH
             if (configuration == null) continue;
 
             var interaction = new DefaultElementInteraction(
-                $"Attach Item: {_DatenMeister._AttachedExtent._AttachedExtentConfiguration.name ?? "Attached Item"}",
+                $"Attach Item: {_AttachedExtent._AttachedExtentConfiguration.name ?? "Attached Item"}",
                 async (guest, o) =>
                 {
                     var attachedItem =

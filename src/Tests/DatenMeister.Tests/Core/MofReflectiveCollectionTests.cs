@@ -44,7 +44,7 @@ public class MofReflectiveCollectionTests
         var reflectiveSequence = new PureReflectiveSequence();
         Assert.That(reflectiveSequence.size(), Is.EqualTo(0));
 
-        var otherReflectiveSequence = new PureReflectiveSequence(new[] { _DatenMeister.TheOne.Actions.__Action, _DatenMeister.TheOne.Actions.__ActionSet });
+        var otherReflectiveSequence = new PureReflectiveSequence(new[] { _Actions.TheOne.__Action, _Actions.TheOne.__ActionSet });
         Assert.That(otherReflectiveSequence.size(), Is.EqualTo(2));
     }
 }

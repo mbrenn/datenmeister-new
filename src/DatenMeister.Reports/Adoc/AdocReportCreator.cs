@@ -35,7 +35,7 @@ public class AdocReportCreator : GenericReportCreator
     /// <param name="reportDefinition">The report definition to be used</param>
     public override void StartReport(ReportLogic reportLogic, IElement reportInstance, IObject reportDefinition)
     {
-        var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
+        var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
         if (!string.IsNullOrEmpty(title))
         {
             TextWriter.WriteLine($"= {title}");

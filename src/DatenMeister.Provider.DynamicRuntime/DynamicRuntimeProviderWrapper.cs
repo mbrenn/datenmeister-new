@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
-using static DatenMeister.Core.Models._DatenMeister._DynamicRuntimeProvider;
+using static DatenMeister.Core.Models._DynamicRuntimeProvider;
 
 namespace DatenMeister.Provider.DynamicRuntime;
 

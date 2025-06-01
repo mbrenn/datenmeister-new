@@ -15,7 +15,7 @@ public class DeletePropertyFromCollectionActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__DeletePropertyFromCollectionAction) == true;
+            _Actions.TheOne.__DeletePropertyFromCollectionAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -24,9 +24,9 @@ public class DeletePropertyFromCollectionActionHandler : IActionHandler
         {
             var collectionUrl =
                 action.getOrDefault<string>(
-                    _DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl);
+                    _Actions._DeletePropertyFromCollectionAction.collectionUrl);
             var propertyName =
-                action.getOrDefault<string>(_DatenMeister._Actions._DeletePropertyFromCollectionAction
+                action.getOrDefault<string>(_Actions._DeletePropertyFromCollectionAction
                     .propertyName);
 
             if (string.IsNullOrEmpty(propertyName))

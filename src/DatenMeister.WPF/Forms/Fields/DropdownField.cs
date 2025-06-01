@@ -27,8 +27,8 @@ public class DropdownField : IDetailField
         if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
         if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-        _name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DropDownFieldData.isReadOnly)
+        _name = fieldData.get<string>(_Forms._FieldData.name);
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._DropDownFieldData.isReadOnly)
                          || fieldFlags.IsReadOnly;
 
         _propertyValue = null;
@@ -38,16 +38,16 @@ public class DropdownField : IDetailField
         }
         else
         {
-            if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
+            if (fieldData.isSet(_Forms._FieldData.defaultValue))
             {
-                _propertyValue = fieldData.get(_DatenMeister._Forms._FieldData.defaultValue);
+                _propertyValue = fieldData.get(_Forms._FieldData.defaultValue);
             }
         }
 
         List<KeyValuePair<string, object>>? values = null;
 
         var enumerationProperty =
-            fieldData.getOrDefault<IElement>(_DatenMeister._Forms._DropDownFieldData.valuesByEnumeration);
+            fieldData.getOrDefault<IElement>(_Forms._DropDownFieldData.valuesByEnumeration);
         if (enumerationProperty != null)
         {
             values = new List<KeyValuePair<string, object>>();
@@ -62,7 +62,7 @@ public class DropdownField : IDetailField
         if (values == null)
         {
             var dropDownValues =
-                fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
+                fieldData.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
             if (values == null && dropDownValues == null)
             {
                 return new TextBlock
@@ -73,8 +73,8 @@ public class DropdownField : IDetailField
                 
             values = dropDownValues.Select(x => x as IElement).Select(x =>
                 new KeyValuePair<string, object>(
-                    x.getOrDefault<string>(_DatenMeister._Forms._ValuePair.name),
-                    x.getOrDefault<object>(_DatenMeister._Forms._ValuePair.value))
+                    x.getOrDefault<string>(_Forms._ValuePair.name),
+                    x.getOrDefault<object>(_Forms._ValuePair.value))
             ).ToList();
         }
 

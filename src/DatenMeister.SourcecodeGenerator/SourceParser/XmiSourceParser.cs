@@ -44,7 +44,8 @@ public class XmiSourceParser : ISourceParser
     }
     
     public bool IsPackage(IObject element) 
-        => IsOfType(element, _UML.TheOne.Packages.__Package, "Package");
+        => IsOfType(element, _UML.TheOne.Packages.__Package, "Package")
+        || (element as IElement)?.metaclass?.GetUri() == "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package";
 
     public bool IsClass(IObject element)
         => IsOfType(element, _UML.TheOne.StructuredClassifiers.__Class, "Class");

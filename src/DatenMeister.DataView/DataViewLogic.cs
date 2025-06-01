@@ -33,7 +33,7 @@ public class DataViewLogic
 
     public IEnumerable<IElement> GetDataViewElements()
     {
-        var metaClass = _DatenMeister.TheOne.DataViews.__DataView;
+        var metaClass = _DataViews.TheOne.__DataView;
 
         var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
         foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()

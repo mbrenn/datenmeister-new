@@ -240,7 +240,7 @@ public static class ViewExtensionInfoExtension
         if (info is ViewExtensionInfoTab extensionTab
             && extensionTab.NavigationGuest is ItemExplorerControl explorerControl)
         {
-            var formPropertyName = extensionTab.TabFormDefinition.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
+            var formPropertyName = extensionTab.TabFormDefinition.getOrDefault<string>(_Forms._TableForm.property);
             if (!((explorerControl.SelectedItem ?? explorerControl.RootItem) is IElement selectedItem)) return false; // Nothing selected, should not occur
                 
             // Checks the extent type

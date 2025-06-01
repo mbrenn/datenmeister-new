@@ -69,19 +69,19 @@ public class ExcelReferenceLoader : IProviderLoader
 
         var factory = new MofFactory(extent);
         var fixColumnCount =
-            loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+            loaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                 .fixColumnCount);
         var onlySetColumns =
-            loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+            loaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                 .onlySetColumns);
         var fixRowCount =
-            loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+            loaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                 .fixRowCount);
         var countRows =
-            loaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+            loaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                 .countRows);
         var countColumns =
-            loaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+            loaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                 .countColumns);
 
         var excelImporter = new ExcelImporter(loaderConfig);

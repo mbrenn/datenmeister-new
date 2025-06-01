@@ -19,19 +19,19 @@ public class ItemTransformationActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__TransformItemsAction) == true;
+            _Actions.TheOne.__TransformItemsAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(() =>
         {
-            var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._TransformItemsAction.metaClass);
+            var metaClass = action.getOrDefault<IElement>(_Actions._TransformItemsAction.metaClass);
             var runtimeClass =
-                action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.runtimeClass);
+                action.getOrDefault<string>(_Actions._TransformItemsAction.runtimeClass);
             var workspace =
-                action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.workspaceId);
-            var path = action.getOrDefault<string>(_DatenMeister._Actions._TransformItemsAction.path);
+                action.getOrDefault<string>(_Actions._TransformItemsAction.workspaceId);
+            var path = action.getOrDefault<string>(_Actions._TransformItemsAction.path);
 
             var sourceWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(workspace);
             if (sourceWorkspace == null)

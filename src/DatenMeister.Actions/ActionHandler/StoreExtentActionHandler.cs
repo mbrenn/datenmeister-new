@@ -18,16 +18,16 @@ public class StoreExtentActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__StoreExtentAction) == true;
+            _Actions.TheOne.__StoreExtentAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(() =>
         {
-            var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspaceId) ??
+            var workspaceName = action.getOrDefault<string>(_Actions._DropExtentAction.workspaceId) ??
                                 "Data";
-            var extentUri = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.extentUri);
+            var extentUri = action.getOrDefault<string>(_Actions._DropExtentAction.extentUri);
 
             var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             if (actionLogic.WorkspaceLogic.FindExtent(workspaceName, extentUri) is not MofExtent extent)

@@ -54,7 +54,7 @@ public partial class ItemExplorerControl : UserControl,
     /// <summary>
     /// Gets the id of the current view mode. 
     /// </summary>
-    public string CurrentViewModeId => CurrentViewMode?.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id) ?? "";
+    public string CurrentViewModeId => CurrentViewMode?.getOrDefault<string>(_Forms._ViewMode.id) ?? "";
 
     public ItemExplorerControl()
     {
@@ -385,7 +385,7 @@ public partial class ItemExplorerControl : UserControl,
         FormDynamicModifier.ModifyFormDependingOnObject(EffectiveForm, value);
             
         // Now gets the tabs
-        var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
+        var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
         if (tabs == null)
         {
             // No tabs, nothing to do
@@ -439,16 +439,16 @@ public partial class ItemExplorerControl : UserControl,
         IReflectiveCollection? container = null)
     {
         // Gets the default view for the given tab
-        var name = tabForm.getOrDefault<string>(_DatenMeister._Forms._Form.title) ??
-                   tabForm.getOrDefault<string>(_DatenMeister._Forms._Form.name);
+        var name = tabForm.getOrDefault<string>(_Forms._Form.title) ??
+                   tabForm.getOrDefault<string>(_Forms._Form.name);
         var usedViewExtensions = viewExtensions.ToList();
 
         UserControl? createdUserControl = null;
-        if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
+        if (tabForm.getMetaClass()?.equals(_Forms.TheOne.__RowForm) == true)
         {
             createdUserControl = CreateDetailForm(value, tabForm, container);
         }
-        else if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
+        else if (tabForm.getMetaClass()?.equals(_Forms.TheOne.__TableForm) == true)
         {
             createdUserControl = CreateListControl(value, tabForm, usedViewExtensions);
         }
@@ -501,7 +501,7 @@ public partial class ItemExplorerControl : UserControl,
 
         // Gets the default types by the form definition
         var defaultTypesForNewItems =
-            tabForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements)
+            tabForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements)
                 ?.ToList()
             ?? new List<object?>();
 
@@ -518,8 +518,8 @@ public partial class ItemExplorerControl : UserControl,
                      usedViewExtensions.OfType<NewInstanceViewExtension>())
             {
                 var factory = new MofFactory(tabForm);
-                var newElement = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                newElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, extension.MetaClass);
+                var newElement = factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
+                newElement.set(_Forms._DefaultTypeForNewElement.metaClass, extension.MetaClass);
                 defaultTypesForNewItems.Add(newElement);
             }
 
@@ -535,7 +535,7 @@ public partial class ItemExplorerControl : UserControl,
             }
 
             // Creates the buttons for the new items
-            var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitNewItems);
+            var inhibitNewButtons = tabForm.getOrDefault<bool>(_Forms._TableForm.inhibitNewItems);
             if (!inhibitNewButtons)
             {
                 // Creates the menu and buttons for the default types. 
@@ -547,7 +547,7 @@ public partial class ItemExplorerControl : UserControl,
         else
         {
             // Query all the plugins whether a filter is available
-            var propertyName = tabForm.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
+            var propertyName = tabForm.getOrDefault<string>(_Forms._TableForm.property);
 
             // Goes through the properties
             if (!string.IsNullOrEmpty(propertyName))
@@ -565,9 +565,9 @@ public partial class ItemExplorerControl : UserControl,
             foreach (var extension in usedViewExtensions.OfType<NewInstanceViewExtension>())
             {
                 var factory = new MofFactory(tabForm);
-                var newElement = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                newElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, extension.MetaClass);
-                newElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty, propertyName);
+                var newElement = factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
+                newElement.set(_Forms._DefaultTypeForNewElement.metaClass, extension.MetaClass);
+                newElement.set(_Forms._DefaultTypeForNewElement.parentProperty, propertyName);
                 defaultTypesForNewItems.Add(newElement);
             }
 
@@ -586,7 +586,7 @@ public partial class ItemExplorerControl : UserControl,
                 }
             }
                 
-            var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitNewItems);
+            var inhibitNewButtons = tabForm.getOrDefault<bool>(_Forms._TableForm.inhibitNewItems);
 
             if (!inhibitNewButtons)
             {
@@ -787,18 +787,18 @@ public partial class ItemExplorerControl : UserControl,
     private void btnViewMode_OnClick(object sender, RoutedEventArgs e)
     {
         var managementWorkspace = GiveMe.Scope.WorkspaceLogic.GetManagementWorkspace();
-        var viewModes = managementWorkspace.GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode);
+        var viewModes = managementWorkspace.GetAllDescendentsOfType(_Forms.TheOne.__ViewMode);
         var contextMenu = new ContextMenu();
 
         var list = new List<MenuItem>();
-        var selectedViewModeId = CurrentViewMode?.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id);
+        var selectedViewModeId = CurrentViewMode?.getOrDefault<string>(_Forms._ViewMode.id);
             
         foreach (var mode in viewModes.OfType<IElement>())
         {
             var viewMode = mode;
             var item = new MenuItem
             {
-                Header = viewMode.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id), 
+                Header = viewMode.getOrDefault<string>(_Forms._ViewMode.id), 
                 Tag = viewMode
             };
 

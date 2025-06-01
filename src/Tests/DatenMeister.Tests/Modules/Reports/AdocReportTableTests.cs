@@ -26,40 +26,40 @@ public class AdocReportTableTests
         HtmlReportTableTests.AddData(extent, factory);
 
         /* Creates the report definition */
-        var reportDefinition = factory.create(_DatenMeister.TheOne.Reports.__ReportDefinition);
-        reportDefinition.set(_DatenMeister._Reports._ReportDefinition.name, "Report Definition");
+        var reportDefinition = factory.create(_Reports.TheOne.__ReportDefinition);
+        reportDefinition.set(_Reports._ReportDefinition.name, "Report Definition");
         extent.elements().add(reportDefinition);
 
         /* Sets the viewnode */
-        var dynamicViewNode = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
-        dynamicViewNode.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
+        var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
+        dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
         extent.elements().add(dynamicViewNode);
 
-        var filterMetaClass = factory.create(_DatenMeister.TheOne.DataViews.__FilterByMetaclassNode);
-        filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.name, "filter");
-        filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, null);
-        filterMetaClass.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, dynamicViewNode);
+        var filterMetaClass = factory.create(_DataViews.TheOne.__FilterByMetaclassNode);
+        filterMetaClass.set(_DataViews._FilterByMetaclassNode.name, "filter");
+        filterMetaClass.set(_DataViews._FilterByMetaclassNode.metaClass, null);
+        filterMetaClass.set(_DataViews._FilterByMetaclassNode.input, dynamicViewNode);
         extent.elements().add(filterMetaClass);
 
         /* Create the report paragraph and its corresponding view node */
-        var reportHeadline = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportHeadline);
-        reportHeadline.set(_DatenMeister._Reports._Elements._ReportHeadline.title, "This is a headline");
+        var reportHeadline = factory.create(_Reports.TheOne.Elements.__ReportHeadline);
+        reportHeadline.set(_Reports._Elements._ReportHeadline.title, "This is a headline");
 
         /* Create the report paragraph and its corresponding view node */
-        var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph);
-        reportParagraph.set(_DatenMeister._Reports._Elements._ReportParagraph.paragraph, "This is a paragraph");
+        var reportParagraph = factory.create(_Reports.TheOne.Elements.__ReportParagraph);
+        reportParagraph.set(_Reports._Elements._ReportParagraph.paragraph, "This is a paragraph");
 
         /* Create the report paragraph and its corresponding view node */
-        var reportTable = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportTable);
+        var reportTable = factory.create(_Reports.TheOne.Elements.__ReportTable);
 
-        var form = factory.create(_DatenMeister.TheOne.Forms.__TableForm);
-        var field1 = factory.create(_DatenMeister.TheOne.Forms.__EvalTextFieldData)
+        var form = factory.create(_Forms.TheOne.__TableForm);
+        var field1 = factory.create(_Forms.TheOne.__EvalTextFieldData)
             .SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_DatenMeister._Forms._EvalTextFieldData.name] = "name",
-                    [_DatenMeister._Forms._EvalTextFieldData.title] = "Name",
-                    [_DatenMeister._Forms._EvalTextFieldData.evalCellProperties] =
+                    [_Forms._EvalTextFieldData.name] = "name",
+                    [_Forms._EvalTextFieldData.title] = "Name",
+                    [_Forms._EvalTextFieldData.evalCellProperties] =
                         "{{if(i.age>18)\r\n" +
                         " c.text = c.text + \" (over18)\"\r\n" +
                         "else\r\n" +
@@ -67,38 +67,38 @@ public class AdocReportTableTests
                         "end}}"
                 });
 
-        var field2 = factory.create(_DatenMeister.TheOne.Forms.__TextFieldData)
+        var field2 = factory.create(_Forms.TheOne.__TextFieldData)
             .SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_DatenMeister._Forms._TextFieldData.name] = "age",
-                    [_DatenMeister._Forms._TextFieldData.title] = "age"
+                    [_Forms._TextFieldData.name] = "age",
+                    [_Forms._TextFieldData.title] = "age"
                 });
-        form.set(_DatenMeister._Forms._TableForm.field, new[] {field1, field2});
+        form.set(_Forms._TableForm.field, new[] {field1, field2});
 
         reportTable.SetProperties(
             new Dictionary<string, object>
             {
-                [_DatenMeister._Reports._Elements._ReportTable.name] = "Table",
-                [_DatenMeister._Reports._Elements._ReportTable.form] = form,
-                [_DatenMeister._Reports._Elements._ReportTable.viewNode] = filterMetaClass
+                [_Reports._Elements._ReportTable.name] = "Table",
+                [_Reports._Elements._ReportTable.form] = form,
+                [_Reports._Elements._ReportTable.viewNode] = filterMetaClass
             });
 
         /* Attached it to the report definition */
-        reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements,
+        reportDefinition.set(_Reports._ReportDefinition.elements,
             new[] {reportHeadline, reportParagraph, reportTable});
 
         /* Creates the report instance */
-        var reportInstance = factory.create(_DatenMeister.TheOne.Reports.__AdocReportInstance);
+        var reportInstance = factory.create(_Reports.TheOne.__AdocReportInstance);
         extent.elements().add(reportInstance);
-        reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.name, "Report");
+        reportInstance.set(_Reports._HtmlReportInstance.name, "Report");
 
-        var source = factory.create(_DatenMeister.TheOne.Reports.__ReportInstanceSource);
-        source.set(_DatenMeister._Reports._ReportInstanceSource.name, "input");
-        source.set(_DatenMeister._Reports._ReportInstanceSource.path, "dm:///test");
-        source.set(_DatenMeister._Reports._ReportInstanceSource.workspaceId, "Data");
-        reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.sources, new[] {source});
-        reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.reportDefinition, reportDefinition);
+        var source = factory.create(_Reports.TheOne.__ReportInstanceSource);
+        source.set(_Reports._ReportInstanceSource.name, "input");
+        source.set(_Reports._ReportInstanceSource.path, "dm:///test");
+        source.set(_Reports._ReportInstanceSource.workspaceId, "Data");
+        reportInstance.set(_Reports._HtmlReportInstance.sources, new[] {source});
+        reportInstance.set(_Reports._HtmlReportInstance.reportDefinition, reportDefinition);
 
         /* Now create the report */
         var writer = new StringWriter();

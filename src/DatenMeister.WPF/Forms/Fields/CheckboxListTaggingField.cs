@@ -35,15 +35,15 @@ public class CheckboxListTaggingField : IDetailField
         DetailFormControl detailForm,
         FieldParameter fieldFlags)
     {
-        _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-        _separator = fieldData.getOrDefault<string>(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator) ?? " ";
-        _containsFreeText = fieldData.getOrDefault<bool>(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText);
+        _name = fieldData.getOrDefault<string>(_Forms._FieldData.name);
+        _separator = fieldData.getOrDefault<string>(_Forms._CheckboxListTaggingFieldData.separator) ?? " ";
+        _containsFreeText = fieldData.getOrDefault<bool>(_Forms._CheckboxListTaggingFieldData.containsFreeText);
 
         var valuePairs =
-            fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CheckboxListTaggingFieldData.values)?.ToList()
+            fieldData.getOrDefault<IReflectiveCollection>(_Forms._CheckboxListTaggingFieldData.values)?.ToList()
             ?? new List<object?>();
             
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly)
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._FieldData.isReadOnly)
                          || fieldFlags.IsReadOnly;
 
         var currentValue = value.getOrDefault<string>(_name) ?? string.Empty;
@@ -53,8 +53,8 @@ public class CheckboxListTaggingField : IDetailField
         _options = new List<CheckBox>();    
         foreach (var pair in valuePairs.OfType<IElement>())
         {
-            var name = pair.getOrDefault<string>(_DatenMeister._Forms._ValuePair.name);
-            var valueContent = pair.getOrDefault<string>(_DatenMeister._Forms._ValuePair.value);
+            var name = pair.getOrDefault<string>(_Forms._ValuePair.name);
+            var valueContent = pair.getOrDefault<string>(_Forms._ValuePair.value);
 
             var checkbox = new CheckBox
             {

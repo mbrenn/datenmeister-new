@@ -21,7 +21,7 @@ public class XmiPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
         switch (position)
         {
             case PluginLoadingPosition.AfterBootstrapping:
-                _storageMapper.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig,
+                _storageMapper.AddMapping(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig,
                     _ => new XmiStorageProviderLoader());
                 break;
         }

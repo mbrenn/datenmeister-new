@@ -27,12 +27,12 @@ public class ActionSetTests
     {
         var actionLogic = CreateActionLogic();
 
-        var actionSet = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionSet);
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoggingWriterAction);
+        var actionSet = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionSet);
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__LoggingWriterAction);
         if (actionSet == null || action == null) throw new InvalidOperationException("null");
 
-        action.set(_DatenMeister._Actions._LoggingWriterAction.message, "zyx");
-        actionSet.get<IReflectiveCollection>(_DatenMeister._Actions._ActionSet.action).add(action);
+        action.set(_Actions._LoggingWriterAction.message, "zyx");
+        actionSet.get<IReflectiveCollection>(_Actions._ActionSet.action).add(action);
 
         actionLogic.ExecuteActionSet(actionSet).Wait();
 
@@ -69,10 +69,10 @@ public class ActionSetTests
         var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             
         var createWorkspaceAction =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
+            InMemoryObject.CreateEmpty(_Actions.TheOne.__CreateWorkspaceAction);
         Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-        createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspaceId, "ws");
-        createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
+        createWorkspaceAction.set(_Actions._CreateWorkspaceAction.workspaceId, "ws");
+        createWorkspaceAction.set(_Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
 
         actionLogic.ExecuteAction(createWorkspaceAction).Wait();
 
@@ -80,9 +80,9 @@ public class ActionSetTests
         Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
 
 
-        var dropWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DropWorkspaceAction);
+        var dropWorkspaceAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__DropWorkspaceAction);
         Debug.Assert(dropWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-        dropWorkspaceAction.set(_DatenMeister._Actions._DropWorkspaceAction.workspaceId, "ws");
+        dropWorkspaceAction.set(_Actions._DropWorkspaceAction.workspaceId, "ws");
         actionLogic.ExecuteAction(dropWorkspaceAction).Wait();
         Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.False);
         Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.False);
@@ -92,13 +92,13 @@ public class ActionSetTests
     public static ProviderToProviderLoaderMapper GetDefaultMapper()
     {
         var result = new ProviderToProviderLoaderMapper();
-        result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
+        result.AddMapping(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig,
             _ => new InMemoryProviderLoader());
-        result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
+        result.AddMapping(_ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig,
             _ => new CsvProviderLoader());
-        result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig,
+        result.AddMapping(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig,
             _ => new XmiStorageProviderLoader());
-        result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
+        result.AddMapping(_ExtentLoaderConfigs.TheOne.__XmlReferenceLoaderConfig,
             _ => new XmlReferenceLoader());
         return result;
     }
@@ -117,10 +117,10 @@ public class ActionSetTests
 
 
         var createWorkspaceAction =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
+            InMemoryObject.CreateEmpty(_Actions.TheOne.__CreateWorkspaceAction);
         Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-        createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspaceId, "ws");
-        createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
+        createWorkspaceAction.set(_Actions._CreateWorkspaceAction.workspaceId, "ws");
+        createWorkspaceAction.set(_Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
 
         actionLogic.ExecuteAction(createWorkspaceAction).Wait();
 
@@ -128,14 +128,14 @@ public class ActionSetTests
         Assert.That(foundExtent, Is.Null);
 
         var loadExtentAction =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoadExtentAction);
+            InMemoryObject.CreateEmpty(_Actions.TheOne.__LoadExtentAction);
         Debug.Assert(loadExtentAction != null, nameof(createWorkspaceAction) + " != null");
         var configuration =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
         Debug.Assert(configuration != null, nameof(configuration) + " != null");
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "ws");
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///");
-        loadExtentAction.set(_DatenMeister._Actions._LoadExtentAction.configuration, configuration);
+        configuration.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "ws");
+        configuration.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///");
+        loadExtentAction.set(_Actions._LoadExtentAction.configuration, configuration);
 
         actionLogic.ExecuteAction(loadExtentAction).Wait();
 

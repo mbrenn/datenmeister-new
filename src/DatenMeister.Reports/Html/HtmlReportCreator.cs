@@ -35,19 +35,19 @@ public class HtmlReportCreator(TextWriter textWriter) : GenericReportCreator
     {
         _htmlReporter = new HtmlReport(TextWriter);
 
-        var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
+        var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
 
         if (!EmbedInExistingPage)
         {
             _htmlReporter.SetDefaultCssStyle();
 
-            var cssFile = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssFile);
+            var cssFile = reportInstance.getOrDefault<string>(_Reports._HtmlReportInstance.cssFile);
             if (!string.IsNullOrEmpty(cssFile))
             {
                 _htmlReporter.AddCssFile(cssFile);
             }
 
-            var cssStyleSheet = reportInstance.getOrDefault<string>(_DatenMeister._Reports._HtmlReportInstance.cssStyleSheet);
+            var cssStyleSheet = reportInstance.getOrDefault<string>(_Reports._HtmlReportInstance.cssStyleSheet);
             if (!string.IsNullOrEmpty(cssStyleSheet))
             {
                 _htmlReporter.AddCssStyleSheet(cssStyleSheet);

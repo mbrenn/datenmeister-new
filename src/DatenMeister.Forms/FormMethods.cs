@@ -48,15 +48,15 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>true, if the form is valid</returns>
     public static bool ValidateForm(IObject form)
     {
-        Debug.Assert(_DatenMeister._Forms._RowForm.field == _DatenMeister._Forms._TableForm.field);
-        Debug.Assert(_DatenMeister._Forms._CollectionForm.tab == _DatenMeister._Forms._ObjectForm.tab);
+        Debug.Assert(_Forms._RowForm.field == _Forms._TableForm.field);
+        Debug.Assert(_Forms._CollectionForm.tab == _Forms._ObjectForm.tab);
             
-        var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = form.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         if (fields != null)
             if (!ValidateFields(fields))
                 return false;
 
-        var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
+        var tabs = form.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
         if (tabs != null)
             foreach (var tab in tabs.OfType<IObject>())
                 if (!ValidateForm(tab))
@@ -79,8 +79,8 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         var set = new HashSet<string>();
         foreach (var field in fields.OfType<IObject>())
         {
-            var preName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-            var isAttached = field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isAttached);
+            var preName = field.getOrDefault<string>(_Forms._FieldData.name);
+            var isAttached = field.getOrDefault<bool>(_Forms._FieldData.isAttached);
             var name = isAttached ? randomGuid + preName : preName;
 
             if (set.Contains(name) && !string.IsNullOrEmpty(name))
@@ -217,11 +217,11 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
                             new[]
                                 {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
                         .WhenMetaClassIsOneOf(
-                            _DatenMeister.TheOne.Forms.__Form,
-                            _DatenMeister.TheOne.Forms.__ObjectForm,
-                            _DatenMeister.TheOne.Forms.__CollectionForm,
-                            _DatenMeister.TheOne.Forms.__RowForm,
-                            _DatenMeister.TheOne.Forms.__TableForm)),
+                            _Forms.TheOne.__Form,
+                            _Forms.TheOne.__ObjectForm,
+                            _Forms.TheOne.__CollectionForm,
+                            _Forms.TheOne.__RowForm,
+                            _Forms.TheOne.__TableForm)),
                 true);
     }
 
@@ -236,17 +236,17 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     public IElement AddFormAssociationForMetaclass(
         IElement form,
         IElement metaClass,
-        _DatenMeister._Forms.___FormType formType)
+        _Forms.___FormType formType)
     {
         var factory = new MofFactory(form);
 
-        var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
+        var formAssociation = factory.create(_Forms.TheOne.__FormAssociation);
         var name = NamedElementMethods.GetName(form);
 
-        formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
-        formAssociation.set(_DatenMeister._Forms._FormAssociation.form, form);
-        formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
-        formAssociation.set(_DatenMeister._Forms._FormAssociation.name, $"Association for {name}");
+        formAssociation.set(_Forms._FormAssociation.formType, formType);
+        formAssociation.set(_Forms._FormAssociation.form, form);
+        formAssociation.set(_Forms._FormAssociation.metaClass, metaClass);
+        formAssociation.set(_Forms._FormAssociation.name, $"Association for {name}");
 
         return formAssociation;
     }
@@ -291,7 +291,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
                     x.elements()
                         .GetAllDescendantsIncludingThemselves(new[]
                             {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                        .WhenMetaClassIsOneOf(_DatenMeister.TheOne.Forms.__FormAssociation)),
+                        .WhenMetaClassIsOneOf(_Forms.TheOne.__FormAssociation)),
             true);
     }
 
@@ -309,8 +309,8 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         foreach (var foundElement in viewExtent
                      .elements()
                      .GetAllDescendantsIncludingThemselves()
-                     .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
-                     .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType)
+                     .WhenMetaClassIs(_Forms.TheOne.__FormAssociation)
+                     .WhenPropertyHasValue(_Forms._FormAssociation.extentType, selectedExtentType)
                      .OfType<IElement>())
         {
             RemoveElement(viewExtent, foundElement);
@@ -334,10 +334,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         foreach (var foundElement in viewExtent
                      .elements()
                      .GetAllDescendantsIncludingThemselves()
-                     .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
-                     .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
-                     .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType,
-                         _DatenMeister._Forms.___FormType.Row)
+                     .WhenMetaClassIs(_Forms.TheOne.__FormAssociation)
+                     .WhenPropertyHasValue(_Forms._FormAssociation.metaClass, metaClass)
+                     .WhenPropertyHasValue(_Forms._FormAssociation.formType,
+                         _Forms.___FormType.Row)
                      .OfType<IElement>())
         {
             RemoveElement(viewExtent, foundElement);
@@ -375,9 +375,9 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>true, if the form already contains a metaclass form</returns>
     public static bool HasMetaClassFieldInForm(IObject form)
     {
-        var formAndFields = _DatenMeister.TheOne.Forms;
+        var formAndFields = _Forms.TheOne;
         return form
-            .get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field)
+            .get<IReflectiveCollection>(_Forms._RowForm.field)
             .OfType<IElement>()
             .Any(x => x.getMetaClass()?.equals(formAndFields.__MetaClassElementFieldData) ?? false);
     }
@@ -391,7 +391,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     {
         return fields
             .OfType<IElement>()
-            .Any(x => x.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) ?? false);
+            .Any(x => x.getMetaClass()?.equals(_Forms.TheOne.__MetaClassElementFieldData) ?? false);
     }
 
     /// <summary>
@@ -403,14 +403,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>The found element or null, if not found</returns>
     public static IElement? GetField(IElement form, string fieldName, IElement? metaClass = null)
     {
-        if (_DatenMeister._Forms._RowForm.field != _DatenMeister._Forms._TableForm.field)
+        if (_Forms._RowForm.field != _Forms._TableForm.field)
             throw new InvalidOperationException(
                 "Something ugly happened here: _FormAndFields._DetailForm.tab != _FormAndFields._ListForm.tab." +
                 "Please check static type definition");
 
-        var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = form.get<IReflectiveCollection>(_Forms._RowForm.field);
         return fields
-            .WhenPropertyHasValue(_DatenMeister._Forms._FieldData.name, fieldName)
+            .WhenPropertyHasValue(_Forms._FieldData.name, fieldName)
             .OfType<IElement>()
             .FirstOrDefault(
                 x => metaClass == null || x.metaclass?.equals(metaClass) == true);
@@ -423,14 +423,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>Enumeration of the detail forms</returns>
     public static IEnumerable<IElement> GetRowForms(IElement form)
     {
-        if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
+        if (form.getMetaClass()?.@equals(_Forms.TheOne.__RowForm) == true)
         {
             yield return form;
         }
             
-        foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab))
+        foreach (var tab in form.get<IReflectiveCollection>(_Forms._CollectionForm.tab))
             if (tab is IElement asElement
-                && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__RowForm) == true)
+                && asElement.getMetaClass()?.@equals(_Forms.TheOne.__RowForm) == true)
                 yield return asElement;
     }
 
@@ -442,14 +442,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>Enumeration of the detail forms</returns>
     public static IEnumerable<IElement> GetTableForms(IElement form)
     {
-        if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
+        if (form.getMetaClass()?.@equals(_Forms.TheOne.__TableForm) == true)
         {
             yield return form;
         }
 
-        foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab))
+        foreach (var tab in form.get<IReflectiveCollection>(_Forms._CollectionForm.tab))
             if (tab is IElement asElement
-                && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__TableForm) == true)
+                && asElement.getMetaClass()?.@equals(_Forms.TheOne.__TableForm) == true)
                 yield return asElement;
     }
 
@@ -462,18 +462,18 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>The found element or null, if not found</returns>
     public static IElement? GetFieldForProperty(IElement form, string propertyName)
     {
-        if (form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true
-            || form.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true)
+        if (form.getMetaClass()?.@equals(_Forms.TheOne.__ObjectForm) == true
+            || form.getMetaClass()?.@equals(_Forms.TheOne.__CollectionForm) == true)
         {
             throw new InvalidOperationException(
                 "The form is of instance Object or Collection Form. It must be Table or RowForm");
         }
 
         foreach (var field 
-                 in form.get<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field))
+                 in form.get<IReflectiveCollection>(_Forms._RowForm.field))
         {
             if (field is IElement asFieldElement
-                && asFieldElement.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) == propertyName)
+                && asFieldElement.getOrDefault<string>(_Forms._FieldData.name) == propertyName)
             {
                 return asFieldElement;
             }
@@ -490,17 +490,17 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>The found element</returns>
     public static IElement? GetTableFormForPropertyName(IElement form, string propertyName)
     {
-        if (_DatenMeister._Forms._CollectionForm.tab != _DatenMeister._Forms._ObjectForm.tab)
+        if (_Forms._CollectionForm.tab != _Forms._ObjectForm.tab)
             throw new InvalidOperationException(
                 "Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
-        var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
+        var tabs = form.get<IReflectiveCollection>(_Forms._CollectionForm.tab);
 
         foreach (var tab in tabs.OfType<IElement>())
             if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(),
-                    _DatenMeister.TheOne.Forms.__TableForm))
+                    _Forms.TheOne.__TableForm))
             {
-                var property = tab.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
+                var property = tab.getOrDefault<string>(_Forms._TableForm.property);
                 if (property == propertyName) return tab;
             }
 
@@ -514,7 +514,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     public IEnumerable<IObject> GetViewModes()
     {
         var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
-        return managementWorkspace.GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
+        return managementWorkspace.GetAllDescendentsOfType(_Forms.TheOne.__ViewMode)
             .OfType<IObject>();
     }
 
@@ -533,16 +533,16 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             foreach (var extentType in extentTypes)
             {
                 var result = managementWorkspace
-                    .GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
-                    .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.defaultExtentType, extentType)
+                    .GetAllDescendentsOfType(_Forms.TheOne.__ViewMode)
+                    .WhenPropertyHasValue(_Forms._ViewMode.defaultExtentType, extentType)
                     .OfType<IElement>()
                     .FirstOrDefault();
                 if (result != null) return result;
             }
 
         return managementWorkspace
-            .GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
-            .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.id, ViewModes.Default)
+            .GetAllDescendentsOfType(_Forms.TheOne.__ViewMode)
+            .WhenPropertyHasValue(_Forms._ViewMode.id, ViewModes.Default)
             .OfType<IElement>()
             .FirstOrDefault();
     }
@@ -578,7 +578,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     public static void AddToFormCreationProtocol(IObject form, string message)
     {
         var currentMessage =
-            form.getOrDefault<string>(_DatenMeister._Forms._Form.creationProtocol)
+            form.getOrDefault<string>(_Forms._Form.creationProtocol)
             ?? string.Empty;
 
         if (currentMessage != string.Empty)
@@ -586,7 +586,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         else
             currentMessage = message;
 
-        form.set(_DatenMeister._Forms._Form.creationProtocol, currentMessage);
+        form.set(_Forms._Form.creationProtocol, currentMessage);
     }
 
     /// <summary>
@@ -596,7 +596,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     public static void RemoveDuplicatingDefaultNewTypes(IObject form)
     {
         var defaultNewTypesForElements =
-            form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
+            form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
         if (defaultNewTypesForElements == null)
         {
             // Nothing to do, when no default types are set
@@ -607,7 +607,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
 
         foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
         {
-            var metaClass = element.getOrDefault<IObject>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
+            var metaClass = element.getOrDefault<IObject>(_Forms._DefaultTypeForNewElement.metaClass);
             if (metaClass == null) continue;
 
             if (handled.Any(x => x.@equals(metaClass)))
@@ -630,10 +630,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     public static void AddDefaultTypeForNewElement(IObject form, IObject defaultType)
     {
         var currentDefaultPackages =
-            form.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.defaultTypesForNewElements);
+            form.get<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
         if (currentDefaultPackages.OfType<IElement>().Any(x =>
                 x.getOrDefault<IElement>(
-                        _DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
+                        _Forms._DefaultTypeForNewElement.metaClass)
                     ?.@equals(defaultType) == true))
         {
 
@@ -645,9 +645,9 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         }
 
         var defaultTypeInstance =
-            new MofFactory(form).create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-        defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, defaultType);
-        defaultTypeInstance.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+            new MofFactory(form).create(_Forms.TheOne.__DefaultTypeForNewElement);
+        defaultTypeInstance.set(_Forms._DefaultTypeForNewElement.metaClass, defaultType);
+        defaultTypeInstance.set(_Forms._DefaultTypeForNewElement.name,
             NamedElementMethods.GetName(defaultType));
         currentDefaultPackages.add(defaultTypeInstance);
 
@@ -665,24 +665,24 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     public static void ExpandDropDownValuesOfValueReference(IElement listOrDetailForm)
     {
         var factory = new MofFactory(listOrDetailForm);
-        var fields = listOrDetailForm.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
+        var fields = listOrDetailForm.get<IReflectiveCollection>(_Forms._TableForm.field);
         foreach (var field in fields.OfType<IElement>())
         {
-            if (field.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DropDownFieldData) != true) continue;
+            if (field.getMetaClass()?.@equals(_Forms.TheOne.__DropDownFieldData) != true) continue;
 
             var byEnumeration =
-                field.getOrDefault<IElement>(_DatenMeister._Forms._DropDownFieldData.valuesByEnumeration);
+                field.getOrDefault<IElement>(_Forms._DropDownFieldData.valuesByEnumeration);
             var byValues =
-                field.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
+                field.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
             if (byValues == null && byEnumeration != null)
             {
                 var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
                 foreach (var value in enumeration)
                 {
-                    var element = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
-                    element.set(_DatenMeister._Forms._ValuePair.name, value);
-                    element.set(_DatenMeister._Forms._ValuePair.value, value);
-                    field.AddCollectionItem(_DatenMeister._Forms._DropDownFieldData.values, element);
+                    var element = factory.create(_Forms.TheOne.__ValuePair);
+                    element.set(_Forms._ValuePair.name, value);
+                    element.set(_Forms._ValuePair.value, value);
+                    field.AddCollectionItem(_Forms._DropDownFieldData.values, element);
                 }
 
                 AddToFormCreationProtocol(listOrDetailForm,
@@ -706,7 +706,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     private static void AddDefaultTypeForListFormsMetaClass(IObject listForm)
     {
         // Adds the default type corresponding to the list form
-        var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass);
+        var metaClass = listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
         if (metaClass != null)
         {
             AddDefaultTypeForNewElement(listForm, metaClass);
@@ -724,7 +724,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         var listForms = GetTableForms(foundForm);
         foreach (var listForm in listForms)
         {
-            var property = listForm.getOrDefault<string>(_DatenMeister._Forms._TableForm.property);
+            var property = listForm.getOrDefault<string>(_Forms._TableForm.property);
             var objectMetaClass = asElement.getMetaClass();
 
             if (property == null || objectMetaClass == null) continue;
@@ -759,17 +759,17 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <param name="form">Form to be evaluated</param>
     /// <param name="formType">Type of the form which is requested</param>
     /// <returns>The converted form</returns>
-    public static IElement ConvertFormToObjectOrCollectionForm(IElement form, _DatenMeister._Forms.___FormType formType)
+    public static IElement ConvertFormToObjectOrCollectionForm(IElement form, _Forms.___FormType formType)
     {
         var metaClass = form.metaclass;
-        if (formType == _DatenMeister._Forms.___FormType.Collection
-            && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+        if (formType == _Forms.___FormType.Collection
+            && (metaClass?.equals(_Forms.TheOne.__RowForm) == true ||
+                metaClass?.equals(_Forms.TheOne.__TableForm) == true))
         {
             var converted = FormMethods.GetCollectionFormForSubforms(form);
-            converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+            converted.set(_Forms._Form.originalUri, form.GetUri());
             converted.set(
-                _DatenMeister._Forms._Form.originalWorkspace, 
+                _Forms._Form.originalWorkspace, 
                 form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
             FormMethods.AddToFormCreationProtocol(
@@ -779,14 +779,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             return converted;
         }
 
-        if (formType == _DatenMeister._Forms.___FormType.Object
-            && (metaClass?.equals(_DatenMeister.TheOne.Forms.__RowForm) == true ||
-                metaClass?.equals(_DatenMeister.TheOne.Forms.__TableForm) == true))
+        if (formType == _Forms.___FormType.Object
+            && (metaClass?.equals(_Forms.TheOne.__RowForm) == true ||
+                metaClass?.equals(_Forms.TheOne.__TableForm) == true))
         {
             var converted = FormMethods.GetObjectFormForSubforms(form);
-            converted.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
+            converted.set(_Forms._Form.originalUri, form.GetUri());
             converted.set(
-                _DatenMeister._Forms._Form.originalWorkspace, 
+                _Forms._Form.originalWorkspace, 
                 form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
             FormMethods.AddToFormCreationProtocol(
@@ -797,8 +797,8 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             return converted;
         }
 
-        form.set(_DatenMeister._Forms._Form.originalUri, form.GetUri());
-        form.set(_DatenMeister._Forms._Form.originalWorkspace, form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
+        form.set(_Forms._Form.originalUri, form.GetUri());
+        form.set(_Forms._Form.originalWorkspace, form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
         return form;
     }

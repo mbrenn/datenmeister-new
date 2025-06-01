@@ -15,13 +15,13 @@ public class DynamicSourceNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
+               metaClass.equals(_DataViews.TheOne.__DynamicSourceNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var name = viewNode.getOrDefault<string>(_DatenMeister._DataViews._DynamicSourceNode.name);
-        var nodeName = viewNode.getOrDefault<string>(_DatenMeister._DataViews._DynamicSourceNode.nodeName);
+        var name = viewNode.getOrDefault<string>(_DataViews._DynamicSourceNode.name);
+        var nodeName = viewNode.getOrDefault<string>(_DataViews._DynamicSourceNode.nodeName);
 
         nodeName = string.IsNullOrEmpty(nodeName) ? name : nodeName;
         if (nodeName == null)

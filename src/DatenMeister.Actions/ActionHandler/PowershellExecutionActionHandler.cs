@@ -17,16 +17,16 @@ public class PowershellExecutionActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__PowershellExecutionAction) == true;
+            _Actions.TheOne.__PowershellExecutionAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(() =>
         {
-            var script = action.getOrDefault<string>(_DatenMeister._Actions._PowershellExecutionAction.script);
+            var script = action.getOrDefault<string>(_Actions._PowershellExecutionAction.script);
             var workingDirectory =
-                action.getOrDefault<string>(_DatenMeister._Actions._PowershellExecutionAction.workingDirectory);
+                action.getOrDefault<string>(_Actions._PowershellExecutionAction.workingDirectory);
 
             var tempPath = Path.Combine(Path.GetTempPath(),
                 StringManipulation.RandomString(16) + ".ps1");

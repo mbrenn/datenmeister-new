@@ -65,10 +65,10 @@ public class ExtentTests
         var path = "./test.xmi";
 
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
 
         await using (var dm = await DatenMeisterTests.GetDatenMeisterScope())
@@ -158,10 +158,10 @@ public class ExtentTests
         var path = "./test.xmi";
 
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
 
         await using (var dm = await DatenMeisterTests.GetDatenMeisterScope())

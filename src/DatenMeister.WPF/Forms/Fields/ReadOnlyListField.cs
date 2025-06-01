@@ -20,7 +20,7 @@ public class ReadOnlyListField : IDetailField
         contentBlock.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Auto});
         contentBlock.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Auto});
 
-        var name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
+        var name = fieldData.get<string>(_Forms._FieldData.name);
 
         if (valueElement?.isSet(name) == true)
         {

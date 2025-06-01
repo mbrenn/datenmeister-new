@@ -41,7 +41,7 @@ public class ResetDatenMeister : PageModel
                 if (loadConfiguration != null)
                 {
                     var extentStoragePath =
-                        loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                        loadConfiguration.getOrDefault<string>(_ExtentLoaderConfigs
                             ._ExtentFileLoaderConfig.filePath);
 
                     if (extentStoragePath != null) files.Add(extentStoragePath);

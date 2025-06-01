@@ -218,14 +218,14 @@ public static class WorkspaceExtensions
 
     public static IUriExtent GetExtentByManagementModel(this IWorkspaceLogic workspaceLogic, IElement modelElement)
     {
-        if (modelElement.getMetaClass()?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
+        if (modelElement.getMetaClass()?.equals(_Management.TheOne.__Extent) != true)
         {
             throw new InvalidOperationException(
-                $"The given element is not of type {_DatenMeister.TheOne.Management.__Extent}");
+                $"The given element is not of type {_Management.TheOne.__Extent}");
         }
 
-        var workspaceId = modelElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId);
-        var uri = modelElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+        var workspaceId = modelElement.getOrDefault<string>(_Management._Extent.workspaceId);
+        var uri = modelElement.getOrDefault<string>(_Management._Extent.uri);
 
         return workspaceLogic.FindExtent(workspaceId, uri) as IUriExtent
                ?? throw new InvalidOperationException("The extent is not found");

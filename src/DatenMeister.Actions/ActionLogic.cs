@@ -52,7 +52,7 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             
         var actionSetExecutionState = new ActionSetExecutionState(result);
         var actions = actionSet.getOrDefault<IReflectiveCollection>(
-            _DatenMeister._Actions._ActionSet.action);
+            _Actions._ActionSet.action);
         if (actions == null)
         {
             // Nothing to be executed
@@ -61,7 +61,7 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             
         foreach (var action in actions.OfType<IElement>())
         {
-            var isDisabled = action.getOrDefault<bool>(_DatenMeister._Actions._Action.isDisabled);
+            var isDisabled = action.getOrDefault<bool>(_Actions._Action.isDisabled);
             if (isDisabled)
             {
                 continue;

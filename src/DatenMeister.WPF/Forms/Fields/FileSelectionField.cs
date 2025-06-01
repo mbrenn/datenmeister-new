@@ -24,8 +24,8 @@ public class FileSelectionField : IDetailField, IPropertyValueChangeable
         if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
         if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-        _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly)
+        _name = fieldData.getOrDefault<string>(_Forms._FieldData.name);
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._FieldData.isReadOnly)
                          || fieldFlags.IsReadOnly;
             
         _valueText = string.Empty;
@@ -35,9 +35,9 @@ public class FileSelectionField : IDetailField, IPropertyValueChangeable
         }
         else
         {
-            if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
+            if (fieldData.isSet(_Forms._FieldData.defaultValue))
             {
-                _valueText = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.defaultValue) ?? string.Empty;
+                _valueText = fieldData.getOrDefault<string>(_Forms._FieldData.defaultValue) ?? string.Empty;
             }
         }
 
@@ -76,13 +76,13 @@ public class FileSelectionField : IDetailField, IPropertyValueChangeable
                 return;
             }
 
-            var isSaving = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FileSelectionFieldData.isSaving);
+            var isSaving = fieldData.getOrDefault<bool>(_Forms._FileSelectionFieldData.isSaving);
             var defaultExtension =
-                fieldData.getOrDefault<string>(_DatenMeister._Forms._FileSelectionFieldData.defaultExtension);
+                fieldData.getOrDefault<string>(_Forms._FileSelectionFieldData.defaultExtension);
             var initialDirectory =
-                fieldData.getOrDefault<string>(_DatenMeister._Forms._FileSelectionFieldData.initialPathToDirectory);
+                fieldData.getOrDefault<string>(_Forms._FileSelectionFieldData.initialPathToDirectory);
             var filter =
-                fieldData.getOrDefault<string>(_DatenMeister._Forms._FileSelectionFieldData.filter);
+                fieldData.getOrDefault<string>(_Forms._FileSelectionFieldData.filter);
 
             if (isSaving)
             {

@@ -27,12 +27,12 @@ public class MoveOrCopyActionTests
         Assert.That(elementTarget, Is.Not.Null);
         Assert.That(elementTargetNonExisting, Is.Null);
 
-        var action = new MofFactory(target).create(_DatenMeister.TheOne.Actions.__MoveOrCopyAction);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.target, elementTarget);
+        var action = new MofFactory(target).create(_Actions.TheOne.__MoveOrCopyAction);
+        action.set(_Actions._MoveOrCopyAction.source, elementSource);
+        action.set(_Actions._MoveOrCopyAction.target, elementTarget);
         action.set(
-            _DatenMeister._Actions._MoveOrCopyAction.copyMode,
-            _DatenMeister._Actions.___MoveOrCopyType.Copy);
+            _Actions._MoveOrCopyAction.copyMode,
+            _Actions.___MoveOrCopyType.Copy);
 
         await actionLogic.ExecuteAction(action);
 
@@ -63,12 +63,12 @@ public class MoveOrCopyActionTests
         var elementSource = source.element("#source1.1");
         var elementTarget = target.element("#target1.1");
 
-        var action = new MofFactory(target).create(_DatenMeister.TheOne.Actions.__MoveOrCopyAction);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.target, elementTarget);
+        var action = new MofFactory(target).create(_Actions.TheOne.__MoveOrCopyAction);
+        action.set(_Actions._MoveOrCopyAction.source, elementSource);
+        action.set(_Actions._MoveOrCopyAction.target, elementTarget);
         action.set(
-            _DatenMeister._Actions._MoveOrCopyAction.copyMode,
-            _DatenMeister._Actions.___MoveOrCopyType.Move);
+            _Actions._MoveOrCopyAction.copyMode,
+            _Actions.___MoveOrCopyType.Move);
 
         await actionLogic.ExecuteAction(action);
 
@@ -106,12 +106,12 @@ public class MoveOrCopyActionTests
             target.elements().OfType<IObject>().Any(x=>x.getOrDefault<string>("name") == "source1.1"), 
             Is.False);
             
-        var action = new MofFactory(target).create(_DatenMeister.TheOne.Actions.__MoveOrCopyAction);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
+        var action = new MofFactory(target).create(_Actions.TheOne.__MoveOrCopyAction);
+        action.set(_Actions._MoveOrCopyAction.source, elementSource);
+        action.set(_Actions._MoveOrCopyAction.target, target);
         action.set(
-            _DatenMeister._Actions._MoveOrCopyAction.copyMode,
-            _DatenMeister._Actions.___MoveOrCopyType.Move);
+            _Actions._MoveOrCopyAction.copyMode,
+            _Actions.___MoveOrCopyType.Move);
 
         await actionLogic.ExecuteAction(action);
             
@@ -135,12 +135,12 @@ public class MoveOrCopyActionTests
             target.elements().OfType<IObject>().Any(x=>x.getOrDefault<string>("name") == "source1.1"), 
             Is.False);
             
-        var action = new MofFactory(target).create(_DatenMeister.TheOne.Actions.__MoveOrCopyAction);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.source, elementSource);
-        action.set(_DatenMeister._Actions._MoveOrCopyAction.target, target);
+        var action = new MofFactory(target).create(_Actions.TheOne.__MoveOrCopyAction);
+        action.set(_Actions._MoveOrCopyAction.source, elementSource);
+        action.set(_Actions._MoveOrCopyAction.target, target);
         action.set(
-            _DatenMeister._Actions._MoveOrCopyAction.copyMode,
-            _DatenMeister._Actions.___MoveOrCopyType.Copy);
+            _Actions._MoveOrCopyAction.copyMode,
+            _Actions.___MoveOrCopyType.Copy);
 
         await actionLogic.ExecuteAction(action);
             

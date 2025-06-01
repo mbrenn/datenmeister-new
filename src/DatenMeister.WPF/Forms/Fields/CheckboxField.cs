@@ -22,8 +22,8 @@ public class CheckboxField : IDetailField, IPropertyValueChangeable
         if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
         if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-        _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly)
+        _name = fieldData.getOrDefault<string>(_Forms._FieldData.name);
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._FieldData.isReadOnly)
                          || fieldFlags.IsReadOnly;
         _propertyValue = null;
         if (value.isSet(_name))
@@ -32,9 +32,9 @@ public class CheckboxField : IDetailField, IPropertyValueChangeable
         }
         else
         {
-            if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
+            if (fieldData.isSet(_Forms._FieldData.defaultValue))
             {
-                _propertyValue = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.defaultValue);
+                _propertyValue = fieldData.getOrDefault<bool>(_Forms._FieldData.defaultValue);
             }
         }
             

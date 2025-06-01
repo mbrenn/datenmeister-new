@@ -14,7 +14,7 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
 {
     static ExtentObject()
     {
-        MetaclassUriPath = _DatenMeister.TheOne.Management.__Extent.Uri;
+        MetaclassUriPath = _Management.TheOne.__Extent.Uri;
     }
 
     public ExtentObject(
@@ -33,14 +33,14 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
         LoadedExtentInformation = loadedExtentInformation;
 
         AddMapping(
-            _DatenMeister._Management._Extent.workspaceId,
+            _Management._Extent.workspaceId,
             _ => parentWorkspace.id,
             (_, _) => throw new InvalidOperationException("Setting of workspaceId is not supported"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.uri,
+            _Management._Extent.uri,
             _ => uriExtent?.contextURI()
-                 ?? loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                 ?? loadedExtentInformation?.Configuration.getOrDefault<string>(_ExtentLoaderConfigs
                      ._ExtentLoaderConfig.extentUri) ?? "Invalid Uri",
             (_, v) =>
             {
@@ -52,27 +52,27 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
                 // But we also need to update the extentmanager's configuration
                 if (loadedExtentInformation != null)
                     loadedExtentInformation.Configuration.set(
-                        _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri,
+                        _ExtentLoaderConfigs._ExtentLoaderConfig.extentUri,
                         v.ToString());
             });
 
         AddMapping(
-            _DatenMeister._Management._Extent.count,
+            _Management._Extent.count,
             _ => uriExtent?.elements().size() ?? 0,
             (_, _) => throw new InvalidOperationException("count cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.totalCount,
+            _Management._Extent.totalCount,
             _ => (uriExtent as MofUriExtent)?.ItemCount ?? 0,
             (_, _) => throw new InvalidOperationException("totalCount cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.type,
+            _Management._Extent.type,
             _ => (uriExtent as MofUriExtent)?.Provider.GetType().Name,
             (_, _) => throw new InvalidOperationException("type cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.name,
+            _Management._Extent.name,
             _ =>
             {
                 var result = (uriExtent as MofExtent)?.GetConfiguration().Name;
@@ -87,7 +87,7 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
             });
 
         AddMapping(
-            _DatenMeister._Management._Extent.extentType,
+            _Management._Extent.extentType,
             _ => (uriExtent as MofExtent)?.GetConfiguration().ExtentType,
             (_, v) =>
             {
@@ -96,7 +96,7 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
             });
 
         AddMapping(
-            _DatenMeister._Management._Extent.autoEnumerateType,
+            _Management._Extent.autoEnumerateType,
             _ => (uriExtent as MofExtent)?.GetConfiguration().AutoEnumerateType,
             (_, v) =>
             {
@@ -106,27 +106,27 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
             });
 
         AddMapping(
-            _DatenMeister._Management._Extent.isModified,
+            _Management._Extent.isModified,
             _ => (uriExtent as MofExtent)?.IsModified == true,
             (_, _) => throw new InvalidOperationException("isModified cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.alternativeUris,
+            _Management._Extent.alternativeUris,
             _ => (uriExtent as MofUriExtent)?.AlternativeUris,
             (_, _) => throw new InvalidOperationException("alternativeUris cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.state,
+            _Management._Extent.state,
             _ => loadedExtentInformation?.LoadingState ?? ExtentLoadingState.Unknown,
             (_, _) => throw new InvalidOperationException("state cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.failMessage,
+            _Management._Extent.failMessage,
             _ => loadedExtentInformation?.FailLoadingMessage ?? string.Empty,
             (_, _) => throw new InvalidOperationException("state cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.properties,
+            _Management._Extent.properties,
             _ =>
             {
                 var found = (loadedExtentInformation?.Extent as MofExtent)?.GetMetaObject()
@@ -140,7 +140,7 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
             (_, _) => throw new InvalidOperationException("properties cannot be set"));
 
         AddMapping(
-            _DatenMeister._Management._Extent.loadingConfiguration,
+            _Management._Extent.loadingConfiguration,
             _ => loadedExtentInformation?.Configuration.SetId(Id + "_loadingConfiguration"),
             (_, _) => throw new InvalidOperationException("loadingConfiguration cannot be set"));
 

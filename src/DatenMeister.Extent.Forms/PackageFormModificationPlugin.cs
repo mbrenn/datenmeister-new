@@ -19,27 +19,27 @@ public class PackageFormModificationPlugin : IFormModificationPlugin
 {
     public bool ModifyForm(FormCreationContext context, IElement form)
     {
-        if (context.MetaClass?.Equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true
-            && context.FormType == _DatenMeister._Forms.___FormType.Object
+        if (context.MetaClass?.Equals(_CommonTypes.TheOne.Default.__Package) == true
+            && context.FormType == _Forms.___FormType.Object
             && context.ParentPropertyName == string.Empty
             && context.DetailElement != null)
         {
             var tabPackagedElement =
                 FormMethods.GetTableFormForPropertyName(form,
-                    _DatenMeister._CommonTypes._Default._Package.packagedElement);
+                    _CommonTypes._Default._Package.packagedElement);
 
             if (tabPackagedElement != null)
             {
                 var factory = new MofFactory(form);
 
                 var defaultTypes =
-                    tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm
+                    tabPackagedElement.get<IReflectiveCollection>(_Forms._TableForm
                         .defaultTypesForNewElements);
 
                 // Checks the preferred types
                 var preferredTypes =
                     context.DetailElement.getOrDefault<IReflectiveCollection>(
-                        _DatenMeister._CommonTypes._Default._Package.preferredType);
+                        _CommonTypes._Default._Package.preferredType);
 
                 AddPreferredTypes(form, factory, preferredTypes, defaultTypes);
 
@@ -47,7 +47,7 @@ public class PackageFormModificationPlugin : IFormModificationPlugin
                 // If a preferred package is set, then all containing classes will be added
                 var preferredPackages =
                     context.DetailElement.getOrDefault<IReflectiveCollection>(
-                        _DatenMeister._CommonTypes._Default._Package.preferredPackage);
+                        _CommonTypes._Default._Package.preferredPackage);
 
                 if (preferredPackages != null)
                 {
@@ -84,10 +84,10 @@ public class PackageFormModificationPlugin : IFormModificationPlugin
     {
         if (preferredType.getMetaClass()?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
         {
-            var defaultType = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-            defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
+            var defaultType = factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
+            defaultType.set(_Forms._DefaultTypeForNewElement.name,
                 NamedElementMethods.GetName(preferredType));
-            defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, preferredType);
+            defaultType.set(_Forms._DefaultTypeForNewElement.metaClass, preferredType);
             defaultTypes.add(defaultType);
 
             FormMethods.AddToFormCreationProtocol(

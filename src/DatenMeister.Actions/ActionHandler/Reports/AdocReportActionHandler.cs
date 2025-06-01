@@ -12,7 +12,7 @@ public class AdocReportActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.Reports.__AdocReportAction) == true;
+            _Actions.TheOne.Reports.__AdocReportAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -20,9 +20,9 @@ public class AdocReportActionHandler : IActionHandler
         await Task.Run(() =>
         {
             var reportInstance =
-                action.getOrDefault<IElement>(_DatenMeister._Actions._Reports._AdocReportAction.reportInstance);
+                action.getOrDefault<IElement>(_Actions._Reports._AdocReportAction.reportInstance);
             var filePath =
-                action.getOrDefault<string>(_DatenMeister._Actions._Reports._AdocReportAction.filePath);
+                action.getOrDefault<string>(_Actions._Reports._AdocReportAction.filePath);
 
             if (string.IsNullOrEmpty(filePath))
             {

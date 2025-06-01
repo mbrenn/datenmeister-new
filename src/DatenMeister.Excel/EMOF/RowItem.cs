@@ -144,7 +144,7 @@ public class RowItem(SheetItem sheetItem, int row) : IProviderObject
         get
         {
             var idColumnName = SheetItem.ExcelProvider.Settings.getOrDefault<string>(
-                _DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.idColumnName);
+                _ExtentLoaderConfigs._ExcelLoaderConfig.idColumnName);
                 
             var firstPart = SheetItem.Sheet.SheetName;
             string secondPart;

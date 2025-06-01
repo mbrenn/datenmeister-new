@@ -48,7 +48,7 @@ public class ReadOnlyProxyTests
 
         var mapper = new ProviderToProviderLoaderMapper();
         mapper.AddMapping(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
+            _ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig,
             _ => new CsvProviderLoader());
 
         var workspaceData = WorkspaceLogic.InitDefault();
@@ -60,18 +60,18 @@ public class ReadOnlyProxyTests
 
 
         var settings =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvSettings);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.separator, ' ');
 
         var configuration =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig);
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
             CSVExtentTests.PathForTemporaryDataFile);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId,
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
 
         /*
         var configuration = new CsvExtentLoaderConfig("dm:///local/")

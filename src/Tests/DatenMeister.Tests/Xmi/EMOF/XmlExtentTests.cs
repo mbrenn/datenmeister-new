@@ -247,11 +247,11 @@ public class XmlExtentTests
         }
 
         var storageConfiguration =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-        storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+        storageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
             "dm:///test");
-        storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
-        storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+        storageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
+        storageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
 
         // Creates the extent
@@ -275,7 +275,7 @@ public class XmlExtentTests
 
         // Reloads it
 
-        storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+        storageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
             "dm:///test_new");
 
         var newExtent = await loader.LoadExtent(storageConfiguration);

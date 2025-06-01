@@ -135,10 +135,10 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
         var mapper = new ProviderToProviderLoaderMapper();
         scopeStorage.Add(mapper);
         mapper.AddMapping(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
+            _ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig,
             _ => new InMemoryProviderLoader());
         mapper.AddMapping(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
+            _ExtentLoaderConfigs.TheOne.__XmlReferenceLoaderConfig,
             _ => new XmlReferenceLoader());
             
         // First resolve hooks

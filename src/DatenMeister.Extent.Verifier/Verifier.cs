@@ -80,13 +80,13 @@ public class Verifier(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage
         var temporaryExtentLogic = new TemporaryExtentLogic(_workspaceLogic, scopeStorage);
         
         var newElement =
-            temporaryExtentLogic.CreateTemporaryElement(_DatenMeister.TheOne.Verifier.__VerifyEntry,
+            temporaryExtentLogic.CreateTemporaryElement(_Verifier.TheOne.__VerifyEntry,
                 TimeSpan.FromDays(30));
         
-        newElement.set(_DatenMeister._Verifier._VerifyEntry.workspaceId, entry.WorkspaceId);
-        newElement.set(_DatenMeister._Verifier._VerifyEntry.itemUri, entry.ItemUri);
-        newElement.set(_DatenMeister._Verifier._VerifyEntry.message, entry.Message);
-        newElement.set(_DatenMeister._Verifier._VerifyEntry.category, entry.Category);
+        newElement.set(_Verifier._VerifyEntry.workspaceId, entry.WorkspaceId);
+        newElement.set(_Verifier._VerifyEntry.itemUri, entry.ItemUri);
+        newElement.set(_Verifier._VerifyEntry.message, entry.Message);
+        newElement.set(_Verifier._VerifyEntry.category, entry.Category);
         
         _verifyEntries.Add(entry);
     }

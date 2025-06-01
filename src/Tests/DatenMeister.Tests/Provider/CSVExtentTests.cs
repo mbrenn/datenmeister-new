@@ -34,16 +34,16 @@ public class CSVExtentTests
         File.WriteAllText(PathForTemporaryDataFile, csvFile);
 
         var settings = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+            _ExtentLoaderConfigs.TheOne.__CsvSettings);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.separator, ' ');
 
         var storageConfiguration = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
-        storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///test");
-        storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
+            _ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig);
+        storageConfiguration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///test");
+        storageConfiguration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
             PathForTemporaryDataFile);
-        storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
+        storageConfiguration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
 
         var storage = new CsvProviderLoader
         {
@@ -54,10 +54,10 @@ public class CSVExtentTests
         var extent = new MofUriExtent(provider.Provider, "dm:////test/", null);
 
         var csvSettings = storageConfiguration
-            .getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings);
+            .getOrDefault<IElement>(_ExtentLoaderConfigs._CsvExtentLoaderConfig.settings);
         Assert.That(settings, Is.Not.Null);
         var columns =
-            csvSettings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings
+            csvSettings.getOrDefault<IReflectiveCollection>(_ExtentLoaderConfigs._CsvSettings
                 .columns);
 
         Assert.That(columns.Count(), Is.EqualTo(3));
@@ -76,8 +76,8 @@ public class CSVExtentTests
         Assert.That(firstElement, Is.Not.Null);
 
         Assert.That(storageConfiguration
-                .getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings)
-                .getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns)
+                .getOrDefault<IElement>(_ExtentLoaderConfigs._CsvExtentLoaderConfig.settings)
+                .getOrDefault<IReflectiveCollection>(_ExtentLoaderConfigs._CsvSettings.columns)
                 .ElementAt(0),
             Is.EqualTo("Column 1"));
 
@@ -112,10 +112,10 @@ public class CSVExtentTests
 
         // Configures the CSV Import
         var settings = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, true);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding, "UTF-8");
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ",");
+            _ExtentLoaderConfigs.TheOne.__CsvSettings);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.hasHeader, true);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.encoding, "UTF-8");
+        settings.set(_ExtentLoaderConfigs._CsvSettings.separator, ",");
 
         // Now, do the import
         csvLoader.Load(data, stream, settings);
@@ -133,7 +133,7 @@ public class CSVExtentTests
 
         /////
         // Now perform the test with activated trimming
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.trimCells, true);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.trimCells, true);
         data = new InMemoryProvider();
         stream = new MemoryStream(byteArray);
         csvLoader.Load(data, stream, settings);

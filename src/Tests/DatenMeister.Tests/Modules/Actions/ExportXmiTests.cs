@@ -16,11 +16,11 @@ public class ExportXmiTests
 
         var temporaryStorage = DatenMeisterTests.GetPathForTemporaryStorage("export.xmi");
 
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ExportToXmiAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__ExportToXmiAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._ExportToXmiAction.sourcePath] = "dm:///source/",
-                [_DatenMeister._Actions._ExportToXmiAction.filePath] = temporaryStorage,
+                [_Actions._ExportToXmiAction.sourcePath] = "dm:///source/",
+                [_Actions._ExportToXmiAction.filePath] = temporaryStorage,
 
             });
 

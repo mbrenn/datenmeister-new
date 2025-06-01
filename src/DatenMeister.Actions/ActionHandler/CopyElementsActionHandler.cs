@@ -18,7 +18,7 @@ public class CopyElementsActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__CopyElementsAction) == true;
+            _Actions.TheOne.__CopyElementsAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -26,19 +26,19 @@ public class CopyElementsActionHandler : IActionHandler
         await Task.Run(() =>
         {
             var sourceWorkspaceId =
-                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.sourceWorkspace)
+                action.getOrDefault<string>(_Actions._CopyElementsAction.sourceWorkspace)
                 ?? WorkspaceNames.WorkspaceData;
             var targetWorkspaceId =
-                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.targetWorkspace)
+                action.getOrDefault<string>(_Actions._CopyElementsAction.targetWorkspace)
                 ?? WorkspaceNames.WorkspaceData;
             var sourcePath =
-                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.sourcePath);
+                action.getOrDefault<string>(_Actions._CopyElementsAction.sourcePath);
             var targetPath =
-                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.targetPath);
+                action.getOrDefault<string>(_Actions._CopyElementsAction.targetPath);
             var moveOnly =
-                action.getOrDefault<bool>(_DatenMeister._Actions._CopyElementsAction.moveOnly);
+                action.getOrDefault<bool>(_Actions._CopyElementsAction.moveOnly);
             var emptyTarget =
-                action.getOrDefault<bool>(_DatenMeister._Actions._CopyElementsAction.emptyTarget);
+                action.getOrDefault<bool>(_Actions._CopyElementsAction.emptyTarget);
 
             var sourceWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(sourceWorkspaceId);
             var targetWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(targetWorkspaceId);

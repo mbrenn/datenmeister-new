@@ -78,7 +78,7 @@ public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties, IHasExten
                 this);
         }
 
-        MetaXmiElement.SetMetaClass(_DatenMeister.TheOne.Management.__ExtentProperties);
+        MetaXmiElement.SetMetaClass(_Management.TheOne.__ExtentProperties);
 
         ExtentConfiguration = new ExtentConfiguration(this);
     }
@@ -326,7 +326,7 @@ public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties, IHasExten
             }
 
             var result = new MofElement(nullObject, this);
-            result.SetMetaClass(_DatenMeister.TheOne.Management.__ExtentProperties);
+            result.SetMetaClass(_Management.TheOne.__ExtentProperties);
             return result;
         }
 

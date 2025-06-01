@@ -62,7 +62,7 @@ public partial class ItemListViewControl
                     loader.Save(
                         memoryProvider,
                         dlg.FileName,
-                        InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings));
+                        InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvSettings));
 
                     MessageBox.Show($"CSV Export completed. \r\n{temporary.elements().Count()} Items exported.");
                 }
@@ -83,7 +83,7 @@ public partial class ItemListViewControl
             CopyToClipboardCommand.Execute(this, CopyType.AsXmi);
         }
 
-        if (EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitEditItems) == false)
+        if (EffectiveForm?.getOrDefault<bool>(_Forms._TableForm.inhibitEditItems) == false)
         {
             yield return
                 new RowItemButtonDefinition(
@@ -92,7 +92,7 @@ public partial class ItemListViewControl
                     ButtonPosition.Before);
         }
 
-        if (EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._TableForm.inhibitDeleteItems) == false)
+        if (EffectiveForm?.getOrDefault<bool>(_Forms._TableForm.inhibitDeleteItems) == false)
         {
             yield return
                 new RowItemButtonDefinition(

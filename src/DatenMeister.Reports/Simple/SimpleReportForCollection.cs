@@ -26,11 +26,11 @@ public class SimpleReportForCollection
     /// <summary>
     /// Gets or sets the report table mode
     /// </summary>
-    public _DatenMeister._Reports._Elements.___ReportTableForTypeMode TableForTypeMode
+    public _Reports._Elements.___ReportTableForTypeMode TableForTypeMode
     {
         get;
         set;
-    } = _DatenMeister._Reports._Elements.___ReportTableForTypeMode.PerType;
+    } = _Reports._Elements.___ReportTableForTypeMode.PerType;
 
     /// <summary>
     /// Gets or sets the form to be set
@@ -68,7 +68,7 @@ public class SimpleReportForCollection
         FormFactoryConfiguration creationMode)
     {
         var foundForm = Form;
-        if (TableForTypeMode == _DatenMeister._Reports._Elements.___ReportTableForTypeMode.PerType)
+        if (TableForTypeMode == _Reports._Elements.___ReportTableForTypeMode.PerType)
         {
             // Splits them up by metaclasses 
             var metaClasses =
@@ -126,10 +126,10 @@ public class SimpleReportForCollection
         if (AddFullNameColumn)
         {
             // Create the metaclass as a field
-            var fullNamefield = MofFactory.CreateElement(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
-            fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
-            fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
-            foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._TableForm.field).add(0, fullNamefield);
+            var fullNamefield = MofFactory.CreateElement(foundForm, _Forms.TheOne.__FullNameFieldData);
+            fullNamefield.set(_Forms._MetaClassElementFieldData.name, "Path");
+            fullNamefield.set(_Forms._MetaClassElementFieldData.title, "Path");
+            foundForm.get<IReflectiveSequence>(_Forms._TableForm.field).add(0, fullNamefield);
         }
     }
 

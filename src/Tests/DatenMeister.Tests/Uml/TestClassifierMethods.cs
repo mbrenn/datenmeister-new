@@ -127,23 +127,23 @@ public class TestClassifierMethods
     {
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
         var commandLineMetaClass = dm.WorkspaceLogic.GetTypesWorkspace()
-                .Resolve(_DatenMeister.TheOne.CommonTypes.OSIntegration.__CommandLineApplication.GetUri()!,
+                .Resolve(_CommonTypes.TheOne.OSIntegration.__CommandLineApplication.GetUri()!,
                     ResolveType.Default)
             as IElement;
             
         Assert.That(commandLineMetaClass, Is.Not.Null);
 
         var foundPropertyType = ClassifierMethods.GetPropertyType(commandLineMetaClass,
-            _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.name);
+            _CommonTypes._OSIntegration._CommandLineApplication.name);
         Assert.That(foundPropertyType, Is.Not.Null);
         Assert.That(foundPropertyType!.equals(_PrimitiveTypes.TheOne.__String));
 
         var dynamicRuntimeProvider = dm.WorkspaceLogic.GetTypesWorkspace()
-                .Resolve(_DatenMeister.TheOne.DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig.GetUri()!,
+                .Resolve(_DynamicRuntimeProvider.TheOne.__DynamicRuntimeLoaderConfig.GetUri()!,
                     ResolveType.Default)
             as IElement;
         var foundPropertyType2 = ClassifierMethods.GetPropertyType(dynamicRuntimeProvider,
-            _DatenMeister._DynamicRuntimeProvider._DynamicRuntimeLoaderConfig.configuration);
+            _DynamicRuntimeProvider._DynamicRuntimeLoaderConfig.configuration);
 
         Assert.That(foundPropertyType2, Is.Null);
     }

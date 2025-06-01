@@ -40,8 +40,7 @@ public class ActionsController(IWorkspaceLogic workspaceLogic, IScopeStorage sco
                     Debugger.Break();
                 }
 
-                if (mofParameter.metaclass?.@equals(_DatenMeister.TheOne.ExtentLoaderConfigs
-                        .__XmiStorageLoaderConfig) != true)
+                if (mofParameter.metaclass?.@equals(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig) != true)
                 {
                     throw new InvalidOperationException("Wrong metaclass. Expected XmiStorageLoaderConfig");
                 }

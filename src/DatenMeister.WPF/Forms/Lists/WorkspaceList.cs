@@ -49,7 +49,7 @@ public class WorkspaceList : ItemExplorerControl
             // Checks, if the given form is correct
             if (!ClassifierMethods.IsSpecializedClassifierOf(
                     (OverridingViewDefinition.Element as IElement)?.getMetaClass(),
-                    _DatenMeister.TheOne.Forms.__CollectionForm))
+                    _Forms.TheOne.__CollectionForm))
             {
                 MessageBox.Show("Overriding form is not of type ExtentForm.");
                 form = null;

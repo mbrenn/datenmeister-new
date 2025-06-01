@@ -25,46 +25,46 @@ public class HtmlReportLoopTests
         HtmlReportTableTests.AddData(extent, factory);
 
         /* Creates the report definition */
-        var reportDefinition = factory.create(_DatenMeister.TheOne.Reports.__ReportDefinition);
-        reportDefinition.set(_DatenMeister._Reports._ReportDefinition.name, "Report Definition");
+        var reportDefinition = factory.create(_Reports.TheOne.__ReportDefinition);
+        reportDefinition.set(_Reports._ReportDefinition.name, "Report Definition");
         extent.elements().add(reportDefinition);
 
         /* Sets the viewnode */
-        var dynamicViewNode = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
-        dynamicViewNode.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
+        var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
+        dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
         extent.elements().add(dynamicViewNode);
 
         /* Create the report paragraph and its corresponding view node */
-        var reportLoop = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportLoop);
+        var reportLoop = factory.create(_Reports.TheOne.Elements.__ReportLoop);
 
-        var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph);
+        var reportParagraph = factory.create(_Reports.TheOne.Elements.__ReportParagraph);
         reportParagraph.set(
-            _DatenMeister._Reports._Elements._ReportParagraph.evalProperties,
+            _Reports._Elements._ReportParagraph.evalProperties,
             "if (i.age>18)\r\n v.paragraph=\"over18\"\r\n else\r\n v.paragraph=\"under18\"\r\n end");
 
-        var reportParagraph2 = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph);
+        var reportParagraph2 = factory.create(_Reports.TheOne.Elements.__ReportParagraph);
         reportParagraph2.set(
-            _DatenMeister._Reports._Elements._ReportParagraph.evalParagraph,
+            _Reports._Elements._ReportParagraph.evalParagraph,
             "Name: {{i.name}}");
 
-        reportLoop.set(_DatenMeister._Reports._Elements._ReportLoop.elements,
+        reportLoop.set(_Reports._Elements._ReportLoop.elements,
             new[] {reportParagraph, reportParagraph2});
-        reportLoop.set(_DatenMeister._Reports._Elements._ReportLoop.viewNode, new[] {dynamicViewNode});
+        reportLoop.set(_Reports._Elements._ReportLoop.viewNode, new[] {dynamicViewNode});
 
         /* Attached it to the report definition */
-        reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements, new[] {reportLoop});
+        reportDefinition.set(_Reports._ReportDefinition.elements, new[] {reportLoop});
 
         /* Creates the report instance */
-        var reportInstance = factory.create(_DatenMeister.TheOne.Reports.__HtmlReportInstance);
+        var reportInstance = factory.create(_Reports.TheOne.__HtmlReportInstance);
         extent.elements().add(reportInstance);
-        reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.name, "Report");
+        reportInstance.set(_Reports._HtmlReportInstance.name, "Report");
 
-        var source = factory.create(_DatenMeister.TheOne.Reports.__ReportInstanceSource);
-        source.set(_DatenMeister._Reports._ReportInstanceSource.name, "input");
-        source.set(_DatenMeister._Reports._ReportInstanceSource.path, "dm:///test");
-        source.set(_DatenMeister._Reports._ReportInstanceSource.workspaceId, "Data");
-        reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.sources, new[] {source});
-        reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.reportDefinition, reportDefinition);
+        var source = factory.create(_Reports.TheOne.__ReportInstanceSource);
+        source.set(_Reports._ReportInstanceSource.name, "input");
+        source.set(_Reports._ReportInstanceSource.path, "dm:///test");
+        source.set(_Reports._ReportInstanceSource.workspaceId, "Data");
+        reportInstance.set(_Reports._HtmlReportInstance.sources, new[] {source});
+        reportInstance.set(_Reports._HtmlReportInstance.reportDefinition, reportDefinition);
 
         /* Now create the report over 18 */
         var writer = new StringWriter();

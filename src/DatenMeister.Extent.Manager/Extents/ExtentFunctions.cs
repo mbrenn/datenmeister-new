@@ -69,7 +69,7 @@ public class ExtentFunctions
             return new CreatableTypeResult
             {
                 MetaLayer = typeLayer,
-                CreatableTypes = new IElement[] { }
+                CreatableTypes = []
             };
         }
 

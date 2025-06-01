@@ -95,12 +95,12 @@ public class CreateNewInstanceButton : Button
             {
                 IElement? type = null;
                 if (element.metaclass?.equals(
-                        _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement) == true)
+                        _Forms.TheOne.__DefaultTypeForNewElement) == true)
                 {
                     var newType =
-                        element.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
+                        element.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement.metaClass);
                     /*var tempParentProperty =
-                        element.getOrDefault<string>(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty)
+                        element.getOrDefault<string>(_Forms._DefaultTypeForNewElement.parentProperty)
                         ?? parentProperty;*/
 
                     if (newType != null)

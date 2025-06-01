@@ -41,10 +41,10 @@ public class MassImportLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         // Configures the CSV Import
         var settings = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, true);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding, "UTF-8");
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ",");
+            _ExtentLoaderConfigs.TheOne.__CsvSettings);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.hasHeader, true);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.encoding, "UTF-8");
+        settings.set(_ExtentLoaderConfigs._CsvSettings.separator, ",");
 
         // Now, do the import
         csvLoader.Load(data, stream, settings);

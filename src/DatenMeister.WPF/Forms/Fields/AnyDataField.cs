@@ -26,10 +26,10 @@ public class AnyDataField : IDetailField
         _element = value;
         _detailFormControl = detailForm;
             
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._AnyDataFieldData.isReadOnly) ||
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._AnyDataFieldData.isReadOnly) ||
                          fieldFlags.IsReadOnly;
 
-        _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+        _name = fieldData.getOrDefault<string>(_Forms._FieldData.name);
         if (_name == null)
         {
             return new TextBlock

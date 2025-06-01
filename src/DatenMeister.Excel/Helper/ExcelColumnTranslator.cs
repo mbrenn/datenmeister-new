@@ -15,15 +15,15 @@ public class ExcelColumnTranslator
     public void LoadTranslation(IElement configurationSetting)
     {
         var columns =
-            configurationSetting.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.columns);
+            configurationSetting.getOrDefault<IReflectiveCollection>(_ExtentLoaderConfigs._ExcelLoaderConfig.columns);
         if (columns != null)
         {
             foreach (var column in columns.OfType<IElement>())
             {
                 _translateColumnNames.Add(
                     new ExcelImporter.Column(
-                        column.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelColumn.name),
-                        column.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelColumn.header)
+                        column.getOrDefault<string>(_ExtentLoaderConfigs._ExcelColumn.name),
+                        column.getOrDefault<string>(_ExtentLoaderConfigs._ExcelColumn.header)
                     ));
             }
         }

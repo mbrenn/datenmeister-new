@@ -16,16 +16,16 @@ public class ExcelPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
             case PluginLoadingPosition.AfterBootstrapping:
                 var mapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
                 mapper.AddMapping(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelExtentLoaderConfig,
+                    _ExtentLoaderConfigs.TheOne.__ExcelExtentLoaderConfig,
                     _ => new ExcelFileProviderLoader());
                 mapper.AddMapping(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelReferenceLoaderConfig,
+                    _ExtentLoaderConfigs.TheOne.__ExcelReferenceLoaderConfig,
                     _ => new ExcelReferenceLoader());
                 mapper.AddMapping(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig,
+                    _ExtentLoaderConfigs.TheOne.__ExcelImportLoaderConfig,
                     _ => new ExcelImportLoader());
                 mapper.AddMapping(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalLoaderConfig,
+                    _ExtentLoaderConfigs.TheOne.__ExcelHierarchicalLoaderConfig,
                     _ => new ExcelHierarchicalLoader());
                 break;
         }

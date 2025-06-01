@@ -15,7 +15,7 @@ public class SelectByExtentNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DatenMeister.TheOne.DataViews.__SelectByExtentNode);
+               metaClass.equals(_DataViews.TheOne.__SelectByExtentNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
@@ -29,13 +29,13 @@ public class SelectByExtentNodeEvaluation : IDataViewNodeEvaluation
             throw new InvalidOperationException("SourceExtent specified but no workspace Logic given");
         }
 
-        var workspaceName = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByExtentNode.workspaceId);
+        var workspaceName = viewNode.getOrDefault<string>(_DataViews._SelectByExtentNode.workspaceId);
         if (string.IsNullOrEmpty(workspaceName))
         {
             workspaceName = WorkspaceNames.WorkspaceData;
         }
 
-        var extentUri = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByExtentNode.extentUri);
+        var extentUri = viewNode.getOrDefault<string>(_DataViews._SelectByExtentNode.extentUri);
         var workspace = workspaceLogic.GetWorkspace(workspaceName);
         if (workspace == null)
         {

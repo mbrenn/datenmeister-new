@@ -33,9 +33,9 @@ public static class NavigatorForExcelHandling
             var excelSettings =
                 dlg.ExcelSettings ?? throw new InvalidOperationException("dlg.ExcelSettings == null");
 
-            excelSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId, workspaceId);
-            excelSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///excelimport_" + newGuid);
-            excelSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath,  newGuid + ".xmi");
+            excelSettings.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId, workspaceId);
+            excelSettings.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///excelimport_" + newGuid);
+            excelSettings.set(_ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath,  newGuid + ".xmi");
 
             dlg.Owner = host as Window;
             if (dlg.ShowDialog() == true)

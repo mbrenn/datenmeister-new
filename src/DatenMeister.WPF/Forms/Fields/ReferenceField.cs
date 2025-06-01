@@ -95,15 +95,15 @@ public partial class ReferenceField : IDetailField
             
         var navigationHost = detailForm.NavigationHost;
             
-        _isInline = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline);
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.isReadOnly)
+        _isInline = fieldData.getOrDefault<bool>(_Forms._ReferenceFieldData.isSelectionInline);
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._ReferenceFieldData.isReadOnly)
                          || fieldFlags.IsReadOnly;
-        _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ?? string.Empty;
+        _name = fieldData.getOrDefault<string>(_Forms._FieldData.name) ?? string.Empty;
         _detailFormControl = detailForm;
         _element = element;
             
-        _workspace = fieldData.getOrDefault<string>(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace);
-        _extent = fieldData.getOrDefault<string>(_DatenMeister._Forms._ReferenceFieldData.defaultItemUri);
+        _workspace = fieldData.getOrDefault<string>(_Forms._ReferenceFieldData.defaultWorkspace);
+        _extent = fieldData.getOrDefault<string>(_Forms._ReferenceFieldData.defaultItemUri);
 
         if (_extent == null)
         {
@@ -262,7 +262,7 @@ public partial class ReferenceField : IDetailField
                 };
 
             var filterMetaClasses =
-                fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ReferenceFieldData.metaClassFilter);
+                fieldData.getOrDefault<IReflectiveCollection>(_Forms._ReferenceFieldData.metaClassFilter);
             if (filterMetaClasses != null)
             {
                 configuration.FilteredMetaClasses = filterMetaClasses.OfType<IElement>().ToList();

@@ -126,12 +126,12 @@ public class ZipCodeExampleManager
 
         // Creates the configuration
         var csvSettings =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
-        csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
-        csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, '\t');
-        csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding, "UTF-8");
-        csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri, _zipCodeModel.ZipCode);
-        csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, new[]
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvSettings);
+        csvSettings.set(_ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+        csvSettings.set(_ExtentLoaderConfigs._CsvSettings.separator, '\t');
+        csvSettings.set(_ExtentLoaderConfigs._CsvSettings.encoding, "UTF-8");
+        csvSettings.set(_ExtentLoaderConfigs._CsvSettings.metaclassUri, _zipCodeModel.ZipCode);
+        csvSettings.set(_ExtentLoaderConfigs._CsvSettings.columns, new[]
         {
             nameof(ZipCode.id),
             nameof(ZipCode.zip),
@@ -141,17 +141,17 @@ public class ZipCodeExampleManager
         }.ToList());
 
         var defaultConfiguration =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig);
         defaultConfiguration.set(
-            _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, extentName);
+            _ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, extentName);
         defaultConfiguration.set(
-            _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
+            _ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
             targetFilename);
         defaultConfiguration.set(
-            _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId,
+            _ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId,
             workspaceId);
         defaultConfiguration.set(
-            _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings,
+            _ExtentLoaderConfigs._CsvExtentLoaderConfig.settings,
             csvSettings);
 
         var loadedExtent = await _extentManager.LoadExtent(defaultConfiguration)

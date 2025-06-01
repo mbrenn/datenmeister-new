@@ -10,16 +10,16 @@ public class DropExtentActionHandler: IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__DropExtentAction) == true;
+            _Actions.TheOne.__DropExtentAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(async () =>
         {
-            var workspaceName = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.workspaceId) ??
+            var workspaceName = action.getOrDefault<string>(_Actions._DropExtentAction.workspaceId) ??
                                 "Data";
-            var extentUri = action.getOrDefault<string>(_DatenMeister._Actions._DropExtentAction.extentUri);
+            var extentUri = action.getOrDefault<string>(_Actions._DropExtentAction.extentUri);
 
             if (string.IsNullOrEmpty(extentUri))
             {

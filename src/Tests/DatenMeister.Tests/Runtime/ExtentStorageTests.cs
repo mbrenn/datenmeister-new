@@ -25,7 +25,7 @@ public class ExtentStorageTests
 
         var mapper = new ProviderToProviderLoaderMapper();
         mapper.AddMapping(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
+            _ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig,
             _ => new CsvProviderLoader());
         var dataLayers = WorkspaceLogic.InitDefault();
 
@@ -36,18 +36,18 @@ public class ExtentStorageTests
         extentManager.OpenDecoupled();
 
         var setting =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
-        setting.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
-        setting.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig);
+        setting.set(_ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+        setting.set(_ExtentLoaderConfigs._CsvSettings.separator, ' ');
 
         var configuration =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig);
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
             CSVExtentTests.PathForTemporaryDataFile);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId,
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, setting);
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, setting);
 
         var csvExtent = await extentManager.LoadExtent(configuration);
         Assert.That(csvExtent, Is.Not.Null);
@@ -58,11 +58,11 @@ public class ExtentStorageTests
 
         // Changes content, store it and check, if stored
         var settings =
-            configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig
+            configuration.getOrDefault<IElement>(_ExtentLoaderConfigs._CsvExtentLoaderConfig
                 .settings);
         Assert.That(settings, Is.Not.Null);
         var columns =
-            settings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+            settings.getOrDefault<IReflectiveCollection>(_ExtentLoaderConfigs._CsvSettings.columns);
         Assert.That(columns, Is.Not.Null);
 
         ((IObject)csvExtent.Extent.elements().ElementAt(0)!)
@@ -84,7 +84,7 @@ public class ExtentStorageTests
 
         var mapper = new ProviderToProviderLoaderMapper();
         mapper.AddMapping(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
+            _ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig,
             _ => new CsvProviderLoader());
         var dataLayers = WorkspaceLogic.InitDefault();
 
@@ -92,16 +92,16 @@ public class ExtentStorageTests
         scopeStorage.Add(mapper);
         scopeStorage.Add(new IntegrationSettings());
         var logic = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
-        var settings = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
-        settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+        var settings = InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvSettings);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+        settings.set(_ExtentLoaderConfigs._CsvSettings.separator, ' ');
         var configuration =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__CsvExtentLoaderConfig);
 
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
             CSVExtentTests.PathForTemporaryDataFile);
-        configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
+        configuration.set(_ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
 
         var csvExtent = await logic.LoadExtent(configuration);
         Assert.That(csvExtent, Is.Not.Null);

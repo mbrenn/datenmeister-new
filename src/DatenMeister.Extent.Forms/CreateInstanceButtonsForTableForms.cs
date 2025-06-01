@@ -19,7 +19,7 @@ public class CreateInstanceButtonsForTableForms : IFormModificationPlugin
     public bool ModifyForm(FormCreationContext context, IElement form)
     {
         var extent = context.DetailElement?.GetExtentOf();
-        if (context.FormType == _DatenMeister._Forms.___FormType.Table &&
+        if (context.FormType == _Forms.___FormType.Table &&
             extent != null)
         {
             var added = false;

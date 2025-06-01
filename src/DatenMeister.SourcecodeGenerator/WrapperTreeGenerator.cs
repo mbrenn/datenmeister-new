@@ -103,10 +103,10 @@ public class WrapperTreeGenerator : WalkPackageClass
         {
             typeByCsName = "int";
         }
-        else if (typeOfProperty?.Equals(Core.Models._PrimitiveTypes.TheOne.__DateTime) == true)
+        /*else if (typeOfProperty?.Equals(Core.Models._PrimitiveTypes.TheOne.__DateTime) == true)
         {
             typeByCsName = "DateTime";
-        }
+        }*/
         else
         {
             isTyped = false;

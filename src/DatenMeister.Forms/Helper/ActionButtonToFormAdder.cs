@@ -48,17 +48,17 @@ public static class ActionButtonToFormAdder
                 var formMetaClass = form.getMetaClass();
 
                 var forms = new List<IObject>();
-                if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__CollectionForm) == true
-                    || formMetaClass?.equals(_DatenMeister.TheOne.Forms.__ObjectForm) == true)
+                if (formMetaClass?.equals(_Forms.TheOne.__CollectionForm) == true
+                    || formMetaClass?.equals(_Forms.TheOne.__ObjectForm) == true)
                 {
                     switch (context.FormType)
                     {
-                        case _DatenMeister._Forms.___FormType.Row:
-                        case _DatenMeister._Forms.___FormType.RowExtension:
+                        case _Forms.___FormType.Row:
+                        case _Forms.___FormType.RowExtension:
                             forms.AddRange(FormMethods.GetRowForms(form));
                             break;
-                        case _DatenMeister._Forms.___FormType.Table:
-                        case _DatenMeister._Forms.___FormType.TableExtension:
+                        case _Forms.___FormType.Table:
+                        case _Forms.___FormType.TableExtension:
                             forms.AddRange(FormMethods.GetTableForms(form));
                             break;
                     }
@@ -70,15 +70,15 @@ public static class ActionButtonToFormAdder
 
                 foreach (var formWithFields in forms)
                 {
-                    var fields = formWithFields.get<IReflectiveSequence>(_DatenMeister._Forms._RowForm.field);
-                    var actionField = MofFactory.CreateElement(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, parameter.ActionName);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.title, parameter.Title);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.name, parameter.ActionName);
+                    var fields = formWithFields.get<IReflectiveSequence>(_Forms._RowForm.field);
+                    var actionField = MofFactory.CreateElement(form, _Forms.TheOne.__ActionFieldData);
+                    actionField.set(_Forms._ActionFieldData.actionName, parameter.ActionName);
+                    actionField.set(_Forms._ActionFieldData.title, parameter.Title);
+                    actionField.set(_Forms._ActionFieldData.name, parameter.ActionName);
 
                     if (parameter.ButtonText != null && !string.IsNullOrEmpty(parameter.ButtonText))
                     {
-                        actionField.set(_DatenMeister._Forms._ActionFieldData.buttonText, parameter.ButtonText);
+                        actionField.set(_Forms._ActionFieldData.buttonText, parameter.ButtonText);
                     }
 
                     if (parameter.Parameter.Count > 0)
@@ -89,7 +89,7 @@ public static class ActionButtonToFormAdder
                             parameter1.set(key, value);
                         }
 
-                        actionField.set(_DatenMeister._Forms._ActionFieldData.parameter, parameter1);
+                        actionField.set(_Forms._ActionFieldData.parameter, parameter1);
                     }
 
                     if (parameter.ActionButtonPosition == -1)

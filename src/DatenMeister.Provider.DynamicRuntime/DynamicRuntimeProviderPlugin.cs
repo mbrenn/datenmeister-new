@@ -21,7 +21,7 @@ public class DynamicRuntimeProviderPlugin(IScopeStorage scopeStorage) : IDatenMe
             {
                 var mapper = ScopeStorage.Get<ProviderToProviderLoaderMapper>();
                 mapper.AddMapping(
-                    _DatenMeister.TheOne.DynamicRuntimeProvider.__DynamicRuntimeLoaderConfig,
+                    _DynamicRuntimeProvider.TheOne.__DynamicRuntimeLoaderConfig,
                     _ => new DynamicRuntimeProviderLoader());
                 break;
             }

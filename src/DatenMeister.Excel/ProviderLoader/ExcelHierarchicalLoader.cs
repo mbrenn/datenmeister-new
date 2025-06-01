@@ -11,7 +11,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Helper;
-using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
+using static DatenMeister.Core.Models._ExtentLoaderConfigs;
 
 namespace DatenMeister.Excel.ProviderLoader;
 

@@ -19,7 +19,7 @@ public class AttachedExtentPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlu
                 {
                     name = AttachedExtentHandler.AttachedExtentProperty,
                     title = "Attached Extent",
-                    metaClass = _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration
+                    metaClass = _AttachedExtent.TheOne.__AttachedExtentConfiguration
                 });
         }
         else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)

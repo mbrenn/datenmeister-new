@@ -19,7 +19,7 @@ public static class FormElementFilter
     /// <returns>The reflective collection containing the filtered elements</returns>
     public static IReflectiveCollection FilterElements(IObject formElement, IReflectiveCollection elements)
     {
-        if (formElement.getOrDefault<bool>(_DatenMeister._Forms._TableForm.includeDescendents))
+        if (formElement.getOrDefault<bool>(_Forms._TableForm.includeDescendents))
         {
             elements = elements.GetAllDescendantsIncludingThemselves();
         }
@@ -30,17 +30,17 @@ public static class FormElementFilter
         // Now performs the sorting
         var sortingOrder =
             formElement.getOrDefault<IReflectiveCollection>(
-                _DatenMeister._Forms._TableForm.sortingOrder);
+                _Forms._TableForm.sortingOrder);
         if (sortingOrder != null)
         {
             var sortingColumnNames =
                 sortingOrder
                     .OfType<IElement>()
                     .Select(x =>
-                        (x.getOrDefault<bool>(_DatenMeister._Forms._SortingOrder.isDescending)
+                        (x.getOrDefault<bool>(_Forms._SortingOrder.isDescending)
                             ? "!"
                             : "") +
-                        x.getOrDefault<string>(_DatenMeister._Forms._SortingOrder.name))
+                        x.getOrDefault<string>(_Forms._SortingOrder.name))
                     .Where(x => !string.IsNullOrEmpty(x) && x != "!");
             elements = elements.OrderElementsBy(sortingColumnNames);
         }
@@ -60,10 +60,10 @@ public static class FormElementFilter
         if (formElement == null) throw new InvalidOperationException("EffectiveForm == null");
             
         var noItemsWithMetaClass =
-            formElement.getOrDefault<bool>(_DatenMeister._Forms._TableForm.noItemsWithMetaClass);
+            formElement.getOrDefault<bool>(_Forms._TableForm.noItemsWithMetaClass);
 
         // If form  defines constraints upon metaclass, then the filtering will occur here
-        var metaClass = formElement.getOrDefault<IElement?>(_DatenMeister._Forms._TableForm.metaClass);
+        var metaClass = formElement.getOrDefault<IElement?>(_Forms._TableForm.metaClass);
 
         if (metaClass != null)
         {

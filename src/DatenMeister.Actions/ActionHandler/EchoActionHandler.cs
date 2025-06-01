@@ -15,14 +15,14 @@ public class EchoActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__EchoAction) == true;
+            _Actions.TheOne.__EchoAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         return await Task.Run(() =>
         {
-            if (action.getOrDefault<string>(_DatenMeister._Actions._EchoAction.shallSuccess) == "OK")
+            if (action.getOrDefault<string>(_Actions._EchoAction.shallSuccess) == "OK")
             {
                 var result = InMemoryObject.CreateEmpty();
                 result.set("returnText", "Returned");

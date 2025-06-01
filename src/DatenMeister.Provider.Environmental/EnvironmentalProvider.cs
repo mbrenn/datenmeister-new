@@ -26,9 +26,9 @@ public class EnvironmentalProvider : IProviderLoader
             var variables = Environment.GetEnvironmentVariables();
             foreach (var pair in variables.OfType<DictionaryEntry>().OrderBy(x => x.Key))
             {
-                var value = new InMemoryObject(provider, _DatenMeister.TheOne.CommonTypes.OSIntegration.__EnvironmentalVariable.Uri);
-                value.SetProperty(_DatenMeister._CommonTypes._OSIntegration._EnvironmentalVariable.name, pair.Key);
-                value.SetProperty(_DatenMeister._CommonTypes._OSIntegration._EnvironmentalVariable.value, pair.Value);
+                var value = new InMemoryObject(provider, _CommonTypes.TheOne.OSIntegration.__EnvironmentalVariable.Uri);
+                value.SetProperty(_CommonTypes._OSIntegration._EnvironmentalVariable.name, pair.Key);
+                value.SetProperty(_CommonTypes._OSIntegration._EnvironmentalVariable.value, pair.Value);
                 value.Id = pair.Key.ToString();
                 provider.AddElement(value);
             }

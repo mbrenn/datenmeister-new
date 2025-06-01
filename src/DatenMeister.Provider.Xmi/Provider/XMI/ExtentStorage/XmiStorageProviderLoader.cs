@@ -34,7 +34,7 @@ public class XmiStorageProviderLoader : IProviderLoader, IProviderLocking
         return await Task.Run(() =>
         {
             var filePath =
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+                configuration.getOrDefault<string>(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
 
             // Strips the quotes from the file path, if user performs a direct copy from the explorer
             if (filePath.StartsWith("\"") && filePath.EndsWith("\""))
@@ -75,7 +75,7 @@ public class XmiStorageProviderLoader : IProviderLoader, IProviderLocking
     public Task StoreProvider(IProvider extent, IElement configuration)
     {
         var filePath =
-            configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
 
         if (!(extent is XmiProvider xmlExtent))
             throw new InvalidOperationException("Only XmlUriExtents are supported");
@@ -132,7 +132,7 @@ public class XmiStorageProviderLoader : IProviderLoader, IProviderLocking
     private static XDocument CreateEmptyXmiDocument(IElement configuration)
     {
         var filePath =
-            configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
 
         CreateDirectoryIfNecessary(configuration);
 
@@ -153,7 +153,7 @@ public class XmiStorageProviderLoader : IProviderLoader, IProviderLocking
     private static void CreateDirectoryIfNecessary(IElement configuration)
     {
         var filePath =
-            configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
         // Creates directory if necessary
         var directoryPath = Path.GetDirectoryName(filePath)
                             ?? throw new InvalidOperationException("directoryPath is null");
@@ -172,7 +172,7 @@ public class XmiStorageProviderLoader : IProviderLoader, IProviderLocking
     public string GetLockFilePath(IElement config)
     {
         var filePath =
-            config.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+            config.getOrDefault<string>(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
         if (string.IsNullOrEmpty(filePath))
         {
             throw new InvalidOperationException(

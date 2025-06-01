@@ -31,14 +31,14 @@ public class ExtentLockingTests
                 {
                     var extentSettings =
                         InMemoryObject.CreateEmpty(
-                            _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-                    extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                            _ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+                    extentSettings.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
                         "dm:///test");
-                    extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                    extentSettings.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
                         Path.Combine(
                             Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
                             "testing/datenmeister/x.xmi"));
-                    extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                    extentSettings.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                         "Data");
 
                     var extentManager = dm.Resolve<ExtentManager>();

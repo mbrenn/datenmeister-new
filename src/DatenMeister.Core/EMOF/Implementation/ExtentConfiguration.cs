@@ -13,7 +13,7 @@ public class ExtentConfiguration
     /// <summary>
     /// Defines the name of the default type packages
     /// </summary>
-    public const string ExtentDefaultTypes = "__DatenMeister.DefaultTypes";
+    public const string ExtentDefaultTypes = "_DefaultTypes";
 
     /// <summary>
     /// Saves the type of the extent

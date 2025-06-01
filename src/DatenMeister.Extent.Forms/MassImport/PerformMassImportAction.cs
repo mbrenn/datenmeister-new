@@ -21,8 +21,8 @@ internal class PerformMassImportActionHandler(IWorkspaceLogic workspaceLogic, IS
 
         // Assumes that the given extent is a definition of Extent-Management instance
 
-        var workspace = extent.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId);
-        var extentUri = extent.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+        var workspace = extent.getOrDefault<string>(_Management._Extent.workspaceId);
+        var extentUri = extent.getOrDefault<string>(_Management._Extent.uri);
 
         var foundExtent = workspaceLogic.FindExtent(workspace, extentUri);
 
@@ -36,11 +36,11 @@ internal class PerformMassImportActionHandler(IWorkspaceLogic workspaceLogic, IS
         massImportLogic.PerformMassImport(foundExtent, text);
 
         // Now return the client action
-        var result = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionResult);
-        var clientAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.ClientActions.__NavigateToExtentClientAction);
-        result.AddCollectionItem(_DatenMeister._Actions._ActionResult.clientActions, clientAction);
-        clientAction.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, workspace);
-        clientAction.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, extentUri);
+        var result = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionResult);
+        var clientAction = InMemoryObject.CreateEmpty(_Actions.TheOne.ClientActions.__NavigateToExtentClientAction);
+        result.AddCollectionItem(_Actions._ActionResult.clientActions, clientAction);
+        clientAction.set(_Actions._ClientActions._NavigateToExtentClientAction.workspaceId, workspace);
+        clientAction.set(_Actions._ClientActions._NavigateToExtentClientAction.extentUri, extentUri);
 
         return await Task.FromResult(result);
     }

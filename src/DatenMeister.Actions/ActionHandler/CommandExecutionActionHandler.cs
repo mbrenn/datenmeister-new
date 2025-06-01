@@ -18,23 +18,23 @@ public class CommandExecutionActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__CommandExecutionAction) == true;
+            _Actions.TheOne.__CommandExecutionAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(() =>
         {
-            var command = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.command);
-            var arguments = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.arguments);
+            var command = action.getOrDefault<string>(_Actions._CommandExecutionAction.command);
+            var arguments = action.getOrDefault<string>(_Actions._CommandExecutionAction.arguments);
             var workingDirectory =
-                action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.workingDirectory);
+                action.getOrDefault<string>(_Actions._CommandExecutionAction.workingDirectory);
 
             /* Translates the command if required */
             var foundCommand = actionLogic.WorkspaceLogic.GetManagementWorkspace()
                 .GetAllDescendents()
-                .WhenMetaClassIs(_DatenMeister.TheOne.CommonTypes.OSIntegration.__CommandLineApplication)
-                .WhenPropertyHasValue(_DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.name,
+                .WhenMetaClassIs(_CommonTypes.TheOne.OSIntegration.__CommandLineApplication)
+                .WhenPropertyHasValue(_CommonTypes._OSIntegration._CommandLineApplication.name,
                     command)
                 .OfType<IElement>()
                 .FirstOrDefault();
@@ -43,7 +43,7 @@ public class CommandExecutionActionHandler : IActionHandler
                 var oldCommand = command;
                 command =
                     foundCommand.getOrDefault<string>(
-                        _DatenMeister._CommonTypes._OSIntegration._CommandLineApplication.applicationPath);
+                        _CommonTypes._OSIntegration._CommandLineApplication.applicationPath);
                 Logger.Info($"Translated process: {oldCommand} {command}");
             }
 

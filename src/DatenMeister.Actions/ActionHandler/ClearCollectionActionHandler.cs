@@ -13,16 +13,16 @@ public class ClearCollectionActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__ClearCollectionAction) == true;
+            _Actions.TheOne.__ClearCollectionAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(() =>
         {
-            var workspaceId = action.getOrDefault<string>(_DatenMeister._Actions._ClearCollectionAction.workspaceId)
+            var workspaceId = action.getOrDefault<string>(_Actions._ClearCollectionAction.workspaceId)
                               ?? WorkspaceNames.WorkspaceData;
-            var path = action.getOrDefault<string>(_DatenMeister._Actions._ClearCollectionAction.path);
+            var path = action.getOrDefault<string>(_Actions._ClearCollectionAction.path);
 
             var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);
             if (workspace == null)

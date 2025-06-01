@@ -18,16 +18,16 @@ public class ImportXmiActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__ImportXmiAction) == true;
+            _Actions.TheOne.__ImportXmiAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(() =>
         {
-            var workspace = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.workspaceId);
-            var itemUri = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.itemUri);
-            var xmi = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.xmi);
+            var workspace = action.getOrDefault<string>(_Actions._ImportXmiAction.workspaceId);
+            var itemUri = action.getOrDefault<string>(_Actions._ImportXmiAction.itemUri);
+            var xmi = action.getOrDefault<string>(_Actions._ImportXmiAction.xmi);
 
             var targetObject = actionLogic.WorkspaceLogic.FindObject(workspace, itemUri);
 
@@ -44,9 +44,9 @@ public class ImportXmiActionHandler : IActionHandler
             else if (targetObject != null)
             {
                 // Ok, we have an item, create a demo extent and add it to the existing extent
-                var property = action.getOrDefault<string>(_DatenMeister._Actions._ImportXmiAction.property);
+                var property = action.getOrDefault<string>(_Actions._ImportXmiAction.property);
                 var addToCollection =
-                    action.getOrDefault<bool>(_DatenMeister._Actions._ImportXmiAction.addToCollection);
+                    action.getOrDefault<bool>(_Actions._ImportXmiAction.addToCollection);
 
                 var provider = new XmiProvider();
                 var extent = new MofUriExtent(provider, "dm:///import", actionLogic.ScopeStorage);

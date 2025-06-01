@@ -66,12 +66,12 @@ public class ExtentCreator
             // Creates the extent for user types
 
             var storageConfiguration = InMemoryObject.CreateEmpty(
-                _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                _ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+            storageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
                 uri);
-            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+            storageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
                 Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")));
-            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+            storageConfiguration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                 workspace);
 
             foundExtent = (await _extentManager.LoadExtent(storageConfiguration, extentCreationFlags)).Extent;

@@ -25,10 +25,10 @@ public class ExtentImport(ExtentManager extentManager)
         if (pathExtension == ".xmi" || pathExtension == ".xml")
         {
             var configuration =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, extentUri);
-            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filePath);
-            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspaceId);
+                InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+            configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, extentUri);
+            configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filePath);
+            configuration.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspaceId);
                 
             var resultingExtent = await extentManager.LoadExtent(configuration);
 

@@ -34,7 +34,7 @@ public class ItemFormatter
     /// <param name="extentForm">The extent form being used to create the tables</param>
     public void FormatCollectionOfItems(IReflectiveCollection collection, IObject extentForm)
     {
-        var tabs = extentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
+        var tabs = extentForm.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
         if (tabs == null)
         {
             FormatCollectionByTab(collection, extentForm);
@@ -50,7 +50,7 @@ public class ItemFormatter
     private void FormatCollectionByTab(IEnumerable<object?> collection, IObject listForm)
     {
         var table = new HtmlTable();
-        var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._RowForm.field);
+        var fields = listForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
 
         if (fields == null)
         {
@@ -62,10 +62,10 @@ public class ItemFormatter
         var listFields = new List<HtmlElement>();
         foreach (var field in fields.OfType<IObject>())
         {
-            var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
+            var fieldName = field.getOrDefault<string>(_Forms._FieldData.title);
 
             fieldName = string.IsNullOrEmpty(fieldName)
-                ? field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name)
+                ? field.getOrDefault<string>(_Forms._FieldData.name)
                 : fieldName;
             if (fieldName == null)
             {
@@ -85,20 +85,20 @@ public class ItemFormatter
             listFields.Clear();
             foreach (var field in fields.OfType<IElement>())
             {
-                var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+                var fieldName = field.getOrDefault<string>(_Forms._FieldData.name);
                 if (fieldName == null)
                 {
                     continue;
                 }
                     
                 HtmlElement value;
-                if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+                if (field.metaclass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
                 {
                     value = item is IElement element && element.metaclass != null
                         ? NamedElementMethods.GetFullName(element.metaclass)
                         : new HtmlRawString("<i>unset</i>");
                 } 
-                else if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__FullNameFieldData) == true)
+                else if (field.metaclass?.equals(_Forms.TheOne.__FullNameFieldData) == true)
                 {
                     var result = NamedElementMethods.GetFullNameWithoutElementId(item);
                     if (string.IsNullOrEmpty(result))
@@ -112,7 +112,7 @@ public class ItemFormatter
                 }
                 else
                 {
-                    if (field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration))
+                    if (field.getOrDefault<bool>(_Forms._FieldData.isEnumeration))
                     {
                         var asEnumeration = item.getOrDefault<IReflectiveCollection>(fieldName);
 
@@ -173,7 +173,7 @@ public class ItemFormatter
 
         CreateDetailRowsForFields(item, detailForm, table);
 
-        var tabs = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CollectionForm.tab);
+        var tabs = detailForm.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
         if (tabs != null)
         {
             foreach (var tab in tabs.OfType<IElement>())
@@ -194,7 +194,7 @@ public class ItemFormatter
     /// <param name="table">The Html Table in which the fields will be include</param>
     private static void CreateDetailRowsForFields(IObject item, IObject form, HtmlTable table)
     {
-        var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm.field);
+        var fields = form.get<IReflectiveCollection>(_Forms._TableForm.field);
         if (fields == null)
         {
             throw new InvalidOperationException("Fields are null...");
@@ -202,11 +202,11 @@ public class ItemFormatter
 
         foreach (var field in fields.OfType<IElement>())
         {
-            var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-            var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
+            var fieldName = field.getOrDefault<string>(_Forms._FieldData.name);
+            var title = field.getOrDefault<string>(_Forms._FieldData.title);
                 
             HtmlElement content;
-            if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+            if (field.metaclass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
             {
                 title = "Metaclass";
                 content = item is IElement element && element.metaclass != null

@@ -186,7 +186,7 @@ public class XmlToExtentConverter
     private string GetNameNormalized(XName xname)
     {
         var keepNamespaces =
-            _loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig
+            _loaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._XmlReferenceLoaderConfig
                 .keepNamespaces);
 
         var name = xname.ToString();

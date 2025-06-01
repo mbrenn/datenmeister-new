@@ -48,17 +48,17 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
     private void ReadFromStream(IProvider extent, Stream stream, IElement? settings)
     {
         var columns =
-            settings?.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+            settings?.getOrDefault<IReflectiveCollection>(_ExtentLoaderConfigs._CsvSettings.columns);
         var hasHeader =
-            settings?.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader) ?? true;
+            settings?.getOrDefault<bool>(_ExtentLoaderConfigs._CsvSettings.hasHeader) ?? true;
 
         var trimCells =
-            settings?.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.trimCells) ?? false;
+            settings?.getOrDefault<bool>(_ExtentLoaderConfigs._CsvSettings.trimCells) ?? false;
         var createColumns = false;
 
         IElement? metaClass = null;
         var metaClassUri =
-            settings?.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri) ?? null;
+            settings?.getOrDefault<string>(_ExtentLoaderConfigs._CsvSettings.metaclassUri) ?? null;
 
         if (workspaceLogic != null && !string.IsNullOrEmpty(metaClassUri))
         {
@@ -66,7 +66,7 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
         }
 
         using var streamReader = new StreamReader(stream, Encoding.GetEncoding(
-            settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8"));
+            settings.getOrDefault<string>(_ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8"));
         var tempColumns = columns?.OfType<string>().ToList();
                 
         if (tempColumns == null)
@@ -124,7 +124,7 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
             extent.AddElement(csvObject);
         }
                 
-        settings?.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
+        settings?.set(_ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
 
         string EvaluateString(string value)
         {
@@ -142,7 +142,7 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
         char separator = ' ';
         if (settings != null)
         {
-            separator = settings.getOrDefault<char>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator);
+            separator = settings.getOrDefault<char>(_ExtentLoaderConfigs._CsvSettings.separator);
         }
             
         return line.Split(
@@ -158,7 +158,7 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
     /// <param name="settings">Settings being used. Of type CSV Settings</param>
     public void Save(IProvider extent, string path, IElement settings)
     {
-        var encoding = settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8";
+        var encoding = settings.getOrDefault<string>(_ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8";
         // Open File
         using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(encoding)))
         {
@@ -175,9 +175,9 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
     public void SaveToStream(TextWriter streamWriter, IProvider extent, IElement settings)
     {
         var csvColumns =
-            settings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+            settings.getOrDefault<IReflectiveCollection>(_ExtentLoaderConfigs._CsvSettings.columns);
         var hasHeader =
-            settings.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader);
+            settings.getOrDefault<bool>(_ExtentLoaderConfigs._CsvSettings.hasHeader);
 
         var columns = new List<string>();
 
@@ -227,7 +227,7 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
         IEnumerable<string> values,
         Func<string, object> conversion)
     {
-        var separator = settings.getOrDefault<char>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator);
+        var separator = settings.getOrDefault<char>(_ExtentLoaderConfigs._CsvSettings.separator);
         var builder = new StringBuilder();
         var first = true;
         foreach (var value in values)

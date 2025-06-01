@@ -65,7 +65,7 @@ public class ExtentList : ItemExplorerControl
 
         if (IsExtentSelectedInTreeview ||
             SelectedItem is IElement selectedElement &&
-            selectedElement.metaclass?.equals(_DatenMeister.TheOne.Management.__Workspace) == true)
+            selectedElement.metaclass?.equals(_Management.TheOne.__Workspace) == true)
         {
             var formDefinition =
                 overridingDefinition ??

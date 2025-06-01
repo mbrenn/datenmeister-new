@@ -10,7 +10,7 @@ public abstract class GenericReportHeadline<T> :
     public bool IsRelevant(IElement element)
     {
         var metaClass = element.getMetaClass();
-        return metaClass?.equals(_DatenMeister.TheOne.Reports.Elements.__ReportHeadline) == true;
+        return metaClass?.equals(_Reports.TheOne.Elements.__ReportHeadline) == true;
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ public abstract class GenericReportHeadline<T> :
     /// <param name="reportNode">The report node</param>
     public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNode)
     {
-        var headline = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportHeadline.title);
+        var headline = reportNode.getOrDefault<string>(_Reports._Elements._ReportHeadline.title);
         WriteHeadline(reportCreator, headline);
     }
 

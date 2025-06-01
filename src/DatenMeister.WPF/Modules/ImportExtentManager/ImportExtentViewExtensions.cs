@@ -91,7 +91,7 @@ public class ImportExtentViewExtensions(ImportExtentManagerPlugin plugin) : IVie
                 }
 
                 var metaClass = selectedExtent.getMetaClass();
-                if (metaClass?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
+                if (metaClass?.equals(_Management.TheOne.__Extent) != true)
                 {
                     MessageBox.Show("Selected element does not reference an extent");
                     return;
@@ -104,8 +104,8 @@ public class ImportExtentViewExtensions(ImportExtentManagerPlugin plugin) : IVie
                     return;
                 }
 
-                var workspaceName = workspace.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
-                var uri = selectedExtent.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+                var workspaceName = workspace.getOrDefault<string>(_Management._Workspace.id);
+                var uri = selectedExtent.getOrDefault<string>(_Management._Extent.uri);
 
                 // Gets the extent from which the data shall be imported
                 var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
@@ -166,7 +166,7 @@ public class ImportExtentViewExtensions(ImportExtentManagerPlugin plugin) : IVie
         // Creates a html report
         var reportInstance = 
             viewExtensionInfo.IsItemInDetailWindowOfType(
-                _DatenMeister.TheOne.ExtentLoaderConfigs.__ExtentLoaderConfig,
+                _ExtentLoaderConfigs.TheOne.__ExtentLoaderConfig,
                 true);
         if (reportInstance != null)
         {

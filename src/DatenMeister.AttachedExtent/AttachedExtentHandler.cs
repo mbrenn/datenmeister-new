@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
-using static DatenMeister.Core.Models._DatenMeister._AttachedExtent;
+using static DatenMeister.Core.Models._AttachedExtent;
 
 namespace DatenMeister.AttachedExtent;
 

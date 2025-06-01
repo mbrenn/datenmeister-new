@@ -29,11 +29,11 @@ public class DateTimeField : IDetailField
 
         fieldFlags.CanBeFocused = true;
             
-        _name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
-        var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.isReadOnly)
+        _name = fieldData.get<string>(_Forms._FieldData.name);
+        var isReadOnly = fieldData.getOrDefault<bool>(_Forms._DateTimeFieldData.isReadOnly)
                          || fieldFlags.IsReadOnly;
-        var hideDate = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate);
-        var hideTime = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime);
+        var hideDate = fieldData.getOrDefault<bool>(_Forms._DateTimeFieldData.hideDate);
+        var hideTime = fieldData.getOrDefault<bool>(_Forms._DateTimeFieldData.hideTime);
 
         _propertyValue = DateTimeHelper.TruncateToSecond(DateTime.Now);
             
@@ -43,9 +43,9 @@ public class DateTimeField : IDetailField
         }
         else
         {
-            if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
+            if (fieldData.isSet(_Forms._FieldData.defaultValue))
             {
-                _propertyValue = fieldData.getOrDefault<DateTime>(_DatenMeister._Forms._FieldData.defaultValue);
+                _propertyValue = fieldData.getOrDefault<DateTime>(_Forms._FieldData.defaultValue);
             }
         }
 

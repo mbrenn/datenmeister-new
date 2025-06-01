@@ -25,11 +25,11 @@ public class StoreExtentTests
             
         // Performs the first loading of the extent
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, temporaryStorage);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///test");
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, temporaryStorage);
+        loaderConfig.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///test");
         loaderConfig.set(
-            _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, 
+            _ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, 
             WorkspaceNames.WorkspaceData);
         var loadedInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
         Assert.That(
@@ -38,11 +38,11 @@ public class StoreExtentTests
             loadedInfo.FailLoadingMessage);
             
         // First Store
-        var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__StoreExtentAction)
+        var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__StoreExtentAction)
             .SetProperties(new Dictionary<string, object>
             {
-                [_DatenMeister._Actions._StoreExtentAction.workspaceId] = WorkspaceNames.WorkspaceData,
-                [_DatenMeister._Actions._StoreExtentAction.extentUri] = "dm:///test"
+                [_Actions._StoreExtentAction.workspaceId] = WorkspaceNames.WorkspaceData,
+                [_Actions._StoreExtentAction.extentUri] = "dm:///test"
             });
             
         actionLogic.ExecuteAction(action).Wait();

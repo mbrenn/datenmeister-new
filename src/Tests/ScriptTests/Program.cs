@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using static DatenMeister.Core.Models._DatenMeister._Reports;
+using static DatenMeister.Core.Models._Reports;
 
 namespace ScriptTests;
 
@@ -10,7 +10,7 @@ class Program
     static async Task Main()
     {
         var configuration =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration)
+            InMemoryObject.CreateEmpty(_Reports.TheOne.__SimpleReportConfiguration)
                 .SetProperty(_SimpleReportConfiguration.typeMode, _Elements.___ReportTableForTypeMode.PerType)
                 .SetProperty(_SimpleReportConfiguration.descendentMode, ___DescendentMode.Inline)
                 .SetProperty(_SimpleReportConfiguration.showDescendents, true)

@@ -11,7 +11,7 @@ using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
-using static DatenMeister.Core.Models._DatenMeister._Reports;
+using static DatenMeister.Core.Models._Reports;
 
 namespace DatenMeister.Reports.Simple;
 

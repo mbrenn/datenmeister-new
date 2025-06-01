@@ -57,12 +57,12 @@ public class ExcelImporter
     /// </summary>
     public void LoadExcel()
     {
-        _excelDocument = SSDocument.LoadFromFile(LoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.filePath));
+        _excelDocument = SSDocument.LoadFromFile(LoaderConfig.getOrDefault<string>(_ExtentLoaderConfigs._ExcelLoaderConfig.filePath));
 
-        if (!LoaderConfig.isSet(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName))
+        if (!LoaderConfig.isSet(_ExtentLoaderConfigs._ExcelLoaderConfig.sheetName))
         {
             LoaderConfig.set(
-                _DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName,
+                _ExtentLoaderConfigs._ExcelLoaderConfig.sheetName,
                 _excelDocument.Tables.FirstOrDefault()?.Name);
         }
     }
@@ -99,7 +99,7 @@ public class ExcelImporter
     {
         if (IsExcelLoaded)
         {
-            return GetSheet(LoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName));
+            return GetSheet(LoaderConfig.getOrDefault<string>(_ExtentLoaderConfigs._ExcelLoaderConfig.sheetName));
         }
 
         return null;
@@ -122,11 +122,11 @@ public class ExcelImporter
     {
         var foundSheet = GetSelectedSheet();
         var offsetRow =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
         var offsetColumn =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
         var hasHeader =
-            LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
+            LoaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
         return foundSheet?.GetCellContent(
             row + offsetRow + (hasHeader ? 1 : 0),
             column + offsetColumn) ?? string.Empty;
@@ -141,13 +141,13 @@ public class ExcelImporter
         var selectedSheet = GetSelectedSheet();
             
         var offsetRow =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
         var offsetColumn =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
         var hasHeader =
-            LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
+            LoaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
         var tryMergedHeaderCells =
-            LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.tryMergedHeaderCells);
+            LoaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelLoaderConfig.tryMergedHeaderCells);
 
         if (selectedSheet == null) return new List<string>();
             
@@ -201,7 +201,7 @@ public class ExcelImporter
     public IEnumerable<string> GetColumnNames(bool forceAll = false)
     {
         var onlySetColumn =
-            LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.onlySetColumns);
+            LoaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelLoaderConfig.onlySetColumns);
             
         var list = GetOriginalColumnNames();
         foreach (var headerName in list)
@@ -224,17 +224,17 @@ public class ExcelImporter
     public int GuessRowCount()
     {
         var xOffsetRow =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
         var xOffsetColumn =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
         var xHasHeader =
-            LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
+            LoaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
         var xCountRows =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countRows);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.countRows);
         var xFitRowCount =
-            LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.fixRowCount);
+            LoaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelLoaderConfig.fixRowCount);
         var xSkipEmptyRows =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.skipEmptyRowsCount);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.skipEmptyRowsCount);
             
         var hasHeaderRows = xHasHeader;
         var foundSheet = GetSelectedSheet();
@@ -264,7 +264,7 @@ public class ExcelImporter
             n++;
         }
 
-        LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countRows, n);
+        LoaderConfig.set(_ExtentLoaderConfigs._ExcelLoaderConfig.countRows, n);
         return n;
     }
 
@@ -277,13 +277,13 @@ public class ExcelImporter
         if (foundSheet == null) return -1;
             
         var xOffsetRow =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
         var xOffsetColumn =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
         var xCountColumns =
-            LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countColumns);
+            LoaderConfig.getOrDefault<int>(_ExtentLoaderConfigs._ExcelLoaderConfig.countColumns);
         var xFitRowCount =
-            LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.fixRowCount);
+            LoaderConfig.getOrDefault<bool>(_ExtentLoaderConfigs._ExcelLoaderConfig.fixRowCount);
 
         if (xFitRowCount) return xCountColumns;
 
@@ -300,7 +300,7 @@ public class ExcelImporter
             n++;
         }
 
-        LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countColumns, n);
+        LoaderConfig.set(_ExtentLoaderConfigs._ExcelLoaderConfig.countColumns, n);
         return n;
     }
 }

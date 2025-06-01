@@ -128,7 +128,7 @@ public class ItemsInExtentList : ItemExplorerControl
                     
                 if (!ClassifierMethods.IsSpecializedClassifierOf(
                         formMetaClass, 
-                        _DatenMeister.TheOne.Forms.__CollectionForm))
+                        _Forms.TheOne.__CollectionForm))
                 {
                     var formType = formMetaClass?.ToString() ?? "Unclassified";
                         
@@ -158,7 +158,7 @@ public class ItemsInExtentList : ItemExplorerControl
                 if (DefaultClassifierHints.IsPackageLike(SelectedItem))
                 {
                     viewMode = SelectedItem.getOrDefault<string>(
-                                   _DatenMeister._CommonTypes._Default._Package.defaultViewMode)
+                                   _CommonTypes._Default._Package.defaultViewMode)
                                ?? viewMode;
                 }
                     
@@ -276,9 +276,9 @@ public class ItemsInExtentList : ItemExplorerControl
             var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
             var uriExtent = Extent as IUriExtent ?? throw new InvalidOperationException("Extent as IUriExtent");
             var loadConfiguration = extentManager.GetLoadConfigurationFor(uriExtent);
-            if (loadConfiguration != null && loadConfiguration.isSet(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath))
+            if (loadConfiguration != null && loadConfiguration.isSet(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath))
             {
-                var filePath = loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
+                var filePath = loadConfiguration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
                     
                 //Clean up file path so it can be navigated OK
                 filePath = Path.GetFullPath(filePath);

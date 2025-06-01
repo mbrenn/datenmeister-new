@@ -79,10 +79,10 @@ public class StundenMeisterPlugin : IDatenMeisterPlugin
         var filePath = Path.Combine(directory, "StundenMeister.xmi");
 
         var storageData = InMemoryObject.CreateEmpty(
-            _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-        storageData.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+            _ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig);
+        storageData.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
             "dm:///stundenmeister/");
-        storageData.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+        storageData.set(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
             filePath);
 
         StundenMeisterData.TheOne.Extent =

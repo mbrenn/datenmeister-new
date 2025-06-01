@@ -29,7 +29,7 @@ public class InMemoryProviderLoader : IProviderLoader
         // Checks whether the item is a linked list
         IProvider provider;
         if (configuration.getOrDefault<bool>(
-                _DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.isLinkedList))
+                _ExtentLoaderConfigs._InMemoryLoaderConfig.isLinkedList))
         {
             provider = new InMemoryProviderLinkedList();
         }

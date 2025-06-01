@@ -77,7 +77,7 @@ public class FormFinder
             }
 
             // Checks, if we want to perform a break
-            if (query.debugActive && element.getOrDefault<bool>(_DatenMeister._Forms._FormAssociation.debugActive))
+            if (query.debugActive && element.getOrDefault<bool>(_Forms._FormAssociation.debugActive))
             {
                 Debugger.Break();
             }
@@ -86,20 +86,20 @@ public class FormFinder
             if (element == null) throw new NullReferenceException("element");
 
             var associationExtentType =
-                element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
+                element.getOrDefault<string>(_Forms._FormAssociation.extentType);
             var associationMetaClass =
-                element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
+                element.getOrDefault<IElement>(_Forms._FormAssociation.metaClass);
             var associationViewType =
-                element.getOrNull<_DatenMeister._Forms.___FormType>(_DatenMeister._Forms._FormAssociation.formType);
+                element.getOrNull<_Forms.___FormType>(_Forms._FormAssociation.formType);
             var associationParentMetaclass =
-                element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.parentMetaClass);
+                element.getOrDefault<IElement>(_Forms._FormAssociation.parentMetaClass);
             var associationParentProperty =
-                element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.parentProperty);
-            var associationForm = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.form);
-            var associationWorkspaceId = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.workspaceId);
-            var associationExtentUri = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentUri);
+                element.getOrDefault<string>(_Forms._FormAssociation.parentProperty);
+            var associationForm = element.getOrDefault<IElement>(_Forms._FormAssociation.form);
+            var associationWorkspaceId = element.getOrDefault<string>(_Forms._FormAssociation.workspaceId);
+            var associationExtentUri = element.getOrDefault<string>(_Forms._FormAssociation.extentUri);
             var associationViewModeId =
-                element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.viewModeId);
+                element.getOrDefault<string>(_Forms._FormAssociation.viewModeId);
             if (string.IsNullOrEmpty(associationExtentType) && associationMetaClass == null
                                                             && associationParentMetaclass == null
                                                             && associationParentProperty == null

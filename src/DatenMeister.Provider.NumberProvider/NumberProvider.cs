@@ -4,7 +4,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Provider.DynamicRuntime;
-using static DatenMeister.Core.Models._DatenMeister._DynamicRuntimeProvider._Examples;
+using static DatenMeister.Core.Models._DynamicRuntimeProvider._Examples;
 
 namespace DatenMeister.Provider.NumberProvider;
 

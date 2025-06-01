@@ -60,7 +60,7 @@ public static class WorkspaceExtentFormGenerator
                               extent.elements(),
                               new FormFactoryConfiguration())
                           ?? throw new InvalidOperationException("List form could not be created");
-            formElement.set(_DatenMeister._Forms._TableForm.inhibitNewItems, true);
+            formElement.set(_Forms._TableForm.inhibitNewItems, true);
         }
 
         var formDefinition = new FormDefinition("Workspaces", formElement)
@@ -162,10 +162,10 @@ public static class WorkspaceExtentFormGenerator
                     extent.elements(),
                     new FormFactoryConfiguration()) ??
                 throw new InvalidOperationException("listForm == null");
-            result.set(_DatenMeister._Forms._TableForm.inhibitDeleteItems, true);
-            result.set(_DatenMeister._Forms._TableForm.inhibitNewItems, true);
-            result.set(_DatenMeister._Forms._TableForm.property,
-                nameof(_DatenMeister._Management._Workspace.extents));
+            result.set(_Forms._TableForm.inhibitDeleteItems, true);
+            result.set(_Forms._TableForm.inhibitNewItems, true);
+            result.set(_Forms._TableForm.property,
+                nameof(_Management._Workspace.extents));
         }
 
         var viewDefinition = new FormDefinition("Extents", result)
@@ -179,7 +179,7 @@ public static class WorkspaceExtentFormGenerator
                     "Edit Properties",
                     async (navigationGuest, element) =>
                     {
-                        var extentUrl = element.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+                        var extentUrl = element.getOrDefault<string>(_Management._Extent.uri);
                         var foundExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, extentUrl);
                         if (foundExtent == null)
                         {
@@ -336,7 +336,7 @@ public static class WorkspaceExtentFormGenerator
 
         void SaveExtent(INavigationGuest navigationGuest, IObject item)
         {
-            var uri = item.getOrDefault<string>(nameof(_DatenMeister._Management._Extent.uri));
+            var uri = item.getOrDefault<string>(nameof(_Management._Extent.uri));
             var storeExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, uri);
 
             var extentManager = GiveMe.Scope.Resolve<ExtentManager>();

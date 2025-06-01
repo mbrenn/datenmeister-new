@@ -52,16 +52,16 @@ public class MoveUpDownActionTests
         // Now, move it up!
         var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic, dm.ScopeStorage);
         var moveAction = temporaryExtentLogic.CreateTemporaryElement(
-            _DatenMeister.TheOne.Actions.__MoveUpDownAction);
+            _Actions.TheOne.__MoveUpDownAction);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.container, 
+            _Actions._MoveUpDownAction.container, 
             extent);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.element, 
+            _Actions._MoveUpDownAction.element, 
             i2);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.direction, 
-            _DatenMeister._Actions.___MoveDirectionType.Up);
+            _Actions._MoveUpDownAction.direction, 
+            _Actions.___MoveDirectionType.Up);
         await actionLogic.ExecuteAction(moveAction);
             
         // Check, that i2 is on 1st position
@@ -73,16 +73,16 @@ public class MoveUpDownActionTests
         //
         // Now, move it down again. Twice
         moveAction = temporaryExtentLogic.CreateTemporaryElement(
-            _DatenMeister.TheOne.Actions.__MoveUpDownAction);
+            _Actions.TheOne.__MoveUpDownAction);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.container, 
+            _Actions._MoveUpDownAction.container, 
             extent);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.element, 
+            _Actions._MoveUpDownAction.element, 
             i2);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.direction, 
-            _DatenMeister._Actions.___MoveDirectionType.Down);
+            _Actions._MoveUpDownAction.direction, 
+            _Actions.___MoveDirectionType.Down);
         await actionLogic.ExecuteAction(moveAction);
         await actionLogic.ExecuteAction(moveAction);
             
@@ -132,19 +132,19 @@ public class MoveUpDownActionTests
         // Now, move it up!
         var temporaryExtentLogic = new TemporaryExtentLogic(dm.WorkspaceLogic, dm.ScopeStorage);
         var moveAction = temporaryExtentLogic.CreateTemporaryElement(
-            _DatenMeister.TheOne.Actions.__MoveUpDownAction);
+            _Actions.TheOne.__MoveUpDownAction);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.container, 
+            _Actions._MoveUpDownAction.container, 
             parent);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.property, 
+            _Actions._MoveUpDownAction.property, 
             "children");
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.element, 
+            _Actions._MoveUpDownAction.element, 
             i2);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.direction, 
-            _DatenMeister._Actions.___MoveDirectionType.Up);
+            _Actions._MoveUpDownAction.direction, 
+            _Actions.___MoveDirectionType.Up);
         await actionLogic.ExecuteAction(moveAction);
             
         // Check, that i2 is on 1st position
@@ -156,19 +156,19 @@ public class MoveUpDownActionTests
         //
         // Now, move it down again. Twice
         moveAction = temporaryExtentLogic.CreateTemporaryElement(
-            _DatenMeister.TheOne.Actions.__MoveUpDownAction);
+            _Actions.TheOne.__MoveUpDownAction);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.container, 
+            _Actions._MoveUpDownAction.container, 
             parent);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.property, 
+            _Actions._MoveUpDownAction.property, 
             "children");
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.element, 
+            _Actions._MoveUpDownAction.element, 
             i2);
         moveAction.set(
-            _DatenMeister._Actions._MoveUpDownAction.direction, 
-            _DatenMeister._Actions.___MoveDirectionType.Down);
+            _Actions._MoveUpDownAction.direction, 
+            _Actions.___MoveDirectionType.Down);
         await actionLogic.ExecuteAction(moveAction);
         await actionLogic.ExecuteAction(moveAction);
             

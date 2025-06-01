@@ -10,7 +10,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
-using static DatenMeister.Core.Models._DatenMeister._FastViewFilters;
+using static DatenMeister.Core.Models._FastViewFilters;
 
 namespace DatenMeister.Tests.Provider;
 
@@ -107,7 +107,7 @@ public class DotNetTests
         workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace()!, extent);
 
         var factory = new MofFactory(extent);
-        var value = factory.create(_DatenMeister.TheOne.FastViewFilters.__PropertyComparisonFilter);
+        var value = factory.create(_FastViewFilters.TheOne.__PropertyComparisonFilter);
         value.set(_PropertyComparisonFilter.Property, "Test");
         value.set(_PropertyComparisonFilter.Value, "Content");
         value.set(_PropertyComparisonFilter.ComparisonType, ___ComparisonType.GreaterThan);

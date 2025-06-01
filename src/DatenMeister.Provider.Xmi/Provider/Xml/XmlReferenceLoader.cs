@@ -21,7 +21,7 @@ public class XmlReferenceLoader : IProviderLoader, IProviderLoaderSupportsReload
     {
         var filePath =
             configuration.getOrDefault<string>(
-                _DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath);
+                _ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath);
 
         // Now load the stuff
         var provider = new InMemoryProvider();
@@ -44,7 +44,7 @@ public class XmlReferenceLoader : IProviderLoader, IProviderLoaderSupportsReload
     {
         var filePath =
             configuration.getOrDefault<string>(
-                _DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath);
+                _ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath);
 
         // Now load the stuff
         var tempProvider = new InMemoryProvider();

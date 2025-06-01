@@ -16,7 +16,7 @@ public class ActionSetInteractionHandler : BaseElementInteractionHandler
     /// </summary>
     public ActionSetInteractionHandler()
     {
-        OnlyElementsOfType = _DatenMeister.TheOne.Actions.__ActionSet;
+        OnlyElementsOfType = _Actions.TheOne.__ActionSet;
     }
 
     public override IEnumerable<IElementInteraction> GetInteractions(IObject element)

@@ -5,12 +5,13 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Locking;
-using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
+using static DatenMeister.Core.Models._ExtentLoaderConfigs;
 
 namespace DatenMeister.Extent.Manager.ExtentStorage;
 
@@ -67,8 +68,8 @@ public class ExtentManager
         lock (_extentStorageData.LoadedExtents)
         {
             return _extentStorageData.LoadedExtents.FirstOrDefault(
-                x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
-                     && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
+                     && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
         }
     }
 
@@ -82,17 +83,17 @@ public class ExtentManager
         {
             // First, check, if there is already an extent loaded in the internal database with that uri and workspace
             var workspaceId =
-                configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId);
+                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId);
             var extentUri =
-                configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri);
+                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri);
             var dropExisting =
-                configuration.getOrDefault<bool>(_ExtentLoaderConfig.dropExisting);
+                configuration.getOrDefault<bool>(_ExtentLoaderConfigs._ExtentLoaderConfig.dropExisting);
                 
             // Checks, if workspace is not set, and then override it with 'Data'
             if (string.IsNullOrEmpty(workspaceId))
             {
                 workspaceId = WorkspaceLogic.GetDefaultWorkspace()?.id ?? WorkspaceNames.WorkspaceData;
-                configuration.set(_ExtentLoaderConfig.workspaceId, workspaceId);
+                configuration.set(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId, workspaceId);
             }
 
             ExtentStorageData.LoadedExtentInformation? foundLoadedExtentInformation;
@@ -101,8 +102,8 @@ public class ExtentManager
             {
                 foundLoadedExtentInformation =
                     _extentStorageData.LoadedExtents.FirstOrDefault(
-                        x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
-                             && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                        x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
+                             && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
             }
 
             if (foundLoadedExtentInformation != null)
@@ -218,7 +219,7 @@ public class ExtentManager
         ExtentStorageData.LoadedExtentInformation extentInformation)
     {
         var extentUri =
-            configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri);
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri);
         if (extentUri == null || string.IsNullOrEmpty(extentUri))
         {
             throw new InvalidOperationException("No extent uri is given");
@@ -226,12 +227,12 @@ public class ExtentManager
 
         // Checks, if the given URL has a relative path and transforms the path to an absolute path
         // TODO: Do real check including generalizations, but accept it for now
-        if (configuration.isSet(_ExtentFileLoaderConfig.filePath))
+        if (configuration.isSet(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath))
         {
             var filePath =
-                configuration.getOrDefault<string>(_ExtentFileLoaderConfig.filePath);
+                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
             filePath = _integrationSettings.NormalizeDirectoryPath(filePath);
-            configuration.set(_ExtentFileLoaderConfig.filePath, filePath);
+            configuration.set(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath, filePath);
 
             if (Directory.Exists(filePath))
             {
@@ -253,7 +254,7 @@ public class ExtentManager
             if (providerLocking.IsLocked(configuration))
             {
                 var filePath =
-                    configuration.getOrDefault<string>(_ExtentFileLoaderConfig
+                    configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentFileLoaderConfig
                         .filePath) ?? "Unknown";
 
                 extentInformation.LoadingState = ExtentLoadingState.Failed;
@@ -271,7 +272,7 @@ public class ExtentManager
         LoadedProviderInfo loadedProviderInfo;
         try
         {
-            Logger.Info("Loading Extent: " + configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+            Logger.Info("Loading Extent: " + configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
             loadedProviderInfo = await extentLoader.LoadProvider(configuration, extentCreationFlags);
             extentInformation.LoadingState =
                 _integrationSettings.IsReadOnly
@@ -290,10 +291,10 @@ public class ExtentManager
         if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace || extentInformation.IsExtentAddedToWorkspace)
         {
             var newWorkspaceId =
-                loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfig.workspaceId) ??
+                loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId) ??
                 string.Empty;
             var newExtentUri =
-                loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfig.extentUri) ?? string.Empty;
+                loadedProviderInfo.UsedConfig?.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri) ?? string.Empty;
             var alreadyFoundExtent = WorkspaceLogic.FindExtent(
                 newWorkspaceId,
                 newExtentUri) ?? throw new InvalidOperationException("The extent was not found: " +
@@ -346,7 +347,7 @@ public class ExtentManager
         bool createEmptyWorkspace)
     {
         var workspaceId =
-            configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId);
+            configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId);
         if (WorkspaceLogic != null)
         {
             var workspace = string.IsNullOrEmpty(workspaceId)
@@ -405,7 +406,7 @@ public class ExtentManager
             list.AddRange(
                 _extentStorageData.LoadedExtents
                     .Where(loadedExtent =>
-                        loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId) ==
+                        loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId) ==
                         workspaceId));
         }
 
@@ -733,7 +734,7 @@ public class ExtentManager
 
             // Check, if given workspace can be loaded or whether references are still in list
             if (IsMetaWorkspaceInLoaderList(
-                    configuration.getOrDefault<string>(_ExtentLoaderConfig
+                    configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                         .workspaceId), loaded))
             {
                 // If yes, put current workspace to the end
@@ -762,9 +763,9 @@ public class ExtentManager
                 {
                     Logger.Warn(
                         "Loading extent of " +
-                        $"{configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)} " +
+                        $"{configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)} " +
                         $"failed: {exc.Message}");
-                    failedExtents.Add(configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                    failedExtents.Add(configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
                     lastException = exc;
 
                     if (Debugger.IsAttached && ExtentConfigurationLoader.BreakOnFailedWorkspaceLoading)
@@ -793,8 +794,8 @@ public class ExtentManager
             catch (Exception exc)
             {
                 Logger.Warn(
-                    $"Loading extent of {configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)} failed: {exc.Message}");
-                failedExtents.Add(configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                    $"Loading extent of {configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)} failed: {exc.Message}");
+                failedExtents.Add(configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
                 lastException = exc;
             }
         }
@@ -831,7 +832,7 @@ public class ExtentManager
     {
         return IsMetaWorkspaceInList(
             workspaceId,
-            configuration.Select(x => x.getOrDefault<string>(_ExtentLoaderConfig.workspaceId))
+            configuration.Select(x => x.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId))
                 .ToArray());
     }
 
@@ -917,7 +918,7 @@ public class ExtentManager
             catch (Exception exc)
             {
                 Logger.Error(
-                    $"Error during storing of extent: {info.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)}: {exc.Message}");
+                    $"Error during storing of extent: {info.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)}: {exc.Message}");
             }
         }
     }
@@ -997,9 +998,9 @@ public class ExtentManager
             {
                 var found = list.FirstOrDefault(
                     x => x.Workspace ==
-                         entry.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
+                         entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
                          && x.ExtentUri ==
-                         entry.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+                         entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
 
                 if (found != null)
                 {
@@ -1010,8 +1011,8 @@ public class ExtentManager
 
                 list.Add(
                     new VerifyDatabaseEntry(
-                        entry.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId),
-                        entry.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)
+                        entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId),
+                        entry.Configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
                     ));
             }
         }

@@ -45,19 +45,19 @@ public class DataviewTests
         var userViewExtent = helper.GetUserFormExtent();
 
         var factory = new MofFactory(userViewExtent);
-        var extentSource = factory.create(_DatenMeister.TheOne.DataViews.__SelectByExtentNode);
-        extentSource.set(_DatenMeister._DataViews._SelectByExtentNode.extentUri, "dm:///testdata");
+        var extentSource = factory.create(_DataViews.TheOne.__SelectByExtentNode);
+        extentSource.set(_DataViews._SelectByExtentNode.extentUri, "dm:///testdata");
         userViewExtent.elements().add(extentSource);
 
-        var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
+        var propertyFilter = factory.create(_DataViews.TheOne.__FilterByPropertyValueNode);
         userViewExtent.elements().add(propertyFilter);
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, "name");
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
-            _DatenMeister._DataViews.___ComparisonMode.Contains);
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, "ai");
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, extentSource);
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.property, "name");
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.comparisonMode,
+            _DataViews.___ComparisonMode.Contains);
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.value, "ai");
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.input, extentSource);
 
-        dataView.set(_DatenMeister._DataViews._DataView.viewNode, propertyFilter);
+        dataView.set(_DataViews._DataView.viewNode, propertyFilter);
 
         var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
         var extent = workspaceLogic.FindExtent("dm:///view/test");
@@ -70,8 +70,8 @@ public class DataviewTests
         Assert.That(elements.Length, Is.GreaterThan(0));
 
         // Go to Non-Contain
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
-            _DatenMeister._DataViews.___ComparisonMode.DoesNotContain);
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.comparisonMode,
+            _DataViews.___ComparisonMode.DoesNotContain);
         elements = extent.elements().OfType<IElement>().ToArray();
         Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
         Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
@@ -87,15 +87,15 @@ public class DataviewTests
         var factory = InMemoryObject.TemporaryFactory;
 
         // Creates the dataview
-        var extentSource = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
-        extentSource.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
+        var extentSource = factory.create(_DataViews.TheOne.__DynamicSourceNode);
+        extentSource.set(_DataViews._DynamicSourceNode.name, "input");
 
-        var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterByPropertyValueNode);
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, "name");
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode,
-            _DatenMeister._DataViews.___ComparisonMode.Contains);
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, "ai");
-        propertyFilter.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, extentSource);
+        var propertyFilter = factory.create(_DataViews.TheOne.__FilterByPropertyValueNode);
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.property, "name");
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.comparisonMode,
+            _DataViews.___ComparisonMode.Contains);
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.value, "ai");
+        propertyFilter.set(_DataViews._FilterByPropertyValueNode.input, extentSource);
 
         // Gets the elements
         var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
@@ -119,7 +119,7 @@ public class DataviewTests
         var factory = InMemoryObject.TemporaryFactory;
 
         var selectFromAllWorkspacesNode =
-            factory.create(_DatenMeister.TheOne.DataViews.__SelectFromAllWorkspacesNode);
+            factory.create(_DataViews.TheOne.__SelectFromAllWorkspacesNode);
 
         var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
         var result =
@@ -145,8 +145,8 @@ public class DataviewTests
         var factory = InMemoryObject.TemporaryFactory;
 
         var selectByWorkspaceNode =
-            factory.create(_DatenMeister.TheOne.DataViews.__SelectByWorkspaceNode);
-        selectByWorkspaceNode.set(_DatenMeister._DataViews._SelectByWorkspaceNode.workspaceId, WorkspaceNames.WorkspaceData);
+            factory.create(_DataViews.TheOne.__SelectByWorkspaceNode);
+        selectByWorkspaceNode.set(_DataViews._SelectByWorkspaceNode.workspaceId, WorkspaceNames.WorkspaceData);
 
         var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
         var result =

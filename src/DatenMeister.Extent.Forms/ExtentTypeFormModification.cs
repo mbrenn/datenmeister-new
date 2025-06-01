@@ -44,15 +44,15 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
     /// <returns>true, if matching has occured</returns>
     private bool IncludeJumpToExtentButton(FormCreationContext context, IElement form)
     {
-        if (context.FormType == _DatenMeister._Forms.___FormType.Collection)
+        if (context.FormType == _Forms.___FormType.Collection)
         {
             var fields = form.get<IReflectiveCollection>(
-                _DatenMeister._Forms._CollectionForm.field);
+                _Forms._CollectionForm.field);
             var factory = new MofFactory(form);
-            var field = factory.create(_DatenMeister.TheOne.Forms.__ActionFieldData);
-            field.set(_DatenMeister._Forms._ActionFieldData.name, "Go to Extent");
-            field.set(_DatenMeister._Forms._ActionFieldData.title, "Go to Extent");
-            field.set(_DatenMeister._Forms._ActionFieldData.actionName, "DatenMeister.Navigation.ToExtent");
+            var field = factory.create(_Forms.TheOne.__ActionFieldData);
+            field.set(_Forms._ActionFieldData.name, "Go to Extent");
+            field.set(_Forms._ActionFieldData.title, "Go to Extent");
+            field.set(_Forms._ActionFieldData.actionName, "DatenMeister.Navigation.ToExtent");
 
             fields.add(field);
             return true;
@@ -69,8 +69,8 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
     /// <param name="form">Form to be used</param>
     private bool IncludeExtentTypesForTableFormOfExtent(FormCreationContext context, IElement form)
     {
-        if (context.FormType != _DatenMeister._Forms.___FormType.Row ||
-            context.MetaClass?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
+        if (context.FormType != _Forms.___FormType.Row ||
+            context.MetaClass?.equals(_Management.TheOne.__Extent) != true)
         {
             return false;
         }
@@ -79,13 +79,13 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
         var field =
             FormMethods.GetField(
                 form,
-                _DatenMeister._Management._Extent.extentType,
-                _DatenMeister.TheOne.Forms.__CheckboxListTaggingFieldData);
+                _Management._Extent.extentType,
+                _Forms.TheOne.__CheckboxListTaggingFieldData);
 
         if (field != null)
         {
             var values =
-                field.get<IReflectiveCollection>(_DatenMeister._Forms._CheckboxListTaggingFieldData.values);
+                field.get<IReflectiveCollection>(_Forms._CheckboxListTaggingFieldData.values);
             var valuesAsList = values
                 .OfType<IElement>()
                 .ToList();
@@ -95,15 +95,15 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
             foreach (var extentType in extentTypes)
             {
                 if (valuesAsList.Any(x =>
-                        x.getOrDefault<string>(_DatenMeister._Forms._ValuePair.value) == extentType))
+                        x.getOrDefault<string>(_Forms._ValuePair.value) == extentType))
                 {
                     // Already added, otherwise add the value pair
                     continue;
                 }
 
-                var valuePair = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
-                valuePair.set(_DatenMeister._Forms._ValuePair.name, extentType);
-                valuePair.set(_DatenMeister._Forms._ValuePair.value, extentType);
+                var valuePair = factory.create(_Forms.TheOne.__ValuePair);
+                valuePair.set(_Forms._ValuePair.name, extentType);
+                valuePair.set(_Forms._ValuePair.value, extentType);
                 values.add(valuePair);
             }
         }
@@ -129,7 +129,7 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
         var foundExtentTypes =
             extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
 
-        if (!foundExtentTypes.Any() || context.FormType != _DatenMeister._Forms.___FormType.Collection)
+        if (!foundExtentTypes.Any() || context.FormType != _Forms.___FormType.Collection)
         {
             return false;
         }
@@ -140,7 +140,7 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
         // First, figure out which list forms we are having...
         foreach (var listForm in tableForms)
         {
-            var metaClass = listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass);
+            var metaClass = listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
             foundListMetaClasses.Add(metaClass);
         }
 
@@ -148,7 +148,7 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
         foreach (var listForm in tableForms)
         {
             // Selects only the listform which do not have a classifier
-            if (listForm.getOrDefault<IElement>(_DatenMeister._Forms._TableForm.metaClass) != null)
+            if (listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass) != null)
             {
                 continue;
             }
@@ -198,14 +198,14 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
         var foundExtentTypes =
             extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
 
-        if (foundExtentTypes.Count == 0 || context.FormType != _DatenMeister._Forms.___FormType.Object)
+        if (foundExtentTypes.Count == 0 || context.FormType != _Forms.___FormType.Object)
         {
             return false;
         }
 
         // Check, if the detail element is from type package
         if ((context.DetailElement as IElement)?.metaclass?.equals(_UML.TheOne.Packages.__Package) != true
-            && (context.DetailElement as IElement)?.metaclass?.equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) != true)
+            && (context.DetailElement as IElement)?.metaclass?.equals(_CommonTypes.TheOne.Default.__Package) != true)
         {
             return false;
         }
@@ -215,13 +215,13 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
         foreach (var rowForm in rowForms)
         {
             var foundFieldForPackagedElement = FormMethods.GetFieldForProperty(rowForm,
-                _DatenMeister._CommonTypes._Default._Package.packagedElement);
+                _CommonTypes._Default._Package.packagedElement);
             if (
-                foundFieldForPackagedElement?.metaclass?.equals(_DatenMeister.TheOne.Forms.__SubElementFieldData) ==
+                foundFieldForPackagedElement?.metaclass?.equals(_Forms.TheOne.__SubElementFieldData) ==
                 true)
             {
                 var defaultTypesForNewElements = foundFieldForPackagedElement.get<IReflectiveCollection>(
-                    _DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements);
+                    _Forms._SubElementFieldData.defaultTypesForNewElements);
                 // We found it, so add the stuff
 
                 foreach (var foundExtentType in foundExtentTypes)

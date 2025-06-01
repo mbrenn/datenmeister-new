@@ -45,22 +45,22 @@ public class ManagementViewDefinitions
     /// <returns>The created type</returns>
     public IElement GetFindTypeForm(FindTypeFormParameter parameter, string? buttonName = null)
     {
-        var detailForm = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__RowForm);
-        detailForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, true);
-        detailForm.set(_DatenMeister._Forms._RowForm.defaultHeight, 600);
-        detailForm.set(_DatenMeister._Forms._RowForm.defaultWidth, 700);
-        detailForm.set(_DatenMeister._Forms._RowForm.hideMetaInformation, false);
+        var detailForm = InMemoryObject.CreateEmpty(_Forms.TheOne.__RowForm);
+        detailForm.set(_Forms._RowForm.hideMetaInformation, true);
+        detailForm.set(_Forms._RowForm.defaultHeight, 600);
+        detailForm.set(_Forms._RowForm.defaultWidth, 700);
+        detailForm.set(_Forms._RowForm.hideMetaInformation, false);
 
-        if (buttonName != null) detailForm.set(_DatenMeister._Forms._RowForm.buttonApplyText, buttonName);
+        if (buttonName != null) detailForm.set(_Forms._RowForm.buttonApplyText, buttonName);
 
-        var type2Field = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
-        type2Field.set(_DatenMeister._Forms._ReferenceFieldData.name, "selectedType");
-        type2Field.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, true);
-        type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultValue, parameter.PreSelectedPackage);
-        type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace, parameter.WorkspaceName);
-        type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultItemUri, parameter.ExtentUri);
+        var type2Field = InMemoryObject.CreateEmpty(_Forms.TheOne.__ReferenceFieldData);
+        type2Field.set(_Forms._ReferenceFieldData.name, "selectedType");
+        type2Field.set(_Forms._ReferenceFieldData.isSelectionInline, true);
+        type2Field.set(_Forms._ReferenceFieldData.defaultValue, parameter.PreSelectedPackage);
+        type2Field.set(_Forms._ReferenceFieldData.defaultWorkspace, parameter.WorkspaceName);
+        type2Field.set(_Forms._ReferenceFieldData.defaultItemUri, parameter.ExtentUri);
 
-        detailForm.set(_DatenMeister._Forms._RowForm.field, new[] { type2Field });
+        detailForm.set(_Forms._RowForm.field, new[] { type2Field });
 
         return detailForm ?? throw new InvalidOperationException("Form could not be created");
     }

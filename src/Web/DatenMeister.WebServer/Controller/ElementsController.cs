@@ -178,7 +178,7 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         var converter = new MofJsonDeconverter(workspaceLogic, scopeStorage);
         var objectToBeSet = converter.ConvertToObject(parameter.Query)
                             ?? throw new InvalidOperationException("Object to be set is null");
-        var resultNode = objectToBeSet.getOrDefault<IElement>(_DatenMeister._DataViews._QueryStatement.resultNode)
+        var resultNode = objectToBeSet.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode)
                          ?? throw new InvalidOperationException("resultNode is not set");
 
         // Second, execute the query

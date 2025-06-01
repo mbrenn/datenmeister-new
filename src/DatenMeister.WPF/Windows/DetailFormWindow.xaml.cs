@@ -268,8 +268,8 @@ public partial class DetailFormWindow : Window, INavigationHost
             return;
         }
 
-        var width = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultWidth);
-        var height = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._RowForm.defaultHeight);
+        var width = control.EffectiveForm.getOrDefault<double>(_Forms._RowForm.defaultWidth);
+        var height = control.EffectiveForm.getOrDefault<double>(_Forms._RowForm.defaultHeight);
         if (width <= 0 && height <= 0)
         {
             width = 1000;
@@ -454,7 +454,7 @@ public partial class DetailFormWindow : Window, INavigationHost
 
             SetMainContent(control);
 
-            var title = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._RowForm.title);
+            var title = effectiveForm.getOrDefault<string>(_Forms._RowForm.title);
             if (!string.IsNullOrEmpty(title))
             {
                 Title = title;

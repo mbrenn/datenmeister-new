@@ -22,7 +22,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {   
         return node.getMetaClass()?.equals(
-            _DatenMeister.TheOne.Actions.__CreateFormByMetaClass) == true;
+            _Actions.TheOne.__CreateFormByMetaClass) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
@@ -31,11 +31,11 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
         {
             var formCreator = new FormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             var formMethods = new FormMethods(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-            var metaClass = action.getOrDefault<IElement>(_DatenMeister._Actions._CreateFormByMetaClass.metaClass);
+            var metaClass = action.getOrDefault<IElement>(_Actions._CreateFormByMetaClass.metaClass);
             var creationMode =
-                action.getOrDefault<string>(_DatenMeister._Actions._CreateFormByMetaClass.creationMode);
+                action.getOrDefault<string>(_Actions._CreateFormByMetaClass.creationMode);
             var targetContainer =
-                action.getOrDefault<IObject>(_DatenMeister._Actions._CreateFormByMetaClass.targetContainer);
+                action.getOrDefault<IObject>(_Actions._CreateFormByMetaClass.targetContainer);
             var targetReflection = targetContainer == null
                 ? formMethods.GetUserFormExtent().elements()
                 : DefaultClassifierHints.GetDefaultReflectiveCollection(targetContainer);
@@ -77,7 +77,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
                     var association = formMethods.AddFormAssociationForMetaclass(
                         form,
                         metaClass,
-                        _DatenMeister._Forms.___FormType.Object);
+                        _Forms.___FormType.Object);
                     targetReflection.add(association);
                 }
             }
@@ -92,7 +92,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
                     var association = formMethods.AddFormAssociationForMetaclass(
                         form,
                         metaClass,
-                        _DatenMeister._Forms.___FormType.Collection);
+                        _Forms.___FormType.Collection);
                     targetReflection.add(association);
                 }
             }

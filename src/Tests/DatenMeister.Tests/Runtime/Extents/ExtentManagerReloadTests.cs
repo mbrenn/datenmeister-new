@@ -24,11 +24,11 @@ internal class ExtentManagerReloadTests
 
         // Load
         var loaderConfig =
-            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.extentUri, "dm:///test");
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.workspaceId,
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__XmlReferenceLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._XmlReferenceLoaderConfig.extentUri, "dm:///test");
+        loaderConfig.set(_ExtentLoaderConfigs._XmlReferenceLoaderConfig.workspaceId,
             WorkspaceNames.WorkspaceData);
-        loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath,
+        loaderConfig.set(_ExtentLoaderConfigs._XmlReferenceLoaderConfig.filePath,
             Path.Combine(Environment.CurrentDirectory, "Examples\\xmi-temp-trx.xml"));
 
         File.Copy("Examples/xmi1.xml", "Examples\\xmi-temp-trx.xml", true);

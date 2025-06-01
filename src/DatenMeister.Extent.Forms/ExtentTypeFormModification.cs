@@ -198,7 +198,7 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
         var foundExtentTypes =
             extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
 
-        if (!foundExtentTypes.Any() || context.FormType != _DatenMeister._Forms.___FormType.Object)
+        if (foundExtentTypes.Count == 0 || context.FormType != _DatenMeister._Forms.___FormType.Object)
         {
             return false;
         }

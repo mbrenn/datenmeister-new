@@ -14,6 +14,7 @@ namespace DatenMeister.Excel.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @tables
             {
                 get =>
@@ -30,6 +31,7 @@ namespace DatenMeister.Excel.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @name
             {
                 get =>
@@ -38,6 +40,7 @@ namespace DatenMeister.Excel.Models
                     innerDmElement.set("name", value);
             }
 
+            // Not found
             public object? @items
             {
                 get =>

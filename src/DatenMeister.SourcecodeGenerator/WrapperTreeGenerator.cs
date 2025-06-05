@@ -17,6 +17,8 @@ public class WrapperTreeGenerator : WalkPackageClass
         FactoryVersion = new Version(1, 3, 0, 0);
     }
 
+    public required TypeUriMappingLogic TypeUriMapping { get; set; }
+
     /// <summary>
     ///     Creates a C# source code. Not to be used for recursive
     ///     call since the namespace is just once created
@@ -106,12 +108,31 @@ public class WrapperTreeGenerator : WalkPackageClass
         {
             typeByCsName = "int";
         }
-        /*else if (typeOfProperty?.Equals(Core.Models._PrimitiveTypes.TheOne.__DateTime) == true)
+        /*else if (typeOfProperty?.Equals(DatenMeister.Core.Models._Date _PrimitiveTypes.TheOne.__DateTime) == true)
         {
             typeByCsName = "DateTime";
         }*/
         else
         {
+            // Check, if we know the type
+            var foundTypes = TypeUriMapping.Entries.Where(
+                x => x.TypeUri == typeOfProperty?.GetUri()
+                && x.TypeKind == TypeKind.WrappedClass).ToList();
+            if (foundTypes.Count() > 1)
+            {
+                throw new InvalidOperationException("We have an issue");
+            }
+            
+            var foundType = foundTypes.FirstOrDefault();
+            if (foundType != null)
+            {
+                Result.AppendLine($"{stack.Indentation}// {foundType.ClassFullName}");
+            }
+            else
+            {
+                Result.AppendLine($"{stack.Indentation}// Not found");
+            }
+
             isTyped = false;
         }
         

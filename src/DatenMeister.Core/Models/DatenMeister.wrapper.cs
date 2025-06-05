@@ -24,6 +24,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("name", value);
                 }
 
+                // Not found
                 public object? @packagedElement
                 {
                     get =>
@@ -32,6 +33,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("packagedElement", value);
                 }
 
+                // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
                 public object? @preferredType
                 {
                     get =>
@@ -40,6 +42,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("preferredType", value);
                 }
 
+                // DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper
                 public object? @preferredPackage
                 {
                     get =>
@@ -222,6 +225,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.Actions.Action_Wrapper
             public object? @action
             {
                 get =>
@@ -374,6 +378,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @configuration
             {
                 get =>
@@ -686,6 +691,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
             public object? @metaClass
             {
                 get =>
@@ -814,6 +820,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @metaClass
             {
                 get =>
@@ -830,6 +837,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("creationMode", value);
             }
 
+            // Not found
             public object? @targetContainer
             {
                 get =>
@@ -872,6 +880,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("path", value);
                 }
 
+                // DatenMeister.Core.Models.Reports.SimpleReportConfiguration_Wrapper
                 public object? @configuration
                 {
                     get =>
@@ -928,6 +937,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("filePath", value);
                 }
 
+                // DatenMeister.Core.Models.Reports.AdocReportInstance_Wrapper
                 public object? @reportInstance
                 {
                     get =>
@@ -968,6 +978,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("filePath", value);
                 }
 
+                // DatenMeister.Core.Models.Reports.HtmlReportInstance_Wrapper
                 public object? @reportInstance
                 {
                     get =>
@@ -1034,6 +1045,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("copyMode", value);
             }
 
+            // Not found
             public object? @target
             {
                 get =>
@@ -1042,6 +1054,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("target", value);
             }
 
+            // Not found
             public object? @source
             {
                 get =>
@@ -1058,6 +1071,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @element
             {
                 get =>
@@ -1066,6 +1080,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("element", value);
             }
 
+            // Not found
             public object? @direction
             {
                 get =>
@@ -1074,6 +1089,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("direction", value);
             }
 
+            // Not found
             public object? @container
             {
                 get =>
@@ -1194,6 +1210,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("propertyName", value);
             }
 
+            // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
             public object? @metaclass
             {
                 get =>
@@ -1278,6 +1295,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @isSuccess
             {
                 get =>
@@ -1286,6 +1304,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isSuccess", value);
             }
 
+            // Not found
             public object? @clientActions
             {
                 get =>
@@ -1312,6 +1331,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("actionName", value);
                 }
 
+                // Not found
                 public object? @element
                 {
                     get =>
@@ -1320,6 +1340,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("element", value);
                 }
 
+                // Not found
                 public object? @parameter
                 {
                     get =>
@@ -1352,6 +1373,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("actionName", value);
                 }
 
+                // Not found
                 public object? @element
                 {
                     get =>
@@ -1360,6 +1382,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("element", value);
                 }
 
+                // Not found
                 public object? @parameter
                 {
                     get =>
@@ -1462,6 +1485,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("uri", value);
             }
 
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
             public object? @viewNode
             {
                 get =>
@@ -1526,6 +1550,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
             public object? @input
             {
                 get =>
@@ -1550,6 +1575,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
             public object? @input
             {
                 get =>
@@ -1574,6 +1600,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("value", value);
             }
 
+            // Not found
             public object? @comparisonMode
             {
                 get =>
@@ -1598,6 +1625,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
             public object? @input
             {
                 get =>
@@ -1606,6 +1634,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("input", value);
             }
 
+            // Not found
             public object? @metaClass
             {
                 get =>
@@ -1638,6 +1667,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
             public object? @input
             {
                 get =>
@@ -1718,6 +1748,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
             public object? @nodes
             {
                 get =>
@@ -1726,6 +1757,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("nodes", value);
             }
 
+            // Not found
             public object? @resultNode
             {
                 get =>
@@ -1802,6 +1834,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("title", value);
             }
 
+            // DatenMeister.Core.Models.Reports.Elements.ReportElement_Wrapper
             public object? @elements
             {
                 get =>
@@ -1858,6 +1891,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("name", value);
             }
 
+            // DatenMeister.Core.Models.Reports.ReportDefinition_Wrapper
             public object? @reportDefinition
             {
                 get =>
@@ -1866,6 +1900,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("reportDefinition", value);
             }
 
+            // DatenMeister.Core.Models.Reports.ReportInstanceSource_Wrapper
             public object? @sources
             {
                 get =>
@@ -1890,6 +1925,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("name", value);
             }
 
+            // DatenMeister.Core.Models.Reports.ReportDefinition_Wrapper
             public object? @reportDefinition
             {
                 get =>
@@ -1898,6 +1934,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("reportDefinition", value);
             }
 
+            // DatenMeister.Core.Models.Reports.ReportInstanceSource_Wrapper
             public object? @sources
             {
                 get =>
@@ -1938,6 +1975,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("name", value);
             }
 
+            // DatenMeister.Core.Models.Reports.ReportDefinition_Wrapper
             public object? @reportDefinition
             {
                 get =>
@@ -1946,6 +1984,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("reportDefinition", value);
             }
 
+            // DatenMeister.Core.Models.Reports.ReportInstanceSource_Wrapper
             public object? @sources
             {
                 get =>
@@ -2010,6 +2049,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("showFullName", value);
             }
 
+            // Not found
             public object? @form
             {
                 get =>
@@ -2018,6 +2058,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("form", value);
             }
 
+            // Not found
             public object? @descendentMode
             {
                 get =>
@@ -2026,6 +2067,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("descendentMode", value);
             }
 
+            // Not found
             public object? @typeMode
             {
                 get =>
@@ -2108,6 +2150,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("cssClass", value);
                 }
 
+                // Not found
                 public object? @viewNode
                 {
                     get =>
@@ -2156,6 +2199,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("cssClass", value);
                 }
 
+                // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
                 public object? @viewNode
                 {
                     get =>
@@ -2164,6 +2208,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("viewNode", value);
                 }
 
+                // DatenMeister.Core.Models.Forms.TableForm_Wrapper
                 public object? @form
                 {
                     get =>
@@ -2196,6 +2241,7 @@ namespace DatenMeister.Core.Models
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
+                // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
                 public object? @viewNode
                 {
                     get =>
@@ -2204,6 +2250,7 @@ namespace DatenMeister.Core.Models
                         innerDmElement.set("viewNode", value);
                 }
 
+                // DatenMeister.Core.Models.Reports.Elements.ReportElement_Wrapper
                 public object? @elements
                 {
                     get =>
@@ -2378,6 +2425,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("skipEmptyRowsCount", value);
             }
 
+            // DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper
             public object? @columns
             {
                 get =>
@@ -2530,6 +2578,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("skipEmptyRowsCount", value);
             }
 
+            // DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper
             public object? @columns
             {
                 get =>
@@ -2690,6 +2739,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("skipEmptyRowsCount", value);
             }
 
+            // DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper
             public object? @columns
             {
                 get =>
@@ -2994,6 +3044,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.ExtentLoaderConfigs.CsvSettings_Wrapper
             public object? @settings
             {
                 get =>
@@ -3066,6 +3117,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("hasHeader", value);
             }
 
+            // Not found
             public object? @separator
             {
                 get =>
@@ -3114,6 +3166,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("name", value);
             }
 
+            // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
             public object? @metaClass
             {
                 get =>
@@ -3138,6 +3191,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition_Wrapper
             public object? @hierarchicalColumns
             {
                 get =>
@@ -3258,6 +3312,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("skipEmptyRowsCount", value);
             }
 
+            // DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper
             public object? @columns
             {
                 get =>
@@ -3406,6 +3461,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -3486,6 +3542,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -3550,6 +3607,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -3582,6 +3640,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("actionName", value);
             }
 
+            // Not found
             public object? @parameter
             {
                 get =>
@@ -3630,6 +3689,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -3710,6 +3770,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -3742,6 +3803,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("name", value);
             }
 
+            // Not found
             public object? @formType
             {
                 get =>
@@ -3750,6 +3812,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("formType", value);
             }
 
+            // DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper
             public object? @metaClass
             {
                 get =>
@@ -3774,6 +3837,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("viewModeId", value);
             }
 
+            // DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper
             public object? @parentMetaClass
             {
                 get =>
@@ -3790,6 +3854,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("parentProperty", value);
             }
 
+            // DatenMeister.Core.Models.Forms.Form_Wrapper
             public object? @form
             {
                 get =>
@@ -3830,6 +3895,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.Forms.ValuePair_Wrapper
             public object? @values
             {
                 get =>
@@ -3838,6 +3904,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("values", value);
             }
 
+            // Not found
             public object? @valuesByEnumeration
             {
                 get =>
@@ -3878,6 +3945,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -3902,6 +3970,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @value
             {
                 get =>
@@ -3958,6 +4027,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4030,6 +4100,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("showExtentSelection", value);
             }
 
+            // Not found
             public object? @metaClassFilter
             {
                 get =>
@@ -4070,6 +4141,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4094,6 +4166,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @metaClass
             {
                 get =>
@@ -4102,6 +4175,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("metaClass", value);
             }
 
+            // DatenMeister.Core.Models.Forms.Form_Wrapper
             public object? @form
             {
                 get =>
@@ -4118,6 +4192,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("allowOnlyExistingElements", value);
             }
 
+            // Not found
             public object? @defaultTypesForNewElements
             {
                 get =>
@@ -4190,6 +4265,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4278,6 +4354,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4374,6 +4451,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4478,6 +4556,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4510,6 +4589,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("name", value);
             }
 
+            // Not found
             public object? @metaClass
             {
                 get =>
@@ -4566,6 +4646,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4590,6 +4671,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.Forms.ValuePair_Wrapper
             public object? @values
             {
                 get =>
@@ -4646,6 +4728,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4718,6 +4801,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -4846,6 +4930,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("defaultHeight", value);
             }
 
+            // DatenMeister.Core.Models.Forms.FieldData_Wrapper
             public object? @field
             {
                 get =>
@@ -4934,6 +5019,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("property", value);
             }
 
+            // Not found
             public object? @metaClass
             {
                 get =>
@@ -4982,6 +5068,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("inhibitEditItems", value);
             }
 
+            // DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper
             public object? @defaultTypesForNewElements
             {
                 get =>
@@ -4990,6 +5077,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("defaultTypesForNewElements", value);
             }
 
+            // Not found
             public object? @fastViewFilters
             {
                 get =>
@@ -4998,6 +5086,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("fastViewFilters", value);
             }
 
+            // DatenMeister.Core.Models.Forms.FieldData_Wrapper
             public object? @field
             {
                 get =>
@@ -5006,6 +5095,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("field", value);
             }
 
+            // DatenMeister.Core.Models.Forms.SortingOrder_Wrapper
             public object? @sortingOrder
             {
                 get =>
@@ -5014,6 +5104,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("sortingOrder", value);
             }
 
+            // Not found
             public object? @viewNode
             {
                 get =>
@@ -5126,6 +5217,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.Forms.Form_Wrapper
             public object? @tab
             {
                 get =>
@@ -5142,6 +5234,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("autoTabs", value);
             }
 
+            // DatenMeister.Core.Models.Forms.FieldData_Wrapper
             public object? @field
             {
                 get =>
@@ -5222,6 +5315,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.Forms.Form_Wrapper
             public object? @tab
             {
                 get =>
@@ -5390,6 +5484,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -5414,6 +5509,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // Not found
             public object? @defaultWorkspace
             {
                 get =>
@@ -5422,6 +5518,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("defaultWorkspace", value);
             }
 
+            // Not found
             public object? @defaultExtent
             {
                 get =>
@@ -5462,6 +5559,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
             public object? @query
             {
                 get =>
@@ -5502,6 +5600,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("isEnumeration", value);
             }
 
+            // Not found
             public object? @defaultValue
             {
                 get =>
@@ -5554,6 +5653,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("referencedExtent", value);
             }
 
+            // Not found
             public object? @referenceType
             {
                 get =>
@@ -5662,6 +5762,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("autoEnumerateType", value);
             }
 
+            // Not found
             public object? @state
             {
                 get =>
@@ -5678,6 +5779,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("failMessage", value);
             }
 
+            // Not found
             public object? @properties
             {
                 get =>
@@ -5686,6 +5788,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("properties", value);
             }
 
+            // Not found
             public object? @loadingConfiguration
             {
                 get =>
@@ -5718,6 +5821,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("annotation", value);
             }
 
+            // DatenMeister.Core.Models.Management.Extent_Wrapper
             public object? @extents
             {
                 get =>
@@ -5766,6 +5870,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("name", value);
             }
 
+            // Not found
             public object? @rootElementMetaClasses
             {
                 get =>
@@ -5862,6 +5967,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("autoEnumerateType", value);
             }
 
+            // Not found
             public object? @state
             {
                 get =>
@@ -5878,6 +5984,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("failMessage", value);
             }
 
+            // Not found
             public object? @properties
             {
                 get =>
@@ -5886,6 +5993,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("properties", value);
             }
 
+            // Not found
             public object? @loadingConfiguration
             {
                 get =>
@@ -5918,6 +6026,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("title", value);
             }
 
+            // Not found
             public object? @metaClass
             {
                 get =>
@@ -5934,6 +6043,7 @@ namespace DatenMeister.Core.Models
         {
             public IElement GetWrappedElement() => innerDmElement;
 
+            // DatenMeister.Core.Models.Management.ExtentTypeSetting_Wrapper
             public object? @extentTypeSettings
             {
                 get =>
@@ -5942,6 +6052,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("extentTypeSettings", value);
             }
 
+            // DatenMeister.Core.Models.Management.ExtentPropertyDefinition_Wrapper
             public object? @propertyDefinitions
             {
                 get =>
@@ -5970,6 +6081,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("Property", value);
             }
 
+            // Not found
             public object? @ComparisonType
             {
                 get =>
@@ -6030,6 +6142,7 @@ namespace DatenMeister.Core.Models
                     innerDmElement.set("runtimeClass", value);
             }
 
+            // Not found
             public object? @configuration
             {
                 get =>

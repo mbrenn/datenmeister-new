@@ -12,6 +12,8 @@ public static class SourceGenerator
 {
     public static void GenerateSourceFor(SourceGeneratorOptions options)
     {
+        var typeUri = new TypeUriMappingLogic();
+        typeUri.LoadAssemblies();
         ////////////////////////////////////////
         // First of all, create all Mof types, representing the objects under concern
         var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl, null);
@@ -60,7 +62,8 @@ public static class SourceGenerator
         // Creates the class tree
         var wrapperTreeGenerator = new WrapperTreeGenerator(sourceParser)
         {
-            Namespace = options.Namespace
+            Namespace = options.Namespace,
+            TypeUriMapping = typeUri
         };
 
         wrapperTreeGenerator.Walk(extent);

@@ -99,8 +99,20 @@ internal class Program
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Generates source code files based on provided type definitions.
+    /// This method processes the given XMI file and generates corresponding TypeScript interfaces,
+    /// C# classes, and wrapper classes based on the type definitions found in the XMI.
+    /// The generated files are saved to the specified target directory.
+    /// </summary>
+    /// <param name="options">The command options containing paths, namespaces, and other configurations for source code generation.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating whether the code generation was successful.
+    /// Returns false if the input file does not exist or if no valid types were found in the XMI.</returns>
     private static async Task<bool> CreateCodeForTypes(CommandOptions options)
     {
+        var typesFromAssembly = new TypeUriMappingLogic();
+        typesFromAssembly.LoadAssemblies();
+        
         var pathXml = options.PathXml;
         var pathTarget = options.PathTarget;
         var codeNamespace = options.CodeNamespace;
@@ -158,7 +170,6 @@ internal class Program
 
         classGenerator.Walk(typeExtent);
         
-
         var pathOfClassTree = Path.Combine(pathTarget, $"{filename}.cs");
         var fileContent = classGenerator.Result.ToString();
         await File.WriteAllTextAsync(pathOfClassTree, fileContent);
@@ -170,7 +181,8 @@ internal class Program
         // Generates tree for StundenPlan
         var wrapperGenerator = new WrapperTreeGenerator
         {
-            Namespace = codeNamespace
+            Namespace = codeNamespace,
+            TypeUriMapping = typesFromAssembly
         };
 
         wrapperGenerator.Walk(typeExtent);

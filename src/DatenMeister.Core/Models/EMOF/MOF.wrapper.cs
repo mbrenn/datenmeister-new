@@ -40,6 +40,7 @@ namespace DatenMeister.Core.Models.EMOF
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
+                // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper
                 public object? @tagOwner
                 {
                     get =>
@@ -48,6 +49,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("tagOwner", value);
                 }
 
+                // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Comment_Wrapper
                 public object? @ownedComment
                 {
                     get =>
@@ -56,6 +58,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("ownedComment", value);
                 }
 
+                // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper
                 public object? @ownedElement
                 {
                     get =>
@@ -64,6 +67,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("ownedElement", value);
                 }
 
+                // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper
                 public object? @owner
                 {
                     get =>
@@ -100,6 +104,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("value", value);
                 }
 
+                // Not found
                 public object? @element
                 {
                     get =>
@@ -168,6 +173,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("name", value);
                 }
 
+                // Not found
                 public object? @value
                 {
                     get =>
@@ -192,6 +198,7 @@ namespace DatenMeister.Core.Models.EMOF
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
+                // Not found
                 public object? @firstElement
                 {
                     get =>
@@ -200,6 +207,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("firstElement", value);
                 }
 
+                // Not found
                 public object? @secondElement
                 {
                     get =>
@@ -208,6 +216,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("secondElement", value);
                 }
 
+                // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Association_Wrapper
                 public object? @association
                 {
                     get =>
@@ -224,6 +233,7 @@ namespace DatenMeister.Core.Models.EMOF
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
+                // Not found
                 public object? @objectInError
                 {
                     get =>
@@ -232,6 +242,7 @@ namespace DatenMeister.Core.Models.EMOF
                         innerDmElement.set("objectInError", value);
                 }
 
+                // Not found
                 public object? @elementInError
                 {
                     get =>
@@ -260,6 +271,7 @@ namespace DatenMeister.Core.Models.EMOF
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
+                // DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper
                 public object? @package
                 {
                     get =>
@@ -292,6 +304,7 @@ namespace DatenMeister.Core.Models.EMOF
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
+                // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
                 public object? @metaclass
                 {
                     get =>

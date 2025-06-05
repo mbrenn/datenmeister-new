@@ -8,6 +8,8 @@ namespace DatenMeister.Excel.Models
 {
     public class ExcelModels
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook",
+            TypeKind = TypeKind.WrappedClass)]
         public class Workbook_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -22,6 +24,8 @@ namespace DatenMeister.Excel.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Table",
+            TypeKind = TypeKind.WrappedClass)]
         public class Table_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;

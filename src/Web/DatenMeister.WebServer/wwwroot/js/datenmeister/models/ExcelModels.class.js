@@ -1,4 +1,4 @@
-// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.0.0.0
+// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 var DatenMeister;
 (function (DatenMeister) {
     var Excel;

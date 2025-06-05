@@ -32,7 +32,8 @@ public class ClassTreeGenerator : WalkPackageClass
     {
         WriteUsages([
             "DatenMeister.Core.EMOF.Interface.Reflection",
-            "DatenMeister.Core.EMOF.Implementation"
+            "DatenMeister.Core.EMOF.Implementation",
+            "DatenMeister.Core.Helper"
         ]);
             
         WriteResharperComments();
@@ -88,7 +89,8 @@ public class ClassTreeGenerator : WalkPackageClass
         if (classInstance is not IElement asElement) return;
 
         var name = GetNameOfElement(classInstance);
-
+        Result.AppendLine($"{stack.Indentation}[TypeUri(Uri = \"{classInstance.GetUri()}\",");
+        Result.AppendLine($"{stack.Indentation}    TypeKind = TypeKind.ClassTree)]");
         Result.AppendLine($"{stack.Indentation}public class _{name}");
         Result.AppendLine($"{stack.Indentation}{{");
 
@@ -133,7 +135,7 @@ public class ClassTreeGenerator : WalkPackageClass
     /// <param name="enumInstance">The class that shall be retrieved</param>
     /// <param name="stack">Stack being used</param>
     /// <param name="callee">The element to be called when tn enumeration is required to be called.
-    /// May be null, then WalkEnumLiteral will be called</param>
+    /// Maybe null, then WalkEnumLiteral will be called</param>
     protected override void WalkEnum(IObject enumInstance, CallStack stack, Action<IObject, CallStack>? callee = null)
     {
         var asElement = (IElement) enumInstance;

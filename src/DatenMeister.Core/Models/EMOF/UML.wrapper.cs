@@ -10,6 +10,8 @@ namespace DatenMeister.Core.Models.EMOF
     {
         public class Activities
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Activity",
+                TypeKind = TypeKind.WrappedClass)]
             public class Activity_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -552,6 +554,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityEdge",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActivityEdge_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -734,6 +738,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityFinalNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActivityFinalNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -900,6 +906,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityGroup",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActivityGroup_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1018,6 +1026,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActivityNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1184,6 +1194,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityParameterNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActivityParameterNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1406,6 +1418,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityPartition",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActivityPartition_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1580,6 +1594,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CentralBufferNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class CentralBufferNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1794,6 +1810,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ControlFlow",
+                TypeKind = TypeKind.WrappedClass)]
             public class ControlFlow_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1976,6 +1994,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ControlNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ControlNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2142,6 +2162,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DataStoreNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class DataStoreNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2356,6 +2378,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DecisionNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class DecisionNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2538,6 +2562,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExceptionHandler",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExceptionHandler_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2600,6 +2626,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutableNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExecutableNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2774,6 +2802,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FinalNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class FinalNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2940,6 +2970,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FlowFinalNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class FlowFinalNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -3106,6 +3138,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ForkNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ForkNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -3272,6 +3306,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InitialNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class InitialNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -3438,6 +3474,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InterruptibleActivityRegion",
+                TypeKind = TypeKind.WrappedClass)]
             public class InterruptibleActivityRegion_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -3572,6 +3610,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#JoinNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class JoinNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -3754,6 +3794,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MergeNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class MergeNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -3920,6 +3962,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ObjectFlow",
+                TypeKind = TypeKind.WrappedClass)]
             public class ObjectFlow_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -4134,6 +4178,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ObjectNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ObjectNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -4348,6 +4394,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Variable",
+                TypeKind = TypeKind.WrappedClass)]
             public class Variable_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -4526,6 +4574,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Values
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Duration",
+                TypeKind = TypeKind.WrappedClass)]
             public class Duration_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -4644,6 +4694,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DurationConstraint",
+                TypeKind = TypeKind.WrappedClass)]
             public class DurationConstraint_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -4770,6 +4822,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DurationInterval",
+                TypeKind = TypeKind.WrappedClass)]
             public class DurationInterval_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -4888,6 +4942,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DurationObservation",
+                TypeKind = TypeKind.WrappedClass)]
             public class DurationObservation_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -4998,6 +5054,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Expression",
+                TypeKind = TypeKind.WrappedClass)]
             public class Expression_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5116,6 +5174,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Interval",
+                TypeKind = TypeKind.WrappedClass)]
             public class Interval_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5234,6 +5294,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#IntervalConstraint",
+                TypeKind = TypeKind.WrappedClass)]
             public class IntervalConstraint_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5352,6 +5414,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralBoolean",
+                TypeKind = TypeKind.WrappedClass)]
             public class LiteralBoolean_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5462,6 +5526,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralInteger",
+                TypeKind = TypeKind.WrappedClass)]
             public class LiteralInteger_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5572,6 +5638,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralNull",
+                TypeKind = TypeKind.WrappedClass)]
             public class LiteralNull_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5674,6 +5742,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralReal",
+                TypeKind = TypeKind.WrappedClass)]
             public class LiteralReal_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5784,6 +5854,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class LiteralSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5886,6 +5958,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralString",
+                TypeKind = TypeKind.WrappedClass)]
             public class LiteralString_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5996,6 +6070,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralUnlimitedNatural",
+                TypeKind = TypeKind.WrappedClass)]
             public class LiteralUnlimitedNatural_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6106,6 +6182,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Observation",
+                TypeKind = TypeKind.WrappedClass)]
             public class Observation_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6200,6 +6278,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueExpression",
+                TypeKind = TypeKind.WrappedClass)]
             public class OpaqueExpression_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6334,6 +6414,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StringExpression",
+                TypeKind = TypeKind.WrappedClass)]
             public class StringExpression_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6484,6 +6566,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeConstraint",
+                TypeKind = TypeKind.WrappedClass)]
             public class TimeConstraint_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6610,6 +6694,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeExpression",
+                TypeKind = TypeKind.WrappedClass)]
             public class TimeExpression_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6728,6 +6814,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeInterval",
+                TypeKind = TypeKind.WrappedClass)]
             public class TimeInterval_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6846,6 +6934,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeObservation",
+                TypeKind = TypeKind.WrappedClass)]
             public class TimeObservation_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -6956,6 +7046,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ValueSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class ValueSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -7062,6 +7154,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class UseCases
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Actor",
+                TypeKind = TypeKind.WrappedClass)]
             public class Actor_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -7388,6 +7482,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Extend",
+                TypeKind = TypeKind.WrappedClass)]
             public class Extend_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -7522,6 +7618,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExtensionPoint",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExtensionPoint_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -7632,6 +7730,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Include",
+                TypeKind = TypeKind.WrappedClass)]
             public class Include_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -7750,6 +7850,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#UseCase",
+                TypeKind = TypeKind.WrappedClass)]
             public class UseCase_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -8112,6 +8214,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class StructuredClassifiers
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Association",
+                TypeKind = TypeKind.WrappedClass)]
             public class Association_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -8462,6 +8566,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AssociationClass",
+                TypeKind = TypeKind.WrappedClass)]
             public class AssociationClass_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -8924,6 +9030,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Class",
+                TypeKind = TypeKind.WrappedClass)]
             public class Class_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -9338,6 +9446,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Collaboration",
+                TypeKind = TypeKind.WrappedClass)]
             public class Collaboration_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -9704,6 +9814,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CollaborationUse",
+                TypeKind = TypeKind.WrappedClass)]
             public class CollaborationUse_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -9798,6 +9910,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Component",
+                TypeKind = TypeKind.WrappedClass)]
             public class Component_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -10252,6 +10366,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ComponentRealization",
+                TypeKind = TypeKind.WrappedClass)]
             public class ComponentRealization_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -10410,6 +10526,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectableElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class ConnectableElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -10520,6 +10638,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectableElementTemplateParameter",
+                TypeKind = TypeKind.WrappedClass)]
             public class ConnectableElementTemplateParameter_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -10590,6 +10710,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Connector",
+                TypeKind = TypeKind.WrappedClass)]
             public class Connector_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -10748,6 +10870,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectorEnd",
+                TypeKind = TypeKind.WrappedClass)]
             public class ConnectorEnd_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -10850,6 +10974,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#EncapsulatedClassifier",
+                TypeKind = TypeKind.WrappedClass)]
             public class EncapsulatedClassifier_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -11192,6 +11318,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Port",
+                TypeKind = TypeKind.WrappedClass)]
             public class Port_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -11598,6 +11726,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuredClassifier",
+                TypeKind = TypeKind.WrappedClass)]
             public class StructuredClassifier_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -11936,6 +12066,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class StateMachines
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectionPointReference",
+                TypeKind = TypeKind.WrappedClass)]
             public class ConnectionPointReference_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -12062,6 +12194,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FinalState",
+                TypeKind = TypeKind.WrappedClass)]
             public class FinalState_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -12348,6 +12482,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolConformance",
+                TypeKind = TypeKind.WrappedClass)]
             public class ProtocolConformance_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -12418,6 +12554,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolStateMachine",
+                TypeKind = TypeKind.WrappedClass)]
             public class ProtocolStateMachine_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -12936,6 +13074,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolTransition",
+                TypeKind = TypeKind.WrappedClass)]
             public class ProtocolTransition_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -13174,6 +13314,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Pseudostate",
+                TypeKind = TypeKind.WrappedClass)]
             public class Pseudostate_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -13300,6 +13442,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Region",
+                TypeKind = TypeKind.WrappedClass)]
             public class Region_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -13490,6 +13634,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#State",
+                TypeKind = TypeKind.WrappedClass)]
             public class State_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -13776,6 +13922,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StateMachine",
+                TypeKind = TypeKind.WrappedClass)]
             public class StateMachine_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -14286,6 +14434,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Transition",
+                TypeKind = TypeKind.WrappedClass)]
             public class Transition_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -14500,6 +14650,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Vertex",
+                TypeKind = TypeKind.WrappedClass)]
             public class Vertex_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -14606,6 +14758,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class SimpleClassifiers
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#BehavioredClassifier",
+                TypeKind = TypeKind.WrappedClass)]
             public class BehavioredClassifier_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -14932,6 +15086,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DataType",
+                TypeKind = TypeKind.WrappedClass)]
             public class DataType_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -15250,6 +15406,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Enumeration",
+                TypeKind = TypeKind.WrappedClass)]
             public class Enumeration_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -15576,6 +15734,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#EnumerationLiteral",
+                TypeKind = TypeKind.WrappedClass)]
             public class EnumerationLiteral_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -15718,6 +15878,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Interface",
+                TypeKind = TypeKind.WrappedClass)]
             public class Interface_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -16068,6 +16230,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InterfaceRealization",
+                TypeKind = TypeKind.WrappedClass)]
             public class InterfaceRealization_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -16226,6 +16390,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PrimitiveType",
+                TypeKind = TypeKind.WrappedClass)]
             public class PrimitiveType_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -16544,6 +16710,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Reception",
+                TypeKind = TypeKind.WrappedClass)]
             public class Reception_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -16766,6 +16934,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Signal",
+                TypeKind = TypeKind.WrappedClass)]
             public class Signal_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -17080,6 +17250,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Packages
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Extension",
+                TypeKind = TypeKind.WrappedClass)]
             public class Extension_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -17446,6 +17618,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExtensionEnd",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExtensionEnd_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -17796,6 +17970,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Image",
+                TypeKind = TypeKind.WrappedClass)]
             public class Image_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -17850,6 +18026,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Model",
+                TypeKind = TypeKind.WrappedClass)]
             public class Model_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -18080,6 +18258,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Package",
+                TypeKind = TypeKind.WrappedClass)]
             public class Package_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -18302,6 +18482,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PackageMerge",
+                TypeKind = TypeKind.WrappedClass)]
             public class PackageMerge_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -18372,6 +18554,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Profile",
+                TypeKind = TypeKind.WrappedClass)]
             public class Profile_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -18610,6 +18794,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProfileApplication",
+                TypeKind = TypeKind.WrappedClass)]
             public class ProfileApplication_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -18688,6 +18874,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Stereotype",
+                TypeKind = TypeKind.WrappedClass)]
             public class Stereotype_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -19122,6 +19310,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Interactions
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActionExecutionSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActionExecutionSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -19256,6 +19446,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#BehaviorExecutionSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class BehaviorExecutionSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -19390,6 +19582,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CombinedFragment",
+                TypeKind = TypeKind.WrappedClass)]
             public class CombinedFragment_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -19524,6 +19718,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConsiderIgnoreFragment",
+                TypeKind = TypeKind.WrappedClass)]
             public class ConsiderIgnoreFragment_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -19666,6 +19862,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Continuation",
+                TypeKind = TypeKind.WrappedClass)]
             public class Continuation_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -19784,6 +19982,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DestructionOccurrenceSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class DestructionOccurrenceSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -19918,6 +20118,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionOccurrenceSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExecutionOccurrenceSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -20052,6 +20254,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExecutionSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -20178,6 +20382,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Gate",
+                TypeKind = TypeKind.WrappedClass)]
             public class Gate_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -20264,6 +20470,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#GeneralOrdering",
+                TypeKind = TypeKind.WrappedClass)]
             public class GeneralOrdering_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -20358,6 +20566,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Interaction",
+                TypeKind = TypeKind.WrappedClass)]
             public class Interaction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -20908,6 +21118,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionConstraint",
+                TypeKind = TypeKind.WrappedClass)]
             public class InteractionConstraint_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21042,6 +21254,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionFragment",
+                TypeKind = TypeKind.WrappedClass)]
             public class InteractionFragment_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21152,6 +21366,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionOperand",
+                TypeKind = TypeKind.WrappedClass)]
             public class InteractionOperand_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21326,6 +21542,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionUse",
+                TypeKind = TypeKind.WrappedClass)]
             public class InteractionUse_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21476,6 +21694,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Lifeline",
+                TypeKind = TypeKind.WrappedClass)]
             public class Lifeline_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21594,6 +21814,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Message",
+                TypeKind = TypeKind.WrappedClass)]
             public class Message_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21736,6 +21958,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MessageEnd",
+                TypeKind = TypeKind.WrappedClass)]
             public class MessageEnd_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21822,6 +22046,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MessageOccurrenceSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class MessageOccurrenceSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -21956,6 +22182,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OccurrenceSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class OccurrenceSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -22082,6 +22310,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PartDecomposition",
+                TypeKind = TypeKind.WrappedClass)]
             public class PartDecomposition_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -22232,6 +22462,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StateInvariant",
+                TypeKind = TypeKind.WrappedClass)]
             public class StateInvariant_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -22354,6 +22586,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class InformationFlows
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#InformationFlow",
+                TypeKind = TypeKind.WrappedClass)]
             public class InformationFlow_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -22528,6 +22762,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InformationItem",
+                TypeKind = TypeKind.WrappedClass)]
             public class InformationItem_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -22842,6 +23078,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Deployments
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Artifact",
+                TypeKind = TypeKind.WrappedClass)]
             public class Artifact_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -23184,6 +23422,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CommunicationPath",
+                TypeKind = TypeKind.WrappedClass)]
             public class CommunicationPath_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -23534,6 +23774,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DeployedArtifact",
+                TypeKind = TypeKind.WrappedClass)]
             public class DeployedArtifact_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -23612,6 +23854,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Deployment",
+                TypeKind = TypeKind.WrappedClass)]
             public class Deployment_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -23770,6 +24014,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DeploymentSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class DeploymentSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -24136,6 +24382,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DeploymentTarget",
+                TypeKind = TypeKind.WrappedClass)]
             public class DeploymentTarget_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -24230,6 +24478,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Device",
+                TypeKind = TypeKind.WrappedClass)]
             public class Device_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -24668,6 +24918,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionEnvironment",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExecutionEnvironment_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -25106,6 +25358,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Manifestation",
+                TypeKind = TypeKind.WrappedClass)]
             public class Manifestation_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -25256,6 +25510,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Node",
+                TypeKind = TypeKind.WrappedClass)]
             public class Node_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -25698,6 +25954,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class CommonStructure
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Abstraction",
+                TypeKind = TypeKind.WrappedClass)]
             public class Abstraction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -25840,6 +26098,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Comment",
+                TypeKind = TypeKind.WrappedClass)]
             public class Comment_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -25886,6 +26146,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Constraint",
+                TypeKind = TypeKind.WrappedClass)]
             public class Constraint_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26004,6 +26266,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Dependency",
+                TypeKind = TypeKind.WrappedClass)]
             public class Dependency_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26138,6 +26402,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DirectedRelationship",
+                TypeKind = TypeKind.WrappedClass)]
             public class DirectedRelationship_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26192,6 +26458,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Element",
+                TypeKind = TypeKind.WrappedClass)]
             public class Element_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26222,6 +26490,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ElementImport",
+                TypeKind = TypeKind.WrappedClass)]
             public class ElementImport_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26308,6 +26578,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MultiplicityElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class MultiplicityElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26386,6 +26658,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#NamedElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class NamedElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26464,6 +26738,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Namespace",
+                TypeKind = TypeKind.WrappedClass)]
             public class Namespace_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26590,6 +26866,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PackageableElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class PackageableElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26684,6 +26962,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PackageImport",
+                TypeKind = TypeKind.WrappedClass)]
             public class PackageImport_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26762,6 +27042,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ParameterableElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class ParameterableElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26808,6 +27090,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Realization",
+                TypeKind = TypeKind.WrappedClass)]
             public class Realization_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26950,6 +27234,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Relationship",
+                TypeKind = TypeKind.WrappedClass)]
             public class Relationship_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -26988,6 +27274,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateableElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class TemplateableElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27034,6 +27322,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateBinding",
+                TypeKind = TypeKind.WrappedClass)]
             public class TemplateBinding_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27112,6 +27402,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateParameter",
+                TypeKind = TypeKind.WrappedClass)]
             public class TemplateParameter_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27182,6 +27474,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateParameterSubstitution",
+                TypeKind = TypeKind.WrappedClass)]
             public class TemplateParameterSubstitution_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27244,6 +27538,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateSignature",
+                TypeKind = TypeKind.WrappedClass)]
             public class TemplateSignature_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27298,6 +27594,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Type",
+                TypeKind = TypeKind.WrappedClass)]
             public class Type_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27400,6 +27698,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TypedElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class TypedElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27486,6 +27786,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Usage",
+                TypeKind = TypeKind.WrappedClass)]
             public class Usage_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27624,6 +27926,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class CommonBehavior
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#AnyReceiveEvent",
+                TypeKind = TypeKind.WrappedClass)]
             public class AnyReceiveEvent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -27718,6 +28022,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Behavior",
+                TypeKind = TypeKind.WrappedClass)]
             public class Behavior_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -28196,6 +28502,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallEvent",
+                TypeKind = TypeKind.WrappedClass)]
             public class CallEvent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -28298,6 +28606,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ChangeEvent",
+                TypeKind = TypeKind.WrappedClass)]
             public class ChangeEvent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -28400,6 +28710,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Event",
+                TypeKind = TypeKind.WrappedClass)]
             public class Event_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -28494,6 +28806,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FunctionBehavior",
+                TypeKind = TypeKind.WrappedClass)]
             public class FunctionBehavior_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -28988,6 +29302,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MessageEvent",
+                TypeKind = TypeKind.WrappedClass)]
             public class MessageEvent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -29082,6 +29398,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueBehavior",
+                TypeKind = TypeKind.WrappedClass)]
             public class OpaqueBehavior_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -29576,6 +29894,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SignalEvent",
+                TypeKind = TypeKind.WrappedClass)]
             public class SignalEvent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -29678,6 +29998,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeEvent",
+                TypeKind = TypeKind.WrappedClass)]
             public class TimeEvent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -29788,6 +30110,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Trigger",
+                TypeKind = TypeKind.WrappedClass)]
             public class Trigger_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -29886,6 +30210,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Classification
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Substitution",
+                TypeKind = TypeKind.WrappedClass)]
             public class Substitution_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30044,6 +30370,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#BehavioralFeature",
+                TypeKind = TypeKind.WrappedClass)]
             public class BehavioralFeature_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30258,6 +30586,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Classifier",
+                TypeKind = TypeKind.WrappedClass)]
             public class Classifier_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30560,6 +30890,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClassifierTemplateParameter",
+                TypeKind = TypeKind.WrappedClass)]
             public class ClassifierTemplateParameter_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30646,6 +30978,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Feature",
+                TypeKind = TypeKind.WrappedClass)]
             public class Feature_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30764,6 +31098,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Generalization",
+                TypeKind = TypeKind.WrappedClass)]
             public class Generalization_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30850,6 +31186,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#GeneralizationSet",
+                TypeKind = TypeKind.WrappedClass)]
             public class GeneralizationSet_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30976,6 +31314,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InstanceSpecification",
+                TypeKind = TypeKind.WrappedClass)]
             public class InstanceSpecification_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -31110,6 +31450,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InstanceValue",
+                TypeKind = TypeKind.WrappedClass)]
             public class InstanceValue_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -31220,6 +31562,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Operation",
+                TypeKind = TypeKind.WrappedClass)]
             public class Operation_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -31570,6 +31914,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OperationTemplateParameter",
+                TypeKind = TypeKind.WrappedClass)]
             public class OperationTemplateParameter_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -31640,6 +31986,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Parameter",
+                TypeKind = TypeKind.WrappedClass)]
             public class Parameter_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -31862,6 +32210,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ParameterSet",
+                TypeKind = TypeKind.WrappedClass)]
             public class ParameterSet_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -31956,6 +32306,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Property",
+                TypeKind = TypeKind.WrappedClass)]
             public class Property_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -32306,6 +32658,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RedefinableElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class RedefinableElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -32408,6 +32762,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RedefinableTemplateSignature",
+                TypeKind = TypeKind.WrappedClass)]
             public class RedefinableTemplateSignature_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -32558,6 +32914,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Slot",
+                TypeKind = TypeKind.WrappedClass)]
             public class Slot_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -32612,6 +32970,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuralFeature",
+                TypeKind = TypeKind.WrappedClass)]
             public class StructuralFeature_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -32798,6 +33158,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Actions
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#ValueSpecificationAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ValueSpecificationAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -33036,6 +33398,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#VariableAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class VariableAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -33266,6 +33630,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#WriteLinkAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class WriteLinkAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -33504,6 +33870,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#WriteStructuralFeatureAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class WriteStructuralFeatureAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -33758,6 +34126,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#WriteVariableAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class WriteVariableAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -33996,6 +34366,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AcceptCallAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class AcceptCallAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -34250,6 +34622,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AcceptEventAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class AcceptEventAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -34496,6 +34870,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Action",
+                TypeKind = TypeKind.WrappedClass)]
             public class Action_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -34718,6 +35094,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActionInputPin",
+                TypeKind = TypeKind.WrappedClass)]
             public class ActionInputPin_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -34996,6 +35374,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AddStructuralFeatureValueAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class AddStructuralFeatureValueAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -35266,6 +35646,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AddVariableValueAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class AddVariableValueAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -35520,6 +35902,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#BroadcastSignalAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class BroadcastSignalAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -35766,6 +36150,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class CallAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -36020,6 +36406,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallBehaviorAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class CallBehaviorAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -36282,6 +36670,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallOperationAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class CallOperationAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -36552,6 +36942,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Clause",
+                TypeKind = TypeKind.WrappedClass)]
             public class Clause_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -36630,6 +37022,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClearAssociationAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ClearAssociationAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -36868,6 +37262,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClearStructuralFeatureAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ClearStructuralFeatureAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -37114,6 +37510,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClearVariableAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ClearVariableAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -37344,6 +37742,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConditionalNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ConditionalNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -37734,6 +38134,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CreateLinkAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class CreateLinkAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -37972,6 +38374,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CreateLinkObjectAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class CreateLinkObjectAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -38218,6 +38622,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CreateObjectAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class CreateObjectAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -38456,6 +38862,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DestroyLinkAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class DestroyLinkAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -38694,6 +39102,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DestroyObjectAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class DestroyObjectAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -38940,6 +39350,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExpansionNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExpansionNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -39170,6 +39582,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExpansionRegion",
+                TypeKind = TypeKind.WrappedClass)]
             public class ExpansionRegion_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -39552,6 +39966,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InputPin",
+                TypeKind = TypeKind.WrappedClass)]
             public class InputPin_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -39822,6 +40238,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InvocationAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class InvocationAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -40060,6 +40478,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class LinkAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -40298,6 +40718,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndCreationData",
+                TypeKind = TypeKind.WrappedClass)]
             public class LinkEndCreationData_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -40368,6 +40790,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndData",
+                TypeKind = TypeKind.WrappedClass)]
             public class LinkEndData_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -40422,6 +40846,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndDestructionData",
+                TypeKind = TypeKind.WrappedClass)]
             public class LinkEndDestructionData_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -40492,6 +40918,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LoopNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class LoopNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -40922,6 +41350,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class OpaqueAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -41176,6 +41606,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OutputPin",
+                TypeKind = TypeKind.WrappedClass)]
             public class OutputPin_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -41446,6 +41878,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Pin",
+                TypeKind = TypeKind.WrappedClass)]
             public class Pin_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -41716,6 +42150,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#QualifierValue",
+                TypeKind = TypeKind.WrappedClass)]
             public class QualifierValue_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -41762,6 +42198,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RaiseExceptionAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class RaiseExceptionAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -41992,6 +42430,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadExtentAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadExtentAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -42230,6 +42670,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadIsClassifiedObjectAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadIsClassifiedObjectAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -42484,6 +42926,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadLinkAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -42730,6 +43174,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkObjectEndAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadLinkObjectEndAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -42976,6 +43422,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkObjectEndQualifierAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadLinkObjectEndQualifierAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -43222,6 +43670,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadSelfAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadSelfAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -43452,6 +43902,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadStructuralFeatureAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadStructuralFeatureAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -43698,6 +44150,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadVariableAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReadVariableAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -43936,6 +44390,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReclassifyObjectAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReclassifyObjectAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -44190,6 +44646,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReduceAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReduceAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -44444,6 +44902,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RemoveStructuralFeatureValueAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class RemoveStructuralFeatureValueAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -44714,6 +45174,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RemoveVariableValueAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class RemoveVariableValueAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -44968,6 +45430,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReplyAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReplyAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -45214,6 +45678,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SendObjectAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class SendObjectAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -45468,6 +45934,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SendSignalAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class SendSignalAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -45722,6 +46190,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SequenceNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class SequenceNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -46088,6 +46558,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StartClassifierBehaviorAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class StartClassifierBehaviorAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -46318,6 +46790,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StartObjectBehaviorAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class StartObjectBehaviorAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -46580,6 +47054,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuralFeatureAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class StructuralFeatureAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -46818,6 +47294,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuredActivityNode",
+                TypeKind = TypeKind.WrappedClass)]
             public class StructuredActivityNode_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -47176,6 +47654,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TestIdentityAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class TestIdentityAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -47422,6 +47902,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#UnmarshallAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class UnmarshallAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -47668,6 +48150,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ValuePin",
+                TypeKind = TypeKind.WrappedClass)]
             public class ValuePin_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;

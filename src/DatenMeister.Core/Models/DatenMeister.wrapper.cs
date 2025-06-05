@@ -10,6 +10,8 @@ namespace DatenMeister.Core.Models
     {
         public class Default
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package",
+                TypeKind = TypeKind.WrappedClass)]
             public class Package_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -56,6 +58,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1",
+                TypeKind = TypeKind.WrappedClass)]
             public class XmiExportContainer_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -70,6 +74,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#73c8c24e-6040-4700-b11d-c60f2379523a",
+                TypeKind = TypeKind.WrappedClass)]
             public class XmiImportContainer_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -104,6 +110,8 @@ namespace DatenMeister.Core.Models
 
         public class ExtentManager
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings",
+                TypeKind = TypeKind.WrappedClass)]
             public class ImportSettings_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -134,6 +142,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportException",
+                TypeKind = TypeKind.WrappedClass)]
             public class ImportException_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -152,6 +162,8 @@ namespace DatenMeister.Core.Models
 
         public class OSIntegration
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication",
+                TypeKind = TypeKind.WrappedClass)]
             public class CommandLineApplication_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -174,6 +186,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#OSIntegration.EnvironmentalVariable",
+                TypeKind = TypeKind.WrappedClass)]
             public class EnvironmentalVariable_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -202,6 +216,8 @@ namespace DatenMeister.Core.Models
 
     public class Actions
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ActionSet",
+            TypeKind = TypeKind.WrappedClass)]
         public class ActionSet_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -232,6 +248,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction",
+            TypeKind = TypeKind.WrappedClass)]
         public class LoggingWriterAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -262,6 +280,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
+            TypeKind = TypeKind.WrappedClass)]
         public class CommandExecutionAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -308,6 +328,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
+            TypeKind = TypeKind.WrappedClass)]
         public class PowershellExecutionAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -346,6 +368,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee",
+            TypeKind = TypeKind.WrappedClass)]
         public class LoadExtentAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -384,6 +408,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09",
+            TypeKind = TypeKind.WrappedClass)]
         public class DropExtentAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -422,6 +448,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe",
+            TypeKind = TypeKind.WrappedClass)]
         public class CreateWorkspaceAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -460,6 +488,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8",
+            TypeKind = TypeKind.WrappedClass)]
         public class DropWorkspaceAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -490,6 +520,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed",
+            TypeKind = TypeKind.WrappedClass)]
         public class CopyElementsAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -560,6 +592,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExportToXmiAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -606,6 +640,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae",
+            TypeKind = TypeKind.WrappedClass)]
         public class ClearCollectionAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -644,6 +680,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ItemTransformationActionHandler",
+            TypeKind = TypeKind.WrappedClass)]
         public class TransformItemsAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -706,6 +744,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Actions.EchoAction",
+            TypeKind = TypeKind.WrappedClass)]
         public class EchoAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -736,6 +776,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74",
+            TypeKind = TypeKind.WrappedClass)]
         public class DocumentOpenAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -766,6 +808,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
+            TypeKind = TypeKind.WrappedClass)]
         public class CreateFormByMetaClass_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -814,6 +858,8 @@ namespace DatenMeister.Core.Models
 
         public class Reports
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#Actions.SimpleReportAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class SimpleReportAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -868,6 +914,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#Actions.AdocReportAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class AdocReportAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -906,6 +954,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#Actions.HtmlReportAction",
+                TypeKind = TypeKind.WrappedClass)]
             public class HtmlReportAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -946,6 +996,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.Action",
+            TypeKind = TypeKind.WrappedClass)]
         public class Action_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -968,6 +1020,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction",
+            TypeKind = TypeKind.WrappedClass)]
         public class MoveOrCopyAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -998,6 +1052,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54",
+            TypeKind = TypeKind.WrappedClass)]
         public class MoveUpDownAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1036,6 +1092,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1",
+            TypeKind = TypeKind.WrappedClass)]
         public class StoreExtentAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1074,6 +1132,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d",
+            TypeKind = TypeKind.WrappedClass)]
         public class ImportXmiAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1120,6 +1180,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503",
+            TypeKind = TypeKind.WrappedClass)]
         public class DeletePropertyFromCollectionAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1150,6 +1212,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1",
+            TypeKind = TypeKind.WrappedClass)]
         public class MoveOrCopyActionResult_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1174,6 +1238,8 @@ namespace DatenMeister.Core.Models
 
         public class ParameterTypes
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd",
+                TypeKind = TypeKind.WrappedClass)]
             public class NavigationDefineActionParameter_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1206,6 +1272,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
+            TypeKind = TypeKind.WrappedClass)]
         public class ActionResult_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1230,6 +1298,8 @@ namespace DatenMeister.Core.Models
 
         public class ClientActions
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998",
+                TypeKind = TypeKind.WrappedClass)]
             public class ClientAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1260,6 +1330,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971",
+                TypeKind = TypeKind.WrappedClass)]
             public class AlertClientAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1298,6 +1370,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462",
+                TypeKind = TypeKind.WrappedClass)]
             public class NavigateToExtentClientAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1320,6 +1394,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4",
+                TypeKind = TypeKind.WrappedClass)]
             public class NavigateToItemClientAction_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1356,6 +1432,8 @@ namespace DatenMeister.Core.Models
 
     public class DataViews
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DataView",
+            TypeKind = TypeKind.WrappedClass)]
         public class DataView_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1394,6 +1472,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class ViewNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1408,6 +1488,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class SelectByExtentNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1438,6 +1520,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class FlattenNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1460,6 +1544,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class FilterByPropertyValueNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1506,6 +1592,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class FilterByMetaclassNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1544,6 +1632,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class SelectByFullNameNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1574,6 +1664,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class DynamicSourceNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1596,6 +1688,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
+            TypeKind = TypeKind.WrappedClass)]
         public class SelectByPathNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1618,6 +1712,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement",
+            TypeKind = TypeKind.WrappedClass)]
         public class QueryStatement_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1640,6 +1736,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
+            TypeKind = TypeKind.WrappedClass)]
         public class SelectFromAllWorkspacesNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1654,6 +1752,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
+            TypeKind = TypeKind.WrappedClass)]
         public class SelectByWorkspaceNode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1680,6 +1780,8 @@ namespace DatenMeister.Core.Models
 
     public class Reports
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition",
+            TypeKind = TypeKind.WrappedClass)]
         public class ReportDefinition_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1710,6 +1812,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource",
+            TypeKind = TypeKind.WrappedClass)]
         public class ReportInstanceSource_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1740,6 +1844,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance",
+            TypeKind = TypeKind.WrappedClass)]
         public class ReportInstance_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1770,6 +1876,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance",
+            TypeKind = TypeKind.WrappedClass)]
         public class AdocReportInstance_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1800,6 +1908,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance",
+            TypeKind = TypeKind.WrappedClass)]
         public class HtmlReportInstance_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1846,6 +1956,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration",
+            TypeKind = TypeKind.WrappedClass)]
         public class SimpleReportConfiguration_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -1934,6 +2046,8 @@ namespace DatenMeister.Core.Models
 
         public class Elements
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReportElement_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1948,6 +2062,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReportHeadline_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -1970,6 +2086,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReportParagraph_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2024,6 +2142,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReportTable_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2070,6 +2190,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportLoop",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReportLoop_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -2106,6 +2228,8 @@ namespace DatenMeister.Core.Models
 
     public class ExtentLoaderConfigs
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExtentLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2144,6 +2268,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExcelLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2294,6 +2420,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExcelReferenceLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2444,6 +2572,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExcelImportLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2602,6 +2732,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExcelExtentLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2656,6 +2788,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class InMemoryLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2702,6 +2836,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class XmlReferenceLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2756,6 +2892,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExtentFileLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2802,6 +2940,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class XmiStorageLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2848,6 +2988,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class CsvExtentLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2902,6 +3044,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings",
+            TypeKind = TypeKind.WrappedClass)]
         public class CsvSettings_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2956,6 +3100,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExcelHierarchicalColumnDefinition_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -2986,6 +3132,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExcelHierarchicalLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3152,6 +3300,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExcelColumn_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3174,6 +3324,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3",
+            TypeKind = TypeKind.WrappedClass)]
         public class EnvironmentalVariableLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3216,6 +3368,8 @@ namespace DatenMeister.Core.Models
 
     public class Forms
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class FieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3270,6 +3424,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder",
+            TypeKind = TypeKind.WrappedClass)]
         public class SortingOrder_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3292,6 +3448,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class AnyDataFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3346,6 +3504,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class CheckboxFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3408,6 +3568,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class ActionFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3486,6 +3648,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class DateTimeFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3564,6 +3728,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation",
+            TypeKind = TypeKind.WrappedClass)]
         public class FormAssociation_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3658,6 +3824,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class DropDownFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3728,6 +3896,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair",
+            TypeKind = TypeKind.WrappedClass)]
         public class ValuePair_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3750,6 +3920,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class MetaClassElementFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3804,6 +3976,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class ReferenceFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -3914,6 +4088,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class SubElementFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4032,6 +4208,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class TextFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4118,6 +4296,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class EvalTextFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4212,6 +4392,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class SeparatorLineFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4226,6 +4408,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class FileSelectionFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4312,6 +4496,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement",
+            TypeKind = TypeKind.WrappedClass)]
         public class DefaultTypeForNewElement_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4342,6 +4528,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class FullNameFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4396,6 +4584,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class CheckboxListTaggingFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4474,6 +4664,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData",
+            TypeKind = TypeKind.WrappedClass)]
         public class NumberFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4544,6 +4736,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",
+            TypeKind = TypeKind.WrappedClass)]
         public class Form_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4614,6 +4808,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
+            TypeKind = TypeKind.WrappedClass)]
         public class RowForm_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4724,6 +4920,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm",
+            TypeKind = TypeKind.WrappedClass)]
         public class TableForm_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -4922,6 +5120,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
+            TypeKind = TypeKind.WrappedClass)]
         public class CollectionForm_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5016,6 +5216,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
+            TypeKind = TypeKind.WrappedClass)]
         public class ObjectForm_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5102,6 +5304,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode",
+            TypeKind = TypeKind.WrappedClass)]
         public class ViewMode_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5132,6 +5336,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection",
+            TypeKind = TypeKind.WrappedClass)]
         public class DropDownByCollection_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5202,6 +5408,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00",
+            TypeKind = TypeKind.WrappedClass)]
         public class UriReferenceFieldData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5224,6 +5432,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0",
+            TypeKind = TypeKind.WrappedClass)]
         public class NavigateToFieldsForTestAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5246,6 +5456,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2",
+            TypeKind = TypeKind.WrappedClass)]
         public class DropDownByQueryData_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5312,6 +5524,8 @@ namespace DatenMeister.Core.Models
 
     public class AttachedExtent
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration",
+            TypeKind = TypeKind.WrappedClass)]
         public class AttachedExtentConfiguration_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5362,6 +5576,8 @@ namespace DatenMeister.Core.Models
 
     public class Management
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent",
+            TypeKind = TypeKind.WrappedClass)]
         public class Extent_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5480,6 +5696,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace",
+            TypeKind = TypeKind.WrappedClass)]
         public class Workspace_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5510,6 +5728,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel",
+            TypeKind = TypeKind.WrappedClass)]
         public class CreateNewWorkspaceModel_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5532,6 +5752,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentTypeSetting",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExtentTypeSetting_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5554,6 +5776,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExtentProperties_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5672,6 +5896,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentPropertyDefinition",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExtentPropertyDefinition_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5702,6 +5928,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentSettings",
+            TypeKind = TypeKind.WrappedClass)]
         public class ExtentSettings_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5728,6 +5956,8 @@ namespace DatenMeister.Core.Models
 
     public class FastViewFilters
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyComparisonFilter",
+            TypeKind = TypeKind.WrappedClass)]
         public class PropertyComparisonFilter_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5758,6 +5988,8 @@ namespace DatenMeister.Core.Models
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyContainsFilter",
+            TypeKind = TypeKind.WrappedClass)]
         public class PropertyContainsFilter_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5784,6 +6016,8 @@ namespace DatenMeister.Core.Models
 
     public class DynamicRuntimeProvider
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DynamicRuntimeProvider.DynamicRuntimeLoaderConfig",
+            TypeKind = TypeKind.WrappedClass)]
         public class DynamicRuntimeLoaderConfig_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -5840,6 +6074,8 @@ namespace DatenMeister.Core.Models
 
         public class Examples
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a",
+                TypeKind = TypeKind.WrappedClass)]
             public class NumberProviderSettings_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5870,6 +6106,8 @@ namespace DatenMeister.Core.Models
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.DynamicRuntimeProviders.Examples.NumberRepresentation",
+                TypeKind = TypeKind.WrappedClass)]
             public class NumberRepresentation_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -5914,6 +6152,8 @@ namespace DatenMeister.Core.Models
 
     public class Verifier
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768",
+            TypeKind = TypeKind.WrappedClass)]
         public class VerifyEntry_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;

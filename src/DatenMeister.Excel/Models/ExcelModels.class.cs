@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -8,6 +9,8 @@ namespace DatenMeister.Excel.Models
 {
     public class _ExcelModels
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook",
+            TypeKind = TypeKind.ClassTree)]
         public class _Workbook
         {
             public static string @tables = "tables";
@@ -18,6 +21,8 @@ namespace DatenMeister.Excel.Models
         public _Workbook @Workbook = new _Workbook();
         public MofObjectShadow @__Workbook = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Table",
+            TypeKind = TypeKind.ClassTree)]
         public class _Table
         {
             public static string @name = "name";

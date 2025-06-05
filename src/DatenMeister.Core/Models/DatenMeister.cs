@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -10,6 +11,8 @@ namespace DatenMeister.Core.Models
     {
         public class _Default
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package",
+                TypeKind = TypeKind.ClassTree)]
             public class _Package
             {
                 public static string @name = "name";
@@ -32,6 +35,8 @@ namespace DatenMeister.Core.Models
             public _Package @Package = new _Package();
             public MofObjectShadow @__Package = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1",
+                TypeKind = TypeKind.ClassTree)]
             public class _XmiExportContainer
             {
                 public static string @xmi = "xmi";
@@ -42,6 +47,8 @@ namespace DatenMeister.Core.Models
             public _XmiExportContainer @XmiExportContainer = new _XmiExportContainer();
             public MofObjectShadow @__XmiExportContainer = new MofObjectShadow("dm:///_internal/types/internal#1c21ea5b-a9ce-4793-b2f9-590ab2c4e4f1");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#73c8c24e-6040-4700-b11d-c60f2379523a",
+                TypeKind = TypeKind.ClassTree)]
             public class _XmiImportContainer
             {
                 public static string @xmi = "xmi";
@@ -64,6 +71,8 @@ namespace DatenMeister.Core.Models
 
         public class _ExtentManager
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings",
+                TypeKind = TypeKind.ClassTree)]
             public class _ImportSettings
             {
                 public static string @filePath = "filePath";
@@ -80,6 +89,8 @@ namespace DatenMeister.Core.Models
             public _ImportSettings @ImportSettings = new _ImportSettings();
             public MofObjectShadow @__ImportSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportException",
+                TypeKind = TypeKind.ClassTree)]
             public class _ImportException
             {
                 public static string @message = "message";
@@ -96,6 +107,8 @@ namespace DatenMeister.Core.Models
 
         public class _OSIntegration
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication",
+                TypeKind = TypeKind.ClassTree)]
             public class _CommandLineApplication
             {
                 public static string @name = "name";
@@ -109,6 +122,8 @@ namespace DatenMeister.Core.Models
             public _CommandLineApplication @CommandLineApplication = new _CommandLineApplication();
             public MofObjectShadow @__CommandLineApplication = new MofObjectShadow("dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#OSIntegration.EnvironmentalVariable",
+                TypeKind = TypeKind.ClassTree)]
             public class _EnvironmentalVariable
             {
                 public static string @name = "name";
@@ -132,6 +147,8 @@ namespace DatenMeister.Core.Models
 
     public class _Actions
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ActionSet",
+            TypeKind = TypeKind.ClassTree)]
         public class _ActionSet
         {
             public static string @action = "action";
@@ -148,6 +165,8 @@ namespace DatenMeister.Core.Models
         public _ActionSet @ActionSet = new _ActionSet();
         public MofObjectShadow @__ActionSet = new MofObjectShadow("dm:///_internal/types/internal#Actions.ActionSet");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction",
+            TypeKind = TypeKind.ClassTree)]
         public class _LoggingWriterAction
         {
             public static string @message = "message";
@@ -164,6 +183,8 @@ namespace DatenMeister.Core.Models
         public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
         public MofObjectShadow @__LoggingWriterAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.LoggingWriterAction");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
+            TypeKind = TypeKind.ClassTree)]
         public class _CommandExecutionAction
         {
             public static string @command = "command";
@@ -186,6 +207,8 @@ namespace DatenMeister.Core.Models
         public _CommandExecutionAction @CommandExecutionAction = new _CommandExecutionAction();
         public MofObjectShadow @__CommandExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
+            TypeKind = TypeKind.ClassTree)]
         public class _PowershellExecutionAction
         {
             public static string @script = "script";
@@ -205,6 +228,8 @@ namespace DatenMeister.Core.Models
         public _PowershellExecutionAction @PowershellExecutionAction = new _PowershellExecutionAction();
         public MofObjectShadow @__PowershellExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee",
+            TypeKind = TypeKind.ClassTree)]
         public class _LoadExtentAction
         {
             public static string @configuration = "configuration";
@@ -224,6 +249,8 @@ namespace DatenMeister.Core.Models
         public _LoadExtentAction @LoadExtentAction = new _LoadExtentAction();
         public MofObjectShadow @__LoadExtentAction = new MofObjectShadow("dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09",
+            TypeKind = TypeKind.ClassTree)]
         public class _DropExtentAction
         {
             public static string @workspaceId = "workspaceId";
@@ -243,6 +270,8 @@ namespace DatenMeister.Core.Models
         public _DropExtentAction @DropExtentAction = new _DropExtentAction();
         public MofObjectShadow @__DropExtentAction = new MofObjectShadow("dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe",
+            TypeKind = TypeKind.ClassTree)]
         public class _CreateWorkspaceAction
         {
             public static string @workspaceId = "workspaceId";
@@ -262,6 +291,8 @@ namespace DatenMeister.Core.Models
         public _CreateWorkspaceAction @CreateWorkspaceAction = new _CreateWorkspaceAction();
         public MofObjectShadow @__CreateWorkspaceAction = new MofObjectShadow("dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8",
+            TypeKind = TypeKind.ClassTree)]
         public class _DropWorkspaceAction
         {
             public static string @workspaceId = "workspaceId";
@@ -278,6 +309,8 @@ namespace DatenMeister.Core.Models
         public _DropWorkspaceAction @DropWorkspaceAction = new _DropWorkspaceAction();
         public MofObjectShadow @__DropWorkspaceAction = new MofObjectShadow("dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed",
+            TypeKind = TypeKind.ClassTree)]
         public class _CopyElementsAction
         {
             public static string @sourcePath = "sourcePath";
@@ -309,6 +342,8 @@ namespace DatenMeister.Core.Models
         public _CopyElementsAction @CopyElementsAction = new _CopyElementsAction();
         public MofObjectShadow @__CopyElementsAction = new MofObjectShadow("dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExportToXmiAction
         {
             public static string @sourcePath = "sourcePath";
@@ -331,6 +366,8 @@ namespace DatenMeister.Core.Models
         public _ExportToXmiAction @ExportToXmiAction = new _ExportToXmiAction();
         public MofObjectShadow @__ExportToXmiAction = new MofObjectShadow("dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae",
+            TypeKind = TypeKind.ClassTree)]
         public class _ClearCollectionAction
         {
             public static string @workspaceId = "workspaceId";
@@ -350,6 +387,8 @@ namespace DatenMeister.Core.Models
         public _ClearCollectionAction @ClearCollectionAction = new _ClearCollectionAction();
         public MofObjectShadow @__ClearCollectionAction = new MofObjectShadow("dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.ItemTransformationActionHandler",
+            TypeKind = TypeKind.ClassTree)]
         public class _TransformItemsAction
         {
             public static string @metaClass = "metaClass";
@@ -378,6 +417,8 @@ namespace DatenMeister.Core.Models
         public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
         public MofObjectShadow @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Actions.EchoAction",
+            TypeKind = TypeKind.ClassTree)]
         public class _EchoAction
         {
             public static string @shallSuccess = "shallSuccess";
@@ -394,6 +435,8 @@ namespace DatenMeister.Core.Models
         public _EchoAction @EchoAction = new _EchoAction();
         public MofObjectShadow @__EchoAction = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Actions.EchoAction");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74",
+            TypeKind = TypeKind.ClassTree)]
         public class _DocumentOpenAction
         {
             public static string @filePath = "filePath";
@@ -410,6 +453,8 @@ namespace DatenMeister.Core.Models
         public _DocumentOpenAction @DocumentOpenAction = new _DocumentOpenAction();
         public MofObjectShadow @__DocumentOpenAction = new MofObjectShadow("dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
+            TypeKind = TypeKind.ClassTree)]
         public class _CreateFormByMetaClass
         {
             public static string @metaClass = "metaClass";
@@ -434,6 +479,8 @@ namespace DatenMeister.Core.Models
 
         public class _Reports
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#Actions.SimpleReportAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _SimpleReportAction
             {
                 public static string @path = "path";
@@ -459,6 +506,8 @@ namespace DatenMeister.Core.Models
             public _SimpleReportAction @SimpleReportAction = new _SimpleReportAction();
             public MofObjectShadow @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.SimpleReportAction");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#Actions.AdocReportAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _AdocReportAction
             {
                 public static string @filePath = "filePath";
@@ -478,6 +527,8 @@ namespace DatenMeister.Core.Models
             public _AdocReportAction @AdocReportAction = new _AdocReportAction();
             public MofObjectShadow @__AdocReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.AdocReportAction");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#Actions.HtmlReportAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _HtmlReportAction
             {
                 public static string @filePath = "filePath";
@@ -501,6 +552,8 @@ namespace DatenMeister.Core.Models
 
         public _Reports Reports = new _Reports();
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#Actions.Action",
+            TypeKind = TypeKind.ClassTree)]
         public class _Action
         {
             public static string @name = "name";
@@ -514,6 +567,8 @@ namespace DatenMeister.Core.Models
         public _Action @Action = new _Action();
         public MofObjectShadow @__Action = new MofObjectShadow("dm:///_internal/types/internal#Actions.Action");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.MoveOrCopyAction",
+            TypeKind = TypeKind.ClassTree)]
         public class _MoveOrCopyAction
         {
             public static string @copyMode = "copyMode";
@@ -568,6 +623,8 @@ namespace DatenMeister.Core.Models
             @Down
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54",
+            TypeKind = TypeKind.ClassTree)]
         public class _MoveUpDownAction
         {
             public static string @element = "element";
@@ -587,6 +644,8 @@ namespace DatenMeister.Core.Models
         public _MoveUpDownAction @MoveUpDownAction = new _MoveUpDownAction();
         public MofObjectShadow @__MoveUpDownAction = new MofObjectShadow("dm:///_internal/types/internal#bc4952bf-a3f5-4516-be26-5b773e38bd54");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1",
+            TypeKind = TypeKind.ClassTree)]
         public class _StoreExtentAction
         {
             public static string @workspaceId = "workspaceId";
@@ -606,6 +665,8 @@ namespace DatenMeister.Core.Models
         public _StoreExtentAction @StoreExtentAction = new _StoreExtentAction();
         public MofObjectShadow @__StoreExtentAction = new MofObjectShadow("dm:///_internal/types/internal#43b0764e-b70f-42bb-b37d-ae8586ec45f1");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d",
+            TypeKind = TypeKind.ClassTree)]
         public class _ImportXmiAction
         {
             public static string @workspaceId = "workspaceId";
@@ -628,6 +689,8 @@ namespace DatenMeister.Core.Models
         public _ImportXmiAction @ImportXmiAction = new _ImportXmiAction();
         public MofObjectShadow @__ImportXmiAction = new MofObjectShadow("dm:///_internal/types/internal#0f4b40ec-2f90-4184-80d8-2aa3a8eaef5d");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503",
+            TypeKind = TypeKind.ClassTree)]
         public class _DeletePropertyFromCollectionAction
         {
             public static string @propertyName = "propertyName";
@@ -644,6 +707,8 @@ namespace DatenMeister.Core.Models
         public _DeletePropertyFromCollectionAction @DeletePropertyFromCollectionAction = new _DeletePropertyFromCollectionAction();
         public MofObjectShadow @__DeletePropertyFromCollectionAction = new MofObjectShadow("dm:///_internal/types/internal#b631bb00-ab11-4a8a-a148-e28abc398503");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#3223e13a-bbb7-4785-8b81-7275be23b0a1",
+            TypeKind = TypeKind.ClassTree)]
         public class _MoveOrCopyActionResult
         {
             public static string @targetUrl = "targetUrl";
@@ -659,6 +724,8 @@ namespace DatenMeister.Core.Models
 
         public class _ParameterTypes
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd",
+                TypeKind = TypeKind.ClassTree)]
             public class _NavigationDefineActionParameter
             {
                 public static string @actionName = "actionName";
@@ -679,6 +746,8 @@ namespace DatenMeister.Core.Models
 
         public _ParameterTypes ParameterTypes = new _ParameterTypes();
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
+            TypeKind = TypeKind.ClassTree)]
         public class _ActionResult
         {
             public static string @isSuccess = "isSuccess";
@@ -694,6 +763,8 @@ namespace DatenMeister.Core.Models
 
         public class _ClientActions
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998",
+                TypeKind = TypeKind.ClassTree)]
             public class _ClientAction
             {
                 public static string @actionName = "actionName";
@@ -710,6 +781,8 @@ namespace DatenMeister.Core.Models
             public _ClientAction @ClientAction = new _ClientAction();
             public MofObjectShadow @__ClientAction = new MofObjectShadow("dm:///_internal/types/internal#e07ca80e-2540-4f91-8214-60dbd464e998");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971",
+                TypeKind = TypeKind.ClassTree)]
             public class _AlertClientAction
             {
                 public static string @messageText = "messageText";
@@ -729,6 +802,8 @@ namespace DatenMeister.Core.Models
             public _AlertClientAction @AlertClientAction = new _AlertClientAction();
             public MofObjectShadow @__AlertClientAction = new MofObjectShadow("dm:///_internal/types/internal#0ee17f2a-5407-4d38-b1b4-34ead2186971");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462",
+                TypeKind = TypeKind.ClassTree)]
             public class _NavigateToExtentClientAction
             {
                 public static string @workspaceId = "workspaceId";
@@ -742,6 +817,8 @@ namespace DatenMeister.Core.Models
             public _NavigateToExtentClientAction @NavigateToExtentClientAction = new _NavigateToExtentClientAction();
             public MofObjectShadow @__NavigateToExtentClientAction = new MofObjectShadow("dm:///_internal/types/internal#3251783f-2683-4c24-bad5-828930028462");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4",
+                TypeKind = TypeKind.ClassTree)]
             public class _NavigateToItemClientAction
             {
                 public static string @workspaceId = "workspaceId";
@@ -768,6 +845,8 @@ namespace DatenMeister.Core.Models
 
     public class _DataViews
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DataView",
+            TypeKind = TypeKind.ClassTree)]
         public class _DataView
         {
             public static string @name = "name";
@@ -787,6 +866,8 @@ namespace DatenMeister.Core.Models
         public _DataView @DataView = new _DataView();
         public MofObjectShadow @__DataView = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DataView");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _ViewNode
         {
             public static string @name = "name";
@@ -797,6 +878,8 @@ namespace DatenMeister.Core.Models
         public _ViewNode @ViewNode = new _ViewNode();
         public MofObjectShadow @__ViewNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _SelectByExtentNode
         {
             public static string @extentUri = "extentUri";
@@ -813,6 +896,8 @@ namespace DatenMeister.Core.Models
         public _SelectByExtentNode @SelectByExtentNode = new _SelectByExtentNode();
         public MofObjectShadow @__SelectByExtentNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _FlattenNode
         {
             public static string @input = "input";
@@ -826,6 +911,8 @@ namespace DatenMeister.Core.Models
         public _FlattenNode @FlattenNode = new _FlattenNode();
         public MofObjectShadow @__FlattenNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _FilterByPropertyValueNode
         {
             public static string @input = "input";
@@ -848,6 +935,8 @@ namespace DatenMeister.Core.Models
         public _FilterByPropertyValueNode @FilterByPropertyValueNode = new _FilterByPropertyValueNode();
         public MofObjectShadow @__FilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _FilterByMetaclassNode
         {
             public static string @input = "input";
@@ -904,6 +993,8 @@ namespace DatenMeister.Core.Models
             @LighterOrEqualThan
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _SelectByFullNameNode
         {
             public static string @input = "input";
@@ -920,6 +1011,8 @@ namespace DatenMeister.Core.Models
         public _SelectByFullNameNode @SelectByFullNameNode = new _SelectByFullNameNode();
         public MofObjectShadow @__SelectByFullNameNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _DynamicSourceNode
         {
             public static string @nodeName = "nodeName";
@@ -933,6 +1026,8 @@ namespace DatenMeister.Core.Models
         public _DynamicSourceNode @DynamicSourceNode = new _DynamicSourceNode();
         public MofObjectShadow @__DynamicSourceNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
+            TypeKind = TypeKind.ClassTree)]
         public class _SelectByPathNode
         {
             public static string @workspaceId = "workspaceId";
@@ -946,6 +1041,8 @@ namespace DatenMeister.Core.Models
         public _SelectByPathNode @SelectByPathNode = new _SelectByPathNode();
         public MofObjectShadow @__SelectByPathNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement",
+            TypeKind = TypeKind.ClassTree)]
         public class _QueryStatement
         {
             public static string @nodes = "nodes";
@@ -959,6 +1056,8 @@ namespace DatenMeister.Core.Models
         public _QueryStatement @QueryStatement = new _QueryStatement();
         public MofObjectShadow @__QueryStatement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
+            TypeKind = TypeKind.ClassTree)]
         public class _SelectFromAllWorkspacesNode
         {
             public static string @name = "name";
@@ -969,6 +1068,8 @@ namespace DatenMeister.Core.Models
         public _SelectFromAllWorkspacesNode @SelectFromAllWorkspacesNode = new _SelectFromAllWorkspacesNode();
         public MofObjectShadow @__SelectFromAllWorkspacesNode = new MofObjectShadow("dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
+            TypeKind = TypeKind.ClassTree)]
         public class _SelectByWorkspaceNode
         {
             public static string @workspaceId = "workspaceId";
@@ -988,6 +1089,8 @@ namespace DatenMeister.Core.Models
 
     public class _Reports
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition",
+            TypeKind = TypeKind.ClassTree)]
         public class _ReportDefinition
         {
             public static string @name = "name";
@@ -1004,6 +1107,8 @@ namespace DatenMeister.Core.Models
         public _ReportDefinition @ReportDefinition = new _ReportDefinition();
         public MofObjectShadow @__ReportDefinition = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource",
+            TypeKind = TypeKind.ClassTree)]
         public class _ReportInstanceSource
         {
             public static string @name = "name";
@@ -1020,6 +1125,8 @@ namespace DatenMeister.Core.Models
         public _ReportInstanceSource @ReportInstanceSource = new _ReportInstanceSource();
         public MofObjectShadow @__ReportInstanceSource = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance",
+            TypeKind = TypeKind.ClassTree)]
         public class _ReportInstance
         {
             public static string @name = "name";
@@ -1036,6 +1143,8 @@ namespace DatenMeister.Core.Models
         public _ReportInstance @ReportInstance = new _ReportInstance();
         public MofObjectShadow @__ReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance",
+            TypeKind = TypeKind.ClassTree)]
         public class _AdocReportInstance
         {
             public static string @name = "name";
@@ -1052,6 +1161,8 @@ namespace DatenMeister.Core.Models
         public _AdocReportInstance @AdocReportInstance = new _AdocReportInstance();
         public MofObjectShadow @__AdocReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance",
+            TypeKind = TypeKind.ClassTree)]
         public class _HtmlReportInstance
         {
             public static string @cssFile = "cssFile";
@@ -1096,6 +1207,8 @@ namespace DatenMeister.Core.Models
             @PerPackage
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration",
+            TypeKind = TypeKind.ClassTree)]
         public class _SimpleReportConfiguration
         {
             public static string @name = "name";
@@ -1135,6 +1248,8 @@ namespace DatenMeister.Core.Models
 
         public class _Elements
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReportElement
             {
                 public static string @name = "name";
@@ -1145,6 +1260,8 @@ namespace DatenMeister.Core.Models
             public _ReportElement @ReportElement = new _ReportElement();
             public MofObjectShadow @__ReportElement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReportHeadline
             {
                 public static string @title = "title";
@@ -1158,6 +1275,8 @@ namespace DatenMeister.Core.Models
             public _ReportHeadline @ReportHeadline = new _ReportHeadline();
             public MofObjectShadow @__ReportHeadline = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReportParagraph
             {
                 public static string @paragraph = "paragraph";
@@ -1183,6 +1302,8 @@ namespace DatenMeister.Core.Models
             public _ReportParagraph @ReportParagraph = new _ReportParagraph();
             public MofObjectShadow @__ReportParagraph = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReportTable
             {
                 public static string @cssClass = "cssClass";
@@ -1224,6 +1345,8 @@ namespace DatenMeister.Core.Models
                 @AllTypes
             }
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportLoop",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReportLoop
             {
                 public static string @viewNode = "viewNode";
@@ -1250,6 +1373,8 @@ namespace DatenMeister.Core.Models
 
     public class _ExtentLoaderConfigs
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExtentLoaderConfig
         {
             public static string @name = "name";
@@ -1269,6 +1394,8 @@ namespace DatenMeister.Core.Models
         public _ExtentLoaderConfig @ExtentLoaderConfig = new _ExtentLoaderConfig();
         public MofObjectShadow @__ExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExcelLoaderConfig
         {
             public static string @fixRowCount = "fixRowCount";
@@ -1330,6 +1457,8 @@ namespace DatenMeister.Core.Models
         public _ExcelLoaderConfig @ExcelLoaderConfig = new _ExcelLoaderConfig();
         public MofObjectShadow @__ExcelLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExcelReferenceLoaderConfig
         {
             public static string @fixRowCount = "fixRowCount";
@@ -1391,6 +1520,8 @@ namespace DatenMeister.Core.Models
         public _ExcelReferenceLoaderConfig @ExcelReferenceLoaderConfig = new _ExcelReferenceLoaderConfig();
         public MofObjectShadow @__ExcelReferenceLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExcelImportLoaderConfig
         {
             public static string @extentPath = "extentPath";
@@ -1455,6 +1586,8 @@ namespace DatenMeister.Core.Models
         public _ExcelImportLoaderConfig @ExcelImportLoaderConfig = new _ExcelImportLoaderConfig();
         public MofObjectShadow @__ExcelImportLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExcelExtentLoaderConfig
         {
             public static string @filePath = "filePath";
@@ -1480,6 +1613,8 @@ namespace DatenMeister.Core.Models
         public _ExcelExtentLoaderConfig @ExcelExtentLoaderConfig = new _ExcelExtentLoaderConfig();
         public MofObjectShadow @__ExcelExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _InMemoryLoaderConfig
         {
             public static string @isLinkedList = "isLinkedList";
@@ -1502,6 +1637,8 @@ namespace DatenMeister.Core.Models
         public _InMemoryLoaderConfig @InMemoryLoaderConfig = new _InMemoryLoaderConfig();
         public MofObjectShadow @__InMemoryLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _XmlReferenceLoaderConfig
         {
             public static string @filePath = "filePath";
@@ -1527,6 +1664,8 @@ namespace DatenMeister.Core.Models
         public _XmlReferenceLoaderConfig @XmlReferenceLoaderConfig = new _XmlReferenceLoaderConfig();
         public MofObjectShadow @__XmlReferenceLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExtentFileLoaderConfig
         {
             public static string @filePath = "filePath";
@@ -1549,6 +1688,8 @@ namespace DatenMeister.Core.Models
         public _ExtentFileLoaderConfig @ExtentFileLoaderConfig = new _ExtentFileLoaderConfig();
         public MofObjectShadow @__ExtentFileLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _XmiStorageLoaderConfig
         {
             public static string @filePath = "filePath";
@@ -1571,6 +1712,8 @@ namespace DatenMeister.Core.Models
         public _XmiStorageLoaderConfig @XmiStorageLoaderConfig = new _XmiStorageLoaderConfig();
         public MofObjectShadow @__XmiStorageLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _CsvExtentLoaderConfig
         {
             public static string @settings = "settings";
@@ -1596,6 +1739,8 @@ namespace DatenMeister.Core.Models
         public _CsvExtentLoaderConfig @CsvExtentLoaderConfig = new _CsvExtentLoaderConfig();
         public MofObjectShadow @__CsvExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings",
+            TypeKind = TypeKind.ClassTree)]
         public class _CsvSettings
         {
             public static string @encoding = "encoding";
@@ -1621,6 +1766,8 @@ namespace DatenMeister.Core.Models
         public _CsvSettings @CsvSettings = new _CsvSettings();
         public MofObjectShadow @__CsvSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExcelHierarchicalColumnDefinition
         {
             public static string @name = "name";
@@ -1637,6 +1784,8 @@ namespace DatenMeister.Core.Models
         public _ExcelHierarchicalColumnDefinition @ExcelHierarchicalColumnDefinition = new _ExcelHierarchicalColumnDefinition();
         public MofObjectShadow @__ExcelHierarchicalColumnDefinition = new MofObjectShadow("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExcelHierarchicalLoaderConfig
         {
             public static string @hierarchicalColumns = "hierarchicalColumns";
@@ -1704,6 +1853,8 @@ namespace DatenMeister.Core.Models
         public _ExcelHierarchicalLoaderConfig @ExcelHierarchicalLoaderConfig = new _ExcelHierarchicalLoaderConfig();
         public MofObjectShadow @__ExcelHierarchicalLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExcelColumn
         {
             public static string @header = "header";
@@ -1717,6 +1868,8 @@ namespace DatenMeister.Core.Models
         public _ExcelColumn @ExcelColumn = new _ExcelColumn();
         public MofObjectShadow @__ExcelColumn = new MofObjectShadow("dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3",
+            TypeKind = TypeKind.ClassTree)]
         public class _EnvironmentalVariableLoaderConfig
         {
             public static string @name = "name";
@@ -1742,6 +1895,8 @@ namespace DatenMeister.Core.Models
 
     public class _Forms
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _FieldData
         {
             public static string @isAttached = "isAttached";
@@ -1767,6 +1922,8 @@ namespace DatenMeister.Core.Models
         public _FieldData @FieldData = new _FieldData();
         public MofObjectShadow @__FieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder",
+            TypeKind = TypeKind.ClassTree)]
         public class _SortingOrder
         {
             public static string @name = "name";
@@ -1780,6 +1937,8 @@ namespace DatenMeister.Core.Models
         public _SortingOrder @SortingOrder = new _SortingOrder();
         public MofObjectShadow @__SortingOrder = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _AnyDataFieldData
         {
             public static string @isAttached = "isAttached";
@@ -1805,6 +1964,8 @@ namespace DatenMeister.Core.Models
         public _AnyDataFieldData @AnyDataFieldData = new _AnyDataFieldData();
         public MofObjectShadow @__AnyDataFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _CheckboxFieldData
         {
             public static string @lineHeight = "lineHeight";
@@ -1833,6 +1994,8 @@ namespace DatenMeister.Core.Models
         public _CheckboxFieldData @CheckboxFieldData = new _CheckboxFieldData();
         public MofObjectShadow @__CheckboxFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _ActionFieldData
         {
             public static string @actionName = "actionName";
@@ -1867,6 +2030,8 @@ namespace DatenMeister.Core.Models
         public _ActionFieldData @ActionFieldData = new _ActionFieldData();
         public MofObjectShadow @__ActionFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _DateTimeFieldData
         {
             public static string @hideDate = "hideDate";
@@ -1901,6 +2066,8 @@ namespace DatenMeister.Core.Models
         public _DateTimeFieldData @DateTimeFieldData = new _DateTimeFieldData();
         public MofObjectShadow @__DateTimeFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation",
+            TypeKind = TypeKind.ClassTree)]
         public class _FormAssociation
         {
             public static string @name = "name";
@@ -1941,6 +2108,8 @@ namespace DatenMeister.Core.Models
         public _FormAssociation @FormAssociation = new _FormAssociation();
         public MofObjectShadow @__FormAssociation = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _DropDownFieldData
         {
             public static string @values = "values";
@@ -1972,6 +2141,8 @@ namespace DatenMeister.Core.Models
         public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
         public MofObjectShadow @__DropDownFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair",
+            TypeKind = TypeKind.ClassTree)]
         public class _ValuePair
         {
             public static string @value = "value";
@@ -1985,6 +2156,8 @@ namespace DatenMeister.Core.Models
         public _ValuePair @ValuePair = new _ValuePair();
         public MofObjectShadow @__ValuePair = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _MetaClassElementFieldData
         {
             public static string @isAttached = "isAttached";
@@ -2010,6 +2183,8 @@ namespace DatenMeister.Core.Models
         public _MetaClassElementFieldData @MetaClassElementFieldData = new _MetaClassElementFieldData();
         public MofObjectShadow @__MetaClassElementFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _ReferenceFieldData
         {
             public static string @isSelectionInline = "isSelectionInline";
@@ -2056,6 +2231,8 @@ namespace DatenMeister.Core.Models
         public _ReferenceFieldData @ReferenceFieldData = new _ReferenceFieldData();
         public MofObjectShadow @__ReferenceFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _SubElementFieldData
         {
             public static string @metaClass = "metaClass";
@@ -2105,6 +2282,8 @@ namespace DatenMeister.Core.Models
         public _SubElementFieldData @SubElementFieldData = new _SubElementFieldData();
         public MofObjectShadow @__SubElementFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _TextFieldData
         {
             public static string @lineHeight = "lineHeight";
@@ -2142,6 +2321,8 @@ namespace DatenMeister.Core.Models
         public _TextFieldData @TextFieldData = new _TextFieldData();
         public MofObjectShadow @__TextFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _EvalTextFieldData
         {
             public static string @evalCellProperties = "evalCellProperties";
@@ -2182,6 +2363,8 @@ namespace DatenMeister.Core.Models
         public _EvalTextFieldData @EvalTextFieldData = new _EvalTextFieldData();
         public MofObjectShadow @__EvalTextFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _SeparatorLineFieldData
         {
             public static string @Height = "Height";
@@ -2192,6 +2375,8 @@ namespace DatenMeister.Core.Models
         public _SeparatorLineFieldData @SeparatorLineFieldData = new _SeparatorLineFieldData();
         public MofObjectShadow @__SeparatorLineFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _FileSelectionFieldData
         {
             public static string @defaultExtension = "defaultExtension";
@@ -2229,6 +2414,8 @@ namespace DatenMeister.Core.Models
         public _FileSelectionFieldData @FileSelectionFieldData = new _FileSelectionFieldData();
         public MofObjectShadow @__FileSelectionFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement",
+            TypeKind = TypeKind.ClassTree)]
         public class _DefaultTypeForNewElement
         {
             public static string @name = "name";
@@ -2245,6 +2432,8 @@ namespace DatenMeister.Core.Models
         public _DefaultTypeForNewElement @DefaultTypeForNewElement = new _DefaultTypeForNewElement();
         public MofObjectShadow @__DefaultTypeForNewElement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _FullNameFieldData
         {
             public static string @isAttached = "isAttached";
@@ -2270,6 +2459,8 @@ namespace DatenMeister.Core.Models
         public _FullNameFieldData @FullNameFieldData = new _FullNameFieldData();
         public MofObjectShadow @__FullNameFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FullNameFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _CheckboxListTaggingFieldData
         {
             public static string @values = "values";
@@ -2304,6 +2495,8 @@ namespace DatenMeister.Core.Models
         public _CheckboxListTaggingFieldData @CheckboxListTaggingFieldData = new _CheckboxListTaggingFieldData();
         public MofObjectShadow @__CheckboxListTaggingFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData",
+            TypeKind = TypeKind.ClassTree)]
         public class _NumberFieldData
         {
             public static string @format = "format";
@@ -2372,6 +2565,8 @@ namespace DatenMeister.Core.Models
             @TableExtension
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",
+            TypeKind = TypeKind.ClassTree)]
         public class _Form
         {
             public static string @name = "name";
@@ -2403,6 +2598,8 @@ namespace DatenMeister.Core.Models
         public _Form @Form = new _Form();
         public MofObjectShadow @__Form = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.Form");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm",
+            TypeKind = TypeKind.ClassTree)]
         public class _RowForm
         {
             public static string @buttonApplyText = "buttonApplyText";
@@ -2449,6 +2646,8 @@ namespace DatenMeister.Core.Models
         public _RowForm @RowForm = new _RowForm();
         public MofObjectShadow @__RowForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.RowForm");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm",
+            TypeKind = TypeKind.ClassTree)]
         public class _TableForm
         {
             public static string @property = "property";
@@ -2528,6 +2727,8 @@ namespace DatenMeister.Core.Models
         public _TableForm @TableForm = new _TableForm();
         public MofObjectShadow @__TableForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.TableForm");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm",
+            TypeKind = TypeKind.ClassTree)]
         public class _CollectionForm
         {
             public static string @tab = "tab";
@@ -2568,6 +2769,8 @@ namespace DatenMeister.Core.Models
         public _CollectionForm @CollectionForm = new _CollectionForm();
         public MofObjectShadow @__CollectionForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.CollectionForm");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm",
+            TypeKind = TypeKind.ClassTree)]
         public class _ObjectForm
         {
             public static string @tab = "tab";
@@ -2605,6 +2808,8 @@ namespace DatenMeister.Core.Models
         public _ObjectForm @ObjectForm = new _ObjectForm();
         public MofObjectShadow @__ObjectForm = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ObjectForm");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode",
+            TypeKind = TypeKind.ClassTree)]
         public class _ViewMode
         {
             public static string @name = "name";
@@ -2621,6 +2826,8 @@ namespace DatenMeister.Core.Models
         public _ViewMode @ViewMode = new _ViewMode();
         public MofObjectShadow @__ViewMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection",
+            TypeKind = TypeKind.ClassTree)]
         public class _DropDownByCollection
         {
             public static string @defaultWorkspace = "defaultWorkspace";
@@ -2652,6 +2859,8 @@ namespace DatenMeister.Core.Models
         public _DropDownByCollection @DropDownByCollection = new _DropDownByCollection();
         public MofObjectShadow @__DropDownByCollection = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownByCollection");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00",
+            TypeKind = TypeKind.ClassTree)]
         public class _UriReferenceFieldData
         {
             public static string @defaultWorkspace = "defaultWorkspace";
@@ -2665,6 +2874,8 @@ namespace DatenMeister.Core.Models
         public _UriReferenceFieldData @UriReferenceFieldData = new _UriReferenceFieldData();
         public MofObjectShadow @__UriReferenceFieldData = new MofObjectShadow("dm:///_internal/types/internal#26a9c433-ead8-414b-9a8e-bb5a1a8cca00");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0",
+            TypeKind = TypeKind.ClassTree)]
         public class _NavigateToFieldsForTestAction
         {
             public static string @name = "name";
@@ -2678,6 +2889,8 @@ namespace DatenMeister.Core.Models
         public _NavigateToFieldsForTestAction @NavigateToFieldsForTestAction = new _NavigateToFieldsForTestAction();
         public MofObjectShadow @__NavigateToFieldsForTestAction = new MofObjectShadow("dm:///_internal/types/internal#ba1403c9-20cd-487d-8147-3937889deeb0");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#8bb3e235-beed-4eb7-a95e-b5cfa4417bd2",
+            TypeKind = TypeKind.ClassTree)]
         public class _DropDownByQueryData
         {
             public static string @query = "query";
@@ -2712,6 +2925,8 @@ namespace DatenMeister.Core.Models
 
     public class _AttachedExtent
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration",
+            TypeKind = TypeKind.ClassTree)]
         public class _AttachedExtentConfiguration
         {
             public static string @name = "name";
@@ -2768,6 +2983,8 @@ namespace DatenMeister.Core.Models
             @LoadedReadOnly
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent",
+            TypeKind = TypeKind.ClassTree)]
         public class _Extent
         {
             public static string @name = "name";
@@ -2817,6 +3034,8 @@ namespace DatenMeister.Core.Models
         public _Extent @Extent = new _Extent();
         public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace",
+            TypeKind = TypeKind.ClassTree)]
         public class _Workspace
         {
             public static string @id = "id";
@@ -2833,6 +3052,8 @@ namespace DatenMeister.Core.Models
         public _Workspace @Workspace = new _Workspace();
         public MofObjectShadow @__Workspace = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel",
+            TypeKind = TypeKind.ClassTree)]
         public class _CreateNewWorkspaceModel
         {
             public static string @id = "id";
@@ -2846,6 +3067,8 @@ namespace DatenMeister.Core.Models
         public _CreateNewWorkspaceModel @CreateNewWorkspaceModel = new _CreateNewWorkspaceModel();
         public MofObjectShadow @__CreateNewWorkspaceModel = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentTypeSetting",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExtentTypeSetting
         {
             public static string @name = "name";
@@ -2859,6 +3082,8 @@ namespace DatenMeister.Core.Models
         public _ExtentTypeSetting @ExtentTypeSetting = new _ExtentTypeSetting();
         public MofObjectShadow @__ExtentTypeSetting = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentTypeSetting");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExtentProperties
         {
             public static string @name = "name";
@@ -2908,6 +3133,8 @@ namespace DatenMeister.Core.Models
         public _ExtentProperties @ExtentProperties = new _ExtentProperties();
         public MofObjectShadow @__ExtentProperties = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentPropertyDefinition",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExtentPropertyDefinition
         {
             public static string @name = "name";
@@ -2924,6 +3151,8 @@ namespace DatenMeister.Core.Models
         public _ExtentPropertyDefinition @ExtentPropertyDefinition = new _ExtentPropertyDefinition();
         public MofObjectShadow @__ExtentPropertyDefinition = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentPropertyDefinition");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentSettings",
+            TypeKind = TypeKind.ClassTree)]
         public class _ExtentSettings
         {
             public static string @extentTypeSettings = "extentTypeSettings";
@@ -2971,6 +3200,8 @@ namespace DatenMeister.Core.Models
             @LighterOrEqualThan
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyComparisonFilter",
+            TypeKind = TypeKind.ClassTree)]
         public class _PropertyComparisonFilter
         {
             public static string @Property = "Property";
@@ -2987,6 +3218,8 @@ namespace DatenMeister.Core.Models
         public _PropertyComparisonFilter @PropertyComparisonFilter = new _PropertyComparisonFilter();
         public MofObjectShadow @__PropertyComparisonFilter = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyComparisonFilter");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyContainsFilter",
+            TypeKind = TypeKind.ClassTree)]
         public class _PropertyContainsFilter
         {
             public static string @Property = "Property";
@@ -3006,6 +3239,8 @@ namespace DatenMeister.Core.Models
 
     public class _DynamicRuntimeProvider
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DynamicRuntimeProvider.DynamicRuntimeLoaderConfig",
+            TypeKind = TypeKind.ClassTree)]
         public class _DynamicRuntimeLoaderConfig
         {
             public static string @runtimeClass = "runtimeClass";
@@ -3033,6 +3268,8 @@ namespace DatenMeister.Core.Models
 
         public class _Examples
         {
+            [TypeUri(Uri = "dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a",
+                TypeKind = TypeKind.ClassTree)]
             public class _NumberProviderSettings
             {
                 public static string @name = "name";
@@ -3049,6 +3286,8 @@ namespace DatenMeister.Core.Models
             public _NumberProviderSettings @NumberProviderSettings = new _NumberProviderSettings();
             public MofObjectShadow @__NumberProviderSettings = new MofObjectShadow("dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a");
 
+            [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.DynamicRuntimeProviders.Examples.NumberRepresentation",
+                TypeKind = TypeKind.ClassTree)]
             public class _NumberRepresentation
             {
                 public static string @binary = "binary";
@@ -3078,6 +3317,8 @@ namespace DatenMeister.Core.Models
 
     public class _Verifier
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#d19d742f-9bba-4bef-b310-05ef96153768",
+            TypeKind = TypeKind.ClassTree)]
         public class _VerifyEntry
         {
             public static string @workspaceId = "workspaceId";

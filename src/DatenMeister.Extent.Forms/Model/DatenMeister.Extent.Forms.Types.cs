@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -8,6 +9,8 @@ namespace DatenMeister.Extent.Forms.Model
 {
     public class _Root
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc",
+            TypeKind = TypeKind.ClassTree)]
         public class _MassImportDefinitionAction
         {
             public static string @item = "item";

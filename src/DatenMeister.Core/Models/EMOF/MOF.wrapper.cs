@@ -10,12 +10,16 @@ namespace DatenMeister.Core.Models.EMOF
     {
         public class Identifiers
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-URIExtent",
+                TypeKind = TypeKind.WrappedClass)]
             public class URIExtent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-Extent",
+                TypeKind = TypeKind.WrappedClass)]
             public class Extent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -30,6 +34,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class CMOFExtension
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag",
+                TypeKind = TypeKind.WrappedClass)]
             public class Tag_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -72,6 +78,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Extension
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag",
+                TypeKind = TypeKind.WrappedClass)]
             public class Tag_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -106,12 +114,16 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Common
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReflectiveSequence_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection",
+                TypeKind = TypeKind.WrappedClass)]
             public class ReflectiveCollection_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -126,18 +138,24 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class CMOFReflection
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Factory",
+                TypeKind = TypeKind.WrappedClass)]
             public class Factory_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element",
+                TypeKind = TypeKind.WrappedClass)]
             public class Element_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument",
+                TypeKind = TypeKind.WrappedClass)]
             public class Argument_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -160,12 +178,16 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Extent",
+                TypeKind = TypeKind.WrappedClass)]
             public class Extent_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link",
+                TypeKind = TypeKind.WrappedClass)]
             public class Link_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -196,6 +218,8 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Exception",
+                TypeKind = TypeKind.WrappedClass)]
             public class Exception_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -230,6 +254,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class Reflection
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory",
+                TypeKind = TypeKind.WrappedClass)]
             public class Factory_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
@@ -244,18 +270,24 @@ namespace DatenMeister.Core.Models.EMOF
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Type",
+                TypeKind = TypeKind.WrappedClass)]
             public class Type_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object",
+                TypeKind = TypeKind.WrappedClass)]
             public class Object_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element",
+                TypeKind = TypeKind.WrappedClass)]
             public class Element_Wrapper(IElement innerDmElement)
             {
                 public IElement GetWrappedElement() => innerDmElement;

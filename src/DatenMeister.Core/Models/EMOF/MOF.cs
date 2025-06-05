@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -10,6 +11,8 @@ namespace DatenMeister.Core.Models.EMOF
     {
         public class _Identifiers
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-URIExtent",
+                TypeKind = TypeKind.ClassTree)]
             public class _URIExtent
             {
             }
@@ -17,6 +20,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _URIExtent @URIExtent = new _URIExtent();
             public MofObjectShadow @__URIExtent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-Extent",
+                TypeKind = TypeKind.ClassTree)]
             public class _Extent
             {
             }
@@ -36,6 +41,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _CMOFExtension
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag",
+                TypeKind = TypeKind.ClassTree)]
             public class _Tag
             {
                 public static string @tagOwner = "tagOwner";
@@ -61,6 +68,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Extension
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag",
+                TypeKind = TypeKind.ClassTree)]
             public class _Tag
             {
                 public static string @name = "name";
@@ -83,6 +92,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Common
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReflectiveSequence
             {
             }
@@ -90,6 +101,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
             public MofObjectShadow @__ReflectiveSequence = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReflectiveCollection
             {
             }
@@ -109,6 +122,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _CMOFReflection
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Factory",
+                TypeKind = TypeKind.ClassTree)]
             public class _Factory
             {
             }
@@ -116,6 +131,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Factory @Factory = new _Factory();
             public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element",
+                TypeKind = TypeKind.ClassTree)]
             public class _Element
             {
             }
@@ -123,6 +140,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Element @Element = new _Element();
             public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument",
+                TypeKind = TypeKind.ClassTree)]
             public class _Argument
             {
                 public static string @name = "name";
@@ -136,6 +155,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Argument @Argument = new _Argument();
             public MofObjectShadow @__Argument = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Extent",
+                TypeKind = TypeKind.ClassTree)]
             public class _Extent
             {
             }
@@ -143,6 +164,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Extent @Extent = new _Extent();
             public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link",
+                TypeKind = TypeKind.ClassTree)]
             public class _Link
             {
                 public static string @firstElement = "firstElement";
@@ -159,6 +182,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Link @Link = new _Link();
             public MofObjectShadow @__Link = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Exception",
+                TypeKind = TypeKind.ClassTree)]
             public class _Exception
             {
                 public static string @objectInError = "objectInError";
@@ -181,6 +206,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Reflection
         {
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory",
+                TypeKind = TypeKind.ClassTree)]
             public class _Factory
             {
                 public static string @package = "package";
@@ -191,6 +218,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Factory @Factory = new _Factory();
             public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Type",
+                TypeKind = TypeKind.ClassTree)]
             public class _Type
             {
             }
@@ -198,6 +227,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Type @Type = new _Type();
             public MofObjectShadow @__Type = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Type");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object",
+                TypeKind = TypeKind.ClassTree)]
             public class _Object
             {
             }
@@ -205,6 +236,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Object @Object = new _Object();
             public MofObjectShadow @__Object = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Object");
 
+            [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element",
+                TypeKind = TypeKind.ClassTree)]
             public class _Element
             {
                 public static string @metaclass = "metaclass";

@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.SourcecodeGenerator.SourceParser;
@@ -61,6 +62,8 @@ public class WrapperTreeGenerator : WalkPackageClass
 
         var name = GetNameOfElement(classInstance);
 
+        Result.AppendLine($"{stack.Indentation}[TypeUri(Uri = \"{classInstance.GetUri()}\",");
+        Result.AppendLine($"{stack.Indentation}    TypeKind = TypeKind.WrappedClass)]");
         Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper(IElement innerDmElement)");
         Result.AppendLine($"{stack.Indentation}{{");
         Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => innerDmElement;");

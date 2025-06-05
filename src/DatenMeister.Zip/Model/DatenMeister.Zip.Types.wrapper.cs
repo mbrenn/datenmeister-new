@@ -8,6 +8,8 @@ namespace DatenMeister.Zip.Model
 {
     public class Root
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#bb766314-6b49-48a6-b80b-08d61c549ff6",
+            TypeKind = TypeKind.WrappedClass)]
         public class ZipFileExtractAction_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;
@@ -46,6 +48,8 @@ namespace DatenMeister.Zip.Model
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#a03dae8c-4f44-4d08-9cf8-e98627d05e2f",
+            TypeKind = TypeKind.WrappedClass)]
         public class ZipFileExtractActionResult_Wrapper(IElement innerDmElement)
         {
             public IElement GetWrappedElement() => innerDmElement;

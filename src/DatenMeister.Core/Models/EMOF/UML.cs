@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -10,6 +11,8 @@ namespace DatenMeister.Core.Models.EMOF
     {
         public class _Activities
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Activity",
+                TypeKind = TypeKind.ClassTree)]
             public class _Activity
             {
                 public static string @edge = "edge";
@@ -218,6 +221,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Activity @Activity = new _Activity();
             public MofObjectShadow @__Activity = new MofObjectShadow("dm:///_internal/model/uml#Activity");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityEdge",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActivityEdge
             {
                 public static string @activity = "activity";
@@ -291,6 +296,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActivityEdge @ActivityEdge = new _ActivityEdge();
             public MofObjectShadow @__ActivityEdge = new MofObjectShadow("dm:///_internal/model/uml#ActivityEdge");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityFinalNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActivityFinalNode
             {
                 public static string @activity = "activity";
@@ -358,6 +365,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActivityFinalNode @ActivityFinalNode = new _ActivityFinalNode();
             public MofObjectShadow @__ActivityFinalNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityFinalNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityGroup",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActivityGroup
             {
                 public static string @containedEdge = "containedEdge";
@@ -407,6 +416,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActivityGroup @ActivityGroup = new _ActivityGroup();
             public MofObjectShadow @__ActivityGroup = new MofObjectShadow("dm:///_internal/model/uml#ActivityGroup");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActivityNode
             {
                 public static string @activity = "activity";
@@ -474,6 +485,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActivityNode @ActivityNode = new _ActivityNode();
             public MofObjectShadow @__ActivityNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityParameterNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActivityParameterNode
             {
                 public static string @parameter = "parameter";
@@ -562,6 +575,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActivityParameterNode @ActivityParameterNode = new _ActivityParameterNode();
             public MofObjectShadow @__ActivityParameterNode = new MofObjectShadow("dm:///_internal/model/uml#ActivityParameterNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActivityPartition",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActivityPartition
             {
                 public static string @edge = "edge";
@@ -632,6 +647,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActivityPartition @ActivityPartition = new _ActivityPartition();
             public MofObjectShadow @__ActivityPartition = new MofObjectShadow("dm:///_internal/model/uml#ActivityPartition");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CentralBufferNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _CentralBufferNode
             {
                 public static string @inState = "inState";
@@ -717,6 +734,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CentralBufferNode @CentralBufferNode = new _CentralBufferNode();
             public MofObjectShadow @__CentralBufferNode = new MofObjectShadow("dm:///_internal/model/uml#CentralBufferNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ControlFlow",
+                TypeKind = TypeKind.ClassTree)]
             public class _ControlFlow
             {
                 public static string @activity = "activity";
@@ -790,6 +809,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ControlFlow @ControlFlow = new _ControlFlow();
             public MofObjectShadow @__ControlFlow = new MofObjectShadow("dm:///_internal/model/uml#ControlFlow");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ControlNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ControlNode
             {
                 public static string @activity = "activity";
@@ -857,6 +878,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ControlNode @ControlNode = new _ControlNode();
             public MofObjectShadow @__ControlNode = new MofObjectShadow("dm:///_internal/model/uml#ControlNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DataStoreNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _DataStoreNode
             {
                 public static string @inState = "inState";
@@ -942,6 +965,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DataStoreNode @DataStoreNode = new _DataStoreNode();
             public MofObjectShadow @__DataStoreNode = new MofObjectShadow("dm:///_internal/model/uml#DataStoreNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DecisionNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _DecisionNode
             {
                 public static string @decisionInput = "decisionInput";
@@ -1015,6 +1040,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DecisionNode @DecisionNode = new _DecisionNode();
             public MofObjectShadow @__DecisionNode = new MofObjectShadow("dm:///_internal/model/uml#DecisionNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExceptionHandler",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExceptionHandler
             {
                 public static string @exceptionInput = "exceptionInput";
@@ -1043,6 +1070,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExceptionHandler @ExceptionHandler = new _ExceptionHandler();
             public MofObjectShadow @__ExceptionHandler = new MofObjectShadow("dm:///_internal/model/uml#ExceptionHandler");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutableNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExecutableNode
             {
                 public static string @handler = "handler";
@@ -1113,6 +1142,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExecutableNode @ExecutableNode = new _ExecutableNode();
             public MofObjectShadow @__ExecutableNode = new MofObjectShadow("dm:///_internal/model/uml#ExecutableNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FinalNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _FinalNode
             {
                 public static string @activity = "activity";
@@ -1180,6 +1211,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _FinalNode @FinalNode = new _FinalNode();
             public MofObjectShadow @__FinalNode = new MofObjectShadow("dm:///_internal/model/uml#FinalNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FlowFinalNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _FlowFinalNode
             {
                 public static string @activity = "activity";
@@ -1247,6 +1280,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _FlowFinalNode @FlowFinalNode = new _FlowFinalNode();
             public MofObjectShadow @__FlowFinalNode = new MofObjectShadow("dm:///_internal/model/uml#FlowFinalNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ForkNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ForkNode
             {
                 public static string @activity = "activity";
@@ -1314,6 +1349,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ForkNode @ForkNode = new _ForkNode();
             public MofObjectShadow @__ForkNode = new MofObjectShadow("dm:///_internal/model/uml#ForkNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InitialNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _InitialNode
             {
                 public static string @activity = "activity";
@@ -1381,6 +1418,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InitialNode @InitialNode = new _InitialNode();
             public MofObjectShadow @__InitialNode = new MofObjectShadow("dm:///_internal/model/uml#InitialNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InterruptibleActivityRegion",
+                TypeKind = TypeKind.ClassTree)]
             public class _InterruptibleActivityRegion
             {
                 public static string @interruptingEdge = "interruptingEdge";
@@ -1436,6 +1475,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InterruptibleActivityRegion @InterruptibleActivityRegion = new _InterruptibleActivityRegion();
             public MofObjectShadow @__InterruptibleActivityRegion = new MofObjectShadow("dm:///_internal/model/uml#InterruptibleActivityRegion");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#JoinNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _JoinNode
             {
                 public static string @isCombineDuplicate = "isCombineDuplicate";
@@ -1509,6 +1550,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _JoinNode @JoinNode = new _JoinNode();
             public MofObjectShadow @__JoinNode = new MofObjectShadow("dm:///_internal/model/uml#JoinNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MergeNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _MergeNode
             {
                 public static string @activity = "activity";
@@ -1576,6 +1619,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _MergeNode @MergeNode = new _MergeNode();
             public MofObjectShadow @__MergeNode = new MofObjectShadow("dm:///_internal/model/uml#MergeNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ObjectFlow",
+                TypeKind = TypeKind.ClassTree)]
             public class _ObjectFlow
             {
                 public static string @isMulticast = "isMulticast";
@@ -1661,6 +1706,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ObjectFlow @ObjectFlow = new _ObjectFlow();
             public MofObjectShadow @__ObjectFlow = new MofObjectShadow("dm:///_internal/model/uml#ObjectFlow");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ObjectNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ObjectNode
             {
                 public static string @inState = "inState";
@@ -1746,6 +1793,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ObjectNode @ObjectNode = new _ObjectNode();
             public MofObjectShadow @__ObjectNode = new MofObjectShadow("dm:///_internal/model/uml#ObjectNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Variable",
+                TypeKind = TypeKind.ClassTree)]
             public class _Variable
             {
                 public static string @activityScope = "activityScope";
@@ -1847,6 +1896,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Values
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Duration",
+                TypeKind = TypeKind.ClassTree)]
             public class _Duration
             {
                 public static string @expr = "expr";
@@ -1896,6 +1947,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Duration @Duration = new _Duration();
             public MofObjectShadow @__Duration = new MofObjectShadow("dm:///_internal/model/uml#Duration");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DurationConstraint",
+                TypeKind = TypeKind.ClassTree)]
             public class _DurationConstraint
             {
                 public static string @firstEvent = "firstEvent";
@@ -1948,6 +2001,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DurationConstraint @DurationConstraint = new _DurationConstraint();
             public MofObjectShadow @__DurationConstraint = new MofObjectShadow("dm:///_internal/model/uml#DurationConstraint");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DurationInterval",
+                TypeKind = TypeKind.ClassTree)]
             public class _DurationInterval
             {
                 public static string @max = "max";
@@ -1997,6 +2052,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DurationInterval @DurationInterval = new _DurationInterval();
             public MofObjectShadow @__DurationInterval = new MofObjectShadow("dm:///_internal/model/uml#DurationInterval");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DurationObservation",
+                TypeKind = TypeKind.ClassTree)]
             public class _DurationObservation
             {
                 public static string @event = "event";
@@ -2043,6 +2100,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DurationObservation @DurationObservation = new _DurationObservation();
             public MofObjectShadow @__DurationObservation = new MofObjectShadow("dm:///_internal/model/uml#DurationObservation");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Expression",
+                TypeKind = TypeKind.ClassTree)]
             public class _Expression
             {
                 public static string @operand = "operand";
@@ -2092,6 +2151,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Expression @Expression = new _Expression();
             public MofObjectShadow @__Expression = new MofObjectShadow("dm:///_internal/model/uml#Expression");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Interval",
+                TypeKind = TypeKind.ClassTree)]
             public class _Interval
             {
                 public static string @max = "max";
@@ -2141,6 +2202,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Interval @Interval = new _Interval();
             public MofObjectShadow @__Interval = new MofObjectShadow("dm:///_internal/model/uml#Interval");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#IntervalConstraint",
+                TypeKind = TypeKind.ClassTree)]
             public class _IntervalConstraint
             {
                 public static string @specification = "specification";
@@ -2190,6 +2253,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _IntervalConstraint @IntervalConstraint = new _IntervalConstraint();
             public MofObjectShadow @__IntervalConstraint = new MofObjectShadow("dm:///_internal/model/uml#IntervalConstraint");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralBoolean",
+                TypeKind = TypeKind.ClassTree)]
             public class _LiteralBoolean
             {
                 public static string @value = "value";
@@ -2236,6 +2301,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LiteralBoolean @LiteralBoolean = new _LiteralBoolean();
             public MofObjectShadow @__LiteralBoolean = new MofObjectShadow("dm:///_internal/model/uml#LiteralBoolean");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralInteger",
+                TypeKind = TypeKind.ClassTree)]
             public class _LiteralInteger
             {
                 public static string @value = "value";
@@ -2282,6 +2349,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LiteralInteger @LiteralInteger = new _LiteralInteger();
             public MofObjectShadow @__LiteralInteger = new MofObjectShadow("dm:///_internal/model/uml#LiteralInteger");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralNull",
+                TypeKind = TypeKind.ClassTree)]
             public class _LiteralNull
             {
                 public static string @type = "type";
@@ -2325,6 +2394,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LiteralNull @LiteralNull = new _LiteralNull();
             public MofObjectShadow @__LiteralNull = new MofObjectShadow("dm:///_internal/model/uml#LiteralNull");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralReal",
+                TypeKind = TypeKind.ClassTree)]
             public class _LiteralReal
             {
                 public static string @value = "value";
@@ -2371,6 +2442,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LiteralReal @LiteralReal = new _LiteralReal();
             public MofObjectShadow @__LiteralReal = new MofObjectShadow("dm:///_internal/model/uml#LiteralReal");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _LiteralSpecification
             {
                 public static string @type = "type";
@@ -2414,6 +2487,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LiteralSpecification @LiteralSpecification = new _LiteralSpecification();
             public MofObjectShadow @__LiteralSpecification = new MofObjectShadow("dm:///_internal/model/uml#LiteralSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralString",
+                TypeKind = TypeKind.ClassTree)]
             public class _LiteralString
             {
                 public static string @value = "value";
@@ -2460,6 +2535,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LiteralString @LiteralString = new _LiteralString();
             public MofObjectShadow @__LiteralString = new MofObjectShadow("dm:///_internal/model/uml#LiteralString");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LiteralUnlimitedNatural",
+                TypeKind = TypeKind.ClassTree)]
             public class _LiteralUnlimitedNatural
             {
                 public static string @value = "value";
@@ -2506,6 +2583,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LiteralUnlimitedNatural @LiteralUnlimitedNatural = new _LiteralUnlimitedNatural();
             public MofObjectShadow @__LiteralUnlimitedNatural = new MofObjectShadow("dm:///_internal/model/uml#LiteralUnlimitedNatural");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Observation",
+                TypeKind = TypeKind.ClassTree)]
             public class _Observation
             {
                 public static string @visibility = "visibility";
@@ -2546,6 +2625,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Observation @Observation = new _Observation();
             public MofObjectShadow @__Observation = new MofObjectShadow("dm:///_internal/model/uml#Observation");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueExpression",
+                TypeKind = TypeKind.ClassTree)]
             public class _OpaqueExpression
             {
                 public static string @behavior = "behavior";
@@ -2601,6 +2682,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _OpaqueExpression @OpaqueExpression = new _OpaqueExpression();
             public MofObjectShadow @__OpaqueExpression = new MofObjectShadow("dm:///_internal/model/uml#OpaqueExpression");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StringExpression",
+                TypeKind = TypeKind.ClassTree)]
             public class _StringExpression
             {
                 public static string @owningExpression = "owningExpression";
@@ -2662,6 +2745,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _StringExpression @StringExpression = new _StringExpression();
             public MofObjectShadow @__StringExpression = new MofObjectShadow("dm:///_internal/model/uml#StringExpression");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeConstraint",
+                TypeKind = TypeKind.ClassTree)]
             public class _TimeConstraint
             {
                 public static string @firstEvent = "firstEvent";
@@ -2714,6 +2799,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TimeConstraint @TimeConstraint = new _TimeConstraint();
             public MofObjectShadow @__TimeConstraint = new MofObjectShadow("dm:///_internal/model/uml#TimeConstraint");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeExpression",
+                TypeKind = TypeKind.ClassTree)]
             public class _TimeExpression
             {
                 public static string @expr = "expr";
@@ -2763,6 +2850,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TimeExpression @TimeExpression = new _TimeExpression();
             public MofObjectShadow @__TimeExpression = new MofObjectShadow("dm:///_internal/model/uml#TimeExpression");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeInterval",
+                TypeKind = TypeKind.ClassTree)]
             public class _TimeInterval
             {
                 public static string @max = "max";
@@ -2812,6 +2901,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TimeInterval @TimeInterval = new _TimeInterval();
             public MofObjectShadow @__TimeInterval = new MofObjectShadow("dm:///_internal/model/uml#TimeInterval");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeObservation",
+                TypeKind = TypeKind.ClassTree)]
             public class _TimeObservation
             {
                 public static string @event = "event";
@@ -2858,6 +2949,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TimeObservation @TimeObservation = new _TimeObservation();
             public MofObjectShadow @__TimeObservation = new MofObjectShadow("dm:///_internal/model/uml#TimeObservation");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ValueSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _ValueSpecification
             {
                 public static string @type = "type";
@@ -2907,6 +3000,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _UseCases
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Actor",
+                TypeKind = TypeKind.ClassTree)]
             public class _Actor
             {
                 public static string @classifierBehavior = "classifierBehavior";
@@ -3034,6 +3129,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Actor @Actor = new _Actor();
             public MofObjectShadow @__Actor = new MofObjectShadow("dm:///_internal/model/uml#Actor");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Extend",
+                TypeKind = TypeKind.ClassTree)]
             public class _Extend
             {
                 public static string @condition = "condition";
@@ -3089,6 +3186,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Extend @Extend = new _Extend();
             public MofObjectShadow @__Extend = new MofObjectShadow("dm:///_internal/model/uml#Extend");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExtensionPoint",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExtensionPoint
             {
                 public static string @useCase = "useCase";
@@ -3135,6 +3234,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExtensionPoint @ExtensionPoint = new _ExtensionPoint();
             public MofObjectShadow @__ExtensionPoint = new MofObjectShadow("dm:///_internal/model/uml#ExtensionPoint");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Include",
+                TypeKind = TypeKind.ClassTree)]
             public class _Include
             {
                 public static string @addition = "addition";
@@ -3184,6 +3285,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Include @Include = new _Include();
             public MofObjectShadow @__Include = new MofObjectShadow("dm:///_internal/model/uml#Include");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#UseCase",
+                TypeKind = TypeKind.ClassTree)]
             public class _UseCase
             {
                 public static string @extend = "extend";
@@ -3329,6 +3432,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _StructuredClassifiers
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Association",
+                TypeKind = TypeKind.ClassTree)]
             public class _Association
             {
                 public static string @endType = "endType";
@@ -3465,6 +3570,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Association @Association = new _Association();
             public MofObjectShadow @__Association = new MofObjectShadow("dm:///_internal/model/uml#Association");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AssociationClass",
+                TypeKind = TypeKind.ClassTree)]
             public class _AssociationClass
             {
                 public static string @extension = "extension";
@@ -3643,6 +3750,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _AssociationClass @AssociationClass = new _AssociationClass();
             public MofObjectShadow @__AssociationClass = new MofObjectShadow("dm:///_internal/model/uml#AssociationClass");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Class",
+                TypeKind = TypeKind.ClassTree)]
             public class _Class
             {
                 public static string @extension = "extension";
@@ -3803,6 +3912,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Class @Class = new _Class();
             public MofObjectShadow @__Class = new MofObjectShadow("dm:///_internal/model/uml#Class");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Collaboration",
+                TypeKind = TypeKind.ClassTree)]
             public class _Collaboration
             {
                 public static string @collaborationRole = "collaborationRole";
@@ -3945,6 +4056,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Collaboration @Collaboration = new _Collaboration();
             public MofObjectShadow @__Collaboration = new MofObjectShadow("dm:///_internal/model/uml#Collaboration");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CollaborationUse",
+                TypeKind = TypeKind.ClassTree)]
             public class _CollaborationUse
             {
                 public static string @roleBinding = "roleBinding";
@@ -3985,6 +4098,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CollaborationUse @CollaborationUse = new _CollaborationUse();
             public MofObjectShadow @__CollaborationUse = new MofObjectShadow("dm:///_internal/model/uml#CollaborationUse");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Component",
+                TypeKind = TypeKind.ClassTree)]
             public class _Component
             {
                 public static string @isIndirectlyInstantiated = "isIndirectlyInstantiated";
@@ -4160,6 +4275,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Component @Component = new _Component();
             public MofObjectShadow @__Component = new MofObjectShadow("dm:///_internal/model/uml#Component");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ComponentRealization",
+                TypeKind = TypeKind.ClassTree)]
             public class _ComponentRealization
             {
                 public static string @abstraction = "abstraction";
@@ -4224,6 +4341,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ComponentRealization @ComponentRealization = new _ComponentRealization();
             public MofObjectShadow @__ComponentRealization = new MofObjectShadow("dm:///_internal/model/uml#ComponentRealization");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectableElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _ConnectableElement
             {
                 public static string @end = "end";
@@ -4270,6 +4389,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ConnectableElement @ConnectableElement = new _ConnectableElement();
             public MofObjectShadow @__ConnectableElement = new MofObjectShadow("dm:///_internal/model/uml#ConnectableElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectableElementTemplateParameter",
+                TypeKind = TypeKind.ClassTree)]
             public class _ConnectableElementTemplateParameter
             {
                 public static string @parameteredElement = "parameteredElement";
@@ -4301,6 +4422,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ConnectableElementTemplateParameter @ConnectableElementTemplateParameter = new _ConnectableElementTemplateParameter();
             public MofObjectShadow @__ConnectableElementTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#ConnectableElementTemplateParameter");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Connector",
+                TypeKind = TypeKind.ClassTree)]
             public class _Connector
             {
                 public static string @contract = "contract";
@@ -4365,6 +4488,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Connector @Connector = new _Connector();
             public MofObjectShadow @__Connector = new MofObjectShadow("dm:///_internal/model/uml#Connector");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectorEnd",
+                TypeKind = TypeKind.ClassTree)]
             public class _ConnectorEnd
             {
                 public static string @definingEnd = "definingEnd";
@@ -4408,6 +4533,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ConnectorEnd @ConnectorEnd = new _ConnectorEnd();
             public MofObjectShadow @__ConnectorEnd = new MofObjectShadow("dm:///_internal/model/uml#ConnectorEnd");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#EncapsulatedClassifier",
+                TypeKind = TypeKind.ClassTree)]
             public class _EncapsulatedClassifier
             {
                 public static string @ownedPort = "ownedPort";
@@ -4541,6 +4668,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _EncapsulatedClassifier @EncapsulatedClassifier = new _EncapsulatedClassifier();
             public MofObjectShadow @__EncapsulatedClassifier = new MofObjectShadow("dm:///_internal/model/uml#EncapsulatedClassifier");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Port",
+                TypeKind = TypeKind.ClassTree)]
             public class _Port
             {
                 public static string @isBehavior = "isBehavior";
@@ -4698,6 +4827,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Port @Port = new _Port();
             public MofObjectShadow @__Port = new MofObjectShadow("dm:///_internal/model/uml#Port");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuredClassifier",
+                TypeKind = TypeKind.ClassTree)]
             public class _StructuredClassifier
             {
                 public static string @ownedAttribute = "ownedAttribute";
@@ -4853,6 +4984,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _StateMachines
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConnectionPointReference",
+                TypeKind = TypeKind.ClassTree)]
             public class _ConnectionPointReference
             {
                 public static string @entry = "entry";
@@ -4905,6 +5038,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ConnectionPointReference @ConnectionPointReference = new _ConnectionPointReference();
             public MofObjectShadow @__ConnectionPointReference = new MofObjectShadow("dm:///_internal/model/uml#ConnectionPointReference");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FinalState",
+                TypeKind = TypeKind.ClassTree)]
             public class _FinalState
             {
                 public static string @connection = "connection";
@@ -5017,6 +5152,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _FinalState @FinalState = new _FinalState();
             public MofObjectShadow @__FinalState = new MofObjectShadow("dm:///_internal/model/uml#FinalState");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolConformance",
+                TypeKind = TypeKind.ClassTree)]
             public class _ProtocolConformance
             {
                 public static string @generalMachine = "generalMachine";
@@ -5048,6 +5185,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ProtocolConformance @ProtocolConformance = new _ProtocolConformance();
             public MofObjectShadow @__ProtocolConformance = new MofObjectShadow("dm:///_internal/model/uml#ProtocolConformance");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolStateMachine",
+                TypeKind = TypeKind.ClassTree)]
             public class _ProtocolStateMachine
             {
                 public static string @conformance = "conformance";
@@ -5247,6 +5386,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ProtocolStateMachine @ProtocolStateMachine = new _ProtocolStateMachine();
             public MofObjectShadow @__ProtocolStateMachine = new MofObjectShadow("dm:///_internal/model/uml#ProtocolStateMachine");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProtocolTransition",
+                TypeKind = TypeKind.ClassTree)]
             public class _ProtocolTransition
             {
                 public static string @postCondition = "postCondition";
@@ -5341,6 +5482,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ProtocolTransition @ProtocolTransition = new _ProtocolTransition();
             public MofObjectShadow @__ProtocolTransition = new MofObjectShadow("dm:///_internal/model/uml#ProtocolTransition");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Pseudostate",
+                TypeKind = TypeKind.ClassTree)]
             public class _Pseudostate
             {
                 public static string @kind = "kind";
@@ -5393,6 +5536,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Pseudostate @Pseudostate = new _Pseudostate();
             public MofObjectShadow @__Pseudostate = new MofObjectShadow("dm:///_internal/model/uml#Pseudostate");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Region",
+                TypeKind = TypeKind.ClassTree)]
             public class _Region
             {
                 public static string @extendedRegion = "extendedRegion";
@@ -5469,6 +5614,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Region @Region = new _Region();
             public MofObjectShadow @__Region = new MofObjectShadow("dm:///_internal/model/uml#Region");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#State",
+                TypeKind = TypeKind.ClassTree)]
             public class _State
             {
                 public static string @connection = "connection";
@@ -5581,6 +5728,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _State @State = new _State();
             public MofObjectShadow @__State = new MofObjectShadow("dm:///_internal/model/uml#State");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StateMachine",
+                TypeKind = TypeKind.ClassTree)]
             public class _StateMachine
             {
                 public static string @connectionPoint = "connectionPoint";
@@ -5777,6 +5926,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _StateMachine @StateMachine = new _StateMachine();
             public MofObjectShadow @__StateMachine = new MofObjectShadow("dm:///_internal/model/uml#StateMachine");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Transition",
+                TypeKind = TypeKind.ClassTree)]
             public class _Transition
             {
                 public static string @container = "container";
@@ -5862,6 +6013,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Transition @Transition = new _Transition();
             public MofObjectShadow @__Transition = new MofObjectShadow("dm:///_internal/model/uml#Transition");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Vertex",
+                TypeKind = TypeKind.ClassTree)]
             public class _Vertex
             {
                 public static string @container = "container";
@@ -5976,6 +6129,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _SimpleClassifiers
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#BehavioredClassifier",
+                TypeKind = TypeKind.ClassTree)]
             public class _BehavioredClassifier
             {
                 public static string @classifierBehavior = "classifierBehavior";
@@ -6103,6 +6258,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _BehavioredClassifier @BehavioredClassifier = new _BehavioredClassifier();
             public MofObjectShadow @__BehavioredClassifier = new MofObjectShadow("dm:///_internal/model/uml#BehavioredClassifier");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DataType",
+                TypeKind = TypeKind.ClassTree)]
             public class _DataType
             {
                 public static string @ownedAttribute = "ownedAttribute";
@@ -6227,6 +6384,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DataType @DataType = new _DataType();
             public MofObjectShadow @__DataType = new MofObjectShadow("dm:///_internal/model/uml#DataType");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Enumeration",
+                TypeKind = TypeKind.ClassTree)]
             public class _Enumeration
             {
                 public static string @ownedLiteral = "ownedLiteral";
@@ -6354,6 +6513,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Enumeration @Enumeration = new _Enumeration();
             public MofObjectShadow @__Enumeration = new MofObjectShadow("dm:///_internal/model/uml#Enumeration");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#EnumerationLiteral",
+                TypeKind = TypeKind.ClassTree)]
             public class _EnumerationLiteral
             {
                 public static string @classifier = "classifier";
@@ -6412,6 +6573,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _EnumerationLiteral @EnumerationLiteral = new _EnumerationLiteral();
             public MofObjectShadow @__EnumerationLiteral = new MofObjectShadow("dm:///_internal/model/uml#EnumerationLiteral");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Interface",
+                TypeKind = TypeKind.ClassTree)]
             public class _Interface
             {
                 public static string @nestedClassifier = "nestedClassifier";
@@ -6548,6 +6711,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Interface @Interface = new _Interface();
             public MofObjectShadow @__Interface = new MofObjectShadow("dm:///_internal/model/uml#Interface");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InterfaceRealization",
+                TypeKind = TypeKind.ClassTree)]
             public class _InterfaceRealization
             {
                 public static string @contract = "contract";
@@ -6612,6 +6777,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InterfaceRealization @InterfaceRealization = new _InterfaceRealization();
             public MofObjectShadow @__InterfaceRealization = new MofObjectShadow("dm:///_internal/model/uml#InterfaceRealization");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PrimitiveType",
+                TypeKind = TypeKind.ClassTree)]
             public class _PrimitiveType
             {
                 public static string @ownedAttribute = "ownedAttribute";
@@ -6736,6 +6903,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _PrimitiveType @PrimitiveType = new _PrimitiveType();
             public MofObjectShadow @__PrimitiveType = new MofObjectShadow("dm:///_internal/model/uml#PrimitiveType");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Reception",
+                TypeKind = TypeKind.ClassTree)]
             public class _Reception
             {
                 public static string @signal = "signal";
@@ -6824,6 +6993,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Reception @Reception = new _Reception();
             public MofObjectShadow @__Reception = new MofObjectShadow("dm:///_internal/model/uml#Reception");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Signal",
+                TypeKind = TypeKind.ClassTree)]
             public class _Signal
             {
                 public static string @ownedAttribute = "ownedAttribute";
@@ -6951,6 +7122,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Packages
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Extension",
+                TypeKind = TypeKind.ClassTree)]
             public class _Extension
             {
                 public static string @isRequired = "isRequired";
@@ -7093,6 +7266,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Extension @Extension = new _Extension();
             public MofObjectShadow @__Extension = new MofObjectShadow("dm:///_internal/model/uml#Extension");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExtensionEnd",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExtensionEnd
             {
                 public static string @lower = "lower";
@@ -7229,6 +7404,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExtensionEnd @ExtensionEnd = new _ExtensionEnd();
             public MofObjectShadow @__ExtensionEnd = new MofObjectShadow("dm:///_internal/model/uml#ExtensionEnd");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Image",
+                TypeKind = TypeKind.ClassTree)]
             public class _Image
             {
                 public static string @content = "content";
@@ -7254,6 +7431,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Image @Image = new _Image();
             public MofObjectShadow @__Image = new MofObjectShadow("dm:///_internal/model/uml#Image");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Model",
+                TypeKind = TypeKind.ClassTree)]
             public class _Model
             {
                 public static string @viewpoint = "viewpoint";
@@ -7345,6 +7524,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Model @Model = new _Model();
             public MofObjectShadow @__Model = new MofObjectShadow("dm:///_internal/model/uml#Model");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Package",
+                TypeKind = TypeKind.ClassTree)]
             public class _Package
             {
                 public static string @URI = "URI";
@@ -7433,6 +7614,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Package @Package = new _Package();
             public MofObjectShadow @__Package = new MofObjectShadow("dm:///_internal/model/uml#Package");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PackageMerge",
+                TypeKind = TypeKind.ClassTree)]
             public class _PackageMerge
             {
                 public static string @mergedPackage = "mergedPackage";
@@ -7464,6 +7647,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _PackageMerge @PackageMerge = new _PackageMerge();
             public MofObjectShadow @__PackageMerge = new MofObjectShadow("dm:///_internal/model/uml#PackageMerge");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Profile",
+                TypeKind = TypeKind.ClassTree)]
             public class _Profile
             {
                 public static string @metaclassReference = "metaclassReference";
@@ -7558,6 +7743,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Profile @Profile = new _Profile();
             public MofObjectShadow @__Profile = new MofObjectShadow("dm:///_internal/model/uml#Profile");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ProfileApplication",
+                TypeKind = TypeKind.ClassTree)]
             public class _ProfileApplication
             {
                 public static string @appliedProfile = "appliedProfile";
@@ -7592,6 +7779,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ProfileApplication @ProfileApplication = new _ProfileApplication();
             public MofObjectShadow @__ProfileApplication = new MofObjectShadow("dm:///_internal/model/uml#ProfileApplication");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Stereotype",
+                TypeKind = TypeKind.ClassTree)]
             public class _Stereotype
             {
                 public static string @icon = "icon";
@@ -7764,6 +7953,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Interactions
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActionExecutionSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActionExecutionSpecification
             {
                 public static string @action = "action";
@@ -7819,6 +8010,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActionExecutionSpecification @ActionExecutionSpecification = new _ActionExecutionSpecification();
             public MofObjectShadow @__ActionExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#ActionExecutionSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#BehaviorExecutionSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _BehaviorExecutionSpecification
             {
                 public static string @behavior = "behavior";
@@ -7874,6 +8067,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _BehaviorExecutionSpecification @BehaviorExecutionSpecification = new _BehaviorExecutionSpecification();
             public MofObjectShadow @__BehaviorExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#BehaviorExecutionSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CombinedFragment",
+                TypeKind = TypeKind.ClassTree)]
             public class _CombinedFragment
             {
                 public static string @cfragmentGate = "cfragmentGate";
@@ -7929,6 +8124,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CombinedFragment @CombinedFragment = new _CombinedFragment();
             public MofObjectShadow @__CombinedFragment = new MofObjectShadow("dm:///_internal/model/uml#CombinedFragment");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConsiderIgnoreFragment",
+                TypeKind = TypeKind.ClassTree)]
             public class _ConsiderIgnoreFragment
             {
                 public static string @message = "message";
@@ -7987,6 +8184,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ConsiderIgnoreFragment @ConsiderIgnoreFragment = new _ConsiderIgnoreFragment();
             public MofObjectShadow @__ConsiderIgnoreFragment = new MofObjectShadow("dm:///_internal/model/uml#ConsiderIgnoreFragment");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Continuation",
+                TypeKind = TypeKind.ClassTree)]
             public class _Continuation
             {
                 public static string @setting = "setting";
@@ -8036,6 +8235,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Continuation @Continuation = new _Continuation();
             public MofObjectShadow @__Continuation = new MofObjectShadow("dm:///_internal/model/uml#Continuation");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DestructionOccurrenceSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _DestructionOccurrenceSpecification
             {
                 public static string @message = "message";
@@ -8091,6 +8292,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DestructionOccurrenceSpecification @DestructionOccurrenceSpecification = new _DestructionOccurrenceSpecification();
             public MofObjectShadow @__DestructionOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#DestructionOccurrenceSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionOccurrenceSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExecutionOccurrenceSpecification
             {
                 public static string @execution = "execution";
@@ -8146,6 +8349,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExecutionOccurrenceSpecification @ExecutionOccurrenceSpecification = new _ExecutionOccurrenceSpecification();
             public MofObjectShadow @__ExecutionOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#ExecutionOccurrenceSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExecutionSpecification
             {
                 public static string @finish = "finish";
@@ -8198,6 +8403,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExecutionSpecification @ExecutionSpecification = new _ExecutionSpecification();
             public MofObjectShadow @__ExecutionSpecification = new MofObjectShadow("dm:///_internal/model/uml#ExecutionSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Gate",
+                TypeKind = TypeKind.ClassTree)]
             public class _Gate
             {
                 public static string @message = "message";
@@ -8235,6 +8442,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Gate @Gate = new _Gate();
             public MofObjectShadow @__Gate = new MofObjectShadow("dm:///_internal/model/uml#Gate");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#GeneralOrdering",
+                TypeKind = TypeKind.ClassTree)]
             public class _GeneralOrdering
             {
                 public static string @after = "after";
@@ -8275,6 +8484,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _GeneralOrdering @GeneralOrdering = new _GeneralOrdering();
             public MofObjectShadow @__GeneralOrdering = new MofObjectShadow("dm:///_internal/model/uml#GeneralOrdering");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Interaction",
+                TypeKind = TypeKind.ClassTree)]
             public class _Interaction
             {
                 public static string @action = "action";
@@ -8486,6 +8697,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Interaction @Interaction = new _Interaction();
             public MofObjectShadow @__Interaction = new MofObjectShadow("dm:///_internal/model/uml#Interaction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionConstraint",
+                TypeKind = TypeKind.ClassTree)]
             public class _InteractionConstraint
             {
                 public static string @maxint = "maxint";
@@ -8541,6 +8754,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InteractionConstraint @InteractionConstraint = new _InteractionConstraint();
             public MofObjectShadow @__InteractionConstraint = new MofObjectShadow("dm:///_internal/model/uml#InteractionConstraint");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionFragment",
+                TypeKind = TypeKind.ClassTree)]
             public class _InteractionFragment
             {
                 public static string @covered = "covered";
@@ -8587,6 +8802,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InteractionFragment @InteractionFragment = new _InteractionFragment();
             public MofObjectShadow @__InteractionFragment = new MofObjectShadow("dm:///_internal/model/uml#InteractionFragment");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionOperand",
+                TypeKind = TypeKind.ClassTree)]
             public class _InteractionOperand
             {
                 public static string @fragment = "fragment";
@@ -8657,6 +8874,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InteractionOperand @InteractionOperand = new _InteractionOperand();
             public MofObjectShadow @__InteractionOperand = new MofObjectShadow("dm:///_internal/model/uml#InteractionOperand");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InteractionUse",
+                TypeKind = TypeKind.ClassTree)]
             public class _InteractionUse
             {
                 public static string @actualGate = "actualGate";
@@ -8718,6 +8937,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InteractionUse @InteractionUse = new _InteractionUse();
             public MofObjectShadow @__InteractionUse = new MofObjectShadow("dm:///_internal/model/uml#InteractionUse");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Lifeline",
+                TypeKind = TypeKind.ClassTree)]
             public class _Lifeline
             {
                 public static string @coveredBy = "coveredBy";
@@ -8767,6 +8988,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Lifeline @Lifeline = new _Lifeline();
             public MofObjectShadow @__Lifeline = new MofObjectShadow("dm:///_internal/model/uml#Lifeline");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Message",
+                TypeKind = TypeKind.ClassTree)]
             public class _Message
             {
                 public static string @argument = "argument";
@@ -8825,6 +9048,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Message @Message = new _Message();
             public MofObjectShadow @__Message = new MofObjectShadow("dm:///_internal/model/uml#Message");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MessageEnd",
+                TypeKind = TypeKind.ClassTree)]
             public class _MessageEnd
             {
                 public static string @message = "message";
@@ -8862,6 +9087,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _MessageEnd @MessageEnd = new _MessageEnd();
             public MofObjectShadow @__MessageEnd = new MofObjectShadow("dm:///_internal/model/uml#MessageEnd");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MessageOccurrenceSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _MessageOccurrenceSpecification
             {
                 public static string @message = "message";
@@ -8917,6 +9144,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _MessageOccurrenceSpecification @MessageOccurrenceSpecification = new _MessageOccurrenceSpecification();
             public MofObjectShadow @__MessageOccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#MessageOccurrenceSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OccurrenceSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _OccurrenceSpecification
             {
                 public static string @covered = "covered";
@@ -8969,6 +9198,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _OccurrenceSpecification @OccurrenceSpecification = new _OccurrenceSpecification();
             public MofObjectShadow @__OccurrenceSpecification = new MofObjectShadow("dm:///_internal/model/uml#OccurrenceSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PartDecomposition",
+                TypeKind = TypeKind.ClassTree)]
             public class _PartDecomposition
             {
                 public static string @actualGate = "actualGate";
@@ -9030,6 +9261,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _PartDecomposition @PartDecomposition = new _PartDecomposition();
             public MofObjectShadow @__PartDecomposition = new MofObjectShadow("dm:///_internal/model/uml#PartDecomposition");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StateInvariant",
+                TypeKind = TypeKind.ClassTree)]
             public class _StateInvariant
             {
                 public static string @covered = "covered";
@@ -9190,6 +9423,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _InformationFlows
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#InformationFlow",
+                TypeKind = TypeKind.ClassTree)]
             public class _InformationFlow
             {
                 public static string @conveyed = "conveyed";
@@ -9260,6 +9495,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InformationFlow @InformationFlow = new _InformationFlow();
             public MofObjectShadow @__InformationFlow = new MofObjectShadow("dm:///_internal/model/uml#InformationFlow");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InformationItem",
+                TypeKind = TypeKind.ClassTree)]
             public class _InformationItem
             {
                 public static string @represented = "represented";
@@ -9387,6 +9624,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Deployments
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Artifact",
+                TypeKind = TypeKind.ClassTree)]
             public class _Artifact
             {
                 public static string @fileName = "fileName";
@@ -9520,6 +9759,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Artifact @Artifact = new _Artifact();
             public MofObjectShadow @__Artifact = new MofObjectShadow("dm:///_internal/model/uml#Artifact");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CommunicationPath",
+                TypeKind = TypeKind.ClassTree)]
             public class _CommunicationPath
             {
                 public static string @endType = "endType";
@@ -9656,6 +9897,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CommunicationPath @CommunicationPath = new _CommunicationPath();
             public MofObjectShadow @__CommunicationPath = new MofObjectShadow("dm:///_internal/model/uml#CommunicationPath");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DeployedArtifact",
+                TypeKind = TypeKind.ClassTree)]
             public class _DeployedArtifact
             {
                 public static string @clientDependency = "clientDependency";
@@ -9690,6 +9933,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DeployedArtifact @DeployedArtifact = new _DeployedArtifact();
             public MofObjectShadow @__DeployedArtifact = new MofObjectShadow("dm:///_internal/model/uml#DeployedArtifact");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Deployment",
+                TypeKind = TypeKind.ClassTree)]
             public class _Deployment
             {
                 public static string @configuration = "configuration";
@@ -9754,6 +9999,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Deployment @Deployment = new _Deployment();
             public MofObjectShadow @__Deployment = new MofObjectShadow("dm:///_internal/model/uml#Deployment");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DeploymentSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _DeploymentSpecification
             {
                 public static string @deployment = "deployment";
@@ -9896,6 +10143,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DeploymentSpecification @DeploymentSpecification = new _DeploymentSpecification();
             public MofObjectShadow @__DeploymentSpecification = new MofObjectShadow("dm:///_internal/model/uml#DeploymentSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DeploymentTarget",
+                TypeKind = TypeKind.ClassTree)]
             public class _DeploymentTarget
             {
                 public static string @deployedElement = "deployedElement";
@@ -9936,6 +10185,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DeploymentTarget @DeploymentTarget = new _DeploymentTarget();
             public MofObjectShadow @__DeploymentTarget = new MofObjectShadow("dm:///_internal/model/uml#DeploymentTarget");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Device",
+                TypeKind = TypeKind.ClassTree)]
             public class _Device
             {
                 public static string @nestedNode = "nestedNode";
@@ -10105,6 +10356,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Device @Device = new _Device();
             public MofObjectShadow @__Device = new MofObjectShadow("dm:///_internal/model/uml#Device");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExecutionEnvironment",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExecutionEnvironment
             {
                 public static string @nestedNode = "nestedNode";
@@ -10274,6 +10527,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExecutionEnvironment @ExecutionEnvironment = new _ExecutionEnvironment();
             public MofObjectShadow @__ExecutionEnvironment = new MofObjectShadow("dm:///_internal/model/uml#ExecutionEnvironment");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Manifestation",
+                TypeKind = TypeKind.ClassTree)]
             public class _Manifestation
             {
                 public static string @utilizedElement = "utilizedElement";
@@ -10335,6 +10590,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Manifestation @Manifestation = new _Manifestation();
             public MofObjectShadow @__Manifestation = new MofObjectShadow("dm:///_internal/model/uml#Manifestation");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Node",
+                TypeKind = TypeKind.ClassTree)]
             public class _Node
             {
                 public static string @nestedNode = "nestedNode";
@@ -10510,6 +10767,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _CommonStructure
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Abstraction",
+                TypeKind = TypeKind.ClassTree)]
             public class _Abstraction
             {
                 public static string @mapping = "mapping";
@@ -10568,6 +10827,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Abstraction @Abstraction = new _Abstraction();
             public MofObjectShadow @__Abstraction = new MofObjectShadow("dm:///_internal/model/uml#Abstraction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Comment",
+                TypeKind = TypeKind.ClassTree)]
             public class _Comment
             {
                 public static string @annotatedElement = "annotatedElement";
@@ -10590,6 +10851,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Comment @Comment = new _Comment();
             public MofObjectShadow @__Comment = new MofObjectShadow("dm:///_internal/model/uml#Comment");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Constraint",
+                TypeKind = TypeKind.ClassTree)]
             public class _Constraint
             {
                 public static string @constrainedElement = "constrainedElement";
@@ -10639,6 +10902,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Constraint @Constraint = new _Constraint();
             public MofObjectShadow @__Constraint = new MofObjectShadow("dm:///_internal/model/uml#Constraint");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Dependency",
+                TypeKind = TypeKind.ClassTree)]
             public class _Dependency
             {
                 public static string @client = "client";
@@ -10694,6 +10959,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Dependency @Dependency = new _Dependency();
             public MofObjectShadow @__Dependency = new MofObjectShadow("dm:///_internal/model/uml#Dependency");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DirectedRelationship",
+                TypeKind = TypeKind.ClassTree)]
             public class _DirectedRelationship
             {
                 public static string @source = "source";
@@ -10719,6 +10986,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DirectedRelationship @DirectedRelationship = new _DirectedRelationship();
             public MofObjectShadow @__DirectedRelationship = new MofObjectShadow("dm:///_internal/model/uml#DirectedRelationship");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Element",
+                TypeKind = TypeKind.ClassTree)]
             public class _Element
             {
                 public static string @ownedComment = "ownedComment";
@@ -10735,6 +11004,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Element @Element = new _Element();
             public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/uml#Element");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ElementImport",
+                TypeKind = TypeKind.ClassTree)]
             public class _ElementImport
             {
                 public static string @alias = "alias";
@@ -10772,6 +11043,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ElementImport @ElementImport = new _ElementImport();
             public MofObjectShadow @__ElementImport = new MofObjectShadow("dm:///_internal/model/uml#ElementImport");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MultiplicityElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _MultiplicityElement
             {
                 public static string @isOrdered = "isOrdered";
@@ -10806,6 +11079,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _MultiplicityElement @MultiplicityElement = new _MultiplicityElement();
             public MofObjectShadow @__MultiplicityElement = new MofObjectShadow("dm:///_internal/model/uml#MultiplicityElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#NamedElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _NamedElement
             {
                 public static string @clientDependency = "clientDependency";
@@ -10840,6 +11115,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _NamedElement @NamedElement = new _NamedElement();
             public MofObjectShadow @__NamedElement = new MofObjectShadow("dm:///_internal/model/uml#NamedElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Namespace",
+                TypeKind = TypeKind.ClassTree)]
             public class _Namespace
             {
                 public static string @elementImport = "elementImport";
@@ -10892,6 +11169,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Namespace @Namespace = new _Namespace();
             public MofObjectShadow @__Namespace = new MofObjectShadow("dm:///_internal/model/uml#Namespace");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PackageableElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _PackageableElement
             {
                 public static string @visibility = "visibility";
@@ -10932,6 +11211,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _PackageableElement @PackageableElement = new _PackageableElement();
             public MofObjectShadow @__PackageableElement = new MofObjectShadow("dm:///_internal/model/uml#PackageableElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#PackageImport",
+                TypeKind = TypeKind.ClassTree)]
             public class _PackageImport
             {
                 public static string @importedPackage = "importedPackage";
@@ -10966,6 +11247,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _PackageImport @PackageImport = new _PackageImport();
             public MofObjectShadow @__PackageImport = new MofObjectShadow("dm:///_internal/model/uml#PackageImport");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ParameterableElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _ParameterableElement
             {
                 public static string @owningTemplateParameter = "owningTemplateParameter";
@@ -10988,6 +11271,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ParameterableElement @ParameterableElement = new _ParameterableElement();
             public MofObjectShadow @__ParameterableElement = new MofObjectShadow("dm:///_internal/model/uml#ParameterableElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Realization",
+                TypeKind = TypeKind.ClassTree)]
             public class _Realization
             {
                 public static string @mapping = "mapping";
@@ -11046,6 +11331,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Realization @Realization = new _Realization();
             public MofObjectShadow @__Realization = new MofObjectShadow("dm:///_internal/model/uml#Realization");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Relationship",
+                TypeKind = TypeKind.ClassTree)]
             public class _Relationship
             {
                 public static string @relatedElement = "relatedElement";
@@ -11065,6 +11352,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Relationship @Relationship = new _Relationship();
             public MofObjectShadow @__Relationship = new MofObjectShadow("dm:///_internal/model/uml#Relationship");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateableElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _TemplateableElement
             {
                 public static string @ownedTemplateSignature = "ownedTemplateSignature";
@@ -11087,6 +11376,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TemplateableElement @TemplateableElement = new _TemplateableElement();
             public MofObjectShadow @__TemplateableElement = new MofObjectShadow("dm:///_internal/model/uml#TemplateableElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateBinding",
+                TypeKind = TypeKind.ClassTree)]
             public class _TemplateBinding
             {
                 public static string @boundElement = "boundElement";
@@ -11121,6 +11412,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TemplateBinding @TemplateBinding = new _TemplateBinding();
             public MofObjectShadow @__TemplateBinding = new MofObjectShadow("dm:///_internal/model/uml#TemplateBinding");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateParameter",
+                TypeKind = TypeKind.ClassTree)]
             public class _TemplateParameter
             {
                 public static string @default = "default";
@@ -11152,6 +11445,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TemplateParameter @TemplateParameter = new _TemplateParameter();
             public MofObjectShadow @__TemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#TemplateParameter");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateParameterSubstitution",
+                TypeKind = TypeKind.ClassTree)]
             public class _TemplateParameterSubstitution
             {
                 public static string @actual = "actual";
@@ -11180,6 +11475,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TemplateParameterSubstitution @TemplateParameterSubstitution = new _TemplateParameterSubstitution();
             public MofObjectShadow @__TemplateParameterSubstitution = new MofObjectShadow("dm:///_internal/model/uml#TemplateParameterSubstitution");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TemplateSignature",
+                TypeKind = TypeKind.ClassTree)]
             public class _TemplateSignature
             {
                 public static string @ownedParameter = "ownedParameter";
@@ -11205,6 +11502,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TemplateSignature @TemplateSignature = new _TemplateSignature();
             public MofObjectShadow @__TemplateSignature = new MofObjectShadow("dm:///_internal/model/uml#TemplateSignature");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Type",
+                TypeKind = TypeKind.ClassTree)]
             public class _Type
             {
                 public static string @package = "package";
@@ -11248,6 +11547,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Type @Type = new _Type();
             public MofObjectShadow @__Type = new MofObjectShadow("dm:///_internal/model/uml#Type");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TypedElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _TypedElement
             {
                 public static string @type = "type";
@@ -11285,6 +11586,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TypedElement @TypedElement = new _TypedElement();
             public MofObjectShadow @__TypedElement = new MofObjectShadow("dm:///_internal/model/uml#TypedElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Usage",
+                TypeKind = TypeKind.ClassTree)]
             public class _Usage
             {
                 public static string @client = "client";
@@ -11371,6 +11674,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _CommonBehavior
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#AnyReceiveEvent",
+                TypeKind = TypeKind.ClassTree)]
             public class _AnyReceiveEvent
             {
                 public static string @visibility = "visibility";
@@ -11411,6 +11716,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _AnyReceiveEvent @AnyReceiveEvent = new _AnyReceiveEvent();
             public MofObjectShadow @__AnyReceiveEvent = new MofObjectShadow("dm:///_internal/model/uml#AnyReceiveEvent");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Behavior",
+                TypeKind = TypeKind.ClassTree)]
             public class _Behavior
             {
                 public static string @context = "context";
@@ -11595,6 +11902,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Behavior @Behavior = new _Behavior();
             public MofObjectShadow @__Behavior = new MofObjectShadow("dm:///_internal/model/uml#Behavior");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallEvent",
+                TypeKind = TypeKind.ClassTree)]
             public class _CallEvent
             {
                 public static string @operation = "operation";
@@ -11638,6 +11947,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CallEvent @CallEvent = new _CallEvent();
             public MofObjectShadow @__CallEvent = new MofObjectShadow("dm:///_internal/model/uml#CallEvent");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ChangeEvent",
+                TypeKind = TypeKind.ClassTree)]
             public class _ChangeEvent
             {
                 public static string @changeExpression = "changeExpression";
@@ -11681,6 +11992,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ChangeEvent @ChangeEvent = new _ChangeEvent();
             public MofObjectShadow @__ChangeEvent = new MofObjectShadow("dm:///_internal/model/uml#ChangeEvent");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Event",
+                TypeKind = TypeKind.ClassTree)]
             public class _Event
             {
                 public static string @visibility = "visibility";
@@ -11721,6 +12034,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Event @Event = new _Event();
             public MofObjectShadow @__Event = new MofObjectShadow("dm:///_internal/model/uml#Event");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#FunctionBehavior",
+                TypeKind = TypeKind.ClassTree)]
             public class _FunctionBehavior
             {
                 public static string @body = "body";
@@ -11911,6 +12226,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _FunctionBehavior @FunctionBehavior = new _FunctionBehavior();
             public MofObjectShadow @__FunctionBehavior = new MofObjectShadow("dm:///_internal/model/uml#FunctionBehavior");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#MessageEvent",
+                TypeKind = TypeKind.ClassTree)]
             public class _MessageEvent
             {
                 public static string @visibility = "visibility";
@@ -11951,6 +12268,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _MessageEvent @MessageEvent = new _MessageEvent();
             public MofObjectShadow @__MessageEvent = new MofObjectShadow("dm:///_internal/model/uml#MessageEvent");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueBehavior",
+                TypeKind = TypeKind.ClassTree)]
             public class _OpaqueBehavior
             {
                 public static string @body = "body";
@@ -12141,6 +12460,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _OpaqueBehavior @OpaqueBehavior = new _OpaqueBehavior();
             public MofObjectShadow @__OpaqueBehavior = new MofObjectShadow("dm:///_internal/model/uml#OpaqueBehavior");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SignalEvent",
+                TypeKind = TypeKind.ClassTree)]
             public class _SignalEvent
             {
                 public static string @signal = "signal";
@@ -12184,6 +12505,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _SignalEvent @SignalEvent = new _SignalEvent();
             public MofObjectShadow @__SignalEvent = new MofObjectShadow("dm:///_internal/model/uml#SignalEvent");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TimeEvent",
+                TypeKind = TypeKind.ClassTree)]
             public class _TimeEvent
             {
                 public static string @isRelative = "isRelative";
@@ -12230,6 +12553,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TimeEvent @TimeEvent = new _TimeEvent();
             public MofObjectShadow @__TimeEvent = new MofObjectShadow("dm:///_internal/model/uml#TimeEvent");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Trigger",
+                TypeKind = TypeKind.ClassTree)]
             public class _Trigger
             {
                 public static string @event = "event";
@@ -12276,6 +12601,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Classification
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#Substitution",
+                TypeKind = TypeKind.ClassTree)]
             public class _Substitution
             {
                 public static string @contract = "contract";
@@ -12340,6 +12667,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Substitution @Substitution = new _Substitution();
             public MofObjectShadow @__Substitution = new MofObjectShadow("dm:///_internal/model/uml#Substitution");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#BehavioralFeature",
+                TypeKind = TypeKind.ClassTree)]
             public class _BehavioralFeature
             {
                 public static string @concurrency = "concurrency";
@@ -12425,6 +12754,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _BehavioralFeature @BehavioralFeature = new _BehavioralFeature();
             public MofObjectShadow @__BehavioralFeature = new MofObjectShadow("dm:///_internal/model/uml#BehavioralFeature");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Classifier",
+                TypeKind = TypeKind.ClassTree)]
             public class _Classifier
             {
                 public static string @attribute = "attribute";
@@ -12543,6 +12874,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Classifier @Classifier = new _Classifier();
             public MofObjectShadow @__Classifier = new MofObjectShadow("dm:///_internal/model/uml#Classifier");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClassifierTemplateParameter",
+                TypeKind = TypeKind.ClassTree)]
             public class _ClassifierTemplateParameter
             {
                 public static string @allowSubstitutable = "allowSubstitutable";
@@ -12580,6 +12913,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ClassifierTemplateParameter @ClassifierTemplateParameter = new _ClassifierTemplateParameter();
             public MofObjectShadow @__ClassifierTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#ClassifierTemplateParameter");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Feature",
+                TypeKind = TypeKind.ClassTree)]
             public class _Feature
             {
                 public static string @featuringClassifier = "featuringClassifier";
@@ -12629,6 +12964,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Feature @Feature = new _Feature();
             public MofObjectShadow @__Feature = new MofObjectShadow("dm:///_internal/model/uml#Feature");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Generalization",
+                TypeKind = TypeKind.ClassTree)]
             public class _Generalization
             {
                 public static string @general = "general";
@@ -12666,6 +13003,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Generalization @Generalization = new _Generalization();
             public MofObjectShadow @__Generalization = new MofObjectShadow("dm:///_internal/model/uml#Generalization");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#GeneralizationSet",
+                TypeKind = TypeKind.ClassTree)]
             public class _GeneralizationSet
             {
                 public static string @generalization = "generalization";
@@ -12718,6 +13057,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _GeneralizationSet @GeneralizationSet = new _GeneralizationSet();
             public MofObjectShadow @__GeneralizationSet = new MofObjectShadow("dm:///_internal/model/uml#GeneralizationSet");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InstanceSpecification",
+                TypeKind = TypeKind.ClassTree)]
             public class _InstanceSpecification
             {
                 public static string @classifier = "classifier";
@@ -12773,6 +13114,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InstanceSpecification @InstanceSpecification = new _InstanceSpecification();
             public MofObjectShadow @__InstanceSpecification = new MofObjectShadow("dm:///_internal/model/uml#InstanceSpecification");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InstanceValue",
+                TypeKind = TypeKind.ClassTree)]
             public class _InstanceValue
             {
                 public static string @instance = "instance";
@@ -12819,6 +13162,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InstanceValue @InstanceValue = new _InstanceValue();
             public MofObjectShadow @__InstanceValue = new MofObjectShadow("dm:///_internal/model/uml#InstanceValue");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Operation",
+                TypeKind = TypeKind.ClassTree)]
             public class _Operation
             {
                 public static string @bodyCondition = "bodyCondition";
@@ -12955,6 +13300,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Operation @Operation = new _Operation();
             public MofObjectShadow @__Operation = new MofObjectShadow("dm:///_internal/model/uml#Operation");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OperationTemplateParameter",
+                TypeKind = TypeKind.ClassTree)]
             public class _OperationTemplateParameter
             {
                 public static string @parameteredElement = "parameteredElement";
@@ -12986,6 +13333,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _OperationTemplateParameter @OperationTemplateParameter = new _OperationTemplateParameter();
             public MofObjectShadow @__OperationTemplateParameter = new MofObjectShadow("dm:///_internal/model/uml#OperationTemplateParameter");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Parameter",
+                TypeKind = TypeKind.ClassTree)]
             public class _Parameter
             {
                 public static string @default = "default";
@@ -13074,6 +13423,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Parameter @Parameter = new _Parameter();
             public MofObjectShadow @__Parameter = new MofObjectShadow("dm:///_internal/model/uml#Parameter");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ParameterSet",
+                TypeKind = TypeKind.ClassTree)]
             public class _ParameterSet
             {
                 public static string @condition = "condition";
@@ -13114,6 +13465,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ParameterSet @ParameterSet = new _ParameterSet();
             public MofObjectShadow @__ParameterSet = new MofObjectShadow("dm:///_internal/model/uml#ParameterSet");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Property",
+                TypeKind = TypeKind.ClassTree)]
             public class _Property
             {
                 public static string @aggregation = "aggregation";
@@ -13250,6 +13603,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Property @Property = new _Property();
             public MofObjectShadow @__Property = new MofObjectShadow("dm:///_internal/model/uml#Property");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RedefinableElement",
+                TypeKind = TypeKind.ClassTree)]
             public class _RedefinableElement
             {
                 public static string @isLeaf = "isLeaf";
@@ -13293,6 +13648,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _RedefinableElement @RedefinableElement = new _RedefinableElement();
             public MofObjectShadow @__RedefinableElement = new MofObjectShadow("dm:///_internal/model/uml#RedefinableElement");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RedefinableTemplateSignature",
+                TypeKind = TypeKind.ClassTree)]
             public class _RedefinableTemplateSignature
             {
                 public static string @classifier = "classifier";
@@ -13354,6 +13711,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _RedefinableTemplateSignature @RedefinableTemplateSignature = new _RedefinableTemplateSignature();
             public MofObjectShadow @__RedefinableTemplateSignature = new MofObjectShadow("dm:///_internal/model/uml#RedefinableTemplateSignature");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Slot",
+                TypeKind = TypeKind.ClassTree)]
             public class _Slot
             {
                 public static string @definingFeature = "definingFeature";
@@ -13379,6 +13738,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Slot @Slot = new _Slot();
             public MofObjectShadow @__Slot = new MofObjectShadow("dm:///_internal/model/uml#Slot");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuralFeature",
+                TypeKind = TypeKind.ClassTree)]
             public class _StructuralFeature
             {
                 public static string @isReadOnly = "isReadOnly";
@@ -13552,6 +13913,8 @@ namespace DatenMeister.Core.Models.EMOF
 
         public class _Actions
         {
+            [TypeUri(Uri = "dm:///_internal/model/uml#ValueSpecificationAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ValueSpecificationAction
             {
                 public static string @result = "result";
@@ -13646,6 +14009,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ValueSpecificationAction @ValueSpecificationAction = new _ValueSpecificationAction();
             public MofObjectShadow @__ValueSpecificationAction = new MofObjectShadow("dm:///_internal/model/uml#ValueSpecificationAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#VariableAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _VariableAction
             {
                 public static string @variable = "variable";
@@ -13737,6 +14102,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _VariableAction @VariableAction = new _VariableAction();
             public MofObjectShadow @__VariableAction = new MofObjectShadow("dm:///_internal/model/uml#VariableAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#WriteLinkAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _WriteLinkAction
             {
                 public static string @endData = "endData";
@@ -13831,6 +14198,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _WriteLinkAction @WriteLinkAction = new _WriteLinkAction();
             public MofObjectShadow @__WriteLinkAction = new MofObjectShadow("dm:///_internal/model/uml#WriteLinkAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#WriteStructuralFeatureAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _WriteStructuralFeatureAction
             {
                 public static string @result = "result";
@@ -13931,6 +14300,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _WriteStructuralFeatureAction @WriteStructuralFeatureAction = new _WriteStructuralFeatureAction();
             public MofObjectShadow @__WriteStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#WriteStructuralFeatureAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#WriteVariableAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _WriteVariableAction
             {
                 public static string @value = "value";
@@ -14047,6 +14418,8 @@ namespace DatenMeister.Core.Models.EMOF
                 @stream
             }
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AcceptCallAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _AcceptCallAction
             {
                 public static string @returnInformation = "returnInformation";
@@ -14147,6 +14520,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _AcceptCallAction @AcceptCallAction = new _AcceptCallAction();
             public MofObjectShadow @__AcceptCallAction = new MofObjectShadow("dm:///_internal/model/uml#AcceptCallAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AcceptEventAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _AcceptEventAction
             {
                 public static string @isUnmarshall = "isUnmarshall";
@@ -14244,6 +14619,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _AcceptEventAction @AcceptEventAction = new _AcceptEventAction();
             public MofObjectShadow @__AcceptEventAction = new MofObjectShadow("dm:///_internal/model/uml#AcceptEventAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Action",
+                TypeKind = TypeKind.ClassTree)]
             public class _Action
             {
                 public static string @context = "context";
@@ -14332,6 +14709,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Action @Action = new _Action();
             public MofObjectShadow @__Action = new MofObjectShadow("dm:///_internal/model/uml#Action");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ActionInputPin",
+                TypeKind = TypeKind.ClassTree)]
             public class _ActionInputPin
             {
                 public static string @fromAction = "fromAction";
@@ -14441,6 +14820,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ActionInputPin @ActionInputPin = new _ActionInputPin();
             public MofObjectShadow @__ActionInputPin = new MofObjectShadow("dm:///_internal/model/uml#ActionInputPin");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AddStructuralFeatureValueAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _AddStructuralFeatureValueAction
             {
                 public static string @insertAt = "insertAt";
@@ -14547,6 +14928,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _AddStructuralFeatureValueAction @AddStructuralFeatureValueAction = new _AddStructuralFeatureValueAction();
             public MofObjectShadow @__AddStructuralFeatureValueAction = new MofObjectShadow("dm:///_internal/model/uml#AddStructuralFeatureValueAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#AddVariableValueAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _AddVariableValueAction
             {
                 public static string @insertAt = "insertAt";
@@ -14647,6 +15030,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _AddVariableValueAction @AddVariableValueAction = new _AddVariableValueAction();
             public MofObjectShadow @__AddVariableValueAction = new MofObjectShadow("dm:///_internal/model/uml#AddVariableValueAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#BroadcastSignalAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _BroadcastSignalAction
             {
                 public static string @signal = "signal";
@@ -14744,6 +15129,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _BroadcastSignalAction @BroadcastSignalAction = new _BroadcastSignalAction();
             public MofObjectShadow @__BroadcastSignalAction = new MofObjectShadow("dm:///_internal/model/uml#BroadcastSignalAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _CallAction
             {
                 public static string @isSynchronous = "isSynchronous";
@@ -14844,6 +15231,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CallAction @CallAction = new _CallAction();
             public MofObjectShadow @__CallAction = new MofObjectShadow("dm:///_internal/model/uml#CallAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallBehaviorAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _CallBehaviorAction
             {
                 public static string @behavior = "behavior";
@@ -14947,6 +15336,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CallBehaviorAction @CallBehaviorAction = new _CallBehaviorAction();
             public MofObjectShadow @__CallBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#CallBehaviorAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CallOperationAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _CallOperationAction
             {
                 public static string @operation = "operation";
@@ -15053,6 +15444,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CallOperationAction @CallOperationAction = new _CallOperationAction();
             public MofObjectShadow @__CallOperationAction = new MofObjectShadow("dm:///_internal/model/uml#CallOperationAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Clause",
+                TypeKind = TypeKind.ClassTree)]
             public class _Clause
             {
                 public static string @body = "body";
@@ -15087,6 +15480,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Clause @Clause = new _Clause();
             public MofObjectShadow @__Clause = new MofObjectShadow("dm:///_internal/model/uml#Clause");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClearAssociationAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ClearAssociationAction
             {
                 public static string @association = "association";
@@ -15181,6 +15576,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ClearAssociationAction @ClearAssociationAction = new _ClearAssociationAction();
             public MofObjectShadow @__ClearAssociationAction = new MofObjectShadow("dm:///_internal/model/uml#ClearAssociationAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClearStructuralFeatureAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ClearStructuralFeatureAction
             {
                 public static string @result = "result";
@@ -15278,6 +15675,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ClearStructuralFeatureAction @ClearStructuralFeatureAction = new _ClearStructuralFeatureAction();
             public MofObjectShadow @__ClearStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#ClearStructuralFeatureAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ClearVariableAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ClearVariableAction
             {
                 public static string @variable = "variable";
@@ -15369,6 +15768,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ClearVariableAction @ClearVariableAction = new _ClearVariableAction();
             public MofObjectShadow @__ClearVariableAction = new MofObjectShadow("dm:///_internal/model/uml#ClearVariableAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ConditionalNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ConditionalNode
             {
                 public static string @clause = "clause";
@@ -15520,6 +15921,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ConditionalNode @ConditionalNode = new _ConditionalNode();
             public MofObjectShadow @__ConditionalNode = new MofObjectShadow("dm:///_internal/model/uml#ConditionalNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CreateLinkAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _CreateLinkAction
             {
                 public static string @endData = "endData";
@@ -15614,6 +16017,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CreateLinkAction @CreateLinkAction = new _CreateLinkAction();
             public MofObjectShadow @__CreateLinkAction = new MofObjectShadow("dm:///_internal/model/uml#CreateLinkAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CreateLinkObjectAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _CreateLinkObjectAction
             {
                 public static string @result = "result";
@@ -15711,6 +16116,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CreateLinkObjectAction @CreateLinkObjectAction = new _CreateLinkObjectAction();
             public MofObjectShadow @__CreateLinkObjectAction = new MofObjectShadow("dm:///_internal/model/uml#CreateLinkObjectAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#CreateObjectAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _CreateObjectAction
             {
                 public static string @classifier = "classifier";
@@ -15805,6 +16212,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _CreateObjectAction @CreateObjectAction = new _CreateObjectAction();
             public MofObjectShadow @__CreateObjectAction = new MofObjectShadow("dm:///_internal/model/uml#CreateObjectAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DestroyLinkAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _DestroyLinkAction
             {
                 public static string @endData = "endData";
@@ -15899,6 +16308,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DestroyLinkAction @DestroyLinkAction = new _DestroyLinkAction();
             public MofObjectShadow @__DestroyLinkAction = new MofObjectShadow("dm:///_internal/model/uml#DestroyLinkAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#DestroyObjectAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _DestroyObjectAction
             {
                 public static string @isDestroyLinks = "isDestroyLinks";
@@ -15996,6 +16407,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _DestroyObjectAction @DestroyObjectAction = new _DestroyObjectAction();
             public MofObjectShadow @__DestroyObjectAction = new MofObjectShadow("dm:///_internal/model/uml#DestroyObjectAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExpansionNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExpansionNode
             {
                 public static string @regionAsInput = "regionAsInput";
@@ -16087,6 +16500,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExpansionNode @ExpansionNode = new _ExpansionNode();
             public MofObjectShadow @__ExpansionNode = new MofObjectShadow("dm:///_internal/model/uml#ExpansionNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ExpansionRegion",
+                TypeKind = TypeKind.ClassTree)]
             public class _ExpansionRegion
             {
                 public static string @inputElement = "inputElement";
@@ -16235,6 +16650,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ExpansionRegion @ExpansionRegion = new _ExpansionRegion();
             public MofObjectShadow @__ExpansionRegion = new MofObjectShadow("dm:///_internal/model/uml#ExpansionRegion");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InputPin",
+                TypeKind = TypeKind.ClassTree)]
             public class _InputPin
             {
                 public static string @isControl = "isControl";
@@ -16341,6 +16758,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InputPin @InputPin = new _InputPin();
             public MofObjectShadow @__InputPin = new MofObjectShadow("dm:///_internal/model/uml#InputPin");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#InvocationAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _InvocationAction
             {
                 public static string @argument = "argument";
@@ -16435,6 +16854,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _InvocationAction @InvocationAction = new _InvocationAction();
             public MofObjectShadow @__InvocationAction = new MofObjectShadow("dm:///_internal/model/uml#InvocationAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _LinkAction
             {
                 public static string @endData = "endData";
@@ -16529,6 +16950,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LinkAction @LinkAction = new _LinkAction();
             public MofObjectShadow @__LinkAction = new MofObjectShadow("dm:///_internal/model/uml#LinkAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndCreationData",
+                TypeKind = TypeKind.ClassTree)]
             public class _LinkEndCreationData
             {
                 public static string @insertAt = "insertAt";
@@ -16560,6 +16983,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LinkEndCreationData @LinkEndCreationData = new _LinkEndCreationData();
             public MofObjectShadow @__LinkEndCreationData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndCreationData");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndData",
+                TypeKind = TypeKind.ClassTree)]
             public class _LinkEndData
             {
                 public static string @end = "end";
@@ -16585,6 +17010,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LinkEndData @LinkEndData = new _LinkEndData();
             public MofObjectShadow @__LinkEndData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndData");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LinkEndDestructionData",
+                TypeKind = TypeKind.ClassTree)]
             public class _LinkEndDestructionData
             {
                 public static string @destroyAt = "destroyAt";
@@ -16616,6 +17043,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LinkEndDestructionData @LinkEndDestructionData = new _LinkEndDestructionData();
             public MofObjectShadow @__LinkEndDestructionData = new MofObjectShadow("dm:///_internal/model/uml#LinkEndDestructionData");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#LoopNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _LoopNode
             {
                 public static string @bodyOutput = "bodyOutput";
@@ -16782,6 +17211,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _LoopNode @LoopNode = new _LoopNode();
             public MofObjectShadow @__LoopNode = new MofObjectShadow("dm:///_internal/model/uml#LoopNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OpaqueAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _OpaqueAction
             {
                 public static string @body = "body";
@@ -16882,6 +17313,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _OpaqueAction @OpaqueAction = new _OpaqueAction();
             public MofObjectShadow @__OpaqueAction = new MofObjectShadow("dm:///_internal/model/uml#OpaqueAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#OutputPin",
+                TypeKind = TypeKind.ClassTree)]
             public class _OutputPin
             {
                 public static string @isControl = "isControl";
@@ -16988,6 +17421,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _OutputPin @OutputPin = new _OutputPin();
             public MofObjectShadow @__OutputPin = new MofObjectShadow("dm:///_internal/model/uml#OutputPin");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#Pin",
+                TypeKind = TypeKind.ClassTree)]
             public class _Pin
             {
                 public static string @isControl = "isControl";
@@ -17094,6 +17529,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _Pin @Pin = new _Pin();
             public MofObjectShadow @__Pin = new MofObjectShadow("dm:///_internal/model/uml#Pin");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#QualifierValue",
+                TypeKind = TypeKind.ClassTree)]
             public class _QualifierValue
             {
                 public static string @qualifier = "qualifier";
@@ -17116,6 +17553,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _QualifierValue @QualifierValue = new _QualifierValue();
             public MofObjectShadow @__QualifierValue = new MofObjectShadow("dm:///_internal/model/uml#QualifierValue");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RaiseExceptionAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _RaiseExceptionAction
             {
                 public static string @exception = "exception";
@@ -17207,6 +17646,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _RaiseExceptionAction @RaiseExceptionAction = new _RaiseExceptionAction();
             public MofObjectShadow @__RaiseExceptionAction = new MofObjectShadow("dm:///_internal/model/uml#RaiseExceptionAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadExtentAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadExtentAction
             {
                 public static string @classifier = "classifier";
@@ -17301,6 +17742,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadExtentAction @ReadExtentAction = new _ReadExtentAction();
             public MofObjectShadow @__ReadExtentAction = new MofObjectShadow("dm:///_internal/model/uml#ReadExtentAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadIsClassifiedObjectAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadIsClassifiedObjectAction
             {
                 public static string @classifier = "classifier";
@@ -17401,6 +17844,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadIsClassifiedObjectAction @ReadIsClassifiedObjectAction = new _ReadIsClassifiedObjectAction();
             public MofObjectShadow @__ReadIsClassifiedObjectAction = new MofObjectShadow("dm:///_internal/model/uml#ReadIsClassifiedObjectAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadLinkAction
             {
                 public static string @result = "result";
@@ -17498,6 +17943,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadLinkAction @ReadLinkAction = new _ReadLinkAction();
             public MofObjectShadow @__ReadLinkAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkObjectEndAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadLinkObjectEndAction
             {
                 public static string @end = "end";
@@ -17595,6 +18042,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadLinkObjectEndAction @ReadLinkObjectEndAction = new _ReadLinkObjectEndAction();
             public MofObjectShadow @__ReadLinkObjectEndAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkObjectEndAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadLinkObjectEndQualifierAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadLinkObjectEndQualifierAction
             {
                 public static string @object = "object";
@@ -17692,6 +18141,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadLinkObjectEndQualifierAction @ReadLinkObjectEndQualifierAction = new _ReadLinkObjectEndQualifierAction();
             public MofObjectShadow @__ReadLinkObjectEndQualifierAction = new MofObjectShadow("dm:///_internal/model/uml#ReadLinkObjectEndQualifierAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadSelfAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadSelfAction
             {
                 public static string @result = "result";
@@ -17783,6 +18234,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadSelfAction @ReadSelfAction = new _ReadSelfAction();
             public MofObjectShadow @__ReadSelfAction = new MofObjectShadow("dm:///_internal/model/uml#ReadSelfAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadStructuralFeatureAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadStructuralFeatureAction
             {
                 public static string @result = "result";
@@ -17880,6 +18333,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadStructuralFeatureAction @ReadStructuralFeatureAction = new _ReadStructuralFeatureAction();
             public MofObjectShadow @__ReadStructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#ReadStructuralFeatureAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReadVariableAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReadVariableAction
             {
                 public static string @result = "result";
@@ -17974,6 +18429,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReadVariableAction @ReadVariableAction = new _ReadVariableAction();
             public MofObjectShadow @__ReadVariableAction = new MofObjectShadow("dm:///_internal/model/uml#ReadVariableAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReclassifyObjectAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReclassifyObjectAction
             {
                 public static string @isReplaceAll = "isReplaceAll";
@@ -18074,6 +18531,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReclassifyObjectAction @ReclassifyObjectAction = new _ReclassifyObjectAction();
             public MofObjectShadow @__ReclassifyObjectAction = new MofObjectShadow("dm:///_internal/model/uml#ReclassifyObjectAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReduceAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReduceAction
             {
                 public static string @collection = "collection";
@@ -18174,6 +18633,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReduceAction @ReduceAction = new _ReduceAction();
             public MofObjectShadow @__ReduceAction = new MofObjectShadow("dm:///_internal/model/uml#ReduceAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RemoveStructuralFeatureValueAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _RemoveStructuralFeatureValueAction
             {
                 public static string @isRemoveDuplicates = "isRemoveDuplicates";
@@ -18280,6 +18741,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _RemoveStructuralFeatureValueAction @RemoveStructuralFeatureValueAction = new _RemoveStructuralFeatureValueAction();
             public MofObjectShadow @__RemoveStructuralFeatureValueAction = new MofObjectShadow("dm:///_internal/model/uml#RemoveStructuralFeatureValueAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#RemoveVariableValueAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _RemoveVariableValueAction
             {
                 public static string @isRemoveDuplicates = "isRemoveDuplicates";
@@ -18380,6 +18843,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _RemoveVariableValueAction @RemoveVariableValueAction = new _RemoveVariableValueAction();
             public MofObjectShadow @__RemoveVariableValueAction = new MofObjectShadow("dm:///_internal/model/uml#RemoveVariableValueAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ReplyAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _ReplyAction
             {
                 public static string @replyToCall = "replyToCall";
@@ -18477,6 +18942,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _ReplyAction @ReplyAction = new _ReplyAction();
             public MofObjectShadow @__ReplyAction = new MofObjectShadow("dm:///_internal/model/uml#ReplyAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SendObjectAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _SendObjectAction
             {
                 public static string @request = "request";
@@ -18577,6 +19044,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _SendObjectAction @SendObjectAction = new _SendObjectAction();
             public MofObjectShadow @__SendObjectAction = new MofObjectShadow("dm:///_internal/model/uml#SendObjectAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SendSignalAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _SendSignalAction
             {
                 public static string @signal = "signal";
@@ -18677,6 +19146,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _SendSignalAction @SendSignalAction = new _SendSignalAction();
             public MofObjectShadow @__SendSignalAction = new MofObjectShadow("dm:///_internal/model/uml#SendSignalAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#SequenceNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _SequenceNode
             {
                 public static string @executableNode = "executableNode";
@@ -18819,6 +19290,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _SequenceNode @SequenceNode = new _SequenceNode();
             public MofObjectShadow @__SequenceNode = new MofObjectShadow("dm:///_internal/model/uml#SequenceNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StartClassifierBehaviorAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _StartClassifierBehaviorAction
             {
                 public static string @object = "object";
@@ -18910,6 +19383,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _StartClassifierBehaviorAction @StartClassifierBehaviorAction = new _StartClassifierBehaviorAction();
             public MofObjectShadow @__StartClassifierBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#StartClassifierBehaviorAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StartObjectBehaviorAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _StartObjectBehaviorAction
             {
                 public static string @object = "object";
@@ -19013,6 +19488,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _StartObjectBehaviorAction @StartObjectBehaviorAction = new _StartObjectBehaviorAction();
             public MofObjectShadow @__StartObjectBehaviorAction = new MofObjectShadow("dm:///_internal/model/uml#StartObjectBehaviorAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuralFeatureAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _StructuralFeatureAction
             {
                 public static string @object = "object";
@@ -19107,6 +19584,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _StructuralFeatureAction @StructuralFeatureAction = new _StructuralFeatureAction();
             public MofObjectShadow @__StructuralFeatureAction = new MofObjectShadow("dm:///_internal/model/uml#StructuralFeatureAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#StructuredActivityNode",
+                TypeKind = TypeKind.ClassTree)]
             public class _StructuredActivityNode
             {
                 public static string @activity = "activity";
@@ -19246,6 +19725,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _StructuredActivityNode @StructuredActivityNode = new _StructuredActivityNode();
             public MofObjectShadow @__StructuredActivityNode = new MofObjectShadow("dm:///_internal/model/uml#StructuredActivityNode");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#TestIdentityAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _TestIdentityAction
             {
                 public static string @first = "first";
@@ -19343,6 +19824,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _TestIdentityAction @TestIdentityAction = new _TestIdentityAction();
             public MofObjectShadow @__TestIdentityAction = new MofObjectShadow("dm:///_internal/model/uml#TestIdentityAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#UnmarshallAction",
+                TypeKind = TypeKind.ClassTree)]
             public class _UnmarshallAction
             {
                 public static string @object = "object";
@@ -19440,6 +19923,8 @@ namespace DatenMeister.Core.Models.EMOF
             public _UnmarshallAction @UnmarshallAction = new _UnmarshallAction();
             public MofObjectShadow @__UnmarshallAction = new MofObjectShadow("dm:///_internal/model/uml#UnmarshallAction");
 
+            [TypeUri(Uri = "dm:///_internal/model/uml#ValuePin",
+                TypeKind = TypeKind.ClassTree)]
             public class _ValuePin
             {
                 public static string @value = "value";

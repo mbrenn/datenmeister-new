@@ -66,7 +66,7 @@ public class WrapperTreeGenerator : WalkPackageClass
 
         Result.AppendLine($"{stack.Indentation}[TypeUri(Uri = \"{classInstance.GetUri()}\",");
         Result.AppendLine($"{stack.Indentation}    TypeKind = TypeKind.WrappedClass)]");
-        Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper(IElement innerDmElement)");
+        Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper(IElement innerDmElement) : IElementWrapper");
         Result.AppendLine($"{stack.Indentation}{{");
         Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => innerDmElement;");
         Result.AppendLine();
@@ -78,6 +78,13 @@ public class WrapperTreeGenerator : WalkPackageClass
         Result.AppendLine();
     }
 
+    private enum TypingClassification
+    {
+        Unknown,
+        Primitive, 
+        Class
+    }
+
     protected override void WalkProperty(IObject propertyObject, CallStack stack)
     {
         base.WalkProperty(propertyObject, stack);
@@ -86,11 +93,11 @@ public class WrapperTreeGenerator : WalkPackageClass
 
         var nameAsObject = propertyObject.get("name");
         var name = nameAsObject?.ToString() ?? string.Empty;
-        
+
         var typeOfProperty = PropertyMethods.GetPropertyType(asElement);
         var typeByCsName = "object?";
-        var isTyped = true;
-        
+        var isTyped = TypingClassification.Primitive;
+
         if (typeOfProperty?.Equals(_PrimitiveTypes.TheOne.__String) == true)
         {
             typeByCsName = "string";
@@ -115,43 +122,81 @@ public class WrapperTreeGenerator : WalkPackageClass
         else
         {
             // Check, if we know the type
-            var foundTypes = TypeUriMapping.Entries.Where(
-                x => x.TypeUri == typeOfProperty?.GetUri()
-                && x.TypeKind == TypeKind.WrappedClass).ToList();
+            var foundTypes = TypeUriMapping.Entries.Where(x => x.TypeUri == typeOfProperty?.GetUri()
+                                                               && x.TypeKind == TypeKind.WrappedClass).ToList();
             if (foundTypes.Count > 1)
             {
-                throw new InvalidOperationException("We have an issue");
+                throw new InvalidOperationException("We have an issue. We found more than one match! ");
             }
-            
+
+            // Now, whether we found a type, we will create different styles of source code
             var foundType = foundTypes.FirstOrDefault();
             if (foundType != null)
             {
                 Result.AppendLine($"{stack.Indentation}// {foundType.ClassFullName}");
+                isTyped = TypingClassification.Class;
             }
             else
             {
                 Result.AppendLine($"{stack.Indentation}// Not found");
+                isTyped = TypingClassification.Unknown;
             }
 
-            isTyped = false;
+
         }
-        
+
         Result.AppendLine($"{stack.Indentation}public {typeByCsName} @{name}");
         Result.AppendLine($"{stack.Indentation}{{");
-        Result.AppendLine($"{stack.Indentation}    get =>");
-
-        if (isTyped)
-        {
-            Result.AppendLine($"{stack.Indentation}        innerDmElement.getOrDefault<{typeByCsName}>(\"{name}\");");
-        }
-        else
-        {
-            Result.AppendLine($"{stack.Indentation}        innerDmElement.get(\"{name}\");");
-        }
-
         
-        Result.AppendLine($"{stack.Indentation}    set => ");
-        Result.AppendLine($"{stack.Indentation}        innerDmElement.set(\"{name}\", value);");
+
+        switch (isTyped)
+        {
+            case TypingClassification.Unknown:
+                Result.AppendLine($"{stack.Indentation}    get =>");
+                Result.AppendLine($"{stack.Indentation}        innerDmElement.get(\"{name}\");");
+                break;
+            case TypingClassification.Primitive:
+                Result.AppendLine($"{stack.Indentation}    get =>");
+                Result.AppendLine(
+                    $"{stack.Indentation}        innerDmElement.getOrDefault<{typeByCsName}>(\"{name}\");");
+                break;
+            case TypingClassification.Class:
+                Result.AppendLine($"{stack.Indentation}    get");
+                Result.AppendLine($"{stack.Indentation}    {{");
+                Result.AppendLine($"{stack.Indentation}        var foundElement = innerDmElement.getOrDefault<IElement>(\"{name}\");");
+                Result.AppendLine($"{stack.Indentation}        return foundElement == null ? null : new {typeByCsName}(foundElement);");
+                Result.AppendLine($"{stack.Indentation}    }}");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(isTyped.ToString());
+        }
+
+        switch (isTyped)
+        {
+            case TypingClassification.Unknown:
+                Result.AppendLine($"{stack.Indentation}    set => ");
+                Result.AppendLine($"{stack.Indentation}        innerDmElement.set(\"{name}\", value);");
+                break;
+            case TypingClassification.Primitive:
+                Result.AppendLine($"{stack.Indentation}    set => ");
+                Result.AppendLine($"{stack.Indentation}        innerDmElement.set(\"{name}\", value);");
+                break;
+            case TypingClassification.Class:
+                Result.AppendLine($"{stack.Indentation}    set ");
+                Result.AppendLine($"{stack.Indentation}    {{");
+                Result.AppendLine($"{stack.Indentation}        if(value is IWrappedElement wrappedElement)");
+                Result.AppendLine($"{stack.Indentation}        {{");
+                Result.AppendLine($"{stack.Indentation}            innerDmElement.set(\"{name}\", wrappedElement.GetWrappedElement());");
+                Result.AppendLine($"{stack.Indentation}        }}");
+                Result.AppendLine($"{stack.Indentation}        else");
+                Result.AppendLine($"{stack.Indentation}        {{");
+                Result.AppendLine($"{stack.Indentation}            innerDmElement.set(\"{name}\", value);");
+                Result.AppendLine($"{stack.Indentation}        }}");
+                Result.AppendLine($"{stack.Indentation}    }}");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
         Result.AppendLine($"{stack.Indentation}}}");
 
         Result.AppendLine();

@@ -123,6 +123,7 @@ class ItemXmiExportNavigate extends FormActions.ItemFormActionModuleBase {
 class ItemXmiExport extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Item.ExportXmi");
+        this.actionVerb = "Perform Xmi Export";
     }
     async loadObject() {
         let p = new URLSearchParams(window.location.search);

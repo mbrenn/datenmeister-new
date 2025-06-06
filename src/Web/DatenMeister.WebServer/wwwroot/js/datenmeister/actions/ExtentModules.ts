@@ -41,6 +41,7 @@ export function loadModules() {
 class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.Properties.Update");
+        this.actionVerb = "Update Extent Properties";
     }
 
     async loadObject(): Promise<Mof.DmObjectWithSync> | undefined {

@@ -36,6 +36,7 @@ export function loadModules() {
 class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Extent.Properties.Update");
+        this.actionVerb = "Update Extent Properties";
     }
     async loadObject() {
         let p = new URLSearchParams(window.location.search);

@@ -27,6 +27,11 @@ export interface IItemFormActionModule
     actionVerb?: string;
 
     /**
+     * Defines the headline of the action form. Can be undefined, so actionVerb is used.
+     */
+    actionHeading: string | undefined;
+
+    /**
      * Loads the object for a certain action. 
      * Can be undefined, if a default object can be used
      */
@@ -78,6 +83,15 @@ export interface IItemFormActionModule
     skipSaving: boolean | undefined;
 }
 
+export function getActionHeading(module: IItemFormActionModule)
+{
+    if (module.actionHeading !== undefined) {
+        return module.actionHeading;
+    }
+    
+    return module.actionVerb;
+}
+
 /**
  * Defines the base implementation which can be overridden
  */
@@ -88,14 +102,23 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
     }
 
     /** 
-     * Name of the action
+     * Name of the action as a coded information
      */
     actionName: string;
 
     /** 
      * Defines the uri of the metaclass of the action which provides a unique and 
      */
-    actionMetaClassUri: string;                         
+    actionMetaClassUri: string;
+
+    /**
+     * Defines the headline of the action form. Can be undefined, so actionVerb is used. 
+     */
+    actionHeading: string | undefined;
+
+    /**
+     * Represents an action verb that is used for the button or heading, if actionHeading is not set
+     */
     actionVerb: string;
 
     requiresConfirmation: boolean | undefined;
@@ -111,7 +134,7 @@ export class ItemFormActionModuleBase implements IItemFormActionModule {
      * of an item.
      */
     skipSaving: boolean | undefined;
-
+        
     execute(form: IIForms.IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<Mof.DmObject | void> {
         return Promise.resolve(undefined);
     }

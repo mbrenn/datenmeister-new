@@ -41,6 +41,7 @@ class WorkspaceExtentLoadOrCreateNavigateAction extends FormActions.ItemFormActi
 class WorkspaceExtentLoadOrCreateAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Workspace.Extent.LoadOrCreate");
+        this.actionHeading = 'Create/Load Extent - Select Extent Type';
         this.actionVerb = "Choose Extent Type";
     }
     async loadForm() {

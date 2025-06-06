@@ -19,12 +19,17 @@ export async function createActionFormForEmptyObject(
     
     const statusOverview = new StatusFieldControl();
     const module = FormActions.getModule(actionName);
+    
     if (module === undefined)
     {
         parent.text("Unknown action: " + actionName);
         return;
     }
-
+    
+    if(module.actionName !== undefined) {
+        $("#actionname").text(FormActions.getActionHeading(module));
+    }
+    
     configuration.submitName = "Perform Action";
     configuration.showCancelButton = false;
     configuration.allowAddingNewProperties = false;
@@ -160,4 +165,6 @@ export async function createActionFormForEmptyObject(
     statusOverview.setListStatus("Prepare Page", true);
 
     debugElementToDom(form, "#debug_formelement");
+    
+    return module;
 }

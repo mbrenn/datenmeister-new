@@ -16,6 +16,9 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
         parent.text("Unknown action: " + actionName);
         return;
     }
+    if (module.actionName !== undefined) {
+        $("#actionname").text(FormActions.getActionHeading(module));
+    }
     configuration.submitName = "Perform Action";
     configuration.showCancelButton = false;
     configuration.allowAddingNewProperties = false;
@@ -121,5 +124,6 @@ export async function createActionFormForEmptyObject(parent, metaClass, configur
     await module.preparePage(creator.element, creator);
     statusOverview.setListStatus("Prepare Page", true);
     debugElementToDom(form, "#debug_formelement");
+    return module;
 }
 //# sourceMappingURL=ActionForm.js.map

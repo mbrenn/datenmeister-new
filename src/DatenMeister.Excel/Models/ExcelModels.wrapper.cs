@@ -10,7 +10,7 @@ namespace DatenMeister.Excel.Models
     {
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Workbook",
             TypeKind = TypeKind.WrappedClass)]
-        public class Workbook_Wrapper(IElement innerDmElement)
+        public class Workbook_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -18,7 +18,7 @@ namespace DatenMeister.Excel.Models
             public object? @tables
             {
                 get =>
-                    innerDmElement.get("tables");
+                    innerDmElement.getOrDefault<object?>("tables");
                 set => 
                     innerDmElement.set("tables", value);
             }
@@ -27,7 +27,7 @@ namespace DatenMeister.Excel.Models
 
         [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Excel.Models.Table",
             TypeKind = TypeKind.WrappedClass)]
-        public class Table_Wrapper(IElement innerDmElement)
+        public class Table_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -35,7 +35,7 @@ namespace DatenMeister.Excel.Models
             public object? @name
             {
                 get =>
-                    innerDmElement.get("name");
+                    innerDmElement.getOrDefault<object?>("name");
                 set => 
                     innerDmElement.set("name", value);
             }
@@ -44,7 +44,7 @@ namespace DatenMeister.Excel.Models
             public object? @items
             {
                 get =>
-                    innerDmElement.get("items");
+                    innerDmElement.getOrDefault<object?>("items");
                 set => 
                     innerDmElement.set("items", value);
             }

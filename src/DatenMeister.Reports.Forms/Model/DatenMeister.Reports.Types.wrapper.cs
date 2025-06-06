@@ -10,7 +10,7 @@ namespace DatenMeister.Reports.Forms.Model
     {
         [TypeUri(Uri = "dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695",
             TypeKind = TypeKind.WrappedClass)]
-        public class ReportForm_Wrapper(IElement innerDmElement)
+        public class ReportForm_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -82,7 +82,7 @@ namespace DatenMeister.Reports.Forms.Model
 
         [TypeUri(Uri = "dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c",
             TypeKind = TypeKind.WrappedClass)]
-        public class RequestReportAction_Wrapper(IElement innerDmElement)
+        public class RequestReportAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -122,7 +122,7 @@ namespace DatenMeister.Reports.Forms.Model
 
         [TypeUri(Uri = "dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684",
             TypeKind = TypeKind.WrappedClass)]
-        public class RequestReportResult_Wrapper(IElement innerDmElement)
+        public class RequestReportResult_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 

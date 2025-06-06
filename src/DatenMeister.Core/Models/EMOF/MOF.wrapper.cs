@@ -12,7 +12,7 @@ namespace DatenMeister.Core.Models.EMOF
         {
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-URIExtent",
                 TypeKind = TypeKind.WrappedClass)]
-            public class URIExtent_Wrapper(IElement innerDmElement)
+            public class URIExtent_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -20,7 +20,7 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-Extent",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Extent_Wrapper(IElement innerDmElement)
+            public class Extent_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -36,44 +36,92 @@ namespace DatenMeister.Core.Models.EMOF
         {
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Tag_Wrapper(IElement innerDmElement)
+            public class Tag_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
                 // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper
-                public object? @tagOwner
+                public DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper? @tagOwner
                 {
-                    get =>
-                        innerDmElement.get("tagOwner");
-                    set => 
-                        innerDmElement.set("tagOwner", value);
+                    get
+                    {
+                        var foundElement = innerDmElement.getOrDefault<IElement>("tagOwner");
+                        return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
+                    }
+                    set 
+                    {
+                        if(value is IElementWrapper wrappedElement)
+                        {
+                            innerDmElement.set("tagOwner", wrappedElement.GetWrappedElement());
+                        }
+                        else
+                        {
+                            innerDmElement.set("tagOwner", value);
+                        }
+                    }
                 }
 
                 // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Comment_Wrapper
-                public object? @ownedComment
+                public DatenMeister.Core.Models.EMOF.UML.CommonStructure.Comment_Wrapper? @ownedComment
                 {
-                    get =>
-                        innerDmElement.get("ownedComment");
-                    set => 
-                        innerDmElement.set("ownedComment", value);
+                    get
+                    {
+                        var foundElement = innerDmElement.getOrDefault<IElement>("ownedComment");
+                        return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Comment_Wrapper(foundElement);
+                    }
+                    set 
+                    {
+                        if(value is IElementWrapper wrappedElement)
+                        {
+                            innerDmElement.set("ownedComment", wrappedElement.GetWrappedElement());
+                        }
+                        else
+                        {
+                            innerDmElement.set("ownedComment", value);
+                        }
+                    }
                 }
 
                 // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper
-                public object? @ownedElement
+                public DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper? @ownedElement
                 {
-                    get =>
-                        innerDmElement.get("ownedElement");
-                    set => 
-                        innerDmElement.set("ownedElement", value);
+                    get
+                    {
+                        var foundElement = innerDmElement.getOrDefault<IElement>("ownedElement");
+                        return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
+                    }
+                    set 
+                    {
+                        if(value is IElementWrapper wrappedElement)
+                        {
+                            innerDmElement.set("ownedElement", wrappedElement.GetWrappedElement());
+                        }
+                        else
+                        {
+                            innerDmElement.set("ownedElement", value);
+                        }
+                    }
                 }
 
                 // DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper
-                public object? @owner
+                public DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper? @owner
                 {
-                    get =>
-                        innerDmElement.get("owner");
-                    set => 
-                        innerDmElement.set("owner", value);
+                    get
+                    {
+                        var foundElement = innerDmElement.getOrDefault<IElement>("owner");
+                        return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
+                    }
+                    set 
+                    {
+                        if(value is IElementWrapper wrappedElement)
+                        {
+                            innerDmElement.set("owner", wrappedElement.GetWrappedElement());
+                        }
+                        else
+                        {
+                            innerDmElement.set("owner", value);
+                        }
+                    }
                 }
 
             }
@@ -84,7 +132,7 @@ namespace DatenMeister.Core.Models.EMOF
         {
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Tag_Wrapper(IElement innerDmElement)
+            public class Tag_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -108,7 +156,7 @@ namespace DatenMeister.Core.Models.EMOF
                 public object? @element
                 {
                     get =>
-                        innerDmElement.get("element");
+                        innerDmElement.getOrDefault<object?>("element");
                     set => 
                         innerDmElement.set("element", value);
                 }
@@ -121,7 +169,7 @@ namespace DatenMeister.Core.Models.EMOF
         {
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence",
                 TypeKind = TypeKind.WrappedClass)]
-            public class ReflectiveSequence_Wrapper(IElement innerDmElement)
+            public class ReflectiveSequence_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -129,7 +177,7 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection",
                 TypeKind = TypeKind.WrappedClass)]
-            public class ReflectiveCollection_Wrapper(IElement innerDmElement)
+            public class ReflectiveCollection_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -145,7 +193,7 @@ namespace DatenMeister.Core.Models.EMOF
         {
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Factory",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Factory_Wrapper(IElement innerDmElement)
+            public class Factory_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -153,7 +201,7 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Element_Wrapper(IElement innerDmElement)
+            public class Element_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -161,7 +209,7 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Argument_Wrapper(IElement innerDmElement)
+            public class Argument_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -177,7 +225,7 @@ namespace DatenMeister.Core.Models.EMOF
                 public object? @value
                 {
                     get =>
-                        innerDmElement.get("value");
+                        innerDmElement.getOrDefault<object?>("value");
                     set => 
                         innerDmElement.set("value", value);
                 }
@@ -186,7 +234,7 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Extent",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Extent_Wrapper(IElement innerDmElement)
+            public class Extent_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -194,7 +242,7 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Link_Wrapper(IElement innerDmElement)
+            public class Link_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -202,7 +250,7 @@ namespace DatenMeister.Core.Models.EMOF
                 public object? @firstElement
                 {
                     get =>
-                        innerDmElement.get("firstElement");
+                        innerDmElement.getOrDefault<object?>("firstElement");
                     set => 
                         innerDmElement.set("firstElement", value);
                 }
@@ -211,25 +259,37 @@ namespace DatenMeister.Core.Models.EMOF
                 public object? @secondElement
                 {
                     get =>
-                        innerDmElement.get("secondElement");
+                        innerDmElement.getOrDefault<object?>("secondElement");
                     set => 
                         innerDmElement.set("secondElement", value);
                 }
 
                 // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Association_Wrapper
-                public object? @association
+                public DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Association_Wrapper? @association
                 {
-                    get =>
-                        innerDmElement.get("association");
-                    set => 
-                        innerDmElement.set("association", value);
+                    get
+                    {
+                        var foundElement = innerDmElement.getOrDefault<IElement>("association");
+                        return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Association_Wrapper(foundElement);
+                    }
+                    set 
+                    {
+                        if(value is IElementWrapper wrappedElement)
+                        {
+                            innerDmElement.set("association", wrappedElement.GetWrappedElement());
+                        }
+                        else
+                        {
+                            innerDmElement.set("association", value);
+                        }
+                    }
                 }
 
             }
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Exception",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Exception_Wrapper(IElement innerDmElement)
+            public class Exception_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -237,7 +297,7 @@ namespace DatenMeister.Core.Models.EMOF
                 public object? @objectInError
                 {
                     get =>
-                        innerDmElement.get("objectInError");
+                        innerDmElement.getOrDefault<object?>("objectInError");
                     set => 
                         innerDmElement.set("objectInError", value);
                 }
@@ -246,7 +306,7 @@ namespace DatenMeister.Core.Models.EMOF
                 public object? @elementInError
                 {
                     get =>
-                        innerDmElement.get("elementInError");
+                        innerDmElement.getOrDefault<object?>("elementInError");
                     set => 
                         innerDmElement.set("elementInError", value);
                 }
@@ -267,24 +327,36 @@ namespace DatenMeister.Core.Models.EMOF
         {
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Factory_Wrapper(IElement innerDmElement)
+            public class Factory_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
                 // DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper
-                public object? @package
+                public DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper? @package
                 {
-                    get =>
-                        innerDmElement.get("package");
-                    set => 
-                        innerDmElement.set("package", value);
+                    get
+                    {
+                        var foundElement = innerDmElement.getOrDefault<IElement>("package");
+                        return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper(foundElement);
+                    }
+                    set 
+                    {
+                        if(value is IElementWrapper wrappedElement)
+                        {
+                            innerDmElement.set("package", wrappedElement.GetWrappedElement());
+                        }
+                        else
+                        {
+                            innerDmElement.set("package", value);
+                        }
+                    }
                 }
 
             }
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Type",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Type_Wrapper(IElement innerDmElement)
+            public class Type_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -292,7 +364,7 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Object_Wrapper(IElement innerDmElement)
+            public class Object_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
@@ -300,17 +372,29 @@ namespace DatenMeister.Core.Models.EMOF
 
             [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element",
                 TypeKind = TypeKind.WrappedClass)]
-            public class Element_Wrapper(IElement innerDmElement)
+            public class Element_Wrapper(IElement innerDmElement) : IElementWrapper
             {
                 public IElement GetWrappedElement() => innerDmElement;
 
                 // DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper
-                public object? @metaclass
+                public DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper? @metaclass
                 {
-                    get =>
-                        innerDmElement.get("metaclass");
-                    set => 
-                        innerDmElement.set("metaclass", value);
+                    get
+                    {
+                        var foundElement = innerDmElement.getOrDefault<IElement>("metaclass");
+                        return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
+                    }
+                    set 
+                    {
+                        if(value is IElementWrapper wrappedElement)
+                        {
+                            innerDmElement.set("metaclass", wrappedElement.GetWrappedElement());
+                        }
+                        else
+                        {
+                            innerDmElement.set("metaclass", value);
+                        }
+                    }
                 }
 
             }

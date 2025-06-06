@@ -10,7 +10,7 @@ namespace DatenMeister.Extent.Forms.Model
     {
         [TypeUri(Uri = "dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc",
             TypeKind = TypeKind.WrappedClass)]
-        public class MassImportDefinitionAction_Wrapper(IElement innerDmElement)
+        public class MassImportDefinitionAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -18,7 +18,7 @@ namespace DatenMeister.Extent.Forms.Model
             public object? @item
             {
                 get =>
-                    innerDmElement.get("item");
+                    innerDmElement.getOrDefault<object?>("item");
                 set => 
                     innerDmElement.set("item", value);
             }

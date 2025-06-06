@@ -10,7 +10,7 @@ namespace DatenMeister.Core.Models.EMOF
     {
         [TypeUri(Uri = "dm:///_internal/model/primitivetypes#Boolean",
             TypeKind = TypeKind.WrappedClass)]
-        public class Boolean_Wrapper(IElement innerDmElement)
+        public class Boolean_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -18,7 +18,7 @@ namespace DatenMeister.Core.Models.EMOF
 
         [TypeUri(Uri = "dm:///_internal/model/primitivetypes#Integer",
             TypeKind = TypeKind.WrappedClass)]
-        public class Integer_Wrapper(IElement innerDmElement)
+        public class Integer_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -26,7 +26,7 @@ namespace DatenMeister.Core.Models.EMOF
 
         [TypeUri(Uri = "dm:///_internal/model/primitivetypes#Real",
             TypeKind = TypeKind.WrappedClass)]
-        public class Real_Wrapper(IElement innerDmElement)
+        public class Real_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -34,7 +34,7 @@ namespace DatenMeister.Core.Models.EMOF
 
         [TypeUri(Uri = "dm:///_internal/model/primitivetypes#String",
             TypeKind = TypeKind.WrappedClass)]
-        public class String_Wrapper(IElement innerDmElement)
+        public class String_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 
@@ -42,7 +42,7 @@ namespace DatenMeister.Core.Models.EMOF
 
         [TypeUri(Uri = "dm:///_internal/model/primitivetypes#UnlimitedNatural",
             TypeKind = TypeKind.WrappedClass)]
-        public class UnlimitedNatural_Wrapper(IElement innerDmElement)
+        public class UnlimitedNatural_Wrapper(IElement innerDmElement) : IElementWrapper
         {
             public IElement GetWrappedElement() => innerDmElement;
 

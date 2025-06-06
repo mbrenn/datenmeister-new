@@ -134,6 +134,7 @@ public class WrapperTreeGenerator : WalkPackageClass
             if (foundType != null)
             {
                 Result.AppendLine($"{stack.Indentation}// {foundType.ClassFullName}");
+                typeByCsName = foundType.ClassFullName;
                 isTyped = TypingClassification.Class;
             }
             else
@@ -145,16 +146,13 @@ public class WrapperTreeGenerator : WalkPackageClass
 
         }
 
-        Result.AppendLine($"{stack.Indentation}public {typeByCsName} @{name}");
+        Result.AppendLine($"{stack.Indentation}public {typeByCsName}{(isTyped == TypingClassification.Class ? "?" : "")} @{name}");
         Result.AppendLine($"{stack.Indentation}{{");
         
 
         switch (isTyped)
         {
             case TypingClassification.Unknown:
-                Result.AppendLine($"{stack.Indentation}    get =>");
-                Result.AppendLine($"{stack.Indentation}        innerDmElement.get(\"{name}\");");
-                break;
             case TypingClassification.Primitive:
                 Result.AppendLine($"{stack.Indentation}    get =>");
                 Result.AppendLine(
@@ -184,7 +182,7 @@ public class WrapperTreeGenerator : WalkPackageClass
             case TypingClassification.Class:
                 Result.AppendLine($"{stack.Indentation}    set ");
                 Result.AppendLine($"{stack.Indentation}    {{");
-                Result.AppendLine($"{stack.Indentation}        if(value is IWrappedElement wrappedElement)");
+                Result.AppendLine($"{stack.Indentation}        if(value is IElementWrapper wrappedElement)");
                 Result.AppendLine($"{stack.Indentation}        {{");
                 Result.AppendLine($"{stack.Indentation}            innerDmElement.set(\"{name}\", wrappedElement.GetWrappedElement());");
                 Result.AppendLine($"{stack.Indentation}        }}");

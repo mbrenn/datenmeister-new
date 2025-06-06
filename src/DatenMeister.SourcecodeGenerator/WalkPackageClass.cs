@@ -155,15 +155,14 @@ public class WalkPackageClass
         Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion}");
 
         // Check, if we have namespaces
-        if (!string.IsNullOrEmpty(Namespace))
+        if (string.IsNullOrEmpty(Namespace))
         {
-            var indentation = stack.Indentation;
-            Result.AppendLine($"{indentation}namespace {Namespace}");
-            Result.AppendLine($"{indentation}{{");
-
-            stack = new CallStack(stack);
-            stack.Level--;
+            return;
         }
+        
+        var indentation = stack.Indentation;
+        Result.AppendLine($"{indentation}namespace {Namespace};");
+        Result.AppendLine();
     }
 
     /// <summary>
@@ -177,16 +176,7 @@ public class WalkPackageClass
     /// </param>
     private void EndNamespace(ref CallStack stack)
     {
-        // Check, if we have namespaces
-        if (!string.IsNullOrEmpty(Namespace))
-        {
-            stack = stack.Owner ?? throw new InvalidOperationException("Stack underflow");
-            var indentation = stack.Indentation;
-            Result.AppendLine($"{indentation}}}");
-
-            stack = new CallStack(stack);
-            stack.Level--;
-        }
+        // Nothing to do, we are using flatline C# 9 namespaces
     }
 
     /// <summary>

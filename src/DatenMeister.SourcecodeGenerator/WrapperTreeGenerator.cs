@@ -100,7 +100,7 @@ public class WrapperTreeGenerator : WalkPackageClass
 
         if (typeOfProperty?.Equals(_PrimitiveTypes.TheOne.__String) == true)
         {
-            typeByCsName = "string";
+            typeByCsName = "string?";
         }
         else if (typeOfProperty?.Equals(_PrimitiveTypes.TheOne.__Boolean) == true)
         {
@@ -115,7 +115,7 @@ public class WrapperTreeGenerator : WalkPackageClass
         {
             typeByCsName = "int";
         }
-        else if (typeOfProperty?.Equals(DatenMeister.Core.Models._CommonTypes.TheOne.__DateTime) == true)
+        else if (typeOfProperty?.Equals(Core.Models._CommonTypes.TheOne.__DateTime) == true)
         {
             typeByCsName = "DateTime";
         }

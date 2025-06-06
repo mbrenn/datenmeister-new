@@ -20,6 +20,14 @@ public class TypeScriptInterfaceGenerator : WalkPackageClass
         FactoryVersion = new Version(1, 3, 0, 0);
     }
 
+    public override void Walk(IUriExtent extent)
+    {
+        // We set the namespace to empty to avoid that the WalkPackageClass creates a C#-Namespace(!)
+        Namespace = string.Empty;
+        
+        base.Walk(extent);
+    }
+
     /// <summary>
     ///     Parses the packages and creates the C# Code for all the
     ///     packages by recursive calls to itself for packages and

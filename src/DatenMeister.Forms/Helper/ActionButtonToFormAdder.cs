@@ -39,7 +39,7 @@ public static class ActionButtonToFormAdder
 
             if (
                 FormCreationContext.EvaluateMatching(parameter, context) &&
-                (parameter.PredicateForElement == null || parameter.PredicateForElement(context.DetailElement)) &&
+                (parameter.PredicateForElement == null || context.DetailElement == null || parameter.PredicateForElement(context.DetailElement)) &&
                 (parameter.PredicateForContext == null || parameter.PredicateForContext(context))
             )
             {

@@ -90,18 +90,20 @@ function parseNavigateToItemParam(param) {
     }
     return result;
 }
-export function getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass) {
+export function getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass, metaClassWorkspace) {
     return Settings.baseUrl +
-        "ItemAction/Extent.CreateItem?workspace=" +
-        encodeURIComponent(workspace) +
-        "&extent=" +
-        encodeURIComponent(extentUri) +
+        "ItemAction/Extent.CreateNewItem" +
+        "?workspace=" + encodeURIComponent(workspace) +
+        "&item=" + encodeURIComponent(extentUri) +
         (metaclass !== undefined
             ? "&metaclass=" + encodeURIComponent(metaclass)
+            : "") +
+        (metaClassWorkspace !== undefined
+            ? "&metaclassworkspace=" + encodeURIComponent(metaClassWorkspace)
             : "");
 }
-export function navigateToCreateNewItemInExtent(workspace, extentUri, metaclass) {
-    document.location.href = getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass);
+export function navigateToCreateNewItemInExtent(workspace, extentUri, metaclass, metaClassWorkspace) {
+    document.location.href = getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass, metaClassWorkspace);
 }
 export function getLinkForNavigateToAction(parameter, actionName, formUri) {
     let urlParameter = "";
@@ -109,7 +111,7 @@ export function getLinkForNavigateToAction(parameter, actionName, formUri) {
         urlParameter = "?";
         let ampersand = "";
         for (let key in parameter) {
-            var value = parameter[key];
+            const value = parameter[key];
             urlParameter += ampersand + encodeURIComponent(key) + "=" + encodeURIComponent(value);
             ampersand = "&";
         }
@@ -121,18 +123,16 @@ export function navigateToAction(actionName, formUri, parameter) {
 }
 export function getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName) {
     return Settings.baseUrl +
-        "ItemAction/Extent.CreateItemInProperty?workspace=" +
-        encodeURIComponent(workspace) +
-        "&itemUrl=" +
-        encodeURIComponent(itemUrl) +
+        "ItemAction/Extent.CreateNewItem" +
+        "?workspace=" + encodeURIComponent(workspace) +
+        "&item=" + encodeURIComponent(itemUrl) +
         (metaclass !== undefined
             ? "&metaclass=" + encodeURIComponent(metaclass)
             : "") +
         (metaclassWorkspace !== undefined
             ? "&metaclassworkspace=" + encodeURIComponent(metaclassWorkspace)
             : "") +
-        "&property=" +
-        encodeURIComponent(propertyName);
+        "&property=" + encodeURIComponent(propertyName);
 }
 export function navigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName) {
     document.location.href =

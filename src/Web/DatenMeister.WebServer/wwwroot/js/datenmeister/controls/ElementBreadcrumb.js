@@ -47,8 +47,8 @@ export function createBreadcrumbForExtent(container, workspace, extentUri) {
     let breadcrumb = new ElementBreadcrumb(container);
     const _ = breadcrumb.createForExtent(workspace, extentUri);
 }
-export function createBreadcrumbForItem(container, workspace, itemUri) {
+export async function createBreadcrumbForItem(container, workspace, itemUri) {
     let breadcrumb = new ElementBreadcrumb(container);
-    const _ = breadcrumb.createForItem(workspace, itemUri);
+    const _ = await breadcrumb.createForItem(workspace, itemUri);
 }
 //# sourceMappingURL=ElementBreadcrumb.js.map

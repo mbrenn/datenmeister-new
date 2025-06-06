@@ -9,7 +9,6 @@ import * as Mof from "../Mof.js";
 import { DmObject, ObjectType } from "../Mof.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Navigator from "../Navigator.js";
-import * as Settings from "../Settings.js";
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 import { FormSelectionControl } from "../controls/FormSelectionControl.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
@@ -272,24 +271,7 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv, containerDiv
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
         selectItem.itemSelected.addListener(selectedItem => {
-            if (selectedItem === undefined) {
-                document.location.href =
-                    Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri);
-            }
-            else {
-                document.location.href =
-                    Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri) +
-                        "&metaclass=" +
-                        encodeURIComponent(selectedItem.uri);
-            }
+            Navigator.navigateToCreateNewItemInExtent(workspace, extentUri, selectedItem?.uri, selectedItem?.workspace);
         });
         await selectItem.setWorkspaceById('Types');
         await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");

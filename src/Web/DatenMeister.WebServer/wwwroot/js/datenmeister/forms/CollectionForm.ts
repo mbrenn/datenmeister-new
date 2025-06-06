@@ -420,23 +420,8 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
         settings.showExtentInBreadcrumb = true;
         selectItem.itemSelected.addListener(
             selectedItem => {
-                if (selectedItem === undefined) {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri);
-                } else {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri) +
-                        "&metaclass=" +
-                        encodeURIComponent(selectedItem.uri);
-                }
+
+                Navigator.navigateToCreateNewItemInExtent(workspace, extentUri, selectedItem?.uri, selectedItem?.workspace);
             });
         
         await selectItem.setWorkspaceById('Types');

@@ -253,7 +253,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 const inner = defaultTypesForNewElements[n] as Mof.DmObject;
                 createButton(
                     inner.get('name', Mof.ObjectType.String),
-                    inner.get('metaClass', Mof.ObjectType.Object).uri);
+                    inner.get('metaClass', Mof.ObjectType.Object));
             }
         }
         
@@ -276,7 +276,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                                 document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(
                                     tthis.workspace,
                                     tthis.extentUri,
-                                    selectedItem === undefined ? undefined : selectedItem.uri);
+                                    selectedItem === undefined ? undefined : selectedItem.uri,
+                                    selectedItem === undefined ? undefined : selectedItem.workspace);
                             } else {
                                 document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                                     tthis.workspace,
@@ -298,24 +299,22 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             tthis.tableCache.cacheButtons.append(typeSelection);
         }
 
-        function createButton (name: string, metaClassUri?: string) {
+        function createButton (name: string, metaClass?: Mof.DmObject) {
+            const metaClassUri = metaClass?.uri;
+            const metaClassWorkspace = metaClass?.workspace;
+            
             const btn = $("<btn class='btn btn-secondary'></btn>");
             btn.text("Create " + name);
             btn.on('click', () => {
-
-                // Checks, if the metaClassUri is set
-                let metaClassUriParameter = '';
-                if (metaClassUri !== undefined && metaClassUri !== null) {
-                    metaClassUriParameter = "&metaclass=" + encodeURIComponent(metaClassUri);
-                }
-
+                                
                 // Creates the location to the buttons
                 if (property === undefined || property === null) {
                     document.location.href =
                         Navigator.getLinkForNavigateToCreateNewItemInExtent(
                             tthis.workspace,
                             tthis.extentUri,
-                            metaClassUri);
+                            metaClassUri, 
+                            metaClassWorkspace);
                 } else {
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                         tthis.workspace,

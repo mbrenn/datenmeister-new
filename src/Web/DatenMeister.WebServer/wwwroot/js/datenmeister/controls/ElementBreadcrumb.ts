@@ -62,7 +62,7 @@ export function createBreadcrumbForExtent(container: JQuery, workspace: string, 
     const _ = breadcrumb.createForExtent(workspace, extentUri);
 }
 
-export function createBreadcrumbForItem(container: JQuery, workspace: string, itemUri: string) {
+export async function createBreadcrumbForItem(container: JQuery, workspace: string, itemUri: string) {
     let breadcrumb = new ElementBreadcrumb(container);
-    const _ = breadcrumb.createForItem(workspace, itemUri);
+    const _ = await breadcrumb.createForItem(workspace, itemUri);
 }

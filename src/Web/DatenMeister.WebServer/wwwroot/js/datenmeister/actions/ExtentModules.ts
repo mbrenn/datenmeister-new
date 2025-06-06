@@ -17,17 +17,15 @@ import _StoreExtentAction = _DatenMeister._Actions._StoreExtentAction;
 import _ObjectForm = _DatenMeister._Forms._ObjectForm;
 import _RowForm = _DatenMeister._Forms._RowForm;
 import _ActionFieldData = _DatenMeister._Forms._ActionFieldData;
-import {createBreadcrumbForItem} from "../controls/ElementBreadcrumb.js";
 import {TableForm} from "../forms/TableForm.js";
 
 export function loadModules() {
     FormActions.addModule(new ExtentPropertiesUpdateAction());
-    FormActions.addModule(new ExtentCreateItemAction());
+    FormActions.addModule(new ExtentCreateNewItemAction());
     FormActions.addModule(new ExtentClearAction());
     FormActions.addModule(new ExtentDeleteAction());
     FormActions.addModule(new ExtentNavigateToAction());
     FormActions.addModule(new ExtentPropertiesAction());
-    FormActions.addModule(new ExtentCreateItemInPropertyAction());
     FormActions.addModule(new ExtentsListViewItemAction());
     FormActions.addModule(new ExtentsListDeleteItemAction());
     FormActions.addModule(new ExtentsListMoveUpItemAction());
@@ -71,30 +69,69 @@ class ExtentPropertiesUpdateAction extends FormActions.ItemFormActionModuleBase 
     }
 }
 
-class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
-    constructor() {
-        super("Extent.CreateItem");
-        this.actionVerb = "Create Item";
-    }
+class ExtentCreateNewItemAction extends FormActions.ItemFormActionModuleBase
+{
+    private isForExtent = false;
+    private workspace: string;
+    private itemUri: string;
+    private metaClass: string;
+    private property: string;
+    private metaclassWorkspace: string;
     
+    
+    constructor() {
+        super("Extent.CreateNewItem");
+        this.actionVerb = "Create New Item";        
+    }
+
+    loadParameterFromUrl()
+    {
+        let p = new URLSearchParams(window.location.search);
+        this.workspace = p.get('workspace');
+        this.itemUri = p.get('item');
+        this.metaClass = p.get('metaclass');
+        this.property = p.get('property');
+        this.metaclassWorkspace = p.get('metaclassworkspace');
+
+        this.isForExtent = 
+            this.property === null || this.property === undefined || this.property === "";
+
+        if (this.itemUri === null || this.workspace === null) {
+            alert('There is no extent given');
+        }
+    }
+
+    /**
+     * We are loading the default object for the given metaclass and 
+     * adds a button to the form to allow the creation of that item and forwarding to 
+     * the creation of another item
+     * @param metaClass Url of the metaclass to which the form shall be created
+     * @returns The form to be used for the item creation. 
+     */
     override async loadForm(metaClass:string): Promise<Mof.DmObject> | undefined {
-        const form = await ClientForms.getDefaultObjectForMetaClass(metaClass,
-            "ViewMode.DataManipulation");
         
+        this.loadParameterFromUrl();
+        
+        // Gets the form
+        const form = await ClientForms.getDefaultObjectForMetaClass(
+            metaClass, "ViewMode.DataManipulation");
+        
+        // Tries to find the first tab and its fields
         const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
         const firstTab = tabs[0] as Mof.DmObject;
         const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);
         
+        // Adds the button to create another item
         const parameter = new Mof.DmObject();
         parameter.set('name', 'CreateItemAndAnotherOne');
-        
+
         // Adds the additional button 
         const actionButton = new Mof.DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
         actionButton.set(_ActionFieldData.title, "Create Item and another one");
         actionButton.set(_ActionFieldData.parameter, parameter);
         actionButton.set(_ActionFieldData.actionName, this.actionName);
         fields.push(actionButton);
-        
+
         return form;
     }
 
@@ -104,116 +141,67 @@ class ExtentCreateItemAction extends FormActions.ItemFormActionModuleBase {
             submitMethod = SubmitMethod.UserDefined1;
         }
         
-        let p = new URLSearchParams(window.location.search);
-
-        if (!p.has("extent") || !p.has("workspace")) {
-            alert('There is no extent given');
-        } else {
-            const workspace = p.get('workspace');
-            const extentUri = p.get('extent');
-            await this.extentCreateItem(workspace, extentUri, element, undefined, submitMethod);
+        if(this.isForExtent) {
+            await this.extentCreateItem(element, submitMethod);
+        }
+        else {
+            await this.extentCreateItemInProperty(element, submitMethod);
         }
     }
 
-    async extentCreateItem(workspace: string, extentUri: string, element: Mof.DmObject, metaClass?: string, submitMethod?: SubmitMethod) {
-        if (metaClass === undefined) {
-            metaClass = element.metaClass?.uri;
-        }
-
+    /**
+     * Creates a new item in an extent
+     * @param element Element which shall be created
+     * @param submitMethod the clicked button for that method
+     */
+    async extentCreateItem(element: Mof.DmObject, submitMethod?: SubmitMethod) {
+        
         const newItem = await ClientItems.createItemInExtent(
-            workspace, extentUri,
+            this.workspace, this.itemUri,
             {
-                metaClass: metaClass === undefined ? "" : metaClass,
+                metaClass: this.metaClass === undefined ? "" : this.metaClass,
                 properties: element
             }
         );
 
         if (submitMethod === SubmitMethod.Save) {
             // If user has clicked on the save button (without closing), the form shall just be updated
-            Navigator.navigateToItemByUrl(workspace, newItem.itemId);
+            Navigator.navigateToItemByUrl(this.workspace, newItem.itemId);
         }  if (submitMethod === SubmitMethod.UserDefined1) {
             // Recreate a new item, because user clicked on the userdefined item
-            Navigator.navigateToCreateNewItemInExtent(workspace, extentUri, metaClass);
+            Navigator.navigateToCreateNewItemInExtent(this.workspace, this.itemUri, this.metaClass);
         }
         else {
             // Else, move to the overall items overview
             document.location.href =
-                Navigator.getLinkForNavigateToExtentItems(workspace, extentUri);
+                Navigator.getLinkForNavigateToExtentItems(this.workspace, this.itemUri);
         }
     }
-}
 
-class ExtentCreateItemInPropertyAction extends FormActions.ItemFormActionModuleBase {
-    constructor() {
-        super("Extent.CreateItemInProperty");
-        this.actionVerb = "Create Item";
-    }
-    
-    override async preparePage(element: Mof.DmObject, form: IFormNavigation): Promise<void> | undefined {
-        let p = new URLSearchParams(window.location.search);
-        const workspace = p.get('workspace');
-        const itemUrl = p.get('itemUrl');
-        
-        await createBreadcrumbForItem($(".dm-breadcrumb-page"), workspace, itemUrl);
-    }
-
-    override async loadForm(metaClass?: string): Promise<Mof.DmObject> | undefined {
-        const form =
-            await ClientForms.getDefaultObjectForMetaClass(metaClass,
-            "ViewMode.DataManipulation");
-
-        const tabs = form.get(_ObjectForm.tab, Mof.ObjectType.Array);
-        const firstTab = tabs[0] as Mof.DmObject;
-        const fields = firstTab.get(_RowForm.field, Mof.ObjectType.Array);
-
-        const parameter = new Mof.DmObject();
-        parameter.set('name', 'CreateItemAndAnotherOne');
-
-        // Adds the additional button 
-        const actionButton = new Mof.DmObject(_DatenMeister._Forms.__ActionFieldData_Uri);
-        actionButton.set(_ActionFieldData.title, "Create Item and another one");
-        actionButton.set(_ActionFieldData.parameter, parameter);
-        actionButton.set(_ActionFieldData.actionName, this.actionName);
-        fields.push(actionButton);
-
-        return form;
-    }
-
-    async execute(form: IFormNavigation, element: Mof.DmObject, parameter?: Mof.DmObject, submitMethod?: SubmitMethod): Promise<void> {
-        let p = new URLSearchParams(window.location.search);
-
-        if (!p.has("itemUrl") || !p.has("workspace") || !p.has("property")) {
-            alert('There is no itemUrl given');
-        } else {
-
-            if (parameter?.get('name', Mof.ObjectType.String) === 'CreateItemAndAnotherOne') {
-                submitMethod = SubmitMethod.UserDefined1;
+    /**
+     * Creates a new item as a child of a property
+     * @param element Elements information which will be added
+     * @param submitMethod the clicked button for that method  
+     */
+    async extentCreateItemInProperty(element: Mof.DmObject, submitMethod?: SubmitMethod)
+    {
+        await ClientItems.createItemAsChild(this.workspace, this.itemUri,
+            {
+                metaClass: (this.metaClass === undefined || this.metaClass === null) ? "" : this.metaClass,
+                property: this.property,
+                asList: true,
+                properties: element
             }
+        );
 
-            const workspace = p.get('workspace');
-            const itemUrl = p.get('itemUrl');
-            const property = p.get('property');
-            const metaclass = p.get('metaclass');
-            const metaclassWorkspace = p.get('metaclassworkspace');
-
-            await ClientItems.createItemAsChild(workspace, itemUrl,
-                {
-                    metaClass: (metaclass === undefined || metaclass === null) ? "" : metaclass,
-                    property: property,
-                    asList: true,
-                    properties: element
-                }
-            );
-
-            if (submitMethod === SubmitMethod.UserDefined1) {
-                // Recreate a new item, because user clicked on the userdefined item
-                Navigator.navigateToCreateItemInProperty(
-                    workspace, itemUrl, metaclass, metaclassWorkspace, property);
-            }
-            else {
-                // If user has clicked on the save button (without closing), the form shall just be updated            
-                Navigator.navigateToItemByUrl(workspace, itemUrl);
-            }
+        if (submitMethod === SubmitMethod.UserDefined1) {
+            // Recreate a new item, because user clicked on the userdefined item
+            Navigator.navigateToCreateItemInProperty(
+                this.workspace, this.itemUri, this.metaClass, this.metaclassWorkspace, this.property);
+        }
+        else {
+            // If user has clicked on the save button (without closing), the form shall just be updated            
+            Navigator.navigateToItemByUrl(this.workspace, this.itemUri);
         }
     }
 }

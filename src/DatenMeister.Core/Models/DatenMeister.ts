@@ -1,6 +1,11 @@
 // Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 export namespace _CommonTypes
 {
+        export class _DateTime
+        {
+        }
+
+        export const __DateTime_Uri = "dm:///_internal/types/internal#DateTime";
         export namespace _Default
         {
                 export class _Package

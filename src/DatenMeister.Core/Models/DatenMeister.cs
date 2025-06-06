@@ -9,6 +9,15 @@ namespace DatenMeister.Core.Models
 {
     public class _CommonTypes
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DateTime",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DateTime
+        {
+        }
+
+        public _DateTime @DateTime = new _DateTime();
+        public MofObjectShadow @__DateTime = new MofObjectShadow("dm:///_internal/types/internal#DateTime");
+
         public class _Default
         {
             [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package",

@@ -108,17 +108,17 @@ public class WrapperTreeGenerator : WalkPackageClass
         {
             typeByCsName = "int";
         }
-        /*else if (typeOfProperty?.Equals(DatenMeister.Core.Models._Date _PrimitiveTypes.TheOne.__DateTime) == true)
+        else if (typeOfProperty?.Equals(DatenMeister.Core.Models._CommonTypes.TheOne.__DateTime) == true)
         {
             typeByCsName = "DateTime";
-        }*/
+        }
         else
         {
             // Check, if we know the type
             var foundTypes = TypeUriMapping.Entries.Where(
                 x => x.TypeUri == typeOfProperty?.GetUri()
                 && x.TypeKind == TypeKind.WrappedClass).ToList();
-            if (foundTypes.Count() > 1)
+            if (foundTypes.Count > 1)
             {
                 throw new InvalidOperationException("We have an issue");
             }

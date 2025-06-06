@@ -8,6 +8,14 @@ namespace DatenMeister.Core.Models
 {
     public class CommonTypes
     {
+        [TypeUri(Uri = "dm:///_internal/types/internal#DateTime",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DateTime_Wrapper(IElement innerDmElement)
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+        }
+
         public class Default
         {
             [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package",

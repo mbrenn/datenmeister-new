@@ -9,6 +9,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Types;
@@ -29,8 +30,8 @@ public class FormCreatorTests
         var zipModel = scopeStorage.Get<ZipCodeModel>();
         Assert.That(zipModel, Is.Not.Null);
         Assert.That(zipModel.ZipCode, Is.Not.Null);
-
-        var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+        
+        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateTableFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
         Assert.That(createdForm, Is.Not.Null);
@@ -99,8 +100,8 @@ public class FormCreatorTests
         var scopeStorage = dm.ScopeStorage;
 
         var zipModel = scopeStorage.Get<ZipCodeModel>();
-
-        var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+        
+        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
         var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
@@ -132,8 +133,8 @@ public class FormCreatorTests
 
         var zipModel = scopeStorage.Get<ZipCodeModel>();
         var instance = InMemoryObject.CreateEmpty(zipModel.ZipCode!);
-
-        var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+        
+        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
         var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
@@ -164,8 +165,8 @@ public class FormCreatorTests
         var scopeStorage = dm.ScopeStorage;
 
         var instance = InMemoryObject.CreateEmpty();
-            
-        var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+        
+        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
             
@@ -193,7 +194,7 @@ public class FormCreatorTests
         instance3.set(_UML._StructuredClassifiers._Connector.name, "Instance3");
         packageModel.set(_UML._Packages._Package.packagedElement, new[] {instance1, instance2, instance3});
             
-        var formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForItem(packageModel, new FormFactoryConfiguration());
             
@@ -205,7 +206,7 @@ public class FormCreatorTests
         var tableForms = FormMethods.GetTableForms(createdForm).ToList();
         Assert.That(tableForms.Count, Is.GreaterThanOrEqualTo(2));
             
-        // Now get all table forms withi properties of packagedElements
+        // Now get all table forms within properties of packagedElements
         var tableFormsForPackagedElements = tableForms
             .Where(x => x.getOrDefault<string>(_Forms._TableForm.property) == "packagedElement")
             .ToList();

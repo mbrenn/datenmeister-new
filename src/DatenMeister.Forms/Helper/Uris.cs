@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Forms;
+﻿namespace DatenMeister.Forms.Helper;
 
 /// <summary>
 /// Justs a helper class to store some important references to the forms

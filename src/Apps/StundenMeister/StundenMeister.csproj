@@ -27,6 +27,5 @@
     <ProjectReference Include="..\..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
-    <ProjectReference Include="..\..\DatenMeister.WPF\DatenMeister.WPF.csproj" />
   </ItemGroup>
 </Project>

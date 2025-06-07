@@ -166,7 +166,7 @@ public partial class FormCreator
         // Create the tab for the elements of without any metaclass
         if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
         {
-            var form = _parentFormFactory.CreateTableFormForCollection(
+            var form = CreateTableFormForCollection(
                 new TemporaryReflectiveCollection(elementsWithoutMetaClass),
                 configuration with { IsForTableForm = true, AllowFormModifications = false });
             if (form == null)
@@ -209,7 +209,7 @@ public partial class FormCreator
                 // Asks the view logic whether it has a list form for the specific metaclass
                 // It will ask the form reportCreator, if there is no view association directly referencing
                 // to the element
-                var formCreator = new FormFactory(_workspaceLogic, _scopeStorage);
+                var formCreator = new FormFactory.TableFormFactory(_workspaceLogic, _scopeStorage);
 
                 FormMethods.AddToFormCreationProtocol(
                     result,

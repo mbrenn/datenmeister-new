@@ -10,6 +10,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Forms.FormFactory;
 using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
 
 namespace DatenMeister.Forms.FormCreator;
@@ -17,7 +18,7 @@ namespace DatenMeister.Forms.FormCreator;
 /// <summary>
 ///     Creates a view out of the given extent, elements (collection) or element).
 /// </summary>
-public partial class FormCreator : IFormFactory
+public partial class FormCreator : IObjectFormFactory, ITableFormFactory, ICollectionFormFactory, IRowFormFactory
 {
     /// <summary>
     ///     Defines a small helper enumeration which can be used to define the type of the
@@ -77,11 +78,6 @@ public partial class FormCreator : IFormFactory
     private IFactory? _f;
 
     /// <summary>
-    ///     Defines the parent form factory which is used to create subforms.
-    /// </summary>
-    private readonly IFormFactory _parentFormFactory;
-
-    /// <summary>
     /// The cached real type
     /// </summary>
     private IElement? _realType;
@@ -116,7 +112,6 @@ public partial class FormCreator : IFormFactory
         _scopeStorage = scopeStorage;
         _extentSettings = scopeStorage.Get<ExtentSettings>();
         _workspaceLogic = workspaceLogic;
-        _parentFormFactory = this;
     }
 
     /// <summary>
@@ -129,14 +124,12 @@ public partial class FormCreator : IFormFactory
     private FormCreator(
         IWorkspaceLogic workspaceLogic,
         FormMethods formLogic,
-        IScopeStorage scopeStorage,
-        IFormFactory? parentFormFactory)
+        IScopeStorage scopeStorage)
     {
         _formLogic = formLogic;
         _scopeStorage = scopeStorage;
         _extentSettings = scopeStorage.Get<ExtentSettings>();
         _workspaceLogic = workspaceLogic;
-        _parentFormFactory = parentFormFactory ?? this;
     }
 
     /// <summary>
@@ -157,30 +150,6 @@ public partial class FormCreator : IFormFactory
             : InMemoryObject.TemporaryFactory;
 
         return _f;
-    }
-
-    /// <summary>
-    ///     Creates the form logic by using the private constructor
-    /// </summary>
-    /// <param name="workspaceLogic">Workspace Logic to be evaluated</param>
-    /// <param name="scopeStorage">Scope storage</param>
-    /// <param name="parentFormFactory">
-    ///     The parent factory which will be called in case a subform needs to be
-    ///     created
-    /// </param>
-    /// <returns>The form creator</returns>
-    public static FormCreator Create(
-        IWorkspaceLogic workspaceLogic,
-        IScopeStorage scopeStorage,
-        IFormFactory? parentFormFactory = null)
-    {
-        var formLogic = new FormMethods(
-            workspaceLogic, scopeStorage);
-        return new FormCreator(
-            workspaceLogic,
-            formLogic,
-            scopeStorage,
-            parentFormFactory);
     }
 
     /// <summary>
@@ -692,7 +661,7 @@ public partial class FormCreator : IFormFactory
                     {
                         if (_formLogic != null)
                             enumerationListForm =
-                                new FormFactory(_workspaceLogic, _scopeStorage)
+                                new FormFactory.TableFormFactory(_workspaceLogic, _scopeStorage)
                                     .CreateTableFormForMetaClass(propertyType, configuration);
 
                         // Create the internal form out of the metaclass

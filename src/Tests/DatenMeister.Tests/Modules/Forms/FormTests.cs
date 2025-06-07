@@ -7,6 +7,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Types;
 using NUnit.Framework;
 
@@ -92,9 +93,6 @@ public class FormTests
         field1.set(_Forms._DropDownFieldData.valuesByEnumeration,
             comparisonType);
         form.set(_Forms._RowForm.field, new[] {field1});
-
-        var formFactory = scope.Resolve<FormFactory>();
-        Assert.That(formFactory, Is.Not.Null);
 
         var valuesBefore =
             field1.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);

@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Forms;
+namespace DatenMeister.Forms.FormFactory;
 
 public interface ICollectionFormFactory
 {

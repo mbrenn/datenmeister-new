@@ -10,7 +10,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.FormModifications;
 
-namespace DatenMeister.Forms;
+namespace DatenMeister.Forms.FormFactory;
 
 /// <summary>
 /// Defines the base class for all the FormFactory Methods.
@@ -29,8 +29,7 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <returns>The created instance of the form reportCreator</returns>
     protected FormCreator.FormCreator CreateFormCreator()
     {
-        return FormCreator.FormCreator.Create(
-            workspaceLogic, scopeStorage, null);
+        return new FormCreator.FormCreator(workspaceLogic, scopeStorage);
     }
 
     /// <summary>

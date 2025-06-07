@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Forms;
+namespace DatenMeister.Forms.FormFactory;
 
 public interface IObjectFormFactory
 {

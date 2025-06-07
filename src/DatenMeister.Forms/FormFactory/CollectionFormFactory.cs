@@ -10,7 +10,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.FormModifications;
 
-namespace DatenMeister.Forms;
+namespace DatenMeister.Forms.FormFactory;
 
 public class CollectionFormFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     : FormFactoryBase(workspaceLogic, scopeStorage), ICollectionFormFactory

@@ -321,7 +321,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             
 
         // Wait for both
-        await Promise.all([defer1, defer2, defer3]).then(async ([element1, form, _]) => {
+        await Promise.all([defer1, defer2, defer3()]).then(async ([element1, form, _]) => {
             this.element = element1;
             this.statusTextControl.setListStatus("Load Object", true);
             this.statusTextControl.setListStatus("Load Form", true);

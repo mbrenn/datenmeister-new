@@ -194,7 +194,7 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
         }
              
         var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);
-        List<object> results = new();
+        List<object> results = [];
 
         // Get the items and take care of the allowed timeout
         foreach (var item in resultingNodes)

@@ -241,7 +241,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         const tthis = this;
 
         if (this.formElement.get(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
-
             // Creates default unclassified button
             createUnclassifiedButton();
         }
@@ -262,37 +261,36 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             const btn = $("<btn class='btn btn-secondary'></btn>");
             const typeSelection = $("<div></div>");
             btn.text("Create new Item");
-                btn.on('click', async () => {
-                    typeSelection.empty();
-                    const selectItem = new SIC.SelectItemControl();
-                    const settings = new SIC.Settings();
-                    settings.showWorkspaceInBreadcrumb = true;
-                    settings.showExtentInBreadcrumb = true;
-                    settings.setButtonText = 'Create new Item';
-                    selectItem.itemSelected.addListener(
-                        selectedItem => {
-                            if (tthis.itemUrl === undefined)
-                            {
-                                document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(
-                                    tthis.workspace,
-                                    tthis.extentUri,
-                                    selectedItem === undefined ? undefined : selectedItem.uri,
-                                    selectedItem === undefined ? undefined : selectedItem.workspace);
-                            } else {
-                                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                                    tthis.workspace,
-                                    tthis.itemUrl,
-                                    selectedItem === undefined ? undefined : selectedItem.uri,
-                                    selectedItem === undefined ? undefined : selectedItem.workspace,
-                                    property);
-                            }
-                        });
+            btn.on('click', async () => {
+                typeSelection.empty();
+                const selectItem = new SIC.SelectItemControl();
+                const settings = new SIC.Settings();
+                settings.showWorkspaceInBreadcrumb = true;
+                settings.showExtentInBreadcrumb = true;
+                settings.setButtonText = 'Create new Item';
+                selectItem.itemSelected.addListener(
+                    selectedItem => {
+                        if (tthis.itemUrl === undefined) {
+                            document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(
+                                tthis.workspace,
+                                tthis.extentUri,
+                                selectedItem === undefined ? undefined : selectedItem.uri,
+                                selectedItem === undefined ? undefined : selectedItem.workspace);
+                        } else {
+                            document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
+                                tthis.workspace,
+                                tthis.itemUrl,
+                                selectedItem === undefined ? undefined : selectedItem.uri,
+                                selectedItem === undefined ? undefined : selectedItem.workspace,
+                                property);
+                        }
+                    });
 
-                    await selectItem.setWorkspaceById('Types');
-                    await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
+                await selectItem.setWorkspaceById('Types');
+                await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
 
-                    selectItem.init(typeSelection, settings);
-                });
+                selectItem.init(typeSelection, settings);
+            });
 
 
             tthis.tableCache.cacheButtons.append(btn);

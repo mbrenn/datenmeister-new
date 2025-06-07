@@ -109,7 +109,7 @@ public class ExtentItemsController
         var result = new CollectionAndFormModel();
 
         // Find the matching form
-        var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
+        var formFactory = new CollectionFormFactory(_workspaceLogic, _scopeStorage);
         var extentForm = formFactory.CreateCollectionFormForExtent(
             extent,
             new FormFactoryConfiguration { ViewModeId = viewMode ?? ViewModes.Default });

@@ -65,7 +65,7 @@ public class FormCreatorTests
         extent.elements().add(unclassified);
             
         // Ok, data is prepared, now get the collection
-        var formsLogic = new FormFactory(workspaceLogic, scopeStorage);
+        var formsLogic = new CollectionFormFactory(workspaceLogic, scopeStorage);
         var collectionForm = formsLogic.CreateCollectionFormForExtent(
             extent, 
             new FormFactoryConfiguration());
@@ -231,7 +231,7 @@ public class FormCreatorTests
         var workspaceLogic = dm.WorkspaceLogic;
         var scopeStorage = dm.ScopeStorage;
 
-        var formCreator = new FormFactory(workspaceLogic, scopeStorage);
+        var formCreator = new CollectionFormFactory(workspaceLogic, scopeStorage);
 
         var extent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);
         Assert.That(extent, Is.Not.Null);

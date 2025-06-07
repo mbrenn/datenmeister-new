@@ -1,0 +1,19 @@
+﻿using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+
+namespace DatenMeister.Forms;
+
+public interface ICollectionFormFactory
+{
+    /// <summary>
+    /// Gets the extent form for a certain item's metaclass.
+    /// This method can be used when the object to which a form shall be provided is not available 
+    /// </summary>
+    /// <param name="metaClass">MetaClass to which the form shall be provided</param>
+    /// <param name="configuration">Configuration to be used</param>
+    /// <returns>The instance of the extent form</returns>
+    IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+
+    IElement? CreateCollectionFormForExtent(IExtent extent, IReflectiveCollection collection, FormFactoryConfiguration configuration);
+}

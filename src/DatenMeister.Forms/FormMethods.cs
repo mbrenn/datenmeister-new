@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
+using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -837,5 +838,25 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         }
 
         return form;
+    }
+
+    public static string GetUrlOfTableForm(IExtent extent, IElement tableForm)
+    {
+        // Set the data url of the table form
+        var dataUrl = (extent as IUriExtent)?.contextURI() ?? string.Empty;
+
+        // If form also contains a metaclass, then the metaclass needs to be added
+        var tableFormMetaClass =
+            tableForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
+        var metaClassUri = tableFormMetaClass != null
+            ? tableFormMetaClass.GetUri()
+            : null;
+
+        if (!string.IsNullOrEmpty(metaClassUri))
+        {
+            dataUrl += "?metaclass=" + HttpUtility.UrlEncode(metaClassUri);
+        }
+
+        return dataUrl;
     }
 }

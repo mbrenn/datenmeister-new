@@ -65,9 +65,8 @@ public class FormsControllerInternal
             throw new InvalidOperationException("Extent not found: " + extentUri);
         }
             
-        var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
-        var form = formFactory
-            .CreateCollectionFormForExtent(extent,
+        var formFactory = new CollectionFormFactory(_workspaceLogic, _scopeStorage);
+        var form = formFactory.CreateCollectionFormForExtent(extent,
                 new FormFactoryConfiguration
                 {
                     ViewModeId = viewMode ?? string.Empty,

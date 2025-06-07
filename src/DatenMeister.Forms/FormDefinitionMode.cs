@@ -31,11 +31,3 @@ public enum FormDefinitionMode
     /// </summary>
     NoFormModifications = 0x08
 }
-
-public static class FormDefinitionModeExtensions
-{
-    public static bool HasFlagFast(this FormDefinitionMode value, FormDefinitionMode flag)
-    {
-        return (value & flag) != 0;
-    }
-}

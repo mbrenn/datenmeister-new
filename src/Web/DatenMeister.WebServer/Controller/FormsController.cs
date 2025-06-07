@@ -84,7 +84,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         string extentUri, string? viewMode)
     {
         var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-        var formFactory = new FormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
+        var formFactory = new CollectionFormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
         viewMode = MvcUrlEncoder.DecodePath(viewMode);
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
@@ -96,7 +96,6 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         if (extent == null || collection == null)
         {
             throw new InvalidOperationException($"Extent not found: {workspaceId} - {extentUri}");
-
         }
 
         // Creates the form itself

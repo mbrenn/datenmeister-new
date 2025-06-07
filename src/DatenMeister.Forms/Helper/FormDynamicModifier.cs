@@ -7,7 +7,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Forms;
+namespace DatenMeister.Forms.Helper;
 
 public static class FormDynamicModifier
 {

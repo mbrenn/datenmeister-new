@@ -4,7 +4,7 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 
-namespace DatenMeister.Forms;
+namespace DatenMeister.Forms.Helper;
 
 /// <summary>
 /// Performs the filtering of the elements according the form rules

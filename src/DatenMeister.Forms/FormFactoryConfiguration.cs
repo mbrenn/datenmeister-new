@@ -36,7 +36,7 @@ public record FormFactoryConfiguration
     /// <summary>
     /// Gets or sets a flag which indicates that for a collection only these properties shall be
     /// included which are in common between the elements. This reduces the number of
-    /// columns
+    /// columns.
     /// </summary>
     public bool IncludeOnlyCommonProperties { get; set; }
 
@@ -64,13 +64,13 @@ public record FormFactoryConfiguration
     public string ViewModeId { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the information whether the created form is just for a tableform.
-    ///     If that this is the case, then no fields like SubElementField will be created
+    /// Gets or sets the information whether the created form is just for a tableform.
+    /// If that this is the case, then no fields like SubElementField will be created
     /// </summary>
     public bool IsForTableForm { get; set; }
 
     public static FormFactoryConfiguration CreateByMetaClassOnly =>
-        new() {AutomaticMetaClassField = false, CreateByPropertyValues = false};
+        new() { AutomaticMetaClassField = false, CreateByPropertyValues = false };
 
     /// <summary>
     /// Defines the factory to be used to create the items

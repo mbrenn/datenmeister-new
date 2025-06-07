@@ -67,7 +67,7 @@ public class ZipCodePlugin : IDatenMeisterPlugin
                     throw new InvalidOperationException("The ZipCode Model could not be created");
 
                 ActionButtonToFormAdder.AddActionButton(
-                    _scopeStorage.Get<FormsPluginState>(),
+                    _scopeStorage.Get<FormsState>(),
                     new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
                     {
                         MetaClass = _Management.TheOne.__Workspace,
@@ -88,7 +88,7 @@ public class ZipCodePlugin : IDatenMeisterPlugin
             case PluginLoadingPosition.AfterLoadingOfExtents:
                 // Loads the Zipcode Form Modification Plugin in which the user may directly create an zip
                 // code example in a workspace object
-                var formsPluginState = _scopeStorage.Get<FormsPluginState>();
+                var formsPluginState = _scopeStorage.Get<FormsState>();
                 formsPluginState.FormModificationPlugins.Add(
                     new ZipCodeFormModificationPlugin());
                 break;

@@ -13,6 +13,7 @@ using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.DataView;
 using DatenMeister.FastViewFilter;
 using DatenMeister.Forms;
+using DatenMeister.Forms.Helper;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

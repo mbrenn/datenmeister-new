@@ -30,7 +30,7 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
                     
-                var formsPlugin = scopeStorage.Get<FormsPluginState>();
+                var formsPlugin = scopeStorage.Get<FormsState>();
   
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")

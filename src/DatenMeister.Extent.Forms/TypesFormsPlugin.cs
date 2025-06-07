@@ -21,7 +21,7 @@ public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
-                var formsPlugin = scopeStorage.Get<FormsPluginState>();
+                var formsPlugin = scopeStorage.Get<FormsState>();
                 formsPlugin.FormModificationPlugins.Add(
                     new ExtentTypeFormModification(workspaceLogic, _extentSettings));
 

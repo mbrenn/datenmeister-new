@@ -30,7 +30,7 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
                     
-                var formsPlugin = scopeStorage.Get<FormsPluginState>();
+                var formsPlugin = scopeStorage.Get<FormsState>();
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item")

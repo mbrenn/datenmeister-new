@@ -74,7 +74,7 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
 
     private void AddActionButtons()
     {
-        var formsPlugin = scopeStorage.Get<FormsPluginState>();
+        var formsPlugin = scopeStorage.Get<FormsState>();
 
         ActionButtonToFormAdder.AddActionButton(
             formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")

@@ -26,7 +26,7 @@ public partial class FormCreator : IFormFactory
     public enum FormUmlElementType
     {
         /// <summary>
-        ///     Definition is not givne
+        ///     Definition is not given
         /// </summary>
         Unknown,
 

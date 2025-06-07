@@ -143,7 +143,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         string workspaceId, string itemUri, string? viewMode)
     {
         var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-        var formFactory = new FormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
+        var formFactory = new ObjectFormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
 
         viewMode = MvcUrlEncoder.DecodePath(viewMode);
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);

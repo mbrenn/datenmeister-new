@@ -48,7 +48,7 @@ public class AboutModel : PageModel
     {
         get
         {
-            var formPlugin = GiveMe.Scope.ScopeStorage.Get<FormsPluginState>();
+            var formPlugin = GiveMe.Scope.ScopeStorage.Get<FormsState>();
             return formPlugin.FormModificationPlugins
                 .Select(x => $"{x} ({x.GetType().FullName})")
                 .ToList();

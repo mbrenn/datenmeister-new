@@ -12,7 +12,7 @@ public class FormsControllerInternal
     private readonly IScopeStorage _scopeStorage;
     private readonly IWorkspaceLogic _workspaceLogic;
     private readonly TemporaryExtentFactory _temporaryExtentFactory;
-    private TemporaryExtentLogic _temporaryLogic;
+    private readonly TemporaryExtentLogic _temporaryLogic;
 
     public FormsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
@@ -41,7 +41,7 @@ public class FormsControllerInternal
     {
         var item = GetItemByUriParameter(workspaceId, itemUrl);
 
-        var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
+        var formFactory = new ObjectFormFactory(_workspaceLogic, _scopeStorage);
         var form = formFactory.CreateObjectFormForItem(item,
             new FormFactoryConfiguration
             {
@@ -92,7 +92,7 @@ public class FormsControllerInternal
     /// <returns>The found form</returns>
     public IObject GetObjectFormForMetaClassInternal(string? metaClass, string? viewMode = null)
     {
-        var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
+        var formFactory = new ObjectFormFactory(_workspaceLogic, _scopeStorage);
 
         var configurationMode = new FormFactoryConfiguration
         {

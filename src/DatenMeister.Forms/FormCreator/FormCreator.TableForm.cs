@@ -131,6 +131,9 @@ public partial class FormCreator
                 NamedElementMethods.GetName(metaClass));
 
             FormMethods.AddDefaultTypeForNewElement(form, metaClass);
+            
+            // Do not create buttons for unclassified items in the metaclass
+            form.set(_Forms._TableForm.inhibitNewUnclassifiedItems, true);
         }
         else
         {
@@ -242,7 +245,7 @@ public partial class FormCreator
         var firstRun = true;
         var toBeDeleted = new HashSet<string>();
 
-        // Parses the meta class
+        // Parses the metaclass
         if (creationMode.CreateByMetaClass)
             foreach (var element in elements.OfType<IElement>())
             {

@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core;
+﻿using System.Diagnostics;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -13,19 +14,18 @@ namespace DatenMeister.WebServer.InterfaceController;
 public class ExtentItemsController
 {
     private readonly IWorkspaceLogic _workspaceLogic;
+    private readonly IScopeStorage _scopeStorage;
     private readonly FormsPlugin _formsPlugin;
-    private readonly FormFactory _formFactory;
         
     public ExtentItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
         _workspaceLogic = workspaceLogic;
+        _scopeStorage = scopeStorage;
         _formsPlugin =
             new FormsPlugin(
                 _workspaceLogic,
                 new ExtentCreator(_workspaceLogic, scopeStorage),
                 scopeStorage);
-        _formFactory = new FormFactory(
-            _workspaceLogic, scopeStorage);
     }
 
     /// <summary>
@@ -37,6 +37,9 @@ public class ExtentItemsController
     /// <returns>ID of the item</returns>
     public ItemAndFormModel? GetItemAndForm(string workspaceId, string extentUrl, string? itemId)
     {
+        // Check, if we are used at all. I would like to get rid of the class.
+        Debugger.Break();
+        
         // Finds the specific items of the given extent
         var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl) as IUriExtent;
         if (extent == null)
@@ -61,8 +64,9 @@ public class ExtentItemsController
         // Create the result 
         var result = new ItemAndFormModel();
             
+        var objectFormFactory = new ObjectFormFactory(_workspaceLogic, _scopeStorage);
         // Find the matching form
-        var extentForm = _formFactory.CreateObjectFormForItem(
+        var extentForm = objectFormFactory.CreateObjectFormForItem(
             foundElement,
             new FormFactoryConfiguration{ViewModeId = "Default"});
             
@@ -91,6 +95,9 @@ public class ExtentItemsController
     /// <returns>ID of the item</returns>
     public CollectionAndFormModel? GetItemsAndFormOfExtent(string workspaceId, string extentUrl, string? viewMode = null)
     {
+        // Check, if we are used at all. I would like to get rid of the class.
+        Debugger.Break();
+        
         // Finds the specific items of the given extent
         var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl) as IUriExtent;
         if (extent == null)
@@ -102,7 +109,8 @@ public class ExtentItemsController
         var result = new CollectionAndFormModel();
 
         // Find the matching form
-        var extentForm = _formFactory.CreateCollectionFormForExtent(
+        var formFactory = new FormFactory(_workspaceLogic, _scopeStorage);
+        var extentForm = formFactory.CreateCollectionFormForExtent(
             extent,
             new FormFactoryConfiguration { ViewModeId = viewMode ?? ViewModes.Default });
         if (extentForm == null)

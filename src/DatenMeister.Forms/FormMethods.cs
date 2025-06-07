@@ -10,6 +10,7 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFinder;
@@ -233,7 +234,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <param name="metaClass">The metaclass being used for form association</param>
     /// <param name="formType">Type to be added</param>
     /// <returns></returns>
-    public IElement AddFormAssociationForMetaclass(
+    public static IElement AddFormAssociationForMetaclass(
         IElement form,
         IElement metaClass,
         _Forms.___FormType formType)
@@ -387,7 +388,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// </summary>
     /// <param name="fields">Enumeration fo fields</param>
     /// <returns>true, if the form already contains a metaclass form</returns>
-    public bool HasMetaClassFieldInForm(IEnumerable<object> fields)
+    public static bool HasMetaClassFieldInForm(IEnumerable<object> fields)
     {
         return fields
             .OfType<IElement>()
@@ -520,7 +521,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
 
     /// <summary>
     ///     Gets the default view mode for a certain object by querying the view mode instances as
-    ///     given in the in the management workspace
+    ///     given in the management workspace
     /// </summary>
     /// <param name="extent">Extent whose view mode is requested</param>
     /// <returns>Found element or null if not found</returns>
@@ -530,6 +531,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
 
         var extentTypes = extent?.GetConfiguration()?.ExtentTypes;
         if (extentTypes != null)
+        {
             foreach (var extentType in extentTypes)
             {
                 var result = managementWorkspace
@@ -539,6 +541,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
                     .FirstOrDefault();
                 if (result != null) return result;
             }
+        }
 
         return managementWorkspace
             .GetAllDescendentsOfType(_Forms.TheOne.__ViewMode)
@@ -799,6 +802,39 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
 
         form.set(_Forms._Form.originalUri, form.GetUri());
         form.set(_Forms._Form.originalWorkspace, form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
+
+        return form;
+    }
+
+    /// <summary>
+    /// Clones the form and sets the orignal uri and workspace
+    /// </summary>
+    /// <param name="form">The form to be cloned</param>
+    /// <returns>The cloned form including the original uri and workspalce</returns>
+    public static IElement CloneForm(IElement form)
+    {
+        // Performs the cloning
+        form = ObjectCopier.Copy(
+            new MofFactory(form), form, new CopyOption());
+
+        // Sets the original ori and workspace, so the client can reference to the original uri
+        var originalUrl =
+            form.isSet(_Forms._Form.originalUri)
+                ? form.get<string>(_Forms._Form.originalUri)
+                : form.GetUri();
+        if (originalUrl != null)
+        {
+            form.set(_Forms._Form.originalUri, originalUrl);
+        }
+
+        var originalWorkspace =
+            form.isSet(_Forms._Form.originalWorkspace)
+                ? form.get<string>(_Forms._Form.originalWorkspace)
+                : form.GetExtentOf()?.GetWorkspace()?.id;
+        if (originalWorkspace != null)
+        {
+            form.set(_Forms._Form.originalWorkspace, originalWorkspace);
+        }
 
         return form;
     }

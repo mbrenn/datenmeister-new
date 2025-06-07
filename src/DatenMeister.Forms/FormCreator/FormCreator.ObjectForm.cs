@@ -159,7 +159,7 @@ public partial class FormCreator
             // Adds the metaclass field if not already added
             if (!cache.MetaClassAlreadyAdded
                 && creationMode.AutomaticMetaClassField
-                && !new FormMethods(_workspaceLogic, _scopeStorage).HasMetaClassFieldInForm(
+                && !FormMethods.HasMetaClassFieldInForm(
                     detailForm.get<IReflectiveCollection>(_Forms._RowForm.field)!))
             {
                 // Add the element itself

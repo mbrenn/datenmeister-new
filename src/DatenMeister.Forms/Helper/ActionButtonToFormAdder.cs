@@ -16,11 +16,11 @@ public static class ActionButtonToFormAdder
     /// <summary>
     ///     Initializes a new instance of the ActionButtonToFormAdder
     /// </summary>
-    /// <param name="formsPluginState">The plugin interface to the forms</param>
+    /// <param name="formsState">The plugin interface to the forms</param>
     /// <param name="adder">The parameter of the addition</param>
-    public static void AddActionButton(FormsPluginState formsPluginState, ActionButtonAdderParameter adder)
+    public static void AddActionButton(FormsState formsState, ActionButtonAdderParameter adder)
     {
-        formsPluginState.FormModificationPlugins.Add(
+        formsState.FormModificationPlugins.Add(
             new FormModification(adder));
     }
 

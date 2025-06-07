@@ -74,7 +74,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
                 if (includeFormAssociation)
                 {
-                    var association = formMethods.AddFormAssociationForMetaclass(
+                    var association = FormMethods.AddFormAssociationForMetaclass(
                         form,
                         metaClass,
                         _Forms.___FormType.Object);
@@ -89,7 +89,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
                 if (includeFormAssociation)
                 {
-                    var association = formMethods.AddFormAssociationForMetaclass(
+                    var association = FormMethods.AddFormAssociationForMetaclass(
                         form,
                         metaClass,
                         _Forms.___FormType.Collection);

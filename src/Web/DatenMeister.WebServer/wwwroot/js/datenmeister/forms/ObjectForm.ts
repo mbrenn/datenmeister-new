@@ -318,7 +318,6 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                 });
             }
         };
-            
 
         // Wait for both
         await Promise.all([defer1, defer2, defer3()]).then(async ([element1, form, _]) => {

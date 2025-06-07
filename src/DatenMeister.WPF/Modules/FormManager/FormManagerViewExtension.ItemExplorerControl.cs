@@ -404,9 +404,9 @@ public partial class FormManagerViewExtension : IViewExtensionFactory
             // Creates association
             var formLogic = GiveMe.Scope.Resolve<FormMethods>();
             var association1 = 
-                formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, _Forms.___FormType.Collection);
+                FormMethods.AddFormAssociationForMetaclass(detailForm, locatedItem, _Forms.___FormType.Collection);
             var association2 = 
-                formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, _Forms.___FormType.Object);
+                FormMethods.AddFormAssociationForMetaclass(extentForm, locatedItem, _Forms.___FormType.Object);
                 
             DefaultClassifierHints.AddToExtentOrElement(package, association1);
             name = fullName + "AssociationDetail";

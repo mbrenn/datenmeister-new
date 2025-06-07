@@ -3,7 +3,7 @@ using DatenMeister.Forms.FormModifications;
 
 namespace DatenMeister.Forms;
 
-public class FormsPluginState
+public class FormsState
 {
     /// <summary>
     /// Lists all form modificationPlugins

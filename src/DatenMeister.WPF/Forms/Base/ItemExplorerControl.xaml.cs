@@ -13,6 +13,7 @@ using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
+using DatenMeister.Forms.Helper;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Modules;

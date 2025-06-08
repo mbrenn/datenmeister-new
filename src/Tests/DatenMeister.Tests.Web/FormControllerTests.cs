@@ -205,7 +205,6 @@ public class FormControllerTests
                 x.getOrDefault<string>(_Forms._FieldData.title) == "DefaultTypes"), Is.True);
     }
 
-
     [Test]
     public async Task TestCreateCollectionFormByExtent()
     {

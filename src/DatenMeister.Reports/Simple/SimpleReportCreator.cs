@@ -9,6 +9,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
 using static DatenMeister.Core.Models._Reports;
@@ -20,7 +21,8 @@ namespace DatenMeister.Reports.Simple;
 /// </summary>
 public class SimpleReportCreator
 {
-    private readonly FormCreator _formCreator;
+    private readonly IRowFormFactory _rowFormFactory;
+    private readonly ITableFormFactory _tableFormFactory;
 
     /// <summary>
     /// Gets or sets the workspace logic
@@ -44,7 +46,8 @@ public class SimpleReportCreator
     {
         _workspaceLogic = workspaceLogic;
         _reportConfiguration = simpleReportConfiguration;
-        _formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
+        _rowFormFactory = new RowFormCreator(workspaceLogic, scopeStorage);
+        _tableFormFactory = new TableFormCreator(workspaceLogic, scopeStorage);
     }
 
     /// <summary>
@@ -93,8 +96,9 @@ public class SimpleReportCreator
         {
             var name = NamedElementMethods.GetFullName(rootElement);
             report.Add(new HtmlHeadline($"Reported Item '{name}'", 1));
-            var detailForm =
-                _formCreator.CreateRowFormForItem(rootElement, formFactoryConfiguration);
+            var detailForm = _rowFormFactory.CreateRowFormForItem(rootElement, formFactoryConfiguration)
+                ?? throw new InvalidOperationException("detailForm is null");
+            
             _itemFormatter.FormatItem(rootElement, detailForm);
         }
             
@@ -167,7 +171,7 @@ public class SimpleReportCreator
         var addFullNameColumn =
             _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showFullName);
         var collectionReporter = new SimpleReportForCollection(
-            _formCreator,
+            _tableFormFactory,
             _itemFormatter ?? throw new InvalidOperationException("itemFormatter is null"), 
             report)
         {

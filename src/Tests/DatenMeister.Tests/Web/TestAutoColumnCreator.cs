@@ -37,7 +37,7 @@ public class TestAutoColumnCreator1
         var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
         // Execute the stuff
-        var creator = FormCreator.Create(workspaceLogic, scopeStorage);
+        var creator = new CollectionFormCreator(workspaceLogic, scopeStorage);
         var result = creator.CreateCollectionFormForExtent(
             extent,extent.elements(), new FormFactoryConfiguration());
         Assert.That(result, Is.Not.Null);
@@ -91,7 +91,7 @@ public class TestAutoColumnCreator1
         var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
         // Execute the stuff
-        var creator = FormCreator.Create(workspaceLogic, scopeStorage);
+        var creator = new CollectionFormCreator(workspaceLogic, scopeStorage);
         var result = creator.CreateCollectionFormForExtent(
             extent, extent.elements(), new FormFactoryConfiguration());
         Assert.That(result, Is.Not.Null);

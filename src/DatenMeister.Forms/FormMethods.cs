@@ -559,7 +559,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>The created extent</returns>
     public static IElement GetCollectionFormForSubforms(params IElement[] subForms)
     {
-        return FormCreator.FormCreator.CreateCollectionFormFromTabs(null, subForms);
+        return FormCreator.CollectionFormCreator.CreateCollectionFormFromTabs(null, subForms);
     }
         
     /// <summary>
@@ -569,7 +569,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// <returns>The created extent</returns>
     public static IElement GetObjectFormForSubforms(params IElement[] subForms)
     {
-        return FormCreator.FormCreator.CreateObjectFormFromTabs(null, subForms);
+        return FormCreator.ObjectFormCreator.CreateObjectFormFromTabs(null, subForms);
     }
 
     /// <summary>
@@ -579,8 +579,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// </summary>
     /// <param name="form">For to which the message shall be addedparam</param>
     /// <param name="message">Message it self that shall be added</param>
-    public static void AddToFormCreationProtocol(IObject form, string message)
+    public static void AddToFormCreationProtocol(IObject? form, string message)
     {
+        if (form == null) return;
+        
         var currentMessage =
             form.getOrDefault<string>(_Forms._Form.creationProtocol)
             ?? string.Empty;
@@ -858,5 +860,30 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
         }
 
         return dataUrl;
+    }
+    
+    /// <summary>
+    ///     Checks whether a detail form is already within the element form.
+    ///     If yes, then it is directly returned, otherwise a new detail form is created and added to the form
+    /// </summary>
+    /// <param name="collectionOrObjectForm">extentForm to be evaluated</param>
+    public static IElement GetOrCreateRowFormIntoForm(IElement collectionOrObjectForm)
+    {
+        var tabs = collectionOrObjectForm.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
+
+        foreach (var tab in tabs.OfType<IElement>())
+        {
+            if (ClassifierMethods.IsSpecializedClassifierOf(
+                    tab.getMetaClass(),
+                    _Forms.TheOne.__RowForm))
+            {
+                return tab;
+            }
+        }
+
+        // Create new one
+        var newTab = new MofFactory(collectionOrObjectForm).create(_Forms.TheOne.__RowForm);
+        tabs.add(newTab);
+        return newTab;
     }
 }

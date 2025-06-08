@@ -1,15 +1,25 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.FormCreator;
 
-public partial class FormCreator
+public class ObjectFormCreator
+    : FormCreator, IObjectFormFactory
 {
+    public ObjectFormCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        :base (workspaceLogic, scopeStorage)
+    {
+        
+    }
+    
     /// <summary>
     ///     Creates the extent form for a specific object which is selected in the item explorer view.
     ///     This is the typical method that is used to create the form via the FormFinder
@@ -21,7 +31,7 @@ public partial class FormCreator
         IObject element,
         FormFactoryConfiguration creationMode)
     { 
-        if (_workspaceLogic == null)
+        if (WorkspaceLogic == null)
             throw new InvalidOperationException("WorkspaceLogic is null");
 
         var factory = GetMofFactory(creationMode);
@@ -45,8 +55,8 @@ public partial class FormCreator
 
         // Get all properties of the elements
         var flagAddByMetaClass = creationMode.CreateByMetaClass;
-        var propertyNamesWithCollection = new List<P>();
-        var propertyNamesWithoutCollection = new List<P>();
+        var propertyNamesWithCollection = new List<CollectionFormCreator.P>();
+        var propertyNamesWithoutCollection = new List<CollectionFormCreator.P>();
 
         // Adds the properties by the stored properties of the element
         if (creationMode.CreateByPropertyValues)
@@ -58,13 +68,13 @@ public partial class FormCreator
                 where element.IsPropertyOfType<IReflectiveCollection>(p)
                 let propertyContent = element.get<IReflectiveCollection>(p)
                 where propertyContent != null
-                select new P { PropertyName = p }).ToList();
+                select new CollectionFormCreator.P { PropertyName = p }).ToList();
 
             propertyNamesWithoutCollection = (from p in properties
                 where !element.IsPropertyOfType<IReflectiveCollection>(p)
                 let propertyContent = element.get(p)
                 where propertyContent != null
-                select new P { PropertyName = p }).ToList();
+                select new CollectionFormCreator.P { PropertyName = p }).ToList();
         }
 
         // Adds the properties by the metaclasses
@@ -76,7 +86,7 @@ public partial class FormCreator
                 if (PropertyMethods.IsCollection(property))
                 {
                     propertyNamesWithCollection.Add(
-                        new P
+                        new CollectionFormCreator.P
                         {
                             PropertyName = NamedElementMethods.GetName(property),
                             PropertyType = PropertyMethods.GetPropertyType(property),
@@ -86,7 +96,7 @@ public partial class FormCreator
                     
                 // As temporary workaround, we do also add the collections to the detail view
                 propertyNamesWithoutCollection.Add(
-                    new P
+                    new CollectionFormCreator.P
                     {
                         PropertyName = NamedElementMethods.GetName(property),
                         PropertyType = property,
@@ -97,12 +107,12 @@ public partial class FormCreator
 
         // Remove duplicate properties in each of the collection
         var propertiesWithCollection =
-            from p in propertyNamesWithCollection.Distinct(new P.PropertyNameEqualityComparer())
+            from p in propertyNamesWithCollection.Distinct(new CollectionFormCreator.P.PropertyNameEqualityComparer())
             let propertyContent = element.get<IReflectiveCollection>(p.PropertyName)
             select new { propertyName = p.PropertyName, propertyType = p.PropertyType, propertyContent };
 
         var propertiesWithoutCollection =
-            (from p in propertyNamesWithoutCollection.Distinct(new P.PropertyNameEqualityComparer())
+            (from p in propertyNamesWithoutCollection.Distinct(new CollectionFormCreator.P.PropertyNameEqualityComparer())
                 let propertyContent = element.getOrDefault<object>(p.PropertyName)
                 select new { propertyName = p.PropertyName, propertyType = p.PropertyType, propertyContent })
             .ToList();
@@ -196,7 +206,7 @@ public partial class FormCreator
                     .OfType<IElement>()
                     .Select(x=>x.getMetaClass())
                     .Where(x => x != null)
-                    .Distinct(new P.MofObjectComparer());
+                    .Distinct(new CollectionFormCreator.P.MofObjectComparer());
 
                 if (elementsWithoutMetaClass.Any() || !elementsAsObjects.Any())
                 {
@@ -226,14 +236,15 @@ public partial class FormCreator
                 foreach (var metaClass in elementsWithMetaClass)
                 {
                     // Now try to figure out the metaclass
-                    if (_formLogic != null)
+                    if (FormLogic != null)
                     {
                         FormMethods.AddToFormCreationProtocol(
                             objectForm,
                             "[FormCreator.CreateObjectFormForItem]: Add Table Form for metaclass:" +
                             NamedElementMethods.GetName(metaClass));
 
-                        var form = _parentFormFactory.CreateTableFormForProperty(
+                        var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
+                        var form = tableFormCreator.CreateTableFormForProperty(
                             element,
                             propertyName,
                             metaClass,
@@ -253,8 +264,9 @@ public partial class FormCreator
                             "[FormCreator.CreateObjectFormForItem]: Add Table Form for metaclass:" +
                             NamedElementMethods.GetName(metaClass));
 
+                        var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
                         tabs.Add(
-                            CreateTableFormForProperty(null, pair.propertyName, metaClass,
+                            tableFormCreator.CreateTableFormForProperty(null, pair.propertyName, metaClass,
                                 creationMode with { AllowFormModifications = false }));
                     }
                 }
@@ -268,7 +280,8 @@ public partial class FormCreator
 
                 // If there are elements included and they are filled
                 // OR, if there is no element included at all, create the corresponding list form
-                var form = _parentFormFactory.CreateTableFormForCollection(
+                var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
+                var form = tableFormCreator.CreateTableFormForCollection(
                     new TemporaryReflectiveCollection(elementsAsObjects),
                     creationMode with { AllowFormModifications = false });
                 if (form != null)
@@ -301,8 +314,7 @@ public partial class FormCreator
 
         // ReSharper restore HeuristicUnreachableCode
         objectForm.set(_Forms._ObjectForm.tab, tabs);
-
-        CleanupObjectForm(objectForm);
+        
         return objectForm;
     }
         
@@ -336,7 +348,8 @@ public partial class FormCreator
             _Forms._RowForm.name,
             $"Object Form for '{NamedElementMethods.GetFullName(metaClass)}'");
             
-        var rowForm = _parentFormFactory.CreateRowFormByMetaClass(metaClass, configuration);
+        var rowFormCreator = new RowFormCreator(WorkspaceLogic, ScopeStorage);
+        var rowForm = rowFormCreator.CreateRowFormByMetaClass(metaClass, configuration);
         result.set(_Forms._CollectionForm.tab, new []{rowForm});
         return result;
     }

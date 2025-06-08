@@ -440,3 +440,17 @@ public class MofObjectEqualityComparer : IEqualityComparer<IObject?>
         return obj?.GetHashCode() ?? 0;
     }
 }
+
+public class MofElementEqualityComparer : IEqualityComparer<IElement?>
+{
+    public bool Equals(IElement? x, IElement? y)
+    {
+        var result = MofObject.AreEqual(x, y);
+        return result;
+    }
+
+    public int GetHashCode(IElement? obj)
+    {
+        return obj?.GetHashCode() ?? 0;
+    }
+}

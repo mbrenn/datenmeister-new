@@ -31,7 +31,7 @@ public class FormCreatorTests
         Assert.That(zipModel, Is.Not.Null);
         Assert.That(zipModel.ZipCode, Is.Not.Null);
         
-        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
+        var formCreator = new TableFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateTableFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
         Assert.That(createdForm, Is.Not.Null);
@@ -101,7 +101,7 @@ public class FormCreatorTests
 
         var zipModel = scopeStorage.Get<ZipCodeModel>();
         
-        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
+        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
         var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
@@ -134,7 +134,7 @@ public class FormCreatorTests
         var zipModel = scopeStorage.Get<ZipCodeModel>();
         var instance = InMemoryObject.CreateEmpty(zipModel.ZipCode!);
         
-        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
+        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
         var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
@@ -166,7 +166,7 @@ public class FormCreatorTests
 
         var instance = InMemoryObject.CreateEmpty();
         
-        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
+        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
             
@@ -194,7 +194,7 @@ public class FormCreatorTests
         instance3.set(_UML._StructuredClassifiers._Connector.name, "Instance3");
         packageModel.set(_UML._Packages._Package.packagedElement, new[] {instance1, instance2, instance3});
             
-        var formCreator = new FormCreator(workspaceLogic, scopeStorage);
+        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
             formCreator.CreateObjectFormForItem(packageModel, new FormFactoryConfiguration());
             

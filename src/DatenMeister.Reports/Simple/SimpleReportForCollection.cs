@@ -1,14 +1,13 @@
 ﻿using System.Diagnostics;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
 
@@ -17,12 +16,8 @@ namespace DatenMeister.Reports.Simple;
 /// <summary>
 /// This class creates a simple report just for a collection. 
 /// </summary>
-public class SimpleReportForCollection
+public class SimpleReportForCollection(ITableFormFactory formCreator, ItemFormatter itemFormatter, IHtmlReport report)
 {
-    private readonly IHtmlReport _report;
-    private readonly FormCreator _formCreator;
-    private readonly ItemFormatter _itemFormatter;
-
     /// <summary>
     /// Gets or sets the report table mode
     /// </summary>
@@ -49,32 +44,19 @@ public class SimpleReportForCollection
         
     public bool AddFullNameColumn { get; set; }
 
-    public SimpleReportForCollection(FormCreator formCreator, ItemFormatter itemFormatter, IHtmlReport report)
-    {
-        _formCreator = formCreator;
-        _itemFormatter = itemFormatter;
-        _report = report;
-    }
-
-    public SimpleReportForCollection(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage, IHtmlReport report)
-    {
-        _report = report;
-        _formCreator = FormCreator.Create(workspaceLogic, scopeStorage);
-        _itemFormatter = new ItemFormatter(_report);
-    }
-        
     public void WriteReportForCollection(
         IReflectiveCollection elements,
         FormFactoryConfiguration creationMode)
     {
         var foundForm = Form;
+        
         if (TableForTypeMode == _Reports._Elements.___ReportTableForTypeMode.PerType)
         {
             // Splits them up by metaclasses 
             var metaClasses =
                 elements.GroupBy(
                     x => x is IElement element ? element.metaclass : null,
-                    new MofObjectEqualityComparer()).ToList();
+                    new MofElementEqualityComparer()).ToList();
 
             foreach (var metaClass in metaClasses)
             {
@@ -85,21 +67,24 @@ public class SimpleReportForCollection
 
                 if (ShowMetaClassHeadlines)
                 {
-                    _report.Add(new HtmlHeadline(metaClassName, 2));
+                    report.Add(new HtmlHeadline(metaClassName, 2));
                 }
 
                 var collection = new TemporaryReflectiveCollection(metaClass);
 
                 if (metaClass.Key == null)
                 {
-                    foundForm = _formCreator.CreateTableFormForCollection(
+                    foundForm = formCreator.CreateTableFormForCollection(
                         collection,
                         creationMode);
                 }
                 else
                 {
-                    foundForm = _formCreator.CreateTableFormForMetaClass(metaClass.Key, creationMode);
+                    foundForm = formCreator.CreateTableFormForMetaClass(metaClass.Key, creationMode);
                 }
+                
+                if(foundForm == null)
+                    throw new InvalidOperationException("foundForm is null");
 
                 AddFullNameColumnIfNecessary(foundForm);
 
@@ -110,10 +95,9 @@ public class SimpleReportForCollection
         {
             if (foundForm == null)
             {
-                foundForm = _formCreator.CreateTableFormForCollection(
-                    elements,
-                    creationMode);
-
+                foundForm = formCreator.CreateTableFormForCollection(
+                    elements, creationMode) ?? throw new InvalidOperationException("foundForm is null");
+                
                 AddFullNameColumnIfNecessary(foundForm);
             }
 
@@ -138,7 +122,7 @@ public class SimpleReportForCollection
         // Gets the reflective sequence for the name
         var collection = new TemporaryReflectiveSequence(metaClass);
 
-        Debug.Assert(_itemFormatter != null, nameof(_itemFormatter) + " != null");
-        _itemFormatter.FormatCollectionOfItems(collection, form);
+        Debug.Assert(itemFormatter != null, nameof(itemFormatter) + " != null");
+        itemFormatter.FormatCollectionOfItems(collection, form);
     }
 }

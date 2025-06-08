@@ -282,6 +282,7 @@ public class ItemsControllerTests
     [Test]
     public async Task TestSetPropertyReference()
     {
+        Thread.Sleep(200);
         var (dm, example) = await ElementControllerTests.CreateExampleExtent();
 
         var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);

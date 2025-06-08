@@ -1,15 +1,24 @@
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.FormCreator;
 
-public partial class FormCreator
+public class TableFormCreator : FormCreator, ITableFormFactory
 {
+    public TableFormCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    : base(workspaceLogic, scopeStorage)
+    {
+        
+    }
+    
     /// <summary>
     ///     Creates the list form out of the elements in the reflective collection.
     ///     Supports the creation by the metaclass and by the object's properties

@@ -18,7 +18,7 @@ namespace DatenMeister.Forms.FormCreator;
 /// <summary>
 ///     Creates a view out of the given extent, elements (collection) or element).
 /// </summary>
-public partial class FormCreator : IObjectFormFactory, ITableFormFactory, ICollectionFormFactory, IRowFormFactory
+public abstract class FormCreator
 {
     /// <summary>
     ///     Defines a small helper enumeration which can be used to define the type of the
@@ -47,56 +47,65 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
         Enumeration
     }
 
-    private readonly ExtentSettings _extentSettings;
+    internal readonly ExtentSettings ExtentSettings;
 
     /// <summary>
     ///     Stores the reference to the view logic which is required to get the views
     ///     for the tabs of the extent form
     /// </summary>
-    private readonly FormMethods? _formLogic;
+    protected FormMethods? FormLogic { get; }
 
-    private readonly IScopeStorage _scopeStorage;
+    protected IScopeStorage ScopeStorage { get; }
 
     /// <summary>
     ///     Stores the associated workspace logic
     /// </summary>
-    private readonly IWorkspaceLogic _workspaceLogic;
+    protected IWorkspaceLogic WorkspaceLogic { get; }
+    
+    #region CachedTypes
 
-    /// <summary>
-    /// Caches the boolean type
-    /// </summary>
-    private IElement? _booleanType;
+    class CachedTypesDefinition
+    {
+        /// <summary>
+        /// Caches the boolean type
+        /// </summary>
+        internal IElement? BooleanType;
 
-    /// <summary>
-    /// Caches the datatime type
-    /// </summary>
-    private IElement? _dateTimeType;
+        /// <summary>
+        /// Caches the datatime type
+        /// </summary>
+        internal IElement? DateTimeType;
 
-    /// <summary>
-    ///     Just intermediate memory
-    /// </summary>
-    private IFactory? _f;
+        /// <summary>
+        ///     Just intermediate memory
+        /// </summary>
+        internal IFactory? Factory;
 
-    /// <summary>
-    /// The cached real type
-    /// </summary>
-    private IElement? _realType;
+        /// <summary>
+        /// The cached real type
+        /// </summary>
+        internal IElement? RealType;
 
-    /// <summary>
-    /// The cached integer type
-    /// </summary>
-    private IElement? _integerType;
-        
-    /// <summary>
-    /// The cached string type
-    /// </summary>
-    private IElement? _stringType;
-        
-    /// <summary>
-    /// The cached unlimited natural type
-    /// </summary>
-    private IElement? _unlimitedNaturalType;
-        
+        /// <summary>
+        /// The cached integer type
+        /// </summary>
+        internal IElement? IntegerType;
+
+        /// <summary>
+        /// The cached string type
+        /// </summary>
+        internal IElement? StringType;
+
+        /// <summary>
+        /// The cached unlimited natural type
+        /// </summary>
+        internal IElement? UnlimitedNaturalType;
+    }
+
+    CachedTypesDefinition CachedTypes { get; } = new CachedTypesDefinition();
+    
+    #endregion
+
     private Workspace? _uriResolver;
 
     /// <summary>
@@ -104,32 +113,14 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     /// </summary>
     /// <param name="workspaceLogic">The workspace logic to be used</param>
     /// <param name="scopeStorage">The scope storage</param>
-    public FormCreator(
+    protected FormCreator(
         IWorkspaceLogic workspaceLogic,
         IScopeStorage scopeStorage)
     {
-        _formLogic = new FormMethods(workspaceLogic, scopeStorage);
-        _scopeStorage = scopeStorage;
-        _extentSettings = scopeStorage.Get<ExtentSettings>();
-        _workspaceLogic = workspaceLogic;
-    }
-
-    /// <summary>
-    ///     Initializes a new instance of the FormCreator class
-    /// </summary>
-    /// <param name="workspaceLogic">The workspace logic to be used</param>
-    /// <param name="scopeStorage">The scope storage</param>
-    /// <param name="formLogic">View logic being used</param>
-    /// <param name="parentFormFactory">The parent form factory</param>
-    private FormCreator(
-        IWorkspaceLogic workspaceLogic,
-        FormMethods formLogic,
-        IScopeStorage scopeStorage)
-    {
-        _formLogic = formLogic;
-        _scopeStorage = scopeStorage;
-        _extentSettings = scopeStorage.Get<ExtentSettings>();
-        _workspaceLogic = workspaceLogic;
+        FormLogic = new FormMethods(workspaceLogic, scopeStorage);
+        ScopeStorage = scopeStorage;
+        ExtentSettings = scopeStorage.Get<ExtentSettings>();
+        WorkspaceLogic = workspaceLogic;
     }
 
     /// <summary>
@@ -142,14 +133,14 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
             return configuration.Factory;
         }
 
-        if (_f != null) return _f;
+        if (CachedTypes.Factory != null) return CachedTypes.Factory;
 
-        var userExtent = _formLogic?.GetUserFormExtent(true);
-        _f = userExtent != null
+        var userExtent = FormLogic?.GetUserFormExtent(true);
+        CachedTypes.Factory = userExtent != null
             ? new MofFactory(userExtent)
             : InMemoryObject.TemporaryFactory;
 
-        return _f;
+        return CachedTypes.Factory;
     }
 
     /// <summary>
@@ -162,7 +153,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     /// <param name="item">Item being used</param>
     /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
     /// <param name="cache">Cache being used to store intermediate items</param>
-    private void AddFieldsToForm(
+    protected void AddFieldsToForm(
         IObject rowOrTableForm,
         object item,
         FormFactoryConfiguration creationMode,
@@ -240,7 +231,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     /// <param name="item">Item to be evaluated</param>
     /// <param name="creationMode">The creation mode that is used</param>
     /// <param name="cache">Cache being used to store intermediate items</param>
-    private void AddFieldsToFormByPropertyValues(
+    protected void AddFieldsToFormByPropertyValues(
         IObject form,
         object item,
         FormFactoryConfiguration creationMode,
@@ -334,7 +325,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     /// <param name="configuration">Creation Mode to be used</param>
     /// <param name="cache">Cache of reportCreator cache</param>
     /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-    private bool AddFieldsToRowOrTableFormByMetaClass(
+    protected bool AddFieldsToRowOrTableFormByMetaClass(
         IObject rowOrObjectForm,
         IObject? metaClass,
         FormFactoryConfiguration configuration,
@@ -488,9 +479,8 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
 
             if (!isPropertyACollection)
             {
-                // Property is a single element, so a field is added to the detail form, if not already
-                // existing
-                var detailForm = GetOrCreateRowFormIntoForm(form);
+                // Property is a single element, so a field is added to the detail form, if not already existing
+                var detailForm = FormMethods.GetOrCreateRowFormIntoForm(form);
                 var result = AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
 
                 FormMethods.AddToFormCreationProtocol(form,
@@ -511,7 +501,8 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
             var tabs = form.get<IReflectiveCollection>(_Forms._CollectionForm.tab);
 
             // Now try to figure out the metaclass
-            var listForm = CreateTableFormForProperty(
+            var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
+            var listForm = tableFormCreator.CreateTableFormForProperty(
                 umlClassOrProperty,
                 FormFactoryConfiguration.CreateByMetaClassOnly);
 
@@ -540,7 +531,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
 
         if (isCollectionForm && isEnumerationUml || isObjectForm && isEnumerationUml)
         {
-            var detailForm = GetOrCreateRowFormIntoForm(form);
+            var detailForm = FormMethods.GetOrCreateRowFormIntoForm(form);
             var result = AddFieldsToFormByMetaClassProperty(detailForm, umlClassOrProperty, creationMode);
 
             FormMethods.AddToFormCreationProtocol(form,
@@ -577,7 +568,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     /// <param name="propertyName">Name of the property wo whose values the list form shall be created.</param>
     /// <param name="configuration">Defines the mode how to create the fields</param>
     /// <returns>The field data</returns>
-    private IElement CreateFieldForProperty(IObject? property,
+    protected IElement CreateFieldForProperty(IObject? property,
         string? propertyName,
         FormFactoryConfiguration configuration)
     {
@@ -593,14 +584,14 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
         var isReadOnly = configuration.IsReadOnly;
 
         // Check, if field property is an enumeration
-        _uriResolver ??= _workspaceLogic.GetTypesWorkspace();
+        _uriResolver ??= WorkspaceLogic.GetTypesWorkspace();
 
-        _stringType ??= _PrimitiveTypes.TheOne.__String;
-        _integerType ??= _PrimitiveTypes.TheOne.__Integer;
-        _booleanType ??= _PrimitiveTypes.TheOne.__Boolean;
-        _realType ??= _PrimitiveTypes.TheOne.__Real;
-        _unlimitedNaturalType ??= _PrimitiveTypes.TheOne.__UnlimitedNatural;
-        _dateTimeType ??= _uriResolver?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+        CachedTypes.StringType ??= _PrimitiveTypes.TheOne.__String;
+        CachedTypes.IntegerType ??= _PrimitiveTypes.TheOne.__Integer;
+        CachedTypes.BooleanType ??= _PrimitiveTypes.TheOne.__Boolean;
+        CachedTypes.RealType ??= _PrimitiveTypes.TheOne.__Real;
+        CachedTypes.UnlimitedNaturalType ??= _PrimitiveTypes.TheOne.__UnlimitedNatural;
+        CachedTypes.DateTimeType ??= _uriResolver?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
         // Checks, if the property is an enumeration.
         var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)
@@ -611,7 +602,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
                 return CreateFieldForEnumeration(propertyName, propertyType, configuration);
             }
 
-            if (propertyType.equals(_booleanType))
+            if (propertyType.equals(CachedTypes.BooleanType))
             {
                 // If we have a boolean and the field is not for a list form
                 var checkbox = factory.create(_Forms.TheOne.__CheckboxFieldData);
@@ -621,7 +612,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
                 return checkbox;
             }
 
-            if (propertyType.equals(_dateTimeType))
+            if (propertyType.equals(CachedTypes.DateTimeType))
             {
                 var dateTimeField = factory.create(_Forms.TheOne.__DateTimeFieldData);
                 dateTimeField.set(_Forms._CheckboxFieldData.name, propertyName);
@@ -631,11 +622,11 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
             }
 
             if (
-                !propertyType.equals(_stringType) &&
-                !propertyType.equals(_integerType) &&
-                !propertyType.equals(_realType) &&
-                !propertyType.equals(_unlimitedNaturalType) && 
-                !propertyType.equals(_dateTimeType))
+                !propertyType.equals(CachedTypes.StringType) &&
+                !propertyType.equals(CachedTypes.IntegerType) &&
+                !propertyType.equals(CachedTypes.RealType) &&
+                !propertyType.equals(CachedTypes.UnlimitedNaturalType) && 
+                !propertyType.equals(CachedTypes.DateTimeType))
             {
                 // If we have something else than a primitive type and it is not for a list form
                 if (propertyIsCollection)
@@ -659,19 +650,22 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
                     IElement? enumerationListForm = null;
                     if (!configuration.IsForTableForm)
                     {
-                        if (_formLogic != null)
+                        if (FormLogic != null)
                             enumerationListForm =
-                                new FormFactory.TableFormFactory(_workspaceLogic, _scopeStorage)
+                                new TableFormFactory(WorkspaceLogic, ScopeStorage)
                                     .CreateTableFormForMetaClass(propertyType, configuration);
 
                         // Create the internal form out of the metaclass
                         if (enumerationListForm == null
                             && configuration.CreateByMetaClass)
+                        {
+                            var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
                             enumerationListForm =
-                                CreateTableFormForMetaClass(
+                                tableFormCreator.CreateTableFormForMetaClass(
                                     propertyType,
                                     configuration with { IsForTableForm = true },
                                     property as IElement);
+                        }
 
                         if (enumerationListForm != null)
                             elementsField.set(_Forms._SubElementFieldData.form, enumerationListForm);
@@ -754,8 +748,8 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
         column.set(_Forms._TextFieldData.isReadOnly, isReadOnly);
 
         // If propertyType is an integer, the field can be smaller
-        if (propertyType.equals(_integerType)
-            || propertyType.equals(_unlimitedNaturalType))
+        if (propertyType.equals(CachedTypes.IntegerType)
+            || propertyType.equals(CachedTypes.UnlimitedNaturalType))
         {
             column.set(_Forms._TextFieldData.width, 10);
         }
@@ -770,7 +764,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     /// <param name="propertyType">Type of the enumeration</param>
     /// <param name="creationMode">The used creation mode</param>
     /// <returns>The created element of the enumeration</returns>
-    private IElement CreateFieldForEnumeration(
+    protected IElement CreateFieldForEnumeration(
         string propertyName,
         IElement propertyType,
         FormFactoryConfiguration creationMode)
@@ -796,7 +790,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
         return comboBox;
     }
         
-    private static void SortFieldsByImportantProperties(IObject form)
+    protected static void SortFieldsByImportantProperties(IObject form)
     {
         var fields = form.getOrDefault<IReflectiveSequence>(_Forms._TableForm.field);
         if (fields == null) return;
@@ -826,7 +820,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     ///     If no field is given, then the one text field for the name will be added
     /// </summary>
     /// <param name="form">Form to be checked</param>
-    private static void AddTextFieldForNameIfNoFieldAvailable(IObject form)
+    protected static void AddTextFieldForNameIfNoFieldAvailable(IObject form)
     {
         // If the field is empty, create an empty textfield with 'name' as a placeholder
         var fieldLength =
@@ -851,7 +845,7 @@ public partial class FormCreator : IObjectFormFactory, ITableFormFactory, IColle
     ///     This improves the speed of form creation since some state are explicitly stored in the
     ///     cache instead of being required to be evaluated out of the field structure.
     /// </summary>
-    private class FormCreatorCache
+    protected class FormCreatorCache
     {
         /// <summary>
         ///     True, if the metaclass has been already covered

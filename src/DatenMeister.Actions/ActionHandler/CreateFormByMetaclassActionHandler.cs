@@ -29,7 +29,6 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
     {
         await Task.Run(() =>
         {
-            var formCreator = new FormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             var formMethods = new FormMethods(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             var metaClass = action.getOrDefault<IElement>(_Actions._CreateFormByMetaClass.metaClass);
             var creationMode =
@@ -69,6 +68,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateObjectForm(bool includeFormAssociation)
             {
+                var formCreator = new ObjectFormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
                 form = formCreator.CreateObjectFormForMetaClass(metaClass, new FormFactoryConfiguration());
                 targetReflection.add(form);
 
@@ -84,6 +84,8 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateCollectionForm(bool includeFormAssociation)
             {
+                
+                var formCreator = new CollectionFormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
                 form = formCreator.CreateCollectionFormForMetaClass(metaClass);
                 targetReflection.add(form);
 

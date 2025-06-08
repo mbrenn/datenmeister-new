@@ -1,3 +1,4 @@
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -5,41 +6,24 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.FormCreator;
 
-public partial class FormCreator
+public class CollectionFormCreator : FormCreator, ICollectionFormFactory
 {
+    public CollectionFormCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        :base (workspaceLogic, scopeStorage)
+    {
+        
+    }
     /// <summary>
     ///     Stores the configuration whether we require a tab for each property
     /// </summary>
     private const bool ConfigurationFormCreatorSeparateProperties = true;
 
-    /// <summary>
-    ///     Checks whether a detail form is already within the element form.
-    ///     If yes, then it is directly returned, otherwise a new detail form is created and added to the form
-    /// </summary>
-    /// <param name="collectionOrObjectForm">extentForm to be evaluated</param>
-    public IElement GetOrCreateRowFormIntoForm(IElement collectionOrObjectForm)
-    {
-        var tabs = collectionOrObjectForm.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
-
-        foreach (var tab in tabs.OfType<IElement>())
-        {
-            if (ClassifierMethods.IsSpecializedClassifierOf(
-                    tab.getMetaClass(),
-                    _Forms.TheOne.__RowForm))
-            {
-                return tab;
-            }
-        }
-
-        // Create new one
-        var newTab = new MofFactory(collectionOrObjectForm).create(_Forms.TheOne.__RowForm);
-        tabs.add(newTab);
-        return newTab;
-    }
 
     /// <summary>
     ///     Creates an extent form containing the subforms
@@ -103,11 +87,11 @@ public partial class FormCreator
         FormFactoryConfiguration configuration,
         CollectionFormConfiguration? extentFormConfiguration)
     {
+        ArgumentNullException.ThrowIfNull(elements);
+        
         extentFormConfiguration ??= new CollectionFormConfiguration();
             
         var cache = new FormCreatorCache();
-        if (elements == null)
-            throw new ArgumentNullException(nameof(elements));
 
         var tabs = new List<IElement>();
 
@@ -143,12 +127,12 @@ public partial class FormCreator
         var metaClasses = elementsWithMetaClass.Select(x => x.Key).ToList();
         foreach (var extentType in extentFormConfiguration.ExtentTypes)
         {
-            var extentTypeSetting = _extentSettings.GetExtentTypeSetting(extentType);
+            var extentTypeSetting = ExtentSettings.GetExtentTypeSetting(extentType);
             if (extentTypeSetting == null) continue;
 
             foreach (var extentMetaClass in
                      extentTypeSetting.rootElementMetaClasses.Select(
-                         x => _workspaceLogic.ResolveElement(x, ResolveType.Default)))
+                         x => WorkspaceLogic.ResolveElement(x, ResolveType.Default)))
             {
                 if (metaClasses.Any(x => x != null && x.equals(extentMetaClass)))
                 {
@@ -166,7 +150,8 @@ public partial class FormCreator
         // Create the tab for the elements of without any metaclass
         if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
         {
-            var form = CreateTableFormForCollection(
+            var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
+            var form = tableFormCreator.CreateTableFormForCollection(
                 new TemporaryReflectiveCollection(elementsWithoutMetaClass),
                 configuration with { IsForTableForm = true, AllowFormModifications = false });
             if (form == null)
@@ -201,7 +186,7 @@ public partial class FormCreator
                 continue;
 
             IElement form;
-            if (_formLogic != null) // View logic is used to ask for a default list view. 
+            if (FormLogic != null) // View logic is used to ask for a default list view. 
             {
                 var extent = (elements as IHasExtent)?.Extent;
                 if (extent == null) throw new InvalidOperationException("elements does not have an extent");
@@ -209,7 +194,7 @@ public partial class FormCreator
                 // Asks the view logic whether it has a list form for the specific metaclass
                 // It will ask the form reportCreator, if there is no view association directly referencing
                 // to the element
-                var formCreator = new FormFactory.TableFormFactory(_workspaceLogic, _scopeStorage);
+                var formCreator = new FormFactory.TableFormFactory(WorkspaceLogic, ScopeStorage);
 
                 FormMethods.AddToFormCreationProtocol(
                     result,
@@ -241,7 +226,8 @@ public partial class FormCreator
             else
             {
                 // If no view logic is given, then ask directly the form reportCreator.
-                form = CreateTableFormForMetaClass(groupedMetaclass,
+                var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
+                form = tableFormCreator.CreateTableFormForMetaClass(groupedMetaclass,
                     configuration with { AllowFormModifications = false });
             }
 
@@ -250,7 +236,6 @@ public partial class FormCreator
         }
 
         result.set(_Forms._CollectionForm.tab, tabs);
-        CleanupCollectionForm(result);
             
         return result;
     }
@@ -334,11 +319,13 @@ public partial class FormCreator
 
             rowForm.set(_Forms._RowForm.field, fields);
                 
-            CleanupRowForm(rowForm);
+            RowFormCreator.CleanupRowForm(rowForm);
                 
             tabs.Add(rowForm);
         }
-
+        
+        var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
+        
         foreach (var pair in propertiesWithCollection)
         {
             FormMethods.AddToFormCreationProtocol(
@@ -348,7 +335,8 @@ public partial class FormCreator
 
             var propertyType = PropertyMethods.GetPropertyType(pair.property);
             // Now try to figure out the metaclass
-            var tableForm = CreateTableFormForMetaClass(
+            
+            var tableForm = tableFormCreator.CreateTableFormForMetaClass(
                 propertyType,
                 new FormFactoryConfiguration
                 {
@@ -364,8 +352,6 @@ public partial class FormCreator
         }
 
         collectionForm.set(_Forms._CollectionForm.tab, tabs);
-
-        CleanupCollectionForm(collectionForm);
             
         return collectionForm;
     }
@@ -408,14 +394,4 @@ public partial class FormCreator
             }
         }
     }
-    public void CleanupCollectionForm(IElement extentForm)
-    {
-            
-    }
-
-    public void CleanupObjectForm(IElement extentForm)
-    {
-            
-    }
-
 }

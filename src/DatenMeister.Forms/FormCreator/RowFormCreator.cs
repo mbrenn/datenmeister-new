@@ -1,11 +1,20 @@
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.FormCreator;
 
-public partial class FormCreator
+public class RowFormCreator : FormCreator, IRowFormFactory
 {
+    public RowFormCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    :base (workspaceLogic, scopeStorage)
+    {
+        
+    }
+    
     /// <summary>
     ///     Creates a detail form by considering the the information that is stored within
     ///     the given element. Dependent upon the creation mode, the form will be created
@@ -66,7 +75,7 @@ public partial class FormCreator
         return createdForm;
     }
         
-    public void CleanupRowForm(IElement rowForm)
+    public static void CleanupRowForm(IElement rowForm)
     {
         SortFieldsByImportantProperties(rowForm);
     }

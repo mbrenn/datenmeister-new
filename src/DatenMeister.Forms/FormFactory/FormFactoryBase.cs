@@ -7,6 +7,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.FormModifications;
 
@@ -22,24 +23,20 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 {
     protected readonly FormMethods FormMethods = new(workspaceLogic, scopeStorage);
     protected readonly FormsState FormsState = scopeStorage.Get<FormsState>();
-    
-    /// <summary>
-    ///     Creates a new instance of the form reportCreator
-    /// </summary>
-    /// <returns>The created instance of the form reportCreator</returns>
-    protected FormCreator.FormCreator CreateFormCreator()
-    {
-        return new FormCreator.FormCreator(workspaceLogic, scopeStorage);
-    }
+    protected readonly IWorkspaceLogic WorkspaceLogic = workspaceLogic;
+    protected readonly IScopeStorage ScopeStorage = scopeStorage;
 
     /// <summary>
-    ///     Creates a new instance of the form reportCreator
+    /// Creates a new instance of the form reportCreator
     /// </summary>
     /// <returns>The created instance of the form reportCreator</returns>
     protected FormFinder.FormFinder CreateFormFinder()
     {
         return new FormFinder.FormFinder(FormMethods);
     }
+
+    internal IFactory GetMofFactory(FormFactoryConfiguration configuration) 
+        => new TableFormCreator(WorkspaceLogic, ScopeStorage).GetMofFactory(configuration);
 
     /// <summary>
     /// Cleans up the object form. 
@@ -219,7 +216,7 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             var autoGenerate = tab.getOrDefault<bool>(_Forms._TableForm.autoGenerateFields);
             if (autoGenerate)
             {
-                var formCreator = CreateFormCreator();
+                var formCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
                 var propertyName = tab.getOrDefault<string>(_Forms._TableForm.property);
                 if (propertyName == null || string.IsNullOrEmpty(propertyName))
                 {

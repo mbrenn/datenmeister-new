@@ -35,8 +35,8 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return new FormFinder.FormFinder(FormMethods);
     }
 
-    internal IFactory GetMofFactory(FormFactoryConfiguration configuration) 
-        => new TableFormCreator(WorkspaceLogic, ScopeStorage).GetMofFactory(configuration);
+    internal IFactory GetMofFactory(FormFactoryContext context) 
+        => new TableFormCreator(WorkspaceLogic, ScopeStorage).GetMofFactory(context);
 
     /// <summary>
     /// Cleans up the object form. 
@@ -226,7 +226,7 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
                     formCreator.AddToTableFormByElements(
                         tab,
                         new PropertiesAsReflectiveCollection(element),
-                        new FormFactoryConfiguration());
+                        new FormFactoryContext());
                 }
                 else
                 {
@@ -238,7 +238,7 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
                         formCreator.AddToTableFormByElements(
                             tab,
                             reflectiveSequence,
-                            new FormFactoryConfiguration());
+                            new FormFactoryContext());
                 }
             }
         }
@@ -247,7 +247,7 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <summary>
     ///     Calls all the plugins for the extent form
     /// </summary>
-    /// <param name="configuration">Used configuration to call the plugins</param>
+    /// <param name="context">Used configuration to call the plugins</param>
     /// <param name="formCreationContext">Form Creation context to be used</param>
     /// <param name="foundForm">The form being found</param>
     /// <param name="overrideParentMetaClassForTabs">If the tabs shall be queried with a specific
@@ -256,19 +256,19 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// is the extent and not the item to which is filtered</param>
     /// <returns>Element being called</returns>
     public void CallPluginsForCollectionOrObjectForm(
-        FormFactoryConfiguration configuration, 
+        FormFactoryContext context, 
         FormCreationContext formCreationContext, 
         ref IElement foundForm,
         IElement? overrideParentMetaClassForTabs = null)
     {
-        if (configuration?.AllowFormModifications != true)
+        if (context?.AllowFormModifications != true)
         {
             // Nothing to do
             return;
         }
 
         FormsState.CallFormsModificationPlugins(
-            configuration,
+            context,
             formCreationContext,
             ref foundForm);
             
@@ -280,7 +280,7 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             FormMethods.ExpandDropDownValuesOfValueReference(rowFormInstance);
 
             FormsState.CallFormsModificationPlugins(
-                configuration,
+                context,
                 formCreationContext with { FormType = _Forms.___FormType.Row },
                 ref rowFormInstance);
         }
@@ -293,14 +293,14 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             FormMethods.ExpandDropDownValuesOfValueReference(tableFormInstance);
 
             FormsState.CallFormsModificationPlugins(
-                configuration,
+                context,
                 formCreationContext with
                 {
                     FormType = _Forms.___FormType.Table,
                     ParentPropertyName = tableFormInstance.getOrDefault<string>(_Forms._TableForm.property),
                     ParentMetaClass = formCreationContext.MetaClass,
                     MetaClass = tableFormInstance.getOrDefault<IElement>(_Forms._TableForm.metaClass),
-                    IsReadOnly = configuration.IsReadOnly
+                    IsReadOnly = context.IsReadOnly
                 },
                 ref tableFormInstance);
         }

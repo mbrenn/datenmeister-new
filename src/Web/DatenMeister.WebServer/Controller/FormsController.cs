@@ -100,10 +100,10 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         }
 
         // Creates the form itself
-        var form = formFactory.CreateCollectionFormForExtent(
+        var form = formFactory.CreateCollectionFormForCollection(
                        extent,
                        collection,
-                       new FormFactoryConfiguration
+                       new FormFactoryContext
                        {
                            ViewModeId = viewMode ?? string.Empty,
                            Factory = factory
@@ -161,7 +161,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         // Creates the form itself
         var form = formFactory.CreateObjectFormForItem(
             element,
-            new FormFactoryConfiguration
+            new FormFactoryContext
             {                    
                 ViewModeId = viewMode ?? string.Empty,
                 Factory = factory, 

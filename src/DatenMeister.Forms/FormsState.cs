@@ -8,21 +8,21 @@ public class FormsState
     /// <summary>
     /// Lists all form modificationPlugins
     /// </summary>
-    public List<IFormModificationPlugin> FormModificationPlugins { get; } = new();
+    public List<IFormModificationPlugin> FormModificationPlugins { get; } = [];
         
 
     /// <summary>
     ///     Calls all the form modification plugins, if allowed.
     /// </summary>
-    /// <param name="configuration">The configuration under which the plugins shall be checked</param>
+    /// <param name="context">The configuration under which the plugins shall be checked</param>
     /// <param name="formCreationContext">The creation context used by the plugins</param>
     /// <param name="form">The form that is evaluated</param>
     public void CallFormsModificationPlugins(
-        FormFactoryConfiguration configuration,
+        FormFactoryContext context,
         FormCreationContext formCreationContext, 
         ref IElement form)
     {
-        if (configuration?.AllowFormModifications != true)
+        if (context?.AllowFormModifications != true)
         {
             // Nothing to do
             return;

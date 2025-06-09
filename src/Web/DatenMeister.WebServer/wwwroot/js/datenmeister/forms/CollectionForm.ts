@@ -142,9 +142,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         this.statusTextControl.setListStatus("Loading Default Viewmode", false);
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
 
-            /*
-            Gets the default viewmode for the extent to be shown            
-             */
+            // Gets the default viewmode for the extent to be shown
             configuration.viewMode = await VML.getDefaultViewModeIfNotSet(workspace, extentUri);
         }
         this.statusTextControl.setListStatus("Loading Default Viewmode", true);

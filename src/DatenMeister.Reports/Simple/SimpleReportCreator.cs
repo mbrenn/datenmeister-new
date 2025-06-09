@@ -66,7 +66,7 @@ public class SimpleReportCreator
     /// <param name="textWriter">Text Writer to be used for html file creation</param>
     public void CreateReport(TextWriter textWriter)
     {
-        var formFactoryConfiguration = new FormFactoryConfiguration
+        var formFactoryConfiguration = new FormFactoryContext
         {
             AutomaticMetaClassField =
                 _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
@@ -135,7 +135,7 @@ public class SimpleReportCreator
     /// <param name="collection">Reflective collection of elements to be shown</param>
     public void CreateReportForCollection(TextWriter textWriter, IReflectiveCollection collection)
     {
-        var formFactoryConfiguration = new FormFactoryConfiguration
+        var formFactoryConfiguration = new FormFactoryContext
         {
             AutomaticMetaClassField =
                 _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
@@ -160,7 +160,7 @@ public class SimpleReportCreator
     private void WriteReportForCollection(
         IHtmlReport report,
         IReflectiveCollection elements,
-        FormFactoryConfiguration creationMode)
+        FormFactoryContext creationMode)
     {
         report.Add(new HtmlHeadline("Items in collection", 1));
 

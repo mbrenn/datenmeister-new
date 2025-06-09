@@ -38,7 +38,9 @@ public class ExtentItemsController
     /// <returns>ID of the item</returns>
     public ItemAndFormModel? GetItemAndForm(string workspaceId, string extentUrl, string? itemId)
     {
+        throw new NotImplementedException("GetItemAndForm is not supported anymore");
         // Check, if we are used at all. I would like to get rid of the class.
+/*
         Debugger.Break();
         
         // Finds the specific items of the given extent
@@ -69,7 +71,7 @@ public class ExtentItemsController
         // Find the matching form
         var extentForm = objectFormFactory.CreateObjectFormForItem(
             foundElement,
-            new FormFactoryConfiguration{ViewModeId = "Default"});
+            new FormFactoryContext{ViewModeId = "Default"});
             
         if (extentForm == null)
         {
@@ -85,6 +87,7 @@ public class ExtentItemsController
             
         // Returns the result
         return result;
+*/
     }
 
     /// <summary>
@@ -96,6 +99,9 @@ public class ExtentItemsController
     /// <returns>ID of the item</returns>
     public CollectionAndFormModel? GetItemsAndFormOfExtent(string workspaceId, string extentUrl, string? viewMode = null)
     {
+        throw new NotImplementedException("GetItemsAndFormOfExtent not implemented anymore");
+        
+        /*
         // Check, if we are used at all. I would like to get rid of the class.
         Debugger.Break();
         
@@ -126,5 +132,6 @@ public class ExtentItemsController
 
         // Returns the result
         return result;
+        */
     }
 }

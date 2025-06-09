@@ -69,7 +69,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
             void CreateObjectForm(bool includeFormAssociation)
             {
                 var formCreator = new ObjectFormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-                form = formCreator.CreateObjectFormForMetaClass(metaClass, new FormFactoryConfiguration());
+                form = formCreator.CreateObjectFormForMetaClass(metaClass, new FormFactoryContext());
                 targetReflection.add(form);
 
                 if (includeFormAssociation)

@@ -46,7 +46,7 @@ public class SimpleReportForCollection(ITableFormFactory formCreator, ItemFormat
 
     public void WriteReportForCollection(
         IReflectiveCollection elements,
-        FormFactoryConfiguration creationMode)
+        FormFactoryContext creationMode)
     {
         var foundForm = Form;
         

@@ -31,21 +31,21 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
     /// This is a quite slow routine, but at least, it works
     /// </summary>
     /// <param name="collection">Collection to be evaluated</param>
-    /// <param name="configuration">Configuration of the form</param>
+    /// <param name="context">Configuration of the form</param>
     /// <returns>The created form</returns>
     public IElement? CreateTableFormForCollection(
         IReflectiveCollection collection,
-        FormFactoryConfiguration configuration)
+        FormFactoryContext context)
     {
         using var _ = new StopWatchLogger(Logger, "Timing for CreateTableFormForCollection: ", LogLevel.Trace);
-        configuration = configuration with { IsForTableForm = true };
+        context = context with { IsForTableForm = true };
         IElement? foundForm = null;
-        if (configuration.ViaFormCreator)
+        if (context.ViaFormCreator)
         {
             // Ok, now perform the creation...
             var formCreator = new TableFormFactory(WorkspaceLogic, ScopeStorage);
             foundForm = formCreator.CreateTableFormForCollection(collection,
-                configuration with { AllowFormModifications = false });
+                context with { AllowFormModifications = false });
             FormMethods.AddToFormCreationProtocol(foundForm,
                 "[FormFactory.CreateTableFormForCollection] Created Form via FormCreator");
         }
@@ -57,11 +57,11 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
             AddDefaultTypesForTableFormByExtentInformation(collection as IHasExtent, foundForm);
 
             FormsState.CallFormsModificationPlugins(
-                configuration, new FormCreationContext
+                context, new FormCreationContext
                 {
                     FormType = _Forms.___FormType.Table,
-                    ViewMode = configuration.ViewModeId,
-                    IsReadOnly = configuration.IsReadOnly
+                    ViewMode = context.ViewModeId,
+                    IsReadOnly = context.IsReadOnly
                 },
                 ref foundForm);
 
@@ -73,13 +73,13 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
 
     public IElement? CreateTableFormForMetaClass(
         IElement? metaClass,
-        FormFactoryConfiguration configuration)
+        FormFactoryContext context)
     {
         using var _ = new StopWatchLogger(Logger, "Timing for CreateTableFormForMetaClass: ", LogLevel.Trace);
-        configuration = configuration with { IsForTableForm = true };
+        context = context with { IsForTableForm = true };
         IElement? foundForm = null;
 
-        if (configuration.ViaFormFinder)
+        if (context.ViaFormFinder)
         {
             // Tries to find the form
             var viewFinder = new FormFinder.FormFinder(FormMethods);
@@ -88,7 +88,7 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
                 {
                     metaClass = metaClass,
                     FormType = _Forms.___FormType.Table,
-                    viewModeId = configuration.ViewModeId
+                    viewModeId = context.ViewModeId
                 }).FirstOrDefault();
 
             if (foundForm != null)
@@ -102,11 +102,11 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
             }
         }
 
-        if (foundForm == null && configuration.ViaFormCreator)
+        if (foundForm == null && context.ViaFormCreator)
         {
             // Ok, we have not found the form. So create one
             var formCreator = new TableFormFactory(WorkspaceLogic, ScopeStorage);
-            foundForm = formCreator.CreateTableFormForMetaClass(metaClass, configuration);
+            foundForm = formCreator.CreateTableFormForMetaClass(metaClass, context);
 
             FormMethods.AddToFormCreationProtocol(
                 foundForm,
@@ -116,12 +116,12 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
         if (foundForm != null)
         {   
             FormsState.CallFormsModificationPlugins(
-                configuration,
+                context,
                 new FormCreationContext
                 {
                     MetaClass = metaClass,
                     FormType = _Forms.___FormType.Table,
-                    IsReadOnly = configuration.IsReadOnly
+                    IsReadOnly = context.IsReadOnly
                 },
                 ref foundForm);
 
@@ -137,21 +137,21 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
     /// <param name="parentElement">The element to which the property belows</param>
     /// <param name="propertyName">The name of the property</param>
     /// <param name="propertyType">The type of the property</param>
-    /// <param name="configuration">The configuration being used to creates the list form</param>
+    /// <param name="context">The configuration being used to creates the list form</param>
     /// <returns>The created listform</returns>
     public IElement? CreateTableFormForProperty(
         IObject? parentElement,
         string propertyName,
         IElement? propertyType,
-        FormFactoryConfiguration configuration)
+        FormFactoryContext context)
     {
         using var _ = new StopWatchLogger(Logger, "Timing for CreateTableFormForProperty: ", LogLevel.Trace);
-        configuration = configuration with { IsForTableForm = true };
+        context = context with { IsForTableForm = true };
         IElement? foundForm = null;
         propertyType ??=
             ClassifierMethods.GetPropertyTypeOfValuesProperty(parentElement as IElement, propertyName);
 
-        if (configuration.ViaFormFinder)
+        if (context.ViaFormFinder)
         {
             var viewFinder = new FormFinder.FormFinder(FormMethods);
             foundForm = viewFinder.FindFormsFor(
@@ -175,7 +175,7 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
             }
         }
 
-        if (foundForm == null && configuration.ViaFormCreator)
+        if (foundForm == null && context.ViaFormCreator)
         {
             var formCreator = new TableFormFactory(WorkspaceLogic, ScopeStorage);
 
@@ -184,14 +184,14 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
             {
                 foundForm = formCreator.CreateTableFormForCollection(
                                 parentElement.get<IReflectiveCollection>(propertyName),
-                                new FormFactoryConfiguration { IncludeOnlyCommonProperties = true })
+                                new FormFactoryContext { IncludeOnlyCommonProperties = true })
                             ?? throw new InvalidOperationException("foundForm == null");
             }
             else
             {
                 foundForm = formCreator.CreateTableFormForMetaClass(
                     propertyType,
-                    new FormFactoryConfiguration { IncludeOnlyCommonProperties = true });
+                    new FormFactoryContext { IncludeOnlyCommonProperties = true });
 
                 foundForm?.set(
                     _Forms._TableForm.title,
@@ -209,14 +209,14 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
             AddDefaultTypesForTableFormByExtentInformation(parentElement as IHasExtent, foundForm);
 
             FormsState.CallFormsModificationPlugins(
-                configuration,
+                context,
                 new FormCreationContext
                 {
                     FormType = _Forms.___FormType.Table,
                     MetaClass = (parentElement as IElement)?.metaclass,
                     ParentPropertyName = propertyName,
                     DetailElement = parentElement,
-                    IsReadOnly = configuration.IsReadOnly
+                    IsReadOnly = context.IsReadOnly
                 },
                 ref foundForm);
 

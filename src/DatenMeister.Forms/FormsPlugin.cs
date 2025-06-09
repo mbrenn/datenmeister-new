@@ -99,13 +99,15 @@ public class FormsPlugin : IDatenMeisterPlugin
                     throw new InvalidOperationException("Extent for users is not found");
 
                 extent.GetConfiguration()
-                    .AddDefaultTypes(new[]
-                    {_Forms.TheOne.__Form,
+                    .AddDefaultTypes(
+                    [
+                        _Forms.TheOne.__Form,
                         _Forms.TheOne.__CollectionForm,
                         _Forms.TheOne.__ObjectForm,
                         _Forms.TheOne.__TableForm,
                         _Forms.TheOne.__RowForm,
-                        _Forms.TheOne.__FormAssociation});
+                        _Forms.TheOne.__FormAssociation
+                    ]);
 
                 // Tests the existence of the test form and other forms
                 var testForm = _workspaceLogic.FindElement(WorkspaceNames.WorkspaceManagement, Uris.TestFormUri);

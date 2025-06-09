@@ -44,7 +44,7 @@ public class FormsControllerInternal
 
         var formFactory = new ObjectFormFactory(_workspaceLogic, _scopeStorage);
         var form = formFactory.CreateObjectFormForItem(item,
-            new FormFactoryConfiguration
+            new FormFactoryContext
             {
                 ViewModeId = viewMode ?? string.Empty,
                 Factory = _temporaryExtentFactory
@@ -68,7 +68,7 @@ public class FormsControllerInternal
             
         var formFactory = new CollectionFormFactory(_workspaceLogic, _scopeStorage);
         var form = formFactory.CreateCollectionFormForExtent(extent,
-                new FormFactoryConfiguration
+                new FormFactoryContext
                 {
                     ViewModeId = viewMode ?? string.Empty,
                     Factory = _temporaryExtentFactory
@@ -94,7 +94,7 @@ public class FormsControllerInternal
     {
         var formFactory = new ObjectFormFactory(_workspaceLogic, _scopeStorage);
 
-        var configurationMode = new FormFactoryConfiguration
+        var configurationMode = new FormFactoryContext
         {
             ViewModeId = viewMode ?? string.Empty,
             Factory = _temporaryExtentFactory

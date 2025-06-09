@@ -5,24 +5,24 @@ namespace DatenMeister.Forms.FormFactory;
 
 public interface ITableFormFactory
 {
-    IElement? CreateTableFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
+    IElement? CreateTableFormForCollection(IReflectiveCollection collection, FormFactoryContext context);
 
     /// <summary>
     ///     Creates the list form for a specific meta class.
     /// </summary>
     /// <param name="metaClass">Metaclass to be handled</param>
-    /// <param name="configuration">Configuration of the metaclass. </param>
+    /// <param name="context">Configuration of the metaclass. </param>
     /// <returns></returns>
-    IElement? CreateTableFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+    IElement? CreateTableFormForMetaClass(IElement metaClass, FormFactoryContext context);
 
     IElement? CreateTableFormForProperty(IObject? element, string propertyName, IElement? propertyType,
-        FormFactoryConfiguration configuration);
+        FormFactoryContext context);
 
 
     public IElement? CreateTableFormForPropertyValues(IObject element, string propertyName,
-        FormFactoryConfiguration configuration)
+        FormFactoryContext context)
     {
-        return CreateTableFormForProperty(element, propertyName, null, configuration);
+        return CreateTableFormForProperty(element, propertyName, null, context);
     }
     
 }

@@ -33,7 +33,7 @@ public class FormCreatorTests
         
         var formCreator = new TableFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
-            formCreator.CreateTableFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
+            formCreator.CreateTableFormForMetaClass(zipModel.ZipCode!, new FormFactoryContext());
         Assert.That(createdForm, Is.Not.Null);
         var fields =
             createdForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
@@ -69,7 +69,7 @@ public class FormCreatorTests
         var formsLogic = new CollectionFormFactory(workspaceLogic, scopeStorage);
         var collectionForm = formsLogic.CreateCollectionFormForExtent(
             extent, 
-            new FormFactoryConfiguration());
+            new FormFactoryContext());
         Assert.That(collectionForm, Is.Not.Null);
         var tableForms = FormMethods.GetTableForms(collectionForm!).ToList();
         Assert.That(tableForms.Count, Is.EqualTo(2));
@@ -103,7 +103,7 @@ public class FormCreatorTests
         
         var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
-            formCreator.CreateObjectFormForMetaClass(zipModel.ZipCode!, new FormFactoryConfiguration());
+            formCreator.CreateObjectFormForMetaClass(zipModel.ZipCode!, new FormFactoryContext());
         var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
@@ -136,7 +136,7 @@ public class FormCreatorTests
         
         var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
-            formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
+            formCreator.CreateObjectFormForItem(instance, new FormFactoryContext());
         var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
@@ -168,7 +168,7 @@ public class FormCreatorTests
         
         var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
-            formCreator.CreateObjectFormForItem(instance, new FormFactoryConfiguration());
+            formCreator.CreateObjectFormForItem(instance, new FormFactoryContext());
             
         var rowForms = FormMethods.GetRowForms(createdForm).ToList();
         Assert.That(rowForms.Count, Is.GreaterThan(0));
@@ -196,7 +196,7 @@ public class FormCreatorTests
             
         var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
         var createdForm =
-            formCreator.CreateObjectFormForItem(packageModel, new FormFactoryConfiguration());
+            formCreator.CreateObjectFormForItem(packageModel, new FormFactoryContext());
             
         var rowForms = FormMethods.GetRowForms(createdForm).ToList();
         Assert.That(rowForms.Count, Is.EqualTo(1));
@@ -237,7 +237,7 @@ public class FormCreatorTests
         var extent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);
         Assert.That(extent, Is.Not.Null);
 
-        var createdForm = formCreator.CreateCollectionFormForExtent(extent, new FormFactoryConfiguration()
+        var createdForm = formCreator.CreateCollectionFormForExtent(extent, new FormFactoryContext()
         {
             AllowFormModifications = true
         });

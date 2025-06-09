@@ -38,8 +38,8 @@ public class TestAutoColumnCreator1
 
         // Execute the stuff
         var creator = new CollectionFormCreator(workspaceLogic, scopeStorage);
-        var result = creator.CreateCollectionFormForExtent(
-            extent,extent.elements(), new FormFactoryConfiguration());
+        var result = creator.CreateCollectionFormForCollection(
+            extent,extent.elements(), new FormFactoryContext());
         Assert.That(result, Is.Not.Null);
         var tab = result.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
@@ -92,8 +92,8 @@ public class TestAutoColumnCreator1
 
         // Execute the stuff
         var creator = new CollectionFormCreator(workspaceLogic, scopeStorage);
-        var result = creator.CreateCollectionFormForExtent(
-            extent, extent.elements(), new FormFactoryConfiguration());
+        var result = creator.CreateCollectionFormForCollection(
+            extent, extent.elements(), new FormFactoryContext());
         Assert.That(result, Is.Not.Null);
 
         var tab = result

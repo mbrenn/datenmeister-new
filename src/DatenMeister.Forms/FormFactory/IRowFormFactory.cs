@@ -4,7 +4,7 @@ namespace DatenMeister.Forms.FormFactory;
 
 public interface IRowFormFactory
 {
-    IElement? CreateRowFormForItem(IObject element, FormFactoryConfiguration configuration);
+    IElement? CreateRowFormForItem(IObject element, FormFactoryContext context);
 
     /// <summary>
     /// Creates the detail form by a certain metaclass
@@ -12,5 +12,5 @@ public interface IRowFormFactory
     /// <param name="metaClass">Metaclass to be used</param>
     /// <param name="creationMode">Creation Mode to be used</param>
     /// <returns></returns>
-    IElement? CreateRowFormByMetaClass(IElement metaClass, FormFactoryConfiguration? creationMode);
+    IElement? CreateRowFormByMetaClass(IElement metaClass, FormFactoryContext? creationMode);
 }

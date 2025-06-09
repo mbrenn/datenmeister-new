@@ -6,7 +6,7 @@ namespace DatenMeister.Forms;
 /// A configuration being used for the form factories to define the behavior of how to
 /// create a form upon a certain request
 /// </summary>
-public record FormFactoryConfiguration
+public record FormFactoryContext
 {
     /// <summary>
     /// Allows the use of the form finder
@@ -69,7 +69,7 @@ public record FormFactoryConfiguration
     /// </summary>
     public bool IsForTableForm { get; set; }
 
-    public static FormFactoryConfiguration CreateByMetaClassOnly =>
+    public static FormFactoryContext CreateByMetaClassOnly =>
         new() { AutomaticMetaClassField = false, CreateByPropertyValues = false };
 
     /// <summary>

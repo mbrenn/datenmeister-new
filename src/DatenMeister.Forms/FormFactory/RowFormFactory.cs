@@ -29,12 +29,12 @@ public class RowFormFactory : FormFactoryBase, IRowFormFactory
     /// <param name="metaClass">Metaclass to be evaluated</param>
     /// <param name="configuration">Form configuration to be used</param>
     /// <returns></returns>
-    public IElement? CreateRowFormByMetaClass(IElement metaClass, FormFactoryConfiguration? configuration)
+    public IElement? CreateRowFormByMetaClass(IElement metaClass, FormFactoryContext? configuration)
     {
         using var _ = new StopWatchLogger(Logger, "Timing for CreateRowFormByMetaClass: ", LogLevel.Trace);
         // Ok, not an extent now do the right things
         IElement? rowForm = null;
-        configuration ??= new FormFactoryConfiguration();
+        configuration ??= new FormFactoryContext();
 
         if (configuration.ViaFormFinder)
         {
@@ -60,7 +60,7 @@ public class RowFormFactory : FormFactoryBase, IRowFormFactory
             var formCreator = new RowFormFactory(WorkspaceLogic, ScopeStorage);
             rowForm = formCreator.CreateRowFormByMetaClass(
                 metaClass,
-                new FormFactoryConfiguration { IncludeOnlyCommonProperties = true, AllowFormModifications = false});
+                new FormFactoryContext { IncludeOnlyCommonProperties = true, AllowFormModifications = false});
 
             FormMethods.AddToFormCreationProtocol(rowForm, "[FormFactory.CreateRowFormByMetaClass] Created Form via FormCreator");
         }
@@ -98,9 +98,9 @@ public class RowFormFactory : FormFactoryBase, IRowFormFactory
     /// Here, the metaclass or the included properties are used
     /// </summary>
     /// <param name="element">Element to be evaluted</param>
-    /// <param name="configuration">Configuration how this element shall be evaluated</param>
+    /// <param name="context">Configuration how this element shall be evaluated</param>
     /// <returns>The created element</returns>
-    public IElement? CreateRowFormForItem(IObject element, FormFactoryConfiguration configuration)
+    public IElement? CreateRowFormForItem(IObject element, FormFactoryContext context)
     {
         ArgumentNullException.ThrowIfNull(element);
         
@@ -108,7 +108,7 @@ public class RowFormFactory : FormFactoryBase, IRowFormFactory
         IElement? foundForm = null;
         var extent = (element as IHasExtent)?.Extent;
 
-        if (configuration.ViaFormFinder)
+        if (context.ViaFormFinder)
         {
             // Tries to find the form
             var viewFinder = new FormFinder.FormFinder(FormMethods);
@@ -120,7 +120,7 @@ public class RowFormFactory : FormFactoryBase, IRowFormFactory
                     metaClass = (element as IElement)?.getMetaClass(),
                     FormType = _Forms.___FormType.Row,
                     extentTypes = extent == null ? [] : extent.GetConfiguration().ExtentTypes,
-                    viewModeId = configuration.ViewModeId
+                    viewModeId = context.ViewModeId
                 }).FirstOrDefault();
 
             if (foundForm != null)
@@ -132,25 +132,25 @@ public class RowFormFactory : FormFactoryBase, IRowFormFactory
             }
         }
 
-        if (foundForm == null && configuration.ViaFormCreator)
+        if (foundForm == null && context.ViaFormCreator)
         {
             // Ok, we have not found the form. So create one
             var formCreator = new RowFormFactory(WorkspaceLogic, ScopeStorage);
-            foundForm = formCreator.CreateRowFormForItem(element, configuration);
+            foundForm = formCreator.CreateRowFormForItem(element, context);
             FormMethods.AddToFormCreationProtocol(foundForm, "[FormFactory.CreateRowFormForItem] Created Form via FormCreator");
         }
 
         if (foundForm != null)
         {
             FormsState.CallFormsModificationPlugins(
-                configuration,
+                context,
                 new FormCreationContext
                 {
                     MetaClass = (element as IElement)?.getMetaClass(),
                     FormType = _Forms.___FormType.Row,
                     ExtentTypes = extent?.GetConfiguration().ExtentTypes ?? [],
                     DetailElement = element,
-                    IsReadOnly = configuration.IsReadOnly
+                    IsReadOnly = context.IsReadOnly
                 },
                 ref foundForm);
                 

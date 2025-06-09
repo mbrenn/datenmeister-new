@@ -11,9 +11,9 @@ public interface ICollectionFormFactory
     /// This method can be used when the object to which a form shall be provided is not available 
     /// </summary>
     /// <param name="metaClass">MetaClass to which the form shall be provided</param>
-    /// <param name="configuration">Configuration to be used</param>
+    /// <param name="context">Configuration to be used</param>
     /// <returns>The instance of the extent form</returns>
-    IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
+    IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryContext context);
 
-    IElement? CreateCollectionFormForExtent(IExtent extent, IReflectiveCollection collection, FormFactoryConfiguration configuration);
+    IElement? CreateCollectionFormForCollection(IExtent extent, IReflectiveCollection collection, FormFactoryContext context);
 }

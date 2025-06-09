@@ -75,7 +75,7 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
         {
             // Create form
             var formCreator = new TableFormFactory(reportLogic.WorkspaceLogic, reportLogic.ScopeStorage);
-            form = formCreator.CreateTableFormForCollection(elements, new FormFactoryConfiguration());
+            form = formCreator.CreateTableFormForCollection(elements, new FormFactoryContext());
         }
 
         // Creates the table

@@ -12,9 +12,9 @@ public class TypeUriMappingLogic
 {
     public class Entry
     {
-        public string TypeUri { get; set; }
+        public string TypeUri { get; set; } = string.Empty;
 
-        public string ClassFullName { get; set; }
+        public string ClassFullName { get; set; } = string.Empty;
 
         public TypeKind TypeKind { get; set; }
     }

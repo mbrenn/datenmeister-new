@@ -23,9 +23,9 @@ public class RowFormCreator : FormCreator, IRowFormFactory
     /// <param name="element"></param>
     /// <param name="creationMode"></param>
     /// <returns></returns>
-    public IElement CreateRowFormForItem(IObject element, FormFactoryConfiguration? creationMode = null)
+    public IElement CreateRowFormForItem(IObject element, FormFactoryContext? creationMode = null)
     {
-        creationMode ??= new FormFactoryConfiguration();
+        creationMode ??= new FormFactoryContext();
         var cache = new FormCreatorCache();
         var createdForm = GetMofFactory(creationMode).create(_Forms.TheOne.__RowForm);
         createdForm.set(_Forms._RowForm.name, "Item");
@@ -49,9 +49,9 @@ public class RowFormCreator : FormCreator, IRowFormFactory
     /// <param name="metaClass">Metaclass to which the form will be created</param>
     /// <param name="creationMode">The creation mode being used</param>
     /// <returns>The created form for the metaclass</returns>
-    public IElement CreateRowFormByMetaClass(IElement? metaClass, FormFactoryConfiguration? creationMode = null)
+    public IElement CreateRowFormByMetaClass(IElement? metaClass, FormFactoryContext? creationMode = null)
     {
-        creationMode ??= new FormFactoryConfiguration();
+        creationMode ??= new FormFactoryContext();
         var createdForm = GetMofFactory(creationMode).create(_Forms.TheOne.__RowForm);
         var name = NamedElementMethods.GetName(metaClass);
         createdForm.set(_Forms._RowForm.name, $"{name} - Detail");

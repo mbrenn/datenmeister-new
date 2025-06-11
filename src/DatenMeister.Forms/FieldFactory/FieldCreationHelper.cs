@@ -19,29 +19,28 @@ public static class FieldCreationHelper
     /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
     public static bool AddFieldsToRowOrTableFormByMetaClass(
         IObject rowOrObjectForm,
-        IObject? metaClass,
+        IElement? metaClass,
         NewFormCreationContext context)
     {
+        if (metaClass == null) return false;
         var cache = context.ScopeStorage.Get<FormCreatorCache>();
+        if (!cache.CoveredMetaClasses.Add(metaClass))
+        {
+            // Already covered so we don't to manage it
+            return false;
+        }
 
         var wasInMetaClass = false;
-        if (metaClass == null) return false;
 
         var classifierMethods =
             ClassifierMethods.GetPropertiesOfClassifier(metaClass)
                 .Where(x => x.isSet("name")).ToList();
-        var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
 
         foreach (var property in classifierMethods)
         {
             wasInMetaClass = true;
             var propertyName = property.get<string?>("name");
-
-            if (propertyName == null ||
-                focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
-                // Skip the property name, when we would like to have focus on certain property names
-                continue;
-
+            
             var isAlreadyIn = rowOrObjectForm
                 .get<IReflectiveCollection>(_Forms._RowForm.field)
                 .OfType<IObject>()

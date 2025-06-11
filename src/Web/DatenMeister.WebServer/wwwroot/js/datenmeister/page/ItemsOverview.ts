@@ -15,6 +15,8 @@ export async function init(workspace: string, extentUri: string) : Promise<void>
         }
     );
     
+    $("#items_collection_uri").text(extentUri);
+    
     await listForm.createCollectionForRootElements(        
         workspace,
         extentUri,

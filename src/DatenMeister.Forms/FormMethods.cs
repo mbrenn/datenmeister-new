@@ -15,6 +15,7 @@ using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFinder;
+using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms;
 
@@ -551,16 +552,6 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             .FirstOrDefault();
     }
 
-
-    /// <summary>
-    ///     Gets the extent form containing the subforms
-    /// </summary>
-    /// <param name="subForms">The forms to be added to the extent forms</param>
-    /// <returns>The created extent</returns>
-    public static IElement GetCollectionFormForSubforms(params IElement[] subForms)
-    {
-        return FormCreator.CollectionFormCreator.CreateCollectionFormFromTabs(null, subForms);
-    }
         
     /// <summary>
     ///     Gets the extent form containing the subforms
@@ -772,7 +763,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
             && (metaClass?.equals(_Forms.TheOne.__RowForm) == true ||
                 metaClass?.equals(_Forms.TheOne.__TableForm) == true))
         {
-            var converted = FormMethods.GetCollectionFormForSubforms(form);
+            var converted = CollectionFormHelper.CreateCollectionFormFromTabs(form);
             converted.set(_Forms._Form.originalUri, form.GetUri());
             converted.set(
                 _Forms._Form.originalWorkspace, 

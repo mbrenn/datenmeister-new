@@ -15,5 +15,8 @@ public interface ICollectionFormFactory
     /// <returns>The instance of the extent form</returns>
     IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryContext context);
 
-    IElement? CreateCollectionFormForCollection(IExtent extent, IReflectiveCollection collection, FormFactoryContext context);
+    IElement? CreateCollectionFormForCollection(
+        IExtent extent,
+        IReflectiveCollection collection,
+        FormFactoryContext context);
 }

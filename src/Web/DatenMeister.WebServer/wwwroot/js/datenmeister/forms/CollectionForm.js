@@ -59,9 +59,7 @@ export class CollectionFormCreator {
         // Load default viewmode
         this.statusTextControl.setListStatus("Loading Default Viewmode", false);
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
-            /*
-            Gets the default viewmode for the extent to be shown
-             */
+            // Gets the default viewmode for the extent to be shown
             configuration.viewMode = await VML.getDefaultViewModeIfNotSet(workspace, extentUri);
         }
         this.statusTextControl.setListStatus("Loading Default Viewmode", true);
@@ -204,14 +202,14 @@ export class CollectionFormCreator {
             this.statusTextControl.setListStatus("Actionfields", true);
         }
         this.statusTextControl.setListStatus("Create Tabs", false);
-        // Create the tabs
+        // Create the table
+        itemContainer.empty();
         const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
-        var firstTab = true;
         for (let n in tabs) {
-            const tab = tabs[n];
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
+            const tab = tabs[n];
             // The function which is capable to create the content of the tab
             // This function must be indirectly created since it works in the enumeration value
             const tabCreationFunction = async function (tab, form) {
@@ -252,11 +250,6 @@ export class CollectionFormCreator {
             this.statusTextControl.setListStatus("Create tab " + n, false);
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
-            if (firstTab) {
-                // Empties the loading information on first tab
-                itemContainer.empty();
-                firstTab = false;
-            }
             itemContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }

@@ -336,19 +336,20 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
 
         this.statusTextControl.setListStatus("Create Tabs", false);
         
-        // Create the tabs
+        // Create the table
+        
+        itemContainer.empty();
+        
         const tabs = 
             this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array) as Array<Mof.DmObject>;
-
-        var firstTab = true;
         for (let n in tabs) {
 
-            const tab = tabs[n] as Mof.DmObject;
-            
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
-
+            
+            const tab = tabs[n] as Mof.DmObject;
+            
             // The function which is capable to create the content of the tab
             // This function must be indirectly created since it works in the enumeration value
             const tabCreationFunction = async function(tab:DmObject, form: JQuery) {
@@ -396,11 +397,6 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
 
-            if (firstTab) {
-                // Empties the loading information on first tab
-                itemContainer.empty();
-                firstTab = false;
-            }
             itemContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }

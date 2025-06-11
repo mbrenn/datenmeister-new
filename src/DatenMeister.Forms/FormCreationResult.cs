@@ -1,3 +1,7 @@
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+
 namespace DatenMeister.Forms;
 
 /// <summary>
@@ -8,6 +12,15 @@ namespace DatenMeister.Forms;
 public class FormCreationResult
 {
     /// <summary>
+    /// Gets or sets a value whether the main content is created out of the request.
+    /// This allows to implement fallback mechanisms in case one handler
+    /// is not able to create the requested form.
+    /// As a simplified rule: As long as the MainContent is not created, one handler shall try
+    /// to create the full form. 
+    /// </summary>
+    public bool IsMainContentCreated { get; set; }
+    
+    /// <summary>
     /// Gets or sets a value if the request has been managed.
     /// If the request is not managed until the end of the chain, an error will be sent out
     /// </summary>
@@ -17,4 +30,35 @@ public class FormCreationResult
     /// Gets or sets the information whether the request is finalized
     /// </summary>
     public bool IsFinalized { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the result of the activity 
+    /// </summary>
+    public IElement? Result { get; set; }
+    
+    /// <summary>
+    ///     Adds a certain text to the form creation protocol.
+    ///     This protocol is used to allow more easy debugging of the form creation process.
+    ///     Otherwise, the form is 'just' there and nobody knows how it was created.
+    /// </summary>
+    /// <param name="form">For to which the message shall be addedparam</param>
+    /// <param name="message">Message it self that shall be added</param>
+    public void AddToFormCreationProtocol(string message)
+    {
+        if (Result == null) return;
+
+        lock (Result)
+        {   
+            var currentMessage =
+                Result.getOrDefault<string>(_Forms._Form.creationProtocol)
+                ?? string.Empty;
+
+            if (currentMessage != string.Empty)
+                currentMessage += "\r\n" + message;
+            else
+                currentMessage = message;
+
+            Result.set(_Forms._Form.creationProtocol, currentMessage);
+        }
+    }
 }

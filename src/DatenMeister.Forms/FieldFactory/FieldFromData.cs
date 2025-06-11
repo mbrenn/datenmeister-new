@@ -1,4 +1,3 @@
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -8,13 +7,13 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
 
-namespace DatenMeister.Forms.FormCreator;
+namespace DatenMeister.Forms.FieldFactory;
 
-public class FieldCreator : FormCreator
+public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
 {
     #region CachedTypes
 
-    class CachedTypesDefinition
+    private class CachedTypesDefinition
     {
         /// <summary>
         /// Caches the boolean type
@@ -53,27 +52,13 @@ public class FieldCreator : FormCreator
 
     private Workspace? _uriResolver;
     
-    public FieldCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-        : base(workspaceLogic, scopeStorage)
+    public void CreateFieldForProperty(IObject? property, NewFormCreationContext context, FormCreationResult result)
     {
-
-    }
-
-    /// <summary>
-    /// Gets the field data, depending upon the given property
-    /// </summary>
-    /// <param name="property">Uml-Property which is requesting a field</param>
-    /// <param name="propertyName">Name of the property wo whose values the list form shall be created.</param>
-    /// <param name="context">Defines the mode how to create the fields</param>
-    /// <returns>The field data</returns>
-    public IElement CreateFieldForProperty(IObject? property,
-        string? propertyName,
-        FormFactoryContext context)
-    {
+        var propertyName = property.getOrDefault<string>(_UML._Classification._Property.name);
         if (property == null && propertyName == null)
             throw new InvalidOperationException("property == null && propertyName == null");
 
-        var factory = GetMofFactory(context);
+        var factory = context.Global.Factory;
 
         var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
 
@@ -82,7 +67,7 @@ public class FieldCreator : FormCreator
         var isReadOnly = context.IsReadOnly;
 
         // Check, if field property is an enumeration
-        _uriResolver ??= WorkspaceLogic.GetTypesWorkspace();
+        _uriResolver ??= workspaceLogic.GetTypesWorkspace();
 
         CachedTypes.StringType ??= _PrimitiveTypes.TheOne.__String;
         CachedTypes.IntegerType ??= _PrimitiveTypes.TheOne.__Integer;
@@ -97,29 +82,29 @@ public class FieldCreator : FormCreator
         {
             if (propertyTypeMetaClass.equals(_UML.TheOne.SimpleClassifiers.__Enumeration))
             {
-                return CreateFieldForEnumeration(propertyName, propertyType, context);
+                result.Result = CreateFieldForEnumeration(propertyName, propertyType, context);
             }
 
-            if (propertyType.equals(CachedTypes.BooleanType))
+            else if (propertyType.equals(CachedTypes.BooleanType))
             {
                 // If we have a boolean and the field is not for a list form
                 var checkbox = factory.create(_Forms.TheOne.__CheckboxFieldData);
                 checkbox.set(_Forms._CheckboxFieldData.name, propertyName);
                 checkbox.set(_Forms._CheckboxFieldData.title, propertyName);
                 checkbox.set(_Forms._CheckboxFieldData.isReadOnly, isReadOnly);
-                return checkbox;
+                result.Result = checkbox;
             }
 
-            if (propertyType.equals(CachedTypes.DateTimeType))
+            else if (propertyType.equals(CachedTypes.DateTimeType))
             {
                 var dateTimeField = factory.create(_Forms.TheOne.__DateTimeFieldData);
                 dateTimeField.set(_Forms._CheckboxFieldData.name, propertyName);
                 dateTimeField.set(_Forms._CheckboxFieldData.title, propertyName);
                 dateTimeField.set(_Forms._CheckboxFieldData.isReadOnly, isReadOnly);
-                return dateTimeField;
+                result.Result = dateTimeField;
             }
 
-            if (
+            else if (
                 !propertyType.equals(CachedTypes.StringType) &&
                 !propertyType.equals(CachedTypes.IntegerType) &&
                 !propertyType.equals(CachedTypes.RealType) &&
@@ -145,14 +130,12 @@ public class FieldCreator : FormCreator
                         _Forms._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                     elementsField.set(_Forms._SubElementFieldData.isReadOnly, isReadOnly);
 
-                    IElement? enumerationListForm = null;
                     if (!context.IsForTableForm)
                     {
-                        if (FormLogic != null)
-                            enumerationListForm =
-                                new TableFormFactory(WorkspaceLogic, ScopeStorage)
-                                    .CreateTableFormForMetaClass(propertyType, context);
+                        var enumerationListForm = 
+                            FormCreation.CreateTableFormForMetaClass(propertyType, context).Result;
 
+                        /* TODO: Rescue
                         // Create the internal form out of the metaclass
                         if (enumerationListForm == null
                             && context.CreateByMetaClass)
@@ -164,15 +147,16 @@ public class FieldCreator : FormCreator
                                     context with { IsForTableForm = true },
                                     property as IElement);
                         }
+                        */
 
                         if (enumerationListForm != null)
                             elementsField.set(_Forms._SubElementFieldData.form, enumerationListForm);
                     }
 
-                    return elementsField;
+                    result.Result = elementsField;
                 }
 
-                if (Configuration.CreateDropDownForReferences)
+                else if (Configuration.CreateDropDownForReferences)
                 {
                     var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
                     var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
@@ -195,7 +179,7 @@ public class FieldCreator : FormCreator
                     dropDownByQueryData.set(_Forms._SubElementFieldData.name, propertyName);
                     dropDownByQueryData.set(_Forms._SubElementFieldData.title, propertyName);
 
-                    return dropDownByQueryData;
+                    result.Result = dropDownByQueryData;
                 }
                 // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable CS0162 // Unreachable code detected
@@ -211,7 +195,7 @@ public class FieldCreator : FormCreator
                         _Forms._ReferenceFieldData.metaClassFilter,
                         new[] { propertyType });
 
-                    return reference;
+                    result.Result = reference;
                 }   
 #pragma warning restore CS0162 // Unreachable code detected
                 // ReSharper restore HeuristicUnreachableCode
@@ -236,23 +220,34 @@ public class FieldCreator : FormCreator
                 FormMethods.AddDefaultTypeForNewElement(element, propertyType);
             }
 
-            return element;
+            result.Result = element;
         }
 
-        // Per default, assume some kind of text
-        var column = factory.create(_Forms.TheOne.__TextFieldData);
-        column.set(_Forms._TextFieldData.name, propertyName);
-        column.set(_Forms._TextFieldData.title, propertyName);
-        column.set(_Forms._TextFieldData.isReadOnly, isReadOnly);
-
-        // If propertyType is an integer, the field can be smaller
-        if (propertyType.equals(CachedTypes.IntegerType)
-            || propertyType.equals(CachedTypes.UnlimitedNaturalType))
+        if (result.Result == null)
         {
-            column.set(_Forms._TextFieldData.width, 10);
-        }
 
-        return column;
+            // Per default, assume some kind of text
+            var column = factory.create(_Forms.TheOne.__TextFieldData);
+            column.set(_Forms._TextFieldData.name, propertyName);
+            column.set(_Forms._TextFieldData.title, propertyName);
+            column.set(_Forms._TextFieldData.isReadOnly, isReadOnly);
+
+            // If propertyType is an integer, the field can be smaller
+            if (propertyType.equals(CachedTypes.IntegerType)
+                || propertyType.equals(CachedTypes.UnlimitedNaturalType))
+            {
+                column.set(_Forms._TextFieldData.width, 10);
+            }
+
+            result.Result = column;
+        }
+        
+
+        if (result.Result != null)
+        {
+            result.IsManaged = true;
+            result.IsMainContentCreated = true;
+        }
     }
 
     /// <summary>
@@ -260,15 +255,15 @@ public class FieldCreator : FormCreator
     /// </summary>
     /// <param name="propertyName">Name of the property being used to add title and name</param>
     /// <param name="propertyType">Type of the enumeration</param>
-    /// <param name="creationMode">The used creation mode</param>
+    /// <param name="context">The used creation mode</param>
     /// <returns>The created element of the enumeration</returns>
     public IElement CreateFieldForEnumeration(
         string propertyName,
         IElement propertyType,
-        FormFactoryContext creationMode)
+        NewFormCreationContext context)
     {
-        var factory = GetMofFactory(creationMode);
-        var isReadOnly = creationMode.IsReadOnly;
+        var factory = context.Global.Factory;
+        var isReadOnly = context.IsReadOnly;
         // If we have an enumeration (C#: Enum) and the field is not for a list form
         var comboBox = factory.create(_Forms.TheOne.__DropDownFieldData);
         comboBox.set(_Forms._DropDownFieldData.name, propertyName);

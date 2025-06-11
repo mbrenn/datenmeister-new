@@ -19,7 +19,6 @@ public class FormsControllerInternal
     {
         _workspaceLogic = workspaceLogic;
         _scopeStorage = scopeStorage;
-            
         _temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
         _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic);
     }
@@ -65,23 +64,26 @@ public class FormsControllerInternal
         {
             throw new InvalidOperationException("Extent not found: " + extentUri);
         }
+
+        var factory = new NewFormCreationContextFactory(_workspaceLogic, _scopeStorage)
+        {
+            MofFactory = _temporaryExtentFactory
+        };
+        
+        var formContext = factory.Create();
+
+        var form = FormCreation.CreateCollectionFormForCollection(
+            extent.elements(),
+            formContext);
             
-        var formFactory = new CollectionFormFactory(_workspaceLogic, _scopeStorage);
-        var form = formFactory.CreateCollectionFormForExtent(extent,
-                new FormFactoryContext
-                {
-                    ViewModeId = viewMode ?? string.Empty,
-                    Factory = _temporaryExtentFactory
-                });
-            
-        if (form == null)
+        if (form.Result == null)
         {
             throw new InvalidOperationException("Form is not defined");
         }
             
         _temporaryLogic.TemporaryExtent.elements().add(form);
 
-        return form;
+        return form.Result;
     }
 
     /// <summary>

@@ -21,6 +21,11 @@
         <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
         <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
         <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+        <ProjectReference Include="..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="RowForm\" />
     </ItemGroup>
 
 </Project>

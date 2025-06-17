@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Actions.Forms;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Forms;
 using DatenMeister.Forms.FormModifications;
 using NUnit.Framework;
 
@@ -12,6 +13,7 @@ public class ActionFormTests
     [Test]
     public void TestAddingOfActionButtonInActions()
     {
+        // TODO: Load the full extents
         var form = InMemoryObject.CreateEmpty(_Forms.TheOne.__Form);
         var actionDirect = InMemoryObject.CreateEmpty(_Actions.TheOne.__Action);
         var actionIndirect1 = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionSet);
@@ -19,29 +21,37 @@ public class ActionFormTests
         var actionNon = InMemoryObject.CreateEmpty(_Management.TheOne.__Extent);
 
         var formHandler = new ActionFormPlugin.ActionFormModificationPlugin();
-        var context = new FormCreationContext()
+        var context = new NewFormCreationContext
         {
-            DetailElement = actionDirect,
-            FormType = _Forms.___FormType.Row,
-            MetaClass = actionDirect.metaclass
+            Global = new NewFormCreationContext.GlobalContext
+            {
+                Factory = InMemoryObject.TemporaryFactory
+            }
         };
-            
+
+        var result = new FormCreationResult
+        {
+            Form = form
+        };
+
         // Test 1 
-        Assert.That(formHandler.ModifyForm(context, form), Is.True);
+        formHandler.CreateRowFormForMetaClass(actionDirect.metaclass!, context, result);
+        Assert.That(result.IsManaged, Is.True);
+        result.IsManaged = false;
             
-        // Test 2 
-        context.DetailElement = actionIndirect1;
-        context.MetaClass = actionIndirect1.metaclass;
-        Assert.That(formHandler.ModifyForm(context, form), Is.True);
+        // Test 2
+        formHandler.CreateRowFormForMetaClass(actionIndirect1.metaclass!, context, result);
+        Assert.That(result.IsManaged, Is.True);
+        result.IsManaged = false;
             
         // Test 3
-        context.DetailElement = actionIndirect2;
-        context.MetaClass = actionIndirect2.metaclass;
-        Assert.That(formHandler.ModifyForm(context, form), Is.True);
+        formHandler.CreateRowFormForMetaClass(actionIndirect2.metaclass!, context, result);
+        Assert.That(result.IsManaged, Is.True);
+        result.IsManaged = false;
             
         // Test 4
-        context.DetailElement = actionNon;
-        context.MetaClass = actionNon.metaclass;
-        Assert.That(formHandler.ModifyForm(context, form), Is.False);
+        formHandler.CreateRowFormForMetaClass(actionNon.metaclass!, context, result);
+        Assert.That(result.IsManaged, Is.False);
+        result.IsManaged = false;
     }
 }

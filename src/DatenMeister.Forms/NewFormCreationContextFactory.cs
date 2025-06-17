@@ -68,6 +68,13 @@ public class NewFormCreationContextFactory
         
         // Build up the FieldForm Queue
         context.Global.FieldFormFactories.Add(new FieldFromData(_workspaceLogic));
+        
+        // Now go through the available Form Modification Plugins
+        foreach (var plugin in State.NewFormModificationPlugins)
+        {
+            plugin(context);
+        }
+        
         return context;
     }
 }

@@ -5,6 +5,7 @@ namespace DatenMeister.Forms.FormModifications;
 /// <summary>
 ///     Defines the interface to modify the form, depending on the context
 /// </summary>
+[Obsolete]
 public interface IFormModificationPlugin
 {
     /// <summary>
@@ -20,4 +21,9 @@ public interface IFormModificationPlugin
     /// </param>
     /// <returns>true, if the form has been modified</returns>
     public bool ModifyForm(FormCreationContext context, IElement form);
+}
+
+public interface INewFormModificationPlugin
+{
+    public void UpdateFactories(NewFormCreationContext context);
 }

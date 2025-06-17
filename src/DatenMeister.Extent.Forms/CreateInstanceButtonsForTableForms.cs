@@ -5,6 +5,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 using DatenMeister.Forms.Helper;
 
@@ -15,13 +16,18 @@ namespace DatenMeister.Extent.Forms;
 ///     the element is currently belonging to.
 ///     Here, the property 'ExtentConfiguration.ExtentDefaultTypes' is being used to retrieve the values
 /// </summary>
-public class CreateInstanceButtonsForTableForms : IFormModificationPlugin
+public class CreateInstanceButtonsForTableForms : INewTableFormFactory
 {
-    public bool ModifyForm(FormCreationContext context, IElement form)
+    public void CreateTableFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+        FormCreationResult result)
     {
-        var extent = context.DetailElement?.GetExtentOf();
-        if (context.FormType == _Forms.___FormType.Table &&
-            extent != null)
+        if (result.Form == null)
+        {
+            throw new InvalidOperationException("Form is null");
+        }
+
+        var extent = collection.GetUriExtentOf();
+        if (extent != null)
         {
             var added = false;
             // Adds the default types as defined in the extent
@@ -30,19 +36,20 @@ public class CreateInstanceButtonsForTableForms : IFormModificationPlugin
             {
                 foreach (var defaultType in defaultTypes.OfType<IElement>())
                 {
-                    FormMethods.AddToFormCreationProtocol(
-                        form,
+                    result.AddToFormCreationProtocol(
                         "[CreateInstanceButtonsForTableForms]: Add DefaultType per ExtentDefaultTypes property " +
                         NamedElementMethods.GetName(defaultType));
                         
-                    FormMethods.AddDefaultTypeForNewElement(form, defaultType);
+                    FormMethods.AddDefaultTypeForNewElement(result.Form, defaultType);
                     added = true;
                 }
             }
 
-            return added;
+            result.IsManaged = added;
         }
+    }
 
-        return false;
+    public void CreateTableFormForMetaclass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
+    {
     }
 }

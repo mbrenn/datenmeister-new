@@ -59,7 +59,7 @@ public class ZipCodePlugin : IDatenMeisterPlugin
                 // Load Resource
                 var types = _localTypeSupport.AddInternalTypes(
                     ZipCodeModel.PackagePath,
-                    new[] {typeof(ZipCode), typeof(ZipCodeWithState)});
+                    new[] { typeof(ZipCode), typeof(ZipCodeWithState) });
                 zipCodeModel.ZipCode = types.ElementAt(0);
                 zipCodeModel.ZipCodeWithState = types.ElementAt(1);
 
@@ -72,8 +72,8 @@ public class ZipCodePlugin : IDatenMeisterPlugin
                     {
                         MetaClass = _Management.TheOne.__Workspace,
                         FormType = _Forms.___FormType.Object,
-                        PredicateForElement = 
-                            element => 
+                        PredicateForElement =
+                            element =>
                                 element?.getOrDefault<string>(
                                     _Management._Workspace.id) == WorkspaceNames.WorkspaceData
                     });
@@ -84,13 +84,14 @@ public class ZipCodePlugin : IDatenMeisterPlugin
                 _extentSettings.extentTypeSettings.Add(
                     new ExtentType(ZipCodeExtentType));
                 break;
-                
+
             case PluginLoadingPosition.AfterLoadingOfExtents:
                 // Loads the Zipcode Form Modification Plugin in which the user may directly create an zip
                 // code example in a workspace object
                 var formsPluginState = _scopeStorage.Get<FormsState>();
-                formsPluginState.FormModificationPlugins.Add(
-                    new ZipCodeFormModificationPlugin());
+
+                formsPluginState.NewFormModificationPlugins.Add(context =>
+                    context.Global.RowFormFactories.Add(new ZipCodeFormModificationPlugin()));
                 break;
         }
 

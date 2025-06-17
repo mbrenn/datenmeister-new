@@ -6,6 +6,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 using DatenMeister.Plugins;
 
@@ -25,8 +26,8 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
                 var formsPluginState = scopeStorage.Get<FormsState>();
-                formsPluginState.FormModificationPlugins.Add(
-                    new ActionFormModificationPlugin());
+                formsPluginState.NewFormModificationPlugins.Add(
+                    context => context.Global.RowFormFactories.Add(new ActionFormModificationPlugin()));
                 break;
         }
 
@@ -36,30 +37,34 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     /// <summary>
     /// The helper class which includes the action button into the forms for actions
     /// </summary>
-    public class ActionFormModificationPlugin : IFormModificationPlugin
+    public class ActionFormModificationPlugin : INewRowFormFactory
     {
-        public bool ModifyForm(FormCreationContext context, IElement form)
+        public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+        {
+        }
+
+        public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
         {
             var isAction = ClassifierMethods.IsSpecializedClassifierOf(
-                context.MetaClass, _Actions.TheOne.__Action);
+                metaClass, _Actions.TheOne.__Action);
 
-            if (isAction
-                && context.FormType == _Forms.___FormType.Row
-                && context.ParentPropertyName == string.Empty
-                && context.DetailElement != null)
+            if (result.Form == null)
+            {
+                throw new InvalidOperationException("Form is null");
+            }
+
+            if (isAction)
             {
                 // Fitting, create the field
-                var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
-                var actionField = MofFactory.CreateElement(form, _Forms.TheOne.__ActionFieldData);
+                var fields = result.Form.get<IReflectiveSequence>(_Forms._RowForm.field);
+                var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
                 actionField.set(_Forms._ActionFieldData.actionName, "Action.Execute");
                 actionField.set(_Forms._ActionFieldData.title, "Execute Action");
                 actionField.set(_Forms._ActionFieldData.name, "Execute");
                 fields.add(actionField);
 
-                return true;
+                result.IsManaged = true;
             }
-
-            return false;
         }
     }
 

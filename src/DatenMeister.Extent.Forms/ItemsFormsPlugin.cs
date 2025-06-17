@@ -29,7 +29,7 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
-                    
+
                 var formsPlugin = scopeStorage.Get<FormsState>();
 
                 ActionButtonToFormAdder.AddActionButton(
@@ -37,7 +37,7 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                     {
                         FormType = _Forms.___FormType.Row
                     });
-                    
+
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationItemMoveOrCopyNavigate, "Move/Copy")
@@ -62,10 +62,10 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
                     {
-                        ActionButtonPosition = 0, 
+                        ActionButtonPosition = 0,
                         FormType = _Forms.___FormType.Table
                     });
-                    
+
 
                 ActionButtonToFormAdder.AddActionButton(
                     formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListMoveUpItem, "⬆️")
@@ -112,8 +112,8 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                         IsReadOnly = false
                     });
 
-                formsPlugin.FormModificationPlugins.Add(
-                    new CreateInstanceButtonsForTableForms());
+                formsPlugin.NewFormModificationPlugins.Add(context =>
+                    context.Global.TableFormFactories.Add(new CreateInstanceButtonsForTableForms()));
                 break;
         }
 

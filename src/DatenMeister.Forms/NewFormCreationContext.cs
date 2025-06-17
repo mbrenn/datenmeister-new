@@ -8,7 +8,7 @@ namespace DatenMeister.Forms;
 /// A configuration being used for the form factories to define the behavior of how to
 /// create a form upon a certain request
 /// </summary>
-public record NewFormCreationContext
+public class NewFormCreationContext
 {
     public class GlobalContext
     {
@@ -21,6 +21,11 @@ public record NewFormCreationContext
         /// Defines a list of table form factories which have to be parsed through
         /// </summary>
         public List<INewTableFormFactory> TableFormFactories { get; } = [];
+        
+        /// <summary>
+        /// Defines a list of table form factories which have to be parsed through
+        /// </summary>
+        public List<INewRowFormFactory> RowFormFactories { get; } = [];
         
         /// <summary>
         /// Defines a list of table object factories which have to be parsed through
@@ -43,7 +48,7 @@ public record NewFormCreationContext
         public required IFactory Factory { get; init; }
     }
 
-    public ScopeStorage ScopeStorage { get; } = new();
+    public ScopeStorage LocalScopeStorage { get; } = new();
 
     public required GlobalContext Global { get; init; }
     
@@ -62,4 +67,37 @@ public record NewFormCreationContext
     /// If that this is the case, then no fields like SubElementField will be created
     /// </summary>
     public bool IsForTableForm { get; set; }
+
+    /// <summary>
+    /// Clones the context and copies all properties, except the LocalScopeStorage
+    /// </summary>
+    /// <returns>The cloned instance</returns>
+    public NewFormCreationContext Clone()
+    {
+        return new NewFormCreationContext
+        {
+            IsReadOnly = IsReadOnly,
+            Global = Global,
+            ViewModeId = ViewModeId,
+            IsForTableForm = IsForTableForm
+        };
+    }
+
+    public NewFormCreationContext SetReadOnly(bool isReadOnly)
+    {
+        IsReadOnly = isReadOnly;
+        return this;
+    }
+
+    public NewFormCreationContext SetViewModeId(string viewModeId)
+    {
+        ViewModeId = viewModeId;
+        return this;
+    }
+
+    public NewFormCreationContext SetIsForTableForm(bool isForTableForm)
+    {
+        IsForTableForm = isForTableForm;
+        return this;
+    }
 }

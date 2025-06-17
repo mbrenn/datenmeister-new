@@ -21,8 +21,10 @@ namespace DatenMeister.Reports.Simple;
 /// </summary>
 public class SimpleReportCreator
 {
-    private readonly IRowFormFactory _rowFormFactory;
-    private readonly ITableFormFactory _tableFormFactory;
+    /// <summary>
+    /// Stores the creation context which is used to create the correspondign views
+    /// </summary>
+    private NewFormCreationContextFactory _formContextFactory;
 
     /// <summary>
     /// Gets or sets the workspace logic
@@ -46,8 +48,8 @@ public class SimpleReportCreator
     {
         _workspaceLogic = workspaceLogic;
         _reportConfiguration = simpleReportConfiguration;
-        _rowFormFactory = new RowFormCreator(workspaceLogic, scopeStorage);
-        _tableFormFactory = new TableFormCreator(workspaceLogic, scopeStorage);
+        _formContextFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        
     }
 
     /// <summary>
@@ -66,12 +68,6 @@ public class SimpleReportCreator
     /// <param name="textWriter">Text Writer to be used for html file creation</param>
     public void CreateReport(TextWriter textWriter)
     {
-        var formFactoryConfiguration = new FormFactoryContext
-        {
-            AutomaticMetaClassField =
-                _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
-        };
-            
         var rootElementUrl = _reportConfiguration.getOrDefault<string>(_SimpleReportConfiguration.rootElement);
         var workspaceId = _reportConfiguration.getOrDefault<string>(_SimpleReportConfiguration.workspaceId)
                           ?? WorkspaceNames.WorkspaceData;
@@ -96,12 +92,15 @@ public class SimpleReportCreator
         {
             var name = NamedElementMethods.GetFullName(rootElement);
             report.Add(new HtmlHeadline($"Reported Item '{name}'", 1));
-            var detailForm = _rowFormFactory.CreateRowFormForItem(rootElement, formFactoryConfiguration)
-                ?? throw new InvalidOperationException("detailForm is null");
-            
+            var detailForm = FormCreation.CreateRowFormForItem
+                                 (rootElement,
+                                     _formContextFactory.Create())
+                                 .Form
+                             ?? throw new InvalidOperationException("detailForm is null");
+
             _itemFormatter.FormatItem(rootElement, detailForm);
         }
-            
+
         // First, gets the elements to be shown
         IReflectiveCollection elements =
             new TemporaryReflectiveCollection(DefaultClassifierHints.GetPackagedElements(rootElement));
@@ -110,7 +109,7 @@ public class SimpleReportCreator
             elements = elements.GetAllCompositesIncludingThemselves();
         }
 
-        WriteReportForCollection(report, elements, formFactoryConfiguration);
+        WriteReportForCollection(report, elements);
 
         report.EndReport();
     }
@@ -135,18 +134,12 @@ public class SimpleReportCreator
     /// <param name="collection">Reflective collection of elements to be shown</param>
     public void CreateReportForCollection(TextWriter textWriter, IReflectiveCollection collection)
     {
-        var formFactoryConfiguration = new FormFactoryContext
-        {
-            AutomaticMetaClassField =
-                _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
-        };
-
         using var report = new HtmlReport(textWriter);
         _itemFormatter = new ItemFormatter(report);
             
         report.SetDefaultCssStyle();
         report.StartReport("DatenMeister - Report");
-        WriteReportForCollection(report, collection, formFactoryConfiguration);
+        WriteReportForCollection(report, collection);
             
         report.EndReport();
     }
@@ -156,11 +149,9 @@ public class SimpleReportCreator
     /// </summary>
     /// <param name="report"></param>
     /// <param name="elements"></param>
-    /// <param name="creationMode"></param>
     private void WriteReportForCollection(
         IHtmlReport report,
-        IReflectiveCollection elements,
-        FormFactoryContext creationMode)
+        IReflectiveCollection elements)
     {
         report.Add(new HtmlHeadline("Items in collection", 1));
 
@@ -171,7 +162,7 @@ public class SimpleReportCreator
         var addFullNameColumn =
             _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showFullName);
         var collectionReporter = new SimpleReportForCollection(
-            _tableFormFactory,
+            _formContextFactory.Create(),
             _itemFormatter ?? throw new InvalidOperationException("itemFormatter is null"), 
             report)
         {
@@ -180,7 +171,7 @@ public class SimpleReportCreator
             AddFullNameColumn = addFullNameColumn
         };
             
-        collectionReporter.WriteReportForCollection(elements, creationMode);
+        collectionReporter.WriteReportForCollection(elements);
 
     }
 }

@@ -6,6 +6,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormModifications;
+using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Extent.Forms;
 

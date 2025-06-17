@@ -6,8 +6,9 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 
-namespace DatenMeister.Forms.FieldFactory;
+namespace DatenMeister.Forms.Fields;
 
 public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
 {
@@ -63,10 +64,15 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
         var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
 
         propertyName ??= property.get<string>("name");
+        if (propertyName == null)
+        {
+            throw new InvalidOperationException("propertyName == null");
+        }
+        // Checks, if the property is an enumeration.
         var propertyIsCollection = property != null && PropertyMethods.IsCollection(property);
         var isReadOnly = context.IsReadOnly;
 
-        // Check, if field property is an enumeration
+        // Checks, if field property is an enumeration
         _uriResolver ??= workspaceLogic.GetTypesWorkspace();
 
         CachedTypes.StringType ??= _PrimitiveTypes.TheOne.__String;
@@ -82,7 +88,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
         {
             if (propertyTypeMetaClass.equals(_UML.TheOne.SimpleClassifiers.__Enumeration))
             {
-                result.Result = CreateFieldForEnumeration(propertyName, propertyType, context);
+                result.Form = CreateFieldForEnumeration(propertyName, propertyType, context);
             }
 
             else if (propertyType.equals(CachedTypes.BooleanType))
@@ -92,7 +98,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                 checkbox.set(_Forms._CheckboxFieldData.name, propertyName);
                 checkbox.set(_Forms._CheckboxFieldData.title, propertyName);
                 checkbox.set(_Forms._CheckboxFieldData.isReadOnly, isReadOnly);
-                result.Result = checkbox;
+                result.Form = checkbox;
             }
 
             else if (propertyType.equals(CachedTypes.DateTimeType))
@@ -101,7 +107,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                 dateTimeField.set(_Forms._CheckboxFieldData.name, propertyName);
                 dateTimeField.set(_Forms._CheckboxFieldData.title, propertyName);
                 dateTimeField.set(_Forms._CheckboxFieldData.isReadOnly, isReadOnly);
-                result.Result = dateTimeField;
+                result.Form = dateTimeField;
             }
 
             else if (
@@ -133,7 +139,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                     if (!context.IsForTableForm)
                     {
                         var enumerationListForm = 
-                            FormCreation.CreateTableFormForMetaClass(propertyType, context).Result;
+                            FormCreation.CreateTableFormForMetaClass(propertyType, context).Form;
 
                         /* TODO: Rescue
                         // Create the internal form out of the metaclass
@@ -153,7 +159,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                             elementsField.set(_Forms._SubElementFieldData.form, enumerationListForm);
                     }
 
-                    result.Result = elementsField;
+                    result.Form = elementsField;
                 }
 
                 else if (Configuration.CreateDropDownForReferences)
@@ -179,7 +185,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                     dropDownByQueryData.set(_Forms._SubElementFieldData.name, propertyName);
                     dropDownByQueryData.set(_Forms._SubElementFieldData.title, propertyName);
 
-                    result.Result = dropDownByQueryData;
+                    result.Form = dropDownByQueryData;
                 }
                 // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable CS0162 // Unreachable code detected
@@ -195,7 +201,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                         _Forms._ReferenceFieldData.metaClassFilter,
                         new[] { propertyType });
 
-                    result.Result = reference;
+                    result.Form = reference;
                 }   
 #pragma warning restore CS0162 // Unreachable code detected
                 // ReSharper restore HeuristicUnreachableCode
@@ -220,12 +226,11 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                 FormMethods.AddDefaultTypeForNewElement(element, propertyType);
             }
 
-            result.Result = element;
+            result.Form = element;
         }
 
-        if (result.Result == null)
+        else if (result.Form == null)
         {
-
             // Per default, assume some kind of text
             var column = factory.create(_Forms.TheOne.__TextFieldData);
             column.set(_Forms._TextFieldData.name, propertyName);
@@ -239,11 +244,11 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                 column.set(_Forms._TextFieldData.width, 10);
             }
 
-            result.Result = column;
+            result.Form = column;
         }
         
 
-        if (result.Result != null)
+        if (result.Form != null)
         {
             result.IsManaged = true;
             result.IsMainContentCreated = true;

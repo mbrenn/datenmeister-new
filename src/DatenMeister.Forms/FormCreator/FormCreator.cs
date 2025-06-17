@@ -11,10 +11,12 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
 
 namespace DatenMeister.Forms.FormCreator;
 
+[Obsolete]
 /// <summary>
 ///     Creates a view out of the given extent, elements (collection) or element).
 /// </summary>

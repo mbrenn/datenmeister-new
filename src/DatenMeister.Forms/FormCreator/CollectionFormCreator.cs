@@ -9,9 +9,11 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.FormCreator;
 
+[Obsolete]
 public class CollectionFormCreator : FormCreator, ICollectionFormFactory
 {
     public CollectionFormCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
@@ -332,7 +334,9 @@ public class CollectionFormCreator : FormCreator, ICollectionFormFactory
             
         return collectionForm;
     }
-
+    
+    
+    [Obsolete]
     public class P
     {
         public string PropertyName { get; set; } = string.Empty;

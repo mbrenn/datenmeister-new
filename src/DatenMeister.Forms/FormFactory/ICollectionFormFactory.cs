@@ -4,6 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Forms.FormFactory;
 
+[Obsolete]
 public interface ICollectionFormFactory
 {
     /// <summary>

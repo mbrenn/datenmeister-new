@@ -1,11 +1,13 @@
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.Helper;
 
-namespace DatenMeister.Forms.FieldFactory;
+namespace DatenMeister.Forms.Fields;
 
 public static class FieldCreationHelper
 {
@@ -23,7 +25,7 @@ public static class FieldCreationHelper
         NewFormCreationContext context)
     {
         if (metaClass == null) return false;
-        var cache = context.ScopeStorage.Get<FormCreatorCache>();
+        var cache = context.LocalScopeStorage.Get<FormCreatorCache>();
         if (!cache.CoveredMetaClasses.Add(metaClass))
         {
             // Already covered so we don't to manage it
@@ -51,14 +53,14 @@ public static class FieldCreationHelper
             var column = FormCreation.CreateFieldForProperty(
                 property,
                 context);
-            if (column.Result != null)
+            if (column.Form != null)
             {
-                rowOrObjectForm.get<IReflectiveCollection>(_Forms._RowForm.field).add(column.Result);
+                rowOrObjectForm.get<IReflectiveCollection>(_Forms._RowForm.field).add(column.Form);
             }
             
             FormMethods.AddToFormCreationProtocol(rowOrObjectForm,
-                "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass: " +
-                NamedElementMethods.GetName(column));
+                "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass for property: " +
+                NamedElementMethods.GetName(propertyName));
         }
 
 #if DEBUG
@@ -67,5 +69,44 @@ public static class FieldCreationHelper
 #endif
 
         return wasInMetaClass;
+    }
+    
+    public class P
+    {
+        public string PropertyName { get; set; } = string.Empty;
+
+        public IElement? PropertyType { get; set; }
+
+        public IElement? Property { get; set; }
+
+        public class PropertyNameEqualityComparer : IEqualityComparer<P>
+        {
+            public bool Equals(P? x, P? y)
+            {
+                if (x == null || y == null) return false;
+
+                return x.PropertyName.Equals(y.PropertyName);
+            }
+
+            public int GetHashCode(P obj)
+            {
+                return obj.PropertyName.GetHashCode();
+            }
+        }
+            
+        public class MofObjectComparer : IEqualityComparer<IElement?>
+        {
+            public bool Equals(IElement? x, IElement? y)
+            {
+                if (x == null || y == null) return false;
+
+                return MofObject.AreEqual(x, y);
+            }
+
+            public int GetHashCode(IElement obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
     }
 }

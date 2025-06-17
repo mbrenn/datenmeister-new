@@ -14,6 +14,7 @@ using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.FormFactory;
 
+[Obsolete]
 public class CollectionFormFactory : FormFactoryBase, ICollectionFormFactory
 {
     public CollectionFormFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)

@@ -19,6 +19,7 @@ using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFinder;
+using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
 using DatenMeister.Provider.Xmi.Provider.Xml;
 using DatenMeister.Types;

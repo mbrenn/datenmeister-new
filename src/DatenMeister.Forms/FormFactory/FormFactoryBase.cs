@@ -10,9 +10,11 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.FormModifications;
+using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.FormFactory;
 
+[Obsolete]
 /// <summary>
 /// Defines the base class for all the FormFactory Methods.
 /// It also contains generic function which are usually required during the Form Creation

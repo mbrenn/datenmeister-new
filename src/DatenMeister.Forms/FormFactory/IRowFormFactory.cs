@@ -2,6 +2,7 @@
 
 namespace DatenMeister.Forms.FormFactory;
 
+[Obsolete]
 public interface IRowFormFactory
 {
     IElement? CreateRowFormForItem(IObject element, FormFactoryContext context);

@@ -24,8 +24,4 @@
         <ProjectReference Include="..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="RowForm\" />
-    </ItemGroup>
-
 </Project>

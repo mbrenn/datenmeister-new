@@ -4,10 +4,11 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Actions.ActionHandler;
 
-public class CreateFormByMetaclassCreationMode
+public static class CreateFormByMetaclassCreationMode
 {
     public const string Object = "Object";
     public const string Collection = "Collection";
@@ -38,6 +39,10 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
             var targetReflection = targetContainer == null
                 ? formMethods.GetUserFormExtent().elements()
                 : DefaultClassifierHints.GetDefaultReflectiveCollection(targetContainer);
+            var factory = new NewFormCreationContextFactory(
+                actionLogic.WorkspaceLogic,
+                actionLogic.ScopeStorage);
+            var context = factory.Create();
 
             IElement form;
             switch (creationMode)
@@ -68,8 +73,8 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateObjectForm(bool includeFormAssociation)
             {
-                var formCreator = new ObjectFormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-                form = formCreator.CreateObjectFormForMetaClass(metaClass, new FormFactoryContext());
+                form = FormCreation.CreateObjectFormForMetaClass(metaClass, context).Form
+                    ?? throw new InvalidOperationException("Form was not created");
                 targetReflection.add(form);
 
                 if (includeFormAssociation)
@@ -84,9 +89,8 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateCollectionForm(bool includeFormAssociation)
             {
-                
-                var formCreator = new CollectionFormCreator(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
-                form = formCreator.CreateCollectionFormForMetaClass(metaClass);
+                form = FormCreation.CreateCollectionFormForMetaClass(metaClass, context).Form
+                       ?? throw new InvalidOperationException("Form is null");
                 targetReflection.add(form);
 
                 if (includeFormAssociation)

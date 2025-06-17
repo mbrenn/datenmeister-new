@@ -4,9 +4,11 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.FormCreator;
 
+[Obsolete]
 public class RowFormCreator : FormCreator, IRowFormFactory
 {
     public RowFormCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)

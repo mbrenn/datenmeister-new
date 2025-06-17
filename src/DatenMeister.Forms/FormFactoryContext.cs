@@ -6,6 +6,7 @@ namespace DatenMeister.Forms;
 /// A configuration being used for the form factories to define the behavior of how to
 /// create a form upon a certain request
 /// </summary>
+[Obsolete]
 public record FormFactoryContext
 {
     /// <summary>

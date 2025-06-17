@@ -4,6 +4,7 @@ namespace DatenMeister.Forms.FormCreator;
 /// Stores the creation mode
 /// </summary>
 [Flags]
+[Obsolete]
 public enum CreationMode
 {
     /// <summary>
@@ -55,12 +56,4 @@ public enum CreationMode
     /// Creates all properties that are possible
     /// </summary>
     All = ByMetaClass | ByPropertyValues | AddMetaClass,
-}
-
-public static class CreationModeExtensions
-{
-    public static bool HasFlagFast(this CreationMode value, CreationMode flag)
-    {
-        return (value & flag) != 0;
-    }
 }

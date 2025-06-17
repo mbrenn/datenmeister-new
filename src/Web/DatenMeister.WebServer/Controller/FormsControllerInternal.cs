@@ -4,28 +4,27 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.WebServer.Controller;
 
 public class FormsControllerInternal
 {
-    private readonly IScopeStorage _scopeStorage;
-    private readonly IWorkspaceLogic _workspaceLogic;
     private readonly TemporaryExtentFactory _temporaryExtentFactory;
     private readonly TemporaryExtentLogic _temporaryLogic;
 
     public FormsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
-        _workspaceLogic = workspaceLogic;
-        _scopeStorage = scopeStorage;
+        WorkspaceLogic = workspaceLogic;
+        ScopeStorage = scopeStorage;
         _temporaryLogic = new TemporaryExtentLogic(workspaceLogic, scopeStorage);
         _temporaryExtentFactory = new TemporaryExtentFactory(_temporaryLogic);
     }
 
-    public IScopeStorage ScopeStorage => _scopeStorage;
+    public IScopeStorage ScopeStorage { get; }
 
-    public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
+    public IWorkspaceLogic WorkspaceLogic { get; }
 
     public IElement GetInternal(string formUri)
     {
@@ -40,32 +39,34 @@ public class FormsControllerInternal
     public IElement GetObjectFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
     {
         var item = GetItemByUriParameter(workspaceId, itemUrl);
+        var factory = new NewFormCreationContextFactory(WorkspaceLogic, ScopeStorage)
+        {
+            MofFactory = _temporaryExtentFactory
+        };
 
-        var formFactory = new ObjectFormFactory(_workspaceLogic, _scopeStorage);
-        var form = formFactory.CreateObjectFormForItem(item,
-            new FormFactoryContext
-            {
-                ViewModeId = viewMode ?? string.Empty,
-                Factory = _temporaryExtentFactory
-            });
+        var formContext = factory.Create()
+            .SetViewModeId(viewMode ?? string.Empty);
+        
+        var form = FormCreation.CreateObjectFormForItem(item,
+            formContext);
 
-        if (form == null)
+        if (form.Form == null)
         {
             throw new InvalidOperationException("Form is not defined");
         }
 
-        return form;
+        return form.Form;
     }
 
     public IElement GetCollectionFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
     {
-        var (collection, extent) = _workspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
+        var (collection, extent) = WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
         if (collection == null || extent == null)
         {
             throw new InvalidOperationException("Extent not found: " + extentUri);
         }
 
-        var factory = new NewFormCreationContextFactory(_workspaceLogic, _scopeStorage)
+        var factory = new NewFormCreationContextFactory(WorkspaceLogic, ScopeStorage)
         {
             MofFactory = _temporaryExtentFactory
         };
@@ -76,14 +77,14 @@ public class FormsControllerInternal
             extent.elements(),
             formContext);
             
-        if (form.Result == null)
+        if (form.Form == null)
         {
             throw new InvalidOperationException("Form is not defined");
         }
             
         _temporaryLogic.TemporaryExtent.elements().add(form);
 
-        return form.Result;
+        return form.Form;
     }
 
     /// <summary>
@@ -94,54 +95,45 @@ public class FormsControllerInternal
     /// <returns>The found form</returns>
     public IObject GetObjectFormForMetaClassInternal(string? metaClass, string? viewMode = null)
     {
-        var formFactory = new ObjectFormFactory(_workspaceLogic, _scopeStorage);
-
-        var configurationMode = new FormFactoryContext
+        var factory = new NewFormCreationContextFactory(WorkspaceLogic, ScopeStorage)
         {
-            ViewModeId = viewMode ?? string.Empty,
-            Factory = _temporaryExtentFactory
+            MofFactory = _temporaryExtentFactory
         };
+
+        var context = factory.Create().SetViewModeId(viewMode ?? string.Empty);
 
         IElement? resolvedMetaClass = null;
         if (!string.IsNullOrEmpty(metaClass))
         {
-            resolvedMetaClass = _workspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) as IElement;
+            resolvedMetaClass = WorkspaceLogic.Resolve(metaClass, ResolveType.OnlyMetaWorkspaces) as IElement;
             if (resolvedMetaClass == null)
             {
                 throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);
             }
         }
+        
+        var result = FormCreation.CreateObjectFormForMetaClass(
+            resolvedMetaClass,
+            context);
 
-        IElement? form;
-        if (resolvedMetaClass == null)
-        {
-            form = formFactory.CreateEmptyObjectForm(configurationMode);
-        }
-        else
-        {
-            form = formFactory.CreateObjectFormForMetaClass(
-                resolvedMetaClass,
-                configurationMode);
-        }
-
-        if (form == null)
+        if (result.Form == null)
         {
             throw new InvalidOperationException("Form is not defined");
         }
 
-        return form;
+        return result.Form;
     }
 
     /// <summary>
     /// Gets the items by the uri parameter.
-    /// The parameter themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
+    /// The parameters themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
     /// </summary>
     /// <param name="workspaceId">Id of the workspace</param>
     /// <param name="itemUri">Uri of the item</param>
     /// <returns>The found object</returns>
     private IObject GetItemByUriParameter(string workspaceId, string itemUri)
     {
-        var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+        var workspace = WorkspaceLogic.GetWorkspace(workspaceId);
         if (workspace == null)
         {
             throw new InvalidOperationException("Extent is not found");
@@ -157,7 +149,7 @@ public class FormsControllerInternal
 
     public IEnumerable<IObject> GetViewModesInternal()
     {
-        var formsController = new FormMethods(_workspaceLogic, _scopeStorage);
+        var formsController = new FormMethods(WorkspaceLogic, ScopeStorage);
         return formsController.GetViewModes();
     }
 }

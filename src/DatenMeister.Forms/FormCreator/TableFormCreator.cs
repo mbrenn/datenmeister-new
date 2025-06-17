@@ -9,9 +9,11 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.FormCreator;
 
+[Obsolete]
 public class TableFormCreator : FormCreator, ITableFormFactory
 {
     public TableFormCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)

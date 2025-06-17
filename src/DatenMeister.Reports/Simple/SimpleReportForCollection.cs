@@ -16,7 +16,7 @@ namespace DatenMeister.Reports.Simple;
 /// <summary>
 /// This class creates a simple report just for a collection. 
 /// </summary>
-public class SimpleReportForCollection(ITableFormFactory formCreator, ItemFormatter itemFormatter, IHtmlReport report)
+public class SimpleReportForCollection(NewFormCreationContext formContext, ItemFormatter itemFormatter, IHtmlReport report)
 {
     /// <summary>
     /// Gets or sets the report table mode
@@ -45,8 +45,7 @@ public class SimpleReportForCollection(ITableFormFactory formCreator, ItemFormat
     public bool AddFullNameColumn { get; set; }
 
     public void WriteReportForCollection(
-        IReflectiveCollection elements,
-        FormFactoryContext creationMode)
+        IReflectiveCollection elements)
     {
         var foundForm = Form;
         
@@ -74,13 +73,13 @@ public class SimpleReportForCollection(ITableFormFactory formCreator, ItemFormat
 
                 if (metaClass.Key == null)
                 {
-                    foundForm = formCreator.CreateTableFormForCollection(
+                    foundForm = FormCreation.CreateTableFormForCollection(
                         collection,
-                        creationMode);
+                        formContext).Form;
                 }
                 else
                 {
-                    foundForm = formCreator.CreateTableFormForMetaClass(metaClass.Key, creationMode);
+                    foundForm = FormCreation.CreateTableFormForMetaClass(metaClass.Key, formContext).Form;
                 }
                 
                 if(foundForm == null)
@@ -95,8 +94,8 @@ public class SimpleReportForCollection(ITableFormFactory formCreator, ItemFormat
         {
             if (foundForm == null)
             {
-                foundForm = formCreator.CreateTableFormForCollection(
-                    elements, creationMode) ?? throw new InvalidOperationException("foundForm is null");
+                foundForm = FormCreation.CreateTableFormForCollection(
+                    elements, formContext).Form ?? throw new InvalidOperationException("foundForm is null");
                 
                 AddFullNameColumnIfNecessary(foundForm);
             }

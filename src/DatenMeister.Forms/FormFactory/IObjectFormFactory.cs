@@ -2,6 +2,7 @@
 
 namespace DatenMeister.Forms.FormFactory;
 
+[Obsolete]
 public interface IObjectFormFactory
 {
     /// <summary>

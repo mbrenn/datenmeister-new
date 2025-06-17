@@ -13,5 +13,5 @@ public interface INewObjectFormFactory
     /// <returns>The instance of the extent form</returns>
     void CreateObjectFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result);
     
-    void CreateObjectFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result);
+    void CreateObjectFormForMetaClass(IElement? metaClass, NewFormCreationContext context, FormCreationResult result);
 }

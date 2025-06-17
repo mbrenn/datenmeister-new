@@ -34,7 +34,7 @@ public class FormCreationResult
     /// <summary>
     /// Gets or sets the result of the activity 
     /// </summary>
-    public IElement? Result { get; set; }
+    public IElement? Form { get; set; }
     
     /// <summary>
     ///     Adds a certain text to the form creation protocol.
@@ -45,12 +45,12 @@ public class FormCreationResult
     /// <param name="message">Message it self that shall be added</param>
     public void AddToFormCreationProtocol(string message)
     {
-        if (Result == null) return;
+        if (Form == null) return;
 
-        lock (Result)
+        lock (Form)
         {   
             var currentMessage =
-                Result.getOrDefault<string>(_Forms._Form.creationProtocol)
+                Form.getOrDefault<string>(_Forms._Form.creationProtocol)
                 ?? string.Empty;
 
             if (currentMessage != string.Empty)
@@ -58,7 +58,7 @@ public class FormCreationResult
             else
                 currentMessage = message;
 
-            Result.set(_Forms._Form.creationProtocol, currentMessage);
+            Form.set(_Forms._Form.creationProtocol, currentMessage);
         }
     }
 }

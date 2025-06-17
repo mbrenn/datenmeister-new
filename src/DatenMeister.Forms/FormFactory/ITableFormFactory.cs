@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Forms.FormFactory;
 
+[Obsolete]
 public interface ITableFormFactory
 {
     IElement? CreateTableFormForCollection(IReflectiveCollection collection, FormFactoryContext context);

@@ -4,6 +4,7 @@
 /// This class contains additional properties which can be used for the auto-generation
 /// of Collection Forms
 /// </summary>
+[Obsolete]
 public class CollectionFormConfiguration
 {
     /// <summary>

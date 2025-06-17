@@ -8,6 +8,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Extent.Manager;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 using DatenMeister.Types;
 using NUnit.Framework;
 

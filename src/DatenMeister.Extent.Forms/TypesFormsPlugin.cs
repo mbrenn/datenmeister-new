@@ -23,24 +23,40 @@ public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
 
                 var formsPlugin = scopeStorage.Get<FormsState>();
                 formsPlugin.NewFormModificationPlugins.Add(
-                    context => context.Global.CollectionFormFactories.Add(
-                        new ExtentTypeFormModification.IncludeJumpToExtentButtonModification()));
-                
+                    new NewFormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.CollectionFormFactories.Add(
+                            new ExtentTypeFormModification.IncludeJumpToExtentButtonModification()),
+                        Name = "IncludeJumpToExtentButtonModification"
+                    });
+
                 formsPlugin.NewFormModificationPlugins.Add(
-                    context => context.Global.RowFormFactories.Add(
-                        new ExtentTypeFormModification.IncludeExtentTypesForTableFormExtent(
-                            _extentSettings)));
-                
+                    new NewFormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.RowFormFactories.Add(
+                            new ExtentTypeFormModification.IncludeExtentTypesForTableFormExtent(_extentSettings)),
+                        Name = "IncludeExtentTypesForTableFormExtent"
+                    });
+
                 formsPlugin.NewFormModificationPlugins.Add(
-                    context => context.Global.CollectionFormFactories.Add(
-                        new ExtentTypeFormModification.IncludeCreationButtonsInTableFormForClassifierOfExtentType(
-                            workspaceLogic, _extentSettings)));
-                
+                    new NewFormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.CollectionFormFactories.Add(
+                            new ExtentTypeFormModification.IncludeCreationButtonsInTableFormForClassifierOfExtentType(
+                                workspaceLogic, _extentSettings)),
+                        Name = "IncludeCreationButtonsInTableFormForClassifierOfExtentType"
+                    });
+
                 formsPlugin.NewFormModificationPlugins.Add(
-                    context => context.Global.ObjectFormFactories.Add(
-                        new ExtentTypeFormModification.NewIncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
-                            workspaceLogic, _extentSettings)));
-                
+                    new NewFormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.ObjectFormFactories.Add(
+                            new ExtentTypeFormModification.
+                                NewIncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
+                                    workspaceLogic, _extentSettings)),
+                        Name = "IncludeCreationButtonsInTableFormForClassifierOfExtentType"
+                    });
+
                 break;
         }
 

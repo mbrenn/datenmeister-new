@@ -37,7 +37,6 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
                 LoadXmi();
-
                 AddActionButtons();
                 break;
         }
@@ -74,20 +73,19 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
 
     private void AddActionButtons()
     {
+        // TODO: Reactivate Constraints
         var formsPlugin = scopeStorage.Get<FormsState>();
 
-        ActionButtonToFormAdder.AddActionButton(
-            formsPlugin, new ActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")
+        ActionButtonToFormAdder.AddRowActionButton(
+            formsPlugin, new NewActionButtonAdderParameter(NavigationExtentNavigateTo, "View Items in Extent")
             {
-                FormType = _Forms.___FormType.Row,
-                MetaClass = _Management.TheOne.__Extent
+                //MetaClass = _Management.TheOne.__Extent
             });
 
-        ActionButtonToFormAdder.AddActionButton(
-            formsPlugin, new ActionButtonAdderParameter(NavigationStore, "Store Extent")
+        ActionButtonToFormAdder.AddRowActionButton(
+            formsPlugin, new NewActionButtonAdderParameter(NavigationStore, "Store Extent")
             {
-                FormType = _Forms.___FormType.Row,
-                MetaClass = _Management.TheOne.__Extent,
+                /*MetaClass = _Management.TheOne.__Extent,*/
                 PredicateForElement =
                     element =>
                         extentManager.GetProviderLoaderAndConfiguration(
@@ -96,60 +94,54 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
                             .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true
             });
 
-        ActionButtonToFormAdder.AddActionButton(
+        ActionButtonToFormAdder.AddRowActionButton(
             formsPlugin,
-            new ActionButtonAdderParameter(NavigationExtentProperties, "View Extent Properties")
+            new NewActionButtonAdderParameter(NavigationExtentProperties, "View Extent Properties")
             {
-                FormType = _Forms.___FormType.Row,
-                MetaClass = _Management.TheOne.__Extent
+                //MetaClass = _Management.TheOne.__Extent
             });
 
-        ActionButtonToFormAdder.AddActionButton(
-            formsPlugin, new ActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
+        ActionButtonToFormAdder.AddRowActionButton(
+            formsPlugin, new NewActionButtonAdderParameter(NavigationExtentDeleteExtent, "Delete Extent")
             {
-                FormType = _Forms.___FormType.Row,
-                MetaClass = _Management.TheOne.__Extent
+                // MetaClass = _Management.TheOne.__Extent
             });
 
-        ActionButtonToFormAdder.AddActionButton(
-            formsPlugin, new ActionButtonAdderParameter(NavigationExtentClear, "Clear Extent")
+        ActionButtonToFormAdder.AddRowActionButton(
+            formsPlugin, new NewActionButtonAdderParameter(NavigationExtentClear, "Clear Extent")
             {
-                FormType = _Forms.___FormType.Row,
-                MetaClass = _Management.TheOne.__Extent
+                // MetaClass = _Management.TheOne.__Extent
             });
 
-        ActionButtonToFormAdder.AddActionButton(
-            formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "New Item")
+        ActionButtonToFormAdder.AddRowActionButton(
+            formsPlugin, new NewActionButtonAdderParameter(NavigationItemNew, "New Item")
             {
-                MetaClass = _Management.TheOne.__Extent,
-                FormType = _Forms.___FormType.Collection
+                //MetaClass = _Management.TheOne.__Extent
             }
         );
 
-        ActionButtonToFormAdder.AddActionButton(
+        ActionButtonToFormAdder.AddTableActionButton(
             formsPlugin,
-            new ActionButtonAdderParameter(NavigationExtentNavigateTo, "Items")
+            new NewActionButtonAdderParameter(NavigationExtentNavigateTo, "Items")
             {
-                ParentMetaClass = _Management.TheOne.__Workspace,
+                /*ParentMetaClass = _Management.TheOne.__Workspace,
                 FormType = _Forms.___FormType.Table,
-                ParentPropertyName = _Management._Workspace.extents,
+                ParentPropertyName = _Management._Workspace.extents,*/
                 ActionButtonPosition = 0
             });
 
-        ActionButtonToFormAdder.AddActionButton(
+        ActionButtonToFormAdder.AddRowActionButton(
             formsPlugin,
-            new ActionButtonAdderParameter(NavigationExportXmi, "Export Xmi")
+            new NewActionButtonAdderParameter(NavigationExportXmi, "Export Xmi")
             {
-                FormType = _Forms.___FormType.Row,
-                MetaClass = _Management.TheOne.__Extent
+                // MetaClass = _Management.TheOne.__Extent
             });
 
-        ActionButtonToFormAdder.AddActionButton(
+        ActionButtonToFormAdder.AddRowActionButton(
             formsPlugin,
-            new ActionButtonAdderParameter(NavigationImportXmi, "Import Xmi")
+            new NewActionButtonAdderParameter(NavigationImportXmi, "Import Xmi")
             {
-                FormType = _Forms.___FormType.Row,
-                MetaClass = _Management.TheOne.__Extent
+                // MetaClass = _Management.TheOne.__Extent
             });
     }
 }

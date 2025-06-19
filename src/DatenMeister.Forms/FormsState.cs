@@ -4,13 +4,29 @@ using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms;
 
+/// <summary>
+/// Defines the data-structure for the form modification plugin
+/// </summary>
+public class NewFormModificationPlugin
+{
+    /// <summary>
+    /// Function which creates the context
+    /// </summary>
+    public required Action<NewFormCreationContext> CreateContext { get; set; }
+    
+    /// <summary>
+    /// Name of the plugin
+    /// </summary>
+    public required string Name { get; set; }
+}
+
 
 public class FormsState
 {
     /// <summary>
     /// Stores the list of form modification plugins which may modify the factory 
     /// </summary>
-    public List<Action<NewFormCreationContext>> NewFormModificationPlugins { get; } = [];
+    public List<NewFormModificationPlugin> NewFormModificationPlugins { get; } = [];
     
     /// <summary>
     /// Lists all form modificationPlugins

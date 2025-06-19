@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 
 namespace DatenMeister.Forms.Helper;
@@ -18,12 +19,122 @@ public static class ActionButtonToFormAdder
     /// </summary>
     /// <param name="formsState">The plugin interface to the forms</param>
     /// <param name="adder">The parameter of the addition</param>
+    [Obsolete]
     public static void AddActionButton(FormsState formsState, ActionButtonAdderParameter adder)
     {
         formsState.FormModificationPlugins.Add(
             new FormModification(adder));
     }
 
+    public static void AddRowActionButton(FormsState formsState, NewActionButtonAdderParameter adder)
+    {
+        formsState.NewFormModificationPlugins.Add(
+            new NewFormModificationPlugin
+            {
+                CreateContext = context =>
+                    context.Global.RowFormFactories.Add(
+                        new NewRowFormModification(adder)),
+                Name = adder.Title
+            });
+    }
+
+    public static void AddTableActionButton(FormsState formsState, NewActionButtonAdderParameter adder)
+    {
+        formsState.NewFormModificationPlugins.Add(
+            new NewFormModificationPlugin
+            {
+                CreateContext = context =>
+                    context.Global.TableFormFactories.Add(
+                        new NewRowFormModification(adder)),
+                Name = adder.Title
+            });
+    }
+
+    private class NewRowFormModification(NewActionButtonAdderParameter parameter) : INewRowFormFactory,
+        INewTableFormFactory
+    {
+        private void ManageActionButton(IObject? element, NewFormCreationContext context, FormCreationResult result)
+        {
+            if (result.Form == null)
+                throw new InvalidOperationException("Form is null");
+
+            parameter.OnCall?.Invoke(element, parameter);
+
+            if (parameter.PredicateForElement != null && parameter.PredicateForElement(element) == false)
+            {
+                // Not predicated
+                return;
+            }
+
+            var fields = result.Form.get<IReflectiveSequence>(_Forms._RowForm.field);
+            var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
+            actionField.set(_Forms._ActionFieldData.actionName, parameter.ActionName);
+            actionField.set(_Forms._ActionFieldData.title, parameter.Title);
+            actionField.set(_Forms._ActionFieldData.name, parameter.ActionName);
+
+            if (!string.IsNullOrEmpty(parameter.ButtonText))
+            {
+                actionField.set(_Forms._ActionFieldData.buttonText, parameter.ButtonText);
+            }
+
+            if (parameter.Parameter.Count > 0)
+            {
+                var parameter1 = context.Global.Factory.create(null);
+                foreach (var (key, value) in parameter.Parameter)
+                {
+                    parameter1.set(key, value);
+                }
+
+                actionField.set(_Forms._ActionFieldData.parameter, parameter1);
+            }
+
+            if (parameter.ActionButtonPosition == -1)
+            {
+                fields.add(actionField);
+            }
+            else
+            {
+                fields.add(parameter.ActionButtonPosition, actionField);
+            }
+
+            parameter.OnCallSuccess?.Invoke(element, parameter);
+            
+            result.AddToFormCreationProtocol(
+                $"[ActionButtonToFormAdder]: Added Button{parameter.Title}");
+
+            result.IsManaged = true;
+        }
+        
+        /// <summary>
+        /// Modifies the form by checking whether the action button can be applied
+        /// </summary>
+        /// <param name="context">The form creation context in which the application shall be checked. This is
+        /// the specific instance of the requesting form context</param>
+        /// <param name="result">The form to which the changes shall be applied</param>
+        /// <returns>true, if the form has been modified</returns>
+        public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+        {
+            ManageActionButton(element, context, result);
+        }
+
+        public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context,
+            FormCreationResult result)
+        {
+        }
+
+        public void CreateTableFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+            FormCreationResult result)
+        {
+            ManageActionButton(null, context, result);
+        }
+
+        public void CreateTableFormForMetaclass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
+        {
+        }
+    }
+
+
+    [Obsolete]
     private class FormModification(ActionButtonAdderParameter parameter) : IFormModificationPlugin
     {
         /// <summary>

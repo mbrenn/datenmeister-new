@@ -26,17 +26,17 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
 
     public Task Start(PluginLoadingPosition position)
     {
+        // TODO: Reactivate the constraints
         switch (position)
         {
             case PluginLoadingPosition.AfterLoadingOfExtents:
                     
                 var formsPlugin = scopeStorage.Get<FormsState>();
   
-                ActionButtonToFormAdder.AddActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
+                ActionButtonToFormAdder.AddRowActionButton(
+                    formsPlugin, new NewActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
                     {
-                        FormType = _Forms.___FormType.Row,
-                        MetaClass = _Management.TheOne.__Workspace,
+                        //MetaClass = _Management.TheOne.__Workspace,
                         OnCallSuccess = (element, parameter) =>
                         {
                             // Sets the parameter that the right workspace is used
@@ -48,11 +48,10 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                         }
                     });
                     
-                ActionButtonToFormAdder.AddActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
+                ActionButtonToFormAdder.AddRowActionButton(
+                    formsPlugin, new NewActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
                     {
-                        FormType = _Forms.___FormType.Row,
-                        MetaClass = _Management.TheOne.__Workspace,
+                        /*MetaClass = _Management.TheOne.__Workspace,*/
                         OnCallSuccess = (element, parameter) =>
                         {
                             // Sets the parameter that the right workspace is used

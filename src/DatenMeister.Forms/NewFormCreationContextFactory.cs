@@ -72,7 +72,7 @@ public class NewFormCreationContextFactory
         // Now go through the available Form Modification Plugins
         foreach (var plugin in State.NewFormModificationPlugins)
         {
-            plugin(context);
+            plugin.CreateContext(context);
         }
         
         return context;

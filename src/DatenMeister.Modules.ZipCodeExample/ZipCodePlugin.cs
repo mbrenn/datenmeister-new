@@ -53,25 +53,25 @@ public class ZipCodePlugin : IDatenMeisterPlugin
         {
             case PluginLoadingPosition.AfterInitialization:
             {
+                // TODO: Implement filters
                 Logger.Info("Initializing type for ZipCode-Plugin");
                 var zipCodeModel = _scopeStorage.Get<ZipCodeModel>();
 
                 // Load Resource
                 var types = _localTypeSupport.AddInternalTypes(
                     ZipCodeModel.PackagePath,
-                    new[] { typeof(ZipCode), typeof(ZipCodeWithState) });
+                    [typeof(ZipCode), typeof(ZipCodeWithState)]);
                 zipCodeModel.ZipCode = types.ElementAt(0);
                 zipCodeModel.ZipCodeWithState = types.ElementAt(1);
 
                 if (zipCodeModel.ZipCode == null || zipCodeModel.ZipCodeWithState == null)
                     throw new InvalidOperationException("The ZipCode Model could not be created");
 
-                ActionButtonToFormAdder.AddActionButton(
+                ActionButtonToFormAdder.AddRowActionButton(
                     _scopeStorage.Get<FormsState>(),
-                    new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
+                    new NewActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
                     {
-                        MetaClass = _Management.TheOne.__Workspace,
-                        FormType = _Forms.___FormType.Object,
+                        /*MetaClass = _Management.TheOne.__Workspace,*/
                         PredicateForElement =
                             element =>
                                 element?.getOrDefault<string>(
@@ -90,8 +90,13 @@ public class ZipCodePlugin : IDatenMeisterPlugin
                 // code example in a workspace object
                 var formsPluginState = _scopeStorage.Get<FormsState>();
 
-                formsPluginState.NewFormModificationPlugins.Add(context =>
-                    context.Global.RowFormFactories.Add(new ZipCodeFormModificationPlugin()));
+                formsPluginState.NewFormModificationPlugins.Add(
+                    new NewFormModificationPlugin
+                    {
+                        CreateContext = context =>
+                            context.Global.RowFormFactories.Add(new ZipCodeFormModificationPlugin()),
+                        Name = typeof(ZipCodePlugin).FullName!
+                    });
                 break;
         }
 

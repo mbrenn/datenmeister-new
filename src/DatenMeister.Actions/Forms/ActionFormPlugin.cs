@@ -27,7 +27,13 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 
                 var formsPluginState = scopeStorage.Get<FormsState>();
                 formsPluginState.NewFormModificationPlugins.Add(
-                    context => context.Global.RowFormFactories.Add(new ActionFormModificationPlugin()));
+                    new NewFormModificationPlugin
+                    {
+                        Name = "ActionFormPlugin",
+                        CreateContext =
+                            context => context.Global.RowFormFactories.Add(new ActionFormModificationPlugin())
+                    });
+
                 break;
         }
 

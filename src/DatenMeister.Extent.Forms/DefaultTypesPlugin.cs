@@ -14,9 +14,14 @@ public class DefaultTypesPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugi
 
                 var formsPluginState = scopeStorage.Get<FormsState>();
                 formsPluginState.NewFormModificationPlugins.Add(
-                    context =>
-                    context.Global.ObjectFormFactories.Add(
-                        new PackageFormModificationPlugin()));
+                    new NewFormModificationPlugin
+                    {
+                        CreateContext =
+                            context =>
+                                context.Global.ObjectFormFactories.Add(
+                                    new PackageFormModificationPlugin()),
+                        Name = "PackageFormModificationPlugin"
+                    });
                 break;
         }
 

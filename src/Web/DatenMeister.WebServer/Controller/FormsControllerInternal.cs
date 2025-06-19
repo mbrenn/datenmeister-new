@@ -13,6 +13,8 @@ public class FormsControllerInternal
 {
     private readonly TemporaryExtentFactory _temporaryExtentFactory;
     private readonly TemporaryExtentLogic _temporaryLogic;
+    
+    public TemporaryExtentFactory TemporaryExtentFactory => _temporaryExtentFactory;
 
     public FormsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {

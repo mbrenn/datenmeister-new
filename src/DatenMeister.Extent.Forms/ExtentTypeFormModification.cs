@@ -8,6 +8,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 using DatenMeister.Forms.Helper;
 
@@ -16,100 +17,90 @@ namespace DatenMeister.Extent.Forms;
 /// <summary>
 /// Modifies the form according to the Extent Type
 /// </summary>
-public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSettings extentSettings)
-    : IFormModificationPlugin
+public class ExtentTypeFormModification()
 {
-    /// <summary>
-    /// Performs some modifications for the extent forms
-    /// </summary>
-    /// <param name="context">Context to be used</param>
-    /// <param name="form">Form to be sued</param>
-    /// <returns></returns>
-    public bool ModifyForm(FormCreationContext context, IElement form)
-    {
-        var result = false;
-        result |= IncludeCreationButtonsInTableFormForClassifierOfExtentType(context, form);
-        result |= IncludeExtentTypesForTableFormOfExtent(context, form);
-        result |= IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(context, form);
-        result |= IncludeJumpToExtentButton(context, form);
-            
-        return result;
-    }
 
-    /// <summary>
-    /// If the user shows all items of an extent in the extent overview, the
-    /// user can click on the button to get to the extent itself
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="form"></param>
-    /// <returns>true, if matching has occured</returns>
-    private bool IncludeJumpToExtentButton(FormCreationContext context, IElement form)
+    public class IncludeJumpToExtentButtonModification : INewCollectionFormFactory
     {
-        if (context.FormType == _Forms.___FormType.Collection)
+        public void CreateCollectionFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+            FormCreationResult result)
         {
-            var fields = form.get<IReflectiveCollection>(
-                _Forms._CollectionForm.field);
-            var factory = new MofFactory(form);
+        }
+
+        public void CreateCollectionFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
+        {
+            if (result.Form == null)
+            {
+                throw new InvalidOperationException("Form is null");
+            }
+
+            var fields = result.Form.get<IReflectiveCollection>(_Forms._CollectionForm.field);
+            var factory = new MofFactory(result.Form);
             var field = factory.create(_Forms.TheOne.__ActionFieldData);
             field.set(_Forms._ActionFieldData.name, "Go to Extent");
             field.set(_Forms._ActionFieldData.title, "Go to Extent");
             field.set(_Forms._ActionFieldData.actionName, "DatenMeister.Navigation.ToExtent");
 
             fields.add(field);
-            return true;
+            result.IsManaged = true;
         }
-
-        return false;
     }
 
-    /// <summary>
-    /// If the user shows the extent, the checkbox tagging field for the extent will receive
-    /// additional values for the known extent types 
-    /// </summary>
-    /// <param name="context">Form creation to be used</param>
-    /// <param name="form">Form to be used</param>
-    private bool IncludeExtentTypesForTableFormOfExtent(FormCreationContext context, IElement form)
+    public class IncludeExtentTypesForTableFormExtent(ExtentSettings extentSettings) : INewRowFormFactory
     {
-        if (context.FormType != _Forms.___FormType.Row ||
-            context.MetaClass?.equals(_Management.TheOne.__Extent) != true)
+        public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
         {
-            return false;
+            throw new NotImplementedException();
         }
-            
-        // Got it, look for the field
-        var field =
-            FormMethods.GetField(
-                form,
-                _Management._Extent.extentType,
-                _Forms.TheOne.__CheckboxListTaggingFieldData);
 
-        if (field != null)
+        public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
         {
-            var values =
-                field.get<IReflectiveCollection>(_Forms._CheckboxListTaggingFieldData.values);
-            var valuesAsList = values
-                .OfType<IElement>()
-                .ToList();
-
-            var extentTypes = extentSettings.extentTypeSettings.Select(x => x.name).ToList();
-            var factory = new MofFactory(field);
-            foreach (var extentType in extentTypes)
+            
+            if (metaClass.equals(_Management.TheOne.__Extent) != true)
             {
-                if (valuesAsList.Any(x =>
-                        x.getOrDefault<string>(_Forms._ValuePair.value) == extentType))
-                {
-                    // Already added, otherwise add the value pair
-                    continue;
-                }
+                return;
+            }
 
-                var valuePair = factory.create(_Forms.TheOne.__ValuePair);
-                valuePair.set(_Forms._ValuePair.name, extentType);
-                valuePair.set(_Forms._ValuePair.value, extentType);
-                values.add(valuePair);
+            if (result.Form == null)
+            {
+                throw new InvalidOperationException("Form is null");
+            }
+            
+            // Got it, look for the field
+            var field =
+                FormMethods.GetField(
+                    result.Form,
+                    _Management._Extent.extentType,
+                    _Forms.TheOne.__CheckboxListTaggingFieldData);
+
+            if (field != null)
+            {
+                var values =
+                    field.get<IReflectiveCollection>(_Forms._CheckboxListTaggingFieldData.values);
+                var valuesAsList = values
+                    .OfType<IElement>()
+                    .ToList();
+
+                var extentTypes = extentSettings.extentTypeSettings.Select(x => x.name).ToList();
+                var factory = new MofFactory(field);
+                foreach (var extentType in extentTypes)
+                {
+                    if (valuesAsList.Any(x =>
+                            x.getOrDefault<string>(_Forms._ValuePair.value) == extentType))
+                    {
+                        // Already added, otherwise add the value pair
+                        continue;
+                    }
+
+                    var valuePair = factory.create(_Forms.TheOne.__ValuePair);
+                    valuePair.set(_Forms._ValuePair.name, extentType);
+                    valuePair.set(_Forms._ValuePair.value, extentType);
+                    values.add(valuePair);
+                }
+                
+                result.IsManaged = true;
             }
         }
-
-        return true;
     }
 
     /// <summary>
@@ -121,109 +112,46 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
     /// to the extenttype's associated classifiers except the ones where a table form is already existing.
     ///  
     /// </summary>
-    /// <param name="context">Form Creation Context to be used</param>
-    /// <param name="form">Form to be used</param>
-    /// <returns>true, if the form has been modified. </returns>
-    private bool IncludeCreationButtonsInTableFormForClassifierOfExtentType(FormCreationContext context, IElement form)
+    public class IncludeCreationButtonsInTableFormForClassifierOfExtentType(
+        IWorkspaceLogic workspaceLogic,
+        ExtentSettings extentSettings)
+        : INewCollectionFormFactory
     {
-        // Finds the extent type fitting to the extent to be shown
-        var foundExtentTypes =
-            extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
-
-        if (!foundExtentTypes.Any() || context.FormType != _Forms.___FormType.Collection)
+        public void CreateCollectionFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+            FormCreationResult result)
         {
-            return false;
-        }
+            var extentTypes = collection.GetUriExtentOf()?.GetConfiguration().ExtentTypes;
+            if (extentTypes == null)
+                return;
             
-        var foundListMetaClasses = new List<IElement>();
+            // Finds the extent type fitting to the extent to be shown
+            var foundExtentTypes =
+                extentSettings.extentTypeSettings.Where(x => extentTypes.Contains(x.name)).ToList();
 
-        var tableForms = FormMethods.GetTableForms(form).ToList();
-        // First, figure out which list forms we are having...
-        foreach (var listForm in tableForms)
-        {
-            var metaClass = listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
-            foundListMetaClasses.Add(metaClass);
-        }
+            if (foundExtentTypes.Count == 0)
+                return;
 
-        // Second, now create the action buttons for the tableform without classifier
-        foreach (var listForm in tableForms)
-        {
-            // Selects only the listform which do not have a classifier
-            if (listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass) != null)
+            if (result.Form == null)
+                throw new InvalidOperationException("Form is null");
+
+            var foundListMetaClasses = new List<IElement>();
+
+            var tableForms = FormMethods.GetTableForms(result.Form).ToList();
+            // First, figure out which list forms we are having...
+            foreach (var listForm in tableForms)
             {
-                continue;
+                var metaClass = listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
+                foundListMetaClasses.Add(metaClass);
             }
 
-            foreach (var foundExtentType in foundExtentTypes)
+            // Second, now create the action buttons for the tableform without classifier
+            foreach (var listForm in tableForms)
             {
-                foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
+                // Selects only the listform which do not have a classifier
+                if (listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass) != null)
                 {
-                    var resolvedMetaClass =
-                        workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
-
-                    if (resolvedMetaClass == null)
-                    {
-                        continue;
-                    }
-
-                    // The found metaclass already has a list form
-                    if (foundListMetaClasses.Contains(resolvedMetaClass))
-                    {
-                        FormMethods.AddToFormCreationProtocol(listForm,
-                            $"ExtentTypeFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
-                        continue;
-                    }
-
-                    FormMethods.AddDefaultTypeForNewElement(form, resolvedMetaClass);
-
-                    FormMethods.AddToFormCreationProtocol(listForm,
-                        $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
+                    continue;
                 }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Includes the creation buttons for all Properties in SubElementFields for packagedItems for the
-     * default root classes of a certain extent type
-     */
-    private bool IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
-        FormCreationContext context,
-        IElement form)
-    {
-        var changed = false;
-
-        // Finds the extent type fitting to the extent to be shown
-        var foundExtentTypes =
-            extentSettings.extentTypeSettings.Where(x => context.ExtentTypes.Contains(x.name)).ToList();
-
-        if (foundExtentTypes.Count == 0 || context.FormType != _Forms.___FormType.Object)
-        {
-            return false;
-        }
-
-        // Check, if the detail element is from type package
-        if ((context.DetailElement as IElement)?.metaclass?.equals(_UML.TheOne.Packages.__Package) != true
-            && (context.DetailElement as IElement)?.metaclass?.equals(_CommonTypes.TheOne.Default.__Package) != true)
-        {
-            return false;
-        }
-
-        // Now, go through the forms and look for the subelements of packagedElements
-        var rowForms = FormMethods.GetRowForms(form).ToList();
-        foreach (var rowForm in rowForms)
-        {
-            var foundFieldForPackagedElement = FormMethods.GetFieldForProperty(rowForm,
-                _CommonTypes._Default._Package.packagedElement);
-            if (
-                foundFieldForPackagedElement?.metaclass?.equals(_Forms.TheOne.__SubElementFieldData) ==
-                true)
-            {
-                var defaultTypesForNewElements = foundFieldForPackagedElement.get<IReflectiveCollection>(
-                    _Forms._SubElementFieldData.defaultTypesForNewElements);
-                // We found it, so add the stuff
 
                 foreach (var foundExtentType in foundExtentTypes)
                 {
@@ -237,16 +165,107 @@ public class ExtentTypeFormModification(IWorkspaceLogic workspaceLogic, ExtentSe
                             continue;
                         }
 
-                        changed = true;
-                        defaultTypesForNewElements.add(resolvedMetaClass);
+                        // The found metaclass already has a list form
+                        if (foundListMetaClasses.Contains(resolvedMetaClass))
+                        {
+                            FormMethods.AddToFormCreationProtocol(listForm,
+                                $"ExtentTypeFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
+                            continue;
+                        }
 
-                        FormMethods.AddToFormCreationProtocol(rowForm,
-                            $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}' to PackagedElement");
+                        FormMethods.AddDefaultTypeForNewElement(result.Form, resolvedMetaClass);
+
+                        FormMethods.AddToFormCreationProtocol(listForm,
+                            $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
                     }
                 }
             }
+
+            result.IsManaged = true;
         }
 
-        return changed;
+        public void CreateCollectionFormForMetaClass(IElement metaClass, NewFormCreationContext context,
+            FormCreationResult result)
+        {
+        }
+    }
+
+    /**
+     * Includes the creation buttons for all Properties in SubElementFields for packagedItems for the
+     * default root classes of a certain extent type
+     */
+    public class NewIncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
+        IWorkspaceLogic workspaceLogic,
+        ExtentSettings extentSettings) : INewObjectFormFactory
+    {
+        public void CreateObjectFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+        {
+            var extentTypes = element.GetUriExtentOf()?.GetConfiguration().ExtentTypes;
+
+            var changed = false;
+            if (extentTypes == null)
+                return;
+
+            // Finds the extent type fitting to the extent to be shown
+            var foundExtentTypes =
+                extentSettings.extentTypeSettings.Where(x => extentTypes.Contains(x.name)).ToList();
+
+            if (foundExtentTypes.Count == 0)
+                return;
+
+            if (result.Form == null)
+                throw new InvalidOperationException("Form is null");
+
+            // Check, if the detail element is from type package
+            if ((element as IElement)?.metaclass?.equals(_UML.TheOne.Packages.__Package) != true
+                && (element as IElement)?.metaclass?.equals(_CommonTypes.TheOne.Default.__Package) != true)
+            {
+                return;
+            }
+
+            // Now, go through the forms and look for the subelements of packagedElements
+            var rowForms = FormMethods.GetRowForms(result.Form).ToList();
+            foreach (var rowForm in rowForms)
+            {
+                var foundFieldForPackagedElement = FormMethods.GetFieldForProperty(rowForm,
+                    _CommonTypes._Default._Package.packagedElement);
+                if (
+                    foundFieldForPackagedElement?.metaclass?.equals(_Forms.TheOne.__SubElementFieldData) ==
+                    true)
+                {
+                    var defaultTypesForNewElements = foundFieldForPackagedElement.get<IReflectiveCollection>(
+                        _Forms._SubElementFieldData.defaultTypesForNewElements);
+                    // We found it, so add the stuff
+
+                    foreach (var foundExtentType in foundExtentTypes)
+                    {
+                        foreach (var rootMetaClass in foundExtentType.rootElementMetaClasses)
+                        {
+                            var resolvedMetaClass =
+                                workspaceLogic.ResolveElement(rootMetaClass, ResolveType.OnlyMetaWorkspaces);
+
+                            if (resolvedMetaClass == null)
+                            {
+                                continue;
+                            }
+
+                            changed = true;
+                            defaultTypesForNewElements.add(resolvedMetaClass);
+
+                            FormMethods.AddToFormCreationProtocol(rowForm,
+                                $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}' to PackagedElement");
+                        }
+                    }
+                }
+            }
+
+            result.IsManaged = changed;
+        }
+
+        public void CreateObjectFormForMetaClass(IElement? metaClass, NewFormCreationContext context,
+            FormCreationResult result)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

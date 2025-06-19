@@ -22,9 +22,25 @@ public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
                 var formsPlugin = scopeStorage.Get<FormsState>();
-                formsPlugin.FormModificationPlugins.Add(
-                    new ExtentTypeFormModification(workspaceLogic, _extentSettings));
-
+                formsPlugin.NewFormModificationPlugins.Add(
+                    context => context.Global.CollectionFormFactories.Add(
+                        new ExtentTypeFormModification.IncludeJumpToExtentButtonModification()));
+                
+                formsPlugin.NewFormModificationPlugins.Add(
+                    context => context.Global.RowFormFactories.Add(
+                        new ExtentTypeFormModification.IncludeExtentTypesForTableFormExtent(
+                            _extentSettings)));
+                
+                formsPlugin.NewFormModificationPlugins.Add(
+                    context => context.Global.CollectionFormFactories.Add(
+                        new ExtentTypeFormModification.IncludeCreationButtonsInTableFormForClassifierOfExtentType(
+                            workspaceLogic, _extentSettings)));
+                
+                formsPlugin.NewFormModificationPlugins.Add(
+                    context => context.Global.ObjectFormFactories.Add(
+                        new ExtentTypeFormModification.NewIncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
+                            workspaceLogic, _extentSettings)));
+                
                 break;
         }
 

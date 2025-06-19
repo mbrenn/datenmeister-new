@@ -32,16 +32,18 @@ public class FormCreatorTests
         Assert.That(zipModel, Is.Not.Null);
         Assert.That(zipModel.ZipCode, Is.Not.Null);
         
-        var formCreator = new TableFormCreator(workspaceLogic, scopeStorage);
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
+        
         var createdForm =
-            formCreator.CreateTableFormForMetaClass(zipModel.ZipCode!, new FormFactoryContext());
+            FormCreation.CreateTableFormForMetaClass(zipModel.ZipCode!, context).Form;
         Assert.That(createdForm, Is.Not.Null);
         var fields =
             createdForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
                 ?.OfType<IElement>()
                 .ToList();
         Assert.That(fields, Is.Not.Null);
-        Assert.That(createdForm.metaclass?.equals(_Forms.TheOne.__TableForm), Is.True);
+        Assert.That(createdForm!.metaclass?.equals(_Forms.TheOne.__TableForm), Is.True);
         Assert.That(fields!.Any(x =>
             x.getOrDefault<string>(_Forms._FieldData.name) == nameof(ZipCode.name)));
         Assert.That(fields!.Any(x =>
@@ -67,10 +69,12 @@ public class FormCreatorTests
         extent.elements().add(unclassified);
             
         // Ok, data is prepared, now get the collection
-        var formsLogic = new CollectionFormFactory(workspaceLogic, scopeStorage);
-        var collectionForm = formsLogic.CreateCollectionFormForExtent(
-            extent, 
-            new FormFactoryContext());
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
+        
+        var collectionForm = FormCreation.CreateCollectionFormForCollection(
+            extent.elements(), context).Form;
+        
         Assert.That(collectionForm, Is.Not.Null);
         var tableForms = FormMethods.GetTableForms(collectionForm!).ToList();
         Assert.That(tableForms.Count, Is.EqualTo(2));
@@ -102,10 +106,14 @@ public class FormCreatorTests
 
         var zipModel = scopeStorage.Get<ZipCodeModel>();
         
-        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
+        
         var createdForm =
-            formCreator.CreateObjectFormForMetaClass(zipModel.ZipCode!, new FormFactoryContext());
-        var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
+            FormCreation.CreateObjectFormForMetaClass(zipModel.ZipCode!, context).Form;
+        Assert.That(createdForm, Is.Not.Null);
+        
+        var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
         var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
@@ -135,10 +143,14 @@ public class FormCreatorTests
         var zipModel = scopeStorage.Get<ZipCodeModel>();
         var instance = InMemoryObject.CreateEmpty(zipModel.ZipCode!);
         
-        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
+        
         var createdForm =
-            formCreator.CreateObjectFormForItem(instance, new FormFactoryContext());
-        var detailForm = FormMethods.GetRowForms(createdForm).FirstOrDefault();
+            FormCreation.CreateObjectFormForItem(instance,context).Form;
+        Assert.That(createdForm, Is.Not.Null);
+        
+        var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
         var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
@@ -167,14 +179,16 @@ public class FormCreatorTests
 
         var instance = InMemoryObject.CreateEmpty();
         
-        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
         var createdForm =
-            formCreator.CreateObjectFormForItem(instance, new FormFactoryContext());
+            FormCreation.CreateObjectFormForItem(instance, context).Form;
+        Assert.That(createdForm, Is.Not.Null);
             
-        var rowForms = FormMethods.GetRowForms(createdForm).ToList();
+        var rowForms = FormMethods.GetRowForms(createdForm!).ToList();
         Assert.That(rowForms.Count, Is.GreaterThan(0));
             
-        var tableForms = FormMethods.GetTableForms(createdForm).ToList();
+        var tableForms = FormMethods.GetTableForms(createdForm!).ToList();
         Assert.That(tableForms.Count, Is.EqualTo(0));
     }
 
@@ -194,17 +208,20 @@ public class FormCreatorTests
         var instance3 = InMemoryObject.CreateEmpty(_UML.TheOne.StructuredClassifiers.__Connector);
         instance3.set(_UML._StructuredClassifiers._Connector.name, "Instance3");
         packageModel.set(_UML._Packages._Package.packagedElement, new[] {instance1, instance2, instance3});
-            
-        var formCreator = new ObjectFormCreator(workspaceLogic, scopeStorage);
+
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
         var createdForm =
-            formCreator.CreateObjectFormForItem(packageModel, new FormFactoryContext());
+            FormCreation.CreateObjectFormForItem(packageModel, context).Form;
+        
+        Assert.That(createdForm, Is.Not.Null);
             
-        var rowForms = FormMethods.GetRowForms(createdForm).ToList();
+        var rowForms = FormMethods.GetRowForms(createdForm!).ToList();
         Assert.That(rowForms.Count, Is.EqualTo(1));
             
         // Checks, if the # of tableforms is bigger or equal to 2. 
         // We have to check for higher values since additional table forms might be created by metaclass
-        var tableForms = FormMethods.GetTableForms(createdForm).ToList();
+        var tableForms = FormMethods.GetTableForms(createdForm!).ToList();
         Assert.That(tableForms.Count, Is.GreaterThanOrEqualTo(2));
             
         // Now get all table forms within properties of packagedElements
@@ -233,16 +250,13 @@ public class FormCreatorTests
         var workspaceLogic = dm.WorkspaceLogic;
         var scopeStorage = dm.ScopeStorage;
 
-        var formCreator = new CollectionFormFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
 
         var extent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);
         Assert.That(extent, Is.Not.Null);
 
-        var createdForm = formCreator.CreateCollectionFormForExtent(extent, new FormFactoryContext()
-        {
-            AllowFormModifications = true
-        });
-
+        var createdForm = FormCreation.CreateCollectionFormForCollection(extent.elements(), context).Form;
         Assert.That(createdForm, Is.Not.Null);
 
         var listForm = FormMethods.GetTableForms(createdForm!).FirstOrDefault(
@@ -255,7 +269,7 @@ public class FormCreatorTests
             listForm.getOrDefault<IReflectiveSequence>(_Forms._TableForm.defaultTypesForNewElements);
         Assert.That(
             defaultTypesForNewElements.OfType<IElement>().Any(
-                x => x?.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement.metaClass)
+                x => x.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement.metaClass)
                     .Equals(_UML.TheOne.StructuredClassifiers.__Class) == true),
             Is.True);
     }

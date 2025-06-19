@@ -37,11 +37,13 @@ public class TestAutoColumnCreator1
         var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
         // Execute the stuff
-        var creator = new CollectionFormCreator(workspaceLogic, scopeStorage);
-        var result = creator.CreateCollectionFormForCollection(
-            extent,extent.elements(), new FormFactoryContext());
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
+        
+        var result = FormCreation.CreateCollectionFormForCollection(
+            extent.elements(), context).Form;
         Assert.That(result, Is.Not.Null);
-        var tab = result.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
+        var tab = result!.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
         Assert.That(tab, Is.Not.Null);
         Assert.That(tab
@@ -91,12 +93,15 @@ public class TestAutoColumnCreator1
         var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
         // Execute the stuff
-        var creator = new CollectionFormCreator(workspaceLogic, scopeStorage);
-        var result = creator.CreateCollectionFormForCollection(
-            extent, extent.elements(), new FormFactoryContext());
+        
+        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var context = formCreationFactory.Create();
+        
+        var result = FormCreation.CreateCollectionFormForCollection(
+            extent.elements(), context).Form;
         Assert.That(result, Is.Not.Null);
 
-        var tab = result
+        var tab = result!
             .getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
 

@@ -85,14 +85,18 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     public ActionResult<CreateCollectionFormForExtentResult> CreateCollectionFormForExtent(string workspaceId,
         string extentUri, string? viewMode)
     {
-        var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-        var formFactory = new CollectionFormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
-
         viewMode = MvcUrlEncoder.DecodePath(viewMode);
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
+        
+        var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
+        var factory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage)
+        {
+            MofFactory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User))
+        };
 
-        var factory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User));
+        var context = factory.Create()
+            .SetViewModeId(viewMode ?? string.Empty);
 
         var (collection, extent) = _internal.WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
         if (extent == null || collection == null)
@@ -101,14 +105,9 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         }
 
         // Creates the form itself
-        var form = formFactory.CreateCollectionFormForCollection(
-                       extent,
+        var form = FormCreation.CreateCollectionFormForCollection(
                        collection,
-                       new FormFactoryContext
-                       {
-                           ViewModeId = viewMode ?? string.Empty,
-                           Factory = factory
-                       })
+                       context).Form
                    ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
         formMethods.GetUserFormExtent().elements().add(form);
@@ -143,15 +142,20 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     public ActionResult<CreateObjectFormForItemResult> CreateObjectFormForItem(
         string workspaceId, string itemUri, string? viewMode)
     {
-        var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
-        var formFactory = new ObjectFormFactory(_internal.WorkspaceLogic, _internal.ScopeStorage);
-
         viewMode = MvcUrlEncoder.DecodePath(viewMode);
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
-
+        
+        var formMethods = new FormMethods(_internal.WorkspaceLogic, _internal.ScopeStorage);
         var userFormExtent = formMethods.GetUserFormExtent();
-        var factory = new MofFactory(userFormExtent);
+        
+        var factory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage)
+        {
+            MofFactory = new MofFactory(userFormExtent)
+        };
+        
+        var formContext = factory.Create()
+            .SetViewModeId(viewMode ?? string.Empty);
 
         var element = _internal.WorkspaceLogic.FindObject(workspaceId, itemUri);
         if (element == null)
@@ -160,20 +164,15 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         }
 
         // Creates the form itself
-        var form = formFactory.CreateObjectFormForItem(
+        var result = FormCreation.CreateObjectFormForItem(
             element,
-            new FormFactoryContext
-            {                    
-                ViewModeId = viewMode ?? string.Empty,
-                Factory = factory, 
-                ViaFormFinder = false // We want to create a complete and fresh form
-            }) ?? throw new InvalidOperationException("Form returned null for whatever reason");
+            formContext).Form ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
-        userFormExtent.elements().add(form);
+        userFormExtent.elements().add(result);
 
         return new CreateObjectFormForItemResult
         {
-            CreatedForm = ItemWithNameAndId.Create(form)
+            CreatedForm = ItemWithNameAndId.Create(result)
         };
     }
 

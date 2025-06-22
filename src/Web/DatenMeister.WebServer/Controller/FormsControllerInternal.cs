@@ -75,8 +75,11 @@ public class FormsControllerInternal
         
         var formContext = factory.Create();
 
-        var form = FormCreation.CreateCollectionFormForCollection(
-            extent.elements(),
+        var form = FormCreation.CreateCollectionForm(
+            new CollectionFormFactoryParameter
+            {
+                Collection = extent.elements()
+            },
             formContext);
             
         if (form.Form == null)

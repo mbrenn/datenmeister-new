@@ -72,8 +72,12 @@ public class FormCreatorTests
         var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         
-        var collectionForm = FormCreation.CreateCollectionFormForCollection(
-            extent.elements(), context).Form;
+        var collectionForm = FormCreation.CreateCollectionForm(
+            new CollectionFormFactoryParameter
+            {
+                Collection = extent.elements(),
+            },
+            context).Form;
         
         Assert.That(collectionForm, Is.Not.Null);
         var tableForms = FormMethods.GetTableForms(collectionForm!).ToList();
@@ -256,7 +260,11 @@ public class FormCreatorTests
         var extent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);
         Assert.That(extent, Is.Not.Null);
 
-        var createdForm = FormCreation.CreateCollectionFormForCollection(extent.elements(), context).Form;
+        var createdForm = FormCreation.CreateCollectionForm(
+            new CollectionFormFactoryParameter
+            {
+                Collection = extent.elements()
+            }, context).Form;
         Assert.That(createdForm, Is.Not.Null);
 
         var listForm = FormMethods.GetTableForms(createdForm!).FirstOrDefault(

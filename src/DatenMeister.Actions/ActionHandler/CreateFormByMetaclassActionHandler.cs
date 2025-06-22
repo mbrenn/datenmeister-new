@@ -4,6 +4,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Actions.ActionHandler;
@@ -74,7 +75,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
             void CreateObjectForm(bool includeFormAssociation)
             {
                 form = FormCreation.CreateObjectFormForMetaClass(metaClass, context).Form
-                    ?? throw new InvalidOperationException("Form was not created");
+                       ?? throw new InvalidOperationException("Form was not created");
                 targetReflection.add(form);
 
                 if (includeFormAssociation)
@@ -89,7 +90,12 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateCollectionForm(bool includeFormAssociation)
             {
-                form = FormCreation.CreateCollectionFormForMetaClass(metaClass, context).Form
+                form = FormCreation.CreateCollectionForm(
+                           new CollectionFormFactoryParameter
+                           {
+                               MetaClass = metaClass
+                           },
+                           context).Form
                        ?? throw new InvalidOperationException("Form is null");
                 targetReflection.add(form);
 

@@ -2,6 +2,12 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Forms.FormFactory;
 
+public class FieldFactoryParameter
+{
+    public IElement? PropertyType { get; set; }
+    
+    public string PropertyName { get; set; } = string.Empty;
+}
 public interface INewFieldFactory
 {
     /// <summary>

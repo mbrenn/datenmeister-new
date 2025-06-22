@@ -13,10 +13,15 @@ namespace DatenMeister.Forms.CollectionForms;
 public class CollectionFormFromData : INewCollectionFormFactory
 {
     public void CreateCollectionFormForCollection(
-        IReflectiveCollection collection, 
+        CollectionFormFactoryParameter parameter, 
         NewFormCreationContext context,
         FormCreationResult result)
     {
+        if (parameter.Collection == null)
+            return;
+        
+        var collection = parameter.Collection;
+                
         var tabs = new List<IElement>();
 
         result.Form ??= context.Global.Factory.create(_Forms.TheOne.__CollectionForm);

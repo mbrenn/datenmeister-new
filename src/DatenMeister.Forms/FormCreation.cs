@@ -1,6 +1,7 @@
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms;
 
@@ -11,8 +12,8 @@ public static class FormCreation
     /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(FormCreation)); 
     
-    public static FormCreationResult CreateCollectionFormForCollection(
-        IReflectiveCollection collection,
+    public static FormCreationResult CreateCollectionForm(
+        CollectionFormFactoryParameter parameter,
         NewFormCreationContext context,
         FormCreationResult? result = null)
     {
@@ -20,21 +21,7 @@ public static class FormCreation
         WalkThroughManager(
             context.Global.CollectionFormFactories, 
             manager => 
-                manager.CreateCollectionFormForCollection(collection, context, result),
-            result);
-
-        return result;
-    }
-    public static FormCreationResult CreateCollectionFormForMetaClass(
-        IElement metaClass,
-        NewFormCreationContext context,
-        FormCreationResult? result = null)
-    {
-        result ??= new FormCreationResult();
-        WalkThroughManager(
-            context.Global.CollectionFormFactories, 
-            manager => 
-                manager.CreateCollectionFormForMetaClass(metaClass, context, result),
+                manager.CreateCollectionFormForCollection(parameter, context, result),
             result);
 
         return result;

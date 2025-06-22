@@ -22,12 +22,8 @@ public class ExtentTypeFormModification()
 
     public class IncludeJumpToExtentButtonModification : INewCollectionFormFactory
     {
-        public void CreateCollectionFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+        public void CreateCollectionFormForCollection(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
             FormCreationResult result)
-        {
-        }
-
-        public void CreateCollectionFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
         {
             if (result.Form == null)
             {
@@ -117,9 +113,14 @@ public class ExtentTypeFormModification()
         ExtentSettings extentSettings)
         : INewCollectionFormFactory
     {
-        public void CreateCollectionFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+        public void CreateCollectionFormForCollection(
+            CollectionFormFactoryParameter parameter, NewFormCreationContext context,
             FormCreationResult result)
         {
+            if (parameter.Collection == null)
+                return;
+            
+            var collection = parameter.Collection;
             var extentTypes = collection.GetUriExtentOf()?.GetConfiguration().ExtentTypes;
             if (extentTypes == null)
                 return;

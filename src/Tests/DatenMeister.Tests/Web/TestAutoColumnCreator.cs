@@ -8,6 +8,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.FormFactory;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web;
@@ -39,9 +40,12 @@ public class TestAutoColumnCreator1
         // Execute the stuff
         var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
-        
-        var result = FormCreation.CreateCollectionFormForCollection(
-            extent.elements(), context).Form;
+
+        var result = FormCreation.CreateCollectionForm(
+            new CollectionFormFactoryParameter
+            {
+                Collection = extent.elements(),
+            }, context).Form;
         Assert.That(result, Is.Not.Null);
         var tab = result!.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
@@ -97,8 +101,11 @@ public class TestAutoColumnCreator1
         var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         
-        var result = FormCreation.CreateCollectionFormForCollection(
-            extent.elements(), context).Form;
+        var result = FormCreation.CreateCollectionForm(
+            new CollectionFormFactoryParameter()
+            {
+                Collection = extent.elements(),
+            }, context).Form;
         Assert.That(result, Is.Not.Null);
 
         var tab = result!

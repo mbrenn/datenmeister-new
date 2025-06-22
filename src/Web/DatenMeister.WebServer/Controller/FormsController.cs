@@ -105,8 +105,11 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         }
 
         // Creates the form itself
-        var form = FormCreation.CreateCollectionFormForCollection(
-                       collection,
+        var form = FormCreation.CreateCollectionForm(
+                       new CollectionFormFactoryParameter()
+                       {
+                           Collection = collection,
+                       },
                        context).Form
                    ?? throw new InvalidOperationException("Form returned null for whatever reason");
 

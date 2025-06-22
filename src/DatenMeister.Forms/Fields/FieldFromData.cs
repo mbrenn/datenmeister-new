@@ -53,9 +53,13 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
 
     private Workspace? _uriResolver;
     
-    public void CreateFieldForProperty(IObject? property, NewFormCreationContext context, FormCreationResult result)
+    public void CreateField(FieldFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
     {
-        var propertyName = property.getOrDefault<string>(_UML._Classification._Property.name);
+        var property = parameter.PropertyType;
+        var propertyName = string.IsNullOrEmpty(parameter.PropertyName) 
+            ? property.getOrDefault<string>(_UML._Classification._Property.name)
+            : parameter.PropertyName;
+        
         if (property == null && propertyName == null)
             throw new InvalidOperationException("property == null && propertyName == null");
 
@@ -138,8 +142,13 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
 
                     if (!context.IsForTableForm)
                     {
-                        var enumerationListForm = 
-                            FormCreation.CreateTableFormForMetaClass(propertyType, context).Form;
+                        var clonedContext = context.Clone();
+                        var enumerationListForm =
+                            FormCreation.CreateTableFormForMetaClass(
+                                new TableFormFactoryParameter
+                                {
+                                    MetaClass = propertyType
+                                }, clonedContext).Form;
 
                         /* TODO: Rescue
                         // Create the internal form out of the metaclass

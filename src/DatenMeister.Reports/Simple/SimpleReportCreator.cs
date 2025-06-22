@@ -92,8 +92,11 @@ public class SimpleReportCreator
         {
             var name = NamedElementMethods.GetFullName(rootElement);
             report.Add(new HtmlHeadline($"Reported Item '{name}'", 1));
-            var detailForm = FormCreation.CreateRowFormForItem
-                                 (rootElement,
+            var detailForm = FormCreation.CreateRowForm(
+                                     new RowFormFactoryParameter
+                                     {
+                                         Element = rootElement
+                                     },
                                      _formContextFactory.Create())
                                  .Form
                              ?? throw new InvalidOperationException("detailForm is null");

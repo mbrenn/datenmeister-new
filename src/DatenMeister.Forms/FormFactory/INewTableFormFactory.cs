@@ -12,13 +12,8 @@ public class TableFormFactoryParameter
 
 public interface INewTableFormFactory
 {
-    void CreateTableFormForCollection(
-        IReflectiveCollection collection,
-        NewFormCreationContext context,
-        FormCreationResult result);
-    
-    void CreateTableFormForMetaclass(
-        IElement metaClass,
+    void CreateTableForm(
+        TableFormFactoryParameter parameter,
         NewFormCreationContext context,
         FormCreationResult result);
 }

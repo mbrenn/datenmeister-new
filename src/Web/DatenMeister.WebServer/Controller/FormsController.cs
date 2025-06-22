@@ -167,9 +167,11 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         }
 
         // Creates the form itself
-        var result = FormCreation.CreateObjectFormForItem(
-            element,
-            formContext).Form ?? throw new InvalidOperationException("Form returned null for whatever reason");
+        var result = FormCreation.CreateObjectForm(
+            new ObjectFormFactoryParameter
+            {
+                Element = element 
+            }, formContext).Form ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
         userFormExtent.elements().add(result);
 

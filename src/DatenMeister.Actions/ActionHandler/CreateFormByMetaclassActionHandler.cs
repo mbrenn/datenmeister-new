@@ -19,10 +19,11 @@ public static class CreateFormByMetaclassCreationMode
     public const string ObjectCollectionAssociation = "Object_Collection_Association";
         
 }
+
 public class CreateFormByMetaclassActionHandler : IActionHandler
 {
     public bool IsResponsible(IElement node)
-    {   
+    {
         return node.getMetaClass()?.equals(
             _Actions.TheOne.__CreateFormByMetaClass) == true;
     }
@@ -74,7 +75,11 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateObjectForm(bool includeFormAssociation)
             {
-                form = FormCreation.CreateObjectFormForMetaClass(metaClass, context).Form
+                form = FormCreation.CreateObjectForm(
+                           new ObjectFormFactoryParameter
+                           {
+                               MetaClass = metaClass
+                           }, context).Form
                        ?? throw new InvalidOperationException("Form was not created");
                 targetReflection.add(form);
 

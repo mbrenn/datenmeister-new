@@ -53,8 +53,9 @@ public static class ActionButtonToFormAdder
     private class NewRowFormModification(NewActionButtonAdderParameter parameter) : INewRowFormFactory,
         INewTableFormFactory
     {
-        private void ManageActionButton(IObject? element, NewFormCreationContext context, FormCreationResult result)
+        private void ManageActionButton(RowFormFactoryParameter? factoryParameter, NewFormCreationContext context, FormCreationResult result)
         {
+            var element = factoryParameter?.Element;
             if (result.Form == null)
                 throw new InvalidOperationException("Form is null");
 
@@ -104,32 +105,24 @@ public static class ActionButtonToFormAdder
 
             result.IsManaged = true;
         }
-        
+
         /// <summary>
         /// Modifies the form by checking whether the action button can be applied
         /// </summary>
+        /// <param name="factoryParameter">The factory parameter being used</param>
         /// <param name="context">The form creation context in which the application shall be checked. This is
         /// the specific instance of the requesting form context</param>
         /// <param name="result">The form to which the changes shall be applied</param>
         /// <returns>true, if the form has been modified</returns>
-        public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(RowFormFactoryParameter factoryParameter, NewFormCreationContext context, FormCreationResult result)
         {
-            ManageActionButton(element, context, result);
+            ManageActionButton(factoryParameter, context, result);
         }
 
-        public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context,
-            FormCreationResult result)
-        {
-        }
-
-        public void CreateTableFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+        public void CreateTableForm(TableFormFactoryParameter factoryParameter, NewFormCreationContext context,
             FormCreationResult result)
         {
             ManageActionButton(null, context, result);
-        }
-
-        public void CreateTableFormForMetaclass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
-        {
         }
     }
 

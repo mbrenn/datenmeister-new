@@ -11,7 +11,5 @@ public class RowFormFactoryParameter
 
 public interface INewRowFormFactory
 {
-    public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result);
-    
-    public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result);   
+    public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result);
 }

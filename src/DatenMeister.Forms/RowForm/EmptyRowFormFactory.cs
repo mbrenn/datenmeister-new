@@ -6,13 +6,7 @@ namespace DatenMeister.Forms.RowForm;
 
 public class EmptyRowFormFactory : INewRowFormFactory
 {
-    public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
-    {
-        result.Form ??= context.Global.Factory.create(_Forms.TheOne.__RowForm);
-        result.IsManaged = true;
-    }
-
-    public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
     {
         result.Form ??= context.Global.Factory.create(_Forms.TheOne.__RowForm);
         result.IsManaged = true;

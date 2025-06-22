@@ -5,6 +5,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormCreator;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.Fields;
@@ -51,8 +52,12 @@ public static class FieldCreationHelper
             if (isAlreadyIn) continue;
 
             var column = FormCreation.CreateFieldForProperty(
-                property,
-                context);
+                new FieldFactoryParameter
+                {
+                    PropertyName = propertyName ?? string.Empty,
+                    PropertyType = property
+                },
+                context.Clone());
             if (column.Form != null)
             {
                 rowOrObjectForm.get<IReflectiveCollection>(_Forms._RowForm.field).add(column.Form);

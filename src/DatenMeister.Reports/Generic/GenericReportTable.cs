@@ -79,7 +79,11 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
 
             var context = formCreationFactory.Create();
             // Create form
-            form = FormCreation.CreateTableFormForCollection(elements, context).Form;
+            form = FormCreation.CreateTableFormForMetaClass(
+                new TableFormFactoryParameter()
+                {
+                    Collection = elements
+                }, context).Form;
         }
 
         // Creates the table

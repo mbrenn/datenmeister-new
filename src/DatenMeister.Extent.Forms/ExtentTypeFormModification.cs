@@ -17,12 +17,12 @@ namespace DatenMeister.Extent.Forms;
 /// <summary>
 /// Modifies the form according to the Extent Type
 /// </summary>
-public class ExtentTypeFormModification()
+public class ExtentTypeFormModification
 {
 
     public class IncludeJumpToExtentButtonModification : INewCollectionFormFactory
     {
-        public void CreateCollectionFormForCollection(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+        public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
             FormCreationResult result)
         {
             if (result.Form == null)
@@ -44,15 +44,11 @@ public class ExtentTypeFormModification()
 
     public class IncludeExtentTypesForTableFormExtent(ExtentSettings extentSettings) : INewRowFormFactory
     {
-        public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
         {
-            throw new NotImplementedException();
-        }
-
-        public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
-        {
+            var metaClass = parameter.MetaClass;
             
-            if (metaClass.equals(_Management.TheOne.__Extent) != true)
+            if (metaClass == null || metaClass.equals(_Management.TheOne.__Extent) != true)
             {
                 return;
             }
@@ -113,7 +109,7 @@ public class ExtentTypeFormModification()
         ExtentSettings extentSettings)
         : INewCollectionFormFactory
     {
-        public void CreateCollectionFormForCollection(
+        public void CreateCollectionForm(
             CollectionFormFactoryParameter parameter, NewFormCreationContext context,
             FormCreationResult result)
         {
@@ -199,8 +195,12 @@ public class ExtentTypeFormModification()
         IWorkspaceLogic workspaceLogic,
         ExtentSettings extentSettings) : INewObjectFormFactory
     {
-        public void CreateObjectFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+        public void CreateObjectForm(ObjectFormFactoryParameter paramete, NewFormCreationContext context, FormCreationResult result)
         {
+            var element = paramete.Element;
+            if (element == null)
+                return;
+            
             var extentTypes = element.GetUriExtentOf()?.GetConfiguration().ExtentTypes;
 
             var changed = false;

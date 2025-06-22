@@ -7,7 +7,7 @@ namespace DatenMeister.Forms.CollectionForms;
 
 public class CollectionFormFromMetaClass : INewCollectionFormFactory
 {
-    public void CreateCollectionFormForCollection(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
         FormCreationResult result)
     {
         if (parameter.MetaClass == null)
@@ -100,8 +100,10 @@ public class CollectionFormFromMetaClass : INewCollectionFormFactory
                 // Now try to figure out the metaclass
 
                 var tableForm = FormCreation.CreateTableFormForMetaClass(
-                                    propertyType,
-                                    context.Clone()).Form
+                                    new TableFormFactoryParameter()
+                                    {
+                                        MetaClass = propertyType
+                                    }, context.Clone()).Form
                                 ?? throw new InvalidOperationException("No form was found");
 
                 tableForm.set(

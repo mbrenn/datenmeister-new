@@ -18,7 +18,7 @@ public interface INewCollectionFormFactory
     /// <param name="parameter">Parameter whose data is used to create the form</param>
     /// <param name="context">The context being used</param>
     /// <param name="result">The structure in which the result will be stored</param>
-    void CreateCollectionFormForCollection(
+    void CreateCollectionForm(
         CollectionFormFactoryParameter parameter,
         NewFormCreationContext context,
         FormCreationResult result);

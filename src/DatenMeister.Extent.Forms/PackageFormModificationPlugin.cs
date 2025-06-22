@@ -49,9 +49,12 @@ public class PackageFormModificationPlugin : INewObjectFormFactory
         }
     }
 
-    public void CreateObjectFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
     {
-
+        var element = parameter.Element;
+        if (element == null)
+            return;
+        
         if (result.Form == null)
         {
             throw new InvalidOperationException("Form is null");

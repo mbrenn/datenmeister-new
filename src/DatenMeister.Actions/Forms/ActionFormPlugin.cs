@@ -45,12 +45,12 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     /// </summary>
     public class ActionFormModificationPlugin : INewRowFormFactory
     {
-        public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
         {
-        }
-
-        public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
-        {
+            var metaClass = parameter.MetaClass;
+            if (metaClass == null)
+                return;
+            
             var isAction = ClassifierMethods.IsSpecializedClassifierOf(
                 metaClass, _Actions.TheOne.__Action);
 

@@ -44,6 +44,7 @@ public class AboutModel : PageModel
     /// <summary>
     /// Returns a list of strings containing the names of the types of the Form Modification Plugins
     /// </summary>
+    [Obsolete]
     public static List<string> FormModificationTypes
     {
         get

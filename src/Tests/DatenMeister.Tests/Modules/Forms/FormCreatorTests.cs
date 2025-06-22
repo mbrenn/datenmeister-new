@@ -34,9 +34,13 @@ public class FormCreatorTests
         
         var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
-        
+
         var createdForm =
-            FormCreation.CreateTableFormForMetaClass(zipModel.ZipCode!, context).Form;
+            FormCreation.CreateTableFormForMetaClass(
+                new TableFormFactoryParameter()
+                {
+                    MetaClass = zipModel.ZipCode!
+                }, context).Form;
         Assert.That(createdForm, Is.Not.Null);
         var fields =
             createdForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
@@ -109,14 +113,18 @@ public class FormCreatorTests
         var scopeStorage = dm.ScopeStorage;
 
         var zipModel = scopeStorage.Get<ZipCodeModel>();
-        
+
         var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
-        
+
         var createdForm =
-            FormCreation.CreateObjectFormForMetaClass(zipModel.ZipCode!, context).Form;
+            FormCreation.CreateObjectForm(
+                new ObjectFormFactoryParameter
+                {
+                    MetaClass = zipModel.ZipCode!
+                }, context).Form;
         Assert.That(createdForm, Is.Not.Null);
-        
+
         var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
@@ -128,7 +136,7 @@ public class FormCreatorTests
         {
             if (field.metaclass?.equals(_Forms.TheOne.__TextFieldData) != true)
                 continue;
-                
+
             // Testing only on TextFields
             any = true;
             Assert.That(field.getOrDefault<bool>(_Forms._FieldData.isReadOnly), Is.False);
@@ -151,7 +159,11 @@ public class FormCreatorTests
         var context = formCreationFactory.Create();
         
         var createdForm =
-            FormCreation.CreateObjectFormForItem(instance,context).Form;
+            FormCreation.CreateObjectForm(
+                new ObjectFormFactoryParameter
+                {
+                    Element =  instance!
+                }, context).Form;
         Assert.That(createdForm, Is.Not.Null);
         
         var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
@@ -185,8 +197,13 @@ public class FormCreatorTests
         
         var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
+        
         var createdForm =
-            FormCreation.CreateObjectFormForItem(instance, context).Form;
+            FormCreation.CreateObjectForm(
+                new ObjectFormFactoryParameter
+                {
+                    Element =  instance!
+                }, context).Form;
         Assert.That(createdForm, Is.Not.Null);
             
         var rowForms = FormMethods.GetRowForms(createdForm!).ToList();
@@ -202,7 +219,7 @@ public class FormCreatorTests
         await using var dm = await DatenMeisterTests.GetDatenMeisterScope();
         var workspaceLogic = dm.WorkspaceLogic;
         var scopeStorage = dm.ScopeStorage;
-            
+
         // Prepare instance
         var packageModel = InMemoryObject.CreateEmpty(_UML.TheOne.Packages.__Package);
         var instance1 = InMemoryObject.CreateEmpty(_UML.TheOne.StructuredClassifiers.__Class);
@@ -211,39 +228,45 @@ public class FormCreatorTests
         instance2.set(_UML._StructuredClassifiers._Connector.name, "Instance2");
         var instance3 = InMemoryObject.CreateEmpty(_UML.TheOne.StructuredClassifiers.__Connector);
         instance3.set(_UML._StructuredClassifiers._Connector.name, "Instance3");
-        packageModel.set(_UML._Packages._Package.packagedElement, new[] {instance1, instance2, instance3});
+        packageModel.set(_UML._Packages._Package.packagedElement, new[] { instance1, instance2, instance3 });
 
         var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         var createdForm =
-            FormCreation.CreateObjectFormForItem(packageModel, context).Form;
-        
+            FormCreation.CreateObjectForm(
+                new ObjectFormFactoryParameter
+                {
+                    Element = packageModel
+                }, context).Form;
+
         Assert.That(createdForm, Is.Not.Null);
-            
+
         var rowForms = FormMethods.GetRowForms(createdForm!).ToList();
         Assert.That(rowForms.Count, Is.EqualTo(1));
-            
+
         // Checks, if the # of tableforms is bigger or equal to 2. 
         // We have to check for higher values since additional table forms might be created by metaclass
         var tableForms = FormMethods.GetTableForms(createdForm!).ToList();
         Assert.That(tableForms.Count, Is.GreaterThanOrEqualTo(2));
-            
+
         // Now get all table forms within properties of packagedElements
         var tableFormsForPackagedElements = tableForms
             .Where(x => x.getOrDefault<string>(_Forms._TableForm.property) == "packagedElement")
             .ToList();
-            
+
         // Here, we should now have two table forms, one for the class and one for the connector
         Assert.That(tableFormsForPackagedElements.Count, Is.EqualTo(2));
-            
+
         // Checks that the metaclass is correctly 
         Assert.That(
-            tableFormsForPackagedElements.Any(
-                x => x.getOrDefault<IElement>(_Forms._TableForm.metaClass)?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true),
+            tableFormsForPackagedElements.Any(x =>
+                x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                    ?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true),
             Is.True);
         Assert.That(
-            tableFormsForPackagedElements.Any(
-                x => x.getOrDefault<IElement>(_Forms._TableForm.metaClass)?.equals(_UML.TheOne.StructuredClassifiers.__Connector) == true), 
+            tableFormsForPackagedElements.Any(x =>
+                x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                    ?.equals(_UML.TheOne.StructuredClassifiers.__Connector) == true),
             Is.True);
     }
 

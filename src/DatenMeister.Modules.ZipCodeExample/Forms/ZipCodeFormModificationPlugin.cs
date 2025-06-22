@@ -14,13 +14,10 @@ namespace DatenMeister.Modules.ZipCodeExample.Forms;
 /// </summary>
 public class ZipCodeFormModificationPlugin : INewRowFormFactory
 {
-    public void CreateRowFormForItem(IObject element, NewFormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
     {
-    }
-
-    public void CreateRowFormForMetaClass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
-    {
-        if (metaClass.equals(_Management.TheOne.__Workspace) == true)
+        var metaClass = parameter.MetaClass;
+        if (metaClass != null && metaClass.equals(_Management.TheOne.__Workspace) == true)
         {
             // Ok, I got it
 
@@ -32,7 +29,5 @@ public class ZipCodeFormModificationPlugin : INewRowFormFactory
             fields.add(actionField);
             result.IsManaged = true;
         }
-
-        result.IsManaged = false;
     }
 }

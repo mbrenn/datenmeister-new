@@ -8,7 +8,7 @@ namespace DatenMeister.Forms.CollectionForms;
 /// </summary>
 public class EmptyCollectionFormFactory : INewCollectionFormFactory
 {
-    public void CreateCollectionFormForCollection(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
         FormCreationResult result)
     {
         result.AddToFormCreationProtocol(

@@ -39,7 +39,7 @@ public class NewFormCreationContextFactory
     /// Creates a new form creation
     /// </summary>
     /// <returns>The created form</returns>
-    public NewFormCreationContext Create()
+    public NewFormCreationContext Create(string viewMode = "")
     {
         var context = new NewFormCreationContext
         {

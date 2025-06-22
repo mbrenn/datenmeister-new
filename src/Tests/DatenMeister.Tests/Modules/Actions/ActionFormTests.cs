@@ -2,6 +2,7 @@
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 using NUnit.Framework;
 
@@ -35,22 +36,38 @@ public class ActionFormTests
         };
 
         // Test 1 
-        formHandler.CreateRowFormForMetaClass(actionDirect.metaclass!, context, result);
+        formHandler.CreateRowForm(
+            new RowFormFactoryParameter
+                {
+                    MetaClass = actionDirect.metaclass!
+                    }, context, result);
         Assert.That(result.IsManaged, Is.True);
         result.IsManaged = false;
             
         // Test 2
-        formHandler.CreateRowFormForMetaClass(actionIndirect1.metaclass!, context, result);
+        formHandler.CreateRowForm(
+            new RowFormFactoryParameter
+            {
+                MetaClass = actionIndirect1.metaclass!
+            }, context, result);
         Assert.That(result.IsManaged, Is.True);
         result.IsManaged = false;
             
         // Test 3
-        formHandler.CreateRowFormForMetaClass(actionIndirect2.metaclass!, context, result);
+        formHandler.CreateRowForm(
+            new RowFormFactoryParameter
+            {
+                MetaClass = actionIndirect2.metaclass!
+            }, context, result);
         Assert.That(result.IsManaged, Is.True);
         result.IsManaged = false;
             
         // Test 4
-        formHandler.CreateRowFormForMetaClass(actionNon.metaclass!, context, result);
+        formHandler.CreateRowForm(
+            new RowFormFactoryParameter
+            {
+                MetaClass = actionNon.metaclass!
+            }, context, result);
         Assert.That(result.IsManaged, Is.False);
         result.IsManaged = false;
     }

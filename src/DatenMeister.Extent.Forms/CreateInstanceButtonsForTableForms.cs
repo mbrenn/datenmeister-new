@@ -18,13 +18,17 @@ namespace DatenMeister.Extent.Forms;
 /// </summary>
 public class CreateInstanceButtonsForTableForms : INewTableFormFactory
 {
-    public void CreateTableFormForCollection(IReflectiveCollection collection, NewFormCreationContext context,
+    public void CreateTableForm(
+        TableFormFactoryParameter parameter,
+        NewFormCreationContext context,
         FormCreationResult result)
     {
+        var collection = parameter.Collection;
+        if (collection == null)
+            return;
+        
         if (result.Form == null)
-        {
             throw new InvalidOperationException("Form is null");
-        }
 
         var extent = collection.GetUriExtentOf();
         if (extent != null)

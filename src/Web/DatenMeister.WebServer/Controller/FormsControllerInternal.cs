@@ -49,8 +49,11 @@ public class FormsControllerInternal
         var formContext = factory.Create()
             .SetViewModeId(viewMode ?? string.Empty);
         
-        var form = FormCreation.CreateObjectFormForItem(item,
-            formContext);
+        var form = FormCreation.CreateObjectForm(
+            new ObjectFormFactoryParameter
+            {
+                Element = item
+            }, formContext);
 
         if (form.Form == null)
         {
@@ -116,10 +119,11 @@ public class FormsControllerInternal
                 throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);
             }
         }
-        
-        var result = FormCreation.CreateObjectFormForMetaClass(
-            resolvedMetaClass,
-            context);
+        var result = FormCreation.CreateObjectForm(
+            new ObjectFormFactoryParameter
+            {
+                MetaClass = resolvedMetaClass
+            }, context);
 
         if (result.Form == null)
         {

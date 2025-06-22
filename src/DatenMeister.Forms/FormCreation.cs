@@ -21,29 +21,7 @@ public static class FormCreation
         WalkThroughManager(
             context.Global.CollectionFormFactories, 
             manager => 
-                manager.CreateCollectionFormForCollection(parameter, context, result),
-            result);
-
-        return result;
-    }
-
-    /// <summary>
-    /// Evaluates all available managers to create a table view for a certain collection
-    /// </summary>
-    /// <param name="collection">Collection to be evaluated</param>
-    /// <param name="context">Context to be used</param>
-    /// <param name="result">Result of the creation which lead to the creation of the result</param>
-    /// <returns></returns>
-    public static FormCreationResult CreateTableFormForCollection(
-        IReflectiveCollection collection,
-        NewFormCreationContext context,
-        FormCreationResult? result = null)
-    {
-        result ??= new FormCreationResult();
-        WalkThroughManager(
-            context.Global.TableFormFactories, 
-            manager => 
-                manager.CreateTableFormForCollection(collection, context, result),
+                manager.CreateCollectionForm(parameter, context, result),
             result);
 
         return result;
@@ -52,14 +30,14 @@ public static class FormCreation
     /// <summary>
     /// Creates an objectform for a specific item by walking through the context 
     /// </summary>
-    /// <param name="element">Element to be managed</param>
+    /// <param name="parameter">Parameter to be evaluated</param>
     /// <param name="context">Context for that request</param>
     /// <param name="result">Optional storage for the final result, in case
     /// the element is not set, a new element will be created and returned by the
     /// function.</param>
     /// <returns>The created form result</returns>
-    public static FormCreationResult CreateObjectFormForItem(
-        IObject element,
+    public static FormCreationResult CreateObjectForm(
+        ObjectFormFactoryParameter parameter,
         NewFormCreationContext context,
         FormCreationResult? result = null)
     {
@@ -67,30 +45,7 @@ public static class FormCreation
         WalkThroughManager(
             context.Global.ObjectFormFactories,
             manager =>
-                manager.CreateObjectFormForItem(element, context, result),
-            result);
-        return result;
-    }
-
-    /// <summary>
-    /// Creates an objectform for a specific item by walking through the context 
-    /// </summary>
-    /// <param name="metaClass">MetaClass to be contained</param>
-    /// <param name="context">Context for that request</param>
-    /// <param name="result">Optional storage for the final result, in case
-    /// the element is not set, a new element will be created and returned by the
-    /// function.</param>
-    /// <returns>The created form result</returns>
-    public static FormCreationResult CreateObjectFormForMetaClass(
-        IElement? metaClass,
-        NewFormCreationContext context,
-        FormCreationResult? result = null)
-    {
-        result ??= new FormCreationResult();
-        WalkThroughManager(
-            context.Global.ObjectFormFactories,
-            manager =>
-                manager.CreateObjectFormForMetaClass(metaClass, context, result),
+                manager.CreateObjectForm(parameter, context, result),
             result);
         return result;
     }
@@ -98,12 +53,12 @@ public static class FormCreation
     /// <summary>
     /// Evaluates all available managers to create a table view for a certain collection
     /// </summary>
-    /// <param name="metaClass">The metaclass which is used to create the instances</param>
+    /// <param name="parameter">The parameter which is used to create the instances</param>
     /// <param name="context">Context to be used</param>
     /// <param name="result">Result of the creation which lead to the creation of the result</param>
     /// <returns></returns>
     public static FormCreationResult CreateTableFormForMetaClass(
-        IElement metaClass,
+        TableFormFactoryParameter parameter,
         NewFormCreationContext context,
         FormCreationResult? result = null)
     {
@@ -111,14 +66,14 @@ public static class FormCreation
         WalkThroughManager(
             context.Global.TableFormFactories, 
             manager => 
-                manager.CreateTableFormForMetaclass(metaClass, context, result),
+                manager.CreateTableForm(parameter, context, result),
             result);
 
         return result;
     }
 
-    public static FormCreationResult CreateRowFormForMetaClass(
-        IElement metaClass,
+    public static FormCreationResult CreateRowForm(
+        RowFormFactoryParameter parameter,
         NewFormCreationContext context,
         FormCreationResult? result = null)
     {
@@ -126,30 +81,14 @@ public static class FormCreation
         WalkThroughManager(
             context.Global.RowFormFactories,
             manager =>
-                manager.CreateRowFormForMetaClass(metaClass, context, result),
+                manager.CreateRowForm(parameter, context, result),
             result);
 
         return result;
     }
 
-
-    public static FormCreationResult CreateRowFormForItem(
-        IObject item,
-        NewFormCreationContext context,
-        FormCreationResult? result = null)
-    {
-        result ??= new FormCreationResult();
-        WalkThroughManager(
-            context.Global.RowFormFactories,
-            manager =>
-                manager.CreateRowFormForItem(item, context, result),
-            result);
-
-        return result;
-    }
-    
     public static FormCreationResult CreateFieldForProperty(
-        IObject? property,
+        FieldFactoryParameter parameter,
         NewFormCreationContext context,
         FormCreationResult? result = null)
     {
@@ -158,7 +97,7 @@ public static class FormCreation
         WalkThroughManager(
             context.Global.FieldFormFactories,
             manager =>
-                manager.CreateFieldForProperty(property, context, result),
+                manager.CreateField(parameter, context, result),
             result);
         
         return result;

@@ -215,7 +215,7 @@ public class CreateFormByMetaClassActionTests
         Assert.That(_zipModel, Is.Not.Null);
         Assert.That(_zipModel.ZipCode, Is.Not.Null);
 
-        _formMethods = new FormMethods(_workspaceLogic, _scopeStorage);
+        _formMethods = new FormMethods(_workspaceLogic);
         _existingElements = _formMethods.GetUserFormExtent().elements().OfType<IObject>().ToList();
     }
 }

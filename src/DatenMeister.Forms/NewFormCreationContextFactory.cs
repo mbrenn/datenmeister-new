@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms.CollectionForms;
 using DatenMeister.Forms.Fields;
+using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.ObjectForm;
 using DatenMeister.Forms.RowForm;
 using DatenMeister.Forms.TableForms;
@@ -52,18 +53,21 @@ public class NewFormCreationContextFactory
 
         // Build up the CollectionForm Queue
         context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory());
-        context.Global.CollectionFormFactories.Add(
-            new CollectionFormFromData());
+        context.Global.CollectionFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+        context.Global.CollectionFormFactories.Add(new CollectionFormFromData());
 
         // Build up the ObjectForm Queue
         context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory());
+        context.Global.ObjectFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.ObjectFormFactories.Add(new ObjectFormFromData());
         
         // Build up the TableForm Queue
         context.Global.TableFormFactories.Add(new EmptyTableFormFactory());
+        context.Global.TableFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.TableFormFactories.Add(new TableFormFromData());
         
         context.Global.RowFormFactories.Add(new EmptyRowFormFactory());
+        context.Global.RowFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.RowFormFactories.Add(new RowFormFromData());
         
         // Build up the FieldForm Queue

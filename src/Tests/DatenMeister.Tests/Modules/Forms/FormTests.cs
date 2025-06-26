@@ -148,7 +148,7 @@ public class FormTests
     public async Task TestGetViewModes()
     {
         await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
-        var formMethods = new FormMethods(scope.WorkspaceLogic, scope.ScopeStorage);
+        var formMethods = new FormMethods(scope.WorkspaceLogic);
 
         // Check, if default view mode is in
         var viewModes = formMethods.GetViewModes().ToList();

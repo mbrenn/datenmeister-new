@@ -78,7 +78,7 @@ public abstract class FormCreator
         IWorkspaceLogic workspaceLogic,
         IScopeStorage scopeStorage)
     {
-        FormLogic = new FormMethods(workspaceLogic, scopeStorage);
+        FormLogic = new FormMethods(workspaceLogic);
         ScopeStorage = scopeStorage;
         ExtentSettings = scopeStorage.Get<ExtentSettings>();
         WorkspaceLogic = workspaceLogic;

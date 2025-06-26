@@ -32,7 +32,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
     {
         await Task.Run(() =>
         {
-            var formMethods = new FormMethods(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+            var formMethods = new FormMethods(actionLogic.WorkspaceLogic);
             var metaClass = action.getOrDefault<IElement>(_Actions._CreateFormByMetaClass.metaClass);
             var creationMode =
                 action.getOrDefault<string>(_Actions._CreateFormByMetaClass.creationMode);

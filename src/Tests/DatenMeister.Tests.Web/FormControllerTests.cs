@@ -210,7 +210,7 @@ public class FormControllerTests
     public async Task TestCreateCollectionFormByExtent()
     {
         var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
-        var formMethods = new FormMethods(formsInternal.WorkspaceLogic, formsInternal.ScopeStorage);
+        var formMethods = new FormMethods(formsInternal.WorkspaceLogic);
         var actionResult = formsController.CreateCollectionFormForExtent(
             WorkspaceNames.WorkspaceData,
             zipExtent.contextURI(),
@@ -240,7 +240,7 @@ public class FormControllerTests
     public async Task TestCreateObjectFormByItem()
     {
         var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
-        var formMethods = new FormMethods(formsInternal.WorkspaceLogic, formsInternal.ScopeStorage);
+        var formMethods = new FormMethods(formsInternal.WorkspaceLogic);
 
         var zipItem = zipExtent.elements().OfType<IObject>().First();
         Assert.That(zipItem, Is.Not.Null);

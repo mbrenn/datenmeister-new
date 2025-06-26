@@ -28,6 +28,9 @@ public class ObjectFormFromData : INewObjectFormFactory
     public void CreateObjectForm(ObjectFormFactoryParameter parameter, NewFormCreationContext context,
         FormCreationResult result)
     {
+        if (result.IsMainContentCreated)
+            return;
+        
         var element = parameter.Element;
         var parameterMetaclass = parameter.MetaClass;
         var factory = context.Global.Factory;

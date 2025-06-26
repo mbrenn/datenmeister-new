@@ -47,7 +47,7 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
     private void LoadXmi()
     {
         var localTypeSupport = new LocalTypeSupport(workspaceLogic, scopeStorage);
-        var formMethods = new FormMethods(workspaceLogic, scopeStorage);
+        var formMethods = new FormMethods(workspaceLogic);
         var targetExtent = formMethods.GetInternalFormExtent();
         var localTypeExtent = localTypeSupport.GetInternalTypeExtent();
         PackageMethods.ImportByStream(

@@ -158,7 +158,7 @@ public class FormsControllerInternal
 
     public IEnumerable<IObject> GetViewModesInternal()
     {
-        var formsController = new FormMethods(WorkspaceLogic, ScopeStorage);
+        var formsController = new FormMethods(WorkspaceLogic);
         return formsController.GetViewModes();
     }
 }

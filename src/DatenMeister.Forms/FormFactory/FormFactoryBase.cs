@@ -23,7 +23,7 @@ namespace DatenMeister.Forms.FormFactory;
 /// <param name="scopeStorage">The storage of extensions</param>
 public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
-    protected readonly FormMethods FormMethods = new(workspaceLogic, scopeStorage);
+    protected readonly FormMethods FormMethods = new(workspaceLogic);
     protected readonly FormsState FormsState = scopeStorage.Get<FormsState>();
     protected readonly IWorkspaceLogic WorkspaceLogic = workspaceLogic;
     protected readonly IScopeStorage ScopeStorage = scopeStorage;

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Diagnostics;
 using System.Web;
 using BurnSystems.Logging;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -21,18 +20,13 @@ namespace DatenMeister.Forms.Helper;
 /// <summary>
 ///     Contains some helper methods for forms
 /// </summary>
-public class FormMethods(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+public class FormMethods(IWorkspaceLogic workspaceLogic)
 {
     /// <summary>
     ///     Logger being used
     /// </summary>
     private static readonly ClassLogger Logger = new(typeof(FormMethods));
-        
-    /// <summary>
-    /// Stores the scope storage
-    /// </summary>
-    private readonly IScopeStorage _scopeStorage = scopeStorage;
-        
+
     /// <summary>
     /// Stores the type of the extent containing the views
     /// </summary>

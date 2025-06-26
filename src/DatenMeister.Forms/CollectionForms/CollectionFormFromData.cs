@@ -17,7 +17,7 @@ public class CollectionFormFromData : INewCollectionFormFactory
         NewFormCreationContext context,
         FormCreationResult result)
     {
-        if (parameter.Collection == null)
+        if (parameter.Collection == null || result.IsMainContentCreated)
             return;
 
         var collection = parameter.Collection;

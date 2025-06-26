@@ -19,7 +19,7 @@ internal class Plugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage
         if (position == PluginLoadingPosition.AfterLoadingOfExtents)
         {
             var localTypeSupport = new LocalTypeSupport(workspaceLogic, scopeStorage);
-            var formMethods = new FormMethods(workspaceLogic, scopeStorage);
+            var formMethods = new FormMethods(workspaceLogic);
             var targetExtent = formMethods.GetInternalFormExtent();
             var localTypeExtent = localTypeSupport.GetInternalTypeExtent();
             

@@ -16,6 +16,9 @@ public class TableFormFromData : INewTableFormFactory
         NewFormCreationContext context,
         FormCreationResult result)
     {
+        if (result.IsMainContentCreated)
+            return;
+        
         var metaClass = parameter.MetaClass;
         var collection = parameter.Collection;
 

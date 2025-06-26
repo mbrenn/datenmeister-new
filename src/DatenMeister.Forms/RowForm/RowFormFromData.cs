@@ -12,9 +12,11 @@ public class RowFormFromData : INewRowFormFactory
     public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context,
         FormCreationResult result)
     {
+        if (result.IsMainContentCreated)
+            return;
+        
         var element = parameter.Element;
         var parameterMetaClass = parameter.MetaClass;
-
 
         var createdForm =
             result.Form ??= context.Global.Factory.create(_Forms.TheOne.__RowForm);

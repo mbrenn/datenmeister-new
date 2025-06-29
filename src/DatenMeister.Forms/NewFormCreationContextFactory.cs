@@ -55,19 +55,25 @@ public class NewFormCreationContextFactory
         context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory());
         context.Global.CollectionFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.CollectionFormFactories.Add(new CollectionFormFromData());
+        context.Global.CollectionFormFactories.Add(new ValidateObjectOrCollectionForm());
 
         // Build up the ObjectForm Queue
         context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory());
         context.Global.ObjectFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.ObjectFormFactories.Add(new ObjectFormFromData());
+        context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm());
         
         // Build up the TableForm Queue
         context.Global.TableFormFactories.Add(new EmptyTableFormFactory());
         context.Global.TableFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.TableFormFactories.Add(new TableFormFromData());
+        context.Global.TableFormFactories.Add(new ExpandDropDownOfValueReference());
+        context.Global.TableFormFactories.Add(new AddDefaultTypeForMetaClassOfForm());
+        context.Global.TableFormFactories.Add(new RemoveDuplicateDefaultNewTypes());
         
         context.Global.RowFormFactories.Add(new EmptyRowFormFactory());
         context.Global.RowFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+        context.Global.RowFormFactories.Add(new ExpandDropDownOfValueReference());
         context.Global.RowFormFactories.Add(new RowFormFromData());
         
         // Build up the FieldForm Queue

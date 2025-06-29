@@ -43,18 +43,6 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <summary>
     /// Cleans up the object form. 
     /// </summary>
-    /// <param name="collectionForm">Collection Form to be cleaned up</param>
-    /// <param name="cleanUpTabs">Flag, whether the tabs shall also be cleaned up.
-    /// Per default, the creator of the tabs should call the corresponding CleanupRow and
-    /// CleanupTableForm</param>
-    public static void CleanupCollectionForm(IElement collectionForm, bool cleanUpTabs = false)
-    {
-        CleanupObjectForm(collectionForm, cleanUpTabs);
-    }
-
-    /// <summary>
-    /// Cleans up the object form. 
-    /// </summary>
     /// <param name="objectForm"></param>
     /// <param name="cleanUpTabs">Flag, whether the tabs shall also be cleaned up.
     /// Per default, the creator of the tabs should call the corresponding CleanupRow and
@@ -69,26 +57,16 @@ public class FormFactoryBase(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var rowForms = FormMethods.GetRowForms(objectForm);
         foreach (var detailForm in rowForms)
         {
-            CleanupRowForm(detailForm);
+           //  CleanupRowForm(detailForm);
         }
 
         var tableForms = FormMethods.GetTableForms(objectForm);
         foreach (var tableForm in tableForms)
         {
-            FormMethods.CleanupTableForm(tableForm);
+            // FormMethods.CleanupTableForm(tableForm);
         }
     }
 
-    /// <summary>
-    /// Cleans up the ist form by executing several default methods like, expanding the
-    /// drop down values.
-    /// </summary>
-    /// <param name="rowForm">Detail form to be evaluated</param>
-    public static void CleanupRowForm(IElement rowForm)
-    {
-        FormMethods.ExpandDropDownValuesOfValueReference(rowForm);
-    }
-    
 
     /// <summary>
     ///     Adds all found extension forms.

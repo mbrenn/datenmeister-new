@@ -67,7 +67,7 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
                 },
                 ref foundForm);
 
-            FormMethods.CleanupTableForm(foundForm);
+            // FormMethods.CleanupTableForm(foundForm);
         }
 
         return foundForm;
@@ -222,7 +222,7 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
                 },
                 ref foundForm);
 
-            FormMethods.CleanupTableForm(foundForm);
+            // FormMethods.CleanupTableForm(foundForm);
         }
 
         return foundForm;
@@ -235,7 +235,7 @@ public class TableFormFactory : FormFactoryBase, ITableFormFactory
     /// </summary>
     /// <param name="hasExtent">The extent containing the default types</param>
     /// <param name="listForm">the table form to which the elements will be added</param>
-    void AddDefaultTypesForTableFormByExtentInformation(IHasExtent? hasExtent, IObject listForm)
+    void AddDefaultTypesForTableFormByExtentInformation(IHasExtent? hasExtent, IElement listForm)
     {
         if (hasExtent is null) return;
 

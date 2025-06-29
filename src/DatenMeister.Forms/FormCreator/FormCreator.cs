@@ -12,6 +12,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
+using DatenMeister.Forms.TableForms;
 using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
 
 namespace DatenMeister.Forms.FormCreator;
@@ -115,7 +116,7 @@ public abstract class FormCreator
     /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
     /// <param name="cache">Cache being used to store intermediate items</param>
     protected void AddFieldsToForm(
-        IObject rowOrTableForm,
+        IElement rowOrTableForm,
         object item,
         FormFactoryContext creationMode,
         FormCreatorCache cache)
@@ -178,7 +179,7 @@ public abstract class FormCreator
         }
 
 #if DEBUG
-        if (!FormMethods.ValidateForm(rowOrTableForm))
+        if (!ValidateTableOrRowForm.ValidateForm(rowOrTableForm))
             throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
     }
@@ -193,7 +194,7 @@ public abstract class FormCreator
     /// <param name="creationMode">The creation mode that is used</param>
     /// <param name="cache">Cache being used to store intermediate items</param>
     protected void AddFieldsToFormByPropertyValues(
-        IObject form,
+        IElement form,
         object item,
         FormFactoryContext creationMode,
         FormCreatorCache cache)
@@ -272,7 +273,7 @@ public abstract class FormCreator
         }
 
 #if DEBUG
-        if (!FormMethods.ValidateForm(form))
+        if (!ValidateTableOrRowForm.ValidateForm(form))
             throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
     }
@@ -287,7 +288,7 @@ public abstract class FormCreator
     /// <param name="cache">Cache of reportCreator cache</param>
     /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
     protected bool AddFieldsToRowOrTableFormByMetaClass(
-        IObject rowOrObjectForm,
+        IElement rowOrObjectForm,
         IObject? metaClass,
         FormFactoryContext context,
         FormCreatorCache? cache = null)
@@ -351,7 +352,7 @@ public abstract class FormCreator
         SortFieldsByImportantProperties(rowOrObjectForm);
 
 #if DEBUG
-        if (!FormMethods.ValidateForm(rowOrObjectForm))
+        if (!ValidateTableOrRowForm.ValidateForm(rowOrObjectForm))
             throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
 
@@ -388,7 +389,7 @@ public abstract class FormCreator
     ///     If no field is given, then the one text field for the name will be added
     /// </summary>
     /// <param name="form">Form to be checked</param>
-    protected static void AddTextFieldForNameIfNoFieldAvailable(IObject form)
+    protected static void AddTextFieldForNameIfNoFieldAvailable(IElement form)
     {
         // If the field is empty, create an empty textfield with 'name' as a placeholder
         var fieldLength =
@@ -402,7 +403,7 @@ public abstract class FormCreator
 
             form.AddCollectionItem(_Forms._TableForm.field, textFieldData);
 
-            FormMethods.AddToFormCreationProtocol(
+            FormCreationResult.AddToFormCreationProtocol(
                 form,
                 "[FormCreator.AddTextFieldForNameIfNoFieldAvailable]: Added default 'name' because it is empty");
         }

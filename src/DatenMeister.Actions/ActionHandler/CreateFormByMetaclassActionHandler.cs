@@ -17,7 +17,6 @@ public static class CreateFormByMetaclassCreationMode
     public const string ObjectAssociation = "Object_Association";
     public const string CollectionAssociation = "Collection_Association";
     public const string ObjectCollectionAssociation = "Object_Collection_Association";
-        
 }
 
 public class CreateFormByMetaclassActionHandler : IActionHandler

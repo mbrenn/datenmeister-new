@@ -63,6 +63,8 @@ public class CollectionFormFromData : INewCollectionFormFactory
                         new TableFormFactoryParameter
                         {
                             Collection = new TemporaryReflectiveCollection(elementsWithoutMetaClass),
+                            Extent = parameter.Extent,
+                            ExtentTypes = parameter.ExtentTypes
                         },
                         context.Clone().SetIsForTableForm(true))
                     .Form;
@@ -140,7 +142,9 @@ public class CollectionFormFromData : INewCollectionFormFactory
         result.IsManaged = result.IsMainContentCreated = true;
     }
 
-    public void CreateCollectionFormForMetaClass(IElement metaClass, NewFormCreationContext context,
+    public void CreateCollectionFormForMetaClass(
+        IElement metaClass,
+        NewFormCreationContext context,
         FormCreationResult result)
     {
         result.Form ??= context.Global.Factory.create(_Forms.TheOne.__CollectionForm);

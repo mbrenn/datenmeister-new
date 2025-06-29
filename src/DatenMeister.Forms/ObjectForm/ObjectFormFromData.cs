@@ -25,7 +25,9 @@ public class ObjectFormFromData : INewObjectFormFactory
     /// <param name="context">The configuration of how to create the form</param>
     /// <param name="result">Result of the activity</param>
     /// <returns>The created form</returns>
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateObjectForm(
+        ObjectFormFactoryParameter parameter,
+        NewFormCreationContext context,
         FormCreationResult result)
     {
         if (result.IsMainContentCreated)
@@ -46,7 +48,9 @@ public class ObjectFormFromData : INewObjectFormFactory
             var rowForm = FormCreation.CreateRowForm(
                 new RowFormFactoryParameter
                 {
-                    MetaClass = parameterMetaclass
+                    MetaClass = parameterMetaclass,
+                    ExtentTypes = parameter.ExtentTypes,
+                    Extent = parameter.Extent
                 }, context.Clone());
 
             result.Form.set(_Forms._CollectionForm.tab, new[] { rowForm });
@@ -186,8 +190,7 @@ public class ObjectFormFromData : INewObjectFormFactory
                         detailForm.AddCollectionItem(_Forms._RowForm.field, field.Form);
                     }
 
-                    FormMethods.AddToFormCreationProtocol(
-                        result.Form,
+                    result.AddToFormCreationProtocol(
                         "[ObjectFormFromData.CreateObjectFormForItem]: Added field to DetailForm: " +
                         NamedElementMethods.GetName(field));
                 }
@@ -269,7 +272,9 @@ public class ObjectFormFromData : INewObjectFormFactory
                         var form = FormCreation.CreateTableFormForMetaClass(
                             new TableFormFactoryParameter
                             {
-                                MetaClass = metaClass 
+                                MetaClass = metaClass,
+                                Extent = parameter.Extent,
+                                ExtentTypes = parameter.ExtentTypes
                             }, context);
                         if (form.Form != null)
                         {

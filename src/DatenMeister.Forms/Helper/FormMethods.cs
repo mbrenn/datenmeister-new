@@ -31,65 +31,11 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// Stores the type of the extent containing the views
     /// </summary>
     public const string FormExtentType = "DatenMeister.Forms";
-        
+
     /// <summary>
     ///     Stores the workspacelogic
     /// </summary>
     private readonly IWorkspaceLogic _workspaceLogic = workspaceLogic;
-
-    /// <summary>
-    ///     Performs a verification of the form and returns false, if the form is not in a valid state
-    /// </summary>
-    /// <param name="form">Form to be evaluated</param>
-    /// <returns>true, if the form is valid</returns>
-    public static bool ValidateForm(IObject form)
-    {
-        Debug.Assert(_Forms._RowForm.field == _Forms._TableForm.field);
-        Debug.Assert(_Forms._CollectionForm.tab == _Forms._ObjectForm.tab);
-            
-        var fields = form.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
-        if (fields != null)
-            if (!ValidateFields(fields))
-                return false;
-
-        var tabs = form.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab);
-        if (tabs != null)
-            foreach (var tab in tabs.OfType<IObject>())
-                if (!ValidateForm(tab))
-                    return false;
-
-        return true;
-    }
-
-    /// <summary>
-    ///     Checks, if there is a duplicated name of the fields
-    /// </summary>
-    /// <param name="fields">Fields to be enumerated</param>
-    /// <returns>true, if there are no duplications</returns>
-    private static bool ValidateFields(IEnumerable fields)
-    {
-        // Creates a random GUID to establish a separate namespace for attached fields
-        var randomGuid = Guid.NewGuid();
-            
-        // Now go through the hash set
-        var set = new HashSet<string>();
-        foreach (var field in fields.OfType<IObject>())
-        {
-            var preName = field.getOrDefault<string>(_Forms._FieldData.name);
-            var isAttached = field.getOrDefault<bool>(_Forms._FieldData.isAttached);
-            var name = isAttached ? randomGuid + preName : preName;
-
-            if (set.Contains(name) && !string.IsNullOrEmpty(name))
-            {
-                Logger.Warn($"Field '{name}' is included twice. Validation of form failed");
-                return false;
-            }
-
-            set.Add(name);
-        }
-
-        return true;
-    }
 
     /// <summary>
     /// Gets the internal view extent being empty at each start-up
@@ -211,7 +157,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
                     .SelectMany(x => x.elements()
                         .GetAllDescendantsIncludingThemselves(
                             new[]
-                                {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                                { _UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
                         .WhenMetaClassIsOneOf(
                             _Forms.TheOne.__Form,
                             _Forms.TheOne.__ObjectForm,
@@ -286,7 +232,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
                 .SelectMany(x =>
                     x.elements()
                         .GetAllDescendantsIncludingThemselves(new[]
-                            {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                            { _UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
                         .WhenMetaClassIsOneOf(_Forms.TheOne.__FormAssociation)),
             true);
     }
@@ -408,8 +354,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
         return fields
             .WhenPropertyHasValue(_Forms._FieldData.name, fieldName)
             .OfType<IElement>()
-            .FirstOrDefault(
-                x => metaClass == null || x.metaclass?.equals(metaClass) == true);
+            .FirstOrDefault(x => metaClass == null || x.metaclass?.equals(metaClass) == true);
     }
 
     /// <summary>
@@ -423,7 +368,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
         {
             yield return form;
         }
-            
+
         foreach (var tab in form.get<IReflectiveCollection>(_Forms._CollectionForm.tab))
             if (tab is IElement asElement
                 && asElement.getMetaClass()?.@equals(_Forms.TheOne.__RowForm) == true)
@@ -465,7 +410,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
                 "The form is of instance Object or Collection Form. It must be Table or RowForm");
         }
 
-        foreach (var field 
+        foreach (var field
                  in form.get<IReflectiveCollection>(_Forms._RowForm.field))
         {
             if (field is IElement asFieldElement
@@ -545,7 +490,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             .FirstOrDefault();
     }
 
-        
+
     /// <summary>
     ///     Gets the extent form containing the subforms
     /// </summary>
@@ -555,8 +500,8 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     {
         return CreateObjectFormFromTabs(null, subForms);
     }
-    
-        
+
+
     /// <summary>
     ///     Creates an extent form containing the subforms
     /// </summary>
@@ -579,10 +524,11 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// </summary>
     /// <param name="form">For to which the message shall be addedparam</param>
     /// <param name="message">Message it self that shall be added</param>
+    [Obsolete]
     public static void AddToFormCreationProtocol(IObject? form, string message)
     {
         if (form == null) return;
-        
+
         var currentMessage =
             form.getOrDefault<string>(_Forms._Form.creationProtocol)
             ?? string.Empty;
@@ -599,32 +545,34 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// Cleans duplicates of default new types
     /// </summary>
     /// <param name="form">For to be handled</param>
+    [Obsolete]
     public static void RemoveDuplicatingDefaultNewTypes(IObject form)
     {
-        var defaultNewTypesForElements =
-            form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
-        if (defaultNewTypesForElements == null)
-        {
-            // Nothing to do, when no default types are set
-            return;
-        }
-
-        var handled = new List<IObject>();
-
-        foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
-        {
-            var metaClass = element.getOrDefault<IObject>(_Forms._DefaultTypeForNewElement.metaClass);
-            if (metaClass == null) continue;
-
-            if (handled.Any(x => x.@equals(metaClass)))
+        /*
+            var defaultNewTypesForElements =
+                form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
+            if (defaultNewTypesForElements == null)
             {
-                defaultNewTypesForElements.remove(element);
+                // Nothing to do, when no default types are set
+                return;
             }
-            else
+
+            var handled = new List<IObject>();
+
+            foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
             {
-                handled.Add(metaClass);
-            }
-        }
+                var metaClass = element.getOrDefault<IObject>(_Forms._DefaultTypeForNewElement.metaClass);
+                if (metaClass == null) continue;
+
+                if (handled.Any(x => x.@equals(metaClass)))
+                {
+                    defaultNewTypesForElements.remove(element);
+                }
+                else
+                {
+                    handled.Add(metaClass);
+                }
+            }*/
     }
 
     /// <summary>
@@ -633,7 +581,8 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// </summary>
     /// <param name="form">Form to be evaluated</param>
     /// <param name="defaultType">DefaultType to be added</param>
-    public static void AddDefaultTypeForNewElement(IObject form, IObject defaultType)
+    [Obsolete]
+    public static void AddDefaultTypeForNewElement(IElement form, IObject defaultType)
     {
         var currentDefaultPackages =
             form.get<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
@@ -657,10 +606,11 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             NamedElementMethods.GetName(defaultType));
         currentDefaultPackages.add(defaultTypeInstance);
 
-        AddToFormCreationProtocol(
+        FormCreationResult.AddToFormCreationProtocol(
             form,
             $"[FormMethods.AddDefaultTypeForNewElement] Added defaulttype: {NamedElementMethods.GetName(defaultType)}");
     }
+
 
     /// <summary>
     ///     Expands the dropdown values of the the DropDownField.
@@ -668,8 +618,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     ///     So, the DropDownField can already be resolved on server side
     /// </summary>
     /// <param name="listOrDetailForm">The list form or the DetailForm being handled</param>
+    [Obsolete]
     public static void ExpandDropDownValuesOfValueReference(IElement listOrDetailForm)
     {
+        /*
         var factory = new MofFactory(listOrDetailForm);
         var fields = listOrDetailForm.get<IReflectiveCollection>(_Forms._TableForm.field);
         foreach (var field in fields.OfType<IElement>())
@@ -694,7 +646,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
                 AddToFormCreationProtocol(listOrDetailForm,
                     $"[ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
             }
-        }
+        }*/
     }
 
     /// <summary>
@@ -704,12 +656,14 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
     /// <param name="listForm">List form to be evaluated</param>
     public static void CleanupTableForm(IElement listForm)
     {
+        /*
         AddDefaultTypeForListFormsMetaClass(listForm);
-        ExpandDropDownValuesOfValueReference(listForm);            
-        RemoveDuplicatingDefaultNewTypes(listForm);
+        ExpandDropDownValuesOfValueReference(listForm);
+        RemoveDuplicatingDefaultNewTypes(listForm);*/
     }
 
-    private static void AddDefaultTypeForListFormsMetaClass(IObject listForm)
+    [Obsolete]
+    private static void AddDefaultTypeForListFormsMetaClass(IElement listForm)
     {
         // Adds the default type corresponding to the list form
         var metaClass = listForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
@@ -775,10 +729,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             var converted = CollectionFormHelper.CreateCollectionFormFromTabs(form);
             converted.set(_Forms._Form.originalUri, form.GetUri());
             converted.set(
-                _Forms._Form.originalWorkspace, 
+                _Forms._Form.originalWorkspace,
                 form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
-            FormMethods.AddToFormCreationProtocol(
+            FormCreationResult.AddToFormCreationProtocol(
                 converted,
                 "Friendly conversion from row/table form to collection form:"
                 + NamedElementMethods.GetName(form));
@@ -792,10 +746,10 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             var converted = FormMethods.GetObjectFormForSubforms(form);
             converted.set(_Forms._Form.originalUri, form.GetUri());
             converted.set(
-                _Forms._Form.originalWorkspace, 
+                _Forms._Form.originalWorkspace,
                 form.GetExtentOf()?.GetWorkspace()?.id ?? string.Empty);
 
-            FormMethods.AddToFormCreationProtocol(
+            FormCreationResult.AddToFormCreationProtocol(
                 converted,
                 "Friendly conversion from row/table form to object form:"
                 + NamedElementMethods.GetName(form));
@@ -861,7 +815,7 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
 
         return dataUrl;
     }
-    
+
     /// <summary>
     ///     Checks whether a detail form is already within the element form.
     ///     If yes, then it is directly returned, otherwise a new detail form is created and added to the form

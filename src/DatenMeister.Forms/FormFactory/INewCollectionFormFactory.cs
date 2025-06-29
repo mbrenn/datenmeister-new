@@ -3,11 +3,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Forms.FormFactory;
 
-public class CollectionFormFactoryParameter
+public class CollectionFormFactoryParameter : FormFactoryParameterBase
 {
     public IReflectiveCollection? Collection { get; set; }
-    
-    public IElement? MetaClass { get; set; }
 }
 
 public interface INewCollectionFormFactory

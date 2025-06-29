@@ -1,4 +1,5 @@
 ﻿using BurnSystems.Logging;
+using DatenMeister.Core.Models;
 
 namespace DatenMeister.Core;
 
@@ -38,14 +39,20 @@ public class ScopeStorage : IScopeStorage
 
     public T Get<T>() where T : new()
     {
+        return Get<T>(true);
+    }
+
+    public T Get<T>(bool traceMessageInCaseOfCreation) where T : new()
+    {
         lock (_storage)
         {
             if (_storage.TryGetValue(typeof(T), out var result))
             {
-                return (T) result;
+                return (T)result;
             }
 
-            Logger.Trace($"Type of {typeof(T).FullName} not available, so we have to create an empty one.");
+            if (traceMessageInCaseOfCreation)
+                Logger.Trace($"Type of {typeof(T).FullName} not available, so we have to create an empty one.");
 
             var newResult = new T();
             Add(newResult);
@@ -69,5 +76,17 @@ public class ScopeStorage : IScopeStorage
         }
 
         return default!;
+    }
+
+    /// <summary>
+    /// Removes the instance from the scope storage
+    /// </summary>
+    /// <typeparam name="T">Type to be removed</typeparam>
+    public void Remove<T>()
+    {
+        lock (_storage)
+        {
+            _storage.Remove(typeof(T));
+        }
     }
 }

@@ -2,11 +2,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Forms.FormFactory;
 
-public class ObjectFormFactoryParameter
+public class ObjectFormFactoryParameter : FormFactoryParameterBase
 {
     public IObject? Element { get; set; }
-    
-    public IElement? MetaClass { get; set; }
 }
 
 public interface INewObjectFormFactory

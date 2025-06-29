@@ -1,5 +1,7 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
@@ -163,15 +165,18 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var element = _internal.WorkspaceLogic.FindObject(workspaceId, itemUri);
         if (element == null)
         {
-            throw new InvalidOperationException($"Extent not found: {workspaceId} - {itemUri}");
+            throw new InvalidOperationException($"Element not found: {workspaceId} - {itemUri}");
         }
 
         // Creates the form itself
+        var parameter = new ObjectFormFactoryParameter
+        {
+            Element = element
+        };
+        parameter.SetByExtent(element.GetExtentOf() as IUriExtent);
         var result = FormCreation.CreateObjectForm(
-            new ObjectFormFactoryParameter
-            {
-                Element = element 
-            }, formContext).Form ?? throw new InvalidOperationException("Form returned null for whatever reason");
+            parameter, 
+            formContext).Form ?? throw new InvalidOperationException("Form returned null for whatever reason");
 
         userFormExtent.elements().add(result);
 

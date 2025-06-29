@@ -7,6 +7,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
+using DatenMeister.Forms.TableForms;
 
 namespace DatenMeister.Forms.Fields;
 
@@ -21,7 +22,7 @@ public static class FieldCreationHelper
     /// <param name="context">Creation Mode to be used</param>
     /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
     public static bool AddFieldsToRowOrTableFormByMetaClass(
-        IObject rowOrObjectForm,
+        IElement rowOrObjectForm,
         IElement? metaClass,
         NewFormCreationContext context)
     {
@@ -63,13 +64,15 @@ public static class FieldCreationHelper
                 rowOrObjectForm.get<IReflectiveCollection>(_Forms._RowForm.field).add(column.Form);
             }
             
-            FormMethods.AddToFormCreationProtocol(rowOrObjectForm,
+            FormCreationResult.AddToFormCreationProtocol(
+                rowOrObjectForm,
                 "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass for property: " +
                 NamedElementMethods.GetName(propertyName));
         }
 
 #if DEBUG
-        if (!FormMethods.ValidateForm(rowOrObjectForm))
+        
+        if (!ValidateTableOrRowForm.ValidateForm(rowOrObjectForm))
             throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
 

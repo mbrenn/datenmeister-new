@@ -9,7 +9,6 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
-using DatenMeister.Forms.FormModifications;
 using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Extent.Forms;
@@ -19,7 +18,6 @@ namespace DatenMeister.Extent.Forms;
 /// </summary>
 public class ExtentTypeFormModification
 {
-
     public class IncludeJumpToExtentButtonModification : INewCollectionFormFactory
     {
         public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
@@ -165,14 +163,14 @@ public class ExtentTypeFormModification
                         // The found metaclass already has a list form
                         if (foundListMetaClasses.Contains(resolvedMetaClass))
                         {
-                            FormMethods.AddToFormCreationProtocol(listForm,
+                            result.AddToFormCreationProtocol(
                                 $"ExtentTypeFormsPlugin: Did not add {NamedElementMethods.GetName(resolvedMetaClass)} for ExtentType '{foundExtentType.name}' since it already got a listform");
                             continue;
                         }
 
                         FormMethods.AddDefaultTypeForNewElement(result.Form, resolvedMetaClass);
 
-                        FormMethods.AddToFormCreationProtocol(listForm,
+                        result.AddToFormCreationProtocol(
                             $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
                     }
                 }
@@ -253,7 +251,7 @@ public class ExtentTypeFormModification
                             changed = true;
                             defaultTypesForNewElements.add(resolvedMetaClass);
 
-                            FormMethods.AddToFormCreationProtocol(rowForm,
+                            result.AddToFormCreationProtocol(
                                 $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}' to PackagedElement");
                         }
                     }

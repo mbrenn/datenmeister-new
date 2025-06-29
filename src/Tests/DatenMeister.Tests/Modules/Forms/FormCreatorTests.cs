@@ -8,7 +8,6 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Modules.ZipCodeExample;
@@ -80,6 +79,8 @@ public class FormCreatorTests
             new CollectionFormFactoryParameter
             {
                 Collection = extent.elements(),
+                Extent = extent,
+                ExtentTypes = extent.GetConfiguration().ExtentTypes
             },
             context).Form;
         
@@ -286,7 +287,9 @@ public class FormCreatorTests
         var createdForm = FormCreation.CreateCollectionForm(
             new CollectionFormFactoryParameter
             {
-                Collection = extent.elements()
+                Collection = extent.elements(),
+                Extent = extent,
+                ExtentTypes = extent.GetConfiguration().ExtentTypes
             }, context).Form;
         Assert.That(createdForm, Is.Not.Null);
 

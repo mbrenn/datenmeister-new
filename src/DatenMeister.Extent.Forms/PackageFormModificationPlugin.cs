@@ -18,18 +18,18 @@ namespace DatenMeister.Extent.Forms;
 public class PackageFormModificationPlugin : INewObjectFormFactory
 {
     private static void AddPreferredTypes(
-        IObject form,
+        FormCreationResult result,
         IFactory factory,
         IReflectiveCollection? preferredTypes,
         IReflectiveCollection defaultTypes)
     {
         if (preferredTypes != null)
             foreach (var preferredType in preferredTypes.OfType<IElement>())
-                AddPreferredType(form, factory, preferredType, defaultTypes);
+                AddPreferredType(result, factory, preferredType, defaultTypes);
     }
 
     private static void AddPreferredType(
-        IObject form,
+        FormCreationResult result,
         IFactory factory,
         IElement preferredType,
         IReflectiveCollection defaultTypes)
@@ -42,8 +42,7 @@ public class PackageFormModificationPlugin : INewObjectFormFactory
             defaultType.set(_Forms._DefaultTypeForNewElement.metaClass, preferredType);
             defaultTypes.add(defaultType);
 
-            FormMethods.AddToFormCreationProtocol(
-                form,
+            result.AddToFormCreationProtocol(
                 "[PackageFormModificationPlugin]: Add DefaultType by preferred Types" +
                 NamedElementMethods.GetName(defaultType));
         }
@@ -77,7 +76,7 @@ public class PackageFormModificationPlugin : INewObjectFormFactory
                     element.getOrDefault<IReflectiveCollection>(
                         _CommonTypes._Default._Package.preferredType);
 
-                AddPreferredTypes(result.Form, context.Global.Factory, preferredTypes, defaultTypes);
+                AddPreferredTypes(result, context.Global.Factory, preferredTypes, defaultTypes);
 
                 // Checks the preferred package. 
                 // If a preferred package is set, then all containing classes will be added
@@ -90,17 +89,12 @@ public class PackageFormModificationPlugin : INewObjectFormFactory
                     foreach (var preferredPackage in preferredPackages.OfType<IElement>())
                     {
                         var preferredTypes2 = PackageMethods.GetPackagedObjects(preferredPackage);
-                        AddPreferredTypes(result.Form, context.Global.Factory, preferredTypes2, defaultTypes);
+                        AddPreferredTypes(result, context.Global.Factory, preferredTypes2, defaultTypes);
                     }
                 }
             }
 
             result.IsManaged = true;
         }
-    }
-
-    public void CreateObjectFormForMetaClass(IElement? metaClass, NewFormCreationContext context,
-        FormCreationResult result)
-    {
     }
 }

@@ -1,6 +1,8 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
@@ -48,12 +50,15 @@ public class FormsControllerInternal
 
         var formContext = factory.Create()
             .SetViewModeId(viewMode ?? string.Empty);
+
+        var parameter = new ObjectFormFactoryParameter
+        {
+            Element = item
+        };
+        parameter.SetByExtent(item.GetExtentOf() as IUriExtent);
         
         var form = FormCreation.CreateObjectForm(
-            new ObjectFormFactoryParameter
-            {
-                Element = item
-            }, formContext);
+            parameter, formContext);
 
         if (form.Form == null)
         {
@@ -119,6 +124,7 @@ public class FormsControllerInternal
                 throw new InvalidOperationException("MetaClass for Form Creation is not found: " + metaClass);
             }
         }
+        
         var result = FormCreation.CreateObjectForm(
             new ObjectFormFactoryParameter
             {

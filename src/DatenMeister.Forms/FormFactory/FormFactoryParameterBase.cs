@@ -1,0 +1,37 @@
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+
+namespace DatenMeister.Forms.FormFactory;
+
+public abstract class FormFactoryParameterBase
+{
+    /// <summary>
+    /// Defines the Extenttypes to which the current request belongs to 
+    /// </summary>
+    public IEnumerable<string>? ExtentTypes { get; set; }
+    
+    /// <summary>
+    /// Defines the extent to which the current of a form belongs to 
+    /// </summary>
+    public IUriExtent? Extent { get; set; } 
+    
+    /// <summary>
+    /// Defines the metaclass to which the current request of a form belongs to 
+    /// </summary>
+    public IElement? MetaClass { get; set; }
+
+    /// <summary>
+    /// Sets the properties for Extent and ExtentTypes by the given extent.
+    /// If extent is empty, the call will just be ignored
+    /// </summary>
+    /// <param name="extent">Extent to be set</param>
+    public void SetByExtent(IUriExtent? extent)
+    {
+        if (extent == null)
+            return;
+        
+        Extent = extent;
+        ExtentTypes = extent.GetConfiguration().ExtentTypes;
+    }
+}

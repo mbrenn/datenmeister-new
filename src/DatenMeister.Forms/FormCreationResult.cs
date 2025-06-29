@@ -46,11 +46,15 @@ public class FormCreationResult
     public void AddToFormCreationProtocol(string message)
     {
         if (Form == null) return;
+        AddToFormCreationProtocol(Form, message);
+    }
 
-        lock (Form)
+    public static void AddToFormCreationProtocol(IElement form, string message)
+    {
+        lock (form)
         {   
             var currentMessage =
-                Form.getOrDefault<string>(_Forms._Form.creationProtocol)
+                form.getOrDefault<string>(_Forms._Form.creationProtocol)
                 ?? string.Empty;
 
             if (currentMessage != string.Empty)
@@ -58,7 +62,7 @@ public class FormCreationResult
             else
                 currentMessage = message;
 
-            Form.set(_Forms._Form.creationProtocol, currentMessage);
+            form.set(_Forms._Form.creationProtocol, currentMessage);
         }
     }
 }

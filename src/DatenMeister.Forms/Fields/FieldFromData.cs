@@ -55,6 +55,10 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
     
     public void CreateField(FieldFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
     {
+        // We do not need to create the field twice
+        if (result.IsMainContentCreated)
+            return;
+        
         var property = parameter.PropertyType;
         var propertyName = string.IsNullOrEmpty(parameter.PropertyName) 
             ? property.getOrDefault<string>(_UML._Classification._Property.name)
@@ -255,7 +259,6 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
 
             result.Form = column;
         }
-        
 
         if (result.Form != null)
         {
@@ -271,7 +274,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
     /// <param name="propertyType">Type of the enumeration</param>
     /// <param name="context">The used creation mode</param>
     /// <returns>The created element of the enumeration</returns>
-    public IElement CreateFieldForEnumeration(
+    private IElement CreateFieldForEnumeration(
         string propertyName,
         IElement propertyType,
         NewFormCreationContext context)

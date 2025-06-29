@@ -1,15 +1,21 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Forms.FormFactory;
 
-[Obsolete]
+public class ObjectFormFactoryParameter : FormFactoryParameterBase
+{
+    public IObject? Element { get; set; }
+}
+
 public interface IObjectFormFactory
 {
     /// <summary>
     /// Gets the extent form for a certain item
     /// </summary>
-    /// <param name="element">Element to which the form is requested</param>
+    /// <param name="parameter">Parameter to be evaluated</param>
     /// <param name="context">Configuration to be used</param>
+    /// <param name="result">The result to which the element will be added</param>
     /// <returns>The instance of the extent form</returns>
-    IElement? CreateObjectFormForItem(IObject element, FormFactoryContext context);
+    void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context,
+        FormCreationResult result);
 }

@@ -11,11 +11,11 @@ using DatenMeister.Forms.TableForms;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ValidateObjectOrCollectionForm : INewObjectFormFactory, INewCollectionFormFactory
+public class ValidateObjectOrCollectionForm : IObjectFormFactory, ICollectionFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ValidateTableOrRowForm));
 
-    private static void Validate(FormFactoryParameterBase parameter, NewFormCreationContext context,
+    private static void Validate(FormFactoryParameterBase parameter, FormCreationContext context,
         FormCreationResult result)
     {
         var validationResult = context.LocalScopeStorage.Get<ValidationResult>(false);
@@ -92,12 +92,12 @@ public class ValidateObjectOrCollectionForm : INewObjectFormFactory, INewCollect
         return true;
     }
 
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         Validate(parameter, context, result);
     }
 
-    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResult result)
     {
         Validate(parameter, context, result);

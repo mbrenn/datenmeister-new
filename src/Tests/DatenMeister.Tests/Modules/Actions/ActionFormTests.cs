@@ -21,9 +21,9 @@ public class ActionFormTests
         var actionNon = InMemoryObject.CreateEmpty(_Management.TheOne.__Extent);
 
         var formHandler = new ActionFormPlugin.ActionFormModificationPlugin();
-        var context = new NewFormCreationContext
+        var context = new FormCreationContext
         {
-            Global = new NewFormCreationContext.GlobalContext
+            Global = new FormCreationContext.GlobalContext
             {
                 Factory = InMemoryObject.TemporaryFactory
             }

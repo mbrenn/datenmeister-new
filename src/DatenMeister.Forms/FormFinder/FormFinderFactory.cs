@@ -5,8 +5,8 @@ using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.FormFinder;
 
-public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : INewCollectionFormFactory, INewObjectFormFactory,
-    INewRowFormFactory, INewTableFormFactory
+public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : ICollectionFormFactory, IObjectFormFactory,
+    IRowFormFactory, ITableFormFactory
 {
     private readonly FormMethods _formMethods = new(workspaceLogic);
 
@@ -15,7 +15,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : INewCollectionF
         return new FormFinder(_formMethods);
     }
 
-    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResult result)
     {
         var findQuery =
@@ -45,7 +45,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : INewCollectionF
         }
     }
 
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         var findQuery =
             new FindFormQuery
@@ -58,7 +58,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : INewCollectionF
         Find(result, findQuery);
     }
 
-    public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         var findQuery =
             new FindFormQuery
@@ -71,7 +71,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : INewCollectionF
         Find(result, findQuery);
     }
 
-    public void CreateTableForm(TableFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         var findQuery =
             new FindFormQuery

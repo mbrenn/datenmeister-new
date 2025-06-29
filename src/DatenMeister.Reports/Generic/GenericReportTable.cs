@@ -6,7 +6,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.TextTemplates;
 
@@ -73,7 +72,7 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
         // Find form 
         if (form == null)
         {
-            var formCreationFactory = new NewFormCreationContextFactory(
+            var formCreationFactory = new FormCreationContextFactory(
                 reportLogic.WorkspaceLogic,
                 reportLogic.ScopeStorage);
 

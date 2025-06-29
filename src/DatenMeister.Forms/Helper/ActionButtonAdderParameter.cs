@@ -7,7 +7,7 @@ namespace DatenMeister.Forms.Helper;
 /// Defines the parameter for the ActionButtonToFormadder
 /// </summary>
 [Obsolete]
-public record ActionButtonAdderParameter(string ActionName, string Title, string? ButtonText = "") : FormCreationContext
+public record ActionButtonAdderParameter(string ActionName, string Title, string? ButtonText = "") : FormModifications.FormCreationContext
 {
     /// <summary>
     /// The action name being used. 
@@ -42,7 +42,7 @@ public record ActionButtonAdderParameter(string ActionName, string Title, string
     /// to the FormCreationContext. If the element is set, than it will be added as an AND
     /// evaluation to all the other filterings.
     /// </summary>
-    public Func<FormCreationContext, bool>? PredicateForContext { get; set; }
+    public Func<FormModifications.FormCreationContext, bool>? PredicateForContext { get; set; }
 
     /// <summary>
     /// Gets or sets the delegate that will be called, when the 

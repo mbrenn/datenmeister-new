@@ -4,7 +4,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Forms.TableForms;
@@ -24,7 +23,7 @@ public static class FieldCreationHelper
     public static bool AddFieldsToRowOrTableFormByMetaClass(
         IElement rowOrObjectForm,
         IElement? metaClass,
-        NewFormCreationContext context)
+        FormCreationContext context)
     {
         if (metaClass == null) return false;
         var cache = context.LocalScopeStorage.Get<FormCreatorCache>();

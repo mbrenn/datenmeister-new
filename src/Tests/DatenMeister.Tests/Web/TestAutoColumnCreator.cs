@@ -37,7 +37,7 @@ public class TestAutoColumnCreator1
         var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
         // Execute the stuff
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
 
         var result = FormCreation.CreateCollectionForm(
@@ -97,7 +97,7 @@ public class TestAutoColumnCreator1
 
         // Execute the stuff
         
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         
         var result = FormCreation.CreateCollectionForm(

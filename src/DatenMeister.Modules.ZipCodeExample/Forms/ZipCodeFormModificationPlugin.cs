@@ -6,15 +6,16 @@ using DatenMeister.Core.Models;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
+using FormCreationContext = DatenMeister.Forms.FormCreationContext;
 
 namespace DatenMeister.Modules.ZipCodeExample.Forms;
 
 /// <summary>
 /// Defines the plugin which modifies the zip
 /// </summary>
-public class ZipCodeFormModificationPlugin : INewRowFormFactory
+public class ZipCodeFormModificationPlugin : IRowFormFactory
 {
-    public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         var metaClass = parameter.MetaClass;
         if (metaClass != null && metaClass.equals(_Management.TheOne.__Workspace) == true)

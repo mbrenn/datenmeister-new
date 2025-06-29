@@ -52,7 +52,7 @@ public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
                     {
                         CreateContext = context => context.Global.ObjectFormFactories.Add(
                             new ExtentTypeFormModification.
-                                NewIncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
+                                IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
                                     workspaceLogic, _extentSettings)),
                         Name = "IncludeCreationButtonsInTableFormForClassifierOfExtentType"
                     });

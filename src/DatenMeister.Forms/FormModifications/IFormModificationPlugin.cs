@@ -25,5 +25,5 @@ public interface IFormModificationPlugin
 
 public interface INewFormModificationPlugin
 {
-    public void UpdateFactories(NewFormCreationContext context);
+    public void UpdateFactories(Forms.FormCreationContext context);
 }

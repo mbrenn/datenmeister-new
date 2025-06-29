@@ -10,6 +10,7 @@ using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
+using DatenMeister.Forms.TableForms;
 
 namespace DatenMeister.Extent.Forms;
 
@@ -18,9 +19,9 @@ namespace DatenMeister.Extent.Forms;
 /// </summary>
 public class ExtentTypeFormModification
 {
-    public class IncludeJumpToExtentButtonModification : INewCollectionFormFactory
+    public class IncludeJumpToExtentButtonModification : ICollectionFormFactory
     {
-        public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+        public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
             FormCreationResult result)
         {
             if (result.Form == null)
@@ -40,9 +41,9 @@ public class ExtentTypeFormModification
         }
     }
 
-    public class IncludeExtentTypesForTableFormExtent(ExtentSettings extentSettings) : INewRowFormFactory
+    public class IncludeExtentTypesForTableFormExtent(ExtentSettings extentSettings) : IRowFormFactory
     {
-        public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
         {
             var metaClass = parameter.MetaClass;
             
@@ -105,10 +106,10 @@ public class ExtentTypeFormModification
     public class IncludeCreationButtonsInTableFormForClassifierOfExtentType(
         IWorkspaceLogic workspaceLogic,
         ExtentSettings extentSettings)
-        : INewCollectionFormFactory
+        : ICollectionFormFactory
     {
         public void CreateCollectionForm(
-            CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+            CollectionFormFactoryParameter parameter, FormCreationContext context,
             FormCreationResult result)
         {
             if (parameter.Collection == null)
@@ -168,7 +169,7 @@ public class ExtentTypeFormModification
                             continue;
                         }
 
-                        FormMethods.AddDefaultTypeForNewElement(result.Form, resolvedMetaClass);
+                        AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(result, resolvedMetaClass);
 
                         result.AddToFormCreationProtocol(
                             $"ExtentTypeFormsPlugin: Added {NamedElementMethods.GetName(resolvedMetaClass)} by ExtentType '{foundExtentType.name}'");
@@ -179,7 +180,7 @@ public class ExtentTypeFormModification
             result.IsManaged = true;
         }
 
-        public void CreateCollectionFormForMetaClass(IElement metaClass, NewFormCreationContext context,
+        public void CreateCollectionFormForMetaClass(IElement metaClass, FormCreationContext context,
             FormCreationResult result)
         {
         }
@@ -189,11 +190,11 @@ public class ExtentTypeFormModification
      * Includes the creation buttons for all Properties in SubElementFields for packagedItems for the
      * default root classes of a certain extent type
      */
-    public class NewIncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
+    public class IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
         IWorkspaceLogic workspaceLogic,
-        ExtentSettings extentSettings) : INewObjectFormFactory
+        ExtentSettings extentSettings) : IObjectFormFactory
     {
-        public void CreateObjectForm(ObjectFormFactoryParameter paramete, NewFormCreationContext context, FormCreationResult result)
+        public void CreateObjectForm(ObjectFormFactoryParameter paramete, FormCreationContext context, FormCreationResult result)
         {
             var element = paramete.Element;
             if (element == null)
@@ -261,7 +262,7 @@ public class ExtentTypeFormModification
             result.IsManaged = changed;
         }
 
-        public void CreateObjectFormForMetaClass(IElement? metaClass, NewFormCreationContext context,
+        public void CreateObjectFormForMetaClass(IElement? metaClass, FormCreationContext context,
             FormCreationResult result)
         {
             throw new NotImplementedException();

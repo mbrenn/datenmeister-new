@@ -8,7 +8,6 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
@@ -24,7 +23,7 @@ public class SimpleReportCreator
     /// <summary>
     /// Stores the creation context which is used to create the correspondign views
     /// </summary>
-    private NewFormCreationContextFactory _formContextFactory;
+    private FormCreationContextFactory _formContextFactory;
 
     /// <summary>
     /// Gets or sets the workspace logic
@@ -48,7 +47,7 @@ public class SimpleReportCreator
     {
         _workspaceLogic = workspaceLogic;
         _reportConfiguration = simpleReportConfiguration;
-        _formContextFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        _formContextFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         
     }
 

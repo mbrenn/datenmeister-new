@@ -1,6 +1,4 @@
 using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms;
@@ -14,7 +12,7 @@ public static class FormCreation
     
     public static FormCreationResult CreateCollectionForm(
         CollectionFormFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult? result = null)
     {
         result ??= new FormCreationResult();
@@ -38,7 +36,7 @@ public static class FormCreation
     /// <returns>The created form result</returns>
     public static FormCreationResult CreateObjectForm(
         ObjectFormFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult? result = null)
     {
         result ??= new FormCreationResult();
@@ -59,7 +57,7 @@ public static class FormCreation
     /// <returns></returns>
     public static FormCreationResult CreateTableFormForMetaClass(
         TableFormFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult? result = null)
     {
         result ??= new FormCreationResult();
@@ -74,7 +72,7 @@ public static class FormCreation
 
     public static FormCreationResult CreateRowForm(
         RowFormFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult? result = null)
     {
         result ??= new FormCreationResult();
@@ -89,7 +87,7 @@ public static class FormCreation
 
     public static FormCreationResult CreateFieldForProperty(
         FieldFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult? result = null)
     {
         result ??= new FormCreationResult();

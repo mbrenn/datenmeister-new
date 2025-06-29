@@ -9,7 +9,7 @@ public class FieldFactoryParameter : FormFactoryParameterBase
     public string PropertyName { get; set; } = string.Empty;
 }
 
-public interface INewFieldFactory
+public interface IFieldFactory
 {
     /// <summary>
     /// Creates a field element for a certain ProprtyType
@@ -20,6 +20,6 @@ public interface INewFieldFactory
     /// <returns></returns>
     void CreateField(
         FieldFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult result);
 }

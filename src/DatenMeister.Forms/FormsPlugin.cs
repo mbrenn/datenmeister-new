@@ -65,7 +65,7 @@ public class FormsPlugin : IDatenMeisterPlugin
     public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
 
     /// <summary>
-    /// Integrates the the view logic into the workspace.
+    /// Integrates the view logic into the workspace.
     /// </summary>
     public async Task Start(PluginLoadingPosition position)
     {

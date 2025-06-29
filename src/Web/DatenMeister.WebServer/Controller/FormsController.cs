@@ -92,7 +92,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
         
         var formMethods = new FormMethods(_internal.WorkspaceLogic);
-        var factory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage)
+        var factory = new FormCreationContextFactory(workspaceLogic, scopeStorage)
         {
             MofFactory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User))
         };
@@ -154,7 +154,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var formMethods = new FormMethods(_internal.WorkspaceLogic);
         var userFormExtent = formMethods.GetUserFormExtent();
         
-        var factory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage)
+        var factory = new FormCreationContextFactory(workspaceLogic, scopeStorage)
         {
             MofFactory = new MofFactory(userFormExtent)
         };

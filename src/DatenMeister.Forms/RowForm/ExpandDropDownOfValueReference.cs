@@ -7,14 +7,14 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class ExpandDropDownOfValueReference : INewRowFormFactory, INewTableFormFactory
+public class ExpandDropDownOfValueReference : IRowFormFactory, ITableFormFactory
 {
-    public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         ExpandDropDownValuesOfValueReference(context, result);
     }
 
-    public void CreateTableForm(TableFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         ExpandDropDownValuesOfValueReference(context, result);
     }
@@ -24,7 +24,7 @@ public class ExpandDropDownOfValueReference : INewRowFormFactory, INewTableFormF
     ///     The DropDownField supports a reference field which is not resolved by every Form Client.
     ///     So, the DropDownField can already be resolved on server side
     /// </summary>
-    public static void ExpandDropDownValuesOfValueReference(NewFormCreationContext context, 
+    public static void ExpandDropDownValuesOfValueReference(FormCreationContext context, 
         FormCreationResult result)
     {
         var listOrDetailForm = result.Form;

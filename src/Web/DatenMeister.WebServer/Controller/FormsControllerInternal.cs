@@ -43,7 +43,7 @@ public class FormsControllerInternal
     public IElement GetObjectFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
     {
         var item = GetItemByUriParameter(workspaceId, itemUrl);
-        var factory = new NewFormCreationContextFactory(WorkspaceLogic, ScopeStorage)
+        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
         {
             MofFactory = _temporaryExtentFactory
         };
@@ -76,7 +76,7 @@ public class FormsControllerInternal
             throw new InvalidOperationException("Extent not found: " + extentUri);
         }
 
-        var factory = new NewFormCreationContextFactory(WorkspaceLogic, ScopeStorage)
+        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
         {
             MofFactory = _temporaryExtentFactory
         };
@@ -108,7 +108,7 @@ public class FormsControllerInternal
     /// <returns>The found form</returns>
     public IObject GetObjectFormForMetaClassInternal(string? metaClass, string? viewMode = null)
     {
-        var factory = new NewFormCreationContextFactory(WorkspaceLogic, ScopeStorage)
+        var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
         {
             MofFactory = _temporaryExtentFactory
         };

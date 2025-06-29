@@ -6,7 +6,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Html;
 using DatenMeister.HtmlEngine;
@@ -16,7 +15,7 @@ namespace DatenMeister.Reports.Simple;
 /// <summary>
 /// This class creates a simple report just for a collection. 
 /// </summary>
-public class SimpleReportForCollection(NewFormCreationContext formContext, ItemFormatter itemFormatter, IHtmlReport report)
+public class SimpleReportForCollection(FormCreationContext formContext, ItemFormatter itemFormatter, IHtmlReport report)
 {
     /// <summary>
     /// Gets or sets the report table mode

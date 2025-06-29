@@ -10,7 +10,7 @@ using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.Fields;
 
-public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
+public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
 {
     #region CachedTypes
 
@@ -53,7 +53,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
 
     private Workspace? _uriResolver;
     
-    public void CreateField(FieldFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateField(FieldFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         // We do not need to create the field twice
         if (result.IsMainContentCreated)
@@ -135,11 +135,6 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                     elementsField.set(_Forms._SubElementFieldData.isReadOnly,
                         context.IsForTableForm || context.IsReadOnly);
 
-                    if (!context.IsForTableForm)
-                    {
-                        FormMethods.AddDefaultTypeForNewElement(elementsField, propertyType);
-                    }
-
                     elementsField.set(
                         _Forms._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                     elementsField.set(_Forms._SubElementFieldData.isReadOnly, isReadOnly);
@@ -151,22 +146,10 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
                             FormCreation.CreateTableFormForMetaClass(
                                 new TableFormFactoryParameter
                                 {
+                                    Extent = parameter.Extent,
+                                    ExtentTypes = parameter.ExtentTypes,
                                     MetaClass = propertyType
                                 }, clonedContext).Form;
-
-                        /* TODO: Rescue
-                        // Create the internal form out of the metaclass
-                        if (enumerationListForm == null
-                            && context.CreateByMetaClass)
-                        {
-                            var tableFormCreator = new TableFormCreator(WorkspaceLogic, ScopeStorage);
-                            enumerationListForm =
-                                tableFormCreator.CreateTableFormForMetaClass(
-                                    propertyType,
-                                    context with { IsForTableForm = true },
-                                    property as IElement);
-                        }
-                        */
 
                         if (enumerationListForm != null)
                             elementsField.set(_Forms._SubElementFieldData.form, enumerationListForm);
@@ -234,11 +217,6 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
             element.set(_Forms._SubElementFieldData.isReadOnly, isReadOnly);
             element.set(_Forms._SubElementFieldData.isEnumeration, propertyIsCollection);
 
-            if (propertyType != null)
-            {
-                FormMethods.AddDefaultTypeForNewElement(element, propertyType);
-            }
-
             result.Form = element;
         }
 
@@ -277,7 +255,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : INewFieldFactory
     private IElement CreateFieldForEnumeration(
         string propertyName,
         IElement propertyType,
-        NewFormCreationContext context)
+        FormCreationContext context)
     {
         var factory = context.Global.Factory;
         var isReadOnly = context.IsReadOnly;

@@ -49,10 +49,8 @@ public class AboutModel : PageModel
         get
         {
             var formPlugin = GiveMe.Scope.ScopeStorage.Get<FormsState>();
-            return formPlugin.FormModificationPlugins
-                .Select(x => $"OBSOLETE: {x} ({x.GetType().FullName})")
-                .Union(formPlugin.NewFormModificationPlugins
-                    .Select(x => $"{x} ({x.Name})"))
+            return formPlugin.NewFormModificationPlugins
+                .Select(x => $"{x} ({x.Name})")
                 .ToList();
         }
     }

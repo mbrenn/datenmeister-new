@@ -3,13 +3,12 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.Fields;
 using DatenMeister.Forms.FormFactory;
-using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class RowFormFromData : INewRowFormFactory
+public class RowFormFromData : IRowFormFactory
 {
-    public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResult result)
     {
         if (result.IsMainContentCreated)

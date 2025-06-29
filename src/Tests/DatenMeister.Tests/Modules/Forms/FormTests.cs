@@ -49,9 +49,9 @@ public class FormTests
         
         var extent = XmiExtensions.CreateXmiExtent("dm:///test");
         var factory = new MofFactory(extent);
-        var context = new NewFormCreationContext
+        var context = new FormCreationContext
         {
-            Global = new NewFormCreationContext.GlobalContext
+            Global = new FormCreationContext.GlobalContext
             {
                 Factory = factory
             }
@@ -132,9 +132,9 @@ public class FormTests
             field1.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
         Assert.That(valuesBefore, Is.Null);
         
-        var context = new NewFormCreationContext
+        var context = new FormCreationContext
         {
-            Global = new NewFormCreationContext.GlobalContext { Factory = new MofFactory(form) }
+            Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
         };
         
         var result = new FormCreationResult
@@ -179,9 +179,9 @@ public class FormTests
         var fields = form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
         Assert.That(fields.Count(), Is.EqualTo(5));
 
-        var context = new NewFormCreationContext
+        var context = new FormCreationContext
         {
-            Global = new NewFormCreationContext.GlobalContext { Factory = new MofFactory(form) }
+            Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
         };
         
         var result = new FormCreationResult
@@ -191,7 +191,7 @@ public class FormTests
         };
 
         
-        var removeDuplicateHandler = new RemoveDuplicateDefaultNewTypes();
+        var removeDuplicateHandler = new RemoveDuplicateDefaultTypes();
         removeDuplicateHandler.CreateTableForm(
             new TableFormFactoryParameter(),
             context,

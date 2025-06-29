@@ -8,6 +8,8 @@ using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 using DatenMeister.Forms.Helper;
+using DatenMeister.Forms.TableForms;
+using FormCreationContext = DatenMeister.Forms.FormCreationContext;
 
 namespace DatenMeister.Extent.Forms;
 
@@ -16,11 +18,11 @@ namespace DatenMeister.Extent.Forms;
 ///     the element is currently belonging to.
 ///     Here, the property 'ExtentConfiguration.ExtentDefaultTypes' is being used to retrieve the values
 /// </summary>
-public class CreateInstanceButtonsForTableForms : INewTableFormFactory
+public class CreateInstanceButtonsForTableForms : ITableFormFactory
 {
     public void CreateTableForm(
         TableFormFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult result)
     {
         var collection = parameter.Collection;
@@ -44,16 +46,12 @@ public class CreateInstanceButtonsForTableForms : INewTableFormFactory
                         "[CreateInstanceButtonsForTableForms]: Add DefaultType per ExtentDefaultTypes property " +
                         NamedElementMethods.GetName(defaultType));
                         
-                    FormMethods.AddDefaultTypeForNewElement(result.Form, defaultType);
+                    AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(result, defaultType);
                     added = true;
                 }
             }
 
             result.IsManaged = added;
         }
-    }
-
-    public void CreateTableFormForMetaclass(IElement metaClass, NewFormCreationContext context, FormCreationResult result)
-    {
     }
 }

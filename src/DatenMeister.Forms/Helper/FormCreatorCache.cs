@@ -1,6 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Forms.FormCreator;
+namespace DatenMeister.Forms.Helper;
 
 /// <summary>
 ///     Defines a class being used as an internal cache for the form creation.

@@ -3,7 +3,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 
@@ -40,7 +39,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
             var targetReflection = targetContainer == null
                 ? formMethods.GetUserFormExtent().elements()
                 : DefaultClassifierHints.GetDefaultReflectiveCollection(targetContainer);
-            var factory = new NewFormCreationContextFactory(
+            var factory = new FormCreationContextFactory(
                 actionLogic.WorkspaceLogic,
                 actionLogic.ScopeStorage);
             var context = factory.Create();

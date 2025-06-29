@@ -8,34 +8,34 @@ namespace DatenMeister.Forms;
 /// A configuration being used for the form factories to define the behavior of how to
 /// create a form upon a certain request
 /// </summary>
-public class NewFormCreationContext
+public class FormCreationContext
 {
     public class GlobalContext
     {
         /// <summary>
         /// Defines a list of collection form factories which have to be parsed through
         /// </summary>
-        public List<INewCollectionFormFactory> CollectionFormFactories { get; } = [];
+        public List<ICollectionFormFactory> CollectionFormFactories { get; } = [];
         
         /// <summary>
         /// Defines a list of table form factories which have to be parsed through
         /// </summary>
-        public List<INewTableFormFactory> TableFormFactories { get; } = [];
+        public List<ITableFormFactory> TableFormFactories { get; } = [];
         
         /// <summary>
         /// Defines a list of table form factories which have to be parsed through
         /// </summary>
-        public List<INewRowFormFactory> RowFormFactories { get; } = [];
+        public List<IRowFormFactory> RowFormFactories { get; } = [];
         
         /// <summary>
         /// Defines a list of table object factories which have to be parsed through
         /// </summary>
-        public List<INewObjectFormFactory> ObjectFormFactories { get; } = [];
+        public List<IObjectFormFactory> ObjectFormFactories { get; } = [];
         
         /// <summary>
         /// Defines a list of table object factories which have to be parsed through
         /// </summary>
-        public List<INewFieldFactory> FieldFormFactories { get; } = [];
+        public List<IFieldFactory> FieldFormFactories { get; } = [];
 
         /// <summary>
         /// Gets the scope storage which allows the transfer of information between the different handlers
@@ -72,9 +72,9 @@ public class NewFormCreationContext
     /// Clones the context and copies all properties, except the LocalScopeStorage
     /// </summary>
     /// <returns>The cloned instance</returns>
-    public NewFormCreationContext Clone()
+    public FormCreationContext Clone()
     {
-        return new NewFormCreationContext
+        return new FormCreationContext
         {
             IsReadOnly = IsReadOnly,
             Global = Global,
@@ -83,19 +83,19 @@ public class NewFormCreationContext
         };
     }
 
-    public NewFormCreationContext SetReadOnly(bool isReadOnly)
+    public FormCreationContext SetReadOnly(bool isReadOnly)
     {
         IsReadOnly = isReadOnly;
         return this;
     }
 
-    public NewFormCreationContext SetViewModeId(string viewModeId)
+    public FormCreationContext SetViewModeId(string viewModeId)
     {
         ViewModeId = viewModeId;
         return this;
     }
 
-    public NewFormCreationContext SetIsForTableForm(bool isForTableForm)
+    public FormCreationContext SetIsForTableForm(bool isForTableForm)
     {
         IsForTableForm = isForTableForm;
         return this;

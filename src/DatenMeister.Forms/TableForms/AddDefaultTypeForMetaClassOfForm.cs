@@ -11,9 +11,9 @@ namespace DatenMeister.Forms.TableForms;
 /// <summary>
 /// Adds the button for a default type according to the metaclass of the TableForm 
 /// </summary>
-public class AddDefaultTypeForMetaClassOfForm : INewTableFormFactory
+public class AddDefaultTypeForMetaClassOfForm : ITableFormFactory
 {
-    public void CreateTableForm(TableFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResult result)
     {
         var form = result.Form;
@@ -24,14 +24,22 @@ public class AddDefaultTypeForMetaClassOfForm : INewTableFormFactory
         if (defaultType == null)
             return;
 
+        AddDefaultTypeIfNotExists(result, defaultType);
+    }
+
+    public static void AddDefaultTypeIfNotExists(FormCreationResult result, IElement defaultType)
+    {
+        var form = result.Form;
+        if (form == null)
+            return;
+        
         var currentDefaultPackages =
             form.get<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
         if (currentDefaultPackages.OfType<IElement>().Any(x =>
                 x.getOrDefault<IElement>(
                         _Forms._DefaultTypeForNewElement.metaClass)
-                    ?.@equals(defaultType) == true))
+                    ?.equals(defaultType) == true))
         {
-
             result.AddToFormCreationProtocol(
                 $"[FormMethods.AddDefaultTypeForNewElement] Not added because default type is already existing: {NamedElementMethods.GetName(defaultType)}");
             // No adding, because it already exists

@@ -1,20 +1,16 @@
-using System.Diagnostics;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
-using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.CollectionForms;
 
-public class CollectionFormFromData : INewCollectionFormFactory
+public class CollectionFormFromData : ICollectionFormFactory
 {
     public void CreateCollectionForm(
         CollectionFormFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult result)
     {
         if (parameter.Collection == null || result.IsMainContentCreated)
@@ -144,7 +140,7 @@ public class CollectionFormFromData : INewCollectionFormFactory
 
     public void CreateCollectionFormForMetaClass(
         IElement metaClass,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult result)
     {
         result.Form ??= context.Global.Factory.create(_Forms.TheOne.__CollectionForm);

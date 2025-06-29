@@ -11,11 +11,11 @@ using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.TableForms;
 
-public class ValidateTableOrRowForm : INewTableFormFactory
+public class ValidateTableOrRowForm : ITableFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ValidateTableOrRowForm));
 
-    public void CreateTableForm(TableFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResult result)
     {
         var validationResult = context.LocalScopeStorage.Get<ValidationResult>(false);
@@ -78,9 +78,9 @@ public class ValidateTableOrRowForm : INewTableFormFactory
 
     public static bool ValidateForm(IElement form)
     {
-        var context = new NewFormCreationContext
+        var context = new FormCreationContext
         {
-            Global = new NewFormCreationContext.GlobalContext { Factory = new MofFactory(form) }
+            Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
         };
 
 

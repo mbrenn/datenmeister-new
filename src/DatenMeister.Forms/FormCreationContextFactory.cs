@@ -11,7 +11,7 @@ using DatenMeister.TemporaryExtent;
 
 namespace DatenMeister.Forms;
 
-public class NewFormCreationContextFactory
+public class FormCreationContextFactory
 {
     private readonly IWorkspaceLogic _workspaceLogic;
     private readonly IScopeStorage _scopeStorage;
@@ -24,7 +24,7 @@ public class NewFormCreationContextFactory
 
     public IFactory? MofFactory { get; set; }
 
-    public NewFormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+    public FormCreationContextFactory(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
     {
         _workspaceLogic = workspaceLogic;
         _scopeStorage = scopeStorage;
@@ -40,12 +40,12 @@ public class NewFormCreationContextFactory
     /// Creates a new form creation
     /// </summary>
     /// <returns>The created form</returns>
-    public NewFormCreationContext Create(string viewMode = "")
+    public FormCreationContext Create(string viewMode = "")
     {
-        var context = new NewFormCreationContext
+        var context = new FormCreationContext
         {
             ViewModeId = ViewMode,
-            Global = new NewFormCreationContext.GlobalContext
+            Global = new FormCreationContext.GlobalContext
             {
                 Factory = MofFactory ?? _temporaryExtentFactory
             }
@@ -66,10 +66,11 @@ public class NewFormCreationContextFactory
         // Build up the TableForm Queue
         context.Global.TableFormFactories.Add(new EmptyTableFormFactory());
         context.Global.TableFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+        context.Global.TableFormFactories.Add(new TableFormForMetaClass());
         context.Global.TableFormFactories.Add(new TableFormFromData());
         context.Global.TableFormFactories.Add(new ExpandDropDownOfValueReference());
         context.Global.TableFormFactories.Add(new AddDefaultTypeForMetaClassOfForm());
-        context.Global.TableFormFactories.Add(new RemoveDuplicateDefaultNewTypes());
+        context.Global.TableFormFactories.Add(new RemoveDuplicateDefaultTypes());
         
         context.Global.RowFormFactories.Add(new EmptyRowFormFactory());
         context.Global.RowFormFactories.Add(new FormFinderFactory(_workspaceLogic));

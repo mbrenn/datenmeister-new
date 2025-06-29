@@ -15,7 +15,7 @@ namespace DatenMeister.Extent.Forms;
 /// It finds the 'packagedElement' of a package and adds all preferred type as being mentioned
 /// in the package instance itself
 /// </summary>
-public class PackageFormModificationPlugin : INewObjectFormFactory
+public class PackageFormModificationPlugin : IObjectFormFactory
 {
     private static void AddPreferredTypes(
         FormCreationResult result,
@@ -48,7 +48,7 @@ public class PackageFormModificationPlugin : INewObjectFormFactory
         }
     }
 
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         var element = parameter.Element;
         if (element == null)

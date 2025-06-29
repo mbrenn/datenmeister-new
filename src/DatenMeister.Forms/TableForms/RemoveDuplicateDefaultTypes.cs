@@ -6,9 +6,9 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.TableForms;
 
-public class RemoveDuplicateDefaultNewTypes : INewTableFormFactory
+public class RemoveDuplicateDefaultTypes : ITableFormFactory
 {
-    public void CreateTableForm(TableFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
     {
         var form = result.Form;
         if (form == null)

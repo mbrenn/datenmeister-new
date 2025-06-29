@@ -5,9 +5,9 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.CollectionForms;
 
-public class CollectionFormFromMetaClass : INewCollectionFormFactory
+public class CollectionFormFromMetaClass : ICollectionFormFactory
 {
-    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, NewFormCreationContext context,
+    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResult result)
     {
         if (parameter.MetaClass == null)

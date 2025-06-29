@@ -7,13 +7,12 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.Fields;
-using DatenMeister.Forms.FormCreator;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ObjectFormFromData : INewObjectFormFactory
+public class ObjectFormFromData : IObjectFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ObjectFormFromData));
 
@@ -27,7 +26,7 @@ public class ObjectFormFromData : INewObjectFormFactory
     /// <returns>The created form</returns>
     public void CreateObjectForm(
         ObjectFormFactoryParameter parameter,
-        NewFormCreationContext context,
+        FormCreationContext context,
         FormCreationResult result)
     {
         if (result.IsMainContentCreated)

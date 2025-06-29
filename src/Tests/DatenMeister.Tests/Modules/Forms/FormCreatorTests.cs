@@ -31,7 +31,7 @@ public class FormCreatorTests
         Assert.That(zipModel, Is.Not.Null);
         Assert.That(zipModel.ZipCode, Is.Not.Null);
         
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
 
         var createdForm =
@@ -72,7 +72,7 @@ public class FormCreatorTests
         extent.elements().add(unclassified);
             
         // Ok, data is prepared, now get the collection
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         
         var collectionForm = FormCreation.CreateCollectionForm(
@@ -115,7 +115,7 @@ public class FormCreatorTests
 
         var zipModel = scopeStorage.Get<ZipCodeModel>();
 
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
 
         var createdForm =
@@ -156,7 +156,7 @@ public class FormCreatorTests
         var zipModel = scopeStorage.Get<ZipCodeModel>();
         var instance = InMemoryObject.CreateEmpty(zipModel.ZipCode!);
         
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         
         var createdForm =
@@ -196,7 +196,7 @@ public class FormCreatorTests
 
         var instance = InMemoryObject.CreateEmpty();
         
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         
         var createdForm =
@@ -231,7 +231,7 @@ public class FormCreatorTests
         instance3.set(_UML._StructuredClassifiers._Connector.name, "Instance3");
         packageModel.set(_UML._Packages._Package.packagedElement, new[] { instance1, instance2, instance3 });
 
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
         var createdForm =
             FormCreation.CreateObjectForm(
@@ -278,7 +278,7 @@ public class FormCreatorTests
         var workspaceLogic = dm.WorkspaceLogic;
         var scopeStorage = dm.ScopeStorage;
 
-        var formCreationFactory = new NewFormCreationContextFactory(workspaceLogic, scopeStorage);
+        var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
 
         var extent = LocalTypeSupport.GetInternalTypeExtent(workspaceLogic);

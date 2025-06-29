@@ -1,23 +1,22 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Forms.FormFactory;
 
-[Obsolete]
+public class CollectionFormFactoryParameter : FormFactoryParameterBase
+{
+    public IReflectiveCollection? Collection { get; set; }
+}
+
 public interface ICollectionFormFactory
 {
     /// <summary>
-    /// Gets the extent form for a certain item's metaclass.
-    /// This method can be used when the object to which a form shall be provided is not available 
+    /// Creates a new collectionform out of the given collection. 
     /// </summary>
-    /// <param name="metaClass">MetaClass to which the form shall be provided</param>
-    /// <param name="context">Configuration to be used</param>
-    /// <returns>The instance of the extent form</returns>
-    IElement? CreateCollectionFormForMetaClass(IElement metaClass, FormFactoryContext context);
-
-    IElement? CreateCollectionFormForCollection(
-        IExtent extent,
-        IReflectiveCollection collection,
-        FormFactoryContext context);
+    /// <param name="parameter">Parameter whose data is used to create the form</param>
+    /// <param name="context">The context being used</param>
+    /// <param name="result">The structure in which the result will be stored</param>
+    void CreateCollectionForm(
+        CollectionFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResult result);
 }

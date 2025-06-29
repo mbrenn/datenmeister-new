@@ -9,6 +9,7 @@ using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 using DatenMeister.Plugins;
+using FormCreationContext = DatenMeister.Forms.FormCreationContext;
 
 namespace DatenMeister.Actions.Forms;
 
@@ -43,9 +44,9 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     /// <summary>
     /// The helper class which includes the action button into the forms for actions
     /// </summary>
-    public class ActionFormModificationPlugin : INewRowFormFactory
+    public class ActionFormModificationPlugin : IRowFormFactory
     {
-        public void CreateRowForm(RowFormFactoryParameter parameter, NewFormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
         {
             var metaClass = parameter.MetaClass;
             if (metaClass == null)

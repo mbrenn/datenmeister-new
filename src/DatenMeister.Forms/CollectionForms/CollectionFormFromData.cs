@@ -1,5 +1,8 @@
+using System.Web;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
@@ -13,6 +16,7 @@ public class CollectionFormFromData : ICollectionFormFactory
         FormCreationContext context,
         FormCreationResult result)
     {
+        var extent = parameter.Extent;
         if (parameter.Collection == null || result.IsMainContentCreated)
             return;
 
@@ -74,8 +78,13 @@ public class CollectionFormFromData : ICollectionFormFactory
 
             innerTableForm.set(_Forms._TableForm.name, "Unclassified");
             innerTableForm.set(_Forms._TableForm.noItemsWithMetaClass, true);
-
-            // TODO: Rescue - SortFieldsByImportantProperties(form);
+            
+            // Sets the dataurl of the table form
+            if (extent != null)
+            {
+                var dataUrl = GetUrlOfTableForm(extent, innerTableForm);
+                innerTableForm.set(_Forms._TableForm.dataUrl, dataUrl);
+            }
 
             // Remove action create property buttons which were created and are covered by the list forms
             // being created below
@@ -94,9 +103,6 @@ public class CollectionFormFromData : ICollectionFormFactory
                 // Should not happen, but we need to handle this
                 continue;
 
-            var extent = (collection as IHasExtent)?.Extent;
-            if (extent == null) throw new InvalidOperationException("elements does not have an extent");
-
             result.AddToFormCreationProtocol(
                 $"[{typeof(CollectionFormFromData)}.CreateCollectionFormForCollection]: Create ListForm for metaclass: " +
                 NamedElementMethods.GetName(groupedMetaclass));
@@ -112,6 +118,10 @@ public class CollectionFormFromData : ICollectionFormFactory
                                 .Form ??
                             throw new InvalidOperationException("No form was found");
 
+            // Sets the dataurl of the table form
+            var dataUrl = GetUrlOfTableForm(extent, tableForm);
+            tableForm.set(_Forms._TableForm.dataUrl, dataUrl);
+            
             /*
             if (context.CreateByMetaClass)
             {
@@ -121,14 +131,6 @@ public class CollectionFormFromData : ICollectionFormFactory
                 }
             }*/
 
-            /* TODO: RESCUE
-            FormMethods.AddToFormCreationProtocol(
-                form,
-                "[FormCreator.CreateCollectionFormForCollection]: Create Default Type for metaclass: " +
-                NamedElementMethods.GetName(groupedMetaclass));
-            FormMethods.AddDefaultTypeForNewElement(form, groupedMetaclass);
-            */
-
             tableForm.set(_Forms._TableForm.metaClass, groupedMetaclass);
             tabs.Add(tableForm);
         }
@@ -136,6 +138,24 @@ public class CollectionFormFromData : ICollectionFormFactory
         result.Form.set(_Forms._CollectionForm.tab, tabs);
 
         result.IsManaged = result.IsMainContentCreated = true;
+    }
+
+    private static string GetUrlOfTableForm(IExtent extent, IElement tableForm)
+    {
+        // Set the data url of the table form
+        var dataUrl = (extent as IUriExtent)?.contextURI() ?? string.Empty;
+
+        // If form also contains a metaclass, then the metaclass needs to be added
+        var tableFormMetaClass =
+            tableForm.getOrDefault<IElement>(_Forms._TableForm.metaClass);
+        var metaClassUri = tableFormMetaClass?.GetUri();
+
+        if (!string.IsNullOrEmpty(metaClassUri))
+        {
+            dataUrl += "?metaclass=" + HttpUtility.UrlEncode(metaClassUri);
+        }
+
+        return dataUrl;
     }
 
     public void CreateCollectionFormForMetaClass(

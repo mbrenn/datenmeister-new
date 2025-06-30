@@ -70,6 +70,7 @@ public class FormCreationContextFactory
         context.Global.TableFormFactories.Add(new TableFormFromData());
         context.Global.TableFormFactories.Add(new ExpandDropDownOfValueReference());
         context.Global.TableFormFactories.Add(new AddDefaultTypeForMetaClassOfForm());
+        context.Global.TableFormFactories.Add(new SortFieldsByImportantProperties());
         context.Global.TableFormFactories.Add(new RemoveDuplicateDefaultTypes());
         
         context.Global.RowFormFactories.Add(new EmptyRowFormFactory());

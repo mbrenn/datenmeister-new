@@ -32,7 +32,7 @@ public class CreateInstanceButtonsForTableForms : ITableFormFactory
         if (result.Form == null)
             throw new InvalidOperationException("Form is null");
 
-        var extent = collection.GetUriExtentOf();
+        var extent = parameter.Extent;
         if (extent != null)
         {
             var added = false;

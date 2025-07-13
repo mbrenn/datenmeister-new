@@ -21,5 +21,5 @@ public interface IFieldFactory
     void CreateField(
         FieldFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult result);
+        FormCreationResultOneForm result);
 }

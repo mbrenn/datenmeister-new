@@ -14,7 +14,7 @@ public class CollectionFormFromData : ICollectionFormFactory
     public void CreateCollectionForm(
         CollectionFormFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultOneForm result)
     {
         var extent = parameter.Extent;
         if (parameter.Collection == null || result.IsMainContentCreated)
@@ -59,7 +59,7 @@ public class CollectionFormFromData : ICollectionFormFactory
         if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
         {
             var innerTableForm =
-                FormCreation.CreateTableFormForMetaClass(
+                FormCreation.CreateTableForm(
                         new TableFormFactoryParameter
                         {
                             Collection = new TemporaryReflectiveCollection(elementsWithoutMetaClass),
@@ -67,7 +67,7 @@ public class CollectionFormFromData : ICollectionFormFactory
                             ExtentTypes = parameter.ExtentTypes
                         },
                         context.Clone().SetIsForTableForm(true))
-                    .Form;
+                    .Forms;
             if (innerTableForm == null)
             {
                 throw new InvalidOperationException("The form was not created... When it should have been.");
@@ -76,19 +76,22 @@ public class CollectionFormFromData : ICollectionFormFactory
             result.AddToFormCreationProtocol(
                 $"[{typeof(CollectionFormFromData)}.CreateCollectionFormForCollection]: Create ListForm for unclassified elements");
 
-            innerTableForm.set(_Forms._TableForm.name, "Unclassified");
-            innerTableForm.set(_Forms._TableForm.noItemsWithMetaClass, true);
-            
-            // Sets the dataurl of the table form
-            if (extent != null)
+            foreach (var innerForm in innerTableForm)
             {
-                var dataUrl = GetUrlOfTableForm(extent, innerTableForm);
-                innerTableForm.set(_Forms._TableForm.dataUrl, dataUrl);
-            }
+                innerForm.set(_Forms._TableForm.name, "Unclassified");
+                innerForm.set(_Forms._TableForm.noItemsWithMetaClass, true);
 
-            // Remove action create property buttons which were created and are covered by the list forms
-            // being created below
-            tabs.Add(innerTableForm);
+                // Sets the dataurl of the table form
+                if (extent != null)
+                {
+                    var dataUrl = GetUrlOfTableForm(extent, innerForm);
+                    innerForm.set(_Forms._TableForm.dataUrl, dataUrl);
+                }
+
+                // Remove action create property buttons which were created and are covered by the list forms
+                // being created below
+                tabs.Add(innerForm);
+            }
         }
 
         // Go through all the meta classes and create a tab for each of them
@@ -107,7 +110,7 @@ public class CollectionFormFromData : ICollectionFormFactory
                 $"[{typeof(CollectionFormFromData)}.CreateCollectionFormForCollection]: Create ListForm for metaclass: " +
                 NamedElementMethods.GetName(groupedMetaclass));
 
-            var tableForm = FormCreation.CreateTableFormForMetaClass(
+            var tableForm = FormCreation.CreateTableForm(
                                     new TableFormFactoryParameter
                                     {
                                         MetaClass = groupedMetaclass
@@ -115,24 +118,21 @@ public class CollectionFormFromData : ICollectionFormFactory
                                     context.Clone()
                                         .SetReadOnly(true)
                                         .SetIsForTableForm(true))
-                                .Form ??
+                                .Forms ??
                             throw new InvalidOperationException("No form was found");
 
-            // Sets the dataurl of the table form
-            var dataUrl = GetUrlOfTableForm(extent, tableForm);
-            tableForm.set(_Forms._TableForm.dataUrl, dataUrl);
-            
-            /*
-            if (context.CreateByMetaClass)
+            foreach (var innerForm in tableForm)
             {
-                foreach (var element in @group)
+                if (extent != null)
                 {
-                    AddFieldsToFormByPropertyValues(form, element, context, cache);
+                    // Sets the dataurl of the table form
+                    var dataUrl = GetUrlOfTableForm(extent, innerForm);
+                    innerForm.set(_Forms._TableForm.dataUrl, dataUrl);
                 }
-            }*/
 
-            tableForm.set(_Forms._TableForm.metaClass, groupedMetaclass);
-            tabs.Add(tableForm);
+                innerForm.set(_Forms._TableForm.metaClass, groupedMetaclass);
+                tabs.Add(innerForm);
+            }
         }
 
         result.Form.set(_Forms._CollectionForm.tab, tabs);
@@ -161,7 +161,7 @@ public class CollectionFormFromData : ICollectionFormFactory
     public void CreateCollectionFormForMetaClass(
         IElement metaClass,
         FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultOneForm result)
     {
         result.Form ??= context.Global.Factory.create(_Forms.TheOne.__CollectionForm);
         result.Form.set(_Forms._ObjectForm.name, $"ListForm for '{NamedElementMethods.GetName(metaClass)}'");
@@ -247,19 +247,23 @@ public class CollectionFormFromData : ICollectionFormFactory
             {
                 // Now try to figure out the metaclass
 
-                var tableForm = FormCreation.CreateTableFormForMetaClass(
+                var tableForm = FormCreation.CreateTableForm(
                                     new TableFormFactoryParameter
                                     {
                                         MetaClass = propertyType
                                     },
-                                    context.Clone()).Form
+                                    context.Clone()).Forms
                                 ?? throw new InvalidOperationException("No form was found");
 
-                tableForm.set(
-                    _Forms._TableForm.title,
-                    "Property: packagedElements of type " + NamedElementMethods.GetName(propertyType));
+                foreach (var form in tableForm)
+                {
+                    form.set(
+                        _Forms._TableForm.title,
+                        "Property: packagedElements of type " + NamedElementMethods.GetName(propertyType));
+                    tabs.Add(form);
+                }
 
-                tabs.Add(tableForm);
+                
             }
         }
 

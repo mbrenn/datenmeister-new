@@ -38,21 +38,22 @@ public static class ActionButtonToFormAdder
     private class RowFormModification(NewActionButtonAdderParameter parameter) : IRowFormFactory,
         ITableFormFactory
     {
-        private void ManageActionButton(RowFormFactoryParameter? factoryParameter, FormCreationContext context, FormCreationResult result)
+        private void ManageActionButton(RowFormFactoryParameter? factoryParameter, FormCreationContext context, FormCreationResultMultipleForms result)
         {
             var element = factoryParameter?.Element;
-            if (result.Form == null)
+            var form = result.Forms.FirstOrDefault();
+            if (form == null)
                 throw new InvalidOperationException("Form is null");
 
             parameter.OnCall?.Invoke(element, parameter);
 
-            if (parameter.PredicateForElement != null && parameter.PredicateForElement(element) == false)
+            if (element != null && parameter.PredicateForElement != null && parameter.PredicateForElement(element) == false)
             {
                 // Not predicated
                 return;
             }
 
-            var fields = result.Form.get<IReflectiveSequence>(_Forms._RowForm.field);
+            var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
             var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
             actionField.set(_Forms._ActionFieldData.actionName, parameter.ActionName);
             actionField.set(_Forms._ActionFieldData.title, parameter.Title);
@@ -99,13 +100,13 @@ public static class ActionButtonToFormAdder
         /// the specific instance of the requesting form context</param>
         /// <param name="result">The form to which the changes shall be applied</param>
         /// <returns>true, if the form has been modified</returns>
-        public void CreateRowForm(RowFormFactoryParameter factoryParameter, FormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(RowFormFactoryParameter factoryParameter, FormCreationContext context, FormCreationResultMultipleForms result)
         {
             ManageActionButton(factoryParameter, context, result);
         }
 
         public void CreateTableForm(TableFormFactoryParameter factoryParameter, FormCreationContext context,
-            FormCreationResult result)
+            FormCreationResultMultipleForms result)
         {
             ManageActionButton(null, context, result);
         }

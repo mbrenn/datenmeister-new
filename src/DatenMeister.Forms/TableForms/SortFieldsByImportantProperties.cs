@@ -10,31 +10,32 @@ namespace DatenMeister.Forms.TableForms;
 public class SortFieldsByImportantProperties : ITableFormFactory
 {
     public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultMultipleForms result)
     {
-        var form = result.Form;
-
-        var fields = form?.getOrDefault<IReflectiveSequence>(_Forms._TableForm.field);
-        if (fields == null) 
-            return;
-        
-        var fieldsAsList = fields.OfType<IElement>().ToList();
-
-        // Check if the name is within the list, if yes, push it to the front
-        var fieldName = fieldsAsList.FirstOrDefault(x =>
-            x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) ==
-            _UML._CommonStructure._NamedElement.name);
-
-        if (fieldName != null)
+        foreach (var form in result.Forms)
         {
-            fields.remove(fieldName);
-            fields.add(0, fieldName);
+            var fields = form?.getOrDefault<IReflectiveSequence>(_Forms._TableForm.field);
+            if (fields == null)
+                return;
 
-            result.AddToFormCreationProtocol(
-                "[FormCreator.SortFieldsByImportantProperties]: Field 'name' was put up-front");
+            var fieldsAsList = fields.OfType<IElement>().ToList();
+
+            // Check if the name is within the list, if yes, push it to the front
+            var fieldName = fieldsAsList.FirstOrDefault(x =>
+                x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) ==
+                _UML._CommonStructure._NamedElement.name);
+
+            if (fieldName != null)
+            {
+                fields.remove(fieldName);
+                fields.add(0, fieldName);
+
+                result.AddToFormCreationProtocol(
+                    "[FormCreator.SortFieldsByImportantProperties]: Field 'name' was put up-front");
+            }
+
+            // Performs a resetting of all properties
+            // form.set(_DatenMeister._Forms._TableForm.field, fieldsAsList);
         }
-
-        // Performs a resetting of all properties
-        // form.set(_DatenMeister._Forms._TableForm.field, fieldsAsList);
     }
 }

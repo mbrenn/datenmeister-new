@@ -9,9 +9,13 @@ namespace DatenMeister.Forms.TableForms;
 public class EmptyTableFormFactory : ITableFormFactory
 {
     public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultMultipleForms result)
     {
-        result.Form ??= context.Global.Factory.create(_Forms.TheOne.__TableForm);
+        if (!result.Forms.Any())
+        {
+            result.Forms = [context.Global.Factory.create(_Forms.TheOne.__TableForm)];
+        }
+
         result.IsManaged = true;
         
         result.AddToFormCreationProtocol(

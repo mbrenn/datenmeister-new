@@ -22,7 +22,7 @@ public class ExtentTypeFormModification
     public class IncludeJumpToExtentButtonModification : ICollectionFormFactory
     {
         public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
-            FormCreationResult result)
+            FormCreationResultOneForm result)
         {
             if (result.Form == null)
             {
@@ -43,7 +43,10 @@ public class ExtentTypeFormModification
 
     public class IncludeExtentTypesForTableFormExtent(ExtentSettings extentSettings) : IRowFormFactory
     {
-        public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(
+            RowFormFactoryParameter parameter,
+            FormCreationContext context,
+            FormCreationResultMultipleForms result)
         {
             var metaClass = parameter.MetaClass;
             
@@ -52,44 +55,42 @@ public class ExtentTypeFormModification
                 return;
             }
 
-            if (result.Form == null)
+            foreach (var form in result.Forms)
             {
-                throw new InvalidOperationException("Form is null");
-            }
-            
-            // Got it, look for the field
-            var field =
-                FormMethods.GetField(
-                    result.Form,
-                    _Management._Extent.extentType,
-                    _Forms.TheOne.__CheckboxListTaggingFieldData);
+                // Got it, look for the field
+                var field =
+                    FormMethods.GetField(
+                        form,
+                        _Management._Extent.extentType,
+                        _Forms.TheOne.__CheckboxListTaggingFieldData);
 
-            if (field != null)
-            {
-                var values =
-                    field.get<IReflectiveCollection>(_Forms._CheckboxListTaggingFieldData.values);
-                var valuesAsList = values
-                    .OfType<IElement>()
-                    .ToList();
-
-                var extentTypes = extentSettings.extentTypeSettings.Select(x => x.name).ToList();
-                var factory = new MofFactory(field);
-                foreach (var extentType in extentTypes)
+                if (field != null)
                 {
-                    if (valuesAsList.Any(x =>
-                            x.getOrDefault<string>(_Forms._ValuePair.value) == extentType))
+                    var values =
+                        field.get<IReflectiveCollection>(_Forms._CheckboxListTaggingFieldData.values);
+                    var valuesAsList = values
+                        .OfType<IElement>()
+                        .ToList();
+
+                    var extentTypes = extentSettings.extentTypeSettings.Select(x => x.name).ToList();
+                    var factory = new MofFactory(field);
+                    foreach (var extentType in extentTypes)
                     {
-                        // Already added, otherwise add the value pair
-                        continue;
+                        if (valuesAsList.Any(x =>
+                                x.getOrDefault<string>(_Forms._ValuePair.value) == extentType))
+                        {
+                            // Already added, otherwise add the value pair
+                            continue;
+                        }
+
+                        var valuePair = factory.create(_Forms.TheOne.__ValuePair);
+                        valuePair.set(_Forms._ValuePair.name, extentType);
+                        valuePair.set(_Forms._ValuePair.value, extentType);
+                        values.add(valuePair);
                     }
 
-                    var valuePair = factory.create(_Forms.TheOne.__ValuePair);
-                    valuePair.set(_Forms._ValuePair.name, extentType);
-                    valuePair.set(_Forms._ValuePair.value, extentType);
-                    values.add(valuePair);
+                    result.IsManaged = true;
                 }
-                
-                result.IsManaged = true;
             }
         }
     }
@@ -109,14 +110,14 @@ public class ExtentTypeFormModification
         : ICollectionFormFactory
     {
         public void CreateCollectionForm(
-            CollectionFormFactoryParameter parameter, FormCreationContext context,
-            FormCreationResult result)
+            CollectionFormFactoryParameter parameter,
+            FormCreationContext context,
+            FormCreationResultOneForm result)
         {
             if (parameter.Collection == null)
                 return;
             
-            var collection = parameter.Collection;
-            var extentTypes = collection.GetUriExtentOf()?.GetConfiguration().ExtentTypes;
+            var extentTypes = parameter.ExtentTypes;
             if (extentTypes == null)
                 return;
             
@@ -179,11 +180,6 @@ public class ExtentTypeFormModification
 
             result.IsManaged = true;
         }
-
-        public void CreateCollectionFormForMetaClass(IElement metaClass, FormCreationContext context,
-            FormCreationResult result)
-        {
-        }
     }
 
     /**
@@ -194,13 +190,16 @@ public class ExtentTypeFormModification
         IWorkspaceLogic workspaceLogic,
         ExtentSettings extentSettings) : IObjectFormFactory
     {
-        public void CreateObjectForm(ObjectFormFactoryParameter paramete, FormCreationContext context, FormCreationResult result)
+        public void CreateObjectForm(
+            ObjectFormFactoryParameter parameter,
+            FormCreationContext context, 
+            FormCreationResultOneForm result)
         {
-            var element = paramete.Element;
+            var element = parameter.Element;
             if (element == null)
                 return;
             
-            var extentTypes = element.GetUriExtentOf()?.GetConfiguration().ExtentTypes;
+            var extentTypes = parameter.ExtentTypes;
 
             var changed = false;
             if (extentTypes == null)
@@ -260,12 +259,6 @@ public class ExtentTypeFormModification
             }
 
             result.IsManaged = changed;
-        }
-
-        public void CreateObjectFormForMetaClass(IElement? metaClass, FormCreationContext context,
-            FormCreationResult result)
-        {
-            throw new NotImplementedException();
         }
     }
 }

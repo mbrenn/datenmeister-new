@@ -9,5 +9,5 @@ public class RowFormFactoryParameter : FormFactoryParameterBase
 
 public interface IRowFormFactory
 {
-    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result);
+    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result);
 }

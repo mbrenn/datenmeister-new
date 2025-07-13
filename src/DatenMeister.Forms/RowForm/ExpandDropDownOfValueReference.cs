@@ -9,12 +9,16 @@ namespace DatenMeister.Forms.RowForm;
 
 public class ExpandDropDownOfValueReference : IRowFormFactory, ITableFormFactory
 {
-    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter, 
+        FormCreationContext context,
+        FormCreationResultMultipleForms result)
     {
         ExpandDropDownValuesOfValueReference(context, result);
     }
 
-    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateTableForm(TableFormFactoryParameter parameter, 
+        FormCreationContext context, 
+        FormCreationResultMultipleForms result)
     {
         ExpandDropDownValuesOfValueReference(context, result);
     }
@@ -24,37 +28,37 @@ public class ExpandDropDownOfValueReference : IRowFormFactory, ITableFormFactory
     ///     The DropDownField supports a reference field which is not resolved by every Form Client.
     ///     So, the DropDownField can already be resolved on server side
     /// </summary>
-    public static void ExpandDropDownValuesOfValueReference(FormCreationContext context, 
-        FormCreationResult result)
+    public static void ExpandDropDownValuesOfValueReference(
+        FormCreationContext context, 
+        FormCreationResultMultipleForms result)
     {
-        var listOrDetailForm = result.Form;
-        if (listOrDetailForm == null)
-            return;
-        
-        var factory = context.Global.Factory;
-        var fields = listOrDetailForm.get<IReflectiveCollection>(_Forms._TableForm.field);
-        foreach (var field in fields.OfType<IElement>())
+        foreach (var listOrDetailForm in result.Forms)
         {
-            if (field.getMetaClass()?.@equals(_Forms.TheOne.__DropDownFieldData) != true) continue;
-
-            var byEnumeration =
-                field.getOrDefault<IElement>(_Forms._DropDownFieldData.valuesByEnumeration);
-            var byValues =
-                field.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
-            if (byValues == null && byEnumeration != null)
+            var factory = context.Global.Factory;
+            var fields = listOrDetailForm.get<IReflectiveCollection>(_Forms._TableForm.field);
+            foreach (var field in fields.OfType<IElement>())
             {
-                var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
-                foreach (var value in enumeration)
-                {
-                    var element = factory.create(_Forms.TheOne.__ValuePair);
-                    element.set(_Forms._ValuePair.name, value);
-                    element.set(_Forms._ValuePair.value, value);
-                    field.AddCollectionItem(_Forms._DropDownFieldData.values, element);
-                }
+                if (field.getMetaClass()?.@equals(_Forms.TheOne.__DropDownFieldData) != true) continue;
 
-                result.IsManaged = true;
-                result.AddToFormCreationProtocol(
-                    $"[ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
+                var byEnumeration =
+                    field.getOrDefault<IElement>(_Forms._DropDownFieldData.valuesByEnumeration);
+                var byValues =
+                    field.getOrDefault<IReflectiveCollection>(_Forms._DropDownFieldData.values);
+                if (byValues == null && byEnumeration != null)
+                {
+                    var enumeration = EnumerationMethods.GetEnumValues(byEnumeration);
+                    foreach (var value in enumeration)
+                    {
+                        var element = factory.create(_Forms.TheOne.__ValuePair);
+                        element.set(_Forms._ValuePair.name, value);
+                        element.set(_Forms._ValuePair.value, value);
+                        field.AddCollectionItem(_Forms._DropDownFieldData.values, element);
+                    }
+
+                    result.IsManaged = true;
+                    result.AddToFormCreationProtocol(
+                        $"[ExpandDropDownValuesOfValueReference] Expanded DropDown-Values for {NamedElementMethods.GetName(field)}");
+                }
             }
         }
     }

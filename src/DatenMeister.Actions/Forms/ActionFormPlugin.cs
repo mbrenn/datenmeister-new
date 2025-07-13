@@ -46,7 +46,7 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     /// </summary>
     public class ActionFormModificationPlugin : IRowFormFactory
     {
-        public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+        public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result)
         {
             var metaClass = parameter.MetaClass;
             if (metaClass == null)
@@ -55,15 +55,16 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
             var isAction = ClassifierMethods.IsSpecializedClassifierOf(
                 metaClass, _Actions.TheOne.__Action);
 
-            if (result.Form == null)
+            var form = result.Forms.FirstOrDefault();
+            if (form == null)
             {
-                throw new InvalidOperationException("Form is null");
+                throw new InvalidOperationException("No rowform has been created");
             }
 
             if (isAction)
             {
                 // Fitting, create the field
-                var fields = result.Form.get<IReflectiveSequence>(_Forms._RowForm.field);
+                var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
                 var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
                 actionField.set(_Forms._ActionFieldData.actionName, "Action.Execute");
                 actionField.set(_Forms._ActionFieldData.title, "Execute Action");

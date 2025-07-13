@@ -78,6 +78,96 @@ public static class FieldCreationHelper
         return wasInMetaClass;
     }
     
+    
+
+        /// <summary>
+        ///     Adds the fields to the properties as given in the object itself.
+        ///     The properties are retrieved by reading the available property types
+        ///     from the object itself via the interface IObjectAllProperties
+        /// </summary>
+        /// <param name="form">Form to be extended</param>
+        /// <param name="item">Item to be evaluated</param>
+        /// <param name="context">Context in which the form is created</param>
+        public static void AddFieldsToFormByPropertyValues(
+            IObject form,
+            object item,
+            FormCreationContext context)
+        {
+            var cache = context.LocalScopeStorage.Get<FormCreatorCache>();
+            if (item is not IObjectAllProperties itemAsAllProperties)
+                // The object does not allow the retrieving of properties
+                return;
+
+            if (item is not IObject itemAsObject)
+                // The object cannot be converted and FormCreator does not support
+                // non MOF Objects
+                return;
+
+            var isReadOnly = context.IsReadOnly;
+            var factory = context.Global.Factory;
+
+            // Creates the form out of the properties of the item
+            var properties = itemAsAllProperties.getPropertiesBeingSet();
+
+            var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
+
+            foreach (var propertyName in properties
+                         .Where(property => !cache.CoveredPropertyNames.Contains(property)))
+            {
+                cache.CoveredPropertyNames.Add(propertyName);
+                if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
+                    // Skip the property name, when we would like to have focus on certain property names
+                    continue;
+
+                // Checks, whether the field is already existing
+                var column = form
+                    .get<IReflectiveCollection>(_Forms._RowForm.field)
+                    .OfType<IObject>()
+                    .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == propertyName);
+
+                var propertyValue = itemAsObject.getOrDefault<object>(propertyName);
+
+                if (column == null)
+                {
+                    // Guess by content, which type of field shall be created
+                    var propertyType = propertyValue?.GetType();
+                    if (propertyType == null)
+                        // No propertyType ==> propertyValue is null and nothing is generated
+                        continue;
+
+                    if (DotNetHelper.IsEnumeration(propertyType))
+                    {
+                        column = factory.create(_Forms.TheOne.__SubElementFieldData);
+                    }
+                    else if (propertyValue is IObject)
+                    {
+                        column = factory.create(_Forms.TheOne.__ReferenceFieldData);
+                        column.set(_Forms._ReferenceFieldData.isSelectionInline, false);
+                    }
+                    else
+                    {
+                        column = factory.create(_Forms.TheOne.__TextFieldData);
+                    }
+
+                    column.set(_Forms._FieldData.name, propertyName);
+                    column.set(_Forms._FieldData.title, propertyName);
+                    column.set(_Forms._FieldData.isReadOnly, isReadOnly);
+
+                    form.get<IReflectiveCollection>(_Forms._RowForm.field).add(column);
+
+                    FormCreationResult.AddToFormCreationProtocol(
+                        form,
+                        "[FormCreator.AddFieldsToFormByPropertyValues]: " + NamedElementMethods.GetName(column));
+                }
+
+                // Makes the field to an enumeration, if explicitly requested or the type behind is an enumeration
+                column.set(
+                    _Forms._FieldData.isEnumeration,
+                    column.getOrDefault<bool>(_Forms._FieldData.isEnumeration) |
+                    DotNetHelper.IsEnumeration(propertyValue?.GetType()));
+            }
+        }
+    
     public class P
     {
         public string PropertyName { get; set; } = string.Empty;

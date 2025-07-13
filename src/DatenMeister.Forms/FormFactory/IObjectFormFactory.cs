@@ -16,6 +16,8 @@ public interface IObjectFormFactory
     /// <param name="context">Configuration to be used</param>
     /// <param name="result">The result to which the element will be added</param>
     /// <returns>The instance of the extent form</returns>
-    void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result);
+    void CreateObjectForm(
+        ObjectFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm result);
 }

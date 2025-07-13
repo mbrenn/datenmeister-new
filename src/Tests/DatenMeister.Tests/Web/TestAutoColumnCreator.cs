@@ -8,12 +8,13 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.FormFinder;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web;
 
 [TestFixture]
-public class TestAutoColumnCreator1
+public class TestAutoColumnCreator
 {
     [Test]
     public void TestSimpleAutoColumn()
@@ -39,6 +40,8 @@ public class TestAutoColumnCreator1
         // Execute the stuff
         var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
+        context.RemoveFormFinder();
+        context.Global.Factory = factory;
 
         var result = FormCreation.CreateCollectionForm(
             new CollectionFormFactoryParameter
@@ -99,9 +102,11 @@ public class TestAutoColumnCreator1
         
         var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
         var context = formCreationFactory.Create();
+        context.RemoveFormFinder();
+        context.Global.Factory = factory;
         
         var result = FormCreation.CreateCollectionForm(
-            new CollectionFormFactoryParameter()
+            new CollectionFormFactoryParameter
             {
                 Collection = extent.elements(),
             }, context).Form;
@@ -110,6 +115,8 @@ public class TestAutoColumnCreator1
         var tab = result!
             .getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
+        
+        Assert.That(tab, Is.Not.Null);
 
         Assert.That(tab
                 .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
@@ -138,7 +145,6 @@ public class TestAutoColumnCreator1
             .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
             .OfType<IElement>()
             .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == "other");
-
 
         Assert.That(firstColumn, Is.Not.Null);
         Assert.That(secondColumn, Is.Not.Null);

@@ -48,7 +48,7 @@ public class PackageFormModificationPlugin : IObjectFormFactory
         }
     }
 
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResultOneForm result)
     {
         var element = parameter.Element;
         if (element == null)
@@ -62,7 +62,8 @@ public class PackageFormModificationPlugin : IObjectFormFactory
         if ((element as IElement)?.metaclass?.Equals(_CommonTypes.TheOne.Default.__Package) == true)
         {
             var tabPackagedElement =
-                FormMethods.GetTableFormForPropertyName(result.Form,
+                FormMethods.GetTableFormForPropertyName(
+                    result.Form,
                     _CommonTypes._Default._Package.packagedElement);
 
             if (tabPackagedElement != null)

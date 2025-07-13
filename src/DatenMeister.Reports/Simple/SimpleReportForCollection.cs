@@ -72,20 +72,20 @@ public class SimpleReportForCollection(FormCreationContext formContext, ItemForm
 
                 if (metaClass.Key == null)
                 {
-                    foundForm = FormCreation.CreateTableFormForMetaClass(
+                    foundForm = FormCreation.CreateTableForm(
                         new TableFormFactoryParameter()
                         {
                             Collection = collection
                         },
-                        formContext).Form;
+                        formContext).Forms.FirstOrDefault();
                 }
                 else
                 {
-                    foundForm = FormCreation.CreateTableFormForMetaClass(
+                    foundForm = FormCreation.CreateTableForm(
                         new TableFormFactoryParameter()
                         {
                             MetaClass = metaClass.Key
-                        }, formContext).Form;
+                        }, formContext).Forms.FirstOrDefault();
                 }
                 
                 if(foundForm == null)
@@ -100,11 +100,11 @@ public class SimpleReportForCollection(FormCreationContext formContext, ItemForm
         {
             if (foundForm == null)
             {
-                foundForm = FormCreation.CreateTableFormForMetaClass(
+                foundForm = FormCreation.CreateTableForm(
                     new TableFormFactoryParameter()
                     {
                         Collection = elements
-                    }, formContext).Form ?? throw new InvalidOperationException("foundForm is null");
+                    }, formContext).Forms.FirstOrDefault() ?? throw new InvalidOperationException("foundForm is null");
                 
                 AddFullNameColumnIfNecessary(foundForm);
             }

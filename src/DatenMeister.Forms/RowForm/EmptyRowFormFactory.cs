@@ -5,9 +5,15 @@ namespace DatenMeister.Forms.RowForm;
 
 public class EmptyRowFormFactory : IRowFormFactory
 {
-    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter,
+        FormCreationContext context, 
+        FormCreationResultMultipleForms result)
     {
-        result.Form ??= context.Global.Factory.create(_Forms.TheOne.__RowForm);
+        if (!result.Forms.Any())
+        {
+            result.Forms = [context.Global.Factory.create(_Forms.TheOne.__RowForm)];
+        }
+
         result.IsManaged = true;
     }
 }

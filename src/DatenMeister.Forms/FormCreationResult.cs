@@ -9,7 +9,7 @@ namespace DatenMeister.Forms;
 /// It contains the created form, but also additional information whether
 /// the factory has managed the request or finalized the request
 /// </summary>
-public class FormCreationResult
+public abstract class FormCreationResult
 {
     /// <summary>
     /// Gets or sets a value whether the main content is created out of the request.
@@ -30,26 +30,10 @@ public class FormCreationResult
     /// Gets or sets the information whether the request is finalized
     /// </summary>
     public bool IsFinalized { get; set; }
-    
-    /// <summary>
-    /// Gets or sets the result of the activity 
-    /// </summary>
-    public IElement? Form { get; set; }
-    
-    /// <summary>
-    ///     Adds a certain text to the form creation protocol.
-    ///     This protocol is used to allow more easy debugging of the form creation process.
-    ///     Otherwise, the form is 'just' there and nobody knows how it was created.
-    /// </summary>
-    /// <param name="form">For to which the message shall be addedparam</param>
-    /// <param name="message">Message it self that shall be added</param>
-    public void AddToFormCreationProtocol(string message)
-    {
-        if (Form == null) return;
-        AddToFormCreationProtocol(Form, message);
-    }
 
-    public static void AddToFormCreationProtocol(IElement form, string message)
+    public abstract void AddToFormCreationProtocol(string message);
+
+    public static void AddToFormCreationProtocol(IObject form, string message)
     {
         lock (form)
         {   
@@ -63,6 +47,42 @@ public class FormCreationResult
                 currentMessage = message;
 
             form.set(_Forms._Form.creationProtocol, currentMessage);
+        }
+    }
+}
+
+public class FormCreationResultOneForm : FormCreationResult
+{
+    /// <summary>
+    /// Gets or sets the result of the activity 
+    /// </summary>
+    public IElement? Form { get; set; }
+    
+    /// <summary>
+    ///     Adds a certain text to the form creation protocol.
+    ///     This protocol is used to allow more easy debugging of the form creation process.
+    ///     Otherwise, the form is 'just' there and nobody knows how it was created.
+    /// </summary>
+    /// <param name="message">Message it self that shall be added</param>
+    public override void AddToFormCreationProtocol(string message)
+    {
+        if (Form == null) return;
+        FormCreationResult.AddToFormCreationProtocol(Form, message);
+    }
+}
+
+public class FormCreationResultMultipleForms : FormCreationResult
+{
+    /// <summary>
+    /// Gets or sets the result of the activity 
+    /// </summary>
+    public IEnumerable<IElement> Forms { get; set; } = [];
+    
+    public override void AddToFormCreationProtocol(string message)
+    {
+        foreach (var form in Forms)
+        {
+            FormCreationResult.AddToFormCreationProtocol(form, message);
         }
     }
 }

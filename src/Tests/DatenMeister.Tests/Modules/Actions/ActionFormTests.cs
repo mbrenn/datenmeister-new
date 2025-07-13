@@ -29,9 +29,9 @@ public class ActionFormTests
             }
         };
 
-        var result = new FormCreationResult
+        var result = new FormCreationResultMultipleForms
         {
-            Form = form
+            Forms = [form]
         };
 
         // Test 1 

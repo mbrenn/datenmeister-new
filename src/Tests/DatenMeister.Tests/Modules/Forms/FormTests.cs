@@ -20,12 +20,35 @@ namespace DatenMeister.Tests.Modules.Forms;
 public class FormTests
 {
     [Test]
-    public void TestProtocol()
+    public void TestProtocolOneForm()
     {
         var element = InMemoryObject.CreateEmpty();
-        var formContext = new FormCreationResult
+        var formContext = new FormCreationResultOneForm()
         {
             Form = element
+        };
+            
+        formContext.AddToFormCreationProtocol("test");
+        Assert.That(
+            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("test") == true,
+            Is.True);
+            
+        formContext.AddToFormCreationProtocol("hallo");
+        Assert.That(
+            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("test") == true,
+            Is.True);
+        Assert.That(
+            element.getOrDefault<string>(_Forms._Form.creationProtocol)?.Contains("hallo") == true,
+            Is.True);
+    }
+    
+    [Test]
+    public void TestProtocolMultipleForm()
+    {
+        var element = InMemoryObject.CreateEmpty();
+        var formContext = new FormCreationResultMultipleForms()
+        {
+            Forms = [element]
         };
             
         formContext.AddToFormCreationProtocol("test");
@@ -75,9 +98,9 @@ public class FormTests
 
         form.set(_Forms._RowForm.field, new[] {field1, field2, field3, field4});
 
-        var result = new FormCreationResult
+        var result = new FormCreationResultMultipleForms
         {
-            Form = form,
+            Forms = [form],
             IsMainContentCreated = true
         };
         
@@ -92,16 +115,22 @@ public class FormTests
         Assert.That(context.LocalScopeStorage.Get<ValidationResult>().IsInvalid, Is.True);
         context.LocalScopeStorage.Remove<ValidationResult>();
         
+        var resultSingle = new FormCreationResultOneForm()
+        {
+            Form = form,
+            IsMainContentCreated = true
+        };
+        
         var newForm = factory.create(_Forms.TheOne.__CollectionForm);
         newForm.set(_Forms._CollectionForm.tab, new[] {form});
-        result.Form = newForm;
-        validateObjectOrCollectionForm.CreateCollectionForm(new CollectionFormFactoryParameter(), context, result);
+        resultSingle.Form = newForm;
+        validateObjectOrCollectionForm.CreateCollectionForm(new CollectionFormFactoryParameter(), context, resultSingle);
         Assert.That(context.LocalScopeStorage.Get<ValidationResult>().IsInvalid, Is.True);
         context.LocalScopeStorage.Remove<ValidationResult>();
 
         form.set(_Forms._RowForm.field, new[] {field1, field2, field3, field4});
         
-        validateObjectOrCollectionForm.CreateCollectionForm(new CollectionFormFactoryParameter(), context, result);
+        validateObjectOrCollectionForm.CreateCollectionForm(new CollectionFormFactoryParameter(), context, resultSingle);
         Assert.That(context.LocalScopeStorage.Get<ValidationResult>().IsInvalid, Is.False);
         context.LocalScopeStorage.Remove<ValidationResult>();    
     }
@@ -137,9 +166,9 @@ public class FormTests
             Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
         };
         
-        var result = new FormCreationResult
+        var result = new FormCreationResultMultipleForms()
         {
-            Form = form,
+            Forms = [form],
             IsMainContentCreated = true
         };
 
@@ -184,9 +213,9 @@ public class FormTests
             Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
         };
         
-        var result = new FormCreationResult
+        var result = new FormCreationResultMultipleForms()
         {
-            Form = form,
+            Forms = [form],
             IsMainContentCreated = true
         };
 

@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.FormFinder;
 
 namespace DatenMeister.Forms;
 
@@ -45,7 +46,7 @@ public class FormCreationContext
         /// <summary>
         /// Defines the factory to be used to create the items
         /// </summary>
-        public required IFactory Factory { get; init; }
+        public required IFactory Factory { get; set; }
     }
 
     public ScopeStorage LocalScopeStorage { get; } = new();
@@ -99,5 +100,22 @@ public class FormCreationContext
     {
         IsForTableForm = isForTableForm;
         return this;
+    }
+}
+
+
+public static class FormCreationContextHelper
+{
+    
+    /// <summary>
+    /// Removes all FormFinders from the FormCreationContext, so only Auto-Generated items are added
+    /// </summary>
+    /// <param name="context">Context to be evaluated</param>
+    public static void RemoveFormFinder(this FormCreationContext context)
+    {
+        context.Global.CollectionFormFactories.RemoveAll(x => x is FormFinderFactory);
+        context.Global.RowFormFactories.RemoveAll(x => x is FormFinderFactory);
+        context.Global.ObjectFormFactories.RemoveAll(x => x is FormFinderFactory);
+        context.Global.TableFormFactories.RemoveAll(x => x is FormFinderFactory);
     }
 }

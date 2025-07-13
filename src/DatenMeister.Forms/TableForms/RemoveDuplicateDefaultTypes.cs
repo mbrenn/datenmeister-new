@@ -8,36 +8,39 @@ namespace DatenMeister.Forms.TableForms;
 
 public class RemoveDuplicateDefaultTypes : ITableFormFactory
 {
-    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateTableForm(
+        TableFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultMultipleForms result)
     {
-        var form = result.Form;
-        if (form == null)
-            return;
-        var defaultNewTypesForElements =
-            form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
-        if (defaultNewTypesForElements == null)
+        foreach (var form in result.Forms)
         {
-            // Nothing to do, when no default types are set
-            return;
-        }
-
-        var handled = new List<IObject>();
-
-        foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
-        {
-            var metaClass = element.getOrDefault<IObject>(_Forms._DefaultTypeForNewElement.metaClass);
-            if (metaClass == null) continue;
-
-            if (handled.Any(x => x.@equals(metaClass)))
+            var defaultNewTypesForElements =
+                form.getOrDefault<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
+            if (defaultNewTypesForElements == null)
             {
-                defaultNewTypesForElements.remove(element);
+                // Nothing to do, when no default types are set
+                return;
             }
-            else
-            {
-                handled.Add(metaClass);
-            }
-        }
 
-        result.IsManaged = true;
+            var handled = new List<IObject>();
+
+            foreach (var element in defaultNewTypesForElements.OfType<IObject>().ToList())
+            {
+                var metaClass = element.getOrDefault<IObject>(_Forms._DefaultTypeForNewElement.metaClass);
+                if (metaClass == null) continue;
+
+                if (handled.Any(x => x.@equals(metaClass)))
+                {
+                    defaultNewTypesForElements.remove(element);
+                }
+                else
+                {
+                    handled.Add(metaClass);
+                }
+            }
+
+            result.IsManaged = true;
+        }
     }
 }

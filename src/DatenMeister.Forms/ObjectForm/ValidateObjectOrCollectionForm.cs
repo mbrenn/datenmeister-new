@@ -16,7 +16,7 @@ public class ValidateObjectOrCollectionForm : IObjectFormFactory, ICollectionFor
     private static readonly ILogger Logger = new ClassLogger(typeof(ValidateTableOrRowForm));
 
     private static void Validate(FormFactoryParameterBase parameter, FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultOneForm result)
     {
         var validationResult = context.LocalScopeStorage.Get<ValidationResult>(false);
         if (!result.IsMainContentCreated)
@@ -43,9 +43,9 @@ public class ValidateObjectOrCollectionForm : IObjectFormFactory, ICollectionFor
             
             foreach (var tab in tabs.OfType<IElement>())
             {
-                var formCreationResult = new FormCreationResult()
+                var formCreationResult = new FormCreationResultMultipleForms
                 {
-                    Form = tab,
+                    Forms = [tab],
                     IsMainContentCreated = true
                 };
                 
@@ -92,13 +92,14 @@ public class ValidateObjectOrCollectionForm : IObjectFormFactory, ICollectionFor
         return true;
     }
 
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context,
+        FormCreationResultOneForm result)
     {
         Validate(parameter, context, result);
     }
 
     public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultOneForm result)
     {
         Validate(parameter, context, result);
     }

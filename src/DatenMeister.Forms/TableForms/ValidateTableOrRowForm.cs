@@ -15,8 +15,10 @@ public class ValidateTableOrRowForm : ITableFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ValidateTableOrRowForm));
 
-    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result)
+    public void CreateTableForm(
+        TableFormFactoryParameter parameter, 
+        FormCreationContext context,
+        FormCreationResultMultipleForms result)
     {
         var validationResult = context.LocalScopeStorage.Get<ValidationResult>(false);
         if (!result.IsMainContentCreated)
@@ -30,17 +32,18 @@ public class ValidateTableOrRowForm : ITableFormFactory
             // We do not need to check anything, because it is already invalid
         }
 
-        var form = result.Form;
-
-        // Check that the namings are the same, this is just a static check to avoid compile errors
-        Debug.Assert(_Forms._RowForm.field == _Forms._TableForm.field);
-
-        var fields = form.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
-        if (fields != null)
+        foreach (var form in result.Forms)
         {
-            if (!ValidateFields(fields))
+            // Check that the namings are the same, this is just a static check to avoid compile errors
+            Debug.Assert(_Forms._RowForm.field == _Forms._TableForm.field);
+
+            var fields = form.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+            if (fields != null)
             {
-                validationResult.IsInvalid = true;
+                if (!ValidateFields(fields))
+                {
+                    validationResult.IsInvalid = true;
+                }
             }
         }
     }
@@ -84,9 +87,9 @@ public class ValidateTableOrRowForm : ITableFormFactory
         };
 
 
-        var result = new FormCreationResult
+        var result = new FormCreationResultMultipleForms
         {
-            Form = form,
+            Forms = [form],
             IsMainContentCreated = true
         };
 

@@ -5,9 +5,9 @@ namespace DatenMeister.Forms.ObjectForm;
 
 public class EmptyObjectFormFactory : IObjectFormFactory
 {
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResultOneForm result)
     {
-        result.Form ??= context.Global.Factory.create(_Forms.TheOne.__TableForm);
+        result.Form ??= context.Global.Factory.create(_Forms.TheOne.__ObjectForm);
 
         result.IsManaged = true;
         

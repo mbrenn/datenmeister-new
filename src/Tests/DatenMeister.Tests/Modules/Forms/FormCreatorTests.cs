@@ -35,11 +35,11 @@ public class FormCreatorTests
         var context = formCreationFactory.Create();
 
         var createdForm =
-            FormCreation.CreateTableFormForMetaClass(
-                new TableFormFactoryParameter()
+            FormCreation.CreateTableForm(
+                new TableFormFactoryParameter
                 {
                     MetaClass = zipModel.ZipCode!
-                }, context).Form;
+                }, context).Forms.FirstOrDefault();
         Assert.That(createdForm, Is.Not.Null);
         var fields =
             createdForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
@@ -237,7 +237,8 @@ public class FormCreatorTests
             FormCreation.CreateObjectForm(
                 new ObjectFormFactoryParameter
                 {
-                    Element = packageModel
+                    Element = packageModel,
+                    MetaClass = _UML.TheOne.Packages.__Package,
                 }, context).Form;
 
         Assert.That(createdForm, Is.Not.Null);
@@ -258,7 +259,7 @@ public class FormCreatorTests
         // Here, we should now have two table forms, one for the class and one for the connector
         Assert.That(tableFormsForPackagedElements.Count, Is.EqualTo(2));
 
-        // Checks that the metaclass is correctly 
+        // Checks that the metaclass is correctly set
         Assert.That(
             tableFormsForPackagedElements.Any(x =>
                 x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
@@ -296,7 +297,7 @@ public class FormCreatorTests
         var listForm = FormMethods.GetTableForms(createdForm!).FirstOrDefault(
             x =>
                 x.getOrDefault<IElement>(_Forms._TableForm.metaClass)
-                    ?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true);
+                    ?.Equals(_UML.TheOne.Packages.__Package) == true);
         Assert.That(listForm, Is.Not.Null);
 
         var defaultTypesForNewElements =
@@ -304,7 +305,7 @@ public class FormCreatorTests
         Assert.That(
             defaultTypesForNewElements.OfType<IElement>().Any(
                 x => x.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement.metaClass)
-                    .Equals(_UML.TheOne.StructuredClassifiers.__Class) == true),
+                    .Equals(_UML.TheOne.Packages.__Package) == true),
             Is.True);
     }
 }

@@ -60,6 +60,7 @@ public class FormCreationContextFactory
         // Build up the ObjectForm Queue
         context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory());
         context.Global.ObjectFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+        context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass());
         context.Global.ObjectFormFactories.Add(new ObjectFormFromData());
         context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm());
         

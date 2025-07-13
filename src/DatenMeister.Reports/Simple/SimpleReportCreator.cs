@@ -97,7 +97,7 @@ public class SimpleReportCreator
                                          Element = rootElement
                                      },
                                      _formContextFactory.Create())
-                                 .Form
+                                 .Forms.FirstOrDefault()
                              ?? throw new InvalidOperationException("detailForm is null");
 
             _itemFormatter.FormatItem(rootElement, detailForm);

@@ -44,7 +44,6 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
                 actionLogic.ScopeStorage);
             var context = factory.Create();
 
-            IElement form;
             switch (creationMode)
             {
                 case CreateFormByMetaclassCreationMode.Object:
@@ -73,7 +72,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateObjectForm(bool includeFormAssociation)
             {
-                form = FormCreation.CreateObjectForm(
+                var form = FormCreation.CreateObjectForm(
                            new ObjectFormFactoryParameter
                            {
                                MetaClass = metaClass
@@ -93,7 +92,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
 
             void CreateCollectionForm(bool includeFormAssociation)
             {
-                form = FormCreation.CreateCollectionForm(
+                var form = FormCreation.CreateCollectionForm(
                            new CollectionFormFactoryParameter
                            {
                                MetaClass = metaClass

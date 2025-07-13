@@ -18,5 +18,5 @@ public interface ICollectionFormFactory
     void CreateCollectionForm(
         CollectionFormFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult result);
+        FormCreationResultOneForm result);
 }

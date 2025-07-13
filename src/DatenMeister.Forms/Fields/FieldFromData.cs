@@ -53,7 +53,10 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
 
     private Workspace? _uriResolver;
     
-    public void CreateField(FieldFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateField(
+        FieldFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm result)
     {
         // We do not need to create the field twice
         if (result.IsMainContentCreated)
@@ -143,13 +146,13 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
                     {
                         var clonedContext = context.Clone();
                         var enumerationListForm =
-                            FormCreation.CreateTableFormForMetaClass(
+                            FormCreation.CreateTableForm(
                                 new TableFormFactoryParameter
                                 {
                                     Extent = parameter.Extent,
                                     ExtentTypes = parameter.ExtentTypes,
                                     MetaClass = propertyType
-                                }, clonedContext).Form;
+                                }, clonedContext).Forms.FirstOrDefault();
 
                         if (enumerationListForm != null)
                             elementsField.set(_Forms._SubElementFieldData.form, enumerationListForm);

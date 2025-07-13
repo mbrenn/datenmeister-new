@@ -14,25 +14,26 @@ namespace DatenMeister.Forms.TableForms;
 public class AddDefaultTypeForMetaClassOfForm : ITableFormFactory
 {
     public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultMultipleForms result)
     {
-        var form = result.Form;
-        if (form == null)
-            return;
+        foreach (var form in result.Forms)
+        {
+            var defaultType = form.getOrDefault<IElement>(_Forms._TableForm.metaClass);
+            if (defaultType == null)
+                return;
 
-        var defaultType = form.getOrDefault<IElement>(_Forms._TableForm.metaClass);
-        if (defaultType == null)
-            return;
-
-        AddDefaultTypeIfNotExists(result, defaultType);
+            AddDefaultTypeIfNotExists(result, form, defaultType);
+        }
     }
 
-    public static void AddDefaultTypeIfNotExists(FormCreationResult result, IElement defaultType)
+    public static void AddDefaultTypeIfNotExists(FormCreationResultOneForm result, IElement defaultType)
     {
-        var form = result.Form;
-        if (form == null)
-            return;
-        
+        AddDefaultTypeIfNotExists(result, result.Form, defaultType);
+    }
+    
+    public static void AddDefaultTypeIfNotExists(FormCreationResult result, IElement form,
+        IElement defaultType)
+    {
         var currentDefaultPackages =
             form.get<IReflectiveCollection>(_Forms._TableForm.defaultTypesForNewElements);
         if (currentDefaultPackages.OfType<IElement>().Any(x =>

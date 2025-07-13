@@ -15,14 +15,14 @@ namespace DatenMeister.Modules.ZipCodeExample.Forms;
 /// </summary>
 public class ZipCodeFormModificationPlugin : IRowFormFactory
 {
-    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result)
     {
+            var form = result.Forms.FirstOrDefault();
         var metaClass = parameter.MetaClass;
-        if (metaClass != null && metaClass.equals(_Management.TheOne.__Workspace) == true)
+        if (metaClass != null && metaClass.equals(_Management.TheOne.__Workspace) == true && form != null)
         {
             // Ok, I got it
-
-            var fields = result.Form.get<IReflectiveSequence>(_Forms._RowForm.field);
+            var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
             var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
             actionField.set(_Forms._ActionFieldData.actionName, "ZipExample.CreateExample");
             actionField.set(_Forms._ActionFieldData.title, "Create Zip Model");

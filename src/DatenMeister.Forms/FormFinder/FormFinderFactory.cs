@@ -15,8 +15,10 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : ICollectionForm
         return new FormFinder(_formMethods);
     }
 
-    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result)
+    public void CreateCollectionForm(
+        CollectionFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm result)
     {
         var findQuery =
             new FindFormQuery
@@ -39,13 +41,25 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : ICollectionForm
 
         if (foundForm != null)
         {
-            result.Form = foundForm;
+            if (result is FormCreationResultOneForm oneForm)
+            {   
+                oneForm.Form = foundForm;
+            }
+
+            if (result is FormCreationResultMultipleForms multipleForms)
+            {
+                multipleForms.Forms = [foundForm];
+            }
+            
             result.IsMainContentCreated = true;
             result.IsManaged = true;
         }
     }
 
-    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateObjectForm(
+        ObjectFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultOneForm result)
     {
         var findQuery =
             new FindFormQuery
@@ -58,7 +72,10 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : ICollectionForm
         Find(result, findQuery);
     }
 
-    public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateRowForm(
+        RowFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultMultipleForms result)
     {
         var findQuery =
             new FindFormQuery
@@ -71,7 +88,10 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : ICollectionForm
         Find(result, findQuery);
     }
 
-    public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context, FormCreationResult result)
+    public void CreateTableForm(
+        TableFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultMultipleForms result)
     {
         var findQuery =
             new FindFormQuery

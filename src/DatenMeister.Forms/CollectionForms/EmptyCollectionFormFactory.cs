@@ -8,8 +8,10 @@ namespace DatenMeister.Forms.CollectionForms;
 /// </summary>
 public class EmptyCollectionFormFactory : ICollectionFormFactory
 {
-    public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
-        FormCreationResult result)
+    public void CreateCollectionForm(
+        CollectionFormFactoryParameter parameter, 
+        FormCreationContext context,
+        FormCreationResultOneForm result)
     {
         result.AddToFormCreationProtocol(
             "[EmptyCollectionFormFactory] Empty object Collection-Form created");

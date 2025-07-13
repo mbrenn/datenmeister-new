@@ -23,35 +23,35 @@ public class CreateInstanceButtonsForTableForms : ITableFormFactory
     public void CreateTableForm(
         TableFormFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult result)
+        FormCreationResultMultipleForms result)
     {
         var collection = parameter.Collection;
         if (collection == null)
             return;
-        
-        if (result.Form == null)
-            throw new InvalidOperationException("Form is null");
 
-        var extent = parameter.Extent;
-        if (extent != null)
+        foreach (var form in result.Forms)
         {
-            var added = false;
-            // Adds the default types as defined in the extent
-            var defaultTypes = extent.getOrDefault<IReflectiveCollection>(ExtentConfiguration.ExtentDefaultTypes);
-            if (defaultTypes != null)
+            var extent = parameter.Extent;
+            if (extent != null)
             {
-                foreach (var defaultType in defaultTypes.OfType<IElement>())
+                var added = false;
+                // Adds the default types as defined in the extent
+                var defaultTypes = extent.getOrDefault<IReflectiveCollection>(ExtentConfiguration.ExtentDefaultTypes);
+                if (defaultTypes != null)
                 {
-                    result.AddToFormCreationProtocol(
-                        "[CreateInstanceButtonsForTableForms]: Add DefaultType per ExtentDefaultTypes property " +
-                        NamedElementMethods.GetName(defaultType));
-                        
-                    AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(result, defaultType);
-                    added = true;
-                }
-            }
+                    foreach (var defaultType in defaultTypes.OfType<IElement>())
+                    {
+                        result.AddToFormCreationProtocol(
+                            "[CreateInstanceButtonsForTableForms]: Add DefaultType per ExtentDefaultTypes property " +
+                            NamedElementMethods.GetName(defaultType));
 
-            result.IsManaged = added;
+                        AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(result, form, defaultType);
+                        added = true;
+                    }
+                }
+
+                result.IsManaged = added;
+            }
         }
     }
 }

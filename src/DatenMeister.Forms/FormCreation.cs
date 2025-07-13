@@ -10,12 +10,12 @@ public static class FormCreation
     /// </summary>
     private static readonly ILogger Logger = new ClassLogger(typeof(FormCreation)); 
     
-    public static FormCreationResult CreateCollectionForm(
+    public static FormCreationResultOneForm CreateCollectionForm(
         CollectionFormFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult? result = null)
+        FormCreationResultOneForm? result = null)
     {
-        result ??= new FormCreationResult();
+        result ??= new FormCreationResultOneForm();
         WalkThroughManager(
             context.Global.CollectionFormFactories, 
             manager => 
@@ -34,12 +34,12 @@ public static class FormCreation
     /// the element is not set, a new element will be created and returned by the
     /// function.</param>
     /// <returns>The created form result</returns>
-    public static FormCreationResult CreateObjectForm(
+    public static FormCreationResultOneForm CreateObjectForm(
         ObjectFormFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult? result = null)
+        FormCreationResultOneForm? result = null)
     {
-        result ??= new FormCreationResult();
+        result ??= new FormCreationResultOneForm();
         WalkThroughManager(
             context.Global.ObjectFormFactories,
             manager =>
@@ -55,12 +55,12 @@ public static class FormCreation
     /// <param name="context">Context to be used</param>
     /// <param name="result">Result of the creation which lead to the creation of the result</param>
     /// <returns></returns>
-    public static FormCreationResult CreateTableFormForMetaClass(
+    public static FormCreationResultMultipleForms CreateTableForm(
         TableFormFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult? result = null)
+        FormCreationResultMultipleForms? result = null)
     {
-        result ??= new FormCreationResult();
+        result ??= new FormCreationResultMultipleForms();
         WalkThroughManager(
             context.Global.TableFormFactories, 
             manager => 
@@ -70,12 +70,12 @@ public static class FormCreation
         return result;
     }
 
-    public static FormCreationResult CreateRowForm(
+    public static FormCreationResultMultipleForms CreateRowForm(
         RowFormFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult? result = null)
+        FormCreationResultMultipleForms? result = null)
     {
-        result ??= new FormCreationResult();
+        result ??= new FormCreationResultMultipleForms();
         WalkThroughManager(
             context.Global.RowFormFactories,
             manager =>
@@ -85,12 +85,12 @@ public static class FormCreation
         return result;
     }
 
-    public static FormCreationResult CreateFieldForProperty(
+    public static FormCreationResultOneForm CreateFieldForProperty(
         FieldFactoryParameter parameter,
         FormCreationContext context,
-        FormCreationResult? result = null)
+        FormCreationResultOneForm? result = null)
     {
-        result ??= new FormCreationResult();
+        result ??= new FormCreationResultOneForm();
         
         WalkThroughManager(
             context.Global.FieldFormFactories,

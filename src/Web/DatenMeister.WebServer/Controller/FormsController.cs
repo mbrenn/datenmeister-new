@@ -232,10 +232,10 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         if (workspaceId == null) throw new ArgumentNullException(nameof(workspaceId));
         if (extentUri == null) throw new ArgumentNullException(nameof(extentUri));
 
-        var formMethods = new FormMethods(_internal.WorkspaceLogic);
+        var viewModeMethods = new ViewModeMethods(_internal.WorkspaceLogic);
         var extent = _internal.WorkspaceLogic.FindExtent(workspaceId, extentUri);
 
-        var viewMode = formMethods.GetDefaultViewMode(extent);
+        var viewMode = viewModeMethods.GetDefaultViewMode(extent);
         if (viewMode == null)
         {
             throw new InvalidOperationException("No viewmode was found");

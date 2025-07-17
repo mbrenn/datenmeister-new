@@ -240,9 +240,10 @@ public class FormTests
     {
         await using var scope = await DatenMeisterTests.GetDatenMeisterScope();
         var formMethods = new FormMethods(scope.WorkspaceLogic);
+        var viewModeMethods = new ViewModeMethods(scope.WorkspaceLogic);
 
         // Check, if default view mode is in
-        var viewModes = formMethods.GetViewModes().ToList();
+        var viewModes = viewModeMethods.GetViewModes().ToList();
         Assert.That(
             viewModes.Any(x => x.getOrDefault<string>(_Forms._ViewMode.id) == ViewModes.Default),
             Is.True);
@@ -258,7 +259,7 @@ public class FormTests
         viewMode.set(_Forms._ViewMode.id, "Test");
         userFormExtent.elements().add(viewMode);
             
-        viewModes = formMethods.GetViewModes().ToList();
+        viewModes = viewModeMethods.GetViewModes().ToList();
         Assert.That(
             viewModes.Any(x => x.getOrDefault<string>(_Forms._ViewMode.id) == "Test"),
             Is.True);

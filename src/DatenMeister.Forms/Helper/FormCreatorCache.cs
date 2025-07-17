@@ -15,7 +15,7 @@ public class FormCreatorCache
     public bool MetaClassAlreadyAdded { get; set; }
 
     /// <summary>
-    ///     The meta classes that have been covered
+    /// The meta classes that have been covered
     /// </summary>
     public HashSet<IElement> CoveredMetaClasses { get; } = new();
 

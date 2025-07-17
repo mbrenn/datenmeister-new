@@ -34,7 +34,7 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                 var formsPlugin = scopeStorage.Get<FormsState>();
   
                 ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, new NewActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
+                    formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
                     {
                         //MetaClass = _Management.TheOne.__Workspace,
                         OnCallSuccess = (element, parameter) =>
@@ -49,7 +49,7 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                     });
                     
                 ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, new NewActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
+                    formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
                     {
                         /*MetaClass = _Management.TheOne.__Workspace,*/
                         OnCallSuccess = (element, parameter) =>

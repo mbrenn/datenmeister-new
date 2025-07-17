@@ -69,7 +69,7 @@ public class ZipCodePlugin : IDatenMeisterPlugin
 
                 ActionButtonToFormAdder.AddRowActionButton(
                     _scopeStorage.Get<FormsState>(),
-                    new NewActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
+                    new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
                     {
                         /*MetaClass = _Management.TheOne.__Workspace,*/
                         PredicateForElement =

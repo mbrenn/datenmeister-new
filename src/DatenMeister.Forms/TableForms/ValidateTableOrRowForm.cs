@@ -86,7 +86,6 @@ public class ValidateTableOrRowForm : ITableFormFactory
             Global = new FormCreationContext.GlobalContext { Factory = new MofFactory(form) }
         };
 
-
         var result = new FormCreationResultMultipleForms
         {
             IsMainContentCreated = true

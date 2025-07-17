@@ -11,7 +11,7 @@ namespace DatenMeister.Forms.Helper;
 /// </summary>
 public static class ActionButtonToFormAdder
 {
-    public static void AddRowActionButton(FormsState formsState, NewActionButtonAdderParameter adder)
+    public static void AddRowActionButton(FormsState formsState, ActionButtonAdderParameter adder)
     {
         formsState.FormModificationPlugins.Add(
             new FormModificationPlugin
@@ -23,7 +23,7 @@ public static class ActionButtonToFormAdder
             });
     }
 
-    public static void AddTableActionButton(FormsState formsState, NewActionButtonAdderParameter adder)
+    public static void AddTableActionButton(FormsState formsState, ActionButtonAdderParameter adder)
     {
         formsState.FormModificationPlugins.Add(
             new FormModificationPlugin
@@ -35,7 +35,7 @@ public static class ActionButtonToFormAdder
             });
     }
 
-    private class RowFormModification(NewActionButtonAdderParameter parameter) : IRowFormFactory,
+    private class RowFormModification(ActionButtonAdderParameter parameter) : IRowFormFactory,
         ITableFormFactory
     {
         private void ManageActionButton(RowFormFactoryParameter? factoryParameter, FormCreationContext context, FormCreationResultMultipleForms result)

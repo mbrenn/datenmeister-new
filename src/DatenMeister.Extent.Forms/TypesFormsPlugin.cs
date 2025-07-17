@@ -22,24 +22,24 @@ public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
                 var formsPlugin = scopeStorage.Get<FormsState>();
-                formsPlugin.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         CreateContext = context => context.Global.CollectionFormFactories.Add(
                             new ExtentTypeFormModification.IncludeJumpToExtentButtonModification()),
                         Name = "IncludeJumpToExtentButtonModification"
                     });
 
-                formsPlugin.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         CreateContext = context => context.Global.RowFormFactories.Add(
                             new ExtentTypeFormModification.IncludeExtentTypesForTableFormExtent(_extentSettings)),
                         Name = "IncludeExtentTypesForTableFormExtent"
                     });
 
-                formsPlugin.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         CreateContext = context => context.Global.CollectionFormFactories.Add(
                             new ExtentTypeFormModification.IncludeCreationButtonsInTableFormForClassifierOfExtentType(
@@ -47,8 +47,8 @@ public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scop
                         Name = "IncludeCreationButtonsInTableFormForClassifierOfExtentType"
                     });
 
-                formsPlugin.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         CreateContext = context => context.Global.ObjectFormFactories.Add(
                             new ExtentTypeFormModification.

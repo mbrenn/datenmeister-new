@@ -49,7 +49,7 @@ public class AboutModel : PageModel
         get
         {
             var formPlugin = GiveMe.Scope.ScopeStorage.Get<FormsState>();
-            return formPlugin.NewFormModificationPlugins
+            return formPlugin.FormModificationPlugins
                 .Select(x => $"{x} ({x.Name})")
                 .ToList();
         }

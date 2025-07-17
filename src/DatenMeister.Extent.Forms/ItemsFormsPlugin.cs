@@ -94,8 +94,8 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                         // IsReadOnly = false
                     });
 
-                formsPlugin.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         CreateContext =context =>
                             context.Global.TableFormFactories.Add(new CreateInstanceButtonsForTableForms()),

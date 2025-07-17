@@ -5,7 +5,7 @@ namespace DatenMeister.Forms;
 /// <summary>
 /// Defines the data-structure for the form modification plugin
 /// </summary>
-public class NewFormModificationPlugin
+public class FormModificationPlugin
 {
     /// <summary>
     /// Function which creates the context
@@ -24,5 +24,5 @@ public class FormsState
     /// <summary>
     /// Stores the list of form modification plugins which may modify the factory 
     /// </summary>
-    public List<NewFormModificationPlugin> NewFormModificationPlugins { get; } = [];
+    public List<FormModificationPlugin> FormModificationPlugins { get; } = [];
 }

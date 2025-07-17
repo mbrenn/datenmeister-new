@@ -13,8 +13,8 @@ public static class ActionButtonToFormAdder
 {
     public static void AddRowActionButton(FormsState formsState, NewActionButtonAdderParameter adder)
     {
-        formsState.NewFormModificationPlugins.Add(
-            new NewFormModificationPlugin
+        formsState.FormModificationPlugins.Add(
+            new FormModificationPlugin
             {
                 CreateContext = context =>
                     context.Global.RowFormFactories.Add(
@@ -25,8 +25,8 @@ public static class ActionButtonToFormAdder
 
     public static void AddTableActionButton(FormsState formsState, NewActionButtonAdderParameter adder)
     {
-        formsState.NewFormModificationPlugins.Add(
-            new NewFormModificationPlugin
+        formsState.FormModificationPlugins.Add(
+            new FormModificationPlugin
             {
                 CreateContext = context =>
                     context.Global.TableFormFactories.Add(

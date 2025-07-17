@@ -85,7 +85,7 @@ public class FormCreationContextFactory
         context.Global.FieldFormFactories.Add(new FieldFromData(_workspaceLogic));
         
         // Now go through the available Form Modification Plugins
-        foreach (var plugin in State.NewFormModificationPlugins)
+        foreach (var plugin in State.FormModificationPlugins)
         {
             plugin.CreateContext(context);
         }

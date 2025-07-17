@@ -90,8 +90,8 @@ public class ZipCodePlugin : IDatenMeisterPlugin
                 // code example in a workspace object
                 var formsPluginState = _scopeStorage.Get<FormsState>();
 
-                formsPluginState.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPluginState.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         CreateContext = context =>
                             context.Global.RowFormFactories.Add(new ZipCodeFormModificationPlugin()),

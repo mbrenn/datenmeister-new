@@ -13,8 +13,8 @@ public class DefaultTypesPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugi
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
                 var formsPluginState = scopeStorage.Get<FormsState>();
-                formsPluginState.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPluginState.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         CreateContext =
                             context =>

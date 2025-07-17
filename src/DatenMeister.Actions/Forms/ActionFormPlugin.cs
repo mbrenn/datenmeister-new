@@ -27,8 +27,8 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
             case PluginLoadingPosition.AfterLoadingOfExtents:
 
                 var formsPluginState = scopeStorage.Get<FormsState>();
-                formsPluginState.NewFormModificationPlugins.Add(
-                    new NewFormModificationPlugin
+                formsPluginState.FormModificationPlugins.Add(
+                    new FormModificationPlugin
                     {
                         Name = "ActionFormPlugin",
                         CreateContext =

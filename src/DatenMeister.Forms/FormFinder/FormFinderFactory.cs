@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.Models;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
@@ -48,7 +50,7 @@ public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : ICollectionForm
 
             if (result is FormCreationResultMultipleForms multipleForms)
             {
-                multipleForms.Forms = [foundForm];
+                multipleForms.Forms.Add(foundForm);
             }
             
             result.IsMainContentCreated = true;

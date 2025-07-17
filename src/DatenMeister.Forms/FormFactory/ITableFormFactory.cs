@@ -2,7 +2,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Forms.FormFactory;
 
-public class TableFormFactoryParameter : FormFactoryParameterBase
+public record TableFormFactoryParameter : FormFactoryParameterBase
 {
     /// <summary>
     /// Gets or sets the name of the property being used to create the Table form

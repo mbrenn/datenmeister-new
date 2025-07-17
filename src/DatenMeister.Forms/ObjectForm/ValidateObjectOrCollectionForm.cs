@@ -45,9 +45,10 @@ public class ValidateObjectOrCollectionForm : IObjectFormFactory, ICollectionFor
             {
                 var formCreationResult = new FormCreationResultMultipleForms
                 {
-                    Forms = [tab],
                     IsMainContentCreated = true
                 };
+                
+                formCreationResult.Forms.Add(tab);
                 
                 validator.CreateTableForm(
                     new TableFormFactoryParameter(),

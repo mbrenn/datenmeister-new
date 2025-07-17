@@ -62,6 +62,7 @@ public class FormCreationContextFactory
         context.Global.ObjectFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass());
         context.Global.ObjectFormFactories.Add(new ObjectFormFromData());
+        context.Global.ObjectFormFactories.Add(new AddTableFormForPackagedElements());
         context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm());
         
         // Build up the TableForm Queue

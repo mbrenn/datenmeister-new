@@ -13,7 +13,7 @@ public class EmptyTableFormFactory : ITableFormFactory
     {
         if (!result.Forms.Any())
         {
-            result.Forms = [context.Global.Factory.create(_Forms.TheOne.__TableForm)];
+            result.Forms.Add(context.Global.Factory.create(_Forms.TheOne.__TableForm));
         }
 
         result.IsManaged = true;

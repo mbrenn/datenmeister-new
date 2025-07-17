@@ -2,7 +2,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Forms.FormFactory;
 
-public class CollectionFormFactoryParameter : FormFactoryParameterBase
+public record CollectionFormFactoryParameter : FormFactoryParameterBase
 {
     public IReflectiveCollection? Collection { get; set; }
 }

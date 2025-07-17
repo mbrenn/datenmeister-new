@@ -100,7 +100,7 @@ public class CollectionFormFromMetaClass : ICollectionFormFactory
                 // Now try to figure out the metaclass
 
                 foreach (var tableForm in FormCreation.CreateTableForm(
-                             new TableFormFactoryParameter()
+                             new TableFormFactoryParameter
                              {
                                  MetaClass = propertyType
                              }, context.Clone()).Forms)

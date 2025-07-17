@@ -76,7 +76,7 @@ public class FormCreationResultMultipleForms : FormCreationResult
     /// <summary>
     /// Gets or sets the result of the activity 
     /// </summary>
-    public IEnumerable<IElement> Forms { get; set; } = [];
+    public List<IElement> Forms { get; init; } = [];
     
     public override void AddToFormCreationProtocol(string message)
     {

@@ -89,9 +89,10 @@ public class ValidateTableOrRowForm : ITableFormFactory
 
         var result = new FormCreationResultMultipleForms
         {
-            Forms = [form],
             IsMainContentCreated = true
         };
+        
+        result.Forms.Add(form);
 
         var validateTableOrRowForm = new ValidateTableOrRowForm();
         validateTableOrRowForm.CreateTableForm(new TableFormFactoryParameter(), context, result);

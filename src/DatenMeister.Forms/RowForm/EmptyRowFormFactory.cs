@@ -11,7 +11,7 @@ public class EmptyRowFormFactory : IRowFormFactory
     {
         if (!result.Forms.Any())
         {
-            result.Forms = [context.Global.Factory.create(_Forms.TheOne.__RowForm)];
+            result.Forms.Add(context.Global.Factory.create(_Forms.TheOne.__RowForm));
         }
 
         result.IsManaged = true;

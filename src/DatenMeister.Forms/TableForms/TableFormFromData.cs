@@ -1,9 +1,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.Fields;
 using DatenMeister.Forms.FormFactory;
-using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.TableForms;
 
@@ -28,7 +26,7 @@ public class TableFormFromData : ITableFormFactory
         {
             if (!result.Forms.Any())
             {
-                result.Forms = [context.Global.Factory.create(_Forms.TheOne.__RowForm)];
+                result.Forms.Add(context.Global.Factory.create(_Forms.TheOne.__RowForm));
             };
             
             var createdForm = result.Forms.First();

@@ -4,7 +4,7 @@ using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Forms.FormFactory;
 
-public abstract class FormFactoryParameterBase
+public abstract record FormFactoryParameterBase
 {
     /// <summary>
     /// Defines the Extenttypes to which the current request belongs to 

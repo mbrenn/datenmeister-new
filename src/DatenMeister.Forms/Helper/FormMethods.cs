@@ -203,15 +203,17 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             .OfType<IUriExtent>()
             .ToList();
 
-        // Even if internal extent or user form extent does not have the the flag
-        var internalFormExtent = GetInternalFormExtent();
-        if (result.All(x => x.contextURI() != internalFormExtent.contextURI()))
+        // Even if internal extent or user form extent does not have the flag
+        var internalFormExtent = GetInternalFormExtent(true);
+        if (internalFormExtent != null &&
+            result.All(x => x.contextURI() != internalFormExtent.contextURI()))
         {
             result.Add(internalFormExtent);
         }
 
-        var userFormExtent = GetInternalFormExtent();
-        if (result.All(x => x.contextURI() != userFormExtent.contextURI()))
+        var userFormExtent = GetInternalFormExtent(true);
+        if (userFormExtent != null && 
+            result.All(x => x.contextURI() != userFormExtent.contextURI()))
         {
             result.Add(userFormExtent);
         }
@@ -229,8 +231,9 @@ public class FormMethods(IWorkspaceLogic workspaceLogic)
             GetAllFormExtents()
                 .SelectMany(x =>
                     x.elements()
-                        .GetAllDescendantsIncludingThemselves(new[]
-                            { _UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
+                        .GetAllDescendantsIncludingThemselves(
+                        [_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement
+                        ])
                         .WhenMetaClassIsOneOf(_Forms.TheOne.__FormAssociation)),
             true);
     }

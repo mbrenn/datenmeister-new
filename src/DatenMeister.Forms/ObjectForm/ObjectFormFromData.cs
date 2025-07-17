@@ -39,7 +39,7 @@ public class ObjectFormFromData : IObjectFormFactory
         
         if(element != null)
         {
-            var cache = new FormCreatorCache();
+            var cache = context.LocalScopeStorage.Get<FormCreatorCache>(false);
 
             // Creates the empty form
             result.Form.set(
@@ -126,7 +126,7 @@ public class ObjectFormFromData : IObjectFormFactory
             // We start with the detail form of type RowForm, we always need to have that form
             // because additional plugins might also add certain buttons to that form
             var detailForm = FormCreation.CreateRowForm(
-                new RowFormFactoryParameter()
+                new RowFormFactoryParameter
                 {
                     Element = element,
                     Extent = parameter.Extent,
@@ -157,7 +157,7 @@ public class ObjectFormFromData : IObjectFormFactory
             foreach (var pair in propertiesWithCollection)
             {
                 var listForm = FormCreation.CreateTableForm(
-                    new TableFormFactoryParameter()
+                    new TableFormFactoryParameter
                     {
                         Extent = parameter.Extent,
                         ExtentTypes = parameter.ExtentTypes,

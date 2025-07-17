@@ -102,13 +102,19 @@ public static class ActionButtonToFormAdder
         /// <returns>true, if the form has been modified</returns>
         public void CreateRowForm(RowFormFactoryParameter factoryParameter, FormCreationContext context, FormCreationResultMultipleForms result)
         {
-            ManageActionButton(factoryParameter, context, result);
+            if (context.IsInExtensionCreationMode())
+            {
+                ManageActionButton(factoryParameter, context, result);
+            }
         }
 
         public void CreateTableForm(TableFormFactoryParameter factoryParameter, FormCreationContext context,
             FormCreationResultMultipleForms result)
         {
-            ManageActionButton(null, context, result);
+            if (context.IsInExtensionCreationMode())
+            {
+                ManageActionButton(null, context, result);
+            }
         }
     }
 }

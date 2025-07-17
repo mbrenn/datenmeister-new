@@ -54,6 +54,7 @@ public class FormCreationContextFactory
         // Build up the CollectionForm Queue
         context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory());
         context.Global.CollectionFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+        context.Global.CollectionFormFactories.Add(new CollectionFormFromMetaClass());
         context.Global.CollectionFormFactories.Add(new CollectionFormFromData());
         context.Global.CollectionFormFactories.Add(new ValidateObjectOrCollectionForm());
 

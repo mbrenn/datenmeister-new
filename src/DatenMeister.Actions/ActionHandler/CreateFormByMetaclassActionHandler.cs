@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime;
@@ -43,6 +44,7 @@ public class CreateFormByMetaclassActionHandler : IActionHandler
                 actionLogic.WorkspaceLogic,
                 actionLogic.ScopeStorage);
             var context = factory.Create();
+            context.Global.Factory = new MofFactory(targetReflection);
 
             switch (creationMode)
             {

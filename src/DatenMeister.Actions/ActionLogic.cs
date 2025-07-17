@@ -35,7 +35,7 @@ public class ActionLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStor
     /// Gets or sets a flag whether an asynchronous execution shall be performed
     /// that means whether the action itself shall be executed in a task. 
     /// </summary>
-    private const bool AsyncExecution = true;
+    private const bool AsyncExecution = false;
 
     private static readonly ILogger ClassLogger = new ClassLogger(typeof(ActionLogic));
         

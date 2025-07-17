@@ -80,6 +80,7 @@ public class FormCreationContextFactory
         context.Global.RowFormFactories.Add(new FormFinderFactory(_workspaceLogic));
         context.Global.RowFormFactories.Add(new ExpandDropDownOfValueReference());
         context.Global.RowFormFactories.Add(new RowFormFromData());
+        context.Global.RowFormFactories.Add(new AddMetaClassField());
         
         // Build up the FieldForm Queue
         context.Global.FieldFormFactories.Add(new FieldFromData(_workspaceLogic));

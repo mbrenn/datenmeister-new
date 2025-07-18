@@ -28,10 +28,14 @@ public class AddDefaultTypeForMetaClassOfForm : ITableFormFactory
 
     public static void AddDefaultTypeIfNotExists(FormCreationResultOneForm result, IElement defaultType)
     {
+        if (result.Form == null) return;
+        
         AddDefaultTypeIfNotExists(result, result.Form, defaultType);
     }
     
-    public static void AddDefaultTypeIfNotExists(FormCreationResult result, IElement form,
+    public static void AddDefaultTypeIfNotExists(
+        FormCreationResult result,
+        IElement form,
         IElement defaultType)
     {
         var currentDefaultPackages =

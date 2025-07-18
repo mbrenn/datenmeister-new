@@ -25,8 +25,10 @@ public static class FieldCreationHelper
         IElement? metaClass,
         FormCreationContext context)
     {
-        if (metaClass == null) return false;
+        if (metaClass == null)
+            return false;
         var cache = context.LocalScopeStorage.Get<FormCreatorCache>();
+
         if (!cache.CoveredMetaClasses.Add(metaClass))
         {
             // Already covered so we don't to manage it
@@ -43,13 +45,20 @@ public static class FieldCreationHelper
         {
             wasInMetaClass = true;
             var propertyName = property.get<string?>("name");
-            
+
+            if (propertyName == null || !cache.CoveredPropertyNames.Add(propertyName))
+            {
+                // We already managed this property
+                continue;
+            }
+
             var isAlreadyIn = rowOrObjectForm
                 .get<IReflectiveCollection>(_Forms._RowForm.field)
                 .OfType<IObject>()
                 .Any(x => x.getOrDefault<string>(_Forms._FieldData.name) == propertyName);
 
-            if (isAlreadyIn) continue;
+            if (isAlreadyIn)
+                continue;
 
             var column = FormCreation.CreateFieldForProperty(
                 new FieldFactoryParameter
@@ -62,7 +71,7 @@ public static class FieldCreationHelper
             {
                 rowOrObjectForm.get<IReflectiveCollection>(_Forms._RowForm.field).add(column.Form);
             }
-            
+
             FormCreationResult.AddToFormCreationProtocol(
                 rowOrObjectForm,
                 "[FormCreator.AddFieldsToRowOrObjectFormByMetaClass]: Added field by Metaclass for property: " +
@@ -70,104 +79,101 @@ public static class FieldCreationHelper
         }
 
 #if DEBUG
-        
         if (!ValidateTableOrRowForm.ValidateForm(rowOrObjectForm))
             throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
 
         return wasInMetaClass;
     }
-    
-    
 
-        /// <summary>
-        ///     Adds the fields to the properties as given in the object itself.
-        ///     The properties are retrieved by reading the available property types
-        ///     from the object itself via the interface IObjectAllProperties
-        /// </summary>
-        /// <param name="form">Form to be extended</param>
-        /// <param name="item">Item to be evaluated</param>
-        /// <param name="context">Context in which the form is created</param>
-        public static void AddFieldsToFormByPropertyValues(
-            IObject form,
-            object item,
-            FormCreationContext context)
+    /// <summary>
+    ///     Adds the fields to the properties as given in the object itself.
+    ///     The properties are retrieved by reading the available property types
+    ///     from the object itself via the interface IObjectAllProperties
+    /// </summary>
+    /// <param name="form">Form to be extended</param>
+    /// <param name="item">Item to be evaluated</param>
+    /// <param name="context">Context in which the form is created</param>
+    public static void AddFieldsToFormByPropertyValues(
+        IObject form,
+        object item,
+        FormCreationContext context)
+    {
+        var cache = context.LocalScopeStorage.Get<FormCreatorCache>();
+        if (item is not IObjectAllProperties itemAsAllProperties)
+            // The object does not allow the retrieving of properties
+            return;
+
+        if (item is not IObject itemAsObject)
+            // The object cannot be converted and FormCreator does not support
+            // non MOF Objects
+            return;
+
+        var isReadOnly = context.IsReadOnly;
+        var factory = context.Global.Factory;
+
+        // Creates the form out of the properties of the item
+        var properties = itemAsAllProperties.getPropertiesBeingSet();
+
+        var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
+
+        foreach (var propertyName in properties
+                     .Where(property => !cache.CoveredPropertyNames.Contains(property)))
         {
-            var cache = context.LocalScopeStorage.Get<FormCreatorCache>();
-            if (item is not IObjectAllProperties itemAsAllProperties)
-                // The object does not allow the retrieving of properties
-                return;
+            cache.CoveredPropertyNames.Add(propertyName);
+            if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
+                // Skip the property name, when we would like to have focus on certain property names
+                continue;
 
-            if (item is not IObject itemAsObject)
-                // The object cannot be converted and FormCreator does not support
-                // non MOF Objects
-                return;
+            // Checks, whether the field is already existing
+            var column = form
+                .get<IReflectiveCollection>(_Forms._RowForm.field)
+                .OfType<IObject>()
+                .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == propertyName);
 
-            var isReadOnly = context.IsReadOnly;
-            var factory = context.Global.Factory;
+            var propertyValue = itemAsObject.getOrDefault<object>(propertyName);
 
-            // Creates the form out of the properties of the item
-            var properties = itemAsAllProperties.getPropertiesBeingSet();
-
-            var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
-
-            foreach (var propertyName in properties
-                         .Where(property => !cache.CoveredPropertyNames.Contains(property)))
+            if (column == null)
             {
-                cache.CoveredPropertyNames.Add(propertyName);
-                if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
-                    // Skip the property name, when we would like to have focus on certain property names
+                // Guess by content, which type of field shall be created
+                var propertyType = propertyValue?.GetType();
+                if (propertyType == null)
+                    // No propertyType ==> propertyValue is null and nothing is generated
                     continue;
 
-                // Checks, whether the field is already existing
-                var column = form
-                    .get<IReflectiveCollection>(_Forms._RowForm.field)
-                    .OfType<IObject>()
-                    .FirstOrDefault(x => x.getOrDefault<string>(_Forms._FieldData.name) == propertyName);
-
-                var propertyValue = itemAsObject.getOrDefault<object>(propertyName);
-
-                if (column == null)
+                if (DotNetHelper.IsEnumeration(propertyType))
                 {
-                    // Guess by content, which type of field shall be created
-                    var propertyType = propertyValue?.GetType();
-                    if (propertyType == null)
-                        // No propertyType ==> propertyValue is null and nothing is generated
-                        continue;
-
-                    if (DotNetHelper.IsEnumeration(propertyType))
-                    {
-                        column = factory.create(_Forms.TheOne.__SubElementFieldData);
-                    }
-                    else if (propertyValue is IObject)
-                    {
-                        column = factory.create(_Forms.TheOne.__ReferenceFieldData);
-                        column.set(_Forms._ReferenceFieldData.isSelectionInline, false);
-                    }
-                    else
-                    {
-                        column = factory.create(_Forms.TheOne.__TextFieldData);
-                    }
-
-                    column.set(_Forms._FieldData.name, propertyName);
-                    column.set(_Forms._FieldData.title, propertyName);
-                    column.set(_Forms._FieldData.isReadOnly, isReadOnly);
-
-                    form.get<IReflectiveCollection>(_Forms._RowForm.field).add(column);
-
-                    FormCreationResult.AddToFormCreationProtocol(
-                        form,
-                        "[FormCreator.AddFieldsToFormByPropertyValues]: " + NamedElementMethods.GetName(column));
+                    column = factory.create(_Forms.TheOne.__SubElementFieldData);
+                }
+                else if (propertyValue is IObject)
+                {
+                    column = factory.create(_Forms.TheOne.__ReferenceFieldData);
+                    column.set(_Forms._ReferenceFieldData.isSelectionInline, false);
+                }
+                else
+                {
+                    column = factory.create(_Forms.TheOne.__TextFieldData);
                 }
 
-                // Makes the field to an enumeration, if explicitly requested or the type behind is an enumeration
-                column.set(
-                    _Forms._FieldData.isEnumeration,
-                    column.getOrDefault<bool>(_Forms._FieldData.isEnumeration) |
-                    DotNetHelper.IsEnumeration(propertyValue?.GetType()));
+                column.set(_Forms._FieldData.name, propertyName);
+                column.set(_Forms._FieldData.title, propertyName);
+                column.set(_Forms._FieldData.isReadOnly, isReadOnly);
+
+                form.get<IReflectiveCollection>(_Forms._RowForm.field).add(column);
+
+                FormCreationResult.AddToFormCreationProtocol(
+                    form,
+                    "[FormCreator.AddFieldsToFormByPropertyValues]: " + NamedElementMethods.GetName(column));
             }
+
+            // Makes the field to an enumeration, if explicitly requested or the type behind is an enumeration
+            column.set(
+                _Forms._FieldData.isEnumeration,
+                column.getOrDefault<bool>(_Forms._FieldData.isEnumeration) |
+                DotNetHelper.IsEnumeration(propertyValue?.GetType()));
         }
-    
+    }
+
     public class P
     {
         public string PropertyName { get; set; } = string.Empty;
@@ -190,7 +196,7 @@ public static class FieldCreationHelper
                 return obj.PropertyName.GetHashCode();
             }
         }
-            
+
         public class MofObjectComparer : IEqualityComparer<IElement?>
         {
             public bool Equals(IElement? x, IElement? y)

@@ -30,10 +30,11 @@ public class ObjectFormFromMetaClass : IObjectFormFactory
         var tabs = new List<IElement>();
         var parameterMetaclass = parameter.MetaClass;
         var factory = context.Global.Factory;
-        result.Form ??= factory.create(_Forms.TheOne.__ObjectForm);
 
         if (parameterMetaclass != null)
         {
+            result.Form ??= factory.create(_Forms.TheOne.__ObjectForm);
+            
             var propertyNamesWithCollection = new List<FieldCreationHelper.P>();
             var propertyNamesWithoutCollection = new List<FieldCreationHelper.P>();
 
@@ -110,12 +111,12 @@ public class ObjectFormFromMetaClass : IObjectFormFactory
                     tabs.Add(form);
                 }
             }
-        }
 
-        if (tabs.Count > 0)
-        {
-            result.Form.set(_Forms._CollectionForm.tab, tabs);
-            result.IsMainContentCreated = result.IsManaged = true;
+            if (tabs.Count > 0)
+            {
+                result.Form.set(_Forms._CollectionForm.tab, tabs);
+                result.IsMainContentCreated = result.IsManaged = true;
+            }
         }
     }
 }

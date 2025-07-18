@@ -128,6 +128,7 @@ public class ObjectFormFromData : IObjectFormFactory
             var detailForm = FormCreation.CreateRowForm(
                 new RowFormFactoryParameter
                 {
+                    MetaClass =parameter.MetaClass,
                     Element = element,
                     Extent = parameter.Extent,
                     ExtentTypes = parameter.ExtentTypes,
@@ -139,7 +140,15 @@ public class ObjectFormFromData : IObjectFormFactory
             {
                 var detailResult = new FormCreationResultMultipleForms();
                 new EmptyRowFormFactory().CreateRowForm(
-                    new RowFormFactoryParameter(), context.Clone(), detailResult);
+                    new RowFormFactoryParameter()
+                    {
+                        MetaClass = parameter.MetaClass,
+                        Element = parameter.Element,
+                        Extent = parameter.Extent,
+                        ExtentTypes = parameter.ExtentTypes
+                    },
+                    context.Clone(), 
+                    detailResult);
                 detailForm = detailResult.Forms.FirstOrDefault() ?? throw new InvalidOperationException(
                     "detailForm == null, it should not happen by EmptyRowFormFactory");
             }

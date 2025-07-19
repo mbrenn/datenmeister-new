@@ -30,6 +30,49 @@ public static class FormCreation
             manager => 
                 manager.CreateCollectionForm(parameter, context, result),
             result);
+        
+        // After we are having created the object form, we go through the rowforms and
+        // table forms, so the system can create additional forms or updates, if requested
+        if (result.IsMainContentCreated)
+        {
+            var tabs = result.Form.getOrDefault<IReflectiveCollection>(
+                _Forms._ObjectForm.tab).OfType<IElement>();
+            foreach (var tab in tabs)
+            {
+                var innerContext = context.Clone();
+                innerContext.LocalScopeStorage.Add(new ExtensionCreationMode());
+
+                var innerResult = new FormCreationResultMultipleForms()
+                {
+                    Forms = [tab],
+                    IsMainContentCreated = true
+                };
+                
+                if (tab.getMetaClass()?.equals(_Forms.TheOne.__RowForm) == true)
+                {
+                    var innerParameter = new RowFormFactoryParameter()
+                    {
+                        Extent = parameter.Extent,
+                        ExtentTypes = parameter.ExtentTypes,
+                        MetaClass = parameter.MetaClass
+                    };
+
+                    CreateRowForm(innerParameter, innerContext, innerResult);
+                }
+                else 
+                if (tab.getMetaClass()?.equals(_Forms.TheOne.__TableForm) == true)
+                {
+                    var innerParameter = new TableFormFactoryParameter
+                    {
+                        Extent = parameter.Extent,
+                        ExtentTypes = parameter.ExtentTypes,
+                        MetaClass = tab.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                    };
+
+                    CreateTableForm(innerParameter, innerContext, innerResult);
+                }   
+            }
+        }
 
         return result;
     }
@@ -95,8 +138,7 @@ public static class FormCreation
                     };
 
                     CreateTableForm(innerParameter, innerContext, innerResult);
-                }
-                    
+                }   
             }
         }
         

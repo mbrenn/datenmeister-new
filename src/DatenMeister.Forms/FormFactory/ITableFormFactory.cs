@@ -1,4 +1,5 @@
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Forms.FormFactory;
 
@@ -10,6 +11,10 @@ public record TableFormFactoryParameter : FormFactoryParameterBase
     public string PropertyName { get; set; }
     
     public IReflectiveCollection? Collection { get; set; }
+    
+    public IElement? ParentMetaClass { get; set; }
+    
+    public string ParentPropertyName { get; set; }
 }
 
 public interface ITableFormFactory

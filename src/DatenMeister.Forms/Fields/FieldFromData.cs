@@ -151,7 +151,9 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
                                 {
                                     Extent = parameter.Extent,
                                     ExtentTypes = parameter.ExtentTypes,
-                                    MetaClass = propertyType
+                                    MetaClass = propertyType,
+                                    ParentMetaClass = parameter.MetaClass,
+                                    ParentPropertyName = parameter.PropertyName
                                 }, clonedContext).Forms.FirstOrDefault();
 
                         if (enumerationListForm != null)

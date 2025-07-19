@@ -11,47 +11,67 @@ namespace DatenMeister.Forms.Helper;
 /// </summary>
 public static class ActionButtonToFormAdder
 {
-    public static void AddRowActionButton(FormsState formsState, ActionButtonAdderParameter adder)
+    public static void AddRowActionButton(FormsState formsState, ActionButtonAdderParameterForRow adder)
     {
         formsState.FormModificationPlugins.Add(
             new FormModificationPlugin
             {
                 CreateContext = context =>
                     context.Global.RowFormFactories.Add(
-                        new RowFormModification(adder)),
+                        new RowAndTableFormModification(adder)),
                 Name = adder.Title
             });
     }
 
-    public static void AddTableActionButton(FormsState formsState, ActionButtonAdderParameter adder)
+    public static void AddTableActionButton(FormsState formsState, ActionButtonAdderParameterForTable adder)
     {
         formsState.FormModificationPlugins.Add(
             new FormModificationPlugin
             {
                 CreateContext = context =>
                     context.Global.TableFormFactories.Add(
-                        new RowFormModification(adder)),
+                        new RowAndTableFormModification(adder)),
                 Name = adder.Title
             });
     }
 
-    private class RowFormModification(ActionButtonAdderParameter parameter) : IRowFormFactory,
+    private class RowAndTableFormModification(ActionButtonAdderParameter parameter) : IRowFormFactory,
         ITableFormFactory
     {
-        private void ManageActionButton(RowFormFactoryParameter? factoryParameter, FormCreationContext context, FormCreationResultMultipleForms result)
+        private void ManageActionButton(
+            FormFactoryParameterBase factoryParameter,
+            FormCreationContext context,
+            FormCreationResultMultipleForms result)
         {
-            var element = factoryParameter?.Element;
+            if (parameter is ActionButtonAdderParameterForRow forRow
+                && factoryParameter is RowFormFactoryParameter rowParameter)
+            {
+                forRow.OnCall?.Invoke(rowParameter);
+                var element = rowParameter.Element;
+
+                if (element != null && parameter.PredicateForElement != null &&
+                    parameter.PredicateForElement(element) == false)
+                {
+                    // Not predicated
+                    return;
+                }
+            }
+            else if (parameter is ActionButtonAdderParameterForTable forTable
+                     && factoryParameter is TableFormFactoryParameter tableParameter)
+            {
+                forTable.OnCall?.Invoke(tableParameter);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown parameter combination: "
+                                                    + parameter.GetType()
+                                                    + " " + factoryParameter.GetType());
+            }
+
             var form = result.Forms.FirstOrDefault();
             if (form == null)
                 throw new InvalidOperationException("Form is null");
 
-            parameter.OnCall?.Invoke(element, parameter);
-
-            if (element != null && parameter.PredicateForElement != null && parameter.PredicateForElement(element) == false)
-            {
-                // Not predicated
-                return;
-            }
 
             var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);
             var actionField = context.Global.Factory.create(_Forms.TheOne.__ActionFieldData);
@@ -84,7 +104,13 @@ public static class ActionButtonToFormAdder
                 fields.add(parameter.ActionButtonPosition, actionField);
             }
 
-            parameter.OnCallSuccess?.Invoke(element, parameter);
+            (parameter as ActionButtonAdderParameterForRow)?.OnCallSuccess?.Invoke(
+                factoryParameter as RowFormFactoryParameter
+                ?? throw new InvalidOperationException("RowFormFactoryParameter is null"));
+
+            (parameter as ActionButtonAdderParameterForTable)?.OnCallSuccess?.Invoke(
+                factoryParameter as TableFormFactoryParameter
+                ?? throw new InvalidOperationException("TableFormFactoryParameter is null"));
             
             result.AddToFormCreationProtocol(
                 $"[ActionButtonToFormAdder]: Added Button{parameter.Title}");
@@ -113,7 +139,7 @@ public static class ActionButtonToFormAdder
         {
             if (context.IsInExtensionCreationMode())
             {
-                ManageActionButton(null, context, result);
+                ManageActionButton(factoryParameter, context, result);
             }
         }
     }

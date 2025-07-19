@@ -2,6 +2,7 @@
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
 
@@ -32,36 +33,46 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
             case PluginLoadingPosition.AfterLoadingOfExtents:
                     
                 var formsPlugin = scopeStorage.Get<FormsState>();
-  
-                ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
+
+                var actionParameter =
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateExtentNavigate, "Create or Load Extent")
                     {
-                        //MetaClass = _Management.TheOne.__Workspace,
-                        OnCallSuccess = (element, parameter) =>
-                        {
-                            // Sets the parameter that the right workspace is used
-                            var workspaceId = element?.getOrDefault<string>(_Management._Workspace.id);
-                            if (!string.IsNullOrEmpty(workspaceId))
-                            {
-                                parameter.Parameter["workspaceId"] = workspaceId;
-                            }
-                        }
-                    });
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                    };
+
+                actionParameter.OnCallSuccess = parameter =>
+                {
+                    // Sets the parameter that the right workspace is used
+                    var workspaceId =
+                        parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
+                    if (!string.IsNullOrEmpty(workspaceId))
+                    {
+                        actionParameter.Parameter["workspaceId"] = workspaceId;
+                    }
+                };
+                
+                ActionButtonToFormAdder.AddRowActionButton(
+                    formsPlugin, actionParameter);
+                
+                var otherActionParameter =
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateExtentNavigate, "Create or Load Extent")
+                    {
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                    };
+
+                otherActionParameter.OnCallSuccess = parameter =>
+                {
+                    // Sets the parameter that the right workspace is used
+                    var workspaceId =
+                        parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
+                    if (!string.IsNullOrEmpty(workspaceId))
+                    {
+                        otherActionParameter.Parameter["workspaceId"] = workspaceId;
+                    }
+                };
                     
                 ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
-                    {
-                        /*MetaClass = _Management.TheOne.__Workspace,*/
-                        OnCallSuccess = (element, parameter) =>
-                        {
-                            // Sets the parameter that the right workspace is used
-                            var workspaceId = element?.getOrDefault<string>(_Management._Workspace.id);
-                            if (!string.IsNullOrEmpty(workspaceId))
-                            {
-                                parameter.Parameter["workspaceId"] = workspaceId;
-                            }
-                        }
-                    });
+                    formsPlugin, otherActionParameter);
 
                 break;
         }

@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 
 namespace DatenMeister.Forms.Helper;
@@ -39,18 +40,56 @@ public class ActionButtonAdderParameter
     /// If the element is set, then the predicate must return true, to add the filter element 
     /// </summary>
     public Func<IObject?, bool>? PredicateForElement { get; set; }
+}
+
+public class ActionButtonAdderParameterForRow : ActionButtonAdderParameter
+{
+    public ActionButtonAdderParameterForRow(
+        string actionName,
+        string title,
+        string buttonText = "") : base(actionName, title, buttonText)
+    {
+    }
+
+    public Predicate<RowFormFactoryParameter> PredicateForParameter { get; set; } = _ => true;
 
     /// <summary>
     /// Gets or sets the delegate that will be called, when the 
     /// the filter is evaluated. This allows setting a breakpoint for the debugger
     /// during issue finding
     /// </summary>
-    public Action<IObject?, ActionButtonAdderParameter>? OnCall { get; set; }
+    public Action<RowFormFactoryParameter>? OnCall { get; set; }
         
     /// <summary>
     /// Gets or sets the delegate that will be called, when the 
     /// the filter is evaluated and a match has been figured out.
     /// This allows setting a breakpoint for the debugger during issue finding
     /// </summary>
-    public Action<IObject?, ActionButtonAdderParameter>? OnCallSuccess { get; set; }
+    public Action<RowFormFactoryParameter>? OnCallSuccess { get; set; }
+}
+
+public class ActionButtonAdderParameterForTable : ActionButtonAdderParameter
+{
+    public ActionButtonAdderParameterForTable(
+        string actionName,
+        string title,
+        string buttonText = "") : base(actionName, title, buttonText)
+    {
+    }
+
+    public Predicate<TableFormFactoryParameter> PredicateForParameter { get; set; } = _ => true;
+
+    /// <summary>
+    /// Gets or sets the delegate that will be called, when the 
+    /// the filter is evaluated. This allows setting a breakpoint for the debugger
+    /// during issue finding
+    /// </summary>
+    public Action<TableFormFactoryParameter>? OnCall { get; set; }
+        
+    /// <summary>
+    /// Gets or sets the delegate that will be called, when the 
+    /// the filter is evaluated and a match has been figured out.
+    /// This allows setting a breakpoint for the debugger during issue finding
+    /// </summary>
+    public Action<TableFormFactoryParameter>? OnCallSuccess { get; set; }
 }

@@ -34,61 +34,60 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 var formsPlugin = scopeStorage.Get<FormsState>();
 
                 ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "Delete Item"));
+                    formsPlugin, new ActionButtonAdderParameterForRow(NavigationItemDelete, "Delete Item"));
 
 
                 ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationItemMoveOrCopyNavigate, "Move/Copy"));
-
-                ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin,
-                    new ActionButtonAdderParameter(NavigationExportXmi, "Export", "Export Item as Xmi"));
+                    formsPlugin, new ActionButtonAdderParameterForRow(NavigationItemMoveOrCopyNavigate, "Move/Copy"));
 
                 ActionButtonToFormAdder.AddRowActionButton(
                     formsPlugin,
-                    new ActionButtonAdderParameter(NavigationImportXmi, "Import", "Import Item as Xmi"));
+                    new ActionButtonAdderParameterForRow(NavigationExportXmi, "Export", "Export Item as Xmi"));
+
+                ActionButtonToFormAdder.AddRowActionButton(
+                    formsPlugin,
+                    new ActionButtonAdderParameterForRow(NavigationImportXmi, "Import", "Import Item as Xmi"));
 
                 ActionButtonToFormAdder.AddTableActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListViewItem, "View Item")
+                    formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListViewItem, "View Item")
                     {
                         ActionButtonPosition = 0
                     });
 
-
                 ActionButtonToFormAdder.AddTableActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListMoveUpItem, "⬆️")
+                    formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListMoveUpItem, "⬆️")
                     {
                         // ParentMetaClass = _Management.TheOne.__Extent
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListMoveDownItem, "⬇️")
+                    formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListMoveDownItem, "⬇️")
                     {
                         // ParentMetaClass = _Management.TheOne.__Extent
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationExtentsListDeleteItem, "❌")
+                    formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListDeleteItem, "❌")
                     {
                         // ParentMetaClass = _Management.TheOne.__Extent
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveUpItem, "⬆️I")
+                    formsPlugin, new ActionButtonAdderParameterForTable(NavigationItemPropertyMoveUpItem, "⬆️I")
                     {
                         // PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
                         // IsReadOnly = false
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationItemPropertyMoveDownItem, "⬇️I")
+                    formsPlugin, new ActionButtonAdderParameterForTable(NavigationItemPropertyMoveDownItem, "⬇️I")
                     {
                         // PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
                         // IsReadOnly = false
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
-                    formsPlugin, new ActionButtonAdderParameter(NavigationItemDelete, "❌I")
+                    formsPlugin, new ActionButtonAdderParameterForTable(NavigationItemDelete, "❌I")
                     {
                         // PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
                         // IsReadOnly = false

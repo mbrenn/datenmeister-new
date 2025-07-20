@@ -136,13 +136,13 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
                     elementsField.set(_Forms._SubElementFieldData.name, propertyName);
                     elementsField.set(_Forms._SubElementFieldData.title, propertyName);
                     elementsField.set(_Forms._SubElementFieldData.isReadOnly,
-                        context.IsForTableForm || context.IsReadOnly);
+                        parameter.IsInTable || context.IsReadOnly);
 
                     elementsField.set(
                         _Forms._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                     elementsField.set(_Forms._SubElementFieldData.isReadOnly, isReadOnly);
 
-                    if (!context.IsForTableForm)
+                    if (!parameter.IsInTable)
                     {
                         var clonedContext = context.Clone();
                         var enumerationListForm =

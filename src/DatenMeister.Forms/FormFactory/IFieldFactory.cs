@@ -7,6 +7,13 @@ public record FieldFactoryParameter : FormFactoryParameterBase
     public IElement? PropertyType { get; set; }
     
     public string PropertyName { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Gets or sets the value whether this value will be shown in a table.
+    /// If it is shown in a table, a subtable will not be created
+    /// This avoids a endless recursion leading to stackoverflow  
+    /// </summary>
+    public bool IsInTable { get; set; }
 }
 
 public interface IFieldFactory

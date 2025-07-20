@@ -64,12 +64,6 @@ public class FormCreationContext
     public string ViewModeId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the information whether the created form is just for a tableform.
-    /// If that this is the case, then no fields like SubElementField will be created
-    /// </summary>
-    public bool IsForTableForm { get; set; }
-
-    /// <summary>
     /// Clones the context and copies all properties, except the LocalScopeStorage
     /// </summary>
     /// <returns>The cloned instance</returns>
@@ -79,8 +73,7 @@ public class FormCreationContext
         {
             IsReadOnly = IsReadOnly,
             Global = Global,
-            ViewModeId = ViewModeId,
-            IsForTableForm = IsForTableForm
+            ViewModeId = ViewModeId
         };
     }
 
@@ -93,12 +86,6 @@ public class FormCreationContext
     public FormCreationContext SetViewModeId(string viewModeId)
     {
         ViewModeId = viewModeId;
-        return this;
-    }
-
-    public FormCreationContext SetIsForTableForm(bool isForTableForm)
-    {
-        IsForTableForm = isForTableForm;
         return this;
     }
 }

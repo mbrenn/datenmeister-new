@@ -35,6 +35,8 @@ public static class FieldCreationHelper
             return false;
         }
 
+        var isTableForm = rowOrObjectForm.metaclass?.equals(_Forms.TheOne.__TableForm) == true;
+
         var wasInMetaClass = false;
 
         var classifierMethods =
@@ -60,11 +62,12 @@ public static class FieldCreationHelper
             if (isAlreadyIn)
                 continue;
 
-            var column = FormCreation.CreateFieldForProperty(
+            var column = FormCreation.CreateField(
                 new FieldFactoryParameter
                 {
                     PropertyName = propertyName ?? string.Empty,
-                    PropertyType = property
+                    PropertyType = property,
+                    IsInTable = isTableForm
                 },
                 context.Clone());
             if (column.Form != null)

@@ -67,7 +67,7 @@ public class CollectionFormFromData : ICollectionFormFactory
                             Extent = parameter.Extent,
                             ExtentTypes = parameter.ExtentTypes
                         },
-                        context.Clone().SetIsForTableForm(true))
+                        context.Clone())
                     .Forms;
             if (innerTableForm == null)
             {
@@ -117,8 +117,7 @@ public class CollectionFormFromData : ICollectionFormFactory
                                         MetaClass = groupedMetaclass
                                     },
                                     context.Clone()
-                                        .SetReadOnly(true)
-                                        .SetIsForTableForm(true))
+                                        .SetReadOnly(true))
                                 .Forms ??
                             throw new InvalidOperationException("No form was found");
 

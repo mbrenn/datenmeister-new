@@ -2547,14 +2547,6 @@ public class _Forms
         public IElement @__Row = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowForm");
         public static string @Table = "Table";
         public IElement @__Table = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableForm");
-        public static string @ObjectExtension = "ObjectExtension";
-        public IElement @__ObjectExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-ObjectExtension");
-        public static string @CollectionExtension = "CollectionExtension";
-        public IElement @__CollectionExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-CollectionExtension");
-        public static string @RowExtension = "RowExtension";
-        public IElement @__RowExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-RowExtension");
-        public static string @TableExtension = "TableExtension";
-        public IElement @__TableExtension = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TableExtension");
 
     }
 
@@ -2567,11 +2559,7 @@ public class _Forms
         @Object,
         @Collection,
         @Row,
-        @Table,
-        @ObjectExtension,
-        @CollectionExtension,
-        @RowExtension,
-        @TableExtension
+        @Table
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Forms.Form",

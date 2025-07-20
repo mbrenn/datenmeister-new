@@ -130,9 +130,8 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
             new ActionButtonAdderParameterForTable(NavigationExtentNavigateTo, "Items")
             {
                 PredicateForParameter = x => 
-                    x.PropertyName == _Management._Workspace.extents,
-                
-                /*ParentMetaClass = _Management.TheOne.__Workspace,*/
+                    x.PropertyName == _Management._Workspace.extents
+                    && x.ParentMetaClass?.equals(_Management.TheOne.__Workspace) == true,
                 ActionButtonPosition = 0
             });
 

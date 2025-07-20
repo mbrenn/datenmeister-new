@@ -91,6 +91,8 @@ public static class FormCreation
         FormCreationContext context,
         FormCreationResultOneForm? result = null)
     {
+        parameter.MetaClass ??= parameter.Element?.AsIElement()?.getMetaClass();
+        
         result ??= new FormCreationResultOneForm();
         WalkThroughManager(
             context.Global.ObjectFormFactories,
@@ -172,6 +174,8 @@ public static class FormCreation
         FormCreationContext context,
         FormCreationResultMultipleForms? result = null)
     {
+        parameter.MetaClass ??= parameter.Element?.AsIElement()?.getMetaClass();
+
         result ??= new FormCreationResultMultipleForms();
         WalkThroughManager(
             context.Global.RowFormFactories,

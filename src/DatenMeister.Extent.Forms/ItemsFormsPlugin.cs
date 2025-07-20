@@ -57,39 +57,45 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListMoveUpItem, "⬆️")
                     {
-                        // ParentMetaClass = _Management.TheOne.__Extent
+                        PredicateForParameter = x => 
+                            x.ParentMetaClass?.equals(_Management.TheOne.__Extent) == true
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListMoveDownItem, "⬇️")
                     {
-                        // ParentMetaClass = _Management.TheOne.__Extent
+                        PredicateForParameter = x => 
+                            x.ParentMetaClass?.equals(_Management.TheOne.__Extent) == true
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListDeleteItem, "❌")
                     {
-                        // ParentMetaClass = _Management.TheOne.__Extent
+                        PredicateForParameter = x => 
+                            x.ParentMetaClass?.equals(_Management.TheOne.__Extent) == true
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationItemPropertyMoveUpItem, "⬆️I")
                     {
-                        // PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
+                        PredicateForParameter =
+                            x => !string.IsNullOrEmpty(x.ParentPropertyName)
                         // IsReadOnly = false
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationItemPropertyMoveDownItem, "⬇️I")
                     {
-                        // PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
+                        PredicateForParameter =
+                            x => !string.IsNullOrEmpty(x.ParentPropertyName)
                         // IsReadOnly = false
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationItemDelete, "❌I")
                     {
-                        // PredicateForContext = x => !string.IsNullOrEmpty(x.ParentPropertyName),
+                        PredicateForParameter =
+                            x => !string.IsNullOrEmpty(x.ParentPropertyName)
                         // IsReadOnly = false
                     });
 

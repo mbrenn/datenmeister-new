@@ -55,11 +55,24 @@ public static class ActionButtonToFormAdder
                     // Not predicated
                     return;
                 }
+
+                if (!forRow.PredicateForParameter(rowParameter))
+                {
+                    // Skip it
+                    return;
+                }
             }
             else if (parameter is ActionButtonAdderParameterForTable forTable
                      && factoryParameter is TableFormFactoryParameter tableParameter)
             {
+                
                 forTable.OnCall?.Invoke(tableParameter);
+                
+                if (!forTable.PredicateForParameter(tableParameter))
+                {
+                    // Skip it
+                    return;
+                }
             }
             else
             {

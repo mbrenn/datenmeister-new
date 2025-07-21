@@ -40,7 +40,7 @@ public class FormsControllerInternal
         return item;
     }
 
-    public IElement GetObjectFormForItemInternal(string workspaceId, string itemUrl, string? viewMode)
+    public IElement GetObjectFormForItemInternal(string workspaceId, string itemUrl, string viewMode)
     {
         var item = GetItemByUriParameter(workspaceId, itemUrl);
         var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
@@ -48,8 +48,7 @@ public class FormsControllerInternal
             MofFactory = _temporaryExtentFactory
         };
 
-        var formContext = factory.Create()
-            .SetViewModeId(viewMode ?? string.Empty);
+        var formContext = factory.Create(viewMode);
 
         var parameter = new ObjectFormFactoryParameter
         {
@@ -68,7 +67,7 @@ public class FormsControllerInternal
         return form.Form;
     }
 
-    public IElement GetCollectionFormForExtentInternal(string workspaceId, string extentUri, string? viewMode)
+    public IElement GetCollectionFormForExtentInternal(string workspaceId, string extentUri, string viewMode)
     {
         var (collection, extent) = WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
         if (collection == null || extent == null)
@@ -81,7 +80,7 @@ public class FormsControllerInternal
             MofFactory = _temporaryExtentFactory
         };
         
-        var formContext = factory.Create();
+        var formContext = factory.Create(viewMode);
 
         var form = FormCreation.CreateCollectionForm(
             new CollectionFormFactoryParameter
@@ -106,14 +105,14 @@ public class FormsControllerInternal
     /// <param name="metaClass">MetaClass to be given</param>
     /// <param name="viewMode">The view mode</param>
     /// <returns>The found form</returns>
-    public IObject GetObjectFormForMetaClassInternal(string? metaClass, string? viewMode = null)
+    public IObject GetObjectFormForMetaClassInternal(string? metaClass, string viewMode)
     {
         var factory = new FormCreationContextFactory(WorkspaceLogic, ScopeStorage)
         {
             MofFactory = _temporaryExtentFactory
         };
 
-        var context = factory.Create().SetViewModeId(viewMode ?? string.Empty);
+        var context = factory.Create(viewMode);
 
         IElement? resolvedMetaClass = null;
         if (!string.IsNullOrEmpty(metaClass))

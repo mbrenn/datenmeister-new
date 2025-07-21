@@ -39,7 +39,7 @@ public class TestAutoColumnCreator
 
         // Execute the stuff
         var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
-        var context = formCreationFactory.Create();
+        var context = formCreationFactory.Create(string.Empty);
         context.RemoveFormFinder();
         context.Global.Factory = factory;
 
@@ -101,7 +101,7 @@ public class TestAutoColumnCreator
         // Execute the stuff
         
         var formCreationFactory = new FormCreationContextFactory(workspaceLogic, scopeStorage);
-        var context = formCreationFactory.Create();
+        var context = formCreationFactory.Create(string.Empty);
         context.RemoveFormFinder();
         context.Global.Factory = factory;
         

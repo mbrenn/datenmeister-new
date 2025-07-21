@@ -171,7 +171,7 @@ public class FormControllerTests
         Assert.That(zipCodeMetaUrl, Is.Not.Null);
 
         var controller = new FormsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
-        var form = (controller.GetObjectFormForMetaClassInternal(zipCodeMetaUrl) as IElement)!;
+        var form = (controller.GetObjectFormForMetaClassInternal(zipCodeMetaUrl, string.Empty) as IElement)!;
 
         Assert.That(form, Is.Not.Null);
         Assert.That(form.getMetaClass()?.@equals(_Forms.TheOne.__ObjectForm), Is.True);

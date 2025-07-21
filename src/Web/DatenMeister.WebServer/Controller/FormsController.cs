@@ -47,7 +47,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         itemUrl = MvcUrlEncoder.DecodePathOrEmpty(itemUrl);
         viewMode = MvcUrlEncoder.DecodePath(viewMode);
 
-        var form = _internal.GetObjectFormForItemInternal(workspaceId, itemUrl, viewMode);
+        var form = _internal.GetObjectFormForItemInternal(workspaceId, itemUrl, viewMode ?? string.Empty);
 
         return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
     }
@@ -59,7 +59,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
 
-        var form = _internal.GetCollectionFormForExtentInternal(workspaceId, extentUri, viewMode);
+        var form = _internal.GetCollectionFormForExtentInternal(workspaceId, extentUri, viewMode ?? string.Empty);
 
         return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
     }
@@ -97,8 +97,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             MofFactory = new MofFactory(formMethods.GetFormExtent(FormLocationType.User))
         };
 
-        var context = factory.Create()
-            .SetViewModeId(viewMode ?? string.Empty);
+        var context = factory.Create(viewMode ?? string.Empty);
 
         var (collection, extent) = _internal.WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
         if (extent == null || collection == null)
@@ -159,8 +158,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             MofFactory = new MofFactory(userFormExtent)
         };
         
-        var formContext = factory.Create()
-            .SetViewModeId(viewMode ?? string.Empty);
+        var formContext = factory.Create(viewMode ?? string.Empty);
 
         var element = _internal.WorkspaceLogic.FindObject(workspaceId, itemUri);
         if (element == null)
@@ -199,7 +197,7 @@ public class FormsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             metaClass = null;
         }
 
-        var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode);
+        var form = _internal.GetObjectFormForMetaClassInternal(metaClass, viewMode ?? string.Empty);
 
         return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
     }

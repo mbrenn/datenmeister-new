@@ -96,7 +96,7 @@ public class SimpleReportCreator
                                      {
                                          Element = rootElement
                                      },
-                                     _formContextFactory.Create())
+                                     _formContextFactory.Create(string.Empty))
                                  .Forms.FirstOrDefault()
                              ?? throw new InvalidOperationException("detailForm is null");
 
@@ -164,7 +164,7 @@ public class SimpleReportCreator
         var addFullNameColumn =
             _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showFullName);
         var collectionReporter = new SimpleReportForCollection(
-            _formContextFactory.Create(),
+            _formContextFactory.Create(string.Empty),
             _itemFormatter ?? throw new InvalidOperationException("itemFormatter is null"), 
             report)
         {

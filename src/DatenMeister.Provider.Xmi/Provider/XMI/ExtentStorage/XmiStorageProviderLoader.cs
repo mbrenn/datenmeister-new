@@ -36,12 +36,6 @@ public class XmiStorageProviderLoader : IProviderLoader, IProviderLocking
             var filePath =
                 configuration.getOrDefault<string>(_ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
 
-            // Strips the quotes from the file path, if user performs a direct copy from the explorer
-            if (filePath.StartsWith("\"") && filePath.EndsWith("\""))
-            {
-                filePath = filePath[1..^1];
-            }
-
             XDocument xmlDocument;
             if (!File.Exists(filePath) || extentCreationFlags == ExtentCreationFlags.CreateOnly)
             {

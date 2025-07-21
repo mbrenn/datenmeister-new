@@ -55,7 +55,7 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                     formsPlugin, actionParameter);
                 
                 var otherActionParameter =
-                    new ActionButtonAdderParameterForRow(WorkspaceCreateExtentNavigate, "Create or Load Extent")
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
                     {
                         PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
                     };

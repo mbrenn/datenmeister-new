@@ -23,6 +23,9 @@ export function navigateToDefineAction(workspace) {
         getLinkForNavigateToWorkspace(workspace);
 }
 export function getLinkForNavigateToExtentItems(workspace, extentUri, parameter) {
+    if (workspace === undefined || extentUri === undefined) {
+        return null;
+    }
     let urlParameter = "";
     let ampersand = '?';
     // Trim extentUri to remove the parameters
@@ -38,8 +41,10 @@ export function getLinkForNavigateToExtentItems(workspace, extentUri, parameter)
         encodeURIComponent(extentUri + urlParameter);
 }
 export function navigateToExtentItems(workspace, extentUri, parameter) {
-    document.location.href =
-        getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
+    const link = getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
+    if (link !== null) {
+        document.location.href = link;
+    }
 }
 export function navigateToExtentProperties(workspace, extentUri) {
     document.location.href = getLinkForNavigateToExtentProperties(workspace, extentUri);

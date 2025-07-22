@@ -196,12 +196,14 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             this.formElement.get('title')
             ?? this.formElement.get('name'));
 
-        headLineLink.attr(
-            'href',
-            Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass }));
+        const link = Navigator.getLinkForNavigateToExtentItems(
+            this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass });
+        if(link !== null ) {
+            headLineLink.attr(
+                'href', link);
+        }
 
         this.tableCache.cacheFreeTextField.empty();
-
         this.tableCache.cacheButtons.empty();
 
         // Evaluate the new buttons to create objects

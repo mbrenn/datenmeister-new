@@ -38,7 +38,12 @@ export interface NavigationToExtentItemsParameter{
     metaClass?: string; 
 }
 
-export function getLinkForNavigateToExtentItems(workspace: string, extentUri: string, parameter?: NavigationToExtentItemsParameter) {
+export function getLinkForNavigateToExtentItems(workspace: string | undefined, extentUri: string | undefined, parameter?: NavigationToExtentItemsParameter) {
+    if(workspace === undefined || extentUri === undefined)
+    {
+        return null;
+    }
+    
     let urlParameter = "";
     let ampersand = '?';
     
@@ -58,8 +63,10 @@ export function getLinkForNavigateToExtentItems(workspace: string, extentUri: st
 }
 
 export function navigateToExtentItems(workspace: string, extentUri: string, parameter?: NavigationToExtentItemsParameter) {
-    document.location.href =
-        getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
+    const link = getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
+    if (link !== null) {
+        document.location.href = link;
+    }
 }
 
 export function navigateToExtentProperties(workspace: string, extentUri: string) {

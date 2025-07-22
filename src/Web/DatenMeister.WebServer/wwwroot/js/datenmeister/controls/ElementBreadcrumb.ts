@@ -37,9 +37,15 @@ export class ElementBreadcrumb {
             const element = $("<a></a>");
             element.text(item.name);
             if (item.ententType === EntentType.Extent) {
-                element.attr('href', Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri));
-            } else {
-                element.attr('href', Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
+                const link = Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri);
+                if (link !== null) {
+                    element.attr('href', link);
+                }
+            }else {
+                const link = Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri);
+                if (link !== null) {
+                    element.attr('href', link);
+                }
             }
 
             this._container.append(element);

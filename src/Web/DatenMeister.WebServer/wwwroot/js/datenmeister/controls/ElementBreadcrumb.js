@@ -26,10 +26,16 @@ export class ElementBreadcrumb {
             const element = $("<a></a>");
             element.text(item.name);
             if (item.ententType === EntentType.Extent) {
-                element.attr('href', Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri));
+                const link = Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri);
+                if (link !== null) {
+                    element.attr('href', link);
+                }
             }
             else {
-                element.attr('href', Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
+                const link = Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri);
+                if (link !== null) {
+                    element.attr('href', link);
+                }
             }
             this._container.append(element);
             // Adds the properties, in case the ententType is of type Extent

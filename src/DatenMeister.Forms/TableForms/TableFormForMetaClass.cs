@@ -38,7 +38,7 @@ public class TableFormForMetaClass : ITableFormFactory
         result.AddToFormCreationProtocol(
             "[TableFormFromData.CreateTableFormForProperty]");
 
-        FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(createdForm, metaClass, context);
+        FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(createdForm, metaClass, parameter, context);
         createdForm.set(_Forms._TableForm.metaClass, metaClass);
 
         result.IsManaged = result.IsMainContentCreated = true;

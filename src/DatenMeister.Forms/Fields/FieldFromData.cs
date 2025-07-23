@@ -162,12 +162,32 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
 
                     result.Form = elementsField;
                 }
-
+                else if (parameter.IsInTable)
+                {
+                    var referenceField = factory.create(_Forms.TheOne.__ReferenceFieldData);
+                    referenceField.set(_Forms._TextFieldData.name, propertyName);
+                    referenceField.set(_Forms._TextFieldData.title, propertyName);
+                    result.Form = referenceField;
+                }
                 else if (Configuration.CreateDropDownForReferences)
                 {
+                    // Gets the workspace of the object
+                    var workspace = parameter.Extent?.GetWorkspace();
+                    
                     var dropDownByQueryData = factory.create(_Forms.TheOne.__DropDownByQueryData);
                     var queryStatement = factory.create(_DataViews.TheOne.__QueryStatement);
-                    var queryByExtent = factory.create(_DataViews.TheOne.__SelectFromAllWorkspacesNode);
+                    
+                    IElement queryByExtent;
+                    if (workspace != null)
+                    {
+                        queryByExtent = factory.create(_DataViews.TheOne.__SelectByWorkspaceNode);
+                        queryByExtent.set(_DataViews._SelectByWorkspaceNode.workspaceId, workspace.id);
+                    }
+                    else
+                    {
+                        queryByExtent = factory.create(_DataViews.TheOne.__SelectFromAllWorkspacesNode);    
+                    }
+                    
                     var queryFlatten = factory.create(_DataViews.TheOne.__FlattenNode);
                     var queryByMetaClass = factory.create(_DataViews.TheOne.__FilterByMetaclassNode);
                         

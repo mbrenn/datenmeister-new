@@ -11,19 +11,30 @@ using DatenMeister.Core.Runtime.Proxies.ReadOnly;
 
 namespace DatenMeister.DataView;
 
-public class DataViewExtent : IUriExtent, IUriResolver
+public class DataViewExtent : IUriExtent, IUriResolver, IHasExtentConfiguration
 {
     private readonly IElement _dataViewElement;
     private readonly DataViewLogic _dataViewLogic;
 
-    private ExtentUrlNavigator _urlNavigator; 
+    private readonly ExtentConfiguration _extentConfiguration;
+
+    private ExtentUrlNavigator _urlNavigator;
 
     public DataViewExtent(IElement dataViewElement, DataViewLogic dataViewLogic, IScopeStorage scopeStorage)
     {
         _dataViewElement = dataViewElement ?? throw new ArgumentNullException(nameof(dataViewElement));
         _dataViewLogic = dataViewLogic ?? throw new ArgumentNullException(nameof(dataViewLogic));
         _urlNavigator = new ExtentUrlNavigator(this, scopeStorage);
+        _extentConfiguration = new ExtentConfiguration(this);
     }
+
+    /// <summary>
+    /// Gets the extent configuration
+    /// </summary>
+    public ExtentConfiguration ExtentConfiguration
+        => _extentConfiguration
+           ?? throw new InvalidOperationException(
+               "ExtentConfiguration is not existing");
 
     public bool equals(object? other) =>
         _dataViewElement.equals(other);
@@ -71,13 +82,13 @@ public class DataViewExtent : IUriExtent, IUriResolver
         return _urlNavigator.element(uri) as IElement;
     }
 
-        
+
     public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true, string? workspace = null)
     {
         return _urlNavigator.element(uri);
     }
 
-        
+
     public IElement? ResolveById(string id)
     {
         return _urlNavigator.element("#" + id) as IElement;

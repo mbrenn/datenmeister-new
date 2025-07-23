@@ -94,7 +94,7 @@ public static class Filter
         =>
             new FilterOnMultipleProperties(
                 collection,
-                new[] {property},
+                [property],
                 value,
                 comparer);
 
@@ -198,7 +198,7 @@ public static class Filter
         string byFollowingProperty)
         =>
             new TemporaryReflectiveSequence(AllDescendentsQuery
-                .GetDescendents(collection, new[] {byFollowingProperty}).Cast<object>().ToList());
+                .GetDescendents(collection, [byFollowingProperty]).Cast<object>().ToList());
 
     /// <summary>
     /// Orders the reflective section by the given property
@@ -210,7 +210,7 @@ public static class Filter
         this IReflectiveCollection collection,
         string property)
         =>
-            new OrderByProperties(collection, new[] {property});
+            new OrderByProperties(collection, [property]);
 
     /// <summary>
     /// Orders the reflective section by the given property

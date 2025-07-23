@@ -31,7 +31,11 @@ public class RowFormFromData : IRowFormFactory
             result.AddToFormCreationProtocol(
                 "[RowFormFromData.CreateRowFormForItem]: " + NamedElementMethods.GetName(element));
             
-            FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(createdForm, metaClass, context);
+            FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(
+                createdForm,
+                metaClass,
+                parameter,
+                context);
             result.IsManaged = result.IsMainContentCreated = true;
         }
         

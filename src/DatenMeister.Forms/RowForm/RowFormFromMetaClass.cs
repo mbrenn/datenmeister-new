@@ -33,7 +33,8 @@ public class RowFormFromMetaClass : IRowFormFactory
             result.AddToFormCreationProtocol(
                 "[FormCreator.CreateRowFormByMetaClass]: " + NamedElementMethods.GetName(parameterMetaClass));
 
-            if (!FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(createdForm, parameterMetaClass, context))
+            if (!FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(
+                    createdForm, parameterMetaClass, parameter, context))
             {
                 createdForm.set(_Forms._RowForm.allowNewProperties, true);
             }

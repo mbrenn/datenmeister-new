@@ -91,7 +91,9 @@ public class DataViewEvaluation
             }
 
             // Checks the timeout
-            if (MaximumExecutionTiming != TimeSpan.MaxValue && _stopwatch.Elapsed > MaximumExecutionTiming)
+            if (MaximumExecutionTiming != TimeSpan.MaxValue
+                && _stopwatch.Elapsed > MaximumExecutionTiming
+                && !Debugger.IsAttached)
             {
                 Logger.Error("Maximum execution timing exceeded");
                 throw new InvalidOperationException("Maximum execution timing exceeded");
@@ -99,6 +101,15 @@ public class DataViewEvaluation
 
             // Gets the elements
             var result = GetElementsForViewNodeInternal(viewNode);
+            if (Debugger.IsAttached)
+            {
+                var asList = result.ToList();
+                if (asList.Count > 100)
+                {
+                    Logger.Info($"Result of dataview evaluation is {asList.Count} elements");
+                }
+            }
+            
             return result;
         }
         finally

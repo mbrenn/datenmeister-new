@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 
@@ -28,13 +29,13 @@ public class ExtentConfiguration
     /// <summary>
     /// Stores the extent
     /// </summary>
-    private readonly MofExtent _extent;
+    private readonly IExtent _extent;
 
     /// <summary>
     /// Initializes a new instance of the extent
     /// </summary>
     /// <param name="extent"></param>
-    public ExtentConfiguration(MofExtent extent)
+    public ExtentConfiguration(IExtent extent)
     {
         _extent = extent;
     }

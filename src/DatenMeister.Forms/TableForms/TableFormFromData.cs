@@ -41,6 +41,7 @@ public class TableFormFromData : ITableFormFactory
                     FieldCreationHelper.AddFieldsToRowOrTableFormByMetaClass(
                         createdForm,
                         innerMetaClass,
+                        parameter,
                         context);
                 }
                 else

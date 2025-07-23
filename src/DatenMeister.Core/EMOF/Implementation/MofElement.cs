@@ -48,7 +48,11 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
             {
                 return true;
             }
-                
+             
+            /*
+             * We simplify the logic and currently, we do not satisfy the MOF Standard
+             * that only values being different than the default value are to be regarded as being set
+             * 
             // Checks whether we are having a default Value
             var defaultValue = DefaultValueHandler.ReadDefaultValueOfProperty<object>(this, property);
             if (defaultValue != null)
@@ -56,6 +60,7 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
                 // If we have a default value, then it is quite sure that the property is set!
                 return true;
             }
+            */
         }
 
         return base.isSet(property);

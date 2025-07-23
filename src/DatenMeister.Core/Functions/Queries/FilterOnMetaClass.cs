@@ -11,7 +11,7 @@ public class FilterOnMetaClass : ProxyReflectiveCollection
     public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
         : base(collection)
     {
-        _filteredMetaClass = filteredMetaClass == null ? null : new[] {filteredMetaClass};
+        _filteredMetaClass = filteredMetaClass == null ? null : [filteredMetaClass];
     }
 
     public FilterOnMetaClass(IReflectiveCollection collection, IElement[] filteredMetaClass)
@@ -58,16 +58,10 @@ public class FilterOnMetaClass : ProxyReflectiveCollection
     {
         var isIn = false;
         var metaClass = valueAsObject?.getMetaClass();
-        if (metaClass == null && _filteredMetaClass == null)
+        if (metaClass == null && (_filteredMetaClass == null || _filteredMetaClass.Length == 0)
+            || metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
         {
             isIn = true;
-        }
-        else
-        {
-            if (metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
-            {
-                isIn = true;
-            }
         }
 
         return isIn;

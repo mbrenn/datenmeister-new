@@ -18,7 +18,7 @@ public class PropertiesAsReflectiveCollection(IObject value) : IReflectiveCollec
     /// </summary>
     private readonly ICollection<string> _propertyNames = new List<string>();
 
-    private readonly List<Tuple<string, object>> _propertyValues = new();
+    private readonly List<Tuple<string, object>> _propertyValues = [];
 
     /// <summary>
     /// Initializes a new instance of the PropertiesAsReflectiveCollection
@@ -29,7 +29,7 @@ public class PropertiesAsReflectiveCollection(IObject value) : IReflectiveCollec
     {
         if (propertyName != null)
         {
-            _propertyNames = new[] {propertyName};
+            _propertyNames = [propertyName];
         }
     }
 

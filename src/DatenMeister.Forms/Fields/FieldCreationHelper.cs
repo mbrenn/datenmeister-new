@@ -18,11 +18,13 @@ public static class FieldCreationHelper
     /// </summary>
     /// <param name="rowOrObjectForm">Form that will be extended. Must be list or detail form.</param>
     /// <param name="metaClass">Metaclass to be used</param>
+    /// <param name="parameter">Being </param>
     /// <param name="context">Creation Mode to be used</param>
     /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
     public static bool AddFieldsToRowOrTableFormByMetaClass(
         IElement rowOrObjectForm,
         IElement? metaClass,
+        FormFactoryParameterBase parameter,
         FormCreationContext context)
     {
         if (metaClass == null)
@@ -65,6 +67,8 @@ public static class FieldCreationHelper
             var column = FormCreation.CreateField(
                 new FieldFactoryParameter
                 {
+                    Extent = parameter.Extent,
+                    ExtentTypes = parameter.ExtentTypes,
                     PropertyName = propertyName ?? string.Empty,
                     PropertyType = property,
                     IsInTable = isTableForm

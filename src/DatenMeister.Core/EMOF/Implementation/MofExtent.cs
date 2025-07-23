@@ -19,7 +19,9 @@ namespace DatenMeister.Core.EMOF.Implementation;
 /// <summary>
 /// Implements the extent interface according the MOF specification
 /// </summary>
-public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties, IHasExtent, IHasMofExtentMetaObject
+public class MofExtent : 
+    IExtent, IHasWorkspace, IObjectAllProperties, IHasExtent,
+    IHasMofExtentMetaObject, IHasExtentConfiguration
 {
     private static readonly MofExtent XmlMetaExtent =
         new MofUriExtent(new XmiProvider(), null)

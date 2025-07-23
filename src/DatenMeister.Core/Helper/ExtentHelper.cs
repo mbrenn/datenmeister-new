@@ -16,7 +16,7 @@ public static class ExtentHelper
     public static readonly ClassLogger Logger = new(typeof(ExtentHelper));
 
     public static ExtentConfiguration GetConfiguration(this IExtent extent)
-        => (extent as MofExtent)?.ExtentConfiguration
+        => (extent as IHasExtentConfiguration)?.ExtentConfiguration
            ?? throw new InvalidOperationException("Configuration is not existing");
 
     /// <summary>

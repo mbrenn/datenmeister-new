@@ -231,17 +231,18 @@ public class ExtentManager
         {
             var filePath =
                 configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
-            filePath = _integrationSettings.NormalizeDirectoryPath(filePath);
-
-            if (Directory.Exists(filePath))
-            {
-                throw new InvalidOperationException("Given file is a directory name. ");
-            }
 
             // Strips the quotes from the file path, if user performs a direct copy from the explorer
             if (filePath.StartsWith("\"") && filePath.EndsWith("\""))
             {
                 filePath = filePath[1..^1];
+            }
+            
+            filePath = _integrationSettings.NormalizeDirectoryPath(filePath);
+
+            if (Directory.Exists(filePath))
+            {
+                throw new InvalidOperationException("Given file is a directory name. ");
             }
             
             configuration.set(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath, filePath);

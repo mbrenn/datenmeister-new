@@ -12,7 +12,7 @@ public class FilterOnMetaClassOrSpecialized : ProxyReflectiveCollection
     public FilterOnMetaClassOrSpecialized(IReflectiveCollection collection, IElement? filteredMetaClass)
         : base(collection)
     {
-        _filteredMetaClass = filteredMetaClass == null ? null : new[] {filteredMetaClass};
+        _filteredMetaClass = filteredMetaClass == null ? null : [filteredMetaClass];
     }
 
     public FilterOnMetaClassOrSpecialized(IReflectiveCollection collection, IElement[] filteredMetaClass)

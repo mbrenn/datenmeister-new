@@ -202,6 +202,7 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
                         
                     queryByMetaClass.set(_DataViews._FilterByMetaclassNode.input, queryFlatten);
                     queryByMetaClass.set(_DataViews._FilterByMetaclassNode.metaClass, propertyType);
+                    queryByMetaClass.set(_DataViews._FilterByMetaclassNode.includeInherits, true);
                         
                     dropDownByQueryData.set(_Forms._SubElementFieldData.name, propertyName);
                     dropDownByQueryData.set(_Forms._SubElementFieldData.title, propertyName);

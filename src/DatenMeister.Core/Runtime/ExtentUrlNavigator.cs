@@ -235,7 +235,8 @@ public class ExtentUrlNavigator(IUriExtent extent, IScopeStorage? scopeStorage)
         else
         {
             // Now go through the list
-            foreach (var element in AllDescendentsQuery.GetDescendents(extent))
+            foreach (var element in 
+                     AllDescendentsQuery.GetDescendents(extent))
             {
                 var elementAsMofObject =
                     element as IHasId ?? throw new ArgumentException("elementAsMofObject");

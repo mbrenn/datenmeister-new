@@ -2,8 +2,7 @@
 <item>
   <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///intern.datenmeister.types/"></meta>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_CommonTypes" name="CommonTypes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-    <packagedElement p1:type="dm:///_internal/model/uml#PrimitiveType" p1:id="DateTime" name="DateTime">	        
-    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#PrimitiveType" p1:id="DateTime" name="DateTime"></packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="Default" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DefaultTypes.Package" name="Package">
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="1f901e57-0e10-488e-9ab6-c58e21f38f2a" />

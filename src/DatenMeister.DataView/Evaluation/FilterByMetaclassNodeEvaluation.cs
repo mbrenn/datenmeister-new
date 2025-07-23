@@ -32,12 +32,21 @@ public class FilterByMetaclassNodeEvaluation : IDataViewNodeEvaluation
         var input = evaluation.GetElementsForViewNode(inputNode);
 
         var type = viewNode.getOrDefault<IElement>(_DataViews._FilterByMetaclassNode.metaClass);
+        var includeInherits = viewNode.getOrDefault<bool>(_DataViews._FilterByMetaclassNode.includeInherits);
         if (type == null)
         {
             return new TemporaryReflectiveSequence(input.WhenMetaClassIsNotSet());
         }
 
-        return new TemporaryReflectiveSequence(
-            input.WhenMetaClassIs(type));
+        if (includeInherits)
+        {
+            return new TemporaryReflectiveSequence(
+                input.WhenMetaClassIsOrSpecialized(type));
+        }
+        else
+        {
+            return new TemporaryReflectiveSequence(
+                input.WhenMetaClassIs(type));    
+        }
     }
 }

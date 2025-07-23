@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
+﻿using System.Diagnostics;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Proxies;
 
@@ -58,6 +59,28 @@ public class FilterOnMetaClass : ProxyReflectiveCollection
     {
         var isIn = false;
         var metaClass = valueAsObject?.getMetaClass();
+/*
+        if (metaClass != null && metaClass.ToString()?.Contains("ViewNode") == true)
+        {
+            Debugger.Break();
+        }
+        
+        if(metaClass != null
+           && _filteredMetaClass?.Any(x=>x.ToString()?.Contains("ViewNode") == true) == true
+           && !metaClass.ToString()?.Contains("EnvironmentalVariable") == true
+           && !metaClass.ToString()?.Contains("Package") == true
+           && !metaClass.ToString()?.Contains("Workspace") == true
+           && !metaClass.ToString()?.Contains("Package") == true)
+        {
+            Debugger.Break();
+        }
+        
+        if (metaClass != null && metaClass.ToString()?.Contains("ViewNode") == true
+            && _filteredMetaClass?.Any(x=>x.ToString()?.Contains("ViewNode") == true) == true)
+        {
+            Debugger.Log(1, "FilterOnMetaClass", "ViewNode talking");
+        }*/
+
         if (metaClass == null && (_filteredMetaClass == null || _filteredMetaClass.Length == 0)
             || metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
         {

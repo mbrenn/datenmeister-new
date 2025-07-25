@@ -71,7 +71,15 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
         }
     }
 
-    public List<IObject>? GetRootElementsInternal(string workspaceId, string extentUri, string? viewNode = null, QueryFilterParameter? filterParameter = null)
+    public class GetRootElementsInternalResult
+    {
+        public List<IObject>? Elements { get; set; }
+
+        public  bool IsCapped { get; set; }
+    }
+
+    public GetRootElementsInternalResult GetRootElementsInternal(
+        string workspaceId, string extentUri, string? viewNode = null, QueryFilterParameter? filterParameter = null)
     {
         var (collection, extent) = WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
         if (collection == null || extent == null)
@@ -118,15 +126,24 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
         {
             foreach (var filter in filterParameter.FilterByProperties)
             {
-                finalElements = finalElements.Where(x => x.isSet(filter.Key) && x.get(filter.Key)?.ToString() == filter.Value).ToList();
+                finalElements = finalElements
+                    .Where(x => x.isSet(filter.Key) && x.get(filter.Key)?.ToString() == filter.Value).ToList();
             }
         }
 
 #if DEBUG
 #warning Number of elements in ItemsController is limited to improve speed during development. This is not a release option
-        return finalElements.Take(100).ToList();
+        return new GetRootElementsInternalResult
+        {
+            Elements = finalElements.Take(100).ToList(),
+            IsCapped = finalElements.Count > 100
+        };
 #else
-            return finalElements;
+        return new GetRootElementsInternalResult
+        {
+            Elements = finalElements,
+            IsCapped = false
+        };
 #endif
 
     }

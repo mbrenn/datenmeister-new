@@ -23,6 +23,7 @@ using DatenMeister.Provider.ExtentManagement;
 using DatenMeister.WebServer.Library.Helper;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace DatenMeister.WebServer.Controller;
 
@@ -46,33 +47,32 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var factory = new MofFactory(extent);
 
         var metaClass =
-            string.IsNullOrEmpty(createParams.metaClass)
+            string.IsNullOrEmpty(createParams.MetaClass)
                 ? null
-                : extent.GetUriResolver().Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
+                : extent.GetUriResolver().Resolve(createParams.MetaClass, ResolveType.OnlyMetaClasses) as IElement;
 
         var item = factory.create(metaClass);
-        var values = createParams.properties?.v;
+        var values = createParams.Properties?.v;
         if (values != null)
-            foreach (var propertyParam in values)
+            foreach (var (key, value) in values)
             {
-                var value = propertyParam.Value;
                 var propertyValue = new DirectJsonDeconverter(workspaceLogic, scopeStorage)
                     .ConvertJsonValue(value);
 
-                if (propertyValue != null) item.set(propertyParam.Key, propertyValue);
+                if (propertyValue != null) item.set(key, propertyValue);
             }
 
         extent.elements().add(item);
 
         return new CreateItemInExtentResult
         {
-            success = true,
-            itemId = (item as IHasId)?.Id ?? string.Empty,
-            workspace = workspaceId,
-            itemUrl = item.GetUri() ?? string.Empty
+            Success = true,
+            ItemId = (item as IHasId)?.Id ?? string.Empty,
+            Workspace = workspaceId,
+            ItemUrl = item.GetUri() ?? string.Empty
         };
     }
-        
+
     /// <summary>
     /// Parameters to create an item within an extent
     /// </summary>
@@ -81,25 +81,25 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         /// Gets or sets the metaclass
         /// </summary>
-        public string? metaClass { get; set; }
+        public string? MetaClass { get; set; }
 
-        public MofObjectAsJson? properties { get; set; }
+        public MofObjectAsJson? Properties { get; set; }
     }
 
     public class CreateItemInExtentResult
     {
-        public bool success { get; set; }
-        public string itemId { get; set; } = string.Empty;
+        public bool Success { get; set; }
+        public string ItemId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the item url
         /// </summary>
-        public string itemUrl { get; set; } = string.Empty;
+        public string ItemUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the workspace
         /// </summary>
-        public string workspace { get; set; } = string.Empty;
+        public string Workspace { get; set; } = string.Empty;
     }
 
     [HttpPost("api/items/create_child/{workspaceId}/{itemUri}")]
@@ -115,18 +115,18 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var factory = new MofFactory(item);
 
         var metaClass =
-            string.IsNullOrEmpty(createItemAsParams.metaClass)
+            string.IsNullOrEmpty(createItemAsParams.MetaClass)
                 ? null
                 : (item.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver"))
-                .Resolve(createItemAsParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
+                .Resolve(createItemAsParams.MetaClass, ResolveType.OnlyMetaClasses) as IElement;
 
         var child = factory.create(metaClass);
-        if (createItemAsParams.asList)
-            item.AddCollectionItem(createItemAsParams.property, child);
+        if (createItemAsParams.AsList)
+            item.AddCollectionItem(createItemAsParams.Property, child);
         else
-            item.set(createItemAsParams.property, child);
+            item.set(createItemAsParams.Property, child);
 
-        var values = createItemAsParams.properties?.v;
+        var values = createItemAsParams.Properties?.v;
         if (values != null)
             foreach (var propertyParam in values)
             {
@@ -139,10 +139,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         return new CreateItemAsChildResult
         {
-            success = true,
-            itemId = (child as IHasId)?.Id ?? string.Empty,
-            workspace = workspaceId,
-            itemUrl = child.GetUri() ?? string.Empty
+            Success = true,
+            ItemId = (child as IHasId)?.Id ?? string.Empty,
+            Workspace = workspaceId,
+            ItemUrl = child.GetUri() ?? string.Empty
         };
     }
 
@@ -154,37 +154,36 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         /// Gets or sets the metaclass
         /// </summary>
-        public string metaClass { get; set; } = string.Empty;
+        public string MetaClass { get; set; } = string.Empty;
 
         /// <summary>
         /// Property in which the item shall be added
         /// </summary>
-        public string property { get; set; } = string.Empty;
+        public string Property { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets whether the child shall be added as a list item or
         /// shall be directly set to the property
         /// </summary>
-        public bool asList { get; set; }
+        public bool AsList { get; set; }
 
-        public MofObjectAsJson? properties { get; set; }
+        public MofObjectAsJson? Properties { get; set; }
     }
-
 
     public class CreateItemAsChildResult
     {
-        public bool success { get; set; }
-        public string itemId { get; set; } = string.Empty;
+        public bool Success { get; set; }
+        public string ItemId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the item url
         /// </summary>
-        public string itemUrl { get; set; } = string.Empty;
+        public string ItemUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the workspace
         /// </summary>
-        public string workspace { get; set; } = string.Empty;
+        public string Workspace { get; set; } = string.Empty;
     }
 
     [HttpDelete("api/items/delete/{workspaceId}/{itemUrl}")]
@@ -197,7 +196,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var foundItem = workspaceLogic.FindObject(workspaceId, itemUrl);
         if (foundItem != null) success = ObjectHelper.DeleteObject(foundItem);
 
-        return new {success = success};
+        return new { success };
     }
 
     /// <summary>
@@ -218,18 +217,17 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         {
             return NotFound("Extent is not found");
         }
-            
+
         extent.elements().RemoveAll();
 
-        return new SuccessResult {Success = success};
+        return new SuccessResult { Success = success };
     }
 
     /// <summary>
     /// Deletes an item from the extent itself
     /// </summary>
     /// <param name="workspaceId">Id of the workspace</param>
-    /// <param name="extentUri">Uri of the extent</param>
-    /// <param name="itemId">Id of the item to be deleted</param>
+    /// <param name="itemUri">Uri of the item to be deleted</param>
     /// <returns>the value indicating the success or not</returns>
     [HttpPost("api/items/delete_from_extent/{workspaceId}/{itemUri}")]
     public ActionResult<object> DeleteItemFromExtent(
@@ -247,7 +245,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         }
 
         extent.elements().remove(foundElement);
-        return new {success = true};
+        return new { success = true };
     }
 
     [HttpGet("api/items/get/{workspaceId}/{extentUri}/{itemId}")]
@@ -271,7 +269,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         var foundElement = _internal.GetItemByUriParameter(workspaceId, itemUri);
 
-        var converter = new MofJsonConverter {MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true};
+        var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
         var convertedElement = converter.ConvertToJson(foundElement);
 
         return convertedElement;
@@ -294,10 +292,15 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="workspaceId">Id of the workspace</param>
     /// <param name="extentUri">Uri of the extent from which the items are retrieved</param>
     /// <param name="viewNode">The view node being used to filter the items</param>
+    /// <param name="orderBy">Name of the property</param>
+    /// <param name="orderByDescending">true, if a descending order shall be applied</param>
+    /// <param name="filterByProperties">Serialized properties to be set</param>
+    /// <param name="filterByFreeText">Gets or sets the value whether the free text</param>
     /// <returns></returns>
     [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
     public ActionResult<string> GetRootElements(string workspaceId, string extentUri, string? viewNode = null,
-        string? orderBy = null, bool? orderByDescending = false, string? filterByProperties = null, string? filterByFreeText = null)
+        string? orderBy = null, bool? orderByDescending = false, string? filterByProperties = null,
+        string? filterByFreeText = null)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
@@ -311,7 +314,8 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             FilterByProperties = ItemsControllerInternal.DeserializeStringToDictionary(filterByProperties ?? ""),
         };
 
-        var finalElements = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode, query);
+        var result = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode, query);
+        var finalElements = result.Elements;
         if (finalElements == null)
         {
             return NotFound();
@@ -377,19 +381,20 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="viewNode">The view node being used to filter the items</param>
     /// <returns></returns>
     [HttpGet("api/items/get_root_elements_as_item/{workspaceId}/{extentUri}")]
-    public ActionResult<IEnumerable<ItemWithNameAndId>> GetRootElementsAsItem(string workspaceId, string extentUri, string? viewNode = null)
+    public ActionResult<IEnumerable<ItemWithNameAndId>> GetRootElementsAsItem(string workspaceId, string extentUri,
+        string? viewNode = null)
     {
         workspaceId = MvcUrlEncoder.DecodePathOrEmpty(workspaceId);
         extentUri = MvcUrlEncoder.DecodePathOrEmpty(extentUri);
         viewNode = MvcUrlEncoder.DecodePath(viewNode);
 
         var finalElements = _internal.GetRootElementsInternal(workspaceId, extentUri, viewNode);
-        if (finalElements == null)
+        if (finalElements.Elements == null)
         {
             return NotFound($"{extentUri} did not return a reflective collection");
         }
 
-        return finalElements.OfType<IObject>().Select(x => ItemWithNameAndId.Create(x)!).ToList();
+        return finalElements.Elements.Select(x => ItemWithNameAndId.Create(x)!).ToList();
     }
 
     /// <summary>
@@ -423,10 +428,10 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var result = new List<ItemWithNameAndId>();
 
         IUriExtent? extent;
-            
+
         // Checks, if we have found the item
         var foundItem = workspaceLogic.FindObjectOrCollection(workspaceId, itemUri);
-            
+
         switch (foundItem)
         {
             case IElement element:
@@ -455,7 +460,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
                     container = container.container(); // Now go one container up
                 } while (maxIteration > 0);
-                
+
                 extent = element.GetExtentOf() as IUriExtent;
                 break;
             }
@@ -500,7 +505,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                         ?? throw new InvalidOperationException("Item was not found");
         foundItem.set(propertyParams.Key, propertyParams.Value);
-        return new {success = true};
+        return new { success = true };
     }
 
     [HttpPost("api/items/set_property_reference/{workspaceId}/{itemUri}")]
@@ -512,24 +517,14 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         itemUri = MvcUrlEncoder.DecodePathOrEmpty(itemUri);
 
         var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri);
-        if (foundItem == null)
-        {
-            return NotFound("Item was not found");
-        }
-
 
         var reference = _internal.GetItemByUriParameter(
             parameters.WorkspaceId,
             parameters.ReferenceUri);
 
-        if (reference == null)
-        {
-            return NotFound("Reference was not found");
-        }
-
         foundItem.set(parameters.Property, reference);
 
-        return new SuccessResult() {Success = true};
+        return new SuccessResult() { Success = true };
     }
 
     /// <summary>
@@ -564,7 +559,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
                         ?? throw new InvalidOperationException("Item was not found");
         foundItem.unset(propertyParams.Property);
 
-        return new {success = true};
+        return new { success = true };
     }
 
     /// <summary>
@@ -575,7 +570,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         ///     Gets or sets the key
         /// </summary>
-        public string Property { get; set; } = string.Empty;
+        public string Property { get; init; } = string.Empty;
     }
 
     [HttpPost("api/items/set_properties/{workspaceId}/{itemUri}")]
@@ -592,7 +587,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             foundItem.set(propertyParam.Key, propertyParam.Value);
         }
 
-        return new {success = true};
+        return new { success = true };
     }
 
     /// <summary>
@@ -627,7 +622,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         var result = _internal.GetPropertyInternal(workspaceId, itemUri, property);
 
-        var converter = new MofJsonConverter {MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true};
+        var converter = new MofJsonConverter { MaxRecursionDepth = 2, ResolveReferenceToOtherExtents = true };
         return Content($"{{\"v\": {converter.ConvertToJson(result)}}}", "application/json", Encoding.UTF8);
     }
 
@@ -646,14 +641,9 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         }
 
         var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri);
-        if (foundItem == null)
-        {
-            return NotFound("Item was not found");
-        }
-
         ObjectCopier.CopyPropertiesStatic(objectToBeSet, foundItem);
 
-        return new SuccessResult{Success = true};
+        return new SuccessResult { Success = true };
     }
 
     [HttpPost("api/items/set_metaclass/{workspaceId}/{itemUri}")]
@@ -666,15 +656,15 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var foundItem = _internal.GetItemByUriParameter(workspaceId, itemUri)
                         ?? throw new InvalidOperationException("Item was not found");
         if (foundItem is IElementSetMetaClass asMetaClassSet)
-            asMetaClassSet.SetMetaClass(new MofObjectShadow(parameter.metaClass));
+            asMetaClassSet.SetMetaClass(new MofObjectShadow(parameter.MetaClass));
 
-        return new {success = true};
+        return new { success = true };
     }
-        
+
 
     public class SetMetaClassParams
     {
-        public string metaClass { get; set; } = string.Empty;
+        public string MetaClass { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -701,7 +691,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         foundItem.AddCollectionItem(parameters.Property, reference);
 
-        return new {success = true};
+        return new { success = true };
     }
 
     /// <summary>
@@ -712,17 +702,17 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         ///     Defines the property to which the property will be added
         /// </summary>
-        public string Property { get; set; } = string.Empty;
+        public string Property { get; init; } = string.Empty;
 
         /// <summary>
         /// Defines the workspace from which the property will be laoded
         /// </summary>
-        public string? WorkspaceId { get; set; } = null;
+        public string? WorkspaceId { get; init; }
 
         /// <summary>
         /// Defines the reference Uri from which the property will be loaded
         /// </summary>
-        public string ReferenceUri { get; set; } = string.Empty;
+        public string ReferenceUri { get; init; } = string.Empty;
     }
 
     /// <summary>
@@ -750,7 +740,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
         foundItem.RemoveCollectionItem(parameters.Property, reference);
 
-        return new {success = true};
+        return new { success = true };
     }
 
     public class RemoveReferenceToCollectionParams
@@ -758,14 +748,14 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         /// <summary>
         ///     Defines the property to which the property will be removed
         /// </summary>
-        public string Property { get; set; } = string.Empty;
+        public string Property { get; init; } = string.Empty;
 
-        public string? WorkspaceId { get; set; } = null;
+        public string? WorkspaceId { get; init; }
 
-        public string ReferenceUri { get; set; } = string.Empty;
+        public string ReferenceUri { get; init; } = string.Empty;
     }
-        
-        
+
+
     public class ExportXmiResult
     {
         public string Xmi { get; set; } = string.Empty;
@@ -800,18 +790,18 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
 
     public class ImportXmiParams
     {
-        public string Xmi { get; set; } = string.Empty;
+        public string Xmi { get; init; } = string.Empty;
     }
 
     public class ImportXmiResult
     {
-        public bool Success { get; set; }
+        public bool Success { get; init; }
     }
 
     [HttpPost("api/items/import_xmi/{workspace}/{itemUri}")]
     public async Task<ActionResult<ImportXmiResult>> ImportXmi(
         string workspace, string itemUri,
-        [FromQuery(Name = "property")] string property, 
+        [FromQuery(Name = "property")] string property,
         [FromQuery(Name = "addToCollection")] bool addToCollection,
         [FromBody] ImportXmiParams parameter)
     {
@@ -827,24 +817,24 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         action.set(_Actions._ImportXmiAction.property, property);
         action.set(_Actions._ImportXmiAction.addToCollection, addToCollection);
         action.set(_Actions._ImportXmiAction.xmi, parameter.Xmi);
-            
+
         await importXmi.Evaluate(actionLogic, action);
 
         return new ImportXmiResult { Success = true };
     }
-        
+
     public class SetIdParams
     {
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; init; } = string.Empty;
     }
-        
+
     public class SetIdResult
     {
-        public bool Success { get; set; }
-            
-        public string NewUri { get; set; } = string.Empty;
+        public bool Success { get; init; }
+
+        public string NewUri { get; init; } = string.Empty;
     }
-        
+
     /// <summary>
     /// Sets the id of the item via the API
     /// </summary>

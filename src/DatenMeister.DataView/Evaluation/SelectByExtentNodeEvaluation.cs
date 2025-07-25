@@ -23,7 +23,7 @@ public class SelectByExtentNodeEvaluation : IDataViewNodeEvaluation
         var workspaceLogic = evaluation.WorkspaceLogic;
         if (workspaceLogic == null)
         {
-            // No workspace logic is set but source extent queries for an extent and so is dependent upon 
+            // No workspace logic is set, but source extent queries for an extent and so is dependent upon 
             // the workspacelogic
             Logger.Error("SourceExtent specified but no workspace Logic given");
             throw new InvalidOperationException("SourceExtent specified but no workspace Logic given");

@@ -112,7 +112,7 @@ public class ItemsControllerTests
         var (dm, _) = await CreateExampleExtentForSorting();
 
         var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
-        var elements = itemsController
+        var result = itemsController
                            .GetRootElementsInternal(
                                WorkspaceNames.WorkspaceData,
                                ElementControllerTests.UriTemporaryExtent,
@@ -123,9 +123,10 @@ public class ItemsControllerTests
                                })
                 
                        ?? throw new InvalidOperationException("Should not happen");
-
-        Assert.That(elements.Count(), Is.GreaterThan(0));
-        Assert.That(elements[0].getOrDefault<int>("value"), Is.EqualTo(1));
+        var elements = result.Elements;
+        Assert.That(elements, Is.Not.Null);
+        Assert.That(elements!.Count(), Is.GreaterThan(0));
+        Assert.That(elements![0].getOrDefault<int>("value"), Is.EqualTo(1));
         Assert.That(elements[1].getOrDefault<int>("value"), Is.EqualTo(4));
         Assert.That(elements[2].getOrDefault<int>("value"), Is.EqualTo(55));
 
@@ -138,7 +139,7 @@ public class ItemsControllerTests
         var (dm, _) = await CreateExampleExtentForSorting();
 
         var itemsController = new ItemsControllerInternal(dm.WorkspaceLogic, dm.ScopeStorage);
-        var elements = itemsController
+        var result = itemsController
                            .GetRootElementsInternal(
                                WorkspaceNames.WorkspaceData,
                                ElementControllerTests.UriTemporaryExtent,
@@ -151,8 +152,10 @@ public class ItemsControllerTests
 
                        ?? throw new InvalidOperationException("Should not happen");
 
-        Assert.That(elements.Count(), Is.GreaterThan(0));
-        Assert.That(elements[0].getOrDefault<int>("value"), Is.EqualTo( 55));
+        var elements = result.Elements;
+        Assert.That(result.Elements, Is.Not.Null);
+        Assert.That(elements!.Count(), Is.GreaterThan(0));
+        Assert.That(elements![0].getOrDefault<int>("value"), Is.EqualTo( 55));
         Assert.That(elements[1].getOrDefault<int>("value"), Is.EqualTo(4));
         Assert.That(elements[2].getOrDefault<int>("value"), Is.EqualTo(1));
 
@@ -228,7 +231,7 @@ public class ItemsControllerTests
             first.GetUri() ?? throw new InvalidOperationException("Uri is not set"),
             new ItemsController.SetMetaClassParams
             {
-                metaClass = newMetaClass
+                MetaClass = newMetaClass
             });
 
         Assert.That(first.getMetaClass()?.@equals(new MofObjectShadow(newMetaClass)), Is.True);

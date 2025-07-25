@@ -33,7 +33,6 @@ internal class MassImportTests
         var dm = await DatenMeisterTests.GetDatenMeisterScope();
 
         // Create the Target Extent
-
         var extentManager = dm.Resolve<ExtentManager>();
 
         var loaderConfig =

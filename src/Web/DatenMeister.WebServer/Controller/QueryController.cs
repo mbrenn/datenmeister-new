@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Runtime.Workspaces;
+﻿using System.Diagnostics;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core;
 using Microsoft.AspNetCore.Mvc;
 using DatenMeister.Web.Json;
@@ -18,6 +19,8 @@ public class QueryController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         var queryStatement = mofJsonDeconverter.ConvertToObject(queryStatementAsText);
 
         // Now we have the query statement. Get source and filters
+        Debugger.Break(); // We should never be call. Let's see, if we get a call. If no,
+                          // remove it in August, 
         return await Task.FromResult(Ok());
 
     }

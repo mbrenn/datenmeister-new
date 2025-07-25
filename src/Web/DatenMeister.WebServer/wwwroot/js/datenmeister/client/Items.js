@@ -114,7 +114,8 @@ export async function getRootElements(workspace, extentUri, parameter) {
         url += '?' + queryParams.join('&');
     }
     const resultFromServer = await ApiConnection.get(url);
-    return convertToMofObjects(resultFromServer);
+    resultFromServer.rootElementsAsObjects = convertToMofObjects(resultFromServer.rootElements);
+    return resultFromServer;
 }
 function serializeArrayToString(arrayValue) {
     let result = '';

@@ -84,7 +84,7 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
         var (collection, extent) = WorkspaceLogic.FindExtentAndCollection(workspaceId, extentUri);
         if (collection == null || extent == null)
         {
-            return null;
+            throw new InvalidOperationException($"Extent not found: {workspaceId}:{extentUri}");
         }
 
         /*
@@ -107,7 +107,7 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
             }
             else
             {
-                return null;
+                throw new InvalidOperationException($"ViewNode '{viewNode}' not found");
             }
         }
 
@@ -145,7 +145,6 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
             IsCapped = false
         };
 #endif
-
     }
 
     private class PropertyComparer(string property, bool descending) : IComparer<IObject>
@@ -204,7 +203,11 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
                 return factor * doubleX.CompareTo(doubleY);
             }
 
-            return factor * propertyX.ToString()!.CompareTo(propertyY.ToString());
+            return factor * 
+                   string.Compare(
+                       propertyX.ToString()!,
+                       propertyY.ToString(),
+                       StringComparison.Ordinal);
         }
     }
     public static Dictionary<string, string> DeserializeStringToDictionary(string serializedString)

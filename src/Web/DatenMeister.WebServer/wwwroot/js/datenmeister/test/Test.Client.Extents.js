@@ -103,13 +103,15 @@ export function includeTests() {
                 });
                 chai.assert.isTrue(createResult.success);
                 await ClientItem.createItemInExtent("Test", "dm:///newexisting_clear", {});
-                let items = await ClientItem.getRootElements("Test", "dm:///newexisting_clear");
+                let items = (await ClientItem.getRootElements("Test", "dm:///newexisting_clear"))
+                    .rootElementsAsObjects;
                 chai.assert.isTrue(items.length === 1);
                 await ClientExtent.clearExtent({
                     workspace: "Test",
                     extentUri: "dm:///newexisting_clear"
                 });
-                items = await ClientItem.getRootElements("Test", "dm:///newexisting_clear");
+                items = (await ClientItem.getRootElements("Test", "dm:///newexisting_clear"))
+                    .rootElementsAsObjects;
                 chai.assert.isTrue(items.length === 0);
                 await ClientExtent.deleteExtent({
                     workspace: "Test",

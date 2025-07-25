@@ -43,6 +43,13 @@ export class CollectionFormCreator {
         if (this.htmlElements.itemContainer === undefined || this.htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
+        const collectionFormHtml = $("<div>" +
+            "<div class='dm_collection_form_message'></div>" +
+            "<div class='dm_collection_form_table'></div>" +
+            "</div>");
+        this.htmlElements.itemContainer.append(collectionFormHtml);
+        this.htmlElements.messageContainer = this.htmlElements.itemContainer.find(".dm_collection_form_message");
+        this.htmlElements.tableContainer = this.htmlElements.itemContainer.find(".dm_collection_form_table");
         // Sets the refresh callback
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = async () => {
@@ -50,8 +57,8 @@ export class CollectionFormCreator {
             };
         }
         // Empties the overview
-        this.htmlElements.itemContainer.empty();
-        this.htmlElements.itemContainer.append("Load Collection Form");
+        this.htmlElements.tableContainer.empty();
+        this.htmlElements.tableContainer.append("Load Collection Form");
         // Set Read-Only as default
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
@@ -172,7 +179,7 @@ export class CollectionFormCreator {
      * @param configuration
      */
     async createFormByCollection(configuration) {
-        const itemContainer = this.htmlElements.itemContainer;
+        const tableContainer = this.htmlElements.tableContainer;
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
         }
@@ -198,12 +205,12 @@ export class CollectionFormCreator {
                     actionFields.append($("<div>Unsupported Field Type: " + field.metaClass.uri + "</div>"));
                 }
             }
-            itemContainer.append(actionFields);
+            tableContainer.append(actionFields);
             this.statusTextControl.setListStatus("Actionfields", true);
         }
         this.statusTextControl.setListStatus("Create Tabs", false);
         // Create the table
-        itemContainer.empty();
+        tableContainer.empty();
         const tabs = this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array);
         for (let n in tabs) {
             if (!tabs.hasOwnProperty(n)) {
@@ -230,7 +237,11 @@ export class CollectionFormCreator {
                 if (formFactory !== undefined) {
                     const tableForm = formFactory();
                     tableForm.pageNavigation = this;
-                    tableForm.callbackLoadItems = callbackLoadItems;
+                    tableForm.callbackLoadItems = async (x) => {
+                        const result = await callbackLoadItems(x);
+                        tthis.htmlElements.messageContainer.text(result.message);
+                        return result.rootElementsAsObjects;
+                    };
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;
                     tableForm.extentUri = tthis.extentUri;
@@ -250,7 +261,7 @@ export class CollectionFormCreator {
             this.statusTextControl.setListStatus("Create tab " + n, false);
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
-            itemContainer.append(tabFormContainer);
+            tableContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }
         this.statusTextControl.setListStatus("Create Tabs", true);

@@ -86,7 +86,8 @@ public class ItemsControllerTests
                            ?? throw new InvalidOperationException("Should not happen");
             
         Assert.That(rootElements, Is.Not.Null);
-        var elements = JsonConvert.DeserializeObject(rootElements);
+        Assert.That(rootElements.RootElements, Is.Not.Null);
+        var elements = JsonConvert.DeserializeObject(rootElements.RootElements);
         Assert.That(elements, Is.Not.Null);
 
         var asEnumeration = (elements as IEnumerable<object>)?.ToArray();
@@ -179,8 +180,9 @@ public class ItemsControllerTests
                                .Value
                            ?? throw new InvalidOperationException("Should not happen");
         Assert.That(rootElements, Is.Not.Null);
+        Assert.That(rootElements.RootElements, Is.Not.Null);
 
-        var elements = JsonConvert.DeserializeObject(rootElements);
+        var elements = JsonConvert.DeserializeObject(rootElements.RootElements);
         Assert.That(elements, Is.Not.Null);
             
         dm.Dispose();

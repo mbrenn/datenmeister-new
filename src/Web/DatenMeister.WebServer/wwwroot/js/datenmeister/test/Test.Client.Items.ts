@@ -103,7 +103,9 @@ export function includeTests() {
                 chai.assert.isTrue(result.success, 'Item was not created');
                 chai.assert.isTrue(result2.success, 'Item was not created');
 
-                const allItems = await ClientItems.getRootElements('Test', 'dm:///unittest');
+                const allItems =
+                    (await ClientItems.getRootElements('Test', 'dm:///unittest'))
+                        .rootElementsAsObjects;
                 chai.assert.equal(allItems.length, 2, "There are less or more items in the root elements");
                 for (let n in allItems) {
                     const item = allItems[n];
@@ -111,7 +113,8 @@ export function includeTests() {
                         || item.uri === "dm:///unittest#" + result2.itemId);
                 }
 
-                const result3 = await ClientItems.deleteRootElements("Test", "dm:///unittest");
+                const result3 = 
+                    await ClientItems.deleteRootElements("Test", "dm:///unittest");
                 chai.assert.isTrue(result3.success, "Deletion of all root Elements did not work");
             });
             

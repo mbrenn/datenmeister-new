@@ -286,6 +286,13 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
         return ItemWithNameAndId.Create(foundElement)!;
     }
 
+    public class GetRootElementsResult
+    {
+        public bool Success { get; init; }
+        public string RootElements { get; init; } = string.Empty;
+        public string Message { get; init; } = string.Empty;
+    }
+
     /// <summary>
     /// Gets the root elements of a certain extent and workspace
     /// </summary>
@@ -298,7 +305,7 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
     /// <param name="filterByFreeText">Gets or sets the value whether the free text</param>
     /// <returns></returns>
     [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
-    public ActionResult<string> GetRootElements(string workspaceId, string extentUri, string? viewNode = null,
+    public ActionResult<GetRootElementsResult> GetRootElements(string workspaceId, string extentUri, string? viewNode = null,
         string? orderBy = null, bool? orderByDescending = false, string? filterByProperties = null,
         string? filterByFreeText = null)
     {
@@ -321,7 +328,12 @@ public class ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scope
             return NotFound();
         }
 
-        return ConvertToJson(finalElements);
+        return new ActionResult<GetRootElementsResult>(new GetRootElementsResult
+        {
+            RootElements =  ConvertToJson(finalElements),
+            Success = true,
+            Message  = result.IsCapped ? "The result is capped to 100 items" : string.Empty,
+        });
     }
 
     /// <summary>

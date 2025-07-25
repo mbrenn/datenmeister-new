@@ -48,7 +48,8 @@ export function includeTests() {
                     await ClientItems.setProperty("Test", subChild2.itemId, "name", "Child 2");
                     const subChild3 = await ClientItems.createItemInExtent("Test", "dm:///unittest", {});
                     await ClientItems.setProperty("Test", subChild3.itemId, "name", "Child 3");
-                    const children = await ClientItems.getRootElements("Test", "dm:///unittest");
+                    const children = (await ClientItems.getRootElements("Test", "dm:///unittest"))
+                        .rootElementsAsObjects;
                     chai.assert.isTrue(Array.isArray(children) === true, "Array has to be true");
                     chai.assert.isTrue(children.length === 3, "Length of array has to be 3");
                     const child2Name = children[1].get("name", ObjectType.String);

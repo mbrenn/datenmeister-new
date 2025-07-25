@@ -157,10 +157,16 @@ export interface IGetRootElementsParameter{
     orderByDescending?: boolean; // Flag, whether ordering shall be done by descending
     filterByProperties?: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
     filterByFreetext?: string; // Additional freetext
-
 }
 
-export async function getRootElements(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<Array<Mof.DmObject>> {
+export interface IGetRootElementsResult {
+    success: boolean;
+    rootElements: string;
+    rootElementsAsObjects: Array<Mof.DmObject>
+    message: string;   
+}
+
+export async function getRootElements(workspace: string, extentUri: string, parameter?: IGetRootElementsParameter): Promise<IGetRootElementsResult> {
     // Handle issue that empty urls cannot be resolved by ASP.Net, so we need to include a Workspace Name
     if(workspace === undefined || workspace === "" || workspace === null) {
         workspace = "Data";
@@ -204,8 +210,9 @@ export async function getRootElements(workspace: string, extentUri: string, para
         url += '?' + queryParams.join('&');
     }
 
-    const resultFromServer = await ApiConnection.get<string>(url);
-    return convertToMofObjects(resultFromServer);
+    const resultFromServer = await ApiConnection.get<IGetRootElementsResult>(url);
+    resultFromServer.rootElementsAsObjects = convertToMofObjects(resultFromServer.rootElements);
+    return resultFromServer;
 }
 
 function serializeArrayToString(arrayValue) {

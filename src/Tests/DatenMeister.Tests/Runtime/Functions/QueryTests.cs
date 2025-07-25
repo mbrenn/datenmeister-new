@@ -123,7 +123,7 @@ public class QueryTests
         Assert.That(ordered[4].getOrDefault<int>("iq"), Is.EqualTo(100));
     }
 
-    private static IUriExtent CreateQueryTestExtent(bool ordinal = false)
+    public static IUriExtent CreateQueryTestExtent(bool ordinal = false)
     {
         var memoryProvider = new InMemoryProvider();
         var extent = new MofUriExtent(memoryProvider, "dm:///test", null);

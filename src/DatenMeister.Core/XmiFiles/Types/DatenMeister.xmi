@@ -609,6 +609,10 @@
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-Collection" name="Collection" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-RowForm" name="Row" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-TableForm" name="Table" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-ObjectExtension" name="ObjectExtension" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-CollectionExtension" name="CollectionExtension" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-RowExtension" name="RowExtension" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-TableExtension" name="TableExtension" />                                                                                                                                                   
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.Form" name="Form">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="341f1b1f-c83e-48b8-90b4-23ef10c4d5cf" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />

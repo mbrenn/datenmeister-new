@@ -1103,6 +1103,10 @@ export namespace _Forms
             export const Collection = "Collection";
             export const Row = "Row";
             export const Table = "Table";
+            export const ObjectExtension = "ObjectExtension";
+            export const CollectionExtension = "CollectionExtension";
+            export const RowExtension = "RowExtension";
+            export const TableExtension = "TableExtension";
         }
 
         export enum ___FormType
@@ -1110,7 +1114,11 @@ export namespace _Forms
             Object,
             Collection,
             Row,
-            Table
+            Table,
+            ObjectExtension,
+            CollectionExtension,
+            RowExtension,
+            TableExtension
         }
 
         export class _Form

@@ -29,4 +29,8 @@
       <PackageReference Include="BurnSystems" Version="1.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BurnSystems.TimeCache\BurnSystems.TimeCache.csproj" />
+    </ItemGroup>
+
 </Project>

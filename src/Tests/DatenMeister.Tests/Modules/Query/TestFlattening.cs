@@ -29,7 +29,6 @@ public class TestFlattening
         Assert.That(resultingNodes.Any (x =>x.equals(_DataViews.TheOne.__SelectByWorkspaceNode)));
     }
 
-
     private static async Task<(IDatenMeisterScope scope, IElement queryByMetaClass)> SetupExtentAndQuery()
     {
         IDatenMeisterScope? scope = null;

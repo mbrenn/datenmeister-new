@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using BurnSystems.TimeCache;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
@@ -32,7 +33,7 @@ public static class DefaultValueHandler
         {
             var defaultValue = property.getOrDefault<object>(_UML._Classification._Property.defaultValue);
             var name = property.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
-                
+
             if (defaultValue != null)
             {
                 newValue.set(name, defaultValue);
@@ -55,14 +56,33 @@ public static class DefaultValueHandler
             return default;
         }
 
+        var tuple = new Tuple<IElement, string>(type, property);
+        if (_cachedDefaultValues.TryGetValue(
+                tuple,
+                out var cachedValue))
+        {
+            if (cachedValue is T)
+            {
+                return (T)cachedValue!;
+            }
+
+            return default;
+        }
+
         var propertyElement = ClassifierMethods.GetPropertyOfClassifier(type, property);
         if (propertyElement == null)
         {
             // No property ==> No default value
             return default;
         }
-            
-        return propertyElement.getOrDefault<T>(_UML._Classification._Property.defaultValue);
 
+        var result = propertyElement.getOrDefault<T>(_UML._Classification._Property.defaultValue);
+        _cachedDefaultValues[tuple] = result;
+        return result;
     }
+
+    /// <summary>
+    /// The cache for the default values.
+    /// </summary>
+    private static readonly TimeCachedDictionary<Tuple<IElement, string>, object?> _cachedDefaultValues = new();
 }

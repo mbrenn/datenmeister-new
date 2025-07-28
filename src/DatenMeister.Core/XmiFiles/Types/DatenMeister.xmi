@@ -322,6 +322,9 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="6bc52237-b185-481f-a40f-0d2baee04212" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1eb718dc-9e10-4023-b3c7-9cb524b0d46d" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="abca8647-18d7-4322-a803-2e3e1cd123d7" name="ColumnExclude">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="65fdf89d-e9bc-4d7f-acf1-bcd98d5fb6ab" isSubstitutable="false" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">
@@ -612,7 +615,7 @@
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-ObjectExtension" name="ObjectExtension" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-CollectionExtension" name="CollectionExtension" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-RowExtension" name="RowExtension" />
-      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-TableExtension" name="TableExtension" />                                                                                                                                                   
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Forms.FormType-TableExtension" name="TableExtension" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.Form" name="Form">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="341f1b1f-c83e-48b8-90b4-23ef10c4d5cf" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />

@@ -3,7 +3,16 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BurnSystems.TimeCache;
 
-public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV>
+/// <summary>
+/// This is a dictionary, which just holds the entries for a certain amount
+/// of time. By holding the data for just a moment in time, it can be used
+/// to cache data in which the only cache-invalidating trigger is time.
+/// It is not strongly recommended to use that class for caching since an explicit
+/// cache mechanismn provides a higher data integrty and performance. 
+/// </summary>
+/// <typeparam name="TK">Type of the key</typeparam>
+/// <typeparam name="TV">Type of the value</typeparam>
+public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV> where TK : notnull
 {
     /// <summary>
     /// Stores the caching time for the dictionary
@@ -18,7 +27,7 @@ public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV>
     /// <summary>
     /// Stores the dictionary being used to store the data
     /// </summary>
-    private Dictionary<TK, TV> _dictionary = new();
+    private readonly Dictionary<TK, TV> _dictionary = new();
 
     /// <summary>
     /// Checks the cache and deletes the cache in case the last reset has occured
@@ -33,6 +42,18 @@ public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV>
                 _dictionary.Clear();
                 _lastCacheReset = DateTime.Now;
             }
+        }
+    }
+
+    /// <summary>
+    /// Invalidates the cache by clearing all data
+    /// </summary>
+    public void InvalidateCache()
+    {
+        lock (_dictionary)
+        {
+            _dictionary.Clear();
+            _lastCacheReset = DateTime.MinValue;       
         }
     }
 

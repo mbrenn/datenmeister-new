@@ -35,11 +35,11 @@ public class CollectionFormFromMetaClass : ICollectionFormFactory
 
         // Now try to figure out the metaclass
         foreach (var tableForm in FormCreation.CreateTableForm(
-                     new TableFormFactoryParameter
-                     {
-                         MetaClass = metaClass,
-                         ParentMetaClass = parameter.MetaClass
-                     }, context.Clone()).Forms)
+             new TableFormFactoryParameter
+             {
+                 MetaClass = metaClass,
+                 ParentMetaClass = parameter.MetaClass
+             }, context.Clone()).Forms)
         {
             tabs.Add(tableForm);
         }

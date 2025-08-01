@@ -29,7 +29,7 @@ public class TableFormForMetaClass : ITableFormFactory
 
         if (result.Forms.Count == 0)
         {
-            result.Forms.Add(context.Global.Factory.create(_Forms.TheOne.__RowForm));
+            result.Forms.Add(context.Global.Factory.create(_Forms.TheOne.__TableForm));
         };
         
         var createdForm = result.Forms.First();

@@ -88,8 +88,7 @@ public class FormsControllerInternal
             {
                 Collection = extent.elements(),
                 Extent = extent,
-                ExtentTypes = extent.GetConfiguration().ExtentTypes,
-                MetaClass = WorkspaceLogic.GetTypesWorkspace().ResolveElement(_Management.TheOne.__Extent, ResolveType.NoMetaWorkspaces)
+                ExtentTypes = extent.GetConfiguration().ExtentTypes
             },
             formContext);
             

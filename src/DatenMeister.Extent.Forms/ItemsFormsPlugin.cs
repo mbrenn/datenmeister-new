@@ -57,22 +57,19 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListMoveUpItem, "⬆️")
                     {
-                        PredicateForParameter = x => 
-                            x.ParentMetaClass?.equals(_Management.TheOne.__Extent) == true
+                        PredicateForParameter = x => string.IsNullOrEmpty(x.ParentPropertyName)
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListMoveDownItem, "⬇️")
                     {
-                        PredicateForParameter = x => 
-                            x.ParentMetaClass?.equals(_Management.TheOne.__Extent) == true
+                        PredicateForParameter = x => string.IsNullOrEmpty(x.ParentPropertyName)
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(
                     formsPlugin, new ActionButtonAdderParameterForTable(NavigationExtentsListDeleteItem, "❌")
                     {
-                        PredicateForParameter = x => 
-                            x.ParentMetaClass?.equals(_Management.TheOne.__Extent) == true
+                        PredicateForParameter = x => string.IsNullOrEmpty(x.ParentPropertyName)
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(

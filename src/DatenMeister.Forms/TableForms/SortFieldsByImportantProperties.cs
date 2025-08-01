@@ -12,6 +12,9 @@ public class SortFieldsByImportantProperties : ITableFormFactory
     public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultMultipleForms result)
     {
+        if (!context.IsInExtensionCreationMode())
+            return;
+        
         foreach (var form in result.Forms)
         {
             var fields = form?.getOrDefault<IReflectiveSequence>(_Forms._TableForm.field);
@@ -32,6 +35,8 @@ public class SortFieldsByImportantProperties : ITableFormFactory
 
                 result.AddToFormCreationProtocol(
                     "[FormCreator.SortFieldsByImportantProperties]: Field 'name' was put up-front");
+
+                result.IsManaged = true;
             }
 
             // Performs a resetting of all properties

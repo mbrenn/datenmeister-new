@@ -44,7 +44,11 @@ public class RowFormFromData : IRowFormFactory
 
         if(element is IObjectAllProperties itemAsAllProperties)
         {
-            FieldCreationHelper.AddFieldsToFormByPropertyValues(createdForm, itemAsAllProperties, context);
+            FieldCreationHelper.AddFieldsToFormByPropertyValues(
+                createdForm,
+                itemAsAllProperties,
+                parameter,
+                context);
             createdForm.set(_Forms._RowForm.allowNewProperties, true);
         }
     }

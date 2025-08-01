@@ -6,11 +6,10 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms.FormFactory;
-using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.Fields;
 
-public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
+public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : IFieldFactory
 {
     #region CachedTypes
 
@@ -66,32 +65,29 @@ public class FieldFromData(IWorkspaceLogic workspaceLogic) : IFieldFactory
         var propertyName = string.IsNullOrEmpty(parameter.PropertyName) 
             ? property.getOrDefault<string>(_UML._Classification._Property.name)
             : parameter.PropertyName;
-        
-        if (property == null && propertyName == null)
-            throw new InvalidOperationException("property == null && propertyName == null");
-
-        var factory = context.Global.Factory;
-
         var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
-
-        propertyName ??= property.get<string>("name");
-        if (propertyName == null)
-        {
-            throw new InvalidOperationException("propertyName == null");
-        }
+        
+        if (property == null && propertyName == null || propertyType == null)
+            return;
+        
+        var factory = context.Global.Factory;
+        
         // Checks, if the property is an enumeration.
         var propertyIsCollection = property != null && PropertyMethods.IsCollection(property);
         var isReadOnly = context.IsReadOnly;
 
         // Checks, if field property is an enumeration
-        _uriResolver ??= workspaceLogic.GetTypesWorkspace();
+        _uriResolver ??= workspaceLogic.TryGetTypesWorkspace();
+        if (_uriResolver == null)
+            return;
 
         CachedTypes.StringType ??= _PrimitiveTypes.TheOne.__String;
         CachedTypes.IntegerType ??= _PrimitiveTypes.TheOne.__Integer;
         CachedTypes.BooleanType ??= _PrimitiveTypes.TheOne.__Boolean;
         CachedTypes.RealType ??= _PrimitiveTypes.TheOne.__Real;
         CachedTypes.UnlimitedNaturalType ??= _PrimitiveTypes.TheOne.__UnlimitedNatural;
-        CachedTypes.DateTimeType ??= _uriResolver?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+        CachedTypes.DateTimeType ??= _uriResolver
+            ?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
         // Checks, if the property is an enumeration.
         var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)

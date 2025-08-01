@@ -10,6 +10,9 @@ public class CollectionFormFromMetaClass : ICollectionFormFactory
     public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultOneForm result)
     {
+        if (result.IsMainContentCreated)
+            return;
+
         if (parameter.MetaClass == null)
             return;
 
@@ -26,72 +29,22 @@ public class CollectionFormFromMetaClass : ICollectionFormFactory
         var tabs = new List<IElement>();
 
         // Get all properties of the elements
-        var properties = ClassifierMethods.GetPropertiesOfClassifier(metaClass).ToList();
-        if (properties == null)
-            throw new InvalidOperationException(
-                "CollectionForm cannot be created because given element does not have properties");
+        result.AddToFormCreationProtocol(
+            "[CollectionFormFromData.CreateCollectionFormForItemsMetaClass]: Add ListForm: " +
+            NamedElementMethods.GetName(metaClass));
 
-        var propertiesWithCollection =
-            (from p in properties
-                where PropertyMethods.IsCollection(p)
-                select new { propertyName = NamedElementMethods.GetName(p), property = p }).ToList();
-
-        var propertiesWithoutCollection =
-            (from p in properties
-                where !PropertyMethods.IsCollection(p)
-                select new { propertyName = NamedElementMethods.GetName(p), property = p }).ToList();
-
-        if (propertiesWithoutCollection.Any())
+        // Now try to figure out the metaclass
+        foreach (var tableForm in FormCreation.CreateTableForm(
+                     new TableFormFactoryParameter
+                     {
+                         MetaClass = metaClass,
+                         ParentMetaClass = parameter.MetaClass
+                     }, context.Clone()).Forms)
         {
-            var innerContext = context.Clone();
-            var rowForms = FormCreation.CreateRowForm(
-                new RowFormFactoryParameter
-                {
-                    MetaClass = parameter.MetaClass,
-                    Extent = parameter.Extent,
-                    ExtentTypes = parameter.ExtentTypes
-                },
-                innerContext
-            ).Forms;
-
-            foreach (var rowForm in rowForms)
-            {
-                rowForm.set(_Forms._RowForm.name, "Detail");
-                result.AddToFormCreationProtocol(
-                    "[FormCreator.CreateCollectionFormForItemsMetaClass]: Add DetailForm");
-
-                tabs.Add(rowForm);
-            }
-        }
-
-        foreach (var pair in propertiesWithCollection)
-        {
-            result.AddToFormCreationProtocol(
-                "[CollectionFormFromData.CreateCollectionFormForItemsMetaClass]: Add ListForm: " +
-                NamedElementMethods.GetName(pair.property));
-
-            var propertyType = PropertyMethods.GetPropertyType(pair.property);
-            if (propertyType != null)
-            {
-                // Now try to figure out the metaclass
-
-                foreach (var tableForm in FormCreation.CreateTableForm(
-                             new TableFormFactoryParameter
-                             {
-                                 MetaClass = propertyType
-                             }, context.Clone()).Forms)
-                {
-                    tableForm.set(
-                        _Forms._TableForm.title,
-                        "Property: packagedElements of type " + NamedElementMethods.GetName(propertyType));
-
-                    tabs.Add(tableForm);
-                }
-            }
+            tabs.Add(tableForm);
         }
 
         result.Form.set(_Forms._CollectionForm.tab, tabs);
         result.IsManaged = result.IsMainContentCreated = true;
-
     }
 }

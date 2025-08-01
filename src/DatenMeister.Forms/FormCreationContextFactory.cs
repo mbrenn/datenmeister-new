@@ -96,7 +96,9 @@ public class FormCreationContextFactory
         context.Global.RowFormFactories.Add(new ExpandDropDownOfValueReference());
         
         // Build up the FieldForm Queue
-        context.Global.FieldFormFactories.Add(new FieldFromData(_workspaceLogic));
+        context.Global.FieldFormFactories.Add(new FieldFromPropertyType(_workspaceLogic));
+        context.Global.FieldFormFactories.Add(new FieldFromPropertyValue());
+        context.Global.FieldFormFactories.Add(new FieldAnyFieldData());
         
         // Now go through the available Form Modification Plugins
         foreach (var plugin in State.FormModificationPlugins)

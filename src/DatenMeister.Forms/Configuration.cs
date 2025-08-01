@@ -7,5 +7,5 @@ public static class Configuration
     /// shall be created which allows the user to select a specific instance via easy selection
     /// or if the standard reference dialog shall be opened. 
     /// </summary>
-    public const bool CreateDropDownForReferences = true;
+    public const bool CreateDropDownForReferences = false;
 }

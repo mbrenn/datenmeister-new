@@ -80,7 +80,7 @@ public class ItemsFormsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
                     {
                         PredicateForParameter =
                             x => !string.IsNullOrEmpty(x.ParentPropertyName)
-                        // IsReadOnly = false
+                        //IsReadOnly = false
                     });
 
                 ActionButtonToFormAdder.AddTableActionButton(

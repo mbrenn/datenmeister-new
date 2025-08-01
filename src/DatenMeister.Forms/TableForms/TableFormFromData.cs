@@ -50,6 +50,7 @@ public class TableFormFromData : ITableFormFactory
                     FieldCreationHelper.AddFieldsToFormByPropertyValues(
                         createdForm,
                         element,
+                        parameter,
                         context);
                 }
             }

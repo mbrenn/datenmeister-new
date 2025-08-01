@@ -156,7 +156,8 @@ public class ElementControllerTests
             await extentManager.CreateAndAddXmiExtent(
                 UriTemporaryExtent,
                 "./test_element.xmi");
-
+        
+        Assert.That(createdExtent, Is.Not.Null);
         createdExtent.Extent!.set("name", "Test Extent");
 
         var factory = new MofFactory(createdExtent.Extent);

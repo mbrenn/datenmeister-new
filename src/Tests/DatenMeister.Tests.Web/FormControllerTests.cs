@@ -107,7 +107,7 @@ public class FormControllerTests
         Assert.That(foundForm, Is.Not.Null);
         var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
         Assert.That(listForm, Is.Not.Null);
-        var fields = listForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = listForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
 
         var foundFields =
             fields.OfType<IElement>()

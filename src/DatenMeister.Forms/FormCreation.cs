@@ -50,7 +50,7 @@ public static class FormCreation
                 
                 if (tab.getMetaClass()?.equals(_Forms.TheOne.__RowForm) == true)
                 {
-                    var innerParameter = new RowFormFactoryParameter()
+                    var innerParameter = new RowFormFactoryParameter
                     {
                         Extent = parameter.Extent,
                         ExtentTypes = parameter.ExtentTypes,
@@ -66,7 +66,8 @@ public static class FormCreation
                     {
                         Extent = parameter.Extent,
                         ExtentTypes = parameter.ExtentTypes,
-                        MetaClass = tab.getOrDefault<IElement>(_Forms._TableForm.metaClass)
+                        MetaClass = tab.getOrDefault<IElement>(_Forms._TableForm.metaClass),
+                        ParentMetaClass = parameter.MetaClass
                     };
 
                     CreateTableForm(innerParameter, innerContext, innerResult);

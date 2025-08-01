@@ -9,6 +9,11 @@ public record FieldFactoryParameter : FormFactoryParameterBase
     public string PropertyName { get; set; } = string.Empty;
     
     /// <summary>
+    /// Gets or sets the property value being used to create the field value
+    /// </summary>
+    public object? PropertyValue { get; set; } = null;
+    
+    /// <summary>
     /// Gets or sets the value whether this value will be shown in a table.
     /// If it is shown in a table, a subtable will not be created
     /// This avoids a endless recursion leading to stackoverflow  

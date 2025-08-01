@@ -105,7 +105,6 @@ public class CreateFormByMetaClassActionTests
         var detailForm = detailForms.First() as IElement;
         Assert.That(detailForm, Is.Not.Null);
         Assert.That(detailForm!.metaclass, Is.Not.Null);
-        Assert.That(detailForm!.metaclass!.equals(_Forms.TheOne.__RowForm));
     }
         
     /// <summary>

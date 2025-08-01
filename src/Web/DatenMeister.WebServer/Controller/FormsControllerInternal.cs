@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
@@ -85,7 +86,10 @@ public class FormsControllerInternal
         var form = FormCreation.CreateCollectionForm(
             new CollectionFormFactoryParameter
             {
-                Collection = extent.elements()
+                Collection = extent.elements(),
+                Extent = extent,
+                ExtentTypes = extent.GetConfiguration().ExtentTypes,
+                MetaClass = WorkspaceLogic.GetTypesWorkspace().ResolveElement(_Management.TheOne.__Extent, ResolveType.NoMetaWorkspaces)
             },
             formContext);
             

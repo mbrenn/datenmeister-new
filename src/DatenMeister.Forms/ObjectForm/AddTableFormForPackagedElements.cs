@@ -31,12 +31,9 @@ public class AddTableFormForPackagedElements : IObjectFormFactory
 
         // We care about the packaged elements
         // If the property for the list is 'packagedElement', then create multiple subforms...
-        var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
-        {
-            if (x is IElement innerElement) return innerElement.getMetaClass() == null;
-
-            return true;
-        }).ToList();
+        var elementsWithoutMetaClass = elementsAsObjects
+            .Where(x => x.getMetaClass() == null)
+            .ToList();
 
         var elementsWithMetaClass = elementsAsObjects
             .Select(x => x.getMetaClass())
@@ -55,7 +52,7 @@ public class AddTableFormForPackagedElements : IObjectFormFactory
 
             foreach (var item in elementsWithoutMetaClass)
             {
-                FieldCreationHelper.AddFieldsToFormByPropertyValues(form, item, context);
+                FieldCreationHelper.AddFieldsToFormByPropertyValues(form, item, parameter, context);
             }
 
             result.AddToFormCreationProtocol(

@@ -65,7 +65,8 @@ public class CollectionFormFromData : ICollectionFormFactory
                         {
                             Collection = new TemporaryReflectiveCollection(elementsWithoutMetaClass),
                             Extent = parameter.Extent,
-                            ExtentTypes = parameter.ExtentTypes
+                            ExtentTypes = parameter.ExtentTypes,
+                            ParentMetaClass = parameter.MetaClass
                         },
                         context.Clone())
                     .Forms;
@@ -114,7 +115,8 @@ public class CollectionFormFromData : ICollectionFormFactory
             var tableForm = FormCreation.CreateTableForm(
                                     new TableFormFactoryParameter
                                     {
-                                        MetaClass = groupedMetaclass
+                                        MetaClass = groupedMetaclass,
+                                        ParentMetaClass = parameter.MetaClass
                                     },
                                     context.Clone()
                                         .SetReadOnly(true))

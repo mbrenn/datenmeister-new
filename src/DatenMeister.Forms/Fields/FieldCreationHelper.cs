@@ -100,10 +100,14 @@ public static class FieldCreationHelper
     /// </summary>
     /// <param name="form">Form to be extended</param>
     /// <param name="item">Item to be evaluated</param>
+    /// <param name="parameter">Parameter which describe the parameter's under
+    /// which the parant element was created. This value is used to
+    /// set the Extent and ExtentTypes for the field.</param>
     /// <param name="context">Context in which the form is created</param>
     public static void AddFieldsToFormByPropertyValues(
         IObject form,
         object item,
+        FormFactoryParameterBase parameter,
         FormCreationContext context)
     {
         var cache = context.LocalScopeStorage.Get<FormCreatorCache>();
@@ -116,9 +120,6 @@ public static class FieldCreationHelper
             // non MOF Objects
             return;
 
-        var isReadOnly = context.IsReadOnly;
-        var factory = context.Global.Factory;
-
         // Creates the form out of the properties of the item
         var properties = itemAsAllProperties.getPropertiesBeingSet();
 
@@ -127,7 +128,6 @@ public static class FieldCreationHelper
         foreach (var propertyName in properties
                      .Where(property => !cache.CoveredPropertyNames.Contains(property)))
         {
-            cache.CoveredPropertyNames.Add(propertyName);
             if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
                 // Skip the property name, when we would like to have focus on certain property names
                 continue;
@@ -142,42 +142,35 @@ public static class FieldCreationHelper
 
             if (column == null)
             {
-                // Guess by content, which type of field shall be created
-                var propertyType = propertyValue?.GetType();
-                if (propertyType == null)
-                    // No propertyType ==> propertyValue is null and nothing is generated
-                    continue;
+                var clonedContext = context.Clone();
+                var resultingField = FormCreation.CreateField(
+                    new FieldFactoryParameter
+                    {
+                        Extent = parameter.Extent,
+                        ExtentTypes = parameter.ExtentTypes,
+                        PropertyName = propertyName,
+                        PropertyValue = propertyValue
+                    },
+                    clonedContext);
 
-                if (DotNetHelper.IsEnumeration(propertyType))
+                if (resultingField.Form != null)
                 {
-                    column = factory.create(_Forms.TheOne.__SubElementFieldData);
-                }
-                else if (propertyValue is IObject)
-                {
-                    column = factory.create(_Forms.TheOne.__ReferenceFieldData);
-                    column.set(_Forms._ReferenceFieldData.isSelectionInline, false);
+                    form.get<IReflectiveCollection>(_Forms._RowForm.field).add(resultingField.Form);
+                    cache.CoveredPropertyNames.Add(propertyName);
+                    
+                    FormCreationResult.AddToFormCreationProtocol(
+                        form,
+                        "[FieldCreationHelper.AddFieldsToFormByPropertyValues]: Field created for "
+                        + NamedElementMethods.GetName(column));
                 }
                 else
                 {
-                    column = factory.create(_Forms.TheOne.__TextFieldData);
+                    FormCreationResult.AddToFormCreationProtocol(
+                        form,
+                        "[FieldCreationHelper.AddFieldsToFormByPropertyValues]: Field was NOT created for " +
+                        "" + NamedElementMethods.GetName(column));
                 }
-
-                column.set(_Forms._FieldData.name, propertyName);
-                column.set(_Forms._FieldData.title, propertyName);
-                column.set(_Forms._FieldData.isReadOnly, isReadOnly);
-
-                form.get<IReflectiveCollection>(_Forms._RowForm.field).add(column);
-
-                FormCreationResult.AddToFormCreationProtocol(
-                    form,
-                    "[FormCreator.AddFieldsToFormByPropertyValues]: " + NamedElementMethods.GetName(column));
             }
-
-            // Makes the field to an enumeration, if explicitly requested or the type behind is an enumeration
-            column.set(
-                _Forms._FieldData.isEnumeration,
-                column.getOrDefault<bool>(_Forms._FieldData.isEnumeration) |
-                DotNetHelper.IsEnumeration(propertyValue?.GetType()));
         }
     }
 

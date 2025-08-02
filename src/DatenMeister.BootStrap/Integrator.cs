@@ -37,8 +37,6 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
 
     private PluginManager? _pluginManager;
     private DatenMeisterScope? _dmScope;
-        
-    private IntegrationSettings _settings = settings;
 
     public string PathWorkspaces
     {
@@ -81,13 +79,13 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
             scopeStorage.Add(_publicSettings);
         }
 
-        scopeStorage.Add(_settings);
+        scopeStorage.Add(settings);
 
         kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
         // Creates the database path for the DatenMeister.
         // and avoids to have a non-rooted path because it will lead to double creation of assemblies
-        if (!Path.IsPathRooted(_settings.DatabasePath))
+        if (!Path.IsPathRooted(settings.DatabasePath))
         {
             var assembly = Assembly.GetEntryAssembly() ??
                            throw new InvalidOperationException("Entry assembly is null");
@@ -95,15 +93,15 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
             var assemblyDirectoryName = Path.GetDirectoryName(assembly.Location) ??
                                         throw new InvalidOperationException("Assembly Directory Name is null");
 
-            _settings.DatabasePath = Path.Combine(assemblyDirectoryName, _settings.DatabasePath);
+            settings.DatabasePath = Path.Combine(assemblyDirectoryName, settings.DatabasePath);
         }
 
-        if (!Directory.Exists(_settings.DatabasePath))
+        if (!Directory.Exists(settings.DatabasePath))
         {
-            Directory.CreateDirectory(_settings.DatabasePath);
+            Directory.CreateDirectory(settings.DatabasePath);
         }
             
-        Logger.Info($"Database path: {_settings.DatabasePath}");
+        Logger.Info($"Database path: {settings.DatabasePath}");
 
         // Performs the initialization
         var watch = new Stopwatch();
@@ -163,7 +161,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
         scopeStorage.Add(_pluginManager);
 
         var pluginLoader = pluginLoaderSettings.PluginLoader;
-        var defaultPluginSettings = _settings.AdditionalSettings.TryGet<DefaultPluginSettings>();
+        var defaultPluginSettings = settings.AdditionalSettings.TryGet<DefaultPluginSettings>();
         if (defaultPluginSettings != null && pluginLoader is DefaultPluginLoader defaultPluginLoader)
             defaultPluginLoader.Settings = defaultPluginSettings;
 
@@ -184,15 +182,15 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
         var paths =
             new Bootstrapper.FilePaths
             {
-                LoadFromEmbeddedResources = string.IsNullOrEmpty(_settings.PathToXmiFiles),
+                LoadFromEmbeddedResources = string.IsNullOrEmpty(settings.PathToXmiFiles),
                 PathPrimitive =
-                    _settings.PathToXmiFiles == null
+                    settings.PathToXmiFiles == null
                         ? null
-                        : Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
+                        : Path.Combine(settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
                 PathUml =
-                    _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
+                    settings.PathToXmiFiles == null ? null : Path.Combine(settings.PathToXmiFiles, "UML.xmi"),
                 PathMof =
-                    _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
+                    settings.PathToXmiFiles == null ? null : Path.Combine(settings.PathToXmiFiles, "MOF.xmi")
             };
 
         var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
@@ -208,7 +206,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
                 throw new InvalidOperationException("Workspace for MOF is not found"),
                 workspaceLogic,
                 workspaceData.Mof,
-                _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof));
+                settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof));
         var umlTask = Task.Run(() =>
             Bootstrapper.PerformFullBootstrap(
                 paths,
@@ -216,7 +214,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
                 throw new InvalidOperationException("Workspace for UML is not found"),
                 workspaceLogic,
                 workspaceData.Uml,
-                _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml));
+                settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml));
         Task.WaitAll(mofTask, umlTask);
 
         umlWatch.Stop();
@@ -250,7 +248,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
 
         // Boots up the typical DatenMeister Environment by loading the data
         var extentManager = scope.Resolve<ExtentManager>();
-        if (_settings.EstablishDataEnvironment)
+        if (settings.EstablishDataEnvironment)
         {
             var workspaceLoader = scope.Resolve<WorkspaceLoader>();
             workspaceLoader.Load();
@@ -269,7 +267,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
                     Debugger.Break();
                 }
 
-                if (_settings.AllowNoFailOfLoading)
+                if (settings.AllowNoFailOfLoading)
                 {
                     throw;
                 }
@@ -342,15 +340,15 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
                     {
                         Logger.Info($"Overwriting database path to {_publicSettings.DatabasePath}");
 
-                        _settings.DatabasePath = _publicSettings.DatabasePath;
+                        settings.DatabasePath = _publicSettings.DatabasePath;
                     }
 
                     if (_publicSettings.WindowTitle != null && !string.IsNullOrEmpty(_publicSettings.WindowTitle))
                     {
-                        _settings.WindowTitle = _publicSettings.WindowTitle;
+                        settings.WindowTitle = _publicSettings.WindowTitle;
                     }
 
-                    _settings.IsReadOnly = _publicSettings.IsReadOnly;
+                    settings.IsReadOnly = _publicSettings.IsReadOnly;
                 }
             }
         }
@@ -359,7 +357,7 @@ public class Integrator(IntegrationSettings settings, PluginLoaderSettings plugi
             Logger.Warn($"Error during loading of public settings {exc.Message}");
         }
 
-        PathWorkspaces = GetPathToWorkspaces(_settings);
-        PathExtents = GetPathToExtents(_settings);
+        PathWorkspaces = GetPathToWorkspaces(settings);
+        PathExtents = GetPathToExtents(settings);
     }
 }

@@ -1096,8 +1096,11 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _FilterColumnsExclude
     {
-        public static string @ColumnNamesComma = "ColumnNamesComma";
-        public IElement? @_ColumnNamesComma = null;
+        public static string @columnNamesComma = "columnNamesComma";
+        public IElement? @_columnNamesComma = null;
+
+        public static string @input = "input";
+        public IElement? @_input = null;
 
         public static string @name = "name";
         public IElement? @_name = null;
@@ -1111,8 +1114,11 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _FilterColumnsIncludeOnly
     {
-        public static string @ColumnNamesComma = "ColumnNamesComma";
-        public IElement? @_ColumnNamesComma = null;
+        public static string @columnNamesComma = "columnNamesComma";
+        public IElement? @_columnNamesComma = null;
+
+        public static string @input = "input";
+        public IElement? @_input = null;
 
         public static string @name = "name";
         public IElement? @_name = null;

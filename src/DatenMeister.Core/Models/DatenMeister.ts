@@ -505,14 +505,16 @@ export namespace _DataViews
         export const __SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
         export class _FilterColumnsExclude
         {
-            static ColumnNamesComma = "ColumnNamesComma";
+            static columnNamesComma = "columnNamesComma";
+            static input = "input";
             static _name_ = "name";
         }
 
         export const __FilterColumnsExclude_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
         export class _FilterColumnsIncludeOnly
         {
-            static ColumnNamesComma = "ColumnNamesComma";
+            static columnNamesComma = "columnNamesComma";
+            static input = "input";
             static _name_ = "name";
         }
 

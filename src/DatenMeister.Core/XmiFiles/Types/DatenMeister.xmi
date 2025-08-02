@@ -324,11 +324,13 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="abca8647-18d7-4322-a803-2e3e1cd123d7" name="FilterColumnsExclude">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="65fdf89d-e9bc-4d7f-acf1-bcd98d5fb6ab" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1f3b7606-3541-4b29-ad6a-3877916bb280" type-ref="dm:///_internal/model/primitivetypes#String" name="ColumnNamesComma" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1f3b7606-3541-4b29-ad6a-3877916bb280" type-ref="dm:///_internal/model/primitivetypes#String" name="columnNamesComma" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4471bbcd-083e-4c82-8a91-43ab6692833a" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="00d223b8-4335-4ee3-9359-92354e2d669d" name="FilterColumnsIncludeOnly">
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8a0cb28a-7467-44fc-94a6-db6a46839cf8" name="ColumnNamesComma" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8a0cb28a-7467-44fc-94a6-db6a46839cf8" type-ref="dm:///_internal/model/primitivetypes#String" name="columnNamesComma" isID="false" isComposite="false" />
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="f9bf303b-701d-471f-a1d9-5943533c382e" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a9ca7732-32ef-43a8-b41b-315cce111440" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

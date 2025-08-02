@@ -1990,12 +1990,33 @@ public class DataViews
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        public string? @ColumnNamesComma
+        public string? @columnNamesComma
         {
             get =>
-                innerDmElement.getOrDefault<string?>("ColumnNamesComma");
+                innerDmElement.getOrDefault<string?>("columnNamesComma");
             set => 
-                innerDmElement.set("ColumnNamesComma", value);
+                innerDmElement.set("columnNamesComma", value);
+        }
+
+        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        {
+            get
+            {
+                var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    innerDmElement.set("input", value);
+                }
+            }
         }
 
         public string? @name
@@ -2014,12 +2035,33 @@ public class DataViews
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        public string? @ColumnNamesComma
+        public string? @columnNamesComma
         {
             get =>
-                innerDmElement.getOrDefault<string?>("ColumnNamesComma");
+                innerDmElement.getOrDefault<string?>("columnNamesComma");
             set => 
-                innerDmElement.set("ColumnNamesComma", value);
+                innerDmElement.set("columnNamesComma", value);
+        }
+
+        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        {
+            get
+            {
+                var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    innerDmElement.set("input", value);
+                }
+            }
         }
 
         public string? @name

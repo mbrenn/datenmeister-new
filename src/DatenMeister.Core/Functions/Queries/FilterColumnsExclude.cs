@@ -5,14 +5,14 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class ExcludeColumns : ProxyReflectiveCollection
+public class FilterColumnsExclude : ProxyReflectiveCollection
 {
     /// <summary>
     /// Stores the excluded columns
     /// </summary>
     public HashSet<string> ExcludedColumns { get; set; } = [];
     
-    public ExcludeColumns(IReflectiveCollection collection) : base(collection)
+    public FilterColumnsExclude(IReflectiveCollection collection) : base(collection)
     {
     }
 

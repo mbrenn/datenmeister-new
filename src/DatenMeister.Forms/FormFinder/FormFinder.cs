@@ -53,7 +53,7 @@ public class FormFinder
     public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
     {
         // Check, if the view mode is AutoGenerate. If that is the case, then no query will be performed
-        if (query.viewModeId == ViewModes.AutoGenerate)
+        if (query.ViewModeId == ViewModes.AutoGenerate)
         {
             return [];
         }
@@ -66,7 +66,7 @@ public class FormFinder
         stopWatch.IntermediateLog("# of FormAssociations: " + formAssociations.Count);
 
         var foundForms = new List<FoundForm>();
-        var queryViewModeIds = query.viewModeId.Split(' ');
+        var queryViewModeIds = query.ViewModeId.Split(' ');
 
         foreach (var element in formAssociations)
         {
@@ -78,7 +78,7 @@ public class FormFinder
             }
 
             // Checks, if we want to perform a break
-            if (query.debugActive && element.getOrDefault<bool>(_Forms._FormAssociation.debugActive))
+            if (query.DebugActive && element.getOrDefault<bool>(_Forms._FormAssociation.debugActive))
             {
                 Debugger.Break();
             }
@@ -130,16 +130,16 @@ public class FormFinder
             // ExtentType
             if (!string.IsNullOrEmpty(associationExtentType))
             {
-                if (query.extentTypes.Any()
-                    && query.extentTypes.All(x=> x.Contains(associationExtentType)))
+                if (query.ExtentTypes.Any()
+                    && query.ExtentTypes.All(x=> x.Contains(associationExtentType)))
                 {
-                    InternalDebug("-- MATCH: Requested ExtentType: " + string.Join(", ", query.extentTypes) + ", FormAssociation ExtentType: " +
+                    InternalDebug("-- MATCH: Requested ExtentType: " + string.Join(", ", query.ExtentTypes) + ", FormAssociation ExtentType: " +
                                   associationExtentType);
                     points++;
                 }
                 else
                 {
-                    InternalDebug("-- NO MATCH: Requested ExtentType: " + string.Join(", ", query.extentTypes) +
+                    InternalDebug("-- NO MATCH: Requested ExtentType: " + string.Join(", ", query.ExtentTypes) +
                                   ", FormAssociation ExtentType: " +
                                   associationExtentType);
                     isMatching = false;
@@ -152,13 +152,13 @@ public class FormFinder
                 if (queryViewModeIds != null
                     && queryViewModeIds.Contains(associationViewModeId))
                 {
-                    InternalDebug("-- MATCH: Requested ViewMode: " + query.viewModeId + ", FormAssociation ViewModeId: " +
+                    InternalDebug("-- MATCH: Requested ViewMode: " + query.ViewModeId + ", FormAssociation ViewModeId: " +
                                   associationViewModeId);
                     points++;
                 }
                 else
                 {
-                    InternalDebug("-- NO MATCH: Requested ViewMode: " + query.viewModeId +
+                    InternalDebug("-- NO MATCH: Requested ViewMode: " + query.ViewModeId +
                                   ", FormAssociation ViewMode: " +
                                   associationViewModeId);
                     isMatching = false;
@@ -168,16 +168,16 @@ public class FormFinder
             // MetaClass
             if (associationMetaClass != null)
             {
-                if (query.metaClass != null && query.metaClass?.equals(associationMetaClass) == true)
+                if (query.MetaClass != null && query.MetaClass?.equals(associationMetaClass) == true)
                 {
-                    InternalDebug("-- MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.metaClass) +
+                    InternalDebug("-- MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.MetaClass) +
                                   ", FormAssociation innerMetaClass: " +
                                   NamedElementMethods.GetName(associationMetaClass));
                     points++;
                 }
                 else
                 {
-                    InternalDebug("-- NO MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.metaClass) +
+                    InternalDebug("-- NO MATCH: Requested metaClass: " + NamedElementMethods.GetName(query.MetaClass) +
                                   ", FormAssociation innerMetaClass: " +
                                   NamedElementMethods.GetName(associationMetaClass));
                     isMatching = false;
@@ -200,11 +200,11 @@ public class FormFinder
             // ´ParentMetaClass
             if (associationParentMetaclass != null)
             {
-                if (query.parentMetaClass != null &&
-                    query.parentMetaClass?.equals(associationParentMetaclass) == true)
+                if (query.ParentMetaClass != null &&
+                    query.ParentMetaClass?.equals(associationParentMetaclass) == true)
                 {
                     InternalDebug("-- MATCH: Requested parentMetaClass: " +
-                                  NamedElementMethods.GetName(query.parentMetaClass) +
+                                  NamedElementMethods.GetName(query.ParentMetaClass) +
                                   ", FormAssociation parentMetaClass: " +
                                   NamedElementMethods.GetName(associationParentMetaclass));
                     points++;
@@ -212,7 +212,7 @@ public class FormFinder
                 else
                 {
                     InternalDebug("-- NO MATCH: Requested parentMetaClass: " +
-                                  NamedElementMethods.GetName(query.parentMetaClass) +
+                                  NamedElementMethods.GetName(query.ParentMetaClass) +
                                   ", FormAssociation parentMetaClass: " +
                                   NamedElementMethods.GetName(associationParentMetaclass));
                     isMatching = false;
@@ -222,17 +222,17 @@ public class FormFinder
             // ParentProperty
             if (!string.IsNullOrEmpty(associationParentProperty))
             {
-                if (!string.IsNullOrEmpty(query.parentProperty) &&
-                    query.parentProperty.Equals(associationParentProperty))
+                if (!string.IsNullOrEmpty(query.ParentProperty) &&
+                    query.ParentProperty.Equals(associationParentProperty))
                 {
-                    InternalDebug("-- MATCH: Requested ParentProperty: " + query.parentProperty +
+                    InternalDebug("-- MATCH: Requested ParentProperty: " + query.ParentProperty +
                                   ", FormAssociation ParentProperty: " +
                                   associationParentProperty);
                     points++;
                 }
                 else
                 {
-                    InternalDebug("-- NO MATCH: Requested ParentProperty: " + query.parentProperty +
+                    InternalDebug("-- NO MATCH: Requested ParentProperty: " + query.ParentProperty +
                                   ", FormAssociation ParentProperty: " +
                                   associationParentProperty);
                     isMatching = false;
@@ -242,17 +242,17 @@ public class FormFinder
             // WorkspaceId
             if (!string.IsNullOrEmpty(associationWorkspaceId))
             {
-                if (!string.IsNullOrEmpty(query.workspaceId) &&
-                    query.workspaceId.Equals(associationWorkspaceId))
+                if (!string.IsNullOrEmpty(query.WorkspaceId) &&
+                    query.WorkspaceId.Equals(associationWorkspaceId))
                 {
-                    InternalDebug("-- MATCH: Requested WorkspaceId: " + query.workspaceId +
+                    InternalDebug("-- MATCH: Requested WorkspaceId: " + query.WorkspaceId +
                                   ", FormAssociation WorkspaceId: " +
                                   associationWorkspaceId);
                     points++;
                 }
                 else
                 {
-                    InternalDebug("-- NO MATCH: Requested WorkspaceId: " + query.workspaceId +
+                    InternalDebug("-- NO MATCH: Requested WorkspaceId: " + query.WorkspaceId +
                                   ", FormAssociation WorkspaceId: " +
                                   associationWorkspaceId);
                     isMatching = false;
@@ -262,17 +262,17 @@ public class FormFinder
             // WorkspaceId
             if (!string.IsNullOrEmpty(associationExtentUri))
             {
-                if (!string.IsNullOrEmpty(query.extentUri) &&
-                    query.extentUri.Equals(associationExtentUri))
+                if (!string.IsNullOrEmpty(query.ExtentUri) &&
+                    query.ExtentUri.Equals(associationExtentUri))
                 {
-                    InternalDebug("-- MATCH: Requested extentUri: " + query.extentUri +
+                    InternalDebug("-- MATCH: Requested extentUri: " + query.ExtentUri +
                                   ", FormAssociation extentUri: " +
                                   associationExtentUri);
                     points++;
                 }
                 else
                 {
-                    InternalDebug("-- NO MATCH: Requested extentUri: " + query.extentUri +
+                    InternalDebug("-- NO MATCH: Requested extentUri: " + query.ExtentUri +
                                   ", FormAssociation extentUri: " +
                                   associationExtentUri);
                     isMatching = false;

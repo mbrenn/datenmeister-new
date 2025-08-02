@@ -1094,22 +1094,7 @@ public class _DataViews
 
     [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
         TypeKind = TypeKind.ClassTree)]
-    public class _ColumnsExclude
-    {
-        public static string @columnNamesComma = "columnNamesComma";
-        public IElement? @_columnNamesComma = null;
-
-        public static string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _ColumnsExclude @ColumnsExclude = new _ColumnsExclude();
-    public MofObjectShadow @__ColumnsExclude = new MofObjectShadow("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ColumnsIncludeOnly
+    public class _FilterColumnsExclude
     {
         public static string @ColumnNamesComma = "ColumnNamesComma";
         public IElement? @_ColumnNamesComma = null;
@@ -1119,8 +1104,23 @@ public class _DataViews
 
     }
 
-    public _ColumnsIncludeOnly @ColumnsIncludeOnly = new _ColumnsIncludeOnly();
-    public MofObjectShadow @__ColumnsIncludeOnly = new MofObjectShadow("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
+    public _FilterColumnsExclude @FilterColumnsExclude = new _FilterColumnsExclude();
+    public MofObjectShadow @__FilterColumnsExclude = new MofObjectShadow("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
+        TypeKind = TypeKind.ClassTree)]
+    public class _FilterColumnsIncludeOnly
+    {
+        public static string @ColumnNamesComma = "ColumnNamesComma";
+        public IElement? @_ColumnNamesComma = null;
+
+        public static string @name = "name";
+        public IElement? @_name = null;
+
+    }
+
+    public _FilterColumnsIncludeOnly @FilterColumnsIncludeOnly = new _FilterColumnsIncludeOnly();
+    public MofObjectShadow @__FilterColumnsIncludeOnly = new MofObjectShadow("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
 
     public static readonly _DataViews TheOne = new _DataViews();
 

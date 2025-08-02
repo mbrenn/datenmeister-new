@@ -1986,17 +1986,16 @@ public class DataViews
 
     [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
         TypeKind = TypeKind.WrappedClass)]
-    public class ColumnsExclude_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class FilterColumnsExclude_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        // Not found
-        public object? @columnNamesComma
+        public string? @ColumnNamesComma
         {
             get =>
-                innerDmElement.getOrDefault<object?>("columnNamesComma");
+                innerDmElement.getOrDefault<string?>("ColumnNamesComma");
             set => 
-                innerDmElement.set("columnNamesComma", value);
+                innerDmElement.set("ColumnNamesComma", value);
         }
 
         public string? @name
@@ -2011,15 +2010,14 @@ public class DataViews
 
     [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
         TypeKind = TypeKind.WrappedClass)]
-    public class ColumnsIncludeOnly_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class FilterColumnsIncludeOnly_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
 
-        // Not found
-        public object? @ColumnNamesComma
+        public string? @ColumnNamesComma
         {
             get =>
-                innerDmElement.getOrDefault<object?>("ColumnNamesComma");
+                innerDmElement.getOrDefault<string?>("ColumnNamesComma");
             set => 
                 innerDmElement.set("ColumnNamesComma", value);
         }

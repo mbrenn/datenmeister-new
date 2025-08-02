@@ -503,20 +503,20 @@ export namespace _DataViews
         }
 
         export const __SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
-        export class _ColumnsExclude
-        {
-            static columnNamesComma = "columnNamesComma";
-            static _name_ = "name";
-        }
-
-        export const __ColumnsExclude_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
-        export class _ColumnsIncludeOnly
+        export class _FilterColumnsExclude
         {
             static ColumnNamesComma = "ColumnNamesComma";
             static _name_ = "name";
         }
 
-        export const __ColumnsIncludeOnly_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
+        export const __FilterColumnsExclude_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
+        export class _FilterColumnsIncludeOnly
+        {
+            static ColumnNamesComma = "ColumnNamesComma";
+            static _name_ = "name";
+        }
+
+        export const __FilterColumnsIncludeOnly_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
 }
 
 export namespace _Reports

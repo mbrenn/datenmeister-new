@@ -1984,6 +1984,56 @@ public class DataViews
 
     }
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
+        TypeKind = TypeKind.WrappedClass)]
+    public class ColumnsExclude_Wrapper(IElement innerDmElement) : IElementWrapper
+    {
+        public IElement GetWrappedElement() => innerDmElement;
+
+        // Not found
+        public object? @columnNamesComma
+        {
+            get =>
+                innerDmElement.getOrDefault<object?>("columnNamesComma");
+            set => 
+                innerDmElement.set("columnNamesComma", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("name");
+            set => 
+                innerDmElement.set("name", value);
+        }
+
+    }
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
+        TypeKind = TypeKind.WrappedClass)]
+    public class ColumnsIncludeOnly_Wrapper(IElement innerDmElement) : IElementWrapper
+    {
+        public IElement GetWrappedElement() => innerDmElement;
+
+        // Not found
+        public object? @ColumnNamesComma
+        {
+            get =>
+                innerDmElement.getOrDefault<object?>("ColumnNamesComma");
+            set => 
+                innerDmElement.set("ColumnNamesComma", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("name");
+            set => 
+                innerDmElement.set("name", value);
+        }
+
+    }
+
 }
 
 public class Reports

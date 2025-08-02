@@ -1092,6 +1092,36 @@ public class _DataViews
     public _SelectByWorkspaceNode @SelectByWorkspaceNode = new _SelectByWorkspaceNode();
     public MofObjectShadow @__SelectByWorkspaceNode = new MofObjectShadow("dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db");
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
+        TypeKind = TypeKind.ClassTree)]
+    public class _ColumnsExclude
+    {
+        public static string @columnNamesComma = "columnNamesComma";
+        public IElement? @_columnNamesComma = null;
+
+        public static string @name = "name";
+        public IElement? @_name = null;
+
+    }
+
+    public _ColumnsExclude @ColumnsExclude = new _ColumnsExclude();
+    public MofObjectShadow @__ColumnsExclude = new MofObjectShadow("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
+        TypeKind = TypeKind.ClassTree)]
+    public class _ColumnsIncludeOnly
+    {
+        public static string @ColumnNamesComma = "ColumnNamesComma";
+        public IElement? @_ColumnNamesComma = null;
+
+        public static string @name = "name";
+        public IElement? @_name = null;
+
+    }
+
+    public _ColumnsIncludeOnly @ColumnsIncludeOnly = new _ColumnsIncludeOnly();
+    public MofObjectShadow @__ColumnsIncludeOnly = new MofObjectShadow("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
+
     public static readonly _DataViews TheOne = new _DataViews();
 
 }

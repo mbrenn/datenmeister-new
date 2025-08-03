@@ -922,7 +922,7 @@ public class _DataViews
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
         TypeKind = TypeKind.ClassTree)]
-    public class _FilterByPropertyValueNode
+    public class _RowFilterByPropertyValueNode
     {
         public static string @input = "input";
         public IElement? @_input = null;
@@ -941,12 +941,12 @@ public class _DataViews
 
     }
 
-    public _FilterByPropertyValueNode @FilterByPropertyValueNode = new _FilterByPropertyValueNode();
-    public MofObjectShadow @__FilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
+    public _RowFilterByPropertyValueNode @RowFilterByPropertyValueNode = new _RowFilterByPropertyValueNode();
+    public MofObjectShadow @__RowFilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
         TypeKind = TypeKind.ClassTree)]
-    public class _FilterByMetaclassNode
+    public class _RowFilterByMetaclassNode
     {
         public static string @input = "input";
         public IElement? @_input = null;
@@ -962,8 +962,8 @@ public class _DataViews
 
     }
 
-    public _FilterByMetaclassNode @FilterByMetaclassNode = new _FilterByMetaclassNode();
-    public MofObjectShadow @__FilterByMetaclassNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode");
+    public _RowFilterByMetaclassNode @RowFilterByMetaclassNode = new _RowFilterByMetaclassNode();
+    public MofObjectShadow @__RowFilterByMetaclassNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode");
 
     public class _ComparisonMode
     {
@@ -1094,7 +1094,7 @@ public class _DataViews
 
     [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
         TypeKind = TypeKind.ClassTree)]
-    public class _FilterColumnsExclude
+    public class _ColumnFilterExcludeNode
     {
         public static string @columnNamesComma = "columnNamesComma";
         public IElement? @_columnNamesComma = null;
@@ -1107,12 +1107,12 @@ public class _DataViews
 
     }
 
-    public _FilterColumnsExclude @FilterColumnsExclude = new _FilterColumnsExclude();
-    public MofObjectShadow @__FilterColumnsExclude = new MofObjectShadow("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
+    public _ColumnFilterExcludeNode @ColumnFilterExcludeNode = new _ColumnFilterExcludeNode();
+    public MofObjectShadow @__ColumnFilterExcludeNode = new MofObjectShadow("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
         TypeKind = TypeKind.ClassTree)]
-    public class _FilterColumnsIncludeOnly
+    public class _ColumnFilterIncludeOnlyNode
     {
         public static string @columnNamesComma = "columnNamesComma";
         public IElement? @_columnNamesComma = null;
@@ -1125,8 +1125,44 @@ public class _DataViews
 
     }
 
-    public _FilterColumnsIncludeOnly @FilterColumnsIncludeOnly = new _FilterColumnsIncludeOnly();
-    public MofObjectShadow @__FilterColumnsIncludeOnly = new MofObjectShadow("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
+    public _ColumnFilterIncludeOnlyNode @ColumnFilterIncludeOnlyNode = new _ColumnFilterIncludeOnlyNode();
+    public MofObjectShadow @__ColumnFilterIncludeOnlyNode = new MofObjectShadow("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
+        TypeKind = TypeKind.ClassTree)]
+    public class _RowFilterOnPositionNode
+    {
+        public static string @input = "input";
+        public IElement? @_input = null;
+
+        public static string @amount = "amount";
+        public IElement? @_amount = null;
+
+        public static string @number = "number";
+        public IElement? @_number = null;
+
+    }
+
+    public _RowFilterOnPositionNode @RowFilterOnPositionNode = new _RowFilterOnPositionNode();
+    public MofObjectShadow @__RowFilterOnPositionNode = new MofObjectShadow("dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f");
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
+        TypeKind = TypeKind.ClassTree)]
+    public class _RowOrderByNode
+    {
+        public static string @input = "input";
+        public IElement? @_input = null;
+
+        public static string @propertyName = "propertyName";
+        public IElement? @_propertyName = null;
+
+        public static string @orderDescending = "orderDescending";
+        public IElement? @_orderDescending = null;
+
+    }
+
+    public _RowOrderByNode @RowOrderByNode = new _RowOrderByNode();
+    public MofObjectShadow @__RowOrderByNode = new MofObjectShadow("dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9");
 
     public static readonly _DataViews TheOne = new _DataViews();
 

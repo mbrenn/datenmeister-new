@@ -1,7 +1,7 @@
 ﻿import * as FormActions from "../FormActions.js"
 import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {SubmitMethod} from "../forms/Forms.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import * as ActionClient from "../client/Actions.js";

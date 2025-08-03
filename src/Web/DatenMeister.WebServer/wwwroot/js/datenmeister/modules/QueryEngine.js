@@ -1,5 +1,5 @@
 import * as Mof from "../Mof.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class QueryBuilder {
     constructor() {
         this.queryStatement = new Mof.DmObject(_DatenMeister._DataViews.__QueryStatement_Uri);
@@ -15,11 +15,11 @@ export class QueryBuilder {
     }
 }
 export function filterByMetaClass(builder, metaClass, includeInherits) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FilterByMetaclassNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, builder.getResultNode());
-    viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, metaClass);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterByMetaclassNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._RowFilterByMetaclassNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._RowFilterByMetaclassNode.metaClass, metaClass);
     if (includeInherits !== undefined) {
-        viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.includeInherits, includeInherits);
+        viewNode.set(_DatenMeister._DataViews._RowFilterByMetaclassNode.includeInherits, includeInherits);
     }
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
@@ -32,11 +32,11 @@ export function limit(builder, limit) {
     // not implemented up to now
 }
 export function filterByProperty(builder, property, value, comparisonMode) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FilterByPropertyValueNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, builder.getResultNode());
-    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, property);
-    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, value);
-    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode, comparisonMode ?? _DatenMeister._DataViews._ComparisonMode.Equal);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterByPropertyValueNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.property, property);
+    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.value, value);
+    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.comparisonMode, comparisonMode ?? _DatenMeister._DataViews._ComparisonMode.Equal);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;

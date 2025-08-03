@@ -275,14 +275,14 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="59886420-a68c-4a3d-937c-2c168b128127" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b3262eeb-1bd2-45cf-b30e-5a9a93a5ba7d" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="FilterByPropertyValueNode">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByPropertyValueNode" name="RowFilterByPropertyValueNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b08ec0ba-93c0-45ec-a75f-e2b76db2be85" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="248423b3-6df8-476e-8f0d-42fd2ede4df1" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7bf90409-330b-4c2c-8eaf-587b9a858820" name="property" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d761ff6b-d3c5-4089-ab72-0d6451250d09" name="value" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d4911f0d-61d9-401e-9afb-bcc667a6dfa1" name="comparisonMode" type-ref="#DatenMeister.Models.DataViews.ComparisonMode" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByMetaclassNode" name="FilterByMetaclassNode">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterByMetaclassNode" name="RowFilterByMetaclassNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="307ae9ff-38c4-48bb-bec7-40be26c5d81f" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="24eaa825-980c-434c-a853-7825f1a2d2b2" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7e4e02f7-36ae-48d6-8d91-fd48b0a435a1" name="metaClass" />
@@ -322,15 +322,25 @@
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="6bc52237-b185-481f-a40f-0d2baee04212" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1eb718dc-9e10-4023-b3c7-9cb524b0d46d" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="abca8647-18d7-4322-a803-2e3e1cd123d7" name="FilterColumnsExclude">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="abca8647-18d7-4322-a803-2e3e1cd123d7" name="ColumnFilterExcludeNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="65fdf89d-e9bc-4d7f-acf1-bcd98d5fb6ab" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1f3b7606-3541-4b29-ad6a-3877916bb280" type-ref="dm:///_internal/model/primitivetypes#String" name="columnNamesComma" isID="false" isComposite="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4471bbcd-083e-4c82-8a91-43ab6692833a" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="00d223b8-4335-4ee3-9359-92354e2d669d" name="FilterColumnsIncludeOnly">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="00d223b8-4335-4ee3-9359-92354e2d669d" name="ColumnFilterIncludeOnlyNode">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8a0cb28a-7467-44fc-94a6-db6a46839cf8" type-ref="dm:///_internal/model/primitivetypes#String" name="columnNamesComma" isID="false" isComposite="false" />
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="f9bf303b-701d-471f-a1d9-5943533c382e" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a9ca7732-32ef-43a8-b41b-315cce111440" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="d705b34b-369f-4b44-9a00-013e1daa759f" name="RowFilterOnPositionNode">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8dda35ff-32b8-4597-85e4-f7c0f0488fbd" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="db1c165b-92cb-4bb6-a6d2-fcdb7c522f0c" type-ref="dm:///_internal/model/primitivetypes#Integer" name="amount" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3e952af8-b5db-4ce3-9ff0-144857095eba" name="number" type-ref="dm:///_internal/model/primitivetypes#Integer" isID="false" isComposite="false" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="e6948145-e1b7-4542-84e5-269dab1aa4c9" name="RowOrderByNode">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e6d02456-c3dd-4975-936b-9c530d371675" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f15fecaf-9db0-4df6-8779-297bfe2ed71e" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="2a958352-bfdf-4e41-8a67-f17923655f8d" name="orderDescending" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

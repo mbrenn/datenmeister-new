@@ -1,4 +1,4 @@
-﻿import {_DatenMeister} from "../models/DatenMeister.class.js"
+﻿import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as TextField from "../fields/TextField.js";
 import * as CheckboxField from "../fields/CheckboxField.js";
 import * as CheckboxListTaggingField from "../fields/CheckboxListTaggingField.js";

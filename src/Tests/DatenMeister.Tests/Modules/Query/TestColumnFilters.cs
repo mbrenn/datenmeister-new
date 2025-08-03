@@ -37,10 +37,10 @@ public class TestColumnFilters
     {
         var (scope, queryExtent, inputQuery) = await SetupExtentAndQuery();
         var queryFactory = new MofFactory(queryExtent);
-        var filterColumns = queryFactory.create(_DataViews.TheOne.__FilterColumnsExclude);
+        var filterColumns = queryFactory.create(_DataViews.TheOne.__ColumnFilterExcludeNode);
         queryExtent.elements().add(filterColumns);
-        filterColumns.set(_DataViews._FilterColumnsExclude.columnNamesComma, "age,iq");
-        filterColumns.set(_DataViews._FilterColumnsExclude.input, inputQuery);
+        filterColumns.set(_DataViews._ColumnFilterExcludeNode.columnNamesComma, "age,iq");
+        filterColumns.set(_DataViews._ColumnFilterExcludeNode.input, inputQuery);
         
         
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
@@ -59,10 +59,10 @@ public class TestColumnFilters
     {
         var (scope, queryExtent, inputQuery) = await SetupExtentAndQuery();
         var queryFactory = new MofFactory(queryExtent);
-        var filterColumns = queryFactory.create(_DataViews.TheOne.__FilterColumnsIncludeOnly);
+        var filterColumns = queryFactory.create(_DataViews.TheOne.__ColumnFilterIncludeOnlyNode);
         queryExtent.elements().add(filterColumns);
-        filterColumns.set(_DataViews._FilterColumnsExclude.columnNamesComma, "name, age");
-        filterColumns.set(_DataViews._FilterColumnsExclude.input, inputQuery);
+        filterColumns.set(_DataViews._ColumnFilterIncludeOnlyNode.columnNamesComma, "name, age");
+        filterColumns.set(_DataViews._ColumnFilterIncludeOnlyNode.input, inputQuery);
         
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
         var result = viewLogic.GetElementsForViewNode(filterColumns).OfType<IElement>().ToList();

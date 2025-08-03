@@ -5,7 +5,7 @@ import * as FieldFactory from "./FieldFactory.js";
 import * as Settings from "../Settings.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _TableForm = _DatenMeister._Forms._TableForm;
 import * as Actions from "../client/Actions.js";
 import _FieldData = _DatenMeister._Forms._FieldData;

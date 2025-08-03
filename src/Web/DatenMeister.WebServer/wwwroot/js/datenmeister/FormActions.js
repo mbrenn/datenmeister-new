@@ -1,6 +1,6 @@
 import * as Mof from "./Mof.js";
 import { SubmitMethod } from "./forms/Forms.js";
-import { _DatenMeister } from "./models/DatenMeister.class.js";
+import * as _DatenMeister from "./models/DatenMeister.class.js";
 import * as ActionClient from "./client/Actions.js";
 export function getActionHeading(module) {
     if (module.actionHeading !== undefined) {

@@ -16,7 +16,7 @@ import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
 import {FormMode} from "./Forms.js";
 import * as IForm from "./Interfaces.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {ItemLink} from "../ApiModels.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";

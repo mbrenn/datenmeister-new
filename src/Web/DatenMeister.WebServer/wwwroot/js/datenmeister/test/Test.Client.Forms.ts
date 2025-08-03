@@ -3,7 +3,7 @@ import * as IForm from '../forms/Interfaces.js'
 import * as FormConfiguration from '../forms/IFormConfiguration.js'
 import * as ModuleFormLoader from '../forms/DefaultLoader.js'
 import * as Mof from '../Mof.js'
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ClientExtent from "../client/Extents.js";
 import * as ClientForms from "../client/Forms.js";
 import * as ClientWorkspace from "../client/Workspace.js";

@@ -2,7 +2,7 @@
 import { DmObject, ObjectType } from "../Mof.js";
 import { IFormNavigation, IPageForm } from "../forms/Interfaces.js";
 import { SubmitMethod } from "../forms/Forms.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Navigation from "../Navigator.js";
 
 export function loadModules() {

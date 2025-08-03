@@ -15,11 +15,11 @@ export class Field extends BaseField implements IFormField {
     async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
 
         const tthis = this;
-        const title = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.title, ObjectType.String);
-        const action = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.actionName, ObjectType.String);
+        const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, ObjectType.String);
+        const action = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName, ObjectType.String);
 
-        const parameter = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.parameter, ObjectType.Single);
-        const buttonText = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.buttonText, ObjectType.String);
+        const parameter = this.field.get(_DatenMeister._Forms._ActionFieldData.parameter, ObjectType.Single);
+        const buttonText = this.field.get(_DatenMeister._Forms._ActionFieldData.buttonText, ObjectType.String);
 
 
         const module = FormActions.getModule(action);

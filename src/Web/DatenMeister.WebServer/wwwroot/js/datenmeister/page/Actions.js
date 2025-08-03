@@ -6,7 +6,7 @@ import { loadDefaultModules } from "../actions/DefaultLoader.js";
 import * as PathQueryDebugControl from "../controls/PathQueryDebugControl.js";
 loadDefaultModules();
 export async function pageTestFormFields() {
-    var action = new Mof.DmObject(_DatenMeister._DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);
+    var action = new Mof.DmObject(_DatenMeister._Forms.__NavigateToFieldsForTestAction_Uri);
     await FormActions.executeActionOnServer(action);
 }
 export async function pageDebugQueryElements() {
@@ -56,9 +56,9 @@ export async function pageOpenSelectItemControlWithItem() {
 }
 export async function openNavigateToExtentPropertiesViaClientNavigation() {
     const navigate = new Mof.DmObject();
-    navigate.setMetaClassByUri(_DatenMeister._DatenMeister._Actions._ClientActions.__NavigateToExtentClientAction_Uri);
-    navigate.set(_DatenMeister._DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, "Data");
-    navigate.set(_DatenMeister._DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, "dm:///_internal/temp");
-    FormActions.executeClientAction(navigate);
+    navigate.setMetaClassByUri(_DatenMeister._Actions._ClientActions.__NavigateToExtentClientAction_Uri);
+    navigate.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.workspaceId, "Data");
+    navigate.set(_DatenMeister._Actions._ClientActions._NavigateToExtentClientAction.extentUri, "dm:///_internal/temp");
+    await FormActions.executeClientAction(navigate);
 }
 //# sourceMappingURL=Actions.js.map

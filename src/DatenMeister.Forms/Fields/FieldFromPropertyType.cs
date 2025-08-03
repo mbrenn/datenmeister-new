@@ -185,7 +185,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : IFieldFacto
                     }
                     
                     var queryFlatten = factory.create(_DataViews.TheOne.__FlattenNode);
-                    var queryByMetaClass = factory.create(_DataViews.TheOne.__FilterByMetaclassNode);
+                    var queryByMetaClass = factory.create(_DataViews.TheOne.__RowFilterByMetaclassNode);
                         
                     queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByExtent);
                     queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByMetaClass);
@@ -196,9 +196,9 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : IFieldFacto
                         
                     queryFlatten.set(_DataViews._FlattenNode.input, queryByExtent);
                         
-                    queryByMetaClass.set(_DataViews._FilterByMetaclassNode.input, queryFlatten);
-                    queryByMetaClass.set(_DataViews._FilterByMetaclassNode.metaClass, propertyType);
-                    queryByMetaClass.set(_DataViews._FilterByMetaclassNode.includeInherits, true);
+                    queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.input, queryFlatten);
+                    queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.metaClass, propertyType);
+                    queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.includeInherits, true);
                         
                     dropDownByQueryData.set(_Forms._SubElementFieldData.name, propertyName);
                     dropDownByQueryData.set(_Forms._SubElementFieldData.title, propertyName);

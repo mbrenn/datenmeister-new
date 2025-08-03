@@ -1,7 +1,7 @@
 import * as Mof from "../Mof.js";
 import {DmObject, ObjectType} from "../Mof.js";
 import {BaseField, IFormField} from "./Interfaces.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _TextFieldData = _DatenMeister._Forms._TextFieldData;
 import {truncateText} from "../../burnsystems/StringManipulation.js";
 import { injectNameByUri } from "../DomHelper.js";

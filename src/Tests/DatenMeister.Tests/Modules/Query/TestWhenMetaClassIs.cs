@@ -35,7 +35,7 @@ public class TestWhenMetaClassIs
     {
         var (scope, queryByMetaClass) = await SetupExtentAndQuery();
         await using var datenMeisterScope = scope;
-        queryByMetaClass.set(_DataViews._FilterByMetaclassNode.includeInherits, true);
+        queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.includeInherits, true);
 
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
 
@@ -86,7 +86,7 @@ public class TestWhenMetaClassIs
             queryByExtent.set(_DataViews._SelectByWorkspaceNode.workspaceId, "Data");
 
             var queryFlatten = factory.create(_DataViews.TheOne.__FlattenNode);
-            var queryByMetaClass = factory.create(_DataViews.TheOne.__FilterByMetaclassNode);
+            var queryByMetaClass = factory.create(_DataViews.TheOne.__RowFilterByMetaclassNode);
 
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByExtent);
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByMetaClass);
@@ -97,9 +97,9 @@ public class TestWhenMetaClassIs
 
             queryFlatten.set(_DataViews._FlattenNode.input, queryByExtent);
 
-            queryByMetaClass.set(_DataViews._FilterByMetaclassNode.input, queryFlatten);
+            queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.input, queryFlatten);
             queryByMetaClass.set(
-                _DataViews._FilterByMetaclassNode.metaClass,
+                _DataViews._RowFilterByMetaclassNode.metaClass,
                 _DataViews.TheOne.__ViewNode);
             return (scope, queryByMetaClass);
         }

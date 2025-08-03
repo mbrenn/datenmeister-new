@@ -1,7 +1,7 @@
 import * as Mof from "../Mof.js";
 import {DmObject, ObjectType} from "../Mof.js";
 import {BaseField, IFormField} from "./Interfaces.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import _UriReferenceFieldData = _DatenMeister._Forms._UriReferenceFieldData;
 import * as SIC from "../controls/SelectItemControl.js";
 

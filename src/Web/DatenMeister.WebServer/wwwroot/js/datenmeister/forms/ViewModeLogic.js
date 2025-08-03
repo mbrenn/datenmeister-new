@@ -4,7 +4,7 @@
 // When the user changes the viewmode, it will be kept during the session
 import { ObjectType } from "../Mof.js";
 import * as FormsClient from "../client/Forms.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 const sessionPropertyName = "dm_current_viewmode";
 /**
  * Gets the current view mode. It is 'Default', when no viewmode has been selected by the user.

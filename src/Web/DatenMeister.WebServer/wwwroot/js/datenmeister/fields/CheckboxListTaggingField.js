@@ -1,6 +1,6 @@
 import { BaseField } from "./Interfaces.js";
 import { ObjectType } from "../Mof.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
     constructor() {
         super();

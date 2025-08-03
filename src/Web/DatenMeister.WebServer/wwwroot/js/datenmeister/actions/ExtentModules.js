@@ -6,7 +6,7 @@ import * as ClientForms from "../client/Forms.js";
 import * as ClientItems from "../client/Items.js";
 import * as FormActions from "../FormActions.js";
 import { SubmitMethod } from "../forms/Forms.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Mof from "../Mof.js";
 import * as MofArray from "../MofArray.js";
 import * as MofSync from "../MofSync.js";

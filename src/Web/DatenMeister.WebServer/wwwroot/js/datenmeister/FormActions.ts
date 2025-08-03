@@ -1,7 +1,7 @@
 ﻿import * as Mof from "./Mof.js";
 import * as IIForms from "./forms/Interfaces.js";
 import { SubmitMethod } from "./forms/Forms.js";
-import { _DatenMeister } from "./models/DatenMeister.class.js"
+import * as _DatenMeister from "./models/DatenMeister.class.js"
 import * as ActionClient from "./client/Actions.js"
 
 /**

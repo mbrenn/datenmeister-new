@@ -5,7 +5,7 @@
 
 import {DmObject, ObjectType} from "../Mof.js";
 import * as FormsClient from "../client/Forms.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 const sessionPropertyName = "dm_current_viewmode";
 

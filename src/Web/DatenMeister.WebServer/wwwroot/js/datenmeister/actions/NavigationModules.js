@@ -1,6 +1,6 @@
 import * as FormActions from "../FormActions.js";
 import { ObjectType } from "../Mof.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as Navigation from "../Navigator.js";
 export function loadModules() {
     FormActions.addModule(new ChangeForm());

@@ -4,10 +4,15 @@ import * as FormClient from "../client/Forms.js";
 import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ActionClient from "../client/Actions.js";
 import * as Navigation from "../Navigator.js";
+import {IFormNavigation} from "../forms/Interfaces";
+import {DmObject} from "../Mof.js";
+import {SubmitMethod} from "../forms/Forms";
+
 export function loadModules() {
     FormActions.addModule(new FormsCreateByMetaClassAction());
     FormActions.addModule(new NavigateToItemClientAction());
 }
+
 class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Forms.Create.ByMetaClass");
@@ -18,7 +23,8 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
     async loadForm() {
         return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");
     }
-    async execute(form, element, parameter, submitMethod) {
+
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const result = await ActionClient.executeAction(element.workspace, element.uri);
         if (result.success !== true) {
             alert('Form was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
@@ -28,13 +34,15 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
         }
     }
 }
+
 class NavigateToItemClientAction extends FormActions.ItemFormActionModuleBase {
     constructor() {
         super("Forms.NavigateToItem", _DatenMeister._Actions._ClientActions.__NavigateToItemClientAction_Uri);
         this.actionVerb = "Navigate to Item";
         this.skipSaving = true;
     }
-    async execute(form, element, parameter, submitMethod) {
+
+    async execute(form: IFormNavigation, element: DmObject, parameter?: DmObject, submitMethod?: SubmitMethod): Promise<void> {
         const workspaceId = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.workspaceId, Mof.ObjectType.String);
         const itemUri = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.itemUrl, Mof.ObjectType.String);
         const formUri = element.get(_DatenMeister._Actions._ClientActions._NavigateToItemClientAction.formUri, Mof.ObjectType.String);
@@ -43,5 +51,4 @@ class NavigateToItemClientAction extends FormActions.ItemFormActionModuleBase {
         });
     }
 }
-//# sourceMappingURL=FormModules.js.map
 //# sourceMappingURL=FormModules.js.map

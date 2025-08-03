@@ -3,7 +3,7 @@ import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
 import * as Navigator from '../Navigator.js';
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
 import * as Actions from "../client/Actions.js";
 var _FieldData = _DatenMeister._Forms._FieldData;

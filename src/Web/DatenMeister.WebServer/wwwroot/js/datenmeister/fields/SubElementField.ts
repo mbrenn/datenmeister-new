@@ -8,7 +8,7 @@ import * as ClientTypes from "../client/Types.js";
 import {IFormConfiguration} from "../forms/IFormConfiguration.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import {IInjectNameByUriParams, injectNameByUri} from "../DomHelper.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl.js";
 import {ItemWithNameAndId} from "../ApiModels.js";
 import {moveItemInCollectionDown, moveItemInCollectionUp} from "../client/Actions.Items.js";

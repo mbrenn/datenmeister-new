@@ -49,13 +49,13 @@ public class DataviewTests
         extentSource.set(_DataViews._SelectByExtentNode.extentUri, "dm:///testdata");
         userViewExtent.elements().add(extentSource);
 
-        var propertyFilter = factory.create(_DataViews.TheOne.__FilterByPropertyValueNode);
+        var propertyFilter = factory.create(_DataViews.TheOne.__RowFilterByPropertyValueNode);
         userViewExtent.elements().add(propertyFilter);
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.property, "name");
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.comparisonMode,
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.property, "name");
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.comparisonMode,
             _DataViews.___ComparisonMode.Contains);
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.value, "ai");
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.input, extentSource);
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.value, "ai");
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.input, extentSource);
 
         dataView.set(_DataViews._DataView.viewNode, propertyFilter);
 
@@ -70,7 +70,7 @@ public class DataviewTests
         Assert.That(elements.Length, Is.GreaterThan(0));
 
         // Go to Non-Contain
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.comparisonMode,
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.comparisonMode,
             _DataViews.___ComparisonMode.DoesNotContain);
         elements = extent.elements().OfType<IElement>().ToArray();
         Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
@@ -90,12 +90,12 @@ public class DataviewTests
         var extentSource = factory.create(_DataViews.TheOne.__DynamicSourceNode);
         extentSource.set(_DataViews._DynamicSourceNode.name, "input");
 
-        var propertyFilter = factory.create(_DataViews.TheOne.__FilterByPropertyValueNode);
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.property, "name");
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.comparisonMode,
+        var propertyFilter = factory.create(_DataViews.TheOne.__RowFilterByPropertyValueNode);
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.property, "name");
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.comparisonMode,
             _DataViews.___ComparisonMode.Contains);
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.value, "ai");
-        propertyFilter.set(_DataViews._FilterByPropertyValueNode.input, extentSource);
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.value, "ai");
+        propertyFilter.set(_DataViews._RowFilterByPropertyValueNode.input, extentSource);
 
         // Gets the elements
         var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);

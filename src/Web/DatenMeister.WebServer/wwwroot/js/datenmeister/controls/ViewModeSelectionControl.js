@@ -1,6 +1,6 @@
 import * as VML from "../forms/ViewModeLogic.js";
 import { ObjectType } from "../Mof.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { UserEvent } from "../../burnsystems/Events.js";
 export class ViewModeSelectionControl {
     constructor() {

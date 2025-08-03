@@ -6,10 +6,10 @@ import * as _DatenMeister from "../models/DatenMeister.class.js";
 export class Field extends BaseField {
     async createDom(dmElement) {
         const tthis = this;
-        const title = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.title, ObjectType.String);
-        const action = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.actionName, ObjectType.String);
-        const parameter = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.parameter, ObjectType.Single);
-        const buttonText = this.field.get(_DatenMeister._DatenMeister._Forms._ActionFieldData.buttonText, ObjectType.String);
+        const title = this.field.get(_DatenMeister._Forms._ActionFieldData.title, ObjectType.String);
+        const action = this.field.get(_DatenMeister._Forms._ActionFieldData.actionName, ObjectType.String);
+        const parameter = this.field.get(_DatenMeister._Forms._ActionFieldData.parameter, ObjectType.Single);
+        const buttonText = this.field.get(_DatenMeister._Forms._ActionFieldData.buttonText, ObjectType.String);
         const module = FormActions.getModule(action);
         this.inConfirmation = false;
         const requireConfirmation = module?.requiresConfirmation === true;

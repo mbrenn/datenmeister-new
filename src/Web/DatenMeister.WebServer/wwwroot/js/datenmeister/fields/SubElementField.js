@@ -5,7 +5,7 @@ import * as SIC from "../controls/SelectItemControl.js";
 import * as ClientItems from "../client/Items.js";
 import * as ClientTypes from "../client/Types.js";
 import { injectNameByUri } from "../DomHelper.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as TypeSelectionControl from "../controls/TypeSelectionControl.js";
 import { moveItemInCollectionDown, moveItemInCollectionUp } from "../client/Actions.Items.js";
 import * as FormActions from "../FormActions.js";

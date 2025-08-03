@@ -1,6 +1,6 @@
 ﻿import * as Mof from "../Mof.js";
 import * as ClientElements from "../client/Elements.js"
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { _UML } from "../models/uml.js"
 import * as Query from "../modules/QueryEngine.js"
 

@@ -5,7 +5,7 @@ import { createField } from "./FieldFactory.js";
 import * as Navigation from "../Navigator.js"
 import * as TextField from "../fields/TextField.js"
 import {IFormConfiguration} from "./IFormConfiguration.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import { SubmitMethod } from "./Forms.js";
 import * as ClientItem from "../client/Items.js";
     

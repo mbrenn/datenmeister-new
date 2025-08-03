@@ -1,7 +1,7 @@
 ﻿import {BaseField, IFormField} from "./Interfaces.js";
 import {DmObject, ObjectType} from "../Mof.js";
 import * as ElementClient from "../client/Elements.js"
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 import * as DropDownBaseField from "./DropDownBaseField.js";
 import * as QueryBuilder from "../modules/QueryEngine.js";

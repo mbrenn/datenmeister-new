@@ -56,8 +56,8 @@ public class TypeUriMappingLogic
                     }
                 }
 
-                Console.WriteLine(
-                    $"Loaded {Entries.Count - current} types from {Path.GetFileName(file)} with {Entries.Count} entries in total.");
+                /*Console.WriteLine(
+                    $"Loaded {Entries.Count - current} types from {Path.GetFileName(file)} with {Entries.Count} entries in total.");*/
             }
             catch (Exception ex)
             {

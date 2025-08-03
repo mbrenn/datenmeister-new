@@ -9,7 +9,7 @@ import * as ClientElements from '../client/Elements.js'
 import * as ClientItems from '../client/Items.js'
 import * as MofSync from "../MofSync.js"
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 
 export async function createActionFormForEmptyObject(
     parent: JQuery<HTMLElement>,

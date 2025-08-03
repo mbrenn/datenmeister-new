@@ -3,7 +3,7 @@ import * as ClientWorkspace from "../client/Workspace.js";
 import * as ClientItems from "../client/Items.js";
 import * as ClientForms from "../client/Forms.js";
 import {DmObject, ObjectType} from "../Mof.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {FormType} from "../forms/Interfaces.js";
 
 export function includeTests() {

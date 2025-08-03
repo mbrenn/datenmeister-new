@@ -17,12 +17,12 @@ public class FilterByMetaclassNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__FilterByMetaclassNode);
+               metaClass.equals(_DataViews.TheOne.__RowFilterByMetaclassNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FilterByMetaclassNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._RowFilterByMetaclassNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -31,8 +31,8 @@ public class FilterByMetaclassNodeEvaluation : IDataViewNodeEvaluation
 
         var input = evaluation.GetElementsForViewNode(inputNode);
 
-        var type = viewNode.getOrDefault<IElement>(_DataViews._FilterByMetaclassNode.metaClass);
-        var includeInherits = viewNode.getOrDefault<bool>(_DataViews._FilterByMetaclassNode.includeInherits);
+        var type = viewNode.getOrDefault<IElement>(_DataViews._RowFilterByMetaclassNode.metaClass);
+        var includeInherits = viewNode.getOrDefault<bool>(_DataViews._RowFilterByMetaclassNode.includeInherits);
         if (type == null)
         {
             return new TemporaryReflectiveSequence(input.WhenMetaClassIsNotSet());

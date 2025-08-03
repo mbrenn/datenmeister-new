@@ -1,7 +1,7 @@
 import * as FormActions from "../FormActions.js";
 import * as Mof from "../Mof.js";
 import * as MofSync from "../MofSync.js";
-import { _DatenMeister } from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ActionClient from "../client/Actions.js";
 export function loadModules() {
     FormActions.addModule(new AlertClientAction());

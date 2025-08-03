@@ -1,6 +1,6 @@
 ﻿
 import * as FormFactory from  "./FormFactory.js"
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import {RowForm} from "./RowForm.js";
 import {TableForm} from "./TableForm.js";
 

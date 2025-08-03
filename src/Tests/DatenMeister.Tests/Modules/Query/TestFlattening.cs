@@ -67,7 +67,7 @@ public class TestFlattening
             queryByExtent.set(_DataViews._SelectByExtentNode.extentUri, WorkspaceNames.UriExtentInternalTypes);
             
             var queryFlatten = factory.create(_DataViews.TheOne.__FlattenNode);
-            var queryByMetaClass = factory.create(_DataViews.TheOne.__FilterByMetaclassNode);
+            var queryByMetaClass = factory.create(_DataViews.TheOne.__RowFilterByMetaclassNode);
 
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByExtent);
             queryStatement.AddCollectionItem(_DataViews._QueryStatement.nodes, queryByMetaClass);

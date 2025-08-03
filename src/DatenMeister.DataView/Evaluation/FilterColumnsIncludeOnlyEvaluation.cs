@@ -16,12 +16,12 @@ public class FilterColumnsIncludeOnlyEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__FilterColumnsIncludeOnly);
+               metaClass.equals(_DataViews.TheOne.__ColumnFilterIncludeOnlyNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FilterByMetaclassNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._ColumnFilterIncludeOnlyNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");
@@ -30,7 +30,7 @@ public class FilterColumnsIncludeOnlyEvaluation : IDataViewNodeEvaluation
 
         var input = evaluation.GetElementsForViewNode(inputNode);
 
-        var wrappedViewNode = new DataViews.FilterColumnsIncludeOnly_Wrapper(viewNode);
+        var wrappedViewNode = new DataViews.ColumnFilterIncludeOnlyNode_Wrapper(viewNode);
         var columnNames = wrappedViewNode.columnNamesComma;
         if (string.IsNullOrEmpty(columnNames))
         {

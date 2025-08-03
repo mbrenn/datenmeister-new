@@ -418,7 +418,7 @@ export namespace _DataViews
         }
 
         export const __FlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
-        export class _FilterByPropertyValueNode
+        export class _RowFilterByPropertyValueNode
         {
             static input = "input";
             static property = "property";
@@ -427,8 +427,8 @@ export namespace _DataViews
             static _name_ = "name";
         }
 
-        export const __FilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
-        export class _FilterByMetaclassNode
+        export const __RowFilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
+        export class _RowFilterByMetaclassNode
         {
             static input = "input";
             static metaClass = "metaClass";
@@ -436,7 +436,7 @@ export namespace _DataViews
             static _name_ = "name";
         }
 
-        export const __FilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
+        export const __RowFilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
         export module _ComparisonMode
         {
             export const Equal = "Equal";
@@ -503,22 +503,38 @@ export namespace _DataViews
         }
 
         export const __SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
-        export class _FilterColumnsExclude
+        export class _ColumnFilterExcludeNode
         {
             static columnNamesComma = "columnNamesComma";
             static input = "input";
             static _name_ = "name";
         }
 
-        export const __FilterColumnsExclude_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
-        export class _FilterColumnsIncludeOnly
+        export const __ColumnFilterExcludeNode_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
+        export class _ColumnFilterIncludeOnlyNode
         {
             static columnNamesComma = "columnNamesComma";
             static input = "input";
             static _name_ = "name";
         }
 
-        export const __FilterColumnsIncludeOnly_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
+        export const __ColumnFilterIncludeOnlyNode_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
+        export class _RowFilterOnPositionNode
+        {
+            static input = "input";
+            static amount = "amount";
+            static number = "number";
+        }
+
+        export const __RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
+        export class _RowOrderByNode
+        {
+            static input = "input";
+            static propertyName = "propertyName";
+            static orderDescending = "orderDescending";
+        }
+
+        export const __RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
 }
 
 export namespace _Reports

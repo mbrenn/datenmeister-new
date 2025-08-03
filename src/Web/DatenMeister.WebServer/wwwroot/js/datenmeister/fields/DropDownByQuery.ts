@@ -1,7 +1,7 @@
 ﻿import {IFormField} from "./Interfaces.js";
 import * as Mof from "../Mof.js";
 import * as DropDownBaseField from "./DropDownBaseField.js";
-import {_DatenMeister} from "../models/DatenMeister.class.js";
+import * as _DatenMeister from "../models/DatenMeister.class.js";
 import * as ElementClient from "../client/Elements.js";
 
 export class Field extends DropDownBaseField.DropDownBaseField implements IFormField {

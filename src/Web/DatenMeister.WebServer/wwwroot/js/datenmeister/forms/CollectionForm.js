@@ -243,6 +243,12 @@ export class CollectionFormCreator {
                     {
                         const builder = new QueryEngine.QueryBuilder();
                         QueryEngine.getElementsOfExtent(builder, tthis.workspace, tthis.extentUri);
+                        for (const property in query.filterByProperties) {
+                            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+                        }
+                        if (query.orderBy !== undefined) {
+                            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+                        }
                         const queryResult = await ClientElements.queryObject(builder.queryStatement);
                         return {
                             message: "Result per Query",

@@ -22,6 +22,7 @@ import * as ActionField from "../fields/ActionField.js";
 import {StatusFieldControl} from "../controls/StatusFieldControl.js";
 import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
+import {filterByProperty} from "../modules/QueryEngine.js";
 
 export class CollectionFormHtmlElements
 {
@@ -396,6 +397,14 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                     {                     
                         const builder = new QueryEngine.QueryBuilder();
                         QueryEngine.getElementsOfExtent(builder, tthis.workspace, tthis.extentUri);
+                        
+                        for (const property in query.filterByProperties) {                            
+                            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+                        }
+                        
+                        if(query.orderBy !== undefined) {
+                            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+                        }
                         
                         const queryResult = await ClientElements.queryObject(builder.queryStatement);
                         return {

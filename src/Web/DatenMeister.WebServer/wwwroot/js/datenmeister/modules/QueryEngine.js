@@ -21,7 +21,22 @@ export function filterByMetaClass(builder, metaClass, includeInherits) {
     if (includeInherits !== undefined) {
         viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.includeInherits, includeInherits);
     }
-    ;
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
+}
+export function orderByProperty(builder, property, descending) {
+    // Not Implemented up to now
+}
+export function limit(builder, limit) {
+    // not implemented up to now
+}
+export function filterByProperty(builder, property, value, comparisonMode) {
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FilterByPropertyValueNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.property, property);
+    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.value, value);
+    viewNode.set(_DatenMeister._DataViews._FilterByPropertyValueNode.comparisonMode, comparisonMode ?? _DatenMeister._DataViews._ComparisonMode.Equal);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;

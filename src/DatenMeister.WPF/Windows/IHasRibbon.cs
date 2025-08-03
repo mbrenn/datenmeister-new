@@ -1,15 +1,12 @@
-﻿#nullable enable
+﻿using System.Windows.Controls.Ribbon;
 
-using System.Windows.Controls.Ribbon;
+namespace DatenMeister.WPF.Windows;
 
-namespace DatenMeister.WPF.Windows
+public interface IHasRibbon
 {
-    public interface IHasRibbon
-    {
-        /// <summary>
-        /// Gets the ribbon
-        /// </summary>
-        /// <returns></returns>
-        Ribbon GetRibbon();
-    }
+    /// <summary>
+    /// Gets the ribbon
+    /// </summary>
+    /// <returns></returns>
+    Ribbon GetRibbon();
 }

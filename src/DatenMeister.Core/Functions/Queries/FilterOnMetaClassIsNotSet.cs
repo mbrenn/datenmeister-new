@@ -1,41 +1,35 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Common;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Core.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries;
+
+public class FilterOnMetaClassIsNotSet(IReflectiveCollection collection) : ProxyReflectiveCollection(collection)
 {
-    public class FilterOnMetaClassIsNotSet : ProxyReflectiveCollection
+    public override IEnumerator<object?> GetEnumerator()
     {
-        public FilterOnMetaClassIsNotSet(IReflectiveCollection collection) : base(collection)
+        foreach (var value in Collection)
         {
-        }
-
-        public override IEnumerator<object?> GetEnumerator()
-        {
-            foreach (var value in Collection)
+            var valueAsObject = value as IElement;
+            if (valueAsObject?.getMetaClass() == null)
             {
-                var valueAsObject = value as IElement;
-                if (valueAsObject?.getMetaClass() == null)
-                {
-                    yield return valueAsObject;
-                }
+                yield return valueAsObject;
+            }
+        }
+    }
+
+    public override int size()
+    {
+        var result = 0;
+        foreach (var value in Collection)
+        {
+            var valueAsObject = value as IElement;
+            if (valueAsObject?.getMetaClass() == null)
+            {
+                result++;
             }
         }
 
-        public override int size()
-        {
-            var result = 0;
-            foreach (var value in Collection)
-            {
-                var valueAsObject = value as IElement;
-                if (valueAsObject?.getMetaClass() == null)
-                {
-                    result++;
-                }
-            }
-
-            return result;
-        }
+        return result;
     }
 }

@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <LangVersion>8</LangVersion>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
@@ -23,7 +26,6 @@
       <TreatAsUsed>true</TreatAsUsed>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
-    <ProjectReference Include="..\DatenMeister.WPF\DatenMeister.WPF.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons.ico" />

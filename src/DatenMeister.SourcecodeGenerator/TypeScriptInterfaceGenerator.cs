@@ -1,238 +1,232 @@
-﻿ using System;
- using System.Linq;
- using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
-namespace DatenMeister.SourcecodeGenerator
+namespace DatenMeister.SourcecodeGenerator;
+
+/// <summary>
+///     Creates a class file which contains objects for all
+///     items within the given extent.
+///     It parses classes and packages.
+/// </summary>
+public class TypeScriptInterfaceGenerator : WalkPackageClass
 {
     /// <summary>
-    ///     Creates a class file which contains objects for all
-    ///     items within the given extent.
-    ///     It parses classes and packages.
+    ///     Initializes a new instance of the ClassTreeGenerator
     /// </summary>
-    public class TypeScriptInterfaceGenerator : WalkPackageClass
+    public TypeScriptInterfaceGenerator(ISourceParser? parser = null) : base(parser)
     {
-        /// <summary>
-        ///     Initializes a new instance of the ClassTreeGenerator
-        /// </summary>
-        public TypeScriptInterfaceGenerator(ISourceParser? parser = null) : base(parser)
+        FactoryVersion = new Version(1, 3, 0, 0);
+    }
+
+    public override void Walk(IUriExtent extent)
+    {
+        // We set the namespace to empty to avoid that the WalkPackageClass creates a C#-Namespace(!)
+        Namespace = string.Empty;
+        
+        base.Walk(extent);
+    }
+
+    /// <summary>
+    ///     Parses the packages and creates the C# Code for all the
+    ///     packages by recursive calls to itself for packages and
+    ///     ParseClasses for classes.
+    /// </summary>
+    /// <param name="element">Element being parsed</param>
+    /// <param name="stack">Callstack being used</param>
+    protected override void WalkPackage(IObject element, CallStack stack)
+    {
+        var name = GetNameOfElement(element);
+
+        Result.AppendLine($"{stack.Indentation}export namespace _{name}");
+        Result.AppendLine($"{stack.Indentation}{{");
+
+        var innerStack = new CallStack(stack)
         {
-            FactoryVersion = new Version(1, 0, 0, 0);
-        }
+            Fullname = string.IsNullOrEmpty(stack.Fullname) 
+                ? name 
+                : $"{stack.Fullname}.{name}"
+        };
 
-        /// <summary>
-        ///     Creates a C# source code. Not to be used for recursive
-        ///     call since the namespace is just once created
-        /// </summary>
-        /// <param name="extent">
-        ///     Regards the given element as a package
-        ///     and returns a full namespace for the package.
-        /// </param>
-        public override void Walk(IUriExtent extent)
-        {
-            base.Walk(extent);
-        }
+        base.WalkPackage(element, innerStack);
+        Result.AppendLine($"{stack.Indentation}}}");
+        Result.AppendLine();
+    }
 
-        /// <summary>
-        ///     Parses the packages and creates the C# Code for all the
-        ///     packages by recursive calls to itself for packages and
-        ///     ParseClasses for classes.
-        /// </summary>
-        /// <param name="element">Element being parsed</param>
-        /// <param name="stack">Callstack being used</param>
-        protected override void WalkPackage(IObject element, CallStack stack)
-        {
-            var name = GetNameOfElement(element);
+    /// <summary>
+    ///     Parses the packages
+    /// </summary>
+    /// <param name="classInstance">The class that shall be retrieved</param>
+    /// <param name="stack">Stack being used to walk through</param>
+    protected override void WalkClass(IObject classInstance, CallStack stack)
+    {
+        if (!(classInstance is IElement asElement)) return;
+        var name = GetNameOfElement(classInstance);
 
-            Result.AppendLine($"{stack.Indentation}export namespace _{name}");
-            Result.AppendLine($"{stack.Indentation}{{");
+        Result.AppendLine($"{stack.Indentation}export class _{name}");
+        Result.AppendLine($"{stack.Indentation}{{");
 
-            var innerStack = new CallStack(stack)
-            {
-                Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}"
-            };
+        base.WalkClass(classInstance, stack);
 
-            base.WalkPackage(element, innerStack);
-            Result.AppendLine($"{stack.Indentation}}}");
-            Result.AppendLine();
-        }
+        Result.AppendLine($"{stack.Indentation}}}");
 
-        /// <summary>
-        ///     Parses the packages
-        /// </summary>
-        /// <param name="classInstance">The class that shall be retrieved</param>
-        /// <param name="stack">Stack being used to walk through</param>
-        protected override void WalkClass(IObject classInstance, CallStack stack)
-        {
-            if (!(classInstance is IElement asElement)) return;
-            var name = GetNameOfElement(classInstance);
+        Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}export const __{name}_Uri = \"{asElement.GetUri()}\";");
+    }
 
-            Result.AppendLine($"{stack.Indentation}export class _{name}");
-            Result.AppendLine($"{stack.Indentation}{{");
+    protected override void WalkProperty(IObject propertyObject, CallStack stack)
+    {
+        base.WalkProperty(propertyObject, stack);
 
-            base.WalkClass(classInstance, stack);
+        if (propertyObject is not IElement) return;
 
-            Result.AppendLine($"{stack.Indentation}}}");
+        var nameAsObject = propertyObject.get("name");
+        var name = nameAsObject?.ToString() ?? string.Empty;
+        Result.AppendLine($"{stack.Indentation}static {EscapeKeyword(name)} = \"{name}\";");
+    }
 
-            Result.AppendLine();
-            Result.AppendLine($"{stack.Indentation}export const __{name}_Uri = \"{asElement.GetUri()}\";");
-        }
+    /// <summary>
+    ///     Parses the packages
+    /// </summary>
+    /// <param name="enumInstance">The class that shall be retrieved</param>
+    /// <param name="stack">Stack being used</param>
+    /// <param name="callee">The element to be called when tn enumeration is required to be called.
+    /// May be null, then WalkEnumLiteral will be called</param>
+    protected override void WalkEnum(IObject enumInstance, CallStack stack, Action<IObject, CallStack>? callee = null)
+    {
+        var name = GetNameOfElement(enumInstance);
 
-        protected override void WalkProperty(IObject propertyObject, CallStack stack)
-        {
-            base.WalkProperty(propertyObject, stack);
+        Result.AppendLine($"{stack.Indentation}export module _{name}");
+        Result.AppendLine($"{stack.Indentation}{{");
 
-            if (propertyObject is not IElement) return;
+        base.WalkEnum(enumInstance, stack, callee);
 
-            var nameAsObject = propertyObject.get("name");
-            var name = nameAsObject?.ToString() ?? string.Empty;
-            Result.AppendLine($"{stack.Indentation}static {EscapeKeyword(name)} = \"{name}\";");
-        }
-
-        /// <summary>
-        ///     Parses the packages
-        /// </summary>
-        /// <param name="enumInstance">The class that shall be retrieved</param>
-        /// <param name="stack">Stack being used</param>
-        /// <param name="callee">The element to be called when tn enumeration is required to be called.
-        /// May be null, then WalkEnumLiteral will be called</param>
-        protected override void WalkEnum(IObject enumInstance, CallStack stack, Action<IObject, CallStack>? callee = null)
-        {
-            var name = GetNameOfElement(enumInstance);
-
-            Result.AppendLine($"{stack.Indentation}export module _{name}");
-            Result.AppendLine($"{stack.Indentation}{{");
-
-            base.WalkEnum(enumInstance, stack, callee);
-
-            Result.AppendLine($"{stack.Indentation}}}");
-            Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}}}");
+        Result.AppendLine();
 
           
-            Result.AppendLine($"{stack.Indentation}export enum ___{name}");
-            Result.AppendLine($"{stack.Indentation}{{");
+        Result.AppendLine($"{stack.Indentation}export enum ___{name}");
+        Result.AppendLine($"{stack.Indentation}{{");
 
-            var first = true;
+        var first = true;
 
-            base.WalkEnum(enumInstance, stack, (literal, innerStack) =>
-            {
-                if (!first)
-                {
-                    Result.AppendLine(",");
-                }
-                
-                var nameAsObject = literal.get("name");
-                var literalName = nameAsObject == null ? string.Empty : nameAsObject.ToString()!;
-
-                Result.Append($"{innerStack.Indentation}{EscapeKeyword(literalName)}");
-                first = false;
-            });
-
-            Result.AppendLine();
-            Result.AppendLine($"{stack.Indentation}}}");
-            Result.AppendLine();
-        }
-
-        protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack)
+        base.WalkEnum(enumInstance, stack, (literal, innerStack) =>
         {
-            base.WalkEnumLiteral(enumLiteralObject, stack);
-
-            var nameAsObject = enumLiteralObject.get("name");
-            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString()!;
-
-            Result.AppendLine($"{stack.Indentation}export const {EscapeKeyword(name)} = \"{name}\";");
-        }
-
-        private string EscapeKeyword(string name)
-        {
-            if (GetReservedKeywords().Any(x => x == name))
+            if (!first)
             {
-                return $"_{name}_";
+                Result.AppendLine(",");
             }
+                
+            var nameAsObject = literal.get("name");
+            var literalName = nameAsObject == null ? string.Empty : nameAsObject.ToString()!;
 
-            return name;
-        }
-        
-        private string[]? _reservedKeywords;
-        
-        /// <summary>
-        /// Gets an array of the reserved keywords
-        /// </summary>
-        /// <returns></returns>
-        string[] GetReservedKeywords()
+            Result.Append($"{innerStack.Indentation}{EscapeKeyword(literalName)}");
+            first = false;
+        });
+
+        Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}}}");
+        Result.AppendLine();
+    }
+
+    protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack)
+    {
+        base.WalkEnumLiteral(enumLiteralObject, stack);
+
+        var nameAsObject = enumLiteralObject.get("name");
+        var name = nameAsObject == null ? string.Empty : nameAsObject.ToString()!;
+
+        Result.AppendLine($"{stack.Indentation}export const {EscapeKeyword(name)} = \"{name}\";");
+    }
+
+    private string EscapeKeyword(string name)
+    {
+        if (GetReservedKeywords().Any(x => x == name))
         {
-            _reservedKeywords ??= new[]
-            {
-                "abstract",
-                "arguments",
-                "await",
-                "boolean",
-                "break",
-                "byte",
-                "case",
-                "catch",
-                "char",
-                "class",
-                "const",
-                "continue",
-                "debugger",
-                "default",
-                "delete",
-                "do",
-                "double",
-                "else",
-                "enum",
-                "eval",
-                "export",
-                "extends",
-                "false",
-                "final",
-                "finally",
-                "float",
-                "for",
-                "function",
-                "goto",
-                "if",
-                "implements",
-                "import",
-                "in",
-                "instanceof",
-                "int",
-                "interface",
-                "let",
-                "long",
-                "native",
-                "name",
-                "new",
-                "null",
-                "package",
-                "private",
-                "protected",
-                "public",
-                "return",
-                "short",
-                "static",
-                "super",
-                "switch",
-                "synchronized",
-                "this",
-                "throw",
-                "throws",
-                "transient",
-                "true",
-                "try",
-                "typeof",
-                "var",
-                "void",
-                "volatile",
-                "while",
-                "with",
-                "yield",
-            };
-
-            return _reservedKeywords;
+            return $"_{name}_";
         }
+
+        return name;
+    }
+        
+    private string[]? _reservedKeywords;
+        
+    /// <summary>
+    /// Gets an array of the reserved keywords
+    /// </summary>
+    /// <returns></returns>
+    string[] GetReservedKeywords()
+    {
+        _reservedKeywords ??= new[]
+        {
+            "abstract",
+            "arguments",
+            "await",
+            "boolean",
+            "break",
+            "byte",
+            "case",
+            "catch",
+            "char",
+            "class",
+            "const",
+            "continue",
+            "debugger",
+            "default",
+            "delete",
+            "do",
+            "double",
+            "else",
+            "enum",
+            "eval",
+            "export",
+            "extends",
+            "false",
+            "final",
+            "finally",
+            "float",
+            "for",
+            "function",
+            "goto",
+            "if",
+            "implements",
+            "import",
+            "in",
+            "instanceof",
+            "int",
+            "interface",
+            "let",
+            "long",
+            "native",
+            "name",
+            "new",
+            "null",
+            "package",
+            "private",
+            "protected",
+            "public",
+            "return",
+            "short",
+            "static",
+            "super",
+            "switch",
+            "synchronized",
+            "this",
+            "throw",
+            "throws",
+            "transient",
+            "true",
+            "try",
+            "typeof",
+            "var",
+            "void",
+            "volatile",
+            "while",
+            "with",
+            "yield",
+        };
+
+        return _reservedKeywords;
     }
 }

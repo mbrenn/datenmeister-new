@@ -9,7 +9,8 @@ import * as AnyDataField from "../fields/AnyDataField.js";
 import * as SubElementField from "../fields/SubElementField.js";
 import * as SeparatorLineField from "../fields/SeparatorLineField.js";
 import * as ReferenceField from "../fields/ReferenceField.js";
-import * as ReferenceFieldFromCollection from "../fields/ReferenceFieldFromCollection.js";
+import * as DropDownByCollection from "../fields/DropDownByCollection.js";
+import * as DropDownByQuery from "../fields/DropDownByQuery.js";
 import * as UriReferenceFieldData from "../fields/UriReferenceFieldData.js";
 import * as UnknownField from "../fields/UnknownField.js";
 var registeredFieldContainers = new Array();
@@ -20,14 +21,14 @@ export function registerField(metaClassFieldData, factoryMethod) {
     });
 }
 export function canBeSorted(field) {
-    const metaClassUri = field.metaClass.uri;
+    const metaClassUri = field.metaClass?.uri;
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
         return true;
     }
     return false;
 }
 export function canBeTextFiltered(field) {
-    const metaClassUri = field.metaClass.uri;
+    const metaClassUri = field.metaClass?.uri;
     if (metaClassUri === _DatenMeister._Forms.__TextFieldData_Uri) {
         return true;
     }
@@ -45,8 +46,11 @@ export function createField(fieldMetaClassUri, parameter) {
         case _DatenMeister._Forms.__ReferenceFieldData_Uri:
             result = new ReferenceField.Field();
             break;
-        case _DatenMeister._Forms.__ReferenceFieldFromCollectionData_Uri:
-            result = new ReferenceFieldFromCollection.Field();
+        case _DatenMeister._Forms.__DropDownByCollection_Uri:
+            result = new DropDownByCollection.Field();
+            break;
+        case _DatenMeister._Forms.__DropDownByQueryData_Uri:
+            result = new DropDownByQuery.Field();
             break;
         case _DatenMeister._Forms.__CheckboxFieldData_Uri:
             result = new CheckboxField.Field();

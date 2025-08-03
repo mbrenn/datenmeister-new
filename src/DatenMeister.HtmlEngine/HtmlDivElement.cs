@@ -1,20 +1,14 @@
-﻿namespace DatenMeister.HtmlEngine
+﻿namespace DatenMeister.HtmlEngine;
+
+public class HtmlDivElement(HtmlElement divElement) : HtmlElement
 {
-    public class HtmlDivElement : HtmlElement
+    /// <summary>
+    /// Gets or sets the paragraph to be stored
+    /// </summary>
+    private HtmlElement DivElement { get; } = divElement;
+
+    public override string ToString()
     {
-        /// <summary>
-        /// Gets or sets the paragraph to be stored
-        /// </summary>
-        private HtmlElement DivElement { get; }
-
-        public HtmlDivElement(HtmlElement divElement)
-        {
-            DivElement = divElement;
-        }
-
-        public override string ToString()
-        {
-            return $"<div{AttributeString}>{DivElement}</div>\r\n";
-        }
+        return $"<div{AttributeString}>{DivElement}</div>";
     }
 }

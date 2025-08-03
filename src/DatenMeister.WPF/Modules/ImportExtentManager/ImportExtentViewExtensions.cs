@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -19,189 +16,181 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Modules.ImportExtentManager
+namespace DatenMeister.WPF.Modules.ImportExtentManager;
+
+/// <summary>
+/// Defines the view extension factory for the Import Extent function
+/// </summary>
+public class ImportExtentViewExtensions(ImportExtentManagerPlugin plugin) : IViewExtensionFactory
 {
-    /// <summary>
-    /// Defines the view extension factory for the Import Extent function
-    /// </summary>
-    public class ImportExtentViewExtensions : IViewExtensionFactory
+    public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
     {
-        private readonly ImportExtentManagerPlugin _plugin;
+        foreach (var viewExtension in OfferExtentLoadingForDetail(viewExtensionInfo)) 
+            yield return viewExtension;
 
-        public ImportExtentViewExtensions(ImportExtentManagerPlugin plugin)
+        foreach (var viewExtension in OfferForExtentOverview(viewExtensionInfo)) 
+            yield return viewExtension;
+    }
+
+    private IEnumerable<ViewExtension> OfferForExtentOverview(ViewExtensionInfo viewExtensionInfo)
+    {
+        var itemsInExtentList = viewExtensionInfo.GetItemsInExtentExplorerControl();
+        if (itemsInExtentList != null)
         {
-            _plugin = plugin;
+            // Adds the import elements
+            yield return new ExtentMenuButtonDefinition(
+                "Import existing Extent",
+                ImportExistingExtent,
+                null,
+                NavigationCategories.Extents + ".Import");
+
+            yield return new ExtentMenuButtonDefinition(
+                "Import by new Extent",
+                ImportNewExtent,
+                null,
+                NavigationCategories.Extents + ".Import");
+
+            yield return new ExtentMenuButtonDefinition(
+                "Import from Clipboard",
+                null!,
+                null,
+                NavigationCategories.Extents + ".Import");
         }
 
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
+        // Imports the existing extent
+        async void ImportExistingExtent(IExtent extent)
         {
-            foreach (var viewExtension in OfferExtentLoadingForDetail(viewExtensionInfo)) 
-                yield return viewExtension;
+            if (itemsInExtentList == null)
+                return;
 
-            foreach (var viewExtension in OfferForExtentOverview(viewExtensionInfo)) 
-                yield return viewExtension;
-        }
+            var navigationHost = viewExtensionInfo.NavigationHost
+                                 ?? throw new InvalidOperationException("navigationHost == null");
 
-        private IEnumerable<ViewExtension> OfferForExtentOverview(ViewExtensionInfo viewExtensionInfo)
-        {
-            var itemsInExtentList = viewExtensionInfo.GetItemsInExtentExplorerControl();
-            if (itemsInExtentList != null)
+            var controlNavigation = await NavigatorForItems.NavigateToElementDetailView(
+                navigationHost,
+                new NavigateToItemConfig
+                {
+                    Form = new FormDefinition(
+                        GiveMe.Scope.WorkspaceLogic.GetInternalFormsExtent()
+                            .element("#ImportManagerFindExtent")
+                        ?? throw new InvalidOperationException("#ImportManagerFindExtent not found"))
+                });
+
+            if (controlNavigation != null && controlNavigation.Result == NavigationResult.Saved)
             {
-                // Adds the import elements
-                yield return new ExtentMenuButtonDefinition(
-                    "Import existing Extent",
-                    ImportExistingExtent,
-                    null,
-                    NavigationCategories.Extents + ".Import");
+                var detailElement = controlNavigation.DetailElement;
 
-                yield return new ExtentMenuButtonDefinition(
-                    "Import by new Extent",
-                    ImportNewExtent,
-                    null,
-                    NavigationCategories.Extents + ".Import");
-
-                yield return new ExtentMenuButtonDefinition(
-                    "Import from Clipboard",
-                    null!,
-                    null,
-                    NavigationCategories.Extents + ".Import");
-            }
-
-            // Imports the existing extent
-            async void ImportExistingExtent(IExtent extent)
-            {
-                if (itemsInExtentList == null)
+                if (detailElement == null)
                     return;
 
-                var navigationHost = viewExtensionInfo.NavigationHost
-                                     ?? throw new InvalidOperationException("navigationHost == null");
-
-                var controlNavigation = await NavigatorForItems.NavigateToElementDetailView(
-                    navigationHost,
-                    new NavigateToItemConfig
-                    {
-                        Form = new FormDefinition(
-                            GiveMe.Scope.WorkspaceLogic.GetInternalFormsExtent()
-                                .element("#ImportManagerFindExtent")
-                            ?? throw new InvalidOperationException("#ImportManagerFindExtent not found"))
-                    });
-
-                if (controlNavigation != null && controlNavigation.Result == NavigationResult.Saved)
+                var selectedExtent = detailElement.getOrDefault<IElement>("selectedExtent");
+                if (selectedExtent == null)
                 {
-                    var detailElement = controlNavigation.DetailElement;
+                    MessageBox.Show("No extent selected");
+                    return;
+                }
 
-                    if (detailElement == null)
-                        return;
+                var metaClass = selectedExtent.getMetaClass();
+                if (metaClass?.equals(_Management.TheOne.__Extent) != true)
+                {
+                    MessageBox.Show("Selected element does not reference an extent");
+                    return;
+                }
 
-                    var selectedExtent = detailElement.getOrDefault<IElement>("selectedExtent");
-                    if (selectedExtent == null)
-                    {
-                        MessageBox.Show("No extent selected");
-                        return;
-                    }
+                var workspace = selectedExtent.container();
+                if (workspace == null)
+                {
+                    MessageBox.Show("The extent is not connected to the workspace.");
+                    return;
+                }
 
-                    var metaClass = selectedExtent.getMetaClass();
-                    if (metaClass?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
-                    {
-                        MessageBox.Show("Selected element does not reference an extent");
-                        return;
-                    }
+                var workspaceName = workspace.getOrDefault<string>(_Management._Workspace.id);
+                var uri = selectedExtent.getOrDefault<string>(_Management._Extent.uri);
 
-                    var workspace = selectedExtent.container();
-                    if (workspace == null)
-                    {
-                        MessageBox.Show("The extent is not connected to the workspace.");
-                        return;
-                    }
+                // Gets the extent from which the data shall be imported
+                var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
+                if (sourceExtent == null)
+                {
+                    MessageBox.Show($"Source extent with {uri} is not found. ");
+                    return;
+                }
 
-                    var workspaceName = workspace.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
-                    var uri = selectedExtent.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+                var itemCountBefore = sourceExtent.elements().Count();
+                var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
+                               ?? throw new InvalidOperationException("elements == null");
+                plugin.PerformImport(sourceExtent, elements);
+                var itemCountAfter = sourceExtent.elements().Count();
 
-                    // Gets the extent from which the data shall be imported
-                    var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
-                    if (sourceExtent == null)
-                    {
-                        MessageBox.Show($"Source extent with {uri} is not found. ");
-                        return;
-                    }
+                MessageBox.Show(
+                    $"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
+            }
+        }
 
-                    var itemCountBefore = sourceExtent.elements().Count();
+        async void ImportNewExtent(IExtent extent)
+        {
+            if (itemsInExtentList == null)
+                return;
+
+            var navigationHost = viewExtensionInfo.NavigationHost
+                                 ?? throw new InvalidOperationException("navigationHost == null");
+            var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(
+                navigationHost);
+            if (result != null)
+            {
+                // Now, we got the item extent...
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                var loadedExtent = new ExtentStorageData.LoadedExtentInformation(result);
+                extentManager.LoadExtentWithoutAdding(result, ref loadedExtent);
+                if (loadedExtent != null && loadedExtent.Extent != null &&
+                    loadedExtent.LoadingState == ExtentLoadingState.Loaded)
+                {
+                    var itemCountBefore = loadedExtent.Extent.elements().Count();
                     var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                    ?? throw new InvalidOperationException("elements == null");
-                    _plugin.PerformImport(sourceExtent, elements);
-                    var itemCountAfter = sourceExtent.elements().Count();
+                    plugin.PerformImport(loadedExtent.Extent, elements);
+                    var itemCountAfter = loadedExtent.Extent.elements().Count();
 
                     MessageBox.Show(
                         $"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
                 }
-            }
-
-            async void ImportNewExtent(IExtent extent)
-            {
-                if (itemsInExtentList == null)
-                    return;
-
-                var navigationHost = viewExtensionInfo.NavigationHost
-                                     ?? throw new InvalidOperationException("navigationHost == null");
-                var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(
-                    navigationHost);
-                if (result != null)
+                else
                 {
-                    // Now, we got the item extent...
-                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
-                    var loadedExtent = new ExtentStorageData.LoadedExtentInformation(result);
-                    extentManager.LoadExtentWithoutAdding(result, ref loadedExtent);
-                    if (loadedExtent != null && loadedExtent.Extent != null &&
-                        loadedExtent.LoadingState == ExtentLoadingState.Loaded)
-                    {
-                        var itemCountBefore = loadedExtent.Extent.elements().Count();
-                        var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
-                                       ?? throw new InvalidOperationException("elements == null");
-                        _plugin.PerformImport(loadedExtent.Extent, elements);
-                        var itemCountAfter = loadedExtent.Extent.elements().Count();
-
-                        MessageBox.Show(
-                            $"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Extent could not be loaded");
-                    }
+                    MessageBox.Show("Extent could not be loaded");
                 }
             }
         }
+    }
 
-        private static IEnumerable<ViewExtension> OfferExtentLoadingForDetail(ViewExtensionInfo viewExtensionInfo)
-        {
-            // Creates a html report
-            var reportInstance = 
-                viewExtensionInfo.IsItemInDetailWindowOfType(
-                _DatenMeister.TheOne.ExtentLoaderConfigs.__ExtentLoaderConfig,
+    private static IEnumerable<ViewExtension> OfferExtentLoadingForDetail(ViewExtensionInfo viewExtensionInfo)
+    {
+        // Creates a html report
+        var reportInstance = 
+            viewExtensionInfo.IsItemInDetailWindowOfType(
+                _ExtentLoaderConfigs.TheOne.__ExtentLoaderConfig,
                 true);
-            if (reportInstance != null)
-            {
-                yield return
-                    new RowItemButtonDefinition(
-                        "Load Extent",
-                        async (x, y) =>
-                        {
-                            var asElement = y as IElement ?? throw new InvalidOperationException("Not an Element");
-                            var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
-                            var scopeStorage = GiveMe.Scope.ScopeStorage;
+        if (reportInstance != null)
+        {
+            yield return
+                new RowItemButtonDefinition(
+                    "Load Extent",
+                    async (x, y) =>
+                    {
+                        var asElement = y as IElement ?? throw new InvalidOperationException("Not an Element");
+                        var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
+                        var scopeStorage = GiveMe.Scope.ScopeStorage;
                             
-                            var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
-                            var result = await extentManager.LoadExtent(asElement, ExtentCreationFlags.LoadOrCreate);
+                        var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
+                        var result = await extentManager.LoadExtent(asElement, ExtentCreationFlags.LoadOrCreate);
 
-                            if (result.LoadingState == ExtentLoadingState.Loaded)
-                            {
-                                MessageBox.Show("The loader config has been executed");
-                            }
-                            else if (result.LoadingState == ExtentLoadingState.Failed)
-                            {
-                                MessageBox.Show("The loading has failed: " + result.FailLoadingMessage);
-                            }
-                        });
-            }
+                        if (result.LoadingState == ExtentLoadingState.Loaded)
+                        {
+                            MessageBox.Show("The loader config has been executed");
+                        }
+                        else if (result.LoadingState == ExtentLoadingState.Failed)
+                        {
+                            MessageBox.Show("The loading has failed: " + result.FailLoadingMessage);
+                        }
+                    });
         }
     }
 }

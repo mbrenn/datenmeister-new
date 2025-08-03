@@ -1,56 +1,53 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using BenchmarkDotNet.Attributes;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 
-namespace DatenMeister.Benchmark.Providers
+namespace DatenMeister.Benchmark.Providers;
+
+public class XmiProviderBenchmarks
 {
-    public class XmiProviderBenchmarks
+    private readonly List<IElement> _elements;
+
+    public XmiProviderBenchmarks()
     {
-        private readonly List<IElement> _elements;
+        var provider = new XmiProvider(
+            XDocument.Parse("" +
+                            "<item>" +
+                            "    <item name=\"name1\" age=\"18\" />" +
+                            "    <item name=\"name2\" age=\"25\" />" +
+                            "    <item name=\"name3\" age=\"32\" />" +
+                            "</item>"));
+        var extent = new MofUriExtent(provider, "dm:///test", null);
 
-        public XmiProviderBenchmarks()
+        _elements = extent.elements().OfType<IElement>().ToList();
+    }
+
+    [Benchmark]
+    public void BenchMarkGetProperty()
+    {
+        foreach (var element in _elements)
         {
-            var provider = new XmiProvider(
-                XDocument.Parse("" +
-                                "<item>" +
-                                "    <item name=\"name1\" age=\"18\" />" +
-                                "    <item name=\"name2\" age=\"25\" />" +
-                                "    <item name=\"name3\" age=\"32\" />" +
-                                "</item>"));
-            var extent = new MofUriExtent(provider, "dm:///test", null);
-
-            _elements = extent.elements().OfType<IElement>().ToList();
-        }
-
-        [Benchmark]
-        public void BenchMarkGetProperty()
-        {
-            foreach (var element in _elements)
-            {
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-                element.getOrDefault<string>("name");
-                element.getOrDefault<int>("age");
-            }
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
+            element.getOrDefault<string>("name");
+            element.getOrDefault<int>("age");
         }
     }
 }

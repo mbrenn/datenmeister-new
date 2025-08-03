@@ -3,69 +3,61 @@ using DatenMeister.Core.EMOF.Implementation.Hooks;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DataView.Evaluation;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.DataView
+namespace DatenMeister.DataView;
+
+[PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
+public class DataViewPlugin(
+    IWorkspaceLogic workspaceLogic,
+    DataViewLogic dataViewLogic,
+    IScopeStorage scopeStorage)
+    : IDatenMeisterPlugin
 {
-    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
-    public class DataViewPlugin : IDatenMeisterPlugin
+    /// <summary>
+    /// Starts the plugin
+    /// </summary>
+    /// <param name="position"></param>
+    public Task Start(PluginLoadingPosition position)
     {
-        private readonly DataViewLogic _dataViewLogic;
-        private readonly IScopeStorage _scopeStorage;
-        private readonly IWorkspaceLogic _workspaceLogic;
-
-        public DataViewPlugin(
-            IWorkspaceLogic workspaceLogic,
-            DataViewLogic dataViewLogic,
-            IScopeStorage scopeStorage)
+        switch (position)
         {
-            _workspaceLogic = workspaceLogic;
-            _dataViewLogic = dataViewLogic;
-            _scopeStorage = scopeStorage;
+            case PluginLoadingPosition.AfterBootstrapping:
+                var workspace = new Workspace(WorkspaceNames.WorkspaceViews,
+                    "Container of all views which are created dynamically.");
+                workspace.IsDynamicWorkspace = true;
+                workspaceLogic.AddWorkspace(workspace);
+                workspace.ExtentFactory.Add(new DataViewExtentFactory(dataViewLogic, scopeStorage));
+
+                scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
+                break;
+            case PluginLoadingPosition.AfterLoadingOfExtents:
+                var factories = GetDefaultViewNodeFactories();
+                scopeStorage.Add(factories);
+                break;
         }
 
-        /// <summary>
-        /// Starts the plugin
-        /// </summary>
-        /// <param name="position"></param>
-        public Task Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterBootstrapping:
-                    var workspace = new Workspace(WorkspaceNames.WorkspaceViews,
-                        "Container of all views which are created dynamically.");
-                    workspace.IsDynamicWorkspace = true;
-                    _workspaceLogic.AddWorkspace(workspace);
-                    workspace.ExtentFactory.Add(new DataViewExtentFactory(_dataViewLogic, _scopeStorage));
+        return Task.CompletedTask;
+    }
 
-                    _scopeStorage.Get<ResolveHookContainer>().Add(new DataViewResolveHook());
-                    break;
-                case PluginLoadingPosition.AfterLoadingOfExtents:
-                    var factories = GetDefaultViewNodeFactories();
-                    _scopeStorage.Add(factories);
-                    break;
-            }
+    /// <summary>
+    /// Gets the default view node factories
+    /// </summary>
+    /// <returns>The found view node factories</returns>
+    public static DataViewNodeFactories GetDefaultViewNodeFactories()
+    {
+        var result = new DataViewNodeFactories();
+        result.Add(new DynamicSourceNodeEvaluation());            
+        result.Add(new FilterByPropertyValueNodeEvaluation());
+        result.Add(new FilterByMetaclassNodeEvaluation());
+        result.Add(new FlattenNodeEvaluation());
+        result.Add(new SelectByPathNodeEvaluation());
+        result.Add(new SelectByFullNameNodeEvaluation());
+        result.Add(new SelectByExtentNodeEvaluation());
+        result.Add(new SelectFromAllWorkspacesNodeEvaluation());
+        result.Add(new SelectByWorkspaceNodeEvaluation());
+        result.Add(new FilterColumnsExcludeEvaluation());
+        result.Add(new FilterColumnsIncludeOnlyEvaluation());
 
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Gets the default view node factories
-        /// </summary>
-        /// <returns>The found view node factories</returns>
-        public static DataViewNodeFactories GetDefaultViewNodeFactories()
-        {
-            var result = new DataViewNodeFactories();
-            result.Add(new DynamicSourceNodeEvaluation());            
-            result.Add(new FilterByPropertyValueNodeEvaluation());
-            result.Add(new FilterByMetaclassNodeEvaluation());
-            result.Add(new FlattenNodeEvaluation());
-            result.Add(new SelectByPathNodeEvaluation());
-            result.Add(new SelectByFullNameNodeEvaluation());
-            result.Add(new SelectByExtentNodeEvaluation());
-
-            return result;
-        }
+        return result;
     }
 }

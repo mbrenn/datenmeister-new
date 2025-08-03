@@ -10,6 +10,11 @@ export async function init(workspace, extentUri) {
         storeCurrentFormBtn: $("#dm-store-current-form-btn"),
         formSelectorContainer: $("#form_selection_container")
     });
+    $("#items_collection_uri").text(extentUri);
     await listForm.createCollectionForRootElements(workspace, extentUri, { isReadOnly: true });
+    // Sets the window title for the page
+    if (listForm.extentUri !== undefined) {
+        window.document.title = "Items Overview - '" + listForm.extentUri + "' - Der DatenMeister";
+    }
 }
 //# sourceMappingURL=ItemsOverview.js.map

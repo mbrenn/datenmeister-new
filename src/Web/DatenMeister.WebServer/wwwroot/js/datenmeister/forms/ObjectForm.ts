@@ -53,7 +53,6 @@ export class ObjectFormHtmlElements
     statusContainer?: JQuery; 
 }
 
-
 /**
  * Defines the form creator which also performs the connect to the webserver itself. 
  * The input for this type of form is a single element
@@ -105,7 +104,7 @@ export class ObjectFormCreator implements IForm.IPageForm {
         if (this.element == null) this.element = await MofSync.createTemporaryDmObject();
         this.statusTextControl.setListStatus("Temporary Object", true);
 
-        const tabs = this.formElement.getAsArray("tab");
+        const tabs = this.formElement.getAsArray(_DatenMeister._Forms._ObjectForm.tab);
         for (let n in tabs) {
             try {
                 if (!tabs.hasOwnProperty(n)) {
@@ -156,6 +155,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
     formMode: FormMode = FormMode.ViewMode;
     itemUri: string;
     workspace: string;
+    element: Mof.DmObjectWithSync;
     private readonly htmlElements: ObjectFormHtmlElements;
     private statusTextControl: StatusFieldControl;
 
@@ -214,11 +214,15 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
         this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.append($("<div>Loading Data and Form</div>"));
 
-        // Creates the breadcrumb
-        this.statusTextControl.setListStatus("Create Breadcrumb ", false);
-        let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
-        await breadcrumb.createForItem(this.workspace, this.itemUri);
-        this.statusTextControl.setListStatus("Create Breadcrumb ", true);
+        // Creates the breadcrumb, if visible        
+        const breadcrumbDom = $(".dm-breadcrumb-page");
+        if(breadcrumbDom.length > 0) {            
+            this.statusTextControl.setListStatus("Create Breadcrumb ", false);
+            let breadcrumb = new ElementBreadcrumb(breadcrumbDom);
+
+            await breadcrumb.createForItem(this.workspace, this.itemUri);
+            this.statusTextControl.setListStatus("Create Breadcrumb ", true);
+        }
         
         const tthis = this;
 
@@ -264,6 +268,7 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
         }
 
         this.statusTextControl.setListStatus("Get Current Viewmode", false);
+        
         // Defines the viewmode, if not already defined by the caller
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
             configuration.viewMode = await VML.getDefaultViewModeIfNotSet(this.workspace, this.itemUri);
@@ -280,12 +285,46 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
             this._overrideFormUrl === undefined ?
                 ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
                 ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Object);
+        
+        const defer3 = async () =>
+        {
+            // Creates the viewmode Selection field
+            if (this.htmlElements.viewModeSelectorContainer !== undefined
+                && this.htmlElements.viewModeSelectorContainer !== null) {
+                this.htmlElements.viewModeSelectorContainer.empty();
+
+                this.statusTextControl.setListStatus("Create Viewmode Selection", false);
+
+                const viewModeForm = new ViewModeSelectionControl();
+                const htmlViewModeForm = await viewModeForm.createForm(configuration.viewMode);
+                viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
+
+                this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+                this.statusTextControl.setListStatus("Create Viewmode Selection", true);
+            }
+
+            /*
+             * Creates the handler for the automatic creation of forms for extent
+             */
+            if (this.htmlElements.storeCurrentFormBtn !== undefined) {
+                this.htmlElements.storeCurrentFormBtn.on('click',async () => {
+                    const result = await ClientForms.createObjectFormForItem(
+                        this.workspace,
+                        this.itemUri,
+                        configuration.viewMode
+                    );
+
+                    Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
+                });
+            }
+        };
 
         // Wait for both
-        Promise.all([defer1, defer2]).then(async ([element1, form]) => {
-
+        await Promise.all([defer1, defer2, defer3()]).then(async ([element1, form, _]) => {
+            this.element = element1;
             this.statusTextControl.setListStatus("Load Object", true);
             this.statusTextControl.setListStatus("Load Form", true);
+            
             // First the debug information
             debugElementToDom(element1, "#debug_mofelement");
             debugElementToDom(form, "#debug_formelement");
@@ -336,16 +375,17 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                         uri: this._overrideFormUrl
                     };
                 } else {
-                    const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                    if (form.uri !== undefined && byForm === undefined) {
+                    const originalUri = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                    const originalWorkspace = form.get(_DatenMeister._Forms._Form.originalWorkspace, Mof.ObjectType.String)
+                    if (form.uri !== undefined && originalUri === undefined) {
                         formUrl = {
                             workspace: form.workspace,
                             uri: form.uri
                         };
-                    } else if (byForm !== undefined) {
+                    } else if (originalUri !== undefined) {
                         formUrl = {
-                            workspace: "Management",
-                            uri: byForm
+                            workspace: originalWorkspace ?? "Management",
+                            uri: originalUri
                         };
                     }
                 }
@@ -357,35 +397,5 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
                 this.statusTextControl.setListStatus("Create Form Selection", true);
             }
         });
-
-        // Creates the viewmode Selection field
-        if (this.htmlElements.viewModeSelectorContainer !== undefined
-            && this.htmlElements.viewModeSelectorContainer !== null) {
-            this.htmlElements.viewModeSelectorContainer.empty();
-
-            this.statusTextControl.setListStatus("Create Viewmode Selection", false);
-            
-            const viewModeForm = new ViewModeSelectionControl();
-            const htmlViewModeForm = await viewModeForm.createForm(configuration.viewMode);
-            viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
-
-            this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
-            this.statusTextControl.setListStatus("Create Viewmode Selection", true);
-        }
-
-        /*
-         * Creates the handler for the automatic creation of forms for extent
-         */
-        if (this.htmlElements.storeCurrentFormBtn !== undefined) {
-            this.htmlElements.storeCurrentFormBtn.on('click',async () => {
-                const result = await ClientForms.createObjectFormForItem(
-                    this.workspace,
-                    this.itemUri,
-                    configuration.viewMode
-                );
-
-                Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
-            });
-        }
     }
 }

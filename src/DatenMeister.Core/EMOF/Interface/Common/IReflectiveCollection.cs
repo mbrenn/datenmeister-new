@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable InconsistentNaming
+namespace DatenMeister.Core.EMOF.Interface.Common;
 
-namespace DatenMeister.Core.EMOF.Interface.Common
+public interface IReflectiveCollection : IEnumerable<object?>
 {
-    public interface IReflectiveCollection : IEnumerable<object?>
-    {
-        bool add(object value);
+    bool add(object value);
 
-        bool addAll(IReflectiveSequence value);
+    bool addAll(IReflectiveSequence value);
 
-        void clear();
+    void clear();
 
-        bool remove(object? value);
+    bool remove(object? value);
 
-        int size();
-    }
+    int size();
 }

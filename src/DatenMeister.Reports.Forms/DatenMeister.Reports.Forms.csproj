@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -38,10 +39,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Css\DatenMeister.Reports.Forms.css" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js" />
-    <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.js.map" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Forms.ts" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js" />
-    <EmbeddedResource Include="Js\DatenMeister.Reports.Types.js.map" />
     <EmbeddedResource Include="Js\DatenMeister.Reports.Types.ts" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Types.xmi" />
     <EmbeddedResource Include="Xmi\DatenMeister.Reports.Forms.xmi" />
@@ -62,5 +61,9 @@
     <Folder Include="Model\" />
   </ItemGroup>
 
+
+  <Target Name="RunCakeBuild" BeforeTargets="Build">
+    <Exec Command="dotnet cake build.cake --target=Build" />
+  </Target>
 </Project>
 

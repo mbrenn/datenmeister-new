@@ -1,80 +1,69 @@
-﻿using System.Collections.Generic;
+﻿namespace DatenMeister.Core.Provider.Proxies;
 
-namespace DatenMeister.Core.Provider.Proxies
+public class ProxyIdProviderObject(IProviderObject element, string? id) : IProviderObject
 {
-    public class ProxyIdProviderObject : IProviderObject
+    public IProvider Provider => element.Provider;
+
+    public string? Id { get; set; } = id;
+
+    public string? MetaclassUri
     {
-        private readonly IProviderObject _element;
+        get => element.MetaclassUri;
+        set => element.MetaclassUri = value;
+    }
 
-        public ProxyIdProviderObject(IProviderObject element, string? id)
-        {
-            _element = element;
-            Id = id;
-        }
+    public bool IsPropertySet(string property)
+    {
+        return element.IsPropertySet(property);
+    }
 
-        public IProvider Provider => _element.Provider;
+    public object? GetProperty(string property, ObjectType objectType = ObjectType.None)
+    {
+        return element.GetProperty(property, objectType);
+    }
 
-        public string? Id { get; set; }
+    public IEnumerable<string> GetProperties()
+    {
+        return element.GetProperties();
+    }
 
-        public string? MetaclassUri
-        {
-            get => _element.MetaclassUri;
-            set => _element.MetaclassUri = value;
-        }
+    public bool DeleteProperty(string property)
+    {
+        return element.DeleteProperty(property);
+    }
 
-        public bool IsPropertySet(string property)
-        {
-            return _element.IsPropertySet(property);
-        }
+    public void SetProperty(string property, object? value)
+    {
+        element.SetProperty(property, value);
+    }
 
-        public object? GetProperty(string property, ObjectType objectType = ObjectType.None)
-        {
-            return _element.GetProperty(property, objectType);
-        }
+    public void EmptyListForProperty(string property)
+    {
+        element.EmptyListForProperty(property);
+    }
 
-        public IEnumerable<string> GetProperties()
-        {
-            return _element.GetProperties();
-        }
+    public bool AddToProperty(string property, object value, int index = -1)
+    {
+        return element.AddToProperty(property, value, index);
+    }
 
-        public bool DeleteProperty(string property)
-        {
-            return _element.DeleteProperty(property);
-        }
+    public bool RemoveFromProperty(string property, object value)
+    {
+        return element.RemoveFromProperty(property, value);
+    }
 
-        public void SetProperty(string property, object? value)
-        {
-            _element.SetProperty(property, value);
-        }
+    public bool HasContainer()
+    {
+        return element.HasContainer();
+    }
 
-        public void EmptyListForProperty(string property)
-        {
-            _element.EmptyListForProperty(property);
-        }
+    public IProviderObject? GetContainer()
+    {
+        return element.GetContainer();
+    }
 
-        public bool AddToProperty(string property, object value, int index = -1)
-        {
-            return _element.AddToProperty(property, value, index);
-        }
-
-        public bool RemoveFromProperty(string property, object value)
-        {
-            return _element.RemoveFromProperty(property, value);
-        }
-
-        public bool HasContainer()
-        {
-            return _element.HasContainer();
-        }
-
-        public IProviderObject? GetContainer()
-        {
-            return _element.GetContainer();
-        }
-
-        public void SetContainer(IProviderObject? value)
-        {
-            _element.SetContainer(value);
-        }
+    public void SetContainer(IProviderObject? value)
+    {
+        element.SetContainer(value);
     }
 }

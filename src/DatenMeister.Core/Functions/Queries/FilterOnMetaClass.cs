@@ -1,78 +1,92 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Core.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries;
+
+public class FilterOnMetaClass : ProxyReflectiveCollection
 {
-    public class FilterOnMetaClass : ProxyReflectiveCollection
+    private readonly IElement[]? _filteredMetaClass;
+
+    public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
+        : base(collection)
     {
-        private readonly IElement[]? _filteredMetaClass;
+        _filteredMetaClass = filteredMetaClass == null ? null : [filteredMetaClass];
+    }
 
-        public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
-            : base(collection)
-        {
-            _filteredMetaClass = filteredMetaClass == null ? null : new[] {filteredMetaClass};
-        }
+    public FilterOnMetaClass(IReflectiveCollection collection, IElement[] filteredMetaClass)
+        : base(collection)
+    {
+        _filteredMetaClass = filteredMetaClass;
+    }
 
-        public FilterOnMetaClass(IReflectiveCollection collection, IElement[] filteredMetaClass)
-            : base(collection)
+    public override IEnumerator<object> GetEnumerator()
+    {
+        foreach (var value in Collection)
         {
-            _filteredMetaClass = filteredMetaClass;
-        }
-
-        public override IEnumerator<object> GetEnumerator()
-        {
-            foreach (var value in Collection)
+            if (value is IElement valueAsObject && IsInList(valueAsObject))
             {
-                if (value is IElement valueAsObject && IsInList(valueAsObject))
-                {
-                    yield return valueAsObject;
-                }
+                yield return valueAsObject;
             }
         }
+    }
 
-        public override int size()
+    public override int size()
+    {
+        var result = 0;
+        foreach (var value in Collection)
         {
-            var result = 0;
-            foreach (var value in Collection)
-            {
-                var valueAsObject = value as IElement;
-                if (valueAsObject == null) 
-                    continue;
+            var valueAsObject = value as IElement;
+            if (valueAsObject == null) 
+                continue;
                 
-                if (IsInList(valueAsObject))
-                {
-                    result++;
-                }
+            if (IsInList(valueAsObject))
+            {
+                result++;
             }
-
-            return result;
         }
 
-        /// <summary>
-        /// Verifies whether the element shall be given in the list
-        /// </summary>
-        /// <param name="valueAsObject">Value to be shown</param>
-        /// <returns>true, if value is in</returns>
-        private bool IsInList(IElement valueAsObject)
+        return result;
+    }
+
+    /// <summary>
+    /// Verifies whether the element shall be given in the list
+    /// </summary>
+    /// <param name="valueAsObject">Value to be shown</param>
+    /// <returns>true, if value is in</returns>
+    private bool IsInList(IElement valueAsObject)
+    {
+        var isIn = false;
+        var metaClass = valueAsObject?.getMetaClass();
+/*
+        if (metaClass != null && metaClass.ToString()?.Contains("ViewNode") == true)
         {
-            var isIn = false;
-            var metaClass = valueAsObject?.getMetaClass();
-            if (metaClass == null && _filteredMetaClass == null)
-            {
-                isIn = true;
-            }
-            else
-            {
-                if (metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
-                {
-                    isIn = true;
-                }
-            }
-
-            return isIn;
+            Debugger.Break();
         }
+        
+        if(metaClass != null
+           && _filteredMetaClass?.Any(x=>x.ToString()?.Contains("ViewNode") == true) == true
+           && !metaClass.ToString()?.Contains("EnvironmentalVariable") == true
+           && !metaClass.ToString()?.Contains("Package") == true
+           && !metaClass.ToString()?.Contains("Workspace") == true
+           && !metaClass.ToString()?.Contains("Package") == true)
+        {
+            Debugger.Break();
+        }
+        
+        if (metaClass != null && metaClass.ToString()?.Contains("ViewNode") == true
+            && _filteredMetaClass?.Any(x=>x.ToString()?.Contains("ViewNode") == true) == true)
+        {
+            Debugger.Log(1, "FilterOnMetaClass", "ViewNode talking");
+        }*/
+
+        if (metaClass == null && (_filteredMetaClass == null || _filteredMetaClass.Length == 0)
+            || metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
+        {
+            isIn = true;
+        }
+
+        return isIn;
     }
 }

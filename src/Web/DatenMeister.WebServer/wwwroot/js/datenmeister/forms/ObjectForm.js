@@ -47,7 +47,7 @@ export class ObjectFormCreator {
         if (this.element == null)
             this.element = await MofSync.createTemporaryDmObject();
         this.statusTextControl.setListStatus("Temporary Object", true);
-        const tabs = this.formElement.getAsArray("tab");
+        const tabs = this.formElement.getAsArray(_DatenMeister._Forms._ObjectForm.tab);
         for (let n in tabs) {
             try {
                 if (!tabs.hasOwnProperty(n)) {
@@ -123,11 +123,14 @@ export class ObjectFormCreatorForItem {
         // First, clear the page to have a fast reaction, otherwise the user will be confused
         this.htmlElements.itemContainer.empty();
         this.htmlElements.itemContainer.append($("<div>Loading Data and Form</div>"));
-        // Creates the breadcrumb
-        this.statusTextControl.setListStatus("Create Breadcrumb ", false);
-        let breadcrumb = new ElementBreadcrumb($(".dm-breadcrumb-page"));
-        await breadcrumb.createForItem(this.workspace, this.itemUri);
-        this.statusTextControl.setListStatus("Create Breadcrumb ", true);
+        // Creates the breadcrumb, if visible        
+        const breadcrumbDom = $(".dm-breadcrumb-page");
+        if (breadcrumbDom.length > 0) {
+            this.statusTextControl.setListStatus("Create Breadcrumb ", false);
+            let breadcrumb = new ElementBreadcrumb(breadcrumbDom);
+            await breadcrumb.createForItem(this.workspace, this.itemUri);
+            this.statusTextControl.setListStatus("Create Breadcrumb ", true);
+        }
         const tthis = this;
         // Sets activities for the storing of elements
         let configuration;
@@ -183,8 +186,31 @@ export class ObjectFormCreatorForItem {
         const defer2 = this._overrideFormUrl === undefined ?
             ClientForms.getObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode) :
             ClientForms.getForm(this._overrideFormUrl, IForm.FormType.Object);
+        const defer3 = async () => {
+            // Creates the viewmode Selection field
+            if (this.htmlElements.viewModeSelectorContainer !== undefined
+                && this.htmlElements.viewModeSelectorContainer !== null) {
+                this.htmlElements.viewModeSelectorContainer.empty();
+                this.statusTextControl.setListStatus("Create Viewmode Selection", false);
+                const viewModeForm = new ViewModeSelectionControl();
+                const htmlViewModeForm = await viewModeForm.createForm(configuration.viewMode);
+                viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
+                this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
+                this.statusTextControl.setListStatus("Create Viewmode Selection", true);
+            }
+            /*
+             * Creates the handler for the automatic creation of forms for extent
+             */
+            if (this.htmlElements.storeCurrentFormBtn !== undefined) {
+                this.htmlElements.storeCurrentFormBtn.on('click', async () => {
+                    const result = await ClientForms.createObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
+                    Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
+                });
+            }
+        };
         // Wait for both
-        Promise.all([defer1, defer2]).then(async ([element1, form]) => {
+        await Promise.all([defer1, defer2, defer3()]).then(async ([element1, form, _]) => {
+            this.element = element1;
             this.statusTextControl.setListStatus("Load Object", true);
             this.statusTextControl.setListStatus("Load Form", true);
             // First the debug information
@@ -229,17 +255,18 @@ export class ObjectFormCreatorForItem {
                     };
                 }
                 else {
-                    const byForm = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
-                    if (form.uri !== undefined && byForm === undefined) {
+                    const originalUri = form.get(_DatenMeister._Forms._Form.originalUri, Mof.ObjectType.String);
+                    const originalWorkspace = form.get(_DatenMeister._Forms._Form.originalWorkspace, Mof.ObjectType.String);
+                    if (form.uri !== undefined && originalUri === undefined) {
                         formUrl = {
                             workspace: form.workspace,
                             uri: form.uri
                         };
                     }
-                    else if (byForm !== undefined) {
+                    else if (originalUri !== undefined) {
                         formUrl = {
-                            workspace: "Management",
-                            uri: byForm
+                            workspace: originalWorkspace ?? "Management",
+                            uri: originalUri
                         };
                     }
                 }
@@ -248,26 +275,6 @@ export class ObjectFormCreatorForItem {
                 this.statusTextControl.setListStatus("Create Form Selection", true);
             }
         });
-        // Creates the viewmode Selection field
-        if (this.htmlElements.viewModeSelectorContainer !== undefined
-            && this.htmlElements.viewModeSelectorContainer !== null) {
-            this.htmlElements.viewModeSelectorContainer.empty();
-            this.statusTextControl.setListStatus("Create Viewmode Selection", false);
-            const viewModeForm = new ViewModeSelectionControl();
-            const htmlViewModeForm = await viewModeForm.createForm(configuration.viewMode);
-            viewModeForm.viewModeSelected.addListener(_ => configuration.refreshForm());
-            this.htmlElements.viewModeSelectorContainer.append(htmlViewModeForm);
-            this.statusTextControl.setListStatus("Create Viewmode Selection", true);
-        }
-        /*
-         * Creates the handler for the automatic creation of forms for extent
-         */
-        if (this.htmlElements.storeCurrentFormBtn !== undefined) {
-            this.htmlElements.storeCurrentFormBtn.on('click', async () => {
-                const result = await ClientForms.createObjectFormForItem(this.workspace, this.itemUri, configuration.viewMode);
-                Navigator.navigateToItemByUrl(result.createdForm.workspace, result.createdForm.uri);
-            });
-        }
     }
 }
 //# sourceMappingURL=ObjectForm.js.map

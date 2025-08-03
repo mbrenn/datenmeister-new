@@ -1,40 +1,39 @@
 ﻿using System.Windows;
 
-namespace DatenMeister.WPF.Navigation.ProgressBox
+namespace DatenMeister.WPF.Navigation.ProgressBox;
+
+/// <summary>
+/// Interaktionslogik für WpfProgressBox.xaml
+/// </summary>
+public partial class WpfProgressBox : Window, IProgressBox
 {
-    /// <summary>
-    /// Interaktionslogik für WpfProgressBox.xaml
-    /// </summary>
-    public partial class WpfProgressBox : Window, IProgressBox
+    public WpfProgressBox()
     {
-        public WpfProgressBox()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        /// <inheritdoc />
-        public void SetProgress(double percentage, string text)
+    /// <inheritdoc />
+    public void SetProgress(double percentage, string text)
+    {
+        Dispatcher?.InvokeAsync(() =>
         {
-            Dispatcher?.InvokeAsync(() =>
+            TxtStatus.Text = text;
+            if (percentage < 0.0)
             {
-                TxtStatus.Text = text;
-                if (percentage < 0.0)
-                {
-                    ProgressBar.IsIndeterminate = true;
-                }
-                else
-                {
-                    ProgressBar.Maximum = 1.0;
-                    ProgressBar.IsIndeterminate = false;
-                    ProgressBar.Value = percentage;
-                }
-            });
-        }
+                ProgressBar.IsIndeterminate = true;
+            }
+            else
+            {
+                ProgressBar.Maximum = 1.0;
+                ProgressBar.IsIndeterminate = false;
+                ProgressBar.Value = percentage;
+            }
+        });
+    }
 
-        /// <inheritdoc />
-        public void CloseProgress()
-        {
-            Dispatcher?.InvokeAsync(Close);
-        }
+    /// <inheritdoc />
+    public void CloseProgress()
+    {
+        Dispatcher?.InvokeAsync(Close);
     }
 }

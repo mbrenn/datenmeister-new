@@ -1,27 +1,19 @@
-﻿#nullable enable
-using DatenMeister.WPF.Navigation;
+﻿using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Modules.ViewExtensions.Information
+namespace DatenMeister.WPF.Modules.ViewExtensions.Information;
+
+/// <summary>
+/// Contains the information about the window or dialog in which the viewextension will be shown
+/// </summary>
+public class ViewExtensionInfo(INavigationHost navigationHost, INavigationGuest? navigationGuest)
 {
     /// <summary>
-    /// Contains the information about the window or dialog in which the viewextension will be shown
+    /// Gets or sets the navigation host querying the view extensions
     /// </summary>
-    public class ViewExtensionInfo
-    {
-        /// <summary>
-        /// Gets or sets the navigation host querying the view extensions
-        /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+    public INavigationHost NavigationHost { get; set; } = navigationHost;
 
-        /// <summary>
-        /// Gets or sets the navigation guest which is currently
-        /// </summary>
-        public INavigationGuest? NavigationGuest { get; set; }
-
-        public ViewExtensionInfo(INavigationHost navigationHost, INavigationGuest? navigationGuest)
-        {
-            NavigationHost = navigationHost;
-            NavigationGuest = navigationGuest;
-        }
-    }
+    /// <summary>
+    /// Gets or sets the navigation guest which is currently
+    /// </summary>
+    public INavigationGuest? NavigationGuest { get; set; } = navigationGuest;
 }

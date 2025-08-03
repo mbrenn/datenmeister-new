@@ -1,34 +1,28 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;
+
+public struct TagCreateMetaClass(IElement metaClass)
 {
-    public struct TagCreateMetaClass
+    public IElement MetaClass { get; } = metaClass;
+
+    public override bool Equals(object? obj)
     {
-        public TagCreateMetaClass(IElement metaClass)
+        if (obj is TagCreateMetaClass other)
         {
-            MetaClass = metaClass;
+            return MetaClass.equals(other.MetaClass);
         }
 
-        public IElement MetaClass { get; }
+        return false;
+    }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj is TagCreateMetaClass other)
-            {
-                return MetaClass.equals(other.MetaClass);
-            }
+    public bool Equals(TagCreateMetaClass other)
+    {
+        return MetaClass.Equals(other.MetaClass);
+    }
 
-            return false;
-        }
-
-        public bool Equals(TagCreateMetaClass other)
-        {
-            return MetaClass.Equals(other.MetaClass);
-        }
-
-        public override int GetHashCode()
-        {
-            return MetaClass.GetHashCode();
-        }
+    public override int GetHashCode()
+    {
+        return MetaClass.GetHashCode();
     }
 }

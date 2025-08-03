@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace DatenMeister.Excel.Models;
 
-namespace DatenMeister.Excel.Models
+public class Workbook
 {
-    public class Workbook
-    {
-        public IEnumerable<Table>? tables { get; set; }
-    }
+    public IEnumerable<Table>? tables { get; set; }
 }

@@ -3,23 +3,22 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZipCodeLibrary;
 using ZipCodeWebsite.Models;
 
-namespace ZipCodeWebsite.Pages
-{
-    public class IndexRazorModel : PageModel
-    {
-        [BindProperty]
-        public string? searchtext { get; set; }
-        
-        public ZipCodeModel? ZipCodes { get; private set; }
-        
-        public void OnGet()
-        {
-            ZipCodes = ZipCodeLogic.GetZipCodes(searchtext);
-        }
+namespace ZipCodeWebsite.Pages;
 
-        public void OnPost()
-        {
-            ZipCodes = ZipCodeLogic.GetZipCodes(searchtext);
-        }
+public class IndexRazorModel : PageModel
+{
+    [BindProperty]
+    public string? searchtext { get; set; }
+        
+    public ZipCodeModel? ZipCodes { get; private set; }
+        
+    public void OnGet()
+    {
+        ZipCodes = ZipCodeLogic.GetZipCodes(searchtext);
+    }
+
+    public void OnPost()
+    {
+        ZipCodes = ZipCodeLogic.GetZipCodes(searchtext);
     }
 }

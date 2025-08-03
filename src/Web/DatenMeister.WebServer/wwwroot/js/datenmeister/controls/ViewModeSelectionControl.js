@@ -16,7 +16,7 @@ export class ViewModeSelectionControl {
      * requests another viewmode independent of the selected one, it can be injected here.
      */
     async createForm(overridedViewMode) {
-        const container = $("<div></div>");
+        const container = $("<div class='dm-viewmode-selection'></div>");
         const selectField = $("<select></select>");
         const viewModes = await VML.getViewModesFromServer();
         const currentViewMode = overridedViewMode ?? VML.getCurrentViewMode();
@@ -57,9 +57,7 @@ export class ViewModeSelectionControl {
         });
         container.append(selectField);
         // Sets the current view mode
-        const current = $("<span class='dm-viewmode-current'>Current: <span class='dm-viewmode-current-text'></span></span>");
-        $(".dm-viewmode-current-text", current).text(currentViewMode);
-        container.append(current);
+        container.attr('title', 'Viewmode: ' + currentViewMode);
         return container;
     }
 }

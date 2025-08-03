@@ -6,31 +6,30 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Modules
+namespace DatenMeister.Tests.Modules;
+
+[TestFixture]
+public class DefaultClassifierTests
 {
-    [TestFixture]
-    public class DefaultClassifierTests
+    [Test]
+    public void TestDefaultPackage()
     {
-        [Test]
-        public void TestDefaultPackage()
-        {
-            var workspaceData = WorkspaceLogic.InitDefault();
-            var dataExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
-            var typeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types", null);
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), "dm:///uml", null);
+        var workspaceData = WorkspaceLogic.InitDefault();
+        var dataExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test", null);
+        var typeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types", null);
+        var umlExtent = new MofUriExtent(new InMemoryProvider(), "dm:///uml", null);
 
-            workspaceData.Uml.AddExtent(umlExtent);
-            workspaceData.Types.AddExtent(typeExtent);
-            workspaceData.Data.AddExtent(dataExtent);
+        workspaceData.Uml.AddExtent(umlExtent);
+        workspaceData.Types.AddExtent(typeExtent);
+        workspaceData.Data.AddExtent(dataExtent);
 
-            var defaultClassifier = new DefaultClassifierHints();
-            var dataPackage = defaultClassifier.GetDefaultPackageClassifier(dataExtent);
-            var typePackage = defaultClassifier.GetDefaultPackageClassifier(typeExtent);
-            var umlPackage = defaultClassifier.GetDefaultPackageClassifier(umlExtent);
+        var defaultClassifier = new DefaultClassifierHints();
+        var dataPackage = defaultClassifier.GetDefaultPackageClassifier(dataExtent);
+        var typePackage = defaultClassifier.GetDefaultPackageClassifier(typeExtent);
+        var umlPackage = defaultClassifier.GetDefaultPackageClassifier(umlExtent);
 
-            Assert.That(dataPackage?.equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true);
-            Assert.That(typePackage?.equals(_UML.TheOne.Packages.__Package) == true);
-            Assert.That(umlPackage?.equals(_UML.TheOne.Packages.__Package) == true);
-        }
+        Assert.That(dataPackage?.equals(_CommonTypes.TheOne.Default.__Package) == true);
+        Assert.That(typePackage?.equals(_UML.TheOne.Packages.__Package) == true);
+        Assert.That(umlPackage?.equals(_UML.TheOne.Packages.__Package) == true);
     }
 }

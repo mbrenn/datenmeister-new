@@ -1,32 +1,30 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.Extent.Forms
+namespace DatenMeister.Extent.Forms;
+
+public class DefaultTypesPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    public class DefaultTypesPlugin : IDatenMeisterPlugin
+    public Task Start(PluginLoadingPosition position)
     {
-        private readonly IScopeStorage _scopeStorage;
-
-        public DefaultTypesPlugin(IScopeStorage scopeStorage)
+        switch (position)
         {
-            _scopeStorage = scopeStorage;
+            case PluginLoadingPosition.AfterLoadingOfExtents:
+
+                var formsPluginState = scopeStorage.Get<FormsState>();
+                formsPluginState.FormModificationPlugins.Add(
+                    new FormModificationPlugin
+                    {
+                        CreateContext =
+                            context =>
+                                context.Global.ObjectFormFactories.Add(
+                                    new PackageFormModificationPlugin()),
+                        Name = "PackageFormModificationPlugin"
+                    });
+                break;
         }
 
-        public Task Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterLoadingOfExtents:
-
-                    var formsPluginState = _scopeStorage.Get<FormsPluginState>();
-                    formsPluginState.FormModificationPlugins.Add(
-                        new PackageFormModificationPlugin());
-                    break;
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

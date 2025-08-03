@@ -8,7 +8,7 @@ export class Field extends DropDownBaseField.DropDownBaseField implements IFormF
         super();
         this.fieldType = DropDownBaseField.FieldType.Strings;
     }
-
+    
     async loadFields(): Promise<DropDownBaseField.DropDownOptionField[]> {
         const values = this.field.get('values') as Array<DmObject>;
         if (Array.isArray(values)) {

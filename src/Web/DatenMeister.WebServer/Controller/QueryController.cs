@@ -1,35 +1,27 @@
-﻿using DatenMeister.Core.Runtime.Workspaces;
+﻿using System.Diagnostics;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using DatenMeister.Json;
+using DatenMeister.Web.Json;
 
-namespace DatenMeister.WebServer.Controller
+namespace DatenMeister.WebServer.Controller;
+
+[Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
+[ApiController]
+
+public class QueryController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : ControllerBase
 {
-    [Microsoft.AspNetCore.Components.Route("api/[controller]/[action]")]
-    [ApiController]
+    [HttpPost("api/query/query_objects")]
+    public async Task<ActionResult> QueryObjects([FromBody] MofObjectAsJson queryStatementAsText)
+    {   
+        // We finally have the raw data. Convert it to an Xmi  
+        var mofJsonDeconverter = new MofJsonDeconverter(workspaceLogic, scopeStorage);
+        var queryStatement = mofJsonDeconverter.ConvertToObject(queryStatementAsText);
 
-    public class QueryController : ControllerBase
-    {
-        private IWorkspaceLogic _workspaceLogic;
-        private IScopeStorage _scopeStorage;
+        // Now we have the query statement. Get source and filters
+        Debugger.Break(); // We should never be call. Let's see, if we get a call. If no,
+                          // remove it in August, 
+        return await Task.FromResult(Ok());
 
-        public QueryController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-        {
-            _workspaceLogic = workspaceLogic;
-            _scopeStorage = scopeStorage;
-        }
-
-        [HttpPost("api/query/query_objects")]
-        public async Task<ActionResult> QueryObjects([FromBody] MofObjectAsJson queryStatementAsText)
-        {   
-            // We finally have the raw data. Convert it to an Xmi  
-            var mofJsonDeconverter = new MofJsonDeconverter(_workspaceLogic, _scopeStorage);
-            var queryStatement = mofJsonDeconverter.ConvertToObject(queryStatementAsText);
-
-            // Now we have the query statement. Get source and filters
-            return await Task.FromResult(Ok());
-
-        }
     }
 }

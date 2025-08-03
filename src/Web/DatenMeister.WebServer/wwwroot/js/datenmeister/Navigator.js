@@ -23,6 +23,9 @@ export function navigateToDefineAction(workspace) {
         getLinkForNavigateToWorkspace(workspace);
 }
 export function getLinkForNavigateToExtentItems(workspace, extentUri, parameter) {
+    if (workspace === undefined || extentUri === undefined) {
+        return null;
+    }
     let urlParameter = "";
     let ampersand = '?';
     // Trim extentUri to remove the parameters
@@ -38,8 +41,10 @@ export function getLinkForNavigateToExtentItems(workspace, extentUri, parameter)
         encodeURIComponent(extentUri + urlParameter);
 }
 export function navigateToExtentItems(workspace, extentUri, parameter) {
-    document.location.href =
-        getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
+    const link = getLinkForNavigateToExtentItems(workspace, extentUri, parameter);
+    if (link !== null) {
+        document.location.href = link;
+    }
 }
 export function navigateToExtentProperties(workspace, extentUri) {
     document.location.href = getLinkForNavigateToExtentProperties(workspace, extentUri);
@@ -90,17 +95,20 @@ function parseNavigateToItemParam(param) {
     }
     return result;
 }
-export function getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass) {
+export function getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass, metaClassWorkspace) {
     return Settings.baseUrl +
-        "ItemAction/Extent.CreateItem?workspace=" +
-        encodeURIComponent(workspace) +
-        "&extent=" +
-        encodeURIComponent(extentUri) +
-        "&metaclass=" +
-        encodeURIComponent(metaclass);
+        "ItemAction/Extent.CreateNewItem" +
+        "?workspace=" + encodeURIComponent(workspace) +
+        "&item=" + encodeURIComponent(extentUri) +
+        (metaclass !== undefined
+            ? "&metaclass=" + encodeURIComponent(metaclass)
+            : "") +
+        (metaClassWorkspace !== undefined
+            ? "&metaclassworkspace=" + encodeURIComponent(metaClassWorkspace)
+            : "");
 }
-export function navigateToCreateNewItemInExtent(workspace, extentUri, metaclass) {
-    document.location.href = getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass);
+export function navigateToCreateNewItemInExtent(workspace, extentUri, metaclass, metaClassWorkspace) {
+    document.location.href = getLinkForNavigateToCreateNewItemInExtent(workspace, extentUri, metaclass, metaClassWorkspace);
 }
 export function getLinkForNavigateToAction(parameter, actionName, formUri) {
     let urlParameter = "";
@@ -108,7 +116,7 @@ export function getLinkForNavigateToAction(parameter, actionName, formUri) {
         urlParameter = "?";
         let ampersand = "";
         for (let key in parameter) {
-            var value = parameter[key];
+            const value = parameter[key];
             urlParameter += ampersand + encodeURIComponent(key) + "=" + encodeURIComponent(value);
             ampersand = "&";
         }
@@ -120,16 +128,16 @@ export function navigateToAction(actionName, formUri, parameter) {
 }
 export function getLinkForNavigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName) {
     return Settings.baseUrl +
-        "ItemAction/Extent.CreateItemInProperty?workspace=" +
-        encodeURIComponent(workspace) +
-        "&itemUrl=" +
-        encodeURIComponent(itemUrl) +
-        "&metaclass=" +
-        encodeURIComponent(metaclass) +
-        "&metaclassworkspace=" +
-        encodeURIComponent(metaclassWorkspace) +
-        "&property=" +
-        encodeURIComponent(propertyName);
+        "ItemAction/Extent.CreateNewItem" +
+        "?workspace=" + encodeURIComponent(workspace) +
+        "&item=" + encodeURIComponent(itemUrl) +
+        (metaclass !== undefined
+            ? "&metaclass=" + encodeURIComponent(metaclass)
+            : "") +
+        (metaclassWorkspace !== undefined
+            ? "&metaclassworkspace=" + encodeURIComponent(metaclassWorkspace)
+            : "") +
+        "&property=" + encodeURIComponent(propertyName);
 }
 export function navigateToCreateItemInProperty(workspace, itemUrl, metaclass, metaclassWorkspace, propertyName) {
     document.location.href =

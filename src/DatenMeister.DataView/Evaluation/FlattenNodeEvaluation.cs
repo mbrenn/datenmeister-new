@@ -6,29 +6,28 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.DataView.Evaluation
+namespace DatenMeister.DataView.Evaluation;
+
+public class FlattenNodeEvaluation : IDataViewNodeEvaluation
 {
-    public class FlattenNodeEvaluation : IDataViewNodeEvaluation
+    private static readonly ILogger Logger = new ClassLogger(typeof(FlattenNodeEvaluation));
+
+    public bool IsResponsible(IElement node)
     {
-        private static readonly ILogger Logger = new ClassLogger(typeof(FlattenNodeEvaluation));
+        var metaClass = node.getMetaClass();
+        return metaClass != null &&
+               metaClass.equals(_DataViews.TheOne.__FlattenNode);
+    }
 
-        public bool IsResponsible(IElement node)
+    public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
+    {
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
+        if (inputNode == null)
         {
-            var metaClass = node.getMetaClass();
-            return metaClass != null &&
-                   metaClass.equals(_DatenMeister.TheOne.DataViews.__FlattenNode);
+            Logger.Warn("Input node not found");
+            return new PureReflectiveSequence();
         }
 
-        public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
-        {
-            var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FlattenNode.input);
-            if (inputNode == null)
-            {
-                Logger.Warn("Input node not found");
-                return new PureReflectiveSequence();
-            }
-
-            return evaluation.GetElementsForViewNode(inputNode).GetAllDescendantsIncludingThemselves();
-        }
+        return evaluation.GetElementsForViewNode(inputNode).GetAllDescendantsIncludingThemselves();
     }
 }

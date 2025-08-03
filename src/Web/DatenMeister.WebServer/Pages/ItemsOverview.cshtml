@@ -5,7 +5,7 @@
 
 @{
     Layout = "~/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Der DatenMeister - Items Overview";
+    ViewData["Title"] = "Items Overview - Der DatenMeister";
 }
 
 <h1>Items Overview</h1>
@@ -14,10 +14,6 @@
 
 <div class="dm-breadcrumb-page">
 
-</div>
-
-<div id="dm-viewmode-selection-container">
-    
 </div>
 
 <script type="module">
@@ -35,7 +31,7 @@ $(function()
 </script>
 
 <div>
-    <a href="~/ItemAction/Extent.CreateItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&extent=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
+    <a href="~/ItemAction/Extent.CreateNewItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&item=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
     <btn class="btn btn-secondary" id="dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
 </div>
 

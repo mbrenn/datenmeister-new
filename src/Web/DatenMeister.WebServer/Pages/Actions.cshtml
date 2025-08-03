@@ -3,11 +3,11 @@
 @using System.Web
 @using DatenMeister.Core.EMOF.Implementation
 @using DatenMeister.Core.Models
-@model DatenMeister.WebServer.Pages.ActionsModel
+@model ActionsModel
 
 @{
     Layout = "~/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Der DatenMeister - Actions";
+    ViewData["Title"] = "Action - Der DatenMeisters";
 }
 
 <h1>Actions</h1>
@@ -39,7 +39,7 @@
             <a href="~/ItemAction/Workspace.Extent.LoadOrCreate">Load or create an Extent</a>
         </li>
         <li>
-            <a href="~/ItemAction/Workspace.Extent.Xmi.Create?metaclass=@HttpUtility.UrlEncode((_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig as MofObjectShadow)!.Uri)">Create a new Xmi extent</a>
+            <a href="~/ItemAction/Workspace.Extent.Xmi.Create?metaclass=@HttpUtility.UrlEncode((_ExtentLoaderConfigs.TheOne.__XmiStorageLoaderConfig as MofObjectShadow).Uri)">Create a new Xmi extent</a>
         </li>
     </ul>
 </div>

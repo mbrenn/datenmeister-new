@@ -2,79 +2,81 @@
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.Extent.Forms
+namespace DatenMeister.Extent.Forms;
+
+public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    public class WorkspaceFormPlugin: IDatenMeisterPlugin
-    {
-        private readonly IScopeStorage _scopeStorage;
-
-        /// <summary>
-        /// Defines the name of the action to create a new extent in the workspace
-        /// </summary>
-        public const string WorkspaceCreateXmiExtent = "Workspace.Extent.Xmi.Create";
-        /// <summary>
-        /// Defines the name of the action to create a new extent in the workspace
-        /// </summary>
-        public const string WorkspaceCreateXmiExtentNavigate = "Workspace.Extent.Xmi.Create.Navigate";
+    /// <summary>
+    /// Defines the name of the action to create a new extent in the workspace
+    /// </summary>
+    public const string WorkspaceCreateXmiExtent = "Workspace.Extent.Xmi.Create";
+    /// <summary>
+    /// Defines the name of the action to create a new extent in the workspace
+    /// </summary>
+    public const string WorkspaceCreateXmiExtentNavigate = "Workspace.Extent.Xmi.Create.Navigate";
         
-        /// <summary>
-        /// Defines the name of the action to create a new extent in the workspace
-        /// </summary>
-        public const string WorkspaceCreateExtentNavigate = "Workspace.Extent.LoadOrCreate.Navigate";
+    /// <summary>
+    /// Defines the name of the action to create a new extent in the workspace
+    /// </summary>
+    public const string WorkspaceCreateExtentNavigate = "Workspace.Extent.LoadOrCreate.Navigate";
 
 
-        public WorkspaceFormPlugin(IScopeStorage scopeStorage)
+    public Task Start(PluginLoadingPosition position)
+    {
+        // TODO: Reactivate the constraints
+        switch (position)
         {
-            _scopeStorage = scopeStorage;
-        }
-        public Task Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterLoadingOfExtents:
+            case PluginLoadingPosition.AfterLoadingOfExtents:
                     
-                    var formsPlugin = _scopeStorage.Get<FormsPluginState>();
-  
-                    ActionButtonToFormAdder.AddActionButton(
-                        formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateExtentNavigate, "Create or Load Extent")
-                        {
-                            FormType = _DatenMeister._Forms.___FormType.Row,
-                            MetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                            OnCallSuccess = (element, parameter) =>
-                            {
-                                // Sets the parameter that the right workspace is used
-                                var workspaceId = element?.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
-                                if (!string.IsNullOrEmpty(workspaceId))
-                                {
-                                    parameter.Parameter["workspaceId"] = workspaceId;
-                                }
-                            }
-                        });
+                var formsPlugin = scopeStorage.Get<FormsState>();
+
+                var actionParameter =
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateExtentNavigate, "Create or Load Extent")
+                    {
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                    };
+
+                actionParameter.OnCallSuccess = parameter =>
+                {
+                    // Sets the parameter that the right workspace is used
+                    var workspaceId =
+                        parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
+                    if (!string.IsNullOrEmpty(workspaceId))
+                    {
+                        actionParameter.Parameter["workspaceId"] = workspaceId;
+                    }
+                };
+                
+                ActionButtonToFormAdder.AddRowActionButton(
+                    formsPlugin, actionParameter);
+                
+                var otherActionParameter =
+                    new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
+                    {
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                    };
+
+                otherActionParameter.OnCallSuccess = parameter =>
+                {
+                    // Sets the parameter that the right workspace is used
+                    var workspaceId =
+                        parameter.Element?.getOrDefault<string>(_Management._Workspace.id);
+                    if (!string.IsNullOrEmpty(workspaceId))
+                    {
+                        otherActionParameter.Parameter["workspaceId"] = workspaceId;
+                    }
+                };
                     
-                    ActionButtonToFormAdder.AddActionButton(
-                        formsPlugin, new ActionButtonAdderParameter(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")
-                        {
-                            FormType = _DatenMeister._Forms.___FormType.Row,
-                            MetaClass = _DatenMeister.TheOne.Management.__Workspace,
-                            OnCallSuccess = (element, parameter) =>
-                            {
-                                // Sets the parameter that the right workspace is used
-                                var workspaceId = element?.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
-                                if (!string.IsNullOrEmpty(workspaceId))
-                                {
-                                    parameter.Parameter["workspaceId"] = workspaceId;
-                                }
-                            }
-                        });
+                ActionButtonToFormAdder.AddRowActionButton(
+                    formsPlugin, otherActionParameter);
 
-                    break;
-            }
-
-            return Task.CompletedTask;
+                break;
         }
+
+        return Task.CompletedTask;
     }
 }

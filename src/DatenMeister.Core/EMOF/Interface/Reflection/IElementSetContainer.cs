@@ -1,14 +1,13 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Reflection
+﻿namespace DatenMeister.Core.EMOF.Interface.Reflection;
+
+/// <summary>
+/// This interface is used for all methods which are capable to set the container manually
+/// </summary>
+public interface IElementSetContainer
 {
     /// <summary>
-    /// This interface is used for all methods which are capable to set the container manually
+    /// Sets the container of the given element
     /// </summary>
-    public interface IElementSetContainer
-    {
-        /// <summary>
-        /// Sets the container of the given element
-        /// </summary>
-        /// <param name="element">Container element to be set for the element</param>
-        void setContainer(IElement element);
-    }
+    /// <param name="element">Container element to be set for the element</param>
+    void setContainer(IElement element);
 }

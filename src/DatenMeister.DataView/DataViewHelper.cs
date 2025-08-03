@@ -4,39 +4,31 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.DataView
+namespace DatenMeister.DataView;
+
+public class DataViewHelper(IWorkspaceLogic workspaceLogic)
 {
-    public class DataViewHelper
+    public IElement CreateDataview(string name, string extentUri)
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
+        var viewExtent = workspaceLogic.GetUserFormsExtent();
+        var metaClass = _DataViews.TheOne.__DataView;
+        var createdElement = new MofFactory(viewExtent).create(metaClass);
 
-        public DataViewHelper(IWorkspaceLogic workspaceLogic)
-        {
-            _workspaceLogic = workspaceLogic;
-        }
+        createdElement.set(_DataViews._DataView.name, name);
+        createdElement.set(_DataViews._DataView.uri, extentUri);
 
-        public IElement CreateDataview(string name, string extentUri)
-        {
-            var viewExtent = _workspaceLogic.GetUserFormsExtent();
-            var metaClass = _DatenMeister.TheOne.DataViews.__DataView;
-            var createdElement = new MofFactory(viewExtent).create(metaClass);
+        viewExtent.elements().add(createdElement);
 
-            createdElement.set(_DatenMeister._DataViews._DataView.name, name);
-            createdElement.set(_DatenMeister._DataViews._DataView.uri, extentUri);
-
-            viewExtent.elements().add(createdElement);
-
-            return createdElement;
-        }
-
-        /// <summary>
-        /// Gets the extent for the user views which is usually used to define the views
-        /// </summary>
-        /// <returns>Extent containing the user views</returns>
-        public IUriExtent GetUserFormExtent() =>
-            _workspaceLogic.GetUserFormsExtent();
-
-        public Workspace GetViewWorkspace() =>
-            _workspaceLogic.GetViewsWorkspace();
+        return createdElement;
     }
+
+    /// <summary>
+    /// Gets the extent for the user views which is usually used to define the views
+    /// </summary>
+    /// <returns>Extent containing the user views</returns>
+    public IUriExtent GetUserFormExtent() =>
+        workspaceLogic.GetUserFormsExtent();
+
+    public Workspace GetViewWorkspace() =>
+        workspaceLogic.GetViewsWorkspace();
 }

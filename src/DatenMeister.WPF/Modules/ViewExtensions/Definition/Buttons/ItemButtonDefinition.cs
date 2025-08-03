@@ -1,25 +1,15 @@
-﻿#nullable enable
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-using System;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 
-namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
+public class ItemButtonDefinition(string name, Action<IObject> onPressed) : ViewExtension
 {
-    public class ItemButtonDefinition : ViewExtension
+    public string Name { get; } = name;
+
+    public Action<IObject> OnPressed { get; } = onPressed;
+
+    public override string ToString()
     {
-        public ItemButtonDefinition(string name, Action<IObject> onPressed)
-        {
-            Name = name;
-            OnPressed = onPressed;
-        }
-
-        public string Name { get; }
-
-        public Action<IObject> OnPressed { get; }
-
-        public override string ToString()
-        {
-            return $"ItemButtonDefinition: {Name}";
-        }
+        return $"ItemButtonDefinition: {Name}";
     }
 }

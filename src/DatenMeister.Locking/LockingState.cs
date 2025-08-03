@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace DatenMeister.Locking;
 
-namespace DatenMeister.Locking
+public class LockingState
 {
-    public class LockingState
-    {
-        public Task? LockingTask { get; set; }
+    public Task? LockingTask { get; set; }
         
-        internal HashSet<string> LockFilePaths { get; } = new();
+    internal HashSet<string> LockFilePaths { get; } = new();
 
-        internal Mutex GlobalMutex { get; } = new(false, "Global\\DatenMeister.LockingState");
+    internal Mutex GlobalMutex { get; } = new(false, "Global\\DatenMeister.LockingState");
         
-        /// <summary>
-        /// Defines the timespan for the locking
-        /// </summary>
-        public TimeSpan LockingTimeSpan { get; set; } = TimeSpan.FromSeconds(30);
-    }
+    /// <summary>
+    /// Defines the timespan for the locking
+    /// </summary>
+    public TimeSpan LockingTimeSpan { get; set; } = TimeSpan.FromSeconds(30);
 }

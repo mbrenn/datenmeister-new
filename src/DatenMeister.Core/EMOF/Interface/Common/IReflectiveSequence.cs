@@ -1,13 +1,14 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Common
+﻿// ReSharper disable InconsistentNaming
+
+namespace DatenMeister.Core.EMOF.Interface.Common;
+
+public interface IReflectiveSequence : IReflectiveCollection
 {
-    public interface IReflectiveSequence : IReflectiveCollection
-    {
-        void add(int index, object value);
+    void add(int index, object value);
 
-        object? get(int index);
+    object? get(int index);
 
-        void remove(int index);
+    void remove(int index);
 
-        object? set(int index, object value);
-    }
+    object? set(int index, object value);
 }

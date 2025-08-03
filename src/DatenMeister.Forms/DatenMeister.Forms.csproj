@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latestmajor</LangVersion>
         <Nullable>enable</Nullable>
-        <LangVersion>9</LangVersion>
         <PackageVersion>1.1.0</PackageVersion>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <Configurations>Debug;Release;WPF;ViewLogicAdditionalInfo</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'ViewLogicAdditionalInfo' ">
@@ -20,6 +21,7 @@
         <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
         <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
         <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+        <ProjectReference Include="..\DatenMeister.TemporaryExtent\DatenMeister.TemporaryExtent.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,27 +1,38 @@
-﻿using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
+using DatenMeister.Forms.Helper;
+using DatenMeister.Forms.TableForms;
+using FormCreationContext = DatenMeister.Forms.FormCreationContext;
 
-namespace DatenMeister.Extent.Forms
+namespace DatenMeister.Extent.Forms;
+
+/// <summary>
+///     Creates the buttons which allows the user to create new instances by evaluating the extent type to which
+///     the element is currently belonging to.
+///     Here, the property 'ExtentConfiguration.ExtentDefaultTypes' is being used to retrieve the values
+/// </summary>
+public class CreateInstanceButtonsForTableForms : ITableFormFactory
 {
-    /// <summary>
-    ///     Creates the buttons which allows the user to create new instances by evaluating the extent type to which
-    ///     the element is currently belonging to.
-    ///     Here, the property 'ExtentConfiguration.ExtentDefaultTypes' is being used to retrieve the values
-    /// </summary>
-    public class CreateInstanceButtonsForTableForms : IFormModificationPlugin
+    public void CreateTableForm(
+        TableFormFactoryParameter parameter,
+        FormCreationContext context,
+        FormCreationResultMultipleForms result)
     {
-        public bool ModifyForm(FormCreationContext context, IElement form)
+        var collection = parameter.Collection;
+        if (collection == null)
+            return;
+
+        foreach (var form in result.Forms)
         {
-            var extent = context.DetailElement?.GetExtentOf();
-            if (context.FormType == _DatenMeister._Forms.___FormType.Table &&
-                extent != null)
+            var extent = parameter.Extent;
+            if (extent != null)
             {
                 var added = false;
                 // Adds the default types as defined in the extent
@@ -30,20 +41,17 @@ namespace DatenMeister.Extent.Forms
                 {
                     foreach (var defaultType in defaultTypes.OfType<IElement>())
                     {
-                        FormMethods.AddToFormCreationProtocol(
-                            form,
+                        result.AddToFormCreationProtocol(
                             "[CreateInstanceButtonsForTableForms]: Add DefaultType per ExtentDefaultTypes property " +
                             NamedElementMethods.GetName(defaultType));
-                        
-                        FormMethods.AddDefaultTypeForNewElement(form, defaultType);
+
+                        AddDefaultTypeForMetaClassOfForm.AddDefaultTypeIfNotExists(result, form, defaultType);
                         added = true;
                     }
                 }
 
-                return added;
+                result.IsManaged = added;
             }
-
-            return false;
         }
     }
 }

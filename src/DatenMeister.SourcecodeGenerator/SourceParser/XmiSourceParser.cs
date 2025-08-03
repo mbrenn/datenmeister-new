@@ -1,104 +1,64 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.SourcecodeGenerator.SourceParser
+namespace DatenMeister.SourcecodeGenerator.SourceParser;
+
+/// <summary>
+/// Parses the raw elements directly imported from the xmi file
+/// </summary>
+public class XmiSourceParser : ISourceParser
 {
-    /// <summary>
-    /// Parses the raw elements directly imported from the xmi file
-    /// </summary>
-    public class XmiSourceParser : ISourceParser
+    private static bool IsOfType(IObject element, IElement metaClass, string packageName)
     {
-        public bool IsPackage(IObject element)
+        // Checks, if we are having an IElement
+        if (element is not IElement asElement
+            || asElement.metaclass == null)
         {
-            // Checks, if we are having an IElement
-            if (element is IElement asElement && asElement.metaclass?.equals(
-                    _UML.TheOne.Packages.__Package) == true)
-            {
-                return true;
-            }
-            
-            var attributeXmi = "{" + Namespaces.Xmi + "}type";
-
-            return element.isSet(attributeXmi) &&
-                   element.getOrDefault<string>(attributeXmi) == "uml:Package";
+            return false;
+        }
+        
+        if(asElement.metaclass.equals(metaClass))
+        {
+            return true;
         }
 
-        public bool IsClass(IObject element)
+        var uri = asElement.metaclass.GetUri();
+
+        if (uri == WorkspaceNames.UriExtentUml + "#" + packageName)
         {
-            // Checks, if we are having an IElement
-            if (element is IElement asElement && asElement.metaclass?.equals(
-                    _UML.TheOne.StructuredClassifiers.__Class) == true)
-            {
-                return true;
-            }
-            
-            var attributeXmi = "{" + Namespaces.Xmi + "}type";
-
-            return element.isSet(attributeXmi) &&
-                   element.getOrDefault<string>(attributeXmi) == "uml:Class";
+            return true;
         }
-
-        public bool IsEnum(IObject element)
+        
+        if (uri == WorkspaceNames.UriExtentMof + "#" + packageName)
         {
-            // Checks, if we are having an IElement
-            if (element is IElement asElement && asElement.metaclass?.equals(
-                    _UML.TheOne.SimpleClassifiers.__Enumeration) == true)
-            {
-                return true;
-            }
-            
-            var attributeXmi = "{" + Namespaces.Xmi + "}type";
-
-            return element.isSet(attributeXmi) &&
-                   element.getOrDefault<string>(attributeXmi) == "uml:Enumeration";
+            return true;
         }
-
-        public bool IsEnumLiteral(IObject element)
-        {
-            // Checks, if we are having an IElement
-            if (element is IElement asElement && asElement.metaclass?.equals(
-                    _UML.TheOne.SimpleClassifiers.__EnumerationLiteral) == true)
-            {
-                return true;
-            }
             
-            var attributeXmi = "{" + Namespaces.Xmi + "}type";
+        var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
-            return element.isSet(attributeXmi) &&
-                   element.getOrDefault<string>(attributeXmi) == "uml:EnumerationLiteral";
-        }
-
-        public bool IsProperty(IObject element)
-        {
-            // Checks, if we are having an IElement
-            if (element is IElement asElement && asElement.metaclass?.equals(
-                    _UML.TheOne.Classification.__Property) == true)
-            {
-                return true;
-            }
-            
-            var attributeXmi = "{" + Namespaces.Xmi + "}type";
-
-            return element.isSet(attributeXmi) &&
-                   element.getOrDefault<string>(attributeXmi) == "uml:Property";
-        }
-
-        public bool IsPrimitiveType(IObject element)
-        {
-            // Checks, if we are having an IElement
-            if (element is IElement asElement && asElement.metaclass?.equals(
-                    _UML.TheOne.SimpleClassifiers.__PrimitiveType) == true)
-            {
-                return true;
-            }
-            
-            var attributeXmi = "{" + Namespaces.Xmi + "}type";
-
-            return element.isSet(attributeXmi) &&
-                   element.getOrDefault<string>(attributeXmi) == "uml:PrimitiveType";
-        }
+        return element.isSet(attributeXmi) &&
+               element.getOrDefault<string>(attributeXmi) == "uml:" + packageName;
     }
+    
+    public bool IsPackage(IObject element) 
+        => IsOfType(element, _UML.TheOne.Packages.__Package, "Package")
+        || (element as IElement)?.metaclass?.GetUri() == "dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package";
+
+    public bool IsClass(IObject element)
+        => IsOfType(element, _UML.TheOne.StructuredClassifiers.__Class, "Class");
+
+    public bool IsEnum(IObject element)
+        => IsOfType(element, _UML.TheOne.SimpleClassifiers.__Enumeration, "Enumeration");
+
+    public bool IsEnumLiteral(IObject element)
+        => IsOfType(element, _UML.TheOne.SimpleClassifiers.__EnumerationLiteral, "EnumerationLiteral");
+
+    public bool IsProperty(IObject element)
+        => IsOfType(element, _UML.TheOne.Classification.__Property, "Property");
+
+    public bool IsPrimitiveType(IObject element)
+        => IsOfType(element, _UML.TheOne.SimpleClassifiers.__PrimitiveType, "PrimitiveType");
 }

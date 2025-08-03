@@ -1,210 +1,213 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
 
-namespace DatenMeister.Core.EMOF.Implementation
+namespace DatenMeister.Core.EMOF.Implementation;
+
+/// <summary>
+/// Implements the reflective sequence for
+/// </summary>
+public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
 {
     /// <summary>
-    /// Implements the reflective sequence for
+    /// Stores the extent which is abstracted by this class instance
     /// </summary>
-    public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
+    private readonly MofExtent _extent;
+
+    /// <inheritdoc />
+    public IExtent Extent => _extent;
+
+    /// <summary>
+    /// Initializes a new instance of the ExtentReflectiveSequence class
+    /// </summary>
+    /// <param name="extent">Extent to be covered by this reflective sequence</param>
+    public ExtentReflectiveSequence(MofExtent extent)
     {
-        /// <summary>
-        /// Stores the extent which is abstracted by this class instance
-        /// </summary>
-        private readonly MofExtent _extent;
+        _extent = extent;
+    }
 
-        /// <inheritdoc />
-        public IExtent Extent => _extent;
-
-        /// <summary>
-        /// Initializes a new instance of the ExtentReflectiveSequence class
-        /// </summary>
-        /// <param name="extent">Extent to be covered by this reflective sequence</param>
-        public ExtentReflectiveSequence(MofExtent extent)
+    /// <inheritdoc />
+    public IEnumerator<object> GetEnumerator()
+    {
+        foreach (var element in _extent.Provider.GetRootObjects())
         {
-            _extent = extent;
-        }
-
-        /// <inheritdoc />
-        public IEnumerator<object> GetEnumerator()
-        {
-            foreach (var element in _extent.Provider.GetRootObjects())
+            var resultElement = new MofElement(element, _extent)
             {
-                var resultElement = new MofElement(element, _extent)
-                {
-                    // Sets also the directly associated extent
-                    Extent = _extent
-                };
+                // Sets also the directly associated extent
+                Extent = _extent
+            };
 
-                yield return resultElement;
+            yield return resultElement;
+        }
+    }
+
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator()
+        => GetEnumerator();
+
+    /// <inheritdoc />
+    public bool add(object value)
+        => AddInternal(value, -1);
+
+    /// <inheritdoc />
+    public bool addAll(IReflectiveSequence value)
+    {
+        bool? result = null;
+
+        foreach (var element in value)
+        {
+            if (element == null) continue;
+
+            if (result == null)
+            {
+                result = add(element);
+            }
+            else
+            {
+                result |= add(element);
             }
         }
 
-        /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
-            => GetEnumerator();
+        return result == true;
+    }
 
-        /// <inheritdoc />
-        public bool add(object value)
-            => AddInternal(value, -1);
+    /// <inheritdoc />
+    public void clear()
+    {
+        _extent.Provider.DeleteAllElements();
+        _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+    }
 
-        /// <inheritdoc />
-        public bool addAll(IReflectiveSequence value)
+    /// <inheritdoc />
+    public bool remove(object? value)
+    {
+        if (value is MofObject valueAsObject)
         {
-            bool? result = null;
-
-            foreach (var element in value)
+            var id = valueAsObject.ProviderObject.Id;
+            if (id != null)
             {
-                if (element == null) continue;
+                var result = _extent.Provider.DeleteElement(id);
 
-                if (result == null)
+                // Remove the extent allocation
+                if (_extent == valueAsObject.Extent)
                 {
-                    result = add(element);
-                }
-                else
-                {
-                    result |= add(element);
-                }
-            }
-
-            return result == true;
-        }
-
-        /// <inheritdoc />
-        public void clear()
-        {
-            _extent.Provider.DeleteAllElements();
-            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
-        }
-
-        /// <inheritdoc />
-        public bool remove(object? value)
-        {
-            if (value is MofObject valueAsObject)
-            {
-                var id = valueAsObject.ProviderObject.Id;
-                if (id != null)
-                {
-                    var result = _extent.Provider.DeleteElement(id);
-                    UpdateContent();
-                    return result;
+                    valueAsObject.Extent = null;
                 }
 
-                return false;
+                UpdateContent();
+                return result;
             }
 
-            if (value is MofObjectShadow)
-            {
-                //_extent.Provider.DeleteElement(shadow);
-            }
-
-            throw new NotImplementedException("Only the deletion of MofObjects are supported: "
-                                              + (value?.GetType().ToString() ?? "null"));
+            return false;
         }
 
-        /// <inheritdoc />
-        public int size()
-            => _extent.Provider.GetRootObjects().Count();
-
-        /// <inheritdoc />
-        public void add(int index, object value)
+        if (value is MofObjectShadow)
         {
-            AddInternal(value, index);
+            //_extent.Provider.DeleteElement(shadow);
         }
 
-        /// <summary>
-        /// Adds the object internally
-        /// </summary>
-        /// <param name="value">Value to be added</param>
-        /// <param name="index">Index of the object to be added</param>
-        /// <returns>true, if object could be added</returns>
-        private bool AddInternal(object value, int index)
+        throw new NotImplementedException("Only the deletion of MofObjects are supported: "
+                                          + (value?.GetType().ToString() ?? "null"));
+    }
+
+    /// <inheritdoc />
+    public int size()
+        => _extent.Provider.GetRootObjects().Count();
+
+    /// <inheritdoc />
+    public void add(int index, object value)
+    {
+        AddInternal(value, index);
+    }
+
+    /// <summary>
+    /// Adds the object internally
+    /// </summary>
+    /// <param name="value">Value to be added</param>
+    /// <param name="index">Index of the object to be added</param>
+    /// <returns>true, if object could be added</returns>
+    private bool AddInternal(object value, int index)
+    {
+        if (value is MofObject valueAsObject)
         {
-            if (value is MofObject valueAsObject)
+            if (valueAsObject.Extent == _extent || valueAsObject.Extent == null)
             {
-                if (valueAsObject.Extent == _extent || valueAsObject.Extent == null)
-                {
-                    _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
-                    valueAsObject.Extent = _extent;
+                _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
+                valueAsObject.Extent = _extent;
 
-                    _extent?.ChangeEventManager?.SendChangeEvent(valueAsObject);
-                    UpdateContent();
-                    return true;
-                }
-
-                throw new NotImplementedException("Only objects from the extent are currently supported");
+                _extent?.ChangeEventManager?.SendChangeEvent(valueAsObject);
+                UpdateContent();
+                return true;
             }
 
-            if (DotNetHelper.IsOfPrimitiveType(value))
-            {
-                throw new InvalidOperationException(
-                    $"An instance of a primitive type may not be added to the extent root elements: {value}");
-            }
-
-            if (_extent.ConvertForSetting(value) is IProviderObject convertedElement)
-            {
-                _extent?.Provider.AddElement(convertedElement, index);
-            }
-
-            UpdateContent();
-
-            return true;
+            throw new NotImplementedException("Only objects from the extent are currently supported");
         }
 
-        /// <inheritdoc />
-        public object get(int index)
-            =>
-                new MofElement(
-                    _extent.Provider.GetRootObjects().ElementAt(index),
-                    _extent);
-
-        /// <inheritdoc />
-        public void remove(int index)
+        if (DotNetHelper.IsOfPrimitiveType(value))
         {
-            remove(
-                new MofObject(
-                    _extent.Provider.GetRootObjects().ElementAt(index),
-                    _extent));
-            UpdateContent();
+            throw new InvalidOperationException(
+                $"An instance of a primitive type may not be added to the extent root elements: {value}");
         }
 
-        /// <inheritdoc />
-        public object set(int index, object value)
+        if (_extent.ConvertForSetting(value) is IProviderObject convertedElement)
         {
-            var size = this.size();
-            if (index < 0 || index >= size)
-            {
-                throw new ArgumentException("Object could not be added due to wrong index: " + index);
-            }
+            _extent?.Provider.AddElement(convertedElement, index);
+        }
 
-            var result = get(index);
-            (value as MofObject)?.ProviderObject.SetContainer(null);
+        UpdateContent();
+
+        return true;
+    }
+
+    /// <inheritdoc />
+    public object get(int index)
+        =>
+            new MofElement(
+                _extent.Provider.GetRootObjects().ElementAt(index),
+                _extent);
+
+    /// <inheritdoc />
+    public void remove(int index)
+    {
+        remove(
+            new MofObject(
+                _extent.Provider.GetRootObjects().ElementAt(index),
+                _extent));
+        UpdateContent();
+    }
+
+    /// <inheritdoc />
+    public object set(int index, object value)
+    {
+        var size = this.size();
+        if (index < 0 || index >= size)
+        {
+            throw new ArgumentException("Object could not be added due to wrong index: " + index);
+        }
+
+        var result = get(index);
+        (value as MofObject)?.ProviderObject.SetContainer(null);
             
-            remove(index);
-            add(index, value);
+        remove(index);
+        add(index, value);
 
-            UpdateContent();
+        UpdateContent();
             
 
-            return result;
-        }
+        return result;
+    }
 
-        /// <summary>
-        /// Updates the content
-        /// </summary>
-        protected void UpdateContent()
-        {
-            _extent.ChangeEventManager?.SendChangeEvent(_extent);
-            _extent.SignalUpdateOfContent();
+    /// <summary>
+    /// Updates the content
+    /// </summary>
+    protected void UpdateContent()
+    {
+        _extent.ChangeEventManager?.SendChangeEvent(_extent);
+        _extent.SignalUpdateOfContent();
 
-            (_extent as MofUriExtent)?.ClearResolveCache();
-        }
+        (_extent as MofUriExtent)?.ClearResolveCache();
     }
 }

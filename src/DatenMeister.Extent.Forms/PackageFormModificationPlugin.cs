@@ -1,101 +1,101 @@
-﻿using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
-using DatenMeister.Forms.FormModifications;
+using DatenMeister.Forms.FormFactory;
+using DatenMeister.Forms.Helper;
 
-namespace DatenMeister.Extent.Forms
+namespace DatenMeister.Extent.Forms;
+
+/// <summary>
+///     Defines the default type modification plugin.
+/// It finds the 'packagedElement' of a package and adds all preferred type as being mentioned
+/// in the package instance itself
+/// </summary>
+public class PackageFormModificationPlugin : IObjectFormFactory
 {
-    /// <summary>
-    ///     Defines the default type modification plugin.
-    /// It finds the 'packagedElement' of a package and adds all preferred type as being mentioned
-    /// in the package instance itself
-    /// </summary>
-    public class PackageFormModificationPlugin : IFormModificationPlugin
+    private static void AddPreferredTypes(
+        FormCreationResult result,
+        IFactory factory,
+        IReflectiveCollection? preferredTypes,
+        IReflectiveCollection defaultTypes)
     {
-        public bool ModifyForm(FormCreationContext context, IElement form)
+        if (preferredTypes != null)
+            foreach (var preferredType in preferredTypes.OfType<IElement>())
+                AddPreferredType(result, factory, preferredType, defaultTypes);
+    }
+
+    private static void AddPreferredType(
+        FormCreationResult result,
+        IFactory factory,
+        IElement preferredType,
+        IReflectiveCollection defaultTypes)
+    {
+        if (preferredType.getMetaClass()?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
         {
-            if (context.MetaClass?.Equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true
-                && context.FormType == _DatenMeister._Forms.___FormType.Object
-                && context.ParentPropertyName == string.Empty
-                && context.DetailElement != null)
+            var defaultType = factory.create(_Forms.TheOne.__DefaultTypeForNewElement);
+            defaultType.set(_Forms._DefaultTypeForNewElement.name,
+                NamedElementMethods.GetName(preferredType));
+            defaultType.set(_Forms._DefaultTypeForNewElement.metaClass, preferredType);
+            defaultTypes.add(defaultType);
+
+            result.AddToFormCreationProtocol(
+                "[PackageFormModificationPlugin]: Add DefaultType by preferred Types" +
+                NamedElementMethods.GetName(defaultType));
+        }
+    }
+
+    public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResultOneForm result)
+    {
+        var element = parameter.Element;
+        if (element == null)
+            return;
+        
+        if (result.Form == null)
+        {
+            throw new InvalidOperationException("Form is null");
+        }
+
+        if ((element as IElement)?.metaclass?.Equals(_CommonTypes.TheOne.Default.__Package) == true)
+        {
+            var tabPackagedElement =
+                FormMethods.GetTableFormForPropertyName(
+                    result.Form,
+                    _CommonTypes._Default._Package.packagedElement);
+
+            if (tabPackagedElement != null)
             {
-                var tabPackagedElement =
-                    FormMethods.GetTableFormForPropertyName(form,
-                        _DatenMeister._CommonTypes._Default._Package.packagedElement);
+                var defaultTypes =
+                    tabPackagedElement.get<IReflectiveCollection>(_Forms._TableForm
+                        .defaultTypesForNewElements);
 
-                if (tabPackagedElement != null)
+                // Checks the preferred types
+                var preferredTypes =
+                    element.getOrDefault<IReflectiveCollection>(
+                        _CommonTypes._Default._Package.preferredType);
+
+                AddPreferredTypes(result, context.Global.Factory, preferredTypes, defaultTypes);
+
+                // Checks the preferred package. 
+                // If a preferred package is set, then all containing classes will be added
+                var preferredPackages =
+                    element.getOrDefault<IReflectiveCollection>(
+                        _CommonTypes._Default._Package.preferredPackage);
+
+                if (preferredPackages != null)
                 {
-                    var factory = new MofFactory(form);
-
-                    var defaultTypes =
-                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._TableForm
-                            .defaultTypesForNewElements);
-
-                    // Checks the preferred types
-                    var preferredTypes =
-                        context.DetailElement.getOrDefault<IReflectiveCollection>(
-                            _DatenMeister._CommonTypes._Default._Package.preferredType);
-
-                    AddPreferredTypes(form, factory, preferredTypes, defaultTypes);
-
-                    // Checks the preferred package. 
-                    // If a preferred package is set, then all containing classes will be added
-                    var preferredPackages =
-                        context.DetailElement.getOrDefault<IReflectiveCollection>(
-                            _DatenMeister._CommonTypes._Default._Package.preferredPackage);
-
-                    if (preferredPackages != null)
+                    foreach (var preferredPackage in preferredPackages.OfType<IElement>())
                     {
-                        foreach (var preferredPackage in preferredPackages.OfType<IElement>())
-                        {
-                            var preferredTypes2 = PackageMethods.GetPackagedObjects(preferredPackage);
-                            AddPreferredTypes(form, factory, preferredTypes2, defaultTypes);
-                        }
+                        var preferredTypes2 = PackageMethods.GetPackagedObjects(preferredPackage);
+                        AddPreferredTypes(result, context.Global.Factory, preferredTypes2, defaultTypes);
                     }
                 }
-
-                return true;
             }
 
-            return false;
-        }
-
-        private static void AddPreferredTypes(
-            IObject form,
-            MofFactory factory,
-            IReflectiveCollection? preferredTypes,
-            IReflectiveCollection defaultTypes)
-        {
-            if (preferredTypes != null)
-                foreach (var preferredType in preferredTypes.OfType<IElement>())
-                    AddPreferredType(form, factory, preferredType, defaultTypes);
-        }
-
-        private static void AddPreferredType(
-            IObject form,
-            IFactory factory,
-            IElement preferredType,
-            IReflectiveCollection defaultTypes)
-        {
-            if (preferredType.getMetaClass()?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
-            {
-                var defaultType = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
-                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
-                    NamedElementMethods.GetName(preferredType));
-                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, preferredType);
-                defaultTypes.add(defaultType);
-
-                FormMethods.AddToFormCreationProtocol(
-                    form,
-                    "[PackageFormModificationPlugin]: Add DefaultType by preferred Types" +
-                    NamedElementMethods.GetName(defaultType));
-            }
+            result.IsManaged = true;
         }
     }
 }

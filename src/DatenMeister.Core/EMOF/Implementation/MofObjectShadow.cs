@@ -1,56 +1,47 @@
-#nullable enable
-
-using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.EMOF.Implementation
+namespace DatenMeister.Core.EMOF.Implementation;
+
+/// <summary>
+/// Defines a MOF object which is created on the fly to reference
+/// to a specific object which could not be looked up. This supports usages
+/// of DatenMeister with typed instances but without having the full MOF database in memory
+/// </summary>
+public class MofObjectShadow(string uri) : IElement, IKnowsUri
 {
     /// <summary>
-    /// Defines a MOF object which is created on the fly to reference
-    /// to a specific object which could not be looked up. This supports usages
-    /// of DatenMeister with typed instances but without having the full MOF database in memory
+    /// Gets the uri, which describes the given element
     /// </summary>
-    public class MofObjectShadow : IElement, IKnowsUri
+    public string Uri { get; } = uri;
+
+    public bool equals(object? other)
+        => MofObject.AreEqual(this, other as IObject);
+
+    public object? get(string property) => null;
+
+    public void set(string property, object? value)
     {
-        /// <summary>
-        /// Gets the uri, which describes the given element
-        /// </summary>
-        public string Uri { get; }
+        throw new NotImplementedException("This is just a shadow object which cannot store data");
+    }
 
-        public MofObjectShadow(string uri)
-        {
-            Uri = uri;
-        }
+    public bool isSet(string property) => false;
 
-        public bool equals(object? other)
-            => MofObject.AreEqual(this, other as IObject);
+    public void unset(string property)
+    {
+        throw new NotImplementedException("This is just a shadow object which cannot store data");
+    }
 
-        public object? get(string property) => null;
+    public IElement? metaclass => getMetaClass();
 
-        public void set(string property, object? value)
-        {
-            throw new NotImplementedException("This is just a shadow object which cannot store data");
-        }
+    public IElement? getMetaClass() => null;
 
-        public bool isSet(string property) => false;
+    public IElement? container() => null;
 
-        public void unset(string property)
-        {
-            throw new NotImplementedException("This is just a shadow object which cannot store data");
-        }
+    public override string ToString()
+        => $"Shadow: {Uri}";
 
-        public IElement? metaclass => getMetaClass();
-
-        public IElement? getMetaClass() => null;
-
-        public IElement? container() => null;
-
-        public override string ToString()
-            => $"Shadow: {Uri}";
-
-        public override int GetHashCode()
-        {
-            return Uri.GetHashCode();
-        }
+    public override int GetHashCode()
+    {
+        return Uri.GetHashCode();
     }
 }

@@ -3,40 +3,32 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.Extent.Manager.ExtentStorage
+namespace DatenMeister.Extent.Manager.ExtentStorage;
+
+[PluginLoading]
+// ReSharper disable once UnusedType.Global
+public class EventManagerEventHandler(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
-    public class EventManagerEventHandler : IDatenMeisterPlugin
+    public Task Start(PluginLoadingPosition position)
     {
-        private readonly IScopeStorage _scopeStorage;
-
-        public EventManagerEventHandler(IScopeStorage scopeStorage)
+        switch (position)
         {
-            _scopeStorage = scopeStorage;
+            case PluginLoadingPosition.AfterLoadingOfExtents:
+                var workspaceData = scopeStorage.Get<WorkspaceData>();
+                workspaceData.WorkspaceRemoved += async (_, y) =>
+                {
+                    var logic = new WorkspaceLogic(scopeStorage);
+                    var manager = new ExtentManager(logic, scopeStorage);
+                    await manager.DetachAllExtents(info =>
+                        info.Configuration
+                            .getOrDefault<string>(
+                                _ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
+                        == y.Id);
+                };
+                break;
         }
 
-        public Task Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterLoadingOfExtents:
-                    var workspaceData = _scopeStorage.Get<WorkspaceData>();
-                    workspaceData.WorkspaceRemoved += async (x, y) =>
-                    {
-                        var logic = new WorkspaceLogic(_scopeStorage);
-                        var manager = new ExtentManager(logic, _scopeStorage);
-                        await manager.DetachAllExtents(info =>
-                            info.Configuration
-                                .getOrDefault<string>(
-                                    _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
-                            == y.Id);
-                    };
-                    break;
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

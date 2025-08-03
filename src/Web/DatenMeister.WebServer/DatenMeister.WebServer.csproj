@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <Nullable>enable</Nullable>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
     <Configurations>Debug;Release;WPF</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <TargetFrameworks>net9.0</TargetFrameworks>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
     <TypeScriptToolsVersion>4.7.4</TypeScriptToolsVersion>
@@ -30,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BurnSystems" Version="1.1.0" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.4.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -46,7 +49,7 @@
     <ProjectReference Include="..\..\DatenMeister.Html\DatenMeister.Html.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Reports.Forms\DatenMeister.Reports.Forms.csproj" />
-    <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
+    <ProjectReference Include="..\..\Web\DatenMeister.Web.Json\DatenMeister.Web.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.ExtentManagement\DatenMeister.Provider.ExtentManagement.csproj" />
@@ -60,13 +63,6 @@
   <!-- Copies the files from the icons foldes to the wwwroot/img folder -->
   <ItemGroup>
     <IconPngFiles Include="../../../assets/icons/output/*.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Remove="wwwroot\js\%2a%2a.ts" />
-    <TypeScriptCompile Remove="wwwroot\js\datenmeister\test\Test.Mof.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\js\datenmeister\test\Test.Mof.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Examples\plz.csv">
@@ -98,10 +94,4 @@
       <Compile Include="Commit.cs" />
     </ItemGroup>
   </Target>
-  
-    <ItemGroup>
-      <PackageReference Include="BurnSystems" Version="1.1.0" />
-    </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties tsconfig_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

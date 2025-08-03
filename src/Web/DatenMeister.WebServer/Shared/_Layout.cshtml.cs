@@ -1,20 +1,14 @@
 ﻿using DatenMeister.Core;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DatenMeister.WebServer.Shared
-{
-    public class _Layout : PageModel
-    {
-        private readonly IScopeStorage _scopeStorage;
+namespace DatenMeister.WebServer.Shared;
 
-        public _Layout(IScopeStorage scopeStorage)
-        {
-            _scopeStorage = scopeStorage;
-        }
-        
-        public void OnGet()
-        {
+public class _Layout(IScopeStorage scopeStorage) : PageModel
+{
+    private readonly IScopeStorage _scopeStorage = scopeStorage;
+
+    public void OnGet()
+    {
             
-        }
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace DatenMeister.WPF.Modules.TypeManager
+﻿namespace DatenMeister.WPF.Modules.TypeManager;
+
+enum SelectionType
 {
-    enum SelectionType
-    {
-        Package,
-        Class
-    }
+    Package,
+    Class
 }

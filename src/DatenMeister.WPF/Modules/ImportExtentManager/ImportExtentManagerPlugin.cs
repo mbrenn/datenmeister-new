@@ -4,19 +4,18 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.WPF.Modules.ImportExtentManager
-{
-    public class ImportExtentManagerPlugin : IDatenMeisterPlugin
-    {
-        public void Start(PluginLoadingPosition position)
-        {
-            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ImportExtentViewExtensions(this));
-        }
+namespace DatenMeister.WPF.Modules.ImportExtentManager;
 
-        public void PerformImport(IExtent sourceExtent, IReflectiveCollection items)
-        {
-            var copier = new ExtentCopier(new MofFactory(items));
-            copier.Copy(sourceExtent.elements(), items, CopyOptions.None);
-        }
+public class ImportExtentManagerPlugin : IDatenMeisterPlugin
+{
+    public void Start(PluginLoadingPosition position)
+    {
+        GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ImportExtentViewExtensions(this));
+    }
+
+    public void PerformImport(IExtent sourceExtent, IReflectiveCollection items)
+    {
+        var copier = new ExtentCopier(new MofFactory(items));
+        copier.Copy(sourceExtent.elements(), items, CopyOptions.None);
     }
 }

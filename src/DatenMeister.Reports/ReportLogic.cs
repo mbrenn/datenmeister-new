@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -16,221 +13,213 @@ using DatenMeister.DataView;
 using DatenMeister.Reports.Generic;
 using DatenMeister.TextTemplates;
 
-namespace DatenMeister.Reports
+namespace DatenMeister.Reports;
+
+public class ReportLogic(
+    IWorkspaceLogic workspaceLogic,
+    IScopeStorage scopeStorage,
+    GenericReportCreator reportCreator)
 {
-    public class ReportLogic
+    private static readonly ClassLogger Logger = new(typeof(ReportLogic));
+
+    /// <summary>
+    /// Stores the possible source of the report
+    /// </summary>
+    private Dictionary<string, IReflectiveCollection> _sources
+        = new();
+
+    public IWorkspaceLogic WorkspaceLogic { get; set; } = workspaceLogic;
+
+    public IScopeStorage ScopeStorage { get; set; } = scopeStorage;
+
+    public GenericReportCreator ReportCreator { get; } = reportCreator;
+
+    /// <summary>
+    /// Stores the possible source of the report
+    /// </summary>
+    public Dictionary<string, IReflectiveCollection> Sources
     {
-        private static readonly ClassLogger Logger = new(typeof(ReportLogic));
+        get => _sources;
+        set => _sources = value;
+    }
 
-        /// <summary>
-        /// Stores the possible source of the report
-        /// </summary>
-        private Dictionary<string, IReflectiveCollection> _sources
-            = new();
+    /// <summary>
+    /// Adds the source to the report
+    /// </summary>
+    /// <param name="id">Id of the source</param>
+    /// <param name="collection">Collection to be evaluated</param>
+    public void AddSource(string id, IReflectiveCollection collection)
+    {
+        _sources[id] = collection;
+    }
 
-        public IWorkspaceLogic WorkspaceLogic { get; set; }
+    public Dictionary<string, IReflectiveCollection> PushSources()
+    {
+        var old = _sources;
+        _sources = new Dictionary<string, IReflectiveCollection>(_sources);
 
-        public IScopeStorage ScopeStorage { get; set; }
+        return old;
+    }
 
-        public GenericReportCreator ReportCreator { get; }
+    public void PopSources(Dictionary<string, IReflectiveCollection> sources)
+    {
+        _sources = sources;
+    }
 
-        /// <summary>
-        /// Stores the possible source of the report
-        /// </summary>
-        public Dictionary<string, IReflectiveCollection> Sources
+    /// <summary>
+    /// Gets the dataview evaluation for the given context with associated sources
+    /// </summary>
+    /// <returns>The dataview evaluation</returns>
+    public DataViewEvaluation GetDataViewEvaluation()
+    {
+        // Gets the elements for the table
+        var dataviewEvaluation =
+            new DataViewEvaluation(WorkspaceLogic, ScopeStorage);
+        foreach (var source in Sources)
         {
-            get => _sources;
-            set => _sources = value;
+            dataviewEvaluation.AddDynamicSource(source.Key, source.Value);
         }
 
-        public ReportLogic(
-            IWorkspaceLogic workspaceLogic, 
-            IScopeStorage scopeStorage,
-            GenericReportCreator reportCreator)
-        {
-            ReportCreator = reportCreator;
-            WorkspaceLogic = workspaceLogic;
-            ScopeStorage = scopeStorage;
-        }
+        return dataviewEvaluation;
+    }
 
-        /// <summary>
-        /// Adds the source to the report
-        /// </summary>
-        /// <param name="id">Id of the source</param>
-        /// <param name="collection">Collection to be evaluated</param>
-        public void AddSource(string id, IReflectiveCollection collection)
+    /// <summary>
+    /// Reads the report instance and returns all report data sources with
+    /// name and collection of elements. 
+    /// </summary>
+    /// <param name="reportInstance">The Report Instance describing the sources</param>
+    /// <returns>Enumeration of report sources</returns>
+    public IEnumerable<ReportSource> EvaluateSources(IObject reportInstance)
+    {
+        var sources =
+            reportInstance.get<IReflectiveCollection>(_Reports._HtmlReportInstance.sources);
+        foreach (var source in sources.OfType<IObject>())
         {
-            _sources[id] = collection;
-        }
-
-        public Dictionary<string, IReflectiveCollection> PushSources()
-        {
-            var old = _sources;
-            _sources = new Dictionary<string, IReflectiveCollection>(_sources);
-
-            return old;
-        }
-
-        public void PopSources(Dictionary<string, IReflectiveCollection> sources)
-        {
-            _sources = sources;
-        }
-
-        /// <summary>
-        /// Gets the dataview evaluation for the given context with associated sources
-        /// </summary>
-        /// <returns>The dataview evaluation</returns>
-        public DataViewEvaluation GetDataViewEvaluation()
-        {
-            // Gets the elements for the table
-            var dataviewEvaluation =
-                new DataViewEvaluation(WorkspaceLogic, ScopeStorage);
-            foreach (var source in Sources)
+            var name = source.getOrDefault<string>(_Reports._ReportInstanceSource.name);
+            if (string.IsNullOrEmpty(name))
             {
-                dataviewEvaluation.AddDynamicSource(source.Key, source.Value);
+                throw new InvalidOperationException("name of ReportInstanceSource is not set");
             }
 
-            return dataviewEvaluation;
-        }
-
-        /// <summary>
-        /// Reads the report instance and returns all report data sources with
-        /// name and collection of elements. 
-        /// </summary>
-        /// <param name="reportInstance">The Report Instance describing the sources</param>
-        /// <returns>Enumeration of report sources</returns>
-        public IEnumerable<ReportSource> EvaluateSources(IObject reportInstance)
-        {
-            var sources =
-                reportInstance.get<IReflectiveCollection>(_DatenMeister._Reports._HtmlReportInstance.sources);
-            foreach (var source in sources.OfType<IObject>())
+            var workspaceId = source.getOrDefault<string>(_Reports._ReportInstanceSource.workspaceId);
+            if (string.IsNullOrEmpty(workspaceId))
             {
-                var name = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.name);
-                if (string.IsNullOrEmpty(name))
-                {
-                    throw new InvalidOperationException("name of ReportInstanceSource is not set");
-                }
-
-                var workspaceId = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.workspaceId);
-                if (string.IsNullOrEmpty(workspaceId))
-                {
-                    workspaceId = WorkspaceNames.WorkspaceData;
-                }
-
-                var sourceRef = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.path);
-
-                IReflectiveCollection? sourceItems = null;
-                var workspace = WorkspaceLogic.GetWorkspace(workspaceId) ?? WorkspaceLogic.GetDataWorkspace();
-
-                var foundSource = workspace.Resolve(sourceRef, ResolveType.Default);
-                sourceItems = foundSource switch
-                {
-                    IExtent extent => extent.elements(),
-                    IReflectiveCollection asReflectiveCollection => asReflectiveCollection,
-                    IObject asObject => new TemporaryReflectiveCollection(new[] {asObject}),
-                    _ => sourceItems
-                };
-
-                if (sourceItems == null)
-                {
-                    throw new InvalidOperationException($"Source with uri {sourceRef} was not found");
-                }
-
-                yield return new ReportSource(name, sourceItems);
-            }
-        }
-
-        /// <summary>
-        /// Gets the object view the data-evaluation
-        /// </summary>
-        /// <param name="reportNodeOrigin"></param>
-        /// <param name="element"></param>
-        /// <param name="viewNodePropertyName"></param>
-        /// <returns></returns>
-        public bool GetObjectViaDataEvaluation(
-            IElement reportNodeOrigin,
-            out IElement? element,
-            string viewNodePropertyName)
-        {
-            var viewNode = GetViewNode(reportNodeOrigin, viewNodePropertyName);
-
-            var dataViewEvaluation = GetDataViewEvaluation();
-            element = dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
-            if (element == null)
-            {
-                Logger.Info("No Element found");
-                return false;
+                workspaceId = WorkspaceNames.WorkspaceData;
             }
 
-            return true;
-        }
+            var sourceRef = source.getOrDefault<string>(_Reports._ReportInstanceSource.path);
 
-        /// <summary>
-        /// Gets the view node
-        /// </summary>
-        /// <param name="reportNodeOrigin">The element which contains view node</param>
-        /// <param name="viewNodePropertyName">The property name upon which the view node will be used</param>
-        /// <returns>Found viewnode</returns>
-        public static IElement GetViewNode(IElement reportNodeOrigin, string viewNodePropertyName)
-        {
-            var viewNode = reportNodeOrigin.getOrDefault<IElement>(viewNodePropertyName);
-            viewNode ??= InMemoryObject.CreateEmpty(
-                    _DatenMeister.TheOne.DataViews.__DynamicSourceNode)
-                .SetProperty(_DatenMeister._DataViews._DynamicSourceNode.nodeName, "item");
-            return viewNode;
-        }
+            IReflectiveCollection? sourceItems = null;
+            var workspace = WorkspaceLogic.GetWorkspace(workspaceId) ?? WorkspaceLogic.GetDataWorkspace();
 
-        public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin, string propertyName)
-        {
-            var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
-            if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties))
+            var foundSource = workspace.Resolve(sourceRef, ResolveType.Default);
+            sourceItems = foundSource switch
             {
-                GetObjectViaDataEvaluation(reportNodeOrigin, out var element, propertyName);
-                var evalProperties = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties);
+                IExtent extent => extent.elements(),
+                IReflectiveCollection asReflectiveCollection => asReflectiveCollection,
+                IObject asObject => new TemporaryReflectiveCollection(new[] {asObject}),
+                _ => sourceItems
+            };
 
-                var dict = new Dictionary<string, object> { ["v"] = reportNode };
-                if (element != null)
-                {
-                    dict["i"] = element;
-                }
-
-                TextTemplateEngine.Parse(
-                    "{{" + evalProperties + "}}",
-                    dict);
+            if (sourceItems == null)
+            {
+                throw new InvalidOperationException($"Source with uri {sourceRef} was not found");
             }
 
-            return reportNode;
+            yield return new ReportSource(name, sourceItems);
+        }
+    }
+
+    /// <summary>
+    /// Gets the object view the data-evaluation
+    /// </summary>
+    /// <param name="reportNodeOrigin"></param>
+    /// <param name="element"></param>
+    /// <param name="viewNodePropertyName"></param>
+    /// <returns></returns>
+    public bool GetObjectViaDataEvaluation(
+        IElement reportNodeOrigin,
+        out IElement? element,
+        string viewNodePropertyName)
+    {
+        var viewNode = GetViewNode(reportNodeOrigin, viewNodePropertyName);
+
+        var dataViewEvaluation = GetDataViewEvaluation();
+        element = dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
+        if (element == null)
+        {
+            Logger.Info("No Element found");
+            return false;
         }
 
-        /// <summary>
-        /// Generates a full html report by using the instance
-        /// </summary>
-        /// <param name="reportInstance">Report instance to be used</param>
-        public void GenerateReportByInstance(IElement reportInstance)
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the view node
+    /// </summary>
+    /// <param name="reportNodeOrigin">The element which contains view node</param>
+    /// <param name="viewNodePropertyName">The property name upon which the view node will be used</param>
+    /// <returns>Found viewnode</returns>
+    public static IElement GetViewNode(IElement reportNodeOrigin, string viewNodePropertyName)
+    {
+        var viewNode = reportNodeOrigin.getOrDefault<IElement>(viewNodePropertyName);
+        viewNode ??= InMemoryObject.CreateEmpty(
+                _DataViews.TheOne.__DynamicSourceNode)
+            .SetProperty(_DataViews._DynamicSourceNode.nodeName, "item");
+        return viewNode;
+    }
+
+    public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin, string propertyName)
+    {
+        var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
+        if (reportNode.isSet(_Reports._Elements._ReportParagraph.evalProperties))
         {
-            foreach (var scope in EvaluateSources(reportInstance))
+            GetObjectViaDataEvaluation(reportNodeOrigin, out var element, propertyName);
+            var evalProperties = reportNode.getOrDefault<string>(_Reports._Elements._ReportParagraph.evalProperties);
+
+            var dict = new Dictionary<string, object> { ["v"] = reportNode };
+            if (element != null)
             {
-                AddSource(scope.Name, scope.Collection);
+                dict["i"] = element;
             }
 
-            var definition = reportInstance.getOrDefault<IObject>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
-            if (definition == null)
-            {
-                throw new InvalidOperationException("There is no report definition set.");
-            }
-
-            GenerateReportByDefinition(reportInstance, definition);
+            TextTemplateEngine.Parse(
+                "{{" + evalProperties + "}}",
+                dict);
         }
 
-        public void GenerateReportByDefinition(IElement reportInstance, IObject reportDefinition)
+        return reportNode;
+    }
+
+    /// <summary>
+    /// Generates a full html report by using the instance
+    /// </summary>
+    /// <param name="reportInstance">Report instance to be used</param>
+    public void GenerateReportByInstance(IElement reportInstance)
+    {
+        foreach (var scope in EvaluateSources(reportInstance))
         {
-            ReportCreator.StartReport(this, reportInstance, reportDefinition);
-
-            var elements = reportDefinition.get<IReflectiveCollection>(
-                _DatenMeister._Reports._ReportDefinition.elements);
-            ReportCreator.EvaluateElements(this, elements);
-
-            ReportCreator.EndReport(this, reportDefinition);
+            AddSource(scope.Name, scope.Collection);
         }
+
+        var definition = reportInstance.getOrDefault<IObject>(_Reports._HtmlReportInstance.reportDefinition);
+        if (definition == null)
+        {
+            throw new InvalidOperationException("There is no report definition set.");
+        }
+
+        GenerateReportByDefinition(reportInstance, definition);
+    }
+
+    public void GenerateReportByDefinition(IElement reportInstance, IObject reportDefinition)
+    {
+        ReportCreator.StartReport(this, reportInstance, reportDefinition);
+
+        var elements = reportDefinition.get<IReflectiveCollection>(
+            _Reports._ReportDefinition.elements);
+        ReportCreator.EvaluateElements(this, elements);
+
+        ReportCreator.EndReport(this, reportDefinition);
     }
 }

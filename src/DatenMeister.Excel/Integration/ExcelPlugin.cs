@@ -3,42 +3,33 @@ using DatenMeister.Core.Models;
 using DatenMeister.Excel.ProviderLoader;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.Excel.Integration
+namespace DatenMeister.Excel.Integration;
+
+[PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
+public class ExcelPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    [PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
-    public class ExcelPlugin : IDatenMeisterPlugin
+    public Task Start(PluginLoadingPosition position)
     {
-        private readonly IScopeStorage _scopeStorage;
-
-        public ExcelPlugin(IScopeStorage scopeStorage)
+        switch (position)
         {
-            _scopeStorage = scopeStorage;
+            case PluginLoadingPosition.AfterBootstrapping:
+                var mapper = scopeStorage.Get<ProviderToProviderLoaderMapper>();
+                mapper.AddMapping(
+                    _ExtentLoaderConfigs.TheOne.__ExcelExtentLoaderConfig,
+                    _ => new ExcelFileProviderLoader());
+                mapper.AddMapping(
+                    _ExtentLoaderConfigs.TheOne.__ExcelReferenceLoaderConfig,
+                    _ => new ExcelReferenceLoader());
+                mapper.AddMapping(
+                    _ExtentLoaderConfigs.TheOne.__ExcelImportLoaderConfig,
+                    _ => new ExcelImportLoader());
+                mapper.AddMapping(
+                    _ExtentLoaderConfigs.TheOne.__ExcelHierarchicalLoaderConfig,
+                    _ => new ExcelHierarchicalLoader());
+                break;
         }
-        
-        public Task Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterBootstrapping:
-                    var mapper = _scopeStorage.Get<ProviderToProviderLoaderMapper>();
-                    mapper.AddMapping(
-                        _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelExtentLoaderConfig,
-                        manager => new ExcelFileProviderLoader());
-                    mapper.AddMapping(
-                        _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelReferenceLoaderConfig,
-                        manager => new ExcelReferenceLoader());
-                    mapper.AddMapping(
-                        _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig,
-                        manager => new ExcelImportLoader());
-                    mapper.AddMapping(
-                        _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalLoaderConfig,
-                        manager => new ExcelHierarchicalLoader());
-                    break;
-            }
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

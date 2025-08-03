@@ -3,12 +3,11 @@
 @model DatenMeister.WebServer.Pages.CreateItemModel
 @{
     Layout = "~/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Der DatenMeister - Create";
+    ViewData["Title"] = "Action - Der DatenMeister";
 }
 
-<h1>Action '@Model.ActionName'</h1>
+<h1>Action '<span id="actionname">@Model.ActionName</span>'</h1>
 <div class="dm-status-text-container"></div>
-
 
 <div class="dm-breadcrumb-page">
 </div>

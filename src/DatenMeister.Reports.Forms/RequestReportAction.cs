@@ -3,58 +3,41 @@ using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.HtmlEngine;
 using DatenMeister.Reports.Forms.Model;
 using DatenMeister.Reports.Html;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DatenMeister.Reports.Forms
+namespace DatenMeister.Reports.Forms;
+
+internal class RequestReportAction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IActionHandler
 {
-    internal class RequestReportAction : IActionHandler
+    public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
-        private readonly IWorkspaceLogic workspaceLogic;
-        private readonly IScopeStorage scopeStorage;
+        var workspace = action.getOrDefault<string>(_Root._RequestReportAction.workspace);
+        var itemUri = action.getOrDefault<string>(_Root._RequestReportAction.itemUri);
 
-        public RequestReportAction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        var textWriter = new StringWriter();
+        var reportLogic = new ReportLogic(workspaceLogic, scopeStorage, new HtmlReportCreator(textWriter)
         {
-            this.workspaceLogic = workspaceLogic;
-            this.scopeStorage = scopeStorage;
-        }
+            EmbedInExistingPage = true
+        });
 
-        public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
-        {
-            var workspace = action.getOrDefault<string>(_Root._RequestReportAction.workspace);
-            var itemUri = action.getOrDefault<string>(_Root._RequestReportAction.itemUri);
+        // Generates the report
+        var foundReportInstance = workspaceLogic.FindElement(workspace, itemUri)
+                                  ?? throw new InvalidOperationException($"Report was not found: {workspace} / {itemUri}");
 
-            var textWriter = new StringWriter();
-            var reportLogic = new ReportLogic(workspaceLogic, scopeStorage, new HtmlReportCreator(textWriter)
-            {
-                EmbedInExistingPage = true
-            });
+        reportLogic.GenerateReportByInstance(foundReportInstance);
 
-            // Generates the report
-            var foundReportInstance = workspaceLogic.FindElement(workspace, itemUri)
-                ?? throw new InvalidOperationException($"Report was not found: {workspace} / {itemUri}");
+        // Returns the found report
+        var result = InMemoryObject.CreateEmpty(_Root.TheOne.__RequestReportResult);
+        result.set(_Root._RequestReportResult.report, textWriter.ToString());
 
-            reportLogic.GenerateReportByInstance(foundReportInstance);
+        return await Task.FromResult(result);
+    }
 
-            // Returns the found report
-            var result = InMemoryObject.CreateEmpty(_Root.TheOne.__RequestReportResult);
-            result.set(_Root._RequestReportResult.report, textWriter.ToString());
-
-            return await Task.FromResult(result);
-        }
-
-        public bool IsResponsible(IElement node)
-        {
-            return node.getMetaClass()?.equals(_Root.TheOne.@__RequestReportAction) == true;
-        }
+    public bool IsResponsible(IElement node)
+    {
+        return node.getMetaClass()?.equals(_Root.TheOne.@__RequestReportAction) == true;
     }
 }

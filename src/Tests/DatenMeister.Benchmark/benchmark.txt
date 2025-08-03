@@ -19,6 +19,10 @@ Threadsafe
 |--------------------- |---------:|---------:|---------:|
 | BenchMarkGetProperty | 59.50 us | 1.004 us | 0.939 us |
 
+|               Method |     Mean |    Error |   StdDev |
+|--------------------- |---------:|---------:|---------:|
+| BenchMarkGetProperty | 16.44 us | 0.781 us | 0.043 us |
+
 
 
 -----------------
@@ -54,9 +58,9 @@ Now with xmiprovider cache
 
 02.08.2020: 
 - ALL
-|           Method |     Mean |   Error |   StdDev |
-|----------------- |---------:|--------:|---------:|
-| LoadDatenMeister | 186.8 ms | 8.18 ms | 24.13 ms |
+|           Method |     Mean |    Error |  StdDev |
+|----------------- |---------:|---------:|--------:|
+| LoadDatenMeister | 117.7 ms | 121.6 ms | 6.66 ms |
 
 |               Method |     Mean |    Error |   StdDev |   Median |
 |--------------------- |---------:|---------:|---------:|---------:|
@@ -67,6 +71,12 @@ Now with xmiprovider cache
 |        GetAllUmlDescendents |     71.95 ms |     1.432 ms |     3.204 ms |     71.82 ms |
 | GetFirst3SpecializedClasses |    422.23 ms |     8.338 ms |    18.301 ms |    426.09 ms |
 |    GetAllSpecializedClasses | 28,337.32 ms | 1,485.767 ms | 4,262.945 ms | 26,946.98 ms |
+
+|                      Method |         Mean |      Error |    StdDev |
+|---------------------------- |-------------:|-----------:|----------:|
+|        GetAllUmlDescendents |     20.09 ms |   1.183 ms |  0.065 ms |
+| GetFirst3SpecializedClasses |    142.13 ms |   6.079 ms |  0.333 ms |
+|    GetAllSpecializedClasses | 11,786.32 ms | 244.413 ms | 13.397 ms |
 
 // Aggressive Inlining
 |                      Method |     Mean |   Error |  StdDev |
@@ -81,3 +91,18 @@ Now with xmiprovider cache
 |           Method |     Mean |   Error |   StdDev |
 |----------------- |---------:|--------:|---------:|
 | LoadDatenMeister | 175.4 ms | 5.93 ms | 17.11 ms |
+
+
+UseIndexCache = None
+|             Method |      Mean |    Error |   StdDev |
+|------------------- |----------:|---------:|---------:|
+|           AddItems |  96.27 ms | 1.889 ms | 2.100 ms |
+| DeleteItemsForward | 473.00 ms | 9.297 ms | 8.241 ms |
+| DeleteItemsReverse | 304.74 ms | 5.902 ms | 5.521 ms |
+UseIndexCache = Instance
+
+|             Method |      Mean |    Error |   StdDev |
+|------------------- |----------:|---------:|---------:|
+|           AddItems | 112.77 ms | 1.940 ms | 1.720 ms |
+| DeleteItemsForward |  23.39 ms | 0.454 ms | 0.558 ms |
+| DeleteItemsReverse | 310.57 ms | 2.549 ms | 2.385 ms |

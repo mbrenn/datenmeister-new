@@ -7,17 +7,11 @@ using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Extent.Verifier.Verifiers;
 
-public class DuplicateIdVerifier : IWorkspaceVerifier
+public class DuplicateIdVerifier(IWorkspaceLogic workspaceLogic) : IWorkspaceVerifier
 {
-    private readonly IWorkspaceLogic _workspaceLogic;
-
-    public DuplicateIdVerifier(IWorkspaceLogic workspaceLogic)
-    {
-        _workspaceLogic = workspaceLogic;
-    }
     public async Task VerifyExtents(IWorkspaceVerifierLog log)
     {
-        foreach (Workspace workspace in _workspaceLogic.Workspaces)
+        foreach (Workspace workspace in workspaceLogic.Workspaces)
         {
             if (workspace.id is
                 WorkspaceNames.WorkspaceMof

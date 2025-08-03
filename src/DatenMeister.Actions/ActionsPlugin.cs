@@ -1,28 +1,21 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.Actions
+namespace DatenMeister.Actions;
+
+/// <inheritdoc />
+// ReSharper disable once ClassNeverInstantiated.Global
+public class ActionsPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    /// <inheritdoc />
-    // ReSharper disable once ClassNeverInstantiated.Global
-    public class ActionsPlugin : IDatenMeisterPlugin
+    /// <summary>
+    /// Gets the scope storage
+    /// </summary>
+    private readonly IScopeStorage _scopeStorage = scopeStorage;
+
+    public Task Start(PluginLoadingPosition position)
     {
-        /// <summary>
-        /// Gets the scope storage
-        /// </summary>
-        private readonly IScopeStorage _scopeStorage;
+        _scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
 
-        public ActionsPlugin(IScopeStorage scopeStorage)
-        {
-            _scopeStorage = scopeStorage;
-        }
-        
-        public Task Start(PluginLoadingPosition position)
-        {
-            _scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

@@ -1,24 +1,13 @@
-﻿#nullable enable
+﻿namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 
-using System;
-
-namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
+public class GenericButtonDefinition(string name, Action onPressed) : ViewExtension
 {
-    public class GenericButtonDefinition : ViewExtension
+    public string Name { get; } = name;
+
+    public Action OnPressed { get; } = onPressed;
+
+    public override string ToString()
     {
-        public GenericButtonDefinition(string name, Action onPressed)
-        {
-            Name = name;
-            OnPressed = onPressed;
-        }
-
-        public string Name { get; }
-
-        public Action OnPressed { get; }
-
-        public override string ToString()
-        {
-            return $"GenericButtonDefinition: {Name}";
-        }
+        return $"GenericButtonDefinition: {Name}";
     }
 }

@@ -19,12 +19,17 @@ export async function createActionFormForEmptyObject(
     
     const statusOverview = new StatusFieldControl();
     const module = FormActions.getModule(actionName);
+    
     if (module === undefined)
     {
         parent.text("Unknown action: " + actionName);
         return;
     }
-
+    
+    if(module.actionName !== undefined) {
+        $("#actionname").text(FormActions.getActionHeading(module));
+    }
+    
     configuration.submitName = "Perform Action";
     configuration.showCancelButton = false;
     configuration.allowAddingNewProperties = false;
@@ -76,7 +81,7 @@ export async function createActionFormForEmptyObject(
 
                     // Try to find the module and execute the client action
                     const clientAction = clientActions[n] as DmObject;
-                    FormActions.executeClientAction(clientAction, creator);
+                    await FormActions.executeClientAction(clientAction, creator);
                 }                
             }
 
@@ -120,11 +125,10 @@ export async function createActionFormForEmptyObject(
     }
 
     /* Now find the right form */
-    let form;
 
     // Asks the detail form actions, whether we have a form for the action itself
     statusOverview.setListStatus("Load Form", false);
-    form = await module.loadForm(metaClass);
+    let form = await module.loadForm(metaClass);
     if (form === undefined) {
         // Defines the form
         if (configuration.formUri !== undefined) {
@@ -157,8 +161,10 @@ export async function createActionFormForEmptyObject(
 
     // Asks the detail form actions, whether we have a form for the action itself
     statusOverview.setListStatus("Prepare Page", false);
-    await module.preparePage(creator.element, form);
+    await module.preparePage(creator.element, creator);
     statusOverview.setListStatus("Prepare Page", true);
 
     debugElementToDom(form, "#debug_formelement");
+    
+    return module;
 }

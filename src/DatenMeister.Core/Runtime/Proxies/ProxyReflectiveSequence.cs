@@ -1,67 +1,62 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using DatenMeister.Core.EMOF.Interface.Common;
 
-namespace DatenMeister.Core.Runtime.Proxies
+namespace DatenMeister.Core.Runtime.Proxies;
+
+public class ProxyReflectiveSequence(IReflectiveSequence sequence)
+    : ProxyReflectiveCollection(sequence), IReflectiveSequence
 {
-    public class ProxyReflectiveSequence : ProxyReflectiveCollection, IReflectiveSequence
+    /// <summary>
+    ///     Stores the sequence
+    /// </summary>
+    protected IReflectiveSequence Sequence => (IReflectiveSequence) Collection;
+
+    public virtual void add(int index, object value)
     {
-        /// <summary>
-        ///     Stores the sequence
-        /// </summary>
-        protected IReflectiveSequence Sequence => (IReflectiveSequence) Collection;
+        if (PrivatizeElementFunc == null)
+            throw new InvalidOperationException("PrivatizeElementFunc is not set");
 
-        public ProxyReflectiveSequence(IReflectiveSequence sequence) : base(sequence)
-        {
-        }
-
-        public virtual void add(int index, object value)
-        {
-            if (PrivatizeElementFunc == null)
-                throw new InvalidOperationException("PrivatizeElementFunc is not set");
-
-            var newValue = PrivatizeElementFunc(value);
-            if (newValue == null) return;
+        var newValue = PrivatizeElementFunc(value);
+        if (newValue == null) return;
             
-            Sequence.add(index, newValue);
-        }
+        Sequence.add(index, newValue);
+    }
 
-        public virtual object? get(int index)
-        {
-            if (PublicizeElementFunc == null)
-                throw new InvalidOperationException("PublicizeElementFunc is not set");
+    public virtual object? get(int index)
+    {
+        if (PublicizeElementFunc == null)
+            throw new InvalidOperationException("PublicizeElementFunc is not set");
             
-            return PublicizeElementFunc(Sequence.get(index));
-        }
+        return PublicizeElementFunc(Sequence.get(index));
+    }
 
-        public virtual void remove(int index)
+    public virtual void remove(int index)
+    {
+        Sequence.remove(index);
+    }
+
+    public virtual object? set(int index, object value)
+    {
+        if (PublicizeElementFunc == null)
+            throw new InvalidOperationException("PublicizeElementFunc is not set");
+        if (PrivatizeElementFunc == null)
+            throw new InvalidOperationException("PrivatizeElementFunc is not set");
+
+        var newValue = PrivatizeElementFunc(value);
+        if (newValue != null)
         {
-            Sequence.remove(index);
+            return PublicizeElementFunc(Sequence.set(index, newValue));
         }
 
-        public virtual object? set(int index, object value)
-        {
-            if (PublicizeElementFunc == null)
-                throw new InvalidOperationException("PublicizeElementFunc is not set");
-            if (PrivatizeElementFunc == null)
-                throw new InvalidOperationException("PrivatizeElementFunc is not set");
+        return null;
+    }
 
-            var newValue = PrivatizeElementFunc(value);
-            if (newValue != null)
-            {
-                return PublicizeElementFunc(Sequence.set(index, newValue));
-            }
+    IEnumerator IEnumerable.GetEnumerator() =>
+        GetEnumerator();
 
-            return null;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() =>
-            GetEnumerator();
-
-        public new ProxyReflectiveSequence ActivateObjectConversion()
-        {
-            base.ActivateObjectConversion();
-            return this;
-        }
+    public new ProxyReflectiveSequence ActivateObjectConversion()
+    {
+        base.ActivateObjectConversion();
+        return this;
     }
 }

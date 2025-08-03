@@ -2,37 +2,30 @@
 using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.AttachedExtent
+namespace DatenMeister.AttachedExtent;
+
+[PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
+public class AttachedExtentPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
-    public class AttachedExtentPlugin : IDatenMeisterPlugin
+    private readonly ExtentSettings _extentSettings = scopeStorage.Get<ExtentSettings>();
+
+    public Task Start(PluginLoadingPosition position)
     {
-        private readonly ExtentSettings _extentSettings;
-
-        public AttachedExtentPlugin(IScopeStorage scopeStorage)
+        if ((position & PluginLoadingPosition.AfterInitialization) != 0)
         {
-            _extentSettings = scopeStorage.Get<ExtentSettings>();
+            _extentSettings.propertyDefinitions.Add(
+                new ExtentPropertyDefinition
+                {
+                    name = AttachedExtentHandler.AttachedExtentProperty,
+                    title = "Attached Extent",
+                    metaClass = _AttachedExtent.TheOne.__AttachedExtentConfiguration
+                });
+        }
+        else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)
+        {
         }
 
-        public Task Start(PluginLoadingPosition position)
-        {
-            if ((position & PluginLoadingPosition.AfterInitialization) != 0)
-            {
-                _extentSettings.propertyDefinitions.Add(
-                    new ExtentPropertyDefinition
-                    {
-                        name = AttachedExtentHandler.AttachedExtentProperty,
-                        title = "Attached Extent",
-                        metaClass = _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration
-                    });
-            }
-            else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)
-            {
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

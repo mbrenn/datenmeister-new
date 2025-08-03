@@ -31,7 +31,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
     async createFormByObject(parent: JQuery<HTMLElement>, configuration: IFormConfiguration) {
         this.parentHtml = parent;
         this.configuration = configuration;
-        
+
         // Connect the events
         if (configuration.onCancel !== undefined) {
             this.onCancel = configuration.onCancel;
@@ -40,7 +40,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         if (configuration.onSubmit !== undefined) {
             this.onChange = configuration.onSubmit;
         }
-        
+
         // Sets pre-defined configuration
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
@@ -79,7 +79,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created...
             const isFieldReadOnly = field.get(_DatenMeister._Forms._FieldData.isReadOnly, Mof.ObjectType.Boolean);
-            
+
             // Creates the field to be shown 
             fieldElement = createField(
                 fieldMetaClassUri,
@@ -91,7 +91,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                     form: this
                 });
 
-            const singleColumn = 
+            const singleColumn =
                 fieldElement?.showNameField === undefined ? false : fieldElement.showNameField();
 
             // Creates the row
@@ -228,7 +228,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             $("<tr><th>ID</th><td class='dm-detail-info-id'><span class='dm-detail-info-id-value'>I</span>" +
                 "<button class='dm-detail-info-id-edit btn btn-secondary' type='button'>Edit</button></td></tr>"));
         tableInfo.append(
-            $("<tr><th>URL</th><td class='dm-detail-info-uri'>U</td></tr>"));
+            $("<tr><th>URL</th><td><span class='dm-detail-info-uri'>U</span></td></tr>"));
         tableInfo.append(
             $("<tr><th>Workspace</th><td><a class='dm-detail-info-workspace'>W</a></td></tr>"));
         tableInfo.append(
@@ -236,7 +236,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
         tableInfo.append(
             $("<tr><th>Metaclass</th><td><a class='dm-detail-info-metaclass'>m</a></td></tr>"));
 
-        $(".dm-detail-info-id-value", tableInfo).text((this.element.id)?? "none");
+        $(".dm-detail-info-id-value", tableInfo).text((this.element.id) ?? "none");
         let isEditing = false;
         let editField: JQuery<HTMLElement> = null;
         $(".dm-detail-info-id-edit", tableInfo).on('click', async () => {
@@ -245,8 +245,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
                 editField.val(this.element.id);
                 $(".dm-detail-info-id-value", tableInfo).empty().append(editField);
                 $(".dm-detail-info-id-edit", tableInfo).text('Change ID');
-            }
-            else {
+            } else {
                 const oldId = this.element.id;
                 const newId = editField.val().toString();
 
@@ -264,8 +263,7 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
                         // Since the id got changed, we navigate to the new id to avoid any mishap
                         Navigation.navigateToItem(this.element.workspace, this.element.extentUri, this.element.id);
-                    }
-                    catch (e: any) {
+                    } catch (e: any) {
                         if (e.toString().includes("IdIsAlreadySetException")) {
                             $(".dm-detail-info-id", tableInfo).append("<span class='text-warning'>The ID is already set within that extent.</span>");
                         } else {
@@ -276,10 +274,10 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
 
                 $(".dm-detail-info-id-value", tableInfo).text(this.element.id);
             }
-            
+
             isEditing = !isEditing;
         });
-        
+
         if (this.element.uri !== undefined && this.element.uri !== "") {
 
             $(".dm-detail-info-uri", tableInfo).text(this.element.uri);
@@ -293,23 +291,40 @@ export class RowForm implements InterfacesForms.IObjectFormElement {
             $(".dm-detail-info-uri", tableInfo).append(copy);
         }
 
-        $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace ?? "none");
-        if (this.element.workspace !== undefined) {
-            $(".dm-detail-info-workspace", tableInfo).attr('href', Navigation.getLinkForNavigateToWorkspace(this.element.workspace));
+        if (this.element.workspace === undefined) {
+            $(".dm-detail-info-workspace", tableInfo).text("none");
+            $(".dm-detail-info-workspace", tableInfo).addClass("nolink");
+        } else {
+            $(".dm-detail-info-workspace", tableInfo).text(this.element.workspace);
+            $(".dm-detail-info-workspace", tableInfo).attr(
+                'href',
+                Navigation.getLinkForNavigateToWorkspace(this.element.workspace));
         }
 
-        $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri ?? "none");
-        if (this.element.extentUri !== undefined) {
-            $(".dm-detail-info-extenturi", tableInfo).attr('href', Navigation.getLinkForNavigateToExtentProperties(this.element.workspace, this.element.extentUri));
+        if (this.element.workspace === undefined || this.element.extentUri === undefined) {
+            $(".dm-detail-info-extenturi", tableInfo).text("none");
+            $(".dm-detail-info-extenturi", tableInfo).addClass("nolink");
+        } else {
+            $(".dm-detail-info-extenturi", tableInfo).text(this.element.extentUri);
+            $(".dm-detail-info-extenturi", tableInfo).attr(
+                'href',
+                Navigation.getLinkForNavigateToExtentProperties(this.element.workspace, this.element.extentUri));
         }
 
-        $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName ?? "none");
-        if (this.element.metaClass !== undefined) {
+        if (this.element.metaClass?.workspace === undefined ||
+            this.element.metaClass.extentUri === undefined ||
+            this.element.metaClass.id === undefined) {
+            $(".dm-detail-info-metaclass", tableInfo).text("none");
+            $(".dm-detail-info-metaclass", tableInfo).addClass("nolink");
+        } else {
+            $(".dm-detail-info-metaclass", tableInfo).text(this.element.metaClass?.fullName);
+
             $(".dm-detail-info-metaclass", tableInfo).attr('href', Navigation.getLinkForNavigateToItem(
                 this.element.metaClass.workspace,
                 this.element.metaClass.extentUri,
                 this.element.metaClass.id));
         }
+
         parent.append(tableInfo);
     }
 

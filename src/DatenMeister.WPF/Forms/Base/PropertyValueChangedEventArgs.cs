@@ -1,29 +1,20 @@
-﻿using System;
+﻿namespace DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeister.WPF.Forms.Base
+public class PropertyValueChangedEventArgs(DetailFormControl formControl, string propertyName) : EventArgs
 {
-    public class PropertyValueChangedEventArgs : EventArgs
+    public DetailFormControl FormControl
     {
-        public DetailFormControl FormControl
-        {
-            get;
-            set;
-        }
-        
-        /// <summary>
-        /// Gets or sets the name of the property that has changed
-        /// </summary>
-        public string PropertyName;
+        get;
+        set;
+    } = formControl;
 
-        /// <summary>
-        /// Gets or sets the new value
-        /// </summary>
-        public object? NewValue { get; set; }
+    /// <summary>
+    /// Gets or sets the name of the property that has changed
+    /// </summary>
+    public string PropertyName = propertyName;
 
-        public PropertyValueChangedEventArgs(DetailFormControl formControl, string propertyName)
-        {
-            FormControl = formControl;
-            PropertyName = propertyName;
-        }
-    }
+    /// <summary>
+    /// Gets or sets the new value
+    /// </summary>
+    public object? NewValue { get; set; }
 }

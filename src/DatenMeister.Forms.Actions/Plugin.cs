@@ -1,24 +1,17 @@
 ﻿using DatenMeister.Actions;
-using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
 using DatenMeister.Plugins;
 
-namespace DatenMeister.Forms.Actions
+namespace DatenMeister.Forms.Actions;
+
+internal class Plugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    internal class Plugin : IDatenMeisterPlugin
+    public IScopeStorage ScopeStorage { get; } = scopeStorage;
+
+    public Task Start(PluginLoadingPosition position)
     {
-        public Plugin(IScopeStorage scopeStorage)
-        {
-            ScopeStorage = scopeStorage;
-        }
+        ScopeStorage.Get<ActionLogicState>().AddActionHandler(new NavigateToFieldsForTestActionHandler());
 
-        public IScopeStorage ScopeStorage { get; }
-
-        public Task Start(PluginLoadingPosition position)
-        {
-            ScopeStorage.Get<ActionLogicState>().AddActionHandler(new NavigateToFieldsForTestActionHandler());
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

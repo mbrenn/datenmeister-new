@@ -1,9 +1,9 @@
 ﻿
 import * as Form from "../forms/ObjectForm.js"
 import {loadDefaultModules} from "../actions/DefaultLoader.js"
-import {ElementBreadcrumb} from "../controls/ElementBreadcrumb.js";
+import * as UmlHelper from "./../UmlHelper.js"
 
-export function init(workspace: string, itemUri: string) {
+export async function init(workspace: string, itemUri: string) {
     loadDefaultModules();
 
     const objectForm = new Form.ObjectFormCreatorForItem({
@@ -13,9 +13,14 @@ export function init(workspace: string, itemUri: string) {
         storeCurrentFormBtn: $("#dm-store-current-form-btn"),
         statusContainer: $(".dm-status-text-container")
     });
-    
-    const _ = objectForm.createForm(
+
+    const _ = await objectForm.createForm(
         workspace,
         itemUri);
 
+    const name = await UmlHelper.NamedElement.getName(
+        objectForm.element);
+    if (name !== undefined) {
+        window.document.title = "Item - '" + name + "' - Der DatenMeister";
+    }
 }

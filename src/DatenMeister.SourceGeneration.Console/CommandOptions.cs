@@ -1,16 +1,30 @@
-﻿using CommandLine;
+﻿using BurnSystems.CommandLine.ByAttributes;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace DatenMeister.SourceGeneration.Console;
 
 public class CommandOptions
 {
-    [Value(0, MetaName = "Path to Xmi")]
-    public string PathXml { get; set; }
+    [UnnamedArgument(
+        Index = 0,
+        HelpText = "Path to Xmi File",
+        IsRequired = true)]
+    public string PathXml { get; set; } = string.Empty;
 
+    [UnnamedArgument(
+        Index = 1,
+        HelpText = "Path to which the value shall be targeted",
+        IsRequired = true)]
+    public string PathTarget { get; set; } = string.Empty;
 
-    [Value(1, MetaName = "Path to which the value shall be targeted")]
-    public string PathTarget { get; set; }
+    [UnnamedArgument(
+        Index = 2,
+        HelpText = "Namespace of the target class",
+        IsRequired = true)]
+    public string CodeNamespace { get; set; } = string.Empty;
 
-    [Value(2, MetaName = "Namespace of the target class")]
-    public string Namespace { get; set; }
+    [UnnamedArgument(
+        Index = 3,
+        HelpText = "Overriding Namespace of the xmi")]
+    public string XmiNamespace { get; set; } = string.Empty;
 }

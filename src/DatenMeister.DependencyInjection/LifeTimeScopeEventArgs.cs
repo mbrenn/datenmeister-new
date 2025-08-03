@@ -1,15 +1,8 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 
-namespace DatenMeister.DependencyInjection
+namespace DatenMeister.DependencyInjection;
+
+public class LifeTimeScopeEventArgs(ILifetimeScope scope) : EventArgs
 {
-    public class LifeTimeScopeEventArgs : EventArgs
-    {
-        public LifeTimeScopeEventArgs(ILifetimeScope scope)
-        {
-            Scope = scope;
-        }
-
-        public ILifetimeScope Scope { get; set; }
-    }
+    public ILifetimeScope Scope { get; set; } = scope;
 }

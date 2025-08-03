@@ -1,106 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider;
 using DatenMeister.Excel.Helper;
 using NPOI.SS.UserModel;
 
-namespace DatenMeister.Excel.EMOF
+namespace DatenMeister.Excel.EMOF;
+
+public class RowItem(SheetItem sheetItem, int row) : IProviderObject
 {
-    public class RowItem : IProviderObject
+    public IProvider Provider => SheetItem.Provider;
+
+    private SheetItem SheetItem { get; } = sheetItem;
+
+    /// <inheritdoc />
+    public string? MetaclassUri { get; set; }
+
+    public int Row { get; } = row;
+
+    /// <inheritdoc />
+    public bool IsPropertySet(string property)
     {
-        public IProvider Provider => SheetItem.Provider;
+        return SheetItem.Columns.ContainsKey(property);
+    }
 
-        public SheetItem SheetItem { get; }
-
-        /// <inheritdoc />
-        public string MetaclassUri { get; set; }
-
-        public int Row { get; }
-
-        public RowItem(SheetItem sheetItem, int row)
+    /// <inheritdoc />
+    public object? GetProperty(string property, ObjectType objectType)
+    {
+        if (SheetItem.Columns.TryGetValue(property, out var column))
         {
-            SheetItem = sheetItem;
-            Row = row;
+            return SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.GetStringContent();
         }
 
-        /// <inheritdoc />
-        public bool IsPropertySet(string property)
+        return null;
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<string> GetProperties() => SheetItem.Columns.Keys.ToList();
+
+    /// <inheritdoc />
+    public bool DeleteProperty(string property)
+    {
+        if (SheetItem.Columns.TryGetValue(property, out var column))
         {
-            return SheetItem.Columns.ContainsKey(property);
+            SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(string.Empty);
+            SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellType(CellType.Blank);
         }
 
-        /// <inheritdoc />
-        public object? GetProperty(string property, ObjectType objectType)
+        return true;
+    }
+
+    /// <inheritdoc />
+    public void SetProperty(string property, object? value)
+    {
+        if (SheetItem.Columns.TryGetValue(property, out var column))
         {
-            int column;
-            if (SheetItem.Columns.TryGetValue(property, out column))
-            {
-                return SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.GetStringContent();
-            }
-
-            return null;
+            SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(value?.ToString() ?? "");
         }
+    }
 
-        /// <inheritdoc />
-        public IEnumerable<string> GetProperties()
-        {
-            return SheetItem.Columns.Keys.ToList();
-        }
+    /// <inheritdoc />
+    public bool AddToProperty(string property, object value, int index) => throw new NotImplementedException();
 
-        /// <inheritdoc />
-        public bool DeleteProperty(string property)
-        {
-            int column;
-            if (SheetItem.Columns.TryGetValue(property, out column))
-            {
-                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(string.Empty);
-                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellType(CellType.Blank);
-            }
+    /// <inheritdoc />
+    public bool RemoveFromProperty(string property, object value) => throw new NotImplementedException();
 
-            return true;
-        }
+    public bool HasContainer() => true;
 
-        /// <inheritdoc />
-        public void SetProperty(string property, object? value)
-        {
-            int column;
-            if (SheetItem.Columns.TryGetValue(property, out column))
-            {
-                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(value.ToString());
-            }
-        }
+    public IProviderObject GetContainer() => SheetItem;
 
-        /// <inheritdoc />
-        public bool AddToProperty(string property, object value, int index)
-        {
-            throw new NotImplementedException();
-        }
+    public void SetContainer(IProviderObject? value) => throw new NotImplementedException();
 
-        /// <inheritdoc />
-        public bool RemoveFromProperty(string property, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool HasContainer()
-        {
-            return SheetItem != null;
-        }
-
-        public IProviderObject GetContainer()
-        {
-            return SheetItem;
-        }
-
-        public void SetContainer(IProviderObject value)
-        {
-            throw new NotImplementedException();
-        }
-
-/*
+    /*
 
         public bool @equals(object other)
         {
@@ -166,36 +136,35 @@ namespace DatenMeister.Excel.EMOF
             return SheetItem.Columns.Keys.ToList();
         }*/
 
-        /// <summary>
-        /// Gets the id of a row
-        /// </summary>
-        public string Id
+    /// <summary>
+    /// Gets the id of a row
+    /// </summary>
+    public string? Id
+    {
+        get
         {
-            get
-            {
-                var idColumnName = SheetItem.ExcelProvider.Settings.getOrDefault<string>(
-                    _DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.idColumnName);
+            var idColumnName = SheetItem.ExcelProvider.Settings.getOrDefault<string>(
+                _ExtentLoaderConfigs._ExcelLoaderConfig.idColumnName);
                 
-                var firstPart = SheetItem.Sheet.SheetName;
-                string secondPart;
-                if (string.IsNullOrEmpty(idColumnName))
-                {
-                    secondPart = Row.ToString();
-                }
-                else
-                {
-                    secondPart = idColumnName;
-                }
-
-                return $"{firstPart}.{secondPart}";
+            var firstPart = SheetItem.Sheet.SheetName;
+            string secondPart;
+            if (string.IsNullOrEmpty(idColumnName))
+            {
+                secondPart = Row.ToString();
             }
-            set => throw new NotImplementedException();
-        }
+            else
+            {
+                secondPart = idColumnName;
+            }
 
-        /// <inheritdoc />
-        public void EmptyListForProperty(string property)
-        {
-            throw new NotImplementedException();
+            return $"{firstPart}.{secondPart}";
         }
+        set => throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public void EmptyListForProperty(string property)
+    {
+        throw new NotImplementedException();
     }
 }

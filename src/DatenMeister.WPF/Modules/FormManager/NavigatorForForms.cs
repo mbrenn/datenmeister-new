@@ -1,9 +1,8 @@
-﻿namespace DatenMeister.WPF.Modules.FormManager
+﻿namespace DatenMeister.WPF.Modules.FormManager;
+
+/// <summary>
+/// Defines the navigation support for the views
+/// </summary>
+public static class NavigatorForForms
 {
-    /// <summary>
-    /// Defines the navigation support for the views
-    /// </summary>
-    public static class NavigatorForForms
-    {
-    }
 }

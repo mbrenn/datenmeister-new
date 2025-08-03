@@ -1,7 +1,6 @@
-﻿namespace DatenMeister.WebServer.Models
+﻿namespace DatenMeister.WebServer.Models;
+
+public class ExtentModel
 {
-    public class ExtentModel
-    {
-        public string uri { get; set; } = string.Empty;
-    }
+    public string uri { get; set; } = string.Empty;
 }

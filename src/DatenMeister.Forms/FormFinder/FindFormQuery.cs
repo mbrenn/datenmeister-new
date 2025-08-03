@@ -1,92 +1,86 @@
-﻿#nullable enable
-
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
 
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Forms.FormFinder
+namespace DatenMeister.Forms.FormFinder;
+
+public record FindFormQuery
 {
-    public record FindFormQuery
+    public _Forms.___FormType FormType { get; init; }
+
+    public IElement? MetaClass { get; init; }
+
+    public IEnumerable<string> ExtentTypes { get; init; } = new List<string>();
+
+    public IObject? ParentMetaClass { get; init; }
+
+    public string ParentProperty { get; init; } = string.Empty;
+
+    public string WorkspaceId { get; init; } = string.Empty;
+
+    public string ExtentUri { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the information whether the Form Finding shall be with active debugger break,
+    /// in case the FormAssociation also requests a debugging. 
+    /// </summary>
+    public bool DebugActive { get; init; }
+
+    /// <summary>
+    /// Gets or sets the id of the view mode being used for the query
+    /// </summary>
+    public string ViewModeId { get; init; } = string.Empty;
+
+    public FindFormQuery()
     {
-        public _DatenMeister._Forms.___FormType FormType { get; set; }
-
-        public IElement? metaClass { get; set; }
-
-        public IEnumerable<string> extentTypes { get; set; } = new List<string>();
-
-        public IObject? parentMetaClass { get; set; }
-
-        public string parentProperty { get; set; } = string.Empty;
-
-        public string workspaceId { get; set; } = string.Empty;
-
-        public string extentUri { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the information whether the Form Finding shall be with active debugger break,
-        /// in case the FormAssociation also requests a debugging. 
-        /// </summary>
-        public bool debugActive { get; set; }
-
-        /// <summary>
-        /// Gets or sets the id of the view mode being used for the query
-        /// </summary>
-        public string viewModeId { get; set; } = string.Empty;
-
-        public FindFormQuery()
-        {
 #if DEBUG
-            debugActive = true;
+        DebugActive = true;
 #else
-            debugActive = false;
+        DebugActive = false;
 #endif
-        }
+    }
 
-        public override string ToString()
+    public override string ToString()
+    {
+        var result = $"{FormType}";
+        if (MetaClass != null)
         {
-            var result = $"{FormType}";
-            if (metaClass != null)
-            {
-                result += $", metaClass: {NamedElementMethods.GetName(metaClass)}";
-            }
-
-            if (extentTypes.Any())
-            {
-                result += $", extentTypes: {string.Join(", ", extentTypes)}";
-            }
-            
-            if (parentMetaClass != null)
-            {
-                result += $", parentMetaClass: {NamedElementMethods.GetName(parentMetaClass)}";
-            }
-
-            if (!string.IsNullOrEmpty(parentProperty))
-            {
-                result += $", parentProperty: {parentProperty}";
-            }
-
-            if (!string.IsNullOrEmpty(viewModeId))
-            {
-                result += $", viewModeId: {viewModeId}";
-            }
-
-
-            if (!string.IsNullOrEmpty(workspaceId))
-            {
-                result += $", workspaceId: {workspaceId}";
-            }
-
-
-            if (!string.IsNullOrEmpty(extentUri))
-            {
-                result += $", extentUri: {extentUri}";
-            }
-
-            return result;
+            result += $", metaClass: {NamedElementMethods.GetName(MetaClass)}";
         }
+
+        if (ExtentTypes.Any())
+        {
+            result += $", extentTypes: {string.Join(", ", ExtentTypes)}";
+        }
+            
+        if (ParentMetaClass != null)
+        {
+            result += $", parentMetaClass: {NamedElementMethods.GetName(ParentMetaClass)}";
+        }
+
+        if (!string.IsNullOrEmpty(ParentProperty))
+        {
+            result += $", parentProperty: {ParentProperty}";
+        }
+
+        if (!string.IsNullOrEmpty(ViewModeId))
+        {
+            result += $", viewModeId: {ViewModeId}";
+        }
+
+
+        if (!string.IsNullOrEmpty(WorkspaceId))
+        {
+            result += $", workspaceId: {WorkspaceId}";
+        }
+
+        if (!string.IsNullOrEmpty(ExtentUri))
+        {
+            result += $", extentUri: {ExtentUri}";
+        }
+
+        return result;
     }
 }

@@ -1,14 +1,12 @@
-﻿using System;
-using DatenMeister.Json;
+﻿using DatenMeister.Web.Json;
 
-namespace DatenMeister.WebServer.Models
+namespace DatenMeister.WebServer.Models;
+
+[Obsolete]
+public class IItem
 {
-    [Obsolete]
-    public class IItem
-    {
-        public string item { get; set; } = string.Empty;
+    public string item { get; set; } = string.Empty;
         
-        public ItemWithNameAndId? metaClass { get; set; }
+    public ItemWithNameAndId? metaClass { get; set; }
 
-    }
 }

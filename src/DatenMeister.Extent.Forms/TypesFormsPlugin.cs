@@ -3,42 +3,63 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
-using System.Threading.Tasks;
 
-namespace DatenMeister.Extent.Forms
+namespace DatenMeister.Extent.Forms;
+
+// ReSharper disable once UnusedType.Global
+/// <summary>
+/// Defines the default form extensions which are used to navigate through the
+/// items, extents and also offers the simple creation and deletion of items. 
+/// </summary>
+public class TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
-    // ReSharper disable once UnusedType.Global
-    /// <summary>
-    /// Defines the default form extensions which are used to navigate through the
-    /// items, extents and also offers the simple creation and deletion of items. 
-    /// </summary>
-    public class TypesFormsPlugin : IDatenMeisterPlugin
+    private readonly ExtentSettings _extentSettings = scopeStorage.Get<ExtentSettings>();
+
+    public Task Start(PluginLoadingPosition position)
     {
-        private readonly ExtentSettings _extentSettings;
-        private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IScopeStorage _scopeStorage;
-
-        public TypesFormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        switch (position)
         {
-            _workspaceLogic = workspaceLogic;
-            _scopeStorage = scopeStorage;
-            _extentSettings = scopeStorage.Get<ExtentSettings>();
+            case PluginLoadingPosition.AfterLoadingOfExtents:
+
+                var formsPlugin = scopeStorage.Get<FormsState>();
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.CollectionFormFactories.Add(
+                            new ExtentTypeFormModification.IncludeJumpToExtentButtonModification()),
+                        Name = "IncludeJumpToExtentButtonModification"
+                    });
+
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.RowFormFactories.Add(
+                            new ExtentTypeFormModification.IncludeExtentTypesForTableFormExtent(_extentSettings)),
+                        Name = "IncludeExtentTypesForTableFormExtent"
+                    });
+
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.CollectionFormFactories.Add(
+                            new ExtentTypeFormModification.IncludeCreationButtonsInTableFormForClassifierOfExtentType(
+                                workspaceLogic, _extentSettings)),
+                        Name = "IncludeCreationButtonsInTableFormForClassifierOfExtentType"
+                    });
+
+                formsPlugin.FormModificationPlugins.Add(
+                    new FormModificationPlugin
+                    {
+                        CreateContext = context => context.Global.ObjectFormFactories.Add(
+                            new ExtentTypeFormModification.
+                                IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
+                                    workspaceLogic, _extentSettings)),
+                        Name = "IncludeCreationButtonsInTableFormForClassifierOfExtentType"
+                    });
+
+                break;
         }
 
-        public Task Start(PluginLoadingPosition position)
-        {
-            switch (position)
-            {
-                case PluginLoadingPosition.AfterLoadingOfExtents:
-
-                    var formsPlugin = _scopeStorage.Get<FormsPluginState>();
-                    formsPlugin.FormModificationPlugins.Add(
-                        new ExtentTypeFormModification(_workspaceLogic, _extentSettings));
-
-                    break;
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

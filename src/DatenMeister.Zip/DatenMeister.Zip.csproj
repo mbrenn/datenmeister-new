@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latestmajor</LangVersion>
+        <ImplicitUsings>true</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
+      <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Xmi\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Xmi\DatenMeister.Zip.Types.xmi" />
+      <EmbeddedResource Include="Xmi\DatenMeister.Zip.Types.xmi" />
+    </ItemGroup>
+
+</Project>

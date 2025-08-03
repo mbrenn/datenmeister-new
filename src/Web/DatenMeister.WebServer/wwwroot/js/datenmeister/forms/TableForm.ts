@@ -12,6 +12,7 @@ import _FieldData = _DatenMeister._Forms._FieldData;
 import * as burnJsPopup from "../../burnJsPopup.js"
 import { truncateText } from "../../burnsystems/StringManipulation.js";
 import * as ClientItem from "../client/Items.js"
+import {getLinkForNavigateToCreateNewItemInExtent} from "../Navigator.js";
 
 interface PropertyMenuItem
 {
@@ -93,7 +94,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     async refreshForm(): Promise<void> {
 
         if (this.configuration.refreshForm !== undefined) {
-            this.configuration.refreshForm();
+            await this.configuration.refreshForm();
         } else {
             await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
         }
@@ -110,7 +111,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
     async refreshTable(): Promise<void> {
         this.updateFilterQueryText();
-        this.createTable();
+        await this.createTable();
     }
 
     /**
@@ -195,12 +196,14 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             this.formElement.get('title')
             ?? this.formElement.get('name'));
 
-        headLineLink.attr(
-            'href',
-            Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass }));
+        const link = Navigator.getLinkForNavigateToExtentItems(
+            this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass });
+        if(link !== null ) {
+            headLineLink.attr(
+                'href', link);
+        }
 
         this.tableCache.cacheFreeTextField.empty();
-
         this.tableCache.cacheButtons.empty();
 
         // Evaluate the new buttons to create objects
@@ -240,7 +243,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         const tthis = this;
 
         if (this.formElement.get(_DatenMeister._Forms._TableForm.inhibitNewUnclassifiedItems, Mof.ObjectType.Boolean) !== true) {
-
             // Creates default unclassified button
             createUnclassifiedButton();
         }
@@ -252,7 +254,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 const inner = defaultTypesForNewElements[n] as Mof.DmObject;
                 createButton(
                     inner.get('name', Mof.ObjectType.String),
-                    inner.get('metaClass', Mof.ObjectType.Object).uri);
+                    inner.get('metaClass', Mof.ObjectType.Object));
             }
         }
         
@@ -261,65 +263,58 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             const btn = $("<btn class='btn btn-secondary'></btn>");
             const typeSelection = $("<div></div>");
             btn.text("Create new Item");
-                btn.on('click', async () => {
-                    typeSelection.empty();
-                    const selectItem = new SIC.SelectItemControl();
-                    const settings = new SIC.Settings();
-                    settings.showWorkspaceInBreadcrumb = true;
-                    settings.showExtentInBreadcrumb = true;
-                    settings.setButtonText = 'Create new Item';
-                    selectItem.itemSelected.addListener(
-                        selectedItem => {
-                            if (selectedItem === undefined) {
-                                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                                    tthis.workspace,
-                                    tthis.itemUrl,
-                                    undefined,
-                                    undefined,
-                                    property);
-                            } else {
+            btn.on('click', async () => {
+                typeSelection.empty();
+                const selectItem = new SIC.SelectItemControl();
+                const settings = new SIC.Settings();
+                settings.showWorkspaceInBreadcrumb = true;
+                settings.showExtentInBreadcrumb = true;
+                settings.setButtonText = 'Create new Item';
+                selectItem.itemSelected.addListener(
+                    selectedItem => {
+                        if (tthis.itemUrl === undefined) {
+                            document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(
+                                tthis.workspace,
+                                tthis.extentUri,
+                                selectedItem === undefined ? undefined : selectedItem.uri,
+                                selectedItem === undefined ? undefined : selectedItem.workspace);
+                        } else {
+                            document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
+                                tthis.workspace,
+                                tthis.itemUrl,
+                                selectedItem === undefined ? undefined : selectedItem.uri,
+                                selectedItem === undefined ? undefined : selectedItem.workspace,
+                                property);
+                        }
+                    });
 
-                                document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
-                                    tthis.workspace,
-                                    tthis.itemUrl,
-                                    selectedItem.uri,
-                                    selectedItem.workspace,
-                                    property);
-                            }
-                        });
+                await selectItem.setWorkspaceById('Types');
+                await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
 
-                    await selectItem.setWorkspaceById('Types');
-                    await selectItem.setExtentByUri("Types", "dm:///_internal/types/internal");
-
-                    selectItem.init(typeSelection, settings);
-                });
+                selectItem.init(typeSelection, settings);
+            });
 
 
             tthis.tableCache.cacheButtons.append(btn);
             tthis.tableCache.cacheButtons.append(typeSelection);
         }
 
-        function createButton (name: string, metaClassUri?: string) {
-
+        function createButton (name: string, metaClass?: Mof.DmObject) {
+            const metaClassUri = metaClass?.uri;
+            const metaClassWorkspace = metaClass?.workspace;
+            
             const btn = $("<btn class='btn btn-secondary'></btn>");
             btn.text("Create " + name);
             btn.on('click', () => {
-
-                // Checks, if the metaClassUri is set
-                let metaClassUriParameter = '';
-                if (metaClassUri !== undefined && metaClassUri !== null) {
-                    metaClassUriParameter = "&metaclass=" + encodeURIComponent(metaClassUri);
-                }
-
+                                
                 // Creates the location to the buttons
                 if (property === undefined || property === null) {
                     document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(tthis.workspace) +
-                        "&extent=" +
-                        encodeURIComponent(tthis.extentUri) +
-                        metaClassUriParameter;
+                        Navigator.getLinkForNavigateToCreateNewItemInExtent(
+                            tthis.workspace,
+                            tthis.extentUri,
+                            metaClassUri, 
+                            metaClassWorkspace);
                 } else {
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(
                         tthis.workspace,

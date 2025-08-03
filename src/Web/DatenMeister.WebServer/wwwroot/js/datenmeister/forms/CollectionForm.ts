@@ -30,6 +30,17 @@ export class CollectionFormHtmlElements
     This element should be a 'div' or another container item which is capable to hold a table
      */
     itemContainer: JQuery;
+    
+    /*
+     * Stores the message container
+     */
+    messageContainer?: JQuery;
+    
+    /*
+     * Stores the table
+     */
+    tableContainer?: JQuery;
+    
     /*
     Here, the options for selection will be added. 
     This element shall be 'div' which is capable to store the select element
@@ -121,7 +132,15 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         if (this.htmlElements.itemContainer === undefined || this.htmlElements.itemContainer === null) {
             throw "htmlElements.itemContainer is not set";
         }
-
+        
+        const collectionFormHtml = $("<div>" +
+            "<div class='dm_collection_form_message'></div>" +
+            "<div class='dm_collection_form_table'></div>" +
+            "</div>")
+        this.htmlElements.itemContainer.append(collectionFormHtml);
+        this.htmlElements.messageContainer = this.htmlElements.itemContainer.find(".dm_collection_form_message");
+        this.htmlElements.tableContainer = this.htmlElements.itemContainer.find(".dm_collection_form_table");
+        
         // Sets the refresh callback
         if (configuration.refreshForm === undefined) {
             configuration.refreshForm = async () => {
@@ -130,8 +149,8 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         }
 
         // Empties the overview
-        this.htmlElements.itemContainer.empty();
-        this.htmlElements.itemContainer.append("Load Collection Form")
+        this.htmlElements.tableContainer.empty();
+        this.htmlElements.tableContainer.append("Load Collection Form")
 
         // Set Read-Only as default
         if (configuration.isReadOnly === undefined) {
@@ -142,9 +161,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         this.statusTextControl.setListStatus("Loading Default Viewmode", false);
         if (configuration.viewMode === undefined || configuration.viewMode === null) {
 
-            /*
-            Gets the default viewmode for the extent to be shown            
-             */
+            // Gets the default viewmode for the extent to be shown
             configuration.viewMode = await VML.getDefaultViewModeIfNotSet(workspace, extentUri);
         }
         this.statusTextControl.setListStatus("Loading Default Viewmode", true);
@@ -166,7 +183,6 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
         
         // Wait for both
         tthis.formElement = form;
-
         debugElementToDom(form, "#debug_formelement");
 
         this.statusTextControl.setListStatus("Create Form", false);
@@ -292,7 +308,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
     async createFormByCollection(
         configuration: IFormConfiguration) {
 
-        const itemContainer = this.htmlElements.itemContainer;
+        const tableContainer = this.htmlElements.tableContainer;
 
         if (configuration.isReadOnly === undefined) {
             configuration.isReadOnly = true;
@@ -331,26 +347,27 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                 }
             }
 
-            itemContainer.append(actionFields);
+            tableContainer.append(actionFields);
 
             this.statusTextControl.setListStatus("Actionfields", true);
         }
 
         this.statusTextControl.setListStatus("Create Tabs", false);
         
-        // Create the tabs
+        // Create the table
+
+        tableContainer.empty();
+        
         const tabs = 
             this.formElement.get(_DatenMeister._Forms._CollectionForm.tab, Mof.ObjectType.Array) as Array<Mof.DmObject>;
-
-        var firstTab = true;
         for (let n in tabs) {
 
-            const tab = tabs[n] as Mof.DmObject;
-            
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
-
+            
+            const tab = tabs[n] as Mof.DmObject;
+            
             // The function which is capable to create the content of the tab
             // This function must be indirectly created since it works in the enumeration value
             const tabCreationFunction = async function(tab:DmObject, form: JQuery) {
@@ -375,7 +392,11 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                 if (formFactory !== undefined) {
                     const tableForm = formFactory();
                     tableForm.pageNavigation = this;
-                    tableForm.callbackLoadItems = callbackLoadItems;
+                    tableForm.callbackLoadItems = async (x) => {
+                        const result = await callbackLoadItems(x);
+                        tthis.htmlElements.messageContainer.text(result.message);
+                        return result.rootElementsAsObjects;
+                    }
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;
                     tableForm.extentUri = tthis.extentUri;
@@ -398,12 +419,7 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
             // Do it asynchronously. 
             await tabCreationFunction(tab, tabFormContainer);
 
-            if (firstTab) {
-                // Empties the loading information on first tab
-                itemContainer.empty();
-                firstTab = false;
-            }
-            itemContainer.append(tabFormContainer);
+            tableContainer.append(tabFormContainer);
             this.statusTextControl.setListStatus("Create tab " + n, true);
         }
         
@@ -420,23 +436,8 @@ export function createMetaClassSelectionButtonForNewItem(buttonDiv: JQuery, cont
         settings.showExtentInBreadcrumb = true;
         selectItem.itemSelected.addListener(
             selectedItem => {
-                if (selectedItem === undefined) {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri);
-                } else {
-                    document.location.href =
-                        Settings.baseUrl +
-                        "ItemAction/Extent.CreateItem?workspace=" +
-                        encodeURIComponent(workspace) +
-                        "&extent=" +
-                        encodeURIComponent(extentUri) +
-                        "&metaclass=" +
-                        encodeURIComponent(selectedItem.uri);
-                }
+
+                Navigator.navigateToCreateNewItemInExtent(workspace, extentUri, selectedItem?.uri, selectedItem?.workspace);
             });
         
         await selectItem.setWorkspaceById('Types');

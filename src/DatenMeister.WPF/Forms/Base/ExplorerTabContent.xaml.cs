@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace DatenMeister.WPF.Forms.Base
+namespace DatenMeister.WPF.Forms.Base;
+
+/// <summary>
+/// Interaction logic for ExplorerTabContent.xaml
+/// </summary>
+public partial class ExplorerTabContent : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ExplorerTabContent.xaml
-    /// </summary>
-    public partial class ExplorerTabContent : UserControl
+    public ExplorerTabContent()
     {
-        public ExplorerTabContent()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -2,7 +2,6 @@ import * as InterfacesForms from "./Interfaces.js";
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
-import * as Settings from "../Settings.js";
 import * as Navigator from '../Navigator.js';
 import { _DatenMeister } from "../models/DatenMeister.class.js";
 var _TableForm = _DatenMeister._Forms._TableForm;
@@ -42,7 +41,7 @@ export class TableForm {
      */
     async refreshForm() {
         if (this.configuration.refreshForm !== undefined) {
-            this.configuration.refreshForm();
+            await this.configuration.refreshForm();
         }
         else {
             await this.createFormByCollection(this.tableCache.parentHtml, this.configuration, true);
@@ -58,7 +57,7 @@ export class TableForm {
     }
     async refreshTable() {
         this.updateFilterQueryText();
-        this.createTable();
+        await this.createTable();
     }
     /**
      * This method just calls the createFormByCollection since a TableForm can
@@ -121,7 +120,10 @@ export class TableForm {
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(this.formElement.get('title')
             ?? this.formElement.get('name'));
-        headLineLink.attr('href', Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass }));
+        const link = Navigator.getLinkForNavigateToExtentItems(this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass });
+        if (link !== null) {
+            headLineLink.attr('href', link);
+        }
         this.tableCache.cacheFreeTextField.empty();
         this.tableCache.cacheButtons.empty();
         // Evaluate the new buttons to create objects
@@ -162,7 +164,7 @@ export class TableForm {
         if (defaultTypesForNewElements !== undefined) {
             for (let n in defaultTypesForNewElements) {
                 const inner = defaultTypesForNewElements[n];
-                createButton(inner.get('name', Mof.ObjectType.String), inner.get('metaClass', Mof.ObjectType.Object).uri);
+                createButton(inner.get('name', Mof.ObjectType.String), inner.get('metaClass', Mof.ObjectType.Object));
             }
         }
         function createUnclassifiedButton() {
@@ -178,11 +180,11 @@ export class TableForm {
                 settings.showExtentInBreadcrumb = true;
                 settings.setButtonText = 'Create new Item';
                 selectItem.itemSelected.addListener(selectedItem => {
-                    if (selectedItem === undefined) {
-                        document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, undefined, undefined, property);
+                    if (tthis.itemUrl === undefined) {
+                        document.location.href = Navigator.getLinkForNavigateToCreateNewItemInExtent(tthis.workspace, tthis.extentUri, selectedItem === undefined ? undefined : selectedItem.uri, selectedItem === undefined ? undefined : selectedItem.workspace);
                     }
                     else {
-                        document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, selectedItem.uri, selectedItem.workspace, property);
+                        document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, selectedItem === undefined ? undefined : selectedItem.uri, selectedItem === undefined ? undefined : selectedItem.workspace, property);
                     }
                 });
                 await selectItem.setWorkspaceById('Types');
@@ -192,24 +194,16 @@ export class TableForm {
             tthis.tableCache.cacheButtons.append(btn);
             tthis.tableCache.cacheButtons.append(typeSelection);
         }
-        function createButton(name, metaClassUri) {
+        function createButton(name, metaClass) {
+            const metaClassUri = metaClass?.uri;
+            const metaClassWorkspace = metaClass?.workspace;
             const btn = $("<btn class='btn btn-secondary'></btn>");
             btn.text("Create " + name);
             btn.on('click', () => {
-                // Checks, if the metaClassUri is set
-                let metaClassUriParameter = '';
-                if (metaClassUri !== undefined && metaClassUri !== null) {
-                    metaClassUriParameter = "&metaclass=" + encodeURIComponent(metaClassUri);
-                }
                 // Creates the location to the buttons
                 if (property === undefined || property === null) {
                     document.location.href =
-                        Settings.baseUrl +
-                            "ItemAction/Extent.CreateItem?workspace=" +
-                            encodeURIComponent(tthis.workspace) +
-                            "&extent=" +
-                            encodeURIComponent(tthis.extentUri) +
-                            metaClassUriParameter;
+                        Navigator.getLinkForNavigateToCreateNewItemInExtent(tthis.workspace, tthis.extentUri, metaClassUri, metaClassWorkspace);
                 }
                 else {
                     document.location.href = Navigator.getLinkForNavigateToCreateItemInProperty(tthis.workspace, tthis.itemUrl, metaClassUri, "Types", property);

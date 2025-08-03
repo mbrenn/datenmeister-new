@@ -26,10 +26,16 @@ export class ElementBreadcrumb {
             const element = $("<a></a>");
             element.text(item.name);
             if (item.ententType === EntentType.Extent) {
-                element.attr('href', Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri));
+                const link = Navigator.getLinkForNavigateToExtentItems(item.workspace, item.extentUri);
+                if (link !== null) {
+                    element.attr('href', link);
+                }
             }
             else {
-                element.attr('href', Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri));
+                const link = Navigator.getLinkForNavigateToItemByUrl(item.workspace, item.uri);
+                if (link !== null) {
+                    element.attr('href', link);
+                }
             }
             this._container.append(element);
             // Adds the properties, in case the ententType is of type Extent
@@ -47,8 +53,8 @@ export function createBreadcrumbForExtent(container, workspace, extentUri) {
     let breadcrumb = new ElementBreadcrumb(container);
     const _ = breadcrumb.createForExtent(workspace, extentUri);
 }
-export function createBreadcrumbForItem(container, workspace, itemUri) {
+export async function createBreadcrumbForItem(container, workspace, itemUri) {
     let breadcrumb = new ElementBreadcrumb(container);
-    const _ = breadcrumb.createForItem(workspace, itemUri);
+    const _ = await breadcrumb.createForItem(workspace, itemUri);
 }
 //# sourceMappingURL=ElementBreadcrumb.js.map

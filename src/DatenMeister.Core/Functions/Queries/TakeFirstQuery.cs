@@ -1,37 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Common;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Core.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries;
+
+public class TakeFirstQuery(IReflectiveCollection collection, int number) : ProxyReflectiveCollection(collection)
 {
-    public class TakeFirstQuery : ProxyReflectiveCollection
+    public override IEnumerator<object?> GetEnumerator()
     {
-        private readonly int _number;
-
-        public TakeFirstQuery(IReflectiveCollection collection, int number) : base(collection)
+        var n = 0;
+        foreach (var item in Collection)
         {
-            _number = number;
-        }
-
-        public override IEnumerator<object?> GetEnumerator()
-        {
-            var n = 0;
-            foreach (var item in Collection)
+            if (n >= number)
             {
-                if (n >= _number)
-                {
-                    break;
-                }
-
-                yield return item;
-                n++;
+                break;
             }
-        }
 
-        public override int size()
-        {
-            return Math.Min(Collection.size(), _number);
+            yield return item;
+            n++;
         }
+    }
+
+    public override int size()
+    {
+        return Math.Min(Collection.size(), number);
     }
 }

@@ -74,6 +74,12 @@ export interface ICollectionFormElement extends IPageForm {
     createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean): Promise<void>
 }
 
+export interface IQueryFilterResult
+{
+    message?: string
+    elements: Array<Mof.DmObject>;
+}
+
 /**
  * Defines the filter parameters when a query shall be executed upon a set of items to allow
  * filtering, sorting or other data transformations directly on server-side

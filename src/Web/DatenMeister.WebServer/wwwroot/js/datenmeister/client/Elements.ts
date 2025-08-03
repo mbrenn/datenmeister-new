@@ -105,9 +105,9 @@ export interface IQueryObjectResult {
 }
 
 export async function queryObject(query: Mof.DmObject, timeout?: number): Promise<IQueryObjectResult> {
-    var json = Mof.createJsonFromObject(query);
+    const json = Mof.createJsonFromObject(query);
 
-    var parameters: IQueryObjectParameter = {
+    const parameters: IQueryObjectParameter = {
         query: json
     };
 
@@ -115,7 +115,7 @@ export async function queryObject(query: Mof.DmObject, timeout?: number): Promis
         parameters.timeout = timeout;
     }
 
-    var result = await ApiConnection.post<any>(
+    const result = await ApiConnection.post<any>(
         Settings.baseUrl +
         "api/elements/query_object",
         parameters);

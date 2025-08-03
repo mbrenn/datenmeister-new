@@ -1,6 +1,6 @@
 import * as FormFactory from "./FormFactory.js";
 import * as VML from "./ViewModeLogic.js";
-import * as ClientItems from "../client/Items.js";
+import * as ClientElements from "../client/Elements.js";
 import * as ClientForms from "../client/Forms.js";
 import { debugElementToDom } from "../DomHelper.js";
 import { ViewModeSelectionControl } from "../controls/ViewModeSelectionControl.js";
@@ -15,6 +15,7 @@ var _TableForm = _DatenMeister._Forms._TableForm;
 import * as ActionField from "../fields/ActionField.js";
 import { StatusFieldControl } from "../controls/StatusFieldControl.js";
 import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
+import * as QueryEngine from "../modules/QueryEngine.js";
 export class CollectionFormHtmlElements {
 }
 /*
@@ -226,12 +227,28 @@ export class CollectionFormCreator {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
                 const callbackLoadItems = async (query) => {
-                    parameter.filterByFreetext = query.filterByFreetext;
-                    parameter.filterByProperties = query.filterByProperties;
-                    parameter.orderBy = query.orderBy;
-                    parameter.orderByDescending = query.orderByDescending;
-                    // Load the object for the specific form
-                    return await ClientItems.getRootElements(tthis.workspace, tthis.extentUri, parameter);
+                    // Option 1, via direct Http Request
+                    /*
+                    {
+                        parameter.filterByFreetext = query.filterByFreetext;
+                        parameter.filterByProperties = query.filterByProperties;
+                        parameter.orderBy = query.orderBy;
+                        parameter.orderByDescending = query.orderByDescending;
+
+                        // Load the object for the specific form
+                        return await ClientItems.getRootElements(
+                            tthis.workspace, tthis.extentUri, parameter);
+                    }*/
+                    // Option 2, via Query Engine
+                    {
+                        const builder = new QueryEngine.QueryBuilder();
+                        QueryEngine.getElementsOfExtent(builder, tthis.workspace, tthis.extentUri);
+                        const queryResult = await ClientElements.queryObject(builder.queryStatement);
+                        return {
+                            message: "Result per Query",
+                            elements: queryResult.result
+                        };
+                    }
                 };
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {
@@ -240,7 +257,7 @@ export class CollectionFormCreator {
                     tableForm.callbackLoadItems = async (x) => {
                         const result = await callbackLoadItems(x);
                         tthis.htmlElements.messageContainer.text(result.message);
-                        return result.rootElementsAsObjects;
+                        return result.elements;
                     };
                     tableForm.formElement = tab;
                     tableForm.workspace = tthis.workspace;

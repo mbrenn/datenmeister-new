@@ -122,7 +122,7 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
         }
 
         // Evaluate the filters from the query itself by going through all the filter properties
-        if (filterParameter?.FilterByProperties != null && filterParameter.FilterByProperties.Count() > 0)
+        if (filterParameter?.FilterByProperties != null && filterParameter.FilterByProperties.Any())
         {
             foreach (var filter in filterParameter.FilterByProperties)
             {

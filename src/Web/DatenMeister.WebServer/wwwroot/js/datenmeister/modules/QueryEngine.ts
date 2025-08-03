@@ -23,7 +23,7 @@ export class QueryBuilder {
 }
 
 export function filterByMetaClass(builder: QueryBuilder, metaClass: Mof.DmObject, includeInherits?: boolean) {
-    var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FilterByMetaclassNode_Uri);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FilterByMetaclassNode_Uri);
     viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.input, builder.getResultNode());
     viewNode.set(_DatenMeister._DataViews._FilterByMetaclassNode.metaClass, metaClass);
     if (includeInherits !== undefined) {
@@ -36,7 +36,7 @@ export function filterByMetaClass(builder: QueryBuilder, metaClass: Mof.DmObject
 }
 
 export function flatten(builder: QueryBuilder): Mof.DmObject {
-    var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FlattenNode_Uri);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FlattenNode_Uri);
     viewNode.set(_DatenMeister._DataViews._FlattenNode.input, builder.getResultNode());
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
@@ -44,7 +44,7 @@ export function flatten(builder: QueryBuilder): Mof.DmObject {
 }
 
 export function getElementsOfExtent(builder: QueryBuilder, workspaceId: string, extentUrl: string) {
-    var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByExtentNode_Uri);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByExtentNode_Uri);
     viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.workspaceId, workspaceId);
     viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.extentUri, extentUrl);
     builder.addNode(viewNode);
@@ -53,7 +53,7 @@ export function getElementsOfExtent(builder: QueryBuilder, workspaceId: string, 
 }
 
 export function getElementsByPath(builder: QueryBuilder, workspaceId: string, path: string) {
-    var viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByPathNode_Uri);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByPathNode_Uri);
     viewNode.set(_DatenMeister._DataViews._SelectByPathNode.workspaceId, workspaceId);
     viewNode.set(_DatenMeister._DataViews._SelectByPathNode.path, path);
     builder.addNode(viewNode);

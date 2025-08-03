@@ -58,14 +58,14 @@ export function findBySearchString(searchString) {
         encodeURIComponent(searchString));
 }
 export async function queryObject(query, timeout) {
-    var json = Mof.createJsonFromObject(query);
-    var parameters = {
+    const json = Mof.createJsonFromObject(query);
+    const parameters = {
         query: json
     };
     if (timeout !== undefined && timeout !== null && timeout > 0) {
         parameters.timeout = timeout;
     }
-    var result = await ApiConnection.post(Settings.baseUrl +
+    const result = await ApiConnection.post(Settings.baseUrl +
         "api/elements/query_object", parameters);
     return {
         result: convertToMofObjects(result.result)

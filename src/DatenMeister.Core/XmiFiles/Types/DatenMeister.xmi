@@ -335,7 +335,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="d705b34b-369f-4b44-9a00-013e1daa759f" name="RowFilterOnPositionNode">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8dda35ff-32b8-4597-85e4-f7c0f0488fbd" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="db1c165b-92cb-4bb6-a6d2-fcdb7c522f0c" type-ref="dm:///_internal/model/primitivetypes#Integer" name="amount" isID="false" isComposite="false" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3e952af8-b5db-4ce3-9ff0-144857095eba" name="number" type-ref="dm:///_internal/model/primitivetypes#Integer" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3e952af8-b5db-4ce3-9ff0-144857095eba" name="position" type-ref="dm:///_internal/model/primitivetypes#Integer" isID="false" isComposite="false" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="e6948145-e1b7-4542-84e5-269dab1aa4c9" name="RowOrderByNode">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e6d02456-c3dd-4975-936b-9c530d371675" name="input" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />

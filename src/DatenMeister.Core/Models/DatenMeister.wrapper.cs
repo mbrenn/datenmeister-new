@@ -2109,12 +2109,12 @@ public class DataViews
                 innerDmElement.set("amount", value);
         }
 
-        public int @number
+        public int @position
         {
             get =>
-                innerDmElement.getOrDefault<int>("number");
+                innerDmElement.getOrDefault<int>("position");
             set => 
-                innerDmElement.set("number", value);
+                innerDmElement.set("position", value);
         }
 
     }

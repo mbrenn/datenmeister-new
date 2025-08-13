@@ -523,7 +523,7 @@ export namespace _DataViews
         {
             static input = "input";
             static amount = "amount";
-            static number = "number";
+            static position = "position";
         }
 
         export const __RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";

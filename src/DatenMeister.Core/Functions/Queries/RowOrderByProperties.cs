@@ -6,12 +6,12 @@ using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class OrderByProperties : IReflectiveCollection, IHasExtent
+public class RowOrderByProperties : IReflectiveCollection, IHasExtent
 {
     private readonly List<string> _orderByProperty;
     private readonly IReflectiveCollection _parent;
 
-    public OrderByProperties(IReflectiveCollection parent, IEnumerable<string> properties)
+    public RowOrderByProperties(IReflectiveCollection parent, IEnumerable<string> properties)
     {
         if (properties == null)
         {

@@ -39,7 +39,7 @@ public class FilterColumnsIncludeOnlyEvaluation : IDataViewNodeEvaluation
 
         var columns = columnNames.Split(',').Select(x=>x.Trim()).Where(x=>!string.IsNullOrEmpty(x));
 
-        return new FilterColumnsIncludeOnly(input)
+        return new ColumnFilterIncludeOnly(input)
         {
             IncludeColumns = columns.ToHashSet()
         };

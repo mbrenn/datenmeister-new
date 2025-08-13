@@ -5,7 +5,7 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class FilterOnPropertyByPredicateCollection<T>(
+public class RowFilterOnPropertyByPredicateCollection<T>(
     IReflectiveCollection collection,
     string property,
     Predicate<T> filter)

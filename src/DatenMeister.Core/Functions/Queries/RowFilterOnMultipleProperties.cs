@@ -5,7 +5,7 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class FilterOnMultipleProperties(
+public class RowFilterOnMultipleProperties(
     IReflectiveCollection collection,
     IEnumerable<string> properties,
     string searchString,

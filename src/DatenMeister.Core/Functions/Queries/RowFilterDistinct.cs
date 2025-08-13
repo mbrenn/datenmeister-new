@@ -7,9 +7,9 @@ namespace DatenMeister.Core.Functions.Queries;
 /// <summary>
 /// Returns a collection that only returns the distinct elements of a property
 /// </summary>
-public sealed class DistinctReflectiveCollection : TemporaryReflectiveCollection
+public sealed class RowFilterDistinct : TemporaryReflectiveCollection
 {
-    public DistinctReflectiveCollection(IEnumerable collection, string property)
+    public RowFilterDistinct(IEnumerable collection, string property)
     {
         foreach (var element in collection.OfType<IObject>().Select(x => x.get(property)).Distinct())
         {

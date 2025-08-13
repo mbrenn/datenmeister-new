@@ -38,7 +38,7 @@ public class FilterColumnsExcludeEvaluation : IDataViewNodeEvaluation
 
         var columns = columnNames.Split(',').Select(x=>x.Trim()).Where(x=>!string.IsNullOrEmpty(x));
 
-        return new FilterColumnsExclude(input)
+        return new ColumnFilterExclude(input)
         {
             ExcludedColumns = columns.ToHashSet()
         };

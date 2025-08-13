@@ -18,7 +18,7 @@ public class QueryColumnTests
             Assert.That(element.isSet("iq"), Is.True);
         }
         
-        var excludeColumns = new FilterColumnsExclude(testExtent.elements())
+        var excludeColumns = new ColumnFilterExclude(testExtent.elements())
         {
             ExcludedColumns = ["age", "iq"]
         };
@@ -41,7 +41,7 @@ public class QueryColumnTests
             Assert.That(element.isSet("name"), Is.True);
         }
         
-        var excludeColumns = new FilterColumnsIncludeOnly(testExtent.elements())
+        var excludeColumns = new ColumnFilterIncludeOnly(testExtent.elements())
         {
             IncludeColumns = ["name"]
         };

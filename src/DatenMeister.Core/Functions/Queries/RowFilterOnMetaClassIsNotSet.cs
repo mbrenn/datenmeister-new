@@ -4,7 +4,7 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class FilterOnMetaClassIsNotSet(IReflectiveCollection collection) : ProxyReflectiveCollection(collection)
+public class RowFilterOnMetaClassIsNotSet(IReflectiveCollection collection) : ProxyReflectiveCollection(collection)
 {
     public override IEnumerator<object?> GetEnumerator()
     {

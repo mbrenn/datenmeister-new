@@ -23,7 +23,7 @@ public static class Filter
         string property,
         string value)
     {
-        return new FilterOnPropertyByPredicateCollection<string>(
+        return new RowFilterOnPropertyByPredicateCollection<string>(
             collection,
             property,
             x => x?.StartsWith(value) == true);
@@ -32,43 +32,43 @@ public static class Filter
     public static IReflectiveCollection WhenElementIsObject(
         this IReflectiveCollection collection)
         =>
-            new FilterOnElementType<IObject>(collection);
+            new RowFilterOnElementType<IObject>(collection);
 
     public static IReflectiveCollection WhenMetaClassIs(
         this IReflectiveCollection collection,
         IElement? metaClass)
         =>
-            new FilterOnMetaClass(collection, metaClass);
+            new RowFilterOnMetaClass(collection, metaClass);
 
     public static IReflectiveCollection WhenMetaClassIsOrSpecialized(
         this IReflectiveCollection collection,
         IElement? metaClass)
         =>
-            new FilterOnMetaClassOrSpecialized(collection, metaClass);
+            new RowFilterOnMetaClassOrSpecialized(collection, metaClass);
 
     public static IReflectiveCollection WhenMetaClassIsOneOf(
         this IReflectiveCollection collection,
         params IElement[] metaClasses)
         =>
-            new FilterOnMetaClass(collection, metaClasses);
+            new RowFilterOnMetaClass(collection, metaClasses);
 
     public static IReflectiveCollection WhenMetaClassIsNotSet(
         this IReflectiveCollection collection)
         =>
-            new FilterOnMetaClassIsNotSet(collection);
+            new RowFilterOnMetaClassIsNotSet(collection);
 
     public static IReflectiveCollection WhenPropertyIsSet(
         this IReflectiveCollection collection,
         string propertyName)
         =>
-            new FilterOnPropertyIsSet(collection, propertyName);
+            new RowFilterOnPropertyIsSet(collection, propertyName);
 
     public static IReflectiveCollection WhenPropertyHasValue<T>(
         this IReflectiveCollection collection,
         string property,
         T value)
     {
-        return new FilterOnPropertyByPredicateCollection<T>(
+        return new RowFilterOnPropertyByPredicateCollection<T>(
             collection,
             property,
             x => x?.Equals(value) == true);
@@ -80,7 +80,7 @@ public static class Filter
         IEnumerable<T> values)
     {
         var valuesAsList = values.ToList();
-        return new FilterOnPropertyByPredicateCollection<T>(
+        return new RowFilterOnPropertyByPredicateCollection<T>(
             collection,
             property,
             x => valuesAsList.Any(y => x?.Equals(y) == true));
@@ -92,7 +92,7 @@ public static class Filter
         string value,
         StringComparison comparer = StringComparison.CurrentCulture)
         =>
-            new FilterOnMultipleProperties(
+            new RowFilterOnMultipleProperties(
                 collection,
                 [property],
                 value,
@@ -104,7 +104,7 @@ public static class Filter
         string value,
         StringComparison comparer = StringComparison.CurrentCulture)
         =>
-            new FilterOnMultipleProperties(
+            new RowFilterOnMultipleProperties(
                 collection,
                 properties,
                 value,
@@ -210,7 +210,7 @@ public static class Filter
         this IReflectiveCollection collection,
         string property)
         =>
-            new OrderByProperties(collection, [property]);
+            new RowOrderByProperties(collection, [property]);
 
     /// <summary>
     /// Orders the reflective section by the given property
@@ -222,13 +222,13 @@ public static class Filter
         this IReflectiveCollection collection,
         IEnumerable<string> properties)
         =>
-            new OrderByProperties(collection, properties);
+            new RowOrderByProperties(collection, properties);
 
     public static IReflectiveCollection FilterDistinct(
         this IReflectiveCollection collection,
         string property)
         =>
-            new DistinctReflectiveCollection(collection, property);
+            new RowFilterDistinct(collection, property);
 
     /// <summary>
     /// Unionizes two reflective collections into one collection

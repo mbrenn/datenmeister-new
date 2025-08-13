@@ -5,17 +5,17 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;
 
-public class FilterOnMetaClass : ProxyReflectiveCollection
+public class RowFilterOnMetaClass : ProxyReflectiveCollection
 {
     private readonly IElement[]? _filteredMetaClass;
 
-    public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
+    public RowFilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
         : base(collection)
     {
         _filteredMetaClass = filteredMetaClass == null ? null : [filteredMetaClass];
     }
 
-    public FilterOnMetaClass(IReflectiveCollection collection, IElement[] filteredMetaClass)
+    public RowFilterOnMetaClass(IReflectiveCollection collection, IElement[] filteredMetaClass)
         : base(collection)
     {
         _filteredMetaClass = filteredMetaClass;

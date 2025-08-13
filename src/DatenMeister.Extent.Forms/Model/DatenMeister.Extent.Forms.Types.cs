@@ -13,16 +13,16 @@ public class _Root
         TypeKind = TypeKind.ClassTree)]
     public class _MassImportDefinitionAction
     {
-        public static string @item = "item";
+        public static readonly string @item = "item";
         public IElement? @_item = null;
 
-        public static string @text = "text";
+        public static readonly string @text = "text";
         public IElement? @_text = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }

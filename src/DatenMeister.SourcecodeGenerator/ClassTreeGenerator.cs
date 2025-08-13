@@ -112,7 +112,7 @@ public class ClassTreeGenerator : WalkPackageClass
 
         var nameAsObject = propertyObject.get("name");
         var name = nameAsObject?.ToString() ?? string.Empty;
-        Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
+        Result.AppendLine($"{stack.Indentation}public static readonly string @{name} = \"{name}\";");
 
         var id = (asElement as IHasId)?.Id ?? string.Empty;
         if (DotNetHelper.IsGuid(id))

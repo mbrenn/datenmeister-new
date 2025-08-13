@@ -13,7 +13,7 @@ public class _ExcelModels
         TypeKind = TypeKind.ClassTree)]
     public class _Workbook
     {
-        public static string @tables = "tables";
+        public static readonly string @tables = "tables";
         public IElement? @_tables = null;
 
     }
@@ -25,10 +25,10 @@ public class _ExcelModels
         TypeKind = TypeKind.ClassTree)]
     public class _Table
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @items = "items";
+        public static readonly string @items = "items";
         public IElement? @_items = null;
 
     }

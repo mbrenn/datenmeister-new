@@ -13,16 +13,16 @@ public class _Root
         TypeKind = TypeKind.ClassTree)]
     public class _ZipFileExtractAction
     {
-        public static string @sourcePath = "sourcePath";
+        public static readonly string @sourcePath = "sourcePath";
         public IElement? @_sourcePath = null;
 
-        public static string @targetPath = "targetPath";
+        public static readonly string @targetPath = "targetPath";
         public IElement? @_targetPath = null;
 
-        public static string @overwriteIfExisting = "overwriteIfExisting";
+        public static readonly string @overwriteIfExisting = "overwriteIfExisting";
         public IElement? @_overwriteIfExisting = null;
 
-        public static string @overwriteOnlyIfNewer = "overwriteOnlyIfNewer";
+        public static readonly string @overwriteOnlyIfNewer = "overwriteOnlyIfNewer";
         public IElement? @_overwriteOnlyIfNewer = null;
 
     }
@@ -34,13 +34,13 @@ public class _Root
         TypeKind = TypeKind.ClassTree)]
     public class _ZipFileExtractActionResult
     {
-        public static string @success = "success";
+        public static readonly string @success = "success";
         public IElement? @_success = null;
 
-        public static string @alreadyExisting = "alreadyExisting";
+        public static readonly string @alreadyExisting = "alreadyExisting";
         public IElement? @_alreadyExisting = null;
 
-        public static string @isAlreadyUpToDate = "isAlreadyUpToDate";
+        public static readonly string @isAlreadyUpToDate = "isAlreadyUpToDate";
         public IElement? @_isAlreadyUpToDate = null;
 
     }

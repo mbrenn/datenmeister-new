@@ -24,19 +24,19 @@ public class _CommonTypes
             TypeKind = TypeKind.ClassTree)]
         public class _Package
         {
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
-            public static string @packagedElement = "packagedElement";
+            public static readonly string @packagedElement = "packagedElement";
             public IElement? @_packagedElement = null;
 
-            public static string @preferredType = "preferredType";
+            public static readonly string @preferredType = "preferredType";
             public IElement? @_preferredType = null;
 
-            public static string @preferredPackage = "preferredPackage";
+            public static readonly string @preferredPackage = "preferredPackage";
             public IElement? @_preferredPackage = null;
 
-            public static string @defaultViewMode = "defaultViewMode";
+            public static readonly string @defaultViewMode = "defaultViewMode";
             public IElement? @_defaultViewMode = null;
 
         }
@@ -48,7 +48,7 @@ public class _CommonTypes
             TypeKind = TypeKind.ClassTree)]
         public class _XmiExportContainer
         {
-            public static string @xmi = "xmi";
+            public static readonly string @xmi = "xmi";
             public IElement? @_xmi = null;
 
         }
@@ -60,13 +60,13 @@ public class _CommonTypes
             TypeKind = TypeKind.ClassTree)]
         public class _XmiImportContainer
         {
-            public static string @xmi = "xmi";
+            public static readonly string @xmi = "xmi";
             public IElement? @_xmi = null;
 
-            public static string @property = "property";
+            public static readonly string @property = "property";
             public IElement? @_property = null;
 
-            public static string @addToCollection = "addToCollection";
+            public static readonly string @addToCollection = "addToCollection";
             public IElement? @_addToCollection = null;
 
         }
@@ -84,13 +84,13 @@ public class _CommonTypes
             TypeKind = TypeKind.ClassTree)]
         public class _ImportSettings
         {
-            public static string @filePath = "filePath";
+            public static readonly string @filePath = "filePath";
             public IElement? @_filePath = null;
 
-            public static string @extentUri = "extentUri";
+            public static readonly string @extentUri = "extentUri";
             public IElement? @_extentUri = null;
 
-            public static string @workspaceId = "workspaceId";
+            public static readonly string @workspaceId = "workspaceId";
             public IElement? @_workspaceId = null;
 
         }
@@ -102,7 +102,7 @@ public class _CommonTypes
             TypeKind = TypeKind.ClassTree)]
         public class _ImportException
         {
-            public static string @message = "message";
+            public static readonly string @message = "message";
             public IElement? @_message = null;
 
         }
@@ -120,10 +120,10 @@ public class _CommonTypes
             TypeKind = TypeKind.ClassTree)]
         public class _CommandLineApplication
         {
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
-            public static string @applicationPath = "applicationPath";
+            public static readonly string @applicationPath = "applicationPath";
             public IElement? @_applicationPath = null;
 
         }
@@ -135,10 +135,10 @@ public class _CommonTypes
             TypeKind = TypeKind.ClassTree)]
         public class _EnvironmentalVariable
         {
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
-            public static string @value = "value";
+            public static readonly string @value = "value";
             public IElement? @_value = null;
 
         }
@@ -160,13 +160,13 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _ActionSet
     {
-        public static string @action = "action";
+        public static readonly string @action = "action";
         public IElement? @_action = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -178,13 +178,13 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _LoggingWriterAction
     {
-        public static string @message = "message";
+        public static readonly string @message = "message";
         public IElement? @_message = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -196,19 +196,19 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _CommandExecutionAction
     {
-        public static string @command = "command";
+        public static readonly string @command = "command";
         public IElement? @_command = null;
 
-        public static string @arguments = "arguments";
+        public static readonly string @arguments = "arguments";
         public IElement? @_arguments = null;
 
-        public static string @workingDirectory = "workingDirectory";
+        public static readonly string @workingDirectory = "workingDirectory";
         public IElement? @_workingDirectory = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -220,16 +220,16 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _PowershellExecutionAction
     {
-        public static string @script = "script";
+        public static readonly string @script = "script";
         public IElement? @_script = null;
 
-        public static string @workingDirectory = "workingDirectory";
+        public static readonly string @workingDirectory = "workingDirectory";
         public IElement? @_workingDirectory = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -241,16 +241,16 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _LoadExtentAction
     {
-        public static string @configuration = "configuration";
+        public static readonly string @configuration = "configuration";
         public IElement? @_configuration = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -262,16 +262,16 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _DropExtentAction
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -283,16 +283,16 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _CreateWorkspaceAction
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @annotation = "annotation";
+        public static readonly string @annotation = "annotation";
         public IElement? @_annotation = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -304,13 +304,13 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _DropWorkspaceAction
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -322,28 +322,28 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _CopyElementsAction
     {
-        public static string @sourcePath = "sourcePath";
+        public static readonly string @sourcePath = "sourcePath";
         public IElement? @_sourcePath = null;
 
-        public static string @targetPath = "targetPath";
+        public static readonly string @targetPath = "targetPath";
         public IElement? @_targetPath = null;
 
-        public static string @moveOnly = "moveOnly";
+        public static readonly string @moveOnly = "moveOnly";
         public IElement? @_moveOnly = null;
 
-        public static string @sourceWorkspace = "sourceWorkspace";
+        public static readonly string @sourceWorkspace = "sourceWorkspace";
         public IElement? @_sourceWorkspace = null;
 
-        public static string @targetWorkspace = "targetWorkspace";
+        public static readonly string @targetWorkspace = "targetWorkspace";
         public IElement? @_targetWorkspace = null;
 
-        public static string @emptyTarget = "emptyTarget";
+        public static readonly string @emptyTarget = "emptyTarget";
         public IElement? @_emptyTarget = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -355,19 +355,19 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _ExportToXmiAction
     {
-        public static string @sourcePath = "sourcePath";
+        public static readonly string @sourcePath = "sourcePath";
         public IElement? @_sourcePath = null;
 
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @sourceWorkspaceId = "sourceWorkspaceId";
+        public static readonly string @sourceWorkspaceId = "sourceWorkspaceId";
         public IElement? @_sourceWorkspaceId = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -379,16 +379,16 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _ClearCollectionAction
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @path = "path";
+        public static readonly string @path = "path";
         public IElement? @_path = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -400,25 +400,25 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _TransformItemsAction
     {
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @runtimeClass = "runtimeClass";
+        public static readonly string @runtimeClass = "runtimeClass";
         public IElement? @_runtimeClass = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @path = "path";
+        public static readonly string @path = "path";
         public IElement? @_path = null;
 
-        public static string @excludeDescendents = "excludeDescendents";
+        public static readonly string @excludeDescendents = "excludeDescendents";
         public IElement? @_excludeDescendents = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -430,13 +430,13 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _EchoAction
     {
-        public static string @shallSuccess = "shallSuccess";
+        public static readonly string @shallSuccess = "shallSuccess";
         public IElement? @_shallSuccess = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -448,13 +448,13 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _DocumentOpenAction
     {
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -466,19 +466,19 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _CreateFormByMetaClass
     {
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @creationMode = "creationMode";
+        public static readonly string @creationMode = "creationMode";
         public IElement? @_creationMode = null;
 
-        public static string @targetContainer = "targetContainer";
+        public static readonly string @targetContainer = "targetContainer";
         public IElement? @_targetContainer = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -492,22 +492,22 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _SimpleReportAction
         {
-            public static string @path = "path";
+            public static readonly string @path = "path";
             public IElement? @_path = null;
 
-            public static string @configuration = "configuration";
+            public static readonly string @configuration = "configuration";
             public IElement? @_configuration = null;
 
-            public static string @workspaceId = "workspaceId";
+            public static readonly string @workspaceId = "workspaceId";
             public IElement? @_workspaceId = null;
 
-            public static string @filePath = "filePath";
+            public static readonly string @filePath = "filePath";
             public IElement? @_filePath = null;
 
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
-            public static string @isDisabled = "isDisabled";
+            public static readonly string @isDisabled = "isDisabled";
             public IElement? @_isDisabled = null;
 
         }
@@ -519,16 +519,16 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _AdocReportAction
         {
-            public static string @filePath = "filePath";
+            public static readonly string @filePath = "filePath";
             public IElement? @_filePath = null;
 
-            public static string @reportInstance = "reportInstance";
+            public static readonly string @reportInstance = "reportInstance";
             public IElement? @_reportInstance = null;
 
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
-            public static string @isDisabled = "isDisabled";
+            public static readonly string @isDisabled = "isDisabled";
             public IElement? @_isDisabled = null;
 
         }
@@ -540,16 +540,16 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _HtmlReportAction
         {
-            public static string @filePath = "filePath";
+            public static readonly string @filePath = "filePath";
             public IElement? @_filePath = null;
 
-            public static string @reportInstance = "reportInstance";
+            public static readonly string @reportInstance = "reportInstance";
             public IElement? @_reportInstance = null;
 
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
-            public static string @isDisabled = "isDisabled";
+            public static readonly string @isDisabled = "isDisabled";
             public IElement? @_isDisabled = null;
 
         }
@@ -565,10 +565,10 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _Action
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -580,13 +580,13 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _MoveOrCopyAction
     {
-        public static string @copyMode = "copyMode";
+        public static readonly string @copyMode = "copyMode";
         public IElement? @_copyMode = null;
 
-        public static string @target = "target";
+        public static readonly string @target = "target";
         public IElement? @_target = null;
 
-        public static string @source = "source";
+        public static readonly string @source = "source";
         public IElement? @_source = null;
 
     }
@@ -636,16 +636,16 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _MoveUpDownAction
     {
-        public static string @element = "element";
+        public static readonly string @element = "element";
         public IElement? @_element = null;
 
-        public static string @direction = "direction";
+        public static readonly string @direction = "direction";
         public IElement? @_direction = null;
 
-        public static string @container = "container";
+        public static readonly string @container = "container";
         public IElement? @_container = null;
 
-        public static string @property = "property";
+        public static readonly string @property = "property";
         public IElement? @_property = null;
 
     }
@@ -657,16 +657,16 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _StoreExtentAction
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -678,19 +678,19 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _ImportXmiAction
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @itemUri = "itemUri";
+        public static readonly string @itemUri = "itemUri";
         public IElement? @_itemUri = null;
 
-        public static string @xmi = "xmi";
+        public static readonly string @xmi = "xmi";
         public IElement? @_xmi = null;
 
-        public static string @property = "property";
+        public static readonly string @property = "property";
         public IElement? @_property = null;
 
-        public static string @addToCollection = "addToCollection";
+        public static readonly string @addToCollection = "addToCollection";
         public IElement? @_addToCollection = null;
 
     }
@@ -702,13 +702,13 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _DeletePropertyFromCollectionAction
     {
-        public static string @propertyName = "propertyName";
+        public static readonly string @propertyName = "propertyName";
         public IElement? @_propertyName = null;
 
-        public static string @metaclass = "metaclass";
+        public static readonly string @metaclass = "metaclass";
         public IElement? @_metaclass = null;
 
-        public static string @collectionUrl = "collectionUrl";
+        public static readonly string @collectionUrl = "collectionUrl";
         public IElement? @_collectionUrl = null;
 
     }
@@ -720,10 +720,10 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _MoveOrCopyActionResult
     {
-        public static string @targetUrl = "targetUrl";
+        public static readonly string @targetUrl = "targetUrl";
         public IElement? @_targetUrl = null;
 
-        public static string @targetWorkspace = "targetWorkspace";
+        public static readonly string @targetWorkspace = "targetWorkspace";
         public IElement? @_targetWorkspace = null;
 
     }
@@ -737,13 +737,13 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _NavigationDefineActionParameter
         {
-            public static string @actionName = "actionName";
+            public static readonly string @actionName = "actionName";
             public IElement? @_actionName = null;
 
-            public static string @formUrl = "formUrl";
+            public static readonly string @formUrl = "formUrl";
             public IElement? @_formUrl = null;
 
-            public static string @metaClassUrl = "metaClassUrl";
+            public static readonly string @metaClassUrl = "metaClassUrl";
             public IElement? @_metaClassUrl = null;
 
         }
@@ -759,10 +759,10 @@ public class _Actions
         TypeKind = TypeKind.ClassTree)]
     public class _ActionResult
     {
-        public static string @isSuccess = "isSuccess";
+        public static readonly string @isSuccess = "isSuccess";
         public IElement? @_isSuccess = null;
 
-        public static string @clientActions = "clientActions";
+        public static readonly string @clientActions = "clientActions";
         public IElement? @_clientActions = null;
 
     }
@@ -776,13 +776,13 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _ClientAction
         {
-            public static string @actionName = "actionName";
+            public static readonly string @actionName = "actionName";
             public IElement? @_actionName = null;
 
-            public static string @element = "element";
+            public static readonly string @element = "element";
             public IElement? @_element = null;
 
-            public static string @parameter = "parameter";
+            public static readonly string @parameter = "parameter";
             public IElement? @_parameter = null;
 
         }
@@ -794,16 +794,16 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _AlertClientAction
         {
-            public static string @messageText = "messageText";
+            public static readonly string @messageText = "messageText";
             public IElement? @_messageText = null;
 
-            public static string @actionName = "actionName";
+            public static readonly string @actionName = "actionName";
             public IElement? @_actionName = null;
 
-            public static string @element = "element";
+            public static readonly string @element = "element";
             public IElement? @_element = null;
 
-            public static string @parameter = "parameter";
+            public static readonly string @parameter = "parameter";
             public IElement? @_parameter = null;
 
         }
@@ -815,10 +815,10 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _NavigateToExtentClientAction
         {
-            public static string @workspaceId = "workspaceId";
+            public static readonly string @workspaceId = "workspaceId";
             public IElement? @_workspaceId = null;
 
-            public static string @extentUri = "extentUri";
+            public static readonly string @extentUri = "extentUri";
             public IElement? @_extentUri = null;
 
         }
@@ -830,13 +830,13 @@ public class _Actions
             TypeKind = TypeKind.ClassTree)]
         public class _NavigateToItemClientAction
         {
-            public static string @workspaceId = "workspaceId";
+            public static readonly string @workspaceId = "workspaceId";
             public IElement? @_workspaceId = null;
 
-            public static string @itemUrl = "itemUrl";
+            public static readonly string @itemUrl = "itemUrl";
             public IElement? @_itemUrl = null;
 
-            public static string @formUri = "formUri";
+            public static readonly string @formUri = "formUri";
             public IElement? @_formUri = null;
 
         }
@@ -858,16 +858,16 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _DataView
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @uri = "uri";
+        public static readonly string @uri = "uri";
         public IElement? @_uri = null;
 
-        public static string @viewNode = "viewNode";
+        public static readonly string @viewNode = "viewNode";
         public IElement? @_viewNode = null;
 
     }
@@ -879,7 +879,7 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _ViewNode
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -891,13 +891,13 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _SelectByExtentNode
     {
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -909,10 +909,10 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _FlattenNode
     {
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -924,19 +924,19 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _RowFilterByPropertyValueNode
     {
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @property = "property";
+        public static readonly string @property = "property";
         public IElement? @_property = null;
 
-        public static string @value = "value";
+        public static readonly string @value = "value";
         public IElement? @_value = null;
 
-        public static string @comparisonMode = "comparisonMode";
+        public static readonly string @comparisonMode = "comparisonMode";
         public IElement? @_comparisonMode = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -948,16 +948,16 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _RowFilterByMetaclassNode
     {
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @includeInherits = "includeInherits";
+        public static readonly string @includeInherits = "includeInherits";
         public IElement? @_includeInherits = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1006,13 +1006,13 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _SelectByFullNameNode
     {
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @path = "path";
+        public static readonly string @path = "path";
         public IElement? @_path = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1024,10 +1024,10 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _DynamicSourceNode
     {
-        public static string @nodeName = "nodeName";
+        public static readonly string @nodeName = "nodeName";
         public IElement? @_nodeName = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1039,10 +1039,10 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _SelectByPathNode
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @path = "path";
+        public static readonly string @path = "path";
         public IElement? @_path = null;
 
     }
@@ -1054,10 +1054,10 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _QueryStatement
     {
-        public static string @nodes = "nodes";
+        public static readonly string @nodes = "nodes";
         public IElement? @_nodes = null;
 
-        public static string @resultNode = "resultNode";
+        public static readonly string @resultNode = "resultNode";
         public IElement? @_resultNode = null;
 
     }
@@ -1069,7 +1069,7 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _SelectFromAllWorkspacesNode
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1081,10 +1081,10 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _SelectByWorkspaceNode
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1096,13 +1096,13 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _ColumnFilterExcludeNode
     {
-        public static string @columnNamesComma = "columnNamesComma";
+        public static readonly string @columnNamesComma = "columnNamesComma";
         public IElement? @_columnNamesComma = null;
 
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1114,13 +1114,13 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _ColumnFilterIncludeOnlyNode
     {
-        public static string @columnNamesComma = "columnNamesComma";
+        public static readonly string @columnNamesComma = "columnNamesComma";
         public IElement? @_columnNamesComma = null;
 
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1132,13 +1132,13 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _RowFilterOnPositionNode
     {
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @amount = "amount";
+        public static readonly string @amount = "amount";
         public IElement? @_amount = null;
 
-        public static string @number = "number";
+        public static readonly string @number = "number";
         public IElement? @_number = null;
 
     }
@@ -1150,13 +1150,13 @@ public class _DataViews
         TypeKind = TypeKind.ClassTree)]
     public class _RowOrderByNode
     {
-        public static string @input = "input";
+        public static readonly string @input = "input";
         public IElement? @_input = null;
 
-        public static string @propertyName = "propertyName";
+        public static readonly string @propertyName = "propertyName";
         public IElement? @_propertyName = null;
 
-        public static string @orderDescending = "orderDescending";
+        public static readonly string @orderDescending = "orderDescending";
         public IElement? @_orderDescending = null;
 
     }
@@ -1174,13 +1174,13 @@ public class _Reports
         TypeKind = TypeKind.ClassTree)]
     public class _ReportDefinition
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @elements = "elements";
+        public static readonly string @elements = "elements";
         public IElement? @_elements = null;
 
     }
@@ -1192,13 +1192,13 @@ public class _Reports
         TypeKind = TypeKind.ClassTree)]
     public class _ReportInstanceSource
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @path = "path";
+        public static readonly string @path = "path";
         public IElement? @_path = null;
 
     }
@@ -1210,13 +1210,13 @@ public class _Reports
         TypeKind = TypeKind.ClassTree)]
     public class _ReportInstance
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @reportDefinition = "reportDefinition";
+        public static readonly string @reportDefinition = "reportDefinition";
         public IElement? @_reportDefinition = null;
 
-        public static string @sources = "sources";
+        public static readonly string @sources = "sources";
         public IElement? @_sources = null;
 
     }
@@ -1228,13 +1228,13 @@ public class _Reports
         TypeKind = TypeKind.ClassTree)]
     public class _AdocReportInstance
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @reportDefinition = "reportDefinition";
+        public static readonly string @reportDefinition = "reportDefinition";
         public IElement? @_reportDefinition = null;
 
-        public static string @sources = "sources";
+        public static readonly string @sources = "sources";
         public IElement? @_sources = null;
 
     }
@@ -1246,19 +1246,19 @@ public class _Reports
         TypeKind = TypeKind.ClassTree)]
     public class _HtmlReportInstance
     {
-        public static string @cssFile = "cssFile";
+        public static readonly string @cssFile = "cssFile";
         public IElement? @_cssFile = null;
 
-        public static string @cssStyleSheet = "cssStyleSheet";
+        public static readonly string @cssStyleSheet = "cssStyleSheet";
         public IElement? @_cssStyleSheet = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @reportDefinition = "reportDefinition";
+        public static readonly string @reportDefinition = "reportDefinition";
         public IElement? @_reportDefinition = null;
 
-        public static string @sources = "sources";
+        public static readonly string @sources = "sources";
         public IElement? @_sources = null;
 
     }
@@ -1292,34 +1292,34 @@ public class _Reports
         TypeKind = TypeKind.ClassTree)]
     public class _SimpleReportConfiguration
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @showDescendents = "showDescendents";
+        public static readonly string @showDescendents = "showDescendents";
         public IElement? @_showDescendents = null;
 
-        public static string @rootElement = "rootElement";
+        public static readonly string @rootElement = "rootElement";
         public IElement? @_rootElement = null;
 
-        public static string @showRootElement = "showRootElement";
+        public static readonly string @showRootElement = "showRootElement";
         public IElement? @_showRootElement = null;
 
-        public static string @showMetaClasses = "showMetaClasses";
+        public static readonly string @showMetaClasses = "showMetaClasses";
         public IElement? @_showMetaClasses = null;
 
-        public static string @showFullName = "showFullName";
+        public static readonly string @showFullName = "showFullName";
         public IElement? @_showFullName = null;
 
-        public static string @form = "form";
+        public static readonly string @form = "form";
         public IElement? @_form = null;
 
-        public static string @descendentMode = "descendentMode";
+        public static readonly string @descendentMode = "descendentMode";
         public IElement? @_descendentMode = null;
 
-        public static string @typeMode = "typeMode";
+        public static readonly string @typeMode = "typeMode";
         public IElement? @_typeMode = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
     }
@@ -1333,7 +1333,7 @@ public class _Reports
             TypeKind = TypeKind.ClassTree)]
         public class _ReportElement
         {
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
         }
@@ -1345,10 +1345,10 @@ public class _Reports
             TypeKind = TypeKind.ClassTree)]
         public class _ReportHeadline
         {
-            public static string @title = "title";
+            public static readonly string @title = "title";
             public IElement? @_title = null;
 
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
         }
@@ -1360,22 +1360,22 @@ public class _Reports
             TypeKind = TypeKind.ClassTree)]
         public class _ReportParagraph
         {
-            public static string @paragraph = "paragraph";
+            public static readonly string @paragraph = "paragraph";
             public IElement? @_paragraph = null;
 
-            public static string @cssClass = "cssClass";
+            public static readonly string @cssClass = "cssClass";
             public IElement? @_cssClass = null;
 
-            public static string @viewNode = "viewNode";
+            public static readonly string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
 
-            public static string @evalProperties = "evalProperties";
+            public static readonly string @evalProperties = "evalProperties";
             public IElement? @_evalProperties = null;
 
-            public static string @evalParagraph = "evalParagraph";
+            public static readonly string @evalParagraph = "evalParagraph";
             public IElement? @_evalParagraph = null;
 
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
         }
@@ -1387,19 +1387,19 @@ public class _Reports
             TypeKind = TypeKind.ClassTree)]
         public class _ReportTable
         {
-            public static string @cssClass = "cssClass";
+            public static readonly string @cssClass = "cssClass";
             public IElement? @_cssClass = null;
 
-            public static string @viewNode = "viewNode";
+            public static readonly string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
 
-            public static string @form = "form";
+            public static readonly string @form = "form";
             public IElement? @_form = null;
 
-            public static string @evalProperties = "evalProperties";
+            public static readonly string @evalProperties = "evalProperties";
             public IElement? @_evalProperties = null;
 
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
         }
@@ -1430,13 +1430,13 @@ public class _Reports
             TypeKind = TypeKind.ClassTree)]
         public class _ReportLoop
         {
-            public static string @viewNode = "viewNode";
+            public static readonly string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
 
-            public static string @elements = "elements";
+            public static readonly string @elements = "elements";
             public IElement? @_elements = null;
 
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
         }
@@ -1458,16 +1458,16 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentLoaderConfig
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1479,58 +1479,58 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelLoaderConfig
     {
-        public static string @fixRowCount = "fixRowCount";
+        public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
 
-        public static string @fixColumnCount = "fixColumnCount";
+        public static readonly string @fixColumnCount = "fixColumnCount";
         public IElement? @_fixColumnCount = null;
 
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @sheetName = "sheetName";
+        public static readonly string @sheetName = "sheetName";
         public IElement? @_sheetName = null;
 
-        public static string @offsetRow = "offsetRow";
+        public static readonly string @offsetRow = "offsetRow";
         public IElement? @_offsetRow = null;
 
-        public static string @offsetColumn = "offsetColumn";
+        public static readonly string @offsetColumn = "offsetColumn";
         public IElement? @_offsetColumn = null;
 
-        public static string @countRows = "countRows";
+        public static readonly string @countRows = "countRows";
         public IElement? @_countRows = null;
 
-        public static string @countColumns = "countColumns";
+        public static readonly string @countColumns = "countColumns";
         public IElement? @_countColumns = null;
 
-        public static string @hasHeader = "hasHeader";
+        public static readonly string @hasHeader = "hasHeader";
         public IElement? @_hasHeader = null;
 
-        public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
+        public static readonly string @tryMergedHeaderCells = "tryMergedHeaderCells";
         public IElement? @_tryMergedHeaderCells = null;
 
-        public static string @onlySetColumns = "onlySetColumns";
+        public static readonly string @onlySetColumns = "onlySetColumns";
         public IElement? @_onlySetColumns = null;
 
-        public static string @idColumnName = "idColumnName";
+        public static readonly string @idColumnName = "idColumnName";
         public IElement? @_idColumnName = null;
 
-        public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+        public static readonly string @skipEmptyRowsCount = "skipEmptyRowsCount";
         public IElement? @_skipEmptyRowsCount = null;
 
-        public static string @columns = "columns";
+        public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1542,58 +1542,58 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelReferenceLoaderConfig
     {
-        public static string @fixRowCount = "fixRowCount";
+        public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
 
-        public static string @fixColumnCount = "fixColumnCount";
+        public static readonly string @fixColumnCount = "fixColumnCount";
         public IElement? @_fixColumnCount = null;
 
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @sheetName = "sheetName";
+        public static readonly string @sheetName = "sheetName";
         public IElement? @_sheetName = null;
 
-        public static string @offsetRow = "offsetRow";
+        public static readonly string @offsetRow = "offsetRow";
         public IElement? @_offsetRow = null;
 
-        public static string @offsetColumn = "offsetColumn";
+        public static readonly string @offsetColumn = "offsetColumn";
         public IElement? @_offsetColumn = null;
 
-        public static string @countRows = "countRows";
+        public static readonly string @countRows = "countRows";
         public IElement? @_countRows = null;
 
-        public static string @countColumns = "countColumns";
+        public static readonly string @countColumns = "countColumns";
         public IElement? @_countColumns = null;
 
-        public static string @hasHeader = "hasHeader";
+        public static readonly string @hasHeader = "hasHeader";
         public IElement? @_hasHeader = null;
 
-        public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
+        public static readonly string @tryMergedHeaderCells = "tryMergedHeaderCells";
         public IElement? @_tryMergedHeaderCells = null;
 
-        public static string @onlySetColumns = "onlySetColumns";
+        public static readonly string @onlySetColumns = "onlySetColumns";
         public IElement? @_onlySetColumns = null;
 
-        public static string @idColumnName = "idColumnName";
+        public static readonly string @idColumnName = "idColumnName";
         public IElement? @_idColumnName = null;
 
-        public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+        public static readonly string @skipEmptyRowsCount = "skipEmptyRowsCount";
         public IElement? @_skipEmptyRowsCount = null;
 
-        public static string @columns = "columns";
+        public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1605,61 +1605,61 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelImportLoaderConfig
     {
-        public static string @extentPath = "extentPath";
+        public static readonly string @extentPath = "extentPath";
         public IElement? @_extentPath = null;
 
-        public static string @fixRowCount = "fixRowCount";
+        public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
 
-        public static string @fixColumnCount = "fixColumnCount";
+        public static readonly string @fixColumnCount = "fixColumnCount";
         public IElement? @_fixColumnCount = null;
 
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @sheetName = "sheetName";
+        public static readonly string @sheetName = "sheetName";
         public IElement? @_sheetName = null;
 
-        public static string @offsetRow = "offsetRow";
+        public static readonly string @offsetRow = "offsetRow";
         public IElement? @_offsetRow = null;
 
-        public static string @offsetColumn = "offsetColumn";
+        public static readonly string @offsetColumn = "offsetColumn";
         public IElement? @_offsetColumn = null;
 
-        public static string @countRows = "countRows";
+        public static readonly string @countRows = "countRows";
         public IElement? @_countRows = null;
 
-        public static string @countColumns = "countColumns";
+        public static readonly string @countColumns = "countColumns";
         public IElement? @_countColumns = null;
 
-        public static string @hasHeader = "hasHeader";
+        public static readonly string @hasHeader = "hasHeader";
         public IElement? @_hasHeader = null;
 
-        public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
+        public static readonly string @tryMergedHeaderCells = "tryMergedHeaderCells";
         public IElement? @_tryMergedHeaderCells = null;
 
-        public static string @onlySetColumns = "onlySetColumns";
+        public static readonly string @onlySetColumns = "onlySetColumns";
         public IElement? @_onlySetColumns = null;
 
-        public static string @idColumnName = "idColumnName";
+        public static readonly string @idColumnName = "idColumnName";
         public IElement? @_idColumnName = null;
 
-        public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+        public static readonly string @skipEmptyRowsCount = "skipEmptyRowsCount";
         public IElement? @_skipEmptyRowsCount = null;
 
-        public static string @columns = "columns";
+        public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1671,22 +1671,22 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelExtentLoaderConfig
     {
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @idColumnName = "idColumnName";
+        public static readonly string @idColumnName = "idColumnName";
         public IElement? @_idColumnName = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1698,19 +1698,19 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _InMemoryLoaderConfig
     {
-        public static string @isLinkedList = "isLinkedList";
+        public static readonly string @isLinkedList = "isLinkedList";
         public IElement? @_isLinkedList = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1722,22 +1722,22 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _XmlReferenceLoaderConfig
     {
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @keepNamespaces = "keepNamespaces";
+        public static readonly string @keepNamespaces = "keepNamespaces";
         public IElement? @_keepNamespaces = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1749,19 +1749,19 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentFileLoaderConfig
     {
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1773,19 +1773,19 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _XmiStorageLoaderConfig
     {
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1797,22 +1797,22 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _CsvExtentLoaderConfig
     {
-        public static string @settings = "settings";
+        public static readonly string @settings = "settings";
         public IElement? @_settings = null;
 
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1824,22 +1824,22 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _CsvSettings
     {
-        public static string @encoding = "encoding";
+        public static readonly string @encoding = "encoding";
         public IElement? @_encoding = null;
 
-        public static string @hasHeader = "hasHeader";
+        public static readonly string @hasHeader = "hasHeader";
         public IElement? @_hasHeader = null;
 
-        public static string @separator = "separator";
+        public static readonly string @separator = "separator";
         public IElement? @_separator = null;
 
-        public static string @columns = "columns";
+        public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static string @metaclassUri = "metaclassUri";
+        public static readonly string @metaclassUri = "metaclassUri";
         public IElement? @_metaclassUri = null;
 
-        public static string @trimCells = "trimCells";
+        public static readonly string @trimCells = "trimCells";
         public IElement? @_trimCells = null;
 
     }
@@ -1851,13 +1851,13 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelHierarchicalColumnDefinition
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @property = "property";
+        public static readonly string @property = "property";
         public IElement? @_property = null;
 
     }
@@ -1869,64 +1869,64 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelHierarchicalLoaderConfig
     {
-        public static string @hierarchicalColumns = "hierarchicalColumns";
+        public static readonly string @hierarchicalColumns = "hierarchicalColumns";
         public IElement? @_hierarchicalColumns = null;
 
-        public static string @skipElementsForLastLevel = "skipElementsForLastLevel";
+        public static readonly string @skipElementsForLastLevel = "skipElementsForLastLevel";
         public IElement? @_skipElementsForLastLevel = null;
 
-        public static string @fixRowCount = "fixRowCount";
+        public static readonly string @fixRowCount = "fixRowCount";
         public IElement? @_fixRowCount = null;
 
-        public static string @fixColumnCount = "fixColumnCount";
+        public static readonly string @fixColumnCount = "fixColumnCount";
         public IElement? @_fixColumnCount = null;
 
-        public static string @filePath = "filePath";
+        public static readonly string @filePath = "filePath";
         public IElement? @_filePath = null;
 
-        public static string @sheetName = "sheetName";
+        public static readonly string @sheetName = "sheetName";
         public IElement? @_sheetName = null;
 
-        public static string @offsetRow = "offsetRow";
+        public static readonly string @offsetRow = "offsetRow";
         public IElement? @_offsetRow = null;
 
-        public static string @offsetColumn = "offsetColumn";
+        public static readonly string @offsetColumn = "offsetColumn";
         public IElement? @_offsetColumn = null;
 
-        public static string @countRows = "countRows";
+        public static readonly string @countRows = "countRows";
         public IElement? @_countRows = null;
 
-        public static string @countColumns = "countColumns";
+        public static readonly string @countColumns = "countColumns";
         public IElement? @_countColumns = null;
 
-        public static string @hasHeader = "hasHeader";
+        public static readonly string @hasHeader = "hasHeader";
         public IElement? @_hasHeader = null;
 
-        public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
+        public static readonly string @tryMergedHeaderCells = "tryMergedHeaderCells";
         public IElement? @_tryMergedHeaderCells = null;
 
-        public static string @onlySetColumns = "onlySetColumns";
+        public static readonly string @onlySetColumns = "onlySetColumns";
         public IElement? @_onlySetColumns = null;
 
-        public static string @idColumnName = "idColumnName";
+        public static readonly string @idColumnName = "idColumnName";
         public IElement? @_idColumnName = null;
 
-        public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+        public static readonly string @skipEmptyRowsCount = "skipEmptyRowsCount";
         public IElement? @_skipEmptyRowsCount = null;
 
-        public static string @columns = "columns";
+        public static readonly string @columns = "columns";
         public IElement? @_columns = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1938,10 +1938,10 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _ExcelColumn
     {
-        public static string @header = "header";
+        public static readonly string @header = "header";
         public IElement? @_header = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -1953,16 +1953,16 @@ public class _ExtentLoaderConfigs
         TypeKind = TypeKind.ClassTree)]
     public class _EnvironmentalVariableLoaderConfig
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -1980,22 +1980,22 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _FieldData
     {
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2007,10 +2007,10 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _SortingOrder
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDescending = "isDescending";
+        public static readonly string @isDescending = "isDescending";
         public IElement? @_isDescending = null;
 
     }
@@ -2022,22 +2022,22 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _AnyDataFieldData
     {
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2049,25 +2049,25 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _CheckboxFieldData
     {
-        public static string @lineHeight = "lineHeight";
+        public static readonly string @lineHeight = "lineHeight";
         public IElement? @_lineHeight = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2079,31 +2079,31 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _ActionFieldData
     {
-        public static string @actionName = "actionName";
+        public static readonly string @actionName = "actionName";
         public IElement? @_actionName = null;
 
-        public static string @parameter = "parameter";
+        public static readonly string @parameter = "parameter";
         public IElement? @_parameter = null;
 
-        public static string @buttonText = "buttonText";
+        public static readonly string @buttonText = "buttonText";
         public IElement? @_buttonText = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2115,31 +2115,31 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _DateTimeFieldData
     {
-        public static string @hideDate = "hideDate";
+        public static readonly string @hideDate = "hideDate";
         public IElement? @_hideDate = null;
 
-        public static string @hideTime = "hideTime";
+        public static readonly string @hideTime = "hideTime";
         public IElement? @_hideTime = null;
 
-        public static string @showOffsetButtons = "showOffsetButtons";
+        public static readonly string @showOffsetButtons = "showOffsetButtons";
         public IElement? @_showOffsetButtons = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2151,37 +2151,37 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _FormAssociation
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @formType = "formType";
+        public static readonly string @formType = "formType";
         public IElement? @_formType = null;
 
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @extentType = "extentType";
+        public static readonly string @extentType = "extentType";
         public IElement? @_extentType = null;
 
-        public static string @viewModeId = "viewModeId";
+        public static readonly string @viewModeId = "viewModeId";
         public IElement? @_viewModeId = null;
 
-        public static string @parentMetaClass = "parentMetaClass";
+        public static readonly string @parentMetaClass = "parentMetaClass";
         public IElement? @_parentMetaClass = null;
 
-        public static string @parentProperty = "parentProperty";
+        public static readonly string @parentProperty = "parentProperty";
         public IElement? @_parentProperty = null;
 
-        public static string @form = "form";
+        public static readonly string @form = "form";
         public IElement? @_form = null;
 
-        public static string @debugActive = "debugActive";
+        public static readonly string @debugActive = "debugActive";
         public IElement? @_debugActive = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
     }
@@ -2193,28 +2193,28 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _DropDownFieldData
     {
-        public static string @values = "values";
+        public static readonly string @values = "values";
         public IElement? @_values = null;
 
-        public static string @valuesByEnumeration = "valuesByEnumeration";
+        public static readonly string @valuesByEnumeration = "valuesByEnumeration";
         public IElement? @_valuesByEnumeration = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2226,10 +2226,10 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _ValuePair
     {
-        public static string @value = "value";
+        public static readonly string @value = "value";
         public IElement? @_value = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
     }
@@ -2241,22 +2241,22 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _MetaClassElementFieldData
     {
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2268,43 +2268,43 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _ReferenceFieldData
     {
-        public static string @isSelectionInline = "isSelectionInline";
+        public static readonly string @isSelectionInline = "isSelectionInline";
         public IElement? @_isSelectionInline = null;
 
-        public static string @defaultWorkspace = "defaultWorkspace";
+        public static readonly string @defaultWorkspace = "defaultWorkspace";
         public IElement? @_defaultWorkspace = null;
 
-        public static string @defaultItemUri = "defaultItemUri";
+        public static readonly string @defaultItemUri = "defaultItemUri";
         public IElement? @_defaultItemUri = null;
 
-        public static string @showAllChildren = "showAllChildren";
+        public static readonly string @showAllChildren = "showAllChildren";
         public IElement? @_showAllChildren = null;
 
-        public static string @showWorkspaceSelection = "showWorkspaceSelection";
+        public static readonly string @showWorkspaceSelection = "showWorkspaceSelection";
         public IElement? @_showWorkspaceSelection = null;
 
-        public static string @showExtentSelection = "showExtentSelection";
+        public static readonly string @showExtentSelection = "showExtentSelection";
         public IElement? @_showExtentSelection = null;
 
-        public static string @metaClassFilter = "metaClassFilter";
+        public static readonly string @metaClassFilter = "metaClassFilter";
         public IElement? @_metaClassFilter = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2316,46 +2316,46 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _SubElementFieldData
     {
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @form = "form";
+        public static readonly string @form = "form";
         public IElement? @_form = null;
 
-        public static string @allowOnlyExistingElements = "allowOnlyExistingElements";
+        public static readonly string @allowOnlyExistingElements = "allowOnlyExistingElements";
         public IElement? @_allowOnlyExistingElements = null;
 
-        public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
+        public static readonly string @defaultTypesForNewElements = "defaultTypesForNewElements";
         public IElement? @_defaultTypesForNewElements = null;
 
-        public static string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
+        public static readonly string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
         public IElement? @_includeSpecializationsForDefaultTypes = null;
 
-        public static string @defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
+        public static readonly string @defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
         public IElement? @_defaultWorkspaceOfNewElements = null;
 
-        public static string @defaultExtentOfNewElements = "defaultExtentOfNewElements";
+        public static readonly string @defaultExtentOfNewElements = "defaultExtentOfNewElements";
         public IElement? @_defaultExtentOfNewElements = null;
 
-        public static string @actionName = "actionName";
+        public static readonly string @actionName = "actionName";
         public IElement? @_actionName = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2367,34 +2367,34 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _TextFieldData
     {
-        public static string @lineHeight = "lineHeight";
+        public static readonly string @lineHeight = "lineHeight";
         public IElement? @_lineHeight = null;
 
-        public static string @width = "width";
+        public static readonly string @width = "width";
         public IElement? @_width = null;
 
-        public static string @shortenTextLength = "shortenTextLength";
+        public static readonly string @shortenTextLength = "shortenTextLength";
         public IElement? @_shortenTextLength = null;
 
-        public static string @supportClipboardCopy = "supportClipboardCopy";
+        public static readonly string @supportClipboardCopy = "supportClipboardCopy";
         public IElement? @_supportClipboardCopy = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2406,37 +2406,37 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _EvalTextFieldData
     {
-        public static string @evalCellProperties = "evalCellProperties";
+        public static readonly string @evalCellProperties = "evalCellProperties";
         public IElement? @_evalCellProperties = null;
 
-        public static string @lineHeight = "lineHeight";
+        public static readonly string @lineHeight = "lineHeight";
         public IElement? @_lineHeight = null;
 
-        public static string @width = "width";
+        public static readonly string @width = "width";
         public IElement? @_width = null;
 
-        public static string @shortenTextLength = "shortenTextLength";
+        public static readonly string @shortenTextLength = "shortenTextLength";
         public IElement? @_shortenTextLength = null;
 
-        public static string @supportClipboardCopy = "supportClipboardCopy";
+        public static readonly string @supportClipboardCopy = "supportClipboardCopy";
         public IElement? @_supportClipboardCopy = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2448,7 +2448,7 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _SeparatorLineFieldData
     {
-        public static string @Height = "Height";
+        public static readonly string @Height = "Height";
         public IElement? @_Height = null;
 
     }
@@ -2460,34 +2460,34 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _FileSelectionFieldData
     {
-        public static string @defaultExtension = "defaultExtension";
+        public static readonly string @defaultExtension = "defaultExtension";
         public IElement? @_defaultExtension = null;
 
-        public static string @isSaving = "isSaving";
+        public static readonly string @isSaving = "isSaving";
         public IElement? @_isSaving = null;
 
-        public static string @initialPathToDirectory = "initialPathToDirectory";
+        public static readonly string @initialPathToDirectory = "initialPathToDirectory";
         public IElement? @_initialPathToDirectory = null;
 
-        public static string @filter = "filter";
+        public static readonly string @filter = "filter";
         public IElement? @_filter = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2499,13 +2499,13 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _DefaultTypeForNewElement
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @parentProperty = "parentProperty";
+        public static readonly string @parentProperty = "parentProperty";
         public IElement? @_parentProperty = null;
 
     }
@@ -2517,22 +2517,22 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _FullNameFieldData
     {
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2544,31 +2544,31 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _CheckboxListTaggingFieldData
     {
-        public static string @values = "values";
+        public static readonly string @values = "values";
         public IElement? @_values = null;
 
-        public static string @separator = "separator";
+        public static readonly string @separator = "separator";
         public IElement? @_separator = null;
 
-        public static string @containsFreeText = "containsFreeText";
+        public static readonly string @containsFreeText = "containsFreeText";
         public IElement? @_containsFreeText = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2580,28 +2580,28 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _NumberFieldData
     {
-        public static string @format = "format";
+        public static readonly string @format = "format";
         public IElement? @_format = null;
 
-        public static string @isInteger = "isInteger";
+        public static readonly string @isInteger = "isInteger";
         public IElement? @_isInteger = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2650,28 +2650,28 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _Form
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
-        public static string @isAutoGenerated = "isAutoGenerated";
+        public static readonly string @isAutoGenerated = "isAutoGenerated";
         public IElement? @_isAutoGenerated = null;
 
-        public static string @hideMetaInformation = "hideMetaInformation";
+        public static readonly string @hideMetaInformation = "hideMetaInformation";
         public IElement? @_hideMetaInformation = null;
 
-        public static string @originalUri = "originalUri";
+        public static readonly string @originalUri = "originalUri";
         public IElement? @_originalUri = null;
 
-        public static string @originalWorkspace = "originalWorkspace";
+        public static readonly string @originalWorkspace = "originalWorkspace";
         public IElement? @_originalWorkspace = null;
 
-        public static string @creationProtocol = "creationProtocol";
+        public static readonly string @creationProtocol = "creationProtocol";
         public IElement? @_creationProtocol = null;
 
     }
@@ -2683,43 +2683,43 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _RowForm
     {
-        public static string @buttonApplyText = "buttonApplyText";
+        public static readonly string @buttonApplyText = "buttonApplyText";
         public IElement? @_buttonApplyText = null;
 
-        public static string @allowNewProperties = "allowNewProperties";
+        public static readonly string @allowNewProperties = "allowNewProperties";
         public IElement? @_allowNewProperties = null;
 
-        public static string @defaultWidth = "defaultWidth";
+        public static readonly string @defaultWidth = "defaultWidth";
         public IElement? @_defaultWidth = null;
 
-        public static string @defaultHeight = "defaultHeight";
+        public static readonly string @defaultHeight = "defaultHeight";
         public IElement? @_defaultHeight = null;
 
-        public static string @field = "field";
+        public static readonly string @field = "field";
         public IElement? @_field = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
-        public static string @isAutoGenerated = "isAutoGenerated";
+        public static readonly string @isAutoGenerated = "isAutoGenerated";
         public IElement? @_isAutoGenerated = null;
 
-        public static string @hideMetaInformation = "hideMetaInformation";
+        public static readonly string @hideMetaInformation = "hideMetaInformation";
         public IElement? @_hideMetaInformation = null;
 
-        public static string @originalUri = "originalUri";
+        public static readonly string @originalUri = "originalUri";
         public IElement? @_originalUri = null;
 
-        public static string @originalWorkspace = "originalWorkspace";
+        public static readonly string @originalWorkspace = "originalWorkspace";
         public IElement? @_originalWorkspace = null;
 
-        public static string @creationProtocol = "creationProtocol";
+        public static readonly string @creationProtocol = "creationProtocol";
         public IElement? @_creationProtocol = null;
 
     }
@@ -2731,76 +2731,76 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _TableForm
     {
-        public static string @property = "property";
+        public static readonly string @property = "property";
         public IElement? @_property = null;
 
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
-        public static string @includeDescendents = "includeDescendents";
+        public static readonly string @includeDescendents = "includeDescendents";
         public IElement? @_includeDescendents = null;
 
-        public static string @noItemsWithMetaClass = "noItemsWithMetaClass";
+        public static readonly string @noItemsWithMetaClass = "noItemsWithMetaClass";
         public IElement? @_noItemsWithMetaClass = null;
 
-        public static string @inhibitNewItems = "inhibitNewItems";
+        public static readonly string @inhibitNewItems = "inhibitNewItems";
         public IElement? @_inhibitNewItems = null;
 
-        public static string @inhibitDeleteItems = "inhibitDeleteItems";
+        public static readonly string @inhibitDeleteItems = "inhibitDeleteItems";
         public IElement? @_inhibitDeleteItems = null;
 
-        public static string @inhibitEditItems = "inhibitEditItems";
+        public static readonly string @inhibitEditItems = "inhibitEditItems";
         public IElement? @_inhibitEditItems = null;
 
-        public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
+        public static readonly string @defaultTypesForNewElements = "defaultTypesForNewElements";
         public IElement? @_defaultTypesForNewElements = null;
 
-        public static string @fastViewFilters = "fastViewFilters";
+        public static readonly string @fastViewFilters = "fastViewFilters";
         public IElement? @_fastViewFilters = null;
 
-        public static string @field = "field";
+        public static readonly string @field = "field";
         public IElement? @_field = null;
 
-        public static string @sortingOrder = "sortingOrder";
+        public static readonly string @sortingOrder = "sortingOrder";
         public IElement? @_sortingOrder = null;
 
-        public static string @viewNode = "viewNode";
+        public static readonly string @viewNode = "viewNode";
         public IElement? @_viewNode = null;
 
-        public static string @autoGenerateFields = "autoGenerateFields";
+        public static readonly string @autoGenerateFields = "autoGenerateFields";
         public IElement? @_autoGenerateFields = null;
 
-        public static string @duplicatePerType = "duplicatePerType";
+        public static readonly string @duplicatePerType = "duplicatePerType";
         public IElement? @_duplicatePerType = null;
 
-        public static string @dataUrl = "dataUrl";
+        public static readonly string @dataUrl = "dataUrl";
         public IElement? @_dataUrl = null;
 
-        public static string @inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
+        public static readonly string @inhibitNewUnclassifiedItems = "inhibitNewUnclassifiedItems";
         public IElement? @_inhibitNewUnclassifiedItems = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
-        public static string @isAutoGenerated = "isAutoGenerated";
+        public static readonly string @isAutoGenerated = "isAutoGenerated";
         public IElement? @_isAutoGenerated = null;
 
-        public static string @hideMetaInformation = "hideMetaInformation";
+        public static readonly string @hideMetaInformation = "hideMetaInformation";
         public IElement? @_hideMetaInformation = null;
 
-        public static string @originalUri = "originalUri";
+        public static readonly string @originalUri = "originalUri";
         public IElement? @_originalUri = null;
 
-        public static string @originalWorkspace = "originalWorkspace";
+        public static readonly string @originalWorkspace = "originalWorkspace";
         public IElement? @_originalWorkspace = null;
 
-        public static string @creationProtocol = "creationProtocol";
+        public static readonly string @creationProtocol = "creationProtocol";
         public IElement? @_creationProtocol = null;
 
     }
@@ -2812,37 +2812,37 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _CollectionForm
     {
-        public static string @tab = "tab";
+        public static readonly string @tab = "tab";
         public IElement? @_tab = null;
 
-        public static string @autoTabs = "autoTabs";
+        public static readonly string @autoTabs = "autoTabs";
         public IElement? @_autoTabs = null;
 
-        public static string @field = "field";
+        public static readonly string @field = "field";
         public IElement? @_field = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
-        public static string @isAutoGenerated = "isAutoGenerated";
+        public static readonly string @isAutoGenerated = "isAutoGenerated";
         public IElement? @_isAutoGenerated = null;
 
-        public static string @hideMetaInformation = "hideMetaInformation";
+        public static readonly string @hideMetaInformation = "hideMetaInformation";
         public IElement? @_hideMetaInformation = null;
 
-        public static string @originalUri = "originalUri";
+        public static readonly string @originalUri = "originalUri";
         public IElement? @_originalUri = null;
 
-        public static string @originalWorkspace = "originalWorkspace";
+        public static readonly string @originalWorkspace = "originalWorkspace";
         public IElement? @_originalWorkspace = null;
 
-        public static string @creationProtocol = "creationProtocol";
+        public static readonly string @creationProtocol = "creationProtocol";
         public IElement? @_creationProtocol = null;
 
     }
@@ -2854,34 +2854,34 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _ObjectForm
     {
-        public static string @tab = "tab";
+        public static readonly string @tab = "tab";
         public IElement @_tab = new MofObjectShadow("dm:///_internal/types/internal#c19bbfec-6afb-4%23c19cbfec-6afb-4017-94c2-d2992853a25c017-94c2-d2992853a25c");
 
-        public static string @autoTabs = "autoTabs";
+        public static readonly string @autoTabs = "autoTabs";
         public IElement? @_autoTabs = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
-        public static string @isAutoGenerated = "isAutoGenerated";
+        public static readonly string @isAutoGenerated = "isAutoGenerated";
         public IElement? @_isAutoGenerated = null;
 
-        public static string @hideMetaInformation = "hideMetaInformation";
+        public static readonly string @hideMetaInformation = "hideMetaInformation";
         public IElement? @_hideMetaInformation = null;
 
-        public static string @originalUri = "originalUri";
+        public static readonly string @originalUri = "originalUri";
         public IElement? @_originalUri = null;
 
-        public static string @originalWorkspace = "originalWorkspace";
+        public static readonly string @originalWorkspace = "originalWorkspace";
         public IElement? @_originalWorkspace = null;
 
-        public static string @creationProtocol = "creationProtocol";
+        public static readonly string @creationProtocol = "creationProtocol";
         public IElement? @_creationProtocol = null;
 
     }
@@ -2893,13 +2893,13 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _ViewMode
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @id = "id";
+        public static readonly string @id = "id";
         public IElement? @_id = null;
 
-        public static string @defaultExtentType = "defaultExtentType";
+        public static readonly string @defaultExtentType = "defaultExtentType";
         public IElement? @_defaultExtentType = null;
 
     }
@@ -2911,28 +2911,28 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _DropDownByCollection
     {
-        public static string @defaultWorkspace = "defaultWorkspace";
+        public static readonly string @defaultWorkspace = "defaultWorkspace";
         public IElement? @_defaultWorkspace = null;
 
-        public static string @collection = "collection";
+        public static readonly string @collection = "collection";
         public IElement? @_collection = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -2944,10 +2944,10 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _UriReferenceFieldData
     {
-        public static string @defaultWorkspace = "defaultWorkspace";
+        public static readonly string @defaultWorkspace = "defaultWorkspace";
         public IElement? @_defaultWorkspace = null;
 
-        public static string @defaultExtent = "defaultExtent";
+        public static readonly string @defaultExtent = "defaultExtent";
         public IElement? @_defaultExtent = null;
 
     }
@@ -2959,10 +2959,10 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _NavigateToFieldsForTestAction
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @isDisabled = "isDisabled";
+        public static readonly string @isDisabled = "isDisabled";
         public IElement? @_isDisabled = null;
 
     }
@@ -2974,25 +2974,25 @@ public class _Forms
         TypeKind = TypeKind.ClassTree)]
     public class _DropDownByQueryData
     {
-        public static string @query = "query";
+        public static readonly string @query = "query";
         public IElement? @_query = null;
 
-        public static string @isAttached = "isAttached";
+        public static readonly string @isAttached = "isAttached";
         public IElement? @_isAttached = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @isEnumeration = "isEnumeration";
+        public static readonly string @isEnumeration = "isEnumeration";
         public IElement? @_isEnumeration = null;
 
-        public static string @defaultValue = "defaultValue";
+        public static readonly string @defaultValue = "defaultValue";
         public IElement? @_defaultValue = null;
 
-        public static string @isReadOnly = "isReadOnly";
+        public static readonly string @isReadOnly = "isReadOnly";
         public IElement? @_isReadOnly = null;
 
     }
@@ -3010,19 +3010,19 @@ public class _AttachedExtent
         TypeKind = TypeKind.ClassTree)]
     public class _AttachedExtentConfiguration
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @referencedWorkspace = "referencedWorkspace";
+        public static readonly string @referencedWorkspace = "referencedWorkspace";
         public IElement? @_referencedWorkspace = null;
 
-        public static string @referencedExtent = "referencedExtent";
+        public static readonly string @referencedExtent = "referencedExtent";
         public IElement? @_referencedExtent = null;
 
-        public static string @referenceType = "referenceType";
+        public static readonly string @referenceType = "referenceType";
         public IElement? @_referenceType = null;
 
-        public static string @referenceProperty = "referenceProperty";
+        public static readonly string @referenceProperty = "referenceProperty";
         public IElement? @_referenceProperty = null;
 
     }
@@ -3068,46 +3068,46 @@ public class _Management
         TypeKind = TypeKind.ClassTree)]
     public class _Extent
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @uri = "uri";
+        public static readonly string @uri = "uri";
         public IElement? @_uri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @count = "count";
+        public static readonly string @count = "count";
         public IElement? @_count = null;
 
-        public static string @totalCount = "totalCount";
+        public static readonly string @totalCount = "totalCount";
         public IElement? @_totalCount = null;
 
-        public static string @type = "type";
+        public static readonly string @type = "type";
         public IElement? @_type = null;
 
-        public static string @extentType = "extentType";
+        public static readonly string @extentType = "extentType";
         public IElement? @_extentType = null;
 
-        public static string @isModified = "isModified";
+        public static readonly string @isModified = "isModified";
         public IElement? @_isModified = null;
 
-        public static string @alternativeUris = "alternativeUris";
+        public static readonly string @alternativeUris = "alternativeUris";
         public IElement? @_alternativeUris = null;
 
-        public static string @autoEnumerateType = "autoEnumerateType";
+        public static readonly string @autoEnumerateType = "autoEnumerateType";
         public IElement? @_autoEnumerateType = null;
 
-        public static string @state = "state";
+        public static readonly string @state = "state";
         public IElement? @_state = null;
 
-        public static string @failMessage = "failMessage";
+        public static readonly string @failMessage = "failMessage";
         public IElement? @_failMessage = null;
 
-        public static string @properties = "properties";
+        public static readonly string @properties = "properties";
         public IElement? @_properties = null;
 
-        public static string @loadingConfiguration = "loadingConfiguration";
+        public static readonly string @loadingConfiguration = "loadingConfiguration";
         public IElement? @_loadingConfiguration = null;
 
     }
@@ -3119,13 +3119,13 @@ public class _Management
         TypeKind = TypeKind.ClassTree)]
     public class _Workspace
     {
-        public static string @id = "id";
+        public static readonly string @id = "id";
         public IElement? @_id = null;
 
-        public static string @annotation = "annotation";
+        public static readonly string @annotation = "annotation";
         public IElement? @_annotation = null;
 
-        public static string @extents = "extents";
+        public static readonly string @extents = "extents";
         public IElement? @_extents = null;
 
     }
@@ -3137,10 +3137,10 @@ public class _Management
         TypeKind = TypeKind.ClassTree)]
     public class _CreateNewWorkspaceModel
     {
-        public static string @id = "id";
+        public static readonly string @id = "id";
         public IElement? @_id = null;
 
-        public static string @annotation = "annotation";
+        public static readonly string @annotation = "annotation";
         public IElement? @_annotation = null;
 
     }
@@ -3152,10 +3152,10 @@ public class _Management
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentTypeSetting
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @rootElementMetaClasses = "rootElementMetaClasses";
+        public static readonly string @rootElementMetaClasses = "rootElementMetaClasses";
         public IElement? @_rootElementMetaClasses = null;
 
     }
@@ -3167,46 +3167,46 @@ public class _Management
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentProperties
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @uri = "uri";
+        public static readonly string @uri = "uri";
         public IElement? @_uri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @count = "count";
+        public static readonly string @count = "count";
         public IElement? @_count = null;
 
-        public static string @totalCount = "totalCount";
+        public static readonly string @totalCount = "totalCount";
         public IElement? @_totalCount = null;
 
-        public static string @type = "type";
+        public static readonly string @type = "type";
         public IElement? @_type = null;
 
-        public static string @extentType = "extentType";
+        public static readonly string @extentType = "extentType";
         public IElement? @_extentType = null;
 
-        public static string @isModified = "isModified";
+        public static readonly string @isModified = "isModified";
         public IElement? @_isModified = null;
 
-        public static string @alternativeUris = "alternativeUris";
+        public static readonly string @alternativeUris = "alternativeUris";
         public IElement? @_alternativeUris = null;
 
-        public static string @autoEnumerateType = "autoEnumerateType";
+        public static readonly string @autoEnumerateType = "autoEnumerateType";
         public IElement? @_autoEnumerateType = null;
 
-        public static string @state = "state";
+        public static readonly string @state = "state";
         public IElement? @_state = null;
 
-        public static string @failMessage = "failMessage";
+        public static readonly string @failMessage = "failMessage";
         public IElement? @_failMessage = null;
 
-        public static string @properties = "properties";
+        public static readonly string @properties = "properties";
         public IElement? @_properties = null;
 
-        public static string @loadingConfiguration = "loadingConfiguration";
+        public static readonly string @loadingConfiguration = "loadingConfiguration";
         public IElement? @_loadingConfiguration = null;
 
     }
@@ -3218,13 +3218,13 @@ public class _Management
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentPropertyDefinition
     {
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @title = "title";
+        public static readonly string @title = "title";
         public IElement? @_title = null;
 
-        public static string @metaClass = "metaClass";
+        public static readonly string @metaClass = "metaClass";
         public IElement? @_metaClass = null;
 
     }
@@ -3236,10 +3236,10 @@ public class _Management
         TypeKind = TypeKind.ClassTree)]
     public class _ExtentSettings
     {
-        public static string @extentTypeSettings = "extentTypeSettings";
+        public static readonly string @extentTypeSettings = "extentTypeSettings";
         public IElement? @_extentTypeSettings = null;
 
-        public static string @propertyDefinitions = "propertyDefinitions";
+        public static readonly string @propertyDefinitions = "propertyDefinitions";
         public IElement? @_propertyDefinitions = null;
 
     }
@@ -3285,13 +3285,13 @@ public class _FastViewFilters
         TypeKind = TypeKind.ClassTree)]
     public class _PropertyComparisonFilter
     {
-        public static string @Property = "Property";
+        public static readonly string @Property = "Property";
         public IElement? @_Property = null;
 
-        public static string @ComparisonType = "ComparisonType";
+        public static readonly string @ComparisonType = "ComparisonType";
         public IElement? @_ComparisonType = null;
 
-        public static string @Value = "Value";
+        public static readonly string @Value = "Value";
         public IElement? @_Value = null;
 
     }
@@ -3303,10 +3303,10 @@ public class _FastViewFilters
         TypeKind = TypeKind.ClassTree)]
     public class _PropertyContainsFilter
     {
-        public static string @Property = "Property";
+        public static readonly string @Property = "Property";
         public IElement? @_Property = null;
 
-        public static string @Value = "Value";
+        public static readonly string @Value = "Value";
         public IElement? @_Value = null;
 
     }
@@ -3324,22 +3324,22 @@ public class _DynamicRuntimeProvider
         TypeKind = TypeKind.ClassTree)]
     public class _DynamicRuntimeLoaderConfig
     {
-        public static string @runtimeClass = "runtimeClass";
+        public static readonly string @runtimeClass = "runtimeClass";
         public IElement? @_runtimeClass = null;
 
-        public static string @configuration = "configuration";
+        public static readonly string @configuration = "configuration";
         public IElement? @_configuration = null;
 
-        public static string @name = "name";
+        public static readonly string @name = "name";
         public IElement? @_name = null;
 
-        public static string @extentUri = "extentUri";
+        public static readonly string @extentUri = "extentUri";
         public IElement? @_extentUri = null;
 
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @dropExisting = "dropExisting";
+        public static readonly string @dropExisting = "dropExisting";
         public IElement? @_dropExisting = null;
 
     }
@@ -3353,13 +3353,13 @@ public class _DynamicRuntimeProvider
             TypeKind = TypeKind.ClassTree)]
         public class _NumberProviderSettings
         {
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement? @_name = null;
 
-            public static string @start = "start";
+            public static readonly string @start = "start";
             public IElement? @_start = null;
 
-            public static string @end = "end";
+            public static readonly string @end = "end";
             public IElement? @_end = null;
 
         }
@@ -3371,16 +3371,16 @@ public class _DynamicRuntimeProvider
             TypeKind = TypeKind.ClassTree)]
         public class _NumberRepresentation
         {
-            public static string @binary = "binary";
+            public static readonly string @binary = "binary";
             public IElement? @_binary = null;
 
-            public static string @octal = "octal";
+            public static readonly string @octal = "octal";
             public IElement? @_octal = null;
 
-            public static string @decimal = "decimal";
+            public static readonly string @decimal = "decimal";
             public IElement? @_decimal = null;
 
-            public static string @hexadecimal = "hexadecimal";
+            public static readonly string @hexadecimal = "hexadecimal";
             public IElement? @_hexadecimal = null;
 
         }
@@ -3402,16 +3402,16 @@ public class _Verifier
         TypeKind = TypeKind.ClassTree)]
     public class _VerifyEntry
     {
-        public static string @workspaceId = "workspaceId";
+        public static readonly string @workspaceId = "workspaceId";
         public IElement? @_workspaceId = null;
 
-        public static string @itemUri = "itemUri";
+        public static readonly string @itemUri = "itemUri";
         public IElement? @_itemUri = null;
 
-        public static string @category = "category";
+        public static readonly string @category = "category";
         public IElement? @_category = null;
 
-        public static string @message = "message";
+        public static readonly string @message = "message";
         public IElement? @_message = null;
 
     }

@@ -45,16 +45,16 @@ public class _MOF
             TypeKind = TypeKind.ClassTree)]
         public class _Tag
         {
-            public static string @tagOwner = "tagOwner";
+            public static readonly string @tagOwner = "tagOwner";
             public IElement @_tagOwner = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag-tagOwner");
 
-            public static string @ownedComment = "ownedComment";
+            public static readonly string @ownedComment = "ownedComment";
             public IElement @_ownedComment = new MofObjectShadow("dm:///_internal/model/uml#Element-ownedComment");
 
-            public static string @ownedElement = "ownedElement";
+            public static readonly string @ownedElement = "ownedElement";
             public IElement @_ownedElement = new MofObjectShadow("dm:///_internal/model/uml#Element-ownedElement");
 
-            public static string @owner = "owner";
+            public static readonly string @owner = "owner";
             public IElement @_owner = new MofObjectShadow("dm:///_internal/model/uml#Element-owner");
 
         }
@@ -72,13 +72,13 @@ public class _MOF
             TypeKind = TypeKind.ClassTree)]
         public class _Tag
         {
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement @_name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-name");
 
-            public static string @value = "value";
+            public static readonly string @value = "value";
             public IElement @_value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-value");
 
-            public static string @element = "element";
+            public static readonly string @element = "element";
             public IElement @_element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-element");
 
         }
@@ -144,10 +144,10 @@ public class _MOF
             TypeKind = TypeKind.ClassTree)]
         public class _Argument
         {
-            public static string @name = "name";
+            public static readonly string @name = "name";
             public IElement @_name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-name");
 
-            public static string @value = "value";
+            public static readonly string @value = "value";
             public IElement @_value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-value");
 
         }
@@ -168,13 +168,13 @@ public class _MOF
             TypeKind = TypeKind.ClassTree)]
         public class _Link
         {
-            public static string @firstElement = "firstElement";
+            public static readonly string @firstElement = "firstElement";
             public IElement @_firstElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-firstElement");
 
-            public static string @secondElement = "secondElement";
+            public static readonly string @secondElement = "secondElement";
             public IElement @_secondElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-secondElement");
 
-            public static string @association = "association";
+            public static readonly string @association = "association";
             public IElement @_association = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-association");
 
         }
@@ -186,13 +186,13 @@ public class _MOF
             TypeKind = TypeKind.ClassTree)]
         public class _Exception
         {
-            public static string @objectInError = "objectInError";
+            public static readonly string @objectInError = "objectInError";
             public IElement @_objectInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-objectInError");
 
-            public static string @elementInError = "elementInError";
+            public static readonly string @elementInError = "elementInError";
             public IElement @_elementInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-elementInError");
 
-            public static string @description = "description";
+            public static readonly string @description = "description";
             public IElement @_description = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-description");
 
         }
@@ -210,7 +210,7 @@ public class _MOF
             TypeKind = TypeKind.ClassTree)]
         public class _Factory
         {
-            public static string @package = "package";
+            public static readonly string @package = "package";
             public IElement @_package = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory-package");
 
         }
@@ -240,7 +240,7 @@ public class _MOF
             TypeKind = TypeKind.ClassTree)]
         public class _Element
         {
-            public static string @metaclass = "metaclass";
+            public static readonly string @metaclass = "metaclass";
             public IElement @_metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
 
         }

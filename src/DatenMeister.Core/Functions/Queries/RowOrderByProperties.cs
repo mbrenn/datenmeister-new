@@ -51,15 +51,11 @@ public class RowOrderByProperties : IReflectiveCollection, IHasExtent
 
         // Build up the Query
         var firstColumn = _orderByProperty[0];
-        if (firstColumn.StartsWith("!"))
-        {
-            firstColumn = firstColumn.Substring(1);
-        }
-            
+        
         var current =
             firstColumn.StartsWith("!")
                 ? _parent
-                    .OrderByDescending(x => SelectObject(x, firstColumn))
+                    .OrderByDescending(x => SelectObject(x, firstColumn.Substring(1)))
                 : _parent
                     .OrderBy(x => SelectObject(x, firstColumn));
 

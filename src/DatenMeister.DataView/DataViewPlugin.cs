@@ -58,6 +58,7 @@ public class DataViewPlugin(
         result.Add(new FilterColumnsExcludeEvaluation());
         result.Add(new FilterColumnsIncludeOnlyEvaluation());
         result.Add(new RowFilterOnPositionEvaluation());
+        result.Add(new RowFilterNodeEvaluation());
 
         return result;
     }

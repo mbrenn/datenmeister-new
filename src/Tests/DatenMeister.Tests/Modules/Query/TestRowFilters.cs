@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
@@ -14,7 +15,6 @@ namespace DatenMeister.Tests.Modules.Query;
 
 public class TestRowFilters
 {
-    
     [Test]
     public async Task TestWhenMetaClassIsWithoutInherits()
     {
@@ -48,6 +48,63 @@ public class TestRowFilters
                 (x.metaclass.equals(_DataViews.TheOne.__ViewNode) ||
                  x.metaclass.equals(_DataViews.TheOne.__SelectByWorkspaceNode))));
     }
+
+
+    [Test]
+    public async Task TestOrderBy()
+    {
+        var scope = await DatenMeisterTests.GetDatenMeisterScope();
+
+        var extentManager = scope.Resolve<ExtentManager>();
+
+        var loaderConfig =
+            InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+        loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
+            WorkspaceNames.WorkspaceData);
+
+        var loadedExtentInfo = await extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
+        Assert.That(loadedExtentInfo.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
+        var factory = new MofFactory(loadedExtentInfo.Extent!);
+
+        var item = factory.create(_DataViews.TheOne.__ViewNode);
+        item.set(_DataViews._ViewNode.name, $"X");
+        loadedExtentInfo.Extent!.elements().add(item);
+        
+        item = factory.create(_DataViews.TheOne.__ViewNode);
+        item.set(_DataViews._ViewNode.name, $"B");
+        loadedExtentInfo.Extent!.elements().add(item);
+
+        item = factory.create(_DataViews.TheOne.__ViewNode);
+        item.set(_DataViews._ViewNode.name, $"A");
+        loadedExtentInfo.Extent!.elements().add(item);
+        
+        // Now, we create the query and check that the ordering is working
+        var queryByExtent = factory.create(_DataViews.TheOne.__SelectByExtentNode);
+        queryByExtent.set(_DataViews._SelectByExtentNode.workspaceId, "Data");
+        queryByExtent.set(_DataViews._SelectByExtentNode.extentUri, "dm:///test");
+        
+        var queryOnPosition = factory.create(_DataViews.TheOne.__RowOrderByNode);
+        queryOnPosition.set(_DataViews._RowOrderByNode.input, queryByExtent);
+        queryOnPosition.set(_DataViews._RowOrderByNode.propertyName, "name");
+        
+        var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
+        var resultingNodes = viewLogic.GetElementsForViewNode(queryOnPosition).OfType<IElement>().ToList();
+        
+        Assert.That(resultingNodes.Count, Is.EqualTo(3));
+        Assert.That(resultingNodes[0].get(_DataViews._ViewNode.name), Is.EqualTo("A"));
+        Assert.That(resultingNodes[1].get(_DataViews._ViewNode.name), Is.EqualTo("B"));
+        Assert.That(resultingNodes[2].get(_DataViews._ViewNode.name), Is.EqualTo("X"));
+        
+        // Now check the reverse order
+        queryOnPosition.set(_DataViews._RowOrderByNode.orderDescending, true);
+        resultingNodes = viewLogic.GetElementsForViewNode(queryOnPosition).OfType<IElement>().ToList();
+        Assert.That(resultingNodes.Count, Is.EqualTo(3));
+        Assert.That(resultingNodes[0].get(_DataViews._ViewNode.name), Is.EqualTo("X"));
+        Assert.That(resultingNodes[1].get(_DataViews._ViewNode.name), Is.EqualTo("B"));
+        Assert.That(resultingNodes[2].get(_DataViews._ViewNode.name), Is.EqualTo("A"));
+    }
+    
 
     [Test]
     public async Task TestWhenOnPosition()

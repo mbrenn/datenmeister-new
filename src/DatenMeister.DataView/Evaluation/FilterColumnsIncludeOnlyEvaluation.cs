@@ -21,14 +21,7 @@ public class FilterColumnsIncludeOnlyEvaluation : IDataViewNodeEvaluation
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._ColumnFilterIncludeOnlyNode.input);
-        if (inputNode == null)
-        {
-            Logger.Warn("Input node not found");
-            return new PureReflectiveSequence();
-        }
-
-        var input = evaluation.GetElementsForViewNode(inputNode);
+        var input = evaluation.GetInputNode(viewNode);
 
         var wrappedViewNode = new DataViews.ColumnFilterIncludeOnlyNode_Wrapper(viewNode);
         var columnNames = wrappedViewNode.columnNamesComma;

@@ -1,0 +1,28 @@
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+
+namespace DatenMeister.DataView.Evaluation;
+
+public class RowFilterNodeEvaluation : IDataViewNodeEvaluation
+{
+    public bool IsResponsible(IElement node)
+    {
+        var metaClass = node.getMetaClass();
+        return metaClass != null &&
+               metaClass.equals(_DataViews.TheOne.__RowOrderByNode);
+    }
+
+    public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
+    {
+        var input = evaluation.GetInputNode(viewNode);
+
+        var property = viewNode.getOrDefault<string>(_DataViews._RowOrderByNode.propertyName);
+        var orderByDescending = viewNode.getOrDefault<bool>(_DataViews._RowOrderByNode.orderDescending);
+
+        return new RowOrderByProperties(input, 
+        [orderByDescending ? "!" + property : property]);
+    }
+}

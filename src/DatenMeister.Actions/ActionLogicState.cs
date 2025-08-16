@@ -52,6 +52,7 @@ public class ActionLogicState
         logicState.AddActionHandler(new MoveUpDownActionHandler());
         logicState.AddActionHandler(new ImportXmiActionHandler());
         logicState.AddActionHandler(new DeletePropertyFromCollectionActionHandler());
+        logicState.AddActionHandler(new ConsoleWriteActionHandler());
         return logicState;
     }
 }

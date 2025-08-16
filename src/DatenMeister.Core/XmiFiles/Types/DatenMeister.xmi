@@ -255,6 +255,10 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3c3dcee3-b48d-4ff1-b7aa-a8e2e759aa4d" name="formUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false"></ownedAttribute>
       </packagedElement>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="82f46dd7-b61b-4bc1-b25c-d5d3d244c35a" name="ConsoleWriteAction">
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a65703b5-654a-4b42-81de-14595a7b7b62" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="04e791c9-1316-4777-afc0-afb30d294530" name="text" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">

@@ -384,6 +384,14 @@ export namespace _Actions
                 export const __NavigateToItemClientAction_Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4";
         }
 
+        export class _ConsoleWriteAction
+        {
+            static text = "text";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
+        }
+
+        export const __ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
 }
 
 export namespace _DataViews

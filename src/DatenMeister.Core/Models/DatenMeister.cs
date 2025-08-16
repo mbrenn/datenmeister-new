@@ -848,6 +848,24 @@ public class _Actions
 
     public _ClientActions ClientActions = new _ClientActions();
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
+        TypeKind = TypeKind.ClassTree)]
+    public class _ConsoleWriteAction
+    {
+        public static readonly string @text = "text";
+        public IElement? @_text = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
+    }
+
+    public _ConsoleWriteAction @ConsoleWriteAction = new _ConsoleWriteAction();
+    public MofObjectShadow @__ConsoleWriteAction = new MofObjectShadow("dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a");
+
     public static readonly _Actions TheOne = new _Actions();
 
 }

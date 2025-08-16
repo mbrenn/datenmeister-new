@@ -1555,6 +1555,38 @@ public class Actions
 
     }
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
+        TypeKind = TypeKind.WrappedClass)]
+    public class ConsoleWriteAction_Wrapper(IElement innerDmElement) : IElementWrapper
+    {
+        public IElement GetWrappedElement() => innerDmElement;
+
+        public string? @text
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("text");
+            set => 
+                innerDmElement.set("text", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("name");
+            set => 
+                innerDmElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                innerDmElement.getOrDefault<bool>("isDisabled");
+            set => 
+                innerDmElement.set("isDisabled", value);
+        }
+
+    }
+
 }
 
 public class DataViews

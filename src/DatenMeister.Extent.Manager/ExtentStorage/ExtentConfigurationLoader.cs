@@ -26,7 +26,7 @@ public class ExtentConfigurationLoader(
     /// workspace loading. This flag is set, except for unit and integration tests
     /// to figure out the root cause for resetted configurations.
     /// </summary>
-    public static bool BreakOnFailedWorkspaceLoading = true;
+    public static bool BreakOnFailedWorkspaceLoading { get; set; } = true;
 
     /// <summary>
     /// Gets the information about the loaded extents,

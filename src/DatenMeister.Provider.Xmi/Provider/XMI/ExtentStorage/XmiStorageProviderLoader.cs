@@ -58,7 +58,7 @@ public class XmiStorageProviderLoader : IProviderLoader, IProviderLocking
                 catch (Exception exc)
                 {
                     Logger.Warn(exc.ToString());
-                    xmlDocument = CreateEmptyXmiDocument(configuration);
+                    throw;
                 }
             }
 

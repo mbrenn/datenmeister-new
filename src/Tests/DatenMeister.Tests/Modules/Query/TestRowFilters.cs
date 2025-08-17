@@ -9,6 +9,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Modules.ZipCodeExample.Model;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Query;
@@ -16,9 +17,79 @@ namespace DatenMeister.Tests.Modules.Query;
 public class TestRowFilters
 {
     [Test]
+    public async Task TestFilterByPropertyEqual()
+    {
+        var (scope, queryFlatten, queryByMetaClass) = await SetupExtentAndQuery();
+        var testExtent = scope.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///test")!;
+        Assert.That(testExtent, Is.Not.Null);
+        
+        // Add some values
+        var factory = new MofFactory(testExtent);
+        testExtent.elements().add(factory.create(null).SetProperties(
+            new Dictionary<string, object>
+                { ["code"] = "12345", ["name"] = "Berlin" }));
+        testExtent.elements().add(factory.create(null).SetProperties(
+            new Dictionary<string, object>
+                { ["code"] = "55130", ["name"] = "Mainz" }));
+        testExtent.elements().add(factory.create(null).SetProperties(
+            new Dictionary<string, object>
+                { ["code"] = "652a3", ["name"] = "Invalidenheim" }));
+        testExtent.elements().add(factory.create(null).SetProperties(
+            new Dictionary<string, object>
+                { ["code"] = "90231", ["name"] = "Rosenheim" }));
+        
+        // Now, we create the query and check that the filtering is working
+        var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
+
+        var queryProperty = factory.create(_DataViews.TheOne.__RowFilterByPropertyValueNode);
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.input, queryFlatten);
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.property, "code");
+        
+        // Test 1, check, that only Berlin is returned
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.comparisonMode, 
+            _DataViews.___ComparisonMode.Equal);
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.value, "12345");
+        
+        var resultingNodes = viewLogic.GetElementsForViewNode(queryProperty).OfType<IElement>().ToList();
+        Assert.That(resultingNodes.Count, Is.EqualTo(1));
+        Assert.That(resultingNodes.All(x => x.getOrDefault<string>("code") == "12345"));
+        
+        // Test 2, check, that not Berlin is returned
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.comparisonMode, 
+            _DataViews.___ComparisonMode.NotEqual);
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.value, "12345");
+        
+        resultingNodes = viewLogic.GetElementsForViewNode(queryProperty).OfType<IElement>().ToList();
+        Assert.That(resultingNodes.Count, Is.GreaterThan(2));
+        Assert.That(resultingNodes.All(x => x.getOrDefault<string>("code") != "12345"));
+        
+        // Test 3, check that all 'heims' are returned
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.property, "name");
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.comparisonMode, 
+            _DataViews.___ComparisonMode.Contains);
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.value, "heim");
+        resultingNodes = viewLogic.GetElementsForViewNode(queryProperty).OfType<IElement>().ToList();
+        Assert.That(resultingNodes.Count, Is.EqualTo(2));
+        Assert.That(resultingNodes.All(x => x.getOrDefault<string>("name").Contains("heim")));
+        
+        // Test 4, check that only the matches of a 5 digit zip code are returned
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.property, "code");
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.comparisonMode, 
+            _DataViews.___ComparisonMode.RegexMatch);
+        queryProperty.set(_DataViews._RowFilterByPropertyValueNode.value, "^[0-9]{5}$");
+        resultingNodes = viewLogic.GetElementsForViewNode(queryProperty).OfType<IElement>().ToList();
+        Assert.That(resultingNodes.Count, Is.EqualTo(3));
+        Assert.That(resultingNodes.All(x =>
+        {
+            var name = x.getOrDefault<string>("name");
+            return name == "Berlin" || name == "Mainz" || name == "Rosenheim";
+        }));
+    }
+    
+    [Test]
     public async Task TestWhenMetaClassIsWithoutInherits()
     {
-        var (scope, queryByMetaClass) = await SetupExtentAndQuery();
+        var (scope, _, queryByMetaClass) = await SetupExtentAndQuery();
         await using var datenMeisterScope = scope;
 
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
@@ -33,7 +104,7 @@ public class TestRowFilters
     [Test]
     public async Task TestWhenMetaClassIsWitInherits()
     {
-        var (scope, queryByMetaClass) = await SetupExtentAndQuery();
+        var (scope, _, queryByMetaClass) = await SetupExtentAndQuery();
         await using var datenMeisterScope = scope;
         queryByMetaClass.set(_DataViews._RowFilterByMetaclassNode.includeInherits, true);
 
@@ -166,7 +237,7 @@ public class TestRowFilters
         Assert.That(resultingNodes[4].get(_DataViews._ViewNode.name), Is.EqualTo("Item 99"));
     }
 
-    private static async Task<(IDatenMeisterScope scope, IElement queryByMetaClass)> SetupExtentAndQuery()
+    private static async Task<(IDatenMeisterScope scope, IElement queryFlatten, IElement queryByMetaClass)> SetupExtentAndQuery()
     {
         IDatenMeisterScope? scope = null;
         try
@@ -218,7 +289,7 @@ public class TestRowFilters
             queryByMetaClass.set(
                 _DataViews._RowFilterByMetaclassNode.metaClass,
                 _DataViews.TheOne.__ViewNode);
-            return (scope, queryByMetaClass);
+            return (scope, queryFlatten, queryByMetaClass);
         }
         catch
         {

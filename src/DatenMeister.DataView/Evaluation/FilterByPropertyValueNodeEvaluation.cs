@@ -1,4 +1,5 @@
-﻿using BurnSystems.Logging;
+﻿using System.Text.RegularExpressions;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -69,6 +70,13 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
     private IEnumerable<object> FilterElementsForPropertyNode(IReflectiveCollection input, string property,
         string propertyValue, _DataViews.___ComparisonMode comparisonMode)
     {
+        Regex? regex = null;
+        if (comparisonMode == _DataViews.___ComparisonMode.RegexMatch
+            || comparisonMode == _DataViews.___ComparisonMode.RegexNoMatch)
+        {
+            regex = new Regex(propertyValue);
+        }
+        
         foreach (var element in input.OfType<IObject>())
         {
             if (!element.isSet(property))
@@ -95,6 +103,8 @@ public class FilterByPropertyValueNodeEvaluation : IDataViewNodeEvaluation
                 _DataViews.___ComparisonMode.LighterOrEqualThan => string.Compare(elementValue,
                     propertyValue,
                     StringComparison.Ordinal) <= 0,
+                _DataViews.___ComparisonMode.RegexMatch => regex?.IsMatch(elementValue) ?? false,
+                _DataViews.___ComparisonMode.RegexNoMatch => regex?.IsMatch(elementValue) == false,
                 _ => throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, null)
             };
 

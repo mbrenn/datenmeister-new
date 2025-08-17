@@ -455,6 +455,8 @@ export namespace _DataViews
             export const GreaterOrEqualThan = "GreaterOrEqualThan";
             export const LighterThan = "LighterThan";
             export const LighterOrEqualThan = "LighterOrEqualThan";
+            export const RegexMatch = "RegexMatch";
+            export const RegexNoMatch = "RegexNoMatch";
         }
 
         export enum ___ComparisonMode
@@ -466,7 +468,9 @@ export namespace _DataViews
             GreaterThan,
             GreaterOrEqualThan,
             LighterThan,
-            LighterOrEqualThan
+            LighterOrEqualThan,
+            RegexMatch,
+            RegexNoMatch
         }
 
         export class _SelectByFullNameNode

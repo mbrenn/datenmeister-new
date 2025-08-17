@@ -1001,6 +1001,10 @@ public class _DataViews
         public IElement @__LighterThan = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ComparisonMode-LighterThan");
         public static string @LighterOrEqualThan = "LighterOrEqualThan";
         public IElement @__LighterOrEqualThan = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ComparisonMode-LighterOrEqualThan");
+        public static string @RegexMatch = "RegexMatch";
+        public IElement? @__RegexMatch = null;
+        public static string @RegexNoMatch = "RegexNoMatch";
+        public IElement? @__RegexNoMatch = null;
 
     }
 
@@ -1017,7 +1021,9 @@ public class _DataViews
         @GreaterThan,
         @GreaterOrEqualThan,
         @LighterThan,
-        @LighterOrEqualThan
+        @LighterOrEqualThan,
+        @RegexMatch,
+        @RegexNoMatch
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",

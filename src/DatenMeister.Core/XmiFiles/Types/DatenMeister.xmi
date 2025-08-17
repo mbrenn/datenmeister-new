@@ -301,6 +301,8 @@
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-GreaterOrEqualThan" name="GreaterOrEqualThan" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-LighterThan" name="LighterThan" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-LighterOrEqualThan" name="LighterOrEqualThan" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="f27e8c57-17ca-4661-8c3b-463d6c17d68d" name="RegexMatch" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="8076086e-98c0-4c2b-be26-4d4110f2bec3" name="RegexNoMatch" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SelectByFullNameNode" name="SelectByFullNameNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="316f207a-81a5-446c-8518-94c5ded9b8c7" general-ref="#DatenMeister.Models.DataViews.ViewNode" />

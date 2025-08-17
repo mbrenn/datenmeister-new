@@ -334,6 +334,13 @@ export var _Actions;
         _ClientActions._NavigateToItemClientAction = _NavigateToItemClientAction;
         _ClientActions.__NavigateToItemClientAction_Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4";
     })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
+    class _ConsoleWriteAction {
+    }
+    _ConsoleWriteAction.text = "text";
+    _ConsoleWriteAction._name_ = "name";
+    _ConsoleWriteAction.isDisabled = "isDisabled";
+    _Actions._ConsoleWriteAction = _ConsoleWriteAction;
+    _Actions.__ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
 })(_Actions || (_Actions = {}));
 export var _DataViews;
 (function (_DataViews) {
@@ -390,6 +397,8 @@ export var _DataViews;
         _ComparisonMode.GreaterOrEqualThan = "GreaterOrEqualThan";
         _ComparisonMode.LighterThan = "LighterThan";
         _ComparisonMode.LighterOrEqualThan = "LighterOrEqualThan";
+        _ComparisonMode.RegexMatch = "RegexMatch";
+        _ComparisonMode.RegexNoMatch = "RegexNoMatch";
     })(_ComparisonMode = _DataViews._ComparisonMode || (_DataViews._ComparisonMode = {}));
     let ___ComparisonMode;
     (function (___ComparisonMode) {
@@ -401,6 +410,8 @@ export var _DataViews;
         ___ComparisonMode[___ComparisonMode["GreaterOrEqualThan"] = 5] = "GreaterOrEqualThan";
         ___ComparisonMode[___ComparisonMode["LighterThan"] = 6] = "LighterThan";
         ___ComparisonMode[___ComparisonMode["LighterOrEqualThan"] = 7] = "LighterOrEqualThan";
+        ___ComparisonMode[___ComparisonMode["RegexMatch"] = 8] = "RegexMatch";
+        ___ComparisonMode[___ComparisonMode["RegexNoMatch"] = 9] = "RegexNoMatch";
     })(___ComparisonMode = _DataViews.___ComparisonMode || (_DataViews.___ComparisonMode = {}));
     class _SelectByFullNameNode {
     }
@@ -456,7 +467,7 @@ export var _DataViews;
     }
     _RowFilterOnPositionNode.input = "input";
     _RowFilterOnPositionNode.amount = "amount";
-    _RowFilterOnPositionNode.number = "number";
+    _RowFilterOnPositionNode.position = "position";
     _DataViews._RowFilterOnPositionNode = _RowFilterOnPositionNode;
     _DataViews.__RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
     class _RowOrderByNode {

@@ -82,7 +82,7 @@ public class TestRowFilters
         Assert.That(resultingNodes.All(x =>
         {
             var name = x.getOrDefault<string>("name");
-            return name == "Berlin" || name == "Mainz" || name == "Rosenheim";
+            return name is "Berlin" or "Mainz" or "Rosenheim";
         }));
     }
     

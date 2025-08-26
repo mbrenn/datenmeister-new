@@ -348,6 +348,11 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f15fecaf-9db0-4df6-8779-297bfe2ed71e" name="propertyName" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="2a958352-bfdf-4e41-8a67-f17923655f8d" name="orderDescending" type-ref="dm:///_internal/model/primitivetypes#Boolean" isID="false" isComposite="false" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="5f66ff9a-0a68-4c87-856b-5921c7cae628" name="RowFilterByFreeTextAnywhere">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="2722721d-dbb9-4f24-ad16-9ba07c106a12" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="2f5a7112-010e-4e94-974c-21108986abcb" name="freeText" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4d4eea81-5f77-4936-89d4-b4a1befe0d4c" name="input" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
+    </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">

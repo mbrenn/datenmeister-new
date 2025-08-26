@@ -2196,6 +2196,39 @@ public class DataViews
 
     }
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
+        TypeKind = TypeKind.WrappedClass)]
+    public class RowFilterByFreeTextAnywhere_Wrapper(IElement innerDmElement) : IElementWrapper
+    {
+        public IElement GetWrappedElement() => innerDmElement;
+
+        public string? @freeText
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("freeText");
+            set => 
+                innerDmElement.set("freeText", value);
+        }
+
+        // Not found
+        public object? @input
+        {
+            get =>
+                innerDmElement.getOrDefault<object?>("input");
+            set => 
+                innerDmElement.set("input", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("name");
+            set => 
+                innerDmElement.set("name", value);
+        }
+
+    }
+
 }
 
 public class Reports

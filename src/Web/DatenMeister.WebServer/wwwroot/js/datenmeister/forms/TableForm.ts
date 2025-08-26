@@ -338,7 +338,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         const inputField = $('<input type="text" placeholder="Filter by Text"></input>');
         inputField.on('input', async () => {
             tthis.tableState.freeTextFilter = inputField.val().toString();
-            await tthis.refreshTable();
+            await tthis.reloadTable();
         });
 
         this.tableCache.cacheFreeTextField.append(inputField);
@@ -404,10 +404,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 continue;
             }
 
+            /*            
             // If we have freetext, then we need to skip the row.
             if (this.tableParameter.allowFreeTextFiltering && !this.isElementMatchingFreeTextFilter(element, fields)) {
                 continue;
-            }
+            }            
+             */
 
             const row = $("<tr></tr>");
 

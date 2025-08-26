@@ -1188,6 +1188,24 @@ public class _DataViews
     public _RowOrderByNode @RowOrderByNode = new _RowOrderByNode();
     public MofObjectShadow @__RowOrderByNode = new MofObjectShadow("dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9");
 
+    [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
+        TypeKind = TypeKind.ClassTree)]
+    public class _RowFilterByFreeTextAnywhere
+    {
+        public static readonly string @freeText = "freeText";
+        public IElement? @_freeText = null;
+
+        public static readonly string @input = "input";
+        public IElement? @_input = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+    }
+
+    public _RowFilterByFreeTextAnywhere @RowFilterByFreeTextAnywhere = new _RowFilterByFreeTextAnywhere();
+    public MofObjectShadow @__RowFilterByFreeTextAnywhere = new MofObjectShadow("dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628");
+
     public static readonly _DataViews TheOne = new _DataViews();
 
 }

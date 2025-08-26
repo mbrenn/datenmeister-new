@@ -405,11 +405,18 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
                         if(query.orderBy !== undefined) {
                             QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
                         }
+
+                        if(query.filterByFreetext)
+                        {
+                            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+                        }
+                        
+                        QueryEngine.limit(builder, 101);
                         
                         const queryResult = await ClientElements.queryObject(builder.queryStatement);
                         return {
-                            message: "Result per Query",
-                            elements: queryResult.result
+                            message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
+                            elements: queryResult.result.slice(0,100) as Array<DmObject>
                         }
                     }
                 };

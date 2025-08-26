@@ -36,11 +36,34 @@ export function filterByMetaClass(builder: QueryBuilder, metaClass: Mof.DmObject
 }
 
 export function orderByProperty(builder: QueryBuilder, property: string, descending: boolean) {
-    // Not Implemented up to now
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowOrderByNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._RowOrderByNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._RowOrderByNode.propertyName, property);
+    viewNode.set(_DatenMeister._DataViews._RowOrderByNode.orderDescending, descending);
+    
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
 }
 
 export function limit(builder: QueryBuilder, limit: number) {
-    // not implemented up to now
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterOnPositionNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._RowFilterOnPositionNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._RowFilterOnPositionNode.amount, limit);
+    
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
+}
+
+export function filterByFreetext(builder: QueryBuilder, freeText: string) {
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterByFreeTextAnywhere_Uri);
+    viewNode.set(_DatenMeister._DataViews._RowFilterByFreeTextAnywhere.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._RowFilterByFreeTextAnywhere.freeText, freeText);
+
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
 }
 
 export function filterByProperty(builder: QueryBuilder, 

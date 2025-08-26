@@ -547,6 +547,14 @@ export namespace _DataViews
         }
 
         export const __RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
+        export class _RowFilterByFreeTextAnywhere
+        {
+            static freeText = "freeText";
+            static input = "input";
+            static _name_ = "name";
+        }
+
+        export const __RowFilterByFreeTextAnywhere_Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628";
 }
 
 export namespace _Reports

@@ -477,6 +477,13 @@ export var _DataViews;
     _RowOrderByNode.orderDescending = "orderDescending";
     _DataViews._RowOrderByNode = _RowOrderByNode;
     _DataViews.__RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
+    class _RowFilterByFreeTextAnywhere {
+    }
+    _RowFilterByFreeTextAnywhere.freeText = "freeText";
+    _RowFilterByFreeTextAnywhere.input = "input";
+    _RowFilterByFreeTextAnywhere._name_ = "name";
+    _DataViews._RowFilterByFreeTextAnywhere = _RowFilterByFreeTextAnywhere;
+    _DataViews.__RowFilterByFreeTextAnywhere_Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628";
 })(_DataViews || (_DataViews = {}));
 export var _Reports;
 (function (_Reports) {

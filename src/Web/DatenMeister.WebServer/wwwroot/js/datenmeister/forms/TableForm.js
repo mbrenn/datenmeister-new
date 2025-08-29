@@ -101,6 +101,7 @@ export class TableForm {
         query.orderBy = this.tableState.orderBy;
         query.orderByDescending = this.tableState.orderByDescending;
         query.filterByProperties = this.tableState.filterByProperty;
+        query.filterByFreetext = this.tableState.freeTextFilter;
         this.elements = await this.callbackLoadItems(query);
         if (this.firstRun) {
             this.firstRun = false;
@@ -116,6 +117,11 @@ export class TableForm {
             parent.append(this.tableCache.cacheEmptyDiv);
             this.tableCache.cacheTable = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
             parent.append(this.tableCache.cacheTable);
+            // Create filter for freetext
+            if (this.tableParameter.allowFreeTextFiltering) {
+                // Create freetext
+                this.createFreeTextField();
+            }
         }
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(this.formElement.get('title')
@@ -124,17 +130,11 @@ export class TableForm {
         if (link !== null) {
             headLineLink.attr('href', link);
         }
-        this.tableCache.cacheFreeTextField.empty();
         this.tableCache.cacheButtons.empty();
         // Evaluate the new buttons to create objects
         this.createButtonsForNewInstance();
         // Create Query Text
         this.updateFilterQueryText();
-        // Create filter for freetext
-        if (this.tableParameter.allowFreeTextFiltering) {
-            // Create freetext
-            this.createFreeTextField();
-        }
         // Creates the table 
         if (this.elements === undefined) {
             this.elements = [];

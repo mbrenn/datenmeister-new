@@ -7,8 +7,6 @@ namespace DatenMeister.Core.Functions.Queries;
 public class RowFilterOnAnyProperty(IReflectiveCollection collection) : ProxyReflectiveCollection(collection)
 {
     public string FreeText { get; set; } = string.Empty;
-    
-
 
     public override IEnumerator<object> GetEnumerator()
     {

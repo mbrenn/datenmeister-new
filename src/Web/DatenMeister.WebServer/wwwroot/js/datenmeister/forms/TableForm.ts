@@ -166,6 +166,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         query.orderBy = this.tableState.orderBy;
         query.orderByDescending = this.tableState.orderByDescending;
         query.filterByProperties = this.tableState.filterByProperty;
+        query.filterByFreetext = this.tableState.freeTextFilter;
 
         this.elements = await this.callbackLoadItems(query);
 
@@ -189,6 +190,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
             this.tableCache.cacheTable = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
             parent.append(this.tableCache.cacheTable);
+
+            // Create filter for freetext
+            if (this.tableParameter.allowFreeTextFiltering) {
+                // Create freetext
+                this.createFreeTextField();
+            }
         }
 
         const headLineLink = $("a", this.tableCache.cacheHeadline);
@@ -197,13 +204,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             ?? this.formElement.get('name'));
 
         const link = Navigator.getLinkForNavigateToExtentItems(
-            this.workspace, this.extentUri, { metaClass: this.tableParameter.metaClass });
-        if(link !== null ) {
+            this.workspace, this.extentUri, {metaClass: this.tableParameter.metaClass});
+        if (link !== null) {
             headLineLink.attr(
                 'href', link);
         }
 
-        this.tableCache.cacheFreeTextField.empty();
         this.tableCache.cacheButtons.empty();
 
         // Evaluate the new buttons to create objects
@@ -211,12 +217,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         // Create Query Text
         this.updateFilterQueryText();
-
-        // Create filter for freetext
-        if (this.tableParameter.allowFreeTextFiltering) {
-            // Create freetext
-            this.createFreeTextField();
-        }
 
         // Creates the table 
         if (this.elements === undefined) {
@@ -230,7 +230,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             this.tableCache.cacheEmptyDiv.append($("<em></em>").text((this.elements as any).toString()));
 
             if (refresh !== true) {
-                
+
             }
         } else {
             // Creates the table            

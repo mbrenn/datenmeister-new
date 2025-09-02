@@ -25,7 +25,9 @@ export class CollectionFormHtmlElements {
 export class CollectionFormCreator {
     constructor(htmlElements) {
         this.htmlElements = htmlElements;
-        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer, {
+            hideOnComplete: true
+        });
         this.pageNavigation = this;
     }
     async refreshForm() {

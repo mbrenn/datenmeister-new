@@ -62,7 +62,6 @@ public class Startup(IConfiguration configuration)
         extensionProvider.Mappings.Add(".dll", "application/octet-stream");
         config.ContentTypeProvider = extensionProvider;
 
-            
         app.UseStaticFiles(config); // Twice to get rid of issue for blazor client*/
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>

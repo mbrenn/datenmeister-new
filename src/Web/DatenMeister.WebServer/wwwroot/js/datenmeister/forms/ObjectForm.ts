@@ -75,7 +75,11 @@ export class ObjectFormCreator implements IForm.IPageForm {
     
     constructor (htmlElements: ObjectFormHtmlElements) {
         this.htmlElements = htmlElements;
-        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.statusTextControl = new StatusFieldControl(
+            htmlElements.statusContainer,
+            {
+                hideOnComplete: true
+            });
     }
 
     async createFormByObject(
@@ -171,7 +175,10 @@ export class ObjectFormCreatorForItem implements IForm.IPageNavigation {
 
     constructor (htmlElements: ObjectFormHtmlElements) {
         this.htmlElements = htmlElements;
-        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer,
+            {
+                hideOnComplete: true
+            });
     }
 
     async switchToMode(formMode: FormMode) {

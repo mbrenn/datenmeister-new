@@ -68,6 +68,9 @@
     <None Update="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DatenMeister.Settings.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="RunCakeBuild" BeforeTargets="Build">

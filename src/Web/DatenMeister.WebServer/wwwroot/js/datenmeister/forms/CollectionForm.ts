@@ -106,7 +106,11 @@ export class CollectionFormCreator implements IForm.IPageForm, IForm.IPageNaviga
 
     constructor(htmlElements: CollectionFormHtmlElements) {
         this.htmlElements = htmlElements;
-        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.statusTextControl = new StatusFieldControl(
+            htmlElements.statusContainer,
+            {
+                hideOnComplete: true
+            });
         this.pageNavigation = this;
     }
 

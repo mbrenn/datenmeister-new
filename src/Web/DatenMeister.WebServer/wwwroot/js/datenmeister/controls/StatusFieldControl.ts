@@ -57,7 +57,7 @@ export class StatusFieldControl {
             this.htmlElement.attr('dm-statusfield-initialized', '1');
         }
     }
-
+    
     private setHideFlag() {
         if (
             this.statusText !== undefined && this.statusText !== ""

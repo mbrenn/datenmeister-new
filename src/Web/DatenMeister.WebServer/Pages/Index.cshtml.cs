@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using DatenMeister.WebServer.Library.ServerConfiguration;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages;
 
@@ -8,5 +9,10 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
 
     public void OnGet()
     {
+        var startPage = WebServerSettingHandler.TheOne.WebServerSettings.startPage;
+        if (!string.IsNullOrEmpty(startPage))
+        {
+            Response.Redirect(startPage);
+        }
     }
 }

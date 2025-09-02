@@ -26,61 +26,72 @@
     <script src="~/js/jquery.min.js"></script>
 </head>
 <body style="@WebServerSettingHandler.TheOne.BodyCssStyle">
-<div>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">DatenMeister</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces%23Data">Data</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces">Workspaces</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ItemsOverview/Types/dm%3A%2F%2F%2F_internal%2Ftypes%2Fuser">Types</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ItemsOverview/Management/dm%3A%2F%2F%2F_internal%2Fforms%2Fuser">Forms</a>
-                    </li>
-
-                </ul>
-                <div class="d-flex">
-                    <div id="dm-viewmode-selection-container">
+@{
     
+var hideSideToolbar = WebServerSettingHandler.TheOne.WebServerSettings.hideSideToolbar;
+var hideTopToolbar = WebServerSettingHandler.TheOne.WebServerSettings.hideTopToolbar;
+        
+}
+@if (!hideTopToolbar)
+{
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">DatenMeister</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces%23Data">Data</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces">Workspaces</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ItemsOverview/Types/dm%3A%2F%2F%2F_internal%2Ftypes%2Fuser">Types</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ItemsOverview/Management/dm%3A%2F%2F%2F_internal%2Fforms%2Fuser">Forms</a>
+                        </li>
+
+                    </ul>
+                    <div class="d-flex">
+                        <div id="dm-viewmode-selection-container">
+
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Command" aria-label="Command">
+                        <button class="btn btn-outline-success me-2" type="submit">Execute</button>
+                    </div>
+                    <div class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="dm-search-textbox">
+                        <button class="btn btn-outline-success" type="submit" id="dm-search-btn">Search</button>
                     </div>
                 </div>
-                <div class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Command" aria-label="Command">
-                    <button class="btn btn-outline-success me-2" type="submit">Execute</button>
-                </div>
-                <div class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="dm-search-textbox">
-                    <button class="btn btn-outline-success" type="submit" id="dm-search-btn">Search</button>
-                </div>
             </div>
-        </div>
-    </nav>
-</div>
-<div>
-    <nav class="navbar fixed-left dm-sidebar">
-        <ul class="navbar-nav">
-            @foreach (var item in AppNavigationDefinition.Items)
-            {
-                <li class="navbar-item">
-                    <a href="@item.Url" class="nav-link">
-                        <img src="img/@(item.Image)-48.png" alt="@item.Title"/>
-                    </a>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>
+        </nav>
+    </div>
+}
+@if (!hideSideToolbar)
+{
+    <div>
+        <nav class="navbar fixed-left dm-sidebar">
+            <ul class="navbar-nav">
+                @foreach (var item in AppNavigationDefinition.Items)
+                {
+                    <li class="navbar-item">
+                        <a href="@item.Url" class="nav-link">
+                            <img src="img/@(item.Image)-48.png" alt="@item.Title"/>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+}
 
 <div class="dm-maincontent">
     @RenderBody()

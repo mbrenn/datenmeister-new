@@ -26,7 +26,9 @@ export class ObjectFormHtmlElements {
 export class ObjectFormCreator {
     constructor(htmlElements) {
         this.htmlElements = htmlElements;
-        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer, {
+            hideOnComplete: true
+        });
     }
     async createFormByObject(configuration) {
         // First, store the parent and the configuration
@@ -91,7 +93,9 @@ export class ObjectFormCreatorForItem {
     constructor(htmlElements) {
         this.formMode = FormMode.ViewMode;
         this.htmlElements = htmlElements;
-        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer);
+        this.statusTextControl = new StatusFieldControl(htmlElements.statusContainer, {
+            hideOnComplete: true
+        });
     }
     async switchToMode(formMode) {
         this.formMode = formMode;

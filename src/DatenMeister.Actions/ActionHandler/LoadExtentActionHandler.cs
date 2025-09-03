@@ -29,6 +29,11 @@ public class LoadExtentActionHandler : IActionHandler
             var extentUri =
                 configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                     .extentUri);
+            if (string.IsNullOrEmpty(extentUri))
+            {
+                throw new InvalidOperationException("extentUri is null");
+            }
+
             var workspaceId =
                 configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                     .workspaceId)

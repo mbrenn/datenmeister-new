@@ -331,6 +331,7 @@ public class XmiProvider : IProvider, IHasUriResolver, IProviderSupportFunctions
             foreach (var x in _rootNode.Descendants())
             {
                 var foundId = XmiId.Get(x);
+                
                 if (foundId != null)
                 {
                     // Go through each item to build up the cache

@@ -139,10 +139,10 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
             },
             (_, _) => throw new InvalidOperationException("properties cannot be set"));
 
-        AddMapping(
+        /*AddMapping(
             _Management._Extent.loadingConfiguration,
-            _ => loadedExtentInformation?.Configuration.SetId(Id + "_loadingConfiguration"),
-            (_, _) => throw new InvalidOperationException("loadingConfiguration cannot be set"));
+            _ => loadedExtentInformation?.Configuration,
+            (_, _) => throw new InvalidOperationException("loadingConfiguration cannot be set"));*/
 
         AddContainerMapping(
             _ => new WorkspaceObject(provider, parentWorkspace),

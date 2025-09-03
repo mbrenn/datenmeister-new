@@ -301,6 +301,11 @@ public static class WorkspaceExtensions
             string workspaceId,
             string extentUri)
     {
+        if (string.IsNullOrEmpty(extentUri))
+        {
+            throw new InvalidOperationException("ExtentUri is empty");
+        }
+        
         if (string.IsNullOrEmpty(workspaceId))
         {
             // If the workspace is empty return it itself

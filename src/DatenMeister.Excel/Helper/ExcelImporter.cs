@@ -95,11 +95,18 @@ public class ExcelImporter
                throw new InvalidOperationException("Excel Document is not loaded");
     }
 
+    private SsTable? _cachedSelectedSheet;
     private SsTable? GetSelectedSheet()
     {
+        if (_cachedSelectedSheet != null)
+        {
+            return _cachedSelectedSheet;
+        }
+        
         if (IsExcelLoaded)
         {
-            return GetSheet(LoaderConfig.getOrDefault<string>(_ExtentLoaderConfigs._ExcelLoaderConfig.sheetName));
+            return _cachedSelectedSheet = 
+                GetSheet(LoaderConfig.getOrDefault<string>(_ExtentLoaderConfigs._ExcelLoaderConfig.sheetName));
         }
 
         return null;

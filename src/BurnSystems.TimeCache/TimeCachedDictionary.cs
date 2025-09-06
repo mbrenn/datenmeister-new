@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BurnSystems.TimeCache;
@@ -27,7 +28,7 @@ public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV> where TK : notnu
     /// <summary>
     /// Stores the dictionary being used to store the data
     /// </summary>
-    private readonly Dictionary<TK, TV> _dictionary = new();
+    private readonly ConcurrentDictionary<TK, TV> _dictionary = new();
 
     /// <summary>
     /// Checks the cache and deletes the cache in case the last reset has occured
@@ -60,6 +61,7 @@ public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV> where TK : notnu
     public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
     {
         CheckCache();
+
         return _dictionary.GetEnumerator();
     }
 
@@ -111,7 +113,7 @@ public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV> where TK : notnu
     public void Add(TK key, TV value)
     {
         CheckCache();
-        _dictionary.Add(key, value);
+        _dictionary[key] = value;
     }
 
     public bool ContainsKey(TK key)
@@ -123,7 +125,7 @@ public class TimeCachedDictionary<TK, TV> : IDictionary<TK, TV> where TK : notnu
     public bool Remove(TK key)
     {
         CheckCache();
-        return _dictionary.Remove(key);
+        return _dictionary.Remove(key, out _);
     }
 
     public bool TryGetValue(TK key, [MaybeNullWhen(false)] out TV value)

@@ -63,15 +63,32 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     public IProviderObject ProviderObject { get; }
 
     /// <summary>
+    /// Gets or sets the value whether we are having a cached slim evaluation
+    /// </summary>
+    private bool? _cachedIsSlimEvaluation = null;
+    
+    /// <summary>
     /// Gets or sets the flag whether slim uml evaluation is activated
     /// </summary>
     public bool IsSlimUmlEvaluation
     {
         get
         {
-            if (ReferencedExtent.SlimUmlEvaluation) return true;
-                
-            return !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;        
+            if (_cachedIsSlimEvaluation.HasValue)
+            {
+                return _cachedIsSlimEvaluation.Value;
+            }
+
+            if (ReferencedExtent.SlimUmlEvaluation)
+            {
+                _cachedIsSlimEvaluation = true;
+                return true;
+            }
+            
+            _cachedIsSlimEvaluation =
+                !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
+
+            return _cachedIsSlimEvaluation.Value;
         }
     }
         

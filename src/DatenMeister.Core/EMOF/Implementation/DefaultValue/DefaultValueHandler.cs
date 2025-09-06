@@ -57,6 +57,7 @@ public static class DefaultValueHandler
         }
 
         var tuple = new Tuple<IElement, string>(type, property);
+
         if (_cachedDefaultValues.TryGetValue(
                 tuple,
                 out var cachedValue))

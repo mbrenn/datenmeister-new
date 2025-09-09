@@ -21,6 +21,8 @@ public class ExcelExporter
             }
         }
         
+        var sortedProperties = properties.OrderBy(x => x).ToList();
+        
         // We got the elements, now create the excel.
         var directory = Path.GetDirectoryName(targetPath);
         if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
@@ -34,7 +36,7 @@ public class ExcelExporter
         var n = 0;
         var firstRow = sheet.CreateRow(n);
         var cell = 0;
-        foreach (var property in properties)
+        foreach (var property in sortedProperties)
         {
             var firstCell = firstRow.CreateCell(cell, CellType.String);
             firstCell.SetCellValue(property);
@@ -54,7 +56,7 @@ public class ExcelExporter
             
             firstRow = sheet.CreateRow(n);
             cell = 0;
-            foreach (var property in properties)
+            foreach (var property in sortedProperties)
             {
                 var firstCell = firstRow.CreateCell(cell++, CellType.String);
                 firstCell.SetCellValue(element.getOrDefault<string>(property)?? string.Empty);

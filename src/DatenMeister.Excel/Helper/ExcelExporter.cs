@@ -22,9 +22,6 @@ public class ExcelExporter
         }
         
         // We got the elements, now create the excel.
-        
-        
-        // We got the elements, now create the excel.
         var directory = Path.GetDirectoryName(targetPath);
         if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
         {
@@ -39,9 +36,9 @@ public class ExcelExporter
         var cell = 0;
         foreach (var property in properties)
         {
-            cell++;
             var firstCell = firstRow.CreateCell(cell, CellType.String);
             firstCell.SetCellValue(property);
+            cell++;
         }
         
         sheet.AutoSizeColumn(n);

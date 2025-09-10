@@ -13,7 +13,7 @@ public class ExcelExporter
         
         // Gets the property by reading the first 5 items
         var elementsAsArray = elements as IElement[] ?? elements.ToArray();
-        foreach (var element in elementsAsArray.Take(5).OfType<IObjectAllProperties>())
+        foreach (var element in elementsAsArray.OfType<IObjectAllProperties>())
         {
             foreach (var property in element.getPropertiesBeingSet())
             {

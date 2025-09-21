@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Dynamic;
+using System.Globalization;
+using System.Text;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -7,6 +9,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFactory;
+using DatenMeister.HtmlEngine;
 using DatenMeister.TextTemplates;
 
 namespace DatenMeister.Reports.Generic;
@@ -231,7 +234,31 @@ public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T
 
         if (isPropertySet)
         {
-            return new TableCellContent {Content = listElement.getOrDefault<string>(property)};
+            var propertyValue = listElement.get(property);
+            if (DotNetHelper.IsOfEnumeration(propertyValue))
+            {
+                var result = new StringBuilder();
+                var propertyValueAsEnumeration =
+                    propertyValue as IEnumerable<object>
+                    ?? throw new InvalidOperationException("Something obscure happened");
+                var first = true;
+                foreach (var singleValue in propertyValueAsEnumeration)
+                {
+                    if (!first)
+                    {
+                        result.AppendLine();
+                    }
+
+                    first = false;
+                    result.Append(singleValue?.ToString() ?? string.Empty);
+                }
+
+                return new TableCellContent { Content = result.ToString() };
+            }
+            else
+            {
+                return new TableCellContent {Content = listElement.getOrDefault<string>(property)};
+            }
         }
 
         return new TableCellContent {Content = "Null"};

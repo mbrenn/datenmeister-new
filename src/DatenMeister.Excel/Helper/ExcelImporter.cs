@@ -294,7 +294,6 @@ public class ExcelImporter
 
         if (xFitRowCount) return xCountColumns;
 
-
         var n = 0;
         while (true)
         {

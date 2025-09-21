@@ -94,6 +94,8 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
             foreach (var cell in itemAsArray)
             {
                 var columnName = columnPositions[currentPosition];
+                currentPosition++;
+                
                 if (columnName == null)
                 {
                     // Items which do not have a property name are not imported.
@@ -115,8 +117,6 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
                         columnName,
                         jsonImporter.Import(convertedCell));
                 }
-
-                currentPosition++;
             }
             
             if(!settings.FilterItemOut(createdItem))

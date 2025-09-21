@@ -37,14 +37,21 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
                       ?? throw new InvalidOperationException(
                           $"The column \"{settings.ColumnPropertyName}\" could not be found");
 
-        var columnPositions = new List<string>();
+        var columnPositions = new List<string?>();
         var columnIndex = new Dictionary<string, int>();
 
+        // Loads the column headings
         var currentPosition = 0;
         foreach (var column in columns.Where(x => x != null))
         {
-            columnPositions.Add(column!.ToString());
-            columnIndex[column.ToString()] = currentPosition;
+            // Renames the column headings according logic
+            var newColumnName = settings.RenameProperty(column!.ToString());
+            columnPositions.Add(newColumnName);
+            if (newColumnName != null)
+            {
+                columnIndex[column.ToString()] = currentPosition;
+            }
+            
             currentPosition++;
         }
 
@@ -86,23 +93,30 @@ public class JsonCompressedImporter(IFactory factory, JsonCompressedImporterSett
             var createdItem = factory.create(null);
             foreach (var cell in itemAsArray)
             {
-                if (settings.FilterProperty(columnPositions[currentPosition]))
+                var columnName = columnPositions[currentPosition];
+                currentPosition++;
+                
+                if (columnName == null)
+                {
+                    // Items which do not have a property name are not imported.
+                    continue;
+                }
+                
+                if (settings.FilterProperty(columnName))
                 {
                     object? convertedCell = cell;
                     
                     // Perform the conversion
                     if (settings.ConvertProperty != null)
                     {
-                        convertedCell = settings.ConvertProperty(columnPositions[currentPosition], cell);
+                        convertedCell = settings.ConvertProperty(columnName, cell);
                     }
 
                     // Only the items which shall be managed are really imported
                     createdItem.set(
-                        columnPositions[currentPosition],
+                        columnName,
                         jsonImporter.Import(convertedCell));
                 }
-
-                currentPosition++;
             }
             
             if(!settings.FilterItemOut(createdItem))

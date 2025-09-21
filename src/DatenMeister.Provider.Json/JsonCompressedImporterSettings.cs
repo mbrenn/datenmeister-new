@@ -14,6 +14,13 @@ public class JsonCompressedImporterSettings
     /// Defines the name in which the compressed data is given
     /// </summary>
     public string DataPropertyName { get; set; } = "data";
+
+    /// <summary>
+    /// Allows a renaming of the properties.
+    /// Goal is to rename the properties so they match to FieldNamesEwm.
+    /// If null is returned, the field property is being ignored fully. 
+    /// </summary>
+    public Func<string, string?> RenameProperty { get; set; } = x => x;
     
     /// <summary>
     /// Used to filter-out the properties.

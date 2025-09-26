@@ -1391,6 +1391,30 @@ public class Actions
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5",
+            TypeKind = TypeKind.WrappedClass)]
+        public class LoadExtentActionResult_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @workspaceId
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
+            }
+
+            public string? @extentUri
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("extentUri");
+                set => 
+                    innerDmElement.set("extentUri", value);
+            }
+
+        }
+
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",

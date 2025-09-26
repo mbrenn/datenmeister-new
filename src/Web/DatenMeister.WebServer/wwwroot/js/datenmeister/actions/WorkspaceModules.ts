@@ -115,7 +115,7 @@ class WorkspaceExtentLoadOrCreateStep2Action extends FormActions.ItemFormActionM
         if (result.success !== true) {
             alert('Extent was not created successfully:\r\n\r\r\n' + result.reason + "\r\n\r\n" + result.stackTrace);
         } else {
-            Navigator.navigateToExtentItems(element.get("workspaceId"), element.get("extentUri"));
+            Navigator.navigateToExtentItems(result.resultAsDmObject.get("workspaceId"), result.resultAsDmObject.get("extentUri"));
         }
     }
 }

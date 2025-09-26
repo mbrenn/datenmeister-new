@@ -339,6 +339,13 @@ export namespace _Actions
                 }
 
                 export const __NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
+                export class _LoadExtentActionResult
+                {
+                    static workspaceId = "workspaceId";
+                    static extentUri = "extentUri";
+                }
+
+                export const __LoadExtentActionResult_Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5";
         }
 
         export class _ActionResult

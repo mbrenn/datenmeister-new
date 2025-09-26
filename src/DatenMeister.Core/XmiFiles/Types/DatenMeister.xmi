@@ -230,6 +230,10 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a6c14a23-c7fe-40b0-963c-7199be102845" name="formUrl" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="aee31cf5-a557-4045-b3ab-a8dc3dd20f9e" name="metaClassUrl" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
       </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="2863f928-fe69-4d35-8c67-f4f3533b7ae5" name="LoadExtentActionResult">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d0756147-ce53-442f-9866-340479bed627" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" isID="false" isComposite="false" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0c1fb5f0-29cb-4245-b2c0-b19d6b6f3cff" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+      </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="899324b1-85dc-40a1-ba95-dec50509040d" name="ActionResult">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b37dc68-3efa-4b43-88ee-3d4caa18ceb9" name="isSuccess" type-ref="dm:///_internal/model/primitivetypes#_package_PrimitiveTypes" isID="false" isComposite="false" />

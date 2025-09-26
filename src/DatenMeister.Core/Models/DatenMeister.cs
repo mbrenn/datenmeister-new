@@ -751,6 +751,21 @@ public class _Actions
         public _NavigationDefineActionParameter @NavigationDefineActionParameter = new _NavigationDefineActionParameter();
         public MofObjectShadow @__NavigationDefineActionParameter = new MofObjectShadow("dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5",
+            TypeKind = TypeKind.ClassTree)]
+        public class _LoadExtentActionResult
+        {
+            public static readonly string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
+
+            public static readonly string @extentUri = "extentUri";
+            public IElement? @_extentUri = null;
+
+        }
+
+        public _LoadExtentActionResult @LoadExtentActionResult = new _LoadExtentActionResult();
+        public MofObjectShadow @__LoadExtentActionResult = new MofObjectShadow("dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5");
+
     }
 
     public _ParameterTypes ParameterTypes = new _ParameterTypes();

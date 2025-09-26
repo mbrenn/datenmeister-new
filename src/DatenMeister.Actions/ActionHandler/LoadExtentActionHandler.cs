@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
@@ -17,7 +18,7 @@ public class LoadExtentActionHandler : IActionHandler
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
-        await Task.Run(async () =>
+        return await Task.Run(async () =>
         {
             var configuration =
                 action.getOrDefault<IElement>(_Actions._LoadExtentAction.configuration);
@@ -62,8 +63,11 @@ public class LoadExtentActionHandler : IActionHandler
                 throw new InvalidOperationException(
                     "Loading of extent failed:\r\n\r\n" + result.FailLoadingMessage);
             }
-        });
 
-        return null;
+            var resultingElement = InMemoryObject.CreateEmpty(_Actions.TheOne.ParameterTypes.__LoadExtentActionResult.Uri);
+            resultingElement.set(_Actions._ParameterTypes._LoadExtentActionResult.workspaceId, workspaceId);
+            resultingElement.set(_Actions._ParameterTypes._LoadExtentActionResult.extentUri, extentUri);
+            return resultingElement;
+        });
     }
 }

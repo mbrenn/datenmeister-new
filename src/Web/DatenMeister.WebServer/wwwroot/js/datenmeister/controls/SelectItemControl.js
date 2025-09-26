@@ -9,6 +9,7 @@ export class Settings {
         this.showWorkspaceInBreadcrumb = false;
         this.showExtentInBreadcrumb = false;
         this.showCancelButton = true;
+        this.showButtonRow = true;
         this.hideAtStartup = false;
         this.setButtonText = "Set";
         this.headline = undefined;
@@ -76,9 +77,13 @@ export class SelectItemControl {
             "<td><div class='dm-breadcrumb'><nav aria-label='breadcrump'><ul class='breadcrumb'></ul></nav></div>" +
             "<div class='dm-sic-items'></div>" +
             "</td></tr>" +
-            "<tr><td></td><td class='selected'>" +
-            (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
-            "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>" +
+            (this.settings.showButtonRow
+                ?
+                    "<tr><td></td><td class='selected'>" +
+                        (this.settings.showCancelButton ? "<button class='btn btn-secondary dm-sic-cancelbtn' type='button'>Cancel</button>" : "") +
+                        "<button class='btn btn-primary dm-sic-button' type='button'>Set</button></td></tr>"
+                :
+                    "") +
             "</table>");
         const setButton = $(".dm-sic-button", div);
         const cancelButton = $(".dm-sic-cancelbtn", div);

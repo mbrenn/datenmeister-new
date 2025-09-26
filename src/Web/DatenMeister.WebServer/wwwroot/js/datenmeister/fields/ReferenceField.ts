@@ -48,44 +48,49 @@ export class Control {
             const div = $("<em>Element needs to be saved first</em>");
             this._list.append(div);
         } else {
-            if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
-                const div = $("<div><em class='dm-undefined'>undefined</em></div>");
-                this._list.append(div);
-            } else {
-                const div = $("<div />");
-                let _ = injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
-                this._list.append(div);
+            const isSelectionInline = this.field?.get('isSelectionInline', ObjectType.Boolean);
+            
+            if(!isSelectionInline) {
+                if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
+                    const div = $("<div><em class='dm-undefined'>undefined</em></div>");
+                    this._list.append(div);
+                } else {
+                    const div = $("<div />");
+                    let _ = injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
+                    this._list.append(div);
+                }
             }
 
             if (!this.isReadOnly) {
-
-                const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
-                const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
                 const containerChangeCell = $("<div></div>");
+                
+                if(!(this.inhibitInline !== true && isSelectionInline)) {
+                    const changeCell = $("<btn class='btn btn-secondary'>Change</btn>");
+                    const unsetCell = $("<btn class='btn btn-secondary'>Unset</btn>");
 
-                unsetCell.on('click', () => {
-                    ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
-                        async () => {
-                            await tthis.reloadValuesFromServer();
-                        }
-                    );
-                });
+                    unsetCell.on('click', () => {
+                        ClientItem.unsetProperty(tthis.form.workspace, tthis.itemUrl, tthis.propertyName).then(
+                            async () => {
+                                await tthis.reloadValuesFromServer();
+                            }
+                        );
+                    });
 
-                changeCell.on('click', async () => {
-                    await this.createSelectFields(containerChangeCell, value);
+                    changeCell.on('click', async () => {
+                        await this.createSelectFields(containerChangeCell, value);
 
-                    return false;
-                });
+                        return false;
+                    });
 
-                this._list.append(changeCell);
-                this._list.append(unsetCell);
-                this._list.append(containerChangeCell);
+                    this._list.append(changeCell);
+                    this._list.append(unsetCell);
+                }
+                else {
 
-                // Checks, whether the Drop-Down Field shall be completely pre-created
-                if (this.inhibitInline !== true && 
-                    this.field?.get('isSelectionInline', ObjectType.Boolean) === true) {
                     await this.createSelectFields(containerChangeCell, value);
                 }
+                
+                this._list.append(containerChangeCell);
             }
         }       
 
@@ -99,12 +104,18 @@ export class Control {
         
         const tthis = this;
         containerChangeCell.empty();
+        const isSelectionInline = this.field?.get('isSelectionInline', ObjectType.Boolean);
         
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
-        settings.showExtentInBreadcrumb = true;        
-        selectItem.itemSelected.addListener(
+        settings.showExtentInBreadcrumb = true;      
+        settings.showButtonRow = !isSelectionInline;
+        
+        // Depending on whether we are having a inline item, we react upon an explicit click via 'set' button
+        // or directly while the user is navigating
+        const eventType = isSelectionInline ? selectItem.itemClicked : selectItem.itemSelected;
+        eventType.addListener(
             async selectedItem => {
 
                 await ClientItem.setPropertyReference(
@@ -117,10 +128,12 @@ export class Control {
                     }
                 );
 
-                containerChangeCell.empty();
+                if(!isSelectionInline) {
+                    containerChangeCell.empty();
+                    tthis.inhibitInline = true;
 
-                tthis.inhibitInline = true;
-                await this.reloadValuesFromServer();
+                    await this.reloadValuesFromServer();
+                }
             });
 
         await selectItem.initAsync(containerChangeCell, settings);

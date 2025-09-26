@@ -7,7 +7,7 @@ public record CollectionFormFactoryParameter : FormFactoryParameterBase
     public IReflectiveCollection? Collection { get; set; }
 }
 
-public interface ICollectionFormFactory
+public interface ICollectionFormFactory : IFormFactoryBase
 {
     /// <summary>
     /// Creates a new collectionform out of the given collection. 

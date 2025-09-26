@@ -13,8 +13,8 @@ namespace DatenMeister.Forms.FormFinder;
 /// forms via the FormFinder class.
 /// </summary>
 /// <param name="workspaceLogic">The workspacelogic being used to find the right forms</param>
-public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : ICollectionFormFactory, IObjectFormFactory,
-    IRowFormFactory, ITableFormFactory
+public class FormFinderFactory(IWorkspaceLogic workspaceLogic) : 
+    FormFactoryBase, ICollectionFormFactory, IObjectFormFactory, IRowFormFactory, ITableFormFactory
 {
     private readonly FormMethods _formMethods = new(workspaceLogic);
 

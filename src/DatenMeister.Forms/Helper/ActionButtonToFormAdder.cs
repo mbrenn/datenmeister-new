@@ -18,7 +18,10 @@ public static class ActionButtonToFormAdder
             {
                 CreateContext = context =>
                     context.Global.RowFormFactories.Add(
-                        new RowAndTableFormModification(adder)),
+                        new RowAndTableFormModification(adder)
+                        {
+                            Priority = adder.Priority
+                        }),
                 Name = adder.Title
             });
     }
@@ -30,13 +33,16 @@ public static class ActionButtonToFormAdder
             {
                 CreateContext = context =>
                     context.Global.TableFormFactories.Add(
-                        new RowAndTableFormModification(adder)),
+                        new RowAndTableFormModification(adder)
+                        {
+                            Priority = adder.Priority
+                        }),
                 Name = adder.Title
             });
     }
 
-    private class RowAndTableFormModification(ActionButtonAdderParameter parameter) : IRowFormFactory,
-        ITableFormFactory
+    private class RowAndTableFormModification(ActionButtonAdderParameter parameter) : 
+        FormFactoryBase, IRowFormFactory, ITableFormFactory
     {
         private void ManageActionButton(
             FormFactoryParameterBase factoryParameter,
@@ -65,7 +71,6 @@ public static class ActionButtonToFormAdder
             else if (parameter is ActionButtonAdderParameterForTable forTable
                      && factoryParameter is TableFormFactoryParameter tableParameter)
             {
-                
                 forTable.OnCall?.Invoke(tableParameter);
                 
                 if (!forTable.PredicateForParameter(tableParameter))

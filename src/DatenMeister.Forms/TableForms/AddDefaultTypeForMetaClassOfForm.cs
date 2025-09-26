@@ -11,7 +11,7 @@ namespace DatenMeister.Forms.TableForms;
 /// <summary>
 /// Adds the button for a default type according to the metaclass of the TableForm 
 /// </summary>
-public class AddDefaultTypeForMetaClassOfForm : ITableFormFactory
+public class AddDefaultTypeForMetaClassOfForm : FormFactoryBase, ITableFormFactory
 {
     public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultMultipleForms result)

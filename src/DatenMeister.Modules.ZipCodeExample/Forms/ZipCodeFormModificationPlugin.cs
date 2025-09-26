@@ -13,13 +13,18 @@ namespace DatenMeister.Modules.ZipCodeExample.Forms;
 /// <summary>
 /// Defines the plugin which modifies the zip
 /// </summary>
-public class ZipCodeFormModificationPlugin : IRowFormFactory
+public class ZipCodeFormModificationPlugin : FormFactoryBase, IRowFormFactory
 {
     public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result)
     {
-            var form = result.Forms.FirstOrDefault();
+        if (!context.IsInExtensionCreationMode())
+        {
+            return;
+        }
+        
+        var form = result.Forms.FirstOrDefault();
         var metaClass = parameter.MetaClass;
-        if (metaClass != null && metaClass.equals(_Management.TheOne.__Workspace) == true && form != null)
+        if (metaClass != null && metaClass.equals(_Management.TheOne.__Workspace) && form != null)
         {
             // Ok, I got it
             var fields = form.get<IReflectiveSequence>(_Forms._RowForm.field);

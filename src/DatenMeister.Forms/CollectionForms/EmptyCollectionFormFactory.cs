@@ -6,7 +6,7 @@ namespace DatenMeister.Forms.CollectionForms;
 /// <summary>
 /// The factory which creates an empty collection form. 
 /// </summary>
-public class EmptyCollectionFormFactory : ICollectionFormFactory
+public class EmptyCollectionFormFactory : FormFactoryBase, ICollectionFormFactory
 {
     public void CreateCollectionForm(
         CollectionFormFactoryParameter parameter, 

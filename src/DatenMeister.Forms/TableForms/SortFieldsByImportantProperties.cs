@@ -7,7 +7,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.TableForms;
 
-public class SortFieldsByImportantProperties : ITableFormFactory
+public class SortFieldsByImportantProperties : FormFactoryBase, ITableFormFactory
 {
     public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultMultipleForms result)

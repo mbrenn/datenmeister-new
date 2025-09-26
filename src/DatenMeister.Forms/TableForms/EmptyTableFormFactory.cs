@@ -6,7 +6,7 @@ namespace DatenMeister.Forms.TableForms;
 /// <summary>
 /// The factory which creates an empty collection form. 
 /// </summary>
-public class EmptyTableFormFactory : ITableFormFactory
+public class EmptyTableFormFactory : FormFactoryBase, ITableFormFactory
 {
     public void CreateTableForm(TableFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultMultipleForms result)

@@ -7,7 +7,7 @@ using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class AddMetaClassField : IRowFormFactory
+public class AddMetaClassField : FormFactoryBase, IRowFormFactory
 {
     public void CreateRowForm(
         RowFormFactoryParameter parameter,

@@ -9,7 +9,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class AddTableFormForPackagedElements : IObjectFormFactory
+public class AddTableFormForPackagedElements : FormFactoryBase, IObjectFormFactory
 {
     public void CreateObjectForm(
         ObjectFormFactoryParameter parameter,
@@ -66,7 +66,7 @@ public class AddTableFormForPackagedElements : IObjectFormFactory
             var innerContext = context.Clone();
 
             var forms = FormCreation.CreateTableForm(
-                new TableFormFactoryParameter()
+                new TableFormFactoryParameter
                 {
                     MetaClass = metaClass,
                     Extent = parameter.Extent,

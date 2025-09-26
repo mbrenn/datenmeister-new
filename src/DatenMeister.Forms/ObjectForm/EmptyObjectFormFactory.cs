@@ -3,7 +3,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class EmptyObjectFormFactory : IObjectFormFactory
+public class EmptyObjectFormFactory : FormFactoryBase, IObjectFormFactory
 {
     public void CreateObjectForm(ObjectFormFactoryParameter parameter, FormCreationContext context, FormCreationResultOneForm result)
     {

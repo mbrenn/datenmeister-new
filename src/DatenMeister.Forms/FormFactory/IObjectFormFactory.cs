@@ -7,7 +7,7 @@ public record ObjectFormFactoryParameter : FormFactoryParameterBase
     public IObject? Element { get; set; }
 }
 
-public interface IObjectFormFactory
+public interface IObjectFormFactory : IFormFactoryBase
 {
     /// <summary>
     /// Gets the extent form for a certain item

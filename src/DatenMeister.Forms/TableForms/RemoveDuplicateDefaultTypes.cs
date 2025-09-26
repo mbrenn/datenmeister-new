@@ -6,7 +6,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.TableForms;
 
-public class RemoveDuplicateDefaultTypes : ITableFormFactory
+public class RemoveDuplicateDefaultTypes : FormFactoryBase, ITableFormFactory
 {
     public void CreateTableForm(
         TableFormFactoryParameter parameter,

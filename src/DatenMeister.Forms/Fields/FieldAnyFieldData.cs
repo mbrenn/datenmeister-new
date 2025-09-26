@@ -6,12 +6,11 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.Fields;
 
-public class FieldAnyFieldData : IFieldFactory
+public class FieldAnyFieldData : FormFactoryBase, IFieldFactory
 {
     public void CreateField(FieldFactoryParameter parameter, FormCreationContext context,
         FormCreationResultOneForm result)
     {
-
         // We do not need to create the field twice
         if (result.IsMainContentCreated)
             return;

@@ -6,7 +6,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class RowFormFromData : IRowFormFactory
+public class RowFormFromData : FormFactoryBase, IRowFormFactory
 {
     public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultMultipleForms result)

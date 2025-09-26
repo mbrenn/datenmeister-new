@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms.CollectionForms;
 using DatenMeister.Forms.Fields;
+using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Forms.ObjectForm;
 using DatenMeister.Forms.RowForm;
@@ -46,66 +47,86 @@ public class FormCreationContextFactory
                 Factory = MofFactory ?? _temporaryExtentFactory
             }
         };
-        
+
         // Build up the CollectionForm Queue
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory());
-            context.Global.CollectionFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+            context.Global.CollectionFormFactories.Add(new EmptyCollectionFormFactory
+                { Priority = FormFactoryPriorities.Preparation });
+            context.Global.CollectionFormFactories.Add(new FormFinderFactory(_workspaceLogic)
+                { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.CollectionFormFactories.Add(new CollectionFormFromMetaClass());
-        context.Global.CollectionFormFactories.Add(new CollectionFormFromData());
-        context.Global.CollectionFormFactories.Add(new ValidateObjectOrCollectionForm());
+        context.Global.CollectionFormFactories.Add(new CollectionFormFromMetaClass
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        context.Global.CollectionFormFactories.Add(new CollectionFormFromData
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
+        context.Global.CollectionFormFactories.Add(new ValidateObjectOrCollectionForm
+            { Priority = FormFactoryPriorities.Miscellaneous });
 
         // Build up the ObjectForm Queue
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory());
-            context.Global.ObjectFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+            context.Global.ObjectFormFactories.Add(new EmptyObjectFormFactory
+                { Priority = FormFactoryPriorities.Preparation });
+            context.Global.ObjectFormFactories.Add(new FormFinderFactory(_workspaceLogic)
+                { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass());
-        context.Global.ObjectFormFactories.Add(new ObjectFormFromData());
+        context.Global.ObjectFormFactories.Add(new ObjectFormFromMetaClass
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        context.Global.ObjectFormFactories.Add(new ObjectFormFromData
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.ObjectFormFactories.Add(new AddTableFormForPackagedElements());
-        context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm());
-        
+        context.Global.ObjectFormFactories.Add(new ValidateObjectOrCollectionForm
+            { Priority = FormFactoryPriorities.Miscellaneous });
+
         // Build up the TableForm Queue
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.TableFormFactories.Add(new EmptyTableFormFactory());
-            context.Global.TableFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+            context.Global.TableFormFactories.Add(new EmptyTableFormFactory
+                { Priority = FormFactoryPriorities.Preparation });
+            context.Global.TableFormFactories.Add(new FormFinderFactory(_workspaceLogic)
+                { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.TableFormFactories.Add(new TableFormForMetaClass());
-        context.Global.TableFormFactories.Add(new TableFormFromData());
+        context.Global.TableFormFactories.Add(new TableFormForMetaClass
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        context.Global.TableFormFactories.Add(new TableFormFromData
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.TableFormFactories.Add(new ExpandDropDownOfValueReference());
         context.Global.TableFormFactories.Add(new AddDefaultTypeForMetaClassOfForm());
         context.Global.TableFormFactories.Add(new SortFieldsByImportantProperties());
-        context.Global.TableFormFactories.Add(new RemoveDuplicateDefaultTypes());
+        context.Global.TableFormFactories.Add(new RemoveDuplicateDefaultTypes
+            { Priority = FormFactoryPriorities.Miscellaneous });
 
+        // Build up the RowForm Queue
         if (viewMode != ViewModes.AutoGenerate)
         {
-            context.Global.RowFormFactories.Add(new EmptyRowFormFactory());
-            context.Global.RowFormFactories.Add(new FormFinderFactory(_workspaceLogic));
+            context.Global.RowFormFactories.Add(new EmptyRowFormFactory
+                { Priority = FormFactoryPriorities.Preparation });
+            context.Global.RowFormFactories.Add(new FormFinderFactory(_workspaceLogic)
+                { Priority = FormFactoryPriorities.PrimaryBuildUp });
         }
 
-        context.Global.RowFormFactories.Add(new RowFormFromData());
-        context.Global.RowFormFactories.Add(new RowFormFromMetaClass());
+        context.Global.RowFormFactories.Add(new RowFormFromData
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 1 });
+        context.Global.RowFormFactories.Add(new RowFormFromMetaClass
+            { Priority = FormFactoryPriorities.PrimaryBuildUp - 2 });
         context.Global.RowFormFactories.Add(new AddMetaClassField());
         context.Global.RowFormFactories.Add(new ExpandDropDownOfValueReference());
-        
+
         // Build up the FieldForm Queue
         context.Global.FieldFormFactories.Add(new FieldFromPropertyType(_workspaceLogic));
         context.Global.FieldFormFactories.Add(new FieldFromPropertyValue());
         context.Global.FieldFormFactories.Add(new FieldAnyFieldData());
-        
+
         // Now go through the available Form Modification Plugins
         foreach (var plugin in State.FormModificationPlugins)
         {
             plugin.CreateContext(context);
         }
-        
+
         return context;
     }
 }

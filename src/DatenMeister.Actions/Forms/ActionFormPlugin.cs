@@ -44,7 +44,7 @@ public class ActionFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
     /// <summary>
     /// The helper class which includes the action button into the forms for actions
     /// </summary>
-    public class ActionFormModificationPlugin : IRowFormFactory
+    public class ActionFormModificationPlugin : FormFactoryBase, IRowFormFactory
     {
         public void CreateRowForm(RowFormFactoryParameter parameter, FormCreationContext context, FormCreationResultMultipleForms result)
         {

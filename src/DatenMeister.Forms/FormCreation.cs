@@ -42,7 +42,7 @@ public static class FormCreation
                 var innerContext = context.Clone();
                 innerContext.LocalScopeStorage.Add(new ExtensionCreationMode());
 
-                var innerResult = new FormCreationResultMultipleForms()
+                var innerResult = new FormCreationResultMultipleForms
                 {
                     Forms = [tab],
                     IsMainContentCreated = true
@@ -112,7 +112,7 @@ public static class FormCreation
                 var innerContext = context.Clone();
                 innerContext.LocalScopeStorage.Add(new ExtensionCreationMode());
 
-                var innerResult = new FormCreationResultMultipleForms()
+                var innerResult = new FormCreationResultMultipleForms
                 {
                     Forms = [tab],
                     IsMainContentCreated = true
@@ -120,7 +120,7 @@ public static class FormCreation
                 
                 if (tab.getMetaClass()?.equals(_Forms.TheOne.__RowForm) == true)
                 {
-                    var innerParameter = new RowFormFactoryParameter()
+                    var innerParameter = new RowFormFactoryParameter
                     {
                         Extent = parameter.Extent,
                         ExtentTypes = parameter.ExtentTypes,
@@ -211,10 +211,12 @@ public static class FormCreation
     /// <param name="result">The result of the managing action will be evaluated here</param>
     /// <typeparam name="T">Type of the manager</typeparam>
     private static void WalkThroughManager<T>(IEnumerable<T> managers, Action<T> action, FormCreationResult result)
+        where T : IFormFactoryBase
     {
         var anybodyManaged = false;
         var anybodyCreatedMainForm = false;
-        foreach (var manager in managers)
+        var orderedManagers = managers.OrderByDescending(x=>x.Priority);
+        foreach (var manager in orderedManagers)
         {
             result.IsManaged = false;
 

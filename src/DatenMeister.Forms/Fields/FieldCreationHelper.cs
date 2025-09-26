@@ -38,7 +38,6 @@ public static class FieldCreationHelper
         }
 
         var isTableForm = rowOrObjectForm.metaclass?.equals(_Forms.TheOne.__TableForm) == true;
-
         var wasInMetaClass = false;
 
         var classifierMethods =

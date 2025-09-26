@@ -5,7 +5,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.CollectionForms;
 
-public class CollectionFormFromMetaClass : ICollectionFormFactory
+public class CollectionFormFromMetaClass : FormFactoryBase, ICollectionFormFactory
 {
     public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
         FormCreationResultOneForm result)

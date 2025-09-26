@@ -7,7 +7,7 @@ namespace DatenMeister.Forms.Helper;
 /// <summary>
 /// Defines the parameter for the ActionButtonToFormadder
 /// </summary>
-public class ActionButtonAdderParameter
+public class ActionButtonAdderParameter : FormFactoryBase
 {
     public ActionButtonAdderParameter(string actionName, string title, string buttonText = "")
     {

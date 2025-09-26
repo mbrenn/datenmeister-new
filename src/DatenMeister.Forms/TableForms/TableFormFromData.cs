@@ -5,7 +5,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.TableForms;
 
-public class TableFormFromData : ITableFormFactory
+public class TableFormFromData : FormFactoryBase, ITableFormFactory
 {
     /// <summary>
     /// Creates the Table Form

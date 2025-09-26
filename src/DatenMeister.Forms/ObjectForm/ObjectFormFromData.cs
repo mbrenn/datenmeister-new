@@ -13,7 +13,7 @@ using DatenMeister.Forms.RowForm;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ObjectFormFromData : IObjectFormFactory
+public class ObjectFormFromData : FormFactoryBase, IObjectFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ObjectFormFromData));
 
@@ -140,7 +140,7 @@ public class ObjectFormFromData : IObjectFormFactory
             {
                 var detailResult = new FormCreationResultMultipleForms();
                 new EmptyRowFormFactory().CreateRowForm(
-                    new RowFormFactoryParameter()
+                    new RowFormFactoryParameter
                     {
                         MetaClass = parameter.MetaClass,
                         Element = parameter.Element,

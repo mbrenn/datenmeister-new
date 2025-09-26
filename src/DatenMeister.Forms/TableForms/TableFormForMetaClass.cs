@@ -4,7 +4,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.TableForms;
 
-public class TableFormForMetaClass : ITableFormFactory
+public class TableFormForMetaClass : FormFactoryBase, ITableFormFactory
 {
     /// <summary>
     /// Creates the Table Form

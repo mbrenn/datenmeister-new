@@ -18,7 +18,7 @@ namespace DatenMeister.Extent.Forms;
 ///     the element is currently belonging to.
 ///     Here, the property 'ExtentConfiguration.ExtentDefaultTypes' is being used to retrieve the values
 /// </summary>
-public class CreateInstanceButtonsForTableForms : ITableFormFactory
+public class CreateInstanceButtonsForTableForms : FormFactoryBase, ITableFormFactory
 {
     public void CreateTableForm(
         TableFormFactoryParameter parameter,

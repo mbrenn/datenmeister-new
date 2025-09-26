@@ -21,7 +21,7 @@ public record FieldFactoryParameter : FormFactoryParameterBase
     public bool IsInTable { get; set; }
 }
 
-public interface IFieldFactory
+public interface IFieldFactory : IFormFactoryBase
 {
     /// <summary>
     /// Creates a field element for a certain ProprtyType

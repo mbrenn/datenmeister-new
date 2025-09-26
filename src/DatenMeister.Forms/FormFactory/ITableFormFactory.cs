@@ -17,7 +17,7 @@ public record TableFormFactoryParameter : FormFactoryParameterBase
     public string? ParentPropertyName { get; set; }
 }
 
-public interface ITableFormFactory
+public interface ITableFormFactory : IFormFactoryBase
 {
     void CreateTableForm(
         TableFormFactoryParameter parameter,

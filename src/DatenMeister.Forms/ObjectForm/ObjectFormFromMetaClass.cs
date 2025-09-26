@@ -7,7 +7,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ObjectFormFromMetaClass : IObjectFormFactory
+public class ObjectFormFromMetaClass : FormFactoryBase, IObjectFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ObjectFormFromMetaClass));
 

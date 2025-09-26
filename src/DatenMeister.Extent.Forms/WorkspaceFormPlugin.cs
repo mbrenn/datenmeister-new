@@ -37,7 +37,8 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                 var actionParameter =
                     new ActionButtonAdderParameterForRow(WorkspaceCreateExtentNavigate, "Create or Load Extent")
                     {
-                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true
+                        PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Workspace) == true,
+                        Priority = FormFactoryPriorities.AdditionalFunctionsPrimary
                     };
 
                 actionParameter.OnCallSuccess = parameter =>
@@ -51,8 +52,7 @@ public class WorkspaceFormPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlug
                     }
                 };
                 
-                ActionButtonToFormAdder.AddRowActionButton(
-                    formsPlugin, actionParameter);
+                ActionButtonToFormAdder.AddRowActionButton(formsPlugin, actionParameter);
                 
                 var otherActionParameter =
                     new ActionButtonAdderParameterForRow(WorkspaceCreateXmiExtentNavigate, "Create Xmi-Extent")

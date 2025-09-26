@@ -3,7 +3,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class EmptyRowFormFactory : IRowFormFactory
+public class EmptyRowFormFactory : FormFactoryBase, IRowFormFactory
 {
     public void CreateRowForm(RowFormFactoryParameter parameter,
         FormCreationContext context, 

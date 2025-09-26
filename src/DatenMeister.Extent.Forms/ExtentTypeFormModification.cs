@@ -19,7 +19,7 @@ namespace DatenMeister.Extent.Forms;
 /// </summary>
 public class ExtentTypeFormModification
 {
-    public class IncludeJumpToExtentButtonModification : ICollectionFormFactory
+    public class IncludeJumpToExtentButtonModification : FormFactoryBase, ICollectionFormFactory
     {
         public void CreateCollectionForm(CollectionFormFactoryParameter parameter, FormCreationContext context,
             FormCreationResultOneForm result)
@@ -41,7 +41,8 @@ public class ExtentTypeFormModification
         }
     }
 
-    public class IncludeExtentTypesForTableFormExtent(ExtentSettings extentSettings) : IRowFormFactory
+    public class IncludeExtentTypesForTableFormExtent(ExtentSettings extentSettings)
+        : FormFactoryBase, IRowFormFactory
     {
         public void CreateRowForm(
             RowFormFactoryParameter parameter,
@@ -49,7 +50,7 @@ public class ExtentTypeFormModification
             FormCreationResultMultipleForms result)
         {
             var metaClass = parameter.MetaClass;
-            
+
             if (metaClass == null || metaClass.equals(_Management.TheOne.__Extent) != true)
             {
                 return;
@@ -105,9 +106,8 @@ public class ExtentTypeFormModification
     ///  
     /// </summary>
     public class IncludeCreationButtonsInTableFormForClassifierOfExtentType(
-        IWorkspaceLogic workspaceLogic,
-        ExtentSettings extentSettings)
-        : ICollectionFormFactory
+        IWorkspaceLogic workspaceLogic, ExtentSettings extentSettings)
+        : FormFactoryBase, ICollectionFormFactory
     {
         public void CreateCollectionForm(
             CollectionFormFactoryParameter parameter,
@@ -116,11 +116,11 @@ public class ExtentTypeFormModification
         {
             if (parameter.Collection == null)
                 return;
-            
+
             var extentTypes = parameter.ExtentTypes;
             if (extentTypes == null)
                 return;
-            
+
             // Finds the extent type fitting to the extent to be shown
             var foundExtentTypes =
                 extentSettings.extentTypeSettings.Where(x => extentTypes.Contains(x.name)).ToList();
@@ -188,17 +188,18 @@ public class ExtentTypeFormModification
      */
     public class IncludeCreationButtonsInDetailFormOfPackageForClassifierOfExtentType(
         IWorkspaceLogic workspaceLogic,
-        ExtentSettings extentSettings) : IObjectFormFactory
+        ExtentSettings extentSettings)
+        : FormFactoryBase, IObjectFormFactory
     {
         public void CreateObjectForm(
             ObjectFormFactoryParameter parameter,
-            FormCreationContext context, 
+            FormCreationContext context,
             FormCreationResultOneForm result)
         {
             var element = parameter.Element;
             if (element == null)
                 return;
-            
+
             var extentTypes = parameter.ExtentTypes;
 
             var changed = false;

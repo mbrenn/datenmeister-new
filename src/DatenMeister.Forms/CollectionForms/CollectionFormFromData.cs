@@ -10,7 +10,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.CollectionForms;
 
-public class CollectionFormFromData : ICollectionFormFactory
+public class CollectionFormFromData : FormFactoryBase, ICollectionFormFactory
 {
     public void CreateCollectionForm(
         CollectionFormFactoryParameter parameter,

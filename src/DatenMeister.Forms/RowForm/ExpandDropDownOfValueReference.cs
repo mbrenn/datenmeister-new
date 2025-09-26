@@ -7,7 +7,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.RowForm;
 
-public class ExpandDropDownOfValueReference : IRowFormFactory, ITableFormFactory
+public class ExpandDropDownOfValueReference : FormFactoryBase, IRowFormFactory, ITableFormFactory
 {
     public void CreateRowForm(RowFormFactoryParameter parameter, 
         FormCreationContext context,

@@ -6,7 +6,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.Fields;
 
-public class FieldFromPropertyValue : IFieldFactory
+public class FieldFromPropertyValue : FormFactoryBase, IFieldFactory
 {
     public void CreateField(FieldFactoryParameter parameter, FormCreationContext context,
         FormCreationResultOneForm result)

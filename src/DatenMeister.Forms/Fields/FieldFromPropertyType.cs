@@ -9,7 +9,7 @@ using DatenMeister.Forms.FormFactory;
 
 namespace DatenMeister.Forms.Fields;
 
-public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : IFieldFactory
+public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactoryBase, IFieldFactory
 {
     #region CachedTypes
 

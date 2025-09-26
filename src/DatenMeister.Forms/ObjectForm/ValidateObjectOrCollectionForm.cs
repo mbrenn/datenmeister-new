@@ -11,7 +11,7 @@ using DatenMeister.Forms.TableForms;
 
 namespace DatenMeister.Forms.ObjectForm;
 
-public class ValidateObjectOrCollectionForm : IObjectFormFactory, ICollectionFormFactory
+public class ValidateObjectOrCollectionForm : FormFactoryBase, IObjectFormFactory, ICollectionFormFactory
 {
     private static readonly ILogger Logger = new ClassLogger(typeof(ValidateTableOrRowForm));
 

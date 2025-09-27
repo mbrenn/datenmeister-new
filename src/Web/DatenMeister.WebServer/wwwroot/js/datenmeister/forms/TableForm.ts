@@ -484,21 +484,31 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         let sortingArrow: JQuery;
         let onClick: () => Promise<void>;
 
-        if (isSorted) {
-            sortingArrow = isSortedDescending
-                ? $('<span class="dm-tableform-sortbutton">↑</span>')
-                : $('<span class="dm-tableform-sortbutton">↓</span>');
-            onClick = async () => {
-                this.tableState.orderByDescending = !isSortedDescending;
-                await this.reloadTable();
-            };
-        } else {
+        if (!isSorted) {
+            // Starting point, not sorted --> Transition to Sorted
             sortingArrow = $('<span class="dm-tableform-sortbutton">⇅</span>');
             onClick = async () => {
                 this.tableState.orderBy = fieldName;
                 this.tableState.orderByDescending = false;
                 await this.reloadTable();
             };
+        } else if (isSorted && !isSortedDescending) {
+            // Now we are sorted, on next click, we are sorted by descnding
+            sortingArrow = $('<span class="dm-tableform-sortbutton">↓</span>');
+            onClick = async () => {
+                this.tableState.orderByDescending = true;
+                await this.reloadTable();
+            };
+        } else if (isSorted && isSortedDescending) {
+            // Now we are sorted descending, on next click, we switch back to unsorted
+            sortingArrow = $('<span class="dm-tableform-sortbutton">↑</span>');
+            
+            onClick = async () => {
+                this.tableState.orderByDescending = false;
+                this.tableState.orderBy = undefined;
+                await this.reloadTable();
+            };
+            
         }
 
         sortingArrow.on('click', onClick);
@@ -590,6 +600,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         return result;
 
         function createFunctionForRemoveProperties() {
+            const tthis = this;
             return {
                 cellKeyTitle: "Clear",
                 onCreateDom: (popup: burnJsPopup.PopupResult, jquery: JQuery) => {
@@ -597,7 +608,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     button.on('click', async () => {
                         // Gets the data
                         const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
-                        const dataUrl = this.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
+                        const dataUrl = tthis.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
 
                         // Creates the action
                         const action = new Mof.DmObject(_DatenMeister._Actions.__DeletePropertyFromCollectionAction_Uri);
@@ -609,7 +620,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                         };
 
                         await Actions.executeActionDirectly("Execute", parameter);
-                        await this.refreshForm();
+                        await tthis.refreshForm();
                     });
 
                     jquery.append(button);
@@ -716,15 +727,15 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
 
         if (this.tableState.filterByProperty !== undefined) {
-            for (var key in this.tableState.filterByProperty) {
-                var value = this.tableState.filterByProperty[key];
+            for (let key in this.tableState.filterByProperty) {
+                const value = this.tableState.filterByProperty[key];
 
                 result += `${andText + key} is '${value}'`;
                 andText = ' AND ' 
             }
         }        
 
-        if (result === undefined || result === "") {
+        if (result === "") {
             return "No Filter";
         }
 

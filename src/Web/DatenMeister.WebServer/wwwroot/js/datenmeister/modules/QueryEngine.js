@@ -67,6 +67,13 @@ export function flatten(builder) {
     builder.setResultNode(viewNode);
     return viewNode;
 }
+export function addDynamicSource(builder, name) {
+    const dynamicSource = new Mof.DmObject(_DatenMeister._DataViews.__DynamicSourceNode_Uri);
+    dynamicSource.set(_DatenMeister._DataViews._DynamicSourceNode.nodeName, name);
+    builder.addNode(dynamicSource);
+    builder.setResultNode(dynamicSource);
+    return dynamicSource;
+}
 export function getElementsOfExtent(builder, workspaceId, extentUrl) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByExtentNode_Uri);
     viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.workspaceId, workspaceId);

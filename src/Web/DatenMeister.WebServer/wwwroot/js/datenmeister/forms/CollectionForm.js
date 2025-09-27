@@ -244,7 +244,7 @@ export class CollectionFormCreator {
                     // Option 2, via Query Engine
                     {
                         const builder = new QueryEngine.QueryBuilder();
-                        QueryEngine.getElementsOfExtent(builder, tthis.workspace, tthis.extentUri);
+                        QueryEngine.addDynamicSource(builder, "input");
                         for (const property in query.filterByProperties) {
                             QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
                         }
@@ -255,7 +255,10 @@ export class CollectionFormCreator {
                             QueryEngine.filterByFreetext(builder, query.filterByFreetext);
                         }
                         QueryEngine.limit(builder, 101);
-                        const queryResult = await ClientElements.queryObject(builder.queryStatement);
+                        const queryResult = await ClientElements.queryObject(builder.queryStatement, {
+                            dynamicSourceWorkspaceId: tthis.workspace,
+                            dynamicSourceItemUri: tthis.extentUri
+                        });
                         return {
                             message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
                             elements: queryResult.result.slice(0, 100)

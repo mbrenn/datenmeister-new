@@ -3,6 +3,7 @@ import * as ApiConnection from "../ApiConnection.js"
 import * as Settings from "../Settings.js"
 import * as Mof from "../Mof.js";
 import { convertToMofObjects } from "./Items.js"
+import {param} from "jquery";
 
 export function getAllWorkspaces(): Promise<ItemWithNameAndId[]> {
     return load(undefined, undefined);
@@ -96,7 +97,9 @@ export interface IFindBySearchStringResult {
 }
 
 export interface IQueryObjectParameter {
-    query: Mof.JsonFromMofObject;
+    query?: Mof.JsonFromMofObject;
+    dynamicSourceWorkspaceId?: string;
+    dynamicSourceItemUri?: string;
     timeout?: number; // Timeout in seconds
 }
 
@@ -104,15 +107,14 @@ export interface IQueryObjectResult {
     result: Array<Mof.DmObject>;
 }
 
-export async function queryObject(query: Mof.DmObject, timeout?: number): Promise<IQueryObjectResult> {
-    const json = Mof.createJsonFromObject(query);
+export async function queryObject(query: Mof.DmObject, parameters?: IQueryObjectParameter): Promise<IQueryObjectResult> {
 
-    const parameters: IQueryObjectParameter = {
-        query: json
-    };
+    if (parameters === undefined) {
+        parameters = {};
+    }
 
-    if (timeout !== undefined && timeout !== null && timeout > 0) {
-        parameters.timeout = timeout;
+    if (parameters.query === undefined || parameters.query === null) {
+        parameters.query = Mof.createJsonFromObject(query);
     }
 
     const result = await ApiConnection.post<any>(

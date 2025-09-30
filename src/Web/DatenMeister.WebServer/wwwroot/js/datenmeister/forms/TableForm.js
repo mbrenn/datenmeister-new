@@ -111,14 +111,22 @@ export class TableForm {
             this.tableCache.cacheContainer.append(this.tableCache.cacheHeadline);
             this.tableCache.cacheFreeTextField = $("<div class='dm-tableform-freetextform'></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheFreeTextField);
-            this.tableCache.cacheButtons = $("<div></div>");
+            this.tableCache.cacheButtons = $("<div class='dm-tableform-buttons'></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheButtons);
+            this.tableCache.cacheButtonsTypeSelection = $("<div class='dm-tableform-button-typeselection'></div>");
+            this.tableCache.cacheContainer.append(this.tableCache.cacheButtonsTypeSelection);
+            this.tableCache.cacheSettings = $("<div class='dm-tableform-settings'><a class='btn btn-secondary'>Tableform Settings</a></div>");
+            this.tableCache.cacheContainer.append(this.tableCache.cacheSettings);
+            this.tableCache.cacheSettingsButton = $("<div class='dm-tableform-settings-button'></div>");
+            this.tableCache.cacheSettings.append(this.tableCache.cacheSettingsButton);
             this.tableCache.cacheQueryText = $('<div class="dm-tableform-querytext"></div>');
-            this.tableCache.cacheContainer.append(this.tableCache.cacheQueryText);
+            this.tableCache.cacheSettings.append(this.tableCache.cacheQueryText);
             this.tableCache.cacheEmptyDiv = $("<div></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheEmptyDiv);
-            this.tableCache.cacheTable = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
-            this.tableCache.cacheContainer.append(this.tableCache.cacheTable);
+            this.tableCache.cacheTableContainer = $("<div class='dm-tableform-tablecontainer'></div>");
+            this.tableCache.cacheContainer.append(this.tableCache.cacheTableContainer);
+            this.tableCache.cacheTable = $("<table class='table table-striped table-bordered align-top dm-tableform'></table>");
+            this.tableCache.cacheTableContainer.append(this.tableCache.cacheTable);
             // Create filter for freetext
             if (this.tableParameter.allowFreeTextFiltering) {
                 // Create freetext
@@ -194,7 +202,7 @@ export class TableForm {
                 selectItem.init(typeSelection, settings);
             });
             tthis.tableCache.cacheButtons.append(btn);
-            tthis.tableCache.cacheButtons.append(typeSelection);
+            tthis.tableCache.cacheButtonsTypeSelection.append(typeSelection);
         }
         function createButton(name, metaClass) {
             const metaClassUri = metaClass?.uri;

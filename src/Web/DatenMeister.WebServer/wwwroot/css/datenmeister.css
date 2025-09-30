@@ -140,6 +140,11 @@ a.nounderline{
     The definitions for the rowform
  */
 
+div.dm-collectionform-buttons
+{
+    margin-bottom: 10px;
+}
+
 .dm-rowform .dm-textfield {
     white-space: pre-wrap;
 }
@@ -150,7 +155,36 @@ a.nounderline{
 
 div.dm-tableform-container
 {
-    border: 1px solid red;
+    border: 1px solid black;    
+}
+
+div.dm-tableform-container h2
+{
+    border-bottom: 1px solid black;
+    background-color: #EEEEEE;
+    padding: 5px;
+}
+
+div.dm-tableform-container h2 a
+{
+    text-decoration: none;
+    color: black;
+}
+
+.dm-tableform-tablecontainer {
+    max-width: 100%;
+    max-height: 80vh;
+    overflow-x: auto;
+    overflow-y: auto;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.dm-tableform-container .dm-tableform-buttons
+{
+    border-bottom: 1px solid black;
+    vertical-align: center;
+    padding: 0 5px 5px 5px;
 }
 
 .dm-tableform .dm-textfield {
@@ -182,6 +216,17 @@ div.dm-tableform-container
 .dm-tablerow-columnheader .dm-tablerow-columnbuttons {
     text-align: right;
     white-space: nowrap;
+}
+
+.dm-tableform-settings {
+
+    background-color: #FFFFFF;
+    padding: 5px;
+}
+
+.dm-tableform-settings div{
+    display: inline-block;
+    padding-right: 5px;
 }
 
 .dm-tableform-freetextform {

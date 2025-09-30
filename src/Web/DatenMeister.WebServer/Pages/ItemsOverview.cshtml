@@ -30,14 +30,13 @@ $(function()
 
 </script>
 
-<div>
+<div class="dm-collectionform-buttons">
     <a href="~/ItemAction/Extent.CreateNewItem?workspace=@HttpUtility.HtmlAttributeEncode(Model.Workspace)&item=@HttpUtility.HtmlAttributeEncode(Model.Extent)" class="btn btn-secondary">Create unclassified Item</a>
     <btn class="btn btn-secondary" id="dm-btn-create-item-with-metaclass">Create Item w/ MetaClass</btn>
 </div>
 
 <div id="dm-btn-create-item-metaclass"></div>
 <div id="dm-items"></div>
-
 
 <table class="table table-striped table-bordered dm-table-nofullwidth align-top">
     <tbody>

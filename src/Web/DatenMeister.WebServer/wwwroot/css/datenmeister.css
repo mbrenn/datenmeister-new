@@ -148,6 +148,10 @@ a.nounderline{
     resize: both;
 }
 
+div.dm-tableform-container
+{
+    border: 1px solid red;
+}
 
 .dm-tableform .dm-textfield {
     white-space: pre-wrap;

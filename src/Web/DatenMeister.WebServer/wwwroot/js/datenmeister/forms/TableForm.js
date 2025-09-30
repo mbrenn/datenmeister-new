@@ -105,18 +105,20 @@ export class TableForm {
         this.elements = await this.callbackLoadItems(query);
         if (this.firstRun) {
             this.firstRun = false;
+            this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
+            parent.append(this.tableCache.cacheContainer);
             this.tableCache.cacheHeadline = $("<h2><a></a></h2>");
-            parent.append(this.tableCache.cacheHeadline);
+            this.tableCache.cacheContainer.append(this.tableCache.cacheHeadline);
             this.tableCache.cacheFreeTextField = $("<div class='dm-tableform-freetextform'></div>");
-            parent.append(this.tableCache.cacheFreeTextField);
+            this.tableCache.cacheContainer.append(this.tableCache.cacheFreeTextField);
             this.tableCache.cacheButtons = $("<div></div>");
-            parent.append(this.tableCache.cacheButtons);
+            this.tableCache.cacheContainer.append(this.tableCache.cacheButtons);
             this.tableCache.cacheQueryText = $('<div class="dm-tableform-querytext"></div>');
-            parent.append(this.tableCache.cacheQueryText);
+            this.tableCache.cacheContainer.append(this.tableCache.cacheQueryText);
             this.tableCache.cacheEmptyDiv = $("<div></div>");
-            parent.append(this.tableCache.cacheEmptyDiv);
+            this.tableCache.cacheContainer.append(this.tableCache.cacheEmptyDiv);
             this.tableCache.cacheTable = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top dm-tableform'></table>");
-            parent.append(this.tableCache.cacheTable);
+            this.tableCache.cacheContainer.append(this.tableCache.cacheTable);
             // Create filter for freetext
             if (this.tableParameter.allowFreeTextFiltering) {
                 // Create freetext

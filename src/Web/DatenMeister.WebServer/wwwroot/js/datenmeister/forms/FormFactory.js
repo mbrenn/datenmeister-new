@@ -17,7 +17,7 @@ export function registerObjectForm(uri, factoryFunction) {
     });
 }
 export function getCollectionFormFactory(uri) {
-    var indexUri = uri.indexOf('#');
+    const indexUri = uri.indexOf('#');
     if (indexUri !== -1) {
         uri = uri.substring(indexUri + 1);
     }

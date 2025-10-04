@@ -42,7 +42,7 @@ export function registerObjectForm(uri: string, factoryFunction: () => IForm.IOb
 
 export function getCollectionFormFactory(uri: string): () => IForm.ICollectionFormElement | undefined {
 
-    var indexUri = uri.indexOf('#');
+    const indexUri = uri.indexOf('#');
     if (indexUri !== -1) {
         uri = uri.substring(indexUri + 1);
     }

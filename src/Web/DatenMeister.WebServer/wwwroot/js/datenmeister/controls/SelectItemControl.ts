@@ -15,6 +15,9 @@ export class Settings {
     headline:string|undefined = undefined;
 }
 
+/**
+ * Creates a webcontrol which allows the user to select a specific item
+ */
 export class SelectItemControl {
 
     // Defines the dropdown element in which the user can select the extent

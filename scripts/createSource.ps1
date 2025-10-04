@@ -89,6 +89,8 @@ Move-Item Model/*.map Js/ -Force
 
 Set-Location ../..
 
+Move-Item src/DatenMeister.Core/Models/DatenMeister.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts -Force
+
 Set-Location scripts
 
 

@@ -4,6 +4,15 @@ var _FieldData = _DatenMeister._Forms._FieldData;
 var _TableForm = _DatenMeister._Forms._TableForm;
 import * as Mof from "../Mof.js";
 import { truncateText } from "../../burnsystems/StringManipulation.js";
+import * as SelectItemControl from "../controls/SelectItemControl.js";
+import * as Settings from "../Settings.js";
+import * as CollectionForm from "./CollectionForm.js";
+import { _UML } from "../models/uml.js";
+var _NamedElement = _UML._CommonStructure._NamedElement;
+/**
+ * Creates the function which allows to remove all properties of all items within the extent
+ * @param field Field for which the properties shall be removed
+ */
 export function createFunctionToRemoveAllProperties(field) {
     const tthis = this;
     return {
@@ -76,7 +85,7 @@ export function createFunctionToFilterInProperty(tthis, field) {
             });
             jquery.append(dropDown);
         },
-        onSubmitForm: () => {
+        onSubmitForm: async () => {
             const value = dropDown.val();
             if (value !== "" && value !== undefined) {
                 tthis.tableState.filterByProperty[propertyName] = dropDown.val();
@@ -84,13 +93,63 @@ export function createFunctionToFilterInProperty(tthis, field) {
             else {
                 delete tthis.tableState.filterByProperty[propertyName];
             }
-            tthis.reloadTable();
+            await tthis.reloadTable();
         },
         callbackButtonText: (query) => {
             if (tthis.tableState.filterByProperty[propertyName] !== undefined && tthis.tableState.filterByProperty[propertyName] !== "") {
                 query.append($("<span>F</span>"));
                 return true;
             }
+        }
+    };
+}
+/**
+ * Creates a function which allows to store the current view of the table
+ * in a certain package on the server.
+ * @param tableForm
+ */
+export function createFunctionToStoreCurrentView(tableForm) {
+    return {
+        cellKeyTitle: "Store View",
+        onCreateDom: async (popup, jquery) => {
+            const storeTable = $("<table>" +
+                "<tr><td>Name of View:</td><td><input class='dm-tableform-store-currentview-name' type='text'></td></tr>" +
+                "<tr><td title='Define the package under which the new package storing the overall dataview will be stored'>Package:</td>" +
+                "<td class='dm-tableform-store-currentview-package'></td></tr>" +
+                "<tr><td></td><td><button class='btn btn-primary dm-tableform-store-currentview-submit' type='button'>StoreView</button></td></tr>" +
+                "</table>");
+            const nameTextField = $('.dm-tableform-store-currentview-name', storeTable);
+            const packageField = $('.dm-tableform-store-currentview-package', storeTable);
+            const submitButton = $('.dm-tableform-store-currentview-submit', storeTable);
+            const selectItemControl = new SelectItemControl.SelectItemControl();
+            await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
+            const selectItemControlSettings = new SelectItemControl.Settings();
+            selectItemControlSettings.showButtonRow = false;
+            selectItemControlSettings.showCancelButton = false;
+            selectItemControlSettings.headline = "Select Package";
+            selectItemControl.init(packageField, selectItemControlSettings);
+            submitButton.on('click', async () => {
+                const name = nameTextField.val();
+                if (name === undefined || name === "") {
+                    alert("Please provide a name for the view");
+                    return;
+                }
+                // Ok, get the package url
+                const packageUrl = selectItemControl.getSelectedItem();
+                // Prepare the action
+                const actionParameter = new Mof.DmObject(_DatenMeister._Actions.__CreateFormUponViewAction_Uri);
+                actionParameter.set(_DatenMeister._Actions._CreateFormUponViewAction.name, name);
+                actionParameter.set(_DatenMeister._Actions._CreateFormUponViewAction.targetPackageUri, packageUrl.uri);
+                actionParameter.set(_DatenMeister._Actions._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
+                const queryBuilder = CollectionForm.createQueryBuilder(tableForm.getQueryParameter()).queryStatement;
+                queryBuilder.set(_NamedElement._name_, name);
+                actionParameter.set(_DatenMeister._Actions._CreateFormUponViewAction.query, queryBuilder);
+                const result = await Actions.executeActionDirectly("Execute", {
+                    parameter: actionParameter
+                });
+                alert(result.resultAsDmObject.get(_DatenMeister._Actions._ParameterTypes._CreateFormUponViewResult.resultingPackageUrl, Mof.ObjectType.String));
+            });
+            jquery.append(storeTable);
         }
     };
 }

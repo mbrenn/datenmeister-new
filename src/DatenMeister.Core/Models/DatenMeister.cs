@@ -766,6 +766,18 @@ public class _Actions
         public _LoadExtentActionResult @LoadExtentActionResult = new _LoadExtentActionResult();
         public MofObjectShadow @__LoadExtentActionResult = new MofObjectShadow("dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5");
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CreateFormUponViewResult
+        {
+            public static readonly string @resultingPackageUrl = "resultingPackageUrl";
+            public IElement? @_resultingPackageUrl = null;
+
+        }
+
+        public _CreateFormUponViewResult @CreateFormUponViewResult = new _CreateFormUponViewResult();
+        public MofObjectShadow @__CreateFormUponViewResult = new MofObjectShadow("dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b");
+
     }
 
     public _ParameterTypes ParameterTypes = new _ParameterTypes();
@@ -880,6 +892,30 @@ public class _Actions
 
     public _ConsoleWriteAction @ConsoleWriteAction = new _ConsoleWriteAction();
     public MofObjectShadow @__ConsoleWriteAction = new MofObjectShadow("dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a");
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
+        TypeKind = TypeKind.ClassTree)]
+    public class _CreateFormUponViewAction
+    {
+        public static readonly string @query = "query";
+        public IElement? @_query = null;
+
+        public static readonly string @targetPackageUri = "targetPackageUri";
+        public IElement? @_targetPackageUri = null;
+
+        public static readonly string @targetPackageWorkspace = "targetPackageWorkspace";
+        public IElement? @_targetPackageWorkspace = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
+
+        public static readonly string @isDisabled = "isDisabled";
+        public IElement? @_isDisabled = null;
+
+    }
+
+    public _CreateFormUponViewAction @CreateFormUponViewAction = new _CreateFormUponViewAction();
+    public MofObjectShadow @__CreateFormUponViewAction = new MofObjectShadow("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
 
     public static readonly _Actions TheOne = new _Actions();
 
@@ -1098,6 +1134,9 @@ public class _DataViews
 
         public static readonly string @resultNode = "resultNode";
         public IElement? @_resultNode = null;
+
+        public static readonly string @name = "name";
+        public IElement? @_name = null;
 
     }
 

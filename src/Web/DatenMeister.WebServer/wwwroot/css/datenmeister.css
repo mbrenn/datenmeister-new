@@ -153,6 +153,12 @@ div.dm-collectionform-buttons
     resize: both;
 }
 
+table.dm-tableform
+{
+    width: auto;
+    max-width: 100%;
+}
+
 div.dm-tableform-container
 {
     border: 1px solid black;    

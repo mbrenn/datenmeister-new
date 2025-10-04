@@ -1415,6 +1415,22 @@ public class Actions
 
         }
 
+        [TypeUri(Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CreateFormUponViewResult_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @resultingPackageUrl
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("resultingPackageUrl");
+                set => 
+                    innerDmElement.set("resultingPackageUrl", value);
+            }
+
+        }
+
     }
 
     [TypeUri(Uri = "dm:///_internal/types/internal#899324b1-85dc-40a1-ba95-dec50509040d",
@@ -1591,6 +1607,67 @@ public class Actions
                 innerDmElement.getOrDefault<string?>("text");
             set => 
                 innerDmElement.set("text", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("name");
+            set => 
+                innerDmElement.set("name", value);
+        }
+
+        public bool @isDisabled
+        {
+            get =>
+                innerDmElement.getOrDefault<bool>("isDisabled");
+            set => 
+                innerDmElement.set("isDisabled", value);
+        }
+
+    }
+
+    [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
+        TypeKind = TypeKind.WrappedClass)]
+    public class CreateFormUponViewAction_Wrapper(IElement innerDmElement) : IElementWrapper
+    {
+        public IElement GetWrappedElement() => innerDmElement;
+
+        // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
+        public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
+        {
+            get
+            {
+                var foundElement = innerDmElement.getOrDefault<IElement>("query");
+                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
+            }
+            set 
+            {
+                if(value is IElementWrapper wrappedElement)
+                {
+                    innerDmElement.set("query", wrappedElement.GetWrappedElement());
+                }
+                else
+                {
+                    innerDmElement.set("query", value);
+                }
+            }
+        }
+
+        public string? @targetPackageUri
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("targetPackageUri");
+            set => 
+                innerDmElement.set("targetPackageUri", value);
+        }
+
+        public string? @targetPackageWorkspace
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("targetPackageWorkspace");
+            set => 
+                innerDmElement.set("targetPackageWorkspace", value);
         }
 
         public string? @name
@@ -1996,6 +2073,14 @@ public class DataViews
                 innerDmElement.getOrDefault<object?>("resultNode");
             set => 
                 innerDmElement.set("resultNode", value);
+        }
+
+        public string? @name
+        {
+            get =>
+                innerDmElement.getOrDefault<string?>("name");
+            set => 
+                innerDmElement.set("name", value);
         }
 
     }

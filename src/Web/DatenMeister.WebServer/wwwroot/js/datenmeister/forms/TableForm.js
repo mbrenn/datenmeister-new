@@ -101,11 +101,7 @@ export class TableForm {
             throw "No callbackLoadItems is set";
         }
         // Loads the data
-        const query = new InterfacesForms.QueryFilterParameter();
-        query.orderBy = this.tableState.orderBy;
-        query.orderByDescending = this.tableState.orderByDescending;
-        query.filterByProperties = this.tableState.filterByProperty;
-        query.filterByFreetext = this.tableState.freeTextFilter;
+        const query = this.getQueryParameter();
         this.elements = await this.callbackLoadItems(query);
         if (this.firstRun) {
             this.firstRun = false;
@@ -165,9 +161,17 @@ export class TableForm {
             await this.createTable();
         }
     }
+    getQueryParameter() {
+        const query = new InterfacesForms.QueryFilterParameter();
+        query.orderBy = this.tableState.orderBy;
+        query.orderByDescending = this.tableState.orderByDescending;
+        query.filterByProperties = this.tableState.filterByProperty;
+        query.filterByFreetext = this.tableState.freeTextFilter;
+        return query;
+    }
     /*
-    * Creates the buttons for the new instance
-     */
+        * Creates the buttons for the new instance
+         */
     createButtonsForNewInstance() {
         const property = this.formElement.get('property');
         const tthis = this;
@@ -248,26 +252,45 @@ export class TableForm {
         });
         this.tableCache.cacheFreeTextField.append(inputField);
     }
+    /**
+     * Initializes the table settings button and provides the mechanism to create the table
+     * @private
+     */
     async initializeTableSettingsButton() {
         $(".btn", this.tableCache.cacheSettings).on('click', async () => {
-            alert('X');
             const popup = burnJsPopup.createPopup();
             const table = $("<table class='table table-bordered dm-table-nofullwidth align-top dm-tableform'><th>Action</th><th>Parameter</th></table>");
             $(popup.htmlContent).append(table);
+            const menuItems = this.getMenuItemsForTableSettings();
+            menuItems.forEach(menuItem => {
+                const tableRow = $("<tr><td class='dm-key'></td><td class='dm-value'></td></tr>");
+                const cellKey = $(".dm-key", tableRow);
+                const cellValue = $(".dm-value", tableRow);
+                menuItem.onCreateDom(popup, cellValue);
+                if (menuItem.cellKeyTitle !== undefined) {
+                    cellKey.text(menuItem.cellKeyTitle);
+                }
+                table.append(tableRow);
+            });
             // Add submit line
-            const submitButton = $("<button class='btn btn-primary' type='button'>Submit</button>");
+            const submitButton = $("<button class='btn btn-primary' type='button'>Close</button>");
             submitButton.on('click', () => {
-                /*propertyMenuItems.forEach(menuItem => {
+                menuItems.forEach(menuItem => {
                     if (menuItem.onSubmitForm) {
                         menuItem.onSubmitForm();
                     }
-                });*/
+                });
                 popup.closePopup();
             });
             const submitRow = $("<tr><td></td><td class='dm-value'></td></tr>").append(submitButton);
             $("td.dm-value", submitRow).append(submitButton);
             table.append(submitRow);
         });
+    }
+    getMenuItemsForTableSettings() {
+        return [
+            ContextMenu.createFunctionToStoreCurrentView(this)
+        ];
     }
     /**
      * Updates the filter query text which describes the current filter settings
@@ -316,12 +339,6 @@ export class TableForm {
                 (metaClassFilter && elementsMetaClass !== metaClassFilter)) {
                 continue;
             }
-            /*
-            // If we have freetext, then we need to skip the row.
-            if (this.tableParameter.allowFreeTextFiltering && !this.isElementMatchingFreeTextFilter(element, fields)) {
-                continue;
-            }
-             */
             const row = $("<tr></tr>");
             for (const field of fields) {
                 let cell = $("<td></td>");

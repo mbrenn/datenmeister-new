@@ -18,6 +18,22 @@ import { ElementBreadcrumb } from "../controls/ElementBreadcrumb.js";
 import * as QueryEngine from "../modules/QueryEngine.js";
 export class CollectionFormHtmlElements {
 }
+export function createQueryBuilder(query) {
+    // Option 2, via Query Engine
+    const builder = new QueryEngine.QueryBuilder();
+    QueryEngine.addDynamicSource(builder, "input");
+    for (const property in query.filterByProperties) {
+        QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+    }
+    if (query.orderBy !== undefined) {
+        QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+    }
+    if (query.filterByFreetext) {
+        QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+    }
+    QueryEngine.limit(builder, 101);
+    return builder;
+}
 /*
     Creates a form containing a collection of root items of an extent
     The input for this type is a collection of elements
@@ -229,41 +245,15 @@ export class CollectionFormCreator {
                     parameter.viewNode = viewNodeUrl.uri;
                 }
                 const callbackLoadItems = async (query) => {
-                    // Option 1, via direct Http Request
-                    /*
-                    {
-                        parameter.filterByFreetext = query.filterByFreetext;
-                        parameter.filterByProperties = query.filterByProperties;
-                        parameter.orderBy = query.orderBy;
-                        parameter.orderByDescending = query.orderByDescending;
-
-                        // Load the object for the specific form
-                        return await ClientItems.getRootElements(
-                            tthis.workspace, tthis.extentUri, parameter);
-                    }*/
-                    // Option 2, via Query Engine
-                    {
-                        const builder = new QueryEngine.QueryBuilder();
-                        QueryEngine.addDynamicSource(builder, "input");
-                        for (const property in query.filterByProperties) {
-                            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
-                        }
-                        if (query.orderBy !== undefined) {
-                            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-                        }
-                        if (query.filterByFreetext) {
-                            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
-                        }
-                        QueryEngine.limit(builder, 101);
-                        const queryResult = await ClientElements.queryObject(builder.queryStatement, {
-                            dynamicSourceWorkspaceId: tthis.workspace,
-                            dynamicSourceItemUri: tthis.extentUri
-                        });
-                        return {
-                            message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
-                            elements: queryResult.result.slice(0, 100)
-                        };
-                    }
+                    const builder = createQueryBuilder(query);
+                    const queryResult = await ClientElements.queryObject(builder.queryStatement, {
+                        dynamicSourceWorkspaceId: tthis.workspace,
+                        dynamicSourceItemUri: tthis.extentUri
+                    });
+                    return {
+                        message: queryResult.result.length >= 101 ? "Capped to 100 elements" : "",
+                        elements: queryResult.result.slice(0, 100)
+                    };
                 };
                 const formFactory = FormFactory.getCollectionFormFactory(tab.metaClass.uri);
                 if (formFactory !== undefined) {

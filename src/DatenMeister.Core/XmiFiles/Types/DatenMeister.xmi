@@ -234,6 +234,9 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d0756147-ce53-442f-9866-340479bed627" type-ref="dm:///_internal/model/primitivetypes#String" name="workspaceId" isID="false" isComposite="false" />
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0c1fb5f0-29cb-4245-b2c0-b19d6b6f3cff" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
       </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="124e202d-e8b3-4d39-bbc2-4c95896e811b" name="CreateFormUponViewResult">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="caca70d9-60bf-4c3a-9784-f8a2fa083691" type-ref="dm:///_internal/model/primitivetypes#String" name="resultingPackageUrl" isID="false" isComposite="false" />
+      </packagedElement>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="899324b1-85dc-40a1-ba95-dec50509040d" name="ActionResult">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="4b37dc68-3efa-4b43-88ee-3d4caa18ceb9" name="isSuccess" type-ref="dm:///_internal/model/primitivetypes#_package_PrimitiveTypes" isID="false" isComposite="false" />
@@ -262,6 +265,12 @@
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="82f46dd7-b61b-4bc1-b25c-d5d3d244c35a" name="ConsoleWriteAction">
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a65703b5-654a-4b42-81de-14595a7b7b62" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="04e791c9-1316-4777-afc0-afb30d294530" name="text" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b8333b8d-ac49-4a4e-a7f4-c3745e0a0237" name="CreateFormUponViewAction">
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a42debe1-7d09-49f9-9c90-920885f3877f" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="392b1dc2-21e0-4714-a2ad-06700b0a2d96" name="query" isID="false" isComposite="false" type-ref="#DatenMeister.Models.DataViews.QueryStatement"></ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="30dd0a69-f9fa-4bff-a6cd-3ec2cf1c564c" type-ref="dm:///_internal/model/primitivetypes#String" name="targetPackageUri" isID="false" isComposite="false" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a44457d3-4fa8-4d46-a914-5c886fd89a67" name="targetPackageWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -324,6 +333,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.QueryStatement" name="QueryStatement">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="dec9a363-4e79-48bf-9168-83784aaeb31d" name="nodes" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" lower="0" upper="*" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="64a250be-b99f-49ec-b152-dd2e6bb8cc4f" name="resultNode" lower="0" upper="1" type-ref="dm:///intern.datenmeister.types/#DatenMeister.Models.DataViews.ViewNode" isID="false" isComposite="false" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4f5204b1-9bac-4ac7-a5ec-34b9b6befb36" name="name" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="a890d5ec-2686-4f18-9f9f-7037c7fe226a" name="SelectFromAllWorkspacesNode">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="96ed79cd-7898-4334-b0d8-5c0b4d18966d" general-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" isSubstitutable="false" />

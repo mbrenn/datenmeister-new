@@ -72,7 +72,7 @@ export class Control {
         const settings = new SIC.Settings();
         settings.showWorkspaceInBreadcrumb = true;
         settings.showExtentInBreadcrumb = true;
-        settings.showButtonRow = !isSelectionInline;
+        settings.hideButtonRow = isSelectionInline;
         // Depending on whether we are having a inline item, we react upon an explicit click via 'set' button
         // or directly while the user is navigating
         const eventType = isSelectionInline ? selectItem.itemClicked : selectItem.itemSelected;

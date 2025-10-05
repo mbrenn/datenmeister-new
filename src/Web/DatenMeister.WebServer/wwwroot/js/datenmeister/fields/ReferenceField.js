@@ -2,6 +2,7 @@ import * as Mof from "../Mof.js";
 import { injectNameByUri } from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
+import * as DomHelper from "../DomHelper.js";
 export class Control {
     /** Initializes a new instance
      *
@@ -149,7 +150,7 @@ export class Field extends Control {
                 this._list.text(value.toString());
             }
             else {
-                this._list.text(value.get('name'));
+                await DomHelper.injectNameByObject(this._list, value);
             }
         }
         else {

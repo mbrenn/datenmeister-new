@@ -7,6 +7,11 @@ export interface IInjectNameByUriParams {
     onClick?: (item: ItemWithNameAndId) => (void);
 }
 
+export async function injectNameByObject(domElement: JQuery, element: DmObject)
+{
+    return injectNameByUri(domElement, element.workspace, element.uri);   
+}
+
 export async function injectNameByUri(domElement: JQuery<HTMLElement>, workspaceId: string, elementUri: string, parameter?: IInjectNameByUriParams) {
 
     const x = await ElementClient.loadNameByUri(workspaceId, elementUri);

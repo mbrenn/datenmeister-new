@@ -1,5 +1,8 @@
 import * as ElementClient from "./client/Elements.js";
 import * as Navigator from "./Navigator.js";
+export async function injectNameByObject(domElement, element) {
+    return injectNameByUri(domElement, element.workspace, element.uri);
+}
 export async function injectNameByUri(domElement, workspaceId, elementUri, parameter) {
     const x = await ElementClient.loadNameByUri(workspaceId, elementUri);
     domElement.empty();

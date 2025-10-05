@@ -2,9 +2,10 @@
 import * as Mof from "../Mof.js";
 import {IFormConfiguration} from "../forms/IFormConfiguration.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
-import {injectNameByUri} from "../DomHelper.js";
+import {injectNameByObject, injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
+import * as DomHelper from "../DomHelper.js";
 import {ItemWithNameAndId} from "../ApiModels";
 
 export class Control {
@@ -211,8 +212,8 @@ export class Field extends Control implements IFormField {
                 this._list.html("<em class='dm-undefined'>undefined</em>");
             } else if (value.get === undefined) {
                 this._list.text(value.toString());
-            } else {
-                this._list.text(value.get('name'));
+            } else {                
+                await DomHelper.injectNameByObject(this._list, value as Mof.DmObject);
             }
         } else {
             return await this.createDomByValue(value);

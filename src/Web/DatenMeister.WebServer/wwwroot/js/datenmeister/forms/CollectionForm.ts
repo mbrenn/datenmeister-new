@@ -79,7 +79,15 @@ export class CollectionFormHtmlElements
     statusContainer?: JQuery;
 }
 
-export function createQueryBuilder(query: QueryFilterParameter) {
+
+/**
+ * Creates a query builder with the provided filters, ordering, and limit options.
+ *
+ * @param {QueryFilterParameter} query - The query filter parameter containing filter properties, ordering, and free-text filter.
+ * @param {number} [limit] - An optional limit for the number of results. If undefined, a default limit is applied. If less than 0, no limit is applied.
+ * @return {QueryEngine.QueryBuilder} - An instance of the QueryEngine's QueryBuilder configured with the specified parameters.
+ */
+export function createQueryBuilder(query: QueryFilterParameter, limit?: number) {
     // Option 2, via Query Engine
     const builder = new QueryEngine.QueryBuilder();
     QueryEngine.addDynamicSource(builder, "input");
@@ -96,7 +104,16 @@ export function createQueryBuilder(query: QueryFilterParameter) {
         QueryEngine.filterByFreetext(builder, query.filterByFreetext);
     }
 
-    QueryEngine.limit(builder, 101);
+    // Imposes only a limit in case it is not defined or positive
+    // in case the given limit < 0, then no limit is applied
+    if(limit === undefined) {
+        QueryEngine.limit(builder, 101);
+    }
+    if(limit > 0)
+    {
+        QueryEngine.limit(builder, limit);
+    }
+    
     return builder;
 }
 

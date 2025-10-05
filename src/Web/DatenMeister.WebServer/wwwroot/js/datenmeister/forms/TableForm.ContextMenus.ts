@@ -9,8 +9,10 @@ import {TableForm} from "./TableForm.js";
 import * as SelectItemControl from "../controls/SelectItemControl.js";
 import * as Settings from "../Settings.js";
 import * as CollectionForm from "./CollectionForm.js";
+import * as Navigator from "../Navigator.js"
 import {_UML} from "../models/uml.js";
 import _NamedElement = _UML._CommonStructure._NamedElement;
+import {getLinkForNavigateToItemByUrl} from "../Navigator.js";
 
 /**
  * Creates the function which allows to remove all properties of all items within the extent
@@ -138,11 +140,13 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                 "<tr><td title='Define the package under which the new package storing the overall dataview will be stored'>Package:</td>" +
                 "<td class='dm-tableform-store-currentview-package'></td></tr>" +
                 "<tr><td></td><td><button class='btn btn-primary dm-tableform-store-currentview-submit' type='button'>StoreView</button></td></tr>" +
+                "<tr><td></td><td class='dm-tableform-store-currentview-result'></tr>" +
                 "</table>");
 
             const nameTextField = $('.dm-tableform-store-currentview-name', storeTable);
             const packageField = $('.dm-tableform-store-currentview-package', storeTable);
             const submitButton = $('.dm-tableform-store-currentview-submit', storeTable);
+            const resultCell = $('.dm-tableform-store-currentview-result', storeTable);
 
             const selectItemControl = new SelectItemControl.SelectItemControl();
             await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
@@ -174,7 +178,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                     _DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
                 
                 const queryBuilder = 
-                    CollectionForm.createQueryBuilder(tableForm.getQueryParameter()).queryStatement;
+                    CollectionForm.createQueryBuilder(tableForm.getQueryParameter(), -1).queryStatement;
                 queryBuilder.set(_NamedElement._name_, name);
                 actionParameter.set(
                     _DatenMeister._Actions._Forms._CreateFormUponViewAction.query, queryBuilder);
@@ -184,9 +188,24 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                     parameter: actionParameter
                 });
                 
-                alert(result.resultAsDmObject.get(
-                    _DatenMeister._Actions._ParameterTypes._CreateFormUponViewResult.resultingPackageUrl, Mof.ObjectType.String)
-                );
+                const workspace = packageUrl.workspace;
+                const item = result.resultAsDmObject.get(
+                    _DatenMeister._Actions._ParameterTypes._CreateFormUponViewResult.resultingPackageUrl, Mof.ObjectType.String);
+                
+                // If we have the result, we show it with a link to navigate
+                if (result.resultAsDmObject !== undefined) {
+                    const resultText = $("<span>View is created: <a>Click here to navigate to the view</a></span>");
+                    const anchor = resultText.find("a");
+                    anchor.attr("href",
+                        Navigator.getLinkForNavigateToItemByUrl(
+                            workspace,
+                            item));
+                    resultCell.empty();
+                    resultCell.append(resultText);
+                }
+                else{
+                    alert('Something went wrong.');
+                }
             });
 
             jquery.append(storeTable);

@@ -38,7 +38,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// Maps the element to a datetime until when it shall be deleted.
     /// If the element is not found here, then it will be directly deleted
     /// </summary>
-    private static readonly ConcurrentDictionary<string, DateTime> ElementMapping = new ();
+    private static readonly ConcurrentDictionary<IObject, DateTime> ElementMapping = new ();
 
     /// <summary>
     /// Gets the temporary extent and creates a new one, if necessary
@@ -82,9 +82,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
         var foundExtent = TemporaryExtent;
 
         var created = MofFactory.CreateElement(foundExtent, metaClass);
-        var id = (created as IHasId)?.Id 
-                 ?? throw new InvalidOperationException("Element does not has an id");
-        ElementMapping[id] = DateTime.Now + (cleanUpTime ?? DefaultCleanupTime);
+        ElementMapping[created] = DateTime.Now + (cleanUpTime ?? DefaultCleanupTime);
         if (addToExtent)
         {
             foundExtent.elements().add(created);
@@ -123,11 +121,10 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
         // Go through the elements and collect these ones whose clean up time has passed
         var itemsToBeDeleted = 
             foundExtent.elements()
-                .OfType<IHasId>()
+                .OfType<IObject>()
                 .Where(element =>
                 {
-                    var id = element.Id;
-                    if (id != null && ElementMapping.TryGetValue(id, out var time))
+                    if (ElementMapping.TryGetValue(element, out var time))
                     {
                         return time < currentTime;
                     }
@@ -141,11 +138,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
         foreach (var element in itemsToBeDeleted)
         {
             foundExtent.elements().remove(element);
-            var id = element.Id;
-            if (id != null)
-            {
-                ElementMapping.Remove(id, out _);
-            }
+            ElementMapping.Remove(element, out _);
         }
 
         // Logging, if something was deleted

@@ -123,7 +123,7 @@ public class NamedElementMethods
     public static IElement? GetByFullName(IReflectiveCollection collection, string fullName)
     {
         var elementNames = fullName
-            .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
+            .Split(["::"], StringSplitOptions.RemoveEmptyEntries)
             .Select(x => x.Trim()).ToList();
 
         var current = (IEnumerable<object>) collection;

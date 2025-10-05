@@ -296,6 +296,17 @@ export var _Actions;
         _NavigationDefineActionParameter.metaClassUrl = "metaClassUrl";
         _ParameterTypes._NavigationDefineActionParameter = _NavigationDefineActionParameter;
         _ParameterTypes.__NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
+        class _LoadExtentActionResult {
+        }
+        _LoadExtentActionResult.workspaceId = "workspaceId";
+        _LoadExtentActionResult.extentUri = "extentUri";
+        _ParameterTypes._LoadExtentActionResult = _LoadExtentActionResult;
+        _ParameterTypes.__LoadExtentActionResult_Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5";
+        class _CreateFormUponViewResult {
+        }
+        _CreateFormUponViewResult.resultingPackageUrl = "resultingPackageUrl";
+        _ParameterTypes._CreateFormUponViewResult = _CreateFormUponViewResult;
+        _ParameterTypes.__CreateFormUponViewResult_Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b";
     })(_ParameterTypes = _Actions._ParameterTypes || (_Actions._ParameterTypes = {}));
     class _ActionResult {
     }
@@ -341,6 +352,15 @@ export var _Actions;
     _ConsoleWriteAction.isDisabled = "isDisabled";
     _Actions._ConsoleWriteAction = _ConsoleWriteAction;
     _Actions.__ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
+    class _CreateFormUponViewAction {
+    }
+    _CreateFormUponViewAction.query = "query";
+    _CreateFormUponViewAction.targetPackageUri = "targetPackageUri";
+    _CreateFormUponViewAction.targetPackageWorkspace = "targetPackageWorkspace";
+    _CreateFormUponViewAction._name_ = "name";
+    _CreateFormUponViewAction.isDisabled = "isDisabled";
+    _Actions._CreateFormUponViewAction = _CreateFormUponViewAction;
+    _Actions.__CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
 })(_Actions || (_Actions = {}));
 export var _DataViews;
 (function (_DataViews) {
@@ -436,6 +456,7 @@ export var _DataViews;
     }
     _QueryStatement.nodes = "nodes";
     _QueryStatement.resultNode = "resultNode";
+    _QueryStatement._name_ = "name";
     _DataViews._QueryStatement = _QueryStatement;
     _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
     class _SelectFromAllWorkspacesNode {

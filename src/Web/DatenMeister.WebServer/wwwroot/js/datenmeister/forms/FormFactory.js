@@ -17,13 +17,13 @@ export function registerObjectForm(uri, factoryFunction) {
     });
 }
 export function getCollectionFormFactory(uri) {
-    var indexUri = uri.indexOf('#');
+    const indexUri = uri.indexOf('#');
     if (indexUri !== -1) {
         uri = uri.substring(indexUri + 1);
     }
     for (let n in registerDataCollectionForm) {
         const item = registerDataCollectionForm[n];
-        var indexItemUri = item.uri.indexOf('#');
+        const indexItemUri = item.uri.indexOf('#');
         if (indexItemUri !== -1) {
             item.uri = item.uri.substring(indexItemUri + 1);
         }
@@ -34,13 +34,13 @@ export function getCollectionFormFactory(uri) {
     return undefined;
 }
 export function getObjectFormFactory(uri) {
-    var indexUri = uri.indexOf('#');
+    const indexUri = uri.indexOf('#');
     if (indexUri !== -1) {
         uri = uri.substring(indexUri + 1);
     }
     for (let n in registerDataObjectForm) {
         const item = registerDataObjectForm[n];
-        var indexItemUri = item.uri.indexOf('#');
+        const indexItemUri = item.uri.indexOf('#');
         if (indexItemUri !== -1) {
             item.uri = item.uri.substring(indexItemUri + 1);
         }

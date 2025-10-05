@@ -15,6 +15,9 @@ export class Settings {
         this.headline = undefined;
     }
 }
+/**
+ * Creates a webcontrol which allows the user to select a specific item
+ */
 export class SelectItemControl {
     constructor() {
         this.loadedWorkspaces = new Array();

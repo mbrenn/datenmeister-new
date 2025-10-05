@@ -57,6 +57,17 @@ Welcome to the About-Page
         </td>
     </tr>
     <tr>
+        <td>Registered ActionHandlers</td>
+        <td>
+            <ul>
+                @foreach (var actionHandler in AboutModel.ActionHandlers)
+                {
+                    <li>@actionHandler</li>
+                }
+            </ul>
+        </td>
+    </tr>
+    <tr>
         <td>Registered Form-Modification-Plugins</td>
         <td>
             <ul>

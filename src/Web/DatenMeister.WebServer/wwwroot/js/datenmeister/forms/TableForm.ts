@@ -2,27 +2,26 @@
 import * as SIC from "../controls/SelectItemControl.js";
 import * as Mof from "../Mof.js";
 import * as FieldFactory from "./FieldFactory.js";
-import * as Settings from "../Settings.js";
 import {IFormConfiguration} from "./IFormConfiguration.js";
 import * as Navigator from '../Navigator.js'
 import * as _DatenMeister from "../models/DatenMeister.class.js";
-import _TableForm = _DatenMeister._Forms._TableForm;
-import * as Actions from "../client/Actions.js";
 import _FieldData = _DatenMeister._Forms._FieldData;
 import * as burnJsPopup from "../../burnJsPopup.js"
-import { truncateText } from "../../burnsystems/StringManipulation.js";
 import * as ClientItem from "../client/Items.js"
-import {getLinkForNavigateToCreateNewItemInExtent} from "../Navigator.js";
+import * as ContextMenu from "./TableForm.ContextMenus.js"
 
-interface PropertyMenuItem
+interface MenuItemData
 {
     cellKeyTitle?: string;
     onCreateDom: (popupResult: burnJsPopup.PopupResult, jQuery: JQuery) => void;
     onSubmitForm?: () => void;
 
     /**
-     * Allows a menuitem to change the button text
-     * @returns The changed buttontext
+     * Allows a menuitem to change the button text which is shown as the table header and 
+     * allows to replace the '...' in case one of the Menue Items would like to add its own
+     * button Text
+     * @param query Reflects the button itself
+     * @returns true, if the button text was changed
      */
     callbackButtonText?: (query: JQuery) => boolean;
 }
@@ -168,6 +167,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         return await this.createFormByCollection(parent, configuration, refresh);
     }
 
+    /**
+     * Creates the form by the given collection
+     * @param parent The parent html element
+     * @param configuration The configuration for the form
+     * @param refresh true, if we just would like to refresh the table and not create new elements
+     */
     async createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean) {
         this.tableCache.parentHtml = parent;
         this.configuration = configuration;
@@ -184,11 +189,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
 
         // Loads the data
-        const query = new InterfacesForms.QueryFilterParameter();
-        query.orderBy = this.tableState.orderBy;
-        query.orderByDescending = this.tableState.orderByDescending;
-        query.filterByProperties = this.tableState.filterByProperty;
-        query.filterByFreetext = this.tableState.freeTextFilter;
+        const query = this.getQueryParameter();
 
         this.elements = await this.callbackLoadItems(query);
 
@@ -214,6 +215,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             
             this.tableCache.cacheSettingsButton = $("<div class='dm-tableform-settings-button'></div>");
             this.tableCache.cacheSettings.append(this.tableCache.cacheSettingsButton);
+            await this.initializeTableSettingsButton();
             
             this.tableCache.cacheQueryText = $('<div class="dm-tableform-querytext"></div>');
             this.tableCache.cacheSettings.append(this.tableCache.cacheQueryText);
@@ -253,7 +255,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         // Create Query Text
         this.updateFilterQueryText();
-
+        
         // Creates the table 
         if (this.elements === undefined) {
             this.elements = [];
@@ -265,15 +267,24 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             this.tableCache.cacheEmptyDiv.text("Non-Array elements for ListForm: ");
             this.tableCache.cacheEmptyDiv.append($("<em></em>").text((this.elements as any).toString()));
 
-            if (refresh !== true) {
-
-            }
         } else {
             // Creates the table            
             await this.createTable();
         }
     }
 
+    getQueryParameter() {
+        const query = new InterfacesForms.QueryFilterParameter();
+        query.orderBy = this.tableState.orderBy;
+        query.orderByDescending = this.tableState.orderByDescending;
+        query.filterByProperties = this.tableState.filterByProperty;
+        query.filterByFreetext = this.tableState.freeTextFilter;
+        return query;
+    }
+
+    /*
+        * Creates the buttons for the new instance
+         */
     private createButtonsForNewInstance() {
         const property = this.formElement.get('property');
         const tthis = this;
@@ -293,7 +304,10 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                     inner.get('metaClass', Mof.ObjectType.Object));
             }
         }
-        
+
+        /**
+         * Creates the button to create a new item with the given metaclass and adds it to the button row
+         */
         function createUnclassifiedButton() {
             // If user clicks on the button, the user has the opportunity to select the field to be created. 
             const btn = $("<btn class='btn btn-secondary'></btn>");
@@ -330,11 +344,15 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 selectItem.init(typeSelection, settings);
             });
 
-
             tthis.tableCache.cacheButtons.append(btn);
             tthis.tableCache.cacheButtonsTypeSelection.append(typeSelection);
         }
 
+        /**
+         * Creates the button to create a new item with the given metaclass and adds it to the button row
+         * @param name - The name of the button
+         * @param metaClass - The metaclass of the item to be created
+         */
         function createButton (name: string, metaClass?: Mof.DmObject) {
             const metaClassUri = metaClass?.uri;
             const metaClassWorkspace = metaClass?.workspace;
@@ -380,6 +398,61 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         this.tableCache.cacheFreeTextField.append(inputField);
     }
 
+    /**
+     * Initializes the table settings button and provides the mechanism to create the table
+     * @private
+     */
+    private async initializeTableSettingsButton()
+    {
+        $(".btn", this.tableCache.cacheSettings).on('click', async () => {
+            const popup = burnJsPopup.createPopup();
+
+            const table = $("<table class='table table-bordered dm-table-nofullwidth align-top dm-tableform'><th>Action</th><th>Parameter</th></table>");
+            $(popup.htmlContent).append(table);
+            
+            const menuItems = this.getMenuItemsForTableSettings();
+            menuItems.forEach(menuItem => {
+                const tableRow = $("<tr><td class='dm-key'></td><td class='dm-value'></td></tr>");
+                const cellKey = $(".dm-key", tableRow);
+                const cellValue = $(".dm-value", tableRow);
+
+                menuItem.onCreateDom(popup, cellValue);
+                if (menuItem.cellKeyTitle !== undefined) {
+                    cellKey.text(menuItem.cellKeyTitle);
+                }
+
+                table.append(tableRow);
+            });
+
+            // Add submit line
+            const submitButton = $("<button class='btn btn-primary' type='button'>Close</button>");
+            submitButton.on('click', () => {                
+                menuItems.forEach(menuItem => {
+                    if (menuItem.onSubmitForm) {
+                        menuItem.onSubmitForm();
+                    }
+                });
+
+                popup.closePopup();
+            });
+            const submitRow = $("<tr><td></td><td class='dm-value'></td></tr>").append(submitButton);
+
+
+            $("td.dm-value", submitRow).append(submitButton);
+            table.append(submitRow);
+        });
+    }
+    
+    private getMenuItemsForTableSettings() : Array<MenuItemData>
+    {
+        return [
+            ContextMenu.createFunctionToStoreCurrentView(this)
+        ];
+    }
+
+    /**
+     * Updates the filter query text which describes the current filter settings
+     */
     private updateFilterQueryText() {
         if (this.tableParameter.showFilterQuery) {
             const queryText = this.getSummaryOfQuery();
@@ -402,7 +475,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         // Create the column headlines
         for (const field of fields) {
-
             // Create the column
             let cell = $("<th></th>");
 
@@ -431,7 +503,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         const metaClassFilter = this.tableParameter.metaClass;
 
         for (const element of this.elements) {
-
             const elementsMetaClass = element.metaClass?.uri;
 
             // Check if the element may be shown
@@ -439,13 +510,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 (metaClassFilter && elementsMetaClass !== metaClassFilter)) {
                 continue;
             }
-
-            /*            
-            // If we have freetext, then we need to skip the row.
-            if (this.tableParameter.allowFreeTextFiltering && !this.isElementMatchingFreeTextFilter(element, fields)) {
-                continue;
-            }            
-             */
 
             const row = $("<tr></tr>");
 
@@ -578,7 +642,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         // Defines the callback! 
         contextItem.on('click', () => {
-
             const popup = burnJsPopup.createPopup();
 
             const table = $("<table class='table table-bordered dm-table-nofullwidth align-top dm-tableform'><th>Action</th><th>Parameter</th></table>");
@@ -596,7 +659,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
                 table.append(tableRow);
             });
-
 
             // Add submit line
             const submitButton = $("<button class='btn btn-primary' type='button'>Submit</button>");
@@ -617,127 +679,20 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         });
     }
 
-    async createPropertyMenuItems(field: Mof.DmObject): Promise<PropertyMenuItem[]> {
-
-        const tthis = this;
-
+    async createPropertyMenuItems(field: Mof.DmObject): Promise<MenuItemData[]> {
         let result = [];
-        const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
 
         if (field.metaClass.uri !== _DatenMeister._Forms.__ActionFieldData_Uri
             && field.metaClass.uri !== _DatenMeister._Forms.__MetaClassElementFieldData_Uri) {
 
-            result.push(createFunctionForRemoveProperties());
+            result.push(ContextMenu.createFunctionToRemoveAllProperties(field));
+            
             if (this.tableParameter.allowFilteringOnProperty) {
-                result.push(createFunctionToFilterInProperty());
+                result.push(ContextMenu.createFunctionToFilterInProperty(this, field));
             }
         }
 
         return result;
-
-        function createFunctionForRemoveProperties() {
-            const tthis = this;
-            return {
-                cellKeyTitle: "Clear",
-                onCreateDom: (popup: burnJsPopup.PopupResult, jquery: JQuery) => {
-                    const button = $("<button class='btn btn-secondary' type='button'>Clear Properties</button>");
-                    button.on('click', async () => {
-                        // Gets the data
-                        const propertyName = field.get(_FieldData._name_, Mof.ObjectType.String);
-                        const dataUrl = tthis.formElement.get(_TableForm.dataUrl, Mof.ObjectType.String);
-
-                        // Creates the action
-                        const action = new Mof.DmObject(_DatenMeister._Actions.__DeletePropertyFromCollectionAction_Uri);
-                        action.set(_DatenMeister._Actions._DeletePropertyFromCollectionAction.collectionUrl, dataUrl);
-                        action.set(_DatenMeister._Actions._DeletePropertyFromCollectionAction.propertyName, propertyName);
-
-                        const parameter: Actions.ExecuteActionParams = {
-                            parameter: action
-                        };
-
-                        await Actions.executeActionDirectly("Execute", parameter);
-                        await tthis.refreshForm();
-                    });
-
-                    jquery.append(button);
-                },
-                requireConfirmation: true
-            };
-        }
-
-        function createFunctionToFilterInProperty() {
-            const dropDown = $("<select class=''></select>");
-
-            return {
-                cellKeyTitle: "Filter in Property",
-                /**
-                 * Creates a dropdown menu for filtering the values of a specific property.
-                 * @param popup - The popup result object.
-                 * @param jquery - The jQuery element to which the dropdown menu will be appended.
-                 */
-                onCreateDom: (popup: burnJsPopup.PopupResult, jquery: JQuery) => {
-                    // Finds the unique values of the property
-                    const propertyValues = new Set<string>();
-                    tthis.elements.forEach(x => {
-                        const propertyValue = x.get(propertyName, Mof.ObjectType.String);
-                        if (propertyValue !== undefined) {
-                            propertyValues.add(propertyValue);
-                        }
-
-                        // If there are too many values, then do not show them
-                        if (propertyValues.size > 100) {
-                            jquery.append($("<span>Too many values to show</span>"));
-                            return;
-                        }
-                    });
-
-                    // Sort propertyValues
-                    const sortedPropertyValues = Array.from(propertyValues).sort();
-
-                    // Adds the options to the dropdown
-                    dropDown.empty();
-
-                    const noFilter = $("<option></option>");
-                    noFilter.val("");
-                    noFilter.text("-- No Filter --");
-                    dropDown.append(noFilter);
-
-                    const currentValue = tthis.tableState.filterByProperty[propertyName];
-
-                    sortedPropertyValues.forEach(value => {
-                        const option = $("<option></option>");
-                        option.val(value);
-                        option.text(truncateText(value, { maxLength: 20 }));
-                        dropDown.append(option);
-
-                        if (value === currentValue) {
-                            option.prop('selected', true);
-                        }
-                    });
-
-                    jquery.append(dropDown);
-                },
-
-                onSubmitForm: () => {
-                    const value = dropDown.val();
-
-                    if (value !== "" && value !== undefined) {
-                        tthis.tableState.filterByProperty[propertyName] = dropDown.val();
-                    }
-                    else {
-                        delete tthis.tableState.filterByProperty[propertyName];
-                    }
-                    tthis.reloadTable();
-                },
-
-                callbackButtonText: (query: JQuery) => {
-                    if (tthis.tableState.filterByProperty[propertyName] !== undefined && tthis.tableState.filterByProperty[propertyName] !== "") {
-                        query.append($("<span>F</span>"));
-                        return true;
-                    }
-                }
-            };
-        }
     }
 
     /**

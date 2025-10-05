@@ -43,5 +43,7 @@ class NavigateToItemClientAction extends FormActions.ItemFormActionModuleBase {
         });
     }
 }
-//# sourceMappingURL=FormModules.js.map
+export async function createFormUponView(viewParameter) {
+    await ActionClient.executeActionDirectly("CreateFormUponView", { parameter: viewParameter });
+}
 //# sourceMappingURL=FormModules.js.map

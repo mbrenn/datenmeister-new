@@ -339,6 +339,19 @@ export namespace _Actions
                 }
 
                 export const __NavigationDefineActionParameter_Uri = "dm:///_internal/types/internal#90f61e4e-a5ea-42eb-9caa-912d010fbccd";
+                export class _LoadExtentActionResult
+                {
+                    static workspaceId = "workspaceId";
+                    static extentUri = "extentUri";
+                }
+
+                export const __LoadExtentActionResult_Uri = "dm:///_internal/types/internal#2863f928-fe69-4d35-8c67-f4f3533b7ae5";
+                export class _CreateFormUponViewResult
+                {
+                    static resultingPackageUrl = "resultingPackageUrl";
+                }
+
+                export const __CreateFormUponViewResult_Uri = "dm:///_internal/types/internal#124e202d-e8b3-4d39-bbc2-4c95896e811b";
         }
 
         export class _ActionResult
@@ -392,6 +405,16 @@ export namespace _Actions
         }
 
         export const __ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
+        export class _CreateFormUponViewAction
+        {
+            static query = "query";
+            static targetPackageUri = "targetPackageUri";
+            static targetPackageWorkspace = "targetPackageWorkspace";
+            static _name_ = "name";
+            static isDisabled = "isDisabled";
+        }
+
+        export const __CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
 }
 
 export namespace _DataViews
@@ -499,6 +522,7 @@ export namespace _DataViews
         {
             static nodes = "nodes";
             static resultNode = "resultNode";
+            static _name_ = "name";
         }
 
         export const __QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";

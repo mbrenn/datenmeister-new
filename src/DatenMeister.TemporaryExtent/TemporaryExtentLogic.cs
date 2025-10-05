@@ -93,6 +93,27 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
         return created;
     }
 
+    /// <summary>
+    /// Creates a temporary element within the temporary extent.
+    /// </summary>
+    /// <param name="metaClassUri">The Uri of the metaclass being used to add the element</param>
+    /// <param name="cleanUpTime">The cleanup time after which the element will be removed automatically. Default is null.</param>
+    /// <param name="addToExtent">If true, the element will be added to the temporary extent. Default is true.</param>
+    /// <returns>The created temporary element.</returns>
+    public IElement CreateTemporaryElementByUri(string metaClassUri, TimeSpan? cleanUpTime = null, bool addToExtent = true)
+    {
+        var result = CreateTemporaryElement((IElement?)null, cleanUpTime, addToExtent);
+
+        if (!string.IsNullOrEmpty(metaClassUri))
+        {
+            (result as MofElement
+             ?? throw new InvalidOperationException("Created item does not support setting of metaclass"))
+                .SetMetaClass(metaClassUri);
+        }
+
+        return result;
+    }
+
     public void CleanElements()
     {
         var foundExtent = TemporaryExtent;

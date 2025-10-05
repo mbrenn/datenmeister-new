@@ -14,6 +14,13 @@ namespace DatenMeister.Web.Json;
 /// </summary>
 public class DirectJsonDeconverter
 {
+    private static long _counter = 0;
+    
+    private static string GetNextCounter()
+    {
+        return Interlocked.Increment(ref _counter).ToString();
+    }
+    
     /// <summary>
     /// This helper class supports the dereferencing of shadows to actual objects
     /// </summary>
@@ -27,6 +34,8 @@ public class DirectJsonDeconverter
 
     private readonly IWorkspaceLogic? _workspaceLogic;
     private readonly IScopeStorage? _scopeStorage;
+
+    private string prefixCounter = string.Empty;
 
     /// <summary>
     /// Defines a list of shadow object that are created during the conversion and are used to resolve references within each conversion
@@ -99,7 +108,8 @@ public class DirectJsonDeconverter
             // Allows to update the shadow object in case the reference can be resolved
             if (lineResult is MofObjectShadow shadow)
             {
-                Shadows.Add(new ShadowInformation(shadow, x => result[index] = x));
+                var indexInner = index;
+                Shadows.Add(new ShadowInformation(shadow, x => result[indexInner] = x));
             }
 
             if (lineResult is not null)
@@ -116,7 +126,7 @@ public class DirectJsonDeconverter
     /// <summary>
     /// Flag to be sure that there is only one caller within that instance. 
     /// </summary>
-    private bool isInCall = false;
+    private bool _isInCall;
 
     /// <summary>
     /// Takes a MofObjectAsJson element and converts it back to an IObject element
@@ -125,18 +135,19 @@ public class DirectJsonDeconverter
     /// <returns>The converted Json Object</returns>
     public IObject? ConvertToObject(MofObjectAsJson jsonObject)
     {
-        if (isInCall)
+        if (_isInCall)
         {
             throw new InvalidOperationException("The method is not allowed to be multiple times in different threads");
         }
 
         try
         {
-            isInCall = true;
+            _isInCall = true;
+            prefixCounter = GetNextCounter();
             Shadows.Clear();
             References.Clear();
 
-            var result = ConvertToObjectInternal(jsonObject);
+            var result = ConvertToObjectInternal(jsonObject, true);
 
             // Now replaces all the shadows with the actual instances
             foreach (var shadowInfo in Shadows)
@@ -156,17 +167,17 @@ public class DirectJsonDeconverter
         }
         finally
         {
-            isInCall = false;
+            _isInCall = false;
         }
     }
-
 
     /// <summary>
     /// Converts the object to an IObject element and tries to resolve the references in case the rootcall is being exiecte
     /// </summary>
     /// <param name="jsonObject">Json Object to be converted</param>
+    /// <param name="isRoot">true, only if it is the first call to add the element</param>
     /// <returns>The converted object as a Mof Object</returns>
-    private IObject? ConvertToObjectInternal(MofObjectAsJson jsonObject)
+    private IObject? ConvertToObjectInternal(MofObjectAsJson jsonObject, bool isRoot = false)
     { 
         IObject? result = null;
         // Checks, that we are having a reference            
@@ -195,13 +206,27 @@ public class DirectJsonDeconverter
                 var temporaryExtent = temporaryExtentLogic.TryGetTemporaryExtent();
                 if (temporaryExtent != null)
                 {
-                    result = MofFactory.CreateElementWithMetaClassUri(
-                        temporaryExtentLogic.TemporaryExtent,
-                        jsonObject.m?.uri ?? string.Empty);
+                    if (isRoot)
+                    {
+                        result = temporaryExtentLogic.CreateTemporaryElementByUri(
+                            jsonObject.m?.uri ?? string.Empty);
+                    }
+                    else
+                    {
+                        result = MofFactory.CreateElementWithMetaClassUri(
+                            temporaryExtentLogic.TemporaryExtent,
+                            jsonObject.m?.uri ?? string.Empty);
+                    }
                 }
             }
 
             result ??= InMemoryObject.CreateEmpty(jsonObject.m?.uri ?? string.Empty);
+            
+            // Sets the id, if the id is given
+            if (!string.IsNullOrEmpty(jsonObject.id) && result.GetId() != jsonObject.id)
+            {
+                result.SetId(prefixCounter + jsonObject.id);
+            }
 
             // Adds the element to the references
             if (result is IElement asElement)
@@ -209,18 +234,15 @@ public class DirectJsonDeconverter
                 References.Add(asElement);
             }
                 
-            // Sets the id, if the id is given
-            if (!string.IsNullOrEmpty(jsonObject.id) && result.GetId() != jsonObject.id)
-            {
-                result.SetId(jsonObject.id);
-            }
-                
             foreach (var pair in jsonObject.v)
             {
                 var value = ConvertJsonValue(pair.Value);
                 if(value is MofObjectShadow shadow)
                 {
-                    Shadows.Add(new ShadowInformation(shadow, x => result.set(pair.Key, x)));
+                    shadow.Uri = "#" + prefixCounter + shadow.Uri.Replace("#", "");
+                    Shadows.Add(new ShadowInformation(
+                        shadow, 
+                        x => result.set(pair.Key, x)));
                 }
 
                 result.set(pair.Key, value);

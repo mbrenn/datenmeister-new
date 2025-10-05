@@ -90,25 +90,6 @@ export namespace _Actions
         }
 
         export const __LoggingWriterAction_Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction";
-        export class _CommandExecutionAction
-        {
-            static command = "command";
-            static _arguments_ = "arguments";
-            static workingDirectory = "workingDirectory";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
-        }
-
-        export const __CommandExecutionAction_Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82";
-        export class _PowershellExecutionAction
-        {
-            static script = "script";
-            static workingDirectory = "workingDirectory";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
-        }
-
-        export const __PowershellExecutionAction_Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb";
         export class _LoadExtentAction
         {
             static configuration = "configuration";
@@ -204,16 +185,6 @@ export namespace _Actions
         }
 
         export const __DocumentOpenAction_Uri = "dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74";
-        export class _CreateFormByMetaClass
-        {
-            static metaClass = "metaClass";
-            static creationMode = "creationMode";
-            static targetContainer = "targetContainer";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
-        }
-
-        export const __CreateFormByMetaClass_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass";
         export namespace _Reports
         {
                 export class _SimpleReportAction
@@ -397,24 +368,61 @@ export namespace _Actions
                 export const __NavigateToItemClientAction_Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4";
         }
 
-        export class _ConsoleWriteAction
+        export namespace _Forms
         {
-            static text = "text";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
+                export class _CreateFormUponViewAction
+                {
+                    static query = "query";
+                    static targetPackageUri = "targetPackageUri";
+                    static targetPackageWorkspace = "targetPackageWorkspace";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
+                export class _CreateFormByMetaClass
+                {
+                    static metaClass = "metaClass";
+                    static creationMode = "creationMode";
+                    static targetContainer = "targetContainer";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __CreateFormByMetaClass_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass";
         }
 
-        export const __ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
-        export class _CreateFormUponViewAction
+        export namespace _OSIntegration
         {
-            static query = "query";
-            static targetPackageUri = "targetPackageUri";
-            static targetPackageWorkspace = "targetPackageWorkspace";
-            static _name_ = "name";
-            static isDisabled = "isDisabled";
+                export class _CommandExecutionAction
+                {
+                    static command = "command";
+                    static _arguments_ = "arguments";
+                    static workingDirectory = "workingDirectory";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __CommandExecutionAction_Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82";
+                export class _PowershellExecutionAction
+                {
+                    static script = "script";
+                    static workingDirectory = "workingDirectory";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __PowershellExecutionAction_Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb";
+                export class _ConsoleWriteAction
+                {
+                    static text = "text";
+                    static _name_ = "name";
+                    static isDisabled = "isDisabled";
+                }
+
+                export const __ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
         }
 
-        export const __CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
 }
 
 export namespace _DataViews

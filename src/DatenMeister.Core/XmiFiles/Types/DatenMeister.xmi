@@ -54,21 +54,6 @@
       </generalization>
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5506180f-2158-423f-a290-ef929e4f956c" lower="0" upper="1" name="message" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="6f2ea2cd-6218-483c-90a3-4db255e84e82" name="CommandExecutionAction">
-      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="31f4108b-326f-4162-baae-5a3d9cb77d98" general-ref="dm:///_internal/types/internal#Actions.Action">
-        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
-      </generalization>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="19163eb9-9701-4071-a421-54bf19cc062e" name="command" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="21b13f56-9370-4697-a6cc-4250340dcb56" name="arguments" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f5c96e9b-f545-40db-bc6e-9915e14f0594" name="workingDirectory" type-ref="dm:///_internal/model/primitivetypes#String" />
-    </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="4090ce13-6718-466c-96df-52d51024aadb" name="PowershellExecutionAction">
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="03921ba2-05c4-40bc-96d0-74c25c2061f7" name="script" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="220f8111-03cd-4b19-aa8c-a260bca9c320" general-ref="dm:///_internal/types/internal#Actions.Action">
-        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
-      </generalization>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d054662d-cd63-42b3-915c-59ea623152d8" name="workingDirectory" type-ref="dm:///_internal/model/primitivetypes#String" />
-    </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="241b550d-835a-41ea-a32a-bea5d388c6ee" name="LoadExtentAction">
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="da06a7c7-86a6-44a6-9075-9e7a5f9d58ab" name="configuration" type-ref="dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig" />
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="abe39d1e-e793-4f46-9410-3eed2615ee08" general-ref="dm:///_internal/types/internal#Actions.Action">
@@ -143,12 +128,6 @@
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a8a3ea8f-b505-46bc-ab43-1bed0922e2f4" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
-    </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.CreateFormByMetaclass" name="CreateFormByMetaClass">
-      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d7342d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///_internal/types/internal#Actions.Action"></generalization>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-fd48b0a435a1" name="metaClass" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1df4e655-2222-4fa2-bec6-adc7383adb2b" name="creationMode" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-4d48b0a435a1" name="targetContainer" />
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="f77015a8-1d70-4f09-beb3-1e20e6303d40" name="Reports">
       <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.SimpleReportAction" name="SimpleReportAction">
@@ -262,15 +241,40 @@
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="3c3dcee3-b48d-4ff1-b7aa-a8e2e759aa4d" name="formUri" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false"></ownedAttribute>
       </packagedElement>
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="82f46dd7-b61b-4bc1-b25c-d5d3d244c35a" name="ConsoleWriteAction">
-      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a65703b5-654a-4b42-81de-14595a7b7b62" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="04e791c9-1316-4777-afc0-afb30d294530" name="text" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+    <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="97ddd1b8-bd3d-4c43-82ed-5c55abda0929" name="Forms">
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b8333b8d-ac49-4a4e-a7f4-c3745e0a0237" name="CreateFormUponViewAction">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a42debe1-7d09-49f9-9c90-920885f3877f" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="392b1dc2-21e0-4714-a2ad-06700b0a2d96" name="query" isID="false" isComposite="false" type-ref="#DatenMeister.Models.DataViews.QueryStatement"></ownedAttribute>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="30dd0a69-f9fa-4bff-a6cd-3ec2cf1c564c" type-ref="dm:///_internal/model/primitivetypes#String" name="targetPackageUri" isID="false" isComposite="false" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a44457d3-4fa8-4d46-a914-5c886fd89a67" name="targetPackageWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="DatenMeister.Models.Actions.CreateFormByMetaclass" name="CreateFormByMetaClass">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="d7342d31-afd2-4587-a193-c0ea73ba2c19" general-ref="dm:///_internal/types/internal#Actions.Action"></generalization>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-fd48b0a435a1" name="metaClass" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="1df4e655-2222-4fa2-bec6-adc7383adb2b" name="creationMode" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="7e4e02f7-1111-48d6-8d91-4d48b0a435a1" name="targetContainer" />
+      </packagedElement>
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="b8333b8d-ac49-4a4e-a7f4-c3745e0a0237" name="CreateFormUponViewAction">
-      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a42debe1-7d09-49f9-9c90-920885f3877f" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="392b1dc2-21e0-4714-a2ad-06700b0a2d96" name="query" isID="false" isComposite="false" type-ref="#DatenMeister.Models.DataViews.QueryStatement"></ownedAttribute>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="30dd0a69-f9fa-4bff-a6cd-3ec2cf1c564c" type-ref="dm:///_internal/model/primitivetypes#String" name="targetPackageUri" isID="false" isComposite="false" />
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a44457d3-4fa8-4d46-a914-5c886fd89a67" name="targetPackageWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+    <packagedElement p2:type="dm:///_internal/model/uml#Package" p2:id="46691df7-5235-4517-b942-be984c908768" name="OSIntegration">
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="6f2ea2cd-6218-483c-90a3-4db255e84e82" name="CommandExecutionAction">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="31f4108b-326f-4162-baae-5a3d9cb77d98" general-ref="dm:///_internal/types/internal#Actions.Action">
+          <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+        </generalization>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="19163eb9-9701-4071-a421-54bf19cc062e" name="command" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="21b13f56-9370-4697-a6cc-4250340dcb56" name="arguments" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="f5c96e9b-f545-40db-bc6e-9915e14f0594" name="workingDirectory" type-ref="dm:///_internal/model/primitivetypes#String" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="4090ce13-6718-466c-96df-52d51024aadb" name="PowershellExecutionAction">
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="03921ba2-05c4-40bc-96d0-74c25c2061f7" name="script" type-ref="dm:///_internal/model/primitivetypes#String" />
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="220f8111-03cd-4b19-aa8c-a260bca9c320" general-ref="dm:///_internal/types/internal#Actions.Action">
+          <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+        </generalization>
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d054662d-cd63-42b3-915c-59ea623152d8" name="workingDirectory" type-ref="dm:///_internal/model/primitivetypes#String" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="82f46dd7-b61b-4bc1-b25c-d5d3d244c35a" name="ConsoleWriteAction">
+        <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="a65703b5-654a-4b42-81de-14595a7b7b62" general-ref="dm:///_internal/types/internal#Actions.Action" isSubstitutable="false" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="04e791c9-1316-4777-afc0-afb30d294530" name="text" type-ref="dm:///_internal/model/primitivetypes#String" isID="false" isComposite="false" />
+      </packagedElement>
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

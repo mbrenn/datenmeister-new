@@ -148,7 +148,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
             await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
 
             const selectItemControlSettings = new SelectItemControl.Settings();
-            selectItemControlSettings.showButtonRow = false;
+            selectItemControlSettings.hideButtonRow = true;
             selectItemControlSettings.showCancelButton = false;
             selectItemControlSettings.headline = "Select Package";
 
@@ -165,19 +165,19 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
                 const packageUrl = selectItemControl.getSelectedItem();
 
                 // Prepare the action
-                const actionParameter = new Mof.DmObject(_DatenMeister._Actions.__CreateFormUponViewAction_Uri);
+                const actionParameter = new Mof.DmObject(_DatenMeister._Actions._Forms.__CreateFormUponViewAction_Uri);
                 actionParameter.set(
-                    _DatenMeister._Actions._CreateFormUponViewAction.name, name);
+                    _DatenMeister._Actions._Forms._CreateFormUponViewAction.name, name);
                 actionParameter.set(
-                    _DatenMeister._Actions._CreateFormUponViewAction.targetPackageUri, packageUrl.uri);
+                    _DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageUri, packageUrl.uri);
                 actionParameter.set(
-                    _DatenMeister._Actions._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
+                    _DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
                 
                 const queryBuilder = 
                     CollectionForm.createQueryBuilder(tableForm.getQueryParameter()).queryStatement;
                 queryBuilder.set(_NamedElement._name_, name);
                 actionParameter.set(
-                    _DatenMeister._Actions._CreateFormUponViewAction.query, queryBuilder);
+                    _DatenMeister._Actions._Forms._CreateFormUponViewAction.query, queryBuilder);
 
                 const result = 
                     await Actions.executeActionDirectly("Execute", {

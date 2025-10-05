@@ -18,17 +18,17 @@ public class CommandExecutionActionHandler : IActionHandler
     public bool IsResponsible(IElement node)
     {
         return node.getMetaClass()?.equals(
-            _Actions.TheOne.__CommandExecutionAction) == true;
+            _Actions.TheOne.OSIntegration.__CommandExecutionAction) == true;
     }
 
     public async Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         await Task.Run(() =>
         {
-            var command = action.getOrDefault<string>(_Actions._CommandExecutionAction.command);
-            var arguments = action.getOrDefault<string>(_Actions._CommandExecutionAction.arguments);
+            var command = action.getOrDefault<string>(_Actions._OSIntegration._CommandExecutionAction.command);
+            var arguments = action.getOrDefault<string>(_Actions._OSIntegration._CommandExecutionAction.arguments);
             var workingDirectory =
-                action.getOrDefault<string>(_Actions._CommandExecutionAction.workingDirectory);
+                action.getOrDefault<string>(_Actions._OSIntegration._CommandExecutionAction.workingDirectory);
 
             /* Translates the command if required */
             var foundCommand = actionLogic.WorkspaceLogic.GetManagementWorkspace()

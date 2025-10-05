@@ -19,15 +19,15 @@ public class CreateFormUponViewActionHandler : IActionHandler
     {
         
         return node.getMetaClass()?.equals(
-            _Actions.TheOne.__CreateFormUponViewAction) == true;
+            _Actions.TheOne.Forms.__CreateFormUponViewAction) == true;
     }
 
     public Task<IElement?> Evaluate(ActionLogic actionLogic, IElement action)
     {
         var targetWorkspace =
-            action.getOrDefault<string>(_Actions._CreateFormUponViewAction.targetPackageWorkspace);
+            action.getOrDefault<string>(_Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace);
         var targetUri =
-            action.getOrDefault<string>(_Actions._CreateFormUponViewAction.targetPackageUri);
+            action.getOrDefault<string>(_Actions._Forms._CreateFormUponViewAction.targetPackageUri);
 
         var owner = actionLogic.WorkspaceLogic.FindObjectOrCollection(targetWorkspace, targetUri);
         if (owner == null)
@@ -52,7 +52,7 @@ public class CreateFormUponViewActionHandler : IActionHandler
         }
         
         // Ok, we made it... Now we add the item to the target
-        var queryStatement = action.getOrDefault<IElement>(_Actions._CreateFormUponViewAction.query);
+        var queryStatement = action.getOrDefault<IElement>(_Actions._Forms._CreateFormUponViewAction.query);
         var factory = new MofFactory(targetCollection);
         var targetObject = factory.create(_DataViews.TheOne.__QueryStatement);
         targetCollection.add(targetObject);

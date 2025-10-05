@@ -76,23 +76,6 @@ export var _Actions;
     _LoggingWriterAction.isDisabled = "isDisabled";
     _Actions._LoggingWriterAction = _LoggingWriterAction;
     _Actions.__LoggingWriterAction_Uri = "dm:///_internal/types/internal#Actions.LoggingWriterAction";
-    class _CommandExecutionAction {
-    }
-    _CommandExecutionAction.command = "command";
-    _CommandExecutionAction._arguments_ = "arguments";
-    _CommandExecutionAction.workingDirectory = "workingDirectory";
-    _CommandExecutionAction._name_ = "name";
-    _CommandExecutionAction.isDisabled = "isDisabled";
-    _Actions._CommandExecutionAction = _CommandExecutionAction;
-    _Actions.__CommandExecutionAction_Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82";
-    class _PowershellExecutionAction {
-    }
-    _PowershellExecutionAction.script = "script";
-    _PowershellExecutionAction.workingDirectory = "workingDirectory";
-    _PowershellExecutionAction._name_ = "name";
-    _PowershellExecutionAction.isDisabled = "isDisabled";
-    _Actions._PowershellExecutionAction = _PowershellExecutionAction;
-    _Actions.__PowershellExecutionAction_Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb";
     class _LoadExtentAction {
     }
     _LoadExtentAction.configuration = "configuration";
@@ -178,15 +161,6 @@ export var _Actions;
     _DocumentOpenAction.isDisabled = "isDisabled";
     _Actions._DocumentOpenAction = _DocumentOpenAction;
     _Actions.__DocumentOpenAction_Uri = "dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74";
-    class _CreateFormByMetaClass {
-    }
-    _CreateFormByMetaClass.metaClass = "metaClass";
-    _CreateFormByMetaClass.creationMode = "creationMode";
-    _CreateFormByMetaClass.targetContainer = "targetContainer";
-    _CreateFormByMetaClass._name_ = "name";
-    _CreateFormByMetaClass.isDisabled = "isDisabled";
-    _Actions._CreateFormByMetaClass = _CreateFormByMetaClass;
-    _Actions.__CreateFormByMetaClass_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass";
     let _Reports;
     (function (_Reports) {
         class _SimpleReportAction {
@@ -345,22 +319,54 @@ export var _Actions;
         _ClientActions._NavigateToItemClientAction = _NavigateToItemClientAction;
         _ClientActions.__NavigateToItemClientAction_Uri = "dm:///_internal/types/internal#5f69675e-df58-4ad7-84bf-359cdfba5db4";
     })(_ClientActions = _Actions._ClientActions || (_Actions._ClientActions = {}));
-    class _ConsoleWriteAction {
-    }
-    _ConsoleWriteAction.text = "text";
-    _ConsoleWriteAction._name_ = "name";
-    _ConsoleWriteAction.isDisabled = "isDisabled";
-    _Actions._ConsoleWriteAction = _ConsoleWriteAction;
-    _Actions.__ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
-    class _CreateFormUponViewAction {
-    }
-    _CreateFormUponViewAction.query = "query";
-    _CreateFormUponViewAction.targetPackageUri = "targetPackageUri";
-    _CreateFormUponViewAction.targetPackageWorkspace = "targetPackageWorkspace";
-    _CreateFormUponViewAction._name_ = "name";
-    _CreateFormUponViewAction.isDisabled = "isDisabled";
-    _Actions._CreateFormUponViewAction = _CreateFormUponViewAction;
-    _Actions.__CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
+    let _Forms;
+    (function (_Forms) {
+        class _CreateFormUponViewAction {
+        }
+        _CreateFormUponViewAction.query = "query";
+        _CreateFormUponViewAction.targetPackageUri = "targetPackageUri";
+        _CreateFormUponViewAction.targetPackageWorkspace = "targetPackageWorkspace";
+        _CreateFormUponViewAction._name_ = "name";
+        _CreateFormUponViewAction.isDisabled = "isDisabled";
+        _Forms._CreateFormUponViewAction = _CreateFormUponViewAction;
+        _Forms.__CreateFormUponViewAction_Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237";
+        class _CreateFormByMetaClass {
+        }
+        _CreateFormByMetaClass.metaClass = "metaClass";
+        _CreateFormByMetaClass.creationMode = "creationMode";
+        _CreateFormByMetaClass.targetContainer = "targetContainer";
+        _CreateFormByMetaClass._name_ = "name";
+        _CreateFormByMetaClass.isDisabled = "isDisabled";
+        _Forms._CreateFormByMetaClass = _CreateFormByMetaClass;
+        _Forms.__CreateFormByMetaClass_Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass";
+    })(_Forms = _Actions._Forms || (_Actions._Forms = {}));
+    let _OSIntegration;
+    (function (_OSIntegration) {
+        class _CommandExecutionAction {
+        }
+        _CommandExecutionAction.command = "command";
+        _CommandExecutionAction._arguments_ = "arguments";
+        _CommandExecutionAction.workingDirectory = "workingDirectory";
+        _CommandExecutionAction._name_ = "name";
+        _CommandExecutionAction.isDisabled = "isDisabled";
+        _OSIntegration._CommandExecutionAction = _CommandExecutionAction;
+        _OSIntegration.__CommandExecutionAction_Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82";
+        class _PowershellExecutionAction {
+        }
+        _PowershellExecutionAction.script = "script";
+        _PowershellExecutionAction.workingDirectory = "workingDirectory";
+        _PowershellExecutionAction._name_ = "name";
+        _PowershellExecutionAction.isDisabled = "isDisabled";
+        _OSIntegration._PowershellExecutionAction = _PowershellExecutionAction;
+        _OSIntegration.__PowershellExecutionAction_Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb";
+        class _ConsoleWriteAction {
+        }
+        _ConsoleWriteAction.text = "text";
+        _ConsoleWriteAction._name_ = "name";
+        _ConsoleWriteAction.isDisabled = "isDisabled";
+        _OSIntegration._ConsoleWriteAction = _ConsoleWriteAction;
+        _OSIntegration.__ConsoleWriteAction_Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a";
+    })(_OSIntegration = _Actions._OSIntegration || (_Actions._OSIntegration = {}));
 })(_Actions || (_Actions = {}));
 export var _DataViews;
 (function (_DataViews) {

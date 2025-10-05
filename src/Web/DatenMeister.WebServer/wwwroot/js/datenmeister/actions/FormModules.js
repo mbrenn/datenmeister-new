@@ -13,7 +13,7 @@ class FormsCreateByMetaClassAction extends FormActions.ItemFormActionModuleBase 
         super("Forms.Create.ByMetaClass");
         this.actionVerb = "Create by MetaClass";
         this.skipSaving = true;
-        this.defaultMetaClassUri = _DatenMeister._Actions.__CreateFormByMetaClass_Uri;
+        this.defaultMetaClassUri = _DatenMeister._Actions._Forms.__CreateFormByMetaClass_Uri;
     }
     async loadForm() {
         return await FormClient.getForm("dm:///_internal/forms/internal#Forms.Create.ByMetaClass");

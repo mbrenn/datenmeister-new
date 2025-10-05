@@ -192,51 +192,6 @@ public class _Actions
     public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
     public MofObjectShadow @__LoggingWriterAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.LoggingWriterAction");
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
-        TypeKind = TypeKind.ClassTree)]
-    public class _CommandExecutionAction
-    {
-        public static readonly string @command = "command";
-        public IElement? @_command = null;
-
-        public static readonly string @arguments = "arguments";
-        public IElement? @_arguments = null;
-
-        public static readonly string @workingDirectory = "workingDirectory";
-        public IElement? @_workingDirectory = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
-
-    }
-
-    public _CommandExecutionAction @CommandExecutionAction = new _CommandExecutionAction();
-    public MofObjectShadow @__CommandExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
-        TypeKind = TypeKind.ClassTree)]
-    public class _PowershellExecutionAction
-    {
-        public static readonly string @script = "script";
-        public IElement? @_script = null;
-
-        public static readonly string @workingDirectory = "workingDirectory";
-        public IElement? @_workingDirectory = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
-
-    }
-
-    public _PowershellExecutionAction @PowershellExecutionAction = new _PowershellExecutionAction();
-    public MofObjectShadow @__PowershellExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb");
-
     [TypeUri(Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee",
         TypeKind = TypeKind.ClassTree)]
     public class _LoadExtentAction
@@ -461,30 +416,6 @@ public class _Actions
 
     public _DocumentOpenAction @DocumentOpenAction = new _DocumentOpenAction();
     public MofObjectShadow @__DocumentOpenAction = new MofObjectShadow("dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
-        TypeKind = TypeKind.ClassTree)]
-    public class _CreateFormByMetaClass
-    {
-        public static readonly string @metaClass = "metaClass";
-        public IElement? @_metaClass = null;
-
-        public static readonly string @creationMode = "creationMode";
-        public IElement? @_creationMode = null;
-
-        public static readonly string @targetContainer = "targetContainer";
-        public IElement? @_targetContainer = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
-
-    }
-
-    public _CreateFormByMetaClass @CreateFormByMetaClass = new _CreateFormByMetaClass();
-    public MofObjectShadow @__CreateFormByMetaClass = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass");
 
     public class _Reports
     {
@@ -875,47 +806,128 @@ public class _Actions
 
     public _ClientActions ClientActions = new _ClientActions();
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ConsoleWriteAction
+    public class _Forms
     {
-        public static readonly string @text = "text";
-        public IElement? @_text = null;
+        [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CreateFormUponViewAction
+        {
+            public static readonly string @query = "query";
+            public IElement? @_query = null;
 
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
+            public static readonly string @targetPackageUri = "targetPackageUri";
+            public IElement? @_targetPackageUri = null;
 
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
+            public static readonly string @targetPackageWorkspace = "targetPackageWorkspace";
+            public IElement? @_targetPackageWorkspace = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
+        }
+
+        public _CreateFormUponViewAction @CreateFormUponViewAction = new _CreateFormUponViewAction();
+        public MofObjectShadow @__CreateFormUponViewAction = new MofObjectShadow("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CreateFormByMetaClass
+        {
+            public static readonly string @metaClass = "metaClass";
+            public IElement? @_metaClass = null;
+
+            public static readonly string @creationMode = "creationMode";
+            public IElement? @_creationMode = null;
+
+            public static readonly string @targetContainer = "targetContainer";
+            public IElement? @_targetContainer = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
+        }
+
+        public _CreateFormByMetaClass @CreateFormByMetaClass = new _CreateFormByMetaClass();
+        public MofObjectShadow @__CreateFormByMetaClass = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass");
 
     }
 
-    public _ConsoleWriteAction @ConsoleWriteAction = new _ConsoleWriteAction();
-    public MofObjectShadow @__ConsoleWriteAction = new MofObjectShadow("dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a");
+    public _Forms Forms = new _Forms();
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
-        TypeKind = TypeKind.ClassTree)]
-    public class _CreateFormUponViewAction
+    public class _OSIntegration
     {
-        public static readonly string @query = "query";
-        public IElement? @_query = null;
+        [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
+            TypeKind = TypeKind.ClassTree)]
+        public class _CommandExecutionAction
+        {
+            public static readonly string @command = "command";
+            public IElement? @_command = null;
 
-        public static readonly string @targetPackageUri = "targetPackageUri";
-        public IElement? @_targetPackageUri = null;
+            public static readonly string @arguments = "arguments";
+            public IElement? @_arguments = null;
 
-        public static readonly string @targetPackageWorkspace = "targetPackageWorkspace";
-        public IElement? @_targetPackageWorkspace = null;
+            public static readonly string @workingDirectory = "workingDirectory";
+            public IElement? @_workingDirectory = null;
 
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
 
-        public static readonly string @isDisabled = "isDisabled";
-        public IElement? @_isDisabled = null;
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
+        }
+
+        public _CommandExecutionAction @CommandExecutionAction = new _CommandExecutionAction();
+        public MofObjectShadow @__CommandExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
+            TypeKind = TypeKind.ClassTree)]
+        public class _PowershellExecutionAction
+        {
+            public static readonly string @script = "script";
+            public IElement? @_script = null;
+
+            public static readonly string @workingDirectory = "workingDirectory";
+            public IElement? @_workingDirectory = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
+        }
+
+        public _PowershellExecutionAction @PowershellExecutionAction = new _PowershellExecutionAction();
+        public MofObjectShadow @__PowershellExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ConsoleWriteAction
+        {
+            public static readonly string @text = "text";
+            public IElement? @_text = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+            public static readonly string @isDisabled = "isDisabled";
+            public IElement? @_isDisabled = null;
+
+        }
+
+        public _ConsoleWriteAction @ConsoleWriteAction = new _ConsoleWriteAction();
+        public MofObjectShadow @__ConsoleWriteAction = new MofObjectShadow("dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a");
 
     }
 
-    public _CreateFormUponViewAction @CreateFormUponViewAction = new _CreateFormUponViewAction();
-    public MofObjectShadow @__CreateFormUponViewAction = new MofObjectShadow("dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237");
+    public _OSIntegration OSIntegration = new _OSIntegration();
 
     public static readonly _Actions TheOne = new _Actions();
 

@@ -328,94 +328,6 @@ public class Actions
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CommandExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @command
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("command");
-            set => 
-                innerDmElement.set("command", value);
-        }
-
-        public string? @arguments
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("arguments");
-            set => 
-                innerDmElement.set("arguments", value);
-        }
-
-        public string? @workingDirectory
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workingDirectory");
-            set => 
-                innerDmElement.set("workingDirectory", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
-        TypeKind = TypeKind.WrappedClass)]
-    public class PowershellExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @script
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("script");
-            set => 
-                innerDmElement.set("script", value);
-        }
-
-        public string? @workingDirectory
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workingDirectory");
-            set => 
-                innerDmElement.set("workingDirectory", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
-        }
-
-    }
-
     [TypeUri(Uri = "dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee",
         TypeKind = TypeKind.WrappedClass)]
     public class LoadExtentAction_Wrapper(IElement innerDmElement) : IElementWrapper
@@ -850,56 +762,6 @@ public class Actions
                 innerDmElement.getOrDefault<string?>("filePath");
             set => 
                 innerDmElement.set("filePath", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CreateFormByMetaClass_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // Not found
-        public object? @metaClass
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("metaClass");
-            set => 
-                innerDmElement.set("metaClass", value);
-        }
-
-        public string? @creationMode
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("creationMode");
-            set => 
-                innerDmElement.set("creationMode", value);
-        }
-
-        // Not found
-        public object? @targetContainer
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("targetContainer");
-            set => 
-                innerDmElement.set("targetContainer", value);
         }
 
         public string? @name
@@ -1595,95 +1457,241 @@ public class Actions
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ConsoleWriteAction_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Forms
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @text
+        [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CreateFormUponViewAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("text");
-            set => 
-                innerDmElement.set("text", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
+            public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("query");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("query", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("query", value);
+                    }
+                }
+            }
+
+            public string? @targetPackageUri
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("targetPackageUri");
+                set => 
+                    innerDmElement.set("targetPackageUri", value);
+            }
+
+            public string? @targetPackageWorkspace
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("targetPackageWorkspace");
+                set => 
+                    innerDmElement.set("targetPackageWorkspace", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
-        public string? @name
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.Actions.CreateFormByMetaclass",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CreateFormByMetaClass_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
+            public IElement GetWrappedElement() => innerDmElement;
 
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
+            // Not found
+            public object? @metaClass
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("metaClass");
+                set => 
+                    innerDmElement.set("metaClass", value);
+            }
+
+            public string? @creationMode
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("creationMode");
+                set => 
+                    innerDmElement.set("creationMode", value);
+            }
+
+            // Not found
+            public object? @targetContainer
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("targetContainer");
+                set => 
+                    innerDmElement.set("targetContainer", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#b8333b8d-ac49-4a4e-a7f4-c3745e0a0237",
-        TypeKind = TypeKind.WrappedClass)]
-    public class CreateFormUponViewAction_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class OSIntegration
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper
-        public DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper? @query
+        [TypeUri(Uri = "dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82",
+            TypeKind = TypeKind.WrappedClass)]
+        public class CommandExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @command
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("query");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
+                get =>
+                    innerDmElement.getOrDefault<string?>("command");
+                set => 
+                    innerDmElement.set("command", value);
             }
-            set 
+
+            public string? @arguments
             {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("query", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("query", value);
-                }
+                get =>
+                    innerDmElement.getOrDefault<string?>("arguments");
+                set => 
+                    innerDmElement.set("arguments", value);
             }
+
+            public string? @workingDirectory
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workingDirectory");
+                set => 
+                    innerDmElement.set("workingDirectory", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
-        public string? @targetPackageUri
+        [TypeUri(Uri = "dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb",
+            TypeKind = TypeKind.WrappedClass)]
+        public class PowershellExecutionAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("targetPackageUri");
-            set => 
-                innerDmElement.set("targetPackageUri", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @script
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("script");
+                set => 
+                    innerDmElement.set("script", value);
+            }
+
+            public string? @workingDirectory
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workingDirectory");
+                set => 
+                    innerDmElement.set("workingDirectory", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
-        public string? @targetPackageWorkspace
+        [TypeUri(Uri = "dm:///_internal/types/internal#82f46dd7-b61b-4bc1-b25c-d5d3d244c35a",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ConsoleWriteAction_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("targetPackageWorkspace");
-            set => 
-                innerDmElement.set("targetPackageWorkspace", value);
-        }
+            public IElement GetWrappedElement() => innerDmElement;
 
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
+            public string? @text
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("text");
+                set => 
+                    innerDmElement.set("text", value);
+            }
 
-        public bool @isDisabled
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("isDisabled");
-            set => 
-                innerDmElement.set("isDisabled", value);
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+            public bool @isDisabled
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("isDisabled");
+                set => 
+                    innerDmElement.set("isDisabled", value);
+            }
+
         }
 
     }

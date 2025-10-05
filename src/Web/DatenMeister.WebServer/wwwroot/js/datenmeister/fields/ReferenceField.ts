@@ -1,10 +1,11 @@
 ﻿import {IFormField} from "./Interfaces.js";
-import {DmObject, ObjectType} from "../Mof.js";
+import * as Mof from "../Mof.js";
 import {IFormConfiguration} from "../forms/IFormConfiguration.js";
 import {IFormNavigation} from "../forms/Interfaces.js";
 import {injectNameByUri} from "../DomHelper.js";
 import * as ClientItem from "../client/Items.js";
 import * as SIC from "../controls/SelectItemControl.js";
+import {ItemWithNameAndId} from "../ApiModels";
 
 export class Control {
     configuration: IFormConfiguration;
@@ -16,12 +17,14 @@ export class Control {
     propertyName: string;
     
     /** Defines the field properties */
-    field: DmObject;
+    field: Mof.DmObject;
 
     /** Defines whether the field flag to create the selection fields directly 
      * at form creation shall be skipped, even if isSelectionInline is being set.
      * This flag will be set when user has clicked on 'Set'.  */
     inhibitInline: boolean;
+    
+    referenceSetCall: (selectedItem: ItemWithNameAndId) => Promise<void>;
     
     _list: JQuery;
 
@@ -31,7 +34,7 @@ export class Control {
      * then no support will be given for the selected item
      * */
     
-    constructor(field?: DmObject) {
+    constructor(field?: Mof.DmObject) {
         this.field = field;
         this._list = $("<span></span>");
     }
@@ -41,14 +44,14 @@ export class Control {
         this._list.empty();
         const tthis = this;
 
-        const asDmObject = value as DmObject;
+        const asMofDmObject = value as Mof.DmObject;
         if (this.configuration.isNewItem) {
             // Unfortunately, for non-saved items, the user cannot select a reference since we 
             // will not find the reference again
             const div = $("<em>Element needs to be saved first</em>");
             this._list.append(div);
         } else {
-            const isSelectionInline = this.field?.get('isSelectionInline', ObjectType.Boolean);
+            const isSelectionInline = this.field?.get('isSelectionInline', Mof.ObjectType.Boolean);
             
             if(!isSelectionInline) {
                 if ((typeof value !== "object" && typeof value !== "function") || value === null || value === undefined) {
@@ -56,7 +59,7 @@ export class Control {
                     this._list.append(div);
                 } else {
                     const div = $("<div />");
-                    let _ = injectNameByUri(div, asDmObject.workspace, asDmObject.uri);
+                    let _ = injectNameByUri(div, asMofDmObject.workspace, asMofDmObject.uri);
                     this._list.append(div);
                 }
             }
@@ -104,7 +107,7 @@ export class Control {
         
         const tthis = this;
         containerChangeCell.empty();
-        const isSelectionInline = this.field?.get('isSelectionInline', ObjectType.Boolean);
+        const isSelectionInline = this.field?.get('isSelectionInline', Mof.ObjectType.Boolean);
         
         const selectItem = new SIC.SelectItemControl();
         const settings = new SIC.Settings();
@@ -117,17 +120,21 @@ export class Control {
         const eventType = isSelectionInline ? selectItem.itemClicked : selectItem.itemSelected;
         eventType.addListener(
             async selectedItem => {
-
-                await ClientItem.setPropertyReference(
-                    tthis.form.workspace,
-                    tthis.itemUrl,
-                    {
-                        property: tthis.propertyName,
-                        referenceUri: selectedItem.uri,
-                        workspaceId: selectedItem.workspace
-                    }
-                );
-
+                
+                if(tthis.referenceSetCall !== undefined) {
+                    await this.referenceSetCall(selectedItem);
+                }
+                else {
+                    await ClientItem.setPropertyReference(
+                        tthis.form.workspace,
+                        tthis.itemUrl,
+                        {
+                            property: tthis.propertyName,
+                            referenceUri: selectedItem.uri,
+                            workspaceId: selectedItem.workspace
+                        }
+                    );
+                }
                 if(!isSelectionInline) {
                     containerChangeCell.empty();
                     tthis.inhibitInline = true;
@@ -140,12 +147,12 @@ export class Control {
 
         if (value !== undefined && value !== null &&
             (typeof value === "object" || typeof value === "function")) {
-            const valueAsDmObject = value as DmObject;
-            await selectItem.setItemByUri(valueAsDmObject.workspace, valueAsDmObject.uri);
+            const valueAsMofDmObject = value as Mof.DmObject;
+            await selectItem.setItemByUri(valueAsMofDmObject.workspace, valueAsMofDmObject.uri);
         } else {
             // No value is selected, so retrieve the default items
-            const workspaceId = this.field?.get('defaultWorkspace', ObjectType.Single);
-            const itemUri = this.field?.get('defaultItemUri', ObjectType.Single);
+            const workspaceId = this.field?.get('defaultWorkspace', Mof.ObjectType.Single);
+            const itemUri = this.field?.get('defaultItemUri', Mof.ObjectType.Single);
             if (workspaceId !== undefined && workspaceId !== null) {
 
                 if (itemUri === null || itemUri === undefined) {
@@ -168,17 +175,18 @@ export class Control {
 
 export class Field extends Control implements IFormField {
     // The information about the field configuration
-    field: DmObject;
+    field: Mof.DmObject;
 
     // The element being shown
-    element: DmObject;
+    element: Mof.DmObject;
 
     // The name of the field being derived from the field
     fieldName: string;
 
-    async createDom(dmElement: DmObject): Promise<JQuery<HTMLElement>> {
+    async createDom(dmElement: Mof.DmObject): Promise<JQuery<HTMLElement>> {
 
         this.element = dmElement;
+        this.referenceSetCall = this.callbackSetReference;
 
         this._list.empty();
 
@@ -212,9 +220,12 @@ export class Field extends Control implements IFormField {
 
         return this._list;
     }
+    
+    async callbackSetReference(selectedElement: ItemWithNameAndId) {
+        this.element.set(this.fieldName, Mof.DmObject.createFromItemWithNameAndId(selectedElement));
+    }
 
-    async evaluateDom(dmElement: DmObject) : Promise<void> {
-
+    async evaluateDom(dmElement: Mof.DmObject) : Promise<void> {        
     }
 
     async reloadValuesFromServer() {

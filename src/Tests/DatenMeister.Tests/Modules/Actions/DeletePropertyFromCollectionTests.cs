@@ -125,7 +125,7 @@ public class DeletePropertyFromCollectionTests
         var sourceElement1_1 = sourceFactory.create(_Actions.TheOne.__EchoAction)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1.1", ["test"] = "test"})
             .SetId("source1.1");
-        var sourceElement1_2 = sourceFactory.create(_Actions.TheOne.__CommandExecutionAction)
+        var sourceElement1_2 = sourceFactory.create(_Actions.TheOne.OSIntegration.__CommandExecutionAction)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1.2", ["test"] = "test"})
             .SetId("source1.2");
         var sourceElement2 = sourceFactory.create(_Actions.TheOne.__EchoAction)

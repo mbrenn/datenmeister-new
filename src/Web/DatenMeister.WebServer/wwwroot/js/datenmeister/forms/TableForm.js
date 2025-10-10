@@ -23,6 +23,8 @@ class TableState {
         this.orderByDescending = false;
         this.freeTextFilter = "";
         this.filterByProperty = new Array();
+        this.overrideQueryWorkspace = undefined;
+        this.overrideQueryItem = undefined;
     }
 }
 class TableJQueryCaches {
@@ -56,6 +58,9 @@ export class TableForm {
     async refreshTable() {
         this.updateFilterQueryText();
         await this.createTable();
+    }
+    setInfoText(message) {
+        this.tableCache.cacheLoadingInfoText.text(message);
     }
     /**
      * This method just calls the createFormByCollection since a TableForm can
@@ -102,13 +107,14 @@ export class TableForm {
         }
         // Loads the data
         const query = this.getQueryParameter();
-        this.elements = await this.callbackLoadItems(query);
         if (this.firstRun) {
             this.firstRun = false;
             this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
             parent.append(this.tableCache.cacheContainer);
             this.tableCache.cacheHeadline = $("<h2><a></a></h2>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheHeadline);
+            this.tableCache.cacheLoadingInfoText = $("<div class='dm-tableform-loadinginfotext'></div>");
+            this.tableCache.cacheContainer.append(this.tableCache.cacheLoadingInfoText);
             this.tableCache.cacheFreeTextField = $("<div class='dm-tableform-freetextform'></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheFreeTextField);
             this.tableCache.cacheButtons = $("<div class='dm-tableform-buttons'></div>");
@@ -134,6 +140,7 @@ export class TableForm {
                 this.createFreeTextField();
             }
         }
+        this.elements = await this.callbackLoadItems(query);
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(this.formElement.get('title')
             ?? this.formElement.get('name'));
@@ -161,6 +168,12 @@ export class TableForm {
             await this.createTable();
         }
     }
+    /**
+     * Converts the Table State into a parameter information
+     * which is used by the Query creator to provide the
+     * correct Query Statements
+     * @returns The parameter information
+     */
     getQueryParameter() {
         const query = new InterfacesForms.QueryFilterParameter();
         query.orderBy = this.tableState.orderBy;
@@ -287,8 +300,13 @@ export class TableForm {
             table.append(submitRow);
         });
     }
+    /**
+     * Gets the menu items for the table settings
+     * @private
+     */
     getMenuItemsForTableSettings() {
         return [
+            ContextMenu.createFunctionToLoadCurrentView(this),
             ContextMenu.createFunctionToStoreCurrentView(this)
         ];
     }
@@ -305,7 +323,6 @@ export class TableForm {
     * Creates the table itself that shall be shown
     */
     async createTable() {
-        const tthis = this;
         if (this.tableCache?.cacheTable === undefined)
             return;
         this.tableCache.cacheTable.empty();

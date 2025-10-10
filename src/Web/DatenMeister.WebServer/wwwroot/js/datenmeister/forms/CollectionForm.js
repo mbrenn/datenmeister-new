@@ -275,7 +275,7 @@ export class CollectionFormCreator {
                     tableForm.pageNavigation = this;
                     tableForm.callbackLoadItems = async (x) => {
                         const result = await callbackLoadItems(x);
-                        tthis.htmlElements.messageContainer.text(result.message);
+                        tableForm.setInfoText(result.message);
                         return result.elements;
                     };
                     tableForm.formElement = tab;

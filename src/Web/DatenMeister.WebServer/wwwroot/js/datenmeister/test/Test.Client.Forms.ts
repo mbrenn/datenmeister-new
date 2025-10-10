@@ -52,6 +52,11 @@ class Y implements IForm.ICollectionFormElement {
     createFormByCollection(parent: JQuery<HTMLElement>, configuration: FormConfiguration.IFormConfiguration, refresh?: boolean): Promise<void> {
         return Promise.resolve(undefined);
     }
+    
+    setInfoText(message: string): void {
+        throw new Error("Method not implemented.")
+    }
+
 }
 
 export function includeTests() {

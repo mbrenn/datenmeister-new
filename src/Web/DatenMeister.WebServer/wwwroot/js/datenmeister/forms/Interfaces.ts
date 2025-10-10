@@ -71,6 +71,12 @@ export interface ICollectionFormElement extends IPageForm {
      */
     callbackLoadItems: (query: QueryFilterParameter) => Promise<Array<Mof.DmObject>>;
 
+    /**
+     * Sets the info text by the loading which shall be shown to the user
+     * @param message Message to be shown
+     */
+    setInfoText(message: string): void;
+
     createFormByCollection(parent: JQuery<HTMLElement>, configuration: IFormConfiguration, refresh?: boolean): Promise<void>
 }
 

@@ -104,6 +104,59 @@ export function createFunctionToFilterInProperty(tthis, field) {
         }
     };
 }
+function createPopupButton(buttonText, container, createDom) {
+    const buttonContainer = $("<div class='dm-tableform-popup-buttonpopup'></div>");
+    const button = $("<button class='btn btn-secondary' type='button'></button>");
+    const content = $("<div class='dm-tableform-popup-button-popup-content'></div>");
+    buttonContainer.append(button);
+    buttonContainer.append(content);
+    content.hide();
+    button.text(buttonText);
+    button.on('click', () => {
+        content.empty();
+        content.show();
+        createDom(content);
+    });
+    container.append(buttonContainer);
+    return buttonContainer;
+}
+/**
+ * Create function to load current view
+ * @param tableForm Tableform in which the view shall be added
+ */
+export function createFunctionToLoadCurrentView(tableForm) {
+    return {
+        cellKeyTitle: "Load View",
+        onCreateDom: async (popup, jquery) => {
+            createPopupButton("Load View", jquery, async (innerQuery) => {
+                // Creates the select field that can be selected by the user
+                const selectField = $("<div class='dm-tableform-load-currentview-select'></div>'");
+                const selectItemControl = new SelectItemControl.SelectItemControl();
+                await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
+                const selectItemControlSettings = new SelectItemControl.Settings();
+                selectItemControlSettings.showCancelButton = false;
+                selectItemControlSettings.headline = "Select View";
+                selectItemControl.init(selectField, selectItemControlSettings);
+                selectItemControl.itemSelected.addListener(async (item) => {
+                    alert(item.uri);
+                    tableForm.tableState.overrideQueryWorkspace = item.workspace;
+                    tableForm.tableState.overrideQueryItem = item.uri;
+                    popup.closePopup();
+                    await tableForm.reloadTable();
+                });
+                innerQuery.append(selectField);
+                // 
+                const removeOverrideForm = $("<div><button class='btn btn-secondary' type='button'>Switch to Default View</button></div>");
+                removeOverrideForm.on('click', async () => {
+                    tableForm.tableState.overrideQueryWorkspace = undefined;
+                    tableForm.tableState.overrideQueryItem = undefined;
+                    await tableForm.reloadTable();
+                });
+                innerQuery.append(removeOverrideForm);
+            });
+        }
+    };
+}
 /**
  * Creates a function which allows to store the current view of the table
  * in a certain package on the server.
@@ -113,58 +166,61 @@ export function createFunctionToStoreCurrentView(tableForm) {
     return {
         cellKeyTitle: "Store View",
         onCreateDom: async (popup, jquery) => {
-            const storeTable = $("<table>" +
-                "<tr><td>Name of View:</td><td><input class='dm-tableform-store-currentview-name' type='text'></td></tr>" +
-                "<tr><td title='Define the package under which the new package storing the overall dataview will be stored'>Package:</td>" +
-                "<td class='dm-tableform-store-currentview-package'></td></tr>" +
-                "<tr><td></td><td><button class='btn btn-primary dm-tableform-store-currentview-submit' type='button'>StoreView</button></td></tr>" +
-                "<tr><td></td><td class='dm-tableform-store-currentview-result'></tr>" +
-                "</table>");
-            const nameTextField = $('.dm-tableform-store-currentview-name', storeTable);
-            const packageField = $('.dm-tableform-store-currentview-package', storeTable);
-            const submitButton = $('.dm-tableform-store-currentview-submit', storeTable);
-            const resultCell = $('.dm-tableform-store-currentview-result', storeTable);
-            const selectItemControl = new SelectItemControl.SelectItemControl();
-            await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
-            const selectItemControlSettings = new SelectItemControl.Settings();
-            selectItemControlSettings.hideButtonRow = true;
-            selectItemControlSettings.showCancelButton = false;
-            selectItemControlSettings.headline = "Select Package";
-            selectItemControl.init(packageField, selectItemControlSettings);
-            submitButton.on('click', async () => {
-                const name = nameTextField.val();
-                if (name === undefined || name === "") {
-                    alert("Please provide a name for the view");
-                    return;
-                }
-                // Ok, get the package url
-                const packageUrl = selectItemControl.getSelectedItem();
-                // Prepare the action
-                const actionParameter = new Mof.DmObject(_DatenMeister._Actions._Forms.__CreateFormUponViewAction_Uri);
-                actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.name, name);
-                actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageUri, packageUrl.uri);
-                actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
-                const queryBuilder = CollectionForm.createQueryBuilder(tableForm.getQueryParameter(), -1).queryStatement;
-                queryBuilder.set(_NamedElement._name_, name);
-                actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.query, queryBuilder);
-                const result = await Actions.executeActionDirectly("Execute", {
-                    parameter: actionParameter
+            createPopupButton("Load View", jquery, async (innerQuery) => {
+                const storeTable = $("<table>" +
+                    "<tr><td>Name of View:</td><td><input class='dm-tableform-store-currentview-name' type='text'></td></tr>" +
+                    "<tr><td title='Define the package under which the new package storing the overall dataview will be stored'>Package:</td>" +
+                    "<td class='dm-tableform-store-currentview-package'></td></tr>" +
+                    "<tr><td></td><td><button class='btn btn-primary dm-tableform-store-currentview-submit' type='button'>StoreView</button></td></tr>" +
+                    "<tr><td></td><td class='dm-tableform-store-currentview-result'></tr>" +
+                    "</table>");
+                const nameTextField = $('.dm-tableform-store-currentview-name', storeTable);
+                const packageField = $('.dm-tableform-store-currentview-package', storeTable);
+                const submitButton = $('.dm-tableform-store-currentview-submit', storeTable);
+                const resultCell = $('.dm-tableform-store-currentview-result', storeTable);
+                const selectItemControl = new SelectItemControl.SelectItemControl();
+                await selectItemControl.setExtentByUri(Settings.WorkspaceManagement, Settings.UriExtentUserForm);
+                const selectItemControlSettings = new SelectItemControl.Settings();
+                selectItemControlSettings.hideButtonRow = true;
+                selectItemControlSettings.showCancelButton = false;
+                selectItemControlSettings.headline = "Select Package";
+                selectItemControl.init(packageField, selectItemControlSettings);
+                submitButton.on('click', async () => {
+                    const name = nameTextField.val();
+                    if (name === undefined || name === "") {
+                        alert("Please provide a name for the view");
+                        return;
+                    }
+                    // Ok, get the package url
+                    const packageUrl = selectItemControl.getSelectedItem();
+                    // Prepare the action
+                    const actionParameter = new Mof.DmObject(_DatenMeister._Actions._Forms.__CreateFormUponViewAction_Uri);
+                    actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.name, name);
+                    actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageUri, packageUrl.uri);
+                    actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.targetPackageWorkspace, packageUrl.workspace);
+                    const queryBuilder = CollectionForm.createQueryBuilder(tableForm.getQueryParameter(), -1).queryStatement;
+                    queryBuilder.set(_NamedElement._name_, name);
+                    actionParameter.set(_DatenMeister._Actions._Forms._CreateFormUponViewAction.query, queryBuilder);
+                    const result = await Actions.executeActionDirectly("Execute", {
+                        parameter: actionParameter
+                    });
+                    const workspace = packageUrl.workspace;
+                    const item = result.resultAsDmObject.get(_DatenMeister._Actions._ParameterTypes._CreateFormUponViewResult.resultingPackageUrl, Mof.ObjectType.String);
+                    // If we have the result, we show it with a link to navigate
+                    if (result.resultAsDmObject !== undefined) {
+                        selectItemControl.removeControl();
+                        const resultText = $("<span>View is created: <a>Click here to navigate to the view</a></span>");
+                        const anchor = resultText.find("a");
+                        anchor.attr("href", Navigator.getLinkForNavigateToItemByUrl(workspace, item));
+                        resultCell.empty();
+                        resultCell.append(resultText);
+                    }
+                    else {
+                        alert('Something went wrong.');
+                    }
                 });
-                const workspace = packageUrl.workspace;
-                const item = result.resultAsDmObject.get(_DatenMeister._Actions._ParameterTypes._CreateFormUponViewResult.resultingPackageUrl, Mof.ObjectType.String);
-                // If we have the result, we show it with a link to navigate
-                if (result.resultAsDmObject !== undefined) {
-                    const resultText = $("<span>View is created: <a>Click here to navigate to the view</a></span>");
-                    const anchor = resultText.find("a");
-                    anchor.attr("href", Navigator.getLinkForNavigateToItemByUrl(workspace, item));
-                    resultCell.empty();
-                    resultCell.append(resultText);
-                }
-                else {
-                    alert('Something went wrong.');
-                }
+                innerQuery.append(storeTable);
             });
-            jquery.append(storeTable);
         }
     };
 }

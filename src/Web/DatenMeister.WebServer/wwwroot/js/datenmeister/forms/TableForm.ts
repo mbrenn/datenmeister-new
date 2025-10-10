@@ -44,6 +44,9 @@ class TableState {
     orderByDescending: boolean = false;
     freeTextFilter: string = "";
     filterByProperty: Array<string> = new Array<string>();
+    
+    overrideQueryWorkspace: string = undefined;
+    overrideQueryItem: string = undefined;
 }
 
 class TableJQueryCaches {
@@ -52,6 +55,12 @@ class TableJQueryCaches {
      */
     cacheContainer: JQuery;
     cacheHeadline: JQuery;
+
+    /**
+     * Stores the infotext which will contain the message 
+     * that is returned from the loader
+     */
+    cacheLoadingInfoText: JQuery;
     
     /*
     We store the table itself in a container to allow a dedicated scrolling of the table
@@ -134,6 +143,10 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         this.updateFilterQueryText();
         await this.createTable();
     }
+    
+    setInfoText(message: string) {
+        this.tableCache.cacheLoadingInfoText.text(message);
+    }
 
     /**
      * This method just calls the createFormByCollection since a TableForm can 
@@ -190,9 +203,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
 
         // Loads the data
         const query = this.getQueryParameter();
-
-        this.elements = await this.callbackLoadItems(query);
-
         if (this.firstRun) {
             this.firstRun = false;
             
@@ -201,6 +211,9 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             
             this.tableCache.cacheHeadline = $("<h2><a></a></h2>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheHeadline);
+            
+            this.tableCache.cacheLoadingInfoText = $("<div class='dm-tableform-loadinginfotext'></div>");
+            this.tableCache.cacheContainer.append(this.tableCache.cacheLoadingInfoText);
 
             this.tableCache.cacheFreeTextField = $("<div class='dm-tableform-freetextform'></div>");
             this.tableCache.cacheContainer.append(this.tableCache.cacheFreeTextField);
@@ -235,6 +248,9 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                 this.createFreeTextField();
             }
         }
+
+        this.elements = await this.callbackLoadItems(query);
+
 
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(
@@ -273,6 +289,12 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
     }
 
+    /**
+     * Converts the Table State into a parameter information 
+     * which is used by the Query creator to provide the 
+     * correct Query Statements
+     * @returns The parameter information
+     */
     getQueryParameter() {
         const query = new InterfacesForms.QueryFilterParameter();
         query.orderBy = this.tableState.orderBy;
@@ -442,10 +464,15 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             table.append(submitRow);
         });
     }
-    
+
+    /**
+     * Gets the menu items for the table settings
+     * @private
+     */
     private getMenuItemsForTableSettings() : Array<MenuItemData>
     {
         return [
+            ContextMenu.createFunctionToLoadCurrentView(this),
             ContextMenu.createFunctionToStoreCurrentView(this)
         ];
     }
@@ -464,7 +491,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     * Creates the table itself that shall be shown
     */
     private async createTable() {
-        const tthis = this;
         if (this.tableCache?.cacheTable === undefined) return;
         this.tableCache.cacheTable.empty();
 
@@ -614,7 +640,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         sortingArrow.on('click', onClick);
         titleButtons.append(sortingArrow);
     }
-
 
     private async appendColumnMenus(field: Mof.DmObject, cell: JQuery<HTMLElement>) {
         const propertyMenuItems = await this.createPropertyMenuItems(field);

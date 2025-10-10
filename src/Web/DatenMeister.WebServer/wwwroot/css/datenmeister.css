@@ -169,6 +169,7 @@ div.dm-tableform-container h2
     border-bottom: 1px solid black;
     background-color: #EEEEEE;
     padding: 5px;
+    margin-bottom: 0px;
 }
 
 div.dm-tableform-container h2 a
@@ -186,11 +187,27 @@ div.dm-tableform-container h2 a
     border-bottom: 1px solid black;
 }
 
+.dm-tableform-loadinginfotext
+{
+    font-size: 80%;
+    color: red;
+    margin-top: 0px;
+    padding: 5px;
+    border-bottom: 1px solid black;
+}
 .dm-tableform-container .dm-tableform-buttons
 {
     border-bottom: 1px solid black;
     vertical-align: center;
-    padding: 0 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+}
+
+.dm-tableform-popup-button-popup-content
+{
+    margin: 2px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: #EEEEEE;
 }
 
 .dm-tableform .dm-textfield {

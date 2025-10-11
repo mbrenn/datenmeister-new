@@ -31,14 +31,14 @@ public class AdocReportTableTests
         extent.elements().add(reportDefinition);
 
         /* Sets the viewnode */
-        var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
-        dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
+        var dynamicViewNode = factory.create(_DataViews.TheOne.Source.__DynamicSourceNode);
+        dynamicViewNode.set(_DataViews._Source._DynamicSourceNode.name, "input");
         extent.elements().add(dynamicViewNode);
 
-        var filterMetaClass = factory.create(_DataViews.TheOne.__RowFilterByMetaclassNode);
-        filterMetaClass.set(_DataViews._RowFilterByMetaclassNode.name, "filter");
-        filterMetaClass.set(_DataViews._RowFilterByMetaclassNode.metaClass, null);
-        filterMetaClass.set(_DataViews._RowFilterByMetaclassNode.input, dynamicViewNode);
+        var filterMetaClass = factory.create(_DataViews.TheOne.Row.__RowFilterByMetaclassNode);
+        filterMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.name, "filter");
+        filterMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.metaClass, null);
+        filterMetaClass.set(_DataViews._Row._RowFilterByMetaclassNode.input, dynamicViewNode);
         extent.elements().add(filterMetaClass);
 
         /* Create the report paragraph and its corresponding view node */

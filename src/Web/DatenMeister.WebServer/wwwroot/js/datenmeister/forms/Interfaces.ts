@@ -95,4 +95,6 @@ export class QueryFilterParameter {
     orderByDescending?: boolean; // Flag, whether ordering shall be done by descending
     filterByProperties?: Array<string>; // Property filters. Key is Propertyname, Value is textfilter
     filterByFreetext?: string; // Additional freetext
+    
+    queryUrl?: string;
 }

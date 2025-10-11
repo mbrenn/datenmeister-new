@@ -96,17 +96,45 @@ export interface IFindBySearchStringResult {
     reference: ItemWithNameAndId;
 }
 
+/**
+ * Defines the interface to query objects from the server via a specific QueryStatement
+ */
 export interface IQueryObjectParameter {
+    /**
+     * The query itself to be used
+     */
     query?: Mof.JsonFromMofObject;
+    /**
+     * The workspace of the dynamic source which will be added as 'input'
+     */
     dynamicSourceWorkspaceId?: string;
+    
+    /**
+     * The item Uri of the dynamic source which will be added as 'input'    
+     */
     dynamicSourceItemUri?: string;
-    timeout?: number; // Timeout in seconds
+
+    /**
+     * Defines the timeout in seconds. If the query is not finished in the given time, the query will be aborted.
+     */
+    timeout?: number;
 }
 
+/**
+ * Defines the result of the query being sent to the server
+ */
 export interface IQueryObjectResult {
-    result: Array<Mof.DmObject>;
+    /**
+     * Enumeration of found elements
+     */
+    result: Array<Mof.DmObject>;    
 }
 
+/**
+ * Calls the server to query the object according the provided parameters
+ * @param query The query that is being used to query the object
+ * @param parameters Additional parameters, the query object will be included into that element
+ */
 export async function queryObject(query: Mof.DmObject, parameters?: IQueryObjectParameter): Promise<IQueryObjectResult> {
 
     if (parameters === undefined) {

@@ -1769,284 +1769,6 @@ public class DataViews
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByExtentNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @extentUri
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("extentUri");
-            set => 
-                innerDmElement.set("extentUri", value);
-        }
-
-        public string? @workspaceId
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workspaceId");
-            set => 
-                innerDmElement.set("workspaceId", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class FlattenNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterByPropertyValueNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        public string? @property
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("property");
-            set => 
-                innerDmElement.set("property", value);
-        }
-
-        public string? @value
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("value");
-            set => 
-                innerDmElement.set("value", value);
-        }
-
-        // Not found
-        public object? @comparisonMode
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("comparisonMode");
-            set => 
-                innerDmElement.set("comparisonMode", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterByMetaclassNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        // Not found
-        public object? @metaClass
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("metaClass");
-            set => 
-                innerDmElement.set("metaClass", value);
-        }
-
-        public bool @includeInherits
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("includeInherits");
-            set => 
-                innerDmElement.set("includeInherits", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByFullNameNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
-
-        public string? @path
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("path");
-            set => 
-                innerDmElement.set("path", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class DynamicSourceNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @nodeName
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("nodeName");
-            set => 
-                innerDmElement.set("nodeName", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByPathNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @workspaceId
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workspaceId");
-            set => 
-                innerDmElement.set("workspaceId", value);
-        }
-
-        public string? @path
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("path");
-            set => 
-                innerDmElement.set("path", value);
-        }
-
-    }
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement",
         TypeKind = TypeKind.WrappedClass)]
     public class QueryStatement_Wrapper(IElement innerDmElement) : IElementWrapper
@@ -2093,255 +1815,581 @@ public class DataViews
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectFromAllWorkspacesNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Row
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @name
+        [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterByFreeTextAnywhere_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
+            public IElement GetWrappedElement() => innerDmElement;
 
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
-        TypeKind = TypeKind.WrappedClass)]
-    public class SelectByWorkspaceNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @workspaceId
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("workspaceId");
-            set => 
-                innerDmElement.set("workspaceId", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ColumnFilterExcludeNode_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @columnNamesComma
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("columnNamesComma");
-            set => 
-                innerDmElement.set("columnNamesComma", value);
-        }
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
-        {
-            get
+            public string? @freeText
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                get =>
+                    innerDmElement.getOrDefault<string?>("freeText");
+                set => 
+                    innerDmElement.set("freeText", value);
             }
-            set 
+
+            // Not found
+            public object? @input
             {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
+                get =>
+                    innerDmElement.getOrDefault<object?>("input");
+                set => 
                     innerDmElement.set("input", value);
-                }
             }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
-        public string? @name
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterByPropertyValueNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @property
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("property");
+                set => 
+                    innerDmElement.set("property", value);
+            }
+
+            public string? @value
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("value");
+                set => 
+                    innerDmElement.set("value", value);
+            }
+
+            // Not found
+            public object? @comparisonMode
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("comparisonMode");
+                set => 
+                    innerDmElement.set("comparisonMode", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowOrderByNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @propertyName
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("propertyName");
+                set => 
+                    innerDmElement.set("propertyName", value);
+            }
+
+            public bool @orderDescending
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("orderDescending");
+                set => 
+                    innerDmElement.set("orderDescending", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterOnPositionNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public int @amount
+            {
+                get =>
+                    innerDmElement.getOrDefault<int>("amount");
+                set => 
+                    innerDmElement.set("amount", value);
+            }
+
+            public int @position
+            {
+                get =>
+                    innerDmElement.getOrDefault<int>("position");
+                set => 
+                    innerDmElement.set("position", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFlattenNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class RowFilterByMetaclassNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            // Not found
+            public object? @metaClass
+            {
+                get =>
+                    innerDmElement.getOrDefault<object?>("metaClass");
+                set => 
+                    innerDmElement.set("metaClass", value);
+            }
+
+            public bool @includeInherits
+            {
+                get =>
+                    innerDmElement.getOrDefault<bool>("includeInherits");
+                set => 
+                    innerDmElement.set("includeInherits", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
-        TypeKind = TypeKind.WrappedClass)]
-    public class ColumnFilterIncludeOnlyNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Column
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @columnNamesComma
+        [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ColumnFilterIncludeOnlyNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<string?>("columnNamesComma");
-            set => 
-                innerDmElement.set("columnNamesComma", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @columnNamesComma
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("columnNamesComma");
+                set => 
+                    innerDmElement.set("columnNamesComma", value);
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ColumnFilterExcludeNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get
-            {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
-            }
-            set 
-            {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
-            }
-        }
+            public IElement GetWrappedElement() => innerDmElement;
 
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
+            public string? @columnNamesComma
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("columnNamesComma");
+                set => 
+                    innerDmElement.set("columnNamesComma", value);
+            }
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterOnPositionNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Source
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByExtentNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @extentUri
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                get =>
+                    innerDmElement.getOrDefault<string?>("extentUri");
+                set => 
+                    innerDmElement.set("extentUri", value);
             }
-            set 
+
+            public string? @workspaceId
             {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
             }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
-        public int @amount
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByPathNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<int>("amount");
-            set => 
-                innerDmElement.set("amount", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @workspaceId
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
+            }
+
+            public string? @path
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("path");
+                set => 
+                    innerDmElement.set("path", value);
+            }
+
         }
 
-        public int @position
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class DynamicSourceNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get =>
-                innerDmElement.getOrDefault<int>("position");
-            set => 
-                innerDmElement.set("position", value);
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @nodeName
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("nodeName");
+                set => 
+                    innerDmElement.set("nodeName", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByWorkspaceNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @workspaceId
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectByFullNameNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
+            public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+            {
+                get
+                {
+                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                }
+                set 
+                {
+                    if(value is IElementWrapper wrappedElement)
+                    {
+                        innerDmElement.set("input", wrappedElement.GetWrappedElement());
+                    }
+                    else
+                    {
+                        innerDmElement.set("input", value);
+                    }
+                }
+            }
+
+            public string? @path
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("path");
+                set => 
+                    innerDmElement.set("path", value);
+            }
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
+        }
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
+            TypeKind = TypeKind.WrappedClass)]
+        public class SelectFromAllWorkspacesNode_Wrapper(IElement innerDmElement) : IElementWrapper
+        {
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
+
         }
 
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowOrderByNode_Wrapper(IElement innerDmElement) : IElementWrapper
+    public class Node
     {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        // DatenMeister.Core.Models.DataViews.ViewNode_Wrapper
-        public DatenMeister.Core.Models.DataViews.ViewNode_Wrapper? @input
+        [TypeUri(Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370",
+            TypeKind = TypeKind.WrappedClass)]
+        public class ReferenceViewNode_Wrapper(IElement innerDmElement) : IElementWrapper
         {
-            get
+            public IElement GetWrappedElement() => innerDmElement;
+
+            public string? @workspaceId
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("input");
-                return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
+                get =>
+                    innerDmElement.getOrDefault<string?>("workspaceId");
+                set => 
+                    innerDmElement.set("workspaceId", value);
             }
-            set 
+
+            public string? @itemUri
             {
-                if(value is IElementWrapper wrappedElement)
-                {
-                    innerDmElement.set("input", wrappedElement.GetWrappedElement());
-                }
-                else
-                {
-                    innerDmElement.set("input", value);
-                }
+                get =>
+                    innerDmElement.getOrDefault<string?>("itemUri");
+                set => 
+                    innerDmElement.set("itemUri", value);
             }
-        }
 
-        public string? @propertyName
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("propertyName");
-            set => 
-                innerDmElement.set("propertyName", value);
-        }
+            public string? @name
+            {
+                get =>
+                    innerDmElement.getOrDefault<string?>("name");
+                set => 
+                    innerDmElement.set("name", value);
+            }
 
-        public bool @orderDescending
-        {
-            get =>
-                innerDmElement.getOrDefault<bool>("orderDescending");
-            set => 
-                innerDmElement.set("orderDescending", value);
-        }
-
-    }
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
-        TypeKind = TypeKind.WrappedClass)]
-    public class RowFilterByFreeTextAnywhere_Wrapper(IElement innerDmElement) : IElementWrapper
-    {
-        public IElement GetWrappedElement() => innerDmElement;
-
-        public string? @freeText
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("freeText");
-            set => 
-                innerDmElement.set("freeText", value);
-        }
-
-        // Not found
-        public object? @input
-        {
-            get =>
-                innerDmElement.getOrDefault<object?>("input");
-            set => 
-                innerDmElement.set("input", value);
-        }
-
-        public string? @name
-        {
-            get =>
-                innerDmElement.getOrDefault<string?>("name");
-            set => 
-                innerDmElement.set("name", value);
         }
 
     }

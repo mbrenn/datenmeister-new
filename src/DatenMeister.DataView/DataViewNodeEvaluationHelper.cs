@@ -13,7 +13,7 @@ public static class DataViewNodeEvaluationHelper
     
     public static IReflectiveCollection GetInputNode(this DataViewEvaluation viewNodeEvaluation, IElement viewNode)
     {
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._ColumnFilterIncludeOnlyNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Column._ColumnFilterIncludeOnlyNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");

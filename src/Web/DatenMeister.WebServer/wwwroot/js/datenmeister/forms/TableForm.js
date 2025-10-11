@@ -106,7 +106,6 @@ export class TableForm {
             throw "No callbackLoadItems is set";
         }
         // Loads the data
-        const query = this.getQueryParameter();
         if (this.firstRun) {
             this.firstRun = false;
             this.tableCache.cacheContainer = $("<div class='dm-tableform-container'></div>");
@@ -140,6 +139,7 @@ export class TableForm {
                 this.createFreeTextField();
             }
         }
+        const query = this.getQueryParameter();
         this.elements = await this.callbackLoadItems(query);
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(this.formElement.get('title')

@@ -37,10 +37,10 @@ public class TestColumnFilters
     {
         var (scope, queryExtent, inputQuery) = await SetupExtentAndQuery();
         var queryFactory = new MofFactory(queryExtent);
-        var filterColumns = queryFactory.create(_DataViews.TheOne.__ColumnFilterExcludeNode);
+        var filterColumns = queryFactory.create(_DataViews.TheOne.Column.__ColumnFilterExcludeNode);
         queryExtent.elements().add(filterColumns);
-        filterColumns.set(_DataViews._ColumnFilterExcludeNode.columnNamesComma, "age,iq");
-        filterColumns.set(_DataViews._ColumnFilterExcludeNode.input, inputQuery);
+        filterColumns.set(_DataViews._Column._ColumnFilterExcludeNode.columnNamesComma, "age,iq");
+        filterColumns.set(_DataViews._Column._ColumnFilterExcludeNode.input, inputQuery);
         
         
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
@@ -59,10 +59,10 @@ public class TestColumnFilters
     {
         var (scope, queryExtent, inputQuery) = await SetupExtentAndQuery();
         var queryFactory = new MofFactory(queryExtent);
-        var filterColumns = queryFactory.create(_DataViews.TheOne.__ColumnFilterIncludeOnlyNode);
+        var filterColumns = queryFactory.create(_DataViews.TheOne.Column.__ColumnFilterIncludeOnlyNode);
         queryExtent.elements().add(filterColumns);
-        filterColumns.set(_DataViews._ColumnFilterIncludeOnlyNode.columnNamesComma, "name, age");
-        filterColumns.set(_DataViews._ColumnFilterIncludeOnlyNode.input, inputQuery);
+        filterColumns.set(_DataViews._Column._ColumnFilterIncludeOnlyNode.columnNamesComma, "name, age");
+        filterColumns.set(_DataViews._Column._ColumnFilterIncludeOnlyNode.input, inputQuery);
         
         var viewLogic = new DataView.DataViewEvaluation(scope.WorkspaceLogic, scope.ScopeStorage);
         var result = viewLogic.GetElementsForViewNode(filterColumns).OfType<IElement>().ToList();
@@ -101,9 +101,9 @@ public class TestColumnFilters
 
             // Create the data!
             var viewNode = factory.create(_DataViews.TheOne.__ViewNode);
-            var selectWorkspace = factory.create(_DataViews.TheOne.__SelectByExtentNode);
-            selectWorkspace.set(_DataViews._SelectByExtentNode.workspaceId, "Data");
-            selectWorkspace.set(_DataViews._SelectByExtentNode.extentUri, "dm:///test");
+            var selectWorkspace = factory.create(_DataViews.TheOne.Source.__SelectByExtentNode);
+            selectWorkspace.set(_DataViews._Source._SelectByExtentNode.workspaceId, "Data");
+            selectWorkspace.set(_DataViews._Source._SelectByExtentNode.extentUri, "dm:///test");
             extent.elements().add(viewNode);
             extent.elements().add(selectWorkspace);
             

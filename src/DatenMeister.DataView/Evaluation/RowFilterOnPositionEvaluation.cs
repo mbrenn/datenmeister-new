@@ -16,14 +16,14 @@ public class RowFilterOnPositionEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__RowFilterOnPositionNode);
+               metaClass.equals(_DataViews.TheOne.Row.__RowFilterOnPositionNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
     {
-        var wrappedViewNode = new DataViews.RowFilterOnPositionNode_Wrapper(viewNode);
+        var wrappedViewNode = new DataViews.Row.RowFilterOnPositionNode_Wrapper(viewNode);
         
-        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._ColumnFilterExcludeNode.input);
+        var inputNode = viewNode.getOrDefault<IElement>(_DataViews._Row._RowFilterOnPositionNode.input);
         if (inputNode == null)
         {
             Logger.Warn("Input node not found");

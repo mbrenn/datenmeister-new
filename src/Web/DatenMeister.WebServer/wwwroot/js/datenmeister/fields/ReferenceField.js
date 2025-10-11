@@ -81,13 +81,11 @@ export class Control {
             if (tthis.referenceSetCall !== undefined) {
                 await this.referenceSetCall(selectedItem);
             }
-            else {
-                await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
-                    property: tthis.propertyName,
-                    referenceUri: selectedItem.uri,
-                    workspaceId: selectedItem.workspace
-                });
-            }
+            await ClientItem.setPropertyReference(tthis.form.workspace, tthis.itemUrl, {
+                property: tthis.propertyName,
+                referenceUri: selectedItem.uri,
+                workspaceId: selectedItem.workspace
+            });
             if (!isSelectionInline) {
                 containerChangeCell.empty();
                 tthis.inhibitInline = true;

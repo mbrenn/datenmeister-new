@@ -11,7 +11,7 @@ public class SelectFromAllWorkspacesNodeEvaluation : IDataViewNodeEvaluation
     {
         var metaClass = node.getMetaClass();
         return metaClass != null &&
-               metaClass.equals(_DataViews.TheOne.__SelectFromAllWorkspacesNode);
+               metaClass.equals(_DataViews.TheOne.Source.__SelectFromAllWorkspacesNode);
     }
 
     public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)

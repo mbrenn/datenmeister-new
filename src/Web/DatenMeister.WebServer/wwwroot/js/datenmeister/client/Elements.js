@@ -57,6 +57,11 @@ export function findBySearchString(searchString) {
         "api/elements/find_by_searchstring?search=" +
         encodeURIComponent(searchString));
 }
+/**
+ * Calls the server to query the object according the provided parameters
+ * @param query The query that is being used to query the object
+ * @param parameters Additional parameters, the query object will be included into that element
+ */
 export async function queryObject(query, parameters) {
     if (parameters === undefined) {
         parameters = {};

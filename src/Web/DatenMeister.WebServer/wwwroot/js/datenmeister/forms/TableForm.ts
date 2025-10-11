@@ -202,7 +202,6 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         }
 
         // Loads the data
-        const query = this.getQueryParameter();
         if (this.firstRun) {
             this.firstRun = false;
             
@@ -249,8 +248,8 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
             }
         }
 
+        const query = this.getQueryParameter();
         this.elements = await this.callbackLoadItems(query);
-
 
         const headLineLink = $("a", this.tableCache.cacheHeadline);
         headLineLink.text(

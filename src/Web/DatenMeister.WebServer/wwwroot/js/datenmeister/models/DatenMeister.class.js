@@ -383,36 +383,6 @@ export var _DataViews;
     _ViewNode._name_ = "name";
     _DataViews._ViewNode = _ViewNode;
     _DataViews.__ViewNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode";
-    class _SelectByExtentNode {
-    }
-    _SelectByExtentNode.extentUri = "extentUri";
-    _SelectByExtentNode.workspaceId = "workspaceId";
-    _SelectByExtentNode._name_ = "name";
-    _DataViews._SelectByExtentNode = _SelectByExtentNode;
-    _DataViews.__SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode";
-    class _FlattenNode {
-    }
-    _FlattenNode.input = "input";
-    _FlattenNode._name_ = "name";
-    _DataViews._FlattenNode = _FlattenNode;
-    _DataViews.__FlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
-    class _RowFilterByPropertyValueNode {
-    }
-    _RowFilterByPropertyValueNode.input = "input";
-    _RowFilterByPropertyValueNode.property = "property";
-    _RowFilterByPropertyValueNode.value = "value";
-    _RowFilterByPropertyValueNode.comparisonMode = "comparisonMode";
-    _RowFilterByPropertyValueNode._name_ = "name";
-    _DataViews._RowFilterByPropertyValueNode = _RowFilterByPropertyValueNode;
-    _DataViews.__RowFilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
-    class _RowFilterByMetaclassNode {
-    }
-    _RowFilterByMetaclassNode.input = "input";
-    _RowFilterByMetaclassNode.metaClass = "metaClass";
-    _RowFilterByMetaclassNode.includeInherits = "includeInherits";
-    _RowFilterByMetaclassNode._name_ = "name";
-    _DataViews._RowFilterByMetaclassNode = _RowFilterByMetaclassNode;
-    _DataViews.__RowFilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
     let _ComparisonMode;
     (function (_ComparisonMode) {
         _ComparisonMode.Equal = "Equal";
@@ -439,25 +409,6 @@ export var _DataViews;
         ___ComparisonMode[___ComparisonMode["RegexMatch"] = 8] = "RegexMatch";
         ___ComparisonMode[___ComparisonMode["RegexNoMatch"] = 9] = "RegexNoMatch";
     })(___ComparisonMode = _DataViews.___ComparisonMode || (_DataViews.___ComparisonMode = {}));
-    class _SelectByFullNameNode {
-    }
-    _SelectByFullNameNode.input = "input";
-    _SelectByFullNameNode.path = "path";
-    _SelectByFullNameNode._name_ = "name";
-    _DataViews._SelectByFullNameNode = _SelectByFullNameNode;
-    _DataViews.__SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
-    class _DynamicSourceNode {
-    }
-    _DynamicSourceNode.nodeName = "nodeName";
-    _DynamicSourceNode._name_ = "name";
-    _DataViews._DynamicSourceNode = _DynamicSourceNode;
-    _DataViews.__DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
-    class _SelectByPathNode {
-    }
-    _SelectByPathNode.workspaceId = "workspaceId";
-    _SelectByPathNode.path = "path";
-    _DataViews._SelectByPathNode = _SelectByPathNode;
-    _DataViews.__SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";
     class _QueryStatement {
     }
     _QueryStatement.nodes = "nodes";
@@ -465,52 +416,120 @@ export var _DataViews;
     _QueryStatement._name_ = "name";
     _DataViews._QueryStatement = _QueryStatement;
     _DataViews.__QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
-    class _SelectFromAllWorkspacesNode {
-    }
-    _SelectFromAllWorkspacesNode._name_ = "name";
-    _DataViews._SelectFromAllWorkspacesNode = _SelectFromAllWorkspacesNode;
-    _DataViews.__SelectFromAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
-    class _SelectByWorkspaceNode {
-    }
-    _SelectByWorkspaceNode.workspaceId = "workspaceId";
-    _SelectByWorkspaceNode._name_ = "name";
-    _DataViews._SelectByWorkspaceNode = _SelectByWorkspaceNode;
-    _DataViews.__SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
-    class _ColumnFilterExcludeNode {
-    }
-    _ColumnFilterExcludeNode.columnNamesComma = "columnNamesComma";
-    _ColumnFilterExcludeNode.input = "input";
-    _ColumnFilterExcludeNode._name_ = "name";
-    _DataViews._ColumnFilterExcludeNode = _ColumnFilterExcludeNode;
-    _DataViews.__ColumnFilterExcludeNode_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
-    class _ColumnFilterIncludeOnlyNode {
-    }
-    _ColumnFilterIncludeOnlyNode.columnNamesComma = "columnNamesComma";
-    _ColumnFilterIncludeOnlyNode.input = "input";
-    _ColumnFilterIncludeOnlyNode._name_ = "name";
-    _DataViews._ColumnFilterIncludeOnlyNode = _ColumnFilterIncludeOnlyNode;
-    _DataViews.__ColumnFilterIncludeOnlyNode_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
-    class _RowFilterOnPositionNode {
-    }
-    _RowFilterOnPositionNode.input = "input";
-    _RowFilterOnPositionNode.amount = "amount";
-    _RowFilterOnPositionNode.position = "position";
-    _DataViews._RowFilterOnPositionNode = _RowFilterOnPositionNode;
-    _DataViews.__RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
-    class _RowOrderByNode {
-    }
-    _RowOrderByNode.input = "input";
-    _RowOrderByNode.propertyName = "propertyName";
-    _RowOrderByNode.orderDescending = "orderDescending";
-    _DataViews._RowOrderByNode = _RowOrderByNode;
-    _DataViews.__RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
-    class _RowFilterByFreeTextAnywhere {
-    }
-    _RowFilterByFreeTextAnywhere.freeText = "freeText";
-    _RowFilterByFreeTextAnywhere.input = "input";
-    _RowFilterByFreeTextAnywhere._name_ = "name";
-    _DataViews._RowFilterByFreeTextAnywhere = _RowFilterByFreeTextAnywhere;
-    _DataViews.__RowFilterByFreeTextAnywhere_Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628";
+    let _Row;
+    (function (_Row) {
+        class _RowFilterByFreeTextAnywhere {
+        }
+        _RowFilterByFreeTextAnywhere.freeText = "freeText";
+        _RowFilterByFreeTextAnywhere.input = "input";
+        _RowFilterByFreeTextAnywhere._name_ = "name";
+        _Row._RowFilterByFreeTextAnywhere = _RowFilterByFreeTextAnywhere;
+        _Row.__RowFilterByFreeTextAnywhere_Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628";
+        class _RowFilterByPropertyValueNode {
+        }
+        _RowFilterByPropertyValueNode.input = "input";
+        _RowFilterByPropertyValueNode.property = "property";
+        _RowFilterByPropertyValueNode.value = "value";
+        _RowFilterByPropertyValueNode.comparisonMode = "comparisonMode";
+        _RowFilterByPropertyValueNode._name_ = "name";
+        _Row._RowFilterByPropertyValueNode = _RowFilterByPropertyValueNode;
+        _Row.__RowFilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
+        class _RowOrderByNode {
+        }
+        _RowOrderByNode.input = "input";
+        _RowOrderByNode.propertyName = "propertyName";
+        _RowOrderByNode.orderDescending = "orderDescending";
+        _Row._RowOrderByNode = _RowOrderByNode;
+        _Row.__RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
+        class _RowFilterOnPositionNode {
+        }
+        _RowFilterOnPositionNode.input = "input";
+        _RowFilterOnPositionNode.amount = "amount";
+        _RowFilterOnPositionNode.position = "position";
+        _Row._RowFilterOnPositionNode = _RowFilterOnPositionNode;
+        _Row.__RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
+        class _RowFlattenNode {
+        }
+        _RowFlattenNode.input = "input";
+        _RowFlattenNode._name_ = "name";
+        _Row._RowFlattenNode = _RowFlattenNode;
+        _Row.__RowFlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
+        class _RowFilterByMetaclassNode {
+        }
+        _RowFilterByMetaclassNode.input = "input";
+        _RowFilterByMetaclassNode.metaClass = "metaClass";
+        _RowFilterByMetaclassNode.includeInherits = "includeInherits";
+        _RowFilterByMetaclassNode._name_ = "name";
+        _Row._RowFilterByMetaclassNode = _RowFilterByMetaclassNode;
+        _Row.__RowFilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
+    })(_Row = _DataViews._Row || (_DataViews._Row = {}));
+    let _Column;
+    (function (_Column) {
+        class _ColumnFilterIncludeOnlyNode {
+        }
+        _ColumnFilterIncludeOnlyNode.columnNamesComma = "columnNamesComma";
+        _ColumnFilterIncludeOnlyNode.input = "input";
+        _ColumnFilterIncludeOnlyNode._name_ = "name";
+        _Column._ColumnFilterIncludeOnlyNode = _ColumnFilterIncludeOnlyNode;
+        _Column.__ColumnFilterIncludeOnlyNode_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
+        class _ColumnFilterExcludeNode {
+        }
+        _ColumnFilterExcludeNode.columnNamesComma = "columnNamesComma";
+        _ColumnFilterExcludeNode.input = "input";
+        _ColumnFilterExcludeNode._name_ = "name";
+        _Column._ColumnFilterExcludeNode = _ColumnFilterExcludeNode;
+        _Column.__ColumnFilterExcludeNode_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
+    })(_Column = _DataViews._Column || (_DataViews._Column = {}));
+    let _Source;
+    (function (_Source) {
+        class _SelectByExtentNode {
+        }
+        _SelectByExtentNode.extentUri = "extentUri";
+        _SelectByExtentNode.workspaceId = "workspaceId";
+        _SelectByExtentNode._name_ = "name";
+        _Source._SelectByExtentNode = _SelectByExtentNode;
+        _Source.__SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode";
+        class _SelectByPathNode {
+        }
+        _SelectByPathNode.workspaceId = "workspaceId";
+        _SelectByPathNode.path = "path";
+        _Source._SelectByPathNode = _SelectByPathNode;
+        _Source.__SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";
+        class _DynamicSourceNode {
+        }
+        _DynamicSourceNode.nodeName = "nodeName";
+        _DynamicSourceNode._name_ = "name";
+        _Source._DynamicSourceNode = _DynamicSourceNode;
+        _Source.__DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
+        class _SelectByWorkspaceNode {
+        }
+        _SelectByWorkspaceNode.workspaceId = "workspaceId";
+        _SelectByWorkspaceNode._name_ = "name";
+        _Source._SelectByWorkspaceNode = _SelectByWorkspaceNode;
+        _Source.__SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
+        class _SelectByFullNameNode {
+        }
+        _SelectByFullNameNode.input = "input";
+        _SelectByFullNameNode.path = "path";
+        _SelectByFullNameNode._name_ = "name";
+        _Source._SelectByFullNameNode = _SelectByFullNameNode;
+        _Source.__SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
+        class _SelectFromAllWorkspacesNode {
+        }
+        _SelectFromAllWorkspacesNode._name_ = "name";
+        _Source._SelectFromAllWorkspacesNode = _SelectFromAllWorkspacesNode;
+        _Source.__SelectFromAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
+    })(_Source = _DataViews._Source || (_DataViews._Source = {}));
+    let _Node;
+    (function (_Node) {
+        class _ReferenceViewNode {
+        }
+        _ReferenceViewNode.workspaceId = "workspaceId";
+        _ReferenceViewNode.itemUri = "itemUri";
+        _ReferenceViewNode._name_ = "name";
+        _Node._ReferenceViewNode = _ReferenceViewNode;
+        _Node.__ReferenceViewNode_Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370";
+    })(_Node = _DataViews._Node || (_DataViews._Node = {}));
 })(_DataViews || (_DataViews = {}));
 export var _Reports;
 (function (_Reports) {

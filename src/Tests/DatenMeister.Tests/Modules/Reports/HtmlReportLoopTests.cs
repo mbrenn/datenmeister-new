@@ -30,8 +30,8 @@ public class HtmlReportLoopTests
         extent.elements().add(reportDefinition);
 
         /* Sets the viewnode */
-        var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
-        dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
+        var dynamicViewNode = factory.create(_DataViews.TheOne.Source.__DynamicSourceNode);
+        dynamicViewNode.set(_DataViews._Source._DynamicSourceNode.name, "input");
         extent.elements().add(dynamicViewNode);
 
         /* Create the report paragraph and its corresponding view node */

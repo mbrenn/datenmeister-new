@@ -442,40 +442,6 @@ export namespace _DataViews
         }
 
         export const __ViewNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode";
-        export class _SelectByExtentNode
-        {
-            static extentUri = "extentUri";
-            static workspaceId = "workspaceId";
-            static _name_ = "name";
-        }
-
-        export const __SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode";
-        export class _FlattenNode
-        {
-            static input = "input";
-            static _name_ = "name";
-        }
-
-        export const __FlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
-        export class _RowFilterByPropertyValueNode
-        {
-            static input = "input";
-            static property = "property";
-            static value = "value";
-            static comparisonMode = "comparisonMode";
-            static _name_ = "name";
-        }
-
-        export const __RowFilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
-        export class _RowFilterByMetaclassNode
-        {
-            static input = "input";
-            static metaClass = "metaClass";
-            static includeInherits = "includeInherits";
-            static _name_ = "name";
-        }
-
-        export const __RowFilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
         export module _ComparisonMode
         {
             export const Equal = "Equal";
@@ -504,28 +470,6 @@ export namespace _DataViews
             RegexNoMatch
         }
 
-        export class _SelectByFullNameNode
-        {
-            static input = "input";
-            static path = "path";
-            static _name_ = "name";
-        }
-
-        export const __SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
-        export class _DynamicSourceNode
-        {
-            static nodeName = "nodeName";
-            static _name_ = "name";
-        }
-
-        export const __DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
-        export class _SelectByPathNode
-        {
-            static workspaceId = "workspaceId";
-            static path = "path";
-        }
-
-        export const __SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";
         export class _QueryStatement
         {
             static nodes = "nodes";
@@ -534,59 +478,139 @@ export namespace _DataViews
         }
 
         export const __QueryStatement_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement";
-        export class _SelectFromAllWorkspacesNode
+        export namespace _Row
         {
-            static _name_ = "name";
+                export class _RowFilterByFreeTextAnywhere
+                {
+                    static freeText = "freeText";
+                    static input = "input";
+                    static _name_ = "name";
+                }
+
+                export const __RowFilterByFreeTextAnywhere_Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628";
+                export class _RowFilterByPropertyValueNode
+                {
+                    static input = "input";
+                    static property = "property";
+                    static value = "value";
+                    static comparisonMode = "comparisonMode";
+                    static _name_ = "name";
+                }
+
+                export const __RowFilterByPropertyValueNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode";
+                export class _RowOrderByNode
+                {
+                    static input = "input";
+                    static propertyName = "propertyName";
+                    static orderDescending = "orderDescending";
+                }
+
+                export const __RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
+                export class _RowFilterOnPositionNode
+                {
+                    static input = "input";
+                    static amount = "amount";
+                    static position = "position";
+                }
+
+                export const __RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
+                export class _RowFlattenNode
+                {
+                    static input = "input";
+                    static _name_ = "name";
+                }
+
+                export const __RowFlattenNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode";
+                export class _RowFilterByMetaclassNode
+                {
+                    static input = "input";
+                    static metaClass = "metaClass";
+                    static includeInherits = "includeInherits";
+                    static _name_ = "name";
+                }
+
+                export const __RowFilterByMetaclassNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode";
         }
 
-        export const __SelectFromAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
-        export class _SelectByWorkspaceNode
+        export namespace _Column
         {
-            static workspaceId = "workspaceId";
-            static _name_ = "name";
+                export class _ColumnFilterIncludeOnlyNode
+                {
+                    static columnNamesComma = "columnNamesComma";
+                    static input = "input";
+                    static _name_ = "name";
+                }
+
+                export const __ColumnFilterIncludeOnlyNode_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
+                export class _ColumnFilterExcludeNode
+                {
+                    static columnNamesComma = "columnNamesComma";
+                    static input = "input";
+                    static _name_ = "name";
+                }
+
+                export const __ColumnFilterExcludeNode_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
         }
 
-        export const __SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
-        export class _ColumnFilterExcludeNode
+        export namespace _Source
         {
-            static columnNamesComma = "columnNamesComma";
-            static input = "input";
-            static _name_ = "name";
+                export class _SelectByExtentNode
+                {
+                    static extentUri = "extentUri";
+                    static workspaceId = "workspaceId";
+                    static _name_ = "name";
+                }
+
+                export const __SelectByExtentNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode";
+                export class _SelectByPathNode
+                {
+                    static workspaceId = "workspaceId";
+                    static path = "path";
+                }
+
+                export const __SelectByPathNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode";
+                export class _DynamicSourceNode
+                {
+                    static nodeName = "nodeName";
+                    static _name_ = "name";
+                }
+
+                export const __DynamicSourceNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode";
+                export class _SelectByWorkspaceNode
+                {
+                    static workspaceId = "workspaceId";
+                    static _name_ = "name";
+                }
+
+                export const __SelectByWorkspaceNode_Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db";
+                export class _SelectByFullNameNode
+                {
+                    static input = "input";
+                    static path = "path";
+                    static _name_ = "name";
+                }
+
+                export const __SelectByFullNameNode_Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode";
+                export class _SelectFromAllWorkspacesNode
+                {
+                    static _name_ = "name";
+                }
+
+                export const __SelectFromAllWorkspacesNode_Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a";
         }
 
-        export const __ColumnFilterExcludeNode_Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7";
-        export class _ColumnFilterIncludeOnlyNode
+        export namespace _Node
         {
-            static columnNamesComma = "columnNamesComma";
-            static input = "input";
-            static _name_ = "name";
+                export class _ReferenceViewNode
+                {
+                    static workspaceId = "workspaceId";
+                    static itemUri = "itemUri";
+                    static _name_ = "name";
+                }
+
+                export const __ReferenceViewNode_Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370";
         }
 
-        export const __ColumnFilterIncludeOnlyNode_Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d";
-        export class _RowFilterOnPositionNode
-        {
-            static input = "input";
-            static amount = "amount";
-            static position = "position";
-        }
-
-        export const __RowFilterOnPositionNode_Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f";
-        export class _RowOrderByNode
-        {
-            static input = "input";
-            static propertyName = "propertyName";
-            static orderDescending = "orderDescending";
-        }
-
-        export const __RowOrderByNode_Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9";
-        export class _RowFilterByFreeTextAnywhere
-        {
-            static freeText = "freeText";
-            static input = "input";
-            static _name_ = "name";
-        }
-
-        export const __RowFilterByFreeTextAnywhere_Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628";
 }
 
 export namespace _Reports

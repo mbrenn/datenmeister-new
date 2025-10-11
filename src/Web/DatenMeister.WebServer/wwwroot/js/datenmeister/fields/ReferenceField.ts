@@ -121,22 +121,22 @@ export class Control {
         const eventType = isSelectionInline ? selectItem.itemClicked : selectItem.itemSelected;
         eventType.addListener(
             async selectedItem => {
-                
-                if(tthis.referenceSetCall !== undefined) {
+
+                if (tthis.referenceSetCall !== undefined) {
                     await this.referenceSetCall(selectedItem);
                 }
-                else {
-                    await ClientItem.setPropertyReference(
-                        tthis.form.workspace,
-                        tthis.itemUrl,
-                        {
-                            property: tthis.propertyName,
-                            referenceUri: selectedItem.uri,
-                            workspaceId: selectedItem.workspace
-                        }
-                    );
-                }
-                if(!isSelectionInline) {
+                
+                await ClientItem.setPropertyReference(
+                    tthis.form.workspace,
+                    tthis.itemUrl,
+                    {
+                        property: tthis.propertyName,
+                        referenceUri: selectedItem.uri,
+                        workspaceId: selectedItem.workspace
+                    }
+                );
+
+                if (!isSelectionInline) {
                     containerChangeCell.empty();
                     tthis.inhibitInline = true;
 

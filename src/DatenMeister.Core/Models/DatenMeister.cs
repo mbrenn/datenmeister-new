@@ -968,84 +968,6 @@ public class _DataViews
     public _ViewNode @ViewNode = new _ViewNode();
     public MofObjectShadow @__ViewNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode");
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
-        TypeKind = TypeKind.ClassTree)]
-    public class _SelectByExtentNode
-    {
-        public static readonly string @extentUri = "extentUri";
-        public IElement? @_extentUri = null;
-
-        public static readonly string @workspaceId = "workspaceId";
-        public IElement? @_workspaceId = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _SelectByExtentNode @SelectByExtentNode = new _SelectByExtentNode();
-    public MofObjectShadow @__SelectByExtentNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
-        TypeKind = TypeKind.ClassTree)]
-    public class _FlattenNode
-    {
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _FlattenNode @FlattenNode = new _FlattenNode();
-    public MofObjectShadow @__FlattenNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
-        TypeKind = TypeKind.ClassTree)]
-    public class _RowFilterByPropertyValueNode
-    {
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
-
-        public static readonly string @property = "property";
-        public IElement? @_property = null;
-
-        public static readonly string @value = "value";
-        public IElement? @_value = null;
-
-        public static readonly string @comparisonMode = "comparisonMode";
-        public IElement? @_comparisonMode = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _RowFilterByPropertyValueNode @RowFilterByPropertyValueNode = new _RowFilterByPropertyValueNode();
-    public MofObjectShadow @__RowFilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
-        TypeKind = TypeKind.ClassTree)]
-    public class _RowFilterByMetaclassNode
-    {
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
-
-        public static readonly string @metaClass = "metaClass";
-        public IElement? @_metaClass = null;
-
-        public static readonly string @includeInherits = "includeInherits";
-        public IElement? @_includeInherits = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _RowFilterByMetaclassNode @RowFilterByMetaclassNode = new _RowFilterByMetaclassNode();
-    public MofObjectShadow @__RowFilterByMetaclassNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode");
-
     public class _ComparisonMode
     {
         public static string @Equal = "Equal";
@@ -1089,54 +1011,6 @@ public class _DataViews
         @RegexNoMatch
     }
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
-        TypeKind = TypeKind.ClassTree)]
-    public class _SelectByFullNameNode
-    {
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
-
-        public static readonly string @path = "path";
-        public IElement? @_path = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _SelectByFullNameNode @SelectByFullNameNode = new _SelectByFullNameNode();
-    public MofObjectShadow @__SelectByFullNameNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
-        TypeKind = TypeKind.ClassTree)]
-    public class _DynamicSourceNode
-    {
-        public static readonly string @nodeName = "nodeName";
-        public IElement? @_nodeName = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _DynamicSourceNode @DynamicSourceNode = new _DynamicSourceNode();
-    public MofObjectShadow @__DynamicSourceNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
-        TypeKind = TypeKind.ClassTree)]
-    public class _SelectByPathNode
-    {
-        public static readonly string @workspaceId = "workspaceId";
-        public IElement? @_workspaceId = null;
-
-        public static readonly string @path = "path";
-        public IElement? @_path = null;
-
-    }
-
-    public _SelectByPathNode @SelectByPathNode = new _SelectByPathNode();
-    public MofObjectShadow @__SelectByPathNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode");
-
     [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement",
         TypeKind = TypeKind.ClassTree)]
     public class _QueryStatement
@@ -1155,122 +1029,290 @@ public class _DataViews
     public _QueryStatement @QueryStatement = new _QueryStatement();
     public MofObjectShadow @__QueryStatement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.QueryStatement");
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
-        TypeKind = TypeKind.ClassTree)]
-    public class _SelectFromAllWorkspacesNode
+    public class _Row
     {
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
+        [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RowFilterByFreeTextAnywhere
+        {
+            public static readonly string @freeText = "freeText";
+            public IElement? @_freeText = null;
+
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _RowFilterByFreeTextAnywhere @RowFilterByFreeTextAnywhere = new _RowFilterByFreeTextAnywhere();
+        public MofObjectShadow @__RowFilterByFreeTextAnywhere = new MofObjectShadow("dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RowFilterByPropertyValueNode
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @property = "property";
+            public IElement? @_property = null;
+
+            public static readonly string @value = "value";
+            public IElement? @_value = null;
+
+            public static readonly string @comparisonMode = "comparisonMode";
+            public IElement? @_comparisonMode = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _RowFilterByPropertyValueNode @RowFilterByPropertyValueNode = new _RowFilterByPropertyValueNode();
+        public MofObjectShadow @__RowFilterByPropertyValueNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByPropertyValueNode");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RowOrderByNode
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @propertyName = "propertyName";
+            public IElement? @_propertyName = null;
+
+            public static readonly string @orderDescending = "orderDescending";
+            public IElement? @_orderDescending = null;
+
+        }
+
+        public _RowOrderByNode @RowOrderByNode = new _RowOrderByNode();
+        public MofObjectShadow @__RowOrderByNode = new MofObjectShadow("dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RowFilterOnPositionNode
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @amount = "amount";
+            public IElement? @_amount = null;
+
+            public static readonly string @position = "position";
+            public IElement? @_position = null;
+
+        }
+
+        public _RowFilterOnPositionNode @RowFilterOnPositionNode = new _RowFilterOnPositionNode();
+        public MofObjectShadow @__RowFilterOnPositionNode = new MofObjectShadow("dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RowFlattenNode
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _RowFlattenNode @RowFlattenNode = new _RowFlattenNode();
+        public MofObjectShadow @__RowFlattenNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FlattenNode");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _RowFilterByMetaclassNode
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @metaClass = "metaClass";
+            public IElement? @_metaClass = null;
+
+            public static readonly string @includeInherits = "includeInherits";
+            public IElement? @_includeInherits = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _RowFilterByMetaclassNode @RowFilterByMetaclassNode = new _RowFilterByMetaclassNode();
+        public MofObjectShadow @__RowFilterByMetaclassNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterByMetaclassNode");
 
     }
 
-    public _SelectFromAllWorkspacesNode @SelectFromAllWorkspacesNode = new _SelectFromAllWorkspacesNode();
-    public MofObjectShadow @__SelectFromAllWorkspacesNode = new MofObjectShadow("dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a");
+    public _Row Row = new _Row();
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
-        TypeKind = TypeKind.ClassTree)]
-    public class _SelectByWorkspaceNode
+    public class _Column
     {
-        public static readonly string @workspaceId = "workspaceId";
-        public IElement? @_workspaceId = null;
+        [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ColumnFilterIncludeOnlyNode
+        {
+            public static readonly string @columnNamesComma = "columnNamesComma";
+            public IElement? @_columnNamesComma = null;
 
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _ColumnFilterIncludeOnlyNode @ColumnFilterIncludeOnlyNode = new _ColumnFilterIncludeOnlyNode();
+        public MofObjectShadow @__ColumnFilterIncludeOnlyNode = new MofObjectShadow("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ColumnFilterExcludeNode
+        {
+            public static readonly string @columnNamesComma = "columnNamesComma";
+            public IElement? @_columnNamesComma = null;
+
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _ColumnFilterExcludeNode @ColumnFilterExcludeNode = new _ColumnFilterExcludeNode();
+        public MofObjectShadow @__ColumnFilterExcludeNode = new MofObjectShadow("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
 
     }
 
-    public _SelectByWorkspaceNode @SelectByWorkspaceNode = new _SelectByWorkspaceNode();
-    public MofObjectShadow @__SelectByWorkspaceNode = new MofObjectShadow("dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db");
+    public _Column Column = new _Column();
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ColumnFilterExcludeNode
+    public class _Source
     {
-        public static readonly string @columnNamesComma = "columnNamesComma";
-        public IElement? @_columnNamesComma = null;
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SelectByExtentNode
+        {
+            public static readonly string @extentUri = "extentUri";
+            public IElement? @_extentUri = null;
 
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
+            public static readonly string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
 
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _SelectByExtentNode @SelectByExtentNode = new _SelectByExtentNode();
+        public MofObjectShadow @__SelectByExtentNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByExtentNode");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SelectByPathNode
+        {
+            public static readonly string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
+
+            public static readonly string @path = "path";
+            public IElement? @_path = null;
+
+        }
+
+        public _SelectByPathNode @SelectByPathNode = new _SelectByPathNode();
+        public MofObjectShadow @__SelectByPathNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByPathNode");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _DynamicSourceNode
+        {
+            public static readonly string @nodeName = "nodeName";
+            public IElement? @_nodeName = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _DynamicSourceNode @DynamicSourceNode = new _DynamicSourceNode();
+        public MofObjectShadow @__DynamicSourceNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SelectByWorkspaceNode
+        {
+            public static readonly string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _SelectByWorkspaceNode @SelectByWorkspaceNode = new _SelectByWorkspaceNode();
+        public MofObjectShadow @__SelectByWorkspaceNode = new MofObjectShadow("dm:///_internal/types/internal#a7276e99-351c-4aed-8ff1-a4b5ee45b0db");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SelectByFullNameNode
+        {
+            public static readonly string @input = "input";
+            public IElement? @_input = null;
+
+            public static readonly string @path = "path";
+            public IElement? @_path = null;
+
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _SelectByFullNameNode @SelectByFullNameNode = new _SelectByFullNameNode();
+        public MofObjectShadow @__SelectByFullNameNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
+
+        [TypeUri(Uri = "dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a",
+            TypeKind = TypeKind.ClassTree)]
+        public class _SelectFromAllWorkspacesNode
+        {
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _SelectFromAllWorkspacesNode @SelectFromAllWorkspacesNode = new _SelectFromAllWorkspacesNode();
+        public MofObjectShadow @__SelectFromAllWorkspacesNode = new MofObjectShadow("dm:///_internal/types/internal#a890d5ec-2686-4f18-9f9f-7037c7fe226a");
 
     }
 
-    public _ColumnFilterExcludeNode @ColumnFilterExcludeNode = new _ColumnFilterExcludeNode();
-    public MofObjectShadow @__ColumnFilterExcludeNode = new MofObjectShadow("dm:///_internal/types/internal#abca8647-18d7-4322-a803-2e3e1cd123d7");
+    public _Source Source = new _Source();
 
-    [TypeUri(Uri = "dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d",
-        TypeKind = TypeKind.ClassTree)]
-    public class _ColumnFilterIncludeOnlyNode
+    public class _Node
     {
-        public static readonly string @columnNamesComma = "columnNamesComma";
-        public IElement? @_columnNamesComma = null;
+        [TypeUri(Uri = "dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370",
+            TypeKind = TypeKind.ClassTree)]
+        public class _ReferenceViewNode
+        {
+            public static readonly string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
 
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
+            public static readonly string @itemUri = "itemUri";
+            public IElement? @_itemUri = null;
 
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
+            public static readonly string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _ReferenceViewNode @ReferenceViewNode = new _ReferenceViewNode();
+        public MofObjectShadow @__ReferenceViewNode = new MofObjectShadow("dm:///_internal/types/internal#e80d4c64-a68e-44a7-893d-1a5100a80370");
 
     }
 
-    public _ColumnFilterIncludeOnlyNode @ColumnFilterIncludeOnlyNode = new _ColumnFilterIncludeOnlyNode();
-    public MofObjectShadow @__ColumnFilterIncludeOnlyNode = new MofObjectShadow("dm:///_internal/types/internal#00d223b8-4335-4ee3-9359-92354e2d669d");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f",
-        TypeKind = TypeKind.ClassTree)]
-    public class _RowFilterOnPositionNode
-    {
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
-
-        public static readonly string @amount = "amount";
-        public IElement? @_amount = null;
-
-        public static readonly string @position = "position";
-        public IElement? @_position = null;
-
-    }
-
-    public _RowFilterOnPositionNode @RowFilterOnPositionNode = new _RowFilterOnPositionNode();
-    public MofObjectShadow @__RowFilterOnPositionNode = new MofObjectShadow("dm:///_internal/types/internal#d705b34b-369f-4b44-9a00-013e1daa759f");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9",
-        TypeKind = TypeKind.ClassTree)]
-    public class _RowOrderByNode
-    {
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
-
-        public static readonly string @propertyName = "propertyName";
-        public IElement? @_propertyName = null;
-
-        public static readonly string @orderDescending = "orderDescending";
-        public IElement? @_orderDescending = null;
-
-    }
-
-    public _RowOrderByNode @RowOrderByNode = new _RowOrderByNode();
-    public MofObjectShadow @__RowOrderByNode = new MofObjectShadow("dm:///_internal/types/internal#e6948145-e1b7-4542-84e5-269dab1aa4c9");
-
-    [TypeUri(Uri = "dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628",
-        TypeKind = TypeKind.ClassTree)]
-    public class _RowFilterByFreeTextAnywhere
-    {
-        public static readonly string @freeText = "freeText";
-        public IElement? @_freeText = null;
-
-        public static readonly string @input = "input";
-        public IElement? @_input = null;
-
-        public static readonly string @name = "name";
-        public IElement? @_name = null;
-
-    }
-
-    public _RowFilterByFreeTextAnywhere @RowFilterByFreeTextAnywhere = new _RowFilterByFreeTextAnywhere();
-    public MofObjectShadow @__RowFilterByFreeTextAnywhere = new MofObjectShadow("dm:///_internal/types/internal#5f66ff9a-0a68-4c87-856b-5921c7cae628");
+    public _Node Node = new _Node();
 
     public static readonly _DataViews TheOne = new _DataViews();
 

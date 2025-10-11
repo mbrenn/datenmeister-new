@@ -45,8 +45,8 @@ public class ReportActionTests
         reportParagraph.set(_Reports._Elements._ReportParagraph.evalProperties,
             "if (i.age>18)\r\n v.paragraph=\"over18\"\r\n else\r\n v.paragraph=\"under18\"\r\n end");
 
-        var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
-        dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
+        var dynamicViewNode = factory.create(_DataViews.TheOne.Source.__DynamicSourceNode);
+        dynamicViewNode.set(_DataViews._Source._DynamicSourceNode.name, "input");
         extent.elements().add(dynamicViewNode);
         reportParagraph.set(_Reports._Elements._ReportParagraph.viewNode, dynamicViewNode);
 

@@ -16,77 +16,77 @@ export class QueryBuilder {
     }
 }
 export function filterByMetaClass(builder, metaClass, includeInherits) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterByMetaclassNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._RowFilterByMetaclassNode.input, builder.getResultNode());
-    viewNode.set(_DatenMeister._DataViews._RowFilterByMetaclassNode.metaClass, metaClass);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByMetaclassNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.metaClass, metaClass);
     if (includeInherits !== undefined) {
-        viewNode.set(_DatenMeister._DataViews._RowFilterByMetaclassNode.includeInherits, includeInherits);
+        viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.includeInherits, includeInherits);
     }
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
 }
 export function orderByProperty(builder, property, descending) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowOrderByNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._RowOrderByNode.input, builder.getResultNode());
-    viewNode.set(_DatenMeister._DataViews._RowOrderByNode.propertyName, property);
-    viewNode.set(_DatenMeister._DataViews._RowOrderByNode.orderDescending, descending);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowOrderByNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode.propertyName, property);
+    viewNode.set(_DatenMeister._DataViews._Row._RowOrderByNode.orderDescending, descending);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
 }
 export function limit(builder, limit) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterOnPositionNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._RowFilterOnPositionNode.input, builder.getResultNode());
-    viewNode.set(_DatenMeister._DataViews._RowFilterOnPositionNode.amount, limit);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterOnPositionNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterOnPositionNode.amount, limit);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
 }
 export function filterByFreetext(builder, freeText) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterByFreeTextAnywhere_Uri);
-    viewNode.set(_DatenMeister._DataViews._RowFilterByFreeTextAnywhere.input, builder.getResultNode());
-    viewNode.set(_DatenMeister._DataViews._RowFilterByFreeTextAnywhere.freeText, freeText);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByFreeTextAnywhere_Uri);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByFreeTextAnywhere.freeText, freeText);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
 }
 export function filterByProperty(builder, property, value, comparisonMode) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__RowFilterByPropertyValueNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.input, builder.getResultNode());
-    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.property, property);
-    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.value, value);
-    viewNode.set(_DatenMeister._DataViews._RowFilterByPropertyValueNode.comparisonMode, comparisonMode ?? _DatenMeister._DataViews._ComparisonMode.Equal);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByPropertyValueNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.input, builder.getResultNode());
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.property, property);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.value, value);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFilterByPropertyValueNode.comparisonMode, comparisonMode ?? _DatenMeister._DataViews._ComparisonMode.Equal);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
 }
 export function flatten(builder) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__FlattenNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._FlattenNode.input, builder.getResultNode());
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFlattenNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Row._RowFlattenNode.input, builder.getResultNode());
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
 }
 export function addDynamicSource(builder, name) {
-    const dynamicSource = new Mof.DmObject(_DatenMeister._DataViews.__DynamicSourceNode_Uri);
-    dynamicSource.set(_DatenMeister._DataViews._DynamicSourceNode.nodeName, name);
+    const dynamicSource = new Mof.DmObject(_DatenMeister._DataViews._Source.__DynamicSourceNode_Uri);
+    dynamicSource.set(_DatenMeister._DataViews._Source._DynamicSourceNode.nodeName, name);
     builder.addNode(dynamicSource);
     builder.setResultNode(dynamicSource);
     return dynamicSource;
 }
 export function getElementsOfExtent(builder, workspaceId, extentUrl) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByExtentNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.workspaceId, workspaceId);
-    viewNode.set(_DatenMeister._DataViews._SelectByExtentNode.extentUri, extentUrl);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Source.__SelectByExtentNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Source._SelectByExtentNode.workspaceId, workspaceId);
+    viewNode.set(_DatenMeister._DataViews._Source._SelectByExtentNode.extentUri, extentUrl);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;
 }
 export function getElementsByPath(builder, workspaceId, path) {
-    const viewNode = new Mof.DmObject(_DatenMeister._DataViews.__SelectByPathNode_Uri);
-    viewNode.set(_DatenMeister._DataViews._SelectByPathNode.workspaceId, workspaceId);
-    viewNode.set(_DatenMeister._DataViews._SelectByPathNode.path, path);
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Source.__SelectByPathNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Source._SelectByPathNode.workspaceId, workspaceId);
+    viewNode.set(_DatenMeister._DataViews._Source._SelectByPathNode.path, path);
     builder.addNode(viewNode);
     builder.setResultNode(viewNode);
     return viewNode;

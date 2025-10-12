@@ -8,9 +8,9 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 
-public class FlattenNodeEvaluation : IDataViewNodeEvaluation
+public class RowFlattenNodeEvaluation : IDataViewNodeEvaluation
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(FlattenNodeEvaluation));
+    private static readonly ILogger Logger = new ClassLogger(typeof(RowFlattenNodeEvaluation));
 
     public bool IsResponsible(IElement node)
     {

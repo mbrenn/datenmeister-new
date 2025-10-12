@@ -8,9 +8,9 @@ using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.DataView.Evaluation;
 
-public class FilterColumnsIncludeOnlyEvaluation : IDataViewNodeEvaluation
+public class ColumnFilterIncludeOnlyEvaluation : IDataViewNodeEvaluation
 {
-    private static readonly ILogger Logger = new ClassLogger(typeof(FilterColumnsIncludeOnlyEvaluation));
+    private static readonly ILogger Logger = new ClassLogger(typeof(ColumnFilterIncludeOnlyEvaluation));
 
     public bool IsResponsible(IElement node)
     {

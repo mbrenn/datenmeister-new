@@ -15,6 +15,8 @@ namespace DatenMeister.Tests.Modules.Query;
 [TestFixture]
 public class TestFlattening
 {
+    public const string TestExtentUri = "dm:///test";
+
     [Test]
     public async Task TestFlatteningOfTypesExtent()
     {
@@ -29,7 +31,7 @@ public class TestFlattening
         Assert.That(resultingNodes.Any (x =>x.equals(_DataViews.TheOne.Source.__SelectByWorkspaceNode)));
     }
 
-    private static async Task<(IDatenMeisterScope scope, IElement queryByMetaClass)> SetupExtentAndQuery()
+    public static async Task<(IDatenMeisterScope scope, IElement queryByMetaClass)> SetupExtentAndQuery()
     {
         IDatenMeisterScope? scope = null;
         try
@@ -37,12 +39,11 @@ public class TestFlattening
             scope = await DatenMeisterTests.GetDatenMeisterScope();
 
             // Create the Target Extent
-
             var extentManager = scope.Resolve<ExtentManager>();
 
             var loaderConfig =
                 InMemoryObject.CreateEmpty(_ExtentLoaderConfigs.TheOne.__InMemoryLoaderConfig);
-            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///test");
+            loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, TestExtentUri);
             loaderConfig.set(_ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId,
                 WorkspaceNames.WorkspaceData);
 

@@ -24,6 +24,15 @@ export class QueryBuilder {
     }
 }
 
+export function referenceExistingNode(builder: QueryBuilder, workspaceId: string, nodeUri: string) {
+    const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Node.__ReferenceViewNode_Uri);
+    viewNode.set(_DatenMeister._DataViews._Node._ReferenceViewNode.workspaceId, workspaceId);
+    viewNode.set(_DatenMeister._DataViews._Node._ReferenceViewNode.itemUri, nodeUri);
+    builder.addNode(viewNode);
+    builder.setResultNode(viewNode);
+    return viewNode;
+}
+
 export function filterByMetaClass(builder: QueryBuilder, metaClass: Mof.DmObject, includeInherits?: boolean) {
     const viewNode = new Mof.DmObject(_DatenMeister._DataViews._Row.__RowFilterByMetaclassNode_Uri);
     viewNode.set(_DatenMeister._DataViews._Row._RowFilterByMetaclassNode.input, builder.getResultNode());

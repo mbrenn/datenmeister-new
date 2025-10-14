@@ -29,6 +29,13 @@ public class NodeReferenceNodeEvaluation : IDataViewNodeEvaluation
         if (foundObject == null)
         {
             throw new InvalidOperationException("The item has not been found");
+        }        
+        
+        // Check, if the viewnode is a query statement, if that is the case, get the content of the resultNode
+        if (foundObject.getMetaClass()?.equals(_DataViews.TheOne.__QueryStatement) == true)
+        {
+            foundObject = foundObject.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode)
+                ?? throw new InvalidOperationException("resultNode is not set");
         }
         
         return evaluation.GetElementsForViewNode(foundObject);

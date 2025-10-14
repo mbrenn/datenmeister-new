@@ -214,6 +214,12 @@ public class ElementsController(IWorkspaceLogic workspaceLogic, IScopeStorage sc
             
             viewLogic.AddDynamicSource("input", foundItem);
         }
+        
+        // Check, if the viewnode is a query statement, if that is the case, get the content of the resultNode
+        if (resultNode.getMetaClass()?.equals(_DataViews.TheOne.__QueryStatement) == true)
+        {
+            resultNode = resultNode.getOrDefault<IElement>(_DataViews._QueryStatement.resultNode);
+        }
              
         var resultingNodes = viewLogic.GetElementsForViewNode(resultNode);
         List<object> results = [];

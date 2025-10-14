@@ -169,8 +169,6 @@ export function createFunctionToLoadCurrentView(tableForm: TableForm) {
 
                 selectItemControl.itemSelected.addListener(
                     async (item) => {
-                        alert(item.uri);
-
                         tableForm.tableState.overrideQueryWorkspace = item.workspace;
                         tableForm.tableState.overrideQueryItem = item.uri;
                         popup.closePopup();
@@ -203,7 +201,7 @@ export function createFunctionToStoreCurrentView(tableForm: TableForm) {
     return {
         cellKeyTitle: "Store View",
         onCreateDom: async (popup: burnJsPopup.PopupResult, jquery: JQuery) => {
-            createPopupButton("Load View", jquery, async (innerQuery) => {
+            createPopupButton("Store View", jquery, async (innerQuery) => {
                 const storeTable = $("<table>" +
                     "<tr><td>Name of View:</td><td><input class='dm-tableform-store-currentview-name' type='text'></td></tr>" +
                     "<tr><td title='Define the package under which the new package storing the overall dataview will be stored'>Package:</td>" +

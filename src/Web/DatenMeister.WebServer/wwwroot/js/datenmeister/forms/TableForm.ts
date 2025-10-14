@@ -300,12 +300,14 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
         query.orderByDescending = this.tableState.orderByDescending;
         query.filterByProperties = this.tableState.filterByProperty;
         query.filterByFreetext = this.tableState.freeTextFilter;
+        query.queryUrl = this.tableState.overrideQueryItem;
+        query.queryWorkspace = this.tableState.overrideQueryWorkspace;
         return query;
     }
 
-    /*
-        * Creates the buttons for the new instance
-         */
+    /**
+     * Creates the buttons for the new instance
+     */
     private createButtonsForNewInstance() {
         const property = this.formElement.get('property');
         const tthis = this;
@@ -479,9 +481,9 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
     /**
      * Updates the filter query text which describes the current filter settings
      */
-    private updateFilterQueryText() {
+    private async updateFilterQueryText() {
         if (this.tableParameter.showFilterQuery) {
-            const queryText = this.getSummaryOfQuery();
+            const queryText = await this.getSummaryOfQuery();
             this.tableCache.cacheQueryText.text(queryText);
         }
     }
@@ -552,7 +554,7 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
                         form: this
                     });
 
-                let dom;
+                let dom: JQuery;
                 if (fieldElement === undefined) {
                     dom = $("<span></span>");
                     dom.text("Field for " + field.get("name", Mof.ObjectType.String) + " not found");
@@ -723,9 +725,17 @@ export class TableForm implements InterfacesForms.ICollectionFormElement, Interf
      * Gets the summary text which is read by the user to understand the effective filtering
      * @returns The summary text
      */
-    getSummaryOfQuery() {
+    async getSummaryOfQuery() {
         let result = "";
         let andText = '';
+        
+        if(this.tableState.overrideQueryItem !== undefined && this.tableState.overrideQueryWorkspace !== undefined) {
+            
+            const itemResult = await ClientItem.getObjectByUri(this.tableState.overrideQueryWorkspace, this.tableState.overrideQueryItem);
+            const name = itemResult.get('name', Mof.ObjectType.String) ?? "Unknown";
+            result = 'Stored Query: ' + name;
+            return;
+        }
 
         if (this.tableState.orderBy !== undefined) {
             result += `Order By: ${this.tableState.orderBy}`;

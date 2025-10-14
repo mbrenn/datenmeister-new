@@ -90,18 +90,26 @@ export class CollectionFormHtmlElements
 export function createQueryBuilder(query: QueryFilterParameter, limit?: number) {
     // Option 2, via Query Engine
     const builder = new QueryEngine.QueryBuilder();
-    QueryEngine.addDynamicSource(builder, "input");
-
-    for (const property in query.filterByProperties) {
-        QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+    
+    if(query.queryWorkspace !== undefined && query.queryUrl !== undefined)
+    {
+        QueryEngine.referenceExistingNode(builder, query.queryWorkspace, query.queryUrl);
+        return builder;
     }
+    else {
+        QueryEngine.addDynamicSource(builder, "input");
 
-    if (query.orderBy !== undefined) {
-        QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
-    }
+        for (const property in query.filterByProperties) {
+            QueryEngine.filterByProperty(builder, property, query.filterByProperties[property]);
+        }
 
-    if (query.filterByFreetext) {
-        QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+        if (query.orderBy !== undefined) {
+            QueryEngine.orderByProperty(builder, query.orderBy, query.orderByDescending ?? false);
+        }
+
+        if (query.filterByFreetext) {
+            QueryEngine.filterByFreetext(builder, query.filterByFreetext);
+        }
     }
 
     // Imposes only a limit in case it is not defined or positive

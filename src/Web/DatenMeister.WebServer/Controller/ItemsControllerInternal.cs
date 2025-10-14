@@ -45,7 +45,7 @@ public class ItemsControllerInternal(IWorkspaceLogic workspaceLogic, IScopeStora
 
     /// <summary>
     ///     Gets the items by the uri parameter.
-    ///     The parameter themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
+    ///     The parameters themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
     /// </summary>
     /// <param name="workspaceId">Id of the workspace. Null, if through all workspaces shall be searched</param>
     /// <param name="itemUri">Uri of the item</param>

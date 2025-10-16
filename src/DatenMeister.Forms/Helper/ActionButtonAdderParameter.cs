@@ -1,4 +1,4 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.FormModifications;
 

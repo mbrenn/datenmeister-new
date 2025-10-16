@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 namespace DatenMeister.Core.Runtime.Proxies.ReadOnly;
 

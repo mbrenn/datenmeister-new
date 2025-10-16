@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Forms;
 using DatenMeister.Plugins;
 

@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.DynamicFunctions;
 
 namespace DatenMeister.Core.Runtime.Workspaces;

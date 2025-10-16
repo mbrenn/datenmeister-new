@@ -1,7 +1,8 @@
 ﻿using System.Text;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime.Workspaces;

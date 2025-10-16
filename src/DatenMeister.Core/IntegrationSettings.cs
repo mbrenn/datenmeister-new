@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Core;
+﻿using DatenMeister.Core.Interfaces;
+
+namespace DatenMeister.Core;
 
 public class IntegrationSettings
 {

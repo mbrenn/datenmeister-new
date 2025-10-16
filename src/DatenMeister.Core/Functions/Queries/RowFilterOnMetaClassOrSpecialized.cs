@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Core.Uml.Helper;
 

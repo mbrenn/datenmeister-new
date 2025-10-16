@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.Provider;
+﻿namespace DatenMeister.Core.Interfaces.Provider;
 
 /// <summary>
 /// Defines the possible object types for the DatenMeister.

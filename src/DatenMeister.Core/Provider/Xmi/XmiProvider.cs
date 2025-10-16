@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces.Provider;
 
 namespace DatenMeister.Core.Provider.Xmi;
 

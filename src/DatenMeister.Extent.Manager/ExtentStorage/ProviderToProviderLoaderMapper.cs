@@ -1,5 +1,5 @@
 ﻿using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Uml.Helper;
 

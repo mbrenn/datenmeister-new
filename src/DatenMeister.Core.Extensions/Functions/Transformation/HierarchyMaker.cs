@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.Core.Extensions.Functions.Transformation;

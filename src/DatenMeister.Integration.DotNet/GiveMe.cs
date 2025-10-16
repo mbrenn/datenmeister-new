@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Core;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Plugins;
 #if !NET462

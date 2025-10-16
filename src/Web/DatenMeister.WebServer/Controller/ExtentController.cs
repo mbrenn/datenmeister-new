@@ -2,7 +2,8 @@
 using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;

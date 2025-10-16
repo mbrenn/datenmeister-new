@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Common;
 
 namespace DatenMeister.Core.EMOF.Implementation.Hooks.Library;
 

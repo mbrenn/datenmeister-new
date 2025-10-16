@@ -1,4 +1,4 @@
-using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Functions.Queries;

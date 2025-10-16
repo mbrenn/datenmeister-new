@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.FormFactory;
 

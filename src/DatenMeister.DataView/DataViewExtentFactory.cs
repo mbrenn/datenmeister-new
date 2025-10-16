@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 namespace DatenMeister.DataView;
 

@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Reflection;
+﻿namespace DatenMeister.Core.Interfaces.MOF.Reflection;
 
 public interface IElementSetMetaClass
 {

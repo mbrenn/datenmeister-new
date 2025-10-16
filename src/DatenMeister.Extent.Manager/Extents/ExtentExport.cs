@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 

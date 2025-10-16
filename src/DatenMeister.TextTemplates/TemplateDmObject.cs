@@ -1,4 +1,4 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
 using Scriban;
 using Scriban.Parsing;
 using Scriban.Runtime;

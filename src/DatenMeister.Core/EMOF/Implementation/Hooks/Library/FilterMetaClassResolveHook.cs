@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.Functions.Queries;
+﻿using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 namespace DatenMeister.Core.EMOF.Implementation.Hooks.Library;
 

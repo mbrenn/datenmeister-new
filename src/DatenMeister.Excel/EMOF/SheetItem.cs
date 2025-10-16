@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Provider;
+﻿using DatenMeister.Core.Interfaces.Provider;
+using DatenMeister.Core.Provider;
 using DatenMeister.Excel.Helper;
 using NPOI.SS.UserModel;
 

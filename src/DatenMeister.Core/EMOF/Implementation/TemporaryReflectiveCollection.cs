@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.Interfaces.MOF.Common;
 
 namespace DatenMeister.Core.EMOF.Implementation;
 

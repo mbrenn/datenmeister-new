@@ -1,7 +1,7 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
-namespace DatenMeister.Core.EMOF.Interface.Identifiers;
+namespace DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 /// <summary>
 ///     Defines the interface for the Extent as defined in MOF Specification 2.5, Chapter 10.2

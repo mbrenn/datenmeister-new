@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Extensions;
+﻿using DatenMeister.Core.Extensions;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 

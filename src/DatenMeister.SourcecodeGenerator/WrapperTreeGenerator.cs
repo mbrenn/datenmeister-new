@@ -1,6 +1,6 @@
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.SourcecodeGenerator.SourceParser;
@@ -30,7 +30,7 @@ public class WrapperTreeGenerator : WalkPackageClass
     public override void Walk(IUriExtent extent)
     {
         WriteUsages([
-            "DatenMeister.Core.EMOF.Interface.Reflection",
+            "DatenMeister.Core.Interfaces.MOF.Reflection",
             "DatenMeister.Core.Helper"
         ]);
         

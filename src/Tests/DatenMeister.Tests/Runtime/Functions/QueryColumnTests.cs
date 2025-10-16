@@ -1,5 +1,5 @@
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Functions;

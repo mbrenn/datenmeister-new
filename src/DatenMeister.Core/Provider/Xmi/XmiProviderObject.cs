@@ -4,6 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.Provider;
 
 // ReSharper disable UnreachableCode
 

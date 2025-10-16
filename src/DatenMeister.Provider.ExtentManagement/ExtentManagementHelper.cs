@@ -1,6 +1,6 @@
 ﻿using System.Web;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ExtentManagement;

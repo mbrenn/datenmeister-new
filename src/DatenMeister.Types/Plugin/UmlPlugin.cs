@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;

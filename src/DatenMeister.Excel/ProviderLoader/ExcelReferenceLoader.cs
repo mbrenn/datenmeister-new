@@ -1,8 +1,10 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.InMemory;

@@ -1,7 +1,7 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
-namespace DatenMeister.Core.EMOF.Interface.Extension;
+namespace DatenMeister.Core.Interfaces.MOF.Extension;
 
 /// <summary>
 ///     Defines the Tag interface as defined in MOF CoreSpecification 2.5

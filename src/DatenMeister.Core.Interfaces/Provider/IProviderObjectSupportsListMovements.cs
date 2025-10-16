@@ -1,4 +1,4 @@
-namespace DatenMeister.Core.Provider;
+namespace DatenMeister.Core.Interfaces.Provider;
 
 /// <summary>
 /// This interface shall be implemented by all provider objects which directly support the movement

@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.Functions.Queries;
+﻿using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Types;

@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Implementation.Hooks.Library;
+using DatenMeister.Core.Interfaces;
 
 namespace DatenMeister.Core.EMOF.Implementation.Hooks;
 

@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using static DatenMeister.Core.Models._FastViewFilters;
 
 namespace DatenMeister.FastViewFilter;

@@ -1,4 +1,5 @@
 ﻿using BurnSystems.Logging;
+using DatenMeister.Core.Interfaces;
 
 namespace DatenMeister.Core.Runtime.Workspaces.Data;
 

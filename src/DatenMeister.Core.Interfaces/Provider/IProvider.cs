@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.Provider;
+﻿namespace DatenMeister.Core.Interfaces.Provider;
 
 /// <summary>
 /// Defines the flags self-describing the provider and its capabilities

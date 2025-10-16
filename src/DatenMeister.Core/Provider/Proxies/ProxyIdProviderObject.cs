@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Core.Provider.Proxies;
+﻿using DatenMeister.Core.Interfaces.Provider;
+
+namespace DatenMeister.Core.Provider.Proxies;
 
 public class ProxyIdProviderObject(IProviderObject element, string? id) : IProviderObject
 {

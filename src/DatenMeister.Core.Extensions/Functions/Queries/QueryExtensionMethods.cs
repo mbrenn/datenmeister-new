@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.Extensions.Functions.Aggregation;
+﻿using DatenMeister.Core.Extensions.Functions.Aggregation;
 using DatenMeister.Core.Extensions.Functions.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Common;
 
 namespace DatenMeister.Core.Extensions.Functions.Queries;
 

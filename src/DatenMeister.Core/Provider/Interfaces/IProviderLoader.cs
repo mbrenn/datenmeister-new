@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.Provider.Interfaces;

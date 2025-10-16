@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Reflection;
+﻿namespace DatenMeister.Core.Interfaces.MOF.Reflection;
 
 /// <summary>
 /// Defines an interface when it has an id, which can be set

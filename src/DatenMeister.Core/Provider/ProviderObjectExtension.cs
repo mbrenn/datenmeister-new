@@ -1,3 +1,5 @@
+using DatenMeister.Core.Interfaces.Provider;
+
 namespace DatenMeister.Core.Provider;
 
 public static class ProviderObjectExtension

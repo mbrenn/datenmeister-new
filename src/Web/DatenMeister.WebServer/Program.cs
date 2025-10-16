@@ -2,7 +2,7 @@ using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.BootStrap.PublicSettings;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Plugins;
 using DatenMeister.WebServer.Library.ServerConfiguration;

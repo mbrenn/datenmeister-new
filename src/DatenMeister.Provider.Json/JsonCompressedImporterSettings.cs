@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Nodes;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Provider.Json;
 

@@ -20,8 +20,8 @@ public class DotNetIntegrationGenerator
 
         Result.AppendLine($"{stack.Indentation}using DatenMeister.Core;");
         Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Implementation;");
-        Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Interface.Common;");
-        Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Interface.Reflection;");
+        Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.Interfaces.MOF.Common;");
+        Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.Interfaces.MOF.Reflection;");
         Result.AppendLine($"{stack.Indentation}using DatenMeister.Models.EMOF;");
         Result.AppendLine($"{stack.Indentation}using DatenMeister.Provider.DotNet;");
         Result.AppendLine($"{stack.Indentation}// Created by ${typeof(DotNetIntegrationGenerator).FullName}");

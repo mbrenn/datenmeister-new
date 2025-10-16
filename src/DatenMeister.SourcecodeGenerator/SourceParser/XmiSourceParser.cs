@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;

@@ -1,8 +1,10 @@
 using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Provider;
 using DatenMeister.Core.Models;
 
 namespace DatenMeister.Core.Provider.InMemory;

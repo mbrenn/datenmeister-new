@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms;

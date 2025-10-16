@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Xml.Linq;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider.Xmi;
 
 namespace DatenMeister.Provider.Xmi.Provider.XMI.UmlBootstrap;

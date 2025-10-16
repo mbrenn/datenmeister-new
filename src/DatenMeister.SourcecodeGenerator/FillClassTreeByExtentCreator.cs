@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator;
@@ -22,7 +22,7 @@ public class FillClassTreeByExtentCreator : WalkPackageClass
     {
         Result.AppendLine("#nullable enable");
         Result.AppendLine("using System.Collections.Generic;");
-        Result.AppendLine("using DatenMeister.Core.EMOF.Interface.Reflection;");
+        Result.AppendLine("using DatenMeister.Core.Interfaces.MOF.Reflection;");
         WriteResharperComments();
             
         base.Walk(extent);

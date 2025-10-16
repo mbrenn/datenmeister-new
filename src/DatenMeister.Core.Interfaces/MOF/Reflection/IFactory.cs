@@ -1,6 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Core.EMOF.Interface.Reflection;
+namespace DatenMeister.Core.Interfaces.MOF.Reflection;
 
 /// <summary>
 ///     Interface to Factory according to MOFSpecification 2.5, Clause 9.3

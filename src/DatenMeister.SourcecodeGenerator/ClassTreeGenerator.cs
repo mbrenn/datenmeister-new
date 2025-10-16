@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Helper;
+﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator;
@@ -31,7 +31,7 @@ public class ClassTreeGenerator : WalkPackageClass
     public override void Walk(IUriExtent extent)
     {
         WriteUsages([
-            "DatenMeister.Core.EMOF.Interface.Reflection",
+            "DatenMeister.Core.Interfaces.MOF.Reflection",
             "DatenMeister.Core.EMOF.Implementation",
             "DatenMeister.Core.Helper"
         ]);

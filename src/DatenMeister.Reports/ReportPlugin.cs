@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Plugins;
 using DatenMeister.Reports.Adoc;
 using DatenMeister.Reports.Generic;

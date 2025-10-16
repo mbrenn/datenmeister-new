@@ -1,8 +1,8 @@
 ﻿#nullable disable
 
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Extensions.Functions.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Core.Extensions.Functions.Aggregation;
 

@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.Provider;
+﻿namespace DatenMeister.Core.Interfaces.Provider;
 
 /// <summary>
 /// An object representing an object or element in MOF space

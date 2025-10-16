@@ -2,6 +2,7 @@
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Core;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;

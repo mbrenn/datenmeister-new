@@ -1,7 +1,7 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Functions.Queries;
+﻿using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Provider.ExtentManagement;

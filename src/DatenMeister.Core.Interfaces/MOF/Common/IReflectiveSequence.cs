@@ -1,6 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Core.EMOF.Interface.Common;
+namespace DatenMeister.Core.Interfaces.MOF.Common;
 
 public interface IReflectiveSequence : IReflectiveCollection
 {

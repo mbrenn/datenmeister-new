@@ -1,4 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces.Provider;
+
 // ReSharper disable HeuristicUnreachableCode
 
 #pragma warning disable CS0162 // Unreachable code detected (Compile-Time Configurations)

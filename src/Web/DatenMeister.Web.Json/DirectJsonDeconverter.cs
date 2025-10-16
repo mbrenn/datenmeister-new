@@ -1,9 +1,10 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Provider.InMemory;
+﻿using DatenMeister.Core.Provider.InMemory;
 using System.Text.Json;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.TemporaryExtent;
 

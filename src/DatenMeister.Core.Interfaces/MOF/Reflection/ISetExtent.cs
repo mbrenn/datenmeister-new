@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
 
-namespace DatenMeister.Core.EMOF.Interface.Reflection;
+namespace DatenMeister.Core.Interfaces.MOF.Reflection;
 
 public interface ISetExtent
 {

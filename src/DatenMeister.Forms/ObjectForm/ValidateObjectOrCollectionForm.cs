@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Diagnostics;
 using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms.FormFactory;
 using DatenMeister.Forms.Helper;

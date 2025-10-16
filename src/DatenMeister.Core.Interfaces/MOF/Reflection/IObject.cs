@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Reflection;
+﻿namespace DatenMeister.Core.Interfaces.MOF.Reflection;
 
 /// <summary>
 ///     Implements the interface according to MOF Core Specificaton 2.5, clause 9.4

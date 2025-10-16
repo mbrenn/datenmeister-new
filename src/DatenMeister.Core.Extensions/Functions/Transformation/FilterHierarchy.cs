@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Functions.Queries;
+﻿using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Core.Extensions.Functions.Transformation;

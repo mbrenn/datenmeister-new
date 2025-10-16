@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
 
-namespace DatenMeister.Core.EMOF.Interface.Identifiers;
+namespace DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 public interface IExtentCachesObject
 {

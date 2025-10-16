@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Provider.Json;
 

@@ -9,6 +9,7 @@ using DatenMeister.Forms.Helper;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
 using System.Reflection;
+using DatenMeister.Core.Interfaces;
 
 namespace DatenMeister.Extent.Forms;
 

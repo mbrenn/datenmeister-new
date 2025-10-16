@@ -1,4 +1,6 @@
-﻿#pragma warning disable CS0162 // Unreachable code detected (Compile-Time Configurations)
+﻿using DatenMeister.Core.Interfaces.Provider;
+
+#pragma warning disable CS0162 // Unreachable code detected (Compile-Time Configurations)
 
 namespace DatenMeister.Core.Provider.InMemory;
 

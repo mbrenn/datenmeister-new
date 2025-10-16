@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation.Hooks;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DataView.Evaluation;
 using DatenMeister.Plugins;

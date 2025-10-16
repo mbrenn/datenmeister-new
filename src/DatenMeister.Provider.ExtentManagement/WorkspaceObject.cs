@@ -8,7 +8,7 @@ using static DatenMeister.Core.Models._ExtentLoaderConfigs;
 
 namespace DatenMeister.Provider.ExtentManagement;
 
-public class WorkspaceObject : MappingProviderObject<Workspace>
+public class WorkspaceObject : MappingProviderObject<IWorkspace>
 {
     static WorkspaceObject()
     {
@@ -20,7 +20,7 @@ public class WorkspaceObject : MappingProviderObject<Workspace>
     /// </summary>
     /// <param name="workspace">Workspace to be set</param>
     /// <param name="provider">The provider being set</param>
-    public WorkspaceObject(ExtentOfWorkspaceProvider provider, Workspace workspace) : base(workspace, provider,
+    public WorkspaceObject(ExtentOfWorkspaceProvider provider, IWorkspace workspace) : base(workspace, provider,
         workspace.id, MetaclassUriPath)
     {
         Id = ExtentManagementHelper.GetIdOfWorkspace(workspace);

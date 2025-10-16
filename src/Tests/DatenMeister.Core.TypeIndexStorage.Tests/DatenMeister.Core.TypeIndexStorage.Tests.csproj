@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
+      <PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
+      <PackageReference Include="NUnitLite" Version="4.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Core.Interfaces\DatenMeister.Core.Interfaces.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Core.TypeIndexStorage\DatenMeister.Core.TypeIndexStorage.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Core\DatenMeister.Core.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+    </ItemGroup>
+
+</Project>

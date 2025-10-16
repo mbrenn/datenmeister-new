@@ -50,7 +50,7 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
     
     #endregion
 
-    private Workspace? _uriResolver;
+    private IWorkspace? _uriResolver;
     
     public void CreateField(
         FieldFactoryParameter parameter,

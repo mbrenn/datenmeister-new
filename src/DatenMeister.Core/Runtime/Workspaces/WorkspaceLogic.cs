@@ -5,8 +5,6 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Runtime.ChangeEvents;
-using DatenMeister.Core.Runtime.DynamicFunctions;
-
 namespace DatenMeister.Core.Runtime.Workspaces;
 
 /// <summary>
@@ -43,7 +41,7 @@ public class WorkspaceLogic : IWorkspaceLogic
 
     public IScopeStorage? ScopeStorage { get; }
 
-    public Workspace? GetWorkspaceOfExtent(IExtent? extent)
+    public IWorkspace? GetWorkspaceOfExtent(IExtent? extent)
     {
         lock (_workspaceData)
         {
@@ -60,7 +58,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// </summary>
     /// <param name="value">Value to be queried</param>
     /// <returns>The found workspace or the default one, if no extent was found</returns>
-    public Workspace? GetWorkspaceOfObject(IObject value)
+    public IWorkspace? GetWorkspaceOfObject(IObject value)
     {
         // If the object is contained by another object, query the contained objects
         // because the extents will only be stored in the root elements
@@ -71,7 +69,7 @@ public class WorkspaceLogic : IWorkspaceLogic
             return GetWorkspaceOfObject(parent);
         }
 
-        Workspace? result = null;
+        IWorkspace? result = null;
         // If the object knows the extent to which it belongs to, it will return it
         if (value is IHasExtent objectKnowsExtent)
         {
@@ -92,7 +90,7 @@ public class WorkspaceLogic : IWorkspaceLogic
         }
     }
 
-    public IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer)
+    public IEnumerable<IUriExtent> GetExtentsForWorkspace(IWorkspace dataLayer)
     {
         if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
@@ -109,7 +107,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// Gets the default workspace
     /// </summary>
     /// <returns>The default workspace</returns>
-    public Workspace? GetDefaultWorkspace()
+    public IWorkspace? GetDefaultWorkspace()
     {
         lock (_workspaceData)
         {
@@ -122,7 +120,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// The meta workspace can also be the same as the added workspace
     /// </summary>
     /// <param name="workspace">Workspace to be added</param>
-    public Workspace AddWorkspace(Workspace workspace)
+    public IWorkspace AddWorkspace(IWorkspace workspace)
     {
         if (workspace == null) throw new ArgumentNullException(nameof(workspace));
 
@@ -160,7 +158,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// Sends an event for a workspace change
     /// </summary>
     /// <param name="workspace">The workspace that has been changed.</param>
-    public void SendEventForWorkspaceChange(Workspace workspace)
+    public void SendEventForWorkspaceChange(IWorkspace workspace)
     {
         if (workspace != null)
         {
@@ -180,7 +178,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// </summary>
     /// <param name="id">Id of the workspace</param>
     /// <returns>Found the workspace</returns>
-    public Workspace? GetWorkspace(string id)
+    public IWorkspace? GetWorkspace(string id)
     {
         lock (_workspaceData)
         {
@@ -188,17 +186,10 @@ public class WorkspaceLogic : IWorkspaceLogic
         }
     }
 
-    public DynamicFunctionManager GetDynamicFunctionManager(string workspaceId)
-    {
-        return (GetWorkspace(workspaceId)
-                ?? throw new InvalidOperationException($"Workspace not found {workspaceId}"))
-            .DynamicFunctionManager;
-    }
-
     /// <summary>
     /// Gets an enumeration of all workspaces
     /// </summary>
-    public IEnumerable<Workspace> Workspaces
+    public IEnumerable<IWorkspace> Workspaces
     {
         get
         {
@@ -215,7 +206,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// <param name="id">Id of the workspace to be deleted</param>
     public void RemoveWorkspace(string id)
     {
-        Workspace? workspaceToBeDeleted;
+       IWorkspace? workspaceToBeDeleted;
         lock (_workspaceData)
         {
             workspaceToBeDeleted = GetWorkspace(id);
@@ -242,7 +233,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// </summary>
     /// <param name="workspace">Workspace to which the extent shall be added</param>
     /// <param name="newExtent">The extent to be added</param>
-    public void AddExtent(Workspace workspace, IUriExtent newExtent)
+    public void AddExtent(IWorkspace workspace, IUriExtent newExtent)
     {
         workspace.AddExtent(newExtent);
         if (newExtent is MofExtent mofExtent
@@ -250,15 +241,7 @@ public class WorkspaceLogic : IWorkspaceLogic
         {
             mofExtent.ChangeEventManager = _changeEventManager;
         }
-
-        if (newExtent is MofUriExtent mofUriExtent)
-        {
-            lock (_workspaceData)
-            {
-                mofUriExtent.DynamicFunctionManager = workspace.DynamicFunctionManager;
-            }
-        }
-
+        
         SendEventForWorkspaceChange(workspace);
     }
 
@@ -267,7 +250,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     {
         if (!string.IsNullOrEmpty(workspace))
         {
-            return GetWorkspace(workspace)?.Resolve(
+            return (GetWorkspace(workspace) as IUriResolver)?.Resolve(
                 uri,
                 resolveType | ResolveType.NoMetaWorkspaces,
                 traceFailing,
@@ -276,7 +259,7 @@ public class WorkspaceLogic : IWorkspaceLogic
 
         return GetWorkspacesOrderedByDependability(resolveType)
             .Select(
-                innerWorkspace => innerWorkspace.Resolve(
+                innerWorkspace => (innerWorkspace as IUriResolver)?.Resolve(
                     uri,
                     resolveType | ResolveType.NoMetaWorkspaces,
                     traceFailing))
@@ -288,7 +271,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     {
         return GetWorkspacesOrderedByDependability(ResolveType.Default)
             .Select(
-                workspace => workspace.ResolveById(id))
+                workspace => (workspace as IUriResolver)?.ResolveById(id))
             .FirstOrDefault(result => result != null);
     }
 
@@ -320,7 +303,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     /// </summary>
     /// <param name="id">Name of the datalayer</param>
     /// <returns>Found datalayer or null</returns>
-    public Workspace GetById(string id)
+    public IWorkspace GetById(string id)
     {
         lock (_workspaceData)
         {
@@ -371,7 +354,7 @@ public class WorkspaceLogic : IWorkspaceLogic
     ///     being returned is the Data Workspace and the last one is the Mof workspace
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<Workspace> GetWorkspacesOrderedByDependability(ResolveType resolveType)
+    public IEnumerable<IWorkspace> GetWorkspacesOrderedByDependability(ResolveType resolveType)
     {
         var workspaces = Workspaces.ToList();
         var round = 0;

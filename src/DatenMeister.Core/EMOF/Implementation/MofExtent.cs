@@ -13,7 +13,6 @@ using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Runtime.Copier;
-using DatenMeister.Core.Runtime.DynamicFunctions;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation;
@@ -40,8 +39,6 @@ public class MofExtent :
     /// STores the object for synchronization issues
     /// </summary>
     private readonly Lock _syncObject = new();
-
-    private DynamicFunctionManager? _dynamicFunctionManager;
 
     /// <summary>
     /// Stores the information whether the evaluation about the item count is currently
@@ -124,20 +121,10 @@ public class MofExtent :
     /// Gets or sets the effective slim evaluation
     /// </summary>
     public bool SlimUmlEvaluation => LocalSlimUmlEvaluation || GlobalSlimUmlEvaluation;
-
-    /// <summary>
-    /// Gets or sets the Dynamic Function Manager which is used to retrieve the properties
-    /// </summary>
-    public DynamicFunctionManager? DynamicFunctionManager
-    {
-        get => _dynamicFunctionManager ?? (DynamicFunctionManager = Workspace?.DynamicFunctionManager);
-        set => _dynamicFunctionManager = value;
-    }
-
     /// <summary>
     /// Gets the workspace to which the extent is allocated
     /// </summary>
-    public Workspace? Workspace { get; set; }
+    public IWorkspace? Workspace { get; set; }
 
     /// <summary>
     /// Gets or sets the change event manager for the objects within
@@ -435,10 +422,10 @@ public class MofExtent :
     /// <returns>Found element or null, if not found</returns>
     private Type? ResolveDotNetTypeByMetaWorkspaces(
         string metaclassUri,
-        Workspace? workspace,
-        HashSet<Workspace>? alreadyVisited = null)
+        IWorkspace? workspace,
+        HashSet<IWorkspace>? alreadyVisited = null)
     {
-        alreadyVisited ??= new HashSet<Workspace>();
+        alreadyVisited ??= new HashSet<IWorkspace>();
         if (workspace != null && alreadyVisited.Contains(workspace))
         {
             return null;

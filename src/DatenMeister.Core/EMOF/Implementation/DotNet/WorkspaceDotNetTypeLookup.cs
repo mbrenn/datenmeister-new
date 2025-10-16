@@ -5,7 +5,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet;
 /// <summary>
 /// Performs an abstraction of the workspace to have an access to the types of the extents
 /// </summary>
-public class WorkspaceDotNetTypeLookup(Workspace workspace) : IDotNetTypeLookup
+public class WorkspaceDotNetTypeLookup(IWorkspace workspace) : IDotNetTypeLookup
 {
     /// <summary>
     /// Defines a cache between all objects and their id

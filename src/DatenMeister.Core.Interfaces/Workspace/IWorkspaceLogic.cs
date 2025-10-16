@@ -1,8 +1,8 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Runtime.DynamicFunctions;
 
 namespace DatenMeister.Core.Runtime.Workspaces;
 
@@ -19,9 +19,9 @@ public interface IWorkspaceLogic : IUriResolver
     /// <summary>
     ///     Gets the workspaces of the workspace logic
     /// </summary>
-    IEnumerable<Workspace> Workspaces { get; }
+    IEnumerable<IWorkspace> Workspaces { get; }
 
-    Workspace AddWorkspace(Workspace workspace);
+    IWorkspace AddWorkspace(IWorkspace workspace);
 
     /// <summary>
     /// Removes a workspace containing the id
@@ -34,53 +34,45 @@ public interface IWorkspaceLogic : IUriResolver
     /// </summary>
     /// <param name="id">Id of the workspace</param>
     /// <returns>Found workspace or null, if not found</returns>
-    Workspace? GetWorkspace(string id);
-
-    /// <summary>
-    /// Gets the dynamic function manager for a certain workspace.
-    /// The workspace needs to be retrieved in which the types are hosted
-    /// </summary>
-    /// <param name="workspace">Workspace to be queried</param>
-    /// <returns>The dynamic function manager</returns>
-    DynamicFunctionManager GetDynamicFunctionManager(string workspace);
+    IWorkspace? GetWorkspace(string id);
 
     /// <summary>
     /// Gets the datalayer of a certain extent
     /// </summary>
     /// <param name="extent"></param>
     /// <returns></returns>
-    Workspace? GetWorkspaceOfExtent(IExtent extent);
+    IWorkspace? GetWorkspaceOfExtent(IExtent extent);
 
     /// <summary>
     /// Gets the meta layer of a certain object
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    Workspace? GetWorkspaceOfObject(IObject value);
+    IWorkspace? GetWorkspaceOfObject(IObject value);
 
     /// <summary>
     /// Gets all extents for a specific datalayer
     /// </summary>
     /// <param name="dataLayer">Datalayer to be retrieved</param>
     /// <returns>enumeration of extents within the datalayer</returns>
-    IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer);
+    IEnumerable<IUriExtent> GetExtentsForWorkspace(IWorkspace dataLayer);
 
     /// <summary>
     /// Gets the default workspace
     /// </summary>
     /// <returns>The default workspace or null, if not found. </returns>
-    Workspace? GetDefaultWorkspace();
+    IWorkspace? GetDefaultWorkspace();
 
     /// <summary>
     /// Adds an extent to the workspace
     /// </summary>
     /// <param name="workspace">Workspace to which the extent shall be added</param>
     /// <param name="newExtent">The extent to be added</param>
-    void AddExtent(Workspace workspace, IUriExtent newExtent);
+    void AddExtent(IWorkspace workspace, IUriExtent newExtent);
 
     /// <summary>
     /// Sends an event for a workspace change
     /// </summary>
     /// <param name="workspace">The workspace that has been changed</param>
-    void SendEventForWorkspaceChange(Workspace workspace);
+    void SendEventForWorkspaceChange(IWorkspace workspace);
 }

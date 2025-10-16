@@ -4,7 +4,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces.MOF.Extension;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.Runtime.DynamicFunctions;
 
 // ReSharper disable InconsistentNaming
 
@@ -14,7 +13,7 @@ namespace DatenMeister.Core.Runtime.Workspaces;
 /// Defines a workspace according to the Mof specification
 /// MOF Facility Object Lifecycle (MOFFOL)
 /// </summary>
-public class Workspace(string id, string annotation = "") : IWorkspace, IObject, IUriResolver, IObjectAllProperties
+public class Workspace(string id, string annotation = "") : IWorkspace, IObject, IObjectAllProperties
 {
     private static readonly ClassLogger Logger = new(typeof(Workspace));
 
@@ -101,13 +100,8 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
     /// Stores a list of meta workspaces that are associated to the given workspace
     /// The metaworkspaces are requested to figure out meta classes
     /// </summary>
-    public List<Workspace> MetaWorkspaces { get; } = new();
-
-    /// <summary>
-    /// Stores the dynamic function managers
-    /// </summary>
-    public DynamicFunctionManager DynamicFunctionManager { get; } = new();
-
+    public List<IWorkspace> MetaWorkspaces { get; } = new();
+    
     public string id { get; } = id ?? throw new ArgumentNullException(nameof(id));
 
     /// <summary>
@@ -148,7 +142,7 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
     ///     Adds a meta workspace
     /// </summary>
     /// <param name="workspace">Workspace to be added as a meta workspace</param>
-    public void AddMetaWorkspace(Workspace workspace)
+    public void AddMetaWorkspace(IWorkspace workspace)
     {
         lock (_syncObject)
         {
@@ -159,9 +153,11 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
     /// <summary>
     /// Adds an extent to the workspace
     /// </summary>
-    /// <param name="newExtent">The extent to be added</param>
-    public void AddExtent(IUriExtent newExtent)
+    /// <param name="newExtentasExtent">The extent to be added</param>
+    public void AddExtent(IExtent newExtentasExtent)
     {
+        var newExtent = newExtentasExtent as IUriExtent ??
+                        throw new InvalidOperationException("Extent is not an IUriExtent. Unfortunately, we just support IUriExtent");
         var asMofExtent = (MofExtent) newExtent;
         if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
         if (asMofExtent.Workspace != null)
@@ -214,16 +210,11 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
         return false;
     }
 
-    /// <summary>
-    /// Removes the extent from the workspace
-    /// </summary>
-    /// <param name="extentForRemoval">Extent to be removed</param>
-    /// <returns>true, if the extent could be removed</returns>
-    public bool RemoveExtent(IExtent extentForRemoval)
+    public bool RemoveExtent(IExtent extent)
     {
         lock (_syncObject)
         {
-            return _extent.Remove(extentForRemoval);
+            return _extent.Remove(extent);
         }
     }
 

@@ -39,7 +39,7 @@ public static class WorkspaceExtensions
         return FindObjectOrCollection(workspaceLogic, workspaceId, uri) as IObject;
     }
 
-    public static IObject? FindObject(this Workspace workspace, string uri)
+    public static IObject? FindObject(this IWorkspace workspace, string uri)
     {
         return FindObject(
             workspace.extent.Select(x => x as IUriExtent)
@@ -148,7 +148,7 @@ public static class WorkspaceExtensions
     /// <param name="workspaceLogic">Workspacelogic being used</param>
     /// <param name="extent">Extent being added</param>
     /// <returns>true, if addition was succesfsul</returns>
-    public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic,
+    public static bool AddExtentNoDuplicate(this IWorkspace workspace, IWorkspaceLogic workspaceLogic,
         IUriExtent extent)
     {
         var contextUri = extent.contextURI();
@@ -167,14 +167,6 @@ public static class WorkspaceExtensions
     }
 
     /// <summary>
-    /// Removes the extent with the given uri out of the database
-    /// </summary>
-    /// <param name="workspace">The workspace to be modified</param>
-    /// <param name="uri">Uri of the extent</param>
-    /// <returns>true, if the object can be deleted</returns>
-    public static bool RemoveExtent(this Workspace workspace, string uri) => workspace.RemoveExtent(uri);
-
-    /// <summary>
     /// Returns the given workspace and extents out of the urls
     /// </summary>
     /// <param name="workspaceLogic">Workspace collection to be used</param>
@@ -188,7 +180,6 @@ public static class WorkspaceExtensions
             workspaceLogic,
             model.ws,
             model.extent);
-
     }
 
     /// <summary>
@@ -237,14 +228,14 @@ public static class WorkspaceExtensions
     /// <param name="workspaceCollection">The workspace collection to be queried</param>
     /// <param name="extent">The extent to which the workspace is required</param>
     /// <returns>Found workspace or null, if not found</returns>
-    public static Workspace? FindWorkspace(
+    public static IWorkspace? FindWorkspace(
         this IWorkspaceLogic workspaceCollection,
         IExtent extent)
     {
         return workspaceCollection.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
     }
 
-    public static Workspace GetOrCreateWorkspace(
+    public static IWorkspace GetOrCreateWorkspace(
         this IWorkspaceLogic workspaceLogic,
         string name)
     {
@@ -375,25 +366,25 @@ public static class WorkspaceExtensions
         }
     }
 
-    public static Workspace? TryGetManagementWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace? TryGetManagementWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceManagement);
 
-    public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace GetManagementWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
         ?? throw new InvalidOperationException("Management is not found");
 
-    public static Workspace GetDataWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace GetDataWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceData)
         ?? throw new InvalidOperationException("Data is not found");
 
-    public static Workspace GetTypesWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace GetTypesWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceTypes)
         ?? throw new InvalidOperationException("Types is not found");
 
-    public static Workspace? TryGetTypesWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace? TryGetTypesWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
 
-    public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace GetViewsWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceViews)
         ?? throw new InvalidOperationException("Views is not found");
 
@@ -411,11 +402,11 @@ public static class WorkspaceExtensions
                ?? throw new InvalidOperationException("Internal Forms not Found");
     }
 
-    public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace GetUmlWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceUml) ??
         throw new InvalidOperationException("Uml Workspace not found");
 
-    public static Workspace GetMofWorkspace(this IWorkspaceLogic logic) =>
+    public static IWorkspace GetMofWorkspace(this IWorkspaceLogic logic) =>
         logic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
         throw new InvalidOperationException("Mof Workspace not found");
         
@@ -426,7 +417,7 @@ public static class WorkspaceExtensions
     /// </summary>
     /// <param name="workspace">Workspace to be handled</param>
     /// <returns>Enumeration of all elements</returns>
-    public static IReflectiveCollection GetRootElements(Workspace workspace)
+    public static IReflectiveCollection GetRootElements(IWorkspace workspace)
     {
         return new TemporaryReflectiveCollection(workspace.extent.SelectMany(
             extent => extent.elements()).OfType<IElement>())
@@ -435,7 +426,7 @@ public static class WorkspaceExtensions
         };
     }
 
-    public static IReflectiveCollection GetAllDescendents(this Workspace workspace, bool onlyComposite = true)
+    public static IReflectiveCollection GetAllDescendents(this IWorkspace workspace, bool onlyComposite = true)
     {
         if (onlyComposite)
         {
@@ -445,7 +436,7 @@ public static class WorkspaceExtensions
         return GetRootElements(workspace).GetAllDescendantsIncludingThemselves();
     }
 
-    public static IReflectiveCollection GetAllDescendentsOfType(this Workspace workspace, IElement metaClass, bool onlyComposite = true)
+    public static IReflectiveCollection GetAllDescendentsOfType(this IWorkspace workspace, IElement metaClass, bool onlyComposite = true)
     {
         if (onlyComposite)
         {

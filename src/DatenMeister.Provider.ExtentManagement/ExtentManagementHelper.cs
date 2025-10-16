@@ -12,7 +12,7 @@ public class ExtentManagementHelper
     /// </summary>
     /// <param name="workspace">Workspace to be used</param>
     /// <returns>Returns the management url under which the workspace will be found</returns>
-    public static string GetIdOfWorkspace(Workspace workspace)
+    public static string GetIdOfWorkspace(IWorkspace workspace)
     {
         return workspace.id;
     }
@@ -32,7 +32,7 @@ public class ExtentManagementHelper
     /// <param name="workspace">Workspace in which the extent is found</param>
     /// <param name="extent">Extent to be queried</param>
     /// <returns>The management url of the extent</returns>
-    public static string GetIdOfExtent(Workspace workspace, IExtent? extent)
+    public static string GetIdOfExtent(IWorkspace workspace, IExtent? extent)
     {
         var extentUri =
             (extent as IUriExtent)?.contextURI() ??
@@ -91,12 +91,12 @@ public class ExtentManagementHelper
     /// <param name="workspace">Workspace in which the extent is found</param>
     /// <param name="extent">Extent to be queried</param>
     /// <returns>The management url of the extent's properties</returns>
-    public static string GetIdOfExtentsProperties(Workspace workspace, IExtent? extent)
+    public static string GetIdOfExtentsProperties(IWorkspace workspace, IExtent? extent)
     {
         return $"{GetIdOfExtent(workspace, extent)}_Properties";
     }
 
-    public static string GetUrlOfWorkspace(Workspace workspace)
+    public static string GetUrlOfWorkspace(IWorkspace workspace)
     {
         return
             $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfWorkspace(workspace))}";
@@ -108,7 +108,7 @@ public class ExtentManagementHelper
             $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(workspaceName)}";
     }
 
-    public static string GetUrlOfExtent(Workspace workspace, IExtent? extent)
+    public static string GetUrlOfExtent(IWorkspace workspace, IExtent? extent)
     {
         return
             $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfExtent(workspace, extent))}";
@@ -120,7 +120,7 @@ public class ExtentManagementHelper
             $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfExtent(workspaceName, extentUri))}";
     }
 
-    public static string GetUrlOfExtentsProperties(Workspace workspace, IExtent? extent)
+    public static string GetUrlOfExtentsProperties(IWorkspace workspace, IExtent? extent)
     {
         return
             $"{ManagementProviderPlugin.UriExtentWorkspaces}#{HttpUtility.UrlEncode(GetIdOfExtentsProperties(workspace, extent))}";

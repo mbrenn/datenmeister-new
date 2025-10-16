@@ -61,9 +61,8 @@ internal class Program
     /// </summary>
     private static Task PerformStandardProcedure()
     {
-        var R = StandardProcedure.R;
-
         /*System.Console.WriteLine("Clean up .xmi-Files");
+        var R = StandardProcedure.R;
 
         await CleanUpProcedure.CleanUpExtent(
             $"{R}/../DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",

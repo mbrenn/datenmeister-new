@@ -28,7 +28,7 @@ public class TemporaryExtentLogic(IWorkspaceLogic workspaceLogic, IScopeStorage 
     /// <summary>
     /// Gets the name of the workspace
     /// </summary>
-    public Workspace Workspace => workspaceLogic.GetDataWorkspace();
+    public IWorkspace Workspace => workspaceLogic.GetDataWorkspace();
 
     /// <summary>
     /// Gets the name of the workspace

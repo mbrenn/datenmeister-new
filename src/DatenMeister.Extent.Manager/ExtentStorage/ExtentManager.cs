@@ -232,23 +232,26 @@ public class ExtentManager
         if (configuration.isSet(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath))
         {
             var filePath =
-                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
+                configuration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath)
+                ?? string.Empty;
 
-            // Strips the quotes from the file path, if user performs a direct copy from the explorer
-            if (filePath.StartsWith("\"") && filePath.EndsWith("\""))
+            if (!string.IsNullOrEmpty(filePath))
             {
-                filePath = filePath[1..^1];
-            }
-            
-            filePath = _integrationSettings.NormalizeDirectoryPath(filePath);
+                // Strips the quotes from the file path, if user performs a direct copy from the explorer
+                if (filePath.StartsWith("\"") && filePath.EndsWith("\""))
+                {
+                    filePath = filePath[1..^1];
+                }
 
-            if (Directory.Exists(filePath))
-            {
-                throw new InvalidOperationException("Given file is a directory name. ");
-            }
-            
-            configuration.set(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath, filePath);
+                filePath = _integrationSettings.NormalizeDirectoryPath(filePath);
 
+                if (Directory.Exists(filePath))
+                {
+                    throw new InvalidOperationException("Given file is a directory name. ");
+                }
+
+                configuration.set(_ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath, filePath);
+            }
         }
 
         // Check, if the extent url is a real uri
@@ -648,7 +651,7 @@ public class ExtentManager
     /// </summary>
     /// <param name="information">Information to the loaded extents</param>
     public async Task RemoveExtent(ExtentStorageData.LoadedExtentInformation information)
-    {       
+    {      
         // Before removing the extent, store it
         if (information.Extent != null)
         {

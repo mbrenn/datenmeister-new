@@ -124,7 +124,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurnSystems.TimeCachedDicti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Core.Interfaces", "DatenMeister.Core.Interfaces\DatenMeister.Core.Interfaces.csproj", "{02B0C6E7-E943-44F9-8465-4F1D5C948E49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Core.TypeIndexAssembly", "DatenMeister.Core.TypeIndexAssembly\DatenMeister.Core.TypeIndexAssembly.csproj", "{47B58FB0-AA3D-4165-BABB-920BB661000D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Core.TypeIndexStorage", "DatenMeister.Core.TypeIndexStorage\DatenMeister.Core.TypeIndexStorage.csproj", "{47B58FB0-AA3D-4165-BABB-920BB661000D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Core.TypeIndexStorage.Tests", "Tests\DatenMeister.Core.TypeIndexStorage.Tests\DatenMeister.Core.TypeIndexStorage.Tests.csproj", "{8BABE6E1-C205-492B-B11C-B08C2B28413C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Core.Workspaces", "DatenMeister.Core.Workspaces\DatenMeister.Core.Workspaces.csproj", "{8F739FFA-F0BD-43AF-9499-30D4C55E3791}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -549,6 +553,22 @@ Global
 		{47B58FB0-AA3D-4165-BABB-920BB661000D}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
 		{47B58FB0-AA3D-4165-BABB-920BB661000D}.WPF|Any CPU.ActiveCfg = Debug|Any CPU
 		{47B58FB0-AA3D-4165-BABB-920BB661000D}.WPF|Any CPU.Build.0 = Debug|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.WPF|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C}.WPF|Any CPU.Build.0 = Debug|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.WPF|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791}.WPF|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -608,6 +628,8 @@ Global
 		{F7EE2EB2-B830-4AD9-B43B-6E6B18B206F4} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{02B0C6E7-E943-44F9-8465-4F1D5C948E49} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{47B58FB0-AA3D-4165-BABB-920BB661000D} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
+		{8BABE6E1-C205-492B-B11C-B08C2B28413C} = {42691CE7-A35B-42C8-808B-7404528A4014}
+		{8F739FFA-F0BD-43AF-9499-30D4C55E3791} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B2B6BA4-9AD3-43B6-B7D9-C1CC0860820C}

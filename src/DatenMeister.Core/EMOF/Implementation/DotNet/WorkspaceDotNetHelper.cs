@@ -10,7 +10,7 @@ public class WorkspaceDotNetHelper
     /// <param name="type">Type to be handled</param>
     /// <param name="metaWorkspace">The metaworkspace for the dotnet type</param>
     /// <returns></returns>
-    public static string? GetMetaClassUriOfDotNetType(Workspace metaWorkspace, Type type)
+    public static string? GetMetaClassUriOfDotNetType(IWorkspace metaWorkspace, Type type)
     {
         foreach (var metaExtent in metaWorkspace.extent.OfType<MofExtent>())
         {
@@ -30,7 +30,7 @@ public class WorkspaceDotNetHelper
     /// <param name="metaClassUri">Metaclass to be queried</param>
     /// <param name="metaWorkspace">The metaworkspace for the dotnet type</param>
     /// <returns></returns>
-    public static Type? GetDotNetTypeOfMetaClassUri(Workspace metaWorkspace, string metaClassUri)
+    public static Type? GetDotNetTypeOfMetaClassUri(IWorkspace metaWorkspace, string metaClassUri)
     {
         return metaWorkspace.extent.OfType<MofExtent>()
             .Select(metaExtent => metaExtent.TypeLookup.ToType(metaClassUri))

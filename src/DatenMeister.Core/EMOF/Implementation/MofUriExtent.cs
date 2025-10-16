@@ -229,7 +229,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
             }
         }
 
-        var alreadyVisited = new HashSet<Workspace>();
+        var alreadyVisited = new HashSet<IWorkspace>();
 
         if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
         {
@@ -272,7 +272,7 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
         {
             foreach (var innerWorkspace in _cachedWorkspaceLogic.Workspaces)
             {
-                if (innerWorkspace.IsDynamicWorkspace) continue;
+                if ((innerWorkspace as Workspace)?.IsDynamicWorkspace == true) continue;
                 if (alreadyVisited.Contains(innerWorkspace))
                 {
                     continue;
@@ -309,10 +309,10 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
     /// <returns>Found element or null, if not found</returns>
     private IElement? ResolveByMetaWorkspaces(
         string uri,
-        Workspace? workspace,
-        HashSet<Workspace>? alreadyVisited = null)
+        IWorkspace? workspace,
+        HashSet<IWorkspace>? alreadyVisited = null)
     {
-        alreadyVisited ??= new HashSet<Workspace>();
+        alreadyVisited ??= new HashSet<IWorkspace>();
         if (workspace != null && alreadyVisited.Contains(workspace))
         {
             return null;

@@ -44,10 +44,9 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
             var metaClass = getMetaClass();
 
             if (metaclass?.GetExtentOf() is MofExtent extent
-                && metaClass != null
-                && extent.DynamicFunctionManager?.HasDerivedProperty(metaClass, property) == true)
+                && metaClass != null)
             {
-                return true;
+                //return true;
             }
              
             /*
@@ -157,25 +156,6 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     /// <returns>The element itself for chaining</returns>
     public MofElement SetReferencedExtent(IUriExtent extent)
         => SetReferencedExtent((MofExtent)extent);
-
-    protected override (bool, object?) GetDynamicProperty(string property)
-    {
-        if (!IsSlimUmlEvaluation)
-        {
-            var metaClass = getMetaClass();
-            if (!(metaclass?.GetExtentOf() is MofExtent extent))
-            {
-                return (false, null);
-            }
-
-            if (metaClass != null && extent.DynamicFunctionManager != null)
-            {
-                return extent.DynamicFunctionManager.GetDerivedPropertyValue(this, metaClass, property);
-            }
-        }
-
-        return (false, null);
-    }
 
     public override object? get(string property, bool noReferences, ObjectType objectType)
     {

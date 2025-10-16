@@ -83,14 +83,14 @@ public class TemporaryExtentTests
         var element = temporaryLogic.CreateTemporaryElement(null);
         Assert.That(element, Is.Not.Null);
 
-        scope.WorkspaceLogic.GetDataWorkspace().RemoveExtent(TemporaryExtentLogic.InternalTempUri);
+        (scope.WorkspaceLogic.GetDataWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentLogic.InternalTempUri);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
             
         element = temporaryLogic.CreateTemporaryElement(null);
         Assert.That(element, Is.Not.Null);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);
 
-        scope.WorkspaceLogic.GetDataWorkspace().RemoveExtent(TemporaryExtentLogic.InternalTempUri);
+        (scope.WorkspaceLogic.GetDataWorkspace() as Workspace)?.RemoveExtent(TemporaryExtentLogic.InternalTempUri);
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Null);
         temporaryLogic.CleanElements();
         Assert.That(temporaryLogic.TryGetTemporaryExtent(), Is.Not.Null);

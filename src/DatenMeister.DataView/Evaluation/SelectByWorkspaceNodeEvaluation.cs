@@ -35,7 +35,7 @@ public class SelectByWorkspaceNodeEvaluation : IDataViewNodeEvaluation
     /// <param name="evaluation">The used dataevaluation</param>
     /// <param name="workspace">The workspace which shall be queried</param>
     /// <returns></returns>
-    private IEnumerable<IObject> GetElements(DataViewEvaluation evaluation, Workspace workspace)
+    private IEnumerable<IObject> GetElements(DataViewEvaluation evaluation, IWorkspace workspace)
     {
         foreach (var extent in workspace.extent.ToList())
         {

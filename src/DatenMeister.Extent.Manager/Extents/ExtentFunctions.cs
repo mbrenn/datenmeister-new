@@ -85,7 +85,7 @@ public class ExtentFunctions
 
     public class CreatableTypeResult
     {
-        public Workspace? MetaLayer { get; set; }
+        public IWorkspace? MetaLayer { get; set; }
         public IList<IElement>? CreatableTypes { get; set; }
     }
 }

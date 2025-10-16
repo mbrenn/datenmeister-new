@@ -10,7 +10,7 @@ public class WorkspaceData
     /// <summary>
     /// Stores the workspaces
     /// </summary>
-    public List<Workspace> Workspaces { get; set; } = new();
+    public List<IWorkspace> Workspaces { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the default layer that shall be assumed, if no information is considered as available.
@@ -21,7 +21,7 @@ public class WorkspaceData
         set => _default = value;
     }
 
-    public Workspace Data
+    public IWorkspace Data
     {
         get
         {
@@ -30,7 +30,7 @@ public class WorkspaceData
         }
     }
 
-    public Workspace Types
+    public IWorkspace Types
     {
         get
         {
@@ -39,7 +39,7 @@ public class WorkspaceData
         }
     }
 
-    public Workspace Uml
+    public IWorkspace Uml
     {
         get
         {
@@ -48,7 +48,7 @@ public class WorkspaceData
         }
     }
 
-    public Workspace Mof
+    public IWorkspace Mof
     {
         get
         {

@@ -1,11 +1,11 @@
-﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
-using DatenMeister.Core.Runtime.DynamicFunctions;
+﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 // ReSharper disable InconsistentNaming
 
 namespace DatenMeister.Core.Runtime.Workspaces;
 
-public interface IWorkspace
+public interface IWorkspace : IUriResolver
 {
     /// <summary>
     /// Clears the cache, so a new instance can be created
@@ -21,14 +21,17 @@ public interface IWorkspace
     /// Gets the id of the workspace
     /// </summary>
     string id { get; }
-        
-    /// <summary>
-    /// Gets the dynamic function manager
-    /// </summary>
-    DynamicFunctionManager DynamicFunctionManager { get; }
+
+    public string annotation { get; set; }
 
     /// <summary>
     /// Gets a list of workspaces which contain the types of the workspace
     /// </summary>
-    List<Workspace> MetaWorkspaces { get; }
+    List<IWorkspace> MetaWorkspaces { get; }
+
+    void AddMetaWorkspace(IWorkspace innerWorkspace);
+    
+    void AddExtent(IExtent newExtent);
+
+    bool RemoveExtent(IExtent extentToBeRemoved);
 }

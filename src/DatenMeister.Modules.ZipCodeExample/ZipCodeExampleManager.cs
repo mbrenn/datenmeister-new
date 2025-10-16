@@ -60,7 +60,7 @@ public class ZipCodeExampleManager
     /// </summary>
     /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
     /// <param name="exampleFilePath">Defines the path to the example file</param>
-    public async Task<IUriExtent> AddZipCodeExample(Workspace workspace, string? exampleFilePath = null)
+    public async Task<IUriExtent> AddZipCodeExample(IWorkspace workspace, string? exampleFilePath = null)
         => await AddZipCodeExample(workspace.id, exampleFilePath);
 
     public async Task<IUriExtent> AddZipCodeExample(string workspaceId, string? exampleFilePath = null)

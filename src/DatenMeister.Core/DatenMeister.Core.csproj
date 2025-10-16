@@ -32,7 +32,8 @@
     <ItemGroup>
       <ProjectReference Include="..\BurnSystems.TimeCache\BurnSystems.TimeCache.csproj" />
       <ProjectReference Include="..\DatenMeister.Core.Interfaces\DatenMeister.Core.Interfaces.csproj" />
-      <ProjectReference Include="..\DatenMeister.Core.TypeIndexAssembly\DatenMeister.Core.TypeIndexAssembly.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.TypeIndexStorage\DatenMeister.Core.TypeIndexStorage.csproj" />
+      <ProjectReference Include="..\DatenMeister.Core.Workspaces\DatenMeister.Core.Workspaces.csproj" />
     </ItemGroup>
 
 </Project>

@@ -455,7 +455,7 @@ public class Bootstrapper
     /// <returns>The instance of the bootstrapper</returns>
     public static Bootstrapper PerformFullBootstrap(
         IWorkspaceLogic workspaceLogic,
-        Workspace workspace,
+        IWorkspace workspace,
         BootstrapMode mode,
         FilePaths? paths = null)
     {
@@ -553,9 +553,9 @@ public class Bootstrapper
     /// <returns></returns>
     public static Bootstrapper PerformFullBootstrap(
         FilePaths filePaths,
-        Workspace workspace,
+        IWorkspace workspace,
         IWorkspaceLogic workspaceLogic,
-        Workspace dataLayer,
+        IWorkspace dataLayer,
         BootstrapMode mode)
     {
         if (workspace == null) throw new ArgumentNullException(nameof(workspace));

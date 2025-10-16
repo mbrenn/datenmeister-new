@@ -29,6 +29,6 @@ public class DataViewHelper(IWorkspaceLogic workspaceLogic)
     public IUriExtent GetUserFormExtent() =>
         workspaceLogic.GetUserFormsExtent();
 
-    public Workspace GetViewWorkspace() =>
+    public IWorkspace GetViewWorkspace() =>
         workspaceLogic.GetViewsWorkspace();
 }

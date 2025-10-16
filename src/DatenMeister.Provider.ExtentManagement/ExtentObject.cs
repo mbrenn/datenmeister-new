@@ -19,7 +19,7 @@ public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStora
 
     public ExtentObject(
         ExtentOfWorkspaceProvider provider,
-        Workspace parentWorkspace,
+        IWorkspace parentWorkspace,
         IUriExtent? uriExtent,
         ExtentStorageData.LoadedExtentInformation? loadedExtentInformation)
         : base(

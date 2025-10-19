@@ -4,6 +4,7 @@ using DatenMeister.Plugins;
 namespace DatenMeister.Core.TypeIndexAssembly;
 
 
+[PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
 public class TypeIndexPlugin(IScopeStorage scopeStorage) : IDatenMeisterPlugin
 {
     public IScopeStorage ScopeStorage { get; set; } = scopeStorage;

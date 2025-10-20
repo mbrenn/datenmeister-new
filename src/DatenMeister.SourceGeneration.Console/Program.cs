@@ -62,7 +62,6 @@ internal class Program
     private static Task PerformStandardProcedure()
     {
         /*System.Console.WriteLine("Clean up .xmi-Files");
-        var R = StandardProcedure.R;
 
         await CleanUpProcedure.CleanUpExtent(
             $"{R}/../DatenMeister.Core/XmiFiles/Forms/DatenMeister.xmi",
@@ -87,6 +86,8 @@ internal class Program
 
 
 #if !DEBUG
+        
+            var R = StandardProcedure.R;
             var T = StandardProcedure.T;
             
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);

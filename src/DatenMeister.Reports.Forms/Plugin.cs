@@ -8,6 +8,7 @@ using DatenMeister.Types;
 using DatenMeister.WebServer.Library.PageRegistration;
 using System.Reflection;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Forms.Helper;
 
 namespace DatenMeister.Reports.Forms;

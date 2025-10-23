@@ -4,6 +4,7 @@ using DatenMeister.BootStrap;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;

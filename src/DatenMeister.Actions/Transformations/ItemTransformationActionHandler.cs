@@ -3,6 +3,7 @@ using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Models;
 using DatenMeister.Provider.DynamicRuntime;

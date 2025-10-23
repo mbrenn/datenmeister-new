@@ -9,6 +9,7 @@ using System.Text;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Workspace;
 
 namespace DatenMeister.Extent.Forms.MassImport;
 

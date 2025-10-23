@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
 
-namespace DatenMeister.Core.EMOF.Implementation;
+namespace DatenMeister.Core.Interfaces;
 
 /// <summary>
 /// Supports resolving uri to elements within the extent or even within other workspaces

@@ -1,9 +1,8 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Interfaces.MOF.Identifiers;
+﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
 
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Core.Runtime.Workspaces;
+namespace DatenMeister.Core.Interfaces.Workspace;
 
 public interface IWorkspace : IUriResolver
 {

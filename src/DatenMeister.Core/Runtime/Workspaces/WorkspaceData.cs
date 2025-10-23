@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core.Interfaces.Workspace;
+
+namespace DatenMeister.Core.Runtime.Workspaces;
 
 /// <summary>
 /// Stores the data which is persistent within the process

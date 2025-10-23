@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;

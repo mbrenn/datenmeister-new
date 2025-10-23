@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
 

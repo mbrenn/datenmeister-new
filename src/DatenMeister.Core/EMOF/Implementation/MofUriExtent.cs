@@ -5,6 +5,7 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Proxies;

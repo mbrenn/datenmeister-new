@@ -4,6 +4,7 @@ using Autofac.Core.Lifetime;
 using Autofac.Core.Resolving;
 using DatenMeister.Core;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.DependencyInjection;

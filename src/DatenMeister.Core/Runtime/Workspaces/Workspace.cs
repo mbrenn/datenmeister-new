@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Extension;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces.Workspace;
 
 // ReSharper disable InconsistentNaming
 

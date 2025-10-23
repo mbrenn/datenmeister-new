@@ -1,13 +1,21 @@
+using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.Workspace;
 
 namespace DatenMeister.Core.TypeIndexAssembly;
 
-public class TypeIndexLogic(IScopeStorage scopeStorage)
+public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
 {
+    private static readonly ILogger Logger = new ClassLogger(typeof(TypeIndexLogic));
     /// <summary>
     /// Stores the scope storage
     /// </summary>
     private IScopeStorage ScopeStorage { get; set; } = scopeStorage;
+    
+    /// <summary>
+    /// Stores the workspace logic
+    /// </summary>
+    private IWorkspaceLogic WorkspaceLogic { get; set; } = workspaceLogic;
     
     /// <summary>
     /// Called by the plugin after all the types have been loaded.
@@ -16,6 +24,13 @@ public class TypeIndexLogic(IScopeStorage scopeStorage)
     /// </summary>
     public async Task CreateIndexFirstTime()
     {
+        Task.Run(() =>
+        {
+            Logger.Info("Trigger first indexing");
+            
+            PerformIndexing();
+            
+        });
     }
     
     public TimeSpan IndexWaitTime { get; set; } = TimeSpan.FromSeconds(5);
@@ -44,6 +59,8 @@ public class TypeIndexLogic(IScopeStorage scopeStorage)
             }
 
             // Perform the updates
+            Logger.Info("Trigger update of index");
+            PerformIndexing();
 
             // After the updates are performed, check whether the trigger has been called during the indexing
             if (_triggerOccuredDuringIndexing)
@@ -72,5 +89,11 @@ public class TypeIndexLogic(IScopeStorage scopeStorage)
     public async Task StopListening()
     {
         
+    }
+    
+    private void PerformIndexing()
+    {
+        Logger.Info("Start indexing");
+        Logger.Info("Finished indexing");
     }
 }

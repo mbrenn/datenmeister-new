@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider.DotNet;

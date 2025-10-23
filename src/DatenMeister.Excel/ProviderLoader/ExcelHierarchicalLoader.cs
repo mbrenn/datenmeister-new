@@ -7,6 +7,7 @@ using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Provider;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;

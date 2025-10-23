@@ -2,6 +2,7 @@
 using DatenMeister.Actions;
 using DatenMeister.Core;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Plugins;

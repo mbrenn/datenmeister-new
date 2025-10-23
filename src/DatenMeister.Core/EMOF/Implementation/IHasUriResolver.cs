@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Core.EMOF.Implementation;
+﻿using DatenMeister.Core.Interfaces;
+
+namespace DatenMeister.Core.EMOF.Implementation;
 
 /// <summary>
 /// Defines the interface which allows the setting and getting of an IUriResolver

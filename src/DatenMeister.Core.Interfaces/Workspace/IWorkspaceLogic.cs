@@ -1,10 +1,7 @@
-﻿
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Interfaces;
-using DatenMeister.Core.Interfaces.MOF.Identifiers;
+﻿using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 
-namespace DatenMeister.Core.Runtime.Workspaces;
+namespace DatenMeister.Core.Interfaces.Workspace;
 
 /// <summary>
 /// Defines the workspace logic is used to organize the workspaces

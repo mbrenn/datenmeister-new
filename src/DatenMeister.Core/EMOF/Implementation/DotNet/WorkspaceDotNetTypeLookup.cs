@@ -1,3 +1,4 @@
+using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation.DotNet;

@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;

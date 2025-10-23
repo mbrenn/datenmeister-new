@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using BurnSystems.Logging;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Provider.DotNet;

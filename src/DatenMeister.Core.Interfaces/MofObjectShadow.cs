@@ -15,7 +15,14 @@ public class MofObjectShadow(string uri) : IElement, IKnowsUri
     public string Uri { get; set; } = uri;
 
     public bool equals(object? other)
-        => MofObject.AreEqual(this, other as IObject);
+    {
+        if (other is IKnowsUri knowsUri)
+        {
+            return knowsUri.Uri == Uri;
+        }
+        
+        return false;
+    }
 
     public object? get(string property) => null;
 

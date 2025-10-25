@@ -13,7 +13,7 @@ public class IdIsAlreadySetException(string message) : InvalidOperationException
 /// <summary>
 /// Defines a Mof Element according to MOF specification
 /// </summary>
-public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
+public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId, IKnowsUri
 {
     /// <summary>
     /// Stores the cached metaclass to speed-up lookup
@@ -225,5 +225,20 @@ public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICa
     {
         base.CreatedBy(extent);
         return this;
+    }
+
+    /// <summary>
+    /// Gets the uri of the element. In case the element is part of an extent, the uri is resolved via extent.
+    /// In case the element is not part of an extent, the uri is resolved via the element id directly.
+    /// </summary>
+    public string Uri
+    {
+        get
+        {
+            var extent = this.GetUriExtentOf();
+            return extent == null
+                ? "#" + Id 
+                : extent.uri(this) ?? string.Empty;
+        }
     }
 }

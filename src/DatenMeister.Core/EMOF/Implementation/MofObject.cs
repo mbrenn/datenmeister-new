@@ -121,6 +121,10 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     public override bool Equals(object? obj)
         => equals(obj);
 
+    /// <inheritdoc />
+    public bool equals(object? other)
+        => AreEqual(this, other as IObject);
+    
     /// <summary>
     /// Verifies if the two elements reference to the same instance
     /// </summary>
@@ -139,55 +143,14 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
             // If one is at least null, it shall be
             return false;
         }
-
-        var firstAsMofObject = first as MofObject;
-        var secondAsMofObject = second as MofObject;
-        var firstAsShadow = first as MofObjectShadow;
-        var secondAsShadow = second as MofObjectShadow;
-        var firstAsElement = first as MofElement;
-        var secondAsElement = second as MofElement;
-        var firstAsUriExtent = first as MofUriExtent;
-        var secondAsUriExtent = second as MofUriExtent;
-
-        if (firstAsMofObject != null && secondAsMofObject != null)
+        
+        if (first is IKnowsUri firstAsKnowsUri && second is IKnowsUri secondAsKnowsUri)
         {
-            return firstAsMofObject.ProviderObject.Id == secondAsMofObject.ProviderObject.Id;
+            return firstAsKnowsUri.Uri == secondAsKnowsUri.Uri;
         }
-
-        if (firstAsShadow != null && secondAsShadow != null)
-        {
-            return firstAsShadow.Uri == secondAsShadow.Uri;
-        }
-
-        if (firstAsShadow != null && secondAsElement != null)
-        {
-            return firstAsShadow.Uri == secondAsElement.GetUri();
-        }
-
-        if (secondAsShadow != null && firstAsElement != null)
-        {
-            return secondAsShadow.Uri == firstAsElement.GetUri();
-        }
-
-        if (firstAsUriExtent != null && secondAsUriExtent != null)
-        {
-            // Context uri of both are equal
-            return firstAsUriExtent.contextURI() == secondAsUriExtent.contextURI();
-        }
-
-        if (firstAsUriExtent != null || secondAsUriExtent != null)
-        {
-            // One is a uri extent but the other one is not, so it is sure that both are not equal
-            return false;
-        }
-
-        throw new InvalidOperationException(
-            $"Combination of {first.GetType()} and {second.GetType()} is not known to verify equality");
+        
+        return ReferenceEquals(first, second);
     }
-
-    /// <inheritdoc />
-    public bool equals(object? other)
-        => AreEqual(this, other as IObject);
 
     /// <inheritdoc />
     // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode

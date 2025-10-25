@@ -16,7 +16,7 @@ namespace DatenMeister.Core.EMOF.Implementation;
 /// <summary>
 /// Implements the MOF interface for the uriextent
 /// </summary>
-public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlternativeUris
+public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlternativeUris, IKnowsUri
 {
     /// <summary>
     /// Defines the name for the uri property
@@ -406,4 +406,6 @@ public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver, IHasAlt
             }
         }
     }
+
+    public string Uri => contextURI();
 }

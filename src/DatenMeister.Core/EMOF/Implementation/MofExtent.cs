@@ -678,4 +678,5 @@ public class MofExtent :
         _itemCountCached = -1;
         IsModified = isModified;
     }
+
 }

@@ -51,6 +51,11 @@ if(!$onlyOne)
     Write-Output "-- Creating for DatenMeister.Core"
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi" "./DatenMeister.Core/Models" "DatenMeister.Core.Models" "dm:///_internal/types/internal"
 
+    Move-Item ./DatenMeister.Core/Models/DatenMeister.cs ./DatenMeister.Core.Model/ -Force
+    Move-Item ./DatenMeister.Core/Models/EMOF/MOF.cs ./DatenMeister.Core.Model/EMOF/ -Force
+    Move-Item ./DatenMeister.Core/Models/EMOF/UML.cs ./DatenMeister.Core.Model/EMOF/ -Force
+    Move-Item ./DatenMeister.Core/Models/EMOF/PrimitiveTypes.cs ./DatenMeister.Core.Model/EMOF/ -Force
+
     Write-Output "-- Creating for DatenMeister.Reports.Forms"
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Reports.Forms/Xmi/DatenMeister.Reports.Types.xmi" "./DatenMeister.Reports.Forms/Model" "DatenMeister.Reports.Forms.Model" "dm:///_internal/types/internal"
 
@@ -90,6 +95,9 @@ Move-Item Model/*.map Js/ -Force
 Set-Location ../..
 
 Move-Item src/DatenMeister.Core/Models/DatenMeister.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/DatenMeister.class.ts -Force
+Move-Item src/DatenMeister.Core/Models/EMOF/mof.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/mof.ts -Force
+Move-Item src/DatenMeister.Core/Models/EMOF/uml.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/uml.ts -Force
+Move-Item src/DatenMeister.Core/Models/EMOF/primitivetypes.ts src/Web/DatenMeister.WebServer/wwwroot/js/datenmeister/models/primitivetypes.ts -Force
 
 Set-Location scripts
 

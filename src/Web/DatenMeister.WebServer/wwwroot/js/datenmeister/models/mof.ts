@@ -1,4 +1,4 @@
-// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.0.0.0
+// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 export namespace _MOF
 {
         export namespace _Identifiers
@@ -24,6 +24,9 @@ export namespace _MOF
                 export class _Tag
                 {
                     static tagOwner = "tagOwner";
+                    static ownedComment = "ownedComment";
+                    static ownedElement = "ownedElement";
+                    static owner = "owner";
                 }
 
                 export const __Tag_Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag";
@@ -36,7 +39,6 @@ export namespace _MOF
                     static _name_ = "name";
                     static value = "value";
                     static element = "element";
-                    static metaclass = "metaclass";
                 }
 
                 export const __Tag_Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag";
@@ -107,7 +109,6 @@ export namespace _MOF
                 export class _Factory
                 {
                     static _package_ = "package";
-                    static metaclass = "metaclass";
                 }
 
                 export const __Factory_Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory";

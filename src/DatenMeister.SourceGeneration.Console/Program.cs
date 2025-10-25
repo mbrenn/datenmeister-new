@@ -25,7 +25,8 @@ internal class Program
         
         if (args.Length == 0)
         {
-            await PerformStandardProcedure();
+            System.Console.WriteLine("Standard Procedure not supported anymore.");
+            BurnSystems.CommandLine.Parser.ParseIntoOrShowUsage<CommandOptions>(args);
         }
         else
         {

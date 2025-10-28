@@ -65,11 +65,11 @@ public class FieldFromPropertyType(IWorkspaceLogic workspaceLogic) : FormFactory
         
         var property = parameter.PropertyType;
         var propertyName = string.IsNullOrEmpty(parameter.PropertyName) 
-            ? property.getOrDefault<string>(_UML._Classification._Property.name)
+            ? property?.getOrDefault<string>(_UML._Classification._Property.name) ?? string.Empty
             : parameter.PropertyName;
         var propertyType = property == null ? null : PropertyMethods.GetPropertyType(property);
         
-        if (property == null && propertyName == null || propertyType == null)
+        if (property == null && string.IsNullOrEmpty(propertyName) || propertyType == null)
             return;
         
         var factory = context.Global.Factory;

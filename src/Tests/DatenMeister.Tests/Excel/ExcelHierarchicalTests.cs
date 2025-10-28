@@ -82,7 +82,7 @@ public class ExcelHierarchicalTests
             .FirstOrDefault();
         Assert.That(firstLiga, Is.Not.Null);
 
-        var teams = firstLiga.getOrDefault<IReflectiveSequence>("team")
+        var teams = firstLiga!.getOrDefault<IReflectiveSequence>("team")
             .OfType<IElement>()
             .ToList();
 
@@ -94,7 +94,7 @@ public class ExcelHierarchicalTests
 
         Assert.That(frankfurt, Is.Not.Null);
 
-        var players = frankfurt.getOrDefault<IReflectiveSequence>("player")
+        var players = frankfurt!.getOrDefault<IReflectiveSequence>("player")
             .OfType<IElement>()
             .ToList();
 

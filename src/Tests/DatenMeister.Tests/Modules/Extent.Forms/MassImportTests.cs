@@ -133,27 +133,27 @@ internal class MassImportTests
         Assert.That(item4, Is.Not.Null);
         Assert.That(item5, Is.Not.Null);
 
-        Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
+        Assert.That(item1!.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
         Assert.That(item1.getOrDefault<string>("prename"), Is.EqualTo("Martin"));
         Assert.That(item1.getOrDefault<int>("age"), Is.EqualTo(42));
         Assert.That(item1.getOrDefault<string>("location"), Is.Null);
 
-        Assert.That(item2.getOrDefault<string>("name"), Is.EqualTo("Ulrich"));
+        Assert.That(item2!.getOrDefault<string>("name"), Is.EqualTo("Ulrich"));
         Assert.That(item2.getOrDefault<string>("prename"), Is.EqualTo("Megator"));
         Assert.That(item2.getOrDefault<int>("age"), Is.EqualTo(50));
         Assert.That(item2.getOrDefault<string>("location"), Is.Null);
 
-        Assert.That(item3.getOrDefault<string>("name"), Is.EqualTo("Rambo"));
+        Assert.That(item3!.getOrDefault<string>("name"), Is.EqualTo("Rambo"));
         Assert.That(item3.getOrDefault<string>("prename"), Is.EqualTo("Ramontisch"));
         Assert.That(item3.getOrDefault<int>("age"), Is.EqualTo(12));
         Assert.That(item3.getOrDefault<string>("location"), Is.EqualTo("Hessen"));
 
-        Assert.That(item4.getOrDefault<string>("name"), Is.Null);
+        Assert.That(item4!.getOrDefault<string>("name"), Is.Null);
         Assert.That(item4.getOrDefault<string>("prename"), Is.Null);
         Assert.That(item4.getOrDefault<int>("age"), Is.EqualTo(30));
         Assert.That(item4.getOrDefault<string>("location"), Is.Null);
 
-        Assert.That(item5.getOrDefault<string>("prename"), Is.EqualTo("Taylor"));
+        Assert.That(item5!.getOrDefault<string>("prename"), Is.EqualTo("Taylor"));
         Assert.That(item5.getOrDefault<string>("name"), Is.EqualTo("Swift"));
         Assert.That(item5.getOrDefault<int>("age"), Is.EqualTo(28));
         Assert.That(item5.getOrDefault<string>("location"), Is.EqualTo("USA"));

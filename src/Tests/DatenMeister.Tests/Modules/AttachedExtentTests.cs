@@ -46,7 +46,7 @@ public class AttachedExtentTests
         var attachedHandler = new AttachedExtentHandler(workspaceLogic);
         var foundConfiguration = attachedHandler.GetConfiguration(extent);
         Assert.That(foundConfiguration, Is.Not.Null);
-        Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.name), Is.EqualTo("Test"));
+        Assert.That(foundConfiguration!.getOrDefault<string>(_AttachedExtentConfiguration.name), Is.EqualTo("Test"));
         Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referencedExtent),
             Is.EqualTo("dm:///other"));
         Assert.That(foundConfiguration.getOrDefault<string>(_AttachedExtentConfiguration.referencedWorkspace),

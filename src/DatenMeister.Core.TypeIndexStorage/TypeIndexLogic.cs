@@ -3,6 +3,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.TypeIndexAssembly;
@@ -170,6 +171,12 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
     /// <param name="element">Elements which is to be evaluated</param>
     private void AddClassesToWorkspace(WorkspaceModel workspaceModel, IElement element)
     {
+        // Check, if we are a package, if yes, then we look into its properties
+        if (element.isSet(_UML._Packages._Package.packagedElement))
+        {
+            // Ok, we have packaged element, gets all of them and return them
+            element.get(_UML._Packages._Package.packagedElement);
+        }
     }
 
     private void SwapNextAndCurrentTypeData()

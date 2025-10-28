@@ -30,8 +30,8 @@ public class ResolverTests
 
         Assert.That(firstChild, Is.Not.Null);
         Assert.That(firstChildCached, Is.Not.Null);
-        Assert.That(firstChild.getOrDefault<string>("name"), Is.EqualTo("child1"));
-        Assert.That(firstChildCached.getOrDefault<string>("name"), Is.EqualTo("child1"));
+        Assert.That(firstChild!.getOrDefault<string>("name"), Is.EqualTo("child1"));
+        Assert.That(firstChildCached!.getOrDefault<string>("name"), Is.EqualTo("child1"));
     }
 
     [Test]
@@ -48,20 +48,20 @@ public class ResolverTests
             as MofElement;
         var item1 = extent.GetUriResolver().Resolve(TestUri + "#item1", ResolveType.Default)
             as MofElement;
-        var item1_2 = extent.GetUriResolver().Resolve("#item1", ResolveType.Default)
+        var item12 = extent.GetUriResolver().Resolve("#item1", ResolveType.Default)
             as MofElement;
 
         Assert.That(firstChild, Is.Not.Null);
         Assert.That(firstChildCached, Is.Not.Null);
         Assert.That(item1, Is.Not.Null);
-        Assert.That(item1_2, Is.Not.Null);
+        Assert.That(item12, Is.Not.Null);
         Assert.That(noChild, Is.Null);
         Assert.That(child2Child1, Is.Not.Null);
-        Assert.That(firstChild.getOrDefault<string>("name"), Is.EqualTo("child1"));
-        Assert.That(firstChildCached.getOrDefault<string>("name"), Is.EqualTo("child1"));
-        Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("item1"));
-        Assert.That(item1_2.getOrDefault<string>("name"), Is.EqualTo("item1"));
-        Assert.That(child2Child1.getOrDefault<string>("name"), Is.EqualTo("child2child1"));
+        Assert.That(firstChild!.getOrDefault<string>("name"), Is.EqualTo("child1"));
+        Assert.That(firstChildCached!.getOrDefault<string>("name"), Is.EqualTo("child1"));
+        Assert.That(item1!.getOrDefault<string>("name"), Is.EqualTo("item1"));
+        Assert.That(item12!.getOrDefault<string>("name"), Is.EqualTo("item1"));
+        Assert.That(child2Child1!.getOrDefault<string>("name"), Is.EqualTo("child2child1"));
     }
 
     [Test]
@@ -82,9 +82,9 @@ public class ResolverTests
         Assert.That(item1, Is.Not.Null);
         Assert.That(noChild, Is.Null);
         Assert.That(child2Child1, Is.Not.Null);
-        Assert.That(firstChild.getOrDefault<string>("name"), Is.EqualTo("child1"));
-        Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("item1"));
-        Assert.That(child2Child1.getOrDefault<string>("name"), Is.EqualTo("child2child1"));
+        Assert.That(firstChild!.getOrDefault<string>("name"), Is.EqualTo("child1"));
+        Assert.That(item1!.getOrDefault<string>("name"), Is.EqualTo("item1"));
+        Assert.That(child2Child1!.getOrDefault<string>("name"), Is.EqualTo("child2child1"));
     }
 
     [Test]

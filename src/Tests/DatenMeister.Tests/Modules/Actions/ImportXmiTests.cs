@@ -78,7 +78,7 @@ public class ImportXmiTests
         var newItem = newExtent.element("#Item1");
         Assert.That(newItem, Is.Not.Null);
 
-        var issue = newItem.getOrDefault<IElement>("issue");
+        var issue = newItem!.getOrDefault<IElement>("issue");
         Assert.That(issue, Is.Not.Null);
         Assert.That(issue.getOrDefault<string>("state"), Is.EqualTo("Closed"));
     }
@@ -117,7 +117,7 @@ public class ImportXmiTests
         var newItem = newExtent.element("#Item1");
         Assert.That(newItem, Is.Not.Null);
 
-        var issueCollection = newItem.getOrDefault<IReflectiveCollection>("issue");
+        var issueCollection = newItem!.getOrDefault<IReflectiveCollection>("issue");
         Assert.That(issueCollection, Is.Not.Null);
         Assert.That(issueCollection.Count(), Is.EqualTo(1));
         var issue = issueCollection.OfType<IElement>().First();

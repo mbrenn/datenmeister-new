@@ -86,7 +86,7 @@ public class JsonLoadingTests
         Assert.That(extent.elements().Count(), Is.EqualTo(2));
         var value2 = extent.elements().ElementAt(1) as IElement;
         Assert.That(value2, Is.Not.Null);
-        Assert.That(value2.getOrDefault<string>("fruit"), Is.EqualTo("Peach"));
+        Assert.That(value2!.getOrDefault<string>("fruit"), Is.EqualTo("Peach"));
         Assert.That(value2.getOrDefault<int>("number"), Is.EqualTo(1));
     }
 

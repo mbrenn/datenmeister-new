@@ -1,4 +1,4 @@
-// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.0.0.0
+// Created by DatenMeister.SourcecodeGenerator.TypeScriptInterfaceGenerator Version 1.3.0.0
 export var _MOF;
 (function (_MOF) {
     let _Identifiers;
@@ -17,6 +17,9 @@ export var _MOF;
         class _Tag {
         }
         _Tag.tagOwner = "tagOwner";
+        _Tag.ownedComment = "ownedComment";
+        _Tag.ownedElement = "ownedElement";
+        _Tag.owner = "owner";
         _CMOFExtension._Tag = _Tag;
         _CMOFExtension.__Tag_Uri = "dm:///_internal/model/mof#_MOF-CMOFExtension-Tag";
     })(_CMOFExtension = _MOF._CMOFExtension || (_MOF._CMOFExtension = {}));
@@ -27,7 +30,6 @@ export var _MOF;
         _Tag._name_ = "name";
         _Tag.value = "value";
         _Tag.element = "element";
-        _Tag.metaclass = "metaclass";
         _Extension._Tag = _Tag;
         _Extension.__Tag_Uri = "dm:///_internal/model/mof#_MOF-Extension-Tag";
     })(_Extension = _MOF._Extension || (_MOF._Extension = {}));
@@ -82,7 +84,6 @@ export var _MOF;
         class _Factory {
         }
         _Factory._package_ = "package";
-        _Factory.metaclass = "metaclass";
         _Reflection._Factory = _Factory;
         _Reflection.__Factory_Uri = "dm:///_internal/model/mof#_MOF-Reflection-Factory";
         class _Type {

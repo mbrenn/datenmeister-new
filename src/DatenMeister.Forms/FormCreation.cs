@@ -35,8 +35,9 @@ public static class FormCreation
         // table forms, so the system can create additional forms or updates, if requested
         if (result.IsMainContentCreated)
         {
-            var tabs = result.Form.getOrDefault<IReflectiveCollection>(
-                _Forms._ObjectForm.tab).OfType<IElement>();
+            var tabs = result.Form
+                ?.getOrDefault<IReflectiveCollection>(_Forms._ObjectForm.tab).OfType<IElement>()
+                ?? throw new InvalidOperationException("Form is null");
             foreach (var tab in tabs)
             {
                 var innerContext = context.Clone();
@@ -105,8 +106,10 @@ public static class FormCreation
         // table forms, so the system can create additional forms or updates, if requested
         if (result.IsMainContentCreated)
         {
-            var tabs = result.Form.getOrDefault<IReflectiveCollection>(
-                _Forms._ObjectForm.tab).OfType<IElement>();
+            var tabs = result.Form
+                ?.getOrDefault<IReflectiveCollection>(_Forms._ObjectForm.tab).OfType<IElement>()
+                ?? throw new InvalidOperationException("Form is null");
+            
             foreach (var tab in tabs)
             {
                 var innerContext = context.Clone();

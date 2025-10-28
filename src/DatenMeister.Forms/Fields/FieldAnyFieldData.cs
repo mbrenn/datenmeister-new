@@ -17,7 +17,7 @@ public class FieldAnyFieldData : FormFactoryBase, IFieldFactory
 
         var property = parameter.PropertyType;
         var propertyName = string.IsNullOrEmpty(parameter.PropertyName)
-            ? property.getOrDefault<string>(_UML._Classification._Property.name)
+            ? property?.getOrDefault<string>(_UML._Classification._Property.name) ?? string.Empty
             : parameter.PropertyName;
         var propertyValue = parameter.PropertyValue;
         var propertyIsCollection =

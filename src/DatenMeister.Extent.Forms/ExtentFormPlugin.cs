@@ -99,10 +99,15 @@ public class ExtentFormPlugin(IScopeStorage scopeStorage, ExtentManager extentMa
                 PredicateForParameter = x => x.MetaClass?.equals(_Management.TheOne.__Extent) == true,
                 PredicateForElement =
                     element =>
-                        extentManager.GetProviderLoaderAndConfiguration(
+                    {
+                        if (element == null)
+                            throw new InvalidOperationException("Element is null");
+
+                        return extentManager.GetProviderLoaderAndConfiguration(
                                 element.getOrDefault<string>(_Management._Extent.workspaceId),
                                 element.getOrDefault<string>(_Management._Extent.uri))
-                            .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true
+                            .providerLoader?.ProviderLoaderCapabilities.AreChangesPersistant == true;
+                    }
             });
 
         ActionButtonToFormAdder.AddRowActionButton(

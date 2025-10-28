@@ -26,8 +26,10 @@ public class AddTableFormForPackagedElements : FormFactoryBase, IObjectFormFacto
         }
 
         var factory = context.Global.Factory;
-        var elementsAsObjects = parameter.Element.getOrDefault<IReflectiveCollection>(
-            _UML._Packages._Package.packagedElement).OfType<IElement>().ToList();
+        var elementsAsObjects = parameter.Element
+            ?.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
+                .OfType<IElement>().ToList()
+            ?? throw new InvalidOperationException("Element is null");
 
         // We care about the packaged elements
         // If the property for the list is 'packagedElement', then create multiple subforms...

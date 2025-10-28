@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Extension;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -56,6 +57,11 @@ public class Workspace(string id, string annotation = "") : IWorkspace, IObject,
         if (property == "id") return id;
 
         throw new InvalidOperationException($"Given property {id} is not set.");
+    }
+
+    public T getOrDefault<T>(string property)
+    {
+        return ObjectHelper.getOrDefault<T>(this, property);
     }
 
     public void set(string property, object? value)

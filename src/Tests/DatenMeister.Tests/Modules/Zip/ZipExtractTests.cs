@@ -30,7 +30,7 @@ public class ZipExtractTests
         var result = await actionLogic.ExecuteAction(action);
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
+        Assert.That(result!.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.alreadyExisting), Is.False);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.isAlreadyUpToDate), Is.False);
         
@@ -68,7 +68,7 @@ public class ZipExtractTests
         var result = await actionLogic.ExecuteAction(action);
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
+        Assert.That(result!.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.alreadyExisting), Is.True);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.isAlreadyUpToDate), Is.True);
         
@@ -85,7 +85,7 @@ public class ZipExtractTests
         result = await actionLogic.ExecuteAction(action);
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
+        Assert.That(result!.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.alreadyExisting), Is.True);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.isAlreadyUpToDate), Is.False);
         
@@ -121,7 +121,7 @@ public class ZipExtractTests
         var result = await actionLogic.ExecuteAction(action);
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.False);
+        Assert.That(result!.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.False);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.alreadyExisting), Is.True);
         
         File.Delete(TargetPathFile);
@@ -156,7 +156,7 @@ public class ZipExtractTests
         var result = await actionLogic.ExecuteAction(action);
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
+        Assert.That(result!.getOrDefault<bool>(_Root._ZipFileExtractActionResult.success), Is.True);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.alreadyExisting), Is.True);
         Assert.That(result.getOrDefault<bool>(_Root._ZipFileExtractActionResult.isAlreadyUpToDate), Is.False);
         

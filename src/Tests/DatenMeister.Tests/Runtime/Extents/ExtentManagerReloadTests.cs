@@ -42,7 +42,7 @@ internal class ExtentManagerReloadTests
 
         var first = loadedInfo.Extent!.elements().OfType<IElement>().FirstOrDefault();
         Assert.That(first, Is.Not.Null);
-        Assert.That(first.getOrDefault<string>("name"), Is.EqualTo("M"));
+        Assert.That(first!.getOrDefault<string>("name"), Is.EqualTo("M"));
 
         // Reload
         File.Copy("Examples/xmi2.xml", "Examples\\xmi-temp-trx.xml", true);
@@ -51,6 +51,6 @@ internal class ExtentManagerReloadTests
         var first2 = loadedInfo.Extent!.elements().OfType<IElement>().FirstOrDefault();
 
         Assert.That(first2, Is.Not.Null);
-        Assert.That(first2.getOrDefault<string>("name"), Is.EqualTo("Ma"));
+        Assert.That(first2!.getOrDefault<string>("name"), Is.EqualTo("Ma"));
     }
 }

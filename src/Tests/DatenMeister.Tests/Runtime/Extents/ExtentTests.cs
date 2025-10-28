@@ -445,13 +445,13 @@ public class ExtentTests
         var uriExtent = CreateLittleExtent();
         var package1 = uriExtent.element("dm:///test#p1");
         Assert.That(package1, Is.Not.Null);
-        Assert.That(package1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
+        Assert.That(package1!.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
             Is.EqualTo("package1"));
 
 
         var element1 = uriExtent.element("dm:///test#e1");
         Assert.That(element1, Is.Not.Null);
-        Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
+        Assert.That(element1!.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
             Is.EqualTo("element1"));
     }
 

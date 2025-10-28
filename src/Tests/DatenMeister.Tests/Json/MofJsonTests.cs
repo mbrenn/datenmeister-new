@@ -81,7 +81,7 @@ public class MofJsonTests
 
         var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!);
         Assert.That(deconverted, Is.Not.Null);
-        Assert.That(deconverted.getOrDefault<string>("name"), Is.EqualTo("parent"));
+        Assert.That(deconverted!.getOrDefault<string>("name"), Is.EqualTo("parent"));
 
         var child2 = deconverted.get<IElement>("child");
         Assert.That(child2, Is.Not.Null);
@@ -152,7 +152,7 @@ public class MofJsonTests
         var asJsonObject = JsonSerializer.Deserialize<MofObjectAsJson>(json);
         var deconverted = new DirectJsonDeconverter().ConvertToObject(asJsonObject!) as IElement;
         Assert.That(deconverted, Is.Not.Null);
-        Assert.That(deconverted.getOrDefault<string>("name"), Is.EqualTo("Collection"));
+        Assert.That(deconverted!.getOrDefault<string>("name"), Is.EqualTo("Collection"));
         var items = deconverted.get<IReflectiveCollection>("items");
         Assert.That(items, Is.Not.Null);
         Assert.That(items.size(), Is.EqualTo(2));

@@ -43,7 +43,7 @@ public class MoveOrCopyActionTests
         Assert.That(elementInSourceAfter, Is.Not.Null);
         Assert.That(elementInTargetAfter, Is.Not.Null);
 
-        var inTargetCollection = elementTarget.getOrDefault<IReflectiveCollection>(
+        var inTargetCollection = elementTarget!.getOrDefault<IReflectiveCollection>(
                 DefaultClassifierHints.GetDefaultPackagePropertyName(elementTarget!))
             .OfType<IElement>()
             .ToList();
@@ -80,7 +80,7 @@ public class MoveOrCopyActionTests
         Assert.That(elementInSourceAfter, Is.Null);
         Assert.That(elementInTargetAfter, Is.Not.Null);
 
-        var inTargetCollection = elementTarget.getOrDefault<IReflectiveCollection>(
+        var inTargetCollection = elementTarget!.getOrDefault<IReflectiveCollection>(
                 DefaultClassifierHints.GetDefaultPackagePropertyName(elementTarget!))
             .OfType<IElement>()
             .ToList();

@@ -29,19 +29,19 @@ public class DeletePropertyFromCollectionTests
             
         await actionLogic.ExecuteAction(action);
 
-        var source1 = testExtent.element("dm:///source/#source1");
-        var source2 = testExtent.element("dm:///source/#source2");
-        var source1_1 = testExtent.element("dm:///source/#source1.1");
-        var source1_2 = testExtent.element("dm:///source/#source1.2");
+        var source1 = testExtent.element("dm:///source/#source1")!;
+        var source2 = testExtent.element("dm:///source/#source2")!;
+        var source11 = testExtent.element("dm:///source/#source1.1")!;
+        var source12 = testExtent.element("dm:///source/#source1.2")!;
             
         Assert.That(source1, Is.Not.Null);
-        Assert.That(source1_1, Is.Not.Null);
-        Assert.That(source1_2, Is.Not.Null);
+        Assert.That(source11, Is.Not.Null);
+        Assert.That(source12, Is.Not.Null);
         Assert.That(source2, Is.Not.Null);
             
         Assert.That(source1.getOrDefault<string>("test"), Is.EqualTo(null));
-        Assert.That(source1_1.getOrDefault<string>("test"), Is.EqualTo("test"));
-        Assert.That(source1_2.getOrDefault<string>("test"), Is.EqualTo("test"));
+        Assert.That(source11.getOrDefault<string>("test"), Is.EqualTo("test"));
+        Assert.That(source12.getOrDefault<string>("test"), Is.EqualTo("test"));
         Assert.That(source2.getOrDefault<string>("test"), Is.EqualTo(null));
     }
         
@@ -62,18 +62,18 @@ public class DeletePropertyFromCollectionTests
 
         var source1 = testExtent.element("dm:///source/#source1");
         var source2 = testExtent.element("dm:///source/#source2");
-        var source1_1 = testExtent.element("dm:///source/#source1.1");
-        var source1_2 = testExtent.element("dm:///source/#source1.2");
+        var source11 = testExtent.element("dm:///source/#source1.1");
+        var source12 = testExtent.element("dm:///source/#source1.2");
             
         Assert.That(source1, Is.Not.Null);
-        Assert.That(source1_1, Is.Not.Null);
-        Assert.That(source1_2, Is.Not.Null);
+        Assert.That(source11, Is.Not.Null);
+        Assert.That(source12, Is.Not.Null);
         Assert.That(source2, Is.Not.Null);
             
-        Assert.That(source1.getOrDefault<string>("test"), Is.EqualTo("test"));
-        Assert.That(source1_1.getOrDefault<string>("test"), Is.EqualTo(null));
-        Assert.That(source1_2.getOrDefault<string>("test"), Is.EqualTo(null));
-        Assert.That(source2.getOrDefault<string>("test"), Is.EqualTo("test"));
+        Assert.That(source1!.getOrDefault<string>("test"), Is.EqualTo("test"));
+        Assert.That(source11!.getOrDefault<string>("test"), Is.EqualTo(null));
+        Assert.That(source12!.getOrDefault<string>("test"), Is.EqualTo(null));
+        Assert.That(source2!.getOrDefault<string>("test"), Is.EqualTo("test"));
     }
 
     [Test]
@@ -95,18 +95,18 @@ public class DeletePropertyFromCollectionTests
 
         var source1 = testExtent.element("dm:///source/#source1");
         var source2 = testExtent.element("dm:///source/#source2");
-        var source1_1 = testExtent.element("dm:///source/#source1.1");
-        var source1_2 = testExtent.element("dm:///source/#source1.2");
+        var source11 = testExtent.element("dm:///source/#source1.1");
+        var source12 = testExtent.element("dm:///source/#source1.2");
 
         Assert.That(source1, Is.Not.Null);
-        Assert.That(source1_1, Is.Not.Null);
-        Assert.That(source1_2, Is.Not.Null);
+        Assert.That(source11, Is.Not.Null);
+        Assert.That(source12, Is.Not.Null);
         Assert.That(source2, Is.Not.Null);
 
-        Assert.That(source1.getOrDefault<string>("test"), Is.EqualTo("test"));
-        Assert.That(source1_1.getOrDefault<string>("test"), Is.EqualTo(null));
-        Assert.That(source1_2.getOrDefault<string>("test"), Is.EqualTo("test"));
-        Assert.That(source2.getOrDefault<string>("test"), Is.EqualTo("test"));
+        Assert.That(source1!.getOrDefault<string>("test"), Is.EqualTo("test"));
+        Assert.That(source11!.getOrDefault<string>("test"), Is.EqualTo(null));
+        Assert.That(source12!.getOrDefault<string>("test"), Is.EqualTo("test"));
+        Assert.That(source2!.getOrDefault<string>("test"), Is.EqualTo("test"));
     }
 
     public IUriExtent CreateTestExtent(ActionLogic actionLogic)
@@ -122,10 +122,10 @@ public class DeletePropertyFromCollectionTests
         var sourceElement1 = sourceFactory.create(_CommonTypes.TheOne.Default.__Package)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1", ["test"] = "test"})
             .SetId("source1");
-        var sourceElement1_1 = sourceFactory.create(_Actions.TheOne.__EchoAction)
+        var sourceElement11 = sourceFactory.create(_Actions.TheOne.__EchoAction)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1.1", ["test"] = "test"})
             .SetId("source1.1");
-        var sourceElement1_2 = sourceFactory.create(_Actions.TheOne.OSIntegration.__CommandExecutionAction)
+        var sourceElement12 = sourceFactory.create(_Actions.TheOne.OSIntegration.__CommandExecutionAction)
             .SetProperties(new Dictionary<string, object> {["name"] = "source1.2", ["test"] = "test"})
             .SetId("source1.2");
         var sourceElement2 = sourceFactory.create(_Actions.TheOne.__EchoAction)
@@ -133,7 +133,7 @@ public class DeletePropertyFromCollectionTests
             .SetId("source2");
             
         sourceElement1.set(_UML._Packages._Package.packagedElement,
-            new[] {sourceElement1_1, sourceElement1_2});
+            new[] {sourceElement11, sourceElement12});
         sourceExtent.elements().add(sourceElement1);
         sourceExtent.elements().add(sourceElement2);
 

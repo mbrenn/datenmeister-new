@@ -47,6 +47,11 @@ public class DataViewExtent : IUriExtent, IUriResolver, IHasExtentConfiguration
     {
         _dataViewElement.set(property, value);
     }
+    
+    public T getOrDefault<T>(string property)
+    {
+        return _dataViewElement.getOrDefault<T>(property);
+    }
 
     public bool isSet(string property) =>
         _dataViewElement.isSet(property);

@@ -84,8 +84,8 @@ public class ExtentManagerTests
         Assert.That(result.providerLoader, Is.Not.Null);
         Assert.That(result.loadConfiguration, Is.Not.Null);
             
-        Assert.That(result.providerLoader, Is.TypeOf(typeof(InMemoryProviderLoader)));
-        Assert.That(result.loadConfiguration.getOrDefault<string>("Test"), Is.EqualTo("test"));
+        Assert.That(result.providerLoader, Is.TypeOf(typeof(InMemoryProviderLoader))); ;
+        Assert.That(result.loadConfiguration!.getOrDefault<string>("Test"), Is.EqualTo("test"));
     }
 
     [Test]

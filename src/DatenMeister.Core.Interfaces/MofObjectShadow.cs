@@ -26,6 +26,8 @@ public class MofObjectShadow(string uri) : IElement, IKnowsUri
 
     public object? get(string property) => null;
 
+    public T getOrDefault<T>(string property) => default!;
+
     public void set(string property, object? value)
     {
         throw new NotImplementedException("This is just a shadow object which cannot store data");

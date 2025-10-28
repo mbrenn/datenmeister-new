@@ -29,7 +29,7 @@ public class TemporaryExtentTests
             ResolveType.Default) as IElement;
 
         Assert.That(found, Is.Not.Null);
-        Assert.That(found.getOrDefault<string>("name"), Is.EqualTo("Yes"));
+        Assert.That(found!.getOrDefault<string>("name"), Is.EqualTo("Yes"));
     }
 
     [Test]

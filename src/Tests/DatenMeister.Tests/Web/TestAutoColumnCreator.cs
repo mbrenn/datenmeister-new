@@ -52,7 +52,7 @@ public class TestAutoColumnCreator
         var tab = result!.getOrDefault<IReflectiveCollection>(_Forms._CollectionForm.tab)
             .Select(x => x as IElement).FirstOrDefault();
         Assert.That(tab, Is.Not.Null);
-        Assert.That(tab
+        Assert.That(tab!
             .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
             .OfType<IElement>()
             .Count(x => x.getMetaClass()!.ToString()!.Contains("TextFieldData")), Is.EqualTo(2));
@@ -69,7 +69,7 @@ public class TestAutoColumnCreator
         Assert.That(firstColumn, Is.Not.Null);
         Assert.That(secondColumn, Is.Not.Null);
 
-        Assert.That(firstColumn.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
+        Assert.That(firstColumn!.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
     }
 
     [Test]
@@ -118,7 +118,7 @@ public class TestAutoColumnCreator
         
         Assert.That(tab, Is.Not.Null);
 
-        Assert.That(tab
+        Assert.That(tab!
                 .getOrDefault<IReflectiveCollection>(_Forms._RowForm.field)
                 .OfType<IElement>()
                 .Count(x => x.getMetaClass()?.ToString()?.Contains("TextFieldData") == true),
@@ -150,7 +150,7 @@ public class TestAutoColumnCreator
         Assert.That(secondColumn, Is.Not.Null);
         Assert.That(thirdColumn, Is.Not.Null);
 
-        Assert.That(firstColumn.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
-        Assert.That(secondColumn.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
+        Assert.That(firstColumn!.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
+        Assert.That(secondColumn!.getOrDefault<bool>(_Forms._FieldData.isEnumeration), Is.False);
     }
 }

@@ -7,7 +7,6 @@ using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Forms;
 using DatenMeister.HtmlEngine;
@@ -71,11 +70,11 @@ public static class ControlFactory
                 htmlId, functionName, contextWorkspace, contextExtent, itemId);
         }
 
-        (IWorkspace? workspace, IUriExtent? extent, string? itemId) GetWorkspaceExtentAndItemId(IObject item)
+        (IWorkspace? workspace, IUriExtent? extent, string? itemId) GetWorkspaceExtentAndItemId(IObject innerItem)
         {
-            var extent = item?.GetUriExtentOf();
+            var extent = innerItem?.GetUriExtentOf();
             var workspace = extent?.GetWorkspace();
-            var itemId = (item as IHasId)?.Id ?? string.Empty;
+            var itemId = (innerItem as IHasId)?.Id ?? string.Empty;
             return (workspace, extent, itemId);
         }
 
@@ -257,7 +256,7 @@ public static class ControlFactory
     /// <returns>Returned element for the </returns>
     public static object? GetValueOfElement(IObject element, IElement field)
     {
-        var fieldMetaClass = field?.getMetaClass();
+        var fieldMetaClass = field.getMetaClass();
         if (fieldMetaClass?.equals(_Forms.TheOne.__MetaClassElementFieldData) == true)
         {
             return (element as MofElement)?.getMetaClass(false);
@@ -267,11 +266,11 @@ public static class ControlFactory
         if (fieldMetaClass?.equals(_Forms.TheOne.__EvalTextFieldData) == true)
         {
             var cellInformation = InMemoryObject.CreateEmpty();
-            var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;
+            var defaultText = !string.IsNullOrEmpty(name) ? element.getOrDefault<string>(name) : string.Empty;
             cellInformation.set("text", defaultText);
 
             var evalProperties = field.getOrDefault<string>(_Forms._EvalTextFieldData.evalCellProperties);
-            if (evalProperties != null)
+            if (!string.IsNullOrEmpty(evalProperties))
             {
                 defaultText = TextTemplateEngine.Parse(
                     evalProperties,

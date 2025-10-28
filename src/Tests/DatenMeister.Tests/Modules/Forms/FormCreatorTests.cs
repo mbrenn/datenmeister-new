@@ -42,7 +42,7 @@ public class FormCreatorTests
                 }, context).Forms.FirstOrDefault();
         Assert.That(createdForm, Is.Not.Null);
         var fields =
-            createdForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
+            createdForm!.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field)
                 ?.OfType<IElement>()
                 .ToList();
         Assert.That(fields, Is.Not.Null);
@@ -129,7 +129,7 @@ public class FormCreatorTests
         var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
-        var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         Assert.That(fields, Is.Not.Null);
 
         var any = false;
@@ -170,7 +170,7 @@ public class FormCreatorTests
         var detailForm = FormMethods.GetRowForms(createdForm!).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
-        var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         Assert.That(fields, Is.Not.Null);
 
         var any = false;
@@ -301,7 +301,7 @@ public class FormCreatorTests
         Assert.That(listForm, Is.Not.Null);
 
         var defaultTypesForNewElements =
-            listForm.getOrDefault<IReflectiveSequence>(_Forms._TableForm.defaultTypesForNewElements);
+            listForm!.getOrDefault<IReflectiveSequence>(_Forms._TableForm.defaultTypesForNewElements);
         Assert.That(
             defaultTypesForNewElements.OfType<IElement>().Any(
                 x => x.getOrDefault<IElement>(_Forms._DefaultTypeForNewElement.metaClass)

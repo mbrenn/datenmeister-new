@@ -270,14 +270,14 @@ public class DotNetExtentTests
         var nonSpouseElement =
             extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
         Assert.That(nonSpouseElement, Is.Not.Null);
-        Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse"), Is.Not.Null);
+        Assert.That(nonSpouseElement!.getOrDefault<IElement>("Spouse"), Is.Not.Null);
         Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
             Is.EqualTo("Spouse"));
 
         var children = nonSpouseElement.getOrDefault<IReflectiveCollection>("Children");
         Assert.That(children, Is.Not.Null);
-        Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child1"));
-        Assert.That((children.ElementAt(1) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child2"));
+        Assert.That((children.ElementAt(0) as IElement)!.getOrDefault<string>("Name"), Is.EqualTo("Child1"));
+        Assert.That((children.ElementAt(1) as IElement)!.getOrDefault<string>("Name"), Is.EqualTo("Child2"));
     }
 
     [Test]
@@ -343,14 +343,14 @@ public class DotNetExtentTests
         var nonSpouseElement =
             extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
         Assert.That(nonSpouseElement, Is.Not.Null);
-        Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse"), Is.Not.Null);
+        Assert.That(nonSpouseElement!.getOrDefault<IElement>("Spouse"), Is.Not.Null);
         Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
             Is.EqualTo("Spouse"));
 
         var children = nonSpouseElement.getOrDefault<IReflectiveCollection>("Children");
         Assert.That(children, Is.Not.Null);
-        Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child1"));
-        Assert.That((children.ElementAt(1) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child2"));
+        Assert.That((children.ElementAt(0) as IElement)!.getOrDefault<string>("Name"), Is.EqualTo("Child1"));
+        Assert.That((children.ElementAt(1) as IElement)!.getOrDefault<string>("Name"), Is.EqualTo("Child2"));
 
         // Now the challange... change the content in the other extent and it should be reflected here. 
         spouseElement!.set("Name", "New Spouse");
@@ -360,7 +360,7 @@ public class DotNetExtentTests
             Is.EqualTo("New Spouse"));
 
         children = nonSpouseElement.getOrDefault<IReflectiveCollection>("Children");
-        Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("New Child"));
+        Assert.That((children.ElementAt(0) as IElement)!.getOrDefault<string>("Name"), Is.EqualTo("New Child"));
     }
 
     internal static MofUriExtent Initialize()

@@ -41,7 +41,7 @@ public class MoveUpDownActionTests
 
         // Check, that i2 is on 2nd position
         Assert.That(
-            (extent.elements().ElementAt(1) as IElement).getOrDefault<string>("name"),
+            (extent.elements().ElementAt(1) as IElement)!.getOrDefault<string>("name"),
             Is.EqualTo("i2")
         );
         Assert.That(
@@ -66,7 +66,7 @@ public class MoveUpDownActionTests
             
         // Check, that i2 is on 1st position
         Assert.That(
-            (extent.elements().ElementAt(0) as IElement).getOrDefault<string>("name"),
+            (extent.elements().ElementAt(0) as IElement)!.getOrDefault<string>("name"),
             Is.EqualTo("i2")
         );
             
@@ -88,7 +88,7 @@ public class MoveUpDownActionTests
             
         // Check, that i2 is on 3rd position
         Assert.That(
-            (extent.elements().ElementAt(2) as IElement).getOrDefault<string>("name"),
+            (extent.elements().ElementAt(2) as IElement)!.getOrDefault<string>("name"),
             Is.EqualTo("i2")
         );
     }
@@ -124,7 +124,7 @@ public class MoveUpDownActionTests
 
         // Check, that i2 is on 2nd position
         Assert.That(
-            (collection.ElementAt(1) as IElement).getOrDefault<string>("name"),
+            (collection.ElementAt(1) as IElement)!.getOrDefault<string>("name"),
             Is.EqualTo("i2")
         );
 
@@ -149,7 +149,7 @@ public class MoveUpDownActionTests
             
         // Check, that i2 is on 1st position
         Assert.That(
-            (collection.ElementAt(0) as IElement).getOrDefault<string>("name"),
+            (collection.ElementAt(0) as IElement)!.getOrDefault<string>("name"),
             Is.EqualTo("i2")
         );
             
@@ -174,7 +174,7 @@ public class MoveUpDownActionTests
             
         // Check, that i2 is on 3rd position
         Assert.That(
-            (collection.ElementAt(2) as IElement).getOrDefault<string>("name"),
+            (collection.ElementAt(2) as IElement)!.getOrDefault<string>("name"),
             Is.EqualTo("i2")
         );
     }

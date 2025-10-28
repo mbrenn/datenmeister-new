@@ -221,6 +221,11 @@ public class MofExtent :
         return MetaXmiElement.get(property);
     }
 
+    public T getOrDefault<T>(string property)
+    {
+        return ObjectHelper.getOrDefault<T>(this, property);
+    }
+
     /// <inheritdoc />
     public void set(string property, object? value)
     {

@@ -154,7 +154,7 @@ public class XmiProviderTests
         var element = mofExtent.elements().First() as IElement;
         Assert.That(element, Is.Not.Null);
 
-        var result = element.getOrDefault<IReflectiveCollection>("test");
+        var result = element!.getOrDefault<IReflectiveCollection>("test");
         Assert.That(result, Is.Not.Null);
 
         Assert.That(result.Count(), Is.EqualTo(4));

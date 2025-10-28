@@ -68,7 +68,7 @@ public class FormFinder
         var foundForms = new List<FoundForm>();
         var queryViewModeIds = query.ViewModeId.Split(' ');
 
-        foreach (var element in formAssociations)
+        foreach (var element in formAssociations.OfType<IElement>())
         {
             InternalDebug("-");
             if (element is IHasId hasId)
@@ -89,22 +89,22 @@ public class FormFinder
             var associationExtentType =
                 element.getOrDefault<string>(_Forms._FormAssociation.extentType);
             var associationMetaClass =
-                element.getOrDefault<IElement>(_Forms._FormAssociation.metaClass);
+                element.getOrDefault<IElement?>(_Forms._FormAssociation.metaClass);
             var associationViewType =
                 element.getOrNull<_Forms.___FormType>(_Forms._FormAssociation.formType);
             var associationParentMetaclass =
-                element.getOrDefault<IElement>(_Forms._FormAssociation.parentMetaClass);
+                element.getOrDefault<IElement?>(_Forms._FormAssociation.parentMetaClass);
             var associationParentProperty =
                 element.getOrDefault<string>(_Forms._FormAssociation.parentProperty);
-            var associationForm = element.getOrDefault<IElement>(_Forms._FormAssociation.form);
+            var associationForm = element.getOrDefault<IElement?>(_Forms._FormAssociation.form);
             var associationWorkspaceId = element.getOrDefault<string>(_Forms._FormAssociation.workspaceId);
             var associationExtentUri = element.getOrDefault<string>(_Forms._FormAssociation.extentUri);
             var associationViewModeId =
                 element.getOrDefault<string>(_Forms._FormAssociation.viewModeId);
             if (string.IsNullOrEmpty(associationExtentType) && associationMetaClass == null
                                                             && associationParentMetaclass == null
-                                                            && associationParentProperty == null
-                                                            && associationViewModeId == null
+                                                            && string.IsNullOrEmpty(associationParentProperty)
+                                                            && string.IsNullOrEmpty(associationViewModeId)
                                                             && associationViewType == null
                                                             && string.IsNullOrEmpty(associationWorkspaceId)
                                                             && string.IsNullOrEmpty(associationExtentUri))

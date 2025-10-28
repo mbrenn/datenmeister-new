@@ -9,6 +9,8 @@ public interface IObject
 
     object? get(string property);
 
+    T getOrDefault<T>(string property);
+
     void set(string property, object? value);
 
     bool isSet(string property);

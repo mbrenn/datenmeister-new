@@ -16,6 +16,11 @@ public class ExtentPropertyObject(IExtent extent) : IObject, IObjectAllPropertie
     public object? get(string property) => _extent.get(property);
 
     public void set(string property, object? value) => _extent.set(property, value);
+    
+    public T getOrDefault<T>(string property)
+    {
+        return _extent.getOrDefault<T>(property);
+    }
 
     public bool isSet(string property) => _extent.isSet(property);
 

@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
+﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Core.Runtime.Proxies;
 
@@ -12,6 +13,11 @@ public class ProxyIdElement(IObject element, string id) : IElement, IHasId
     public object? get(string property)
     {
         return element.get(property);
+    }
+
+    public T getOrDefault<T>(string property)
+    {
+        return ObjectHelper.getOrDefault<T>(this, property);
     }
 
     public void set(string property, object? value)

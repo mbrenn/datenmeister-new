@@ -145,7 +145,7 @@ public class XmiTests
 
         var firstElement = generalizedElements.ElementAtOrDefault(0) as IElement;
         Assert.That(firstElement, Is.Not.Null);
-        var generalContent = firstElement.getOrDefault<IElement>(generalProperty);
+        var generalContent = firstElement!.getOrDefault<IElement>(generalProperty);
         Assert.That(generalContent, Is.InstanceOf<IElement>());
         Assert.That(generalContent.equals(_UML.TheOne.CommonStructure.__PackageableElement));
     }

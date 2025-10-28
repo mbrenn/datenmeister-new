@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
@@ -77,6 +78,12 @@ public class ProxyUriExtent : IUriExtent
     /// <inheritdoc />
     public object? get(string property) => Extent.get(property);
 
+
+    public T getOrDefault<T>(string property)
+    {
+        return ObjectHelper.getOrDefault<T>(this, property);
+    }
+    
     /// <inheritdoc />
     public void set(string property, object? value)
     {

@@ -159,6 +159,11 @@ public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExten
     /// <inheritdoc />
     public object? get(string property)
         => get(property, false, ObjectType.None);
+    
+    public T getOrDefault<T>(string property)
+    {
+        return ObjectHelper.getOrDefault<T>(this, property);
+    }
 
     // ReSharper disable once InconsistentNaming
     public virtual object? get(string property, bool noReferences, ObjectType objectType)

@@ -44,7 +44,7 @@ public class ManagementProviderTests
         var newUserConfiguration = extentManager.GetLoadConfigurationFor((newUsers as IUriExtent)!);
         Assert.That(newUserConfiguration, Is.Not.Null);
         Assert.That(
-            newUserConfiguration.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
+            newUserConfiguration!.getOrDefault<string>(_ExtentLoaderConfigs._ExtentLoaderConfig
                 .extentUri), Is.EqualTo("dm:///newusers"));
     }
 
@@ -55,7 +55,7 @@ public class ManagementProviderTests
 
         var firstWorkspace = extent.elements().OfType<IElement>().FirstOrDefault();
         Assert.That(firstWorkspace, Is.Not.Null);
-        Assert.That(firstWorkspace.getOrDefault<string>(_Management._Workspace.id),
+        Assert.That(firstWorkspace!.getOrDefault<string>(_Management._Workspace.id),
             Is.EqualTo("Data"));
 
         var extents =
@@ -118,13 +118,14 @@ public class ManagementProviderTests
 
         var firstWorkspace = extent.elements().OfType<IElement>().FirstOrDefault();
         Assert.That(firstWorkspace, Is.Not.Null);
-        Assert.That(firstWorkspace.getOrDefault<string>(_Management._Workspace.id),
+        Assert.That(firstWorkspace!.getOrDefault<string>(_Management._Workspace.id),
             Is.EqualTo("Data"));
 
         var extents =
             firstWorkspace.getOrDefault<IReflectiveCollection>(_Management._Workspace.extents);
         var foundExtent = extents.ElementAt(0) as IElement;
-        var properties = foundExtent.getOrDefault<IElement>(_Management._Extent.properties);
+        Assert.That(foundExtent, Is.Not.Null);
+        var properties = foundExtent!.getOrDefault<IElement>(_Management._Extent.properties);
         Assert.That(properties, Is.Not.Null);
         Assert.That(properties.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
         Assert.That(properties.getOrDefault<string>(MofUriExtent.UriPropertyName), Is.EqualTo("dm:///test"));
@@ -142,19 +143,19 @@ public class ManagementProviderTests
             ExtentManagementHelper.GetUrlOfWorkspace(
                 workspaceLogic.GetDataWorkspace()));
         Assert.That(data, Is.Not.Null);
-        Assert.That(data.getOrDefault<string>(_Management._Workspace.id), Is.EqualTo("Data"));
+        Assert.That(data!.getOrDefault<string>(_Management._Workspace.id), Is.EqualTo("Data"));
 
         var extentData = workspaceLogic.FindElement(
             ExtentManagementHelper.GetUrlOfExtent(
                 workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
         Assert.That(extentData, Is.Not.Null);
-        Assert.That(extentData.getOrDefault<string>(_Management._Extent.uri),
+        Assert.That(extentData!.getOrDefault<string>(_Management._Extent.uri),
             Is.EqualTo("dm:///test"));
 
         var extentProperties = workspaceLogic.FindElement(
             ExtentManagementHelper.GetUrlOfExtentsProperties(
                 workspaceLogic.GetDataWorkspace(), loadedExtent.Extent));
         Assert.That(extentProperties, Is.Not.Null);
-        Assert.That(extentProperties.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
+        Assert.That(extentProperties!.getOrDefault<string>("name"), Is.EqualTo("Brenn"));
     }
 }

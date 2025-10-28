@@ -68,7 +68,7 @@ public class CsvLoader(IWorkspaceLogic? workspaceLogic)
         }
 
         using var streamReader = new StreamReader(stream, Encoding.GetEncoding(
-            settings.getOrDefault<string>(_ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8"));
+            settings?.getOrDefault<string>(_ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8"));
         var tempColumns = columns?.OfType<string>().ToList();
                 
         if (tempColumns == null)

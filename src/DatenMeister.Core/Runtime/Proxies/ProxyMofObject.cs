@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
+﻿using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 namespace DatenMeister.Core.Runtime.Proxies;
 
@@ -19,6 +20,11 @@ public class ProxyMofObject(IObject value) : IHasProxiedObject, IObject, IObject
 
     public virtual object? get(string property) =>
         Object.get(property);
+    
+    public T getOrDefault<T>(string property)
+    {
+        return ObjectHelper.getOrDefault<T>(this, property);
+    }
 
     public virtual void set(string property, object? value)
     {

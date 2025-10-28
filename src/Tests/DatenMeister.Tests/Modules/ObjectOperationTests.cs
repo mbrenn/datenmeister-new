@@ -121,16 +121,18 @@ public class ObjectOperationTests
             elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "package");
         var husbandRoot = elements.FirstOrDefault(x => x.getOrDefault<string>("name") == "husband root");
         Assert.That(husbandRoot, Is.Not.Null);
+        Assert.That(copyRoot, Is.Not.Null);
+        Assert.That(copyPackage, Is.Not.Null);
 
         Assert.That(
-            copyRoot.getOrDefault<IElement>("child").getOrDefault<string>("name"),
+            copyRoot!.getOrDefault<IElement>("child").getOrDefault<string>("name"),
             Is.EqualTo("child root"));
         Assert.That(
             copyRoot.getOrDefault<IElement>("husband").getOrDefault<string>("name"),
             Is.EqualTo("husband root"));
 
         var packageChildren =
-            copyPackage.getOrDefault<IReflectiveCollection>("packagedElement")
+            copyPackage!.getOrDefault<IReflectiveCollection>("packagedElement")
                 .OfType<IElement>().ToList();
 
         Assert.That(packageChildren.Count, Is.EqualTo(2));
@@ -140,10 +142,10 @@ public class ObjectOperationTests
         var copyInPackage =
             packageChildren.FirstOrDefault(x => x.getOrDefault<string>("name") == "inpackage");
         Assert.That(packageChildren.FirstOrDefault(x => x.getOrDefault<string>("name") == "husband package"), Is.Not.Null);
-
+        Assert.That(copyInPackage, Is.Not.Null);
 
         Assert.That(
-            copyInPackage.getOrDefault<IElement>("child").getOrDefault<string>("name"),
+            copyInPackage!.getOrDefault<IElement>("child").getOrDefault<string>("name"),
             Is.EqualTo("child package"));
         Assert.That(
             copyInPackage.getOrDefault<IElement>("husband").getOrDefault<string>("name"),

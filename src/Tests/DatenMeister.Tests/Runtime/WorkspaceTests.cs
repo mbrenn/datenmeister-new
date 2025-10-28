@@ -155,7 +155,7 @@ public class WorkspaceTests
             
         var found2 = workSpaceCollection.FindObject(WorkspaceNames.WorkspaceData, "dm:///unittest#yes");
         Assert.That(found2, Is.Not.Null);
-        Assert.That(found2.getOrDefault<string>("name"), Is.EqualTo("Yes"));
+        Assert.That(found2!.getOrDefault<string>("name"), Is.EqualTo("Yes"));
     }
         
     /// <summary>

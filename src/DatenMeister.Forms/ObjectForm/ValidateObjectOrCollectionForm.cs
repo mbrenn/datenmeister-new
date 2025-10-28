@@ -30,7 +30,7 @@ public class ValidateObjectOrCollectionForm : FormFactoryBase, IObjectFormFactor
             // We do not need to check anything, because it is already invalid
         }
 
-        var form = result.Form;
+        var form = result.Form ?? throw new InvalidOperationException("Form is null");
 
         Debug.Assert(_Forms._CollectionForm.tab == _Forms._ObjectForm.tab);
 

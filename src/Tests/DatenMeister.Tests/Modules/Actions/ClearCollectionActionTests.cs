@@ -43,7 +43,7 @@ public class ClearCollectionActionTests
         Assert.That(source.elements().Count(), Is.GreaterThan(0));
         var source1 = source.elements().First() as IElement;
         Assert.That(source1, Is.Not.Null);
-        var packages = source1.getOrDefault<IReflectiveCollection>("packagedElement");
+        var packages = source1!.getOrDefault<IReflectiveCollection>("packagedElement");
         Assert.That(packages, Is.Not.Null);
         Assert.That(packages.Count(), Is.GreaterThan(0));
             

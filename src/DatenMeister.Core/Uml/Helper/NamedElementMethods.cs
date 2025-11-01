@@ -15,7 +15,7 @@ namespace DatenMeister.Core.Uml.Helper;
 /// <summary>
 /// Defines some helper methods for NamedElements
 /// </summary>
-public class NamedElementMethods
+public static class NamedElementMethods
 {
     private const int MaxDepth = 1000;
 

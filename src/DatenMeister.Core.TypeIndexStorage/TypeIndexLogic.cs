@@ -1,9 +1,12 @@
 using System.Formats.Asn1;
 using BurnSystems.Logging;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Common;
+using DatenMeister.Core.Interfaces.MOF.Identifiers;
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces.Workspace;
 using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.TypeIndexAssembly.Helper;
 using DatenMeister.Core.TypeIndexAssembly.Model;
 
 namespace DatenMeister.Core.TypeIndexAssembly;
@@ -56,6 +59,17 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
     /// </summary>
     private async Task TriggerUpdateOfIndex()
     {
+        lock (TypeIndexStore.IndexNotBuildingEvent)
+        {
+            if (!TypeIndexStore.IndexNotBuildingEvent.WaitOne(0))
+            {
+                Logger.Info("We received a trigger, but the index is already being built.");
+            }
+
+            // We reset the event, so we are sure 
+            TypeIndexStore.IndexNotBuildingEvent.Reset();
+        }
+
         while (true)
         {
             if (_isIndexing)
@@ -63,7 +77,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
                 _triggerOccuredDuringIndexing = true;
                 return;
             }
-
+        
             // Perform the updates
             Logger.Info("Trigger update of index");
             await Task.Run(PerformIndexing);
@@ -78,6 +92,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
 
             break;
         }
+        
+        TypeIndexStore.IndexNotBuildingEvent.Set();
     }
 
     /// <summary>
@@ -113,6 +129,8 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
             _lastIndexTime = DateTime.Now;
             
             SwapNextAndCurrentTypeData();
+            
+            storage.IndexBuiltEvent.Set();
         }
     }
 
@@ -122,46 +140,61 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
     /// <param name="indexData">Indexdata where the update will be stored</param>
     private void BuildWorkspace(TypeIndexData indexData)
     {
-        // First, we build the workspace dependency tree
-        foreach (var workspace in WorkspaceLogic.Workspaces)
+        using (var _ = new StopWatchLogger(Logger, "Building workspace dependency tree"))
         {
-            var model = new WorkspaceModel
+            // First, we build the workspace dependency tree
+            foreach (var workspace in WorkspaceLogic.Workspaces)
             {
-                WorkspaceId = workspace.id
-            };
-
-            foreach (var meta in workspace.MetaWorkspaces)
-            {
-                model.MetaclassWorkspaces.Add(meta.id);
-            }
-            
-            indexData.Workspaces.Add(model);
-        }
-        
-        // Now, we build the information about the metaclasses
-        foreach (var workspace in WorkspaceLogic.Workspaces)
-        {
-            if (!indexData.IsWorkspaceMetaClass(workspace.id))
-            {
-                // This is not a metaclass workspace
-                continue;
-            }
-            
-            Logger.Info("Building classes within workspace: " + workspace.id);
-            
-            // Now we go through the metaclasses
-            var workspaceModel = indexData.GetWorkspace(workspace.id)
-                ?? throw new InvalidOperationException("Workspace not found");
-            foreach (var extent in workspace.extent)
-            {
-                foreach (var element in extent.elements().OfType<IElement>())
+                var model = new WorkspaceModel
                 {
-                    AddClassesToWorkspace(workspaceModel, element);
+                    WorkspaceId = workspace.id
+                };
+
+                foreach (var meta in workspace.MetaWorkspaces)
+                {
+                    model.MetaclassWorkspaces.Add(meta.id);
+                }
+
+                indexData.Workspaces.Add(model);
+            }
+        }
+
+        using (var _ = new StopWatchLogger(Logger, "Building classes"))
+        {
+            // Now, we build the information about the metaclasses
+            foreach (var workspace in WorkspaceLogic.Workspaces)
+            {
+                if (!indexData.IsWorkspaceMetaClass(workspace.id))
+                {
+                    // This is not a metaclass workspace
+                    continue;
+                }
+
+                Logger.Info("Building classes within workspace: " + workspace.id);
+
+                // Now we go through the metaclasses
+                var workspaceModel = indexData.GetWorkspace(workspace.id)
+                                     ?? throw new InvalidOperationException("Workspace not found");
+                foreach (var extent in workspace.extent)
+                {
+                    Logger.Info(
+                        $"Building class within extent: {(extent as IUriExtent)?.contextURI() ?? "Unknown Uri"}");
+
+                    // Adds the extent to the workspace
+                    var extentInfo = new ExtentModel
+                    {
+                        Uri = (extent as IUriExtent)?.contextURI() ?? string.Empty
+                    };
+                    workspaceModel.Extents.Add(extentInfo);
+                    
+                    // Now we go through the elements and try to find the classes
+                    foreach (var element in extent.elements().OfType<IElement>())
+                    {
+                        AddClassesToWorkspace(workspaceModel, element);
+                    }
                 }
             }
         }
-        
-        Logger.Info($"Finished building workspace dependency tree: {indexData.Workspaces.Count} Workspaces indexed");
     }
 
     /// <summary>
@@ -175,10 +208,44 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
         if (element.isSet(_UML._Packages._Package.packagedElement))
         {
             // Ok, we have packaged element, gets all of them and return them
-            element.get(_UML._Packages._Package.packagedElement);
+            var packagedElements = 
+                element.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement).OfType<IElement>();
+            foreach (var packagedElement in packagedElements)
+            {
+                AddClassesToWorkspace(workspaceModel, packagedElement);
+            }
+        }
+        
+        // Check, if we are a classifier
+        if (element.getMetaClass()?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
+        {
+            AddClassToWorkspace(workspaceModel, element);
         }
     }
 
+    /// <summary>
+    /// Adds the specific class to the workspacemodel, so it can be easily looked up. 
+    /// </summary>
+    /// <param name="workspaceModel">Workspace Model to which the element will be added</param>
+    /// <param name="element">The element reflecting the class</param>
+    private void AddClassToWorkspace(WorkspaceModel workspaceModel, IElement element)
+    {
+        Logger.Info("Adding class " + element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name));
+        var classModel = new ClassModel
+        {
+            Id = (element as IHasId)?.Id ?? string.Empty,
+            Name = element.getOrDefault<string>(_UML._StructuredClassifiers._Class.name),
+            FullName = NamedElementMethods.GetFullName(element)
+        };
+
+        workspaceModel.ClassModels.Add(classModel);
+    }
+
+    /// <summary>
+    /// Swaps the active information of the TypeIndex after the index has been built up with the new.
+    /// This method is used to ensure that there is always one active typeindex available in case of an
+    /// update of the type information and while performing the re-index. 
+    /// </summary>
     private void SwapNextAndCurrentTypeData()
     {
         var storage = TypeIndexStore;
@@ -186,6 +253,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
         {
             storage.Current = storage.Next;
             storage.Next = null;
+            storage.IndexBuiltEvent.Set();
         }
     }
 }

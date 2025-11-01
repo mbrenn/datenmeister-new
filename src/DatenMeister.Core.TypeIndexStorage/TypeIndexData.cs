@@ -12,6 +12,15 @@ public class TypeIndexData
     /// </summary>
     public List<WorkspaceModel> Workspaces = new();
 
+    /// <summary>
+    /// Finds the workspace by giving the id within the workspace model list
+    /// </summary>
+    /// <param name="workspaceId">Id of the workspace</param>
+    /// <returns>The found workspace</returns>
+    public WorkspaceModel? FindWorkspace(string workspaceId)
+    {
+        return Workspaces.FirstOrDefault(x => x.WorkspaceId == workspaceId);
+    }
 
     /// <summary>
     /// Returns, if the workspace is being requested by one of the existing Workspaces

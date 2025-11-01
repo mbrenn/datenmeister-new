@@ -9,9 +9,18 @@ public class TestActivationWithinIntegration
     [Test]
     public async Task TestActivation()
     {
-        var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
         var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>();
         
         Assert.That(typeIndexStore, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task TestExistingOfIndexStore()
+    {
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>();
+        
+        Assert.That(typeIndexStore?.GetCurrentIndexStore(), Is.Not.Null);
     }
 }

@@ -10,7 +10,7 @@ public class TypeIndexStore
     /// <summary>
     /// Gets or sets the current data for the TypeIndexing
     /// </summary>
-    public TypeIndexData? Current { get; set; }
+    internal TypeIndexData? Current { get; set; }
     
     /// <summary>
     /// Gets or sets the next data for the TypeIndexing which will be swapped to the current data
@@ -23,13 +23,29 @@ public class TypeIndexStore
     public object SyncIndexSwapping { get; } = new();
     
     /// <summary>
+    /// This event is set, when the index is finished to be built. 
+    /// </summary>
+    public EventWaitHandle IndexBuiltEvent { get; } = new(false, EventResetMode.ManualReset);
+    
+    /// <summary>
+    /// This event is set while the index is not being built. It can be used
+    /// to be absolutely sure that the index has the most recent state. 
+    /// </summary>
+    public EventWaitHandle IndexNotBuildingEvent { get; } = new(true, EventResetMode.ManualReset);
+    
+    /// <summary>
     /// Defines the monitor for the building of the index.
     /// This monitor is held to be absolutely sure that only one indexing is happening at the same time. 
     /// </summary>
     public object SyncIndexBuild { get; } = new();
 
     /// <summary>
-    /// Gets or sets the value whether a waiting is currently ongoing
+    /// Gets the current index store. This method will wait until the index is built.
     /// </summary>
-    public bool IsWaiting;
+    /// <returns>The current type index data</returns>
+    public TypeIndexData GetCurrentIndexStore()
+    {
+        IndexBuiltEvent.WaitOne();
+        return Current ?? throw new InvalidOperationException("Current is null. This should not happen");
+    }
 }

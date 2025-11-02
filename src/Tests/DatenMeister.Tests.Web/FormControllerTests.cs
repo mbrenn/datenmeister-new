@@ -69,7 +69,7 @@ public class FormControllerTests
     [Test]
     public async Task TestDetailFormForDefaultButtons()
     {
-        var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
+        var (dm, zipExtent, _, formsInternal) = await CreateZipExtent();
         var firstElement = zipExtent.elements().First() as IElement;
         Assert.That(firstElement, Is.Not.Null);
         var foundForm = formsInternal.GetObjectFormForItemInternal(
@@ -80,7 +80,7 @@ public class FormControllerTests
         Assert.That(foundForm, Is.Not.Null);
         var detailForm = FormMethods.GetRowForms(foundForm).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
-        var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         var foundFields =
             fields.OfType<IElement>()
                 .Where(
@@ -98,7 +98,7 @@ public class FormControllerTests
     [Test]
     public async Task TestTableFormForDefaultButtons()
     {
-        var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
+        var (dm, zipExtent, _, formsInternal) = await CreateZipExtent();
         var foundForm = formsInternal.GetCollectionFormForExtentInternal(
             WorkspaceNames.WorkspaceData,
             zipExtent.contextURI(),
@@ -107,7 +107,7 @@ public class FormControllerTests
         Assert.That(foundForm, Is.Not.Null);
         var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
         Assert.That(listForm, Is.Not.Null);
-        var fields = listForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
+        var fields = listForm!.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
 
         var foundFields =
             fields.OfType<IElement>()
@@ -117,7 +117,7 @@ public class FormControllerTests
                         ItemsFormsPlugin.NavigationExtentsListDeleteItem)
                 .ToList();
 
-        Assert.That(foundFields.Any(), Is.True);
+        Assert.That(foundFields.Count != 0, Is.True);
         Assert.That(foundFields.Count, Is.EqualTo(1));
 
         foundFields =
@@ -128,7 +128,7 @@ public class FormControllerTests
                         ItemsFormsPlugin.NavigationExtentsListViewItem)
                 .ToList();
 
-        Assert.That(foundFields.Any(), Is.True);
+        Assert.That(foundFields.Count != 0, Is.True);
         Assert.That(foundFields.Count, Is.EqualTo(1));
             
         dm.Dispose();
@@ -137,7 +137,7 @@ public class FormControllerTests
     [Test]
     public async Task TestWorkspaceFormForViewExtentButtonInTableForm()
     {
-        var (dm, zipExtent, formsController, formsInternal) = await CreateZipExtent();
+        var (dm, _, _, formsInternal) = await CreateZipExtent();
         var foundForm = formsInternal.GetObjectFormForItemInternal(
             WorkspaceNames.WorkspaceManagement,
             WorkspaceNames.UriExtentWorkspaces + "#Data",
@@ -146,7 +146,7 @@ public class FormControllerTests
         Assert.That(foundForm, Is.Not.Null);
         var listForm = FormMethods.GetTableForms(foundForm).FirstOrDefault();
         Assert.That(listForm, Is.Not.Null);
-        var fields = listForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = listForm!.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
 
         // Check that field is at first five positions
         var firstField =
@@ -177,7 +177,7 @@ public class FormControllerTests
         Assert.That(form.getMetaClass()?.@equals(_Forms.TheOne.__ObjectForm), Is.True);
         var rowForm = FormMethods.GetRowForms(form).FirstOrDefault();
         Assert.That(rowForm, Is.Not.Null);
-        var fields = rowForm.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
+        var fields = rowForm!.getOrDefault<IReflectiveCollection>(_Forms._TableForm.field);
         Assert.That(fields.Count(), Is.GreaterThan(3));
 
         var positionLat = fields
@@ -199,7 +199,7 @@ public class FormControllerTests
         var detailForm = FormMethods.GetRowForms(form).FirstOrDefault();
         Assert.That(detailForm, Is.Not.Null);
 
-        var fields = detailForm.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
+        var fields = detailForm!.getOrDefault<IReflectiveCollection>(_Forms._RowForm.field);
         Assert.That(fields, Is.Not.Null);
         Assert.That(
             fields.OfType<IElement>().Any(x =>
@@ -284,8 +284,8 @@ public class FormControllerTests
 
         var zipController = new ZipController(dm.WorkspaceLogic, dm.ScopeStorage);
 
-        var extentsData = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)
-                          ?? throw new InvalidOperationException("No management workspace found");
+        _ = dm.WorkspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceData)
+            ?? throw new InvalidOperationException("No management workspace found");
             
         var result = await zipController.CreateZipExample(new ZipController.CreateZipExampleParam
         {

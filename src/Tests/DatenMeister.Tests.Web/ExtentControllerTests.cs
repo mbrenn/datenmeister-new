@@ -60,7 +60,8 @@ public class ExtentControllerTests
         var result = extentController.GetProperties(WorkspaceNames.WorkspaceData, "dm:///test");
         var deserializedGetProperties = JsonSerializer.Deserialize<MofObjectAsJson>(result.Value!);
         var getProperties = new DirectJsonDeconverter().ConvertToObject(deserializedGetProperties!);
-        Assert.That(getProperties.getOrDefault<string>(ExtentConfiguration.NameProperty), Is.EqualTo("name"));
+        Assert.That(getProperties, Is.Not.Null);
+        Assert.That(getProperties!.getOrDefault<string>(ExtentConfiguration.NameProperty), Is.EqualTo("name"));
         Assert.That(getProperties.getOrDefault<string>(ExtentConfiguration.ExtentTypeProperty),
             Is.EqualTo("extentType"));
     }

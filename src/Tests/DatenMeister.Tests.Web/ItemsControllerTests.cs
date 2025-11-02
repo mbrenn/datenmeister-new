@@ -61,7 +61,7 @@ public class ItemsControllerTests
         var item1 = example.element("#item1");
         Assert.That(item1, Is.Not.Null);
 
-        Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("item1"));
+        Assert.That(item1!.getOrDefault<string>("name"), Is.EqualTo("item1"));
 
         itemsController.UnsetProperty(
             WorkspaceNames.WorkspaceData,
@@ -253,7 +253,7 @@ public class ItemsControllerTests
         var first = rootElements.ElementAtOrDefault(0) as IElement;
         Assert.That(first, Is.Not.Null);
 
-        var list = first.getOrDefault<IReflectiveCollection>("reference");
+        var list = first!.getOrDefault<IReflectiveCollection?>("reference");
         Assert.That(list == null || list.size() == 0, Is.True);
 
         itemsController.AddReferenceToCollection(
@@ -296,9 +296,9 @@ public class ItemsControllerTests
         Assert.That(rootElements, Is.Not.Null);
         var first = rootElements.ElementAtOrDefault(0) as IElement;
         Assert.That(first, Is.Not.Null);
-        Assert.That(first.getOrDefault<string>("name"), Is.EqualTo("item1"));
+        Assert.That(first!.getOrDefault<string>("name"), Is.EqualTo("item1"));
 
-        var list = first.getOrDefault<IReflectiveCollection>("reference");
+        var list = first.getOrDefault<IReflectiveCollection?>("reference");
         Assert.That(list == null || list.size() == 0, Is.True);
 
         itemsController.SetPropertyReference(
@@ -314,6 +314,8 @@ public class ItemsControllerTests
         var asElement = first.getOrDefault<IElement>("reference");
         Assert.That(asElement, Is.Not.Null);
         Assert.That(asElement.getOrDefault<string>("name"), Is.EqualTo("item2"));
+        
+        dm.Dispose();
     }
 
     [Test]

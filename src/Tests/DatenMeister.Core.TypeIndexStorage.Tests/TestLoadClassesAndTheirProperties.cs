@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Runtime.Workspaces;
+﻿using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.TypeIndexAssembly;
 using NUnit.Framework;
 
@@ -30,5 +31,21 @@ public class TestLoadClassesAndTheirProperties
         Assert.That(
             classCommandLineApplication.Id,
             Is.EqualTo("CommonTypes.OSIntegration.CommandLineApplication"));
+        Assert.That(
+            classCommandLineApplication.Uri,
+            Is.EqualTo(_CommonTypes.TheOne.OSIntegration.__CommandLineApplication.Uri));
+    }
+
+    [Test]
+    public async Task TestGeneralizationsInClassModel()
+    {
+        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
+        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
+                             ?? throw new InvalidOperationException("TypeIndexStore not found");
+        
+        var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
+
+        var rowFlattenNode = typesWorkspace!.FindClassByUri(_DataViews.TheOne.Row.__RowFlattenNode.Uri);
+        Assert.That(rowFlattenNode,Is.Not.Null);
     }
 }

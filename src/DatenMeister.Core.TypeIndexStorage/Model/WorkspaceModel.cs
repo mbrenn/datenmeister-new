@@ -25,4 +25,14 @@ public class WorkspaceModel
     /// Stores all the class models for the models
     /// </summary>
     public List<ClassModel> ClassModels { get; } = new();
+
+    /// <summary>
+    /// Finds the class by the given uri.
+    /// </summary>
+    /// <param name="uri">Uri of the classmodel being looked for</param>
+    /// <returns>The found class model or null</returns>
+    public ClassModel? FindClassByUri(string uri)
+    {
+        return ClassModels.FirstOrDefault(x => x.Uri == uri);
+    }
 }

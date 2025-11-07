@@ -220,7 +220,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
         // Check, if we are a classifier
         if (element.getMetaClass()?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
         {
-            AddClassToWorkspace(workspaceModel, element);
+            workspaceModel.ClassModels.Add(CreateClassModel(workspaceModel, element));
         }
     }
 
@@ -229,7 +229,7 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
     /// </summary>
     /// <param name="workspaceModel">Workspace Model to which the element will be added</param>
     /// <param name="element">The element reflecting the class</param>
-    private void AddClassToWorkspace(WorkspaceModel workspaceModel, IElement element)
+    private ClassModel CreateClassModel(WorkspaceModel workspaceModel, IElement element)
     {
         Logger.Info("Adding class " + element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name));
         
@@ -257,8 +257,62 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
             }
         }
         
+        // Now get the properties / attributes
+        var ownedAttributes = element.getOrDefault<IReflectiveCollection?>(
+            _UML._StructuredClassifiers._Class.ownedAttribute);
+        if (ownedAttributes != null)
+        {
+            foreach (var attribute in ownedAttributes.OfType<IElement>())
+            {
+                classModel.Attributes.Add(CreateAttributeModel(attribute));
+            }
+        }
 
-        workspaceModel.ClassModels.Add(classModel);
+        return classModel;
+    }
+
+    private AttributeModel CreateAttributeModel(IElement attribute)
+    {
+        var attributeModel = new AttributeModel()
+        {
+            Name = attribute.getOrDefault<string>(_UML._Classification._Property.name),
+            TypeUrl =
+                (attribute.getOrDefault<IElement>(_UML._Classification._Property.type) as IKnowsUri)
+                ?.Uri ?? string.Empty,
+            Url = (attribute as IKnowsUri)?.Uri ?? string.Empty,
+            Id = (attribute as IHasId)?.Id ?? string.Empty
+        };
+        
+        var multiplier = attribute.getOrDefault<int>(_UML._Classification._Property.upperValue);
+        attributeModel.IsMultiple = multiplier is not (0 or 1);
+
+        var defaultValue = attribute.getOrDefault<object?>(_UML._Classification._Property.defaultValue);
+        if (defaultValue != null)
+        {
+            attributeModel.DefaultValue = defaultValue;
+        }
+        
+        var isComposite = attribute.getOrDefault<bool>(_UML._Classification._Property.isComposite);
+        if (isComposite)
+        {
+            attributeModel.IsComposite = true;
+        }
+        else
+        {
+            var typeUrl = attributeModel.TypeUrl;
+            if (typeUrl == _PrimitiveTypes.TheOne.__String.Uri
+                || typeUrl == _PrimitiveTypes.TheOne.__Integer.Uri
+                || typeUrl == _PrimitiveTypes.TheOne.__Boolean.Uri
+                || typeUrl == _PrimitiveTypes.TheOne.__Real.Uri
+                || typeUrl == _PrimitiveTypes.TheOne.__UnlimitedNatural.Uri
+                || typeUrl == Models._CommonTypes.TheOne.__DateTime.Uri)
+            {
+                attributeModel.IsComposite = true;
+            }
+        }
+        
+        return attributeModel;
+        
     }
 
     /// <summary>

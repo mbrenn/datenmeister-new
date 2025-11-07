@@ -1,5 +1,6 @@
 using System.Formats.Asn1;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Interfaces.MOF.Common;
 using DatenMeister.Core.Interfaces.MOF.Identifiers;
@@ -231,12 +232,31 @@ public class TypeIndexLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeS
     private void AddClassToWorkspace(WorkspaceModel workspaceModel, IElement element)
     {
         Logger.Info("Adding class " + element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name));
+        
+        // Add the class itself
         var classModel = new ClassModel
         {
             Id = (element as IHasId)?.Id ?? string.Empty,
             Name = element.getOrDefault<string>(_UML._StructuredClassifiers._Class.name),
-            FullName = NamedElementMethods.GetFullName(element)
+            FullName = NamedElementMethods.GetFullName(element),
+            Uri = (element as IKnowsUri)?.Uri ?? string.Empty
         };
+        
+        // Get th Generalizations of the class
+        var generalizations = element.getOrDefault<IReflectiveCollection?>(_UML._StructuredClassifiers._Class.generalization);
+        if (generalizations != null)
+        {
+            foreach ( var generalization in generalizations.OfType<IElement>())
+            {
+                var general = generalization.getOrDefault<IElement?>(_UML._Classification._Generalization.general);
+                if (general is IKnowsUri uriGeneral)
+                {
+                    classModel.Generalizations.Add(uriGeneral.Uri);
+                    Console.WriteLine(uriGeneral.Uri);
+                }
+            }
+        }
+        
 
         workspaceModel.ClassModels.Add(classModel);
     }

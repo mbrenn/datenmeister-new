@@ -57,7 +57,7 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("tagOwner");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("tagOwner");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
                 }
                 set 
@@ -78,7 +78,7 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("ownedComment");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("ownedComment");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Comment_Wrapper(foundElement);
                 }
                 set 
@@ -99,7 +99,7 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("ownedElement");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("ownedElement");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
                 }
                 set 
@@ -120,7 +120,7 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("owner");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("owner");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.CommonStructure.Element_Wrapper(foundElement);
                 }
                 set 
@@ -313,7 +313,7 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("association");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("association");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Association_Wrapper(foundElement);
                 }
                 set 
@@ -388,7 +388,7 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("package");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("package");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper(foundElement);
                 }
                 set 
@@ -445,7 +445,7 @@ public class MOF
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("metaclass");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("metaclass");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
                 }
                 set 

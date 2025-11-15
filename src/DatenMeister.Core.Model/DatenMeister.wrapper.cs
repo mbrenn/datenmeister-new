@@ -54,7 +54,7 @@ public class CommonTypes
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("preferredType");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("preferredType");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
                 }
                 set 
@@ -75,7 +75,7 @@ public class CommonTypes
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("preferredPackage");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("preferredPackage");
                     return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Packages.Package_Wrapper(foundElement);
                 }
                 set 
@@ -298,7 +298,7 @@ public class Actions
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("action");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("action");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Actions.Action_Wrapper(foundElement);
             }
             set 
@@ -724,7 +724,7 @@ public class Actions
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("metaClass");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("metaClass");
                 return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
             }
             set 
@@ -887,7 +887,7 @@ public class Actions
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("configuration");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("configuration");
                     return foundElement == null ? null : new DatenMeister.Core.Models.Reports.SimpleReportConfiguration_Wrapper(foundElement);
                 }
                 set 
@@ -960,7 +960,7 @@ public class Actions
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("reportInstance");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("reportInstance");
                     return foundElement == null ? null : new DatenMeister.Core.Models.Reports.AdocReportInstance_Wrapper(foundElement);
                 }
                 set 
@@ -1017,7 +1017,7 @@ public class Actions
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("reportInstance");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("reportInstance");
                     return foundElement == null ? null : new DatenMeister.Core.Models.Reports.HtmlReportInstance_Wrapper(foundElement);
                 }
                 set 
@@ -1285,7 +1285,7 @@ public class Actions
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("metaclass");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("metaclass");
                 return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
             }
             set 
@@ -1626,7 +1626,7 @@ public class Actions
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("query");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("query");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
                 }
                 set 
@@ -1911,7 +1911,7 @@ public class DataViews
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("viewNode");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("viewNode");
                 return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
             }
             set 
@@ -1964,7 +1964,7 @@ public class DataViews
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("nodes");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("nodes");
                 return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
             }
             set 
@@ -2053,7 +2053,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2119,7 +2119,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2168,7 +2168,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2217,7 +2217,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2258,7 +2258,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2328,7 +2328,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2377,7 +2377,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2542,7 +2542,7 @@ public class DataViews
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("input");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("input");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -2673,7 +2673,7 @@ public class Reports
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("elements");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("elements");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Reports.Elements.ReportElement_Wrapper(foundElement);
             }
             set 
@@ -2750,7 +2750,7 @@ public class Reports
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("reportDefinition");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("reportDefinition");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Reports.ReportDefinition_Wrapper(foundElement);
             }
             set 
@@ -2771,7 +2771,7 @@ public class Reports
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("sources");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("sources");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Reports.ReportInstanceSource_Wrapper(foundElement);
             }
             set 
@@ -2812,7 +2812,7 @@ public class Reports
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("reportDefinition");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("reportDefinition");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Reports.ReportDefinition_Wrapper(foundElement);
             }
             set 
@@ -2833,7 +2833,7 @@ public class Reports
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("sources");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("sources");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Reports.ReportInstanceSource_Wrapper(foundElement);
             }
             set 
@@ -2890,7 +2890,7 @@ public class Reports
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("reportDefinition");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("reportDefinition");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Reports.ReportDefinition_Wrapper(foundElement);
             }
             set 
@@ -2911,7 +2911,7 @@ public class Reports
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("sources");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("sources");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Reports.ReportInstanceSource_Wrapper(foundElement);
             }
             set 
@@ -3158,7 +3158,7 @@ public class Reports
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("viewNode");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("viewNode");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -3179,7 +3179,7 @@ public class Reports
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("form");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("form");
                     return foundElement == null ? null : new DatenMeister.Core.Models.Forms.TableForm_Wrapper(foundElement);
                 }
                 set 
@@ -3228,7 +3228,7 @@ public class Reports
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("viewNode");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("viewNode");
                     return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.ViewNode_Wrapper(foundElement);
                 }
                 set 
@@ -3249,7 +3249,7 @@ public class Reports
             {
                 get
                 {
-                    var foundElement = innerDmElement.getOrDefault<IElement>("elements");
+                    var foundElement = innerDmElement.getOrDefault<IElement?>("elements");
                     return foundElement == null ? null : new DatenMeister.Core.Models.Reports.Elements.ReportElement_Wrapper(foundElement);
                 }
                 set 
@@ -3444,7 +3444,7 @@ public class ExtentLoaderConfigs
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("columns");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("columns");
                 return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper(foundElement);
             }
             set 
@@ -3613,7 +3613,7 @@ public class ExtentLoaderConfigs
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("columns");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("columns");
                 return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper(foundElement);
             }
             set 
@@ -3790,7 +3790,7 @@ public class ExtentLoaderConfigs
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("columns");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("columns");
                 return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper(foundElement);
             }
             set 
@@ -4131,7 +4131,7 @@ public class ExtentLoaderConfigs
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("settings");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("settings");
                 return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.CsvSettings_Wrapper(foundElement);
             }
             set 
@@ -4273,7 +4273,7 @@ public class ExtentLoaderConfigs
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("metaClass");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("metaClass");
                 return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.StructuredClassifiers.Class_Wrapper(foundElement);
             }
             set 
@@ -4314,7 +4314,7 @@ public class ExtentLoaderConfigs
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("hierarchicalColumns");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("hierarchicalColumns");
                 return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition_Wrapper(foundElement);
             }
             set 
@@ -4447,7 +4447,7 @@ public class ExtentLoaderConfigs
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("columns");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("columns");
                 return foundElement == null ? null : new DatenMeister.Core.Models.ExtentLoaderConfigs.ExcelColumn_Wrapper(foundElement);
             }
             set 
@@ -4995,7 +4995,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("metaClass");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("metaClass");
                 return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper(foundElement);
             }
             set 
@@ -5032,7 +5032,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("parentMetaClass");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("parentMetaClass");
                 return foundElement == null ? null : new DatenMeister.Core.Models.EMOF.UML.Classification.Classifier_Wrapper(foundElement);
             }
             set 
@@ -5061,7 +5061,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("form");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("form");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
             }
             set 
@@ -5118,7 +5118,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("values");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("values");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.ValuePair_Wrapper(foundElement);
             }
             set 
@@ -5426,7 +5426,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("form");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("form");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
             }
             set 
@@ -5962,7 +5962,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("values");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("values");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.ValuePair_Wrapper(foundElement);
             }
             set 
@@ -6245,7 +6245,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("field");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("field");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldData_Wrapper(foundElement);
             }
             set 
@@ -6399,7 +6399,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("defaultTypesForNewElements");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("defaultTypesForNewElements");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.DefaultTypeForNewElement_Wrapper(foundElement);
             }
             set 
@@ -6429,7 +6429,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("field");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("field");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldData_Wrapper(foundElement);
             }
             set 
@@ -6450,7 +6450,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("sortingOrder");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("sortingOrder");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.SortingOrder_Wrapper(foundElement);
             }
             set 
@@ -6588,7 +6588,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("tab");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("tab");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
             }
             set 
@@ -6617,7 +6617,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("field");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("field");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.FieldData_Wrapper(foundElement);
             }
             set 
@@ -6714,7 +6714,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("tab");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("tab");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Forms.Form_Wrapper(foundElement);
             }
             set 
@@ -6990,7 +6990,7 @@ public class Forms
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("query");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("query");
                 return foundElement == null ? null : new DatenMeister.Core.Models.DataViews.QueryStatement_Wrapper(foundElement);
             }
             set 
@@ -7276,7 +7276,7 @@ public class Management
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("extents");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("extents");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Management.Extent_Wrapper(foundElement);
             }
             set 
@@ -7530,7 +7530,7 @@ public class Management
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("extentTypeSettings");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("extentTypeSettings");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Management.ExtentTypeSetting_Wrapper(foundElement);
             }
             set 
@@ -7551,7 +7551,7 @@ public class Management
         {
             get
             {
-                var foundElement = innerDmElement.getOrDefault<IElement>("propertyDefinitions");
+                var foundElement = innerDmElement.getOrDefault<IElement?>("propertyDefinitions");
                 return foundElement == null ? null : new DatenMeister.Core.Models.Management.ExtentPropertyDefinition_Wrapper(foundElement);
             }
             set 

@@ -33,7 +33,7 @@ public class WrapperTreeGenerator : WalkPackageClass
             "DatenMeister.Core.Interfaces.MOF.Reflection",
             "DatenMeister.Core.Interfaces",
             "DatenMeister.Core.Helper",
-            "using DatenMeister.Core.EMOF.Implementation"
+            "DatenMeister.Core.EMOF.Implementation"
         ]);
         
         WriteResharperComments();

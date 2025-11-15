@@ -1,5 +1,4 @@
 using DatenMeister.Core.Functions.Manipulation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using NUnit.Framework;
 

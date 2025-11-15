@@ -1,5 +1,4 @@
-﻿using DatenMeister.Core.Helper;
-using DatenMeister.Core.Provider.InMemory;
+﻿using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.TextTemplates;
 using NUnit.Framework;
 

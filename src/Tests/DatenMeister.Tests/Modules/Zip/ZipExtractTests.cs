@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using DatenMeister.Actions;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Zip.Model;
 using NUnit.Framework;

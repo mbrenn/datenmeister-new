@@ -1,7 +1,5 @@
 using DatenMeister.Core.Interfaces.MOF.Reflection;
 using DatenMeister.Core.Interfaces;
-using DatenMeister.Core.Helper;
-using DatenMeister.Core.EMOF.Implementation;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier

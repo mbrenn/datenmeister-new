@@ -31,9 +31,8 @@ public class ClassTreeGenerator : WalkPackageClass
     public override void Walk(IUriExtent extent)
     {
         WriteUsages([
-            "DatenMeister.Core.Interfaces.MOF.Reflection",
-            "DatenMeister.Core.EMOF.Implementation",
-            "DatenMeister.Core.Helper"
+            "DatenMeister.Core.Interfaces",
+            "DatenMeister.Core.Interfaces.MOF.Reflection"
         ]);
             
         WriteResharperComments();
@@ -64,7 +63,7 @@ public class ClassTreeGenerator : WalkPackageClass
 
         if (stack.Level == 0)
         {
-            Result.AppendLine($"{innerStack.Indentation}public static readonly _{name} TheOne = new _{name}();");
+            Result.AppendLine($"{innerStack.Indentation}public static readonly _{name} TheOne = new ();");
             Result.AppendLine();
         }
 
@@ -74,7 +73,7 @@ public class ClassTreeGenerator : WalkPackageClass
 
         if (stack.Level > 0)
         {
-            Result.AppendLine($"{stack.Indentation}public _{name} {name} = new _{name}();");
+            Result.AppendLine($"{stack.Indentation}public _{name} {name} = new ();");
             Result.AppendLine();
         }
     }
@@ -99,8 +98,8 @@ public class ClassTreeGenerator : WalkPackageClass
         Result.AppendLine($"{stack.Indentation}}}");
 
         Result.AppendLine();
-        Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
-        Result.AppendLine($"{stack.Indentation}public MofObjectShadow @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
+        Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new ();");
+        Result.AppendLine($"{stack.Indentation}public MofObjectShadow @__{name} = new (\"{asElement.GetUri()}\");");
         Result.AppendLine();
     }
 

@@ -16,8 +16,8 @@ public class _MOF
         {
         }
 
-        public _URIExtent @URIExtent = new _URIExtent();
-        public MofObjectShadow @__URIExtent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
+        public _URIExtent @URIExtent = new ();
+        public MofObjectShadow @__URIExtent = new ("dm:///_internal/model/mof#_MOF-Identifiers-URIExtent");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Identifiers-Extent",
             TypeKind = TypeKind.ClassTree)]
@@ -25,18 +25,18 @@ public class _MOF
         {
         }
 
-        public _Extent @Extent = new _Extent();
-        public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Identifiers-Extent");
+        public _Extent @Extent = new ();
+        public MofObjectShadow @__Extent = new ("dm:///_internal/model/mof#_MOF-Identifiers-Extent");
 
     }
 
-    public _Identifiers Identifiers = new _Identifiers();
+    public _Identifiers Identifiers = new ();
 
     public class _EMOF
     {
     }
 
-    public _EMOF EMOF = new _EMOF();
+    public _EMOF EMOF = new ();
 
     public class _CMOFExtension
     {
@@ -58,12 +58,12 @@ public class _MOF
 
         }
 
-        public _Tag @Tag = new _Tag();
-        public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag");
+        public _Tag @Tag = new ();
+        public MofObjectShadow @__Tag = new ("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag");
 
     }
 
-    public _CMOFExtension CMOFExtension = new _CMOFExtension();
+    public _CMOFExtension CMOFExtension = new ();
 
     public class _Extension
     {
@@ -82,12 +82,12 @@ public class _MOF
 
         }
 
-        public _Tag @Tag = new _Tag();
-        public MofObjectShadow @__Tag = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag");
+        public _Tag @Tag = new ();
+        public MofObjectShadow @__Tag = new ("dm:///_internal/model/mof#_MOF-Extension-Tag");
 
     }
 
-    public _Extension Extension = new _Extension();
+    public _Extension Extension = new ();
 
     public class _Common
     {
@@ -97,8 +97,8 @@ public class _MOF
         {
         }
 
-        public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
-        public MofObjectShadow @__ReflectiveSequence = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
+        public _ReflectiveSequence @ReflectiveSequence = new ();
+        public MofObjectShadow @__ReflectiveSequence = new ("dm:///_internal/model/mof#_MOF-Common-ReflectiveSequence");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection",
             TypeKind = TypeKind.ClassTree)]
@@ -106,18 +106,18 @@ public class _MOF
         {
         }
 
-        public _ReflectiveCollection @ReflectiveCollection = new _ReflectiveCollection();
-        public MofObjectShadow @__ReflectiveCollection = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection");
+        public _ReflectiveCollection @ReflectiveCollection = new ();
+        public MofObjectShadow @__ReflectiveCollection = new ("dm:///_internal/model/mof#_MOF-Common-ReflectiveCollection");
 
     }
 
-    public _Common Common = new _Common();
+    public _Common Common = new ();
 
     public class _CMOF
     {
     }
 
-    public _CMOF CMOF = new _CMOF();
+    public _CMOF CMOF = new ();
 
     public class _CMOFReflection
     {
@@ -127,8 +127,8 @@ public class _MOF
         {
         }
 
-        public _Factory @Factory = new _Factory();
-        public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
+        public _Factory @Factory = new ();
+        public MofObjectShadow @__Factory = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Factory");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Element",
             TypeKind = TypeKind.ClassTree)]
@@ -136,8 +136,8 @@ public class _MOF
         {
         }
 
-        public _Element @Element = new _Element();
-        public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
+        public _Element @Element = new ();
+        public MofObjectShadow @__Element = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Element");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Argument",
             TypeKind = TypeKind.ClassTree)]
@@ -151,8 +151,8 @@ public class _MOF
 
         }
 
-        public _Argument @Argument = new _Argument();
-        public MofObjectShadow @__Argument = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
+        public _Argument @Argument = new ();
+        public MofObjectShadow @__Argument = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Extent",
             TypeKind = TypeKind.ClassTree)]
@@ -160,8 +160,8 @@ public class _MOF
         {
         }
 
-        public _Extent @Extent = new _Extent();
-        public MofObjectShadow @__Extent = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
+        public _Extent @Extent = new ();
+        public MofObjectShadow @__Extent = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Extent");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Link",
             TypeKind = TypeKind.ClassTree)]
@@ -178,8 +178,8 @@ public class _MOF
 
         }
 
-        public _Link @Link = new _Link();
-        public MofObjectShadow @__Link = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
+        public _Link @Link = new ();
+        public MofObjectShadow @__Link = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Link");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-CMOFReflection-Exception",
             TypeKind = TypeKind.ClassTree)]
@@ -196,12 +196,12 @@ public class _MOF
 
         }
 
-        public _Exception @Exception = new _Exception();
-        public MofObjectShadow @__Exception = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception");
+        public _Exception @Exception = new ();
+        public MofObjectShadow @__Exception = new ("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception");
 
     }
 
-    public _CMOFReflection CMOFReflection = new _CMOFReflection();
+    public _CMOFReflection CMOFReflection = new ();
 
     public class _Reflection
     {
@@ -214,8 +214,8 @@ public class _MOF
 
         }
 
-        public _Factory @Factory = new _Factory();
-        public MofObjectShadow @__Factory = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory");
+        public _Factory @Factory = new ();
+        public MofObjectShadow @__Factory = new ("dm:///_internal/model/mof#_MOF-Reflection-Factory");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Type",
             TypeKind = TypeKind.ClassTree)]
@@ -223,8 +223,8 @@ public class _MOF
         {
         }
 
-        public _Type @Type = new _Type();
-        public MofObjectShadow @__Type = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Type");
+        public _Type @Type = new ();
+        public MofObjectShadow @__Type = new ("dm:///_internal/model/mof#_MOF-Reflection-Type");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Object",
             TypeKind = TypeKind.ClassTree)]
@@ -232,8 +232,8 @@ public class _MOF
         {
         }
 
-        public _Object @Object = new _Object();
-        public MofObjectShadow @__Object = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Object");
+        public _Object @Object = new ();
+        public MofObjectShadow @__Object = new ("dm:///_internal/model/mof#_MOF-Reflection-Object");
 
         [TypeUri(Uri = "dm:///_internal/model/mof#_MOF-Reflection-Element",
             TypeKind = TypeKind.ClassTree)]
@@ -244,14 +244,14 @@ public class _MOF
 
         }
 
-        public _Element @Element = new _Element();
-        public MofObjectShadow @__Element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element");
+        public _Element @Element = new ();
+        public MofObjectShadow @__Element = new ("dm:///_internal/model/mof#_MOF-Reflection-Element");
 
     }
 
-    public _Reflection Reflection = new _Reflection();
+    public _Reflection Reflection = new ();
 
-    public static readonly _MOF TheOne = new _MOF();
+    public static readonly _MOF TheOne = new ();
 
 }
 

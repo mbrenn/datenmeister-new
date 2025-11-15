@@ -1,7 +1,5 @@
-using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -28,10 +26,10 @@ public class _Root
 
     }
 
-    public _MassImportDefinitionAction @MassImportDefinitionAction = new _MassImportDefinitionAction();
-    public MofObjectShadow @__MassImportDefinitionAction = new MofObjectShadow("dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc");
+    public _MassImportDefinitionAction @MassImportDefinitionAction = new ();
+    public MofObjectShadow @__MassImportDefinitionAction = new ("dm:///_internal/types/internal#b5e9f945-6c33-4b26-837b-38a5ad2f65fc");
 
-    public static readonly _Root TheOne = new _Root();
+    public static readonly _Root TheOne = new ();
 
 }
 

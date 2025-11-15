@@ -14,8 +14,8 @@ public class _PrimitiveTypes
     {
     }
 
-    public _Boolean @Boolean = new _Boolean();
-    public MofObjectShadow @__Boolean = new MofObjectShadow("dm:///_internal/model/primitivetypes#Boolean");
+    public _Boolean @Boolean = new ();
+    public MofObjectShadow @__Boolean = new ("dm:///_internal/model/primitivetypes#Boolean");
 
     [TypeUri(Uri = "dm:///_internal/model/primitivetypes#Integer",
         TypeKind = TypeKind.ClassTree)]
@@ -23,8 +23,8 @@ public class _PrimitiveTypes
     {
     }
 
-    public _Integer @Integer = new _Integer();
-    public MofObjectShadow @__Integer = new MofObjectShadow("dm:///_internal/model/primitivetypes#Integer");
+    public _Integer @Integer = new ();
+    public MofObjectShadow @__Integer = new ("dm:///_internal/model/primitivetypes#Integer");
 
     [TypeUri(Uri = "dm:///_internal/model/primitivetypes#Real",
         TypeKind = TypeKind.ClassTree)]
@@ -32,8 +32,8 @@ public class _PrimitiveTypes
     {
     }
 
-    public _Real @Real = new _Real();
-    public MofObjectShadow @__Real = new MofObjectShadow("dm:///_internal/model/primitivetypes#Real");
+    public _Real @Real = new ();
+    public MofObjectShadow @__Real = new ("dm:///_internal/model/primitivetypes#Real");
 
     [TypeUri(Uri = "dm:///_internal/model/primitivetypes#String",
         TypeKind = TypeKind.ClassTree)]
@@ -41,8 +41,8 @@ public class _PrimitiveTypes
     {
     }
 
-    public _String @String = new _String();
-    public MofObjectShadow @__String = new MofObjectShadow("dm:///_internal/model/primitivetypes#String");
+    public _String @String = new ();
+    public MofObjectShadow @__String = new ("dm:///_internal/model/primitivetypes#String");
 
     [TypeUri(Uri = "dm:///_internal/model/primitivetypes#UnlimitedNatural",
         TypeKind = TypeKind.ClassTree)]
@@ -50,10 +50,10 @@ public class _PrimitiveTypes
     {
     }
 
-    public _UnlimitedNatural @UnlimitedNatural = new _UnlimitedNatural();
-    public MofObjectShadow @__UnlimitedNatural = new MofObjectShadow("dm:///_internal/model/primitivetypes#UnlimitedNatural");
+    public _UnlimitedNatural @UnlimitedNatural = new ();
+    public MofObjectShadow @__UnlimitedNatural = new ("dm:///_internal/model/primitivetypes#UnlimitedNatural");
 
-    public static readonly _PrimitiveTypes TheOne = new _PrimitiveTypes();
+    public static readonly _PrimitiveTypes TheOne = new ();
 
 }
 

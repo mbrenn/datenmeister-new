@@ -1,7 +1,5 @@
-using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -40,8 +38,8 @@ public class _Root
 
     }
 
-    public _ReportForm @ReportForm = new _ReportForm();
-    public MofObjectShadow @__ReportForm = new MofObjectShadow("dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695");
+    public _ReportForm @ReportForm = new ();
+    public MofObjectShadow @__ReportForm = new ("dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c",
         TypeKind = TypeKind.ClassTree)]
@@ -61,8 +59,8 @@ public class _Root
 
     }
 
-    public _RequestReportAction @RequestReportAction = new _RequestReportAction();
-    public MofObjectShadow @__RequestReportAction = new MofObjectShadow("dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c");
+    public _RequestReportAction @RequestReportAction = new ();
+    public MofObjectShadow @__RequestReportAction = new ("dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684",
         TypeKind = TypeKind.ClassTree)]
@@ -73,10 +71,10 @@ public class _Root
 
     }
 
-    public _RequestReportResult @RequestReportResult = new _RequestReportResult();
-    public MofObjectShadow @__RequestReportResult = new MofObjectShadow("dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684");
+    public _RequestReportResult @RequestReportResult = new ();
+    public MofObjectShadow @__RequestReportResult = new ("dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684");
 
-    public static readonly _Root TheOne = new _Root();
+    public static readonly _Root TheOne = new ();
 
 }
 

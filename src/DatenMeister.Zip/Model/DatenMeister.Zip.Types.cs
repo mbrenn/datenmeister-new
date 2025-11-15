@@ -1,7 +1,5 @@
-using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Interfaces;
+using DatenMeister.Core.Interfaces.MOF.Reflection;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -28,8 +26,8 @@ public class _Root
 
     }
 
-    public _ZipFileExtractAction @ZipFileExtractAction = new _ZipFileExtractAction();
-    public MofObjectShadow @__ZipFileExtractAction = new MofObjectShadow("dm:///_internal/types/internal#bb766314-6b49-48a6-b80b-08d61c549ff6");
+    public _ZipFileExtractAction @ZipFileExtractAction = new ();
+    public MofObjectShadow @__ZipFileExtractAction = new ("dm:///_internal/types/internal#bb766314-6b49-48a6-b80b-08d61c549ff6");
 
     [TypeUri(Uri = "dm:///_internal/types/internal#a03dae8c-4f44-4d08-9cf8-e98627d05e2f",
         TypeKind = TypeKind.ClassTree)]
@@ -46,10 +44,10 @@ public class _Root
 
     }
 
-    public _ZipFileExtractActionResult @ZipFileExtractActionResult = new _ZipFileExtractActionResult();
-    public MofObjectShadow @__ZipFileExtractActionResult = new MofObjectShadow("dm:///_internal/types/internal#a03dae8c-4f44-4d08-9cf8-e98627d05e2f");
+    public _ZipFileExtractActionResult @ZipFileExtractActionResult = new ();
+    public MofObjectShadow @__ZipFileExtractActionResult = new ("dm:///_internal/types/internal#a03dae8c-4f44-4d08-9cf8-e98627d05e2f");
 
-    public static readonly _Root TheOne = new _Root();
+    public static readonly _Root TheOne = new ();
 
 }
 

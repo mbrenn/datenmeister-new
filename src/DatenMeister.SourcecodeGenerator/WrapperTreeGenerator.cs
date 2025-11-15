@@ -166,7 +166,7 @@ public class WrapperTreeGenerator : WalkPackageClass
             case TypingClassification.Class:
                 Result.AppendLine($"{stack.Indentation}    get");
                 Result.AppendLine($"{stack.Indentation}    {{");
-                Result.AppendLine($"{stack.Indentation}        var foundElement = innerDmElement.getOrDefault<IElement>(\"{name}\");");
+                Result.AppendLine($"{stack.Indentation}        var foundElement = innerDmElement.getOrDefault<IElement?>(\"{name}\");");
                 Result.AppendLine($"{stack.Indentation}        return foundElement == null ? null : new {typeByCsName}(foundElement);");
                 Result.AppendLine($"{stack.Indentation}    }}");
                 break;

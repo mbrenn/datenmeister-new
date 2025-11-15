@@ -41,12 +41,6 @@ if(!$onlyOne)
     Write-Output "-- Creating for DatenMeister.Core"
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Core/XmiFiles/Types/DatenMeister.xmi" "./DatenMeister.Core.Model" "DatenMeister.Core.Models" "dm:///_internal/types/internal"
 
-    Move-Item ./DatenMeister.Core/Models/DatenMeister.cs ./DatenMeister.Core.Model/ -Force    
-    Move-Item ./DatenMeister.Core/Models/DatenMeister.wrapper.cs ./DatenMeister.Core.Model/ -Force
-    Move-Item ./DatenMeister.Core/Models/EMOF/MOF.cs ./DatenMeister.Core.Model/EMOF/ -Force
-    Move-Item ./DatenMeister.Core/Models/EMOF/UML.cs ./DatenMeister.Core.Model/EMOF/ -Force
-    Move-Item ./DatenMeister.Core/Models/EMOF/PrimitiveTypes.cs ./DatenMeister.Core.Model/EMOF/ -Force
-
     Write-Output "-- Creating for DatenMeister.Reports.Forms"
     dotnet ./DatenMeister.SourceGeneration.Console/bin/Release/net9.0/DatenMeister.SourceGeneration.Console.dll "DatenMeister.Reports.Forms/Xmi/DatenMeister.Reports.Types.xmi" "./DatenMeister.Reports.Forms/Model" "DatenMeister.Reports.Forms.Model" "dm:///_internal/types/internal"
 

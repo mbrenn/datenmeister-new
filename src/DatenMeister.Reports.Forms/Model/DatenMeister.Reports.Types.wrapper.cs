@@ -1,5 +1,7 @@
 using DatenMeister.Core.Interfaces.MOF.Reflection;
+using DatenMeister.Core.Interfaces;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.EMOF.Implementation;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable RedundantNameQualifier
@@ -13,6 +15,10 @@ public class Root
     public class ReportForm_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#89dea433-d199-4889-95eb-7ef30c0b5695");
+
+        public static ReportForm_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @name
         {
@@ -86,6 +92,10 @@ public class Root
     {
         public IElement GetWrappedElement() => innerDmElement;
 
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#a6f3a0e0-c7f6-4b67-b96f-252f3cf1f27c");
+
+        public static RequestReportAction_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
+
         public string? @workspace
         {
             get =>
@@ -125,6 +135,10 @@ public class Root
     public class RequestReportResult_Wrapper(IElement innerDmElement) : IElementWrapper
     {
         public IElement GetWrappedElement() => innerDmElement;
+
+        private static readonly MofObjectShadow _metaClass = new ("dm:///_internal/types/internal#75aaa247-9e5d-4f8c-ad11-8ba43d996684");
+
+        public static RequestReportResult_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));
 
         public string? @report
         {

@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.Helper;
+﻿namespace DatenMeister.Core.Interfaces;
 
 public enum TypeKind
 {

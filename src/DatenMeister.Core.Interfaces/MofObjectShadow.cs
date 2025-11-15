@@ -1,7 +1,6 @@
 using DatenMeister.Core.Interfaces.MOF.Reflection;
-using DatenMeister.Core.EMOF.Implementation;
 
-namespace DatenMeister.Core.EMOF.Implementation;
+namespace DatenMeister.Core.Interfaces;
 
 /// <summary>
 /// Defines a MOF object which is created on the fly to reference

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Interfaces;
 
 namespace DatenMeister.SourcecodeGenerator;
 

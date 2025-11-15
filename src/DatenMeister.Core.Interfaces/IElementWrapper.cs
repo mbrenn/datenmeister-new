@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.Interfaces.MOF.Reflection;
 
-namespace DatenMeister.Core.Helper;
+namespace DatenMeister.Core.Interfaces;
 
 public interface IElementWrapper
 {

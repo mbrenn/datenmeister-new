@@ -1,4 +1,4 @@
-namespace DatenMeister.Core.EMOF.Implementation;
+namespace DatenMeister.Core.Interfaces;
 
 /// <summary>
 /// This interface can be implemented by all elements, which know there uri and

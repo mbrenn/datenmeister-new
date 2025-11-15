@@ -31,6 +31,7 @@ public class WrapperTreeGenerator : WalkPackageClass
     {
         WriteUsages([
             "DatenMeister.Core.Interfaces.MOF.Reflection",
+            "DatenMeister.Core.Interfaces",
             "DatenMeister.Core.Helper"
         ]);
         
@@ -60,7 +61,7 @@ public class WrapperTreeGenerator : WalkPackageClass
     /// <param name="stack">Stack being used to walk through</param>
     protected override void WalkClass(IObject classInstance, CallStack stack)
     {
-        if (classInstance is not IElement) return;
+        if (classInstance is not IElement asElement) return;
 
         var name = GetNameOfElement(classInstance);
 
@@ -69,6 +70,10 @@ public class WrapperTreeGenerator : WalkPackageClass
         Result.AppendLine($"{stack.Indentation}public class {name}_Wrapper(IElement innerDmElement) : IElementWrapper");
         Result.AppendLine($"{stack.Indentation}{{");
         Result.AppendLine($"{stack.Indentation}    public IElement GetWrappedElement() => innerDmElement;");
+        Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}    private static readonly MofObjectShadow _metaClass = new (\"{asElement.GetUri()}\");");
+        Result.AppendLine();
+        Result.AppendLine($"{stack.Indentation}    public static {name}_Wrapper Create(IFactory factory) => new (factory.create(_metaClass));");
         Result.AppendLine();
         
         base.WalkClass(classInstance, stack);

@@ -66,21 +66,8 @@ public class TestFindModels
     }
     
     [Test]
-    public async Task TestFindByInMemoryObjectProvider()
-    {
-        
-        await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
-        var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
-                             ?? throw new InvalidOperationException("TypeIndexStore not found");
-        typeIndexStore.WaitForAvailabilityOfIndexStore();
-        
-        var typesWorkspace = typeIndexStore.GetCurrentIndexStore().FindWorkspace(WorkspaceNames.WorkspaceTypes);
-    }
-    
-    [Test]
     public async Task TestFindByObject()
     {
-        
         await using var dm = await IntegrationOfTests.GetDatenMeisterScope();
         var typeIndexStore = dm.ScopeStorage.TryGet<TypeIndexStore>()
                              ?? throw new InvalidOperationException("TypeIndexStore not found");
